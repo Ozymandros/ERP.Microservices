@@ -19,13 +19,13 @@ var notificationsDb = sqlServer.AddDatabase("NotificationsDB");
 var purchasingDb = sqlServer.AddDatabase("PurchasingDB");
 
 // Afegir el teu microservici
-builder.AddRedis("redis", 6379).WithDaprSidecar(new DaprSidecarOptions
+builder.AddRedis("redis").WithDaprSidecar(new DaprSidecarOptions
 {
     AppId = "redis",
-    AppPort = 6379,
+    AppPort = 6380, // Port alternatiu
     DaprHttpPort = 3600,
-    DaprGrpcPort = 60000,
-    MetricsPort = 9191
+    DaprGrpcPort = 51000,
+    MetricsPort = 9190
 });
 
 // Registra los microservicios
@@ -37,7 +37,7 @@ inventoryService = inventoryService
         AppId = "inventoryservice",
         AppPort = 5001,
         DaprGrpcPort = 50001,
-        DaprHttpPort = 3500,
+        DaprHttpPort = 3501,
         MetricsPort = 9091
     });
 
