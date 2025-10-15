@@ -19,11 +19,11 @@ var billingDb = sqlServer.AddDatabase("BillingDB");
 //var notificationsDb = sqlServer.AddDatabase("NotificationsDB");
 var purchasingDb = sqlServer.AddDatabase("PurchasingDB");
 
-// Afegir el teu microservici
+// Afegir el teu microserviciAppId 
 builder.AddRedis("redis").WithDaprSidecar(new DaprSidecarOptions
 {
     AppId = "redis",
-    AppPort = 6380, // Port alternatiu
+    //AppPort = 6380, // Port alternatiu
     DaprHttpPort = 3600,
     DaprGrpcPort = 51000,
     MetricsPort = 9190
@@ -32,7 +32,7 @@ builder.AddRedis("redis").WithDaprSidecar(new DaprSidecarOptions
 // Registra los microservicios
 var inventoryService = builder.AddProject<Projects.MyApp_Inventory_API>("inventoryservice");
 inventoryService = inventoryService
-    .WithHttpEndpoint()
+    .WithHttpEndpoint(5001)
     .WithExternalHttpEndpoints()
     .WaitFor(inventoryDb)
     .WithReference(inventoryDb)
@@ -47,14 +47,14 @@ inventoryService = inventoryService
 
 var ordersService = builder.AddProject<Projects.MyApp_Orders_API>("ordersservice");
 ordersService = ordersService
-    .WithHttpEndpoint()
+    .WithHttpEndpoint(5002)
     .WithExternalHttpEndpoints()
     .WaitFor(ordersDb)
     .WithReference(ordersDb)
     .WithDaprSidecar(new DaprSidecarOptions
     {
         AppId = "ordersservice",
-        AppPort = 5002,
+        //AppPort = 5002,
         DaprHttpPort = 3502,
         DaprGrpcPort = 50002,
         MetricsPort = 9092
@@ -62,7 +62,7 @@ ordersService = ordersService
 
 var salesService = builder.AddProject<Projects.MyApp_Sales_API>("salesservice");
 salesService = salesService
-    .WithHttpEndpoint()
+    .WithHttpEndpoint(5003)
     .WithExternalHttpEndpoints()
     .WaitFor(salesDb)
     .WithReference(salesDb)
@@ -77,7 +77,7 @@ salesService = salesService
 
 var billingService = builder.AddProject<Projects.MyApp_Billing_API>("billingservice");
 billingService = billingService
-    .WithHttpEndpoint()
+    .WithHttpEndpoint(5004)
     .WithExternalHttpEndpoints()
     .WaitFor(billingDb)
     .WithReference(billingDb)
@@ -106,7 +106,7 @@ billingService = billingService
 
 var purchasingService = builder.AddProject<Projects.MyApp_Purchasing_API>("purchasingservice");
 purchasingService = purchasingService
-    .WithHttpEndpoint()
+    .WithHttpEndpoint(5006)
     .WithExternalHttpEndpoints()
     .WaitFor(purchasingDb)
     .WithReference(purchasingDb)
@@ -118,9 +118,10 @@ purchasingService = purchasingService
         DaprGrpcPort = 50006,
         MetricsPort = 9096
     });
-
+/*
 // Registra el API Gateway de Ocelot
 var apiGateway = builder.AddProject<Projects.ErpApiGateway>("apigateway")
+    .WithHttpEndpoint(5000)
     .WithExternalHttpEndpoints()
 // Wire remaining services into the gateway
     .WithReference(inventoryService)
@@ -130,26 +131,27 @@ var apiGateway = builder.AddProject<Projects.ErpApiGateway>("apigateway")
     .WithReference(billingService)
     //.WithReference(notificationService)
     .WithReference(purchasingService);
-    //.WithEndpoint(name: "http", port: 5000, isProxied: true); ;
+//.WithEndpoint(name: "http", port: 5000, isProxied: true); ;
 
 // attach sidecar to the API gateway itself (listening port 5000)
-//apiGateway = apiGateway
-//    .WithDaprSidecar(new DaprSidecarOptions
-//    {
-//        AppId = "apigateway",
-//        AppPort = 5000,
-//        DaprHttpPort = 3500,
-//        DaprGrpcPort = 50000,
-//        MetricsPort = 9090
-//    });
-
+apiGateway = apiGateway
+    .WithDaprSidecar(new DaprSidecarOptions
+    {
+        AppId = "apigateway",
+        AppPort = 5000,
+        DaprHttpPort = 3500,
+        DaprGrpcPort = 50000,
+        MetricsPort = 9090
+    });
+*/
 // Configuració del Reverse Proxy (YARP)
 var gateway = builder.AddYarp("gateway")
+                     //.WithHttpEndpoint(5000)
                      .WithConfiguration(yarp =>
                      {
                          // Configure routes programmatically
                          yarp.AddRoute("/inventory/{**catch-all}", inventoryService)
-                             .WithTransformPathRemovePrefix("/inventory"); 
+                             .WithTransformPathRemovePrefix("/inventory");
                          yarp.AddRoute("/sales/{**catch-all}", salesService)
                              .WithTransformPathRemovePrefix("/sales");
                          yarp.AddRoute("/billing/{**catch-all}", billingService)
