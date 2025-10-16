@@ -34,7 +34,7 @@ def copy_dbcontext_file(csproj_path):
         
         # Split by "." and get the last segment
         name_segments = csproj_name.split('.')
-        last_segment = name_segments[-1]
+        last_segment = name_segments[-2]
         
         # Remove final "s" if it exists
         if last_segment.endswith('s'):
