@@ -16,6 +16,7 @@ using MyApp.Auth.Domain.Repositories;
 using MyApp.Auth.Infrastructure.Data;
 using MyApp.Auth.Infrastructure.Data.Repositories;
 using MyApp.Auth.Infrastructure.Services;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -141,7 +142,14 @@ builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
 
 // Add AutoMapper
-builder.Services.AddAutoMapper(typeof(AuthMappingProfile).Assembly);
+
+var config = new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile(new AuthMappingProfile());
+    // afegeix més perfils si cal
+});
+var mapper = config.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 // Add Cors
 builder.Services.AddCors(options =>

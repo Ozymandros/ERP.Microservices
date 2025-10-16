@@ -12,8 +12,8 @@ builder.AddRedis("redis").WithDaprSidecar(new DaprSidecarOptions
     AppId = "redis",
     //AppPort = 6380, // Port alternatiu
     DaprHttpPort = 3600,
-    DaprGrpcPort = 45000,
-    MetricsPort = 9190
+    DaprGrpcPort = 46000,
+    MetricsPort = 9100
 });
 
 // Afegir SQL Server com a contenidor
