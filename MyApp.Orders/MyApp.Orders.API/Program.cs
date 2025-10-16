@@ -1,11 +1,41 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MyApp.Orders.Infrastructure.Data;
+using System.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Infrastructure & Application DI
+var ordersDbConnectionString = builder.Configuration.GetConnectionString("ordersdb");
+builder.Services.AddDbContext<OrdersDbContext>(options =>
+    options.UseSqlServer(ordersDbConnectionString));
+
+builder.Services.AddScoped<MyApp.Orders.Domain.IOrderRepository, MyApp.Orders.Infrastructure.Repositories.OrderRepository>();
+builder.Services.AddScoped<MyApp.Orders.Domain.IOrderLineRepository, MyApp.Orders.Infrastructure.Repositories.OrderLineRepository>();
+
+builder.Services.AddAutoMapper(
+    cfg => { /* optional configuration */ },
+    typeof(MyApp.Orders.Application.Mapping.OrderProfile).Assembly
+);
+builder.Services.AddScoped<MyApp.Orders.Application.Contracts.IOrderService, MyApp.Orders.Application.Services.OrderService>();
+
 var app = builder.Build();
+
+// Afegeix un bloc per a l'aplicació automàtica de les migracions
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<OrdersDbContext>();
+    // ATENCIÓ: Esborra la base de dades i torna-la a crear si està buida (útil per a desenvolupament amb contenidors)
+    // dbContext.Database.EnsureDeleted(); 
+
+    // Aquest és el mètode clau: aplica les migracions pendents.
+    dbContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -21,20 +51,7 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.MapControllers();
 
 app.Run();
 

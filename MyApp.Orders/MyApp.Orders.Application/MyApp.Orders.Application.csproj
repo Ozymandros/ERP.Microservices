@@ -12,4 +12,8 @@
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="15.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.21" />
+  </ItemGroup>
 </Project>
