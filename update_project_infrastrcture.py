@@ -1,6 +1,74 @@
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
+import shutil
+import glob
+
+def copy_dbcontext_file(csproj_path):
+    """
+    Looks for XXXDbContext.cs file in the script's directory and copies it
+    to the csproj directory with renamed file based on csproj name.
+    
+    Args:
+        csproj_path: Path to the .csproj file
+    """
+    try:
+        # Get the script's directory (where the .py file is running from)
+        script_dir = Path(__file__).parent
+        
+        # Find XXXDbContext.cs file in script directory
+        dbcontext_files = list(script_dir.glob('*DbContext.cs'))
+        
+        if not dbcontext_files:
+            print("No XXXDbContext.cs file found in script directory, skipping...")
+            return
+        
+        if len(dbcontext_files) > 1:
+            print(f"Warning: Multiple DbContext files found, using the first one: {dbcontext_files[0].name}")
+        
+        source_file = dbcontext_files[0]
+        
+        # Get csproj name and process it
+        csproj_path_obj = Path(csproj_path)
+        csproj_name = csproj_path_obj.stem  # Gets filename without extension
+        
+        # Split by "." and get the last segment
+        name_segments = csproj_name.split('.')
+        last_segment = name_segments[-1]
+        
+        # Remove final "s" if it exists
+        if last_segment.endswith('s'):
+            last_segment = last_segment[:-1]
+        
+        # Create new filename
+        new_filename = f"{last_segment}DbContext.cs"
+        
+        # Create "Data" subfolder in csproj directory if it doesn't exist
+        data_folder = csproj_path_obj.parent / "Data"
+        data_folder.mkdir(exist_ok=True)
+        
+        destination = data_folder / new_filename
+        
+        # Read the source file content
+        with open(source_file, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Get the original class name from source file (without DbContext)
+        source_name = source_file.stem.replace('DbContext', '')
+        
+        # Replace XXX with the new name in the content
+        content = content.replace(source_name, last_segment)
+        
+        # Write to destination with modified content
+        with open(destination, 'w', encoding='utf-8') as f:
+            f.write(content)
+        
+        print(f"Copied and renamed {source_file.name} to {destination}")
+        print(f"Replaced '{source_name}' with '{last_segment}' in file contents")
+        
+    except Exception as e:
+        print(f"Warning: Failed to copy DbContext file. {e}")
+
 
 def add_ef_core_references(csproj_path):
     """
@@ -103,6 +171,10 @@ def main():
         print(f"Error: File '{csproj_path}' does not exist")
         sys.exit(1)
     
+    # Copy DbContext file if it exists
+    copy_dbcontext_file(csproj_path)
+    
+    # Add EF Core references
     add_ef_core_references(csproj_path)
 
 if __name__ == "__main__":

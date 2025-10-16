@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="C:\Projects\ERP_ASPIRE_APP\XXXDbContext.cs" Link="XXXDbContext.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MyApp.Orders.Domain\MyApp.Orders.Domain.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
   </ItemGroup>
