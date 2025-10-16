@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyApp.Purchasing.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/purchasing/orders")]
 public class PurchaseOrdersController : ControllerBase
 {

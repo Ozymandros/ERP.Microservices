@@ -1,13 +1,9 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using MyApp.Auth.API;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Application.Mappings;
 using MyApp.Auth.Application.Services;
@@ -16,7 +12,7 @@ using MyApp.Auth.Domain.Repositories;
 using MyApp.Auth.Infrastructure.Data;
 using MyApp.Auth.Infrastructure.Data.Repositories;
 using MyApp.Auth.Infrastructure.Services;
-using AutoMapper;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +22,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Auth API", Version = "v1" });
-    
+
     // Add JWT Bearer token configuration to Swagger
     var securityScheme = new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
@@ -37,7 +33,7 @@ builder.Services.AddSwaggerGen(c =>
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
         Description = "JWT Authorization header using the Bearer scheme."
     };
-    
+
     c.AddSecurityDefinition("Bearer", securityScheme);
     c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
     {
@@ -56,7 +52,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // Database configuration
-var connectionString = builder.Configuration.GetConnectionString("AuthDb") 
+var connectionString = builder.Configuration.GetConnectionString("AuthDb")
     ?? "Server=localhost;Database=AuthDb;Trusted_Connection=True;";
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
@@ -168,19 +164,14 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
-    
+
     dbContext.Database.Migrate();
-    
-    // Seed default roles
-    var defaultRoles = new[] { "Admin", "User", "Manager" };
-    foreach (var roleName in defaultRoles)
-    {
-        if (!await roleManager.RoleExistsAsync(roleName))
-        {
-            await roleManager.CreateAsync(new Role { Name = roleName, Description = $"{roleName} role" });
-        }
-    }
+
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+    await RoleSeeder.SeedAsync(roleManager);
+
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+    await AdminUserSeeder.SeedAsync(userManager);
 }
 
 // Configure the HTTP request pipeline

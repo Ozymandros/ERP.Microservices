@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MyApp.Orders.Infrastructure.Data;
+using MyApp.Shared.Infrastructure.Extensions;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// JWT Authentication
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 // Infrastructure & Application DI
 var ordersDbConnectionString = builder.Configuration.GetConnectionString("ordersdb");
@@ -26,14 +30,14 @@ builder.Services.AddScoped<MyApp.Orders.Application.Contracts.IOrderService, MyA
 
 var app = builder.Build();
 
-// Afegeix un bloc per a l'aplicació automàtica de les migracions
+// Afegeix un bloc per a l'aplicaciï¿½ automï¿½tica de les migracions
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<OrdersDbContext>();
-    // ATENCIÓ: Esborra la base de dades i torna-la a crear si està buida (útil per a desenvolupament amb contenidors)
+    // ATENCIï¿½: Esborra la base de dades i torna-la a crear si estï¿½ buida (ï¿½til per a desenvolupament amb contenidors)
     // dbContext.Database.EnsureDeleted(); 
 
-    // Aquest és el mètode clau: aplica les migracions pendents.
+    // Aquest ï¿½s el mï¿½tode clau: aplica les migracions pendents.
     dbContext.Database.Migrate();
 }
 
@@ -46,10 +50,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+// Add authentication and authorization middleware
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

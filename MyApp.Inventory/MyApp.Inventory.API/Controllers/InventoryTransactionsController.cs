@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
@@ -6,6 +7,7 @@ using MyApp.Inventory.Domain.Entities;
 namespace MyApp.Inventory.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/inventory/transactions")]
 public class InventoryTransactionsController : ControllerBase
 {

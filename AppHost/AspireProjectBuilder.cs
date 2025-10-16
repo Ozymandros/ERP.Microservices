@@ -67,7 +67,10 @@ public class AspireProjectBuilder
                 //DaprHttpPort = daprHttpPort,
                 //DaprGrpcPort = daprGrpcPort,
                 //MetricsPort = metricsPort
-            });
+            })
+            .WithEnvironment("Jwt__SecretKey", _builder.Configuration["Jwt:SecretKey"])
+            .WithEnvironment("Jwt__Issuer", _builder.Configuration["Jwt:Issuer"])
+            .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"]); ;
 
         return project;
     }

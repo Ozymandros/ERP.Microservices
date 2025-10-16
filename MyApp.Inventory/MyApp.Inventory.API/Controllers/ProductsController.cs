@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyApp.Inventory.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/inventory/products")]
 public class ProductsController : ControllerBase
 {

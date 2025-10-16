@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyApp.Purchasing.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/purchasing/suppliers")]
 public class SuppliersController : ControllerBase
 {

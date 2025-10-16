@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyApp.Sales.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/sales/customers")]
     public class CustomersController : ControllerBase
     {

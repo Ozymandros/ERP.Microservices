@@ -60,7 +60,7 @@ public class RoleService : IRoleService
             return null;
         }
 
-        var role = new Role
+        var role = new Role(createRoleDto.Name)
         {
             Name = createRoleDto.Name,
             Description = createRoleDto.Description,
