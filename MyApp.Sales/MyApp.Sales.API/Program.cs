@@ -1,38 +1,41 @@
 using Microsoft.EntityFrameworkCore;
-using MyApp.Sales.Application.Mapping;
-using MyApp.Sales.Application.Services;
-using MyApp.Sales.Application.Contracts.Services;
-using MyApp.Sales.Infrastructure.Data;
-using MyApp.Sales.Infrastructure.Data.Repositories;
 using MyApp.Sales.Domain;
+using MyApp.Sales.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add DbContext
+// Infrastructure & Application DI
+var salesDbConnectionString = builder.Configuration.GetConnectionString("salesdb");
 builder.Services.AddDbContext<SalesDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
-        ?? "Server=(localdb)\\mssqllocaldb;Database=SalesDb;Trusted_Connection=true;"));
+    options.UseSqlServer(salesDbConnectionString));
 
-// Add Repositories
-builder.Services.AddScoped<ISalesOrderRepository, SalesOrderRepository>();
-builder.Services.AddScoped<ISalesOrderLineRepository, SalesOrderLineRepository>();
-builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<MyApp.Sales.Domain.ISalesOrderLineRepository, MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository>();
+builder.Services.AddScoped<MyApp.Sales.Domain.ISalesOrderRepository, MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderRepository>();
+builder.Services.AddScoped<MyApp.Sales.Domain.ICustomerRepository, MyApp.Sales.Infrastructure.Data.Repositories.CustomerRepository>();
 
-// Add Application Services
-builder.Services.AddScoped<ISalesOrderService, SalesOrderService>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
-
-// Add AutoMapper
-builder.Services.AddAutoMapper(typeof(SalesOrderMappingProfile));
-
-// Add controllers
-builder.Services.AddControllers();
+builder.Services.AddAutoMapper(
+    cfg => { /* optional configuration */ },
+    typeof(MyApp.Sales.Application.Mapping.SalesOrderMappingProfile).Assembly
+);
+builder.Services.AddScoped<MyApp.Sales.Application.Contracts.Services.ISalesOrderService, MyApp.Sales.Application.Services.SalesOrderService>();
 
 var app = builder.Build();
+
+// Afegeix un bloc per a l'aplicaci� autom�tica de les migracions
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<SalesDbContext>();
+    // ATENCI�: Esborra la base de dades i torna-la a crear si est� buida (�til per a desenvolupament amb contenidors)
+    // dbContext.Database.EnsureDeleted(); 
+
+    // Aquest �s el m�tode clau: aplica les migracions pendents.
+    dbContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -42,6 +45,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.MapControllers();
 
 app.Run();

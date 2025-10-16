@@ -1,27 +1,33 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using MyApp.Inventory.Domain.Entities;
 
-namespace MyApp.Inventorys.Infrastructure.Data;
+namespace MyApp.Inventory.Infrastructure.Data;
 
-public class InventorysDbContext : DbContext
+public class InventoryDbContext : DbContext
 {
-    public InventorysDbContext(DbContextOptions<InventorysDbContext> options) : base(options)
+    public InventoryDbContext(DbContextOptions<InventoryDbContext> options) : base(options)
     {
     }
+
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Warehouse> Warehouses { get; set; }
+    public DbSet<InventoryTransaction> InventoryTransactions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(InventoryDbContext).Assembly);
     }
 }
 
-public class InventorysDbContextFactory : IDesignTimeDbContextFactory<InventorysDbContext>
+public class InventoryDbContextFactory : IDesignTimeDbContextFactory<InventoryDbContext>
 {
-    public InventorysDbContext CreateDbContext(string[] args)
+    public InventoryDbContext CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<InventorysDbContext>();
-        optionsBuilder.UseSqlServer("Server=localhost;Database=InventorysDb;Trusted_Connection=True;");
+        var optionsBuilder = new DbContextOptionsBuilder<InventoryDbContext>();
+        optionsBuilder.UseSqlServer("Server=localhost;Database=InventoryDb;Trusted_Connection=True;");
 
-        return new InventorysDbContext(optionsBuilder.Options);
+        return new InventoryDbContext(optionsBuilder.Options);
     }
 }

@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MyApp.Inventory.Domain\MyApp.Inventory.Domain.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Infrastructure\MyApp.Shared.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />

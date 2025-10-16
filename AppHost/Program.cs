@@ -25,22 +25,22 @@ builder.AddRedis("redis").WithDaprSidecar(new DaprSidecarOptions
     AppId = "redis",
     //AppPort = 6380, // Port alternatiu
     DaprHttpPort = 3600,
-    DaprGrpcPort = 51000,
+    DaprGrpcPort = 45000,
     MetricsPort = 9190
 });
 
 // Registra los microservicios
-var inventoryService = builder.AddProject<Projects.MyApp_Inventory_API>("inventoryservice");
-inventoryService = inventoryService
+var inventoryervice = builder.AddProject<Projects.MyApp_Inventory_API>("inventoryervice");
+inventoryervice = inventoryervice
     .WithHttpEndpoint(5001)
     .WithExternalHttpEndpoints()
     .WaitFor(inventoryDb)
     .WithReference(inventoryDb)
     .WithDaprSidecar(new DaprSidecarOptions
     {
-        AppId = "inventoryservice",
+        AppId = "inventoryervice",
         AppPort = 5001,
-        DaprGrpcPort = 50001,
+        DaprGrpcPort = 45001,
         DaprHttpPort = 3501,
         MetricsPort = 9091
     });
@@ -56,7 +56,7 @@ ordersService = ordersService
         AppId = "ordersservice",
         //AppPort = 5002,
         DaprHttpPort = 3502,
-        DaprGrpcPort = 50002,
+        DaprGrpcPort = 45002,
         MetricsPort = 9092
     });
 
@@ -71,7 +71,7 @@ salesService = salesService
         AppId = "salesservice",
         AppPort = 5003,
         DaprHttpPort = 3503,
-        DaprGrpcPort = 50003,
+        DaprGrpcPort = 45003,
         MetricsPort = 9093
     });
 
@@ -86,7 +86,7 @@ billingService = billingService
         AppId = "billingservice",
         AppPort = 5004,
         DaprHttpPort = 3504,
-        DaprGrpcPort = 50004,
+        DaprGrpcPort = 45004,
         MetricsPort = 9094
     });
 
@@ -100,7 +100,7 @@ billingService = billingService
 //        AppId = "notificationservice",
 //        AppPort = 5005,
 //        DaprHttpPort = 3505,
-//        DaprGrpcPort = 50005,
+//        DaprGrpcPort = 45005,
 //        MetricsPort = 9095
 //    });
 
@@ -115,7 +115,7 @@ purchasingService = purchasingService
         AppId = "purchasingservice",
         AppPort = 5006,
         DaprHttpPort = 3506,
-        DaprGrpcPort = 50006,
+        DaprGrpcPort = 45006,
         MetricsPort = 9096
     });
 /*
@@ -124,7 +124,7 @@ var apiGateway = builder.AddProject<Projects.ErpApiGateway>("apigateway")
     .WithHttpEndpoint(5000)
     .WithExternalHttpEndpoints()
 // Wire remaining services into the gateway
-    .WithReference(inventoryService)
+    .WithReference(inventoryervice)
     .WithReference(ordersService)
     .WithReference(salesService)
     .WithReference(salesService)
@@ -150,7 +150,7 @@ var gateway = builder.AddYarp("gateway")
                      .WithConfiguration(yarp =>
                      {
                          // Configure routes programmatically
-                         yarp.AddRoute("/inventory/{**catch-all}", inventoryService)
+                         yarp.AddRoute("/inventory/{**catch-all}", inventoryervice)
                              .WithTransformPathRemovePrefix("/inventory");
                          yarp.AddRoute("/sales/{**catch-all}", salesService)
                              .WithTransformPathRemovePrefix("/sales");
