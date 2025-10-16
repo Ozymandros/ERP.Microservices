@@ -1,0 +1,208 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MyApp.Auth.Application.Contracts.DTOs;
+using MyApp.Auth.Application.Contracts.Services;
+
+namespace MyApp.Auth.API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+[Authorize]
+[Produces("application/json")]
+public class RolesController : ControllerBase
+{
+    private readonly IRoleService _roleService;
+    private readonly ILogger<RolesController> _logger;
+
+    public RolesController(IRoleService roleService, ILogger<RolesController> logger)
+    {
+        _roleService = roleService;
+        _logger = logger;
+    }
+
+    /// <summary>
+    /// Get all roles
+    /// </summary>
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<RoleDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<IEnumerable<RoleDto>>> GetAll()
+    {
+        try
+        {
+            var roles = await _roleService.GetAllRolesAsync();
+            return Ok(roles);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving all roles");
+            return StatusCode(500, new { message = "An error occurred retrieving roles" });
+        }
+    }
+
+    /// <summary>
+    /// Get role by ID
+    /// </summary>
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(RoleDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<RoleDto>> GetById(Guid id)
+    {
+        try
+        {
+            var role = await _roleService.GetRoleByIdAsync(id);
+            if (role == null)
+            {
+                _logger.LogWarning("Role not found: {RoleId}", id);
+                return NotFound(new { message = "Role not found" });
+            }
+
+            return Ok(role);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving role: {RoleId}", id);
+            return StatusCode(500, new { message = "An error occurred retrieving the role" });
+        }
+    }
+
+    /// <summary>
+    /// Get role by name
+    /// </summary>
+    [HttpGet("name/{name}")]
+    [ProducesResponseType(typeof(RoleDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<RoleDto>> GetByName(string name)
+    {
+        try
+        {
+            var role = await _roleService.GetRoleByNameAsync(name);
+            if (role == null)
+            {
+                _logger.LogWarning("Role not found by name: {RoleName}", name);
+                return NotFound(new { message = "Role not found" });
+            }
+
+            return Ok(role);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving role by name: {RoleName}", name);
+            return StatusCode(500, new { message = "An error occurred retrieving the role" });
+        }
+    }
+
+    /// <summary>
+    /// Create new role
+    /// </summary>
+    [HttpPost]
+    [ProducesResponseType(typeof(RoleDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<RoleDto>> Create([FromBody] CreateRoleDto createRoleDto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        try
+        {
+            var result = await _roleService.CreateRoleAsync(createRoleDto);
+            if (result == null)
+            {
+                _logger.LogWarning("Failed to create role: {RoleName}", createRoleDto.Name);
+                return Conflict(new { message = "Role already exists" });
+            }
+
+            _logger.LogInformation("Role created: {RoleName}", createRoleDto.Name);
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating role: {RoleName}", createRoleDto.Name);
+            return StatusCode(500, new { message = "An error occurred creating the role" });
+        }
+    }
+
+    /// <summary>
+    /// Update role
+    /// </summary>
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> Update(Guid id, [FromBody] CreateRoleDto updateRoleDto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        try
+        {
+            var result = await _roleService.UpdateRoleAsync(id, updateRoleDto);
+            if (!result)
+            {
+                _logger.LogWarning("Failed to update role: {RoleId}", id);
+                return NotFound(new { message = "Role not found" });
+            }
+
+            _logger.LogInformation("Role updated: {RoleId}", id);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating role: {RoleId}", id);
+            return StatusCode(500, new { message = "An error occurred updating the role" });
+        }
+    }
+
+    /// <summary>
+    /// Delete role
+    /// </summary>
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        try
+        {
+            var result = await _roleService.DeleteRoleAsync(id);
+            if (!result)
+            {
+                _logger.LogWarning("Failed to delete role: {RoleId}", id);
+                return NotFound(new { message = "Role not found" });
+            }
+
+            _logger.LogInformation("Role deleted: {RoleId}", id);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting role: {RoleId}", id);
+            return StatusCode(500, new { message = "An error occurred deleting the role" });
+        }
+    }
+
+    /// <summary>
+    /// Get users in role
+    /// </summary>
+    [HttpGet("{name}/users")]
+    [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersInRole(string name)
+    {
+        try
+        {
+            var users = await _roleService.GetUsersInRoleAsync(name);
+            return Ok(users);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving users in role: {RoleName}", name);
+            return StatusCode(500, new { message = "An error occurred retrieving users" });
+        }
+    }
+}

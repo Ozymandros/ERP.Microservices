@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MyApp.Auth\MyApp.Auth.API\MyApp.Auth.API.csproj" />
     <ProjectReference Include="..\MyApp.Sales\MyApp.Sales.API\MyApp.Sales.API.csproj" />
     <ProjectReference Include="..\MyApp.Billing\MyApp.Billing.API\MyApp.Billing.API.csproj" />
     <ProjectReference Include="..\MyApp.Inventory\MyApp.Inventory.API\MyApp.Inventory.API.csproj" />

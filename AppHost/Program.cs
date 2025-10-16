@@ -10,14 +10,8 @@ builder.Services.AddDaprClient();
 var password = builder.AddParameter("password", secret: true);
 var sqlServer = builder.AddSqlServer("sqlserver", password);
 
-// Afegir cada base de dades com a recurs independent
-var inventoryDb = sqlServer.AddDatabase("InventoryDB");
-var ordersDb = sqlServer.AddDatabase("OrdersDB");
 var usersDb = sqlServer.AddDatabase("UsersDB");
-var salesDb = sqlServer.AddDatabase("SalesDB");
-var billingDb = sqlServer.AddDatabase("BillingDB");
 //var notificationsDb = sqlServer.AddDatabase("NotificationsDB");
-var purchasingDb = sqlServer.AddDatabase("PurchasingDB");
 
 // Afegir el teu microserviciAppId 
 builder.AddRedis("redis").WithDaprSidecar(new DaprSidecarOptions
@@ -29,7 +23,7 @@ builder.AddRedis("redis").WithDaprSidecar(new DaprSidecarOptions
     MetricsPort = 9190
 });
 
-// Registra los microservicios
+var inventoryDb = sqlServer.AddDatabase("InventoryDB");
 var inventoryervice = builder.AddProject<Projects.MyApp_Inventory_API>("inventoryervice");
 inventoryervice = inventoryervice
     .WithHttpEndpoint(5001)
@@ -45,7 +39,8 @@ inventoryervice = inventoryervice
         MetricsPort = 9091
     });
 
-var ordersService = builder.AddProject<Projects.MyApp_Orders_API>("ordersservice");
+var ordersDb = sqlServer.AddDatabase("OrdersDB");
+var ordersService = builder.AddProject<Projects.MyApp_Orders_API>("orders-service");
 ordersService = ordersService
     .WithHttpEndpoint(5002)
     .WithExternalHttpEndpoints()
@@ -53,14 +48,15 @@ ordersService = ordersService
     .WithReference(ordersDb)
     .WithDaprSidecar(new DaprSidecarOptions
     {
-        AppId = "ordersservice",
+        AppId = "orders-service",
         //AppPort = 5002,
         DaprHttpPort = 3502,
         DaprGrpcPort = 45002,
         MetricsPort = 9092
     });
 
-var salesService = builder.AddProject<Projects.MyApp_Sales_API>("salesservice");
+var salesDb = sqlServer.AddDatabase("SalesDB");
+var salesService = builder.AddProject<Projects.MyApp_Sales_API>("sales-service");
 salesService = salesService
     .WithHttpEndpoint(5003)
     .WithExternalHttpEndpoints()
@@ -68,14 +64,15 @@ salesService = salesService
     .WithReference(salesDb)
     .WithDaprSidecar(new DaprSidecarOptions
     {
-        AppId = "salesservice",
+        AppId = "sales-service",
         AppPort = 5003,
         DaprHttpPort = 3503,
         DaprGrpcPort = 45003,
         MetricsPort = 9093
     });
 
-var billingService = builder.AddProject<Projects.MyApp_Billing_API>("billingservice");
+var billingDb = sqlServer.AddDatabase("BillingDB");
+var billingService = builder.AddProject<Projects.MyApp_Billing_API>("billing-service");
 billingService = billingService
     .WithHttpEndpoint(5004)
     .WithExternalHttpEndpoints()
@@ -83,28 +80,29 @@ billingService = billingService
     .WithReference(billingDb)
     .WithDaprSidecar(new DaprSidecarOptions
     {
-        AppId = "billingservice",
+        AppId = "billing-service",
         AppPort = 5004,
         DaprHttpPort = 3504,
         DaprGrpcPort = 45004,
         MetricsPort = 9094
     });
 
-//var notificationService = builder.AddProject<Projects.MyApp_Notification_API>("notificationservice");
+//var notificationService = builder.AddProject<Projects.MyApp_Notification_API>("notification-service");
 //notificationService = notificationService
 //    .WithHttpEndpoint()
 //    .WithExternalHttpEndpoints()
 //    .WithReference(notificationsDb)
 //    .WithDaprSidecar(new DaprSidecarOptions
 //    {
-//        AppId = "notificationservice",
+//        AppId = "notification-service",
 //        AppPort = 5005,
 //        DaprHttpPort = 3505,
 //        DaprGrpcPort = 45005,
 //        MetricsPort = 9095
 //    });
 
-var purchasingService = builder.AddProject<Projects.MyApp_Purchasing_API>("purchasingservice");
+var purchasingDb = sqlServer.AddDatabase("PurchasingDB");
+var purchasingService = builder.AddProject<Projects.MyApp_Purchasing_API>("purchasing-service");
 purchasingService = purchasingService
     .WithHttpEndpoint(5006)
     .WithExternalHttpEndpoints()
@@ -112,7 +110,7 @@ purchasingService = purchasingService
     .WithReference(purchasingDb)
     .WithDaprSidecar(new DaprSidecarOptions
     {
-        AppId = "purchasingservice",
+        AppId = "purchasing-service",
         AppPort = 5006,
         DaprHttpPort = 3506,
         DaprGrpcPort = 45006,
@@ -144,6 +142,22 @@ apiGateway = apiGateway
         MetricsPort = 9090
     });
 */
+
+var authDb = sqlServer.AddDatabase("AuthDb");
+var authService = builder.AddProject<Projects.MyApp_Auth_API>("auth-service")
+    .WithHttpEndpoint(5007)
+    .WithExternalHttpEndpoints()
+    .WaitFor(authDb)
+    .WithReference(authDb)
+    .WithDaprSidecar(new DaprSidecarOptions
+    {
+        AppId = "purchasing-service",
+        AppPort = 5007,
+        DaprHttpPort = 3507,
+        DaprGrpcPort = 45007,
+        MetricsPort = 9097
+    });
+
 // Configuració del Reverse Proxy (YARP)
 var gateway = builder.AddYarp("gateway")
                      //.WithHttpEndpoint(5000)
@@ -160,6 +174,8 @@ var gateway = builder.AddYarp("gateway")
                              .WithTransformPathRemovePrefix("/orders");
                          yarp.AddRoute("/purchasing/{**catch-all}", purchasingService)
                              .WithTransformPathRemovePrefix("/purchasing");
+                         yarp.AddRoute("/auth/{**catch-all}", authService)
+                             .WithTransformPathRemovePrefix("/auth");
                          //yarp.AddRoute("/notification/{**catch-all}", notificationService)
                          //    .WithTransformPathRemovePrefix("/notification");
                      });

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyApp.Auth.Domain\MyApp.Auth.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Auth.Application.Contracts\MyApp.Auth.Application.Contracts.csproj" />
+    <ProjectReference Include="..\MyApp.Auth.Infrastructure\MyApp.Auth.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
