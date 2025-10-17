@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace MyApp.Sales.API.Controllers
 {
     [ApiController]
-    [Authorize]
+    [Authorize()]
     [Route("api/sales/orders")]
     public class SalesOrdersController : ControllerBase
     {

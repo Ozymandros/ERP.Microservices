@@ -9,7 +9,7 @@ namespace MyApp.Sales.Application.Mapping
         public SalesOrderMappingProfile()
         {
             CreateMap<SalesOrder, SalesOrderDto>()
-                .ForMember(d => d.Status, opt => opt.MapFrom(s => (int)s.Status))
+                .ForMember(d => d.Status, opt => opt.MapFrom(s => s.Status))
                 .ReverseMap()
                 .ForMember(d => d.Status, opt => opt.MapFrom(s => (SalesOrderStatus)s.Status));
 

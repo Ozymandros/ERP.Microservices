@@ -1,11 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\MyApp.Billing.Domain\MyApp.Billing.Domain.csproj" />
     <ProjectReference Include="..\MyApp.Billing.Application.Contracts\MyApp.Billing.Application.Contracts.csproj" />

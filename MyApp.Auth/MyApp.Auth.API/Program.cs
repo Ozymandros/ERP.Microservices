@@ -1,11 +1,9 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MyApp.Auth.Application.Contracts.Services;
-using MyApp.Auth.Application.Mappings;
 using MyApp.Auth.Application.Services;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
@@ -139,13 +137,11 @@ builder.Services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
 
 // Add AutoMapper
 
-var config = new MapperConfiguration(cfg =>
-{
-    cfg.AddProfile(new AuthMappingProfile());
-    // afegeix més perfils si cal
-});
-var mapper = config.CreateMapper();
-builder.Services.AddSingleton(mapper);
+// AutoMapper registration
+builder.Services.AddAutoMapper(
+    cfg => { /* optional configuration */ },
+    typeof(MyApp.Auth.Application.Mappings.AuthMappingProfile).Assembly
+);
 
 // Add Cors
 builder.Services.AddCors(options =>
