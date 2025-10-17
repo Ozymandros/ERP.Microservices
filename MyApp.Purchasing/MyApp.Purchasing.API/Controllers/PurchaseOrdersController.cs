@@ -21,9 +21,10 @@ public class PurchaseOrdersController : ControllerBase
     }
 
     /// <summary>
-    /// Get all purchase orders
+    /// Get all purchase orders - Requires Purchasing.Read permission
     /// </summary>
     [HttpGet]
+    [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<PurchaseOrderDto>>> GetAllPurchaseOrders()
     {
@@ -33,9 +34,10 @@ public class PurchaseOrdersController : ControllerBase
     }
 
     /// <summary>
-    /// Get purchase order by ID
+    /// Get purchase order by ID - Requires Purchasing.Read permission
     /// </summary>
     [HttpGet("{id}")]
+    [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PurchaseOrderDto>> GetPurchaseOrderById(Guid id)
@@ -51,9 +53,10 @@ public class PurchaseOrdersController : ControllerBase
     }
 
     /// <summary>
-    /// Get purchase orders by supplier
+    /// Get purchase orders by supplier - Requires Purchasing.Read permission
     /// </summary>
     [HttpGet("supplier/{supplierId}")]
+    [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<PurchaseOrderDto>>> GetPurchaseOrdersBySupplier(Guid supplierId)
     {
@@ -63,9 +66,10 @@ public class PurchaseOrdersController : ControllerBase
     }
 
     /// <summary>
-    /// Get purchase orders by status
+    /// Get purchase orders by status - Requires Purchasing.Read permission
     /// </summary>
     [HttpGet("status/{status}")]
+    [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<PurchaseOrderDto>>> GetPurchaseOrdersByStatus(string status)
@@ -82,9 +86,10 @@ public class PurchaseOrdersController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new purchase order
+    /// Create a new purchase order - Requires Purchasing.Write permission
     /// </summary>
     [HttpPost]
+    [HasPermission("Purchasing", "Write")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -109,9 +114,10 @@ public class PurchaseOrdersController : ControllerBase
     }
 
     /// <summary>
-    /// Update an existing purchase order
+    /// Update an existing purchase order - Requires Purchasing.Write permission
     /// </summary>
     [HttpPut("{id}")]
+    [HasPermission("Purchasing", "Write")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -136,9 +142,10 @@ public class PurchaseOrdersController : ControllerBase
     }
 
     /// <summary>
-    /// Update purchase order status
+    /// Update purchase order status - Requires Purchasing.Write permission
     /// </summary>
     [HttpPatch("{id}/status/{status}")]
+    [HasPermission("Purchasing", "Write")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -164,9 +171,10 @@ public class PurchaseOrdersController : ControllerBase
     }
 
     /// <summary>
-    /// Delete a purchase order
+    /// Delete a purchase order - Requires Purchasing.Delete permission
     /// </summary>
     [HttpDelete("{id}")]
+    [HasPermission("Purchasing", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeletePurchaseOrder(Guid id)

@@ -21,9 +21,10 @@ public class InventoryTransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Get all inventory transactions
+    /// Get all inventory transactions - Requires Inventory.Read permission
     /// </summary>
     [HttpGet]
+    [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<InventoryTransactionDto>>> GetAllTransactions()
     {
@@ -33,9 +34,10 @@ public class InventoryTransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Get transaction by ID
+    /// Get transaction by ID - Requires Inventory.Read permission
     /// </summary>
     [HttpGet("{id}")]
+    [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<InventoryTransactionDto>> GetTransactionById(Guid id)
@@ -51,9 +53,10 @@ public class InventoryTransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Get transactions by product ID
+    /// Get transactions by product ID - Requires Inventory.Read permission
     /// </summary>
     [HttpGet("product/{productId}")]
+    [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<InventoryTransactionDto>>> GetTransactionsByProductId(Guid productId)
     {
@@ -63,9 +66,10 @@ public class InventoryTransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Get transactions by warehouse ID
+    /// Get transactions by warehouse ID - Requires Inventory.Read permission
     /// </summary>
     [HttpGet("warehouse/{warehouseId}")]
+    [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<InventoryTransactionDto>>> GetTransactionsByWarehouseId(Guid warehouseId)
     {
@@ -75,9 +79,10 @@ public class InventoryTransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Get transactions by type
+    /// Get transactions by type - Requires Inventory.Read permission
     /// </summary>
     [HttpGet("type/{type}")]
+    [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<InventoryTransactionDto>>> GetTransactionsByType(string type)
@@ -94,9 +99,10 @@ public class InventoryTransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new inventory transaction
+    /// Create a new inventory transaction - Requires Inventory.Write permission
     /// </summary>
     [HttpPost]
+    [HasPermission("Inventory", "Write")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -127,9 +133,10 @@ public class InventoryTransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Update an existing inventory transaction
+    /// Update an existing inventory transaction - Requires Inventory.Write permission
     /// </summary>
     [HttpPut("{id}")]
+    [HasPermission("Inventory", "Write")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -160,9 +167,10 @@ public class InventoryTransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Delete an inventory transaction
+    /// Delete an inventory transaction - Requires Inventory.Delete permission
     /// </summary>
     [HttpDelete("{id}")]
+    [HasPermission("Inventory", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteTransaction(Guid id)

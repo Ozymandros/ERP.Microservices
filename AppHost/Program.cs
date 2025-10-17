@@ -4,8 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.Services.AddDaprClient();
-
 // Afegir el teu microserviciAppId 
 builder.AddRedis("redis").WithDaprSidecar(new DaprSidecarOptions
 {
@@ -18,7 +16,7 @@ builder.AddRedis("redis").WithDaprSidecar(new DaprSidecarOptions
 
 // Afegir SQL Server com a contenidor
 var password = builder.AddParameter("password", secret: true);
-var sqlServer = builder.AddSqlServer("sqlserver", password);
+var sqlServer = builder.AddSqlServer("sqlserver", password).WithDataVolume();
 
 var usersDb = sqlServer.AddDatabase("UsersDB");
 //var notificationsDb = sqlServer.AddDatabase("NotificationsDB");

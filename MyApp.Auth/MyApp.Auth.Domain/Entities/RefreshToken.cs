@@ -10,5 +10,5 @@ public class RefreshToken
     public bool IsRevoked { get; set; }
 
     // Navigation property
-    public virtual User? User { get; set; }
+    public virtual ApplicationUser? User { get; set; }
 }

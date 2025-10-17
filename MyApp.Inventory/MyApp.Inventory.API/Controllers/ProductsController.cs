@@ -20,9 +20,10 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Get all products
+    /// Get all products - Requires Inventory.Read permission
     /// </summary>
     [HttpGet]
+    [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
     {
@@ -32,9 +33,10 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Get product by ID
+    /// Get product by ID - Requires Inventory.Read permission
     /// </summary>
     [HttpGet("{id}")]
+    [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProductDto>> GetProductById(Guid id)
@@ -50,9 +52,10 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Get product by SKU
+    /// Get product by SKU - Requires Inventory.Read permission
     /// </summary>
     [HttpGet("sku/{sku}")]
+    [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProductDto>> GetProductBySku(string sku)
@@ -68,9 +71,10 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Get low stock products
+    /// Get low stock products - Requires Inventory.Read permission
     /// </summary>
     [HttpGet("low-stock")]
+    [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetLowStockProducts()
     {
@@ -80,9 +84,10 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new product
+    /// Create a new product - Requires Inventory.Write permission
     /// </summary>
     [HttpPost]
+    [HasPermission("Inventory", "Write")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -107,9 +112,10 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Update an existing product
+    /// Update an existing product - Requires Inventory.Write permission
     /// </summary>
     [HttpPut("{id}")]
+    [HasPermission("Inventory", "Write")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -140,9 +146,10 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Delete a product
+    /// Delete a product - Requires Inventory.Delete permission
     /// </summary>
     [HttpDelete("{id}")]
+    [HasPermission("Inventory", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteProduct(Guid id)

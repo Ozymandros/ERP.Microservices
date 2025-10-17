@@ -2,9 +2,11 @@
 
 public class UserPermission
 {
-    public Guid UserId { get; set; }
+    public Guid Id { get; set; }
+
+    //public Guid UserId { get; set; }
     public IdentityUser User { get; set; } = default!;
 
-    public Guid PermissionId { get; set; }
+    //public Guid PermissionId { get; set; }
     public Permission Permission { get; set; } = default!;
 }

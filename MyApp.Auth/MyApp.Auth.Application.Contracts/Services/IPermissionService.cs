@@ -3,6 +3,8 @@ namespace MyApp.Auth.Application.Contracts
 {
     public interface IPermissionService
     {
-        public async Task<bool> HasPermissionAsync(Guid userId, string module, string action) => throw new NotImplementedException();
+        Task<bool> HasPermissionAsync(Guid userId, string module, string action);
+
+        Task<bool> HasPermissionAsync(string? username, string module, string action);
     }
 }

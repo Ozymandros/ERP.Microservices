@@ -1,17 +1,12 @@
 ﻿using Dapr.Client;
 
-public class DaprPermissionChecker : IPermissionChecker, IDisposable
+public class DaprPermissionChecker : IPermissionChecker
 {
     private readonly DaprClient _daprClient;
 
     public DaprPermissionChecker(DaprClient daprClient)
     {
         _daprClient = daprClient;
-    }
-
-    public void Dispose()
-    {
-        _daprClient.Dispose();
     }
 
     public async Task<bool> HasPermissionAsync(Guid userId, string module, string action)
@@ -24,6 +19,7 @@ public class DaprPermissionChecker : IPermissionChecker, IDisposable
         };
 
         var result = await _daprClient.InvokeMethodAsync<Dictionary<string, string>, bool>(
+            HttpMethod.Get, // 👈 FORÇA GET
             "auth-service", // Nom del servei registrat a Dapr
             "permissions/check",
             query
@@ -56,11 +52,24 @@ public class DaprPermissionChecker : IPermissionChecker, IDisposable
             ["action"] = action
         };
 
-        var result = await _daprClient.InvokeMethodAsync<Dictionary<string, string>, bool>(
+        // 1. Construeix el query string
+        var queryString = new FormUrlEncodedContent(query).ReadAsStringAsync().Result;
+
+        // 2. Construeix la URL completa (mètode + query string)
+        var fullMethod = $"permissions/check?{queryString}";
+
+        // 3. Invoca Dapr SENSE cos de petició
+        var result = await _daprClient.InvokeMethodAsync<bool>(
+            HttpMethod.Get,
             "auth-service", // Nom del servei registrat a Dapr
-            "permissions/check",
-            query
+            fullMethod // URL COMPLETA amb el query string
         );
+        //var result = await _daprClient.InvokeMethodAsync<Dictionary<string, string>, bool>(
+        //    HttpMethod.Get,
+        //    "auth-service", // Nom del servei registrat a Dapr
+        //    "permissions/check",
+        //    query
+        //);
 
         return result;
     }

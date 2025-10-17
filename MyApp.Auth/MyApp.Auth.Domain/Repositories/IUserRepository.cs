@@ -3,10 +3,10 @@ using MyApp.Shared.Domain.Repositories;
 
 namespace MyApp.Auth.Domain.Repositories;
 
-public interface IUserRepository : IRepository<User, Guid>
+public interface IUserRepository : IRepository<ApplicationUser, Guid>
 {
-    Task<User?> GetByEmailAsync(string email);
-    Task<User?> GetByExternalIdAsync(string externalProvider, string externalId);
-    Task<IEnumerable<User>> GetByRoleAsync(string roleName);
+    Task<ApplicationUser?> GetByEmailAsync(string email);
+    Task<ApplicationUser?> GetByExternalIdAsync(string externalProvider, string externalId);
+    Task<IEnumerable<ApplicationUser>> GetByRoleAsync(string roleName);
     Task<bool> EmailExistsAsync(string email);
 }

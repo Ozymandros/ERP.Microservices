@@ -10,15 +10,15 @@ namespace MyApp.Auth.Application.Services;
 
 public class UserService : IUserService
 {
-    private readonly UserManager<User> _userManager;
-    private readonly RoleManager<Role> _roleManager;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<UserService> _logger;
 
     public UserService(
-        UserManager<User> userManager,
-        RoleManager<Role> roleManager,
+        UserManager<ApplicationUser> userManager,
+        RoleManager<ApplicationRole> roleManager,
         IUserRepository userRepository,
         IMapper mapper,
         ILogger<UserService> logger)

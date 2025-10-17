@@ -10,16 +10,16 @@ namespace MyApp.Auth.Application.Services;
 
 public class RoleService : IRoleService
 {
-    private readonly RoleManager<Role> _roleManager;
-    private readonly UserManager<User> _userManager;
+    private readonly RoleManager<ApplicationRole> _roleManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IRoleRepository _roleRepository;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<RoleService> _logger;
 
     public RoleService(
-        RoleManager<Role> roleManager,
-        UserManager<User> userManager,
+        RoleManager<ApplicationRole> roleManager,
+        UserManager<ApplicationUser> userManager,
         IRoleRepository roleRepository,
         IUserRepository userRepository,
         IMapper mapper,
@@ -60,7 +60,7 @@ public class RoleService : IRoleService
             return null;
         }
 
-        var role = new Role(createRoleDto.Name)
+        var role = new ApplicationRole(createRoleDto.Name)
         {
             Name = createRoleDto.Name,
             Description = createRoleDto.Description,

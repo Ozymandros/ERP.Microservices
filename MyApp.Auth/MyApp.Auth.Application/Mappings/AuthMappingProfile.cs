@@ -9,17 +9,17 @@ public class AuthMappingProfile : Profile
     public AuthMappingProfile()
     {
         // User mappings
-        CreateMap<User, UserDto>()
+        CreateMap<ApplicationUser, UserDto>()
             .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserName));
 
-        CreateMap<UpdateUserDto, User>();
+        CreateMap<UpdateUserDto, ApplicationUser>();
 
         // Role mappings
-        CreateMap<Role, RoleDto>();
-        CreateMap<CreateRoleDto, Role>();
+        CreateMap<ApplicationRole, RoleDto>();
+        CreateMap<CreateRoleDto, ApplicationRole>();
 
         // External login mapping
-        CreateMap<ExternalLoginDto, User>()
+        CreateMap<ExternalLoginDto, ApplicationUser>()
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
             .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName));

@@ -18,9 +18,10 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Get all customers
+        /// Get all customers - Requires Sales.Read permission
         /// </summary>
         [HttpGet]
+        [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(IEnumerable<CustomerDto>), 200)]
         public async Task<IActionResult> GetAll()
         {
@@ -29,9 +30,10 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Get a specific customer by ID
+        /// Get a specific customer by ID - Requires Sales.Read permission
         /// </summary>
         [HttpGet("{id}")]
+        [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(CustomerDto), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetById(Guid id)
@@ -43,9 +45,10 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Create a new customer
+        /// Create a new customer - Requires Sales.Write permission
         /// </summary>
         [HttpPost]
+        [HasPermission("Sales", "Write")]
         [ProducesResponseType(typeof(CustomerDto), 201)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> Create([FromBody] CustomerDto dto)
@@ -58,9 +61,10 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Update an existing customer
+        /// Update an existing customer - Requires Sales.Write permission
         /// </summary>
         [HttpPut("{id}")]
+        [HasPermission("Sales", "Write")]
         [ProducesResponseType(typeof(CustomerDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -81,9 +85,10 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Delete a customer
+        /// Delete a customer - Requires Sales.Delete permission
         /// </summary>
         [HttpDelete("{id}")]
+        [HasPermission("Sales", "Delete")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Delete(Guid id)

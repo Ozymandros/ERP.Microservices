@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace MyApp.Auth.Domain.Entities;
 
-public class Role : IdentityRole<Guid>
+public class ApplicationRole : IdentityRole<Guid>
 {
     //
     // Summary:
@@ -14,8 +14,8 @@ public class Role : IdentityRole<Guid>
     //
     // Remarks:
     //     The Id property is initialized to form a new GUID string value.
-    public Role(string roleName) : base(roleName) { }
-    public Role() : base() { }
+    public ApplicationRole(string roleName) : base(roleName) { }
+    public ApplicationRole() : base() { }
 
     public string? Description { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

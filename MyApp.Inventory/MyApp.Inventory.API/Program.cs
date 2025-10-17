@@ -1,14 +1,47 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using MyApp.Inventory.Infrastructure.Data;
 using MyApp.Shared.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
+builder.Services.AddDaprClient();
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    // ... La vostra configuració Info
 
+    // PAS 1: Definició de l'Esquema de Seguretat (Bearer / JWT)
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Si us plau, introduïu 'Bearer' [espai] i el token JWT.",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http, // Tipus: Http per a Bearer
+        BearerFormat = "JWT",
+        Scheme = "Bearer" // El nom de l'esquema d'autorització
+    });
+
+    // PAS 2: Aplicació del Requisit (Fa aparèixer el botó Authorize 🔒)
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer" // Ha de coincidir amb el nom de AddSecurityDefinition
+                }
+            },
+            Array.Empty<string>() // Aplica l'esquema a tots els endpoints
+        }
+    });
+});
 // JWT Authentication
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
@@ -28,6 +61,8 @@ builder.Services.AddAutoMapper(
 builder.Services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService, MyApp.Inventory.Application.Services.InventoryTransactionService>();
 builder.Services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IProductService, MyApp.Inventory.Application.Services.ProductService>();
 builder.Services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IWarehouseService, MyApp.Inventory.Application.Services.WarehouseService>();
+
+builder.Services.AddScoped<IPermissionChecker, DaprPermissionChecker>();
 
 var app = builder.Build();
 

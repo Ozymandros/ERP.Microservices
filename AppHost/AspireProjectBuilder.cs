@@ -60,6 +60,7 @@ public class AspireProjectBuilder
             .WithExternalHttpEndpoints()
             .WaitFor(database)
             .WithReference(database)
+            //.WithDaprSidecarOptions(options => options.AddArgument("--enable-scheduler", "false"))
             .WithDaprSidecar(new DaprSidecarOptions
             {
                 //AppId = daprAppId,
@@ -67,7 +68,7 @@ public class AspireProjectBuilder
                 //DaprHttpPort = daprHttpPort,
                 //DaprGrpcPort = daprGrpcPort,
                 //MetricsPort = metricsPort
-            })
+            }).WithArgs("--enable-scheduler=false")
             .WithEnvironment("Jwt__SecretKey", _builder.Configuration["Jwt:SecretKey"])
             .WithEnvironment("Jwt__Issuer", _builder.Configuration["Jwt:Issuer"])
             .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"]); ;

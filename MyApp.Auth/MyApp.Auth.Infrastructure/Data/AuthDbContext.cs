@@ -6,19 +6,24 @@ using MyApp.Auth.Domain.Entities;
 
 namespace MyApp.Auth.Infrastructure.Data;
 
-public class AuthDbContext : IdentityDbContext<User, Role, Guid>
+public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {
     public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options)
     {
     }
 
+    public override DbSet<ApplicationUser> Users { get; set; }
+    public override DbSet<ApplicationRole> Roles { get; set; }
+    public DbSet<UserPermission> UserPermissions { get; set; }
+    public DbSet<RolePermission> RolePermissions { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<Permission> Permissions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
-        builder.Entity<User>(b =>
+        builder.Entity<ApplicationUser>(b =>
         {
             // Primary key
             b.HasKey(u => u.Id);
@@ -55,7 +60,7 @@ public class AuthDbContext : IdentityDbContext<User, Role, Guid>
             b.HasMany(e => e.UserRoles).WithOne().HasForeignKey(ut => ut.UserId).IsRequired();
         });
 
-        builder.Entity<Role>(b =>
+        builder.Entity<ApplicationRole>(b =>
         {
             // Primary key
             b.HasKey(r => r.Id);

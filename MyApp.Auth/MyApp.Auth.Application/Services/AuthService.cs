@@ -10,14 +10,14 @@ namespace MyApp.Auth.Application.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IJwtTokenProvider _jwtTokenProvider;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly IUserRepository _userRepository;
     private readonly ILogger<AuthService> _logger;
 
     public AuthService(
-        UserManager<User> userManager,
+        UserManager<ApplicationUser> userManager,
         IJwtTokenProvider jwtTokenProvider,
         IRefreshTokenRepository refreshTokenRepository,
         IUserRepository userRepository,
@@ -58,7 +58,7 @@ public class AuthService : IAuthService
             return null;
         }
 
-        var user = new User
+        var user = new ApplicationUser
         {
             Email = registerDto.Email,
             UserName = registerDto.Username,
@@ -122,7 +122,7 @@ public class AuthService : IAuthService
         if (user == null)
         {
             // Create new user for external login
-            user = new User
+            user = new ApplicationUser
             {
                 Email = externalLoginDto.Email,
                 UserName = externalLoginDto.Email.Split('@')[0] + "_" + externalLoginDto.Provider,
@@ -155,7 +155,7 @@ public class AuthService : IAuthService
         _logger.LogInformation("User logged out: {UserId}", userId);
     }
 
-    private async Task<TokenResponseDto> GenerateTokenResponseAsync(User user)
+    private async Task<TokenResponseDto> GenerateTokenResponseAsync(ApplicationUser user)
     {
         var accessToken = await _jwtTokenProvider.GenerateAccessTokenAsync(user);
         var refreshToken = _jwtTokenProvider.GenerateRefreshToken();

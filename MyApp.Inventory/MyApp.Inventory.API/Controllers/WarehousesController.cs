@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyApp.Inventory.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/inventory/warehouses")]
 public class WarehousesController : ControllerBase
 {
@@ -18,9 +20,10 @@ public class WarehousesController : ControllerBase
     }
 
     /// <summary>
-    /// Get all warehouses
+    /// Get all warehouses - Requires Inventory.Read permission
     /// </summary>
     [HttpGet]
+    [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<WarehouseDto>>> GetAllWarehouses()
     {
@@ -30,9 +33,10 @@ public class WarehousesController : ControllerBase
     }
 
     /// <summary>
-    /// Get warehouse by ID
+    /// Get warehouse by ID - Requires Inventory.Read permission
     /// </summary>
     [HttpGet("{id}")]
+    [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<WarehouseDto>> GetWarehouseById(Guid id)
@@ -48,9 +52,10 @@ public class WarehousesController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new warehouse
+    /// Create a new warehouse - Requires Inventory.Write permission
     /// </summary>
     [HttpPost]
+    [HasPermission("Inventory", "Write")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -75,9 +80,10 @@ public class WarehousesController : ControllerBase
     }
 
     /// <summary>
-    /// Update an existing warehouse
+    /// Update an existing warehouse - Requires Inventory.Write permission
     /// </summary>
     [HttpPut("{id}")]
+    [HasPermission("Inventory", "Write")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -108,9 +114,10 @@ public class WarehousesController : ControllerBase
     }
 
     /// <summary>
-    /// Delete a warehouse
+    /// Delete a warehouse - Requires Inventory.Delete permission
     /// </summary>
     [HttpDelete("{id}")]
+    [HasPermission("Inventory", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteWarehouse(Guid id)

@@ -25,7 +25,7 @@ public class InventoryTransactionConfiguration : IEntityTypeConfiguration<Invent
 
         builder.Property(x => x.TransactionDate)
             .IsRequired()
-            .HasDefaultValue(DateTime.UtcNow);
+            .HasDefaultValueSql("GETUTCDATE()");
 
         builder.HasOne(x => x.Product)
             .WithMany(x => x.InventoryTransactions)

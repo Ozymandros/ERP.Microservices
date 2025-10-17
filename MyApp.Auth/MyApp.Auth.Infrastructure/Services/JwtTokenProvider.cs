@@ -9,7 +9,7 @@ namespace MyApp.Auth.Infrastructure.Services;
 
 public interface IJwtTokenProvider
 {
-    Task<string> GenerateAccessTokenAsync(User user);
+    Task<string> GenerateAccessTokenAsync(ApplicationUser user);
     string GenerateRefreshToken();
     ClaimsPrincipal? GetPrincipalFromExpiredToken(string token);
 }
@@ -29,7 +29,7 @@ public class JwtTokenProvider : IJwtTokenProvider
         _accessTokenExpirationMinutes = int.Parse(configuration["Jwt:AccessTokenExpirationMinutes"] ?? "15");
     }
 
-    public Task<string> GenerateAccessTokenAsync(User user)
+    public Task<string> GenerateAccessTokenAsync(ApplicationUser user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

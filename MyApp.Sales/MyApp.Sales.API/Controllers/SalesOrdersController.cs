@@ -18,9 +18,10 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Get all sales orders
+        /// Get all sales orders - Requires Sales.Read permission
         /// </summary>
         [HttpGet]
+        [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(IEnumerable<SalesOrderDto>), 200)]
         public async Task<IActionResult> GetAll()
         {
@@ -29,9 +30,10 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Get a specific sales order by ID
+        /// Get a specific sales order by ID - Requires Sales.Read permission
         /// </summary>
         [HttpGet("{id}")]
+        [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(SalesOrderDto), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetById(Guid id)
@@ -43,9 +45,10 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Create a new sales order
+        /// Create a new sales order - Requires Sales.Write permission
         /// </summary>
         [HttpPost]
+        [HasPermission("Sales", "Write")]
         [ProducesResponseType(typeof(SalesOrderDto), 201)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> Create([FromBody] CreateUpdateSalesOrderDto dto)
@@ -65,9 +68,10 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Update an existing sales order
+        /// Update an existing sales order - Requires Sales.Write permission
         /// </summary>
         [HttpPut("{id}")]
+        [HasPermission("Sales", "Write")]
         [ProducesResponseType(typeof(SalesOrderDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -88,9 +92,10 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Delete a sales order
+        /// Delete a sales order - Requires Sales.Delete permission
         /// </summary>
         [HttpDelete("{id}")]
+        [HasPermission("Sales", "Delete")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Delete(Guid id)

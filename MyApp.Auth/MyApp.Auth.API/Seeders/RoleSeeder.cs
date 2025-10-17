@@ -3,7 +3,7 @@ using MyApp.Auth.Domain.Entities;
 
 public static class RoleSeeder
 {
-    public static async Task SeedAsync(RoleManager<Role> roleManager)
+    public static async Task SeedAsync(RoleManager<ApplicationRole> roleManager)
     {
         var roles = new[] { "Administrator", "User", "Manager" };
 
@@ -11,7 +11,7 @@ public static class RoleSeeder
         {
             if (!await roleManager.RoleExistsAsync(role))
             {
-                await roleManager.CreateAsync(new Role(role));
+                await roleManager.CreateAsync(new ApplicationRole(role));
             }
         }
     }

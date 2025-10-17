@@ -1,5 +1,8 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
+builder.Services.AddDaprClient();
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

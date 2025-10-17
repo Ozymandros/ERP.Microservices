@@ -5,7 +5,7 @@ using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Auth.Infrastructure.Data.Repositories;
 
-public class UserRepository : Repository<User, Guid>, IUserRepository
+public class UserRepository : Repository<ApplicationUser, Guid>, IUserRepository
 {
     private readonly AuthDbContext _context;
 
@@ -14,7 +14,7 @@ public class UserRepository : Repository<User, Guid>, IUserRepository
         _context = context;
     }
 
-    public async Task<User?> GetByEmailAsync(string email)
+    public async Task<ApplicationUser?> GetByEmailAsync(string email)
     {
         return await _context.Users
             .Include(u => u.RefreshTokens)
@@ -22,18 +22,18 @@ public class UserRepository : Repository<User, Guid>, IUserRepository
             .FirstOrDefaultAsync(u => u.Email == email);
     }
 
-    public async Task<User?> GetByExternalIdAsync(string externalProvider, string externalId)
+    public async Task<ApplicationUser?> GetByExternalIdAsync(string externalProvider, string externalId)
     {
         return await _context.Users
             .Include(u => u.RefreshTokens)
             .FirstOrDefaultAsync(u => u.ExternalProvider == externalProvider && u.ExternalId == externalId);
     }
 
-    public async Task<IEnumerable<User>> GetByRoleAsync(string roleName)
+    public async Task<IEnumerable<ApplicationUser>> GetByRoleAsync(string roleName)
     {
         var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
         if (role == null)
-            return Enumerable.Empty<User>();
+            return Enumerable.Empty<ApplicationUser>();
 
         return await _context.Users
             .Include(u => u.UserRoles)

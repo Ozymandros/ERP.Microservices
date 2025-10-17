@@ -8,6 +8,9 @@ using MyApp.Shared.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
+builder.Services.AddDaprClient();
+
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -30,6 +33,8 @@ builder.Services.AddScoped<IPurchaseOrderLineRepository, PurchaseOrderLineReposi
 // Service registration
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
+
+builder.Services.AddScoped<IPermissionChecker, DaprPermissionChecker>();
 
 // AutoMapper registration
 builder.Services.AddAutoMapper(

@@ -20,9 +20,10 @@ public class SuppliersController : ControllerBase
     }
 
     /// <summary>
-    /// Get all suppliers
+    /// Get all suppliers - Requires Purchasing.Read permission
     /// </summary>
     [HttpGet]
+    [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<SupplierDto>>> GetAllSuppliers()
     {
@@ -32,9 +33,10 @@ public class SuppliersController : ControllerBase
     }
 
     /// <summary>
-    /// Get supplier by ID
+    /// Get supplier by ID - Requires Purchasing.Read permission
     /// </summary>
     [HttpGet("{id}")]
+    [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<SupplierDto>> GetSupplierById(Guid id)
@@ -50,9 +52,10 @@ public class SuppliersController : ControllerBase
     }
 
     /// <summary>
-    /// Get supplier by email
+    /// Get supplier by email - Requires Purchasing.Read permission
     /// </summary>
     [HttpGet("email/{email}")]
+    [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<SupplierDto>> GetSupplierByEmail(string email)
@@ -68,9 +71,10 @@ public class SuppliersController : ControllerBase
     }
 
     /// <summary>
-    /// Search suppliers by name
+    /// Search suppliers by name - Requires Purchasing.Read permission
     /// </summary>
     [HttpGet("search/{name}")]
+    [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<SupplierDto>>> SearchSuppliersByName(string name)
     {
@@ -80,9 +84,10 @@ public class SuppliersController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new supplier
+    /// Create a new supplier - Requires Purchasing.Write permission
     /// </summary>
     [HttpPost]
+    [HasPermission("Purchasing", "Write")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -107,9 +112,10 @@ public class SuppliersController : ControllerBase
     }
 
     /// <summary>
-    /// Update an existing supplier
+    /// Update an existing supplier - Requires Purchasing.Write permission
     /// </summary>
     [HttpPut("{id}")]
+    [HasPermission("Purchasing", "Write")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -140,9 +146,10 @@ public class SuppliersController : ControllerBase
     }
 
     /// <summary>
-    /// Delete a supplier
+    /// Delete a supplier - Requires Purchasing.Delete permission
     /// </summary>
     [HttpDelete("{id}")]
+    [HasPermission("Purchasing", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteSupplier(Guid id)

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Application.Services;
 using MyApp.Auth.Domain.Entities;
@@ -13,6 +14,9 @@ using MyApp.Auth.Infrastructure.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
+builder.Services.AddDaprClient();
 
 // Add services to the container
 builder.Services.AddControllers();
@@ -57,7 +61,7 @@ builder.Services.AddDbContext<AuthDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 // Configure Identity
-builder.Services.AddIdentity<User, Role>(options =>
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
     options.Password.RequiredLength = 6;
     options.Password.RequireNonAlphanumeric = false;
@@ -135,6 +139,10 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
 
+builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
+builder.Services.AddScoped<IPermissionService, PermissionService>();
+builder.Services.AddScoped<IPermissionChecker, DaprPermissionChecker>();
+
 // Add AutoMapper
 
 // AutoMapper registration
@@ -163,10 +171,10 @@ using (var scope = app.Services.CreateScope())
 
     dbContext.Database.Migrate();
 
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
     await RoleSeeder.SeedAsync(roleManager);
 
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     await AdminUserSeeder.SeedAsync(userManager);
 }
 

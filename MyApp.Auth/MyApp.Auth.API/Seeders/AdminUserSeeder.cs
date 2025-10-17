@@ -3,14 +3,14 @@ using MyApp.Auth.Domain.Entities;
 
 public static class AdminUserSeeder
 {
-    public static async Task SeedAsync(UserManager<User> userManager)
+    public static async Task SeedAsync(UserManager<ApplicationUser> userManager)
     {
         var adminEmail = "admin@myapp.local";
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
         if (adminUser == null)
         {
-            var user = new User
+            var user = new ApplicationUser
             {
                 UserName = adminEmail,
                 Email = adminEmail,

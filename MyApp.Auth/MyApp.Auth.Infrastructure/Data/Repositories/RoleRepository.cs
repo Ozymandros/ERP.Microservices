@@ -5,7 +5,7 @@ using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Auth.Infrastructure.Data.Repositories;
 
-public class RoleRepository : Repository<Role, Guid>, IRoleRepository
+public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
 {
     private readonly AuthDbContext _context;
 
@@ -14,7 +14,7 @@ public class RoleRepository : Repository<Role, Guid>, IRoleRepository
         _context = context;
     }
 
-    public async Task<Role?> GetByNameAsync(string name)
+    public async Task<ApplicationRole?> GetByNameAsync(string name)
     {
         return await _context.Roles
             .Include(r => r.RoleClaims)
@@ -26,7 +26,7 @@ public class RoleRepository : Repository<Role, Guid>, IRoleRepository
         return await _context.Roles.AnyAsync(r => r.Name == name);
     }
 
-    public async Task<IEnumerable<Role>> GetRolesByUserIdAsync(Guid userId)
+    public async Task<IEnumerable<ApplicationRole>> GetRolesByUserIdAsync(Guid userId)
     {
         return await _context.Roles
             .Include(r => r.UserRoles)

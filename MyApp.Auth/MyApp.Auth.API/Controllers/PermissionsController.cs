@@ -12,10 +12,17 @@ public class PermissionsController : ControllerBase
         _permissionService = permissionService;
     }
 
+    //[HttpGet("check")]
+    //public async Task<IActionResult> CheckPermission(Guid userId, string module, string action)
+    //{
+    //    var hasPermission = await _permissionService.HasPermissionAsync(userId, module, action);
+    //    return Ok(hasPermission);
+    //}
+
     [HttpGet("check")]
-    public async Task<IActionResult> CheckPermission(Guid userId, string module, string action)
+    public async Task<IActionResult> CheckPermission(string? username, string module, string action)
     {
-        var hasPermission = await _permissionService.HasPermissionAsync(userId, module, action);
+        var hasPermission = await _permissionService.HasPermissionAsync(username, module, action);
         return Ok(hasPermission);
     }
 }

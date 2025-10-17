@@ -3,9 +3,9 @@ using MyApp.Shared.Domain.Repositories;
 
 namespace MyApp.Auth.Domain.Repositories;
 
-public interface IRoleRepository : IRepository<Role, Guid>
+public interface IRoleRepository : IRepository<ApplicationRole, Guid>
 {
-    Task<Role?> GetByNameAsync(string name);
+    Task<ApplicationRole?> GetByNameAsync(string name);
     Task<bool> NameExistsAsync(string name);
-    Task<IEnumerable<Role>> GetRolesByUserIdAsync(Guid userId);
+    Task<IEnumerable<ApplicationRole>> GetRolesByUserIdAsync(Guid userId);
 }
