@@ -18,6 +18,9 @@
     <ProjectReference Include="..\MyApp.Sales.Application.Contracts\MyApp.Sales.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
     <ProjectReference Include="..\MyApp.Sales.Infrastructure\MyApp.Sales.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Infrastructure\MyApp.Shared.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.SignalR\MyApp.Shared.SignalR.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>

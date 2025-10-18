@@ -16,8 +16,13 @@ builder.Services.AddSwaggerGen();
 // JWT Authentication
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
-// Infrastructure & Application DI
+// Get connection string
 var salesDbConnectionString = builder.Configuration.GetConnectionString("salesdb");
+
+// Health Checks
+builder.Services.AddCustomHealthChecks(salesDbConnectionString ?? throw new InvalidOperationException("Connection string 'salesdb' not found."));
+
+// Infrastructure & Application DI
 builder.Services.AddDbContext<SalesDbContext>(options =>
     options.UseSqlServer(salesDbConnectionString));
 
@@ -60,5 +65,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Add health checks endpoint
+app.UseCustomHealthChecks();
 
 app.Run();

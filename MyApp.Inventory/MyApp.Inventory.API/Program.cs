@@ -45,8 +45,13 @@ builder.Services.AddSwaggerGen(c =>
 // JWT Authentication
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
-// Infrastructure & Application DI
+// Get connection string
 var inventoryDbConnectionString = builder.Configuration.GetConnectionString("inventorydb");
+
+// Health Checks
+builder.Services.AddCustomHealthChecks(inventoryDbConnectionString ?? throw new InvalidOperationException("Connection string 'inventorydb' not found."));
+
+// Infrastructure & Application DI
 builder.Services.AddDbContext<InventoryDbContext>(options =>
     options.UseSqlServer(inventoryDbConnectionString));
 
@@ -91,5 +96,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Add health checks endpoint
+app.UseCustomHealthChecks();
 
 app.Run();

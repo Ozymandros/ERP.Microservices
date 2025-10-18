@@ -17,6 +17,9 @@
     <ProjectReference Include="..\MyApp.Notification.Application.Contracts\MyApp.Notification.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
     <ProjectReference Include="..\MyApp.Notification.Infrastructure\MyApp.Notification.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Infrastructure\MyApp.Shared.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.SignalR\MyApp.Shared.SignalR.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

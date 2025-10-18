@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MyApp.Orders.Infrastructure.Data;
 using MyApp.Shared.Infrastructure.Extensions;
 using System.Configuration;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,9 @@ builder.Services.AddScoped<MyApp.Orders.Application.Contracts.IOrderService, MyA
 
 builder.Services.AddScoped<IPermissionChecker, DaprPermissionChecker>();
 
+// Add health checks
+builder.Services.AddCustomHealthChecks(ordersDbConnectionString);
+
 var app = builder.Build();
 
 // Afegeix un bloc per a l'aplicaci� autom�tica de les migracions
@@ -60,6 +64,21 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Map health check endpoint
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+        var result = System.Text.Json.JsonSerializer.Serialize(new
+        {
+            status = report.Status.ToString(),
+            components = report.Entries.Select(e => new { key = e.Key, value = e.Value.Status.ToString() })
+        });
+        await context.Response.WriteAsync(result);
+    }
+});
 
 app.Run();
 
