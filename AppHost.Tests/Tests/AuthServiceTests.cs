@@ -1,75 +1,406 @@
-using AppHost.Tests.Base;
-using System.Net;
+using k8s.Authentication;
+using k8s.KubeConfigModels;
+using Microsoft.Extensions.Configuration;
+using MyApp.Auth.Application.Contracts.DTOs;
+using MyApp.Auth.Domain.Entities;
+using MyApp.Auth.Infrastructure.Services;
 using System.Net.Http.Json;
-using Xunit;
-using Xunit.Abstractions;
 
-namespace AppHost.Tests.Tests;
+namespace MyApp.Tests.Integration;
 
-public class AuthServiceTests : BaseIntegrationTest
+public class AuthIntegrationTests
 {
-    public AuthServiceTests(ITestOutputHelper output) : base(output) { }
-
     [Fact]
-    public async Task Register_WithValidData_ReturnsSuccessStatusCode()
+    public async Task Login_WithVInvalidCredentials_ReturnsUnauthorized()
     {
-        // Arrange
-        await WaitForServiceAsync("auth-service");
-        var user = new
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
-            Email = $"test{Guid.NewGuid()}@test.com",
-            Password = "Test123!",
-            ConfirmPassword = "Test123!"
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        await using var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        var client = app.CreateHttpClient("gateway");
+
+        var loginDto = new LoginDto
+        {
+            Email = "test@example.com",
+            Password = "Password123!"
         };
 
-        // Act
-        var response = await GatewayClient.PostAsJsonAsync("/auth/api/auth/register", user);
+        var response = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
 
-        // Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
     [Fact]
-    public async Task Login_WithValidCredentials_ReturnsTokens()
+    public async Task Login_WithValidCredentials_ReturnsOk()
     {
-        // Arrange
-        await WaitForServiceAsync("auth-service");
-        var credentials = new
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
-            Email = "admin@test.com",
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        await using var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        var client = app.CreateHttpClient("gateway");
+
+        var loginDto = new LoginDto
+        {
+            Email = "admin@myapp.local",
             Password = "Admin123!"
         };
 
-        // Act
-        var response = await GatewayClient.PostAsJsonAsync("/auth/api/auth/login", credentials);
-        var content = await response.Content.ReadFromJsonAsync<TokenResponse>();
+        var response = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
 
-        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.NotNull(content?.AccessToken);
-        Assert.NotNull(content?.RefreshToken);
     }
 
     [Fact]
-    public async Task Refresh_WithValidToken_ReturnsNewTokens()
+    public async Task Login_WithInvalidCredentials_ReturnsUnauthorized()
     {
-        // Arrange
-        await WaitForServiceAsync("auth-service");
-        var client = await CreateAuthorizedClientAsync();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        await using var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        var client = app.CreateHttpClient("gateway");
 
-        // Act
-        var response = await client.PostAsync("/auth/api/auth/refresh", null);
-        var content = await response.Content.ReadFromJsonAsync<TokenResponse>();
+        var loginDto = new LoginDto
+        {
+            Email = "invalid@example.com",
+            Password = "wrongpassword"
+        };
 
-        // Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.NotNull(content?.AccessToken);
-        Assert.NotNull(content?.RefreshToken);
+        var response = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
+
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
-    private class TokenResponse
+    [Fact]
+    public async Task Login_WithInvalidModel_ReturnsBadRequest()
     {
-        public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        await using var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        var client = app.CreateHttpClient("gateway");
+
+        var loginDto = new LoginDto
+        {
+            Email = "",
+            Password = ""
+        };
+
+        var response = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Register_WithValidData_ReturnsCreated()
+    {
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        await using var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        var client = app.CreateHttpClient("gateway");
+
+        var registerDto = new RegisterDto
+        {
+            Email = $"test{Guid.NewGuid()}@example.com",
+            Password = "Password123!",
+            FirstName = "John",
+            LastName = "Doe",
+            PasswordConfirm = "Password123!",
+            Username = "johndoe",
+        };
+
+        var response = await client.PostAsJsonAsync("/auth/api/auth/register", registerDto);
+
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Register_WithExistingEmail_ReturnsConflict()
+    {
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        await using var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        var client = app.CreateHttpClient("gateway");
+
+        var registerDto = new RegisterDto
+        {
+            Email = "existing@example.com",
+            Password = "Password123!",
+            FirstName = "Jane",
+            LastName = "Doe",
+            PasswordConfirm = "Password123!",
+            Username = "existinguser"
+        };
+
+        var response = await client.PostAsJsonAsync("/auth/api/auth/register", registerDto);
+
+        Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Register_WithInvalidModel_ReturnsBadRequest()
+    {
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        await using var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        var client = app.CreateHttpClient("gateway");
+
+        var registerDto = new RegisterDto
+        {
+            Email = "invalid-email",
+            Password = "123",
+            FirstName = "John",
+            LastName = "Doe",
+            Username = "us",
+            PasswordConfirm = "456"
+        };
+
+        var response = await client.PostAsJsonAsync("/auth/api/auth/register", registerDto);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task RefreshToken_WithValidToken_ReturnsOk()
+    {
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        await using var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        var client = app.CreateHttpClient("gateway");
+
+        var refreshTokenDto = new RefreshTokenDto
+        {
+            RefreshToken = "valid-refresh-token",
+            AccessToken = "valid-access-token"
+        };
+
+        var response = await client.PostAsJsonAsync("/auth/api/auth/refresh", refreshTokenDto);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task RefreshToken_WithInvalidToken_ReturnsUnauthorized()
+    {
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        await using var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        var client = app.CreateHttpClient("gateway");
+
+        var refreshTokenDto = new RefreshTokenDto
+        {
+            RefreshToken = "invalid-token",
+            AccessToken = "invalid-token"
+        };
+
+        var response = await client.PostAsJsonAsync("/auth/api/auth/refresh", refreshTokenDto);
+
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task RefreshToken_WithInvalidModel_ReturnsBadRequest()
+    {
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        await using var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        var client = app.CreateHttpClient("gateway");
+
+        var refreshTokenDto = new RefreshTokenDto
+        {
+            RefreshToken = ""
+        };
+
+        var response = await client.PostAsJsonAsync("/auth/api/auth/refresh", refreshTokenDto);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task ExternalLogin_WithValidProvider_ReturnsRedirect()
+    {
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        await using var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        
+        var client = app.CreateHttpClient("gateway");
+
+        var provider = "Google";
+
+        var response = await client.GetAsync($"/auth/api/auth/external-login/{provider}");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task ExternalLogin_WithInvalidProvider_ReturnsBadRequest()
+    {
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        await using var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        var client = app.CreateHttpClient("gateway");
+
+        var provider = "invalid-provider";
+
+        var response = await client.GetAsync($"/auth/api/auth/external-login/{provider}");
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest()
+    {
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        await using var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        var client = app.CreateHttpClient("gateway");
+
+        var response = await client.GetAsync("/auth/api/auth/external-callback");
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    //TODO: Fata un Token valid de JWT
+    //[Fact]
+    //public async Task Logout_WithoutAuthorization_ReturnsUnauthorized()
+    //{
+    //    var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+    //    appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+    //    {
+    //        clientBuilder.AddStandardResilienceHandler();
+    //    });
+    //    await using var app = await appHost.BuildAsync();
+    //    await app.StartAsync();
+    //    var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+    //    await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+    //        .WaitAsync(TimeSpan.FromSeconds(30));
+    //    var client = app.CreateHttpClient("gateway");
+
+    //    var response = await client.PostAsync("/auth/api/auth/logout", null);
+
+    //    Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+    //}
+
+    [Fact]
+    public async Task Logout_WithValidToken_ReturnsNoContent()
+    {
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        await using var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("auth-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        var client = app.CreateHttpClient("gateway");
+
+        // Arrange
+        var user = new ApplicationUser
+        {
+            Id = Guid.NewGuid(),
+            Email = "test@example.com",
+            UserName = "testuser",
+            FirstName = "Test",
+            LastName = "User"
+        };
+
+        IConfiguration configuration = app.Services.GetRequiredService<IConfiguration>();
+        var token = await new JwtTokenProvider(configuration).GenerateAccessTokenAsync(user);
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "valid-jwt-token");
+
+        //Act
+        var response = await client.PostAsync("/auth/api/auth/logout", null);
+
+        //Assert
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using MyApp.Auth.Domain.Entities;
+using System.Reflection.Emit;
 
 namespace MyApp.Auth.Infrastructure.Data;
 
@@ -85,6 +86,19 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
             // Each Role can have many entries in the UserRole join table
             b.HasMany(e=>e.UserRoles).WithOne().HasForeignKey(uc => uc.RoleId).IsRequired();
         });
+
+        builder.Entity<UserPermission>(b =>
+        {
+            b.HasKey(up => up.Id); // PK normal
+            b.HasIndex(up => new { up.UserId, up.PermissionId }).IsUnique(); // Evita duplicats lògics
+        });
+
+        builder.Entity<RolePermission>(b =>
+        {
+            b.HasKey(up => up.Id); // PK normal
+            b.HasIndex(up => new { up.RoleId, up.PermissionId }).IsUnique(); // Evita duplicats lògics
+        });
+
     }
 }
 

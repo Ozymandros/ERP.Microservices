@@ -94,6 +94,9 @@ public class AuthController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
+        if(refreshTokenDto is null || string.IsNullOrWhiteSpace(refreshTokenDto.RefreshToken) || string.IsNullOrWhiteSpace(refreshTokenDto.AccessToken))
+            return BadRequest(new { message = "Invalid token data" });  
+
         try
         {
             var result = await _authService.RefreshTokenAsync(refreshTokenDto);

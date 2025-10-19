@@ -1,12 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MyApp.Auth.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class UserPermission
 {
+    [Key]
     public Guid Id { get; set; }
 
-    //public Guid UserId { get; set; }
-    public IdentityUser User { get; set; } = default!;
+    [ForeignKey("User")]
+    public Guid UserId { get; set; }
+    public ApplicationUser User { get; set; } = default!;
 
-    //public Guid PermissionId { get; set; }
+    [ForeignKey("Permission")]
+    public Guid PermissionId { get; set; }
     public Permission Permission { get; set; } = default!;
 }

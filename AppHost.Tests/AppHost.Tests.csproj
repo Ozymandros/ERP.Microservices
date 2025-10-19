@@ -19,6 +19,15 @@
   <ItemGroup>
     <ProjectReference Include="..\AppHost\AppHost.csproj" />
     <ProjectReference Include="..\ErpApiGateway\ErpApiGateway.csproj" />
+    <ProjectReference Include="..\MyApp.Auth\MyApp.Auth.Application.Contracts\MyApp.Auth.Application.Contracts.csproj" />
+    <ProjectReference Include="..\MyApp.Auth\MyApp.Auth.Domain\MyApp.Auth.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Auth\MyApp.Auth.Infrastructure\MyApp.Auth.Infrastructure.csproj" />
+    <ProjectReference Include="..\MyApp.Billing\MyApp.Billing.Domain\MyApp.Billing.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Inventory\MyApp.Inventory.Domain\MyApp.Inventory.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Orders\MyApp.Orders.Domain\MyApp.Orders.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Purchasing\MyApp.Purchasing.Domain\MyApp.Purchasing.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Sales\MyApp.Sales.Domain\MyApp.Sales.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,21 +1,53 @@
-using AppHost.Tests.Base;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
-using Xunit.Abstractions;
+using Aspire.Hosting;
 
-namespace AppHost.Tests.Tests;
+namespace MyApp.Tests.Integration;
 
-public class SalesServiceTests : BaseIntegrationTest
+public class SalesServiceTests
 {
-    public SalesServiceTests(ITestOutputHelper output) : base(output) { }
+    private async Task<DistributedApplication> CreateAndStartAppAsync()
+    {
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+
+        var app = await appHost.BuildAsync();
+        await app.StartAsync();
+        return app;
+    }
+
+    private async Task<string?> GetAuthTokenAsync(HttpClient client)
+    {
+        var credentials = new
+        {
+            Email = "admin@test.com",
+            Password = "Admin123!"
+        };
+
+        var response = await client.PostAsJsonAsync("/auth/api/auth/login", credentials);
+        var content = await response.Content.ReadFromJsonAsync<TokenResponse>();
+        return content?.AccessToken;
+    }
 
     [Fact]
     public async Task GetSalesOrders_WithValidToken_ReturnsSuccessStatusCode()
     {
         // Arrange
-        await WaitForServiceAsync("sales-service");
-        var client = await CreateAuthorizedClientAsync();
+        await using var app = await CreateAndStartAppAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("sales-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        
+        var client = app.CreateHttpClient("gateway");
+        var token = await GetAuthTokenAsync(client);
+        if (token != null)
+        {
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        }
 
         // Act
         var response = await client.GetAsync("/sales/api/orders");
@@ -28,8 +60,18 @@ public class SalesServiceTests : BaseIntegrationTest
     public async Task CreateSalesOrder_WithValidData_ReturnsCreatedStatusCode()
     {
         // Arrange
-        await WaitForServiceAsync("sales-service");
-        var client = await CreateAuthorizedClientAsync();
+        await using var app = await CreateAndStartAppAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("sales-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        
+        var client = app.CreateHttpClient("gateway");
+        var token = await GetAuthTokenAsync(client);
+        if (token != null)
+        {
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        }
+        
         var order = new
         {
             CustomerId = Guid.NewGuid(),
@@ -59,8 +101,17 @@ public class SalesServiceTests : BaseIntegrationTest
     public async Task GetCustomers_WithValidToken_ReturnsSuccessStatusCode()
     {
         // Arrange
-        await WaitForServiceAsync("sales-service");
-        var client = await CreateAuthorizedClientAsync();
+        await using var app = await CreateAndStartAppAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("sales-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        
+        var client = app.CreateHttpClient("gateway");
+        var token = await GetAuthTokenAsync(client);
+        if (token != null)
+        {
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        }
 
         // Act
         var response = await client.GetAsync("/sales/api/customers");
@@ -73,8 +124,18 @@ public class SalesServiceTests : BaseIntegrationTest
     public async Task CreateCustomer_WithValidData_ReturnsCreatedStatusCode()
     {
         // Arrange
-        await WaitForServiceAsync("sales-service");
-        var client = await CreateAuthorizedClientAsync();
+        await using var app = await CreateAndStartAppAsync();
+        var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        await notifier.WaitForResourceAsync("sales-service", KnownResourceStates.Running)
+            .WaitAsync(TimeSpan.FromSeconds(30));
+        
+        var client = app.CreateHttpClient("gateway");
+        var token = await GetAuthTokenAsync(client);
+        if (token != null)
+        {
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        }
+        
         var customer = new
         {
             Name = "Test Customer",
@@ -97,7 +158,13 @@ public class SalesServiceTests : BaseIntegrationTest
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         Assert.NotNull(createdCustomer?.Id);
-        Assert.Equal(customer.Email, createdCustomer.Email);
+        Assert.Equal(customer.Email, createdCustomer?.Email);
+    }
+
+    private class TokenResponse
+    {
+        public string? AccessToken { get; set; }
+        public string? RefreshToken { get; set; }
     }
 
     private class SalesOrderResponse
@@ -105,8 +172,8 @@ public class SalesServiceTests : BaseIntegrationTest
         public Guid Id { get; set; }
         public Guid CustomerId { get; set; }
         public DateTime OrderDate { get; set; }
-        public string Status { get; set; }
-        public SalesOrderLineResponse[] Lines { get; set; }
+        public string? Status { get; set; }
+        public SalesOrderLineResponse[]? Lines { get; set; }
     }
 
     private class SalesOrderLineResponse
@@ -119,18 +186,18 @@ public class SalesServiceTests : BaseIntegrationTest
     private class CustomerResponse
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public AddressResponse Address { get; set; }
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public string? Phone { get; set; }
+        public AddressResponse? Address { get; set; }
     }
 
     private class AddressResponse
     {
-        public string Street { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string Country { get; set; }
-        public string PostalCode { get; set; }
+        public string? Street { get; set; }
+        public string? City { get; set; }
+        public string? State { get; set; }
+        public string? Country { get; set; }
+        public string? PostalCode { get; set; }
     }
 }

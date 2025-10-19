@@ -45,6 +45,12 @@ var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>();
 
 // Configuració del Reverse Proxy (YARP)
 var gateway = builder.AddYarp("gateway")
+    .WaitFor(authService)
+    .WaitFor(billingService)
+    .WaitFor(inventoryService)
+    .WaitFor(ordersService)
+    .WaitFor(purchasingService)
+    .WaitFor(salesService)
                      //.WithHttpEndpoint(5000)
                      .WithConfiguration(yarp =>
                      {
@@ -65,4 +71,16 @@ var gateway = builder.AddYarp("gateway")
                          //    .WithTransformPathRemovePrefix("/notification");
                      });
 
-builder.Build().Run();
+try
+{
+    builder.Build().Run();
+}
+catch (AggregateException ex)
+{
+    foreach (var inner in ex.InnerExceptions)
+    {
+        Console.WriteLine(inner.Message);
+        Console.WriteLine(inner.StackTrace);
+    }
+    throw;
+}

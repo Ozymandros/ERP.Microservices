@@ -1,4 +1,4 @@
-namespace AppHost.Tests.Tests
+namespace MyApp.Tests.Integration
 {
     public class IntegrationTest1
     {
