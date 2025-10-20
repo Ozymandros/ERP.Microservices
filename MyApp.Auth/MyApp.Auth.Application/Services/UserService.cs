@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using MyApp.Auth.Application.Contracts.DTOs;
@@ -15,19 +16,38 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<UserService> _logger;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public UserService(
         UserManager<ApplicationUser> userManager,
         RoleManager<ApplicationRole> roleManager,
         IUserRepository userRepository,
         IMapper mapper,
-        ILogger<UserService> logger)
+        ILogger<UserService> logger,
+        IHttpContextAccessor httpContextAccessor)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _userRepository = userRepository;
         _mapper = mapper;
         _logger = logger;
+        _httpContextAccessor = httpContextAccessor;
+    }
+
+    
+    /// <summary>
+    /// Get current user
+    /// </summary>
+    /// <returns></returns>
+    public async Task<UserDto?> GetCurrentUserAsync()
+    {
+        if(_httpContextAccessor.HttpContext == null)
+        {
+            _logger.LogWarning("HTTP context is null");
+            return null;
+        }
+        var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+        return user == null ? null : _mapper.Map<UserDto>(user);
     }
 
     public async Task<UserDto?> GetUserByIdAsync(Guid userId)

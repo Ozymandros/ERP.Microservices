@@ -41,6 +41,32 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
+    /// Get current user
+    /// </summary>
+    [HttpGet("current")]
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<UserDto>> GetCurrentUser()
+    {
+        try
+        {
+            var user = await _userService.GetCurrentUserAsync();
+            if (user == null)
+            {
+                _logger.LogWarning("Current user not found");
+                return NotFound(new { message = "Current user not found" });
+            }
+
+            return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving current user");
+            return StatusCode(500, new { message = "An error occurred retrieving the current user" });
+        }
+    }
+
+    /// <summary>
     /// Get user by ID
     /// </summary>
     [HttpGet("{id}")]

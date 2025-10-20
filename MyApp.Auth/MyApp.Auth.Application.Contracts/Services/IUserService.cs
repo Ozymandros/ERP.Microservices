@@ -13,4 +13,5 @@ public interface IUserService
     Task<bool> AssignRoleAsync(Guid userId, string roleName);
     Task<bool> RemoveRoleAsync(Guid userId, string roleName);
     Task<IEnumerable<RoleDto>> GetUserRolesAsync(Guid userId);
+    Task<UserDto?> GetCurrentUserAsync();
 }
