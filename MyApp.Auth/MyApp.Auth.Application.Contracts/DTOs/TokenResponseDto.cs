@@ -1,3 +1,4 @@
+
 namespace MyApp.Auth.Application.Contracts.DTOs;
 
 public class TokenResponseDto
@@ -19,4 +20,6 @@ public class UserDto
     public bool EmailConfirmed { get; set; }
     public bool IsExternalLogin { get; set; }
     public string? ExternalProvider { get; set; }
+    public List<RoleDto?> Roles { get; set; } = new();
+    public List<PermissionDto?> Permissions { get; set; } = new();
 }

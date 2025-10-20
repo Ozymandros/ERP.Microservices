@@ -14,6 +14,7 @@ public class UserService : IUserService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly IUserRepository _userRepository;
+    private readonly IPermissionRepository _permissionRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<UserService> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -24,7 +25,8 @@ public class UserService : IUserService
         IUserRepository userRepository,
         IMapper mapper,
         ILogger<UserService> logger,
-        IHttpContextAccessor httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor,
+        IPermissionRepository permissionRepository)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -32,6 +34,7 @@ public class UserService : IUserService
         _mapper = mapper;
         _logger = logger;
         _httpContextAccessor = httpContextAccessor;
+        _permissionRepository = permissionRepository;
     }
 
     
@@ -47,7 +50,21 @@ public class UserService : IUserService
             return null;
         }
         var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
-        return user == null ? null : _mapper.Map<UserDto>(user);
+        if (user is null)
+        {
+            _logger.LogWarning("Current user not found in HTTP context");
+            return null;
+        }
+
+        var userDto = _mapper.Map<UserDto>(user);
+
+        var roles = await GetUserRolesAsync(user.Id);
+        userDto.Roles = _mapper.Map<List<RoleDto?>>(roles);
+
+        var permissons = await _permissionRepository.GetAllPermissionsByUserId(user.Id);
+        userDto.Permissions = _mapper.Map<List<PermissionDto?>>(permissons);
+
+        return userDto;
     }
 
     public async Task<UserDto?> GetUserByIdAsync(Guid userId)

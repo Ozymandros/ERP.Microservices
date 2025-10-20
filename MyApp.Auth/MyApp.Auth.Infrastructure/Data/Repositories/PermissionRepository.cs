@@ -58,5 +58,30 @@ namespace MyApp.Auth.Infrastructure.Data.Repositories
 
             return userPermissions;
         }
+
+        /// <summary>
+        /// Gets permissions assigned directly to a specific user and role by UserId.
+        /// </summary>
+        
+        public async Task<IEnumerable<Permission>> GetAllPermissionsByUserId(Guid userId)
+        {
+            var userPermissions = await _context.Set<UserPermission>()
+                .AsNoTracking()
+                .Include(up => up.Permission)
+                .Where(up => up.User.Id == userId)
+                .Select(up => up.Permission)
+                .ToListAsync();
+
+            var rolePermissions = await (from ur in _context.Set<Microsoft.AspNetCore.Identity.IdentityUserRole<Guid>>()
+                                         join rp in _context.Set<RolePermission>() on ur.RoleId equals rp.RoleId
+                                         where ur.UserId == userId
+                                         select rp.Permission)
+                                 .Distinct()
+                                 .ToListAsync();
+
+            userPermissions.AddRange(rolePermissions);
+            userPermissions.ToHashSet(new PermissionComparer());
+            return userPermissions;
+        }
     }
 }
