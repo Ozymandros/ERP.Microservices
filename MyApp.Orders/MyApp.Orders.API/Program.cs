@@ -2,10 +2,23 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MyApp.Orders.Infrastructure.Data;
 using MyApp.Shared.Infrastructure.Extensions;
+using MyApp.Shared.Infrastructure.Logging;
+using MyApp.Shared.Infrastructure.Middleware;
 using System.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog - must be done before building
+builder.Host.UseSerilog((context, services, configuration) =>
+    LoggerSetup.ConfigureSerilog(configuration, context.HostingEnvironment, services));
+
+// Ensure unhandled exceptions are logged
+AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+{
+    Log.Fatal(args.ExceptionObject as Exception, "Application terminated unexpectedly");
+};
 
 // Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
 builder.Services.AddDaprClient();
