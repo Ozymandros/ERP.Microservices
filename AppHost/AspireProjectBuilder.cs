@@ -57,9 +57,11 @@ public class AspireProjectBuilder
         // Configure project
         project = project
             .WithHttpEndpoint()//httpPort
+            //.WithHttpsEndpoint()
             .WithExternalHttpEndpoints()
             .WaitFor(database)
             .WithReference(database)
+            .WithHttpHealthCheck(path: "/health", statusCode: 200)
             //.WithDaprSidecarOptions(options => options.AddArgument("--enable-scheduler", "false"))
             .WithDaprSidecar(new DaprSidecarOptions
             {

@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using MyApp.Shared.Infrastructure.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
@@ -7,6 +10,12 @@ builder.Services.AddDaprClient();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Get connection string
+var billingDbConnectionString = builder.Configuration.GetConnectionString("billingdb");
+
+// Health Checks
+builder.Services.AddCustomHealthChecks(billingDbConnectionString ?? throw new InvalidOperationException("Connection string 'billingdb' not found."));
 
 var app = builder.Build();
 
@@ -38,6 +47,21 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+// Map health check endpoint
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+        var result = System.Text.Json.JsonSerializer.Serialize(new
+        {
+            status = report.Status.ToString(),
+            components = report.Entries.Select(e => new { key = e.Key, value = e.Value.Status.ToString() })
+        });
+        await context.Response.WriteAsync(result);
+    }
+});
 
 app.Run();
 

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +12,7 @@ using MyApp.Auth.Domain.Repositories;
 using MyApp.Auth.Infrastructure.Data;
 using MyApp.Auth.Infrastructure.Data.Repositories;
 using MyApp.Auth.Infrastructure.Services;
+using MyApp.Shared.Infrastructure.Extensions;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -56,6 +58,9 @@ builder.Services.AddSwaggerGen(c =>
 // Database configuration
 var connectionString = builder.Configuration.GetConnectionString("AuthDb")
     ?? "Server=localhost;Database=AuthDb;Trusted_Connection=True;";
+
+// Health Checks
+builder.Services.AddCustomHealthChecks(connectionString ?? throw new InvalidOperationException("Connection string 'authdb' not found."));
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -190,5 +195,20 @@ app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+// Map health check endpoint
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+        var result = System.Text.Json.JsonSerializer.Serialize(new
+        {
+            status = report.Status.ToString(),
+            components = report.Entries.Select(e => new { key = e.Key, value = e.Value.Status.ToString() })
+        });
+        await context.Response.WriteAsync(result);
+    }
+});
 
 app.Run();

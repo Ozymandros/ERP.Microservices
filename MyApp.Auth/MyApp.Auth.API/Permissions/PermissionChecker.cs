@@ -57,6 +57,9 @@ public class PermissionService : IPermissionService
 
         var roles = await _userManager.GetRolesAsync(user);
 
+        if(roles.Any(r=>r.Equals("Admin", StringComparison.OrdinalIgnoreCase)))
+            return true;
+
         foreach (var roleName in roles)
         {
             var rolePermissions = await _permissionRepository.GetByRoleName(roleName, module, action);
