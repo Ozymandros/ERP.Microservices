@@ -22,4 +22,5 @@ public class UserDto
     public string? ExternalProvider { get; set; }
     public List<RoleDto?> Roles { get; set; } = new();
     public List<PermissionDto?> Permissions { get; set; } = new();
+    public bool IsAdmin { get; set; }
 }

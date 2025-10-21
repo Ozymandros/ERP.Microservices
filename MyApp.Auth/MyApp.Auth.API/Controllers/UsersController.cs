@@ -52,7 +52,7 @@ public class UsersController : ControllerBase
     /// <summary>
     /// Get current user
     /// </summary>
-    [HttpGet("current")]
+    [HttpGet("me")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<UserDto>> GetCurrentUser()

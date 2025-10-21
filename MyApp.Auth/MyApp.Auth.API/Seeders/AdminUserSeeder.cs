@@ -18,7 +18,7 @@ public static class AdminUserSeeder
             };
 
             await userManager.CreateAsync(user, "Admin123!"); // 🔐 Canvia la contrasenya en producció
-            await userManager.AddToRoleAsync(user, "Administrator");
+            await userManager.AddToRoleAsync(user, "Admin");
         }
     }
 }

@@ -61,8 +61,20 @@ public class UserService : IUserService
         var roles = await GetUserRolesAsync(user.Id);
         userDto.Roles = _mapper.Map<List<RoleDto?>>(roles);
 
-        var permissons = await _permissionRepository.GetAllPermissionsByUserId(user.Id);
-        userDto.Permissions = _mapper.Map<List<PermissionDto?>>(permissons);
+        if(roles.Any(r => r.Name != null && r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase)))
+        {
+            userDto.IsAdmin = true;
+
+            var permissons = await _permissionRepository.GetAllAsync();
+            userDto.Permissions = _mapper.Map<List<PermissionDto?>>(permissons);
+        }
+        else
+        {
+            userDto.IsAdmin = false;
+
+            var permissons = await _permissionRepository.GetAllPermissionsByUserId(user.Id);
+            userDto.Permissions = _mapper.Map<List<PermissionDto?>>(permissons);
+        }
 
         return userDto;
     }

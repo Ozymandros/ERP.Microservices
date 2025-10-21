@@ -5,7 +5,7 @@ public static class RoleSeeder
 {
     public static async Task SeedAsync(RoleManager<ApplicationRole> roleManager)
     {
-        var roles = new[] { "Administrator", "User", "Manager" };
+        var roles = new[] { "Admin", "User", "Manager" };
 
         foreach (var role in roles)
         {

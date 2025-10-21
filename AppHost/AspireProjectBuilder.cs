@@ -3,10 +3,10 @@ using StackExchange.Redis;
 
 public class AspireProjectBuilder
 {
-    private int _httpPort = 5000;
-    private int _daprHttpPort = 3500;
-    private int _daprGrpcPort = 45000;
-    private int _metricsPort = 9090;
+    private int _httpPort = 5001;
+    private int _daprHttpPort = 3501;
+    private int _daprGrpcPort = 45001;
+    private int _metricsPort = 9091;
 
     private readonly IDistributedApplicationBuilder _builder;
     private readonly IResourceBuilder<SqlServerServerResource> _sqlServer;
@@ -44,7 +44,7 @@ public class AspireProjectBuilder
         var daprAppId = $"{serviceNameLower}-service";
 
         // Get current ports and increment (optional)
-        //var httpPort = _httpPort++;
+        var httpPort = _httpPort++;
         //var daprHttpPort = _daprHttpPort++;
         //var daprGrpcPort = _daprGrpcPort++;
         //var metricsPort = _metricsPort++;
@@ -57,7 +57,7 @@ public class AspireProjectBuilder
 
         // Configure project
         project = project
-            .WithHttpEndpoint()//httpPort
+            .WithHttpEndpoint(httpPort)
                                //.WithHttpsEndpoint()
             .WithExternalHttpEndpoints()
             .WaitFor(database)
@@ -66,8 +66,8 @@ public class AspireProjectBuilder
             //.WithDaprSidecarOptions(options => options.AddArgument("--enable-scheduler", "false"))
             .WithDaprSidecar(new DaprSidecarOptions
             {
-                //AppId = daprAppId,
-                //AppPort = httpPort,
+                AppId = daprAppId,
+                AppPort = httpPort,
                 //DaprHttpPort = daprHttpPort,
                 //DaprGrpcPort = daprGrpcPort,
                 //MetricsPort = metricsPort
@@ -88,10 +88,10 @@ public class AspireProjectBuilder
 
     // Optionally reset counters
     public void ResetCounters(
-        int httpPort = 5000,
-        int daprHttpPort = 3500,
-        int daprGrpcPort = 45000,
-        int metricsPort = 9090)
+        int httpPort = 5001,
+        int daprHttpPort = 3501,
+        int daprGrpcPort = 45001,
+        int metricsPort = 9091)
     {
         _httpPort = httpPort;
         _daprHttpPort = daprHttpPort;
