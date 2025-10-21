@@ -1,9 +1,9 @@
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.IdentityModel.Tokens;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.Services;
@@ -13,6 +13,8 @@ using MyApp.Auth.Domain.Repositories;
 using MyApp.Auth.Infrastructure.Data;
 using MyApp.Auth.Infrastructure.Data.Repositories;
 using MyApp.Auth.Infrastructure.Services;
+using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
 using System.Text;
 

@@ -1,15 +1,18 @@
-// DistributedCacheWrapper.cs
+ï»¿// DistributedCacheWrapper.cs
 
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 using System.Text;
+using MyApp.Shared.Domain.Caching;
 
-// ?? Aquesta classe rep la IDistributedCache per DI, no la implementa.
+namespace MyApp.Shared.Infrastructure.Caching;
+
+// ðŸ›‘ Aquesta classe rep la IDistributedCache per DI, no la implementa.
 public class DistributedCacheWrapper : ICacheService
 {
     private readonly IDistributedCache _distributedCache;
 
-    // ?? Rep la instància d'IDistributedCache per Ctor
+    // ðŸŽ¯ Rep la instÃ ncia d'IDistributedCache per Ctor
     public DistributedCacheWrapper(IDistributedCache distributedCache)
     {
         _distributedCache = distributedCache;
@@ -17,7 +20,7 @@ public class DistributedCacheWrapper : ICacheService
 
     public async Task<T?> GetStateAsync<T>(string key) where T : class
     {
-        // 1. Obté els bytes crus de Redis
+        // 1. ObtÃ© els bytes crus de Redis
         var cachedBytes = await _distributedCache.GetAsync(key);
 
         if (cachedBytes == null)
@@ -33,7 +36,7 @@ public class DistributedCacheWrapper : ICacheService
         }
         catch (JsonException)
         {
-            // Potser el format és incorrecte, esborrem l'entrada per evitar errors futurs
+            // Potser el format Ã©s incorrecte, esborrem l'entrada per evitar errors futurs
             await _distributedCache.RemoveAsync(key);
             return null;
         }
@@ -46,10 +49,10 @@ public class DistributedCacheWrapper : ICacheService
         var bytes = Encoding.UTF8.GetBytes(json);
 
         var options = new DistributedCacheEntryOptions();
-        if (expiration.HasValue)
-        {
-            options.AbsoluteExpirationRelativeToNow = expiration.Value;
-        }
+        //if (expiration.HasValue)
+        //{
+            options.AbsoluteExpirationRelativeToNow = expiration ?? TimeSpan.FromHours(1);
+        //}
 
         // 2. Desa els bytes a Redis amb les opcions
         return _distributedCache.SetAsync(key, bytes, options);
@@ -57,7 +60,7 @@ public class DistributedCacheWrapper : ICacheService
 
     public Task RemoveStateAsync(string key)
     {
-        // Simple delegació a la funcionalitat base de Redis
+        // Simple delegaciÃ³ a la funcionalitat base de Redis
         return _distributedCache.RemoveAsync(key);
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
+using MyApp.Shared.Domain.Caching;
 
 namespace MyApp.Auth.API.Controllers;
 
@@ -32,7 +33,13 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var users = await _userService.GetAllUsersAsync();
+            var users = await _cacheService.GetStateAsync<IEnumerable<UserDto>>("all_users");
+            if (users != null)
+            {
+                return Ok(users);
+            }
+
+            users = await _userService.GetAllUsersAsync();
             return Ok(users);
         }
         catch (Exception ex)
@@ -154,6 +161,9 @@ public class UsersController : ControllerBase
                 return NotFound(new { message = "User not found" });
             }
 
+            string cacheKey = $"User-{id}";
+            await _cacheService.RemoveStateAsync(cacheKey);
+
             _logger.LogInformation("User updated: {UserId}", id);
             return NoContent();
         }
@@ -181,6 +191,10 @@ public class UsersController : ControllerBase
                 _logger.LogWarning("Failed to delete user: {UserId}", id);
                 return NotFound(new { message = "User not found" });
             }
+
+            string cacheKey = $"User-{id}";
+            await _cacheService.RemoveStateAsync(cacheKey);
+            await _cacheService.RemoveStateAsync("all_users");
 
             _logger.LogInformation("User deleted: {UserId}", id);
             return NoContent();
@@ -210,6 +224,8 @@ public class UsersController : ControllerBase
                 _logger.LogWarning("Failed to assign role to user: {UserId}, Role: {RoleName}", id, roleName);
                 return NotFound(new { message = "User or role not found" });
             }
+            string cacheKey = $"User-{id}";
+            await _cacheService.RemoveStateAsync(cacheKey);
 
             _logger.LogInformation("Role assigned to user: {UserId}, Role: {RoleName}", id, roleName);
             return NoContent();
@@ -239,6 +255,8 @@ public class UsersController : ControllerBase
                 _logger.LogWarning("Failed to remove role from user: {UserId}, Role: {RoleName}", id, roleName);
                 return NotFound(new { message = "User or role not found" });
             }
+            string cacheKey = $"User-{id}";
+            await _cacheService.RemoveStateAsync(cacheKey);
 
             _logger.LogInformation("Role removed from user: {UserId}, Role: {RoleName}", id, roleName);
             return NoContent();
@@ -261,7 +279,18 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var roles = await _userService.GetUserRolesAsync(id);
+            string cacheKey = $"Roles-{id}";
+            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>(cacheKey); // 1. Intentar obtenir de la cache
+
+            if (roles is not null)
+            {
+                return Ok(roles); // Retorna des de la cache
+            }
+
+            // 2. La dada NO és a la cache, obtenir de la DB
+            roles = await _userService.GetUserRolesAsync(id);
+            await _cacheService.SaveStateAsync(cacheKey, roles);
+
             return Ok(roles);
         }
         catch (Exception ex)

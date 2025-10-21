@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using Microsoft.AspNetCore.Authorization;
+using MyApp.Shared.Domain.Caching;
 
 namespace MyApp.Inventory.API.Controllers;
 
@@ -11,12 +12,14 @@ namespace MyApp.Inventory.API.Controllers;
 public class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;
+    private readonly ICacheService _cacheService;
     private readonly ILogger<ProductsController> _logger;
 
-    public ProductsController(IProductService productService, ILogger<ProductsController> logger)
+    public ProductsController(IProductService productService, ILogger<ProductsController> logger, ICacheService cacheService)
     {
         _productService = productService;
         _logger = logger;
+        _cacheService = cacheService;
     }
 
     /// <summary>
@@ -27,9 +30,26 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
     {
-        _logger.LogInformation("Retrieving all products");
-        var products = await _productService.GetAllProductsAsync();
-        return Ok(products);
+        try
+        {
+            var products = await _cacheService.GetStateAsync<IEnumerable<ProductDto>>("all_products");
+            if (products != null)
+            {
+                _logger.LogInformation("Retrieved all products from cache");
+                return Ok(products);
+            }
+
+            products = await _productService.GetAllProductsAsync();
+            await _cacheService.SaveStateAsync("all_products", products);
+            _logger.LogInformation("Retrieved all products from database and cached");
+            return Ok(products);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving all products");
+            var products = await _productService.GetAllProductsAsync();
+            return Ok(products);
+        }
     }
 
     /// <summary>
@@ -41,14 +61,34 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProductDto>> GetProductById(Guid id)
     {
-        _logger.LogInformation("Retrieving product with ID: {ProductId}", id);
-        var product = await _productService.GetProductByIdAsync(id);
-        if (product == null)
+        try
         {
-            _logger.LogWarning("Product with ID {ProductId} not found", id);
-            return NotFound();
+            string cacheKey = $"Product-{id}";
+            var product = await _cacheService.GetStateAsync<ProductDto>(cacheKey);
+
+            if (product != null)
+            {
+                _logger.LogInformation("Retrieved product {ProductId} from cache", id);
+                return Ok(product);
+            }
+
+            product = await _productService.GetProductByIdAsync(id);
+            if (product == null)
+            {
+                _logger.LogWarning("Product with ID {ProductId} not found", id);
+                return NotFound();
+            }
+
+            await _cacheService.SaveStateAsync(cacheKey, product);
+            _logger.LogInformation("Retrieved product {ProductId} from database and cached", id);
+            return Ok(product);
         }
-        return Ok(product);
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving product {ProductId}", id);
+            var product = await _productService.GetProductByIdAsync(id);
+            return product == null ? NotFound() : Ok(product);
+        }
     }
 
     /// <summary>
@@ -60,14 +100,34 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProductDto>> GetProductBySku(string sku)
     {
-        _logger.LogInformation("Retrieving product with SKU: {SKU}", sku);
-        var product = await _productService.GetProductBySkuAsync(sku);
-        if (product == null)
+        try
         {
-            _logger.LogWarning("Product with SKU {SKU} not found", sku);
-            return NotFound();
+            string cacheKey = $"Product-SKU-{sku}";
+            var product = await _cacheService.GetStateAsync<ProductDto>(cacheKey);
+
+            if (product != null)
+            {
+                _logger.LogInformation("Retrieved product with SKU {SKU} from cache", sku);
+                return Ok(product);
+            }
+
+            product = await _productService.GetProductBySkuAsync(sku);
+            if (product == null)
+            {
+                _logger.LogWarning("Product with SKU {SKU} not found", sku);
+                return NotFound();
+            }
+
+            await _cacheService.SaveStateAsync(cacheKey, product);
+            _logger.LogInformation("Retrieved product with SKU {SKU} from database and cached", sku);
+            return Ok(product);
         }
-        return Ok(product);
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving product with SKU {SKU}", sku);
+            var product = await _productService.GetProductBySkuAsync(sku);
+            return product == null ? NotFound() : Ok(product);
+        }
     }
 
     /// <summary>
@@ -78,9 +138,26 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetLowStockProducts()
     {
-        _logger.LogInformation("Retrieving low stock products");
-        var products = await _productService.GetLowStockProductsAsync();
-        return Ok(products);
+        try
+        {
+            var products = await _cacheService.GetStateAsync<IEnumerable<ProductDto>>("low_stock_products");
+            if (products != null)
+            {
+                _logger.LogInformation("Retrieved low stock products from cache");
+                return Ok(products);
+            }
+
+            products = await _productService.GetLowStockProductsAsync();
+            await _cacheService.SaveStateAsync("low_stock_products", products, TimeSpan.FromMinutes(5));
+            _logger.LogInformation("Retrieved low stock products from database and cached with 5-minute TTL");
+            return Ok(products);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving low stock products");
+            var products = await _productService.GetLowStockProductsAsync();
+            return Ok(products);
+        }
     }
 
     /// <summary>
@@ -102,6 +179,9 @@ public class ProductsController : ControllerBase
         {
             _logger.LogInformation("Creating new product with SKU: {SKU}", dto.SKU);
             var product = await _productService.CreateProductAsync(dto);
+            await _cacheService.RemoveStateAsync("all_products");
+            await _cacheService.RemoveStateAsync("low_stock_products");
+            _logger.LogInformation("Product created and cache invalidated");
             return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
         }
         catch (InvalidOperationException ex)
@@ -131,6 +211,11 @@ public class ProductsController : ControllerBase
         {
             _logger.LogInformation("Updating product with ID: {ProductId}", id);
             var product = await _productService.UpdateProductAsync(id, dto);
+            string cacheKey = $"Product-{id}";
+            await _cacheService.RemoveStateAsync(cacheKey);
+            await _cacheService.RemoveStateAsync("all_products");
+            await _cacheService.RemoveStateAsync("low_stock_products");
+            _logger.LogInformation("Product {ProductId} updated and cache invalidated", id);
             return Ok(product);
         }
         catch (KeyNotFoundException ex)
@@ -158,6 +243,11 @@ public class ProductsController : ControllerBase
         {
             _logger.LogInformation("Deleting product with ID: {ProductId}", id);
             await _productService.DeleteProductAsync(id);
+            string cacheKey = $"Product-{id}";
+            await _cacheService.RemoveStateAsync(cacheKey);
+            await _cacheService.RemoveStateAsync("all_products");
+            await _cacheService.RemoveStateAsync("low_stock_products");
+            _logger.LogInformation("Product {ProductId} deleted and cache invalidated", id);
             return NoContent();
         }
         catch (KeyNotFoundException ex)

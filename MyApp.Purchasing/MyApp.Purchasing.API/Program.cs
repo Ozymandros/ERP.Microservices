@@ -1,12 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
 using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Application.Services;
 using MyApp.Purchasing.Domain.Repositories;
 using MyApp.Purchasing.Infrastructure.Data;
 using MyApp.Purchasing.Infrastructure.Data.Repositories;
+using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Caching.Distributed;
 
 var builder = WebApplication.CreateBuilder(args);
 

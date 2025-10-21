@@ -1,4 +1,6 @@
-﻿public interface ICacheService
+﻿namespace MyApp.Shared.Domain.Caching;
+
+public interface ICacheService
 {
     // Obté l'estat tipat
     Task<T?> GetStateAsync<T>(string key) where T : class;

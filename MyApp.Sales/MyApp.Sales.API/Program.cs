@@ -1,8 +1,7 @@
-using Dapr.Common;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
-using MyApp.Sales.Domain;
 using MyApp.Sales.Infrastructure.Data;
+using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

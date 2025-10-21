@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
 using Microsoft.AspNetCore.Authorization;
+using MyApp.Shared.Domain.Caching;
 
 namespace MyApp.Purchasing.API.Controllers;
 
@@ -11,11 +12,13 @@ namespace MyApp.Purchasing.API.Controllers;
 public class SuppliersController : ControllerBase
 {
     private readonly ISupplierService _supplierService;
+    private readonly ICacheService _cacheService;
     private readonly ILogger<SuppliersController> _logger;
 
-    public SuppliersController(ISupplierService supplierService, ILogger<SuppliersController> logger)
+    public SuppliersController(ISupplierService supplierService, ICacheService cacheService, ILogger<SuppliersController> logger)
     {
         _supplierService = supplierService;
+        _cacheService = cacheService;
         _logger = logger;
     }
 
@@ -27,9 +30,24 @@ public class SuppliersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<SupplierDto>>> GetAllSuppliers()
     {
-        _logger.LogInformation("Retrieving all suppliers");
-        var suppliers = await _supplierService.GetAllSuppliersAsync();
-        return Ok(suppliers);
+        try
+        {
+            var suppliers = await _cacheService.GetStateAsync<IEnumerable<SupplierDto>>("all_suppliers");
+            if (suppliers != null)
+            {
+                return Ok(suppliers);
+            }
+
+            suppliers = await _supplierService.GetAllSuppliersAsync();
+            await _cacheService.SaveStateAsync("all_suppliers", suppliers);
+            return Ok(suppliers);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving all suppliers");
+            var suppliers = await _supplierService.GetAllSuppliersAsync();
+            return Ok(suppliers);
+        }
     }
 
     /// <summary>
@@ -41,14 +59,32 @@ public class SuppliersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<SupplierDto>> GetSupplierById(Guid id)
     {
-        _logger.LogInformation("Retrieving supplier with ID: {SupplierId}", id);
-        var supplier = await _supplierService.GetSupplierByIdAsync(id);
-        if (supplier == null)
+        try
         {
-            _logger.LogWarning("Supplier with ID {SupplierId} not found", id);
-            return NotFound();
+            string cacheKey = $"Supplier-{id}";
+            var supplier = await _cacheService.GetStateAsync<SupplierDto>(cacheKey);
+
+            if (supplier != null)
+            {
+                return Ok(supplier);
+            }
+
+            supplier = await _supplierService.GetSupplierByIdAsync(id);
+            if (supplier == null)
+            {
+                _logger.LogWarning("Supplier with ID {SupplierId} not found", id);
+                return NotFound();
+            }
+
+            await _cacheService.SaveStateAsync(cacheKey, supplier);
+            return Ok(supplier);
         }
-        return Ok(supplier);
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving supplier {SupplierId}", id);
+            var supplier = await _supplierService.GetSupplierByIdAsync(id);
+            return supplier == null ? NotFound() : Ok(supplier);
+        }
     }
 
     /// <summary>
@@ -102,6 +138,7 @@ public class SuppliersController : ControllerBase
         {
             _logger.LogInformation("Creating new supplier: {Name}", dto.Name);
             var supplier = await _supplierService.CreateSupplierAsync(dto);
+            await _cacheService.RemoveStateAsync("all_suppliers");
             return CreatedAtAction(nameof(GetSupplierById), new { id = supplier.Id }, supplier);
         }
         catch (InvalidOperationException ex)
@@ -131,6 +168,9 @@ public class SuppliersController : ControllerBase
         {
             _logger.LogInformation("Updating supplier with ID: {SupplierId}", id);
             var supplier = await _supplierService.UpdateSupplierAsync(id, dto);
+            string cacheKey = $"Supplier-{id}";
+            await _cacheService.RemoveStateAsync(cacheKey);
+            await _cacheService.RemoveStateAsync("all_suppliers");
             return Ok(supplier);
         }
         catch (KeyNotFoundException ex)
@@ -158,6 +198,9 @@ public class SuppliersController : ControllerBase
         {
             _logger.LogInformation("Deleting supplier with ID: {SupplierId}", id);
             await _supplierService.DeleteSupplierAsync(id);
+            string cacheKey = $"Supplier-{id}";
+            await _cacheService.RemoveStateAsync(cacheKey);
+            await _cacheService.RemoveStateAsync("all_suppliers");
             return NoContent();
         }
         catch (KeyNotFoundException ex)

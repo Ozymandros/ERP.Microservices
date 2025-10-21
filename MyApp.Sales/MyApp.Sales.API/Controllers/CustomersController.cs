@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
 using Microsoft.AspNetCore.Authorization;
+using MyApp.Shared.Domain.Caching;
 
 namespace MyApp.Sales.API.Controllers
 {
@@ -11,10 +12,14 @@ namespace MyApp.Sales.API.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _customerService;
+        private readonly ICacheService _cacheService;
+        private readonly ILogger<CustomersController> _logger;
 
-        public CustomersController(ICustomerService customerService)
+        public CustomersController(ICustomerService customerService, ICacheService cacheService, ILogger<CustomersController> logger)
         {
             _customerService = customerService;
+            _cacheService = cacheService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -25,8 +30,24 @@ namespace MyApp.Sales.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<CustomerDto>), 200)]
         public async Task<IActionResult> GetAll()
         {
-            var customers = await _customerService.ListCustomersAsync();
-            return Ok(customers);
+            try
+            {
+                var customers = await _cacheService.GetStateAsync<IEnumerable<CustomerDto>>("all_customers");
+                if (customers != null)
+                {
+                    return Ok(customers);
+                }
+
+                customers = await _customerService.ListCustomersAsync();
+                await _cacheService.SaveStateAsync("all_customers", customers);
+                return Ok(customers);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving all customers");
+                var customers = await _customerService.ListCustomersAsync();
+                return Ok(customers);
+            }
         }
 
         /// <summary>
@@ -38,10 +59,29 @@ namespace MyApp.Sales.API.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var customer = await _customerService.GetCustomerByIdAsync(id);
-            if (customer == null)
-                return NotFound(new { message = $"Customer with ID {id} not found." });
-            return Ok(customer);
+            try
+            {
+                string cacheKey = $"Customer-{id}";
+                var customer = await _cacheService.GetStateAsync<CustomerDto>(cacheKey);
+
+                if (customer != null)
+                {
+                    return Ok(customer);
+                }
+
+                customer = await _customerService.GetCustomerByIdAsync(id);
+                if (customer == null)
+                    return NotFound(new { message = $"Customer with ID {id} not found." });
+
+                await _cacheService.SaveStateAsync(cacheKey, customer);
+                return Ok(customer);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving customer {CustomerId}", id);
+                var customer = await _customerService.GetCustomerByIdAsync(id);
+                return customer == null ? NotFound(new { message = $"Customer with ID {id} not found." }) : Ok(customer);
+            }
         }
 
         /// <summary>
@@ -56,8 +96,17 @@ namespace MyApp.Sales.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var customer = await _customerService.CreateCustomerAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = customer.Id }, customer);
+            try
+            {
+                var customer = await _customerService.CreateCustomerAsync(dto);
+                await _cacheService.RemoveStateAsync("all_customers");
+                return CreatedAtAction(nameof(GetById), new { id = customer.Id }, customer);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating customer");
+                throw;
+            }
         }
 
         /// <summary>
@@ -76,10 +125,14 @@ namespace MyApp.Sales.API.Controllers
             try
             {
                 var customer = await _customerService.UpdateCustomerAsync(id, dto);
+                string cacheKey = $"Customer-{id}";
+                await _cacheService.RemoveStateAsync(cacheKey);
+                await _cacheService.RemoveStateAsync("all_customers");
                 return Ok(customer);
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogWarning("Error updating customer {CustomerId}: {Message}", id, ex.Message);
                 return NotFound(new { message = ex.Message });
             }
         }
@@ -96,10 +149,14 @@ namespace MyApp.Sales.API.Controllers
             try
             {
                 await _customerService.DeleteCustomerAsync(id);
+                string cacheKey = $"Customer-{id}";
+                await _cacheService.RemoveStateAsync(cacheKey);
+                await _cacheService.RemoveStateAsync("all_customers");
                 return NoContent();
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogWarning("Error deleting customer {CustomerId}: {Message}", id, ex.Message);
                 return NotFound(new { message = ex.Message });
             }
         }

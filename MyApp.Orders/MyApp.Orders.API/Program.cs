@@ -1,10 +1,9 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using MyApp.Orders.Infrastructure.Data;
-using MyApp.Shared.Infrastructure.Extensions;
-using System.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.EntityFrameworkCore;
+using MyApp.Orders.Infrastructure.Data;
+using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Infrastructure.Caching;
+using MyApp.Shared.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

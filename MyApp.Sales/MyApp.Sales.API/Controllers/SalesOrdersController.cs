@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
 using Microsoft.AspNetCore.Authorization;
+using MyApp.Shared.Domain.Caching;
 
 namespace MyApp.Sales.API.Controllers
 {
@@ -11,10 +12,14 @@ namespace MyApp.Sales.API.Controllers
     public class SalesOrdersController : ControllerBase
     {
         private readonly ISalesOrderService _salesOrderService;
+        private readonly ICacheService _cacheService;
+        private readonly ILogger<SalesOrdersController> _logger;
 
-        public SalesOrdersController(ISalesOrderService salesOrderService)
+        public SalesOrdersController(ISalesOrderService salesOrderService, ICacheService cacheService, ILogger<SalesOrdersController> logger)
         {
             _salesOrderService = salesOrderService;
+            _cacheService = cacheService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -25,8 +30,26 @@ namespace MyApp.Sales.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<SalesOrderDto>), 200)]
         public async Task<IActionResult> GetAll()
         {
-            var orders = await _salesOrderService.ListSalesOrdersAsync();
-            return Ok(orders);
+            try
+            {
+                var orders = await _cacheService.GetStateAsync<IEnumerable<SalesOrderDto>>("all_sales_orders");
+                if (orders != null)
+                {
+                    _logger.LogInformation("Retrieved all sales orders from cache");
+                    return Ok(orders);
+                }
+
+                orders = await _salesOrderService.ListSalesOrdersAsync();
+                await _cacheService.SaveStateAsync("all_sales_orders", orders);
+                _logger.LogInformation("Retrieved all sales orders from database and cached");
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving all sales orders");
+                var orders = await _salesOrderService.ListSalesOrdersAsync();
+                return Ok(orders);
+            }
         }
 
         /// <summary>
@@ -38,10 +61,34 @@ namespace MyApp.Sales.API.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var order = await _salesOrderService.GetSalesOrderByIdAsync(id);
-            if (order == null)
-                return NotFound(new { message = $"Order with ID {id} not found." });
-            return Ok(order);
+            try
+            {
+                string cacheKey = $"SalesOrder-{id}";
+                var order = await _cacheService.GetStateAsync<SalesOrderDto>(cacheKey);
+
+                if (order != null)
+                {
+                    _logger.LogInformation("Retrieved sales order {OrderId} from cache", id);
+                    return Ok(order);
+                }
+
+                order = await _salesOrderService.GetSalesOrderByIdAsync(id);
+                if (order == null)
+                {
+                    _logger.LogWarning("Sales order {OrderId} not found", id);
+                    return NotFound(new { message = $"Order with ID {id} not found." });
+                }
+
+                await _cacheService.SaveStateAsync(cacheKey, order);
+                _logger.LogInformation("Retrieved sales order {OrderId} from database and cached", id);
+                return Ok(order);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving sales order {OrderId}", id);
+                var order = await _salesOrderService.GetSalesOrderByIdAsync(id);
+                return order == null ? NotFound(new { message = $"Order with ID {id} not found." }) : Ok(order);
+            }
         }
 
         /// <summary>
@@ -59,10 +106,13 @@ namespace MyApp.Sales.API.Controllers
             try
             {
                 var order = await _salesOrderService.CreateSalesOrderAsync(dto);
+                await _cacheService.RemoveStateAsync("all_sales_orders");
+                _logger.LogInformation("Sales order created and cache invalidated");
                 return CreatedAtAction(nameof(GetById), new { id = order.Id }, order);
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogWarning("Error creating sales order: {Message}", ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -83,10 +133,15 @@ namespace MyApp.Sales.API.Controllers
             try
             {
                 var order = await _salesOrderService.UpdateSalesOrderAsync(id, dto);
+                string cacheKey = $"SalesOrder-{id}";
+                await _cacheService.RemoveStateAsync(cacheKey);
+                await _cacheService.RemoveStateAsync("all_sales_orders");
+                _logger.LogInformation("Sales order {OrderId} updated and cache invalidated", id);
                 return Ok(order);
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogWarning("Error updating sales order {OrderId}: {Message}", id, ex.Message);
                 return NotFound(new { message = ex.Message });
             }
         }
@@ -103,10 +158,15 @@ namespace MyApp.Sales.API.Controllers
             try
             {
                 await _salesOrderService.DeleteSalesOrderAsync(id);
+                string cacheKey = $"SalesOrder-{id}";
+                await _cacheService.RemoveStateAsync(cacheKey);
+                await _cacheService.RemoveStateAsync("all_sales_orders");
+                _logger.LogInformation("Sales order {OrderId} deleted and cache invalidated", id);
                 return NoContent();
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogWarning("Error deleting sales order {OrderId}: {Message}", id, ex.Message);
                 return NotFound(new { message = ex.Message });
             }
         }

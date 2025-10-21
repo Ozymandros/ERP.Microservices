@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
+﻿
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MyApp.Inventory.Infrastructure.Data;
+using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

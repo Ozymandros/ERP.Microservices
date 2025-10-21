@@ -1,7 +1,9 @@
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
+using MyApp.Shared.Domain.Caching;
 
 namespace MyApp.Auth.API.Controllers;
 
@@ -11,13 +13,15 @@ namespace MyApp.Auth.API.Controllers;
 [Produces("application/json")]
 public class RolesController : ControllerBase
 {
+    private readonly ICacheService _cacheService;
     private readonly IRoleService _roleService;
     private readonly ILogger<RolesController> _logger;
 
-    public RolesController(IRoleService roleService, ILogger<RolesController> logger)
+    public RolesController(IRoleService roleService, ILogger<RolesController> logger, ICacheService cacheService)
     {
         _roleService = roleService;
         _logger = logger;
+        _cacheService = cacheService;
     }
 
     /// <summary>
@@ -30,7 +34,15 @@ public class RolesController : ControllerBase
     {
         try
         {
-            var roles = await _roleService.GetAllRolesAsync();
+            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>("all_roles");
+            if (roles != null)
+            {
+                return Ok(roles);
+            }
+
+             roles = await _roleService.GetAllRolesAsync();
+            await _cacheService.SaveStateAsync("all_roles", roles);
+
             return Ok(roles);
         }
         catch (Exception ex)
@@ -51,19 +63,30 @@ public class RolesController : ControllerBase
     {
         try
         {
-            var role = await _roleService.GetRoleByIdAsync(id);
-            if (role == null)
+            string cacheKey = $"Role-{id}";
+            var role = await _cacheService.GetStateAsync<RoleDto>(cacheKey); // 1. Intentar obtenir de la cache
+
+            if (role is not null)
+            {
+                return Ok(role); // Retorna des de la cache
+            }
+
+            // 2. La dada NO és a la cache, obtenir de la DB
+            role = await _roleService.GetRoleByIdAsync(id);
+            if (role is null)
             {
                 _logger.LogWarning("Role not found: {RoleId}", id);
                 return NotFound(new { message = "Role not found" });
             }
+
+            await _cacheService.SaveStateAsync<RoleDto>(cacheKey, role);
 
             return Ok(role);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving role: {RoleId}", id);
-            return StatusCode(500, new { message = "An error occurred retrieving the role" });
+            return NotFound(new { message = "Role not found" });
         }
     }
 
@@ -116,6 +139,8 @@ public class RolesController : ControllerBase
                 return Conflict(new { message = "Role already exists" });
             }
 
+            await _cacheService.RemoveStateAsync("all_roles");
+
             _logger.LogInformation("Role created: {RoleName}", createRoleDto.Name);
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
@@ -148,6 +173,9 @@ public class RolesController : ControllerBase
                 return NotFound(new { message = "Role not found" });
             }
 
+            string cacheKey = $"Role-{id}";
+            await _cacheService.RemoveStateAsync(cacheKey);
+
             _logger.LogInformation("Role updated: {RoleId}", id);
             return NoContent();
         }
@@ -175,6 +203,10 @@ public class RolesController : ControllerBase
                 _logger.LogWarning("Failed to delete role: {RoleId}", id);
                 return NotFound(new { message = "Role not found" });
             }
+
+            string cacheKey = $"Role-{id}";
+            await _cacheService.RemoveStateAsync(cacheKey);
+            await _cacheService.RemoveStateAsync("all_roles");
 
             _logger.LogInformation("Role deleted: {RoleId}", id);
             return NoContent();
