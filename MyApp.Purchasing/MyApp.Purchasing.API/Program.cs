@@ -6,6 +6,7 @@ using MyApp.Purchasing.Infrastructure.Data;
 using MyApp.Purchasing.Infrastructure.Data.Repositories;
 using MyApp.Shared.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Caching.Distributed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,9 @@ builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
 
 builder.Services.AddScoped<IPermissionChecker, DaprPermissionChecker>();
+
+builder.AddRedisDistributedCache("cache");
+builder.Services.AddScoped<ICacheService, DistributedCacheWrapper>();
 
 // Add health checks
 builder.Services.AddCustomHealthChecks(connectionString);

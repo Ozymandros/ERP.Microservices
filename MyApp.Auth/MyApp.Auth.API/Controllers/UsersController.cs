@@ -11,13 +11,15 @@ namespace MyApp.Auth.API.Controllers;
 [Produces("application/json")]
 public class UsersController : ControllerBase
 {
+    private readonly ICacheService _cacheService;
     private readonly IUserService _userService;
     private readonly ILogger<UsersController> _logger;
 
-    public UsersController(IUserService userService, ILogger<UsersController> logger)
+    public UsersController(IUserService userService, ILogger<UsersController> logger, ICacheService cacheService)
     {
         _userService = userService;
         _logger = logger;
+        _cacheService = cacheService;
     }
 
     /// <summary>
@@ -77,12 +79,22 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var user = await _userService.GetUserByIdAsync(id);
-            if (user == null)
+            string cacheKey = $"User-{id}";
+            var user = await _cacheService.GetStateAsync<UserDto>(cacheKey); // 1. Intentar obtenir de la cache
+
+            if (user is not null)
             {
-                _logger.LogWarning("User not found: {UserId}", id);
-                return NotFound(new { message = "User not found" });
+                return Ok(user); // Retorna des de la cache
             }
+
+            // 2. La dada NO és a la cache, obtenir de la DB
+            user = await _userService.GetUserByIdAsync(id);
+            if (user is null)
+            {
+                return NotFound();
+            }
+
+            await _cacheService.SaveStateAsync<UserDto>(cacheKey, user);
 
             return Ok(user);
         }

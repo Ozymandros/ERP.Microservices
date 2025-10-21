@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.IdentityModel.Tokens;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.Services;
@@ -148,7 +149,8 @@ builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IPermissionChecker, DaprPermissionChecker>();
 
-// Add AutoMapper
+builder.AddRedisDistributedCache("cache");
+builder.Services.AddScoped<ICacheService, DistributedCacheWrapper>();
 
 // AutoMapper registration
 builder.Services.AddAutoMapper(

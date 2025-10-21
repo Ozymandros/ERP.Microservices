@@ -1,4 +1,6 @@
+using Dapr.Common;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Infrastructure.Data;
 using MyApp.Shared.Infrastructure.Extensions;
@@ -37,6 +39,9 @@ builder.Services.AddAutoMapper(
 builder.Services.AddScoped<MyApp.Sales.Application.Contracts.Services.ISalesOrderService, MyApp.Sales.Application.Services.SalesOrderService>();
 
 builder.Services.AddScoped<IPermissionChecker, DaprPermissionChecker>();
+
+builder.AddRedisDistributedCache("cache");
+builder.Services.AddScoped<ICacheService, DistributedCacheWrapper>();
 
 var app = builder.Build();
 

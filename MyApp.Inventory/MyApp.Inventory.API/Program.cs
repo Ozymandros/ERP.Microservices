@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.OpenApi.Models;
 using MyApp.Inventory.Infrastructure.Data;
 using MyApp.Shared.Infrastructure.Extensions;
@@ -68,6 +69,9 @@ builder.Services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IProdu
 builder.Services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IWarehouseService, MyApp.Inventory.Application.Services.WarehouseService>();
 
 builder.Services.AddScoped<IPermissionChecker, DaprPermissionChecker>();
+
+builder.AddRedisDistributedCache("cache");
+builder.Services.AddScoped<ICacheService, DistributedCacheWrapper>();
 
 var app = builder.Build();
 

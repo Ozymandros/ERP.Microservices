@@ -1,4 +1,5 @@
 using CommunityToolkit.Aspire.Hosting.Dapr;
+using StackExchange.Redis;
 
 public class AspireProjectBuilder
 {
@@ -18,7 +19,7 @@ public class AspireProjectBuilder
         _sqlServer = sqlServer;
     }
 
-    public IResourceBuilder<ProjectResource> AddWebProject<T>()
+    public IResourceBuilder<ProjectResource> AddWebProject<T>(IResourceBuilder<RedisResource>? redis = null)
         where T : IProjectMetadata, new()
     {
         // Extract service name from type name
@@ -57,7 +58,7 @@ public class AspireProjectBuilder
         // Configure project
         project = project
             .WithHttpEndpoint()//httpPort
-            //.WithHttpsEndpoint()
+                               //.WithHttpsEndpoint()
             .WithExternalHttpEndpoints()
             .WaitFor(database)
             .WithReference(database)
@@ -73,7 +74,14 @@ public class AspireProjectBuilder
             }).WithArgs("--enable-scheduler=false")
             .WithEnvironment("Jwt__SecretKey", _builder.Configuration["Jwt:SecretKey"])
             .WithEnvironment("Jwt__Issuer", _builder.Configuration["Jwt:Issuer"])
-            .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"]); ;
+            .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"]);
+
+        if (redis is not null)
+            project
+                //.WaitFor(store)
+                //.WithReference(store)
+                .WaitFor(redis)
+                .WithReference(redis);
 
         return project;
     }

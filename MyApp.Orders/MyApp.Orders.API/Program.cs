@@ -4,6 +4,7 @@ using MyApp.Orders.Infrastructure.Data;
 using MyApp.Shared.Infrastructure.Extensions;
 using System.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Caching.Distributed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,9 @@ builder.Services.AddAutoMapper(
 builder.Services.AddScoped<MyApp.Orders.Application.Contracts.IOrderService, MyApp.Orders.Application.Services.OrderService>();
 
 builder.Services.AddScoped<IPermissionChecker, DaprPermissionChecker>();
+
+builder.AddRedisDistributedCache("cache");
+builder.Services.AddScoped<ICacheService, DistributedCacheWrapper>();
 
 // Add health checks
 builder.Services.AddCustomHealthChecks(ordersDbConnectionString);
