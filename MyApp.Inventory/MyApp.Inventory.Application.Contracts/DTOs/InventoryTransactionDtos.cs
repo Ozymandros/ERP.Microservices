@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using MyApp.Inventory.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
 public class InventoryTransactionDto
 {
     public Guid Id { get; set; }
+
     public Guid ProductId { get; set; }
     public Guid WarehouseId { get; set; }
     public int QuantityChange { get; set; }

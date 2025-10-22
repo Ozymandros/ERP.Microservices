@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Domain.Entities;
@@ -123,5 +124,47 @@ public class RoleService : IRoleService
     {
         var users = await _userRepository.GetByRoleAsync(roleName);
         return _mapper.Map<IEnumerable<UserDto>>(users);
+    }
+
+    public async Task<bool> AddPermissionToRole(CreateRolePermissionDto createDto)
+    {
+        var role = await _roleManager.FindByIdAsync(createDto.RoleId.ToString());
+        if (role == null)
+        {
+            _logger.LogWarning("Role not found: {RoleId}", createDto.RoleId);
+            return false;
+        }
+
+        role.UpdatedAt = DateTime.UtcNow;
+        role.RolePermissions.Add(new RolePermission
+        {
+            RoleId = createDto.RoleId,
+            PermissionId = createDto.PermissionId
+        });
+
+        var result = await _roleManager.UpdateAsync(role);
+        if (!result.Succeeded)
+        {
+            _logger.LogWarning("Failed to update role: {RoleId}", createDto.RoleId);
+            return false;
+        }
+
+        return true;
+    }
+
+    public Task<bool> RemovePermissionFromRoleAsync(DeleteRolePermissionDto deleteDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<IEnumerable<PermissionDto>> GetPermissionsForRoleAsync(Guid roleId)
+    {
+        IEnumerable<Permission> permissions = await _roleRepository.GetPermissionsForRoleAsync(roleId);
+        return _mapper.Map<IEnumerable<PermissionDto>>(permissions);
     }
 }

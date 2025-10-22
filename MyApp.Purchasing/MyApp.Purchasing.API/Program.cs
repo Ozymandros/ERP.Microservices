@@ -29,6 +29,8 @@ var connectionString = builder.Configuration.GetConnectionString("PurchasingDb")
 builder.Services.AddDbContext<PurchasingDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddHttpContextAccessor();
+
 // Repository registration
 builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 builder.Services.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();

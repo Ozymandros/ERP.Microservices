@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Shared.Infrastructure.Data;
 
 namespace MyApp.Sales.Infrastructure.Data;
 
-public class SalesDbContext : DbContext
+public class SalesDbContext : AuditableDbContext
 {
     public SalesDbContext(DbContextOptions<SalesDbContext> options) : base(options)
     {
@@ -33,3 +34,5 @@ public class SalesDbContextFactory : IDesignTimeDbContextFactory<SalesDbContext>
         return new SalesDbContext(optionsBuilder.Options);
     }
 }
+
+

@@ -136,6 +136,8 @@ builder.Services
         options.UserInformationEndpoint = "https://api.github.com/user";
     });
 
+builder.Services.AddHttpContextAccessor();
+
 // Add repository registration
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
@@ -178,7 +180,7 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
 
-    dbContext.Database.Migrate();
+    await dbContext.Database.MigrateAsync();
 
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
     await RoleSeeder.SeedAsync(roleManager);

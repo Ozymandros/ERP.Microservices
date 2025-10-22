@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using MyApp.Inventory.Domain.Entities;
+using MyApp.Shared.Infrastructure.Data;
 
 namespace MyApp.Inventory.Infrastructure.Data;
 
-public class InventoryDbContext : DbContext
+public class InventoryDbContext : AuditableDbContext
 {
     public InventoryDbContext(DbContextOptions<InventoryDbContext> options) : base(options)
     {

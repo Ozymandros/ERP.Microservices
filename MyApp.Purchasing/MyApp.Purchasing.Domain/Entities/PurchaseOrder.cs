@@ -1,3 +1,5 @@
+using MyApp.Shared.Domain.Entities;
+
 namespace MyApp.Purchasing.Domain.Entities;
 
 public enum PurchaseOrderStatus
@@ -8,9 +10,8 @@ public enum PurchaseOrderStatus
     Cancelled
 }
 
-public class PurchaseOrder
+public class PurchaseOrder : AuditableEntity<Guid>
 {
-    public Guid Id { get; set; }
     public string OrderNumber { get; set; } = string.Empty;
     public Guid SupplierId { get; set; }
     public DateTime OrderDate { get; set; }

@@ -3,12 +3,12 @@ using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
 
-public class PermissionService : IPermissionService
+public class PermissionChecker
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IPermissionRepository _permissionRepository;
 
-    public PermissionService(UserManager<ApplicationUser> userManager, IPermissionRepository permissionRepository)
+    public PermissionChecker(UserManager<ApplicationUser> userManager, IPermissionRepository permissionRepository)
     {
         _userManager = userManager;
         _permissionRepository = permissionRepository;

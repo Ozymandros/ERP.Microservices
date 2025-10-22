@@ -1,8 +1,9 @@
+using MyApp.Shared.Domain.Entities;
+
 namespace MyApp.Purchasing.Domain.Entities;
 
-public class Supplier
+public class Supplier : AuditableEntity<Guid>
 {
-    public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string ContactName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;

@@ -11,4 +11,9 @@ public interface IRoleService
     Task<bool> UpdateRoleAsync(Guid roleId, CreateRoleDto updateRoleDto);
     Task<bool> DeleteRoleAsync(Guid roleId);
     Task<IEnumerable<UserDto>> GetUsersInRoleAsync(string roleName);
+    Task<bool> AddPermissionToRole(CreateRolePermissionDto createDto);
+    Task<bool> RemovePermissionFromRoleAsync(DeleteRolePermissionDto deleteDto);
+    Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId);
+
+    Task<IEnumerable<PermissionDto>> GetPermissionsForRoleAsync(Guid roleId);
 }

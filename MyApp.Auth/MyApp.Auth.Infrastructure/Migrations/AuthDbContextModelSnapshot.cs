@@ -138,8 +138,16 @@ namespace MyApp.Auth.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
@@ -151,6 +159,10 @@ namespace MyApp.Auth.Infrastructure.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -178,6 +190,11 @@ namespace MyApp.Auth.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -193,6 +210,9 @@ namespace MyApp.Auth.Infrastructure.Migrations
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsExternalLogin")
                         .HasColumnType("bit");
@@ -231,6 +251,10 @@ namespace MyApp.Auth.Infrastructure.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -288,11 +312,24 @@ namespace MyApp.Auth.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Module")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -338,8 +375,7 @@ namespace MyApp.Auth.Infrastructure.Migrations
 
                     b.HasIndex("PermissionId");
 
-                    b.HasIndex("UserId", "PermissionId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserPermissions");
                 });
@@ -415,7 +451,7 @@ namespace MyApp.Auth.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("MyApp.Auth.Domain.Entities.ApplicationRole", "Role")
-                        .WithMany()
+                        .WithMany("RolePermissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -447,6 +483,8 @@ namespace MyApp.Auth.Infrastructure.Migrations
             modelBuilder.Entity("MyApp.Auth.Domain.Entities.ApplicationRole", b =>
                 {
                     b.Navigation("RoleClaims");
+
+                    b.Navigation("RolePermissions");
 
                     b.Navigation("UserRoles");
                 });

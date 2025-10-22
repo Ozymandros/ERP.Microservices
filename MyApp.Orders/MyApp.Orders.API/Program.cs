@@ -23,6 +23,8 @@ var ordersDbConnectionString = builder.Configuration.GetConnectionString("orders
 builder.Services.AddDbContext<OrdersDbContext>(options =>
     options.UseSqlServer(ordersDbConnectionString));
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<MyApp.Orders.Domain.IOrderRepository, MyApp.Orders.Infrastructure.Repositories.OrderRepository>();
 builder.Services.AddScoped<MyApp.Orders.Domain.IOrderLineRepository, MyApp.Orders.Infrastructure.Repositories.OrderLineRepository>();
 

@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
+using MyApp.Shared.Domain.Entities;
 
 namespace MyApp.Sales.Domain.Entities
 {
-    public class Customer
+    public class Customer : AuditableEntity<Guid>
     {
-        public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;

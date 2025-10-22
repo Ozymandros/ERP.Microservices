@@ -1,8 +1,9 @@
+using MyApp.Shared.Domain.Entities;
+
 namespace MyApp.Inventory.Domain.Entities;
 
-public class Product
+public class Product : AuditableEntity<Guid>
 {
-    public Guid Id { get; set; }
     public string SKU { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;

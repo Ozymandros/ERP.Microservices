@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using MyApp.Orders.Domain.Entities;
+using MyApp.Shared.Infrastructure.Data;
 
 namespace MyApp.Orders.Infrastructure.Data;
 
-public class OrdersDbContext : DbContext
+public class OrdersDbContext : AuditableDbContext
 {
     public OrdersDbContext(DbContextOptions<OrdersDbContext> options) : base(options)
     {

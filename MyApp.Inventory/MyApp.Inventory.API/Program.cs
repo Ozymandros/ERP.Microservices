@@ -58,6 +58,8 @@ builder.Services.AddCustomHealthChecks(inventoryDbConnectionString ?? throw new 
 builder.Services.AddDbContext<InventoryDbContext>(options =>
     options.UseSqlServer(inventoryDbConnectionString));
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository, MyApp.Inventory.Infrastructure.Data.Repositories.InventoryTransactionRepository>();
 builder.Services.AddScoped<MyApp.Inventory.Domain.Repositories.IProductRepository, MyApp.Inventory.Infrastructure.Data.Repositories.ProductRepository>();
 builder.Services.AddScoped<MyApp.Inventory.Domain.Repositories.IWarehouseRepository, MyApp.Inventory.Infrastructure.Data.Repositories.WarehouseRepository>();

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MyApp.Shared.Domain.Entities;
 
-public class Permission
+public class Permission : AuditableEntity<Guid>
 {
-    public Guid Id { get; set; }
     public string Module { get; set; } = default!;
     public string Action { get; set; } = default!;
     public string? Description { get; set; }

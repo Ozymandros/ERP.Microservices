@@ -1,3 +1,5 @@
+using MyApp.Shared.Domain.Entities;
+
 namespace MyApp.Inventory.Domain.Entities;
 
 public enum TransactionType
@@ -7,9 +9,8 @@ public enum TransactionType
     Adjustment
 }
 
-public class InventoryTransaction
+public class InventoryTransaction : AuditableEntity<Guid>
 {
-    public Guid Id { get; set; }
     public Guid ProductId { get; set; }
     public Guid WarehouseId { get; set; }
     public int QuantityChange { get; set; }

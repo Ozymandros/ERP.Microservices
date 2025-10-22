@@ -34,4 +34,14 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
             .Where(r => r.UserRoles.Any(ur => ur.UserId == userId))
             .ToListAsync();
     }
+
+    public async Task<IEnumerable<Permission>> GetPermissionsForRoleAsync(Guid roleId)
+    {
+        var permissions = await _context.Roles
+            .Where(r => r.Id == roleId)
+            .SelectMany(r => r.RolePermissions.Select(rp => rp.Permission)) // Traverse through the join table to the Permission
+            .ToListAsync();
+
+        return permissions;
+    }
 }

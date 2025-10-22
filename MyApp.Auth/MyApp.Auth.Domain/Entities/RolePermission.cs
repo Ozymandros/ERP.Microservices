@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using MyApp.Auth.Domain.Entities;
+﻿using MyApp.Auth.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

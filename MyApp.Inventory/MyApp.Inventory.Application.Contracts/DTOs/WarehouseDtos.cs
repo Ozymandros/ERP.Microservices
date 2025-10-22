@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
+using MyApp.Shared.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
-public class WarehouseDto
+public class WarehouseDto : AuditableEntity<Guid>
 {
-    public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Location { get; set; } = string.Empty;
 }

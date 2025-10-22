@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
+using MyApp.Shared.Domain.Entities;
 
 namespace MyApp.Sales.Domain.Entities
 {
-    public class SalesOrder
+    public class SalesOrder : AuditableEntity<Guid>
     {
-        public Guid Id { get; set; }
         public string OrderNumber { get; set; } = string.Empty;
         public Guid CustomerId { get; set; }
         public DateTime OrderDate { get; set; }

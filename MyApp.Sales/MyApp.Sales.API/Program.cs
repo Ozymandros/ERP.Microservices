@@ -27,6 +27,8 @@ builder.Services.AddCustomHealthChecks(salesDbConnectionString ?? throw new Inva
 builder.Services.AddDbContext<SalesDbContext>(options =>
     options.UseSqlServer(salesDbConnectionString));
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<MyApp.Sales.Domain.ISalesOrderLineRepository, MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository>();
 builder.Services.AddScoped<MyApp.Sales.Domain.ISalesOrderRepository, MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderRepository>();
 builder.Services.AddScoped<MyApp.Sales.Domain.ICustomerRepository, MyApp.Sales.Infrastructure.Data.Repositories.CustomerRepository>();

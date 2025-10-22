@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using MyApp.Purchasing.Domain.Entities;
+using MyApp.Shared.Infrastructure.Data;
 
 namespace MyApp.Purchasing.Infrastructure.Data;
 
-public class PurchasingDbContext : DbContext
+public class PurchasingDbContext : AuditableDbContext
 {
     public PurchasingDbContext(DbContextOptions<PurchasingDbContext> options) : base(options)
     {

@@ -1,10 +1,9 @@
-using System;
+using MyApp.Shared.Domain.Entities;
 
 namespace MyApp.Sales.Domain.Entities
 {
-    public class SalesOrderLine
+    public class SalesOrderLine : AuditableEntity<Guid>
     {
-        public Guid Id { get; set; }
         public Guid SalesOrderId { get; set; }
         public Guid ProductId { get; set; }
         public int Quantity { get; set; }
