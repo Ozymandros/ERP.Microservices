@@ -18,9 +18,9 @@ var redis = builder.AddRedis("cache")
 
 // Afegir SQL Server com a contenidor
 var password = builder.AddParameter("password", secret: true);
-var sqlServer = builder.AddSqlServer("sqlserver", password, 1455);
-    //.WithLifetime(ContainerLifetime.Persistent) // reinicia periòdicament per a entorns de desenvolupament
-    //.WithDataVolume("sqlserver-data"); // volum amb nom → es manté entre arrencades
+var sqlServer = builder.AddSqlServer("sqlserver", password, 1455)
+    .WithLifetime(ContainerLifetime.Persistent) // reinicia periòdicament per a entorns de desenvolupament
+    .WithDataVolume("sqlserver-data"); // volum amb nom → es manté entre arrencades
 
 var usersDb = sqlServer.AddDatabase("UsersDB");
 //var notificationsDb = sqlServer.AddDatabase("NotificationsDB");
