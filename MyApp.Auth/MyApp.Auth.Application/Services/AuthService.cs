@@ -1,10 +1,11 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
 using MyApp.Auth.Infrastructure.Services;
+using System.Security.Claims;
 
 namespace MyApp.Auth.Application.Services;
 
@@ -157,7 +158,15 @@ public class AuthService : IAuthService
 
     private async Task<TokenResponseDto> GenerateTokenResponseAsync(ApplicationUser user)
     {
-        var accessToken = await _jwtTokenProvider.GenerateAccessTokenAsync(user);
+        // ⭐️ Pas 1: Recuperar Rols i Claims de l'usuari
+        var roles = await _userManager.GetRolesAsync(user);
+        var claims = await _userManager.GetClaimsAsync(user); // Crida per obtenir els claims
+
+        // ⭐️ Pas 2: Generar Access Token
+        // Assumim que el teu provider accepta la llista de rols i claims per incloure'ls al JWT.
+        var accessToken = await _jwtTokenProvider.GenerateAccessTokenAsync(user, roles, claims);
+
+        // Generar Refresh Token
         var refreshToken = _jwtTokenProvider.GenerateRefreshToken();
 
         var refreshTokenEntity = new RefreshToken
@@ -169,8 +178,7 @@ public class AuthService : IAuthService
 
         await _refreshTokenRepository.CreateAsync(refreshTokenEntity);
 
-        var roles = await _userManager.GetRolesAsync(user);
-
+        // ⭐️ Pas 3: Retornar DTO amb rols inclosos
         return new TokenResponseDto
         {
             AccessToken = accessToken,
@@ -185,7 +193,9 @@ public class AuthService : IAuthService
                 LastName = user.LastName,
                 EmailConfirmed = user.EmailConfirmed,
                 IsExternalLogin = user.IsExternalLogin,
-                ExternalProvider = user.ExternalProvider
+                ExternalProvider = user.ExternalProvider,
+                //TODO: Roles = roles.ToList() // Afegir els rols a l'objecte de sortida
+                                       // Si cal, també podríem afegir els Claims al DTO.
             }
         };
     }

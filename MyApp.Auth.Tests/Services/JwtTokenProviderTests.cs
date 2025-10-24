@@ -50,7 +50,7 @@ public class JwtTokenProviderTests
         };
 
         // Act
-        var token = await _tokenProvider.GenerateAccessTokenAsync(user);
+        var token = await _tokenProvider.GenerateAccessTokenAsync(user, null, null);
 
         // Assert
         Assert.NotNull(token);

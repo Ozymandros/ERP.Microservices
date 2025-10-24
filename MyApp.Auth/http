@@ -1,0 +1,47 @@
+### Test: CheckPermission_WithValidCredentials_ReturnsPermissionStatus
+
+# 1. Variables d'Entorn
+# Assegura't d'establir la teva URL i el teu token d'autenticació
+@baseUrl = https://localhost:7001  # Ajusta aquesta URL a la teva configuració
+@apiPath = /api/permissions
+@authToken = <EL_TEU_TOKEN_D'ACCÉS_AQUÍ> # Cal un token JWT vàlid
+
+# 2. Variables de Prova
+# Els valors per als paràmetres 'module' i 'action'
+@testModule = sales
+@testAction = create_customer
+
+# 3. Sol·licitud GET
+# L'endpoint és "check", i els paràmetres es passen com a query string (?module=...&action=...)
+GET {{baseUrl}}{{apiPath}}/check?module={{testModule}}&action={{testAction}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+### Espera:
+# - Codi de resposta: 200 OK (Si el token és vàlid)
+# - Cos de la resposta: true o false (boolean)
+
+# Exemple de prova sense permís o amb un mòdul/acció que no existeix
+#
+### Test: CheckPermission_NoAccess_ReturnsFalse
+
+@testModule2 = accounting
+@testAction2 = view_reports
+
+GET {{baseUrl}}{{apiPath}}/check?module={{testModule2}}&action={{testAction2}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+### Espera:
+# - Codi de resposta: 200 OK
+# - Cos de la resposta: false
+
+# Exemple de prova sense token d'autenticació (hauria de retornar 401 Unauthorized)
+#
+### Test: CheckPermission_NoAuth_Returns401
+
+GET {{baseUrl}}{{apiPath}}/check?module=test&action=test
+Accept: application/json
+
+### Espera:
+# - Codi de resposta: 401 Unauthorized

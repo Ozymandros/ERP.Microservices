@@ -1,5 +1,4 @@
-﻿using Aspire.Hosting.Yarp.Transforms;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
@@ -28,23 +27,25 @@ var usersDb = sqlServer.AddDatabase("UsersDB");
 // Create builder with automatic port management
 var projectBuilder = builder.CreateProjectBuilder(sqlServer);
 
+var origin = builder.Configuration["Parameters:FrontendOrigin"];
+
 // Add projects - ports auto-increment
-var authService = projectBuilder.AddWebProject<Projects.MyApp_Auth_API>(redis);
+var authService = projectBuilder.AddWebProject<Projects.MyApp_Auth_API>(redis, origin);
 // Creates: BillingDB, billing-service, ports 5000, 3500, 45000, 9090
 
-var billingService = projectBuilder.AddWebProject<Projects.MyApp_Billing_API>(redis);
+var billingService = projectBuilder.AddWebProject<Projects.MyApp_Billing_API>(redis, origin);
 // Creates: BillingDB, billing-service, ports 5001, 3501, 45001, 9091
 
-var inventoryService = projectBuilder.AddWebProject<Projects.MyApp_Inventory_API>(redis);
+var inventoryService = projectBuilder.AddWebProject<Projects.MyApp_Inventory_API>(redis, origin);
 // Creates: InventoryDB, inventory-service, ports 5002, 3502, 45002, 9092
 
-var ordersService = projectBuilder.AddWebProject<Projects.MyApp_Orders_API>(redis);
+var ordersService = projectBuilder.AddWebProject<Projects.MyApp_Orders_API>(redis, origin);
 // Creates: OrderDB, order-service, ports 5003, 3503, 45003, 9093
 
-var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_API>(redis);
+var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_API>(redis, origin);
 // Creates: OrderDB, order-service, ports 5004, 3504, 45004, 9094
 
-var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis);
+var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin);
 // Creates: OrderDB, order-service, ports 5005, 3505, 45005, 9095
 
 // Configuració del Reverse Proxy (YARP)
@@ -59,21 +60,23 @@ var gateway = builder.AddYarp("gateway")
                      .WithConfiguration(yarp =>
                      {
                          // Configure routes programmatically
-                         yarp.AddRoute("/inventory/{**catch-all}", inventoryService)
-                             .WithTransformPathRemovePrefix("/inventory");
-                         yarp.AddRoute("/sales/{**catch-all}", salesService)
-                             .WithTransformPathRemovePrefix("/sales");
-                         yarp.AddRoute("/billing/{**catch-all}", billingService)
-                             .WithTransformPathRemovePrefix("/billing");
-                         yarp.AddRoute("/orders/{**catch-all}", ordersService)
-                             .WithTransformPathRemovePrefix("/orders");
-                         yarp.AddRoute("/purchasing/{**catch-all}", purchasingService)
-                             .WithTransformPathRemovePrefix("/purchasing");
-                         yarp.AddRoute("/auth/{**catch-all}", authService)
-                             .WithTransformPathRemovePrefix("/auth");
+                         yarp.AddRoute("/api/auth/{**catch-all}", authService);
+                         yarp.AddRoute("/api/permissions/{**catch-all}", authService);
+                         yarp.AddRoute("/api/users/{**catch-all}", authService);
+                         yarp.AddRoute("/api/roles/{**catch-all}", authService);
+                         yarp.AddRoute("/api/billing/{**catch-all}", billingService);
+                         yarp.AddRoute("/api/inventory/{**catch-all}", inventoryService);
+                         yarp.AddRoute("/api/orders/{**catch-all}", ordersService);
+                         yarp.AddRoute("/api/purchasing/{**catch-all}", purchasingService);
+                         yarp.AddRoute("/api/sales/{**catch-all}", salesService);
                          //yarp.AddRoute("/notification/{**catch-all}", notificationService)
                          //    .WithTransformPathRemovePrefix("/notification");
                      });
+
+//TODO (o no):
+//var webClient = builder.AddNpmApp("client", "../../erp-frontend", "dev")
+//    .WithEnvironment("VITE_API", gateway.GetEndpoint("http"))
+//    .WithExternalHttpEndpoints();
 
 try
 {

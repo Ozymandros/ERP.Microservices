@@ -42,6 +42,19 @@ builder.Services.AddScoped<ICacheService, DistributedCacheWrapper>();
 // Add health checks
 builder.Services.AddCustomHealthChecks(ordersDbConnectionString);
 
+var origins = builder.Configuration["FRONTEND_ORIGIN"]?.Split(';') ?? ["http://localhost:3000"];
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(origins)
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 // Afegeix un bloc per a l'aplicaci� autom�tica de les migracions
@@ -63,6 +76,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
+app.UseCors("AllowFrontend");
 
 // Add authentication and authorization middleware
 app.UseAuthentication();

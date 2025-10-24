@@ -180,8 +180,8 @@ public class UserRepositoryTests
         var user3 = CreateTestUser("user@example.com", "regularuser");
 
         _context.UserRoles.AddRange(
-            new IdentityUserRole<Guid> { UserId = user1.Id, RoleId = role.Id },
-            new IdentityUserRole<Guid> { UserId = user2.Id, RoleId = role.Id }
+            new ApplicationUserRole{ UserId = user1.Id, RoleId = role.Id },
+            new ApplicationUserRole { UserId = user2.Id, RoleId = role.Id }
         );
         _context.SaveChanges();
 
@@ -328,7 +328,7 @@ public class UserRepositoryTests
 
         // Act
         await _repository.DeleteAsync(user);
-        var result = _context.Users.Find(user);
+        var result = _context.Users.Find(user.Id);
 
         // Assert
         Assert.Null(result);

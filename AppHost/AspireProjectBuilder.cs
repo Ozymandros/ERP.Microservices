@@ -19,7 +19,7 @@ public class AspireProjectBuilder
         _sqlServer = sqlServer;
     }
 
-    public IResourceBuilder<ProjectResource> AddWebProject<T>(IResourceBuilder<RedisResource>? redis = null)
+    public IResourceBuilder<ProjectResource> AddWebProject<T>(IResourceBuilder<RedisResource>? redis = null, string? origin = null)
         where T : IProjectMetadata, new()
     {
         // Extract service name from type name
@@ -74,7 +74,8 @@ public class AspireProjectBuilder
             }).WithArgs("--enable-scheduler=false")
             .WithEnvironment("Jwt__SecretKey", _builder.Configuration["Jwt:SecretKey"])
             .WithEnvironment("Jwt__Issuer", _builder.Configuration["Jwt:Issuer"])
-            .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"]);
+            .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"])
+            .WithEnvironment("FRONTEND_ORIGIN", origin);
 
         if (redis is not null)
             project

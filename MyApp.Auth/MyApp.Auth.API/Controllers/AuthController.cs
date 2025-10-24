@@ -82,6 +82,15 @@ public class AuthController : ControllerBase
         }
     }
 
+    [HttpOptions("refresh")]
+    [AllowAnonymous] 
+    public IActionResult HandleRefreshOptions()
+    {
+        // Retornem un 204 No Content. 
+        // El middleware CORS ara tindrà l'oportunitat d'afegir les capçaleres abans de finalitzar la resposta.
+        return NoContent();
+    }
+
     /// <summary>
     /// Refresh access token using refresh token
     /// </summary>

@@ -1,12 +1,65 @@
-using System.Net;
-using System.Net.Http.Json;
-using Xunit;
 using Aspire.Hosting;
+using System.Net.Http.Json;
 
 namespace MyApp.Tests.Integration;
 
-public class SalesServiceTests
+public class SalesServiceTests : IAsyncLifetime
 {
+    private DistributedApplication? _app;
+    private HttpClient? _client;
+
+    public async Task InitializeAsync()
+    {
+        _app = await CreateAndStartAppAsync();
+        _client = _app.CreateHttpClient("sales-service");
+
+        // Wait for all services to be healthy
+        await WaitForHealthyServicesAsync();
+    }
+
+    private async Task WaitForHealthyServicesAsync()
+    {
+        var services = new[] { "auth-service", "sales-service" };
+
+        foreach (var service in services)
+        {
+            var client = _app!.CreateHttpClient(service);
+            await WaitForServiceHealthyAsync(client, service);
+        }
+    }
+
+    private async Task WaitForServiceHealthyAsync(HttpClient client, string serviceName, int maxRetries = 30)
+    {
+        for (int i = 0; i < maxRetries; i++)
+        {
+            try
+            {
+                var response = await client.GetAsync("/health");
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"{serviceName} is healthy");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{serviceName} not ready yet (attempt {i + 1}): {ex.Message}");
+            }
+
+            await Task.Delay(2000);
+        }
+
+        throw new TimeoutException($"Service {serviceName} did not become healthy in time");
+    }
+
+    public async Task DisposeAsync()
+    {
+        if (_app != null)
+        {
+            await _app.StopAsync();
+            await _app.DisposeAsync();
+        }
+    }
     private async Task<DistributedApplication> CreateAndStartAppAsync()
     {
         var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
@@ -24,7 +77,7 @@ public class SalesServiceTests
     {
         var credentials = new
         {
-            Email = "admin@test.com",
+            Email = "admin@myapp.local",
             Password = "Admin123!"
         };
 
@@ -41,7 +94,7 @@ public class SalesServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("sales-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
@@ -64,14 +117,14 @@ public class SalesServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("sales-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
         {
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
-        
+
         var order = new
         {
             CustomerId = Guid.NewGuid(),
@@ -105,7 +158,7 @@ public class SalesServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("sales-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
@@ -128,14 +181,14 @@ public class SalesServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("sales-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
         {
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
-        
+
         var customer = new
         {
             Name = "Test Customer",
@@ -152,7 +205,7 @@ public class SalesServiceTests
         };
 
         // Act
-        var response = await client.PostAsJsonAsync("/sales/api/customers", customer);
+        var response = await client.PostAsJsonAsync("/sales/api/sales/customers", customer);
         var createdCustomer = await response.Content.ReadFromJsonAsync<CustomerResponse>();
 
         // Assert
