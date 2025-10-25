@@ -27,7 +27,6 @@
     <ProjectReference Include="..\MyApp.Sales\MyApp.Sales.API\MyApp.Sales.API.csproj" />
     <ProjectReference Include="..\MyApp.Billing\MyApp.Billing.API\MyApp.Billing.API.csproj" />
     <ProjectReference Include="..\MyApp.Inventory\MyApp.Inventory.API\MyApp.Inventory.API.csproj" />
-    <ProjectReference Include="..\MyApp.Notification\MyApp.Notification.API\MyApp.Notification.API.csproj" />
     <ProjectReference Include="..\MyApp.Orders\MyApp.Orders.API\MyApp.Orders.API.csproj" />
     <ProjectReference Include="..\MyApp.Purchasing\MyApp.Purchasing.API\MyApp.Purchasing.API.csproj" />
     <ProjectReference Include="..\ErpApiGateway\ErpApiGateway.csproj" />

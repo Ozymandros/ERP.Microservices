@@ -81,8 +81,16 @@ public class UserService : IUserService
 
     public async Task<UserDto?> GetUserByIdAsync(Guid userId)
     {
-        var user = await _userManager.FindByIdAsync(userId.ToString());
-        return user == null ? null : _mapper.Map<UserDto>(user);
+        try
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            return user == null ? null : _mapper.Map<UserDto>(user);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting user by id {UserId}", userId);
+            return null;
+        }
     }
 
     public async Task<UserDto?> GetUserByEmailAsync(string email)
@@ -93,8 +101,16 @@ public class UserService : IUserService
 
     public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
     {
-        var users = await _userRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<UserDto>>(users);
+        try
+        {
+            var users = await _userRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<UserDto>>(users);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting all users");
+            return Enumerable.Empty<UserDto>();
+        }
     }
 
     public async Task<bool> UpdateUserAsync(Guid userId, UpdateUserDto updateUserDto)
