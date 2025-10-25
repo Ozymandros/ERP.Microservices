@@ -137,7 +137,7 @@ public class RoleServiceTests : BaseServiceTest
 
         // Assert
         result.Should().BeNull();
-                MockMapper.Verify(x => x.Map<RoleDto>(It.IsAny<ApplicationRole>()), Times.Never);
+        MockMapper.Verify(x => x.Map<RoleDto>(It.IsAny<ApplicationRole>()), Times.Never);
     }
 
     #endregion
