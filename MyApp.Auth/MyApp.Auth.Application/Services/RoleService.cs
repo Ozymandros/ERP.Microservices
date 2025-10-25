@@ -48,8 +48,16 @@ public class RoleService : IRoleService
 
     public async Task<IEnumerable<RoleDto>> GetAllRolesAsync()
     {
-        var roles = await _roleRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<RoleDto>>(roles);
+        try
+        {
+            var roles = await _roleRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<RoleDto>>(roles);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting all roles");
+            return Enumerable.Empty<RoleDto>();
+        }
     }
 
     public async Task<RoleDto?> CreateRoleAsync(CreateRoleDto createRoleDto)
@@ -164,7 +172,15 @@ public class RoleService : IRoleService
 
     public async Task<IEnumerable<PermissionDto>> GetPermissionsForRoleAsync(Guid roleId)
     {
-        IEnumerable<Permission> permissions = await _roleRepository.GetPermissionsForRoleAsync(roleId);
-        return _mapper.Map<IEnumerable<PermissionDto>>(permissions);
+        try
+        {
+            IEnumerable<Permission> permissions = await _roleRepository.GetPermissionsForRoleAsync(roleId);
+            return _mapper.Map<IEnumerable<PermissionDto>>(permissions);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting permissions for role {RoleId}", roleId);
+            return Enumerable.Empty<PermissionDto>();
+        }
     }
 }

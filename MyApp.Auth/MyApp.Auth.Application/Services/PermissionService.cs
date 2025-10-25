@@ -91,9 +91,17 @@ public class PermissionService : IPermissionService
 
     public async Task<PermissionDto?> GetPermissionByModuleActionAsync(string module, string action)
     {
-        var entities = await _permissionRepository.GetByUserName("", module, action); // Not ideal, but repository offers specific methods
-        var match = entities?.FirstOrDefault(e => e.Module == module && e.Action == action);
-        return match == null ? null : _mapper.Map<PermissionDto>(match);
+        try
+        {
+            var entities = await _permissionRepository.GetByUserName("", module, action); // Not ideal, but repository offers specific methods
+            var match = entities?.FirstOrDefault(e => e.Module == module && e.Action == action);
+            return match == null ? null : _mapper.Map<PermissionDto>(match);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting permission by module {Module} and action {Action}", module, action);
+            return null;
+        }
     }
 
     public async Task<PermissionDto?> CreatePermissionAsync(MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto createPermissionDto)
