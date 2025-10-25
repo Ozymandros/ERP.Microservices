@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyApp.Auth\MyApp.Auth.Domain\MyApp.Auth.Domain.csproj" />
-    <ProjectReference Include="..\MyApp.Auth\MyApp.Auth.Infrastructure\MyApp.Auth.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\MyApp.Auth.Domain\MyApp.Auth.Domain.csproj" />
+    <ProjectReference Include="..\..\MyApp.Auth.Infrastructure\MyApp.Auth.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
