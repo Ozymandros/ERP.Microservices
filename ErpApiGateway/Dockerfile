@@ -1,30 +1,36 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
 
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-USER $APP_UID
+# Copy solution file
+COPY ["ERP.Microservices.sln", "./"]
+
+# Copy Gateway project
+COPY ["ErpApiGateway/ErpApiGateway.csproj", "ErpApiGateway/"]
+
+# Restore dependencies
+RUN dotnet restore "ErpApiGateway/ErpApiGateway.csproj"
+
+# Copy all source files
+COPY . .
+
+# Build the project
+WORKDIR "/src/ErpApiGateway"
+RUN dotnet build "ErpApiGateway.csproj" -c Release -o /app/build
+
+# Publish stage
+FROM build AS publish
+RUN dotnet publish "ErpApiGateway.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
+# Create non-root user
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+RUN chown -R appuser:appuser /app
+USER appuser
 
-# This stage is used to build the service project
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["ErpApiGateway/ErpApiGateway.csproj", "ErpApiGateway/"]
-RUN dotnet restore "./ErpApiGateway/ErpApiGateway.csproj"
-COPY . .
-WORKDIR "/src/ErpApiGateway"
-RUN dotnet build "./ErpApiGateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
-# This stage is used to publish the service project to be copied to the final stage
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./ErpApiGateway.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM base AS final
-WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ErpApiGateway.dll"]

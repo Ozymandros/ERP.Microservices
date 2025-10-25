@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: erp-microservices
+metadata:
+  template: erp-microservices@0.0.1-beta
+
+# Infrastructure configuration
+infra:
+  provider: bicep
+  path: infra
+  module: main
+
+# Service definitions
+services:
+  # YARP Gateway - External Ingress
+  gateway:
+    project: ./ErpApiGateway
+    language: dotnet
+    host: containerapp
+    docker:
+      path: ./Dockerfile
+      context: .
+    
+  # Auth Service
+  auth-service:
+    project: ./MyApp.Auth/MyApp.Auth.API
+    language: dotnet
+    host: containerapp
+    
+  # Billing Service  
+  billing-service:
+    project: ./MyApp.Billing/MyApp.Billing.API
+    language: dotnet
+    host: containerapp
+    
+  # Inventory Service
+  inventory-service:
+    project: ./MyApp.Inventory/MyApp.Inventory.API
+    language: dotnet
+    host: containerapp
+    
+  # Orders Service
+  orders-service:
+    project: ./MyApp.Orders/MyApp.Orders.API
+    language: dotnet
+    host: containerapp
+    
+  # Purchasing Service
+  purchasing-service:
+    project: ./MyApp.Purchasing/MyApp.Purchasing.API
+    language: dotnet
+    host: containerapp
+    
+  # Sales Service
+  sales-service:
+    project: ./MyApp.Sales/MyApp.Sales.API
+    language: dotnet
+    host: containerapp
