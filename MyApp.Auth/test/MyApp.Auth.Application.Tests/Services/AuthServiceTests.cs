@@ -387,7 +387,7 @@ public class AuthServiceTests : BaseServiceTest
     public async Task LogoutAsync_WithRepositoryException_ShouldLogError()
     {
         // Arrange
-        var refreshToken = Guid.NewGuid();;
+        var refreshToken = Guid.NewGuid();
         var exception = new Exception("Database error");
 
         _mockRefreshTokenRepository
