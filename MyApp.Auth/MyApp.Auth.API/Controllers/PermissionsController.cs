@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Shared.Domain.Caching;
+using System.Security.Claims;
 
 namespace MyApp.Auth.API.Controllers;
 
@@ -140,8 +141,10 @@ public class PermissionsController : ControllerBase
     [HttpGet("check")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<bool>> CheckPermission(string? username, string module, string action)
+    public async Task<ActionResult<bool>> CheckPermission(string module, string action)
     {
+        var user = this.HttpContext.User;
+        var username = user.Identity?.Name;
         try
         {
             var hasPermission = await _permissionService.HasPermissionAsync(username, module, action);

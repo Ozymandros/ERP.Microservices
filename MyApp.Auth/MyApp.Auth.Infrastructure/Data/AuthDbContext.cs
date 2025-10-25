@@ -19,6 +19,7 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
 
     public override DbSet<ApplicationUser> Users { get; set; }
     public override DbSet<ApplicationRole> Roles { get; set; }
+    public override DbSet<IdentityUserRole<Guid>> UserRoles { get; set; }
     public DbSet<UserPermission> UserPermissions { get; set; }
     public DbSet<RolePermission> RolePermissions { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
@@ -106,6 +107,28 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
 
             // Each Role can have many entries in the RolePermission join table
             b.HasMany(e => e.RolePermissions).WithOne(e => e.Role).HasForeignKey(uc => uc.RoleId).IsRequired();
+        });
+
+        builder.Entity<ApplicationUserRole>(b =>
+        {
+            // Primary key
+            //b.HasKey(rp => new { rp.RoleId, rp.UserId });
+            //b.HasKey(r => r.Id);
+
+            // Maps to the AspNetRoles table
+            b.ToTable("AspNetUserRoles");
+
+            //b.HasIndex(rp => new { rp.RoleId, rp.UserId }).IsUnique();
+
+            b.HasOne(rp => rp.Role)
+              .WithMany(r => r.UserRoles)
+              .HasForeignKey(rp => rp.RoleId)
+              .IsRequired();
+
+            b.HasOne(rp => rp.User)
+              .WithMany(r => r.UserRoles)
+              .HasForeignKey(rp => rp.UserId)
+              .IsRequired();
         });
 
         builder.Entity<RolePermission>(b =>

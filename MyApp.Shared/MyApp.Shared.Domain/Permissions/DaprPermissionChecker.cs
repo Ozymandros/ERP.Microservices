@@ -28,13 +28,8 @@ public class DaprPermissionChecker : IPermissionChecker
         return result;
     }
 
-    public async Task<bool> HasPermissionAsync(string? username, string module, string action)
+    public async Task<bool> HasPermissionAsync(string module, string action)
     {
-        if (string.IsNullOrEmpty(username))
-        {
-            throw new ArgumentException($"'{nameof(username)}' cannot be null or empty.", nameof(username));
-        }
-
         if (string.IsNullOrEmpty(module))
         {
             throw new ArgumentException($"'{nameof(module)}' cannot be null or empty.", nameof(module));
@@ -47,7 +42,6 @@ public class DaprPermissionChecker : IPermissionChecker
 
         var query = new Dictionary<string, string>
         {
-            ["username"] = username,
             ["module"] = module,
             ["action"] = action
         };
@@ -58,12 +52,31 @@ public class DaprPermissionChecker : IPermissionChecker
         // 2. Construeix la URL completa (mètode + query string)
         var fullMethod = $"permissions/check?{queryString}";
 
-        // 3. Invoca Dapr SENSE cos de petició
-        var result = await _daprClient.InvokeMethodAsync<bool>(
-            HttpMethod.Get,
-            "auth-service", // Nom del servei registrat a Dapr
-            fullMethod // URL COMPLETA amb el query string
-        );
+        try
+        {
+            // 3. Invoca Dapr SENSE cos de petició
+            var result = await _daprClient.InvokeMethodAsync<bool>(
+                HttpMethod.Get,
+                "auth-service", // Nom del servei registrat a Dapr
+                fullMethod // URL COMPLETA amb el query string
+            );
+            return result;
+        }// Add better error handling and logging
+        catch (Dapr.Client.InvocationException ex)
+        {
+            //_logger.LogError(ex,
+            //    "Dapr invocation failed when checking permission for {Username}. " +
+            //    "Target: auth-service -> permissions/check?module={Module}&action={Action}",
+            //    username, module, action);
+
+            // Log inner exception for more details
+            if (ex.InnerException != null)
+            {
+                //_logger.LogError(ex.InnerException, "Inner exception details");
+            }
+
+            return false; // or throw based on your error handling strategy
+        }
         //var result = await _daprClient.InvokeMethodAsync<Dictionary<string, string>, bool>(
         //    HttpMethod.Get,
         //    "auth-service", // Nom del servei registrat a Dapr
@@ -71,6 +84,6 @@ public class DaprPermissionChecker : IPermissionChecker
         //    query
         //);
 
-        return result;
+        return false;
     }
 }

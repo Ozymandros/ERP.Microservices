@@ -1,0 +1,38 @@
+### Test: CreateCustomer_WithValidData_ReturnsCreatedStatusCode
+
+# Define una variable per a l'adre�a base del teu gateway
+# Has d'ajustar el port o l'URL si �s diferent a l'entorn de prova
+@gatewayUrl = http://localhost:5000
+
+# Definir una variable per al token d'autoritzaci� (simulat)
+# En un cas real, hauries d'obtenir-lo d'un endpoint d'autenticaci�
+# Aqu� s'usa un valor de marcador de posici�.
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjEyMzMzMTQsImlzcyI6Ik15QXBwLkF1dGgiLCJhdWQiOiJNeUFwcC5BbGwifQ.0ejuM0YoR0s9bAqdKVQEDdfRlrKZQVO8vnGGv8hslE0
+
+# Crea una nova adre�a de correu electr�nic �nica per a la prova
+# El client HTTP pot generar GUIDs o timestamps si la teva eina ho suporta
+# Si no, utilitza una adre�a diferent per a cada execuci� manual.
+@randomGuid = {{ $guid }}
+@customerEmail = test{{randomGuid}}@example.com
+
+POST {{gatewayUrl}}/api/sales/customers
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "Name": "Test Customer via HTTP File",
+    "Email": "{{customerEmail}}",
+    "Phone": "+1234567890",
+    "Address": {
+        "Street": "123 Test St",
+        "City": "Test City",
+        "State": "TS",
+        "Country": "Test Country",
+        "PostalCode": "12345"
+    }
+}
+
+### Espera: Codi de resposta HTTP 201 Created
+# L'eina de client HTTP valida que la resposta sigui correcta.
+# A l'eina, generalment, comprovar�s el cos de la resposta
+# per assegurar-te que l'ID es va generar (similar a l'Assert.NotNull(createdCustomer?.Id) del test).

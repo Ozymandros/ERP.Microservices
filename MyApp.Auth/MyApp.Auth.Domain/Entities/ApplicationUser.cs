@@ -21,7 +21,7 @@ public class ApplicationUser : IdentityUser<Guid>, IAuditableEntity<Guid>
 
     // Navigation properties
     public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
-    public virtual ICollection<IdentityUserRole<Guid>> UserRoles { get; set; } = new List<IdentityUserRole<Guid>>();
+    public virtual ICollection<ApplicationUserRole> UserRoles { get; set; } = new List<ApplicationUserRole>();
     public virtual ICollection<IdentityUserClaim<Guid>> UserClaims { get; set; } = new List<IdentityUserClaim<Guid>>();
     public virtual ICollection<IdentityUserLogin<Guid>> UserLogins { get; set; } = new List<IdentityUserLogin<Guid>>();
 }

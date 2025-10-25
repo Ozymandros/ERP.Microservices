@@ -182,8 +182,8 @@ public class RoleRepositoryTests
         var user = CreateTestUser();
 
         _context.UserRoles.AddRange(
-            new IdentityUserRole<Guid> { UserId = user.Id, RoleId = adminRole.Id },
-            new IdentityUserRole<Guid> { UserId = user.Id, RoleId = managerRole.Id }
+            new ApplicationUserRole { UserId = user.Id, RoleId = adminRole.Id },
+            new ApplicationUserRole { UserId = user.Id, RoleId = managerRole.Id }
         );
         _context.SaveChanges();
 
@@ -232,7 +232,7 @@ public class RoleRepositoryTests
         var adminRole = CreateTestRole("Admin");
         var user = CreateTestUser();
 
-        _context.UserRoles.Add(new IdentityUserRole<Guid> { UserId = user.Id, RoleId = adminRole.Id });
+        _context.UserRoles.Add(new ApplicationUserRole { UserId = user.Id, RoleId = adminRole.Id });
 
         var claim = new IdentityRoleClaim<Guid>
         {
@@ -263,8 +263,8 @@ public class RoleRepositoryTests
         var user2 = CreateTestUser("user2");
 
         _context.UserRoles.AddRange(
-            new IdentityUserRole<Guid> { UserId = user1.Id, RoleId = adminRole.Id },
-            new IdentityUserRole<Guid> { UserId = user2.Id, RoleId = userRole.Id }
+            new ApplicationUserRole { UserId = user1.Id, RoleId = adminRole.Id },
+            new ApplicationUserRole { UserId = user2.Id, RoleId = userRole.Id }
         );
         _context.SaveChanges();
 

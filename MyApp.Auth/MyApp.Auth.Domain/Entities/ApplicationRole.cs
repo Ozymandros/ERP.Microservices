@@ -28,7 +28,7 @@ public class ApplicationRole : IdentityRole<Guid>, IAuditableEntity<Guid>
     public bool IsActive { get; set; } = true;
 
     // Navigation properties
-    public virtual ICollection<IdentityUserRole<Guid>> UserRoles { get; set; } = new List<IdentityUserRole<Guid>>();
+    public virtual ICollection<ApplicationUserRole> UserRoles { get; set; } = new List<ApplicationUserRole>();
     public virtual ICollection<IdentityRoleClaim<Guid>> RoleClaims { get; set; } = new List<IdentityRoleClaim<Guid>>();
     public virtual ICollection<RolePermission> RolePermissions { get; set; } = new List<RolePermission>();
 }
