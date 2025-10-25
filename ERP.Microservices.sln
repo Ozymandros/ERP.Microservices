@@ -1,4 +1,4 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -14,79 +14,79 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyApp.Sales", "MyApp.Sales"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyApp.Shared", "MyApp.Shared", "{A6666666-6666-6666-6666-666666666666}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Billing.API", "MyApp.Billing\MyApp.Billing.API\MyApp.Billing.API.csproj", "{59F1D985-5835-4410-9384-636585CFEAA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Billing.API", "MyApp.Billing\src\MyApp.Billing.API\MyApp.Billing.API.csproj", "{59F1D985-5835-4410-9384-636585CFEAA3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Billing.Application", "MyApp.Billing\MyApp.Billing.Application\MyApp.Billing.Application.csproj", "{73887628-D2F2-41A2-B713-886F63EB84B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Billing.Application", "MyApp.Billing\src\MyApp.Billing.Application\MyApp.Billing.Application.csproj", "{73887628-D2F2-41A2-B713-886F63EB84B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Billing.Application.Contracts", "MyApp.Billing\MyApp.Billing.Application.Contracts\MyApp.Billing.Application.Contracts.csproj", "{60E6CF27-C6AB-45FF-A301-873C332E65F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Billing.Application.Contracts", "MyApp.Billing\src\MyApp.Billing.Application.Contracts\MyApp.Billing.Application.Contracts.csproj", "{60E6CF27-C6AB-45FF-A301-873C332E65F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Billing.Domain", "MyApp.Billing\MyApp.Billing.Domain\MyApp.Billing.Domain.csproj", "{16A5CAED-07E2-42A4-AAFC-602F040C34F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Billing.Domain", "MyApp.Billing\src\MyApp.Billing.Domain\MyApp.Billing.Domain.csproj", "{16A5CAED-07E2-42A4-AAFC-602F040C34F4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Billing.Infrastructure", "MyApp.Billing\MyApp.Billing.Infrastructure\MyApp.Billing.Infrastructure.csproj", "{BA8DF615-84F0-4AA2-9857-B701151A80FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Billing.Infrastructure", "MyApp.Billing\src\MyApp.Billing.Infrastructure\MyApp.Billing.Infrastructure.csproj", "{BA8DF615-84F0-4AA2-9857-B701151A80FB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Inventory.API", "MyApp.Inventory\MyApp.Inventory.API\MyApp.Inventory.API.csproj", "{E30A6086-C8A2-4C9C-AE00-942DAD5C29F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Inventory.API", "MyApp.Inventory\src\MyApp.Inventory.API\MyApp.Inventory.API.csproj", "{E30A6086-C8A2-4C9C-AE00-942DAD5C29F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Inventory.Application", "MyApp.Inventory\MyApp.Inventory.Application\MyApp.Inventory.Application.csproj", "{6B811F5E-9D2F-4395-9290-B7975E350031}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Inventory.Application", "MyApp.Inventory\src\MyApp.Inventory.Application\MyApp.Inventory.Application.csproj", "{6B811F5E-9D2F-4395-9290-B7975E350031}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Inventory.Application.Contracts", "MyApp.Inventory\MyApp.Inventory.Application.Contracts\MyApp.Inventory.Application.Contracts.csproj", "{DEF55DDF-FB59-4F79-84B6-323775F22A8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Inventory.Application.Contracts", "MyApp.Inventory\src\MyApp.Inventory.Application.Contracts\MyApp.Inventory.Application.Contracts.csproj", "{DEF55DDF-FB59-4F79-84B6-323775F22A8B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Inventory.Domain", "MyApp.Inventory\MyApp.Inventory.Domain\MyApp.Inventory.Domain.csproj", "{333EF770-1CD8-4752-ADC9-98602E1AFFB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Inventory.Domain", "MyApp.Inventory\src\MyApp.Inventory.Domain\MyApp.Inventory.Domain.csproj", "{333EF770-1CD8-4752-ADC9-98602E1AFFB2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Inventory.Infrastructure", "MyApp.Inventory\MyApp.Inventory.Infrastructure\MyApp.Inventory.Infrastructure.csproj", "{F31C27D1-6928-450A-9C5E-909E7DDF9F3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Inventory.Infrastructure", "MyApp.Inventory\src\MyApp.Inventory.Infrastructure\MyApp.Inventory.Infrastructure.csproj", "{F31C27D1-6928-450A-9C5E-909E7DDF9F3E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Orders.API", "MyApp.Orders\MyApp.Orders.API\MyApp.Orders.API.csproj", "{E82B935A-722F-4581-AC16-89911DD49645}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Orders.API", "MyApp.Orders\src\MyApp.Orders.API\MyApp.Orders.API.csproj", "{E82B935A-722F-4581-AC16-89911DD49645}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Orders.Application", "MyApp.Orders\MyApp.Orders.Application\MyApp.Orders.Application.csproj", "{671951D1-6B84-4D2F-BC3E-475FA5201C97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Orders.Application", "MyApp.Orders\src\MyApp.Orders.Application\MyApp.Orders.Application.csproj", "{671951D1-6B84-4D2F-BC3E-475FA5201C97}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Orders.Application.Contracts", "MyApp.Orders\MyApp.Orders.Application.Contracts\MyApp.Orders.Application.Contracts.csproj", "{3846DC1C-123B-4B75-81D3-586E122F46A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Orders.Application.Contracts", "MyApp.Orders\src\MyApp.Orders.Application.Contracts\MyApp.Orders.Application.Contracts.csproj", "{3846DC1C-123B-4B75-81D3-586E122F46A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Orders.Domain", "MyApp.Orders\MyApp.Orders.Domain\MyApp.Orders.Domain.csproj", "{268B839D-7AA0-47A2-A3C8-3AF593E47C6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Orders.Domain", "MyApp.Orders\src\MyApp.Orders.Domain\MyApp.Orders.Domain.csproj", "{268B839D-7AA0-47A2-A3C8-3AF593E47C6D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Orders.Infrastructure", "MyApp.Orders\MyApp.Orders.Infrastructure\MyApp.Orders.Infrastructure.csproj", "{9ABDFD1A-287B-426F-AAE4-67DCA45A3D10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Orders.Infrastructure", "MyApp.Orders\src\MyApp.Orders.Infrastructure\MyApp.Orders.Infrastructure.csproj", "{9ABDFD1A-287B-426F-AAE4-67DCA45A3D10}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Purchasing.API", "MyApp.Purchasing\MyApp.Purchasing.API\MyApp.Purchasing.API.csproj", "{E945FD0B-8CF0-4AF8-A416-531243C6FD0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Purchasing.API", "MyApp.Purchasing\src\MyApp.Purchasing.API\MyApp.Purchasing.API.csproj", "{E945FD0B-8CF0-4AF8-A416-531243C6FD0B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Purchasing.Application", "MyApp.Purchasing\MyApp.Purchasing.Application\MyApp.Purchasing.Application.csproj", "{68BB8BFA-3E5B-41D9-A7EF-8DCF1687AE9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Purchasing.Application", "MyApp.Purchasing\src\MyApp.Purchasing.Application\MyApp.Purchasing.Application.csproj", "{68BB8BFA-3E5B-41D9-A7EF-8DCF1687AE9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.Application.Contracts", "MyApp.Purchasing\MyApp.Purchasing.Application.Contracts\MyApp.Purchasing.Application.Contracts.csproj", "{2B678F61-A197-4A90-BD89-DBCE474016E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.Application.Contracts", "MyApp.Purchasing\src\MyApp.Purchasing.Application.Contracts\MyApp.Purchasing.Application.Contracts.csproj", "{2B678F61-A197-4A90-BD89-DBCE474016E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.Domain", "MyApp.Purchasing\MyApp.Purchasing.Domain\MyApp.Purchasing.Domain.csproj", "{E7D8335C-6742-4BF8-811C-9132CCDEFD7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.Domain", "MyApp.Purchasing\src\MyApp.Purchasing.Domain\MyApp.Purchasing.Domain.csproj", "{E7D8335C-6742-4BF8-811C-9132CCDEFD7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.Infrastructure", "MyApp.Purchasing\MyApp.Purchasing.Infrastructure\MyApp.Purchasing.Infrastructure.csproj", "{D985B70F-A09E-4102-809B-79BE5618D6E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.Infrastructure", "MyApp.Purchasing\src\MyApp.Purchasing.Infrastructure\MyApp.Purchasing.Infrastructure.csproj", "{D985B70F-A09E-4102-809B-79BE5618D6E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Sales.API", "MyApp.Sales\MyApp.Sales.API\MyApp.Sales.API.csproj", "{4AFE4E65-C1C4-4B2A-8D75-99CBAAA206AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Sales.API", "MyApp.Sales\src\MyApp.Sales.API\MyApp.Sales.API.csproj", "{4AFE4E65-C1C4-4B2A-8D75-99CBAAA206AC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Sales.Application", "MyApp.Sales\MyApp.Sales.Application\MyApp.Sales.Application.csproj", "{2E8E2383-2762-4E8D-802E-3EAB9FBB8F77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Sales.Application", "MyApp.Sales\src\MyApp.Sales.Application\MyApp.Sales.Application.csproj", "{2E8E2383-2762-4E8D-802E-3EAB9FBB8F77}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Sales.Application.Contracts", "MyApp.Sales\MyApp.Sales.Application.Contracts\MyApp.Sales.Application.Contracts.csproj", "{B3FC2AED-999A-4EAB-9510-02A7CCEF1D95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Sales.Application.Contracts", "MyApp.Sales\src\MyApp.Sales.Application.Contracts\MyApp.Sales.Application.Contracts.csproj", "{B3FC2AED-999A-4EAB-9510-02A7CCEF1D95}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Sales.Domain", "MyApp.Sales\MyApp.Sales.Domain\MyApp.Sales.Domain.csproj", "{3EEC8C3C-289C-4237-91FD-01BC5A3A9C05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Sales.Domain", "MyApp.Sales\src\MyApp.Sales.Domain\MyApp.Sales.Domain.csproj", "{3EEC8C3C-289C-4237-91FD-01BC5A3A9C05}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Sales.Infrastructure", "MyApp.Sales\MyApp.Sales.Infrastructure\MyApp.Sales.Infrastructure.csproj", "{09EDD0A5-7E25-40FA-800F-677AEC06133B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Sales.Infrastructure", "MyApp.Sales\src\MyApp.Sales.Infrastructure\MyApp.Sales.Infrastructure.csproj", "{09EDD0A5-7E25-40FA-800F-677AEC06133B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.CQRS", "MyApp.Shared\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj", "{B8522FEF-1678-4393-BD07-EAF9D475CDEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.CQRS", "MyApp.Shared\src\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj", "{B8522FEF-1678-4393-BD07-EAF9D475CDEC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Shared.Domain", "MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj", "{717B9063-FFD2-4290-97B8-4E6BF2A5882F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Shared.Domain", "MyApp.Shared\src\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj", "{717B9063-FFD2-4290-97B8-4E6BF2A5882F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.SignalR", "MyApp.Shared\MyApp.Shared.SignalR\MyApp.Shared.SignalR.csproj", "{0AACE7F0-E73C-45B8-9E67-564E97A5F86C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.SignalR", "MyApp.Shared\src\MyApp.Shared.SignalR\MyApp.Shared.SignalR.csproj", "{0AACE7F0-E73C-45B8-9E67-564E97A5F86C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErpApiGateway", "ErpApiGateway\ErpApiGateway.csproj", "{EDB41344-7520-7143-BF41-322BCC76890F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppHost", "AppHost\AppHost.csproj", "{429007E7-939B-4B10-AF2E-362559E72FCF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Auth.API", "MyApp.Auth\MyApp.Auth.API\MyApp.Auth.API.csproj", "{5C1AB00F-2737-F193-60DC-7AC5A0CE66A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Auth.API", "MyApp.Auth\src\MyApp.Auth.API\MyApp.Auth.API.csproj", "{5C1AB00F-2737-F193-60DC-7AC5A0CE66A6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyApp.Auth", "MyApp.Auth", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Auth.Application", "MyApp.Auth\MyApp.Auth.Application\MyApp.Auth.Application.csproj", "{59D14520-6974-4BFE-E1AC-5A48900545EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Auth.Application", "MyApp.Auth\src\MyApp.Auth.Application\MyApp.Auth.Application.csproj", "{59D14520-6974-4BFE-E1AC-5A48900545EF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Auth.Application.Contracts", "MyApp.Auth\MyApp.Auth.Application.Contracts\MyApp.Auth.Application.Contracts.csproj", "{894104D6-A8C1-BDD4-6B38-4AA6ACFBA5C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Auth.Application.Contracts", "MyApp.Auth\src\MyApp.Auth.Application.Contracts\MyApp.Auth.Application.Contracts.csproj", "{894104D6-A8C1-BDD4-6B38-4AA6ACFBA5C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.Infrastructure", "MyApp.Shared\MyApp.Shared.Infrastructure\MyApp.Shared.Infrastructure.csproj", "{F5E8B3F7-6A4A-F771-635F-6B8359E1A398}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.Infrastructure", "MyApp.Shared\src\MyApp.Shared.Infrastructure\MyApp.Shared.Infrastructure.csproj", "{F5E8B3F7-6A4A-F771-635F-6B8359E1A398}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppHost.Tests", "AppHost.Tests\AppHost.Tests.csproj", "{F9F554A1-843D-41E1-B43F-CFC620461B0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Myapp.Shared.Tests", "test\Myapp.Shared.Tests\Myapp.Shared.Tests.csproj", "{6CE7CB9E-84C4-4461-8123-A566EFC804A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Myapp.Shared.Tests", "MyApp.Shared\test\Myapp.Shared.Tests\Myapp.Shared.Tests.csproj", "{6CE7CB9E-84C4-4461-8123-A566EFC804A7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8FD1FFD7-F354-4B11-851F-FA7CB39A313C}"
 EndProject
@@ -140,9 +140,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Auth.Infrastructure.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Auth.Application.Tests", "MyApp.Auth\test\MyApp.Auth.Application.Tests\MyApp.Auth.Application.Tests.csproj", "{7579DEFE-B845-5C4A-EAA4-52B46CA03634}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Auth.Domain", "MyApp.Auth\MyApp.Auth.Domain\MyApp.Auth.Domain.csproj", "{905F97F2-2375-6994-998F-0C544E24F06C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Auth.Domain", "MyApp.Auth\src\MyApp.Auth.Domain\MyApp.Auth.Domain.csproj", "{905F97F2-2375-6994-998F-0C544E24F06C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Auth.Infrastructure", "MyApp.Auth\MyApp.Auth.Infrastructure\MyApp.Auth.Infrastructure.csproj", "{E055C054-E322-9A3B-82AE-3CCA635A747E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Auth.Infrastructure", "MyApp.Auth\src\MyApp.Auth.Infrastructure\MyApp.Auth.Infrastructure.csproj", "{E055C054-E322-9A3B-82AE-3CCA635A747E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

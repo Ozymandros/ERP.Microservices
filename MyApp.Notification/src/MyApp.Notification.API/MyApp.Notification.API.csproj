@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.15" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyApp.Notification.Domain\MyApp.Notification.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Notification.Application\MyApp.Notification.Application.csproj" />
+    <ProjectReference Include="..\MyApp.Notification.Application.Contracts\MyApp.Notification.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\MyApp.Shared\src\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Notification.Infrastructure\MyApp.Notification.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\MyApp.Shared\src\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj" />
+    <ProjectReference Include="..\..\..\MyApp.Shared\src\MyApp.Shared.Infrastructure\MyApp.Shared.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\MyApp.Shared\src\MyApp.Shared.SignalR\MyApp.Shared.SignalR.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\</DockerfileContext>
+  </PropertyGroup>
+</Project>

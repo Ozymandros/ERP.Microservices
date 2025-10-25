@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="15.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyApp.Inventory.Domain\MyApp.Inventory.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Inventory.Application.Contracts\MyApp.Inventory.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\MyApp.Shared\src\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\..\MyApp.Shared\src\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj" />
+  </ItemGroup>
+</Project>

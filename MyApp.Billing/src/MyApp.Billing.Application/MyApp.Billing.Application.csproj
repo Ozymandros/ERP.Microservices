@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyApp.Billing.Domain\MyApp.Billing.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Billing.Application.Contracts\MyApp.Billing.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\MyApp.Shared\src\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\..\MyApp.Shared\src\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyApp.Orders.Domain\MyApp.Orders.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Orders.Application.Contracts\MyApp.Orders.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\MyApp.Shared\src\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\..\MyApp.Shared\src\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="15.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.10" />
+  </ItemGroup>
+</Project>

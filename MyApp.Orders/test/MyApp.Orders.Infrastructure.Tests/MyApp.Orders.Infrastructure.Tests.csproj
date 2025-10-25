@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -18,9 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MyApp.Orders.Domain\MyApp.Orders.Domain.csproj" />
-    <ProjectReference Include="..\..\MyApp.Orders.Infrastructure\MyApp.Orders.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\MyApp.Orders.Application\MyApp.Orders.Application.csproj" />
+    <ProjectReference Include="..\..\src\MyApp.Orders.Domain\MyApp.Orders.Domain.csproj" />
+    <ProjectReference Include="..\..\src\MyApp.Orders.Infrastructure\MyApp.Orders.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\MyApp.Orders.Application\MyApp.Orders.Application.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyApp.Notification.Domain\MyApp.Notification.Domain.csproj" />
+    <ProjectReference Include="..\..\..\MyApp.Shared\src\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+  </ItemGroup>
+</Project>
