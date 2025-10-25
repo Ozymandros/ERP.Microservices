@@ -26,7 +26,7 @@ param frontendOrigin string = 'https://localhost:3000'
 // Tags that should be applied to all resources
 var tags = {
   'azd-env-name': environmentName
-  'app': 'erp-microservices'
+  app: 'erp-microservices'
 }
 
 // Organize resources in a resource group

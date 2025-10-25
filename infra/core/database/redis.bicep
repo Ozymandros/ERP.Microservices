@@ -39,4 +39,6 @@ output id string = redis.id
 output name string = redis.name
 output hostName string = redis.properties.hostName
 output sslPort int = redis.properties.sslPort
+@description('Redis primary key - should be stored as a secret')
+@secure()
 output primaryKey string = redis.listKeys().primaryKey
