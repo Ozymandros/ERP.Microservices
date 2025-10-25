@@ -3,21 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.API", "MyApp.Purchasing.API\MyApp.Purchasing.API.csproj", "{8EFE6BFA-8B7D-4E5C-9A02-636E70C7664B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.API", "src\MyApp.Purchasing.API\MyApp.Purchasing.API.csproj", "{8EFE6BFA-8B7D-4E5C-9A02-636E70C7664B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.Application", "MyApp.Purchasing.Application\MyApp.Purchasing.Application.csproj", "{5099D0E9-88C8-423C-882C-01CE495EDEA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.Application", "src\MyApp.Purchasing.Application\MyApp.Purchasing.Application.csproj", "{5099D0E9-88C8-423C-882C-01CE495EDEA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.Application.Contracts", "MyApp.Purchasing.Application.Contracts\MyApp.Purchasing.Application.Contracts.csproj", "{739A2E3E-844B-43E6-9C84-9FEEB16B9E9D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.Application.Contracts", "src\MyApp.Purchasing.Application.Contracts\MyApp.Purchasing.Application.Contracts.csproj", "{739A2E3E-844B-43E6-9C84-9FEEB16B9E9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.Domain", "MyApp.Purchasing.Domain\MyApp.Purchasing.Domain.csproj", "{C25F8694-5AB1-46E5-923E-4E3BEF1E2150}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.Domain", "src\MyApp.Purchasing.Domain\MyApp.Purchasing.Domain.csproj", "{C25F8694-5AB1-46E5-923E-4E3BEF1E2150}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.Infrastructure", "MyApp.Purchasing.Infrastructure\MyApp.Purchasing.Infrastructure.csproj", "{0C7A5AB9-EAD9-47C0-8664-8270A36C6EB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Purchasing.Infrastructure", "src\MyApp.Purchasing.Infrastructure\MyApp.Purchasing.Infrastructure.csproj", "{0C7A5AB9-EAD9-47C0-8664-8270A36C6EB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.CQRS", "..\MyApp.Shared\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj", "{81DE420A-BDA2-438F-A3BB-03AD22262370}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.CQRS", "..\MyApp.Shared\src\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj", "{81DE420A-BDA2-438F-A3BB-03AD22262370}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.Domain", "..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj", "{2A1FD095-3B41-46C2-9B1A-4F8C2F858C69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.Domain", "..\MyApp.Shared\src\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj", "{2A1FD095-3B41-46C2-9B1A-4F8C2F858C69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.SignalR", "..\MyApp.Shared\MyApp.Shared.SignalR\MyApp.Shared.SignalR.csproj", "{B387C579-0F21-48BF-AA83-9ED35A77F1B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.SignalR", "..\MyApp.Shared\src\MyApp.Shared.SignalR\MyApp.Shared.SignalR.csproj", "{B387C579-0F21-48BF-AA83-9ED35A77F1B0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0C88DD14-F956-CE84-757C-A364CCF449FC}"
 EndProject

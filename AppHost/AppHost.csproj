@@ -1,4 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<?xml version='1.0' encoding='utf-8'?>
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Sdk Name="Aspire.AppHost.Sdk" Version="9.0.0" />
 
@@ -23,13 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyApp.Auth\MyApp.Auth.API\MyApp.Auth.API.csproj" />
-    <ProjectReference Include="..\MyApp.Sales\MyApp.Sales.API\MyApp.Sales.API.csproj" />
-    <ProjectReference Include="..\MyApp.Billing\MyApp.Billing.API\MyApp.Billing.API.csproj" />
-    <ProjectReference Include="..\MyApp.Inventory\MyApp.Inventory.API\MyApp.Inventory.API.csproj" />
-    <ProjectReference Include="..\MyApp.Notification\MyApp.Notification.API\MyApp.Notification.API.csproj" />
-    <ProjectReference Include="..\MyApp.Orders\MyApp.Orders.API\MyApp.Orders.API.csproj" />
-    <ProjectReference Include="..\MyApp.Purchasing\MyApp.Purchasing.API\MyApp.Purchasing.API.csproj" />
+    <ProjectReference Include="..\MyApp.Auth\src\MyApp.Auth.API\MyApp.Auth.API.csproj" />
+    <ProjectReference Include="..\MyApp.Sales\src\MyApp.Sales.API\MyApp.Sales.API.csproj" />
+    <ProjectReference Include="..\MyApp.Billing\src\MyApp.Billing.API\MyApp.Billing.API.csproj" />
+    <ProjectReference Include="..\MyApp.Inventory\src\MyApp.Inventory.API\MyApp.Inventory.API.csproj" />
+    <ProjectReference Include="..\MyApp.Notification\src\MyApp.Notification.API\MyApp.Notification.API.csproj" />
+    <ProjectReference Include="..\MyApp.Orders\src\MyApp.Orders.API\MyApp.Orders.API.csproj" />
+    <ProjectReference Include="..\MyApp.Purchasing\src\MyApp.Purchasing.API\MyApp.Purchasing.API.csproj" />
     <ProjectReference Include="..\ErpApiGateway\ErpApiGateway.csproj" />
   </ItemGroup>
 

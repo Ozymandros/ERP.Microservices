@@ -3,21 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Orders.API", "MyApp.Orders.API\MyApp.Orders.API.csproj", "{0ED0B823-0CE0-48D9-A310-A8D2801A830B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Orders.API", "src\MyApp.Orders.API\MyApp.Orders.API.csproj", "{0ED0B823-0CE0-48D9-A310-A8D2801A830B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Orders.Application", "MyApp.Orders.Application\MyApp.Orders.Application.csproj", "{7D967CB6-DA9F-4516-AE8B-F4A0CEA6F9B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Orders.Application", "src\MyApp.Orders.Application\MyApp.Orders.Application.csproj", "{7D967CB6-DA9F-4516-AE8B-F4A0CEA6F9B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Orders.Application.Contracts", "MyApp.Orders.Application.Contracts\MyApp.Orders.Application.Contracts.csproj", "{F9406772-61B9-46EB-9658-F385A1FCB4D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Orders.Application.Contracts", "src\MyApp.Orders.Application.Contracts\MyApp.Orders.Application.Contracts.csproj", "{F9406772-61B9-46EB-9658-F385A1FCB4D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Orders.Domain", "MyApp.Orders.Domain\MyApp.Orders.Domain.csproj", "{AC8FFAC1-897E-4611-95ED-325D3CF7C66D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Orders.Domain", "src\MyApp.Orders.Domain\MyApp.Orders.Domain.csproj", "{AC8FFAC1-897E-4611-95ED-325D3CF7C66D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Orders.Infrastructure", "MyApp.Orders.Infrastructure\MyApp.Orders.Infrastructure.csproj", "{B4E03C8A-1AA5-4606-B92E-4CE2D6E781F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Orders.Infrastructure", "src\MyApp.Orders.Infrastructure\MyApp.Orders.Infrastructure.csproj", "{B4E03C8A-1AA5-4606-B92E-4CE2D6E781F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.CQRS", "..\MyApp.Shared\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj", "{E454A4C5-5093-4DF0-B30F-F219E8C68FBF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.CQRS", "..\MyApp.Shared\src\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj", "{E454A4C5-5093-4DF0-B30F-F219E8C68FBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.Domain", "..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj", "{032BDDB1-46F1-4EA9-8F71-80A96DA274B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.Domain", "..\MyApp.Shared\src\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj", "{032BDDB1-46F1-4EA9-8F71-80A96DA274B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.SignalR", "..\MyApp.Shared\MyApp.Shared.SignalR\MyApp.Shared.SignalR.csproj", "{6B68FCD9-4A3A-49B7-96E2-CF1D0275A905}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.SignalR", "..\MyApp.Shared\src\MyApp.Shared.SignalR\MyApp.Shared.SignalR.csproj", "{6B68FCD9-4A3A-49B7-96E2-CF1D0275A905}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0C88DD14-F956-CE84-757C-A364CCF449FC}"
 EndProject

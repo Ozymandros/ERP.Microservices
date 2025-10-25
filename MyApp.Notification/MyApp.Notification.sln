@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Notification.API", "MyApp.Notification.API\MyApp.Notification.API.csproj", "{1E90071C-2C4D-4DCF-9939-A5E7EE84EC4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Notification.API", "src\MyApp.Notification.API\MyApp.Notification.API.csproj", "{1E90071C-2C4D-4DCF-9939-A5E7EE84EC4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Notification.Application", "MyApp.Notification.Application\MyApp.Notification.Application.csproj", "{FE282EA7-A053-4641-B8EE-637AD0221F51}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Notification.Application", "src\MyApp.Notification.Application\MyApp.Notification.Application.csproj", "{FE282EA7-A053-4641-B8EE-637AD0221F51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Notification.Application.Contracts", "MyApp.Notification.Application.Contracts\MyApp.Notification.Application.Contracts.csproj", "{84A82F2E-DD83-4996-B284-44D6A8A76EF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Notification.Application.Contracts", "src\MyApp.Notification.Application.Contracts\MyApp.Notification.Application.Contracts.csproj", "{84A82F2E-DD83-4996-B284-44D6A8A76EF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Notification.Infrastructure", "MyApp.Notification.Infrastructure\MyApp.Notification.Infrastructure.csproj", "{F9FA37BA-DE13-4CC6-BFDA-B078EF033765}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Notification.Infrastructure", "src\MyApp.Notification.Infrastructure\MyApp.Notification.Infrastructure.csproj", "{F9FA37BA-DE13-4CC6-BFDA-B078EF033765}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.CQRS", "..\MyApp.Shared\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj", "{2F02A7C0-071C-43EA-AF04-2F812FCACE01}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.CQRS", "..\MyApp.Shared\src\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj", "{2F02A7C0-071C-43EA-AF04-2F812FCACE01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.Domain", "..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj", "{1BD49559-42B2-438E-BD1F-A6C12A4FA702}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.Domain", "..\MyApp.Shared\src\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj", "{1BD49559-42B2-438E-BD1F-A6C12A4FA702}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.SignalR", "..\MyApp.Shared\MyApp.Shared.SignalR\MyApp.Shared.SignalR.csproj", "{5B43EC57-5E4B-455B-9946-E9DA83AA1B10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared.SignalR", "..\MyApp.Shared\src\MyApp.Shared.SignalR\MyApp.Shared.SignalR.csproj", "{5B43EC57-5E4B-455B-9946-E9DA83AA1B10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
