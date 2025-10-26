@@ -148,7 +148,7 @@ module authService 'core/host/container-app.bicep' = {
     env: [
       {
         name: 'ConnectionStrings__AuthDb'
-        value: 'Server=${sqlServer.outputs.fqdn};Database=AuthDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+        value: 'Server=${sqlServer.outputs.fqdn};Database=AuthDB;User Id=sqladmin;Password=${sqlAdminPassword};'
       }
       {
         name: 'ConnectionStrings__cache'
