@@ -18,7 +18,7 @@ services:
     language: dotnet
     host: containerapp
     docker:
-      path: ./Dockerfile
+      path: ./ErpApiGateway/Dockerfile
       context: .
     
   # Auth Service
