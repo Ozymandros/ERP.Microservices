@@ -3,8 +3,12 @@ using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuración de Ocelot
-builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+// ConfiguraciÃ³n de Ocelot with environment-specific configuration
+var environment = builder.Environment.EnvironmentName;
+builder.Configuration
+    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"ocelot.{environment}.json", optional: true, reloadOnChange: true);
+
 builder.Services.AddOcelot(builder.Configuration);
 
 // Add services to the container.
