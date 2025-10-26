@@ -1,11 +1,12 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.37.4.10188",
-      "templateHash": "15460159493344799911"
+      "templateHash": "9544173022001847433"
     }
   },
   "parameters": {
@@ -57,15 +58,15 @@
       "app": "erp-microservices"
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "rg": {
       "type": "Microsoft.Resources/resourceGroups",
       "apiVersion": "2022-09-01",
       "name": "[format('rg-{0}', parameters('environmentName'))]",
       "location": "[parameters('location')]",
       "tags": "[variables('tags')]"
     },
-    {
+    "containerAppsEnvironment": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "container-apps-environment",
@@ -87,6 +88,12 @@
           },
           "daprEnabled": {
             "value": true
+          },
+          "redisHostName": {
+            "value": "[reference('redis').outputs.hostName.value]"
+          },
+          "redisPrimaryKey": {
+            "value": "[listOutputsWithSecureValues('redis', '2022-09-01').primaryKey]"
           }
         },
         "template": {
@@ -96,7 +103,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.37.4.10188",
-              "templateHash": "12596606677463547030"
+              "templateHash": "5142011908713752480"
             }
           },
           "parameters": {
@@ -133,6 +140,20 @@
               "metadata": {
                 "description": "Log Analytics Workspace ID for diagnostics"
               }
+            },
+            "redisHostName": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Redis host name"
+              }
+            },
+            "redisPrimaryKey": {
+              "type": "securestring",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Redis primary key"
+              }
             }
           },
           "resources": [
@@ -148,7 +169,7 @@
               }
             },
             {
-              "condition": "[parameters('daprEnabled')]",
+              "condition": "[and(parameters('daprEnabled'), not(empty(parameters('redisHostName'))))]",
               "type": "Microsoft.App/managedEnvironments/daprComponents",
               "apiVersion": "2023-05-01",
               "name": "[format('{0}/{1}', parameters('name'), 'statestore')]",
@@ -157,15 +178,24 @@
                 "version": "v1",
                 "ignoreErrors": false,
                 "initTimeout": "60s",
-                "secrets": [],
+                "secrets": [
+                  {
+                    "name": "redis-password",
+                    "value": "[parameters('redisPrimaryKey')]"
+                  }
+                ],
                 "metadata": [
                   {
                     "name": "redisHost",
-                    "value": "redis-cache:6379"
+                    "value": "[format('{0}:6380', parameters('redisHostName'))]"
                   },
                   {
                     "name": "redisPassword",
-                    "value": ""
+                    "secretRef": "redis-password"
+                  },
+                  {
+                    "name": "enableTLS",
+                    "value": "true"
                   },
                   {
                     "name": "actorStateStore",
@@ -203,10 +233,11 @@
         }
       },
       "dependsOn": [
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', format('rg-{0}', parameters('environmentName')))]"
+        "redis",
+        "rg"
       ]
     },
-    {
+    "sqlServer": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "sql-server",
@@ -384,10 +415,10 @@
         }
       },
       "dependsOn": [
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', format('rg-{0}', parameters('environmentName')))]"
+        "rg"
       ]
     },
-    {
+    "redis": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "redis",
@@ -410,12 +441,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.37.4.10188",
-              "templateHash": "16314447860638182389"
+              "templateHash": "6304339580770987389"
             }
           },
           "parameters": {
@@ -461,8 +493,8 @@
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "redis": {
               "type": "Microsoft.Cache/redis",
               "apiVersion": "2023-08-01",
               "name": "[parameters('name')]",
@@ -482,7 +514,7 @@
                 }
               }
             }
-          ],
+          },
           "outputs": {
             "id": {
               "type": "string",
@@ -494,24 +526,27 @@
             },
             "hostName": {
               "type": "string",
-              "value": "[reference(resourceId('Microsoft.Cache/redis', parameters('name')), '2023-08-01').hostName]"
+              "value": "[reference('redis').hostName]"
             },
             "sslPort": {
               "type": "int",
-              "value": "[reference(resourceId('Microsoft.Cache/redis', parameters('name')), '2023-08-01').sslPort]"
+              "value": "[reference('redis').sslPort]"
             },
             "primaryKey": {
-              "type": "string",
-              "value": "[listKeys(resourceId('Microsoft.Cache/redis', parameters('name')), '2023-08-01').primaryKey]"
+              "type": "securestring",
+              "metadata": {
+                "description": "Redis primary key - should be stored as a secret"
+              },
+              "value": "[listKeys('redis', '2023-08-01').primaryKey]"
             }
           }
         }
       },
       "dependsOn": [
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', format('rg-{0}', parameters('environmentName')))]"
+        "rg"
       ]
     },
-    {
+    "containerRegistry": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "container-registry",
@@ -604,10 +639,10 @@
         }
       },
       "dependsOn": [
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', format('rg-{0}', parameters('environmentName')))]"
+        "rg"
       ]
     },
-    {
+    "logAnalytics": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "log-analytics",
@@ -708,10 +743,10 @@
         }
       },
       "dependsOn": [
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', format('rg-{0}', parameters('environmentName')))]"
+        "rg"
       ]
     },
-    {
+    "gateway": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "gateway",
@@ -732,10 +767,10 @@
             "value": "[variables('tags')]"
           },
           "containerAppsEnvironmentName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment'), '2022-09-01').outputs.name.value]"
+            "value": "[reference('containerAppsEnvironment').outputs.name.value]"
           },
           "containerRegistryName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry'), '2022-09-01').outputs.name.value]"
+            "value": "[reference('containerRegistry').outputs.name.value]"
           },
           "imageName": {
             "value": "gateway:latest"
@@ -769,7 +804,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.37.4.10188",
-              "templateHash": "10830255376252174865"
+              "templateHash": "5727928679719484502"
             }
           },
           "parameters": {
@@ -911,7 +946,7 @@
                   "registries": [
                     {
                       "server": "[reference(resourceId('Microsoft.ContainerRegistry/registries', parameters('containerRegistryName')), '2023-01-01-preview').loginServer]",
-                      "identity": "system"
+                      "identity": "system-assigned"
                     }
                   ],
                   "dapr": "[if(parameters('daprEnabled'), createObject('enabled', true(), 'appId', parameters('daprAppId'), 'appPort', parameters('daprAppPort'), 'appProtocol', 'http', 'enableApiLogging', true()), null())]",
@@ -1008,12 +1043,12 @@
         }
       },
       "dependsOn": [
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry')]",
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', format('rg-{0}', parameters('environmentName')))]"
+        "containerAppsEnvironment",
+        "containerRegistry",
+        "rg"
       ]
     },
-    {
+    "authService": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "auth-service",
@@ -1034,10 +1069,10 @@
             "value": "[variables('tags')]"
           },
           "containerAppsEnvironmentName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment'), '2022-09-01').outputs.name.value]"
+            "value": "[reference('containerAppsEnvironment').outputs.name.value]"
           },
           "containerRegistryName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry'), '2022-09-01').outputs.name.value]"
+            "value": "[reference('containerRegistry').outputs.name.value]"
           },
           "imageName": {
             "value": "auth-service:latest"
@@ -1061,11 +1096,11 @@
             "value": [
               {
                 "name": "ConnectionStrings__AuthDb",
-                "value": "[format('Server={0};Database=AuthDB;User Id=sqladmin;Password={1};TrustServerCertificate=True;', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'sql-server'), '2022-09-01').outputs.fqdn.value, parameters('sqlAdminPassword'))]"
+                "secretRef": "sql-connection-authdb"
               },
               {
                 "name": "ConnectionStrings__cache",
-                "value": "[format('{0}:6380,password={1},ssl=True,abortConnect=False', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis'), '2022-09-01').outputs.hostName.value, reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis'), '2022-09-01').outputs.primaryKey.value)]"
+                "secretRef": "redis-connection"
               },
               {
                 "name": "Jwt__SecretKey",
@@ -1092,6 +1127,14 @@
           "secrets": {
             "value": [
               {
+                "name": "sql-connection-authdb",
+                "value": "[format('Server={0};Database=AuthDB;User Id=sqladmin;Password={1};', reference('sqlServer').outputs.fqdn.value, parameters('sqlAdminPassword'))]"
+              },
+              {
+                "name": "redis-connection",
+                "value": "[format('{0}:6380,password={1},ssl=True,abortConnect=False', reference('redis').outputs.hostName.value, listOutputsWithSecureValues('redis', '2022-09-01').primaryKey)]"
+              },
+              {
                 "name": "jwt-secret-key",
                 "value": "[parameters('jwtSecretKey')]"
               }
@@ -1105,7 +1148,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.37.4.10188",
-              "templateHash": "10830255376252174865"
+              "templateHash": "5727928679719484502"
             }
           },
           "parameters": {
@@ -1247,7 +1290,7 @@
                   "registries": [
                     {
                       "server": "[reference(resourceId('Microsoft.ContainerRegistry/registries', parameters('containerRegistryName')), '2023-01-01-preview').loginServer]",
-                      "identity": "system"
+                      "identity": "system-assigned"
                     }
                   ],
                   "dapr": "[if(parameters('daprEnabled'), createObject('enabled', true(), 'appId', parameters('daprAppId'), 'appPort', parameters('daprAppPort'), 'appProtocol', 'http', 'enableApiLogging', true()), null())]",
@@ -1344,14 +1387,14 @@
         }
       },
       "dependsOn": [
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis')]",
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', format('rg-{0}', parameters('environmentName')))]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'sql-server')]"
+        "containerAppsEnvironment",
+        "containerRegistry",
+        "redis",
+        "rg",
+        "sqlServer"
       ]
     },
-    {
+    "billingService": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "billing-service",
@@ -1372,10 +1415,10 @@
             "value": "[variables('tags')]"
           },
           "containerAppsEnvironmentName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment'), '2022-09-01').outputs.name.value]"
+            "value": "[reference('containerAppsEnvironment').outputs.name.value]"
           },
           "containerRegistryName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry'), '2022-09-01').outputs.name.value]"
+            "value": "[reference('containerRegistry').outputs.name.value]"
           },
           "imageName": {
             "value": "billing-service:latest"
@@ -1399,11 +1442,11 @@
             "value": [
               {
                 "name": "ConnectionStrings__BillingDb",
-                "value": "[format('Server={0};Database=BillingDB;User Id=sqladmin;Password={1};TrustServerCertificate=True;', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'sql-server'), '2022-09-01').outputs.fqdn.value, parameters('sqlAdminPassword'))]"
+                "secretRef": "sql-connection-billingdb"
               },
               {
                 "name": "ConnectionStrings__cache",
-                "value": "[format('{0}:6380,password={1},ssl=True,abortConnect=False', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis'), '2022-09-01').outputs.hostName.value, reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis'), '2022-09-01').outputs.primaryKey.value)]"
+                "secretRef": "redis-connection"
               },
               {
                 "name": "Jwt__SecretKey",
@@ -1430,6 +1473,14 @@
           "secrets": {
             "value": [
               {
+                "name": "sql-connection-billingdb",
+                "value": "[format('Server={0};Database=BillingDB;User Id=sqladmin;Password={1};TrustServerCertificate=True;', reference('sqlServer').outputs.fqdn.value, parameters('sqlAdminPassword'))]"
+              },
+              {
+                "name": "redis-connection",
+                "value": "[format('{0}:6380,password={1},ssl=True,abortConnect=False', reference('redis').outputs.hostName.value, listOutputsWithSecureValues('redis', '2022-09-01').primaryKey)]"
+              },
+              {
                 "name": "jwt-secret-key",
                 "value": "[parameters('jwtSecretKey')]"
               }
@@ -1443,7 +1494,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.37.4.10188",
-              "templateHash": "10830255376252174865"
+              "templateHash": "5727928679719484502"
             }
           },
           "parameters": {
@@ -1585,7 +1636,7 @@
                   "registries": [
                     {
                       "server": "[reference(resourceId('Microsoft.ContainerRegistry/registries', parameters('containerRegistryName')), '2023-01-01-preview').loginServer]",
-                      "identity": "system"
+                      "identity": "system-assigned"
                     }
                   ],
                   "dapr": "[if(parameters('daprEnabled'), createObject('enabled', true(), 'appId', parameters('daprAppId'), 'appPort', parameters('daprAppPort'), 'appProtocol', 'http', 'enableApiLogging', true()), null())]",
@@ -1682,14 +1733,14 @@
         }
       },
       "dependsOn": [
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis')]",
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', format('rg-{0}', parameters('environmentName')))]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'sql-server')]"
+        "containerAppsEnvironment",
+        "containerRegistry",
+        "redis",
+        "rg",
+        "sqlServer"
       ]
     },
-    {
+    "inventoryService": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "inventory-service",
@@ -1710,10 +1761,10 @@
             "value": "[variables('tags')]"
           },
           "containerAppsEnvironmentName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment'), '2022-09-01').outputs.name.value]"
+            "value": "[reference('containerAppsEnvironment').outputs.name.value]"
           },
           "containerRegistryName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry'), '2022-09-01').outputs.name.value]"
+            "value": "[reference('containerRegistry').outputs.name.value]"
           },
           "imageName": {
             "value": "inventory-service:latest"
@@ -1737,11 +1788,11 @@
             "value": [
               {
                 "name": "ConnectionStrings__InventoryDb",
-                "value": "[format('Server={0};Database=InventoryDB;User Id=sqladmin;Password={1};TrustServerCertificate=True;', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'sql-server'), '2022-09-01').outputs.fqdn.value, parameters('sqlAdminPassword'))]"
+                "secretRef": "sql-connection-inventorydb"
               },
               {
                 "name": "ConnectionStrings__cache",
-                "value": "[format('{0}:6380,password={1},ssl=True,abortConnect=False', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis'), '2022-09-01').outputs.hostName.value, reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis'), '2022-09-01').outputs.primaryKey.value)]"
+                "secretRef": "redis-connection"
               },
               {
                 "name": "Jwt__SecretKey",
@@ -1768,6 +1819,14 @@
           "secrets": {
             "value": [
               {
+                "name": "sql-connection-inventorydb",
+                "value": "[format('Server={0};Database=InventoryDB;User Id=sqladmin;Password={1};TrustServerCertificate=True;', reference('sqlServer').outputs.fqdn.value, parameters('sqlAdminPassword'))]"
+              },
+              {
+                "name": "redis-connection",
+                "value": "[format('{0}:6380,password={1},ssl=True,abortConnect=False', reference('redis').outputs.hostName.value, listOutputsWithSecureValues('redis', '2022-09-01').primaryKey)]"
+              },
+              {
                 "name": "jwt-secret-key",
                 "value": "[parameters('jwtSecretKey')]"
               }
@@ -1781,7 +1840,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.37.4.10188",
-              "templateHash": "10830255376252174865"
+              "templateHash": "5727928679719484502"
             }
           },
           "parameters": {
@@ -1923,7 +1982,7 @@
                   "registries": [
                     {
                       "server": "[reference(resourceId('Microsoft.ContainerRegistry/registries', parameters('containerRegistryName')), '2023-01-01-preview').loginServer]",
-                      "identity": "system"
+                      "identity": "system-assigned"
                     }
                   ],
                   "dapr": "[if(parameters('daprEnabled'), createObject('enabled', true(), 'appId', parameters('daprAppId'), 'appPort', parameters('daprAppPort'), 'appProtocol', 'http', 'enableApiLogging', true()), null())]",
@@ -2020,14 +2079,14 @@
         }
       },
       "dependsOn": [
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis')]",
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', format('rg-{0}', parameters('environmentName')))]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'sql-server')]"
+        "containerAppsEnvironment",
+        "containerRegistry",
+        "redis",
+        "rg",
+        "sqlServer"
       ]
     },
-    {
+    "ordersService": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "orders-service",
@@ -2048,10 +2107,10 @@
             "value": "[variables('tags')]"
           },
           "containerAppsEnvironmentName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment'), '2022-09-01').outputs.name.value]"
+            "value": "[reference('containerAppsEnvironment').outputs.name.value]"
           },
           "containerRegistryName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry'), '2022-09-01').outputs.name.value]"
+            "value": "[reference('containerRegistry').outputs.name.value]"
           },
           "imageName": {
             "value": "orders-service:latest"
@@ -2075,11 +2134,11 @@
             "value": [
               {
                 "name": "ConnectionStrings__OrdersDb",
-                "value": "[format('Server={0};Database=OrderDB;User Id=sqladmin;Password={1};TrustServerCertificate=True;', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'sql-server'), '2022-09-01').outputs.fqdn.value, parameters('sqlAdminPassword'))]"
+                "secretRef": "sql-connection-ordersdb"
               },
               {
                 "name": "ConnectionStrings__cache",
-                "value": "[format('{0}:6380,password={1},ssl=True,abortConnect=False', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis'), '2022-09-01').outputs.hostName.value, reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis'), '2022-09-01').outputs.primaryKey.value)]"
+                "secretRef": "redis-connection"
               },
               {
                 "name": "Jwt__SecretKey",
@@ -2106,6 +2165,14 @@
           "secrets": {
             "value": [
               {
+                "name": "sql-connection-ordersdb",
+                "value": "[format('Server={0};Database=OrderDB;User Id=sqladmin;Password={1};TrustServerCertificate=True;', reference('sqlServer').outputs.fqdn.value, parameters('sqlAdminPassword'))]"
+              },
+              {
+                "name": "redis-connection",
+                "value": "[format('{0}:6380,password={1},ssl=True,abortConnect=False', reference('redis').outputs.hostName.value, listOutputsWithSecureValues('redis', '2022-09-01').primaryKey)]"
+              },
+              {
                 "name": "jwt-secret-key",
                 "value": "[parameters('jwtSecretKey')]"
               }
@@ -2119,7 +2186,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.37.4.10188",
-              "templateHash": "10830255376252174865"
+              "templateHash": "5727928679719484502"
             }
           },
           "parameters": {
@@ -2261,7 +2328,7 @@
                   "registries": [
                     {
                       "server": "[reference(resourceId('Microsoft.ContainerRegistry/registries', parameters('containerRegistryName')), '2023-01-01-preview').loginServer]",
-                      "identity": "system"
+                      "identity": "system-assigned"
                     }
                   ],
                   "dapr": "[if(parameters('daprEnabled'), createObject('enabled', true(), 'appId', parameters('daprAppId'), 'appPort', parameters('daprAppPort'), 'appProtocol', 'http', 'enableApiLogging', true()), null())]",
@@ -2358,14 +2425,14 @@
         }
       },
       "dependsOn": [
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis')]",
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', format('rg-{0}', parameters('environmentName')))]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'sql-server')]"
+        "containerAppsEnvironment",
+        "containerRegistry",
+        "redis",
+        "rg",
+        "sqlServer"
       ]
     },
-    {
+    "purchasingService": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "purchasing-service",
@@ -2386,10 +2453,10 @@
             "value": "[variables('tags')]"
           },
           "containerAppsEnvironmentName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment'), '2022-09-01').outputs.name.value]"
+            "value": "[reference('containerAppsEnvironment').outputs.name.value]"
           },
           "containerRegistryName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry'), '2022-09-01').outputs.name.value]"
+            "value": "[reference('containerRegistry').outputs.name.value]"
           },
           "imageName": {
             "value": "purchasing-service:latest"
@@ -2413,11 +2480,11 @@
             "value": [
               {
                 "name": "ConnectionStrings__PurchasingDb",
-                "value": "[format('Server={0};Database=PurchasingDB;User Id=sqladmin;Password={1};TrustServerCertificate=True;', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'sql-server'), '2022-09-01').outputs.fqdn.value, parameters('sqlAdminPassword'))]"
+                "secretRef": "sql-connection-purchasingdb"
               },
               {
                 "name": "ConnectionStrings__cache",
-                "value": "[format('{0}:6380,password={1},ssl=True,abortConnect=False', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis'), '2022-09-01').outputs.hostName.value, reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis'), '2022-09-01').outputs.primaryKey.value)]"
+                "secretRef": "redis-connection"
               },
               {
                 "name": "Jwt__SecretKey",
@@ -2444,6 +2511,14 @@
           "secrets": {
             "value": [
               {
+                "name": "sql-connection-purchasingdb",
+                "value": "[format('Server={0};Database=PurchasingDB;User Id=sqladmin;Password={1};TrustServerCertificate=True;', reference('sqlServer').outputs.fqdn.value, parameters('sqlAdminPassword'))]"
+              },
+              {
+                "name": "redis-connection",
+                "value": "[format('{0}:6380,password={1},ssl=True,abortConnect=False', reference('redis').outputs.hostName.value, listOutputsWithSecureValues('redis', '2022-09-01').primaryKey)]"
+              },
+              {
                 "name": "jwt-secret-key",
                 "value": "[parameters('jwtSecretKey')]"
               }
@@ -2457,7 +2532,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.37.4.10188",
-              "templateHash": "10830255376252174865"
+              "templateHash": "5727928679719484502"
             }
           },
           "parameters": {
@@ -2599,7 +2674,7 @@
                   "registries": [
                     {
                       "server": "[reference(resourceId('Microsoft.ContainerRegistry/registries', parameters('containerRegistryName')), '2023-01-01-preview').loginServer]",
-                      "identity": "system"
+                      "identity": "system-assigned"
                     }
                   ],
                   "dapr": "[if(parameters('daprEnabled'), createObject('enabled', true(), 'appId', parameters('daprAppId'), 'appPort', parameters('daprAppPort'), 'appProtocol', 'http', 'enableApiLogging', true()), null())]",
@@ -2696,14 +2771,14 @@
         }
       },
       "dependsOn": [
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis')]",
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', format('rg-{0}', parameters('environmentName')))]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'sql-server')]"
+        "containerAppsEnvironment",
+        "containerRegistry",
+        "redis",
+        "rg",
+        "sqlServer"
       ]
     },
-    {
+    "salesService": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "sales-service",
@@ -2724,10 +2799,10 @@
             "value": "[variables('tags')]"
           },
           "containerAppsEnvironmentName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment'), '2022-09-01').outputs.name.value]"
+            "value": "[reference('containerAppsEnvironment').outputs.name.value]"
           },
           "containerRegistryName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry'), '2022-09-01').outputs.name.value]"
+            "value": "[reference('containerRegistry').outputs.name.value]"
           },
           "imageName": {
             "value": "sales-service:latest"
@@ -2751,11 +2826,11 @@
             "value": [
               {
                 "name": "ConnectionStrings__SalesDb",
-                "value": "[format('Server={0};Database=SalesDB;User Id=sqladmin;Password={1};TrustServerCertificate=True;', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'sql-server'), '2022-09-01').outputs.fqdn.value, parameters('sqlAdminPassword'))]"
+                "secretRef": "sql-connection-salesdb"
               },
               {
                 "name": "ConnectionStrings__cache",
-                "value": "[format('{0}:6380,password={1},ssl=True,abortConnect=False', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis'), '2022-09-01').outputs.hostName.value, reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis'), '2022-09-01').outputs.primaryKey.value)]"
+                "secretRef": "redis-connection"
               },
               {
                 "name": "Jwt__SecretKey",
@@ -2782,6 +2857,14 @@
           "secrets": {
             "value": [
               {
+                "name": "sql-connection-salesdb",
+                "value": "[format('Server={0};Database=SalesDB;User Id=sqladmin;Password={1};TrustServerCertificate=True;', reference('sqlServer').outputs.fqdn.value, parameters('sqlAdminPassword'))]"
+              },
+              {
+                "name": "redis-connection",
+                "value": "[format('{0}:6380,password={1},ssl=True,abortConnect=False', reference('redis').outputs.hostName.value, listOutputsWithSecureValues('redis', '2022-09-01').primaryKey)]"
+              },
+              {
                 "name": "jwt-secret-key",
                 "value": "[parameters('jwtSecretKey')]"
               }
@@ -2795,7 +2878,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.37.4.10188",
-              "templateHash": "10830255376252174865"
+              "templateHash": "5727928679719484502"
             }
           },
           "parameters": {
@@ -2937,7 +3020,7 @@
                   "registries": [
                     {
                       "server": "[reference(resourceId('Microsoft.ContainerRegistry/registries', parameters('containerRegistryName')), '2023-01-01-preview').loginServer]",
-                      "identity": "system"
+                      "identity": "system-assigned"
                     }
                   ],
                   "dapr": "[if(parameters('daprEnabled'), createObject('enabled', true(), 'appId', parameters('daprAppId'), 'appPort', parameters('daprAppPort'), 'appProtocol', 'http', 'enableApiLogging', true()), null())]",
@@ -3034,34 +3117,34 @@
         }
       },
       "dependsOn": [
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis')]",
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', format('rg-{0}', parameters('environmentName')))]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'sql-server')]"
+        "containerAppsEnvironment",
+        "containerRegistry",
+        "redis",
+        "rg",
+        "sqlServer"
       ]
     }
-  ],
+  },
   "outputs": {
     "AZURE_CONTAINER_REGISTRY_ENDPOINT": {
       "type": "string",
-      "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-registry'), '2022-09-01').outputs.loginServer.value]"
+      "value": "[reference('containerRegistry').outputs.loginServer.value]"
     },
     "AZURE_CONTAINER_APPS_ENVIRONMENT_ID": {
       "type": "string",
-      "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'container-apps-environment'), '2022-09-01').outputs.id.value]"
+      "value": "[reference('containerAppsEnvironment').outputs.id.value]"
     },
     "GATEWAY_URL": {
       "type": "string",
-      "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'gateway'), '2022-09-01').outputs.uri.value]"
+      "value": "[reference('gateway').outputs.uri.value]"
     },
     "SQL_SERVER_FQDN": {
       "type": "string",
-      "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'sql-server'), '2022-09-01').outputs.fqdn.value]"
+      "value": "[reference('sqlServer').outputs.fqdn.value]"
     },
     "REDIS_HOST_NAME": {
       "type": "string",
-      "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, format('rg-{0}', parameters('environmentName'))), 'Microsoft.Resources/deployments', 'redis'), '2022-09-01').outputs.hostName.value]"
+      "value": "[reference('redis').outputs.hostName.value]"
     }
   }
 }
