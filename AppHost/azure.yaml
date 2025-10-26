@@ -17,7 +17,7 @@ services:
     host: containerapp
     dapr:
       enabled: true
-      appId: billing-service
+      appId: auth-service
       appPort: 8080
     env:
       - name: ConnectionStrings__Default
@@ -43,7 +43,7 @@ services:
     host: containerapp
     dapr:
       enabled: true
-      appId: billing-service
+      appId: inventory-service
       appPort: 8080
     env:
       - name: ConnectionStrings__Default
@@ -56,11 +56,11 @@ services:
     host: containerapp
     dapr:
       enabled: true
-      appId: billing-service
+      appId: orders-service
       appPort: 8080
     env:
       - name: ConnectionStrings__Default
-        secret: billing-db-connection
+        secret: orders-db-connection
 
   purchasing-service:
     project: ../MyApp.Purchasing/MyApp.Purchasing.API
@@ -69,7 +69,7 @@ services:
     host: containerapp
     dapr:
       enabled: true
-      appId: billing-service
+      appId: purchasing-service
       appPort: 8080
     env:
       - name: ConnectionStrings__Default
@@ -82,7 +82,7 @@ services:
     host: containerapp
     dapr:
       enabled: true
-      appId: billing-service
+      appId: sales-service
       appPort: 8080
     env:
       - name: ConnectionStrings__Default
