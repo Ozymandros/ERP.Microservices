@@ -79,7 +79,7 @@ services:
       - erp
     restart: unless-stopped
 
-  gateway:
+  erpapigateway:
     build:
       context: .
       dockerfile: ErpApiGateway/Dockerfile

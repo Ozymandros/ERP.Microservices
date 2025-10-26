@@ -23,10 +23,20 @@ param jwtSecretKey string
 @description('Frontend origin URLs (semicolon-separated)')
 param frontendOrigin string = 'https://localhost:3000'
 
+@description('Enable provisioning of Key Vault and injecting secrets from Key Vault (set true for production)')
+param enableKeyVault bool = false
+
 // Tags that should be applied to all resources
 var tags = {
   'azd-env-name': environmentName
   app: 'erp-microservices'
+}
+
+// Centralized derived secret values to avoid duplication across services
+var redisConnection = '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
+var redisSecret = {
+  name: 'redis-connection'
+  value: redisConnection
 }
 
 // Organize resources in a resource group
@@ -49,7 +59,7 @@ module containerAppsEnvironment 'core/host/container-apps-environment.bicep' = {
     redisPrimaryKey: redis.outputs.primaryKey
   }
   dependsOn: [
-    redis
+    
   ]
 }
 
@@ -93,6 +103,25 @@ module containerRegistry 'core/host/container-registry.bicep' = {
     name: 'cr${replace(environmentName, '-', '')}'
     location: location
     tags: tags
+  }
+}
+
+// Key Vault (only when enableKeyVault is true)
+// Key Vault + secrets module (deployed into the resource group). This module creates Key Vault and
+// the per-environment secrets only when `enableKeyVault` is true (intended for production).
+module keyVaultModule 'core/security/keyvault-secrets.bicep' = {
+  name: 'keyvault-secrets'
+  scope: rg
+  params: {
+    name: 'kv-${environmentName}'
+    location: location
+    tags: tags
+    redisHostName: redis.outputs.hostName
+    redisPrimaryKey: redis.outputs.primaryKey
+    sqlFqdn: sqlServer.outputs.fqdn
+    sqlAdminPassword: sqlAdminPassword
+    jwtSecretKey: jwtSecretKey
+    enableKeyVault: enableKeyVault
   }
 }
 
@@ -163,6 +192,23 @@ module authService 'core/host/container-app.bicep' = {
         name: 'Jwt__SecretKey'
         secretRef: 'jwt-secret-key'
       }
+      // Key Vault runtime hints (URI and secret names). Empty when enableKeyVault == false.
+      {
+        name: 'KEYVAULT_URI'
+        value: keyVaultModule.outputs.keyVaultUri
+      }
+      {
+        name: 'REDIS_SECRET_NAME'
+        value: keyVaultModule.outputs.redisSecretName
+      }
+      {
+        name: 'SQL_SECRET_NAME'
+        value: keyVaultModule.outputs.sqlAuthSecretName
+      }
+      {
+        name: 'JWT_SECRET_NAME'
+        value: keyVaultModule.outputs.jwtSecretName
+      }
       {
         name: 'Jwt__Issuer'
         value: 'MyApp.Auth'
@@ -185,10 +231,7 @@ module authService 'core/host/container-app.bicep' = {
         name: 'sql-connection-authdb'
         value: 'Server=${sqlServer.outputs.fqdn};Database=AuthDB;User Id=sqladmin;Password=${sqlAdminPassword};'
       }
-      {
-        name: 'redis-connection'
-        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
-      }
+      redisSecret
       {
         name: 'jwt-secret-key'
         value: jwtSecretKey
@@ -227,6 +270,22 @@ module billingService 'core/host/container-app.bicep' = {
         secretRef: 'jwt-secret-key'
       }
       {
+        name: 'KEYVAULT_URI'
+        value: keyVaultModule.outputs.keyVaultUri
+      }
+      {
+        name: 'REDIS_SECRET_NAME'
+        value: keyVaultModule.outputs.redisSecretName
+      }
+      {
+        name: 'SQL_SECRET_NAME'
+        value: keyVaultModule.outputs.sqlBillingSecretName
+      }
+      {
+        name: 'JWT_SECRET_NAME'
+        value: keyVaultModule.outputs.jwtSecretName
+      }
+      {
         name: 'Jwt__Issuer'
         value: 'MyApp.Auth'
       }
@@ -248,10 +307,7 @@ module billingService 'core/host/container-app.bicep' = {
         name: 'sql-connection-billingdb'
         value: 'Server=${sqlServer.outputs.fqdn};Database=BillingDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
       }
-      {
-        name: 'redis-connection'
-        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
-      }
+      redisSecret
       {
         name: 'jwt-secret-key'
         value: jwtSecretKey
@@ -290,6 +346,22 @@ module inventoryService 'core/host/container-app.bicep' = {
         secretRef: 'jwt-secret-key'
       }
       {
+        name: 'KEYVAULT_URI'
+        value: keyVaultModule.outputs.keyVaultUri
+      }
+      {
+        name: 'REDIS_SECRET_NAME'
+        value: keyVaultModule.outputs.redisSecretName
+      }
+      {
+        name: 'SQL_SECRET_NAME'
+        value: keyVaultModule.outputs.sqlInventorySecretName
+      }
+      {
+        name: 'JWT_SECRET_NAME'
+        value: keyVaultModule.outputs.jwtSecretName
+      }
+      {
         name: 'Jwt__Issuer'
         value: 'MyApp.Auth'
       }
@@ -311,10 +383,7 @@ module inventoryService 'core/host/container-app.bicep' = {
         name: 'sql-connection-inventorydb'
         value: 'Server=${sqlServer.outputs.fqdn};Database=InventoryDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
       }
-      {
-        name: 'redis-connection'
-        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
-      }
+      redisSecret
       {
         name: 'jwt-secret-key'
         value: jwtSecretKey
@@ -353,6 +422,22 @@ module ordersService 'core/host/container-app.bicep' = {
         secretRef: 'jwt-secret-key'
       }
       {
+        name: 'KEYVAULT_URI'
+        value: keyVaultModule.outputs.keyVaultUri
+      }
+      {
+        name: 'REDIS_SECRET_NAME'
+        value: keyVaultModule.outputs.redisSecretName
+      }
+      {
+        name: 'SQL_SECRET_NAME'
+        value: keyVaultModule.outputs.sqlOrdersSecretName
+      }
+      {
+        name: 'JWT_SECRET_NAME'
+        value: keyVaultModule.outputs.jwtSecretName
+      }
+      {
         name: 'Jwt__Issuer'
         value: 'MyApp.Auth'
       }
@@ -374,10 +459,7 @@ module ordersService 'core/host/container-app.bicep' = {
         name: 'sql-connection-ordersdb'
         value: 'Server=${sqlServer.outputs.fqdn};Database=OrderDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
       }
-      {
-        name: 'redis-connection'
-        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
-      }
+      redisSecret
       {
         name: 'jwt-secret-key'
         value: jwtSecretKey
@@ -416,6 +498,22 @@ module purchasingService 'core/host/container-app.bicep' = {
         secretRef: 'jwt-secret-key'
       }
       {
+        name: 'KEYVAULT_URI'
+        value: keyVaultModule.outputs.keyVaultUri
+      }
+      {
+        name: 'REDIS_SECRET_NAME'
+        value: keyVaultModule.outputs.redisSecretName
+      }
+      {
+        name: 'SQL_SECRET_NAME'
+        value: keyVaultModule.outputs.sqlPurchasingSecretName
+      }
+      {
+        name: 'JWT_SECRET_NAME'
+        value: keyVaultModule.outputs.jwtSecretName
+      }
+      {
         name: 'Jwt__Issuer'
         value: 'MyApp.Auth'
       }
@@ -437,10 +535,7 @@ module purchasingService 'core/host/container-app.bicep' = {
         name: 'sql-connection-purchasingdb'
         value: 'Server=${sqlServer.outputs.fqdn};Database=PurchasingDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
       }
-      {
-        name: 'redis-connection'
-        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
-      }
+      redisSecret
       {
         name: 'jwt-secret-key'
         value: jwtSecretKey
@@ -479,6 +574,22 @@ module salesService 'core/host/container-app.bicep' = {
         secretRef: 'jwt-secret-key'
       }
       {
+        name: 'KEYVAULT_URI'
+        value: keyVaultModule.outputs.keyVaultUri
+      }
+      {
+        name: 'REDIS_SECRET_NAME'
+        value: keyVaultModule.outputs.redisSecretName
+      }
+      {
+        name: 'SQL_SECRET_NAME'
+        value: keyVaultModule.outputs.sqlSalesSecretName
+      }
+      {
+        name: 'JWT_SECRET_NAME'
+        value: keyVaultModule.outputs.jwtSecretName
+      }
+      {
         name: 'Jwt__Issuer'
         value: 'MyApp.Auth'
       }
@@ -500,10 +611,7 @@ module salesService 'core/host/container-app.bicep' = {
         name: 'sql-connection-salesdb'
         value: 'Server=${sqlServer.outputs.fqdn};Database=SalesDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
       }
-      {
-        name: 'redis-connection'
-        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
-      }
+      redisSecret
       {
         name: 'jwt-secret-key'
         value: jwtSecretKey
