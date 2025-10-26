@@ -6,7 +6,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "auth-service",
-          "Port": 80
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/auth/{everything}",
@@ -18,7 +18,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "inventory-service",
-          "Port": 80
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/inventory/{everything}",
@@ -30,7 +30,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "orders-service",
-          "Port": 80
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/orders/{everything}",
@@ -42,7 +42,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "sales-service",
-          "Port": 80
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/sales/{everything}",
@@ -54,7 +54,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "billing-service",
-          "Port": 80
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/billing/{everything}",
@@ -66,7 +66,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "purchasing-service",
-          "Port": 80
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/purchasing/{everything}",
