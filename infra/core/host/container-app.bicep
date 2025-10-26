@@ -76,7 +76,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
       registries: [
         {
           server: containerRegistry.properties.loginServer
-          identity: 'system'
+          identity: 'system-assigned'
         }
       ]
       dapr: daprEnabled ? {
