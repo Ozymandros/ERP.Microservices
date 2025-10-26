@@ -37,7 +37,7 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01'
 }
 
 // Dapr Component for Redis State Store
-resource daprStateStore 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = if (daprEnabled && !empty(redisHostName)) {
+resource daprStateStore 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = if (daprEnabled && !empty(redisHostName) && !empty(redisPrimaryKey)) {
   name: 'statestore'
   parent: containerAppsEnvironment
   properties: {
