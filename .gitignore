@@ -372,3 +372,6 @@ infra/.bicep
 .env.local
 .env.*.local
 .azure
+
+# Bicep compiled ARM templates
+infra/**/*.json
