@@ -19,7 +19,7 @@ public class AspireProjectBuilder
         _sqlServer = sqlServer;
     }
 
-    public IResourceBuilder<ProjectResource> AddWebProject<T>(IResourceBuilder<RedisResource>? redis = null, string? origin = null)
+    public IResourceBuilder<ProjectResource> AddWebProject<T>(IResourceBuilder<RedisResource>? redis = null, string? origin = null, bool isDeployment = false)
         where T : IProjectMetadata, new()
     {
         // Extract service name from type name
@@ -57,17 +57,16 @@ public class AspireProjectBuilder
 
         // Configure project
         project = project
-            .WithHttpEndpoint(httpPort)
-                               //.WithHttpsEndpoint()
-            .WithExternalHttpEndpoints()
+            //.WithHttpEndpoint(80)
+            //.WithHttpsEndpoint()
+            //.WithExternalHttpEndpoints()
             .WaitFor(database)
             .WithReference(database)
-            .WithHttpHealthCheck(path: "/health", statusCode: 200)
             //.WithDaprSidecarOptions(options => options.AddArgument("--enable-scheduler", "false"))
             .WithDaprSidecar(new DaprSidecarOptions
             {
                 AppId = daprAppId,
-                AppPort = httpPort,
+                AppPort = 80,
                 //DaprHttpPort = daprHttpPort,
                 //DaprGrpcPort = daprGrpcPort,
                 //MetricsPort = metricsPort
@@ -76,6 +75,19 @@ public class AspireProjectBuilder
             .WithEnvironment("Jwt__Issuer", _builder.Configuration["Jwt:Issuer"])
             .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"])
             .WithEnvironment("FRONTEND_ORIGIN", origin);
+
+        if (!isDeployment)
+        {
+            // Local: exposem ports únics per al dashboard
+            project = project.WithHttpEndpoint(httpPort)
+            .WithHttpHealthCheck(path: "/health", statusCode: 200);
+        }
+        else if (serviceName == "gateway")
+        {
+            // Deployment: només el gateway té ingress públic
+            project = project.WithHttpEndpoint(80)
+            .WithHttpHealthCheck(path: "/health", statusCode: 200);
+        }
 
         if (redis is not null)
             project

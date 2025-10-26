@@ -125,7 +125,6 @@ public static class PermissionConstants
             ModuleEnum.Orders => Orders.All,
             ModuleEnum.Sales => Sales.All,
             ModuleEnum.Billing => Billing.All,
-            ModuleEnum.Notification => Notification.All,
             ModuleEnum.Auth => Auth.All,
             _ => Array.Empty<string>()
         };

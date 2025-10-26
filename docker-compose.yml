@@ -1,0 +1,358 @@
+version: "3.9"
+
+x-api-env: &api-env
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_URLS: http://+:8080
+  FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+  Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
+  Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
+  Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
+  ConnectionStrings__cache: redis:6379
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: ${SQL_PASSWORD:-P@ssw0rd12345!}
+    ports:
+      - "1455:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P ${SQL_PASSWORD:-P@ssw0rd12345!} -C -Q 'SELECT 1' || exit 1"
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - erp
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - erp
+    restart: unless-stopped
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    environment:
+      REDIS_HOSTS: local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    networks:
+      - erp
+    restart: unless-stopped
+
+  redis-insight:
+    image: redis/redisinsight:2.66
+    container_name: redis-insight
+    ports:
+      - "5540:5540"
+    depends_on:
+      - redis
+    networks:
+      - erp
+    restart: unless-stopped
+
+  dapr-placement:
+    image: daprio/dapr:1.13.0
+    container_name: dapr-placement
+    command: ["./placement", "-port", "50005", "-log-level", "info"]
+    ports:
+      - "50005:50005"
+    networks:
+      - erp
+    restart: unless-stopped
+
+  gateway:
+    build:
+      context: .
+      dockerfile: ErpApiGateway/Dockerfile
+    container_name: gateway
+    environment:
+      <<: *api-env
+      Ocelot__Routes__0__DownstreamHostAndPorts__0__Host: auth-service
+      Ocelot__Routes__0__DownstreamHostAndPorts__0__Port: 8080
+      Ocelot__Routes__1__DownstreamHostAndPorts__0__Host: inventory-service
+      Ocelot__Routes__1__DownstreamHostAndPorts__0__Port: 8080
+      Ocelot__Routes__2__DownstreamHostAndPorts__0__Host: orders-service
+      Ocelot__Routes__2__DownstreamHostAndPorts__0__Port: 8080
+      Ocelot__Routes__3__DownstreamHostAndPorts__0__Host: sales-service
+      Ocelot__Routes__3__DownstreamHostAndPorts__0__Port: 8080
+      Ocelot__Routes__4__DownstreamHostAndPorts__0__Host: billing-service
+      Ocelot__Routes__4__DownstreamHostAndPorts__0__Port: 8080
+      Ocelot__Routes__5__DownstreamHostAndPorts__0__Host: notification-service
+      Ocelot__Routes__5__DownstreamHostAndPorts__0__Port: 8080
+      Ocelot__Routes__6__DownstreamHostAndPorts__0__Host: purchasing-service
+      Ocelot__Routes__6__DownstreamHostAndPorts__0__Port: 8080
+    ports:
+      - "5000:8080"
+    depends_on:
+      - auth-service
+      - billing-service
+      - inventory-service
+      - orders-service
+      - purchasing-service
+      - sales-service
+    volumes:
+      - ./ErpApiGateway/ocelot.json:/app/ocelot.json:ro
+    networks:
+      - erp
+    restart: unless-stopped
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: MyApp.Auth/MyApp.Auth.API/Dockerfile
+    container_name: auth-service
+    environment:
+      <<: *api-env
+      ConnectionStrings__AuthDb: Server=sqlserver,1433;Database=AuthDb;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+      ConnectionStrings__AuthDB: Server=sqlserver,1433;Database=AuthDb;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+    depends_on:
+      - sqlserver
+      - redis
+      - dapr-placement
+    ports:
+      - "5007:8080"
+    networks:
+      - erp
+    restart: unless-stopped
+
+  auth-service-dapr:
+    image: daprio/dapr:1.13.0
+    container_name: auth-service-dapr
+    depends_on:
+      - auth-service
+      - dapr-placement
+    command:
+      [
+        "./daprd",
+        "-app-id", "auth-service",
+        "-app-port", "8080",
+        "-components-path", "/components",
+        "-placement-host-address", "dapr-placement:50005",
+        "-log-level", "info"
+      ]
+    volumes:
+      - ./deploy/dapr/components:/components:ro
+    network_mode: "service:auth-service"
+    restart: unless-stopped
+
+  billing-service:
+    build:
+      context: .
+      dockerfile: MyApp.Billing/MyApp.Billing.API/Dockerfile
+    container_name: billing-service
+    environment:
+      <<: *api-env
+      ConnectionStrings__billingdb: Server=sqlserver,1433;Database=BillingDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+      ConnectionStrings__BillingDB: Server=sqlserver,1433;Database=BillingDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+    depends_on:
+      - sqlserver
+      - redis
+      - dapr-placement
+    ports:
+      - "5004:8080"
+    networks:
+      - erp
+    restart: unless-stopped
+
+  billing-service-dapr:
+    image: daprio/dapr:1.13.0
+    container_name: billing-service-dapr
+    depends_on:
+      - billing-service
+      - dapr-placement
+    command:
+      [
+        "./daprd",
+        "-app-id", "billing-service",
+        "-app-port", "8080",
+        "-components-path", "/components",
+        "-placement-host-address", "dapr-placement:50005",
+        "-log-level", "info"
+      ]
+    volumes:
+      - ./deploy/dapr/components:/components:ro
+    network_mode: "service:billing-service"
+    restart: unless-stopped
+
+  inventory-service:
+    build:
+      context: .
+      dockerfile: MyApp.Inventory/MyApp.Inventory.API/Dockerfile
+    container_name: inventory-service
+    environment:
+      <<: *api-env
+      ConnectionStrings__inventorydb: Server=sqlserver,1433;Database=InventoryDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+      ConnectionStrings__InventoryDB: Server=sqlserver,1433;Database=InventoryDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+    depends_on:
+      - sqlserver
+      - redis
+      - dapr-placement
+    ports:
+      - "5001:8080"
+    networks:
+      - erp
+    restart: unless-stopped
+
+  inventory-service-dapr:
+    image: daprio/dapr:1.13.0
+    container_name: inventory-service-dapr
+    depends_on:
+      - inventory-service
+      - dapr-placement
+    command:
+      [
+        "./daprd",
+        "-app-id", "inventory-service",
+        "-app-port", "8080",
+        "-components-path", "/components",
+        "-placement-host-address", "dapr-placement:50005",
+        "-log-level", "info"
+      ]
+    volumes:
+      - ./deploy/dapr/components:/components:ro
+    network_mode: "service:inventory-service"
+    restart: unless-stopped
+
+  orders-service:
+    build:
+      context: .
+      dockerfile: MyApp.Orders/MyApp.Orders.API/Dockerfile
+    container_name: orders-service
+    environment:
+      <<: *api-env
+      ConnectionStrings__ordersdb: Server=sqlserver,1433;Database=OrdersDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+      ConnectionStrings__OrdersDB: Server=sqlserver,1433;Database=OrdersDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+    depends_on:
+      - sqlserver
+      - redis
+      - dapr-placement
+    ports:
+      - "5002:8080"
+    networks:
+      - erp
+    restart: unless-stopped
+
+  orders-service-dapr:
+    image: daprio/dapr:1.13.0
+    container_name: orders-service-dapr
+    depends_on:
+      - orders-service
+      - dapr-placement
+    command:
+      [
+        "./daprd",
+        "-app-id", "orders-service",
+        "-app-port", "8080",
+        "-components-path", "/components",
+        "-placement-host-address", "dapr-placement:50005",
+        "-log-level", "info"
+      ]
+    volumes:
+      - ./deploy/dapr/components:/components:ro
+    network_mode: "service:orders-service"
+    restart: unless-stopped
+
+  purchasing-service:
+    build:
+      context: .
+      dockerfile: MyApp.Purchasing/MyApp.Purchasing.API/Dockerfile
+    container_name: purchasing-service
+    environment:
+      <<: *api-env
+      ConnectionStrings__PurchasingDb: Server=sqlserver,1433;Database=PurchasingDb;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+      ConnectionStrings__PurchasingDB: Server=sqlserver,1433;Database=PurchasingDb;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+    depends_on:
+      - sqlserver
+      - redis
+      - dapr-placement
+    ports:
+      - "5006:8080"
+    networks:
+      - erp
+    restart: unless-stopped
+
+  purchasing-service-dapr:
+    image: daprio/dapr:1.13.0
+    container_name: purchasing-service-dapr
+    depends_on:
+      - purchasing-service
+      - dapr-placement
+    command:
+      [
+        "./daprd",
+        "-app-id", "purchasing-service",
+        "-app-port", "8080",
+        "-components-path", "/components",
+        "-placement-host-address", "dapr-placement:50005",
+        "-log-level", "info"
+      ]
+    volumes:
+      - ./deploy/dapr/components:/components:ro
+    network_mode: "service:purchasing-service"
+    restart: unless-stopped
+
+  sales-service:
+    build:
+      context: .
+      dockerfile: MyApp.Sales/MyApp.Sales.API/Dockerfile
+    container_name: sales-service
+    environment:
+      <<: *api-env
+      ConnectionStrings__salesdb: Server=sqlserver,1433;Database=SalesDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+      ConnectionStrings__SalesDB: Server=sqlserver,1433;Database=SalesDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+    depends_on:
+      - sqlserver
+      - redis
+      - dapr-placement
+    ports:
+      - "5003:8080"
+    networks:
+      - erp
+    restart: unless-stopped
+
+  sales-service-dapr:
+    image: daprio/dapr:1.13.0
+    container_name: sales-service-dapr
+    depends_on:
+      - sales-service
+      - dapr-placement
+    command:
+      [
+        "./daprd",
+        "-app-id", "sales-service",
+        "-app-port", "8080",
+        "-components-path", "/components",
+        "-placement-host-address", "dapr-placement:50005",
+        "-log-level", "info"
+      ]
+    volumes:
+      - ./deploy/dapr/components:/components:ro
+    network_mode: "service:sales-service"
+    restart: unless-stopped
+
+networks:
+  erp:
+    driver: bridge
+
+volumes:
+  sqlserver-data:
+  redis-data:

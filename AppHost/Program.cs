@@ -1,5 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
+var isDeployment =
+    args.Contains("--publisher") || // quan azd genera manifests
+    Environment.GetEnvironmentVariable("IS_DEPLOYMENT") == "true";
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 builder.Services.AddHealthChecks();
@@ -30,22 +34,22 @@ var projectBuilder = builder.CreateProjectBuilder(sqlServer);
 var origin = builder.Configuration["Parameters:FrontendOrigin"];
 
 // Add projects - ports auto-increment
-var authService = projectBuilder.AddWebProject<Projects.MyApp_Auth_API>(redis, origin);
+var authService = projectBuilder.AddWebProject<Projects.MyApp_Auth_API>(redis, origin, isDeployment);
 // Creates: BillingDB, billing-service, ports 5000, 3500, 45000, 9090
 
-var billingService = projectBuilder.AddWebProject<Projects.MyApp_Billing_API>(redis, origin);
+var billingService = projectBuilder.AddWebProject<Projects.MyApp_Billing_API>(redis, origin, isDeployment);
 // Creates: BillingDB, billing-service, ports 5001, 3501, 45001, 9091
 
-var inventoryService = projectBuilder.AddWebProject<Projects.MyApp_Inventory_API>(redis, origin);
+var inventoryService = projectBuilder.AddWebProject<Projects.MyApp_Inventory_API>(redis, origin, isDeployment);
 // Creates: InventoryDB, inventory-service, ports 5002, 3502, 45002, 9092
 
-var ordersService = projectBuilder.AddWebProject<Projects.MyApp_Orders_API>(redis, origin);
+var ordersService = projectBuilder.AddWebProject<Projects.MyApp_Orders_API>(redis, origin, isDeployment);
 // Creates: OrderDB, order-service, ports 5003, 3503, 45003, 9093
 
-var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_API>(redis, origin);
+var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_API>(redis, origin, isDeployment);
 // Creates: OrderDB, order-service, ports 5004, 3504, 45004, 9094
 
-var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin);
+var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment);
 // Creates: OrderDB, order-service, ports 5005, 3505, 45005, 9095
 
 // Configuració del Reverse Proxy (YARP)
@@ -57,6 +61,7 @@ var gateway = builder.AddYarp("gateway")
     .WaitFor(purchasingService)
     .WaitFor(salesService)
                      .WithHostPort(5000)
+                     .WithExternalHttpEndpoints()
                      .WithConfiguration(yarp =>
                      {
                          // Configure routes programmatically
