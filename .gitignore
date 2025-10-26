@@ -371,3 +371,4 @@ infra/.bicep
 # Local environment files
 .env.local
 .env.*.local
+.azure

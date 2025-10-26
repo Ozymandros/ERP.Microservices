@@ -68,9 +68,6 @@ Successfully implemented **ICacheService** across all major API controllers foll
 ### 6. **Billing Module** (MyApp.Billing.API)
 - ⏳ **ValuesController** - Placeholder, skipped for now
 
-### 7. **Notification Module** (MyApp.Notification.API)
-- ⏳ **Controllers** - TBD (not yet examined)
-
 ---
 
 ## 📋 Implementation Pattern

@@ -1,0 +1,93 @@
+name: erp-microservices-aspire
+
+services:
+  gateway:
+    project: ../ErpApiGateway
+    language: csharp
+    dist: build
+    host: containerapp
+    ingress:
+      external: true
+      targetPort: 8080
+
+  auth-service:
+    project: ../MyApp.Auth/MyApp.Auth.API
+    language: csharp
+    dist: build
+    host: containerapp
+    dapr:
+      enabled: true
+      appId: billing-service
+      appPort: 8080
+    env:
+      - name: ConnectionStrings__Default
+        secret: auth-db-connection
+
+  billing-service:
+    project: ../MyApp.Billing/MyApp.Billing.API
+    language: csharp
+    dist: build
+    host: containerapp
+    dapr:
+      enabled: true
+      appId: billing-service
+      appPort: 8080
+    env:
+      - name: ConnectionStrings__Default
+        secret: billing-db-connection
+
+  inventory-service:
+    project: ../MyApp.Inventory/MyApp.Inventory.API
+    language: csharp
+    dist: build
+    host: containerapp
+    dapr:
+      enabled: true
+      appId: billing-service
+      appPort: 8080
+    env:
+      - name: ConnectionStrings__Default
+        secret: inventory-db-connection
+
+  orders-service:
+    project: ../MyApp.Orders/MyApp.Orders.API
+    language: csharp
+    dist: build
+    host: containerapp
+    dapr:
+      enabled: true
+      appId: billing-service
+      appPort: 8080
+    env:
+      - name: ConnectionStrings__Default
+        secret: billing-db-connection
+
+  purchasing-service:
+    project: ../MyApp.Purchasing/MyApp.Purchasing.API
+    language: csharp
+    dist: build
+    host: containerapp
+    dapr:
+      enabled: true
+      appId: billing-service
+      appPort: 8080
+    env:
+      - name: ConnectionStrings__Default
+        secret: purchasing-db-connection
+
+  sales-service:
+    project: ../MyApp.Sales/MyApp.Sales.API
+    language: csharp
+    dist: build
+    host: containerapp
+    dapr:
+      enabled: true
+      appId: billing-service
+      appPort: 8080
+    env:
+      - name: ConnectionStrings__Default
+        secret: sales-db-connection
+
+infra:
+  provider: bicep
+  path: ./infra/main.bicep
