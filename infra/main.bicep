@@ -45,7 +45,12 @@ module containerAppsEnvironment 'core/host/container-apps-environment.bicep' = {
     location: location
     tags: tags
     daprEnabled: true
+    redisHostName: redis.outputs.hostName
+    redisPrimaryKey: redis.outputs.primaryKey
   }
+  dependsOn: [
+    redis
+  ]
 }
 
 // Azure SQL Server and Database
@@ -148,11 +153,11 @@ module authService 'core/host/container-app.bicep' = {
     env: [
       {
         name: 'ConnectionStrings__AuthDb'
-        value: 'Server=${sqlServer.outputs.fqdn};Database=AuthDB;User Id=sqladmin;Password=${sqlAdminPassword};'
+        secretRef: 'sql-connection-authdb'
       }
       {
         name: 'ConnectionStrings__cache'
-        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
+        secretRef: 'redis-connection'
       }
       {
         name: 'Jwt__SecretKey'
@@ -176,6 +181,14 @@ module authService 'core/host/container-app.bicep' = {
       }
     ]
     secrets: [
+      {
+        name: 'sql-connection-authdb'
+        value: 'Server=${sqlServer.outputs.fqdn};Database=AuthDB;User Id=sqladmin;Password=${sqlAdminPassword};'
+      }
+      {
+        name: 'redis-connection'
+        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
+      }
       {
         name: 'jwt-secret-key'
         value: jwtSecretKey
@@ -203,11 +216,11 @@ module billingService 'core/host/container-app.bicep' = {
     env: [
       {
         name: 'ConnectionStrings__BillingDb'
-        value: 'Server=${sqlServer.outputs.fqdn};Database=BillingDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+        secretRef: 'sql-connection-billingdb'
       }
       {
         name: 'ConnectionStrings__cache'
-        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
+        secretRef: 'redis-connection'
       }
       {
         name: 'Jwt__SecretKey'
@@ -231,6 +244,14 @@ module billingService 'core/host/container-app.bicep' = {
       }
     ]
     secrets: [
+      {
+        name: 'sql-connection-billingdb'
+        value: 'Server=${sqlServer.outputs.fqdn};Database=BillingDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+      }
+      {
+        name: 'redis-connection'
+        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
+      }
       {
         name: 'jwt-secret-key'
         value: jwtSecretKey
@@ -258,11 +279,11 @@ module inventoryService 'core/host/container-app.bicep' = {
     env: [
       {
         name: 'ConnectionStrings__InventoryDb'
-        value: 'Server=${sqlServer.outputs.fqdn};Database=InventoryDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+        secretRef: 'sql-connection-inventorydb'
       }
       {
         name: 'ConnectionStrings__cache'
-        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
+        secretRef: 'redis-connection'
       }
       {
         name: 'Jwt__SecretKey'
@@ -286,6 +307,14 @@ module inventoryService 'core/host/container-app.bicep' = {
       }
     ]
     secrets: [
+      {
+        name: 'sql-connection-inventorydb'
+        value: 'Server=${sqlServer.outputs.fqdn};Database=InventoryDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+      }
+      {
+        name: 'redis-connection'
+        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
+      }
       {
         name: 'jwt-secret-key'
         value: jwtSecretKey
@@ -313,11 +342,11 @@ module ordersService 'core/host/container-app.bicep' = {
     env: [
       {
         name: 'ConnectionStrings__OrdersDb'
-        value: 'Server=${sqlServer.outputs.fqdn};Database=OrderDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+        secretRef: 'sql-connection-ordersdb'
       }
       {
         name: 'ConnectionStrings__cache'
-        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
+        secretRef: 'redis-connection'
       }
       {
         name: 'Jwt__SecretKey'
@@ -341,6 +370,14 @@ module ordersService 'core/host/container-app.bicep' = {
       }
     ]
     secrets: [
+      {
+        name: 'sql-connection-ordersdb'
+        value: 'Server=${sqlServer.outputs.fqdn};Database=OrderDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+      }
+      {
+        name: 'redis-connection'
+        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
+      }
       {
         name: 'jwt-secret-key'
         value: jwtSecretKey
@@ -368,11 +405,11 @@ module purchasingService 'core/host/container-app.bicep' = {
     env: [
       {
         name: 'ConnectionStrings__PurchasingDb'
-        value: 'Server=${sqlServer.outputs.fqdn};Database=PurchasingDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+        secretRef: 'sql-connection-purchasingdb'
       }
       {
         name: 'ConnectionStrings__cache'
-        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
+        secretRef: 'redis-connection'
       }
       {
         name: 'Jwt__SecretKey'
@@ -396,6 +433,14 @@ module purchasingService 'core/host/container-app.bicep' = {
       }
     ]
     secrets: [
+      {
+        name: 'sql-connection-purchasingdb'
+        value: 'Server=${sqlServer.outputs.fqdn};Database=PurchasingDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+      }
+      {
+        name: 'redis-connection'
+        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
+      }
       {
         name: 'jwt-secret-key'
         value: jwtSecretKey
@@ -423,11 +468,11 @@ module salesService 'core/host/container-app.bicep' = {
     env: [
       {
         name: 'ConnectionStrings__SalesDb'
-        value: 'Server=${sqlServer.outputs.fqdn};Database=SalesDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+        secretRef: 'sql-connection-salesdb'
       }
       {
         name: 'ConnectionStrings__cache'
-        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
+        secretRef: 'redis-connection'
       }
       {
         name: 'Jwt__SecretKey'
@@ -451,6 +496,14 @@ module salesService 'core/host/container-app.bicep' = {
       }
     ]
     secrets: [
+      {
+        name: 'sql-connection-salesdb'
+        value: 'Server=${sqlServer.outputs.fqdn};Database=SalesDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+      }
+      {
+        name: 'redis-connection'
+        value: '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
+      }
       {
         name: 'jwt-secret-key'
         value: jwtSecretKey

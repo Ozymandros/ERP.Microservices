@@ -26,33 +26,51 @@ services:
     project: ./MyApp.Auth/MyApp.Auth.API
     language: dotnet
     host: containerapp
+    docker:
+      path: ./MyApp.Auth/MyApp.Auth.API/Dockerfile
+      context: .
     
   # Billing Service  
   billing-service:
     project: ./MyApp.Billing/MyApp.Billing.API
     language: dotnet
     host: containerapp
+    docker:
+      path: ./MyApp.Billing/MyApp.Billing.API/Dockerfile
+      context: .
     
   # Inventory Service
   inventory-service:
     project: ./MyApp.Inventory/MyApp.Inventory.API
     language: dotnet
     host: containerapp
+    docker:
+      path: ./MyApp.Inventory/MyApp.Inventory.API/Dockerfile
+      context: .
     
   # Orders Service
   orders-service:
     project: ./MyApp.Orders/MyApp.Orders.API
     language: dotnet
     host: containerapp
+    docker:
+      path: ./MyApp.Orders/MyApp.Orders.API/Dockerfile
+      context: .
     
   # Purchasing Service
   purchasing-service:
     project: ./MyApp.Purchasing/MyApp.Purchasing.API
     language: dotnet
     host: containerapp
+    docker:
+      path: ./MyApp.Purchasing/MyApp.Purchasing.API/Dockerfile
+      context: .
     
   # Sales Service
   sales-service:
     project: ./MyApp.Sales/MyApp.Sales.API
     language: dotnet
     host: containerapp
+    docker:
+      path: ./MyApp.Sales/MyApp.Sales.API/Dockerfile
+      context: .

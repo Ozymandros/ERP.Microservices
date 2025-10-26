@@ -13,6 +13,13 @@ param daprEnabled bool = true
 @description('Log Analytics Workspace ID for diagnostics')
 param logAnalyticsWorkspaceId string = ''
 
+@description('Redis host name')
+param redisHostName string = ''
+
+@description('Redis primary key')
+@secure()
+param redisPrimaryKey string = ''
+
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: name
   location: location
@@ -30,7 +37,7 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01'
 }
 
 // Dapr Component for Redis State Store
-resource daprStateStore 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = if (daprEnabled) {
+resource daprStateStore 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = if (daprEnabled && !empty(redisHostName)) {
   name: 'statestore'
   parent: containerAppsEnvironment
   properties: {
@@ -38,15 +45,24 @@ resource daprStateStore 'Microsoft.App/managedEnvironments/daprComponents@2023-0
     version: 'v1'
     ignoreErrors: false
     initTimeout: '60s'
-    secrets: []
+    secrets: [
+      {
+        name: 'redis-password'
+        value: redisPrimaryKey
+      }
+    ]
     metadata: [
       {
         name: 'redisHost'
-        value: 'redis-cache:6379'
+        value: '${redisHostName}:6380'
       }
       {
         name: 'redisPassword'
-        value: ''
+        secretRef: 'redis-password'
+      }
+      {
+        name: 'enableTLS'
+        value: 'true'
       }
       {
         name: 'actorStateStore'
