@@ -10,7 +10,31 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "Limit": 1000
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 30000,
+        "Timeout": 10000
+      },
+      "AddHeadersToRequest": {
+        "X-Forwarded-For": "{RemoteIpAddress}",
+        "X-Request-ID": "{RequestId}",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "{OriginalHost}"
+      },
+      "AddClaimsToRequest": {
+        "sub": "Claims[sub] > value",
+        "email": "Claims[email] > value",
+        "roles": "Claims[role] > value"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -22,7 +46,26 @@
         }
       ],
       "UpstreamPathTemplate": "/inventory/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "Limit": 1000
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 30000,
+        "Timeout": 10000
+      },
+      "AddHeadersToRequest": {
+        "X-Forwarded-For": "{RemoteIpAddress}",
+        "X-Request-ID": "{RequestId}",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "{OriginalHost}"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -34,7 +77,26 @@
         }
       ],
       "UpstreamPathTemplate": "/orders/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "Limit": 1000
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 30000,
+        "Timeout": 10000
+      },
+      "AddHeadersToRequest": {
+        "X-Forwarded-For": "{RemoteIpAddress}",
+        "X-Request-ID": "{RequestId}",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "{OriginalHost}"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -46,7 +108,26 @@
         }
       ],
       "UpstreamPathTemplate": "/sales/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "Limit": 1000
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 30000,
+        "Timeout": 10000
+      },
+      "AddHeadersToRequest": {
+        "X-Forwarded-For": "{RemoteIpAddress}",
+        "X-Request-ID": "{RequestId}",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "{OriginalHost}"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -58,7 +139,26 @@
         }
       ],
       "UpstreamPathTemplate": "/billing/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "Limit": 1000
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 30000,
+        "Timeout": 10000
+      },
+      "AddHeadersToRequest": {
+        "X-Forwarded-For": "{RemoteIpAddress}",
+        "X-Request-ID": "{RequestId}",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "{OriginalHost}"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -70,10 +170,96 @@
         }
       ],
       "UpstreamPathTemplate": "/purchasing/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "Limit": 1000
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 30000,
+        "Timeout": 10000
+      },
+      "AddHeadersToRequest": {
+        "X-Forwarded-For": "{RemoteIpAddress}",
+        "X-Request-ID": "{RequestId}",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "{OriginalHost}"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/health",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/health",
+      "UpstreamHttpMethod": [ "GET" ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": false
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/health/live",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/health/live",
+      "UpstreamHttpMethod": [ "GET" ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": false
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/health/ready",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/health/ready",
+      "UpstreamHttpMethod": [ "GET" ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": false
+      }
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://gateway"
+    "BaseUrl": "https://erp-api.azurewebsites.net",
+    "RequestIdKey": "X-Request-ID",
+    "RateLimitOptions": {
+      "ClientIdHeader": "X-Client-Id",
+      "QuotaExceededMessage": "Rate limit exceeded. Please try again later.",
+      "RateLimitCounterPrefix": "ocelot_ratelimit",
+      "DisableRateLimitHeaders": false,
+      "HttpStatusCode": 429
+    },
+    "QoSOptions": {
+      "ExceptionsAllowedBeforeBreaking": 5,
+      "DurationOfBreak": 30000,
+      "Timeout": 10000
+    },
+    "AuthenticationOptions": {
+      "AuthenticationProviderKey": "Bearer"
+    },
+    "HttpHandlerOptions": {
+      "AllowAutoRedirect": false,
+      "UseTracing": true,
+      "UseProxy": false
+    },
+    "LogLevel": "Warning"
   }
 }
