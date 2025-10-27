@@ -710,7 +710,7 @@ Write-Host "🔍 Starting comprehensive Bicep validation..." -ForegroundColor Cy
 # Step 1: Validate main.bicep syntax
 Write-Host "`n📝 Validating main.bicep syntax..." -ForegroundColor Yellow
 try {
-  az bicep validate --file "$bicepPath/main.bicep"
+  az bicep build --file "$bicepPath/main.bicep"
   Write-Host "✅ main.bicep syntax valid" -ForegroundColor Green
 } catch {
   Write-Host "❌ main.bicep syntax error: $_" -ForegroundColor Red

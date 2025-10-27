@@ -83,3 +83,5 @@ output id string = apiGateway.outputs.id
 output name string = apiGateway.outputs.name
 output uri string = apiGateway.outputs.uri
 output fqdn string = apiGateway.outputs.fqdn
+@description('Managed Identity Principal ID for RBAC role assignments (Phase 3)')
+output managedIdentityPrincipalId string = apiGateway.outputs.managedIdentityPrincipalId

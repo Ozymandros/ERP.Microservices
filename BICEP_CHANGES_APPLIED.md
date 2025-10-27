@@ -432,7 +432,7 @@ ASPNETCORE_ENVIRONMENT=Production
 
 ### Immediately
 1. ✅ Review this document for understanding
-2. ✅ Run Bicep validation: `az bicep validate --file infra/main.bicep`
+2. ✅ Run Bicep validation: `az bicep build --file infra/main.bicep`
 3. ✅ Verify parameters: Check `.env` file has all required variables
 
 ### Phase 2 (Ready When You Are)

@@ -41,7 +41,7 @@
 
 ### Step 1.4: Test Phase 1
 ```powershell
-az bicep validate --file infra/main.bicep
+az bicep build --file infra/main.bicep
 az bicep build --file infra/main.bicep --outfile infra/main.json
 ```
 
@@ -60,7 +60,7 @@ az bicep build --file infra/main.bicep --outfile infra/main.json
 
 ### Step 2.2: Test Phase 2
 ```powershell
-az bicep validate --file infra/myapp-sqlserver/myapp-sqlserver.module.bicep
+az bicep build --file infra/myapp-sqlserver/myapp-sqlserver.module.bicep
 ```
 
 ---
@@ -88,7 +88,7 @@ az bicep validate --file infra/myapp-sqlserver/myapp-sqlserver.module.bicep
 
 ### Step 3.3: Test Phase 3
 ```powershell
-az bicep validate --file infra/core/host/container-app.bicep
+az bicep build --file infra/core/host/container-app.bicep
 ```
 
 ---
@@ -153,9 +153,9 @@ az bicep validate --file infra/core/host/container-app.bicep
 ### Step 4.8: Test Phase 4
 ```powershell
 foreach ($service in @('auth', 'billing', 'inventory', 'orders', 'purchasing', 'sales')) {
-  az bicep validate --file "infra/$service-service/$service-service.module.bicep"
+  az bicep build --file "infra/$service-service/$service-service.module.bicep"
 }
-az bicep validate --file infra/api-gateway/api-gateway.module.bicep
+az bicep build --file infra/api-gateway/api-gateway.module.bicep
 ```
 
 ---
@@ -197,7 +197,7 @@ az bicep validate --file infra/api-gateway/api-gateway.module.bicep
 
 ### Step 5.8: Test Phase 5
 ```powershell
-az bicep validate --file infra/main.bicep
+az bicep build --file infra/main.bicep
 az bicep build --file infra/main.bicep --outfile infra/main.json
 ```
 
@@ -226,7 +226,7 @@ $files = @(
 
 foreach ($file in $files) {
   Write-Host "Validating $file..."
-  az bicep validate --file $file
+  az bicep build --file $file
 }
 ```
 
@@ -354,7 +354,7 @@ az containerapp show --name api-gateway --resource-group rg-myapp-prod --query p
 
 ✅ **All Bicep files validate without errors**
 ```powershell
-az bicep validate --file infra/main.bicep
+az bicep build --file infra/main.bicep
 ```
 
 ✅ **Parameter validation passes**
@@ -455,7 +455,7 @@ module authService 'auth-service/auth-service.module.bicep' = {
 # Validate all bicep files
 Get-ChildItem -Path ./infra -Filter "*.bicep" -Recurse | ForEach-Object {
   Write-Host "Validating $_"
-  az bicep validate --file $_.FullName
+  az bicep build --file $_.FullName
 }
 
 # Build main.bicep

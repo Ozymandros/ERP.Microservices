@@ -427,7 +427,7 @@ All documents reference **azd (Azure Developer CLI)** best practices:
 
 After implementation, verify:
 
-- ✅ All `az bicep validate` commands pass
+- ✅ All `az bicep build` commands pass
 - ✅ All 7 service modules created
 - ✅ All module calls added to main.bicep
 - ✅ Key Vault integration working (enableKeyVault: true)

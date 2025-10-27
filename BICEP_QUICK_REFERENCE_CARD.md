@@ -81,7 +81,7 @@
 
 ```powershell
 # Validate single file
-az bicep validate --file infra/main.bicep
+az bicep build --file infra/main.bicep
 
 # Build to ARM template
 az bicep build --file infra/main.bicep --outfile infra/main.json
@@ -311,13 +311,13 @@ dependsOn: [
 
 Phase 1 ✅
 ```powershell
-az bicep validate --file infra/main.bicep
+az bicep build --file infra/main.bicep
 ```
 
 Phase 4 ✅
 ```powershell
 foreach ($service in @('auth', 'billing', 'inventory', 'orders', 'purchasing', 'sales')) {
-  az bicep validate --file "infra/$service-service/$service-service.module.bicep"
+  az bicep build --file "infra/$service-service/$service-service.module.bicep"
 }
 ```
 

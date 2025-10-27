@@ -7,7 +7,7 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$InfraPath = ".\infra",
     [Parameter(Mandatory=$false)]
-    [switch]$Verbose = $false
+    [switch]$ShowDetails = $false
 )
 
 Write-Host "================================================" -ForegroundColor Green
@@ -33,6 +33,15 @@ $filesToValidate = @(
     "$InfraPath/core/database/sql-server.bicep",
     "$InfraPath/core/security/keyvault-secrets.bicep",
     "$InfraPath/core/host/container-app.bicep",
+    "$InfraPath/core/configuration/app-configuration.bicep",
+    "$InfraPath/core/host/container-app-service.bicep",
+    "$InfraPath/services/auth-service.bicep",
+    "$InfraPath/services/billing-service.bicep",
+    "$InfraPath/services/inventory-service.bicep",
+    "$InfraPath/services/orders-service.bicep",
+    "$InfraPath/services/purchasing-service.bicep",
+    "$InfraPath/services/sales-service.bicep",
+    "$InfraPath/services/api-gateway.bicep",
     "$InfraPath/myapp-sqlserver/myapp-sqlserver.module.bicep",
     "$InfraPath/myapp-sqlserver-roles/myapp-sqlserver-roles.module.bicep",
     "$InfraPath/MyApp-ApplicationInsights/MyApp-ApplicationInsights.module.bicep",
@@ -56,7 +65,7 @@ foreach ($file in $filesToValidate) {
     Write-Host "Validating: $file" -ForegroundColor Cyan
     
     try {
-        $result = az bicep validate --file $file 2>&1
+        $result = az bicep build --file $file 2>&1
         
         if ($LASTEXITCODE -eq 0) {
             Write-Host "  ✓ Valid" -ForegroundColor Green
@@ -73,7 +82,7 @@ foreach ($file in $filesToValidate) {
         $failedFiles += $file
     }
     
-    if ($Verbose) {
+    if ($ShowDetails) {
         Write-Host ""
     }
 }
@@ -93,8 +102,8 @@ if ($failureCount -gt 0) {
         Write-Host "  - $file" -ForegroundColor Red
     }
     Write-Host ""
-    Write-Host "Run with -Verbose flag for detailed error messages:" -ForegroundColor Yellow
-    Write-Host "  ./validate-bicep.ps1 -Verbose" -ForegroundColor Yellow
+    Write-Host "Run with -ShowDetails flag for detailed error messages:" -ForegroundColor Yellow
+    Write-Host "  ./validate-bicep.ps1 -ShowDetails" -ForegroundColor Yellow
     exit 1
 }
 

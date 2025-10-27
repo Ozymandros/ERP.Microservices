@@ -69,11 +69,11 @@ param appConfigConnectionString string = ''
 @description('Array of Key Vault secrets to reference')
 param keyVaultSecrets array = []
 
-@description('Log Analytics Workspace ID')
-param logAnalyticsWorkspaceId string = ''
+@description('Log Analytics Workspace ID for diagnostics and monitoring')
+param logAnalyticsWorkspaceId string
 
-@description('Managed Identity Principal ID')
-param managedIdentityPrincipalId string = ''
+@description('Managed Identity Principal ID for RBAC role assignments')
+param managedIdentityPrincipalId string
 
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
   name: split(containerAppsEnvironmentId, '/')[8]
@@ -253,4 +253,6 @@ resource acrPullRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
 output id string = containerApp.id
 output name string = containerApp.name
 output uri string = externalIngress ? 'https://${containerApp.properties.configuration.ingress.fqdn}' : ''
+@description('Managed Identity Principal ID for RBAC role assignments (Key Vault, App Config, SQL, Redis)')
+output managedIdentityPrincipalId string = containerApp.identity.principalId
 output fqdn string = containerApp.properties.configuration.ingress.fqdn

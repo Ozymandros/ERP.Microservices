@@ -93,3 +93,5 @@ output id string = purchasingService.outputs.id
 output name string = purchasingService.outputs.name
 output uri string = purchasingService.outputs.uri
 output fqdn string = purchasingService.outputs.fqdn
+@description('Managed Identity Principal ID for RBAC role assignments (Phase 3)')
+output managedIdentityPrincipalId string = purchasingService.outputs.managedIdentityPrincipalId

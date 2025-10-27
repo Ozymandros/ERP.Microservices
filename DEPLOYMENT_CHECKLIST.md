@@ -95,7 +95,7 @@ az acr build -r <registry-name> -t auth-service:latest -f MyApp.Auth/MyApp.Auth.
 Run validation before deployment:
 
 ```bash
-az bicep validate --file infra/main.bicep
+az bicep build --file infra/main.bicep
 ```
 
 Should show: `The template is valid.`

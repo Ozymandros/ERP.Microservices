@@ -128,6 +128,22 @@ resource jwtSecretKeyRef 'Microsoft.AppConfiguration/configurationStores/keyValu
 }
 
 // ============================================================================
+// Redis Cache Password - Key Vault Reference
+// ============================================================================
+// Redis authentication password stored securely in Key Vault
+// App Configuration holds only a reference to it
+// Services will resolve the reference at runtime for cache authentication
+
+resource redisCachePasswordRef 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  parent: appConfig
+  name: 'Redis:Password'
+  properties: {
+    value: '{"uri":"${keyVaultName}/secrets/redis-cache-password"}'
+    contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
+  }
+}
+
+// ============================================================================
 // Database Connection Strings - Key Vault References
 // ============================================================================
 // Each service has a specific database connection string

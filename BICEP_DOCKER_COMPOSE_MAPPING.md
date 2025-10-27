@@ -510,7 +510,7 @@ services:
 - [ ] Gateway configured with external ingress
 - [ ] All services reference cache connection
 - [ ] All services reference their service database connection
-- [ ] `az bicep validate` passes all files
+- [ ] `az bicep build` passes all files
 - [ ] `az deployment group validate` passes
 
 ---

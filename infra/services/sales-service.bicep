@@ -93,3 +93,5 @@ output id string = salesService.outputs.id
 output name string = salesService.outputs.name
 output uri string = salesService.outputs.uri
 output fqdn string = salesService.outputs.fqdn
+@description('Managed Identity Principal ID for RBAC role assignments (Phase 3)')
+output managedIdentityPrincipalId string = salesService.outputs.managedIdentityPrincipalId

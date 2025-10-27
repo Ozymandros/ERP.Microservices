@@ -14,6 +14,10 @@ param redisHostName string
 @secure()
 param redisPrimaryKey string
 
+@description('Redis cache password for authentication')
+@secure()
+param redisCachePassword string = ''
+
 @description('SQL Server FQDN')
 param sqlFqdn string
 
@@ -51,6 +55,15 @@ resource kvRedisSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (enab
   name: 'redis-connection'
   properties: {
     value: '${redisHostName}:6380,password=${redisPrimaryKey},ssl=True,abortConnect=False'
+  }
+}
+
+// ✅ Redis cache password secret (for authentication)
+resource kvRedisCachePasswordSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (enableKeyVault && !empty(redisCachePassword)) {
+  parent: keyVault
+  name: 'redis-cache-password'
+  properties: {
+    value: redisCachePassword
   }
 }
 
@@ -118,6 +131,7 @@ output keyVaultName string = enableKeyVault ? name : ''
 
 // Return secret NAMES (not values) so callers can reference secret names safely
 output redisSecretName string = enableKeyVault ? kvRedisSecret.name : ''
+output redisAuthSecretName string = 'redis-cache-password'
 output jwtSecretName string = enableKeyVault ? kvJwtSecret.name : ''
 output sqlAuthSecretName string = enableKeyVault ? kvSqlSecretAuth.name : ''
 output sqlBillingSecretName string = enableKeyVault ? kvSqlSecretBilling.name : ''

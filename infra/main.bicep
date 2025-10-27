@@ -54,7 +54,6 @@ module resources 'resources.bicep' = {
   params: {
     location: location
     tags: tags
-    principalId: principalId
   }
 }
 
@@ -68,6 +67,7 @@ module redis 'core/database/redis.bicep' = {
     sku: 'Standard'
     family: 'C'
     capacity: 1
+    cachePassword: cache_password  // ✅ Wire password for authentication
   }
 }
 
@@ -102,6 +102,7 @@ module keyVault 'core/security/keyvault-secrets.bicep' = {
     jwtSecretKey: jwtSecretKey
     redisHostName: redis.outputs.hostName
     redisPrimaryKey: redis.outputs.primaryKey
+    redisCachePassword: cache_password
     sqlFqdn: sqlServer.outputs.fqdn
     sqlAdminPassword: password
     enableKeyVault: true
@@ -295,6 +296,97 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+  }
+}
+
+// ============================================================================
+// PHASE 3B: Centralized RBAC - Services Access via App Configuration
+// ============================================================================
+// ARCHITECTURE: Centralized secret access through App Configuration
+//
+// Services → RBAC → App Configuration (Data Reader)
+//                       ↓
+//                   App Configuration → RBAC → Key Vault (Secrets User)
+//
+// Benefits:
+// - Single point of access control
+// - Simplified permission management
+// - Centralized audit logging
+// - Better security posture
+// ============================================================================
+
+// RBAC: Grant each microservice access to App Configuration
+module authServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
+  name: 'auth-service-appconfig-rbac'
+  scope: rg
+  params: {
+    appConfigId: appConfiguration.outputs.appConfigResourceId
+    principalId: authServiceModule.outputs.managedIdentityPrincipalId
+  }
+}
+
+module billingServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
+  name: 'billing-service-appconfig-rbac'
+  scope: rg
+  params: {
+    appConfigId: appConfiguration.outputs.appConfigResourceId
+    principalId: billingServiceModule.outputs.managedIdentityPrincipalId
+  }
+}
+
+module inventoryServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
+  name: 'inventory-service-appconfig-rbac'
+  scope: rg
+  params: {
+    appConfigId: appConfiguration.outputs.appConfigResourceId
+    principalId: inventoryServiceModule.outputs.managedIdentityPrincipalId
+  }
+}
+
+module ordersServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
+  name: 'orders-service-appconfig-rbac'
+  scope: rg
+  params: {
+    appConfigId: appConfiguration.outputs.appConfigResourceId
+    principalId: ordersServiceModule.outputs.managedIdentityPrincipalId
+  }
+}
+
+module purchasingServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
+  name: 'purchasing-service-appconfig-rbac'
+  scope: rg
+  params: {
+    appConfigId: appConfiguration.outputs.appConfigResourceId
+    principalId: purchasingServiceModule.outputs.managedIdentityPrincipalId
+  }
+}
+
+module salesServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
+  name: 'sales-service-appconfig-rbac'
+  scope: rg
+  params: {
+    appConfigId: appConfiguration.outputs.appConfigResourceId
+    principalId: salesServiceModule.outputs.managedIdentityPrincipalId
+  }
+}
+
+module apiGatewayAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
+  name: 'api-gateway-appconfig-rbac'
+  scope: rg
+  params: {
+    appConfigId: appConfiguration.outputs.appConfigResourceId
+    principalId: apiGatewayModule.outputs.managedIdentityPrincipalId
+  }
+}
+
+// RBAC: Grant App Configuration access to Key Vault (centralized secret management)
+// This is the SINGLE POINT where App Configuration reads secrets from Key Vault
+module appConfigKeyVaultRbac 'core/security/keyvault-rbac.bicep' = {
+  name: 'appconfig-keyvault-rbac'
+  scope: rg
+  params: {
+    keyVaultId: keyVault.outputs.keyVaultId
+    principalId: appConfiguration.outputs.appConfigPrincipalId
   }
 }
 

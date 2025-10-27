@@ -93,3 +93,5 @@ output id string = authService.outputs.id
 output name string = authService.outputs.name
 output uri string = authService.outputs.uri
 output fqdn string = authService.outputs.fqdn
+@description('Managed Identity Principal ID for RBAC role assignments (Phase 3)')
+output managedIdentityPrincipalId string = authService.outputs.managedIdentityPrincipalId

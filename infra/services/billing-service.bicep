@@ -93,3 +93,5 @@ output id string = billingService.outputs.id
 output name string = billingService.outputs.name
 output uri string = billingService.outputs.uri
 output fqdn string = billingService.outputs.fqdn
+@description('Managed Identity Principal ID for RBAC role assignments (Phase 3)')
+output managedIdentityPrincipalId string = billingService.outputs.managedIdentityPrincipalId

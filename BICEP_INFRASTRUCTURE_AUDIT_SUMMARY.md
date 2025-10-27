@@ -336,7 +336,7 @@ After implementation, verify:
 
 - [ ] **Syntax Valid**
   ```powershell
-  az bicep validate --file infra/main.bicep
+  az bicep build --file infra/main.bicep
   ```
 
 - [ ] **Parameters Valid**

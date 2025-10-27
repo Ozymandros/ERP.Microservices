@@ -699,7 +699,7 @@ resource dbOwnerRole 'Microsoft.Sql/servers/databases/roleAssignments@2021-02-01
 
 ```powershell
 # Validate main.bicep
-az bicep validate --file main.bicep
+az bicep build --file main.bicep
 
 # Validate parameters
 az deployment group validate \
@@ -776,7 +776,7 @@ After implementing these fixes, the infrastructure should:
 - SQL role assignments in place
 
 ✅ **Validation:**
-- `az bicep validate` passes
+- `az bicep build` passes
 - `az deployment group validate` passes
 - No unresolved module references
 

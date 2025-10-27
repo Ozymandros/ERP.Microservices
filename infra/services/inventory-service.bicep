@@ -93,3 +93,5 @@ output id string = inventoryService.outputs.id
 output name string = inventoryService.outputs.name
 output uri string = inventoryService.outputs.uri
 output fqdn string = inventoryService.outputs.fqdn
+@description('Managed Identity Principal ID for RBAC role assignments (Phase 3)')
+output managedIdentityPrincipalId string = inventoryService.outputs.managedIdentityPrincipalId
