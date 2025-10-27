@@ -1,5 +1,5 @@
+using Aspire.Hosting.Azure;
 using CommunityToolkit.Aspire.Hosting.Dapr;
-using StackExchange.Redis;
 
 public class AspireProjectBuilder
 {
@@ -9,17 +9,29 @@ public class AspireProjectBuilder
     private int _metricsPort = 9091;
 
     private readonly IDistributedApplicationBuilder _builder;
-    private readonly IResourceBuilder<SqlServerServerResource> _sqlServer;
+    private readonly IResourceBuilder<SqlServerServerResource>? _sqlServer;
+    private readonly IResourceBuilder<AzureSqlServerResource>? _sqlAzureServer;
+
+    private readonly string? _keyVault;
 
     public AspireProjectBuilder(
         IDistributedApplicationBuilder builder,
-        IResourceBuilder<SqlServerServerResource> sqlServer)
+        IResourceBuilder<SqlServerServerResource>? sqlServer = null,
+        IResourceBuilder<AzureSqlServerResource>? sqlAzureServer = null,
+        string? keyVault = null
+        )
     {
         _builder = builder;
         _sqlServer = sqlServer;
+        _sqlAzureServer = sqlAzureServer;
+        _keyVault = keyVault;
     }
 
-    public IResourceBuilder<ProjectResource> AddWebProject<T>(IResourceBuilder<RedisResource>? redis = null, string? origin = null, bool isDeployment = false)
+    public IResourceBuilder<ProjectResource> AddWebProject<T>(
+        IResourceBuilder<RedisResource>? redis = null,
+        string? origin = null,
+        bool isDeployment = false,
+        IResourceBuilder<AzureApplicationInsightsResource>? applicationInsights = null)
         where T : IProjectMetadata, new()
     {
         // Extract service name from type name
@@ -49,9 +61,6 @@ public class AspireProjectBuilder
         //var daprGrpcPort = _daprGrpcPort++;
         //var metricsPort = _metricsPort++;
 
-        // Add database
-        var database = _sqlServer.AddDatabase(dbName);
-
         // Add project
         var project = _builder.AddProject<T>(serviceResourceName);
 
@@ -60,13 +69,11 @@ public class AspireProjectBuilder
             //.WithHttpEndpoint(80)
             //.WithHttpsEndpoint()
             //.WithExternalHttpEndpoints()
-            .WaitFor(database)
-            .WithReference(database)
             //.WithDaprSidecarOptions(options => options.AddArgument("--enable-scheduler", "false"))
             .WithDaprSidecar(new DaprSidecarOptions
             {
                 AppId = daprAppId,
-                AppPort = 80,
+                AppPort = httpPort,
                 //DaprHttpPort = daprHttpPort,
                 //DaprGrpcPort = daprGrpcPort,
                 //MetricsPort = metricsPort
@@ -74,21 +81,28 @@ public class AspireProjectBuilder
             .WithEnvironment("Jwt__SecretKey", _builder.Configuration["Jwt:SecretKey"])
             .WithEnvironment("Jwt__Issuer", _builder.Configuration["Jwt:Issuer"])
             .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"])
-            .WithEnvironment("FRONTEND_ORIGIN", origin);
+            .WithEnvironment("FRONTEND_ORIGIN", origin)
+            .PublishAsDockerFile();
 
-        if (!isDeployment)
-        {
+            var database = _sqlServer?.AddDatabase(dbName); ;
+            if (database is not null)
+            {
+                project = project.WaitFor(database);
+                project = project.WithReference(database);
+            }
             // Local: exposem ports únics per al dashboard
             project = project.WithHttpEndpoint(httpPort)
             .WithHttpHealthCheck(path: "/health", statusCode: 200);
-        }
-        else if (serviceName == "gateway")
+
+        // Application Insights
+        if (applicationInsights is not null)
         {
-            // Deployment: només el gateway té ingress públic
-            project = project.WithHttpEndpoint(80)
-            .WithHttpHealthCheck(path: "/health", statusCode: 200);
+            project = project
+                .WaitFor(applicationInsights)
+                .WithReference(applicationInsights);
         }
 
+        // Redis Cache
         if (redis is not null)
             project
                 //.WaitFor(store)
@@ -118,8 +132,10 @@ public static class AspireProjectBuilderExtensions
 {
     public static AspireProjectBuilder CreateProjectBuilder(
         this IDistributedApplicationBuilder builder,
-        IResourceBuilder<SqlServerServerResource> sqlServer)
+        IResourceBuilder<SqlServerServerResource>? sqlServer = null,
+        IResourceBuilder<AzureSqlServerResource>? sqlAzure = null,
+        string? keyVault = null)
     {
-        return new AspireProjectBuilder(builder, sqlServer);
+        return new AspireProjectBuilder(builder, sqlServer, sqlAzure, keyVault);
     }
 }

@@ -10,8 +10,8 @@ spec:
   - name: redisHost
     value: "redis:6379"
   - name: redisPassword
-    value: "" # set if needed
+    value: "Redis@Secure123!"
   - name: actorStateStore
-    value: "false"
+    value: "true"
   - name: enableTLS
     value: "false"

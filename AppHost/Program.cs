@@ -6,6 +6,12 @@ var isDeployment =
 
 var builder = DistributedApplication.CreateBuilder(args);
 
+var analyticsWorkspace = isDeployment ? builder
+    .AddAzureLogAnalyticsWorkspace("MyApp-LogAnalyticsWorkspace") : null;
+var applicationInsights = isDeployment ? builder
+    .AddAzureApplicationInsights("MyApp-ApplicationInsights")
+    .WithLogAnalyticsWorkspace(analyticsWorkspace) : null;
+
 builder.Services.AddHealthChecks();
 //var store = builder.AddDaprStateStore("cache", new());
 // Afegeix el contenidor de Redis
@@ -19,64 +25,98 @@ var redis = builder.AddRedis("cache")
     .WithRedisInsight()
     .WithDataVolume("redis-cache");
 
+// Create builder with automatic port management
+AspireProjectBuilder projectBuilder;
+
 // Afegir SQL Server com a contenidor
 var password = builder.AddParameter("password", secret: true);
-var sqlServer = builder.AddSqlServer("sqlserver", password, 1455)
-    .WithLifetime(ContainerLifetime.Persistent) // reinicia periòdicament per a entorns de desenvolupament
-    .WithDataVolume("sqlserver-data"); // volum amb nom → es manté entre arrencades
-
-var usersDb = sqlServer.AddDatabase("UsersDB");
-//var notificationsDb = sqlServer.AddDatabase("NotificationsDB");
-
-// Create builder with automatic port management
-var projectBuilder = builder.CreateProjectBuilder(sqlServer);
+if (isDeployment)
+{
+    var sqlServer = builder.AddAzureSqlServer("myapp-sqlserver");
+    projectBuilder = builder.CreateProjectBuilder();
+}
+else
+{
+    var sqlServer = builder.AddSqlServer("myapp-sqlserver", password, 1455)
+        .WithLifetime(ContainerLifetime.Persistent) // reinicia periòdicament per a entorns de desenvolupament
+        .WithDataVolume("sqlserver-data"); // volum amb nom → es manté entre arrencades
+    projectBuilder = builder.CreateProjectBuilder(sqlServer);
+}
 
 var origin = builder.Configuration["Parameters:FrontendOrigin"];
 
 // Add projects - ports auto-increment
-var authService = projectBuilder.AddWebProject<Projects.MyApp_Auth_API>(redis, origin, isDeployment);
+var authService = projectBuilder.AddWebProject<Projects.MyApp_Auth_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: BillingDB, billing-service, ports 5000, 3500, 45000, 9090
 
-var billingService = projectBuilder.AddWebProject<Projects.MyApp_Billing_API>(redis, origin, isDeployment);
+var billingService = projectBuilder.AddWebProject<Projects.MyApp_Billing_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: BillingDB, billing-service, ports 5001, 3501, 45001, 9091
 
-var inventoryService = projectBuilder.AddWebProject<Projects.MyApp_Inventory_API>(redis, origin, isDeployment);
+var inventoryService = projectBuilder.AddWebProject<Projects.MyApp_Inventory_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: InventoryDB, inventory-service, ports 5002, 3502, 45002, 9092
 
-var ordersService = projectBuilder.AddWebProject<Projects.MyApp_Orders_API>(redis, origin, isDeployment);
+var ordersService = projectBuilder.AddWebProject<Projects.MyApp_Orders_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: OrderDB, order-service, ports 5003, 3503, 45003, 9093
 
-var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_API>(redis, origin, isDeployment);
+var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: OrderDB, order-service, ports 5004, 3504, 45004, 9094
 
-var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment);
+var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: OrderDB, order-service, ports 5005, 3505, 45005, 9095
 
-// Configuració del Reverse Proxy (YARP)
-var gateway = builder.AddYarp("gateway")
-    .WaitFor(authService)
-    .WaitFor(billingService)
-    .WaitFor(inventoryService)
-    .WaitFor(ordersService)
-    .WaitFor(purchasingService)
-    .WaitFor(salesService)
-                     .WithHostPort(5000)
-                     .WithExternalHttpEndpoints()
-                     .WithConfiguration(yarp =>
-                     {
-                         // Configure routes programmatically
-                         yarp.AddRoute("/api/auth/{**catch-all}", authService);
-                         yarp.AddRoute("/api/permissions/{**catch-all}", authService);
-                         yarp.AddRoute("/api/users/{**catch-all}", authService);
-                         yarp.AddRoute("/api/roles/{**catch-all}", authService);
-                         yarp.AddRoute("/api/billing/{**catch-all}", billingService);
-                         yarp.AddRoute("/api/inventory/{**catch-all}", inventoryService);
-                         yarp.AddRoute("/api/orders/{**catch-all}", ordersService);
-                         yarp.AddRoute("/api/purchasing/{**catch-all}", purchasingService);
-                         yarp.AddRoute("/api/sales/{**catch-all}", salesService);
-                         //yarp.AddRoute("/notification/{**catch-all}", notificationService)
-                         //    .WithTransformPathRemovePrefix("/notification");
-                     });
+if (isDeployment)
+{
+    // Azure Deployment: ErpApiGateway with Ocelot
+    var apiGateway = builder.AddProject<Projects.ErpApiGateway>("api-gateway")
+        .WaitFor(authService)
+        .WaitFor(billingService)
+        .WaitFor(inventoryService)
+        .WaitFor(ordersService)
+        .WaitFor(purchasingService)
+        .WaitFor(salesService)
+        .WithExternalHttpEndpoints()
+        .WithEnvironment("OCELOT_ENVIRONMENT", "Production")
+        .PublishAsDockerFile()
+            .WithEnvironment("Jwt__SecretKey", builder.Configuration["Jwt:SecretKey"])
+            .WithEnvironment("Jwt__Issuer", builder.Configuration["Jwt:Issuer"])
+            .WithEnvironment("Jwt__Audience", builder.Configuration["Jwt:Audience"])
+            .WithEnvironment("FRONTEND_ORIGIN", origin);
+
+    if (applicationInsights is not null)
+    {
+        apiGateway = apiGateway
+            .WaitFor(applicationInsights)
+            .WithReference(applicationInsights);
+    }
+}
+else
+{
+    // Local Development: Reverse Proxy (YARP)
+    var gateway = builder.AddYarp("gateway")
+        .WaitFor(authService)
+        .WaitFor(billingService)
+        .WaitFor(inventoryService)
+        .WaitFor(ordersService)
+        .WaitFor(purchasingService)
+        .WaitFor(salesService)
+                         .WithHostPort(5000)
+                         .WithExternalHttpEndpoints()
+                         .WithConfiguration(yarp =>
+                         {
+                             // Configure routes programmatically
+                             yarp.AddRoute("/api/auth/{**catch-all}", authService);
+                             yarp.AddRoute("/api/permissions/{**catch-all}", authService);
+                             yarp.AddRoute("/api/users/{**catch-all}", authService);
+                             yarp.AddRoute("/api/roles/{**catch-all}", authService);
+                             yarp.AddRoute("/api/billing/{**catch-all}", billingService);
+                             yarp.AddRoute("/api/inventory/{**catch-all}", inventoryService);
+                             yarp.AddRoute("/api/orders/{**catch-all}", ordersService);
+                             yarp.AddRoute("/api/purchasing/{**catch-all}", purchasingService);
+                             yarp.AddRoute("/api/sales/{**catch-all}", salesService);
+                             //yarp.AddRoute("/notification/{**catch-all}", notificationService)
+                             //    .WithTransformPathRemovePrefix("/notification");
+                         });
+}
 
 //TODO (o no):
 //var webClient = builder.AddNpmApp("client", "../../erp-frontend", "dev")

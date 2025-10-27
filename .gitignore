@@ -361,4 +361,17 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+# Azure Developer CLI
+.azure/
+*.env
+
+# Deployment artifacts
+infra/.bicep
+
+# Local environment files
+.env.local
+.env.*.local
 .azure
+
+# Bicep compiled ARM templates
+infra/**/*.json

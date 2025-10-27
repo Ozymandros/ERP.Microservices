@@ -6,23 +6,28 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5007
-        }
-      ],
-      "UpstreamPathTemplate": "/auth/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
-    },
-    {
-      "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/inventory/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+      "UpstreamPathTemplate": "/auth/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "Limit": 100
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 5000,
+        "Timeout": 5000
+      },
+      "AddHeadersToRequest": {
+        "X-Forwarded-For": "{RemoteIpAddress}",
+        "X-Request-ID": "{RequestId}"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -33,10 +38,22 @@
           "Port": 5002
         }
       ],
-      "UpstreamPathTemplate": "/orders/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
-    }
-    ,
+      "UpstreamPathTemplate": "/inventory/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "Limit": 100
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 5000,
+        "Timeout": 5000
+      }
+    },
     {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
@@ -46,8 +63,21 @@
           "Port": 5003
         }
       ],
-      "UpstreamPathTemplate": "/sales/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+      "UpstreamPathTemplate": "/orders/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "Limit": 100
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 5000,
+        "Timeout": 5000
+      }
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -58,8 +88,21 @@
           "Port": 5004
         }
       ],
-      "UpstreamPathTemplate": "/billing/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+      "UpstreamPathTemplate": "/sales/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "Limit": 100
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 5000,
+        "Timeout": 5000
+      }
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -70,8 +113,21 @@
           "Port": 5005
         }
       ],
-      "UpstreamPathTemplate": "/notification/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+      "UpstreamPathTemplate": "/billing/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "Limit": 100
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 5000,
+        "Timeout": 5000
+      }
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -83,10 +139,90 @@
         }
       ],
       "UpstreamPathTemplate": "/purchasing/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "Limit": 100
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 5000,
+        "Timeout": 5000
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/health",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/health",
+      "UpstreamHttpMethod": [ "GET" ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": false
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/health/live",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/health/live",
+      "UpstreamHttpMethod": [ "GET" ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": false
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/health/ready",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/health/ready",
+      "UpstreamHttpMethod": [ "GET" ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": false
+      }
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:5000"
+    "BaseUrl": "https://localhost:5000",
+    "RequestIdKey": "X-Request-ID",
+    "RateLimitOptions": {
+      "ClientIdHeader": "X-Client-Id",
+      "QuotaExceededMessage": "Rate limit exceeded",
+      "RateLimitCounterPrefix": "ocelot_ratelimit",
+      "DisableRateLimitHeaders": false,
+      "HttpStatusCode": 429
+    },
+    "QoSOptions": {
+      "ExceptionsAllowedBeforeBreaking": 3,
+      "DurationOfBreak": 10000,
+      "Timeout": 5000
+    },
+    "AuthenticationOptions": {
+      "AuthenticationProviderKey": "Bearer"
+    },
+    "HttpHandlerOptions": {
+      "AllowAutoRedirect": false,
+      "UseTracing": true,
+      "UseProxy": false
+    },
+    "LogLevel": "Information"
   }
 }

@@ -1,18 +1,77 @@
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuración de Ocelot
-builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+// ========================================
+// Configuration
+// ========================================
+
+// ConfiguraciÃ³n de Ocelot with environment-specific configuration
+var environment = builder.Environment.EnvironmentName;
+builder.Configuration
+    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"ocelot.{environment}.json", optional: true, reloadOnChange: true);
+
+// ========================================
+// Services
+// ========================================
+
+// Add Ocelot
 builder.Services.AddOcelot(builder.Configuration);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// Add Authentication - JWT Bearer
+var jwtSecretKey = builder.Configuration["JwtSecretKey"] 
+    ?? throw new InvalidOperationException("JwtSecretKey configuration is required");
+var key = Encoding.ASCII.GetBytes(jwtSecretKey);
 
-var origins = builder.Configuration["FRONTEND_ORIGIN"]?.Split(';') ?? ["http://localhost:3000"];
+builder.Services
+    .AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.Authority = builder.Configuration["JwtIssuer"] ?? "http://localhost:5001";
+        options.Audience = builder.Configuration["JwtAudience"] ?? "erp-api";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = !environment.Equals("Development", StringComparison.OrdinalIgnoreCase),
+            ValidIssuer = builder.Configuration["JwtIssuer"],
+            ValidateAudience = !environment.Equals("Development", StringComparison.OrdinalIgnoreCase),
+            ValidAudience = builder.Configuration["JwtAudience"],
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromSeconds(10)
+        };
+        options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+                logger.LogWarning("Authentication failed: {Message}", context.Exception?.Message);
+                context.Response.StatusCode = 401;
+                context.Response.ContentType = "application/json";
+                return context.Response.WriteAsJsonAsync(new 
+                { 
+                    error = "Authentication failed",
+                    message = context.Exception?.Message ?? "Invalid token" 
+                });
+            }
+        };
+    });
 
+// Add Authorization
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ApiAccess", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+    });
+});
+
+// Add CORS
+var origins = builder.Configuration["FRONTEND_ORIGIN"]?.Split(';') ?? new[] { "http://localhost:3000" };
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -24,9 +83,33 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Add Health Checks
+builder.Services.AddHealthChecks()
+    .AddCheck("Gateway", () => 
+    {
+        return new Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult(
+            Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy, 
+            "Gateway is operational");
+    });
+
+// Add Logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+if (environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
+{
+    builder.Logging.AddDebug();
+}
+
+// ========================================
+// Build App
+// ========================================
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ========================================
+// Middleware
+// ========================================
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -36,25 +119,16 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("AllowFrontend");
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+// Health check endpoints (no auth required)
+app.MapHealthChecks("/health");
+app.MapHealthChecks("/health/live");
+app.MapHealthChecks("/health/ready");
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+// Authentication and Authorization middleware
+app.UseAuthentication();
+app.UseAuthorization();
 
+// Ocelot middleware - must be last
 await app.UseOcelot();
 
 app.Run();
