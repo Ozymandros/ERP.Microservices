@@ -10,7 +10,7 @@ var analyticsWorkspace = isDeployment ? builder
     .AddAzureLogAnalyticsWorkspace("MyApp-LogAnalyticsWorkspace") : null;
 var applicationInsights = isDeployment ? builder
     .AddAzureApplicationInsights("MyApp-ApplicationInsights")
-    .WithLogAnalyticsWorkspace(analyticsWorkspace): null;
+    .WithLogAnalyticsWorkspace(analyticsWorkspace) : null;
 
 builder.Services.AddHealthChecks();
 //var store = builder.AddDaprStateStore("cache", new());
@@ -64,35 +64,54 @@ var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_A
 var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: OrderDB, order-service, ports 5005, 3505, 45005, 9095
 
-// Configuració del Reverse Proxy (YARP)
-var gateway = builder.AddYarp("gateway")
-    .WaitFor(authService)
-    .WaitFor(billingService)
-    .WaitFor(inventoryService)
-    .WaitFor(ordersService)
-    .WaitFor(purchasingService)
-    .WaitFor(salesService)
-                     .WithExternalHttpEndpoints()
-                     .WithConfiguration(yarp =>
-                     {
-                         // Configure routes programmatically
-                         yarp.AddRoute("/api/auth/{**catch-all}", authService);
-                         yarp.AddRoute("/api/permissions/{**catch-all}", authService);
-                         yarp.AddRoute("/api/users/{**catch-all}", authService);
-                         yarp.AddRoute("/api/roles/{**catch-all}", authService);
-                         yarp.AddRoute("/api/billing/{**catch-all}", billingService);
-                         yarp.AddRoute("/api/inventory/{**catch-all}", inventoryService);
-                         yarp.AddRoute("/api/orders/{**catch-all}", ordersService);
-                         yarp.AddRoute("/api/purchasing/{**catch-all}", purchasingService);
-                         yarp.AddRoute("/api/sales/{**catch-all}", salesService);
-                         //yarp.AddRoute("/notification/{**catch-all}", notificationService)
-                         //    .WithTransformPathRemovePrefix("/notification");
-                     });
-
-// Add database
-if (!isDeployment)
+if (isDeployment)
 {
-    gateway = gateway.WithHostPort(5000);
+    // Azure Deployment: ErpApiGateway with Ocelot
+    var apiGateway = builder.AddProject<Projects.ErpApiGateway>("api-gateway")
+        .WaitFor(authService)
+        .WaitFor(billingService)
+        .WaitFor(inventoryService)
+        .WaitFor(ordersService)
+        .WaitFor(purchasingService)
+        .WaitFor(salesService)
+        .WithExternalHttpEndpoints()
+        .WithEnvironment("OCELOT_ENVIRONMENT", "Production")
+        .PublishAsDockerFile();
+
+    if (applicationInsights is not null)
+    {
+        apiGateway = apiGateway
+            .WaitFor(applicationInsights)
+            .WithReference(applicationInsights);
+    }
+}
+else
+{
+    // Local Development: Reverse Proxy (YARP)
+    var gateway = builder.AddYarp("gateway")
+        .WaitFor(authService)
+        .WaitFor(billingService)
+        .WaitFor(inventoryService)
+        .WaitFor(ordersService)
+        .WaitFor(purchasingService)
+        .WaitFor(salesService)
+                         .WithHostPort(5000)
+                         .WithExternalHttpEndpoints()
+                         .WithConfiguration(yarp =>
+                         {
+                             // Configure routes programmatically
+                             yarp.AddRoute("/api/auth/{**catch-all}", authService);
+                             yarp.AddRoute("/api/permissions/{**catch-all}", authService);
+                             yarp.AddRoute("/api/users/{**catch-all}", authService);
+                             yarp.AddRoute("/api/roles/{**catch-all}", authService);
+                             yarp.AddRoute("/api/billing/{**catch-all}", billingService);
+                             yarp.AddRoute("/api/inventory/{**catch-all}", inventoryService);
+                             yarp.AddRoute("/api/orders/{**catch-all}", ordersService);
+                             yarp.AddRoute("/api/purchasing/{**catch-all}", purchasingService);
+                             yarp.AddRoute("/api/sales/{**catch-all}", salesService);
+                             //yarp.AddRoute("/notification/{**catch-all}", notificationService)
+                             //    .WithTransformPathRemovePrefix("/notification");
+                         });
 }
 
 //TODO (o no):
