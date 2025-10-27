@@ -51,13 +51,13 @@ The Aspire dashboard will open automatically showing all services.
 azd up
 ```
 
-See [QUICKSTART.md](./QUICKSTART.md) for detailed 5-minute deployment guide.
+See [QUICKSTART.md](./docs/guides/QUICKSTART.md) for detailed 5-minute deployment guide.
 
 ## 📚 Documentation
 
-- **[Quick Start Guide](./QUICKSTART.md)** - Get started in 5 minutes
-- **[Deployment Guide](./DEPLOYMENT.md)** - Comprehensive deployment documentation
-- **[Architecture Guide](./docs/ARCHITECTURE.md)** - System architecture (coming soon)
+- **[Quick Start Guide](./docs/guides/QUICKSTART.md)** - Get started in 5 minutes
+- **[Deployment Guide](./docs/deployment/DEPLOYMENT.md)** - Comprehensive deployment documentation
+- **[Architecture Guide](./docs/architecture/ARCHITECTURE_DOCUMENTATION.md)** - System architecture and design
 
 ## 🛠️ Technology Stack
 
@@ -89,8 +89,9 @@ ERP.Microservices/
 │   ├── main.bicep              # Main infrastructure definition
 │   └── main.parameters.json    # Parameters template
 ├── .github/workflows/           # CI/CD pipelines
+├── docs/                        # Documentation
 ├── azure.yaml                   # Azure Developer CLI config
-└── DEPLOYMENT.md               # Deployment guide
+└── README.md                    # This file
 ```
 
 Each microservice follows Clean Architecture:
@@ -171,7 +172,7 @@ This deploys:
 - ✅ Azure Cache for Redis
 - ✅ Auto-scaling and health checks
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for details.
+See [DEPLOYMENT.md](./docs/deployment/DEPLOYMENT.md) for details.
 
 ### GitHub Actions (CI/CD)
 
@@ -228,5 +229,5 @@ This project is licensed under the MIT License.
 ## 🆘 Support
 
 - [Report Issues](https://github.com/Ozymandros/ERP.Microservices/issues)
-- [Deployment Guide](./DEPLOYMENT.md)
-- [Quick Start](./QUICKSTART.md)
+- [Deployment Guide](./docs/deployment/DEPLOYMENT.md)
+- [Quick Start](./docs/guides/QUICKSTART.md)

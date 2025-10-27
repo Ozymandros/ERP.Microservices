@@ -192,8 +192,8 @@ azd up
 - [Azure Container Apps Docs](https://learn.microsoft.com/azure/container-apps/)
 - [Azure Developer CLI Docs](https://learn.microsoft.com/azure/developer/azure-developer-cli/)
 - [DEPLOYMENT.md](./DEPLOYMENT.md) - Full deployment guide
-- [QUICKSTART.md](./QUICKSTART.md) - Quick start guide
-- [IMPLEMENTATION_SUMMARY.md](./IMPLEMENTATION_SUMMARY.md) - Technical details
+- [QUICKSTART.md](../guides/QUICKSTART.md) - Quick start guide
+- [IMPLEMENTATION_SUMMARY.md](../implementation/IMPLEMENTATION_SUMMARY.md) - Technical details
 
 ## 🎯 Success Criteria
 

@@ -87,7 +87,7 @@ azd down
 
 ## Next Steps
 
-- [Full Deployment Guide](./DEPLOYMENT.md) - Detailed deployment options
+- [Full Deployment Guide](../deployment/DEPLOYMENT.md) - Detailed deployment options
 - [GitHub Actions Setup](#github-actions) - Automated CI/CD
 - [Monitoring Guide](#monitoring) - View logs and metrics
 
@@ -207,6 +207,6 @@ Development environment (Basic tier):
 ## Support
 
 For issues:
-1. Check [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed troubleshooting
+1. Check [DEPLOYMENT.md](../deployment/DEPLOYMENT.md) for detailed troubleshooting
 2. Review logs in Azure Portal
 3. Open a GitHub issue
