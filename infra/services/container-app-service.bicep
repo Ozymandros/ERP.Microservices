@@ -7,11 +7,11 @@ param location string = resourceGroup().location
 @description('Tags to apply to the Container App')
 param tags object = {}
 
-@description('Name of the Container Apps Environment')
-param containerAppsEnvironmentName string
+@description('Container Apps Environment ID')
+param containerAppsEnvironmentId string
 
-@description('Name of the Container Registry')
-param containerRegistryName string
+@description('Container Registry endpoint')
+param containerRegistryEndpoint string
 
 @description('Container image name')
 param imageName string
@@ -31,14 +31,26 @@ param daprAppId string = name
 @description('Dapr app port')
 param daprAppPort int = targetPort
 
+@description('Minimum number of replicas')
+param minReplicas int = 1
+
+@description('Maximum number of replicas')
+param maxReplicas int = 10
+
+@description('CPU cores')
+param cpu string = '0.5'
+
+@description('Memory in Gi')
+param memory string = '1.0Gi'
+
 @description('JWT secret key')
 @secure()
 param jwtSecretKey string = ''
 
-@description('JWT token issuer')
+@description('JWT issuer')
 param jwtIssuer string = 'MyApp.Auth'
 
-@description('JWT token audience')
+@description('JWT audience')
 param jwtAudience string = 'MyApp.All'
 
 @description('Frontend origin for CORS')
@@ -47,31 +59,87 @@ param frontendOrigin string = 'http://localhost:3000'
 @description('ASP.NET Core environment')
 param aspnetcoreEnvironment string = 'Production'
 
-@description('Environment variables')
-param env array = []
+@description('Key Vault URI for secret references')
+param keyVaultUri string = ''
 
-@description('Secrets for the container app')
-param secrets array = []
+@description('App Configuration connection string')
+@secure()
+param appConfigConnectionString string = ''
 
-@description('Minimum number of replicas')
-param minReplicas int = 1
+@description('Array of Key Vault secrets to reference')
+param keyVaultSecrets array = []
 
-@description('Maximum number of replicas')
-param maxReplicas int = 10
+@description('Log Analytics Workspace ID')
+param logAnalyticsWorkspaceId string = ''
 
-@description('CPU cores (in cores)')
-param cpu string = '0.5'
-
-@description('Memory (in Gi)')
-param memory string = '1.0Gi'
+@description('Managed Identity Principal ID')
+param managedIdentityPrincipalId string = ''
 
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
-  name: containerAppsEnvironmentName
+  name: split(containerAppsEnvironmentId, '/')[8]
 }
 
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' existing = {
-  name: containerRegistryName
+  name: replace(containerRegistryEndpoint, '.azurecr.io', '')
 }
+
+// Build secrets array from Key Vault references
+var keyVaultSecretsList = [for secret in keyVaultSecrets: {
+  name: secret.name
+  keyVaultUrl: '${keyVaultUri}secrets/${secret.secretName}'
+  identity: 'system-assigned'
+}]
+
+// Build environment variables
+var environmentVariables = concat([
+  {
+    name: 'ASPNETCORE_ENVIRONMENT'
+    value: aspnetcoreEnvironment
+  }
+  {
+    name: 'ASPNETCORE_URLS'
+    value: 'http://+:${targetPort}'
+  }
+  {
+    name: 'Jwt__Issuer'
+    value: jwtIssuer
+  }
+  {
+    name: 'Jwt__Audience'
+    value: jwtAudience
+  }
+  {
+    name: 'FRONTEND_ORIGIN'
+    value: frontendOrigin
+  }
+], !empty(appConfigConnectionString) ? [
+  {
+    name: 'AppConfiguration__ConnectionString'
+    secretRef: 'app-config-connection'
+  }
+] : [], !empty(jwtSecretKey) ? [
+  {
+    name: 'Jwt__SecretKey'
+    secretRef: 'jwt-secret'
+  }
+] : [])
+
+// Build secrets array from parameters and Key Vault references
+var secrets = concat(
+  !empty(appConfigConnectionString) ? [
+    {
+      name: 'app-config-connection'
+      value: appConfigConnectionString
+    }
+  ] : [],
+  !empty(jwtSecretKey) ? [
+    {
+      name: 'jwt-secret'
+      value: jwtSecretKey
+    }
+  ] : [],
+  !empty(keyVaultUri) ? keyVaultSecretsList : []
+)
 
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: name
@@ -83,8 +151,19 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   properties: {
     managedEnvironmentId: containerAppsEnvironment.id
     configuration: {
-      ingress: {
-        external: externalIngress
+      ingress: externalIngress ? {
+        external: true
+        targetPort: targetPort
+        transport: 'auto'
+        allowInsecure: false
+        traffic: [
+          {
+            weight: 100
+            latestRevision: true
+          }
+        ]
+      } : {
+        external: false
         targetPort: targetPort
         transport: 'auto'
         allowInsecure: false
@@ -113,7 +192,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
             cpu: json(cpu)
             memory: memory
           }
-          env: env
+          env: environmentVariables
           probes: [
             {
               type: 'Liveness'

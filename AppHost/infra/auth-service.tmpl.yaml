@@ -1,0 +1,61 @@
+api-version: 2024-02-02-preview
+location: {{ .Env.AZURE_LOCATION }}
+identity:
+  type: UserAssigned
+  userAssignedIdentities:
+    ? "{{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}"
+    : {}
+properties:
+  environmentId: {{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_ID }}
+  configuration:
+    activeRevisionsMode: single
+    runtime:
+      dotnet:
+        autoConfigureDataProtection: true
+    ingress:
+      external: false
+      targetPort: 5001
+      transport: http
+      allowInsecure: true
+    registries:
+      - server: {{ .Env.AZURE_CONTAINER_REGISTRY_ENDPOINT }}
+        identity: {{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}
+    secrets:
+      - name: applicationinsights-connection-string
+        value: '{{ .Env.MYAPP_APPLICATIONINSIGHTS_APPINSIGHTSCONNECTIONSTRING }}'
+      - name: connectionstrings--cache
+        value: cache:6379,password={{ securedParameter "cache_password" }}
+  template:
+    containers:
+      - image: {{ .Image }}
+        name: auth-service
+        env:
+          - name: AZURE_CLIENT_ID
+            value: {{ .Env.MANAGED_IDENTITY_CLIENT_ID }}
+          - name: ASPNETCORE_FORWARDEDHEADERS_ENABLED
+            value: "true"
+          - name: FRONTEND_ORIGIN
+            value: http://localhost:3000;http://localhost:5000
+          - name: HTTP_PORTS
+            value: "5001"
+          - name: Jwt__Audience
+            value: MyApp.All
+          - name: Jwt__Issuer
+            value: MyApp.Auth
+          - name: Jwt__SecretKey
+            value: una_clau_molt_llarga_i_super_ultra_secreta_01234566789
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES
+            value: "true"
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES
+            value: "true"
+          - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY
+            value: in_memory
+          - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+            secretRef: applicationinsights-connection-string
+          - name: ConnectionStrings__cache
+            secretRef: connectionstrings--cache
+    scale:
+      minReplicas: 1
+tags:
+  azd-service-name: auth-service
+  aspire-resource-name: auth-service

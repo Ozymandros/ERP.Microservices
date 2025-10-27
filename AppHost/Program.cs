@@ -76,7 +76,11 @@ if (isDeployment)
         .WaitFor(salesService)
         .WithExternalHttpEndpoints()
         .WithEnvironment("OCELOT_ENVIRONMENT", "Production")
-        .PublishAsDockerFile();
+        .PublishAsDockerFile()
+            .WithEnvironment("Jwt__SecretKey", builder.Configuration["Jwt:SecretKey"])
+            .WithEnvironment("Jwt__Issuer", builder.Configuration["Jwt:Issuer"])
+            .WithEnvironment("Jwt__Audience", builder.Configuration["Jwt:Audience"])
+            .WithEnvironment("FRONTEND_ORIGIN", origin);
 
     if (applicationInsights is not null)
     {

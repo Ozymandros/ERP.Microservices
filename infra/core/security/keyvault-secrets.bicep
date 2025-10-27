@@ -114,6 +114,7 @@ resource kvSqlSecretSales 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (e
 
 output keyVaultId string = enableKeyVault ? resourceId('Microsoft.KeyVault/vaults', name) : ''
 output keyVaultUri string = enableKeyVault ? 'https://${name}.${environment().suffixes.keyvaultDns}' : ''
+output keyVaultName string = enableKeyVault ? name : ''
 
 // Return secret NAMES (not values) so callers can reference secret names safely
 output redisSecretName string = enableKeyVault ? kvRedisSecret.name : ''

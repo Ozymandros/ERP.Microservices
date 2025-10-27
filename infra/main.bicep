@@ -2,627 +2,328 @@ targetScope = 'subscription'
 
 @minLength(1)
 @maxLength(64)
-@description('Name of the environment that can be used as part of naming resource convention')
+@description('Name of the environment that can be used as part of naming resource convention, the name of the resource group for your application will use this name, prefixed with rg-')
 param environmentName string
 
 @minLength(1)
-@description('Primary location for all resources')
+@description('The location used for all deployed resources')
 param location string
 
-@description('Id of the principal to assign database and application roles')
+@description('Id of the user or app to assign application roles')
 param principalId string = ''
 
-@description('SQL Server administrator password')
+@metadata({azd: {
+  type: 'generate'
+  config: {length:22,noSpecial:true}
+  }
+})
 @secure()
-param sqlAdminPassword string
+param cache_password string
+@secure()
+param password string
 
-@description('JWT Secret Key for authentication')
+@description('JWT secret key for token signing')
 @secure()
 param jwtSecretKey string
 
-@description('Frontend origin URLs (semicolon-separated)')
-param frontendOrigin string = 'https://localhost:3000'
+@description('JWT token issuer (e.g., MyApp.Auth)')
+param jwtIssuer string = 'MyApp.Auth'
 
-@description('Enable provisioning of Key Vault and injecting secrets from Key Vault (set true for production)')
-param enableKeyVault bool = false
+@description('JWT token audience (e.g., MyApp.All)')
+param jwtAudience string = 'MyApp.All'
 
-// Tags that should be applied to all resources
+@description('Frontend origin for CORS (semicolon-separated for multiple origins)')
+param frontendOrigin string = 'http://localhost:3000;http://localhost:5000'
+
+@description('Environment name (Development, Staging, Production)')
+param aspnetcoreEnvironment string = 'Production'
+
 var tags = {
   'azd-env-name': environmentName
-  app: 'erp-microservices'
 }
+var resourceToken = uniqueString(subscription().id, environmentName)
 
-// Centralized derived secret values to avoid duplication across services
-var redisConnection = '${redis.outputs.hostName}:6380,password=${redis.outputs.primaryKey},ssl=True,abortConnect=False'
-var redisSecret = {
-  name: 'redis-connection'
-  value: redisConnection
-}
-
-// Organize resources in a resource group
 resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: 'rg-${environmentName}'
   location: location
   tags: tags
 }
-
-// Container Apps Environment with Dapr
-module containerAppsEnvironment 'core/host/container-apps-environment.bicep' = {
-  name: 'container-apps-environment'
+module resources 'resources.bicep' = {
   scope: rg
+  name: 'resources'
   params: {
-    name: 'cae-${environmentName}'
     location: location
     tags: tags
-    daprEnabled: true
-    redisHostName: redis.outputs.hostName
-    redisPrimaryKey: redis.outputs.primaryKey
-  }
-  dependsOn: [
-    
-  ]
-}
-
-// Azure SQL Server and Database
-module sqlServer 'core/database/sql-server.bicep' = {
-  name: 'sql-server'
-  scope: rg
-  params: {
-    name: 'sql-${environmentName}'
-    location: location
-    tags: tags
-    administratorLogin: 'sqladmin'
-    administratorLoginPassword: sqlAdminPassword
-    databases: [
-      { name: 'AuthDB' }
-      { name: 'BillingDB' }
-      { name: 'InventoryDB' }
-      { name: 'OrderDB' }
-      { name: 'PurchasingDB' }
-      { name: 'SalesDB' }
-    ]
+    principalId: principalId
   }
 }
 
-// Azure Cache for Redis
 module redis 'core/database/redis.bicep' = {
   name: 'redis'
   scope: rg
   params: {
-    name: 'redis-${environmentName}'
+    name: 'redis-${resourceToken}'
     location: location
     tags: tags
+    sku: 'Standard'
+    family: 'C'
+    capacity: 1
   }
 }
 
-// Container Registry
-module containerRegistry 'core/host/container-registry.bicep' = {
-  name: 'container-registry'
+module sqlServer 'core/database/sql-server.bicep' = {
+  name: 'sqlserver'
   scope: rg
   params: {
-    name: 'cr${replace(environmentName, '-', '')}'
+    name: 'sql-${resourceToken}'
     location: location
     tags: tags
+    administratorLogin: 'sqladmin'
+    administratorLoginPassword: password
+    databases: [
+      {name: 'AuthDB'}
+      {name: 'BillingDB'}
+      {name: 'InventoryDB'}
+      {name: 'OrdersDB'}
+      {name: 'PurchasingDB'}
+      {name: 'SalesDB'}
+    ]
+    minimalTlsVersion: '1.2'
   }
 }
 
-// Key Vault (only when enableKeyVault is true)
-// Key Vault + secrets module (deployed into the resource group). This module creates Key Vault and
-// the per-environment secrets only when `enableKeyVault` is true (intended for production).
-module keyVaultModule 'core/security/keyvault-secrets.bicep' = {
-  name: 'keyvault-secrets'
+module keyVault 'core/security/keyvault-secrets.bicep' = {
+  name: 'keyvault'
   scope: rg
   params: {
-    name: 'kv-${environmentName}'
+    name: 'kv-${resourceToken}'
     location: location
     tags: tags
+    jwtSecretKey: jwtSecretKey
     redisHostName: redis.outputs.hostName
     redisPrimaryKey: redis.outputs.primaryKey
     sqlFqdn: sqlServer.outputs.fqdn
-    sqlAdminPassword: sqlAdminPassword
+    sqlAdminPassword: password
+    enableKeyVault: true
+  }
+}
+
+module appConfiguration 'core/configuration/app-configuration.bicep' = {
+  name: 'app-configuration'
+  scope: rg
+  params: {
+    location: location
+    environmentName: aspnetcoreEnvironment
+    tags: tags
+    keyVaultName: keyVault.outputs.keyVaultName
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    frontendOrigin: frontendOrigin
+    aspnetcoreEnvironment: aspnetcoreEnvironment
+  }
+}
+
+module MyApp_ApplicationInsights 'MyApp-ApplicationInsights/MyApp-ApplicationInsights.module.bicep' = {
+  name: 'MyApp-ApplicationInsights'
+  scope: rg
+  params: {
+    location: location
+    myapp_loganalyticsworkspace_outputs_loganalyticsworkspaceid: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+  }
+}
+module MyApp_LogAnalyticsWorkspace 'MyApp-LogAnalyticsWorkspace/MyApp-LogAnalyticsWorkspace.module.bicep' = {
+  name: 'MyApp-LogAnalyticsWorkspace'
+  scope: rg
+  params: {
+    location: location
+  }
+}
+module myapp_sqlserver 'myapp-sqlserver/myapp-sqlserver.module.bicep' = {
+  name: 'myapp-sqlserver'
+  scope: rg
+  params: {
+    location: location
+  }
+}
+module myapp_sqlserver_roles 'myapp-sqlserver-roles/myapp-sqlserver-roles.module.bicep' = {
+  name: 'myapp-sqlserver-roles'
+  scope: rg
+  params: {
+    location: location
+    myapp_sqlserver_outputs_name: myapp_sqlserver.outputs.name
+    myapp_sqlserver_outputs_sqlserveradminname: myapp_sqlserver.outputs.sqlServerAdminName
+    principalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
+    principalName: resources.outputs.MANAGED_IDENTITY_NAME
+  }
+}
+
+// Service modules
+module authServiceModule 'services/auth-service.bicep' = {
+  name: 'auth-service-deployment'
+  scope: rg
+  params: {
+    location: location
+    tags: tags
+    containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
+    containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+    keyVaultUri: keyVault.outputs.keyVaultUri
+    logAnalyticsWorkspaceId: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
     jwtSecretKey: jwtSecretKey
-    enableKeyVault: enableKeyVault
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    frontendOrigin: frontendOrigin
+    aspnetcoreEnvironment: aspnetcoreEnvironment
+    managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
+    appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
   }
 }
 
-// Log Analytics Workspace
-module logAnalytics 'core/monitor/log-analytics.bicep' = {
-  name: 'log-analytics'
+module billingServiceModule 'services/billing-service.bicep' = {
+  name: 'billing-service-deployment'
   scope: rg
   params: {
-    name: 'log-${environmentName}'
     location: location
     tags: tags
+    containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
+    containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+    keyVaultUri: keyVault.outputs.keyVaultUri
+    logAnalyticsWorkspaceId: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+    jwtSecretKey: jwtSecretKey
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    frontendOrigin: frontendOrigin
+    aspnetcoreEnvironment: aspnetcoreEnvironment
+    managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
+    appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
   }
 }
 
-// Gateway Container App (External Ingress)
-module gateway 'core/host/container-app.bicep' = {
-  name: 'gateway'
+module inventoryServiceModule 'services/inventory-service.bicep' = {
+  name: 'inventory-service-deployment'
   scope: rg
   params: {
-    name: 'gateway'
     location: location
     tags: tags
-    containerAppsEnvironmentName: containerAppsEnvironment.outputs.name
-    containerRegistryName: containerRegistry.outputs.name
-    imageName: 'gateway:latest'
-    targetPort: 8080
-    externalIngress: true
-    daprEnabled: false
-    env: [
-      {
-        name: 'FRONTEND_ORIGIN'
-        value: frontendOrigin
-      }
-      {
-        name: 'ASPNETCORE_ENVIRONMENT'
-        value: 'Production'
-      }
-    ]
+    containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
+    containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+    keyVaultUri: keyVault.outputs.keyVaultUri
+    logAnalyticsWorkspaceId: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+    jwtSecretKey: jwtSecretKey
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    frontendOrigin: frontendOrigin
+    aspnetcoreEnvironment: aspnetcoreEnvironment
+    managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
+    appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
   }
 }
 
-// Auth Service Container App
-module authService 'core/host/container-app.bicep' = {
-  name: 'auth-service'
+module ordersServiceModule 'services/orders-service.bicep' = {
+  name: 'orders-service-deployment'
   scope: rg
   params: {
-    name: 'auth-service'
     location: location
     tags: tags
-    containerAppsEnvironmentName: containerAppsEnvironment.outputs.name
-    containerRegistryName: containerRegistry.outputs.name
-    imageName: 'auth-service:latest'
-    targetPort: 8080
-    externalIngress: false
-    daprEnabled: true
-    daprAppId: 'auth-service'
-    daprAppPort: 8080
-    env: [
-      {
-        name: 'ConnectionStrings__AuthDb'
-        secretRef: 'sql-connection-authdb'
-      }
-      {
-        name: 'ConnectionStrings__cache'
-        secretRef: 'redis-connection'
-      }
-      {
-        name: 'Jwt__SecretKey'
-        secretRef: 'jwt-secret-key'
-      }
-      // Key Vault runtime hints (URI and secret names). Empty when enableKeyVault == false.
-      {
-        name: 'KEYVAULT_URI'
-        value: keyVaultModule.outputs.keyVaultUri
-      }
-      {
-        name: 'REDIS_SECRET_NAME'
-        value: keyVaultModule.outputs.redisSecretName
-      }
-      {
-        name: 'SQL_SECRET_NAME'
-        value: keyVaultModule.outputs.sqlAuthSecretName
-      }
-      {
-        name: 'JWT_SECRET_NAME'
-        value: keyVaultModule.outputs.jwtSecretName
-      }
-      {
-        name: 'Jwt__Issuer'
-        value: 'MyApp.Auth'
-      }
-      {
-        name: 'Jwt__Audience'
-        value: 'MyApp.All'
-      }
-      {
-        name: 'FRONTEND_ORIGIN'
-        value: frontendOrigin
-      }
-      {
-        name: 'ASPNETCORE_ENVIRONMENT'
-        value: 'Production'
-      }
-    ]
-    secrets: [
-      {
-        name: 'sql-connection-authdb'
-        value: 'Server=${sqlServer.outputs.fqdn};Database=AuthDB;User Id=sqladmin;Password=${sqlAdminPassword};'
-      }
-      redisSecret
-      {
-        name: 'jwt-secret-key'
-        value: jwtSecretKey
-      }
-    ]
+    containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
+    containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+    keyVaultUri: keyVault.outputs.keyVaultUri
+    logAnalyticsWorkspaceId: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+    jwtSecretKey: jwtSecretKey
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    frontendOrigin: frontendOrigin
+    aspnetcoreEnvironment: aspnetcoreEnvironment
+    managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
+    appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
   }
 }
 
-// Billing Service Container App
-module billingService 'core/host/container-app.bicep' = {
-  name: 'billing-service'
+module purchasingServiceModule 'services/purchasing-service.bicep' = {
+  name: 'purchasing-service-deployment'
   scope: rg
   params: {
-    name: 'billing-service'
     location: location
     tags: tags
-    containerAppsEnvironmentName: containerAppsEnvironment.outputs.name
-    containerRegistryName: containerRegistry.outputs.name
-    imageName: 'billing-service:latest'
-    targetPort: 8080
-    externalIngress: false
-    daprEnabled: true
-    daprAppId: 'billing-service'
-    daprAppPort: 8080
-    env: [
-      {
-        name: 'ConnectionStrings__BillingDb'
-        secretRef: 'sql-connection-billingdb'
-      }
-      {
-        name: 'ConnectionStrings__cache'
-        secretRef: 'redis-connection'
-      }
-      {
-        name: 'Jwt__SecretKey'
-        secretRef: 'jwt-secret-key'
-      }
-      {
-        name: 'KEYVAULT_URI'
-        value: keyVaultModule.outputs.keyVaultUri
-      }
-      {
-        name: 'REDIS_SECRET_NAME'
-        value: keyVaultModule.outputs.redisSecretName
-      }
-      {
-        name: 'SQL_SECRET_NAME'
-        value: keyVaultModule.outputs.sqlBillingSecretName
-      }
-      {
-        name: 'JWT_SECRET_NAME'
-        value: keyVaultModule.outputs.jwtSecretName
-      }
-      {
-        name: 'Jwt__Issuer'
-        value: 'MyApp.Auth'
-      }
-      {
-        name: 'Jwt__Audience'
-        value: 'MyApp.All'
-      }
-      {
-        name: 'FRONTEND_ORIGIN'
-        value: frontendOrigin
-      }
-      {
-        name: 'ASPNETCORE_ENVIRONMENT'
-        value: 'Production'
-      }
-    ]
-    secrets: [
-      {
-        name: 'sql-connection-billingdb'
-        value: 'Server=${sqlServer.outputs.fqdn};Database=BillingDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
-      }
-      redisSecret
-      {
-        name: 'jwt-secret-key'
-        value: jwtSecretKey
-      }
-    ]
+    containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
+    containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+    keyVaultUri: keyVault.outputs.keyVaultUri
+    logAnalyticsWorkspaceId: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+    jwtSecretKey: jwtSecretKey
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    frontendOrigin: frontendOrigin
+    aspnetcoreEnvironment: aspnetcoreEnvironment
+    managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
+    appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
   }
 }
 
-// Inventory Service Container App
-module inventoryService 'core/host/container-app.bicep' = {
-  name: 'inventory-service'
+module salesServiceModule 'services/sales-service.bicep' = {
+  name: 'sales-service-deployment'
   scope: rg
   params: {
-    name: 'inventory-service'
     location: location
     tags: tags
-    containerAppsEnvironmentName: containerAppsEnvironment.outputs.name
-    containerRegistryName: containerRegistry.outputs.name
-    imageName: 'inventory-service:latest'
-    targetPort: 8080
-    externalIngress: false
-    daprEnabled: true
-    daprAppId: 'inventory-service'
-    daprAppPort: 8080
-    env: [
-      {
-        name: 'ConnectionStrings__InventoryDb'
-        secretRef: 'sql-connection-inventorydb'
-      }
-      {
-        name: 'ConnectionStrings__cache'
-        secretRef: 'redis-connection'
-      }
-      {
-        name: 'Jwt__SecretKey'
-        secretRef: 'jwt-secret-key'
-      }
-      {
-        name: 'KEYVAULT_URI'
-        value: keyVaultModule.outputs.keyVaultUri
-      }
-      {
-        name: 'REDIS_SECRET_NAME'
-        value: keyVaultModule.outputs.redisSecretName
-      }
-      {
-        name: 'SQL_SECRET_NAME'
-        value: keyVaultModule.outputs.sqlInventorySecretName
-      }
-      {
-        name: 'JWT_SECRET_NAME'
-        value: keyVaultModule.outputs.jwtSecretName
-      }
-      {
-        name: 'Jwt__Issuer'
-        value: 'MyApp.Auth'
-      }
-      {
-        name: 'Jwt__Audience'
-        value: 'MyApp.All'
-      }
-      {
-        name: 'FRONTEND_ORIGIN'
-        value: frontendOrigin
-      }
-      {
-        name: 'ASPNETCORE_ENVIRONMENT'
-        value: 'Production'
-      }
-    ]
-    secrets: [
-      {
-        name: 'sql-connection-inventorydb'
-        value: 'Server=${sqlServer.outputs.fqdn};Database=InventoryDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
-      }
-      redisSecret
-      {
-        name: 'jwt-secret-key'
-        value: jwtSecretKey
-      }
-    ]
+    containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
+    containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+    keyVaultUri: keyVault.outputs.keyVaultUri
+    logAnalyticsWorkspaceId: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+    jwtSecretKey: jwtSecretKey
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    frontendOrigin: frontendOrigin
+    aspnetcoreEnvironment: aspnetcoreEnvironment
+    managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
+    appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
   }
 }
 
-// Orders Service Container App
-module ordersService 'core/host/container-app.bicep' = {
-  name: 'orders-service'
+module apiGatewayModule 'services/api-gateway.bicep' = {
+  name: 'api-gateway-deployment'
   scope: rg
   params: {
-    name: 'orders-service'
     location: location
     tags: tags
-    containerAppsEnvironmentName: containerAppsEnvironment.outputs.name
-    containerRegistryName: containerRegistry.outputs.name
-    imageName: 'orders-service:latest'
-    targetPort: 8080
-    externalIngress: false
-    daprEnabled: true
-    daprAppId: 'orders-service'
-    daprAppPort: 8080
-    env: [
-      {
-        name: 'ConnectionStrings__OrdersDb'
-        secretRef: 'sql-connection-ordersdb'
-      }
-      {
-        name: 'ConnectionStrings__cache'
-        secretRef: 'redis-connection'
-      }
-      {
-        name: 'Jwt__SecretKey'
-        secretRef: 'jwt-secret-key'
-      }
-      {
-        name: 'KEYVAULT_URI'
-        value: keyVaultModule.outputs.keyVaultUri
-      }
-      {
-        name: 'REDIS_SECRET_NAME'
-        value: keyVaultModule.outputs.redisSecretName
-      }
-      {
-        name: 'SQL_SECRET_NAME'
-        value: keyVaultModule.outputs.sqlOrdersSecretName
-      }
-      {
-        name: 'JWT_SECRET_NAME'
-        value: keyVaultModule.outputs.jwtSecretName
-      }
-      {
-        name: 'Jwt__Issuer'
-        value: 'MyApp.Auth'
-      }
-      {
-        name: 'Jwt__Audience'
-        value: 'MyApp.All'
-      }
-      {
-        name: 'FRONTEND_ORIGIN'
-        value: frontendOrigin
-      }
-      {
-        name: 'ASPNETCORE_ENVIRONMENT'
-        value: 'Production'
-      }
-    ]
-    secrets: [
-      {
-        name: 'sql-connection-ordersdb'
-        value: 'Server=${sqlServer.outputs.fqdn};Database=OrderDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
-      }
-      redisSecret
-      {
-        name: 'jwt-secret-key'
-        value: jwtSecretKey
-      }
-    ]
+    containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
+    containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+    keyVaultUri: keyVault.outputs.keyVaultUri
+    logAnalyticsWorkspaceId: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+    jwtSecretKey: jwtSecretKey
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    frontendOrigin: frontendOrigin
+    aspnetcoreEnvironment: aspnetcoreEnvironment
+    managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
+    appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
   }
 }
 
-// Purchasing Service Container App
-module purchasingService 'core/host/container-app.bicep' = {
-  name: 'purchasing-service'
-  scope: rg
-  params: {
-    name: 'purchasing-service'
-    location: location
-    tags: tags
-    containerAppsEnvironmentName: containerAppsEnvironment.outputs.name
-    containerRegistryName: containerRegistry.outputs.name
-    imageName: 'purchasing-service:latest'
-    targetPort: 8080
-    externalIngress: false
-    daprEnabled: true
-    daprAppId: 'purchasing-service'
-    daprAppPort: 8080
-    env: [
-      {
-        name: 'ConnectionStrings__PurchasingDb'
-        secretRef: 'sql-connection-purchasingdb'
-      }
-      {
-        name: 'ConnectionStrings__cache'
-        secretRef: 'redis-connection'
-      }
-      {
-        name: 'Jwt__SecretKey'
-        secretRef: 'jwt-secret-key'
-      }
-      {
-        name: 'KEYVAULT_URI'
-        value: keyVaultModule.outputs.keyVaultUri
-      }
-      {
-        name: 'REDIS_SECRET_NAME'
-        value: keyVaultModule.outputs.redisSecretName
-      }
-      {
-        name: 'SQL_SECRET_NAME'
-        value: keyVaultModule.outputs.sqlPurchasingSecretName
-      }
-      {
-        name: 'JWT_SECRET_NAME'
-        value: keyVaultModule.outputs.jwtSecretName
-      }
-      {
-        name: 'Jwt__Issuer'
-        value: 'MyApp.Auth'
-      }
-      {
-        name: 'Jwt__Audience'
-        value: 'MyApp.All'
-      }
-      {
-        name: 'FRONTEND_ORIGIN'
-        value: frontendOrigin
-      }
-      {
-        name: 'ASPNETCORE_ENVIRONMENT'
-        value: 'Production'
-      }
-    ]
-    secrets: [
-      {
-        name: 'sql-connection-purchasingdb'
-        value: 'Server=${sqlServer.outputs.fqdn};Database=PurchasingDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
-      }
-      redisSecret
-      {
-        name: 'jwt-secret-key'
-        value: jwtSecretKey
-      }
-    ]
-  }
-}
+output MANAGED_IDENTITY_CLIENT_ID string = resources.outputs.MANAGED_IDENTITY_CLIENT_ID
+output MANAGED_IDENTITY_NAME string = resources.outputs.MANAGED_IDENTITY_NAME
+output AZURE_LOG_ANALYTICS_WORKSPACE_NAME string = resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_NAME
+output AZURE_CONTAINER_REGISTRY_ENDPOINT string = resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+output AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID string = resources.outputs.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID
+output AZURE_CONTAINER_REGISTRY_NAME string = resources.outputs.AZURE_CONTAINER_REGISTRY_NAME
+output AZURE_CONTAINER_APPS_ENVIRONMENT_NAME string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME
+output AZURE_CONTAINER_APPS_ENVIRONMENT_ID string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
+output AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN
+output SERVICE_CACHE_VOLUME_REDISCACHE_NAME string = resources.outputs.SERVICE_CACHE_VOLUME_REDISCACHE_NAME
+output AZURE_VOLUMES_STORAGE_ACCOUNT string = resources.outputs.AZURE_VOLUMES_STORAGE_ACCOUNT
+output MYAPP_APPLICATIONINSIGHTS_APPINSIGHTSCONNECTIONSTRING string = MyApp_ApplicationInsights.outputs.appInsightsConnectionString
+output MYAPP_SQLSERVER_SQLSERVERFQDN string = myapp_sqlserver.outputs.sqlServerFqdn
+output AZURE_REDIS_CACHE_NAME string = redis.outputs.name
+output AZURE_REDIS_CACHE_HOST string = redis.outputs.hostName
+output AZURE_REDIS_CACHE_PORT int = redis.outputs.sslPort
+output AZURE_SQL_SERVER_NAME string = sqlServer.outputs.name
+output AZURE_SQL_SERVER_FQDN string = sqlServer.outputs.fqdn
+output AZURE_KEY_VAULT_NAME string = keyVault.outputs.keyVaultUri
 
-// Sales Service Container App
-module salesService 'core/host/container-app.bicep' = {
-  name: 'sales-service'
-  scope: rg
-  params: {
-    name: 'sales-service'
-    location: location
-    tags: tags
-    containerAppsEnvironmentName: containerAppsEnvironment.outputs.name
-    containerRegistryName: containerRegistry.outputs.name
-    imageName: 'sales-service:latest'
-    targetPort: 8080
-    externalIngress: false
-    daprEnabled: true
-    daprAppId: 'sales-service'
-    daprAppPort: 8080
-    env: [
-      {
-        name: 'ConnectionStrings__SalesDb'
-        secretRef: 'sql-connection-salesdb'
-      }
-      {
-        name: 'ConnectionStrings__cache'
-        secretRef: 'redis-connection'
-      }
-      {
-        name: 'Jwt__SecretKey'
-        secretRef: 'jwt-secret-key'
-      }
-      {
-        name: 'KEYVAULT_URI'
-        value: keyVaultModule.outputs.keyVaultUri
-      }
-      {
-        name: 'REDIS_SECRET_NAME'
-        value: keyVaultModule.outputs.redisSecretName
-      }
-      {
-        name: 'SQL_SECRET_NAME'
-        value: keyVaultModule.outputs.sqlSalesSecretName
-      }
-      {
-        name: 'JWT_SECRET_NAME'
-        value: keyVaultModule.outputs.jwtSecretName
-      }
-      {
-        name: 'Jwt__Issuer'
-        value: 'MyApp.Auth'
-      }
-      {
-        name: 'Jwt__Audience'
-        value: 'MyApp.All'
-      }
-      {
-        name: 'FRONTEND_ORIGIN'
-        value: frontendOrigin
-      }
-      {
-        name: 'ASPNETCORE_ENVIRONMENT'
-        value: 'Production'
-      }
-    ]
-    secrets: [
-      {
-        name: 'sql-connection-salesdb'
-        value: 'Server=${sqlServer.outputs.fqdn};Database=SalesDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
-      }
-      redisSecret
-      {
-        name: 'jwt-secret-key'
-        value: jwtSecretKey
-      }
-    ]
-  }
-}
-
-// Outputs
-output AZURE_CONTAINER_REGISTRY_ENDPOINT string = containerRegistry.outputs.loginServer
-output AZURE_CONTAINER_APPS_ENVIRONMENT_ID string = containerAppsEnvironment.outputs.id
-output GATEWAY_URL string = gateway.outputs.uri
-output SQL_SERVER_FQDN string = sqlServer.outputs.fqdn
-output REDIS_HOST_NAME string = redis.outputs.hostName
+// Service outputs
+output AUTH_SERVICE_FQDN string = authServiceModule.outputs.fqdn
+output BILLING_SERVICE_FQDN string = billingServiceModule.outputs.fqdn
+output INVENTORY_SERVICE_FQDN string = inventoryServiceModule.outputs.fqdn
+output ORDERS_SERVICE_FQDN string = ordersServiceModule.outputs.fqdn
+output PURCHASING_SERVICE_FQDN string = purchasingServiceModule.outputs.fqdn
+output SALES_SERVICE_FQDN string = salesServiceModule.outputs.fqdn
+output API_GATEWAY_FQDN string = apiGatewayModule.outputs.fqdn
+output API_GATEWAY_URI string = apiGatewayModule.outputs.uri
