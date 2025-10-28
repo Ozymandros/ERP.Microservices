@@ -4,11 +4,28 @@ using MyApp.Orders.Infrastructure.Data;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
 builder.Services.AddDaprClient();
+
+var serviceName = builder.Environment.ApplicationName ?? typeof(Program).Assembly.GetName().Name ?? "MyApp.Orders.API";
+
+// Configure OpenTelemetry pipeline.
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource => resource.AddService(serviceName))
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddOtlpExporter())
+    .WithMetrics(metrics => metrics
+        .AddAspNetCoreInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddOtlpExporter());
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -19,7 +36,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
 // Infrastructure & Application DI
-var ordersDbConnectionString = builder.Configuration.GetConnectionString("ordersdb");
+var ordersDbConnectionString = builder.Configuration.GetConnectionString("ordersdb")
+    ?? throw new InvalidOperationException("Connection string 'ordersdb' not found.");
 builder.Services.AddDbContext<OrdersDbContext>(options =>
     options.UseSqlServer(ordersDbConnectionString));
 

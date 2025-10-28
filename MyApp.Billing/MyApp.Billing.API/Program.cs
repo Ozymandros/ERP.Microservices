@@ -1,10 +1,27 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MyApp.Shared.Infrastructure.Extensions;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
+// Aquesta lï¿½nia registra el DaprClient (Singleton) al contenidor d'Injecciï¿½ de Dependï¿½ncies (DI)
 builder.Services.AddDaprClient();
+
+var serviceName = builder.Environment.ApplicationName ?? typeof(Program).Assembly.GetName().Name ?? "MyApp.Billing.API";
+
+// Configure OpenTelemetry pipeline.
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource => resource.AddService(serviceName))
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddOtlpExporter())
+    .WithMetrics(metrics => metrics
+        .AddAspNetCoreInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddOtlpExporter());
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

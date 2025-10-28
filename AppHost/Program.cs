@@ -10,7 +10,7 @@ var analyticsWorkspace = isDeployment ? builder
     .AddAzureLogAnalyticsWorkspace("MyApp-LogAnalyticsWorkspace") : null;
 var applicationInsights = isDeployment ? builder
     .AddAzureApplicationInsights("MyApp-ApplicationInsights")
-    .WithLogAnalyticsWorkspace(analyticsWorkspace) : null;
+    .WithLogAnalyticsWorkspace(analyticsWorkspace!) : null;
 
 builder.Services.AddHealthChecks();
 //var store = builder.AddDaprStateStore("cache", new());
