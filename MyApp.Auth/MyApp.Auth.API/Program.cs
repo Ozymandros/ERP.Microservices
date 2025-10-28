@@ -18,6 +18,7 @@ using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+using OpenTelemetry.Resources;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
