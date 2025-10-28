@@ -7,12 +7,12 @@ on:
   workflow_dispatch:
 
 permissions:
+  # 'id-token: write' és per a OIDC, el podem eliminar, però el mantindrem per si cal una futura actualització
   id-token: write
   contents: read
 
 env:
-  AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-  AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  # Eliminem els secrets AZURE_CLIENT_ID i AZURE_TENANT_ID de l'env global
   AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
   AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
@@ -31,24 +31,31 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Install Azure Developer CLI
-        uses: Azure/setup-azd@v1.0.0
+        # Utilitzem l'última versió estable per evitar el bug que teniu localment
+        uses: Azure/setup-azd@v1
 
-      - name: Log in with Azure (Federated Credentials)
-        if: ${{ env.AZURE_CLIENT_ID != '' }}
+      - name: Log in with Azure (Client Credentials)
+        # Utilitza l'acció d'inici de sessió d'Azure, que llegeix el JSON de AZURE_CREDENTIALS
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+          
+      # ⚠️ PAS IMPORTANT: Configuració manual de l'entorn abans de l'azd up
+      - name: Set AZD Environment Variables
         run: |
-          azd auth login \
-            --client-id "${{ env.AZURE_CLIENT_ID }}" \
-            --federated-credential-provider "github" \
-            --tenant-id "${{ env.AZURE_TENANT_ID }}"
+          # Aquestes variables són necessàries per a azd up, especialment la ubicació i subscripció
+          azd env set AZURE_LOCATION ${{ env.AZURE_LOCATION }}
+          azd env set AZURE_SUBSCRIPTION_ID ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         shell: bash
 
       - name: Provision and Deploy
         run: |
-          azd up --no-prompt
+          # azd up executarà la provisió i la implementació
+          # azd up --no-prompt
+          azd provision --preview
         env:
-          AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
-          AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
-          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          # Passar secrets directament com a variables d'entorn per a l'execució azd up
           SQL_ADMIN_PASSWORD: ${{ secrets.SQL_ADMIN_PASSWORD }}
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
           FRONTEND_ORIGIN: ${{ vars.FRONTEND_ORIGIN }}
