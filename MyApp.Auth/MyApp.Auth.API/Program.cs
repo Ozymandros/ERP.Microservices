@@ -16,11 +16,28 @@ using MyApp.Auth.Infrastructure.Services;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Resources;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Aquesta lÌnia registra el DaprClient (Singleton) al contenidor d'InjecciÛ de DependËncies (DI)
+builder.Services.AddOpenTelemetry()
+    .WithTracing(tracing =>
+    {
+        tracing
+            .AddOtlpExporter(); // to the collector or Azure Monitor
+    })
+    .WithMetrics(metrics =>
+    {
+        metrics
+            .AddRuntimeInstrumentation()
+            .AddAspNetCoreInstrumentation()
+            .AddOtlpExporter();
+    });
+
+// Aquesta l√≠nia registra el DaprClient (Singleton) al contenidor d'Injecci√≥ de Depend√®ncies (DI)
 builder.Services.AddDaprClient();
 
 // Add services to the container

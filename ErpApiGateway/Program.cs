@@ -1,9 +1,26 @@
-using Ocelot.DependencyInjection;
-using Ocelot.Middleware;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var serviceName = builder.Environment.ApplicationName ?? typeof(Program).Assembly.GetName().Name ?? "ErpApiGateway";
+
+// Configure OpenTelemetry pipeline.
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource => resource.AddService(serviceName))
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddOtlpExporter())
+    .WithMetrics(metrics => metrics
+        .AddAspNetCoreInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddOtlpExporter());
 
 // ========================================
 // Configuration
