@@ -36,7 +36,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
   location: location
   properties: {
     sku: {
-      name: 'PerGB2018'
+      name: 'Free'
     }
   }
   tags: union(tags, {

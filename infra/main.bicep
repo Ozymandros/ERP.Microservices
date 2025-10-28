@@ -3,25 +3,21 @@ targetScope = 'subscription'
 @minLength(1)
 @maxLength(64)
 @description('Name of the environment that can be used as part of naming resource convention, the name of the resource group for your application will use this name, prefixed with rg-')
-param environmentName string
+param environmentName string = 'Production'
 
 @minLength(1)
 @description('The location used for all deployed resources')
-param location string
+param location string = 'westeurope'
 
-@metadata({azd: {
-  type: 'generate'
-  config: {length:22,noSpecial:true}
-  }
-})
 @secure()
-param cache_password string
+param cache_password string = base64(newGuid())
+
 @secure()
-param password string
+param password string = base64(newGuid())
 
 @description('JWT secret key for token signing')
 @secure()
-param jwtSecretKey string
+param jwtSecretKey string = base64('${newGuid()}${newGuid()}')
 
 @description('JWT token issuer (e.g., MyApp.Auth)')
 param jwtIssuer string = 'MyApp.Auth'
@@ -61,10 +57,10 @@ module redis 'core/database/redis.bicep' = {
     name: 'redis-${resourceToken}'
     location: location
     tags: tags
-    sku: 'Standard'
+    sku: 'Basic'
     family: 'C'
-    capacity: 1
-    cachePassword: cache_password  // ✅ Wire password for authentication
+    capacity: 0
+    cachePassword: cache_password // ✅ Wire password for authentication
   }
 }
 
@@ -78,12 +74,12 @@ module sqlServer 'core/database/sql-server.bicep' = {
     administratorLogin: 'sqladmin'
     administratorLoginPassword: password
     databases: [
-      {name: 'AuthDB'}
-      {name: 'BillingDB'}
-      {name: 'InventoryDB'}
-      {name: 'OrdersDB'}
-      {name: 'PurchasingDB'}
-      {name: 'SalesDB'}
+      { name: 'AuthDB' }
+      { name: 'BillingDB' }
+      { name: 'InventoryDB' }
+      { name: 'OrdersDB' }
+      { name: 'PurchasingDB' }
+      { name: 'SalesDB' }
     ]
     minimalTlsVersion: '1.2'
   }
@@ -150,7 +146,7 @@ module authServiceModule 'services/auth-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -170,7 +166,7 @@ module billingServiceModule 'services/billing-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -190,7 +186,7 @@ module inventoryServiceModule 'services/inventory-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -210,7 +206,7 @@ module ordersServiceModule 'services/orders-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -230,7 +226,7 @@ module purchasingServiceModule 'services/purchasing-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -250,7 +246,7 @@ module salesServiceModule 'services/sales-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -270,7 +266,7 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience

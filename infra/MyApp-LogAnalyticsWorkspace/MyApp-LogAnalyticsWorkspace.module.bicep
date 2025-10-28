@@ -6,7 +6,7 @@ resource MyApp_LogAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2
   location: location
   properties: {
     sku: {
-      name: 'PerGB2018'
+      name: 'Free'
     }
   }
   tags: {

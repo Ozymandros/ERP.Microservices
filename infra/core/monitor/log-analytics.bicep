@@ -8,10 +8,12 @@ param location string = resourceGroup().location
 param tags object = {}
 
 @description('Log Analytics Workspace SKU')
-param sku string = 'PerGB2018'
+param sku string = 'Free'
 
 @description('Data retention in days')
 param retentionInDays int = 30
+
+var effectiveRetention = sku == 'Free' ? 7 : retentionInDays
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: name
@@ -21,7 +23,7 @@ resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
     sku: {
       name: sku
     }
-    retentionInDays: retentionInDays
+    retentionInDays: effectiveRetention
     publicNetworkAccessForIngestion: 'Enabled'
     publicNetworkAccessForQuery: 'Enabled'
   }

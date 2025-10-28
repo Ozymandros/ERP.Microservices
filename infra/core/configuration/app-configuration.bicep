@@ -1,5 +1,5 @@
 @description('Location for App Configuration resource')
-param location string
+param location string = resourceGroup().location
 
 @description('Environment name (dev, staging, prod)')
 param environmentName string = 'Production'
@@ -37,9 +37,11 @@ resource appConfig 'Microsoft.AppConfiguration/configurationStores@2023-03-01' =
   name: appConfigName
   location: location
   sku: {
-    name: 'standard'
+    name: 'free'
   }
-  tags: tags
+  tags: union(tags, {
+    'environment-name': environmentName
+  })
   identity: {
     type: 'SystemAssigned'
   }
