@@ -39,7 +39,22 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
       name: 'PerGB2018'
     }
   }
-  tags: tags
+  tags: union(tags, {
+    'aspire-resource-name': 'MyApp-LogAnalyticsWorkspace'
+  })
+}
+
+resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
+  name: take('MyApp-ApplicationInsights-${resourceToken}', 260)
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    WorkspaceResourceId: logAnalyticsWorkspace.id
+  }
+  tags: union(tags, {
+    'aspire-resource-name': 'MyApp-ApplicationInsights'
+  })
 }
 
 resource storageVolume 'Microsoft.Storage/storageAccounts@2022-05-01' = {
@@ -121,3 +136,7 @@ output AZURE_CONTAINER_APPS_ENVIRONMENT_ID string = containerAppEnvironment.id
 output AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN string = containerAppEnvironment.properties.defaultDomain
 output SERVICE_CACHE_VOLUME_REDISCACHE_NAME string = cacheRedisCacheStore.name
 output AZURE_VOLUMES_STORAGE_ACCOUNT string = storageVolume.name
+output AZURE_APPLICATION_INSIGHTS_ID string = applicationInsights.id
+output AZURE_APPLICATION_INSIGHTS_NAME string = applicationInsights.name
+output AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING string = applicationInsights.properties.ConnectionString
+output AZURE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY string = applicationInsights.properties.InstrumentationKey

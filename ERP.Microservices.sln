@@ -146,6 +146,123 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Auth.Infrastructure",
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{AE6EF127-4F9D-463E-AFEB-3AA3D464F645}"
+	ProjectSection(SolutionItems) = preProject
+		docs\CONVENTIONS.md = docs\CONVENTIONS.md
+		docs\DOCUMENTATION_STATUS.md = docs\DOCUMENTATION_STATUS.md
+		docs\FILE_INVENTORY.md = docs\FILE_INVENTORY.md
+		docs\QUICK_START_GUIDE.md = docs\QUICK_START_GUIDE.md
+		docs\README.md = docs\README.md
+		docs\SESSION_COMPLETION.md = docs\SESSION_COMPLETION.md
+		docs\SITEMAP.md = docs\SITEMAP.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api-gateway", "api-gateway", "{4A75EFB0-7D55-4AA1-908F-CA086F404AA1}"
+	ProjectSection(SolutionItems) = preProject
+		docs\api-gateway\README.md = docs\api-gateway\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "architecture", "architecture", "{D822C915-9CE3-4EAF-97BA-8EC6BF78D257}"
+	ProjectSection(SolutionItems) = preProject
+		docs\architecture\ARCHITECTURE_DOCUMENTATION.md = docs\architecture\ARCHITECTURE_DOCUMENTATION.md
+		docs\architecture\DEPENDENCY_MAPPING.md = docs\architecture\DEPENDENCY_MAPPING.md
+		docs\architecture\README.md = docs\architecture\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configuration", "configuration", "{E59D1E31-EA19-4835-B5EC-26687ABF2C2D}"
+	ProjectSection(SolutionItems) = preProject
+		docs\configuration\APP_CONFIGURATION_INTEGRATION.md = docs\configuration\APP_CONFIGURATION_INTEGRATION.md
+		docs\configuration\ICACHESERVICE_IMPLEMENTATION_SUMMARY.md = docs\configuration\ICACHESERVICE_IMPLEMENTATION_SUMMARY.md
+		docs\configuration\OCELOT_CHANGES_SUMMARY.md = docs\configuration\OCELOT_CHANGES_SUMMARY.md
+		docs\configuration\OCELOT_CONFIGURATION_REMEDIATION.md = docs\configuration\OCELOT_CONFIGURATION_REMEDIATION.md
+		docs\configuration\OCELOT_REMEDIATION_COMPLETE.md = docs\configuration\OCELOT_REMEDIATION_COMPLETE.md
+		docs\configuration\OCELOT_VERIFICATION_REPORT.md = docs\configuration\OCELOT_VERIFICATION_REPORT.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deployment", "deployment", "{5ED6BB4B-AEC9-470E-B62C-EC95C8CBFA36}"
+	ProjectSection(SolutionItems) = preProject
+		docs\deployment\DEPLOYMENT.md = docs\deployment\DEPLOYMENT.md
+		docs\deployment\DEPLOYMENT_CHECKLIST.md = docs\deployment\DEPLOYMENT_CHECKLIST.md
+		docs\deployment\DEPLOYMENT_OPERATIONS_GUIDE.md = docs\deployment\DEPLOYMENT_OPERATIONS_GUIDE.md
+		docs\deployment\PRE_DEPLOYMENT_CHECKLIST.md = docs\deployment\PRE_DEPLOYMENT_CHECKLIST.md
+		docs\deployment\README.md = docs\deployment\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "development", "development", "{007C4AD4-941A-4E3B-9BAF-46C94C52A6B4}"
+	ProjectSection(SolutionItems) = preProject
+		docs\development\add-dependencies.prompt.md = docs\development\add-dependencies.prompt.md
+		docs\development\README.md = docs\development\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-compose", "docker-compose", "{B8E3E780-1465-402C-BBAA-8E00B76B27B1}"
+	ProjectSection(SolutionItems) = preProject
+		docs\docker-compose\README.md = docs\docker-compose\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "guides", "guides", "{E9F59242-42AB-4B5B-92C7-3B3A7796F416}"
+	ProjectSection(SolutionItems) = preProject
+		docs\guides\00_START_HERE.md = docs\guides\00_START_HERE.md
+		docs\guides\QUICK_REFERENCE.md = docs\guides\QUICK_REFERENCE.md
+		docs\guides\QUICKSTART.md = docs\guides\QUICKSTART.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "implementation", "implementation", "{BF6F0D73-70A5-45F8-8602-A0E42C91F6B3}"
+	ProjectSection(SolutionItems) = preProject
+		docs\implementation\IMPLEMENTATION_SUMMARY.md = docs\implementation\IMPLEMENTATION_SUMMARY.md
+		docs\implementation\PHASE_2_COMPLETION_SUMMARY.md = docs\implementation\PHASE_2_COMPLETION_SUMMARY.md
+		docs\implementation\PHASE_3_COMPLETION_SUMMARY.md = docs\implementation\PHASE_3_COMPLETION_SUMMARY.md
+		docs\implementation\PHASE_3B_COMPLETION_SUMMARY.md = docs\implementation\PHASE_3B_COMPLETION_SUMMARY.md
+		docs\implementation\REMEDIATION_COMPLETE.md = docs\implementation\REMEDIATION_COMPLETE.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{C3DF9922-3DEB-4F8C-9E92-85B5BC35F6DB}"
+	ProjectSection(SolutionItems) = preProject
+		docs\infrastructure\BICEP_AUDIT_INDEX.md = docs\infrastructure\BICEP_AUDIT_INDEX.md
+		docs\infrastructure\BICEP_AUDIT_VISUAL_SUMMARY.md = docs\infrastructure\BICEP_AUDIT_VISUAL_SUMMARY.md
+		docs\infrastructure\BICEP_CHANGES_APPLIED.md = docs\infrastructure\BICEP_CHANGES_APPLIED.md
+		docs\infrastructure\BICEP_COMPREHENSIVE_AUDIT.md = docs\infrastructure\BICEP_COMPREHENSIVE_AUDIT.md
+		docs\infrastructure\BICEP_DELIVERABLES_SUMMARY.md = docs\infrastructure\BICEP_DELIVERABLES_SUMMARY.md
+		docs\infrastructure\BICEP_DOCKER_COMPOSE_MAPPING.md = docs\infrastructure\BICEP_DOCKER_COMPOSE_MAPPING.md
+		docs\infrastructure\BICEP_INFRASTRUCTURE_AUDIT_SUMMARY.md = docs\infrastructure\BICEP_INFRASTRUCTURE_AUDIT_SUMMARY.md
+		docs\infrastructure\BICEP_QUICK_CHECKLIST.md = docs\infrastructure\BICEP_QUICK_CHECKLIST.md
+		docs\infrastructure\BICEP_QUICK_REFERENCE_CARD.md = docs\infrastructure\BICEP_QUICK_REFERENCE_CARD.md
+		docs\infrastructure\BICEP_REMEDIATION_GUIDE.md = docs\infrastructure\BICEP_REMEDIATION_GUIDE.md
+		docs\infrastructure\BICEP_SERVICES_APPLIED.md = docs\infrastructure\BICEP_SERVICES_APPLIED.md
+		docs\infrastructure\BICEP_TEMPLATES.md = docs\infrastructure\BICEP_TEMPLATES.md
+		docs\infrastructure\DOCKER_COMPOSE_QUICK_REFERENCE.md = docs\infrastructure\DOCKER_COMPOSE_QUICK_REFERENCE.md
+		docs\infrastructure\DOCKER_COMPOSE_REMEDIATION_COMPLETE.md = docs\infrastructure\DOCKER_COMPOSE_REMEDIATION_COMPLETE.md
+		docs\infrastructure\DOCKER_COMPOSE_VALIDATION_REPORT.md = docs\infrastructure\DOCKER_COMPOSE_VALIDATION_REPORT.md
+		docs\infrastructure\README.md = docs\infrastructure\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PHASE_GUIDES", "PHASE_GUIDES", "{5FE9E7B4-3F3F-4CDE-A746-8B686BB8AA81}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "microservices", "microservices", "{0CBF4A4E-29A1-4F40-A38A-F8AA1BC1F3AC}"
+	ProjectSection(SolutionItems) = preProject
+		docs\microservices\README.md = docs\microservices\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "operations", "operations", "{02AB9C65-045B-44F4-BE98-B3DF2B6E0D8E}"
+	ProjectSection(SolutionItems) = preProject
+		docs\operations\README.md = docs\operations\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "reference", "reference", "{FBBC2F15-6D6B-4A25-A4E4-9AF734A48780}"
+	ProjectSection(SolutionItems) = preProject
+		docs\reference\INDEX.md = docs\reference\INDEX.md
+		docs\reference\README.md = docs\reference\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "security", "security", "{9F8E71FF-3A3C-4CE2-9D8F-2DA7BD7A9E0C}"
+	ProjectSection(SolutionItems) = preProject
+		docs\security\INFRASTRUCTURE_SECURITY_ASSESSMENT.md = docs\security\INFRASTRUCTURE_SECURITY_ASSESSMENT.md
+		docs\security\README.md = docs\security\README.md
+		docs\security\README_SECURITY_FIXES.md = docs\security\README_SECURITY_FIXES.md
+		docs\security\SECURITY_FIXES_SUMMARY.md = docs\security\SECURITY_FIXES_SUMMARY.md
+		docs\security\SECURITY_IDENTITY_BEST_PRACTICES.md = docs\security\SECURITY_IDENTITY_BEST_PRACTICES.md
+		docs\security\SECURITY_REMEDIATION_PLAN.md = docs\security\SECURITY_REMEDIATION_PLAN.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -805,6 +922,20 @@ Global
 		{7579DEFE-B845-5C4A-EAA4-52B46CA03634} = {2D12D63F-FBB1-4D52-872D-3BEA0BD06E67}
 		{905F97F2-2375-6994-998F-0C544E24F06C} = {8FD1FFD7-F354-4B11-851F-FA7CB39A313C}
 		{E055C054-E322-9A3B-82AE-3CCA635A747E} = {8FD1FFD7-F354-4B11-851F-FA7CB39A313C}
+		{4A75EFB0-7D55-4AA1-908F-CA086F404AA1} = {AE6EF127-4F9D-463E-AFEB-3AA3D464F645}
+		{D822C915-9CE3-4EAF-97BA-8EC6BF78D257} = {AE6EF127-4F9D-463E-AFEB-3AA3D464F645}
+		{E59D1E31-EA19-4835-B5EC-26687ABF2C2D} = {AE6EF127-4F9D-463E-AFEB-3AA3D464F645}
+		{5ED6BB4B-AEC9-470E-B62C-EC95C8CBFA36} = {AE6EF127-4F9D-463E-AFEB-3AA3D464F645}
+		{007C4AD4-941A-4E3B-9BAF-46C94C52A6B4} = {AE6EF127-4F9D-463E-AFEB-3AA3D464F645}
+		{B8E3E780-1465-402C-BBAA-8E00B76B27B1} = {AE6EF127-4F9D-463E-AFEB-3AA3D464F645}
+		{E9F59242-42AB-4B5B-92C7-3B3A7796F416} = {AE6EF127-4F9D-463E-AFEB-3AA3D464F645}
+		{BF6F0D73-70A5-45F8-8602-A0E42C91F6B3} = {AE6EF127-4F9D-463E-AFEB-3AA3D464F645}
+		{C3DF9922-3DEB-4F8C-9E92-85B5BC35F6DB} = {AE6EF127-4F9D-463E-AFEB-3AA3D464F645}
+		{0CBF4A4E-29A1-4F40-A38A-F8AA1BC1F3AC} = {AE6EF127-4F9D-463E-AFEB-3AA3D464F645}
+		{02AB9C65-045B-44F4-BE98-B3DF2B6E0D8E} = {AE6EF127-4F9D-463E-AFEB-3AA3D464F645}
+		{FBBC2F15-6D6B-4A25-A4E4-9AF734A48780} = {AE6EF127-4F9D-463E-AFEB-3AA3D464F645}
+		{9F8E71FF-3A3C-4CE2-9D8F-2DA7BD7A9E0C} = {AE6EF127-4F9D-463E-AFEB-3AA3D464F645}
+		{5FE9E7B4-3F3F-4CDE-A746-8B686BB8AA81} = {C3DF9922-3DEB-4F8C-9E92-85B5BC35F6DB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {762A0BB9-F061-4D79-B76B-493DC0B3EC0E}
