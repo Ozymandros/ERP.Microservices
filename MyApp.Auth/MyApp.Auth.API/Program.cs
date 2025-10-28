@@ -26,7 +26,7 @@ builder.Services.AddOpenTelemetry()
     .WithTracing(tracing =>
     {
         tracing
-            .AddOtlpExporter(); // cap al collector o Azure Monitor
+            .AddOtlpExporter(); // to the collector or Azure Monitor
     })
     .WithMetrics(metrics =>
     {
@@ -36,7 +36,7 @@ builder.Services.AddOpenTelemetry()
             .AddOtlpExporter();
     });
 
-// Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
+// Aquesta lÃ­nia registra el DaprClient (Singleton) al contenidor d'InjecciÃ³ de DependÃ¨ncies (DI)
 builder.Services.AddDaprClient();
 
 // Add services to the container
