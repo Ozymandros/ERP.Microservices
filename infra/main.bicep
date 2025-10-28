@@ -9,9 +9,6 @@ param environmentName string
 @description('The location used for all deployed resources')
 param location string
 
-@description('Id of the user or app to assign application roles')
-param principalId string = ''
-
 @metadata({azd: {
   type: 'generate'
   config: {length:22,noSpecial:true}
@@ -124,21 +121,6 @@ module appConfiguration 'core/configuration/app-configuration.bicep' = {
   }
 }
 
-module MyApp_ApplicationInsights 'MyApp-ApplicationInsights/MyApp-ApplicationInsights.module.bicep' = {
-  name: 'MyApp-ApplicationInsights'
-  scope: rg
-  params: {
-    location: location
-    myapp_loganalyticsworkspace_outputs_loganalyticsworkspaceid: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
-  }
-}
-module MyApp_LogAnalyticsWorkspace 'MyApp-LogAnalyticsWorkspace/MyApp-LogAnalyticsWorkspace.module.bicep' = {
-  name: 'MyApp-LogAnalyticsWorkspace'
-  scope: rg
-  params: {
-    location: location
-  }
-}
 module myapp_sqlserver 'myapp-sqlserver/myapp-sqlserver.module.bicep' = {
   name: 'myapp-sqlserver'
   scope: rg
@@ -168,7 +150,7 @@ module authServiceModule 'services/auth-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-    logAnalyticsWorkspaceId: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -188,7 +170,7 @@ module billingServiceModule 'services/billing-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-    logAnalyticsWorkspaceId: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -208,7 +190,7 @@ module inventoryServiceModule 'services/inventory-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-    logAnalyticsWorkspaceId: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -228,7 +210,7 @@ module ordersServiceModule 'services/orders-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-    logAnalyticsWorkspaceId: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -248,7 +230,7 @@ module purchasingServiceModule 'services/purchasing-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-    logAnalyticsWorkspaceId: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -268,7 +250,7 @@ module salesServiceModule 'services/sales-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-    logAnalyticsWorkspaceId: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -288,7 +270,7 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-    logAnalyticsWorkspaceId: MyApp_LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -401,7 +383,7 @@ output AZURE_CONTAINER_APPS_ENVIRONMENT_ID string = resources.outputs.AZURE_CONT
 output AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN
 output SERVICE_CACHE_VOLUME_REDISCACHE_NAME string = resources.outputs.SERVICE_CACHE_VOLUME_REDISCACHE_NAME
 output AZURE_VOLUMES_STORAGE_ACCOUNT string = resources.outputs.AZURE_VOLUMES_STORAGE_ACCOUNT
-output MYAPP_APPLICATIONINSIGHTS_APPINSIGHTSCONNECTIONSTRING string = MyApp_ApplicationInsights.outputs.appInsightsConnectionString
+output MYAPP_APPLICATIONINSIGHTS_APPINSIGHTSCONNECTIONSTRING string = resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
 output MYAPP_SQLSERVER_SQLSERVERFQDN string = myapp_sqlserver.outputs.sqlServerFqdn
 output AZURE_REDIS_CACHE_NAME string = redis.outputs.name
 output AZURE_REDIS_CACHE_HOST string = redis.outputs.hostName
