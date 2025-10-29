@@ -86,7 +86,7 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-pr
 // Build secrets array from Key Vault references
 var keyVaultSecretsList = [for secret in keyVaultSecrets: {
   name: secret.name
-  keyVaultUrl: '${keyVaultUri}${endsWith(keyVaultUri, '/') ? '' : '/'}secrets/${secret.secretName}'
+  keyVaultUrl: '${keyVaultUri}secrets/${secret.secretName}'
   identity: 'system-assigned'
 }]
 

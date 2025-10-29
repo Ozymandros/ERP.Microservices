@@ -128,7 +128,6 @@ module keyVault 'core/security/keyvault-secrets.bicep' = {
     ordersDbName: sqlDatabaseNames.orders
     purchasingDbName: sqlDatabaseNames.purchasing
     salesDbName: sqlDatabaseNames.sales
-    enableKeyVault: true
   }
 }
 

@@ -22,7 +22,7 @@ if ($null -eq $azVersion) {
     exit 1
 }
 
-Write-Host "✓ Azure CLI version: $($azVersion.'azure-cli')" -ForegroundColor Green
+Write-Host "? Azure CLI version: $($azVersion.'azure-cli')" -ForegroundColor Green
 Write-Host ""
 
 # Files to validate
@@ -58,7 +58,7 @@ $failedFiles = @()
 # Validate each file
 foreach ($file in $filesToValidate) {
     if (-not (Test-Path $file)) {
-        Write-Host "⚠ SKIP: File not found: $file" -ForegroundColor Yellow
+        Write-Host "? SKIP: File not found: $file" -ForegroundColor Yellow
         continue
     }
     
@@ -68,16 +68,16 @@ foreach ($file in $filesToValidate) {
         $result = az bicep build --file $file 2>&1
         
         if ($LASTEXITCODE -eq 0) {
-            Write-Host "  ✓ Valid" -ForegroundColor Green
+            Write-Host "  ? Valid" -ForegroundColor Green
             $successCount++
         } else {
-            Write-Host "  ✗ Invalid" -ForegroundColor Red
+            Write-Host "  ? Invalid" -ForegroundColor Red
             Write-Host "  Error: $result" -ForegroundColor Red
             $failureCount++
             $failedFiles += $file
         }
     } catch {
-        Write-Host "  ✗ Exception: $_" -ForegroundColor Red
+        Write-Host "  ? Exception: $_" -ForegroundColor Red
         $failureCount++
         $failedFiles += $file
     }
@@ -108,7 +108,7 @@ if ($failureCount -gt 0) {
 }
 
 Write-Host ""
-Write-Host "✓ All Bicep files are valid!" -ForegroundColor Green
+Write-Host "? All Bicep files are valid!" -ForegroundColor Green
 Write-Host ""
 
 # Check for critical parameters
@@ -130,9 +130,9 @@ $criticalParams = @(
 Write-Host "JWT Parameters:" -ForegroundColor Cyan
 foreach ($param in $criticalParams) {
     if ($mainBicepContent -match "param $param") {
-        Write-Host "  ✓ $param" -ForegroundColor Green
+        Write-Host "  ? $param" -ForegroundColor Green
     } else {
-        Write-Host "  ✗ $param - MISSING" -ForegroundColor Red
+        Write-Host "  ? $param - MISSING" -ForegroundColor Red
     }
 }
 
@@ -140,12 +140,12 @@ Write-Host ""
 
 # Check for module calls
 Write-Host "Module Calls:" -ForegroundColor Cyan
-$moduleNames = @("redis", "sqlServer", "keyVault")
+$moduleNames = @("redis", "myapp_sqlserver", "keyVault")
 foreach ($moduleName in $moduleNames) {
     if ($mainBicepContent -match "module $moduleName") {
-        Write-Host "  ✓ $moduleName module call" -ForegroundColor Green
+        Write-Host "  ? $moduleName module call" -ForegroundColor Green
     } else {
-        Write-Host "  ✗ $moduleName module call - MISSING" -ForegroundColor Red
+        Write-Host "  ? $moduleName module call - MISSING" -ForegroundColor Red
     }
 }
 
@@ -154,9 +154,9 @@ Write-Host ""
 # Check Key Vault enablement
 Write-Host "Critical Security Check:" -ForegroundColor Cyan
 if ($mainBicepContent -match "enableKeyVault:\s*true") {
-    Write-Host "  ✓ Key Vault enabled (enableKeyVault: true)" -ForegroundColor Green
+    Write-Host "  ? Key Vault enabled (enableKeyVault: true)" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Key Vault NOT enabled - CRITICAL!" -ForegroundColor Red
+    Write-Host "  ? Key Vault NOT enabled - CRITICAL!" -ForegroundColor Red
 }
 
 Write-Host ""
@@ -166,9 +166,9 @@ Write-Host "================================================" -ForegroundColor G
 Write-Host ""
 
 if ($failureCount -eq 0) {
-    Write-Host "✓ Infrastructure is ready for deployment!" -ForegroundColor Green
+    Write-Host "? Infrastructure is ready for deployment!" -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "✗ Please fix the validation errors above" -ForegroundColor Red
+    Write-Host "? Please fix the validation errors above" -ForegroundColor Red
     exit 1
 }

@@ -1,3 +1,5 @@
+import { sqlFirewallRuleName, sqlTlsVersion, databaseCollation, databaseMaxSizeBytes, databaseSkuName, databaseSkuTier } from '../config/constants.bicep'
+
 @description('The location for the resource(s) to be deployed.')
 param location string = resourceGroup().location
 
@@ -26,7 +28,7 @@ resource myapp_sqlserver 'Microsoft.Sql/servers@2023-08-01' = {
       tenantId: subscription().tenantId
       azureADOnlyAuthentication: true
     }
-    minimalTlsVersion: '1.2'
+    minimalTlsVersion: sqlTlsVersion
     publicNetworkAccess: 'Enabled'
     version: '12.0'
   }
@@ -36,7 +38,7 @@ resource myapp_sqlserver 'Microsoft.Sql/servers@2023-08-01' = {
 }
 
 resource sqlFirewallRule_AllowAllAzureIps 'Microsoft.Sql/servers/firewallRules@2023-08-01' = {
-  name: 'AllowAllAzureIps'
+  name: sqlFirewallRuleName
   properties: {
     endIpAddress: '0.0.0.0'
     startIpAddress: '0.0.0.0'
@@ -50,13 +52,13 @@ resource sqlDatabases 'Microsoft.Sql/servers/databases@2023-08-01' = [for dbName
   parent: myapp_sqlserver
   location: location
   properties: {
-    collation: 'SQL_Latin1_General_CP1_CI_AS'
-    maxSizeBytes: 2147483648
-    catalogCollation: 'SQL_Latin1_General_CP1_CI_AS'
+    collation: databaseCollation
+    maxSizeBytes: databaseMaxSizeBytes
+    catalogCollation: databaseCollation
   }
   sku: {
-    name: 'Basic'
-    tier: 'Basic'
+    name: databaseSkuName
+    tier: databaseSkuTier
   }
   tags: {
     'aspire-resource-name': dbName

@@ -1,3 +1,5 @@
+import { containerRegistrySku, logAnalyticsSkuName, applicationInsightsKind, workloadProfileType, workloadProfileName, aspireDashboardComponentName, aspireDashboardComponentType, storageFileServiceName, storageKind, storageSkuName, storageFileShareQuota, tagAspireNamePrefix, tagAspireResourceName } from 'config/constants.bicep'
+
 @description('The location used for all deployed resources')
 param location string = resourceGroup().location
 
@@ -35,7 +37,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-
   name: managedIdentityName
   location: location
   tags: union(tags, {
-    'aspire-name-prefix': namePrefix
+    '${tagAspireNamePrefix}': namePrefix
   })
 }
 
@@ -43,7 +45,7 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-07-01' =
   name: containerRegistryName
   location: location
   sku: {
-    name: 'Basic'
+    name: containerRegistrySku
   }
   tags: tags
 }
@@ -63,33 +65,33 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
   location: location
   properties: {
     sku: {
-      name: 'PerGB2018'
+      name: logAnalyticsSkuName
     }
   }
   tags: union(tags, {
-    'aspire-resource-name': logAnalyticsWorkspaceName
+    '${tagAspireResourceName}': logAnalyticsWorkspaceName
   })
 }
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: applicationInsightsName
   location: location
-  kind: 'web'
+  kind: applicationInsightsKind
   properties: {
-    Application_Type: 'web'
+    Application_Type: applicationInsightsKind
     WorkspaceResourceId: logAnalyticsWorkspace.id
   }
   tags: union(tags, {
-    'aspire-resource-name': applicationInsightsName
+    '${tagAspireResourceName}': applicationInsightsName
   })
 }
 
 resource storageVolume 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   name: storageAccountName
   location: location
-  kind: 'StorageV2'
+  kind: storageKind
   sku: {
-    name: 'Standard_LRS'
+    name: storageSkuName
   }
   properties: {
     largeFileSharesState: 'Enabled'
@@ -98,14 +100,14 @@ resource storageVolume 'Microsoft.Storage/storageAccounts@2022-05-01' = {
 
 resource storageVolumeFileService 'Microsoft.Storage/storageAccounts/fileServices@2022-05-01' = {
   parent: storageVolume
-  name: 'default'
+  name: storageFileServiceName
 }
 
 resource cacheRedisCacheFileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2022-05-01' = {
   parent: storageVolumeFileService
   name: storageShareName
   properties: {
-    shareQuota: 1024
+    shareQuota: storageFileShareQuota
     enabledProtocols: 'SMB'
   }
 }
@@ -129,8 +131,8 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-02-02-p
   location: location
   properties: {
     workloadProfiles: [{
-      workloadProfileType: 'Consumption'
-      name: 'consumption'
+      workloadProfileType: workloadProfileType
+      name: workloadProfileName
     }]
     appLogsConfiguration: {
       destination: 'log-analytics'
@@ -143,9 +145,9 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-02-02-p
   tags: tags
 
   resource aspireDashboard 'dotNetComponents' = {
-    name: 'aspire-dashboard'
+    name: aspireDashboardComponentName
     properties: {
-      componentType: 'AspireDashboard'
+      componentType: aspireDashboardComponentType
     }
   }
 
