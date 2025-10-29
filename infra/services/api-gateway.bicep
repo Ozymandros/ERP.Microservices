@@ -42,7 +42,10 @@ param imageTag string = 'latest'
 @description('Container Apps managed identity principal ID')
 param managedIdentityPrincipalId string = ''
 
-var serviceName = 'api-gateway'
+@description('Base resource name prefix for this deployment (e.g., myapp-dev)')
+param namePrefix string
+
+var serviceName = '${namePrefix}-api-gateway'
 var imageName = 'erp-api-gateway'
 
 module apiGateway 'container-app-service.bicep' = {

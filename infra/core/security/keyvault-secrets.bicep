@@ -25,6 +25,24 @@ param sqlFqdn string
 @secure()
 param sqlAdminPassword string
 
+@description('Database name for the Auth service')
+param authDbName string
+
+@description('Database name for the Billing service')
+param billingDbName string
+
+@description('Database name for the Inventory service')
+param inventoryDbName string
+
+@description('Database name for the Orders service')
+param ordersDbName string
+
+@description('Database name for the Purchasing service')
+param purchasingDbName string
+
+@description('Database name for the Sales service')
+param salesDbName string
+
 @description('JWT secret value')
 @secure()
 param jwtSecretKey string
@@ -81,7 +99,7 @@ resource kvSqlSecretAuth 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (en
   parent: keyVault
   name: 'sql-connection-authdb'
   properties: {
-    value: 'Server=${sqlFqdn};Database=AuthDB;User Id=sqladmin;Password=${sqlAdminPassword};'
+    value: 'Server=${sqlFqdn};Database=${authDbName};User Id=sqladmin;Password=${sqlAdminPassword};'
   }
 }
 
@@ -89,7 +107,7 @@ resource kvSqlSecretBilling 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if 
   parent: keyVault
   name: 'sql-connection-billingdb'
   properties: {
-    value: 'Server=${sqlFqdn};Database=BillingDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+    value: 'Server=${sqlFqdn};Database=${billingDbName};User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
   }
 }
 
@@ -97,7 +115,7 @@ resource kvSqlSecretInventory 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = i
   parent: keyVault
   name: 'sql-connection-inventorydb'
   properties: {
-    value: 'Server=${sqlFqdn};Database=InventoryDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+    value: 'Server=${sqlFqdn};Database=${inventoryDbName};User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
   }
 }
 
@@ -105,7 +123,7 @@ resource kvSqlSecretOrders 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (
   parent: keyVault
   name: 'sql-connection-ordersdb'
   properties: {
-    value: 'Server=${sqlFqdn};Database=OrderDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+    value: 'Server=${sqlFqdn};Database=${ordersDbName};User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
   }
 }
 
@@ -113,7 +131,7 @@ resource kvSqlSecretPurchasing 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = 
   parent: keyVault
   name: 'sql-connection-purchasingdb'
   properties: {
-    value: 'Server=${sqlFqdn};Database=PurchasingDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+    value: 'Server=${sqlFqdn};Database=${purchasingDbName};User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
   }
 }
 
@@ -121,7 +139,7 @@ resource kvSqlSecretSales 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (e
   parent: keyVault
   name: 'sql-connection-salesdb'
   properties: {
-    value: 'Server=${sqlFqdn};Database=SalesDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+    value: 'Server=${sqlFqdn};Database=${salesDbName};User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
   }
 }
 

@@ -1,13 +1,22 @@
 @description('The location for the resource(s) to be deployed.')
 param location string = resourceGroup().location
 
+@description('SQL Server resource name')
+param sqlServerName string
+
+@description('User-assigned managed identity name for SQL administration')
+param sqlAdminIdentityName string
+
+@description('List of database names to create')
+param databaseNames array
+
 resource sqlServerAdminManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' = {
-  name: take('myapp_sqlserver-admin-${uniqueString(resourceGroup().id)}', 63)
+  name: sqlAdminIdentityName
   location: location
 }
 
 resource myapp_sqlserver 'Microsoft.Sql/servers@2023-08-01' = {
-  name: take('myappsqlserver-${uniqueString(resourceGroup().id)}', 63)
+  name: sqlServerName
   location: location
   properties: {
     administrators: {
@@ -22,7 +31,7 @@ resource myapp_sqlserver 'Microsoft.Sql/servers@2023-08-01' = {
     version: '12.0'
   }
   tags: {
-    'aspire-resource-name': 'myapp-sqlserver'
+    'aspire-resource-name': sqlServerName
   }
 }
 
@@ -35,16 +44,9 @@ resource sqlFirewallRule_AllowAllAzureIps 'Microsoft.Sql/servers/firewallRules@2
   parent: myapp_sqlserver
 }
 
-// CREATE ALL 6 DATABASES
-resource sqlDatabases 'Microsoft.Sql/servers/databases@2023-08-01' = [for db in [
-  'AuthDB'
-  'BillingDB'
-  'InventoryDB'
-  'OrdersDB'
-  'PurchasingDB'
-  'SalesDB'
-]: {
-  name: db
+// CREATE ALL REQUESTED DATABASES
+resource sqlDatabases 'Microsoft.Sql/servers/databases@2023-08-01' = [for dbName in databaseNames: {
+  name: dbName
   parent: myapp_sqlserver
   location: location
   properties: {
@@ -57,7 +59,7 @@ resource sqlDatabases 'Microsoft.Sql/servers/databases@2023-08-01' = [for db in 
     tier: 'Basic'
   }
   tags: {
-    'aspire-resource-name': db
+    'aspire-resource-name': dbName
   }
 }]
 
@@ -67,4 +69,4 @@ output name string = myapp_sqlserver.name
 
 output sqlServerAdminName string = sqlServerAdminManagedIdentity.name
 
-output databaseNames array = [for i in range(0, 6): sqlDatabases[i].name]
+output databaseNames array = [for i in range(0, length(databaseNames)): sqlDatabases[i].name]

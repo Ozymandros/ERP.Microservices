@@ -1,17 +1,8 @@
-@description('The location for the resource(s) to be deployed.')
-param location string = resourceGroup().location
+@description('Log Analytics workspace name. Defaults to the shared workspace provisioned in resources.bicep.')
+param logAnalyticsWorkspaceName string = 'law-${uniqueString(resourceGroup().id)}'
 
-resource MyApp_LogAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2025-02-01' = {
-  name: take('MyAppLogAnalyticsWorkspace-${uniqueString(resourceGroup().id)}', 63)
-  location: location
-  properties: {
-    sku: {
-      name: 'Free'
-    }
-  }
-  tags: {
-    'aspire-resource-name': 'MyApp-LogAnalyticsWorkspace'
-  }
+resource MyApp_LogAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
+  name: logAnalyticsWorkspaceName
 }
 
 output logAnalyticsWorkspaceId string = MyApp_LogAnalyticsWorkspace.id

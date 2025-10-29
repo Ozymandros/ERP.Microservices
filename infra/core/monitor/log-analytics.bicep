@@ -8,7 +8,7 @@ param location string = resourceGroup().location
 param tags object = {}
 
 @description('Log Analytics Workspace SKU')
-param sku string = 'Free'
+param sku string = 'PerGB2018'
 
 @description('Data retention in days')
 param retentionInDays int = 30

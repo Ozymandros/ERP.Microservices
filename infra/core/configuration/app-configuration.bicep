@@ -7,6 +7,9 @@ param environmentName string = 'Production'
 @description('Resource tags')
 param tags object
 
+@description('App Configuration resource name')
+param appConfigName string
+
 @description('Key Vault name for secret references')
 param keyVaultName string
 
@@ -22,7 +25,7 @@ param frontendOrigin string
 @description('ASP.NET Core environment')
 param aspnetcoreEnvironment string
 
-var appConfigName = 'appconfig-${uniqueString(resourceGroup().id)}'
+var keyVaultUri = 'https://${keyVaultName}.${environment().suffixes.keyvaultDns}'
 
 // ============================================================================
 // Azure App Configuration Store
@@ -108,7 +111,7 @@ resource redisCacheSetting 'Microsoft.AppConfiguration/configurationStores/keyVa
   parent: appConfig
   name: 'Redis:Connection'
   properties: {
-    value: '{"uri":"${keyVaultName}/secrets/redis-connection"}'
+    value: '{"uri":"${keyVaultUri}/secrets/redis-connection"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
   }
 }
@@ -124,7 +127,7 @@ resource jwtSecretKeyRef 'Microsoft.AppConfiguration/configurationStores/keyValu
   parent: appConfig
   name: 'Jwt:SecretKey'
   properties: {
-    value: '{"uri":"${keyVaultName}/secrets/jwt-secret-key"}'
+    value: '{"uri":"${keyVaultUri}/secrets/jwt-secret-key"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
   }
 }
@@ -140,7 +143,7 @@ resource redisCachePasswordRef 'Microsoft.AppConfiguration/configurationStores/k
   parent: appConfig
   name: 'Redis:Password'
   properties: {
-    value: '{"uri":"${keyVaultName}/secrets/redis-cache-password"}'
+    value: '{"uri":"${keyVaultUri}/secrets/redis-cache-password"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
   }
 }
@@ -155,7 +158,7 @@ resource sqlAuthDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues@
   parent: appConfig
   name: 'Sql:ConnectionStrings:AuthDb'
   properties: {
-    value: '{"uri":"${keyVaultName}/secrets/sql-connection-authdb"}'
+    value: '{"uri":"${keyVaultUri}/secrets/sql-connection-authdb"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
   }
 }
@@ -164,7 +167,7 @@ resource sqlBillingDbRef 'Microsoft.AppConfiguration/configurationStores/keyValu
   parent: appConfig
   name: 'Sql:ConnectionStrings:BillingDb'
   properties: {
-    value: '{"uri":"${keyVaultName}/secrets/sql-connection-billingdb"}'
+    value: '{"uri":"${keyVaultUri}/secrets/sql-connection-billingdb"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
   }
 }
@@ -173,7 +176,7 @@ resource sqlInventoryDbRef 'Microsoft.AppConfiguration/configurationStores/keyVa
   parent: appConfig
   name: 'Sql:ConnectionStrings:InventoryDb'
   properties: {
-    value: '{"uri":"${keyVaultName}/secrets/sql-connection-inventorydb"}'
+    value: '{"uri":"${keyVaultUri}/secrets/sql-connection-inventorydb"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
   }
 }
@@ -182,7 +185,7 @@ resource sqlOrdersDbRef 'Microsoft.AppConfiguration/configurationStores/keyValue
   parent: appConfig
   name: 'Sql:ConnectionStrings:OrdersDb'
   properties: {
-    value: '{"uri":"${keyVaultName}/secrets/sql-connection-ordersdb"}'
+    value: '{"uri":"${keyVaultUri}/secrets/sql-connection-ordersdb"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
   }
 }
@@ -191,7 +194,7 @@ resource sqlPurchasingDbRef 'Microsoft.AppConfiguration/configurationStores/keyV
   parent: appConfig
   name: 'Sql:ConnectionStrings:PurchasingDb'
   properties: {
-    value: '{"uri":"${keyVaultName}/secrets/sql-connection-purchasingdb"}'
+    value: '{"uri":"${keyVaultUri}/secrets/sql-connection-purchasingdb"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
   }
 }
@@ -200,7 +203,7 @@ resource sqlSalesDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues
   parent: appConfig
   name: 'Sql:ConnectionStrings:SalesDb'
   properties: {
-    value: '{"uri":"${keyVaultName}/secrets/sql-connection-salesdb"}'
+    value: '{"uri":"${keyVaultUri}/secrets/sql-connection-salesdb"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
   }
 }

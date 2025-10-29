@@ -86,7 +86,7 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-pr
 // Build secrets array from Key Vault references
 var keyVaultSecretsList = [for secret in keyVaultSecrets: {
   name: secret.name
-  keyVaultUrl: '${keyVaultUri}secrets/${secret.secretName}'
+  keyVaultUrl: '${keyVaultUri}${endsWith(keyVaultUri, '/') ? '' : '/'}secrets/${secret.secretName}'
   identity: 'system-assigned'
 }]
 
@@ -144,7 +144,14 @@ var secrets = concat(
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: name
   location: location
-  tags: tags
+  tags: union(
+    union(tags, !empty(logAnalyticsWorkspaceId) ? {
+      'log-analytics-workspace-id': logAnalyticsWorkspaceId
+    } : {}),
+    !empty(managedIdentityPrincipalId) ? {
+      'managed-identity-principal-id': managedIdentityPrincipalId
+    } : {}
+  )
   identity: {
     type: 'SystemAssigned'
   }

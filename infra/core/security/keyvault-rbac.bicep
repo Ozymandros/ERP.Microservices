@@ -23,6 +23,13 @@ param principalId string
 // Denies: Create, delete, modify secrets or access policies
 var keyVaultSecretsUserRoleId = '4633458b-17de-408a-b874-0445c86d0e6e'
 
+var keyVaultName = last(split(keyVaultId, '/'))
+
+resource keyVaultResource 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
+  scope: resourceGroup()
+  name: keyVaultName
+}
+
 // ============================================================================
 // Role Assignment: Grant microservice MI access to read Key Vault secrets
 // ============================================================================
@@ -34,7 +41,7 @@ var keyVaultSecretsUserRoleId = '4633458b-17de-408a-b874-0445c86d0e6e'
 
 resource keyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(keyVaultId, principalId, keyVaultSecretsUserRoleId)
-  scope: resourceGroup()
+  scope: keyVaultResource
   properties: {
     principalId: principalId
     principalType: 'ServicePrincipal'
