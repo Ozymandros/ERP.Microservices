@@ -109,22 +109,6 @@ module redis 'core/database/redis.bicep' = {
   }
 }
 
-module sqlServer 'core/database/sql-server.bicep' = {
-  name: 'sqlserver'
-  scope: rg
-  params: {
-    name: sqlServerName
-    location: location
-    tags: tags
-    administratorLogin: 'sqladmin'
-    administratorLoginPassword: password
-    databases: [for dbName in sqlDatabaseList: {
-      name: dbName
-    }]
-    minimalTlsVersion: '1.2'
-  }
-}
-
 module keyVault 'core/security/keyvault-secrets.bicep' = {
   name: 'keyvault'
   scope: rg
@@ -136,7 +120,7 @@ module keyVault 'core/security/keyvault-secrets.bicep' = {
     redisHostName: redis.outputs.hostName
     redisPrimaryKey: redis.outputs.primaryKey
     redisCachePassword: cache_password
-    sqlFqdn: sqlServer.outputs.fqdn
+    sqlFqdn: myapp_sqlserver.outputs.sqlServerFqdn
     sqlAdminPassword: password
     authDbName: sqlDatabaseNames.auth
     billingDbName: sqlDatabaseNames.billing
@@ -439,8 +423,8 @@ output MYAPP_SQLSERVER_SQLSERVERFQDN string = myapp_sqlserver.outputs.sqlServerF
 output AZURE_REDIS_CACHE_NAME string = redis.outputs.name
 output AZURE_REDIS_CACHE_HOST string = redis.outputs.hostName
 output AZURE_REDIS_CACHE_PORT int = redis.outputs.sslPort
-output AZURE_SQL_SERVER_NAME string = sqlServer.outputs.name
-output AZURE_SQL_SERVER_FQDN string = sqlServer.outputs.fqdn
+output AZURE_SQL_SERVER_NAME string = myapp_sqlserver.outputs.name
+output AZURE_SQL_SERVER_FQDN string = myapp_sqlserver.outputs.sqlServerFqdn
 output AZURE_KEY_VAULT_NAME string = keyVault.outputs.keyVaultUri
 
 // Service outputs
