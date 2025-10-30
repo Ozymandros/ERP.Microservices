@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Pagination;
 using System.Security.Claims;
 
 namespace MyApp.Auth.API.Controllers;
@@ -53,6 +54,26 @@ public class PermissionsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving all permissions");
+            return StatusCode(500, new { message = "An error occurred retrieving permissions" });
+        }
+    }
+
+    /// <summary>
+    /// Get all permissions with pagination
+    /// </summary>
+    [HttpGet("paginated")]
+    [ProducesResponseType(typeof(PaginatedResult<PermissionDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<PaginatedResult<PermissionDto>>> GetAllPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        try
+        {
+            var result = await _permissionService.GetAllPermissionsPaginatedAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving paginated permissions");
             return StatusCode(500, new { message = "An error occurred retrieving permissions" });
         }
     }

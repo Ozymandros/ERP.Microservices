@@ -5,6 +5,7 @@ using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Pagination;
 using System;
 
 namespace MyApp.Auth.API.Controllers;
@@ -55,6 +56,26 @@ public class RolesController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving all roles");
+            return StatusCode(500, new { message = "An error occurred retrieving roles" });
+        }
+    }
+
+    /// <summary>
+    /// Get all roles with pagination
+    /// </summary>
+    [HttpGet("paginated")]
+    [ProducesResponseType(typeof(PaginatedResult<RoleDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<PaginatedResult<RoleDto>>> GetAllPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        try
+        {
+            var result = await _roleService.GetAllRolesPaginatedAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving paginated roles");
             return StatusCode(500, new { message = "An error occurred retrieving roles" });
         }
     }

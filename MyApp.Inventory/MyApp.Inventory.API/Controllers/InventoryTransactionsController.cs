@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Inventory.API.Controllers;
 
@@ -31,6 +32,27 @@ public class InventoryTransactionsController : ControllerBase
         _logger.LogInformation("Retrieving all inventory transactions");
         var transactions = await _transactionService.GetAllTransactionsAsync();
         return Ok(transactions);
+    }
+
+    /// <summary>
+    /// Get all inventory transactions with pagination - Requires Inventory.Read permission
+    /// </summary>
+    [HttpGet("paginated")]
+    [HasPermission("Inventory", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<InventoryTransactionDto>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<PaginatedResult<InventoryTransactionDto>>> GetAllTransactionsPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        try
+        {
+            _logger.LogInformation("Retrieving paginated transactions: Page {PageNumber}, Size {PageSize}", pageNumber, pageSize);
+            var result = await _transactionService.GetAllTransactionsPaginatedAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving paginated transactions");
+            return StatusCode(500, new { message = "An error occurred retrieving transactions" });
+        }
     }
 
     /// <summary>

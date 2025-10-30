@@ -3,6 +3,7 @@ using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Inventory.Application.Services;
 
@@ -33,6 +34,13 @@ public class ProductService : IProductService
     {
         var products = await _productRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<ProductDto>>(products);
+    }
+
+    public async Task<PaginatedResult<ProductDto>> GetAllProductsPaginatedAsync(int pageNumber, int pageSize)
+    {
+        var paginatedProducts = await _productRepository.GetAllPaginatedAsync(pageNumber, pageSize);
+        var productDtos = _mapper.Map<IEnumerable<ProductDto>>(paginatedProducts.Items);
+        return new PaginatedResult<ProductDto>(productDtos, paginatedProducts.PageNumber, paginatedProducts.PageSize, paginatedProducts.TotalCount);
     }
 
     public async Task<IEnumerable<ProductDto>> GetLowStockProductsAsync()

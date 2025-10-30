@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using Microsoft.AspNetCore.Authorization;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Inventory.API.Controllers;
 
@@ -30,6 +31,27 @@ public class WarehousesController : ControllerBase
         _logger.LogInformation("Retrieving all warehouses");
         var warehouses = await _warehouseService.GetAllWarehousesAsync();
         return Ok(warehouses);
+    }
+
+    /// <summary>
+    /// Get all warehouses with pagination - Requires Inventory.Read permission
+    /// </summary>
+    [HttpGet("paginated")]
+    [HasPermission("Inventory", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<WarehouseDto>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<PaginatedResult<WarehouseDto>>> GetAllWarehousesPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        try
+        {
+            _logger.LogInformation("Retrieving paginated warehouses: Page {PageNumber}, Size {PageSize}", pageNumber, pageSize);
+            var result = await _warehouseService.GetAllWarehousesPaginatedAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving paginated warehouses");
+            return StatusCode(500, new { message = "An error occurred retrieving warehouses" });
+        }
     }
 
     /// <summary>

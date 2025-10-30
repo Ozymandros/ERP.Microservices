@@ -3,6 +3,7 @@ using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Inventory.Application.Services;
 
@@ -50,6 +51,13 @@ public class InventoryTransactionService : IInventoryTransactionService
     {
         var transactions = await _transactionRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<InventoryTransactionDto>>(transactions);
+    }
+
+    public async Task<PaginatedResult<InventoryTransactionDto>> GetAllTransactionsPaginatedAsync(int pageNumber, int pageSize)
+    {
+        var paginatedTransactions = await _transactionRepository.GetAllPaginatedAsync(pageNumber, pageSize);
+        var transactionDtos = _mapper.Map<IEnumerable<InventoryTransactionDto>>(paginatedTransactions.Items);
+        return new PaginatedResult<InventoryTransactionDto>(transactionDtos, paginatedTransactions.PageNumber, paginatedTransactions.PageSize, paginatedTransactions.TotalCount);
     }
 
     public async Task<InventoryTransactionDto> CreateTransactionAsync(CreateUpdateInventoryTransactionDto dto)

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Auth.API.Controllers;
 
@@ -45,6 +46,26 @@ public class UsersController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving all users");
+            return StatusCode(500, new { message = "An error occurred retrieving users" });
+        }
+    }
+
+    /// <summary>
+    /// Get all users with pagination
+    /// </summary>
+    [HttpGet("paginated")]
+    [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<PaginatedResult<UserDto>>> GetAllPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        try
+        {
+            var result = await _userService.GetAllUsersPaginatedAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving paginated users");
             return StatusCode(500, new { message = "An error occurred retrieving users" });
         }
     }
@@ -94,7 +115,7 @@ public class UsersController : ControllerBase
                 return Ok(user); // Retorna des de la cache
             }
 
-            // 2. La dada NO és a la cache, obtenir de la DB
+            // 2. La dada NO ï¿½s a la cache, obtenir de la DB
             user = await _userService.GetUserByIdAsync(id);
             if (user is null)
             {
@@ -287,7 +308,7 @@ public class UsersController : ControllerBase
                 return Ok(roles); // Retorna des de la cache
             }
 
-            // 2. La dada NO és a la cache, obtenir de la DB
+            // 2. La dada NO ï¿½s a la cache, obtenir de la DB
             roles = await _userService.GetUserRolesAsync(id);
             await _cacheService.SaveStateAsync(cacheKey, roles);
 

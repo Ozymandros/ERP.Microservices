@@ -5,6 +5,7 @@ using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Auth.Application.Services;
 
@@ -81,6 +82,13 @@ public class PermissionService : IPermissionService
     {
         var entities = await _permissionRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<PermissionDto>>(entities);
+    }
+
+    public async Task<PaginatedResult<PermissionDto>> GetAllPermissionsPaginatedAsync(int pageNumber, int pageSize)
+    {
+        var paginatedPermissions = await _permissionRepository.GetAllPaginatedAsync(pageNumber, pageSize);
+        var permissionDtos = _mapper.Map<IEnumerable<PermissionDto>>(paginatedPermissions.Items);
+        return new PaginatedResult<PermissionDto>(permissionDtos, paginatedPermissions.PageNumber, paginatedPermissions.PageSize, paginatedPermissions.TotalCount);
     }
 
     public async Task<PermissionDto?> GetPermissionByIdAsync(Guid id)
