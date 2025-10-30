@@ -121,10 +121,10 @@ public class InventoryTransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new inventory transaction - Requires Inventory.Write permission
+    /// Create a new inventory transaction - Requires Inventory.Create permission
     /// </summary>
     [HttpPost]
-    [HasPermission("Inventory", "Write")]
+    [HasPermission("Inventory", "Create")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -155,10 +155,10 @@ public class InventoryTransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Update an existing inventory transaction - Requires Inventory.Write permission
+    /// Update an existing inventory transaction - Requires Inventory.Update permission
     /// </summary>
     [HttpPut("{id}")]
-    [HasPermission("Inventory", "Write")]
+    [HasPermission("Inventory", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

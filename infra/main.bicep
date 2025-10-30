@@ -170,7 +170,7 @@ module myapp_sqlserver_roles 'myapp-sqlserver-roles/myapp-sqlserver-roles.module
     myapp_sqlserver_outputs_name: myapp_sqlserver.outputs.name
     principalName: resources.outputs.MANAGED_IDENTITY_NAME
     principalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdSqlDbContributor)
+    roleDefinitionId: azureRoleIdSqlDbContributor
   }
 }
 

@@ -84,9 +84,9 @@ namespace MyApp.Orders.API
         }
 
         // POST api/<OrdersController>
-        /// <summary>Create new order - Requires Orders.Write permission</summary>
+        /// <summary>Create new order - Requires Orders.Create permission</summary>
         [HttpPost]
-        [HasPermission("Orders", "Write")]
+        [HasPermission("Orders", "Create")]
         public async Task<OrderDto> Post([FromBody] CreateUpdateOrderDto value)
         {
             try
@@ -104,9 +104,9 @@ namespace MyApp.Orders.API
         }
 
         // PUT api/<OrdersController>/5
-        /// <summary>Update order - Requires Orders.Write permission</summary>
+        /// <summary>Update order - Requires Orders.Update permission</summary>
         [HttpPut("{id}")]
-        [HasPermission("Orders", "Write")]
+        [HasPermission("Orders", "Update")]
         public async Task Put(Guid id, [FromBody] CreateUpdateOrderDto value)
         {
             try

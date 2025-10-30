@@ -36,6 +36,7 @@ public class RolesController : ControllerBase
     /// Get all roles
     /// </summary>
     [HttpGet]
+    [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(IEnumerable<RoleDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<RoleDto>>> GetAll()
@@ -64,6 +65,7 @@ public class RolesController : ControllerBase
     /// Get all roles with pagination
     /// </summary>
     [HttpGet("paginated")]
+    [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<RoleDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<PaginatedResult<RoleDto>>> GetAllPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
@@ -84,6 +86,7 @@ public class RolesController : ControllerBase
     /// Get role by ID
     /// </summary>
     [HttpGet("{id}")]
+    [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(RoleDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -122,6 +125,7 @@ public class RolesController : ControllerBase
     /// Get role by name
     /// </summary>
     [HttpGet("name/{name}")]
+    [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(RoleDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -149,6 +153,7 @@ public class RolesController : ControllerBase
     /// Create new role
     /// </summary>
     [HttpPost]
+    [HasPermission("Roles", "Create")]
     [ProducesResponseType(typeof(RoleDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -183,6 +188,7 @@ public class RolesController : ControllerBase
     /// Update role
     /// </summary>
     [HttpPut("{id}")]
+    [HasPermission("Roles", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -218,6 +224,7 @@ public class RolesController : ControllerBase
     /// Delete role
     /// </summary>
     [HttpDelete("{id}")]
+    [HasPermission("Roles", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -250,6 +257,7 @@ public class RolesController : ControllerBase
     /// Get users in role
     /// </summary>
     [HttpGet("{name}/users")]
+    [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersInRole(string name)
@@ -267,6 +275,7 @@ public class RolesController : ControllerBase
     }
 
     [HttpPost("{roleId}/permissions")]
+    [HasPermission("Roles", "Update")]
     public async Task<IActionResult> AddPermissionToRole(Guid roleId, Guid permissionId)
     {
         try
@@ -306,6 +315,7 @@ public class RolesController : ControllerBase
     }
 
     [HttpDelete("{roleId}/permissions/{permissionId}")]
+    [HasPermission("Roles", "Delete")]
     public async Task<IActionResult> RemovePermissionFromRole(Guid roleId, Guid permissionId)
     {
         try
@@ -346,6 +356,7 @@ public class RolesController : ControllerBase
     }
 
     [HttpGet("{roleId}/permissions")]
+    [HasPermission("Roles", "Read")]
     public async Task<IActionResult> GetRolePermissions(Guid roleId)
     {
         try

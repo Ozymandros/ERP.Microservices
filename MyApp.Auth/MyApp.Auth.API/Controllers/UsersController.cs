@@ -28,6 +28,7 @@ public class UsersController : ControllerBase
     /// Get all users
     /// </summary>
     [HttpGet]
+    [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
@@ -54,6 +55,7 @@ public class UsersController : ControllerBase
     /// Get all users with pagination
     /// </summary>
     [HttpGet("paginated")]
+    [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<PaginatedResult<UserDto>>> GetAllPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
@@ -74,6 +76,7 @@ public class UsersController : ControllerBase
     /// Get current user
     /// </summary>
     [HttpGet("me")]
+    [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<UserDto>> GetCurrentUser()
@@ -100,6 +103,7 @@ public class UsersController : ControllerBase
     /// Get user by ID
     /// </summary>
     [HttpGet("{id}")]
+    [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -137,6 +141,7 @@ public class UsersController : ControllerBase
     /// Get user by email
     /// </summary>
     [HttpGet("email/{email}")]
+    [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -164,6 +169,7 @@ public class UsersController : ControllerBase
     /// Update user
     /// </summary>
     [HttpPut("{id}")]
+    [HasPermission("Users", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -199,6 +205,7 @@ public class UsersController : ControllerBase
     /// Delete user
     /// </summary>
     [HttpDelete("{id}")]
+    [HasPermission("Users", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -231,6 +238,7 @@ public class UsersController : ControllerBase
     /// Assign role to user
     /// </summary>
     [HttpPost("{id}/roles/{roleName}")]
+    [HasPermission("Users", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -262,6 +270,7 @@ public class UsersController : ControllerBase
     /// Remove role from user
     /// </summary>
     [HttpDelete("{id}/roles/{roleName}")]
+    [HasPermission("Users", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -293,6 +302,7 @@ public class UsersController : ControllerBase
     /// Get user roles
     /// </summary>
     [HttpGet("{id}/roles")]
+    [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(IEnumerable<RoleDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

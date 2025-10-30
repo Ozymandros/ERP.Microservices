@@ -37,20 +37,23 @@ public enum ActionEnum
     /// <summary>Read/View permission - allows viewing/retrieving data</summary>
     Read = 1,
 
-    /// <summary>Write/Create/Update permission - allows creating and modifying data</summary>
-    Write = 2,
+    /// <summary>Create permission - allows creating new data</summary>
+    Create = 2,
+
+    /// <summary>Update permission - allows modifying existing data</summary>
+    Update = 3,
 
     /// <summary>Delete permission - allows removing data</summary>
-    Delete = 3,
+    Delete = 4,
 
     /// <summary>Execute permission - allows running operations and commands</summary>
-    Execute = 4,
+    Execute = 5,
 
     /// <summary>Export permission - allows exporting data</summary>
-    Export = 5,
+    Export = 6,
 
     /// <summary>Import permission - allows importing data</summary>
-    Import = 6
+    Import = 7
 }
 
 /// <summary>

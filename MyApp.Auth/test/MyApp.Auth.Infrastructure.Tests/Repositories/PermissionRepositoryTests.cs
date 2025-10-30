@@ -157,12 +157,12 @@ public class PermissionRepositoryTests
         // Arrange
         var role = CreateTestRole("Admin");
         var inventoryRead = CreateTestPermission("Inventory", "Read");
-        var inventoryWrite = CreateTestPermission("Inventory", "Write");
+        var inventoryCreate = CreateTestPermission("Inventory", "Create");
         var salesRead = CreateTestPermission("Sales", "Read");
 
         _context.RolePermissions.AddRange(
             new RolePermission {Id = Guid.NewGuid(), Role = role, Permission = inventoryRead },
-            new RolePermission {Id = Guid.NewGuid(), Role = role, Permission = inventoryWrite },
+            new RolePermission {Id = Guid.NewGuid(), Role = role, Permission = inventoryCreate },
             new RolePermission {Id = Guid.NewGuid(), Role = role, Permission = salesRead }
         );
         _context.SaveChanges();
@@ -184,7 +184,7 @@ public class PermissionRepositoryTests
     {
         // Arrange
         var user = CreateTestUser("john");
-        var permission = CreateTestPermission("Orders", "Write");
+        var permission = CreateTestPermission("Orders", "Create");
 
         var userPermission = new UserPermission
         {
@@ -196,12 +196,12 @@ public class PermissionRepositoryTests
         _context.SaveChanges();
 
         // Act
-        var result = await _repository.GetByUserName("john", "Orders", "Write");
+        var result = await _repository.GetByUserName("john", "Orders", "Create");
 
         // Assert
         Assert.NotNull(result);
         Assert.Single(result);
-        Assert.Contains(result, p => p.Module == "Orders" && p.Action == "Write");
+        Assert.Contains(result, p => p.Module == "Orders" && p.Action == "Create");
     }
 
     [Fact]
@@ -274,12 +274,12 @@ public class PermissionRepositoryTests
         var user = CreateTestUser("admin");
         var inventoryRead = CreateTestPermission("Inventory", "Read");
         var inventoryDelete = CreateTestPermission("Inventory", "Delete");
-        var salesWrite = CreateTestPermission("Sales", "Write");
+        var salesUpdate = CreateTestPermission("Sales", "Update");
 
         _context.UserPermissions.AddRange(
             new UserPermission { Id = Guid.NewGuid(), User = user, Permission = inventoryRead },
             new UserPermission {Id = Guid.NewGuid(), User = user, Permission = inventoryDelete },
-            new UserPermission {Id = Guid.NewGuid(), User = user, Permission = salesWrite }
+            new UserPermission {Id = Guid.NewGuid(), User = user, Permission = salesUpdate }
         );
         _context.SaveChanges();
 
