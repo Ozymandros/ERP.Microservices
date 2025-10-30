@@ -55,9 +55,14 @@ See [QUICKSTART.md](./docs/guides/QUICKSTART.md) for detailed 5-minute deploymen
 
 ## 📚 Documentation
 
+Browse the complete documentation site at **[https://ozymandros.github.io/ERP.Microservices/](https://ozymandros.github.io/ERP.Microservices/)** (generated with DocFX)
+
+### Quick Links
+
 - **[Quick Start Guide](./docs/guides/QUICKSTART.md)** - Get started in 5 minutes
 - **[Deployment Guide](./docs/deployment/DEPLOYMENT.md)** - Comprehensive deployment documentation
 - **[Architecture Guide](./docs/architecture/ARCHITECTURE_DOCUMENTATION.md)** - System architecture and design
+- **[API Reference](https://ozymandros.github.io/ERP.Microservices/api/)** - Complete API documentation
 
 ## 🛠️ Technology Stack
 

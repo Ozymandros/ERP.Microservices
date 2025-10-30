@@ -1,0 +1,43 @@
+- name: Home
+  href: README.md
+- name: Quick Start
+  href: QUICK_START_GUIDE.md
+- name: Guides
+  href: guides/
+  items:
+    - name: Start Here
+      href: guides/00_START_HERE.md
+    - name: Quick Start
+      href: guides/QUICKSTART.md
+    - name: Quick Reference
+      href: guides/QUICK_REFERENCE.md
+- name: Architecture
+  href: architecture/
+  items:
+    - name: Overview
+      href: architecture/README.md
+    - name: Architecture Documentation
+      href: architecture/ARCHITECTURE_DOCUMENTATION.md
+    - name: Dependency Mapping
+      href: architecture/DEPENDENCY_MAPPING.md
+- name: Deployment
+  href: deployment/
+  items:
+    - name: Overview
+      href: deployment/README.md
+    - name: Deployment Guide
+      href: deployment/DEPLOYMENT.md
+    - name: Pre-Deployment Checklist
+      href: deployment/PRE_DEPLOYMENT_CHECKLIST.md
+- name: Infrastructure
+  href: infrastructure/
+- name: Security
+  href: security/
+- name: Configuration
+  href: configuration/
+- name: Microservices
+  href: microservices/
+- name: API Gateway
+  href: api-gateway/
+- name: API Reference
+  href: api/
