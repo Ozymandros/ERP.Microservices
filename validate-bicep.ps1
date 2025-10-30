@@ -153,10 +153,10 @@ Write-Host ""
 
 # Check Key Vault enablement
 Write-Host "Critical Security Check:" -ForegroundColor Cyan
-if ($mainBicepContent -match "enableKeyVault:\s*true") {
-    Write-Host "  ? Key Vault enabled (enableKeyVault: true)" -ForegroundColor Green
+if ($mainBicepContent -match "module keyVault.*keyvault-secrets") {
+    Write-Host "  ✓ Key Vault module enabled" -ForegroundColor Green
 } else {
-    Write-Host "  ? Key Vault NOT enabled - CRITICAL!" -ForegroundColor Red
+    Write-Host "  ✗ Key Vault NOT enabled - CRITICAL!" -ForegroundColor Red
 }
 
 Write-Host ""
@@ -166,9 +166,9 @@ Write-Host "================================================" -ForegroundColor G
 Write-Host ""
 
 if ($failureCount -eq 0) {
-    Write-Host "? Infrastructure is ready for deployment!" -ForegroundColor Green
+    Write-Host "✓ Infrastructure is ready for deployment!" -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "? Please fix the validation errors above" -ForegroundColor Red
+    Write-Host "✗ Please fix the validation errors above" -ForegroundColor Red
     exit 1
 }

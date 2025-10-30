@@ -209,31 +209,6 @@ resource sqlSalesDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues
 }
 
 // ============================================================================
-// Grant App Configuration's Managed Identity Access to Key Vault
-// ============================================================================
-// This allows App Configuration to resolve Key Vault references at runtime
-
-resource keyVaultResource 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
-  name: keyVaultName
-}
-
-resource appConfigKeyVaultAccess 'Microsoft.KeyVault/vaults/accessPolicies@2022-07-01' = {
-  parent: keyVaultResource
-  name: 'add'
-  properties: {
-    accessPolicies: [
-      {
-        objectId: appConfig.identity.principalId
-        tenantId: subscription().tenantId
-        permissions: {
-          secrets: ['get', 'list']
-        }
-      }
-    ]
-  }
-}
-
-// ============================================================================
 // Outputs
 // ============================================================================
 // Connection string for services to connect to App Configuration

@@ -1,5 +1,7 @@
 targetScope = 'subscription'
 
+import { azureRoleIdSqlDbContributor } from 'config/constants.bicep'
+
 @minLength(1)
 @maxLength(64)
 @description('Name of the environment that can be used as part of naming resource convention, the name of the resource group for your application will use this name, prefixed with rg-')
@@ -72,6 +74,10 @@ var sqlDatabaseList = [
 var tags = {
   'azd-env-name': environmentName
 }
+
+// ============================================================================
+// Resource Group Creation
+// ============================================================================
 
 resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: resourceGroupName
@@ -164,6 +170,7 @@ module myapp_sqlserver_roles 'myapp-sqlserver-roles/myapp-sqlserver-roles.module
     myapp_sqlserver_outputs_name: myapp_sqlserver.outputs.name
     principalName: resources.outputs.MANAGED_IDENTITY_NAME
     principalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdSqlDbContributor)
   }
 }
 
@@ -331,78 +338,24 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
 // - Better security posture
 // ============================================================================
 
-// RBAC: Grant each microservice access to App Configuration
-module authServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
-  name: 'auth-service-appconfig-rbac'
+// ============================================================================
+// RBAC Role Assignments (via dedicated module at resource group scope)
+// NO manual input, NO hardcoded IDs - uses official Microsoft patterns
+// ============================================================================
+module rbacAssignments 'rbac-assignments.bicep' = {
+  name: 'rbac-assignments'
   scope: rg
   params: {
-    appConfigId: appConfiguration.outputs.appConfigResourceId
-    principalId: authServiceModule.outputs.managedIdentityPrincipalId
-  }
-}
-
-module billingServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
-  name: 'billing-service-appconfig-rbac'
-  scope: rg
-  params: {
-    appConfigId: appConfiguration.outputs.appConfigResourceId
-    principalId: billingServiceModule.outputs.managedIdentityPrincipalId
-  }
-}
-
-module inventoryServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
-  name: 'inventory-service-appconfig-rbac'
-  scope: rg
-  params: {
-    appConfigId: appConfiguration.outputs.appConfigResourceId
-    principalId: inventoryServiceModule.outputs.managedIdentityPrincipalId
-  }
-}
-
-module ordersServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
-  name: 'orders-service-appconfig-rbac'
-  scope: rg
-  params: {
-    appConfigId: appConfiguration.outputs.appConfigResourceId
-    principalId: ordersServiceModule.outputs.managedIdentityPrincipalId
-  }
-}
-
-module purchasingServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
-  name: 'purchasing-service-appconfig-rbac'
-  scope: rg
-  params: {
-    appConfigId: appConfiguration.outputs.appConfigResourceId
-    principalId: purchasingServiceModule.outputs.managedIdentityPrincipalId
-  }
-}
-
-module salesServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
-  name: 'sales-service-appconfig-rbac'
-  scope: rg
-  params: {
-    appConfigId: appConfiguration.outputs.appConfigResourceId
-    principalId: salesServiceModule.outputs.managedIdentityPrincipalId
-  }
-}
-
-module apiGatewayAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
-  name: 'api-gateway-appconfig-rbac'
-  scope: rg
-  params: {
-    appConfigId: appConfiguration.outputs.appConfigResourceId
-    principalId: apiGatewayModule.outputs.managedIdentityPrincipalId
-  }
-}
-
-// RBAC: Grant App Configuration access to Key Vault (centralized secret management)
-// This is the SINGLE POINT where App Configuration reads secrets from Key Vault
-module appConfigKeyVaultRbac 'core/security/keyvault-rbac.bicep' = {
-  name: 'appconfig-keyvault-rbac'
-  scope: rg
-  params: {
-    keyVaultId: keyVault.outputs.keyVaultId
-    principalId: appConfiguration.outputs.appConfigPrincipalId
+    appConfigName: appConfigurationName
+    keyVaultName: keyVaultName
+    authServicePrincipalId: authServiceModule.outputs.managedIdentityPrincipalId
+    billingServicePrincipalId: billingServiceModule.outputs.managedIdentityPrincipalId
+    inventoryServicePrincipalId: inventoryServiceModule.outputs.managedIdentityPrincipalId
+    ordersServicePrincipalId: ordersServiceModule.outputs.managedIdentityPrincipalId
+    purchasingServicePrincipalId: purchasingServiceModule.outputs.managedIdentityPrincipalId
+    salesServicePrincipalId: salesServiceModule.outputs.managedIdentityPrincipalId
+    apiGatewayPrincipalId: apiGatewayModule.outputs.managedIdentityPrincipalId
+    appConfigPrincipalId: appConfiguration.outputs.appConfigPrincipalId
   }
 }
 

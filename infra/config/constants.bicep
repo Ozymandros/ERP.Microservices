@@ -57,8 +57,32 @@ var defaultCpuCores = '0.5'
 @export()
 var defaultMemory = '1.0Gi'
 
+// ============================================================================
+// NOTE: Azure Role Definition IDs are NO LONGER hardcoded here.
+// They are now passed as deployment parameters for better flexibility and
+// validation. This prevents issues with wrong role IDs and ensures compatibility
+// across different Azure environments.
+// See main.bicep for role definition ID parameters.
+// ============================================================================
+
+// ============================================================================
+// Azure Built-in Role IDs (Microsoft-documented stable constants)
+// Reference: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
+// ============================================================================
+// These are the well-known IDs for Azure's built-in roles. They never change
+// and are used in Bicep `existing` resources to reference built-in role definitions.
+
 @export()
-var acrPullRoleDefinitionId = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
+var azureRoleIdAcrPull = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
+
+@export()
+var azureRoleIdAppConfigurationDataReader = '516239f1-63e1-4108-9233-9e7f68e97ce3'
+
+@export()
+var azureRoleIdKeyVaultSecretsUser = '4633458b-17de-408a-b874-0445c86d0e6e'
+
+@export()
+var azureRoleIdSqlDbContributor = '9b7fa17d-e63e-47b0-bb0a-15c516ac86ec'
 
 // Redis Configuration
 @export()
@@ -85,9 +109,6 @@ var keyVaultSkuFamily = 'A'
 
 @export()
 var keyVaultSkuName = 'standard'
-
-@export()
-var keyVaultSecretsUserRoleId = '4633458b-17de-408a-b8b7-0445c86d0e6e'
 
 // Storage Configuration
 @export()

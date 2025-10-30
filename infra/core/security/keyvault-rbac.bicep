@@ -8,7 +8,7 @@
 // Resources Created:
 // - Key Vault role assignment (Key Vault Secrets User role)
 // 
-// Input: principalId of the microservice managed identity
+// Input: principalId of the microservice managed identity, roleDefinitionId for the role
 // Output: Role assignment resource ID
 // ============================================================================
 
@@ -18,17 +18,15 @@ param keyVaultId string
 @description('Principal ID to grant access (microservice managed identity)')
 param principalId string
 
+@description('Role Definition ID - Key Vault Secrets User role ID')
+@minLength(36)
+@maxLength(36)
+param roleDefinitionId string
+
 // Key Vault Secrets User role (built-in Azure role)
 // Allows: Read secrets
 // Denies: Create, delete, modify secrets or access policies
-var keyVaultSecretsUserRoleId = '4633458b-17de-408a-b874-0445c86d0e6e'
-
-var keyVaultName = last(split(keyVaultId, '/'))
-
-resource keyVaultResource 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
-  scope: resourceGroup()
-  name: keyVaultName
-}
+// Reference: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#key-vault-secrets-user
 
 // ============================================================================
 // Role Assignment: Grant microservice MI access to read Key Vault secrets
@@ -40,12 +38,12 @@ resource keyVaultResource 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
 // ============================================================================
 
 resource keyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(keyVaultId, principalId, keyVaultSecretsUserRoleId)
-  scope: keyVaultResource
+  name: guid(keyVaultId, principalId, roleDefinitionId)
+  scope: resourceGroup()
   properties: {
     principalId: principalId
     principalType: 'ServicePrincipal'
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', keyVaultSecretsUserRoleId)
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
   }
 }
 
@@ -57,7 +55,7 @@ resource keyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04
 output roleAssignmentId string = keyVaultRoleAssignment.id
 
 @description('Role definition ID granted')
-output roleDefinitionId string = keyVaultSecretsUserRoleId
+output grantedRoleDefinitionId string = roleDefinitionId
 
 @description('Principal ID that received access')
 output grantedPrincipalId string = principalId

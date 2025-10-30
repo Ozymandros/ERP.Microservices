@@ -1,4 +1,4 @@
-import { containerRegistrySku, logAnalyticsSkuName, applicationInsightsKind, workloadProfileType, workloadProfileName, aspireDashboardComponentName, aspireDashboardComponentType, storageFileServiceName, storageKind, storageSkuName, storageFileShareQuota, tagAspireNamePrefix, tagAspireResourceName } from 'config/constants.bicep'
+import { containerRegistrySku, logAnalyticsSkuName, applicationInsightsKind, workloadProfileType, workloadProfileName, aspireDashboardComponentName, aspireDashboardComponentType, storageFileServiceName, storageKind, storageSkuName, storageFileShareQuota, tagAspireNamePrefix, tagAspireResourceName, azureRoleIdAcrPull } from 'config/constants.bicep'
 
 @description('The location used for all deployed resources')
 param location string = resourceGroup().location
@@ -51,12 +51,12 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-07-01' =
 }
 
 resource caeMiRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(containerRegistry.id, managedIdentity.id, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d'))
+  name: guid(containerRegistry.id, managedIdentity.id, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdAcrPull))
   scope: containerRegistry
   properties: {
     principalId: managedIdentity.properties.principalId
     principalType: 'ServicePrincipal'
-    roleDefinitionId:  subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
+    roleDefinitionId:  subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdAcrPull)
   }
 }
 
