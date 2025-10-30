@@ -32,8 +32,6 @@
     <ProjectReference Include="..\MyApp.Purchasing.Infrastructure\MyApp.Purchasing.Infrastructure.csproj" />
   </ItemGroup>
   <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);1591</NoWarn>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\</DockerfileContext>
   </PropertyGroup>

@@ -31,8 +31,6 @@
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.SignalR\MyApp.Shared.SignalR.csproj" />
   </ItemGroup>
   <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);1591</NoWarn>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <UserSecretsId>6b92a00d-507a-4fd7-83c2-9e7226dcc10c</UserSecretsId>
     <DockerfileContext>..\..</DockerfileContext>
