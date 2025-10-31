@@ -70,7 +70,7 @@ module redis 'core/database/redis.bicep' = {
     name: 'redis-${resourceToken}'
     location: location
     tags: tags
-    sku: 'Standard'
+    sku: 'Basic'
     family: 'C'
     capacity: 1
   }

@@ -1,0 +1,338 @@
+{
+  "$schema": "https://json.schemastore.org/aspire-8.0.json",
+  "resources": {
+    "MyApp-LogAnalyticsWorkspace": {
+      "type": "azure.bicep.v0",
+      "path": "MyApp-LogAnalyticsWorkspace.module.bicep"
+    },
+    "MyApp-ApplicationInsights": {
+      "type": "azure.bicep.v0",
+      "connectionString": "{MyApp-ApplicationInsights.outputs.appInsightsConnectionString}",
+      "path": "MyApp-ApplicationInsights.module.bicep",
+      "params": {
+        "myapp_loganalyticsworkspace_outputs_loganalyticsworkspaceid": "{MyApp-LogAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId}"
+      }
+    },
+    "cache": {
+      "type": "container.v0",
+      "connectionString": "{cache.bindings.tcp.host}:{cache.bindings.tcp.port},password={cache-password.value}",
+      "image": "docker.io/library/redis:8.2",
+      "entrypoint": "/bin/sh",
+      "args": [
+        "-c",
+        "redis-server --requirepass $REDIS_PASSWORD --save 60 1"
+      ],
+      "volumes": [
+        {
+          "name": "redis-cache",
+          "target": "/data",
+          "readOnly": false
+        }
+      ],
+      "env": {
+        "REDIS_PASSWORD": "{cache-password.value}"
+      },
+      "bindings": {
+        "tcp": {
+          "scheme": "tcp",
+          "protocol": "tcp",
+          "transport": "tcp",
+          "targetPort": 6379
+        }
+      }
+    },
+    "password": {
+      "type": "parameter.v0",
+      "value": "{password.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string",
+          "secret": true
+        }
+      }
+    },
+    "myapp-sqlserver": {
+      "type": "azure.bicep.v0",
+      "connectionString": "Server=tcp:{myapp-sqlserver.outputs.sqlServerFqdn},1433;Encrypt=True;Authentication=\u0022Active Directory Default\u0022",
+      "path": "myapp-sqlserver.module.bicep"
+    },
+    "auth-service-dapr": {
+      "type": "dapr.v0",
+      "dapr": {
+        "application": "auth-service",
+        "appId": "auth-service",
+        "appPort": 5001
+      }
+    },
+    "auth-service": {
+      "type": "container.v1",
+      "build": {
+        "context": "..",
+        "dockerfile": "MyApp.Auth/MyApp.Auth.API/Dockerfile"
+      },
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{auth-service.bindings.http.targetPort}",
+        "Jwt__SecretKey": "una_clau_molt_llarga_i_super_ultra_secreta_01234566789",
+        "Jwt__Issuer": "MyApp.Auth",
+        "Jwt__Audience": "MyApp.All",
+        "FRONTEND_ORIGIN": "http://localhost:3000;http://localhost:5000",
+        "APPLICATIONINSIGHTS_CONNECTION_STRING": "{MyApp-ApplicationInsights.connectionString}",
+        "ConnectionStrings__cache": "{cache.connectionString}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http",
+          "targetPort": 5001
+        }
+      }
+    },
+    "billing-service-dapr": {
+      "type": "dapr.v0",
+      "dapr": {
+        "application": "billing-service",
+        "appId": "billing-service",
+        "appPort": 5002
+      }
+    },
+    "billing-service": {
+      "type": "container.v1",
+      "build": {
+        "context": "..",
+        "dockerfile": "MyApp.Billing/MyApp.Billing.API/Dockerfile"
+      },
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{billing-service.bindings.http.targetPort}",
+        "Jwt__SecretKey": "una_clau_molt_llarga_i_super_ultra_secreta_01234566789",
+        "Jwt__Issuer": "MyApp.Auth",
+        "Jwt__Audience": "MyApp.All",
+        "FRONTEND_ORIGIN": "http://localhost:3000;http://localhost:5000",
+        "APPLICATIONINSIGHTS_CONNECTION_STRING": "{MyApp-ApplicationInsights.connectionString}",
+        "ConnectionStrings__cache": "{cache.connectionString}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http",
+          "targetPort": 5002
+        }
+      }
+    },
+    "inventory-service-dapr": {
+      "type": "dapr.v0",
+      "dapr": {
+        "application": "inventory-service",
+        "appId": "inventory-service",
+        "appPort": 5003
+      }
+    },
+    "inventory-service": {
+      "type": "container.v1",
+      "build": {
+        "context": "..",
+        "dockerfile": "MyApp.Inventory/MyApp.Inventory.API/Dockerfile"
+      },
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{inventory-service.bindings.http.targetPort}",
+        "Jwt__SecretKey": "una_clau_molt_llarga_i_super_ultra_secreta_01234566789",
+        "Jwt__Issuer": "MyApp.Auth",
+        "Jwt__Audience": "MyApp.All",
+        "FRONTEND_ORIGIN": "http://localhost:3000;http://localhost:5000",
+        "APPLICATIONINSIGHTS_CONNECTION_STRING": "{MyApp-ApplicationInsights.connectionString}",
+        "ConnectionStrings__cache": "{cache.connectionString}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http",
+          "targetPort": 5003
+        }
+      }
+    },
+    "orders-service-dapr": {
+      "type": "dapr.v0",
+      "dapr": {
+        "application": "orders-service",
+        "appId": "orders-service",
+        "appPort": 5004
+      }
+    },
+    "orders-service": {
+      "type": "container.v1",
+      "build": {
+        "context": "..",
+        "dockerfile": "MyApp.Orders/MyApp.Orders.API/Dockerfile"
+      },
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{orders-service.bindings.http.targetPort}",
+        "Jwt__SecretKey": "una_clau_molt_llarga_i_super_ultra_secreta_01234566789",
+        "Jwt__Issuer": "MyApp.Auth",
+        "Jwt__Audience": "MyApp.All",
+        "FRONTEND_ORIGIN": "http://localhost:3000;http://localhost:5000",
+        "APPLICATIONINSIGHTS_CONNECTION_STRING": "{MyApp-ApplicationInsights.connectionString}",
+        "ConnectionStrings__cache": "{cache.connectionString}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http",
+          "targetPort": 5004
+        }
+      }
+    },
+    "purchasing-service-dapr": {
+      "type": "dapr.v0",
+      "dapr": {
+        "application": "purchasing-service",
+        "appId": "purchasing-service",
+        "appPort": 5005
+      }
+    },
+    "purchasing-service": {
+      "type": "container.v1",
+      "build": {
+        "context": "..",
+        "dockerfile": "MyApp.Purchasing/MyApp.Purchasing.API/Dockerfile"
+      },
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{purchasing-service.bindings.http.targetPort}",
+        "Jwt__SecretKey": "una_clau_molt_llarga_i_super_ultra_secreta_01234566789",
+        "Jwt__Issuer": "MyApp.Auth",
+        "Jwt__Audience": "MyApp.All",
+        "FRONTEND_ORIGIN": "http://localhost:3000;http://localhost:5000",
+        "APPLICATIONINSIGHTS_CONNECTION_STRING": "{MyApp-ApplicationInsights.connectionString}",
+        "ConnectionStrings__cache": "{cache.connectionString}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http",
+          "targetPort": 5005
+        }
+      }
+    },
+    "sales-service-dapr": {
+      "type": "dapr.v0",
+      "dapr": {
+        "application": "sales-service",
+        "appId": "sales-service",
+        "appPort": 5006
+      }
+    },
+    "sales-service": {
+      "type": "container.v1",
+      "build": {
+        "context": "..",
+        "dockerfile": "MyApp.Sales/MyApp.Sales.API/Dockerfile"
+      },
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{sales-service.bindings.http.targetPort}",
+        "Jwt__SecretKey": "una_clau_molt_llarga_i_super_ultra_secreta_01234566789",
+        "Jwt__Issuer": "MyApp.Auth",
+        "Jwt__Audience": "MyApp.All",
+        "FRONTEND_ORIGIN": "http://localhost:3000;http://localhost:5000",
+        "APPLICATIONINSIGHTS_CONNECTION_STRING": "{MyApp-ApplicationInsights.connectionString}",
+        "ConnectionStrings__cache": "{cache.connectionString}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http",
+          "targetPort": 5006
+        }
+      }
+    },
+    "api-gateway": {
+      "type": "container.v1",
+      "build": {
+        "context": "..",
+        "dockerfile": "ErpApiGateway/Dockerfile"
+      },
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{api-gateway.bindings.http.targetPort}",
+        "OCELOT_ENVIRONMENT": "Production",
+        "Jwt__SecretKey": "una_clau_molt_llarga_i_super_ultra_secreta_01234566789",
+        "Jwt__Issuer": "MyApp.Auth",
+        "Jwt__Audience": "MyApp.All",
+        "FRONTEND_ORIGIN": "http://localhost:3000;http://localhost:5000",
+        "APPLICATIONINSIGHTS_CONNECTION_STRING": "{MyApp-ApplicationInsights.connectionString}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http",
+          "targetPort": 8080,
+          "external": true
+        },
+        "https": {
+          "scheme": "https",
+          "protocol": "tcp",
+          "transport": "http",
+          "targetPort": 8080,
+          "external": true
+        }
+      }
+    },
+    "myapp-sqlserver-roles": {
+      "type": "azure.bicep.v0",
+      "path": "myapp-sqlserver-roles.module.bicep",
+      "params": {
+        "myapp_sqlserver_outputs_name": "{myapp-sqlserver.outputs.name}",
+        "myapp_sqlserver_outputs_sqlserveradminname": "{myapp-sqlserver.outputs.sqlServerAdminName}",
+        "principalId": "",
+        "principalName": ""
+      }
+    },
+    "cache-password": {
+      "type": "parameter.v0",
+      "value": "{cache-password.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string",
+          "secret": true,
+          "default": {
+            "generate": {
+              "minLength": 22,
+              "special": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

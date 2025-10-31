@@ -6,6 +6,7 @@ using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Auth.Application.Services;
 
@@ -50,6 +51,13 @@ public class RoleService : IRoleService
     {
         var roles = await _roleRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<RoleDto>>(roles);
+    }
+
+    public async Task<PaginatedResult<RoleDto>> GetAllRolesPaginatedAsync(int pageNumber, int pageSize)
+    {
+        var paginatedRoles = await _roleRepository.GetAllPaginatedAsync(pageNumber, pageSize);
+        var roleDtos = _mapper.Map<IEnumerable<RoleDto>>(paginatedRoles.Items);
+        return new PaginatedResult<RoleDto>(roleDtos, paginatedRoles.PageNumber, paginatedRoles.PageSize, paginatedRoles.TotalCount);
     }
 
     public async Task<RoleDto?> CreateRoleAsync(CreateRoleDto createRoleDto)

@@ -1,3 +1,5 @@
+import { redisTlsVersion, redisMaxmemoryPolicy } from '../../config/constants.bicep'
+
 @description('Name of the Redis Cache')
 param name string
 
@@ -16,10 +18,6 @@ param family string = 'C'
 @description('Redis Cache capacity')
 param capacity int = 0
 
-@description('Redis cache password for authentication')
-@secure()
-param cachePassword string = ''
-
 resource redis 'Microsoft.Cache/redis@2023-08-01' = {
   name: name
   location: location
@@ -31,13 +29,13 @@ resource redis 'Microsoft.Cache/redis@2023-08-01' = {
       capacity: capacity
     }
     enableNonSslPort: false
-    minimumTlsVersion: '1.2'
+    minimumTlsVersion: redisTlsVersion
     publicNetworkAccess: 'Enabled'
     redisConfiguration: {
-      'maxmemory-policy': 'allkeys-lru'
+      'maxmemory-policy': redisMaxmemoryPolicy
       // ✅ Wire cache password for authentication
       // When requireauth is true, clients must authenticate with the password
-      requireauth: (!empty(cachePassword) ? 'true' : 'false')
+      // requireauth: (!empty(cachePassword) ? 'true' : 'false')
     }
   }
 }

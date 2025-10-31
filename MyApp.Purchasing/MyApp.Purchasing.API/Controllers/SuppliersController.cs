@@ -120,10 +120,10 @@ public class SuppliersController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new supplier - Requires Purchasing.Write permission
+    /// Create a new supplier - Requires Purchasing.Create permission
     /// </summary>
     [HttpPost]
-    [HasPermission("Purchasing", "Write")]
+    [HasPermission("Purchasing", "Create")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -149,10 +149,10 @@ public class SuppliersController : ControllerBase
     }
 
     /// <summary>
-    /// Update an existing supplier - Requires Purchasing.Write permission
+    /// Update an existing supplier - Requires Purchasing.Update permission
     /// </summary>
     [HttpPut("{id}")]
-    [HasPermission("Purchasing", "Write")]
+    [HasPermission("Purchasing", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

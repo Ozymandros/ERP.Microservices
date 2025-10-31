@@ -126,10 +126,10 @@ public class PurchaseOrdersController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new purchase order - Requires Purchasing.Write permission
+    /// Create a new purchase order - Requires Purchasing.Create permission
     /// </summary>
     [HttpPost]
-    [HasPermission("Purchasing", "Write")]
+    [HasPermission("Purchasing", "Create")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -156,10 +156,10 @@ public class PurchaseOrdersController : ControllerBase
     }
 
     /// <summary>
-    /// Update an existing purchase order - Requires Purchasing.Write permission
+    /// Update an existing purchase order - Requires Purchasing.Update permission
     /// </summary>
     [HttpPut("{id}")]
-    [HasPermission("Purchasing", "Write")]
+    [HasPermission("Purchasing", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -188,10 +188,10 @@ public class PurchaseOrdersController : ControllerBase
     }
 
     /// <summary>
-    /// Update purchase order status - Requires Purchasing.Write permission
+    /// Update purchase order status - Requires Purchasing.Update permission
     /// </summary>
     [HttpPatch("{id}/status/{status}")]
-    [HasPermission("Purchasing", "Write")]
+    [HasPermission("Purchasing", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

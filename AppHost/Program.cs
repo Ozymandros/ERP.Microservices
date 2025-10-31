@@ -4,7 +4,10 @@ var isDeployment =
     args.Contains("--publisher") || // quan azd genera manifests
     Environment.GetEnvironmentVariable("IS_DEPLOYMENT") == "true";
 
-var builder = DistributedApplication.CreateBuilder(args);
+var builder = DistributedApplication.CreateBuilder(args).AddDapr();
+
+var stateStore = builder.AddDaprStateStore("statestore");
+var pubSub = builder.AddDaprPubSub("pubsub");
 
 var analyticsWorkspace = isDeployment ? builder
     .AddAzureLogAnalyticsWorkspace("MyApp-LogAnalyticsWorkspace") : null;
@@ -74,6 +77,8 @@ if (isDeployment)
         .WaitFor(ordersService)
         .WaitFor(purchasingService)
         .WaitFor(salesService)
+        .WaitFor(pubSub)
+        .WaitFor(stateStore)
         .WithExternalHttpEndpoints()
         .WithEnvironment("OCELOT_ENVIRONMENT", "Production")
         .PublishAsDockerFile()

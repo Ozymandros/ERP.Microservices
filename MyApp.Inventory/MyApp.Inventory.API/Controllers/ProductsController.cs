@@ -3,6 +3,7 @@ using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Inventory.API.Controllers;
 
@@ -49,6 +50,27 @@ public class ProductsController : ControllerBase
             _logger.LogError(ex, "Error retrieving all products");
             var products = await _productService.GetAllProductsAsync();
             return Ok(products);
+        }
+    }
+
+    /// <summary>
+    /// Get all products with pagination - Requires Inventory.Read permission
+    /// </summary>
+    [HttpGet("paginated")]
+    [HasPermission("Inventory", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<ProductDto>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<PaginatedResult<ProductDto>>> GetAllProductsPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        try
+        {
+            var result = await _productService.GetAllProductsPaginatedAsync(pageNumber, pageSize);
+            _logger.LogInformation("Retrieved paginated products: Page {PageNumber}, Size {PageSize}", pageNumber, pageSize);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving paginated products");
+            return StatusCode(500, new { message = "An error occurred retrieving products" });
         }
     }
 
@@ -161,10 +183,10 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new product - Requires Inventory.Write permission
+    /// Create a new product - Requires Inventory.Create permission
     /// </summary>
     [HttpPost]
-    [HasPermission("Inventory", "Write")]
+    [HasPermission("Inventory", "Create")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -192,10 +214,10 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Update an existing product - Requires Inventory.Write permission
+    /// Update a product - Requires Inventory.Update permission
     /// </summary>
     [HttpPut("{id}")]
-    [HasPermission("Inventory", "Write")]
+    [HasPermission("Inventory", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

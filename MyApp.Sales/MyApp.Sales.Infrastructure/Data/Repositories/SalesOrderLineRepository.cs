@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Sales.Infrastructure.Data.Repositories
 {
@@ -47,6 +48,31 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
                 _context.SalesOrderLines.Remove(line);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public Task<IEnumerable<SalesOrderLine>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PaginatedResult<SalesOrderLine>> GetAllPaginatedAsync(int pageNumber, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<SalesOrderLine> IRepository<SalesOrderLine, Guid>.AddAsync(SalesOrderLine entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<SalesOrderLine> IRepository<SalesOrderLine, Guid>.UpdateAsync(SalesOrderLine entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(SalesOrderLine entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

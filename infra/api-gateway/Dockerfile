@@ -2,20 +2,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# Copy solution file
-COPY ["ERP.Microservices.sln", "./"]
-
-# Copy Gateway project
-COPY ["ErpApiGateway/ErpApiGateway.csproj", "ErpApiGateway/"]
-
-# Restore dependencies
-RUN dotnet restore "ErpApiGateway/ErpApiGateway.csproj"
-
-# Copy all source files
+# Copy entire contents (azd copies only the service folder here)
 COPY . .
 
 # Build the project
-WORKDIR "/src/ErpApiGateway"
 RUN dotnet build "ErpApiGateway.csproj" -c Release -o /app/build
 
 # Publish stage

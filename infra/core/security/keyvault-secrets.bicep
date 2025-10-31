@@ -25,16 +25,31 @@ param sqlFqdn string
 @secure()
 param sqlAdminPassword string
 
+@description('Database name for the Auth service')
+param authDbName string
+
+@description('Database name for the Billing service')
+param billingDbName string
+
+@description('Database name for the Inventory service')
+param inventoryDbName string
+
+@description('Database name for the Orders service')
+param ordersDbName string
+
+@description('Database name for the Purchasing service')
+param purchasingDbName string
+
+@description('Database name for the Sales service')
+param salesDbName string
+
 @description('JWT secret value')
 @secure()
 param jwtSecretKey string
 
-@description('Enable creation of Key Vault and secrets')
-param enableKeyVault bool = false
-
 // Key Vault
 
-resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = if (enableKeyVault) {
+resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   name: name
   location: location
   properties: {
@@ -50,7 +65,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = if (enableKeyVault) {
 }
 
 // Redis secret
-resource kvRedisSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (enableKeyVault) {
+resource kvRedisSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   parent: keyVault
   name: 'redis-connection'
   properties: {
@@ -59,7 +74,7 @@ resource kvRedisSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (enab
 }
 
 // ✅ Redis cache password secret (for authentication)
-resource kvRedisCachePasswordSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (enableKeyVault && !empty(redisCachePassword)) {
+resource kvRedisCachePasswordSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (!empty(redisCachePassword)) {
   parent: keyVault
   name: 'redis-cache-password'
   properties: {
@@ -68,7 +83,7 @@ resource kvRedisCachePasswordSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-0
 }
 
 // JWT secret
-resource kvJwtSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (enableKeyVault) {
+resource kvJwtSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   parent: keyVault
   name: 'jwt-secret-key'
   properties: {
@@ -77,65 +92,65 @@ resource kvJwtSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (enable
 }
 
 // SQL DB secrets
-resource kvSqlSecretAuth 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (enableKeyVault) {
+resource kvSqlSecretAuth 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   parent: keyVault
   name: 'sql-connection-authdb'
   properties: {
-    value: 'Server=${sqlFqdn};Database=AuthDB;User Id=sqladmin;Password=${sqlAdminPassword};'
+    value: 'Server=${sqlFqdn};Database=${authDbName};User Id=sqladmin;Password=${sqlAdminPassword};'
   }
 }
 
-resource kvSqlSecretBilling 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (enableKeyVault) {
+resource kvSqlSecretBilling 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   parent: keyVault
   name: 'sql-connection-billingdb'
   properties: {
-    value: 'Server=${sqlFqdn};Database=BillingDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+    value: 'Server=${sqlFqdn};Database=${billingDbName};User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
   }
 }
 
-resource kvSqlSecretInventory 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (enableKeyVault) {
+resource kvSqlSecretInventory 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   parent: keyVault
   name: 'sql-connection-inventorydb'
   properties: {
-    value: 'Server=${sqlFqdn};Database=InventoryDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+    value: 'Server=${sqlFqdn};Database=${inventoryDbName};User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
   }
 }
 
-resource kvSqlSecretOrders 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (enableKeyVault) {
+resource kvSqlSecretOrders 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   parent: keyVault
   name: 'sql-connection-ordersdb'
   properties: {
-    value: 'Server=${sqlFqdn};Database=OrderDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+    value: 'Server=${sqlFqdn};Database=${ordersDbName};User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
   }
 }
 
-resource kvSqlSecretPurchasing 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (enableKeyVault) {
+resource kvSqlSecretPurchasing 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   parent: keyVault
   name: 'sql-connection-purchasingdb'
   properties: {
-    value: 'Server=${sqlFqdn};Database=PurchasingDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+    value: 'Server=${sqlFqdn};Database=${purchasingDbName};User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
   }
 }
 
-resource kvSqlSecretSales 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (enableKeyVault) {
+resource kvSqlSecretSales 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   parent: keyVault
   name: 'sql-connection-salesdb'
   properties: {
-    value: 'Server=${sqlFqdn};Database=SalesDB;User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+    value: 'Server=${sqlFqdn};Database=${salesDbName};User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
   }
 }
 
-output keyVaultId string = enableKeyVault ? resourceId('Microsoft.KeyVault/vaults', name) : ''
-output keyVaultUri string = enableKeyVault ? 'https://${name}.${environment().suffixes.keyvaultDns}' : ''
-output keyVaultName string = enableKeyVault ? name : ''
+output keyVaultId string = keyVault.id
+output keyVaultUri string = keyVault.properties.vaultUri
+output keyVaultName string = keyVault.name
 
 // Return secret NAMES (not values) so callers can reference secret names safely
-output redisSecretName string = enableKeyVault ? kvRedisSecret.name : ''
+output redisSecretName string = kvRedisSecret.name
 output redisAuthSecretName string = 'redis-cache-password'
-output jwtSecretName string = enableKeyVault ? kvJwtSecret.name : ''
-output sqlAuthSecretName string = enableKeyVault ? kvSqlSecretAuth.name : ''
-output sqlBillingSecretName string = enableKeyVault ? kvSqlSecretBilling.name : ''
-output sqlInventorySecretName string = enableKeyVault ? kvSqlSecretInventory.name : ''
-output sqlOrdersSecretName string = enableKeyVault ? kvSqlSecretOrders.name : ''
-output sqlPurchasingSecretName string = enableKeyVault ? kvSqlSecretPurchasing.name : ''
-output sqlSalesSecretName string = enableKeyVault ? kvSqlSecretSales.name : ''
+output jwtSecretName string = kvJwtSecret.name
+output sqlAuthSecretName string = kvSqlSecretAuth.name
+output sqlBillingSecretName string = kvSqlSecretBilling.name
+output sqlInventorySecretName string = kvSqlSecretInventory.name
+output sqlOrdersSecretName string = kvSqlSecretOrders.name
+output sqlPurchasingSecretName string = kvSqlSecretPurchasing.name
+output sqlSalesSecretName string = kvSqlSecretSales.name

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Inventory.API.Controllers;
 
@@ -31,6 +32,27 @@ public class InventoryTransactionsController : ControllerBase
         _logger.LogInformation("Retrieving all inventory transactions");
         var transactions = await _transactionService.GetAllTransactionsAsync();
         return Ok(transactions);
+    }
+
+    /// <summary>
+    /// Get all inventory transactions with pagination - Requires Inventory.Read permission
+    /// </summary>
+    [HttpGet("paginated")]
+    [HasPermission("Inventory", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<InventoryTransactionDto>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<PaginatedResult<InventoryTransactionDto>>> GetAllTransactionsPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        try
+        {
+            _logger.LogInformation("Retrieving paginated transactions: Page {PageNumber}, Size {PageSize}", pageNumber, pageSize);
+            var result = await _transactionService.GetAllTransactionsPaginatedAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving paginated transactions");
+            return StatusCode(500, new { message = "An error occurred retrieving transactions" });
+        }
     }
 
     /// <summary>
@@ -99,10 +121,10 @@ public class InventoryTransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new inventory transaction - Requires Inventory.Write permission
+    /// Create a new inventory transaction - Requires Inventory.Create permission
     /// </summary>
     [HttpPost]
-    [HasPermission("Inventory", "Write")]
+    [HasPermission("Inventory", "Create")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -133,10 +155,10 @@ public class InventoryTransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Update an existing inventory transaction - Requires Inventory.Write permission
+    /// Update an existing inventory transaction - Requires Inventory.Update permission
     /// </summary>
     [HttpPut("{id}")]
-    [HasPermission("Inventory", "Write")]
+    [HasPermission("Inventory", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

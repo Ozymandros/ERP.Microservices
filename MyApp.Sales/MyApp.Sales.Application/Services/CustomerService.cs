@@ -6,6 +6,7 @@ using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Sales.Application.Services
 {
@@ -32,6 +33,13 @@ namespace MyApp.Sales.Application.Services
         {
             var customers = await _customerRepository.ListAsync();
             return _mapper.Map<IEnumerable<CustomerDto>>(customers);
+        }
+
+        public async Task<PaginatedResult<CustomerDto>> ListCustomersPaginatedAsync(int pageNumber, int pageSize)
+        {
+            var paginatedCustomers = await _customerRepository.GetAllPaginatedAsync(pageNumber, pageSize);
+            var customerDtos = _mapper.Map<IEnumerable<CustomerDto>>(paginatedCustomers.Items);
+            return new PaginatedResult<CustomerDto>(customerDtos, paginatedCustomers.PageNumber, paginatedCustomers.PageSize, paginatedCustomers.TotalCount);
         }
 
         public async Task<CustomerDto> CreateCustomerAsync(CustomerDto dto)

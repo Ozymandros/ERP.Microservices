@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Sales.Domain
 {
@@ -8,8 +9,11 @@ namespace MyApp.Sales.Domain
     {
         Task<TEntity?> GetByIdAsync(TKey id);
         Task<IEnumerable<TEntity>> ListAsync();
-        Task AddAsync(TEntity entity);
-        Task UpdateAsync(TEntity entity);
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<PaginatedResult<TEntity>> GetAllPaginatedAsync(int pageNumber, int pageSize);
+        Task<TEntity> AddAsync(TEntity entity);
+        Task<TEntity> UpdateAsync(TEntity entity);
+        Task DeleteAsync(TEntity entity);
         Task DeleteAsync(TKey id);
     }
 }

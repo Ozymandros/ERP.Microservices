@@ -23,5 +23,10 @@ public class AuthMappingProfile : Profile
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
             .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName));
+
+        // Permission mappings
+        CreateMap<Permission, PermissionDto>();
+        CreateMap<CreatePermissionDto, Permission>();
+        CreateMap<UpdatePermissionDto, Permission>();
     }
 }

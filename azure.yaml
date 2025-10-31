@@ -6,3 +6,33 @@ services:
     language: dotnet
     project: ./AppHost/AppHost.csproj
     host: containerapp
+infra:
+  provider: bicep
+  path: infra
+  module: main
+  parameters:
+    # --- NON-SECRETS ---
+    environmentName:
+      value: ${AZURE_ENV_NAME=Production} # Sets a default if not present
+    location:
+      value: ${AZURE_LOCATION=westeurope} # Sets a default if not present
+    jwtIssuer:
+      value: ${AZURE_JWT_ISSUER=MyApp.Auth} # Sets a default if not present
+    jwtAudience:
+      value: ${AZURE_JWT_AUDIENCE=MyApp.All} # Sets a default if not present
+    frontendOrigin:
+      value: ${AZURE_FRONTEND_ORIGIN=http://localhost:3000} # Sets a default
+    aspnetcoreEnvironment:
+      value: ${ASPNETCORE_ENVIRONMENT=Production} # Sets a default
+
+    # --- SECRETS WITH RANDOM GENERATION ---
+    cache_password:
+      value: ${AZURE_CACHE_PASSWORD=random(length=32,special=true,upper=true,lower=true,numeric=true)}
+      secret: true # Marks it as a secret
+    password:
+      value: ${AZURE_PASSWORD=random(length=32,special=true,upper=true,lower=true,numeric=true)}
+      secret: true
+    jwtSecretKey:
+      # JWT keys are often longer and don't need special chars
+      value: ${AZURE_JWT_SECRET_KEY=random(length=64,upper=true,lower=true,numeric=true)}
+      secret: true

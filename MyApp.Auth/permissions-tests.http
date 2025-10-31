@@ -1,0 +1,348 @@
+### Permissions API Tests
+### Tests for /permissions endpoints: check, GET, POST, PUT, DELETE
+
+## Variables
+@baseUrl = http://localhost:5000
+@apiPath = /api/permissions
+
+## Authorization Token (replace with valid JWT token from login)
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjEyMzMzMTQsImlzcyI6Ik15QXBwLkF1dGgiLCJhdWQiOiJNeUFwcC5BbGwifQ.0ejuM0YoR0s9bAqdKVQEDdfRlrKZQVO8vnGGv8hslE0
+
+## Test Data
+@permissionId = 550e8400-e29b-41d4-a716-446655440000
+@module = sales
+@action = create_customer
+
+@newModule = inventory
+@newAction = view_products
+@newDescription = Allows users to view product inventory
+
+@updateModule = inventory
+@updateAction = view_products_updated
+@updateDescription = Updated permission to view product inventory
+
+---
+
+### 1. Check Permission - Authorized User Has Permission
+# Returns true if user has the specified module:action permission
+GET {{baseUrl}}{{apiPath}}/check?module={{module}}&action={{action}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 2. Check Permission - User Missing Permission
+# Returns false if user lacks the specified permission
+GET {{baseUrl}}{{apiPath}}/check?module=accounting&action=approve_invoices
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 3. Check Permission - No Authorization
+# Missing auth header should return 401 Unauthorized
+GET {{baseUrl}}{{apiPath}}/check?module={{module}}&action={{action}}
+Accept: application/json
+
+---
+
+### 4. Check Permission - Invalid Token
+# Invalid token should return 401 Unauthorized
+GET {{baseUrl}}{{apiPath}}/check?module={{module}}&action={{action}}
+Authorization: Bearer invalid.token.here
+Accept: application/json
+
+---
+
+### 5. Check Permission - Missing Query Parameters
+# Missing module or action parameter should return 400 Bad Request
+GET {{baseUrl}}{{apiPath}}/check?module={{module}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 6. Get All Permissions - Success
+# Returns all permissions (requires Permissions:Read permission)
+GET {{baseUrl}}{{apiPath}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 7. Get All Permissions - No Authorization
+# Missing auth header should return 401 Unauthorized
+GET {{baseUrl}}{{apiPath}}
+Accept: application/json
+
+---
+
+### 8. Get All Permissions - Insufficient Permissions
+# User without Permissions:Read should return 403 Forbidden
+GET {{baseUrl}}{{apiPath}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 9. Get Permissions - Paginated
+# Returns paginated list of permissions (page 1, 10 items per page)
+GET {{baseUrl}}{{apiPath}}/paginated?pageNumber=1&pageSize=10
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 10. Get Permissions - Paginated Page 2
+# Returns second page of permissions (page 2, 5 items per page)
+GET {{baseUrl}}{{apiPath}}/paginated?pageNumber=2&pageSize=5
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 11. Get Permission by ID - Success
+# Returns specific permission by ID (cached)
+GET {{baseUrl}}{{apiPath}}/{{permissionId}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 12. Get Permission by ID - Not Found
+# Non-existent permission ID should return 404 Not Found
+GET {{baseUrl}}{{apiPath}}/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 13. Get Permission by Module and Action - Success
+# Returns permission by module:action combination (cached)
+GET {{baseUrl}}{{apiPath}}/module-action?module={{module}}&action={{action}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 14. Get Permission by Module and Action - Not Found
+# Non-existent module:action should return 404 Not Found
+GET {{baseUrl}}{{apiPath}}/module-action?module=nonexistent&action=nonexistent
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 15. Get Permission by Module and Action - Missing Parameters
+# Missing module or action should return 400 Bad Request
+GET {{baseUrl}}{{apiPath}}/module-action?module={{module}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 16. Create Permission - Success
+# Creates new permission (requires Permissions:Create permission)
+POST {{baseUrl}}{{apiPath}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "module": "{{newModule}}",
+  "action": "{{newAction}}",
+  "description": "{{newDescription}}"
+}
+
+@name: createPermissionResponse
+
+---
+
+### 17. Create Permission - Already Exists
+# Duplicate module:action should return 409 Conflict
+POST {{baseUrl}}{{apiPath}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "module": "{{module}}",
+  "action": "{{action}}",
+  "description": "Duplicate permission"
+}
+
+---
+
+### 18. Create Permission - Invalid Data
+# Missing required fields should return 400 Bad Request
+POST {{baseUrl}}{{apiPath}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "module": "{{newModule}}",
+  "action": ""
+}
+
+---
+
+### 19. Create Permission - No Authorization
+# Missing auth header should return 401 Unauthorized
+POST {{baseUrl}}{{apiPath}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "module": "{{newModule}}",
+  "action": "{{newAction}}",
+  "description": "{{newDescription}}"
+}
+
+---
+
+### 20. Create Permission - Insufficient Permissions
+# User without Permissions:Create should return 403 Forbidden
+POST {{baseUrl}}{{apiPath}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "module": "{{newModule}}",
+  "action": "{{newAction}}",
+  "description": "{{newDescription}}"
+}
+
+---
+
+### 21. Update Permission - Success
+# Updates existing permission (requires Permissions:Update permission)
+PUT {{baseUrl}}{{apiPath}}/{{permissionId}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "module": "{{updateModule}}",
+  "action": "{{updateAction}}",
+  "description": "{{updateDescription}}"
+}
+
+---
+
+### 22. Update Permission - Not Found
+# Non-existent permission ID should return 404 Not Found
+PUT {{baseUrl}}{{apiPath}}/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "module": "{{updateModule}}",
+  "action": "{{updateAction}}",
+  "description": "{{updateDescription}}"
+}
+
+---
+
+### 23. Update Permission - Invalid Data
+# Missing required fields should return 400 Bad Request
+PUT {{baseUrl}}{{apiPath}}/{{permissionId}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "module": "{{updateModule}}",
+  "action": ""
+}
+
+---
+
+### 24. Update Permission - No Authorization
+# Missing auth header should return 401 Unauthorized
+PUT {{baseUrl}}{{apiPath}}/{{permissionId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "module": "{{updateModule}}",
+  "action": "{{updateAction}}",
+  "description": "{{updateDescription}}"
+}
+
+---
+
+### 25. Update Permission - Insufficient Permissions
+# User without Permissions:Update should return 403 Forbidden
+PUT {{baseUrl}}{{apiPath}}/{{permissionId}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "module": "{{updateModule}}",
+  "action": "{{updateAction}}",
+  "description": "{{updateDescription}}"
+}
+
+---
+
+### 26. Delete Permission - Success
+# Deletes existing permission (requires Permissions:Delete permission)
+DELETE {{baseUrl}}{{apiPath}}/{{permissionId}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 27. Delete Permission - Not Found
+# Non-existent permission ID should return 404 Not Found
+DELETE {{baseUrl}}{{apiPath}}/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 28. Delete Permission - No Authorization
+# Missing auth header should return 401 Unauthorized
+DELETE {{baseUrl}}{{apiPath}}/{{permissionId}}
+Accept: application/json
+
+---
+
+### 29. Delete Permission - Insufficient Permissions
+# User without Permissions:Delete should return 403 Forbidden
+DELETE {{baseUrl}}{{apiPath}}/{{permissionId}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+---
+
+### 30. Permissions API - Health Check
+# Verify the Permissions API is responding
+GET {{baseUrl}}/health
+Accept: application/json
+
+---
+
+### Notes
+# Cache Behavior:
+# - All GET requests cache results in Redis DAPR state store
+# - Create/Update/Delete operations invalidate related cache entries
+# - "all_permissions" cache is cleared on create/update/delete
+# - Individual permission cache keys: "Permission-{id}" or "Permission-{module}-{action}"
+#
+# Authorization:
+# - All endpoints require valid JWT token
+# - HasPermission attribute enforces specific permissions (e.g., "Permissions:Read")
+# - Check endpoint doesn't require HasPermission - only authentication
+#
+# Error Responses:
+# - 400 Bad Request: Invalid input data or missing required fields
+# - 401 Unauthorized: Missing or invalid authentication token
+# - 403 Forbidden: User lacks required permissions (HasPermission check failed)
+# - 404 Not Found: Resource doesn't exist
+# - 409 Conflict: Resource already exists (create operations only)
+# - 500 Internal Server Error: Unexpected server error

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using Microsoft.AspNetCore.Authorization;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Inventory.API.Controllers;
 
@@ -33,6 +34,27 @@ public class WarehousesController : ControllerBase
     }
 
     /// <summary>
+    /// Get all warehouses with pagination - Requires Inventory.Read permission
+    /// </summary>
+    [HttpGet("paginated")]
+    [HasPermission("Inventory", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<WarehouseDto>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<PaginatedResult<WarehouseDto>>> GetAllWarehousesPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        try
+        {
+            _logger.LogInformation("Retrieving paginated warehouses: Page {PageNumber}, Size {PageSize}", pageNumber, pageSize);
+            var result = await _warehouseService.GetAllWarehousesPaginatedAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving paginated warehouses");
+            return StatusCode(500, new { message = "An error occurred retrieving warehouses" });
+        }
+    }
+
+    /// <summary>
     /// Get warehouse by ID - Requires Inventory.Read permission
     /// </summary>
     [HttpGet("{id}")]
@@ -52,10 +74,10 @@ public class WarehousesController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new warehouse - Requires Inventory.Write permission
+    /// Create a new warehouse - Requires Inventory.Create permission
     /// </summary>
     [HttpPost]
-    [HasPermission("Inventory", "Write")]
+    [HasPermission("Inventory", "Create")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -80,10 +102,10 @@ public class WarehousesController : ControllerBase
     }
 
     /// <summary>
-    /// Update an existing warehouse - Requires Inventory.Write permission
+    /// Update an existing warehouse - Requires Inventory.Update permission
     /// </summary>
     [HttpPut("{id}")]
-    [HasPermission("Inventory", "Write")]
+    [HasPermission("Inventory", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

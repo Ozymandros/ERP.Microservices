@@ -28,87 +28,138 @@ public static class PermissionConstants
     }
 
     /// <summary>Purchasing module permissions</summary>
+    /// <summary>Purchasing module permissions</summary>
     public static class Purchasing
     {
         public const string Read = "Purchasing.Read";
-        public const string Write = "Purchasing.Write";
+        public const string Create = "Purchasing.Create";
+        public const string Update = "Purchasing.Update";
         public const string Delete = "Purchasing.Delete";
         public const string Execute = "Purchasing.Execute";
         public const string Export = "Purchasing.Export";
         public const string Import = "Purchasing.Import";
 
         /// <summary>All Purchasing permissions</summary>
-        public static string[] All => new[] { Read, Write, Delete, Execute, Export, Import };
+        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
     }
-
     /// <summary>Orders module permissions</summary>
     public static class Orders
     {
         public const string Read = "Orders.Read";
-        public const string Write = "Orders.Write";
+        public const string Create = "Orders.Create";
+        public const string Update = "Orders.Update";
         public const string Delete = "Orders.Delete";
         public const string Execute = "Orders.Execute";
         public const string Export = "Orders.Export";
         public const string Import = "Orders.Import";
 
         /// <summary>All Orders permissions</summary>
-        public static string[] All => new[] { Read, Write, Delete, Execute, Export, Import };
+        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
     }
 
     /// <summary>Sales module permissions</summary>
     public static class Sales
     {
         public const string Read = "Sales.Read";
-        public const string Write = "Sales.Write";
+        public const string Create = "Sales.Create";
+        public const string Update = "Sales.Update";
         public const string Delete = "Sales.Delete";
         public const string Execute = "Sales.Execute";
         public const string Export = "Sales.Export";
         public const string Import = "Sales.Import";
 
         /// <summary>All Sales permissions</summary>
-        public static string[] All => new[] { Read, Write, Delete, Execute, Export, Import };
+        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
     }
 
     /// <summary>Billing module permissions</summary>
     public static class Billing
     {
         public const string Read = "Billing.Read";
-        public const string Write = "Billing.Write";
+        public const string Create = "Billing.Create";
+        public const string Update = "Billing.Update";
         public const string Delete = "Billing.Delete";
         public const string Execute = "Billing.Execute";
         public const string Export = "Billing.Export";
         public const string Import = "Billing.Import";
 
         /// <summary>All Billing permissions</summary>
-        public static string[] All => new[] { Read, Write, Delete, Execute, Export, Import };
+        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
     }
 
     /// <summary>Notification module permissions</summary>
     public static class Notification
     {
         public const string Read = "Notification.Read";
-        public const string Write = "Notification.Write";
+        public const string Create = "Notification.Create";
+        public const string Update = "Notification.Update";
         public const string Delete = "Notification.Delete";
         public const string Execute = "Notification.Execute";
         public const string Export = "Notification.Export";
         public const string Import = "Notification.Import";
 
         /// <summary>All Notification permissions</summary>
-        public static string[] All => new[] { Read, Write, Delete, Execute, Export, Import };
+        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
     }
 
     /// <summary>Auth module permissions</summary>
     public static class Auth
     {
         public const string Read = "Auth.Read";
-        public const string Write = "Auth.Write";
+        public const string Create = "Auth.Create";
+        public const string Update = "Auth.Update";
         public const string Delete = "Auth.Delete";
         public const string Execute = "Auth.Execute";
         public const string Export = "Auth.Export";
         public const string Import = "Auth.Import";
 
         /// <summary>All Auth permissions</summary>
-        public static string[] All => new[] { Read, Write, Delete, Execute, Export, Import };
+        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+    }
+
+    /// <summary>Users management permissions</summary>
+    public static class Users
+    {
+        public const string Read = "Users.Read";
+        public const string Create = "Users.Create";
+        public const string Update = "Users.Update";
+        public const string Delete = "Users.Delete";
+        public const string Execute = "Users.Execute";
+        public const string Export = "Users.Export";
+        public const string Import = "Users.Import";
+
+        /// <summary>All Users permissions</summary>
+        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+    }
+
+    /// <summary>Roles management permissions</summary>
+    public static class Roles
+    {
+        public const string Read = "Roles.Read";
+        public const string Create = "Roles.Create";
+        public const string Update = "Roles.Update";
+        public const string Delete = "Roles.Delete";
+        public const string Execute = "Roles.Execute";
+        public const string Export = "Roles.Export";
+        public const string Import = "Roles.Import";
+
+        /// <summary>All Roles permissions</summary>
+        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+    }
+
+    /// <summary>Permissions management permissions</summary>
+    public static class Permissions
+    {
+        public const string Read = "Permissions.Read";
+        public const string Create = "Permissions.Create";
+        public const string Update = "Permissions.Update";
+        public const string Delete = "Permissions.Delete";
+        public const string Execute = "Permissions.Execute";
+        public const string Export = "Permissions.Export";
+        public const string Import = "Permissions.Import";
+
+        /// <summary>All Permissions permissions</summary>
+        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
     }
 
     /// <summary>

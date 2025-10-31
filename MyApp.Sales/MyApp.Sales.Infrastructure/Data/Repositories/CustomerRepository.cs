@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Sales.Infrastructure.Data.Repositories
 {
@@ -31,15 +32,44 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task AddAsync(Customer entity)
+        public async Task<IEnumerable<Customer>> GetAllAsync()
+        {
+            return await _context.Customers
+                .Include(c => c.Orders)
+                .ToListAsync();
+        }
+
+        public async Task<PaginatedResult<Customer>> GetAllPaginatedAsync(int pageNumber, int pageSize)
+        {
+            var paginationParams = new PaginationParams(pageNumber, pageSize);
+            var query = _context.Customers.Include(c => c.Orders);
+            
+            var totalCount = await query.CountAsync();
+            var items = await query
+                .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+                .Take(paginationParams.PageSize)
+                .ToListAsync();
+
+            return new PaginatedResult<Customer>(items, paginationParams.PageNumber, paginationParams.PageSize, totalCount);
+        }
+
+        public async Task<Customer> AddAsync(Customer entity)
         {
             await _context.Customers.AddAsync(entity);
             await _context.SaveChangesAsync();
+            return entity;
         }
 
-        public async Task UpdateAsync(Customer entity)
+        public async Task<Customer> UpdateAsync(Customer entity)
         {
             _context.Customers.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task DeleteAsync(Customer entity)
+        {
+            _context.Customers.Remove(entity);
             await _context.SaveChangesAsync();
         }
 

@@ -1,14 +1,19 @@
 ﻿using Dapr.Client;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
 
 public class DaprPermissionChecker : IPermissionChecker
 {
     private readonly DaprClient _daprClient;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public DaprPermissionChecker(DaprClient daprClient)
+    public DaprPermissionChecker(DaprClient daprClient, IHttpContextAccessor httpContextAccessor)
     {
         _daprClient = daprClient;
+        _httpContextAccessor = httpContextAccessor;
     }
 
+    // Opció 2 (millor): El token es passa com a paràmetre (més flexible)
     public async Task<bool> HasPermissionAsync(Guid userId, string module, string action)
     {
         var query = new Dictionary<string, string>
@@ -18,27 +23,33 @@ public class DaprPermissionChecker : IPermissionChecker
             ["action"] = action
         };
 
-        var result = await _daprClient.InvokeMethodAsync<Dictionary<string, string>, bool>(
-            HttpMethod.Get, // 👈 FORÇA GET
-            "auth-service", // Nom del servei registrat a Dapr
-            "permissions/check",
-            query
-        );
+        // 1. Crea la petició manualment
+        var request = _daprClient.CreateInvokeMethodRequest(HttpMethod.Get, "auth-service", "api/permissions/check", query);
 
-        return result;
+        // 2. Afegeix el header d'autenticació
+        if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
+        {
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authHeader.ToString().Replace("Bearer ", ""));
+        }
+
+        // 3. Fes la crida
+        try
+        {
+            var result = await _daprClient.InvokeMethodAsync<bool>(request);
+            return result;
+        }
+        catch (InvocationException)
+        {
+            return false;
+        }
     }
 
     public async Task<bool> HasPermissionAsync(string module, string action)
     {
         if (string.IsNullOrEmpty(module))
-        {
             throw new ArgumentException($"'{nameof(module)}' cannot be null or empty.", nameof(module));
-        }
-
         if (string.IsNullOrEmpty(action))
-        {
             throw new ArgumentException($"'{nameof(action)}' cannot be null or empty.", nameof(action));
-        }
 
         var query = new Dictionary<string, string>
         {
@@ -46,44 +57,24 @@ public class DaprPermissionChecker : IPermissionChecker
             ["action"] = action
         };
 
-        // 1. Construeix el query string
-        var queryString = new FormUrlEncodedContent(query).ReadAsStringAsync().Result;
+        // 1. Crea la petició
+        using var request = _daprClient.CreateInvokeMethodRequest(HttpMethod.Get, "auth-service", "api/permissions/check", query);
 
-        // 2. Construeix la URL completa (mètode + query string)
-        var fullMethod = $"permissions/check?{queryString}";
+        // 2. Afegeix el header d'autenticació
+        if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
+        {
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authHeader.ToString().Replace("Bearer ", ""));
+        }
 
+        // 3. Fes la crida
         try
         {
-            // 3. Invoca Dapr SENSE cos de petició
-            var result = await _daprClient.InvokeMethodAsync<bool>(
-                HttpMethod.Get,
-                "auth-service", // Nom del servei registrat a Dapr
-                fullMethod // URL COMPLETA amb el query string
-            );
+            var result = await _daprClient.InvokeMethodAsync<bool>(request);
             return result;
-        }// Add better error handling and logging
-        catch (Dapr.Client.InvocationException ex)
-        {
-            //_logger.LogError(ex,
-            //    "Dapr invocation failed when checking permission for {Username}. " +
-            //    "Target: auth-service -> permissions/check?module={Module}&action={Action}",
-            //    username, module, action);
-
-            // Log inner exception for more details
-            if (ex.InnerException != null)
-            {
-                //_logger.LogError(ex.InnerException, "Inner exception details");
-            }
-
-            return false; // or throw based on your error handling strategy
         }
-        //var result = await _daprClient.InvokeMethodAsync<Dictionary<string, string>, bool>(
-        //    HttpMethod.Get,
-        //    "auth-service", // Nom del servei registrat a Dapr
-        //    "permissions/check",
-        //    query
-        //);
-
-        return false;
+        catch (InvocationException)
+        {
+            return false;
+        }
     }
 }

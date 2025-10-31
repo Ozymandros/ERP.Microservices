@@ -92,10 +92,10 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Create a new sales order - Requires Sales.Write permission
+        /// Create a new sales order - Requires Sales.Create permission
         /// </summary>
         [HttpPost]
-        [HasPermission("Sales", "Write")]
+        [HasPermission("Sales", "Create")]
         [ProducesResponseType(typeof(SalesOrderDto), 201)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> Create([FromBody] CreateUpdateSalesOrderDto dto)
@@ -118,10 +118,10 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Update an existing sales order - Requires Sales.Write permission
+        /// Update an existing sales order - Requires Sales.Update permission
         /// </summary>
         [HttpPut("{id}")]
-        [HasPermission("Sales", "Write")]
+        [HasPermission("Sales", "Update")]
         [ProducesResponseType(typeof(SalesOrderDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
