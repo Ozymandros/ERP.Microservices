@@ -164,7 +164,6 @@ public class PermissionsController : ControllerBase
     /// Check if a user has a specific permission by username
     /// </summary>
     [HttpGet("check")]
-    [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<bool>> CheckPermission(string module, string action)

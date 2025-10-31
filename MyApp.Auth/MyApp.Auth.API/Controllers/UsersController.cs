@@ -76,7 +76,6 @@ public class UsersController : ControllerBase
     /// Get current user
     /// </summary>
     [HttpGet("me")]
-    [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<UserDto>> GetCurrentUser()

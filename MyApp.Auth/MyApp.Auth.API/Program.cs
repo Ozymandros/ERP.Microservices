@@ -12,6 +12,7 @@ using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
 using MyApp.Auth.Infrastructure.Data;
 using MyApp.Auth.Infrastructure.Data.Repositories;
+using MyApp.Auth.Infrastructure.Data.Seeders;
 using MyApp.Auth.Infrastructure.Services;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Infrastructure.Caching;
@@ -206,6 +207,9 @@ using (var scope = app.Services.CreateScope())
 
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     await AdminUserSeeder.SeedAsync(userManager);
+
+    // Seed default permissions
+    await PermissionSeeder.SeedPermissionsAsync(dbContext);
 }
 
 // Configure the HTTP request pipeline
