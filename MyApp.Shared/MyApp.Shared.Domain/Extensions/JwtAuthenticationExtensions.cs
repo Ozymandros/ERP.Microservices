@@ -63,7 +63,7 @@ public static class JwtAuthenticationExtensions
                     {
                         if (context.Exception is SecurityTokenExpiredException)
                         {
-                            context.Response.Headers.Add("X-Token-Expired", "true");
+                            context.Response.Headers.TryAdd("X-Token-Expired", "true");
                         }
                         return Task.CompletedTask;
                     }

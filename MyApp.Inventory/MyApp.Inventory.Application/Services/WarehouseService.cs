@@ -3,6 +3,7 @@ using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Inventory.Application.Services;
 
@@ -27,6 +28,13 @@ public class WarehouseService : IWarehouseService
     {
         var warehouses = await _warehouseRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<WarehouseDto>>(warehouses);
+    }
+
+    public async Task<PaginatedResult<WarehouseDto>> GetAllWarehousesPaginatedAsync(int pageNumber, int pageSize)
+    {
+        var paginatedWarehouses = await _warehouseRepository.GetAllPaginatedAsync(pageNumber, pageSize);
+        var warehouseDtos = _mapper.Map<IEnumerable<WarehouseDto>>(paginatedWarehouses.Items);
+        return new PaginatedResult<WarehouseDto>(warehouseDtos, paginatedWarehouses.PageNumber, paginatedWarehouses.PageSize, paginatedWarehouses.TotalCount);
     }
 
     public async Task<WarehouseDto> CreateWarehouseAsync(CreateUpdateWarehouseDto dto)

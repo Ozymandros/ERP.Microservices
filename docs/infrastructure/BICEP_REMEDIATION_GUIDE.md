@@ -85,7 +85,7 @@ module redis 'core/database/redis.bicep' = {
     name: 'redis-${resourceToken}'
     location: location
     tags: tags
-    sku: 'Standard'  // Change to 'Premium' for production with replicas
+    sku: 'Basic'  // Change to 'Premium' for production with replicas
     family: 'C'
     capacity: 1  // For Standard tier (0 for Basic)
   }

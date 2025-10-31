@@ -2,7 +2,7 @@
 
 ## Overview
 
-The permission system in MyApp is based on a **Module + Action** pattern, where permissions are defined as combinations of a module (e.g., Inventory, Purchasing) and an action (e.g., Read, Write, Delete).
+The permission system in MyApp is based on a **Module + Action** pattern, where permissions are defined as combinations of a module (e.g., Inventory, Purchasing) and an action (e.g., Read, Create, Update, Delete).
 
 ## Permission Format
 
@@ -10,8 +10,9 @@ All permissions follow the pattern: `{Module}.{Action}`
 
 Examples:
 - `Inventory.Read` - Read access to Inventory module
-- `Purchasing.Write` - Write/Create/Update access to Purchasing module
-- `Orders.Delete` - Delete access to Orders module
+- `Purchasing.Create` - Create access to Purchasing module
+- `Orders.Update` - Update access to Orders module
+- `Sales.Delete` - Delete access to Sales module
 
 ## Available Modules
 
@@ -30,11 +31,12 @@ Examples:
 | Action | Value | Description |
 |--------|-------|-------------|
 | `Read` | 1 | View/retrieve data |
-| `Write` | 2 | Create and modify data |
-| `Delete` | 3 | Remove data |
-| `Execute` | 4 | Run operations and commands |
-| `Export` | 5 | Export data |
-| `Import` | 6 | Import data |
+| `Create` | 2 | Create new data |
+| `Update` | 3 | Modify existing data |
+| `Delete` | 4 | Remove data |
+| `Execute` | 5 | Run operations and commands |
+| `Export` | 6 | Export data |
+| `Import` | 7 | Import data |
 
 ## Using Permissions in Code
 
@@ -58,16 +60,16 @@ public class InventoryController : ControllerBase
 
     [HttpPost("products")]
     [Authorize]
-    [Permission(PermissionConstants.Inventory.Write)]
+    [Permission(PermissionConstants.Inventory.Create)]
     public async Task<IActionResult> CreateProduct()
     {
         return Ok();
     }
 
-    [HttpDelete("products/{id}")]
+    [HttpPut("products/{id}")]
     [Authorize]
-    [Permission(PermissionConstants.Inventory.Delete)]
-    public async Task<IActionResult> DeleteProduct(Guid id)
+    [Permission(PermissionConstants.Inventory.Update)]
+    public async Task<IActionResult> UpdateProduct(Guid id)
     {
         return Ok();
     }
@@ -257,7 +259,8 @@ To seed the database with initial permissions:
 var permissions = new[]
 {
     new Permission { Id = Guid.NewGuid(), Module = "Inventory", Action = "Read" },
-    new Permission { Id = Guid.NewGuid(), Module = "Inventory", Action = "Write" },
+    new Permission { Id = Guid.NewGuid(), Module = "Inventory", Action = "Create" },
+    new Permission { Id = Guid.NewGuid(), Module = "Inventory", Action = "Update" },
     new Permission { Id = Guid.NewGuid(), Module = "Inventory", Action = "Delete" },
     // ... add all other module/action combinations
 };

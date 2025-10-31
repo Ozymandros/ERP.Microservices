@@ -6,6 +6,7 @@ using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Auth.Application.Services;
 
@@ -95,6 +96,13 @@ public class UserService : IUserService
     {
         var users = await _userRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<UserDto>>(users);
+    }
+
+    public async Task<PaginatedResult<UserDto>> GetAllUsersPaginatedAsync(int pageNumber, int pageSize)
+    {
+        var paginatedUsers = await _userRepository.GetAllPaginatedAsync(pageNumber, pageSize);
+        var userDtos = _mapper.Map<IEnumerable<UserDto>>(paginatedUsers.Items);
+        return new PaginatedResult<UserDto>(userDtos, paginatedUsers.PageNumber, paginatedUsers.PageSize, paginatedUsers.TotalCount);
     }
 
     public async Task<bool> UpdateUserAsync(Guid userId, UpdateUserDto updateUserDto)

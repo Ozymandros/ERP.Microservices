@@ -1,68 +1,97 @@
+import { containerRegistrySku, logAnalyticsSkuName, applicationInsightsKind, workloadProfileType, workloadProfileName, aspireDashboardComponentName, aspireDashboardComponentType, storageFileServiceName, storageKind, storageSkuName, storageFileShareQuota, tagAspireNamePrefix, tagAspireResourceName, azureRoleIdAcrPull } from 'config/constants.bicep'
+
 @description('The location used for all deployed resources')
 param location string = resourceGroup().location
 
 @description('Tags that will be applied to all resources')
 param tags object = {}
 
-var resourceToken = uniqueString(resourceGroup().id)
+@description('Base name prefix to apply to all resources (e.g., myapp-dev)')
+param namePrefix string
+
+@description('User-assigned managed identity name')
+param managedIdentityName string
+
+@description('Container registry name')
+param containerRegistryName string
+
+@description('Log Analytics workspace name')
+param logAnalyticsWorkspaceName string
+
+@description('Application Insights resource name')
+param applicationInsightsName string
+
+@description('Storage account name for shared volumes')
+param storageAccountName string
+
+@description('Azure Files share name for cache persistence')
+param storageShareName string
+
+@description('Managed environment storage name for cache volumes')
+param containerEnvironmentStorageName string
+
+@description('Container Apps Environment name')
+param containerAppsEnvironmentName string
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: 'mi-${resourceToken}'
+  name: managedIdentityName
   location: location
-  tags: tags
+  tags: union(tags, {
+    '${tagAspireNamePrefix}': namePrefix
+  })
 }
 
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-07-01' = {
-  name: replace('acr-${resourceToken}', '-', '')
+  name: containerRegistryName
   location: location
   sku: {
-    name: 'Basic'
+    name: containerRegistrySku
   }
   tags: tags
 }
 
 resource caeMiRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(containerRegistry.id, managedIdentity.id, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d'))
+  name: guid(containerRegistry.id, managedIdentity.id, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdAcrPull))
   scope: containerRegistry
   properties: {
     principalId: managedIdentity.properties.principalId
     principalType: 'ServicePrincipal'
-    roleDefinitionId:  subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
+    roleDefinitionId:  subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdAcrPull)
   }
 }
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
-  name: 'law-${resourceToken}'
+  name: logAnalyticsWorkspaceName
   location: location
   properties: {
     sku: {
-      name: 'PerGB2018'
+      name: logAnalyticsSkuName
     }
   }
   tags: union(tags, {
-    'aspire-resource-name': 'MyApp-LogAnalyticsWorkspace'
+    '${tagAspireResourceName}': logAnalyticsWorkspaceName
   })
 }
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
-  name: take('MyApp-ApplicationInsights-${resourceToken}', 260)
+  name: applicationInsightsName
   location: location
-  kind: 'web'
+  kind: applicationInsightsKind
   properties: {
-    Application_Type: 'web'
+    Application_Type: applicationInsightsKind
     WorkspaceResourceId: logAnalyticsWorkspace.id
   }
   tags: union(tags, {
-    'aspire-resource-name': 'MyApp-ApplicationInsights'
+    '${tagAspireResourceName}': applicationInsightsName
   })
 }
 
 resource storageVolume 'Microsoft.Storage/storageAccounts@2022-05-01' = {
-  name: 'vol${resourceToken}'
+  name: storageAccountName
   location: location
-  kind: 'StorageV2'
+  kind: storageKind
   sku: {
-    name: 'Standard_LRS'
+    name: storageSkuName
   }
   properties: {
     largeFileSharesState: 'Enabled'
@@ -71,40 +100,54 @@ resource storageVolume 'Microsoft.Storage/storageAccounts@2022-05-01' = {
 
 resource storageVolumeFileService 'Microsoft.Storage/storageAccounts/fileServices@2022-05-01' = {
   parent: storageVolume
-  name: 'default'
+  name: storageFileServiceName
 }
 
 resource cacheRedisCacheFileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2022-05-01' = {
   parent: storageVolumeFileService
-  name: take('${toLower('cache')}-${toLower('rediscache')}', 60)
+  name: storageShareName
   properties: {
-    shareQuota: 1024
+    shareQuota: storageFileShareQuota
     enabledProtocols: 'SMB'
   }
 }
 
+module logAnalyticsKeys 'shared/get-loganalytics-key.bicep' = {
+  name: 'logAnalyticsWorkspaceKeys'
+  params: {
+    workspaceName: logAnalyticsWorkspace.name
+  }
+}
+
+module storageAccountKeys 'shared/get-storageaccount-key.bicep' = {
+  name: 'storageAccountKeys'
+  params: {
+    storageAccountName: storageVolume.name
+  }
+}
+
 resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-02-02-preview' = {
-  name: 'cae-${resourceToken}'
+  name: containerAppsEnvironmentName
   location: location
   properties: {
     workloadProfiles: [{
-      workloadProfileType: 'Consumption'
-      name: 'consumption'
+      workloadProfileType: workloadProfileType
+      name: workloadProfileName
     }]
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
         customerId: logAnalyticsWorkspace.properties.customerId
-        sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
+        sharedKey: logAnalyticsKeys.outputs.primarySharedKey
       }
     }
   }
   tags: tags
 
   resource aspireDashboard 'dotNetComponents' = {
-    name: 'aspire-dashboard'
+    name: aspireDashboardComponentName
     properties: {
-      componentType: 'AspireDashboard'
+      componentType: aspireDashboardComponentType
     }
   }
 
@@ -112,12 +155,12 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-02-02-p
 
 resource cacheRedisCacheStore 'Microsoft.App/managedEnvironments/storages@2023-05-01' = {
   parent: containerAppEnvironment
-  name: take('${toLower('cache')}-${toLower('rediscache')}', 32)
+  name: containerEnvironmentStorageName
   properties: {
     azureFile: {
       shareName: cacheRedisCacheFileShare.name
       accountName: storageVolume.name
-      accountKey: storageVolume.listKeys().keys[0].value
+      accountKey: storageAccountKeys.outputs.primaryKey
       accessMode: 'ReadWrite'
     }
   }

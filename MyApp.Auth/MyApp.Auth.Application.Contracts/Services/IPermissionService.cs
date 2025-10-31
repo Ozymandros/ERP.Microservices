@@ -1,4 +1,5 @@
 ﻿using MyApp.Auth.Application.Contracts.DTOs;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Auth.Application.Contracts
 {
@@ -18,6 +19,11 @@ namespace MyApp.Auth.Application.Contracts
         /// Get all permissions
         /// </summary>
         Task<IEnumerable<PermissionDto>> GetAllPermissionsAsync();
+
+        /// <summary>
+        /// Get all permissions with pagination
+        /// </summary>
+        Task<PaginatedResult<PermissionDto>> GetAllPermissionsPaginatedAsync(int pageNumber, int pageSize);
 
         /// <summary>
         /// Get permission by ID

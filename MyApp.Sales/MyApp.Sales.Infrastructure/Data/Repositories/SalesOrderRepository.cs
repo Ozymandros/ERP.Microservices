@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Sales.Infrastructure.Data.Repositories
 {
@@ -33,15 +34,47 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task AddAsync(SalesOrder entity)
+        public async Task<IEnumerable<SalesOrder>> GetAllAsync()
+        {
+            return await _context.SalesOrders
+                .Include(o => o.Lines)
+                .Include(o => o.Customer)
+                .ToListAsync();
+        }
+
+        public async Task<PaginatedResult<SalesOrder>> GetAllPaginatedAsync(int pageNumber, int pageSize)
+        {
+            var paginationParams = new PaginationParams(pageNumber, pageSize);
+            var query = _context.SalesOrders
+                .Include(o => o.Lines)
+                .Include(o => o.Customer);
+            
+            var totalCount = await query.CountAsync();
+            var items = await query
+                .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+                .Take(paginationParams.PageSize)
+                .ToListAsync();
+
+            return new PaginatedResult<SalesOrder>(items, paginationParams.PageNumber, paginationParams.PageSize, totalCount);
+        }
+
+        public async Task<SalesOrder> AddAsync(SalesOrder entity)
         {
             await _context.SalesOrders.AddAsync(entity);
             await _context.SaveChangesAsync();
+            return entity;
         }
 
-        public async Task UpdateAsync(SalesOrder entity)
+        public async Task<SalesOrder> UpdateAsync(SalesOrder entity)
         {
             _context.SalesOrders.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task DeleteAsync(SalesOrder entity)
+        {
+            _context.SalesOrders.Remove(entity);
             await _context.SaveChangesAsync();
         }
 

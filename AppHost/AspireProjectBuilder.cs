@@ -90,7 +90,7 @@ public class AspireProjectBuilder
                 project = project.WaitFor(database);
                 project = project.WithReference(database);
             }
-            // Local: exposem ports únics per al dashboard
+            // Local: exposem ports ï¿½nics per al dashboard
             project = project.WithHttpEndpoint(httpPort)
             .WithHttpHealthCheck(path: "/health", statusCode: 200);
 

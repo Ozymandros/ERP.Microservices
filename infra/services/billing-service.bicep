@@ -42,7 +42,10 @@ param imageTag string = 'latest'
 @description('Container Apps managed identity principal ID')
 param managedIdentityPrincipalId string = ''
 
-var serviceName = 'billing-service'
+@description('Base resource name prefix for this deployment (e.g., myapp-dev)')
+param namePrefix string
+
+var serviceName = '${namePrefix}-billing-service'
 var imageName = 'billing-service'
 
 module billingService 'container-app-service.bicep' = {

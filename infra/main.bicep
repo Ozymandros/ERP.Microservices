@@ -1,27 +1,26 @@
 targetScope = 'subscription'
 
+import { azureRoleIdSqlDbContributor } from 'config/constants.bicep'
+
 @minLength(1)
 @maxLength(64)
 @description('Name of the environment that can be used as part of naming resource convention, the name of the resource group for your application will use this name, prefixed with rg-')
-param environmentName string
+param environmentName string = 'dev' // 👈 Valor per defecte segur
 
 @minLength(1)
 @description('The location used for all deployed resources')
-param location string
+param location string = 'westeurope' // 👈 Valor per defecte segur
 
-@metadata({azd: {
-  type: 'generate'
-  config: {length:22,noSpecial:true}
-  }
-})
+// Secrets generats amb valor per defecte per evitar el xoc amb el parser
 @secure()
-param cache_password string
-@secure()
-param password string
+param cache_password string = base64(newGuid()) 
 
-@description('JWT secret key for token signing')
 @secure()
-param jwtSecretKey string
+param password string = base64(newGuid())      
+
+@description('JWT secret key for token signing (HS256 requires 32 bytes/256 bits)')
+@secure()
+param jwtSecretKey string = base64('${newGuid()}${newGuid()}') 
 
 @description('JWT token issuer (e.g., MyApp.Auth)')
 param jwtIssuer string = 'MyApp.Auth'
@@ -35,13 +34,53 @@ param frontendOrigin string = 'http://localhost:3000;http://localhost:5000'
 @description('Environment name (Development, Staging, Production)')
 param aspnetcoreEnvironment string = 'Production'
 
+var envSlug = toLower(replace(environmentName, ' ', '-'))
+var namePrefix = 'myapp-${envSlug}'
+var flatPrefix = toLower(replace(namePrefix, '-', ''))
+
+var resourceGroupName = 'rg-${namePrefix}-core'
+
+var managedIdentityName = take('${namePrefix}-user-assigned-identity', 128)
+var containerRegistryName = take('${flatPrefix}containerregistry', 50)
+var logAnalyticsWorkspaceName = take('${namePrefix}-log-analytics-workspace', 63)
+var applicationInsightsName = take('${namePrefix}-application-insights', 260)
+var storageAccountName = take('${flatPrefix}storageaccount', 24)
+var storageShareName = toLower(take('${namePrefix}-cache-fileshare', 63))
+var containerEnvironmentStorageName = take('${flatPrefix}cachevolume', 32)
+var containerAppsEnvironmentName = take('${namePrefix}-container-apps-environment', 63)
+var redisCacheName = take('${namePrefix}-redis-cache', 63)
+var sqlServerName = take('${namePrefix}-sql-server', 63)
+var sqlAdminIdentityName = take('${namePrefix}-sql-admin-identity', 128)
+var keyVaultName = take('${flatPrefix}keyvault', 24)
+var appConfigurationName = take('${namePrefix}-app-configuration', 50)
+var sqlDatabaseNames = {
+  auth: toLower('${namePrefix}-auth-db')
+  billing: toLower('${namePrefix}-billing-db')
+  inventory: toLower('${namePrefix}-inventory-db')
+  orders: toLower('${namePrefix}-orders-db')
+  purchasing: toLower('${namePrefix}-purchasing-db')
+  sales: toLower('${namePrefix}-sales-db')
+}
+
+var sqlDatabaseList = [
+  sqlDatabaseNames.auth
+  sqlDatabaseNames.billing
+  sqlDatabaseNames.inventory
+  sqlDatabaseNames.orders
+  sqlDatabaseNames.purchasing
+  sqlDatabaseNames.sales
+]
+
 var tags = {
   'azd-env-name': environmentName
 }
-var resourceToken = uniqueString(subscription().id, environmentName)
+
+// ============================================================================
+// Resource Group Creation
+// ============================================================================
 
 resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
-  name: 'rg-${environmentName}'
+  name: resourceGroupName
   location: location
   tags: tags
 }
@@ -51,6 +90,15 @@ module resources 'resources.bicep' = {
   params: {
     location: location
     tags: tags
+    namePrefix: namePrefix
+    managedIdentityName: managedIdentityName
+    containerRegistryName: containerRegistryName
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
+    applicationInsightsName: applicationInsightsName
+    storageAccountName: storageAccountName
+    storageShareName: storageShareName
+    containerEnvironmentStorageName: containerEnvironmentStorageName
+    containerAppsEnvironmentName: containerAppsEnvironmentName
   }
 }
 
@@ -58,34 +106,12 @@ module redis 'core/database/redis.bicep' = {
   name: 'redis'
   scope: rg
   params: {
-    name: 'redis-${resourceToken}'
+    name: redisCacheName
     location: location
     tags: tags
-    sku: 'Standard'
+    sku: 'Basic'
     family: 'C'
-    capacity: 1
-    cachePassword: cache_password  // ✅ Wire password for authentication
-  }
-}
-
-module sqlServer 'core/database/sql-server.bicep' = {
-  name: 'sqlserver'
-  scope: rg
-  params: {
-    name: 'sql-${resourceToken}'
-    location: location
-    tags: tags
-    administratorLogin: 'sqladmin'
-    administratorLoginPassword: password
-    databases: [
-      {name: 'AuthDB'}
-      {name: 'BillingDB'}
-      {name: 'InventoryDB'}
-      {name: 'OrdersDB'}
-      {name: 'PurchasingDB'}
-      {name: 'SalesDB'}
-    ]
-    minimalTlsVersion: '1.2'
+    capacity: 0
   }
 }
 
@@ -93,16 +119,21 @@ module keyVault 'core/security/keyvault-secrets.bicep' = {
   name: 'keyvault'
   scope: rg
   params: {
-    name: 'kv-${resourceToken}'
+    name: keyVaultName
     location: location
     tags: tags
     jwtSecretKey: jwtSecretKey
     redisHostName: redis.outputs.hostName
     redisPrimaryKey: redis.outputs.primaryKey
     redisCachePassword: cache_password
-    sqlFqdn: sqlServer.outputs.fqdn
+    sqlFqdn: myapp_sqlserver.outputs.sqlServerFqdn
     sqlAdminPassword: password
-    enableKeyVault: true
+    authDbName: sqlDatabaseNames.auth
+    billingDbName: sqlDatabaseNames.billing
+    inventoryDbName: sqlDatabaseNames.inventory
+    ordersDbName: sqlDatabaseNames.orders
+    purchasingDbName: sqlDatabaseNames.purchasing
+    salesDbName: sqlDatabaseNames.sales
   }
 }
 
@@ -110,6 +141,7 @@ module appConfiguration 'core/configuration/app-configuration.bicep' = {
   name: 'app-configuration'
   scope: rg
   params: {
+    appConfigName: appConfigurationName
     location: location
     environmentName: aspnetcoreEnvironment
     tags: tags
@@ -126,17 +158,19 @@ module myapp_sqlserver 'myapp-sqlserver/myapp-sqlserver.module.bicep' = {
   scope: rg
   params: {
     location: location
+    sqlServerName: sqlServerName
+    sqlAdminIdentityName: sqlAdminIdentityName
+    databaseNames: sqlDatabaseList
   }
 }
 module myapp_sqlserver_roles 'myapp-sqlserver-roles/myapp-sqlserver-roles.module.bicep' = {
   name: 'myapp-sqlserver-roles'
   scope: rg
   params: {
-    location: location
     myapp_sqlserver_outputs_name: myapp_sqlserver.outputs.name
-    myapp_sqlserver_outputs_sqlserveradminname: myapp_sqlserver.outputs.sqlServerAdminName
-    principalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     principalName: resources.outputs.MANAGED_IDENTITY_NAME
+    principalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
+    roleDefinitionId: azureRoleIdSqlDbContributor
   }
 }
 
@@ -150,7 +184,7 @@ module authServiceModule 'services/auth-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -158,6 +192,7 @@ module authServiceModule 'services/auth-service.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+    namePrefix: namePrefix
   }
 }
 
@@ -170,7 +205,7 @@ module billingServiceModule 'services/billing-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -178,6 +213,7 @@ module billingServiceModule 'services/billing-service.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+    namePrefix: namePrefix
   }
 }
 
@@ -190,7 +226,7 @@ module inventoryServiceModule 'services/inventory-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -198,6 +234,7 @@ module inventoryServiceModule 'services/inventory-service.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+    namePrefix: namePrefix
   }
 }
 
@@ -210,7 +247,7 @@ module ordersServiceModule 'services/orders-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -218,6 +255,7 @@ module ordersServiceModule 'services/orders-service.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+    namePrefix: namePrefix
   }
 }
 
@@ -230,7 +268,7 @@ module purchasingServiceModule 'services/purchasing-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -238,6 +276,7 @@ module purchasingServiceModule 'services/purchasing-service.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+    namePrefix: namePrefix
   }
 }
 
@@ -250,7 +289,7 @@ module salesServiceModule 'services/sales-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -258,6 +297,7 @@ module salesServiceModule 'services/sales-service.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+    namePrefix: namePrefix
   }
 }
 
@@ -270,7 +310,7 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-  logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -278,6 +318,7 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+    namePrefix: namePrefix
   }
 }
 
@@ -297,78 +338,24 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
 // - Better security posture
 // ============================================================================
 
-// RBAC: Grant each microservice access to App Configuration
-module authServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
-  name: 'auth-service-appconfig-rbac'
+// ============================================================================
+// RBAC Role Assignments (via dedicated module at resource group scope)
+// NO manual input, NO hardcoded IDs - uses official Microsoft patterns
+// ============================================================================
+module rbacAssignments 'rbac-assignments.bicep' = {
+  name: 'rbac-assignments'
   scope: rg
   params: {
-    appConfigId: appConfiguration.outputs.appConfigResourceId
-    principalId: authServiceModule.outputs.managedIdentityPrincipalId
-  }
-}
-
-module billingServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
-  name: 'billing-service-appconfig-rbac'
-  scope: rg
-  params: {
-    appConfigId: appConfiguration.outputs.appConfigResourceId
-    principalId: billingServiceModule.outputs.managedIdentityPrincipalId
-  }
-}
-
-module inventoryServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
-  name: 'inventory-service-appconfig-rbac'
-  scope: rg
-  params: {
-    appConfigId: appConfiguration.outputs.appConfigResourceId
-    principalId: inventoryServiceModule.outputs.managedIdentityPrincipalId
-  }
-}
-
-module ordersServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
-  name: 'orders-service-appconfig-rbac'
-  scope: rg
-  params: {
-    appConfigId: appConfiguration.outputs.appConfigResourceId
-    principalId: ordersServiceModule.outputs.managedIdentityPrincipalId
-  }
-}
-
-module purchasingServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
-  name: 'purchasing-service-appconfig-rbac'
-  scope: rg
-  params: {
-    appConfigId: appConfiguration.outputs.appConfigResourceId
-    principalId: purchasingServiceModule.outputs.managedIdentityPrincipalId
-  }
-}
-
-module salesServiceAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
-  name: 'sales-service-appconfig-rbac'
-  scope: rg
-  params: {
-    appConfigId: appConfiguration.outputs.appConfigResourceId
-    principalId: salesServiceModule.outputs.managedIdentityPrincipalId
-  }
-}
-
-module apiGatewayAppConfigRbac 'core/configuration/appconfig-rbac.bicep' = {
-  name: 'api-gateway-appconfig-rbac'
-  scope: rg
-  params: {
-    appConfigId: appConfiguration.outputs.appConfigResourceId
-    principalId: apiGatewayModule.outputs.managedIdentityPrincipalId
-  }
-}
-
-// RBAC: Grant App Configuration access to Key Vault (centralized secret management)
-// This is the SINGLE POINT where App Configuration reads secrets from Key Vault
-module appConfigKeyVaultRbac 'core/security/keyvault-rbac.bicep' = {
-  name: 'appconfig-keyvault-rbac'
-  scope: rg
-  params: {
-    keyVaultId: keyVault.outputs.keyVaultId
-    principalId: appConfiguration.outputs.appConfigPrincipalId
+    appConfigName: appConfigurationName
+    keyVaultName: keyVaultName
+    authServicePrincipalId: authServiceModule.outputs.managedIdentityPrincipalId
+    billingServicePrincipalId: billingServiceModule.outputs.managedIdentityPrincipalId
+    inventoryServicePrincipalId: inventoryServiceModule.outputs.managedIdentityPrincipalId
+    ordersServicePrincipalId: ordersServiceModule.outputs.managedIdentityPrincipalId
+    purchasingServicePrincipalId: purchasingServiceModule.outputs.managedIdentityPrincipalId
+    salesServicePrincipalId: salesServiceModule.outputs.managedIdentityPrincipalId
+    apiGatewayPrincipalId: apiGatewayModule.outputs.managedIdentityPrincipalId
+    appConfigPrincipalId: appConfiguration.outputs.appConfigPrincipalId
   }
 }
 
@@ -388,8 +375,8 @@ output MYAPP_SQLSERVER_SQLSERVERFQDN string = myapp_sqlserver.outputs.sqlServerF
 output AZURE_REDIS_CACHE_NAME string = redis.outputs.name
 output AZURE_REDIS_CACHE_HOST string = redis.outputs.hostName
 output AZURE_REDIS_CACHE_PORT int = redis.outputs.sslPort
-output AZURE_SQL_SERVER_NAME string = sqlServer.outputs.name
-output AZURE_SQL_SERVER_FQDN string = sqlServer.outputs.fqdn
+output AZURE_SQL_SERVER_NAME string = myapp_sqlserver.outputs.name
+output AZURE_SQL_SERVER_FQDN string = myapp_sqlserver.outputs.sqlServerFqdn
 output AZURE_KEY_VAULT_NAME string = keyVault.outputs.keyVaultUri
 
 // Service outputs

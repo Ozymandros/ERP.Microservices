@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Pagination;
 using System.Security.Claims;
 
 namespace MyApp.Auth.API.Controllers;
@@ -31,6 +32,7 @@ public class PermissionsController : ControllerBase
     /// Get all permissions
     /// </summary>
     [HttpGet]
+    [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(IEnumerable<PermissionDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<PermissionDto>>> GetAll()
@@ -58,9 +60,31 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
+    /// Get all permissions with pagination
+    /// </summary>
+    [HttpGet("paginated")]
+    [HasPermission("Permissions", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<PermissionDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<PaginatedResult<PermissionDto>>> GetAllPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        try
+        {
+            var result = await _permissionService.GetAllPermissionsPaginatedAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving paginated permissions");
+            return StatusCode(500, new { message = "An error occurred retrieving permissions" });
+        }
+    }
+
+    /// <summary>
     /// Get permission by ID
     /// </summary>
     [HttpGet("{id}")]
+    [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(PermissionDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -100,6 +124,7 @@ public class PermissionsController : ControllerBase
     /// Get permission by module and action
     /// </summary>
     [HttpGet("module-action")]
+    [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(PermissionDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -161,6 +186,7 @@ public class PermissionsController : ControllerBase
     /// Create a new permission
     /// </summary>
     [HttpPost]
+    [HasPermission("Permissions", "Create")]
     [ProducesResponseType(typeof(PermissionDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -195,6 +221,7 @@ public class PermissionsController : ControllerBase
     /// Update an existing permission
     /// </summary>
     [HttpPut("{id}")]
+    [HasPermission("Permissions", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -231,6 +258,7 @@ public class PermissionsController : ControllerBase
     /// Delete a permission
     /// </summary>
     [HttpDelete("{id}")]
+    [HasPermission("Permissions", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

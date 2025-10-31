@@ -4,7 +4,7 @@ namespace MyApp.Shared.Domain.Entities
     public interface IAuditableEntity<T>
         : IAuditableEntity, IEntity<T> where T : IComparable, IComparable<T>, IEquatable<T>, IFormattable, IParsable<T>
     {
-        T Id { get; set; }
+        //T Id { get; set; }
     }
 
     public interface IAuditableEntity

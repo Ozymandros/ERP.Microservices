@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Auth.API.Controllers;
 
@@ -27,6 +28,7 @@ public class UsersController : ControllerBase
     /// Get all users
     /// </summary>
     [HttpGet]
+    [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
@@ -45,6 +47,27 @@ public class UsersController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving all users");
+            return StatusCode(500, new { message = "An error occurred retrieving users" });
+        }
+    }
+
+    /// <summary>
+    /// Get all users with pagination
+    /// </summary>
+    [HttpGet("paginated")]
+    [HasPermission("Users", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<PaginatedResult<UserDto>>> GetAllPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        try
+        {
+            var result = await _userService.GetAllUsersPaginatedAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving paginated users");
             return StatusCode(500, new { message = "An error occurred retrieving users" });
         }
     }
@@ -79,6 +102,7 @@ public class UsersController : ControllerBase
     /// Get user by ID
     /// </summary>
     [HttpGet("{id}")]
+    [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -94,7 +118,7 @@ public class UsersController : ControllerBase
                 return Ok(user); // Retorna des de la cache
             }
 
-            // 2. La dada NO és a la cache, obtenir de la DB
+            // 2. La dada NO ï¿½s a la cache, obtenir de la DB
             user = await _userService.GetUserByIdAsync(id);
             if (user is null)
             {
@@ -116,6 +140,7 @@ public class UsersController : ControllerBase
     /// Get user by email
     /// </summary>
     [HttpGet("email/{email}")]
+    [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -143,6 +168,7 @@ public class UsersController : ControllerBase
     /// Update user
     /// </summary>
     [HttpPut("{id}")]
+    [HasPermission("Users", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -178,6 +204,7 @@ public class UsersController : ControllerBase
     /// Delete user
     /// </summary>
     [HttpDelete("{id}")]
+    [HasPermission("Users", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -210,6 +237,7 @@ public class UsersController : ControllerBase
     /// Assign role to user
     /// </summary>
     [HttpPost("{id}/roles/{roleName}")]
+    [HasPermission("Users", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -241,6 +269,7 @@ public class UsersController : ControllerBase
     /// Remove role from user
     /// </summary>
     [HttpDelete("{id}/roles/{roleName}")]
+    [HasPermission("Users", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -272,6 +301,7 @@ public class UsersController : ControllerBase
     /// Get user roles
     /// </summary>
     [HttpGet("{id}/roles")]
+    [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(IEnumerable<RoleDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -287,7 +317,7 @@ public class UsersController : ControllerBase
                 return Ok(roles); // Retorna des de la cache
             }
 
-            // 2. La dada NO és a la cache, obtenir de la DB
+            // 2. La dada NO ï¿½s a la cache, obtenir de la DB
             roles = await _userService.GetUserRolesAsync(id);
             await _cacheService.SaveStateAsync(cacheKey, roles);
 

@@ -4,16 +4,22 @@
 # Assegura't d'establir la teva URL i el teu token d'autenticació
 @baseUrl = http://localhost:5001  # Ajusta aquesta URL a la teva configuració
 @apiPath = /api/permissions
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjEyMzMzMTQsImlzcyI6Ik15QXBwLkF1dGgiLCJhdWQiOiJNeUFwcC5BbGwifQ.0ejuM0YoR0s9bAqdKVQEDdfRlrKZQVO8vnGGv8hslE0
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImE0OGYzZDUwLTljNGEtNGQ4Zi04NDBlLTA4ZGUxNGI3NmEwMSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluQG15YXBwLmxvY2FsIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImFkbWluQG15YXBwLmxvY2FsIiwiRmlyc3ROYW1lIjoiIiwiTGFzdE5hbWUiOiIiLCJFbWFpbENvbmZpcm1lZCI6IlRydWUiLCJJc0V4dGVybmFsTG9naW4iOiJGYWxzZSIsIkV4dGVybmFsUHJvdmlkZXIiOiIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc2MTkxMDA1MywiaXNzIjoiTXlBcHAuQXV0aCIsImF1ZCI6Ik15QXBwLkFsbCJ9.RT9I3_LR9NfpyNfvOsU-GbLOd5V6EoNnn3V3vTV6pus
 
 # 2. Variables de Prova
 # Els valors per als paràmetres 'module' i 'action'
-@testModule = sales
-@testAction = create_customer
+@testModule = Users
+@testAction = Read
 
 # 3. Sol·licitud GET
 # L'endpoint és "check", i els paràmetres es passen com a query string (?module=...&action=...)
-GET {{baseUrl}}{{apiPath}}/check?module={{testModule}}&action={{testAction}}
+GET http://localhost:5001/api/Permissions/check?module=users&action=Read
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+### 
+
+GET http://localhost:5001/api/Permissions/
 Authorization: Bearer {{authToken}}
 Accept: application/json
 

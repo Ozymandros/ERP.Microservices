@@ -6,6 +6,9 @@ var isDeployment =
 
 var builder = DistributedApplication.CreateBuilder(args);
 
+var stateStore = builder.AddDaprStateStore("statestore");
+var pubSub = builder.AddDaprPubSub("pubsub");
+
 var analyticsWorkspace = isDeployment ? builder
     .AddAzureLogAnalyticsWorkspace("MyApp-LogAnalyticsWorkspace") : null;
 var applicationInsights = isDeployment ? builder
@@ -74,6 +77,8 @@ if (isDeployment)
         .WaitFor(ordersService)
         .WaitFor(purchasingService)
         .WaitFor(salesService)
+        .WaitFor(pubSub)
+        .WaitFor(stateStore)
         .WithExternalHttpEndpoints()
         .WithEnvironment("OCELOT_ENVIRONMENT", "Production")
         .PublishAsDockerFile()

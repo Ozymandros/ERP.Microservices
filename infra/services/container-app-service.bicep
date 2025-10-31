@@ -144,7 +144,14 @@ var secrets = concat(
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: name
   location: location
-  tags: tags
+  tags: union(
+    union(tags, !empty(logAnalyticsWorkspaceId) ? {
+      'log-analytics-workspace-id': logAnalyticsWorkspaceId
+    } : {}),
+    !empty(managedIdentityPrincipalId) ? {
+      'managed-identity-principal-id': managedIdentityPrincipalId
+    } : {}
+  )
   identity: {
     type: 'SystemAssigned'
   }
@@ -171,7 +178,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
       registries: [
         {
           server: containerRegistry.properties.loginServer
-          identity: 'system-assigned'
+          identity: 'system'
         }
       ]
       dapr: daprEnabled ? {

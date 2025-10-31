@@ -13,6 +13,8 @@ param sku string = 'PerGB2018'
 @description('Data retention in days')
 param retentionInDays int = 30
 
+var effectiveRetention = sku == 'Free' ? 7 : retentionInDays
+
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: name
   location: location
@@ -21,7 +23,7 @@ resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
     sku: {
       name: sku
     }
-    retentionInDays: retentionInDays
+    retentionInDays: effectiveRetention
     publicNetworkAccessForIngestion: 'Enabled'
     publicNetworkAccessForQuery: 'Enabled'
   }

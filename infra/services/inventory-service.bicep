@@ -42,7 +42,10 @@ param imageTag string = 'latest'
 @description('Container Apps managed identity principal ID')
 param managedIdentityPrincipalId string = ''
 
-var serviceName = 'inventory-service'
+@description('Base resource name prefix for this deployment (e.g., myapp-dev)')
+param namePrefix string
+
+var serviceName = '${namePrefix}-inventory-service'
 var imageName = 'inventory-service'
 
 module inventoryService 'container-app-service.bicep' = {

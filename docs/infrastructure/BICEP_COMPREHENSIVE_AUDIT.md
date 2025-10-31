@@ -242,7 +242,7 @@ module redis 'core/database/redis.bicep' = {
   params: {
     name: 'redis-${resourceToken}'
     location: location
-    sku: 'Standard'  // or parameterized
+    sku: 'Basic'  // or parameterized
     family: 'C'
     capacity: 1  // For Standard tier
     tags: tags
@@ -646,7 +646,7 @@ module redis 'core/database/redis.bicep' = {
   params: {
     name: 'redis-${resourceToken}'
     location: location
-    sku: 'Standard'
+    sku: 'Basic'
     family: 'C'
     capacity: 1
     tags: tags

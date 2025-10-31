@@ -85,10 +85,10 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Create a new customer - Requires Sales.Write permission
+        /// Create a new customer - Requires Sales.Create permission
         /// </summary>
         [HttpPost]
-        [HasPermission("Sales", "Write")]
+        [HasPermission("Sales", "Create")]
         [ProducesResponseType(typeof(CustomerDto), 201)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> Create([FromBody] CustomerDto dto)
@@ -110,10 +110,10 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Update an existing customer - Requires Sales.Write permission
+        /// Update an existing customer - Requires Sales.Update permission
         /// </summary>
         [HttpPut("{id}")]
-        [HasPermission("Sales", "Write")]
+        [HasPermission("Sales", "Update")]
         [ProducesResponseType(typeof(CustomerDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
