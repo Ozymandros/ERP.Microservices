@@ -58,7 +58,7 @@ $failedFiles = @()
 # Validate each file
 foreach ($file in $filesToValidate) {
     if (-not (Test-Path $file)) {
-        Write-Host "[SKIP] File not found: $file" -ForegroundColor Yellow
+        Write-Host "⚠ SKIP: File not found: $file" -ForegroundColor Yellow
         continue
     }
     
