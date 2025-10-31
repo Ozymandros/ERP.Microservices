@@ -1,0 +1,848 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+  commentId: T:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+  id: SupplierRepositoryTests
+  parent: MyApp.Purchasing.Tests.Repositories
+  children:
+  - MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.#ctor
+  - MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.AddAsync_WithValidSupplier_CreatesSupplier
+  - MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.DeleteAsync_WithValidId_DeletesSupplier
+  - MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetAllAsync_ReturnsAllSuppliers
+  - MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  - MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsSupplier
+  - MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull
+  - MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithValidId_ReturnsSupplier
+  - MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithNoMatches_ReturnsEmpty
+  - MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers
+  - MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.UpdateAsync_WithExistingSupplier_UpdatesSupplierData
+  langs:
+  - csharp
+  - vb
+  name: SupplierRepositoryTests
+  nameWithType: SupplierRepositoryTests
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: SupplierRepositoryTests
+    path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+    startLine: 9
+  assemblies:
+  - MyApp.Purchasing.Infrastructure.Tests
+  namespace: MyApp.Purchasing.Tests.Repositories
+  syntax:
+    content: public class SupplierRepositoryTests
+    content.vb: Public Class SupplierRepositoryTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.#ctor
+  commentId: M:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.#ctor
+  id: '#ctor'
+  parent: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: SupplierRepositoryTests()
+  nameWithType: SupplierRepositoryTests.SupplierRepositoryTests()
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.SupplierRepositoryTests()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+    startLine: 14
+  assemblies:
+  - MyApp.Purchasing.Infrastructure.Tests
+  namespace: MyApp.Purchasing.Tests.Repositories
+  syntax:
+    content: public SupplierRepositoryTests()
+    content.vb: Public Sub New()
+  overload: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.#ctor*
+  nameWithType.vb: SupplierRepositoryTests.New()
+  fullName.vb: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.New()
+  name.vb: New()
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithValidId_ReturnsSupplier
+  commentId: M:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithValidId_ReturnsSupplier
+  id: GetByIdAsync_WithValidId_ReturnsSupplier
+  parent: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByIdAsync_WithValidId_ReturnsSupplier()
+  nameWithType: SupplierRepositoryTests.GetByIdAsync_WithValidId_ReturnsSupplier()
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithValidId_ReturnsSupplier()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByIdAsync_WithValidId_ReturnsSupplier
+    path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+    startLine: 39
+  assemblies:
+  - MyApp.Purchasing.Infrastructure.Tests
+  namespace: MyApp.Purchasing.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByIdAsync_WithValidId_ReturnsSupplier()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByIdAsync_WithValidId_ReturnsSupplier() As Task
+  overload: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithValidId_ReturnsSupplier*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull
+  commentId: M:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull
+  id: GetByIdAsync_WithNonExistentId_ReturnsNull
+  parent: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByIdAsync_WithNonExistentId_ReturnsNull()
+  nameWithType: SupplierRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull()
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByIdAsync_WithNonExistentId_ReturnsNull
+    path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+    startLine: 55
+  assemblies:
+  - MyApp.Purchasing.Infrastructure.Tests
+  namespace: MyApp.Purchasing.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByIdAsync_WithNonExistentId_ReturnsNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByIdAsync_WithNonExistentId_ReturnsNull() As Task
+  overload: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsSupplier
+  commentId: M:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsSupplier
+  id: GetByEmailAsync_WithValidEmail_ReturnsSupplier
+  parent: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByEmailAsync_WithValidEmail_ReturnsSupplier()
+  nameWithType: SupplierRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsSupplier()
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsSupplier()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByEmailAsync_WithValidEmail_ReturnsSupplier
+    path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+    startLine: 72
+  assemblies:
+  - MyApp.Purchasing.Infrastructure.Tests
+  namespace: MyApp.Purchasing.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByEmailAsync_WithValidEmail_ReturnsSupplier()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByEmailAsync_WithValidEmail_ReturnsSupplier() As Task
+  overload: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsSupplier*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  commentId: M:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  id: GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  parent: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByEmailAsync_WithNonExistentEmail_ReturnsNull()
+  nameWithType: SupplierRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull()
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+    path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+    startLine: 87
+  assemblies:
+  - MyApp.Purchasing.Infrastructure.Tests
+  namespace: MyApp.Purchasing.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByEmailAsync_WithNonExistentEmail_ReturnsNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByEmailAsync_WithNonExistentEmail_ReturnsNull() As Task
+  overload: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers
+  commentId: M:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers
+  id: GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers
+  parent: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers()
+  nameWithType: SupplierRepositoryTests.GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers()
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers
+    path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+    startLine: 101
+  assemblies:
+  - MyApp.Purchasing.Infrastructure.Tests
+  namespace: MyApp.Purchasing.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers() As Task
+  overload: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithNoMatches_ReturnsEmpty
+  commentId: M:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithNoMatches_ReturnsEmpty
+  id: GetByNameAsync_WithNoMatches_ReturnsEmpty
+  parent: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByNameAsync_WithNoMatches_ReturnsEmpty()
+  nameWithType: SupplierRepositoryTests.GetByNameAsync_WithNoMatches_ReturnsEmpty()
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithNoMatches_ReturnsEmpty()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByNameAsync_WithNoMatches_ReturnsEmpty
+    path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+    startLine: 118
+  assemblies:
+  - MyApp.Purchasing.Infrastructure.Tests
+  namespace: MyApp.Purchasing.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByNameAsync_WithNoMatches_ReturnsEmpty()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByNameAsync_WithNoMatches_ReturnsEmpty() As Task
+  overload: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithNoMatches_ReturnsEmpty*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.AddAsync_WithValidSupplier_CreatesSupplier
+  commentId: M:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.AddAsync_WithValidSupplier_CreatesSupplier
+  id: AddAsync_WithValidSupplier_CreatesSupplier
+  parent: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: AddAsync_WithValidSupplier_CreatesSupplier()
+  nameWithType: SupplierRepositoryTests.AddAsync_WithValidSupplier_CreatesSupplier()
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.AddAsync_WithValidSupplier_CreatesSupplier()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: AddAsync_WithValidSupplier_CreatesSupplier
+    path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+    startLine: 136
+  assemblies:
+  - MyApp.Purchasing.Infrastructure.Tests
+  namespace: MyApp.Purchasing.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task AddAsync_WithValidSupplier_CreatesSupplier()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function AddAsync_WithValidSupplier_CreatesSupplier() As Task
+  overload: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.AddAsync_WithValidSupplier_CreatesSupplier*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.UpdateAsync_WithExistingSupplier_UpdatesSupplierData
+  commentId: M:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.UpdateAsync_WithExistingSupplier_UpdatesSupplierData
+  id: UpdateAsync_WithExistingSupplier_UpdatesSupplierData
+  parent: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: UpdateAsync_WithExistingSupplier_UpdatesSupplierData()
+  nameWithType: SupplierRepositoryTests.UpdateAsync_WithExistingSupplier_UpdatesSupplierData()
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.UpdateAsync_WithExistingSupplier_UpdatesSupplierData()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateAsync_WithExistingSupplier_UpdatesSupplierData
+    path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+    startLine: 164
+  assemblies:
+  - MyApp.Purchasing.Infrastructure.Tests
+  namespace: MyApp.Purchasing.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdateAsync_WithExistingSupplier_UpdatesSupplierData()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdateAsync_WithExistingSupplier_UpdatesSupplierData() As Task
+  overload: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.UpdateAsync_WithExistingSupplier_UpdatesSupplierData*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.DeleteAsync_WithValidId_DeletesSupplier
+  commentId: M:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.DeleteAsync_WithValidId_DeletesSupplier
+  id: DeleteAsync_WithValidId_DeletesSupplier
+  parent: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: DeleteAsync_WithValidId_DeletesSupplier()
+  nameWithType: SupplierRepositoryTests.DeleteAsync_WithValidId_DeletesSupplier()
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.DeleteAsync_WithValidId_DeletesSupplier()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteAsync_WithValidId_DeletesSupplier
+    path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+    startLine: 186
+  assemblies:
+  - MyApp.Purchasing.Infrastructure.Tests
+  namespace: MyApp.Purchasing.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeleteAsync_WithValidId_DeletesSupplier()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeleteAsync_WithValidId_DeletesSupplier() As Task
+  overload: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.DeleteAsync_WithValidId_DeletesSupplier*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetAllAsync_ReturnsAllSuppliers
+  commentId: M:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetAllAsync_ReturnsAllSuppliers
+  id: GetAllAsync_ReturnsAllSuppliers
+  parent: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetAllAsync_ReturnsAllSuppliers()
+  nameWithType: SupplierRepositoryTests.GetAllAsync_ReturnsAllSuppliers()
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetAllAsync_ReturnsAllSuppliers()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllAsync_ReturnsAllSuppliers
+    path: src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/Repositories/SupplierRepositoryTests.cs
+    startLine: 204
+  assemblies:
+  - MyApp.Purchasing.Infrastructure.Tests
+  namespace: MyApp.Purchasing.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetAllAsync_ReturnsAllSuppliers()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetAllAsync_ReturnsAllSuppliers() As Task
+  overload: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetAllAsync_ReturnsAllSuppliers*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: MyApp.Purchasing.Tests.Repositories
+  commentId: N:MyApp.Purchasing.Tests.Repositories
+  href: MyApp.html
+  name: MyApp.Purchasing.Tests.Repositories
+  nameWithType: MyApp.Purchasing.Tests.Repositories
+  fullName: MyApp.Purchasing.Tests.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Tests
+    name: Tests
+    href: MyApp.Purchasing.Tests.html
+  - name: .
+  - uid: MyApp.Purchasing.Tests.Repositories
+    name: Repositories
+    href: MyApp.Purchasing.Tests.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Tests
+    name: Tests
+    href: MyApp.Purchasing.Tests.html
+  - name: .
+  - uid: MyApp.Purchasing.Tests.Repositories
+    name: Repositories
+    href: MyApp.Purchasing.Tests.Repositories.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.#ctor*
+  commentId: Overload:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.#ctor
+  href: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.html#MyApp_Purchasing_Tests_Repositories_SupplierRepositoryTests__ctor
+  name: SupplierRepositoryTests
+  nameWithType: SupplierRepositoryTests.SupplierRepositoryTests
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.SupplierRepositoryTests
+  nameWithType.vb: SupplierRepositoryTests.New
+  fullName.vb: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.New
+  name.vb: New
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithValidId_ReturnsSupplier*
+  commentId: Overload:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithValidId_ReturnsSupplier
+  href: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.html#MyApp_Purchasing_Tests_Repositories_SupplierRepositoryTests_GetByIdAsync_WithValidId_ReturnsSupplier
+  name: GetByIdAsync_WithValidId_ReturnsSupplier
+  nameWithType: SupplierRepositoryTests.GetByIdAsync_WithValidId_ReturnsSupplier
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithValidId_ReturnsSupplier
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull*
+  commentId: Overload:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull
+  href: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.html#MyApp_Purchasing_Tests_Repositories_SupplierRepositoryTests_GetByIdAsync_WithNonExistentId_ReturnsNull
+  name: GetByIdAsync_WithNonExistentId_ReturnsNull
+  nameWithType: SupplierRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsSupplier*
+  commentId: Overload:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsSupplier
+  href: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.html#MyApp_Purchasing_Tests_Repositories_SupplierRepositoryTests_GetByEmailAsync_WithValidEmail_ReturnsSupplier
+  name: GetByEmailAsync_WithValidEmail_ReturnsSupplier
+  nameWithType: SupplierRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsSupplier
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsSupplier
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull*
+  commentId: Overload:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  href: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.html#MyApp_Purchasing_Tests_Repositories_SupplierRepositoryTests_GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  name: GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  nameWithType: SupplierRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers*
+  commentId: Overload:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers
+  href: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.html#MyApp_Purchasing_Tests_Repositories_SupplierRepositoryTests_GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers
+  name: GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers
+  nameWithType: SupplierRepositoryTests.GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithNoMatches_ReturnsEmpty*
+  commentId: Overload:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithNoMatches_ReturnsEmpty
+  href: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.html#MyApp_Purchasing_Tests_Repositories_SupplierRepositoryTests_GetByNameAsync_WithNoMatches_ReturnsEmpty
+  name: GetByNameAsync_WithNoMatches_ReturnsEmpty
+  nameWithType: SupplierRepositoryTests.GetByNameAsync_WithNoMatches_ReturnsEmpty
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetByNameAsync_WithNoMatches_ReturnsEmpty
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.AddAsync_WithValidSupplier_CreatesSupplier*
+  commentId: Overload:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.AddAsync_WithValidSupplier_CreatesSupplier
+  href: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.html#MyApp_Purchasing_Tests_Repositories_SupplierRepositoryTests_AddAsync_WithValidSupplier_CreatesSupplier
+  name: AddAsync_WithValidSupplier_CreatesSupplier
+  nameWithType: SupplierRepositoryTests.AddAsync_WithValidSupplier_CreatesSupplier
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.AddAsync_WithValidSupplier_CreatesSupplier
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.UpdateAsync_WithExistingSupplier_UpdatesSupplierData*
+  commentId: Overload:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.UpdateAsync_WithExistingSupplier_UpdatesSupplierData
+  href: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.html#MyApp_Purchasing_Tests_Repositories_SupplierRepositoryTests_UpdateAsync_WithExistingSupplier_UpdatesSupplierData
+  name: UpdateAsync_WithExistingSupplier_UpdatesSupplierData
+  nameWithType: SupplierRepositoryTests.UpdateAsync_WithExistingSupplier_UpdatesSupplierData
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.UpdateAsync_WithExistingSupplier_UpdatesSupplierData
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.DeleteAsync_WithValidId_DeletesSupplier*
+  commentId: Overload:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.DeleteAsync_WithValidId_DeletesSupplier
+  href: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.html#MyApp_Purchasing_Tests_Repositories_SupplierRepositoryTests_DeleteAsync_WithValidId_DeletesSupplier
+  name: DeleteAsync_WithValidId_DeletesSupplier
+  nameWithType: SupplierRepositoryTests.DeleteAsync_WithValidId_DeletesSupplier
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.DeleteAsync_WithValidId_DeletesSupplier
+- uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetAllAsync_ReturnsAllSuppliers*
+  commentId: Overload:MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetAllAsync_ReturnsAllSuppliers
+  href: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.html#MyApp_Purchasing_Tests_Repositories_SupplierRepositoryTests_GetAllAsync_ReturnsAllSuppliers
+  name: GetAllAsync_ReturnsAllSuppliers
+  nameWithType: SupplierRepositoryTests.GetAllAsync_ReturnsAllSuppliers
+  fullName: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.GetAllAsync_ReturnsAllSuppliers

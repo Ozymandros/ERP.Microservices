@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#128295; App Configuration Integration Guide | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#128295; App Configuration Integration Guide | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/configuration/APP_CONFIGURATION_INTEGRATION.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-app-configuration-integration-guide">🔧 App Configuration Integration Guide</h1>
+
+<p><strong>Status:</strong> Ready for Implementation<br>
+<strong>Date:</strong> October 27, 2025<br>
+<strong>Target:</strong> All 7 microservices + API Gateway</p>
+<hr>
+<h2 id="-overview">📋 Overview</h2>
+<p>This guide explains how to integrate <strong>Azure App Configuration</strong> into all microservices. App Configuration provides:</p>
+<ul>
+<li>✅ <strong>Centralized Configuration</strong> - Single source of truth for all settings</li>
+<li>✅ <strong>Real-time Updates</strong> - No service restart needed to update settings</li>
+<li>✅ <strong>Feature Flags</strong> - Enable/disable features dynamically</li>
+<li>✅ <strong>Environment-Specific</strong> - Different configs for dev/staging/prod</li>
+<li>✅ <strong>Secure References</strong> - Key Vault secret linking without exposing secrets</li>
+<li>✅ <strong>Audit Trail</strong> - Full history of configuration changes</li>
+</ul>
+<hr>
+<h2 id="-infrastructure-configuration">🏗️ Infrastructure Configuration</h2>
+<h3 id="app-configuration-settings-created">App Configuration Settings Created</h3>
+<p>The Bicep infrastructure creates the following settings in Azure App Configuration:</p>
+<pre><code>✅ Jwt:Issuer              → MyApp.Auth (non-sensitive)
+✅ Jwt:Audience            → MyApp.All (non-sensitive)
+✅ Jwt:SecretKey           → Reference to Key Vault (secure)
+✅ Frontend:Origin         → https://yourdomain.com (non-sensitive)
+✅ ASPNETCORE_ENVIRONMENT  → Production (non-sensitive)
+✅ Redis:Connection        → Reference to Key Vault (secure)
+✅ Sql:ConnectionStrings:*Db → References to Key Vault (secure)
+</code></pre>
+<h3 id="services-configured">Services Configured</h3>
+<ul>
+<li>✅ Auth Service</li>
+<li>✅ Billing Service</li>
+<li>✅ Inventory Service</li>
+<li>✅ Orders Service</li>
+<li>✅ Purchasing Service</li>
+<li>✅ Sales Service</li>
+<li>✅ API Gateway</li>
+</ul>
+<p>All services receive the <strong>App Configuration connection string</strong> via environment variable at deployment time.</p>
+<hr>
+<h2 id="-net-implementation">💻 .NET Implementation</h2>
+<h3 id="step-1-add-nuget-package">Step 1: Add NuGet Package</h3>
+<p>Add Azure App Configuration provider to each service:</p>
+<pre><code class="lang-bash"># From service project directory
+dotnet add package Azure.Identity
+dotnet add package Microsoft.Extensions.Configuration.AzureAppConfiguration
+</code></pre>
+<h3 id="step-2-update-programcs">Step 2: Update Program.cs</h3>
+<p>Add App Configuration to the configuration builder. Here's the recommended pattern:</p>
+<pre><code class="lang-csharp">using Azure.Identity;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// ============================================================================
+// 1. Add App Configuration Provider
+// ============================================================================
+// Reads settings from centralized Azure App Configuration service
+// Falls back to local appsettings.json if not configured in cloud
+
+var appConfigConnection = builder.Configuration.GetConnectionString(&quot;AppConfiguration&quot;);
+if (!string.IsNullOrEmpty(appConfigConnection))
+{
+    builder.Configuration.AddAzureAppConfiguration(options =&gt;
+    {
+        options
+            .Connect(appConfigConnection)
+            // Load settings with no label (shared settings)
+            .Select(KeyFilter.Any, LabelFilter.Null)
+            // Load settings labeled with current environment (environment-specific override)
+            .Select(KeyFilter.Any, builder.Environment.EnvironmentName)
+            // Remove service-specific prefix if using hierarchical keys
+            // (e.g., &quot;Auth:Jwt:Issuer&quot; becomes &quot;Jwt:Issuer&quot;)
+            .TrimKeyPrefix(&quot;Auth:&quot;);
+    });
+}
+
+// ============================================================================
+// 2. Add Key Vault Provider
+// ============================================================================
+// App Configuration returns references to Key Vault secrets
+// This provider resolves those references to actual values
+// Works automatically with App Configuration references
+
+var keyVaultUri = builder.Configuration.GetValue&lt;string&gt;(&quot;KeyVault:Uri&quot;);
+if (!string.IsNullOrEmpty(keyVaultUri))
+{
+    var credential = new DefaultAzureCredential();
+    builder.Configuration.AddAzureKeyVault(
+        new Uri(keyVaultUri),
+        credential);
+}
+
+// ============================================================================
+// 3. Configure Services with Centralized Settings
+// ============================================================================
+// Services now use configuration from App Configuration (with Key Vault resolution)
+
+// JWT Configuration (reads from App Configuration)
+builder.Services.Configure&lt;JwtOptions&gt;(options =&gt;
+{
+    options.SecretKey = builder.Configuration[&quot;Jwt:SecretKey&quot;];     // ← From App Config → Key Vault
+    options.Issuer = builder.Configuration[&quot;Jwt:Issuer&quot;];           // ← From App Config
+    options.Audience = builder.Configuration[&quot;Jwt:Audience&quot;];       // ← From App Config
+    options.ExpirationMinutes = 60;
+});
+
+// Database Configuration (reads from App Configuration)
+builder.Services.Configure&lt;DatabaseOptions&gt;(options =&gt;
+{
+    // Service-specific: Each service reads its own database connection
+    var connectionString = builder.Configuration[&quot;Sql:ConnectionStrings:AuthDb&quot;];  // or BillingDb, etc.
+    options.ConnectionString = connectionString ?? &quot;&quot;;
+});
+
+// Redis Configuration (reads from App Configuration)
+builder.Services.Configure&lt;CacheOptions&gt;(options =&gt;
+{
+    options.ConnectionString = builder.Configuration[&quot;Redis:Connection&quot;];  // ← From App Config → Key Vault
+});
+
+// CORS Configuration (reads from App Configuration)
+builder.Services.AddCors(options =&gt;
+{
+    var frontendOrigin = builder.Configuration[&quot;Frontend:Origin&quot;];   // ← From App Config
+    options.AddPolicy(&quot;AllowFrontend&quot;, policy =&gt;
+    {
+        policy.WithOrigins(frontendOrigin?.Split(';') ?? new[] { &quot;http://localhost:3000&quot; })
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
+// ... rest of service configuration ...
+
+var app = builder.Build();
+
+// ============================================================================
+// 4. Middleware Configuration
+// ============================================================================
+app.UseCors(&quot;AllowFrontend&quot;);
+
+app.Run();
+</code></pre>
+<h3 id="step-3-configuration-models">Step 3: Configuration Models</h3>
+<p>Create strong-typed configuration classes:</p>
+<pre><code class="lang-csharp">// Authentication/JwtOptions.cs
+public class JwtOptions
+{
+    public string SecretKey { get; set; } = &quot;&quot;;
+    public string Issuer { get; set; } = &quot;MyApp.Auth&quot;;
+    public string Audience { get; set; } = &quot;MyApp.All&quot;;
+    public int ExpirationMinutes { get; set; } = 60;
+}
+
+// Database/DatabaseOptions.cs
+public class DatabaseOptions
+{
+    public string ConnectionString { get; set; } = &quot;&quot;;
+    public int CommandTimeout { get; set; } = 30;
+}
+
+// Cache/CacheOptions.cs
+public class CacheOptions
+{
+    public string ConnectionString { get; set; } = &quot;&quot;;
+    public int DatabaseNumber { get; set; } = 0;
+}
+
+// Frontend/FrontendOptions.cs
+public class FrontendOptions
+{
+    public string Origin { get; set; } = &quot;http://localhost:3000&quot;;
+    public string ApiBaseUrl { get; set; } = &quot;&quot;;
+}
+</code></pre>
+<h3 id="step-4-inject-configuration-into-services">Step 4: Inject Configuration into Services</h3>
+<p>Example of using configured settings in a service:</p>
+<pre><code class="lang-csharp">using Microsoft.Extensions.Options;
+
+public class AuthenticationService
+{
+    private readonly JwtOptions _jwtOptions;
+    private readonly ILogger&lt;AuthenticationService&gt; _logger;
+
+    public AuthenticationService(
+        IOptions&lt;JwtOptions&gt; jwtOptions,
+        ILogger&lt;AuthenticationService&gt; logger)
+    {
+        _jwtOptions = jwtOptions.Value;
+        _logger = logger;
+    }
+
+    public string GenerateToken(string userId)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_jwtOptions.SecretKey);
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId)
+            }),
+            Expires = DateTime.UtcNow.AddMinutes(_jwtOptions.ExpirationMinutes),
+            Issuer = _jwtOptions.Issuer,
+            Audience = _jwtOptions.Audience,
+            SigningCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(key),
+                SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        _logger.LogInformation(&quot;Token generated for user {UserId}&quot;, userId);
+        return tokenHandler.WriteToken(token);
+    }
+}
+</code></pre>
+<hr>
+<h2 id="-environment-variables-set-by-infrastructure">🔄 Environment Variables Set by Infrastructure</h2>
+<p>When deployed to Azure Container Apps, each service receives:</p>
+<pre><code class="lang-bash"># Injected by Bicep infrastructure
+AppConfiguration__ConnectionString = &lt;connection-string&gt;
+Jwt__SecretKey = &lt;reference resolved from Key Vault&gt;
+KeyVault__Uri = https://kv-xxxxx.vault.azure.net/
+
+# Local development (appsettings.Development.json)
+AppConfiguration__ConnectionString = &quot;&quot;  # Will be set when connecting to cloud
+</code></pre>
+<hr>
+<h2 id="-local-development-setup">🧪 Local Development Setup</h2>
+<h3 id="option-1-using-local-app-configuration-no-cloud">Option 1: Using Local App Configuration (No Cloud)</h3>
+<p>Create <code>appsettings.Development.json</code>:</p>
+<pre><code class="lang-json">{
+  &quot;Logging&quot;: {
+    &quot;LogLevel&quot;: {
+      &quot;Default&quot;: &quot;Information&quot;
+    }
+  },
+  &quot;Jwt&quot;: {
+    &quot;SecretKey&quot;: &quot;your-secret-key-32-chars-minimum-dont-commit&quot;,
+    &quot;Issuer&quot;: &quot;MyApp.Auth&quot;,
+    &quot;Audience&quot;: &quot;MyApp.All&quot;,
+    &quot;ExpirationMinutes&quot;: 60
+  },
+  &quot;Sql&quot;: {
+    &quot;ConnectionStrings&quot;: {
+      &quot;AuthDb&quot;: &quot;Server=localhost;Database=AuthDB;User Id=sa;Password=Your_Password123!;TrustServerCertificate=True;&quot;
+    }
+  },
+  &quot;Redis&quot;: {
+    &quot;Connection&quot;: &quot;localhost:6380,password=your-redis-password,ssl=False&quot;
+  },
+  &quot;Frontend&quot;: {
+    &quot;Origin&quot;: &quot;http://localhost:3000&quot;
+  },
+  &quot;ASPNETCORE_ENVIRONMENT&quot;: &quot;Development&quot;
+}
+</code></pre>
+<h3 id="option-2-using-azure-app-configuration-locally">Option 2: Using Azure App Configuration Locally</h3>
+<p>To test with real Azure App Configuration locally:</p>
+<pre><code class="lang-csharp">// Program.cs
+var appConfigConnection = builder.Configuration[&quot;AppConfiguration:ConnectionString&quot;];
+if (!string.IsNullOrEmpty(appConfigConnection))
+{
+    builder.Configuration.AddAzureAppConfiguration(options =&gt;
+    {
+        options.Connect(appConfigConnection);
+        options.Select(KeyFilter.Any, &quot;Development&quot;);  // Use dev label
+    });
+}
+</code></pre>
+<p>Then set environment variable:</p>
+<pre><code class="lang-bash"># PowerShell
+$env:AppConfiguration__ConnectionString = &quot;Endpoint=https://appconfig-xxxxx.azureconfig.io;Id=xxxxxx;Secret=xxxxxx&quot;
+
+# Or in .env file
+AppConfiguration__ConnectionString=&quot;Endpoint=https://appconfig-xxxxx.azureconfig.io;Id=xxxxxx;Secret=xxxxxx&quot;
+</code></pre>
+<hr>
+<h2 id="-security-best-practices">🔐 Security Best Practices</h2>
+<h3 id="-do">✅ DO:</h3>
+<ul>
+<li>✅ Store sensitive values (JWT secret, passwords) in Key Vault only</li>
+<li>✅ Reference Key Vault secrets from App Configuration</li>
+<li>✅ Use Managed Identity in production (no connection strings in code)</li>
+<li>✅ Use <code>@secure()</code> decorator on sensitive parameters</li>
+<li>✅ Rotate secrets regularly</li>
+<li>✅ Audit configuration changes in App Configuration</li>
+<li>✅ Use environment-specific labels for different configs</li>
+</ul>
+<h3 id="-dont">❌ DON'T:</h3>
+<ul>
+<li>❌ Store secrets in <code>appsettings.json</code></li>
+<li>❌ Commit connection strings to git</li>
+<li>❌ Expose App Configuration connection strings in frontend</li>
+<li>❌ Use account keys directly (use Managed Identity instead)</li>
+<li>❌ Store unencrypted secrets anywhere</li>
+</ul>
+<hr>
+<h2 id="-deployment-scenario">🚀 Deployment Scenario</h2>
+<h3 id="step-1-deploy-infrastructure">Step 1: Deploy Infrastructure</h3>
+<pre><code class="lang-bash">azd deploy
+</code></pre>
+<p>This creates:</p>
+<ul>
+<li>✅ Azure App Configuration instance</li>
+<li>✅ Key Vault with all secrets</li>
+<li>✅ 7 Container Apps with connection strings injected</li>
+</ul>
+<h3 id="step-2-build-container-images">Step 2: Build Container Images</h3>
+<pre><code class="lang-bash"># From service directory
+docker build -t authservice:latest -f Dockerfile .
+az acr build -r &lt;registry-name&gt; -t auth-service:latest .
+
+# Repeat for all services
+</code></pre>
+<h3 id="step-3-service-startup">Step 3: Service Startup</h3>
+<p>When each Container App starts:</p>
+<ol>
+<li><strong>Environment Loaded</strong>: Container has <code>AppConfiguration__ConnectionString</code> injected</li>
+<li><strong>App Configuration Connected</strong>: <code>AddAzureAppConfiguration()</code> reads settings</li>
+<li><strong>Key Vault Resolved</strong>: App Configuration references are resolved to actual values</li>
+<li><strong>Services Configured</strong>: Dependency injection receives resolved settings</li>
+<li><strong>Application Ready</strong>: Service is ready to handle requests</li>
+</ol>
+<h3 id="step-4-configuration-updates">Step 4: Configuration Updates</h3>
+<p>To update configuration in production <strong>without redeploying</strong>:</p>
+<pre><code class="lang-bash"># Update App Configuration value (non-sensitive)
+az appconfig kv set \
+  -n appconfig-xxxxx \
+  --key &quot;Jwt:Issuer&quot; \
+  --value &quot;NewIssuer&quot; \
+  --label &quot;Production&quot;
+
+# Services pick up the change automatically on next request
+</code></pre>
+<hr>
+<h2 id="-configuration-hierarchy">📊 Configuration Hierarchy</h2>
+<p>When multiple sources exist, resolution order:</p>
+<pre><code>1. App Configuration (cloud) + Key Vault references
+   ↓ (if not found in cloud)
+2. Environment Variables (injected by Azure)
+   ↓ (if not found)
+3. appsettings.json (local)
+   ↓ (if not found)
+4. appsettings.{Environment}.json (local override)
+   ↓ (if not found)
+5. Default values in code (fallback)
+</code></pre>
+<hr>
+<h2 id="-troubleshooting">🔍 Troubleshooting</h2>
+<h3 id="issue-app-configuration-connection-string-is-empty">Issue: &quot;App Configuration connection string is empty&quot;</h3>
+<p><strong>Solution:</strong> Verify environment variable is set:</p>
+<pre><code class="lang-bash"># Inside container
+echo $AppConfiguration__ConnectionString
+
+# Or check deployment
+az containerapp env list-secrets -n &lt;container-app-name&gt; -g &lt;resource-group&gt;
+</code></pre>
+<h3 id="issue-key-vault-secret-not-found">Issue: &quot;Key Vault secret not found&quot;</h3>
+<p><strong>Solution:</strong> Verify App Configuration has access to Key Vault:</p>
+<pre><code class="lang-bash"># Check Key Vault access policy
+az keyvault show --name kv-xxxxx --query &quot;properties.accessPolicies&quot;
+
+# Verify App Configuration managed identity is listed
+</code></pre>
+<h3 id="issue-configuration-not-updating">Issue: &quot;Configuration not updating&quot;</h3>
+<p><strong>Solution:</strong> App Configuration doesn't auto-update in-process. Options:</p>
+<ol>
+<li><strong>Restart container</strong> (clears cache, reloads config)</li>
+<li><strong>Implement IChangeTokenProvider</strong> (for refresh notification)</li>
+<li><strong>Use Feature Flags</strong> (for feature toggles without restart)</li>
+</ol>
+<p>Example with refresh:</p>
+<pre><code class="lang-csharp">// Enable watch for changes
+builder.Configuration.AddAzureAppConfiguration(options =&gt;
+{
+    options
+        .Connect(appConfigConnection)
+        .Select(KeyFilter.Any, LabelFilter.Null)
+        .ConfigureKeyVaultOptions(kvo =&gt;
+        {
+            kvo.SetCredential(new DefaultAzureCredential());
+        });
+});
+
+// Refresh specific keys
+var config = app.Services.GetService&lt;IConfiguration&gt;();
+if (config is IConfigurationRoot configRoot)
+{
+    configRoot.Reload();  // Force reload (expensive)
+}
+</code></pre>
+<hr>
+<h2 id="-complete-programcs-example">📚 Complete Program.cs Example</h2>
+<p>Here's a complete, production-ready <code>Program.cs</code>:</p>
+<pre><code class="lang-csharp">using Azure.Identity;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+using System.Text;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// ============================================================================
+// Configuration Sources
+// ============================================================================
+
+// 1. App Configuration (centralized, overrides local files)
+var appConfigConnection = builder.Configuration.GetConnectionString(&quot;AppConfiguration&quot;);
+if (!string.IsNullOrEmpty(appConfigConnection))
+{
+    builder.Configuration.AddAzureAppConfiguration(options =&gt;
+    {
+        options
+            .Connect(appConfigConnection)
+            .Select(KeyFilter.Any, LabelFilter.Null)
+            .Select(KeyFilter.Any, builder.Environment.EnvironmentName)
+            .TrimKeyPrefix(builder.Configuration[&quot;ServiceName&quot;] + &quot;:&quot;);
+    });
+}
+
+// 2. Key Vault (resolves App Configuration references)
+var keyVaultUri = builder.Configuration.GetValue&lt;string&gt;(&quot;KeyVault:Uri&quot;);
+if (!string.IsNullOrEmpty(keyVaultUri))
+{
+    builder.Configuration.AddAzureKeyVault(
+        new Uri(keyVaultUri),
+        new DefaultAzureCredential());
+}
+
+// ============================================================================
+// Service Registration
+// ============================================================================
+
+// Configuration options
+builder.Services.Configure&lt;JwtOptions&gt;(builder.Configuration.GetSection(&quot;Jwt&quot;));
+builder.Services.Configure&lt;DatabaseOptions&gt;(builder.Configuration.GetSection(&quot;Sql&quot;));
+builder.Services.Configure&lt;CacheOptions&gt;(builder.Configuration.GetSection(&quot;Redis&quot;));
+
+// HTTP services
+builder.Services.AddHttpClient();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// Add your domain services
+builder.Services.AddScoped&lt;IAuthenticationService, AuthenticationService&gt;();
+builder.Services.AddScoped&lt;IDatabaseService, DatabaseService&gt;();
+
+// CORS
+var frontendOrigin = builder.Configuration[&quot;Frontend:Origin&quot;];
+builder.Services.AddCors(options =&gt;
+{
+    options.AddPolicy(&quot;AllowFrontend&quot;, policy =&gt;
+    {
+        policy.WithOrigins(frontendOrigin?.Split(';') ?? new[] { &quot;http://localhost:3000&quot; })
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials();
+    });
+});
+
+// Logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
+// ============================================================================
+// Build and Configure Application
+// ============================================================================
+
+var app = builder.Build();
+
+// Middleware pipeline
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+app.UseCors(&quot;AllowFrontend&quot;);
+app.UseAuthorization();
+app.MapControllers();
+
+// Health check endpoint
+app.MapGet(&quot;/health&quot;, () =&gt; Results.Ok(new { status = &quot;healthy&quot; }));
+
+app.Run();
+</code></pre>
+<hr>
+<h2 id="-deployment-checklist">📋 Deployment Checklist</h2>
+<ul>
+<li>[ ] All services have <code>Azure.Identity</code> NuGet package</li>
+<li>[ ] All services have <code>Microsoft.Extensions.Configuration.AzureAppConfiguration</code> NuGet package</li>
+<li>[ ] <code>Program.cs</code> updated in all services with App Configuration provider</li>
+<li>[ ] Configuration models created (JwtOptions, DatabaseOptions, etc.)</li>
+<li>[ ] Services injected with IOptions<t> for configuration</t></li>
+<li>[ ] CORS configured with centralized Frontend:Origin value</li>
+<li>[ ] Local development uses <code>appsettings.Development.json</code></li>
+<li>[ ] Container images built and pushed to registry</li>
+<li>[ ] Infrastructure deployed with <code>azd deploy</code></li>
+<li>[ ] App Configuration values verified in Azure Portal</li>
+<li>[ ] Key Vault secrets verified and accessible</li>
+<li>[ ] Services started and health check responding</li>
+<li>[ ] Configuration values accessible from running services</li>
+</ul>
+<hr>
+<h2 id="-validation">✅ Validation</h2>
+<p>Test that configuration is working:</p>
+<pre><code class="lang-bash"># 1. Get running container
+az containerapp exec -n auth-service -g rg-myapp-prod
+
+# 2. Inside container, verify environment variables
+echo $AppConfiguration__ConnectionString
+echo $KeyVault__Uri
+
+# 3. Check application logs for successful config load
+az containerapp logs show -n auth-service -g rg-myapp-prod --follow
+</code></pre>
+<p>Expected in logs:</p>
+<pre><code>[Information] AppConfiguration provider added successfully
+[Information] Connected to Azure Key Vault: https://kv-xxxxx.vault.azure.net/
+[Information] Loaded configuration: Jwt:Issuer=MyApp.Auth, Frontend:Origin=https://yourdomain.com
+</code></pre>
+<hr>
+<h2 id="-benefits-summary">🎯 Benefits Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Before</th>
+<th>After</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Configuration Location</strong></td>
+<td>Scattered across services</td>
+<td>Centralized in App Configuration</td>
+</tr>
+<tr>
+<td><strong>Updating Settings</strong></td>
+<td>Redeploy all services</td>
+<td>Update in real-time (or with refresh)</td>
+</tr>
+<tr>
+<td><strong>Secret Management</strong></td>
+<td>Potentially in code</td>
+<td>Secure in Key Vault via references</td>
+</tr>
+<tr>
+<td><strong>Environment-Specific</strong></td>
+<td>Manual file management</td>
+<td>Labels per environment</td>
+</tr>
+<tr>
+<td><strong>Audit Trail</strong></td>
+<td>Limited</td>
+<td>Full history in App Configuration</td>
+</tr>
+<tr>
+<td><strong>Number of Configs</strong></td>
+<td>7 service-specific sets</td>
+<td>1 centralized source for all</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><strong>This completes the App Configuration integration architecture.</strong> 🎉</p>
+<p>Each microservice now pulls its configuration from a single, secure, centralized source with full audit trail and real-time update capabilities.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/configuration/APP_CONFIGURATION_INTEGRATION.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

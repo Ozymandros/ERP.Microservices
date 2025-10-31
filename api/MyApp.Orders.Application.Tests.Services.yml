@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Application.Tests.Services
+  commentId: N:MyApp.Orders.Application.Tests.Services
+  id: MyApp.Orders.Application.Tests.Services
+  children:
+  - MyApp.Orders.Application.Tests.Services.OrderServiceTests
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Orders.Application.Tests.Services
+  nameWithType: MyApp.Orders.Application.Tests.Services
+  fullName: MyApp.Orders.Application.Tests.Services
+  type: Namespace
+  assemblies:
+  - MyApp.Orders.Application.Tests
+references:
+- uid: MyApp.Orders.Application.Tests.Services.OrderServiceTests
+  commentId: T:MyApp.Orders.Application.Tests.Services.OrderServiceTests
+  href: MyApp.Orders.Application.Tests.Services.OrderServiceTests.html
+  name: OrderServiceTests
+  nameWithType: OrderServiceTests
+  fullName: MyApp.Orders.Application.Tests.Services.OrderServiceTests

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Infrastructure Deployment Guide - Role-Based Access Control | ERP.Microservices </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Infrastructure Deployment Guide - Role-Based Access Control | ERP.Microservices ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/infra/DEPLOYMENT_ROLES.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="ERP.Microservices">
+            ERP.Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="infrastructure-deployment-guide---role-based-access-control">Infrastructure Deployment Guide - Role-Based Access Control</h1>
+
+<h2 id="overview">Overview</h2>
+<p>This infrastructure uses <strong>dynamic role definition lookups</strong> instead of hardcoding Azure role IDs. This ensures compatibility across Azure environments and prevents issues when role definitions change.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>You need ONE of the following tools installed:</p>
+<ul>
+<li><strong>Azure CLI</strong> (recommended): <code>az --version</code></li>
+<li><strong>Azure PowerShell</strong>: <code>Get-Module -ListAvailable Az.Accounts</code></li>
+</ul>
+<h2 id="deployment-steps">Deployment Steps</h2>
+<h3 id="step-1-fetch-role-definition-ids">Step 1: Fetch Role Definition IDs</h3>
+<p>Before deploying, fetch the current role definition IDs from your Azure subscription:</p>
+<h4 id="option-a-using-azure-cli-recommended">Option A: Using Azure CLI (Recommended)</h4>
+<pre><code class="lang-bash"># Set your subscription
+az account set --subscription &quot;&lt;subscription-id&gt;&quot;
+
+# Fetch role definition IDs
+$roleIds = @{
+    keyVaultSecretsUserRoleDefinitionId = $(az role definition list --query &quot;[?roleName=='Key Vault Secrets User'].id&quot; -o tsv)
+    acrPullRoleDefinitionId = $(az role definition list --query &quot;[?roleName=='AcrPull'].id&quot; -o tsv)
+    appConfigurationDataReaderRoleDefinitionId = $(az role definition list --query &quot;[?roleName=='App Configuration Data Reader'].id&quot; -o tsv)
+    sqlDbContributorRoleDefinitionId = $(az role definition list --query &quot;[?roleName=='SQL DB Contributor'].id&quot; -o tsv)
+}
+
+# Display fetched IDs
+Write-Host &quot;Fetched Role Definition IDs:&quot;
+$roleIds | Format-Table
+</code></pre>
+<h4 id="option-b-using-azure-powershell">Option B: Using Azure PowerShell</h4>
+<pre><code class="lang-powershell"># Connect to Azure (if not already connected)
+Connect-AzAccount
+
+# Set your subscription
+Set-AzContext -SubscriptionId &quot;&lt;subscription-id&gt;&quot;
+
+# Fetch role definition IDs
+$roleIds = @{
+    keyVaultSecretsUserRoleDefinitionId = (Get-AzRoleDefinition -Name 'Key Vault Secrets User').Id
+    acrPullRoleDefinitionId = (Get-AzRoleDefinition -Name 'AcrPull').Id
+    appConfigurationDataReaderRoleDefinitionId = (Get-AzRoleDefinition -Name 'App Configuration Data Reader').Id
+    sqlDbContributorRoleDefinitionId = (Get-AzRoleDefinition -Name 'SQL DB Contributor').Id
+}
+
+# Display fetched IDs
+$roleIds | Format-Table
+</code></pre>
+<h4 id="option-c-using-the-provided-powershell-script">Option C: Using the Provided PowerShell Script</h4>
+<pre><code class="lang-powershell">cd infra/scripts
+
+# Make script executable
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+
+# Run the script
+&amp; ./get-role-definitions.ps1 -RoleNames @(
+    'Key Vault Secrets User',
+    'AcrPull',
+    'App Configuration Data Reader',
+    'SQL DB Contributor'
+) -Verbose
+</code></pre>
+<h3 id="step-2-deploy-infrastructure">Step 2: Deploy Infrastructure</h3>
+<p>Once you have the role definition IDs, deploy using <code>azd</code>:</p>
+<pre><code class="lang-bash"># From the infra directory
+cd infra
+
+# Deploy with role definition parameters
+azd deploy \
+  --parameter keyVaultSecretsUserRoleDefinitionId=&quot;&lt;role-id&gt;&quot; \
+  --parameter acrPullRoleDefinitionId=&quot;&lt;role-id&gt;&quot; \
+  --parameter appConfigurationDataReaderRoleDefinitionId=&quot;&lt;role-id&gt;&quot; \
+  --parameter sqlDbContributorRoleDefinitionId=&quot;&lt;role-id&gt;&quot;
+</code></pre>
+<p>Or use environment variables:</p>
+<pre><code class="lang-bash">export keyVaultSecretsUserRoleDefinitionId=&quot;&lt;role-id&gt;&quot;
+export acrPullRoleDefinitionId=&quot;&lt;role-id&gt;&quot;
+export appConfigurationDataReaderRoleDefinitionId=&quot;&lt;role-id&gt;&quot;
+export sqlDbContributorRoleDefinitionId=&quot;&lt;role-id&gt;&quot;
+
+azd deploy
+</code></pre>
+<h3 id="step-3-verify-role-assignments">Step 3: Verify Role Assignments</h3>
+<p>After deployment, verify that role assignments were created:</p>
+<pre><code class="lang-powershell"># Using Azure PowerShell
+$roleAssignments = Get-AzRoleAssignment -Scope &quot;/subscriptions/&lt;subscription-id&gt;/resourceGroups/&lt;resource-group-name&gt;&quot;
+$roleAssignments | Where-Object { $_.RoleDefinitionName -match 'Key Vault|AcrPull|App Configuration|SQL' } | Format-Table
+
+# Or using Azure CLI
+az role assignment list \
+  --resource-group &quot;&lt;resource-group-name&gt;&quot; \
+  --query &quot;[].{name:principalName, role:roleDefinitionName}&quot; \
+  --output table
+</code></pre>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="role-not-found-error">&quot;Role not found&quot; Error</h3>
+<p>If you get an error that a role doesn't exist:</p>
+<ol>
+<li><p><strong>Verify the role exists in your subscription:</strong></p>
+<pre><code class="lang-bash">az role definition list --query &quot;[].name&quot; -o tsv | grep -i &quot;KeyVault\|AcrPull\|AppConfig\|SqlDb&quot;
+</code></pre>
+</li>
+<li><p><strong>Check your subscription context:</strong></p>
+<pre><code class="lang-bash">az account show
+</code></pre>
+</li>
+<li><p><strong>Ensure you have Reader permissions</strong> on the subscription to list role definitions.</p>
+</li>
+</ol>
+<h3 id="deployment-timeout">Deployment Timeout</h3>
+<p>If deployment times out:</p>
+<ol>
+<li>Check that the role definitions were passed correctly</li>
+<li>Verify the principal IDs (managed identities) exist</li>
+<li>Check Azure RBAC limits aren't exceeded</li>
+</ol>
+<h3 id="missing-role-assignments-after-deployment">Missing Role Assignments After Deployment</h3>
+<p>If role assignments aren't created:</p>
+<ol>
+<li>Verify the role definition IDs were passed to the deployment</li>
+<li>Check that principal IDs are valid Service Principals</li>
+<li>Look for Azure Activity Log errors during deployment</li>
+</ol>
+<h2 id="best-practices">Best Practices</h2>
+<p>✅ <strong>Always fetch role IDs dynamically</strong> - Don't hardcode them
+✅ <strong>Verify role IDs match your subscription</strong> - They may vary by region or subscription
+✅ <strong>Use descriptive parameter names</strong> - Avoid confusion about which role is which
+✅ <strong>Document the role purposes</strong> - Help maintainers understand the RBAC structure
+✅ <strong>Test in dev environment first</strong> - Before deploying to production</p>
+<h2 id="reference-azure-built-in-roles">Reference: Azure Built-in Roles</h2>
+<table>
+<thead>
+<tr>
+<th>Role Name</th>
+<th>Purpose</th>
+<th>ID Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Key Vault Secrets User</strong></td>
+<td>Read Key Vault secrets</td>
+<td><code>4633458b-17de-408a-b874-0445c86d0e6e</code> (typical)</td>
+</tr>
+<tr>
+<td><strong>AcrPull</strong></td>
+<td>Pull container images from ACR</td>
+<td><code>7f951dda-4ed3-4680-a7ca-43fe172d538d</code> (typical)</td>
+</tr>
+<tr>
+<td><strong>App Configuration Data Reader</strong></td>
+<td>Read App Configuration data</td>
+<td><code>516239f1-63e1-4108-9233-9e7f68e97ce3</code> (typical)</td>
+</tr>
+<tr>
+<td><strong>SQL DB Contributor</strong></td>
+<td>Manage SQL databases</td>
+<td><code>9b7fa17d-e63e-47b0-bb0a-15c516ac86ec</code> (typical)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> These are typical IDs, but should be fetched dynamically for your subscription.</p>
+</blockquote>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles">Azure Built-in Roles</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/role-based-access-control/role-definitions">Azure Role Definitions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/best-practices#role-assignment">Bicep Role Assignments</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/infra/DEPLOYMENT_ROLES.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,1164 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Application.Services.CustomerService
+  commentId: T:MyApp.Sales.Application.Services.CustomerService
+  id: CustomerService
+  parent: MyApp.Sales.Application.Services
+  children:
+  - MyApp.Sales.Application.Services.CustomerService.#ctor(MyApp.Sales.Domain.ICustomerRepository,AutoMapper.IMapper)
+  - MyApp.Sales.Application.Services.CustomerService.CreateCustomerAsync(MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  - MyApp.Sales.Application.Services.CustomerService.DeleteCustomerAsync(System.Guid)
+  - MyApp.Sales.Application.Services.CustomerService.GetCustomerByIdAsync(System.Guid)
+  - MyApp.Sales.Application.Services.CustomerService.ListCustomersAsync
+  - MyApp.Sales.Application.Services.CustomerService.ListCustomersPaginatedAsync(System.Int32,System.Int32)
+  - MyApp.Sales.Application.Services.CustomerService.UpdateCustomerAsync(System.Guid,MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  langs:
+  - csharp
+  - vb
+  name: CustomerService
+  nameWithType: CustomerService
+  fullName: MyApp.Sales.Application.Services.CustomerService
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CustomerService
+    path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+    startLine: 12
+  assemblies:
+  - MyApp.Sales.Application
+  namespace: MyApp.Sales.Application.Services
+  syntax:
+    content: 'public class CustomerService : ICustomerService'
+    content.vb: Public Class CustomerService Implements ICustomerService
+  inheritance:
+  - System.Object
+  implements:
+  - MyApp.Sales.Application.Contracts.Services.ICustomerService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Sales.Application.Services.CustomerService.#ctor(MyApp.Sales.Domain.ICustomerRepository,AutoMapper.IMapper)
+  commentId: M:MyApp.Sales.Application.Services.CustomerService.#ctor(MyApp.Sales.Domain.ICustomerRepository,AutoMapper.IMapper)
+  id: '#ctor(MyApp.Sales.Domain.ICustomerRepository,AutoMapper.IMapper)'
+  parent: MyApp.Sales.Application.Services.CustomerService
+  langs:
+  - csharp
+  - vb
+  name: CustomerService(ICustomerRepository, IMapper)
+  nameWithType: CustomerService.CustomerService(ICustomerRepository, IMapper)
+  fullName: MyApp.Sales.Application.Services.CustomerService.CustomerService(MyApp.Sales.Domain.ICustomerRepository, AutoMapper.IMapper)
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+    startLine: 17
+  assemblies:
+  - MyApp.Sales.Application
+  namespace: MyApp.Sales.Application.Services
+  syntax:
+    content: public CustomerService(ICustomerRepository customerRepository, IMapper mapper)
+    parameters:
+    - id: customerRepository
+      type: MyApp.Sales.Domain.ICustomerRepository
+    - id: mapper
+      type: AutoMapper.IMapper
+    content.vb: Public Sub New(customerRepository As ICustomerRepository, mapper As IMapper)
+  overload: MyApp.Sales.Application.Services.CustomerService.#ctor*
+  nameWithType.vb: CustomerService.New(ICustomerRepository, IMapper)
+  fullName.vb: MyApp.Sales.Application.Services.CustomerService.New(MyApp.Sales.Domain.ICustomerRepository, AutoMapper.IMapper)
+  name.vb: New(ICustomerRepository, IMapper)
+- uid: MyApp.Sales.Application.Services.CustomerService.GetCustomerByIdAsync(System.Guid)
+  commentId: M:MyApp.Sales.Application.Services.CustomerService.GetCustomerByIdAsync(System.Guid)
+  id: GetCustomerByIdAsync(System.Guid)
+  parent: MyApp.Sales.Application.Services.CustomerService
+  langs:
+  - csharp
+  - vb
+  name: GetCustomerByIdAsync(Guid)
+  nameWithType: CustomerService.GetCustomerByIdAsync(Guid)
+  fullName: MyApp.Sales.Application.Services.CustomerService.GetCustomerByIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetCustomerByIdAsync
+    path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+    startLine: 25
+  assemblies:
+  - MyApp.Sales.Application
+  namespace: MyApp.Sales.Application.Services
+  example: []
+  syntax:
+    content: public Task<CustomerDto?> GetCustomerByIdAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Sales.Application.Contracts.DTOs.CustomerDto}
+    content.vb: Public Function GetCustomerByIdAsync(id As Guid) As Task(Of CustomerDto)
+  overload: MyApp.Sales.Application.Services.CustomerService.GetCustomerByIdAsync*
+  implements:
+  - MyApp.Sales.Application.Contracts.Services.ICustomerService.GetCustomerByIdAsync(System.Guid)
+- uid: MyApp.Sales.Application.Services.CustomerService.ListCustomersAsync
+  commentId: M:MyApp.Sales.Application.Services.CustomerService.ListCustomersAsync
+  id: ListCustomersAsync
+  parent: MyApp.Sales.Application.Services.CustomerService
+  langs:
+  - csharp
+  - vb
+  name: ListCustomersAsync()
+  nameWithType: CustomerService.ListCustomersAsync()
+  fullName: MyApp.Sales.Application.Services.CustomerService.ListCustomersAsync()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ListCustomersAsync
+    path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+    startLine: 31
+  assemblies:
+  - MyApp.Sales.Application
+  namespace: MyApp.Sales.Application.Services
+  example: []
+  syntax:
+    content: public Task<IEnumerable<CustomerDto>> ListCustomersAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Sales.Application.Contracts.DTOs.CustomerDto}}
+    content.vb: Public Function ListCustomersAsync() As Task(Of IEnumerable(Of CustomerDto))
+  overload: MyApp.Sales.Application.Services.CustomerService.ListCustomersAsync*
+  implements:
+  - MyApp.Sales.Application.Contracts.Services.ICustomerService.ListCustomersAsync
+- uid: MyApp.Sales.Application.Services.CustomerService.ListCustomersPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Sales.Application.Services.CustomerService.ListCustomersPaginatedAsync(System.Int32,System.Int32)
+  id: ListCustomersPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Sales.Application.Services.CustomerService
+  langs:
+  - csharp
+  - vb
+  name: ListCustomersPaginatedAsync(int, int)
+  nameWithType: CustomerService.ListCustomersPaginatedAsync(int, int)
+  fullName: MyApp.Sales.Application.Services.CustomerService.ListCustomersPaginatedAsync(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ListCustomersPaginatedAsync
+    path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+    startLine: 37
+  assemblies:
+  - MyApp.Sales.Application
+  namespace: MyApp.Sales.Application.Services
+  example: []
+  syntax:
+    content: public Task<PaginatedResult<CustomerDto>> ListCustomersPaginatedAsync(int pageNumber, int pageSize)
+    parameters:
+    - id: pageNumber
+      type: System.Int32
+    - id: pageSize
+      type: System.Int32
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Sales.Application.Contracts.DTOs.CustomerDto}}
+    content.vb: Public Function ListCustomersPaginatedAsync(pageNumber As Integer, pageSize As Integer) As Task(Of PaginatedResult(Of CustomerDto))
+  overload: MyApp.Sales.Application.Services.CustomerService.ListCustomersPaginatedAsync*
+  implements:
+  - MyApp.Sales.Application.Contracts.Services.ICustomerService.ListCustomersPaginatedAsync(System.Int32,System.Int32)
+  nameWithType.vb: CustomerService.ListCustomersPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Sales.Application.Services.CustomerService.ListCustomersPaginatedAsync(Integer, Integer)
+  name.vb: ListCustomersPaginatedAsync(Integer, Integer)
+- uid: MyApp.Sales.Application.Services.CustomerService.CreateCustomerAsync(MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  commentId: M:MyApp.Sales.Application.Services.CustomerService.CreateCustomerAsync(MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  id: CreateCustomerAsync(MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  parent: MyApp.Sales.Application.Services.CustomerService
+  langs:
+  - csharp
+  - vb
+  name: CreateCustomerAsync(CustomerDto)
+  nameWithType: CustomerService.CreateCustomerAsync(CustomerDto)
+  fullName: MyApp.Sales.Application.Services.CustomerService.CreateCustomerAsync(MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateCustomerAsync
+    path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+    startLine: 44
+  assemblies:
+  - MyApp.Sales.Application
+  namespace: MyApp.Sales.Application.Services
+  example: []
+  syntax:
+    content: public Task<CustomerDto> CreateCustomerAsync(CustomerDto dto)
+    parameters:
+    - id: dto
+      type: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Sales.Application.Contracts.DTOs.CustomerDto}
+    content.vb: Public Function CreateCustomerAsync(dto As CustomerDto) As Task(Of CustomerDto)
+  overload: MyApp.Sales.Application.Services.CustomerService.CreateCustomerAsync*
+  implements:
+  - MyApp.Sales.Application.Contracts.Services.ICustomerService.CreateCustomerAsync(MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+- uid: MyApp.Sales.Application.Services.CustomerService.UpdateCustomerAsync(System.Guid,MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  commentId: M:MyApp.Sales.Application.Services.CustomerService.UpdateCustomerAsync(System.Guid,MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  id: UpdateCustomerAsync(System.Guid,MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  parent: MyApp.Sales.Application.Services.CustomerService
+  langs:
+  - csharp
+  - vb
+  name: UpdateCustomerAsync(Guid, CustomerDto)
+  nameWithType: CustomerService.UpdateCustomerAsync(Guid, CustomerDto)
+  fullName: MyApp.Sales.Application.Services.CustomerService.UpdateCustomerAsync(System.Guid, MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateCustomerAsync
+    path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+    startLine: 52
+  assemblies:
+  - MyApp.Sales.Application
+  namespace: MyApp.Sales.Application.Services
+  example: []
+  syntax:
+    content: public Task<CustomerDto> UpdateCustomerAsync(Guid id, CustomerDto dto)
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: dto
+      type: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Sales.Application.Contracts.DTOs.CustomerDto}
+    content.vb: Public Function UpdateCustomerAsync(id As Guid, dto As CustomerDto) As Task(Of CustomerDto)
+  overload: MyApp.Sales.Application.Services.CustomerService.UpdateCustomerAsync*
+  implements:
+  - MyApp.Sales.Application.Contracts.Services.ICustomerService.UpdateCustomerAsync(System.Guid,MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+- uid: MyApp.Sales.Application.Services.CustomerService.DeleteCustomerAsync(System.Guid)
+  commentId: M:MyApp.Sales.Application.Services.CustomerService.DeleteCustomerAsync(System.Guid)
+  id: DeleteCustomerAsync(System.Guid)
+  parent: MyApp.Sales.Application.Services.CustomerService
+  langs:
+  - csharp
+  - vb
+  name: DeleteCustomerAsync(Guid)
+  nameWithType: CustomerService.DeleteCustomerAsync(Guid)
+  fullName: MyApp.Sales.Application.Services.CustomerService.DeleteCustomerAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteCustomerAsync
+    path: src/MyApp.Sales/MyApp.Sales.Application/Services/CustomerService.cs
+    startLine: 63
+  assemblies:
+  - MyApp.Sales.Application
+  namespace: MyApp.Sales.Application.Services
+  example: []
+  syntax:
+    content: public Task DeleteCustomerAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function DeleteCustomerAsync(id As Guid) As Task
+  overload: MyApp.Sales.Application.Services.CustomerService.DeleteCustomerAsync*
+  implements:
+  - MyApp.Sales.Application.Contracts.Services.ICustomerService.DeleteCustomerAsync(System.Guid)
+references:
+- uid: MyApp.Sales.Application.Services
+  commentId: N:MyApp.Sales.Application.Services
+  href: MyApp.html
+  name: MyApp.Sales.Application.Services
+  nameWithType: MyApp.Sales.Application.Services
+  fullName: MyApp.Sales.Application.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Services
+    name: Services
+    href: MyApp.Sales.Application.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Services
+    name: Services
+    href: MyApp.Sales.Application.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MyApp.Sales.Application.Contracts.Services.ICustomerService
+  commentId: T:MyApp.Sales.Application.Contracts.Services.ICustomerService
+  parent: MyApp.Sales.Application.Contracts.Services
+  href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html
+  name: ICustomerService
+  nameWithType: ICustomerService
+  fullName: MyApp.Sales.Application.Contracts.Services.ICustomerService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Sales.Application.Contracts.Services
+  commentId: N:MyApp.Sales.Application.Contracts.Services
+  href: MyApp.html
+  name: MyApp.Sales.Application.Contracts.Services
+  nameWithType: MyApp.Sales.Application.Contracts.Services
+  fullName: MyApp.Sales.Application.Contracts.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts
+    name: Contracts
+    href: MyApp.Sales.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts.Services
+    name: Services
+    href: MyApp.Sales.Application.Contracts.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts
+    name: Contracts
+    href: MyApp.Sales.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts.Services
+    name: Services
+    href: MyApp.Sales.Application.Contracts.Services.html
+- uid: MyApp.Sales.Application.Services.CustomerService.#ctor*
+  commentId: Overload:MyApp.Sales.Application.Services.CustomerService.#ctor
+  href: MyApp.Sales.Application.Services.CustomerService.html#MyApp_Sales_Application_Services_CustomerService__ctor_MyApp_Sales_Domain_ICustomerRepository_AutoMapper_IMapper_
+  name: CustomerService
+  nameWithType: CustomerService.CustomerService
+  fullName: MyApp.Sales.Application.Services.CustomerService.CustomerService
+  nameWithType.vb: CustomerService.New
+  fullName.vb: MyApp.Sales.Application.Services.CustomerService.New
+  name.vb: New
+- uid: MyApp.Sales.Domain.ICustomerRepository
+  commentId: T:MyApp.Sales.Domain.ICustomerRepository
+  parent: MyApp.Sales.Domain
+  href: MyApp.Sales.Domain.ICustomerRepository.html
+  name: ICustomerRepository
+  nameWithType: ICustomerRepository
+  fullName: MyApp.Sales.Domain.ICustomerRepository
+- uid: AutoMapper.IMapper
+  commentId: T:AutoMapper.IMapper
+  parent: AutoMapper
+  isExternal: true
+  name: IMapper
+  nameWithType: IMapper
+  fullName: AutoMapper.IMapper
+- uid: MyApp.Sales.Domain
+  commentId: N:MyApp.Sales.Domain
+  href: MyApp.html
+  name: MyApp.Sales.Domain
+  nameWithType: MyApp.Sales.Domain
+  fullName: MyApp.Sales.Domain
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Domain
+    name: Domain
+    href: MyApp.Sales.Domain.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Domain
+    name: Domain
+    href: MyApp.Sales.Domain.html
+- uid: AutoMapper
+  commentId: N:AutoMapper
+  isExternal: true
+  name: AutoMapper
+  nameWithType: AutoMapper
+  fullName: AutoMapper
+- uid: MyApp.Sales.Application.Services.CustomerService.GetCustomerByIdAsync*
+  commentId: Overload:MyApp.Sales.Application.Services.CustomerService.GetCustomerByIdAsync
+  href: MyApp.Sales.Application.Services.CustomerService.html#MyApp_Sales_Application_Services_CustomerService_GetCustomerByIdAsync_System_Guid_
+  name: GetCustomerByIdAsync
+  nameWithType: CustomerService.GetCustomerByIdAsync
+  fullName: MyApp.Sales.Application.Services.CustomerService.GetCustomerByIdAsync
+- uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.GetCustomerByIdAsync(System.Guid)
+  commentId: M:MyApp.Sales.Application.Contracts.Services.ICustomerService.GetCustomerByIdAsync(System.Guid)
+  parent: MyApp.Sales.Application.Contracts.Services.ICustomerService
+  isExternal: true
+  href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_GetCustomerByIdAsync_System_Guid_
+  name: GetCustomerByIdAsync(Guid)
+  nameWithType: ICustomerService.GetCustomerByIdAsync(Guid)
+  fullName: MyApp.Sales.Application.Contracts.Services.ICustomerService.GetCustomerByIdAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.GetCustomerByIdAsync(System.Guid)
+    name: GetCustomerByIdAsync
+    href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_GetCustomerByIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.GetCustomerByIdAsync(System.Guid)
+    name: GetCustomerByIdAsync
+    href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_GetCustomerByIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task{MyApp.Sales.Application.Contracts.DTOs.CustomerDto}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Sales.Application.Contracts.DTOs.CustomerDto}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<CustomerDto>
+  nameWithType: Task<CustomerDto>
+  fullName: System.Threading.Tasks.Task<MyApp.Sales.Application.Contracts.DTOs.CustomerDto>
+  nameWithType.vb: Task(Of CustomerDto)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  name.vb: Task(Of CustomerDto)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+    name: CustomerDto
+    href: MyApp.Sales.Application.Contracts.DTOs.CustomerDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+    name: CustomerDto
+    href: MyApp.Sales.Application.Contracts.DTOs.CustomerDto.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Sales.Application.Services.CustomerService.ListCustomersAsync*
+  commentId: Overload:MyApp.Sales.Application.Services.CustomerService.ListCustomersAsync
+  href: MyApp.Sales.Application.Services.CustomerService.html#MyApp_Sales_Application_Services_CustomerService_ListCustomersAsync
+  name: ListCustomersAsync
+  nameWithType: CustomerService.ListCustomersAsync
+  fullName: MyApp.Sales.Application.Services.CustomerService.ListCustomersAsync
+- uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.ListCustomersAsync
+  commentId: M:MyApp.Sales.Application.Contracts.Services.ICustomerService.ListCustomersAsync
+  parent: MyApp.Sales.Application.Contracts.Services.ICustomerService
+  href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_ListCustomersAsync
+  name: ListCustomersAsync()
+  nameWithType: ICustomerService.ListCustomersAsync()
+  fullName: MyApp.Sales.Application.Contracts.Services.ICustomerService.ListCustomersAsync()
+  spec.csharp:
+  - uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.ListCustomersAsync
+    name: ListCustomersAsync
+    href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_ListCustomersAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.ListCustomersAsync
+    name: ListCustomersAsync
+    href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_ListCustomersAsync
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Sales.Application.Contracts.DTOs.CustomerDto}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Sales.Application.Contracts.DTOs.CustomerDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<CustomerDto>>
+  nameWithType: Task<IEnumerable<CustomerDto>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Sales.Application.Contracts.DTOs.CustomerDto>>
+  nameWithType.vb: Task(Of IEnumerable(Of CustomerDto))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Sales.Application.Contracts.DTOs.CustomerDto))
+  name.vb: Task(Of IEnumerable(Of CustomerDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+    name: CustomerDto
+    href: MyApp.Sales.Application.Contracts.DTOs.CustomerDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+    name: CustomerDto
+    href: MyApp.Sales.Application.Contracts.DTOs.CustomerDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Sales.Application.Services.CustomerService.ListCustomersPaginatedAsync*
+  commentId: Overload:MyApp.Sales.Application.Services.CustomerService.ListCustomersPaginatedAsync
+  href: MyApp.Sales.Application.Services.CustomerService.html#MyApp_Sales_Application_Services_CustomerService_ListCustomersPaginatedAsync_System_Int32_System_Int32_
+  name: ListCustomersPaginatedAsync
+  nameWithType: CustomerService.ListCustomersPaginatedAsync
+  fullName: MyApp.Sales.Application.Services.CustomerService.ListCustomersPaginatedAsync
+- uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.ListCustomersPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Sales.Application.Contracts.Services.ICustomerService.ListCustomersPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Sales.Application.Contracts.Services.ICustomerService
+  isExternal: true
+  href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_ListCustomersPaginatedAsync_System_Int32_System_Int32_
+  name: ListCustomersPaginatedAsync(int, int)
+  nameWithType: ICustomerService.ListCustomersPaginatedAsync(int, int)
+  fullName: MyApp.Sales.Application.Contracts.Services.ICustomerService.ListCustomersPaginatedAsync(int, int)
+  nameWithType.vb: ICustomerService.ListCustomersPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Sales.Application.Contracts.Services.ICustomerService.ListCustomersPaginatedAsync(Integer, Integer)
+  name.vb: ListCustomersPaginatedAsync(Integer, Integer)
+  spec.csharp:
+  - uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.ListCustomersPaginatedAsync(System.Int32,System.Int32)
+    name: ListCustomersPaginatedAsync
+    href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_ListCustomersPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.ListCustomersPaginatedAsync(System.Int32,System.Int32)
+    name: ListCustomersPaginatedAsync
+    href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_ListCustomersPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Sales.Application.Contracts.DTOs.CustomerDto}}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Sales.Application.Contracts.DTOs.CustomerDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PaginatedResult<CustomerDto>>
+  nameWithType: Task<PaginatedResult<CustomerDto>>
+  fullName: System.Threading.Tasks.Task<MyApp.Shared.Domain.Pagination.PaginatedResult<MyApp.Sales.Application.Contracts.DTOs.CustomerDto>>
+  nameWithType.vb: Task(Of PaginatedResult(Of CustomerDto))
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Shared.Domain.Pagination.PaginatedResult(Of MyApp.Sales.Application.Contracts.DTOs.CustomerDto))
+  name.vb: Task(Of PaginatedResult(Of CustomerDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+    href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html
+  - name: <
+  - uid: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+    name: CustomerDto
+    href: MyApp.Sales.Application.Contracts.DTOs.CustomerDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+    href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+    name: CustomerDto
+    href: MyApp.Sales.Application.Contracts.DTOs.CustomerDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Sales.Application.Services.CustomerService.CreateCustomerAsync*
+  commentId: Overload:MyApp.Sales.Application.Services.CustomerService.CreateCustomerAsync
+  href: MyApp.Sales.Application.Services.CustomerService.html#MyApp_Sales_Application_Services_CustomerService_CreateCustomerAsync_MyApp_Sales_Application_Contracts_DTOs_CustomerDto_
+  name: CreateCustomerAsync
+  nameWithType: CustomerService.CreateCustomerAsync
+  fullName: MyApp.Sales.Application.Services.CustomerService.CreateCustomerAsync
+- uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.CreateCustomerAsync(MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  commentId: M:MyApp.Sales.Application.Contracts.Services.ICustomerService.CreateCustomerAsync(MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  parent: MyApp.Sales.Application.Contracts.Services.ICustomerService
+  href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_CreateCustomerAsync_MyApp_Sales_Application_Contracts_DTOs_CustomerDto_
+  name: CreateCustomerAsync(CustomerDto)
+  nameWithType: ICustomerService.CreateCustomerAsync(CustomerDto)
+  fullName: MyApp.Sales.Application.Contracts.Services.ICustomerService.CreateCustomerAsync(MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  spec.csharp:
+  - uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.CreateCustomerAsync(MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+    name: CreateCustomerAsync
+    href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_CreateCustomerAsync_MyApp_Sales_Application_Contracts_DTOs_CustomerDto_
+  - name: (
+  - uid: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+    name: CustomerDto
+    href: MyApp.Sales.Application.Contracts.DTOs.CustomerDto.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.CreateCustomerAsync(MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+    name: CreateCustomerAsync
+    href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_CreateCustomerAsync_MyApp_Sales_Application_Contracts_DTOs_CustomerDto_
+  - name: (
+  - uid: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+    name: CustomerDto
+    href: MyApp.Sales.Application.Contracts.DTOs.CustomerDto.html
+  - name: )
+- uid: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+  commentId: T:MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+  parent: MyApp.Sales.Application.Contracts.DTOs
+  href: MyApp.Sales.Application.Contracts.DTOs.CustomerDto.html
+  name: CustomerDto
+  nameWithType: CustomerDto
+  fullName: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+- uid: MyApp.Sales.Application.Contracts.DTOs
+  commentId: N:MyApp.Sales.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Sales.Application.Contracts.DTOs
+  nameWithType: MyApp.Sales.Application.Contracts.DTOs
+  fullName: MyApp.Sales.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts
+    name: Contracts
+    href: MyApp.Sales.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Sales.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts
+    name: Contracts
+    href: MyApp.Sales.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Sales.Application.Contracts.DTOs.html
+- uid: MyApp.Sales.Application.Services.CustomerService.UpdateCustomerAsync*
+  commentId: Overload:MyApp.Sales.Application.Services.CustomerService.UpdateCustomerAsync
+  href: MyApp.Sales.Application.Services.CustomerService.html#MyApp_Sales_Application_Services_CustomerService_UpdateCustomerAsync_System_Guid_MyApp_Sales_Application_Contracts_DTOs_CustomerDto_
+  name: UpdateCustomerAsync
+  nameWithType: CustomerService.UpdateCustomerAsync
+  fullName: MyApp.Sales.Application.Services.CustomerService.UpdateCustomerAsync
+- uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.UpdateCustomerAsync(System.Guid,MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  commentId: M:MyApp.Sales.Application.Contracts.Services.ICustomerService.UpdateCustomerAsync(System.Guid,MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  parent: MyApp.Sales.Application.Contracts.Services.ICustomerService
+  isExternal: true
+  href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_UpdateCustomerAsync_System_Guid_MyApp_Sales_Application_Contracts_DTOs_CustomerDto_
+  name: UpdateCustomerAsync(Guid, CustomerDto)
+  nameWithType: ICustomerService.UpdateCustomerAsync(Guid, CustomerDto)
+  fullName: MyApp.Sales.Application.Contracts.Services.ICustomerService.UpdateCustomerAsync(System.Guid, MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+  spec.csharp:
+  - uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.UpdateCustomerAsync(System.Guid,MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+    name: UpdateCustomerAsync
+    href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_UpdateCustomerAsync_System_Guid_MyApp_Sales_Application_Contracts_DTOs_CustomerDto_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+    name: CustomerDto
+    href: MyApp.Sales.Application.Contracts.DTOs.CustomerDto.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.UpdateCustomerAsync(System.Guid,MyApp.Sales.Application.Contracts.DTOs.CustomerDto)
+    name: UpdateCustomerAsync
+    href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_UpdateCustomerAsync_System_Guid_MyApp_Sales_Application_Contracts_DTOs_CustomerDto_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+    name: CustomerDto
+    href: MyApp.Sales.Application.Contracts.DTOs.CustomerDto.html
+  - name: )
+- uid: MyApp.Sales.Application.Services.CustomerService.DeleteCustomerAsync*
+  commentId: Overload:MyApp.Sales.Application.Services.CustomerService.DeleteCustomerAsync
+  href: MyApp.Sales.Application.Services.CustomerService.html#MyApp_Sales_Application_Services_CustomerService_DeleteCustomerAsync_System_Guid_
+  name: DeleteCustomerAsync
+  nameWithType: CustomerService.DeleteCustomerAsync
+  fullName: MyApp.Sales.Application.Services.CustomerService.DeleteCustomerAsync
+- uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.DeleteCustomerAsync(System.Guid)
+  commentId: M:MyApp.Sales.Application.Contracts.Services.ICustomerService.DeleteCustomerAsync(System.Guid)
+  parent: MyApp.Sales.Application.Contracts.Services.ICustomerService
+  isExternal: true
+  href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_DeleteCustomerAsync_System_Guid_
+  name: DeleteCustomerAsync(Guid)
+  nameWithType: ICustomerService.DeleteCustomerAsync(Guid)
+  fullName: MyApp.Sales.Application.Contracts.Services.ICustomerService.DeleteCustomerAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.DeleteCustomerAsync(System.Guid)
+    name: DeleteCustomerAsync
+    href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_DeleteCustomerAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Application.Contracts.Services.ICustomerService.DeleteCustomerAsync(System.Guid)
+    name: DeleteCustomerAsync
+    href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html#MyApp_Sales_Application_Contracts_Services_ICustomerService_DeleteCustomerAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task

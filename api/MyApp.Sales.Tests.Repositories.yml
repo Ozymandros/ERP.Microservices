@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Tests.Repositories
+  commentId: N:MyApp.Sales.Tests.Repositories
+  id: MyApp.Sales.Tests.Repositories
+  children:
+  - MyApp.Sales.Tests.Repositories.CustomerRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Sales.Tests.Repositories
+  nameWithType: MyApp.Sales.Tests.Repositories
+  fullName: MyApp.Sales.Tests.Repositories
+  type: Namespace
+  assemblies:
+  - MyApp.Sales.Infrastructure.Tests
+references:
+- uid: MyApp.Sales.Tests.Repositories.CustomerRepositoryTests
+  commentId: T:MyApp.Sales.Tests.Repositories.CustomerRepositoryTests
+  href: MyApp.Sales.Tests.Repositories.CustomerRepositoryTests.html
+  name: CustomerRepositoryTests
+  nameWithType: CustomerRepositoryTests
+  fullName: MyApp.Sales.Tests.Repositories.CustomerRepositoryTests

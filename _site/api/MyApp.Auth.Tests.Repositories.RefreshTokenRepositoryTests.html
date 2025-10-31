@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class RefreshTokenRepositoryTests | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class RefreshTokenRepositoryTests | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/new/main/apiSpec/new?filename=MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests.md&amp;value=---%0Auid%3A%20MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests">
+
+
+
+  <h1 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests" class="text-break">
+Class RefreshTokenRepositoryTests  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="MyApp.html">MyApp</a>.<a class="xref" href="MyApp.Auth.html">Auth</a>.<a class="xref" href="MyApp.Auth.Tests.html">Tests</a>.<a class="xref" href="MyApp.Auth.Tests.Repositories.html">Repositories</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>MyApp.Auth.Infrastructure.Tests.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class RefreshTokenRepositoryTests</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">RefreshTokenRepositoryTests</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests__ctor_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.#ctor*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests__ctor" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.#ctor">
+  RefreshTokenRepositoryTests()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RefreshTokenRepositoryTests()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken">
+  CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L276"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByTokenAsync_WithEmptyToken_ReturnsNull_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithEmptyToken_ReturnsNull*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByTokenAsync_WithEmptyToken_ReturnsNull" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithEmptyToken_ReturnsNull">
+  GetByTokenAsync_WithEmptyToken_ReturnsNull()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetByTokenAsync_WithEmptyToken_ReturnsNull()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByTokenAsync_WithNonExistentToken_ReturnsNull_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithNonExistentToken_ReturnsNull*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByTokenAsync_WithNonExistentToken_ReturnsNull" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithNonExistentToken_ReturnsNull">
+  GetByTokenAsync_WithNonExistentToken_ReturnsNull()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetByTokenAsync_WithNonExistentToken_ReturnsNull()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByTokenAsync_WithValidToken_ReturnsRefreshToken_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithValidToken_ReturnsRefreshToken*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByTokenAsync_WithValidToken_ReturnsRefreshToken" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithValidToken_ReturnsRefreshToken">
+  GetByTokenAsync_WithValidToken_ReturnsRefreshToken()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetByTokenAsync_WithValidToken_ReturnsRefreshToken()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens">
+  GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L137"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByUserIdAsync_WithNoTokens_ReturnsEmptyList_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithNoTokens_ReturnsEmptyList*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByUserIdAsync_WithNoTokens_ReturnsEmptyList" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithNoTokens_ReturnsEmptyList">
+  GetByUserIdAsync_WithNoTokens_ReturnsEmptyList()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L123"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetByUserIdAsync_WithNoTokens_ReturnsEmptyList()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens">
+  GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull">
+  GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L223"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull">
+  GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L199"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken">
+  GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L174"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull">
+  GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L247"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeAsync_OnlyRevokesSpecificToken_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_OnlyRevokesSpecificToken*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeAsync_OnlyRevokesSpecificToken" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_OnlyRevokesSpecificToken">
+  RevokeAsync_OnlyRevokesSpecificToken()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L342"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task RevokeAsync_OnlyRevokesSpecificToken()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeAsync_WithNonExistentTokenId_DoesNotThrow_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithNonExistentTokenId_DoesNotThrow*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeAsync_WithNonExistentTokenId_DoesNotThrow" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithNonExistentTokenId_DoesNotThrow">
+  RevokeAsync_WithNonExistentTokenId_DoesNotThrow()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L332"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task RevokeAsync_WithNonExistentTokenId_DoesNotThrow()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeAsync_WithValidTokenId_RevokesSingleToken_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithValidTokenId_RevokesSingleToken*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeAsync_WithValidTokenId_RevokesSingleToken" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithValidTokenId_RevokesSingleToken">
+  RevokeAsync_WithValidTokenId_RevokesSingleToken()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L306"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task RevokeAsync_WithValidTokenId_RevokesSingleToken()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens">
+  RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L416"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked">
+  RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L453"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens_" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens*"></a>
+
+  <h3 id="MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens" data-uid="MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens">
+  RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L382"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs/#L9" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

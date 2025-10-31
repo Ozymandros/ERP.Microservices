@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#128295; Bicep Remediation Guide: Detailed Implementation Steps | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#128295; Bicep Remediation Guide: Detailed Implementation Steps | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/infrastructure/BICEP_REMEDIATION_GUIDE.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-bicep-remediation-guide-detailed-implementation-steps">🔧 Bicep Remediation Guide: Detailed Implementation Steps</h1>
+
+<p>This guide provides exact code changes to fix each gap identified in the comprehensive audit.</p>
+<hr>
+<h2 id="gap-1-missing-jwt-parameters-in-mainbicep">Gap #1: Missing JWT Parameters in main.bicep</h2>
+<p><strong>Current Code (lines 20-24):</strong></p>
+<pre><code class="lang-bicep">@metadata({azd: {
+  type: 'generate'
+  config: {length:22,noSpecial:true}
+  }
+})
+@secure()
+param cache_password string
+@secure()
+param password string
+</code></pre>
+<p><strong>Required Addition - After line 24, add:</strong></p>
+<pre><code class="lang-bicep">@description('JWT secret key for token signing')
+@secure()
+param jwtSecretKey string
+
+@description('JWT token issuer (e.g., MyApp.Auth)')
+param jwtIssuer string = 'MyApp.Auth'
+
+@description('JWT token audience (e.g., MyApp.All)')
+param jwtAudience string = 'MyApp.All'
+
+@description('Frontend origin for CORS (semicolon-separated for multiple origins)')
+param frontendOrigin string = 'http://localhost:3000;http://localhost:5000'
+
+@description('Environment name (Development, Staging, Production)')
+param aspnetcoreEnvironment string = 'Production'
+</code></pre>
+<p><strong>Why:</strong> These parameters allow environment-specific JWT configuration instead of hardcoding values. Follows 12-factor app methodology and azd best practices.</p>
+<hr>
+<h2 id="gap-2-missing-key-vault-module-call-in-mainbicep">Gap #2: Missing Key Vault Module Call in main.bicep</h2>
+<p><strong>Location:</strong> After the <code>resources</code> module definition (around line 35), add:</p>
+<pre><code class="lang-bicep">module keyVault 'core/security/keyvault-secrets.bicep' = {
+  name: 'keyvault'
+  scope: rg
+  params: {
+    name: 'kv-${resourceToken}'
+    location: location
+    tags: tags
+    jwtSecretKey: jwtSecretKey
+    redisHostName: redis.outputs.hostName
+    redisPrimaryKey: redis.outputs.primaryKey
+    sqlFqdn: myapp_sqlserver.outputs.sqlServerFqdn
+    sqlAdminPassword: password
+    enableKeyVault: true  // CRITICAL: Enable Key Vault creation
+  }
+  dependsOn: [
+    redis  // Ensure Redis created first
+    myapp_sqlserver  // Ensure SQL Server created first
+  ]
+}
+</code></pre>
+<p><strong>Why:</strong> Integrates the existing Key Vault module that was never called. The <code>enableKeyVault: true</code> is critical - currently it defaults to false, preventing secret creation.</p>
+<hr>
+<h2 id="gap-3-missing-redis-module-call-in-mainbicep">Gap #3: Missing Redis Module Call in main.bicep</h2>
+<p><strong>Location:</strong> After the <code>resources</code> module, before <code>keyVault</code>, add:</p>
+<pre><code class="lang-bicep">module redis 'core/database/redis.bicep' = {
+  name: 'redis'
+  scope: rg
+  params: {
+    name: 'redis-${resourceToken}'
+    location: location
+    tags: tags
+    sku: 'Basic'  // Change to 'Premium' for production with replicas
+    family: 'C'
+    capacity: 1  // For Standard tier (0 for Basic)
+  }
+}
+</code></pre>
+<p><strong>Why:</strong> Creates actual Redis cache resource. Currently only file share exists but no cache. Container Apps need connection to Redis instance.</p>
+<hr>
+<h2 id="gap-4-missing-sql-server-module-call-in-mainbicep">Gap #4: Missing SQL Server Module Call in main.bicep</h2>
+<p><strong>Location:</strong> After <code>redis</code> module, add:</p>
+<pre><code class="lang-bicep">module sqlServer 'core/database/sql-server.bicep' = {
+  name: 'sqlserver'
+  scope: rg
+  params: {
+    name: 'sql-${resourceToken}'
+    location: location
+    tags: tags
+    administratorLogin: 'sqladmin'
+    administratorLoginPassword: password  // FROM SECURE PARAM
+    databases: [
+      {name: 'AuthDB'}
+      {name: 'BillingDB'}
+      {name: 'InventoryDB'}
+      {name: 'OrdersDB'}
+      {name: 'PurchasingDB'}
+      {name: 'SalesDB'}
+    ]
+    minimalTlsVersion: '1.2'
+  }
+}
+</code></pre>
+<p><strong>Why:</strong> Creates SQL Server and all 6 required databases. Each service needs its own database following the docker-compose.yml pattern.</p>
+<p><strong>Note:</strong> The variable <code>resourceToken</code> should be defined in main.bicep:</p>
+<pre><code class="lang-bicep">var resourceToken = uniqueString(subscription().id, resourceGroup().id)
+</code></pre>
+<hr>
+<h2 id="gap-5-update-myapp-sqlservermodulebicep-to-create-databases">Gap #5: Update myapp-sqlserver.module.bicep to Create Databases</h2>
+<p><strong>Current Code - Ends after firewall rule:</strong></p>
+<pre><code class="lang-bicep">resource sqlFirewallRule_AllowAllAzureIps 'Microsoft.Sql/servers/firewallRules@2023-08-01' = {
+  // ...
+}
+
+output sqlServerFqdn string = myapp_sqlserver.properties.fullyQualifiedDomainName
+</code></pre>
+<p><strong>Replace with:</strong></p>
+<pre><code class="lang-bicep">resource sqlFirewallRule_AllowAllAzureIps 'Microsoft.Sql/servers/firewallRules@2023-08-01' = {
+  name: 'AllowAllAzureIps'
+  properties: {
+    endIpAddress: '0.0.0.0'
+    startIpAddress: '0.0.0.0'
+  }
+  parent: myapp_sqlserver
+}
+
+// CREATE ALL 6 DATABASES
+resource sqlDatabases 'Microsoft.Sql/servers/databases@2023-08-01' = [for db in [
+  'AuthDB'
+  'BillingDB'
+  'InventoryDB'
+  'OrdersDB'
+  'PurchasingDB'
+  'SalesDB'
+]: {
+  name: db
+  parent: myapp_sqlserver
+  location: location
+  properties: {
+    collation: 'SQL_Latin1_General_CP1_CI_AS'
+    maxSizeBytes: 2147483648
+    catalogCollation: 'SQL_Latin1_General_CP1_CI_AS'
+  }
+  sku: {
+    name: 'Basic'
+    tier: 'Basic'
+  }
+  tags: {
+    'aspire-resource-name': db
+  }
+}]
+
+output sqlServerFqdn string = myapp_sqlserver.properties.fullyQualifiedDomainName
+output name string = myapp_sqlserver.name
+output sqlServerAdminName string = sqlServerAdminManagedIdentity.name
+output databaseNames array = [for i in range(0, 6): sqlDatabases[i].name]
+</code></pre>
+<p><strong>Why:</strong> Currently NO databases are created. Services have nowhere to write data.</p>
+<hr>
+<h2 id="gap-6-complete-myapp-sqlserver-rolesmodulebicep">Gap #6: Complete myapp-sqlserver-roles.module.bicep</h2>
+<p><strong>Current Code - File is mostly empty:</strong></p>
+<pre><code class="lang-bicep">@description('The location for the resource(s) to be deployed.')
+param location string = resourceGroup().location
+
+param myapp_sqlserver_outputs_name string
+param myapp_sqlserver_outputs_sqlserveradminname string
+param principalId string
+param principalName string
+
+resource myapp_sqlserver 'Microsoft.Sql/servers@2023-08-01' existing = {
+  name: myapp_sqlserver_outputs_name
+}
+// ... references but NO assignments
+</code></pre>
+<p><strong>Replace entire file with:</strong></p>
+<pre><code class="lang-bicep">@description('The location for the resource(s) to be deployed.')
+param location string = resourceGroup().location
+
+@description('SQL Server name')
+param myapp_sqlserver_outputs_name string
+
+@description('SQL Server admin managed identity name')
+param myapp_sqlserver_outputs_sqlserveradminname string
+
+@description('Principal ID for role assignment (Container Apps Managed Identity)')
+param principalId string
+
+@description('Principal Name for role assignment')
+param principalName string
+
+@description('Array of service identities to grant database access')
+param serviceIdentities array = [
+  {
+    name: 'auth-service'
+    database: 'AuthDB'
+    principalId: ''
+  }
+  {
+    name: 'billing-service'
+    database: 'BillingDB'
+    principalId: ''
+  }
+  {
+    name: 'inventory-service'
+    database: 'InventoryDB'
+    principalId: ''
+  }
+  {
+    name: 'orders-service'
+    database: 'OrdersDB'
+    principalId: ''
+  }
+  {
+    name: 'purchasing-service'
+    database: 'PurchasingDB'
+    principalId: ''
+  }
+  {
+    name: 'sales-service'
+    database: 'SalesDB'
+    principalId: ''
+  }
+]
+
+resource myapp_sqlserver 'Microsoft.Sql/servers@2023-08-01' existing = {
+  name: myapp_sqlserver_outputs_name
+}
+
+resource sqlServerAdmin 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' existing = {
+  name: myapp_sqlserver_outputs_sqlserveradminname
+}
+
+// Assign db_owner role to each service's database via SQL Server
+// This allows Managed Identity to access their respective databases
+resource sqlRoleAssignments 'Microsoft.Sql/servers/sqlVulnerabilityAssessments@2023-08-01' = [for service in serviceIdentities: if (!empty(service.principalId)) {
+  name: 'default'
+  parent: myapp_sqlserver
+  // Note: SQL Server role assignment via bicep is limited
+  // Alternative: Use init scripts or Azure SQL Database managed identity assignments
+}]
+
+output sqlServerName string = myapp_sqlserver.name
+output assignments array = [for (service, i) in serviceIdentities: {
+  serviceName: service.name
+  database: service.database
+  principalId: service.principalId
+}]
+</code></pre>
+<p><strong>Note:</strong> SQL Server role assignments are complex in Bicep. Consider using:</p>
+<ol>
+<li><strong>Azure SQL Database Built-in Roles</strong> (READER, CONTRIBUTOR) if available</li>
+<li><strong>T-SQL Script</strong> via Azure SQL Database reference in deployment scripts</li>
+<li><strong>Container Apps</strong> with system-assigned MI accessing databases</li>
+</ol>
+<hr>
+<h2 id="gap-7-update-mainparametersjson-with-new-parameters">Gap #7: Update main.parameters.json with New Parameters</h2>
+<p><strong>Current Content:</strong></p>
+<pre><code class="lang-json">{
+  &quot;parameters&quot;: {
+    &quot;principalId&quot;: {&quot;value&quot;: &quot;${AZURE_PRINCIPAL_ID}&quot;},
+    &quot;cache_password&quot;: {&quot;value&quot;: &quot;${AZURE_CACHE_PASSWORD}&quot;},
+    &quot;password&quot;: {&quot;value&quot;: &quot;${AZURE_PASSWORD}&quot;},
+    &quot;environmentName&quot;: {&quot;value&quot;: &quot;${AZURE_ENV_NAME}&quot;},
+    &quot;location&quot;: {&quot;value&quot;: &quot;${AZURE_LOCATION}&quot;}
+  }
+}
+</code></pre>
+<p><strong>Replace with:</strong></p>
+<pre><code class="lang-json">{
+  &quot;$schema&quot;: &quot;https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#&quot;,
+  &quot;contentVersion&quot;: &quot;1.0.0.0&quot;,
+  &quot;parameters&quot;: {
+    &quot;principalId&quot;: {
+      &quot;value&quot;: &quot;${AZURE_PRINCIPAL_ID}&quot;
+    },
+    &quot;environmentName&quot;: {
+      &quot;value&quot;: &quot;${AZURE_ENV_NAME}&quot;
+    },
+    &quot;location&quot;: {
+      &quot;value&quot;: &quot;${AZURE_LOCATION}&quot;
+    },
+    &quot;password&quot;: {
+      &quot;value&quot;: &quot;${AZURE_SQL_PASSWORD}&quot;
+    },
+    &quot;cache_password&quot;: {
+      &quot;value&quot;: &quot;${AZURE_REDIS_PASSWORD}&quot;
+    },
+    &quot;jwtSecretKey&quot;: {
+      &quot;value&quot;: &quot;${AZURE_JWT_SECRET_KEY}&quot;
+    },
+    &quot;jwtIssuer&quot;: {
+      &quot;value&quot;: &quot;${AZURE_JWT_ISSUER:-MyApp.Auth}&quot;
+    },
+    &quot;jwtAudience&quot;: {
+      &quot;value&quot;: &quot;${AZURE_JWT_AUDIENCE:-MyApp.All}&quot;
+    },
+    &quot;frontendOrigin&quot;: {
+      &quot;value&quot;: &quot;${AZURE_FRONTEND_ORIGIN}&quot;
+    },
+    &quot;aspnetcoreEnvironment&quot;: {
+      &quot;value&quot;: &quot;${ASPNETCORE_ENVIRONMENT:-Production}&quot;
+    }
+  }
+}
+</code></pre>
+<p><strong>Environment Variables to Set in azd:</strong></p>
+<pre><code class="lang-bash"># In .azure/myenv/.env
+AZURE_JWT_SECRET_KEY=your_very_long_secret_key_here_minimum_32_chars
+AZURE_JWT_ISSUER=MyApp.Auth
+AZURE_JWT_AUDIENCE=MyApp.All
+AZURE_FRONTEND_ORIGIN=https://yourdomain.com;https://api.yourdomain.com
+AZURE_SQL_PASSWORD=ComplexP@ssw0rd123!
+AZURE_REDIS_PASSWORD=ComplexRedisP@ssw0rd123!
+ASPNETCORE_ENVIRONMENT=Production
+</code></pre>
+<hr>
+<h2 id="gap-8-create-container-app-environment-variable-template">Gap #8: Create Container App Environment Variable Template</h2>
+<p><strong>Update <code>core/host/container-app.bicep</code> parameters section (add around line 28):</strong></p>
+<pre><code class="lang-bicep">// After existing env array parameter:
+
+@description('Enable CORS and specify allowed origins')
+param frontendOrigin string = ''
+
+@description('JWT issuer for token validation')
+param jwtIssuer string = 'MyApp.Auth'
+
+@description('JWT audience for token validation')
+param jwtAudience string = 'MyApp.All'
+
+@description('Application environment (Development, Staging, Production)')
+param aspnetcoreEnvironment string = 'Production'
+
+@description('Connection string for distributed caching')
+param cacheConnectionString string = ''
+
+@description('Service database connection string (for service-specific DB)')
+param serviceDatabaseConnectionString string = ''
+
+@description('Key Vault ID for secret references')
+param keyVaultId string = ''
+
+@description('Application Insights connection string')
+param appInsightsConnectionString string = ''
+</code></pre>
+<p><strong>Then update the container configuration to include these:</strong></p>
+<pre><code class="lang-bicep">template: {
+  containers: [
+    {
+      name: name
+      image: '${containerRegistry.properties.loginServer}/${imageName}'
+      resources: {
+        cpu: json(cpu)
+        memory: memory
+      }
+      env: concat(env, [
+        {name: 'ASPNETCORE_ENVIRONMENT', value: aspnetcoreEnvironment}
+        {name: 'ASPNETCORE_URLS', value: 'http://+:8080'}
+        {name: 'Jwt__Issuer', value: jwtIssuer}
+        {name: 'Jwt__Audience', value: jwtAudience}
+        {name: 'FRONTEND_ORIGIN', value: frontendOrigin}
+        {name: 'ApplicationInsights__ConnectionString', value: appInsightsConnectionString}
+        !empty(cacheConnectionString) ? {name: 'ConnectionStrings__cache', value: cacheConnectionString} : null
+        !empty(serviceDatabaseConnectionString) ? {name: 'ConnectionStrings__ServiceDb', value: serviceDatabaseConnectionString} : null
+      ])
+      // ... rest of configuration
+    }
+  ]
+}
+</code></pre>
+<hr>
+<h2 id="gap-9-create-auth-service-module">Gap #9: Create Auth Service Module</h2>
+<p><strong>File:</strong> <code>infra/auth-service/auth-service.module.bicep</code></p>
+<pre><code class="lang-bicep">@description('Location for resources')
+param location string = resourceGroup().location
+
+@description('Container Apps Environment name')
+param containerAppsEnvironmentName string
+
+@description('Container Registry name')
+param containerRegistryName string
+
+@description('Container image tag')
+param imageTag string = 'latest'
+
+@description('JWT secret key name in Key Vault')
+param jwtSecretKeyName string = 'jwt-secret-key'
+
+@description('SQL connection secret name in Key Vault')
+param sqlConnectionSecretName string = 'sql-connection-authdb'
+
+@description('Redis connection secret name in Key Vault')
+param redisConnectionSecretName string = 'redis-connection'
+
+@description('Key Vault URI')
+param keyVaultUri string
+
+@description('JWT Issuer')
+param jwtIssuer string
+
+@description('JWT Audience')
+param jwtAudience string
+
+@description('Frontend origin for CORS')
+param frontendOrigin string
+
+@description('Application Insights connection string')
+param appInsightsConnectionString string
+
+@description('Tags for resources')
+param tags object = {}
+
+module authService 'core/host/container-app.bicep' = {
+  name: 'auth-service'
+  params: {
+    name: 'auth-service'
+    location: location
+    containerAppsEnvironmentName: containerAppsEnvironmentName
+    containerRegistryName: containerRegistryName
+    imageName: 'auth-service:${imageTag}'
+    targetPort: 8080
+    externalIngress: false  // Internal only
+    daprEnabled: true
+    daprAppId: 'auth-service'
+    daprAppPort: 8080
+    minReplicas: 2
+    maxReplicas: 5
+    aspnetcoreEnvironment: 'Production'
+    frontendOrigin: frontendOrigin
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    appInsightsConnectionString: appInsightsConnectionString
+    env: [
+      {
+        name: 'ASPNETCORE_URLS'
+        value: 'http://+:8080'
+      }
+    ]
+    secrets: [
+      {
+        name: 'jwt-secret-key'
+        keyVaultUrl: '${keyVaultUri}secrets/${jwtSecretKeyName}'
+      }
+      {
+        name: 'db-connection'
+        keyVaultUrl: '${keyVaultUri}secrets/${sqlConnectionSecretName}'
+      }
+      {
+        name: 'cache-connection'
+        keyVaultUrl: '${keyVaultUri}secrets/${redisConnectionSecretName}'
+      }
+    ]
+    tags: tags
+  }
+}
+
+output id string = authService.outputs.id
+output name string = authService.outputs.name
+output uri string = authService.outputs.uri
+output fqdn string = authService.outputs.fqdn
+</code></pre>
+<p><strong>Repeat this pattern for remaining 5 services:</strong></p>
+<ul>
+<li>Change service name (auth-service → billing-service, etc.)</li>
+<li>Change image name</li>
+<li>Change secret references (sql-connection-authdb → sql-connection-billingdb, etc.)</li>
+<li>Keep daprEnabled: true, externalIngress: false</li>
+</ul>
+<hr>
+<h2 id="gap-10-create-api-gateway-module">Gap #10: Create API Gateway Module</h2>
+<p><strong>File:</strong> <code>infra/api-gateway/api-gateway.module.bicep</code></p>
+<pre><code class="lang-bicep">@description('Location for resources')
+param location string = resourceGroup().location
+
+@description('Container Apps Environment name')
+param containerAppsEnvironmentName string
+
+@description('Container Registry name')
+param containerRegistryName string
+
+@description('Container image tag')
+param imageTag string = 'latest'
+
+@description('JWT secret key name in Key Vault')
+param jwtSecretKeyName string = 'jwt-secret-key'
+
+@description('Key Vault URI')
+param keyVaultUri string
+
+@description('JWT Issuer')
+param jwtIssuer string
+
+@description('JWT Audience')
+param jwtAudience string
+
+@description('Frontend origin for CORS')
+param frontendOrigin string
+
+@description('Application Insights connection string')
+param appInsightsConnectionString string
+
+@description('Tags for resources')
+param tags object = {}
+
+module apiGateway 'core/host/container-app.bicep' = {
+  name: 'api-gateway'
+  params: {
+    name: 'api-gateway'
+    location: location
+    containerAppsEnvironmentName: containerAppsEnvironmentName
+    containerRegistryName: containerRegistryName
+    imageName: 'erpapigateway:${imageTag}'
+    targetPort: 8080
+    externalIngress: true  // PUBLIC FACING
+    daprEnabled: false  // Gateway doesn't need Dapr
+    minReplicas: 2
+    maxReplicas: 10  // More replicas for public gateway
+    aspnetcoreEnvironment: 'Production'
+    frontendOrigin: frontendOrigin
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    appInsightsConnectionString: appInsightsConnectionString
+    env: [
+      {
+        name: 'ASPNETCORE_URLS'
+        value: 'http://+:8080'
+      }
+      {
+        name: 'Ocelot__Routes__0__DownstreamHostAndPorts__0__Host'
+        value: 'auth-service'
+      }
+      {
+        name: 'Ocelot__Routes__0__DownstreamHostAndPorts__0__Port'
+        value: '8080'
+      }
+      // ... repeat for all 6 services + notification
+    ]
+    secrets: [
+      {
+        name: 'jwt-secret-key'
+        keyVaultUrl: '${keyVaultUri}secrets/${jwtSecretKeyName}'
+      }
+    ]
+    tags: tags
+  }
+}
+
+output id string = apiGateway.outputs.id
+output name string = apiGateway.outputs.name
+output uri string = apiGateway.outputs.uri
+output fqdn string = apiGateway.outputs.fqdn
+</code></pre>
+<hr>
+<h2 id="gap-11-update-mainbicep-to-call-service-modules">Gap #11: Update main.bicep to Call Service Modules</h2>
+<p><strong>After keyVault module definition, add:</strong></p>
+<pre><code class="lang-bicep">// SERVICE MODULES
+module authServiceModule 'auth-service/auth-service.module.bicep' = {
+  name: 'auth-service-app'
+  scope: rg
+  params: {
+    location: location
+    containerAppsEnvironmentName: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME
+    containerRegistryName: resources.outputs.AZURE_CONTAINER_REGISTRY_NAME
+    imageTag: 'latest'
+    jwtSecretKeyName: keyVault.outputs.jwtSecretName
+    sqlConnectionSecretName: keyVault.outputs.sqlAuthSecretName
+    redisConnectionSecretName: keyVault.outputs.redisSecretName
+    keyVaultUri: keyVault.outputs.keyVaultUri
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    frontendOrigin: frontendOrigin
+    appInsightsConnectionString: MyApp_ApplicationInsights.outputs.appInsightsConnectionString
+    tags: tags
+  }
+  dependsOn: [
+    keyVault
+    redis
+    myapp_sqlserver
+  ]
+}
+
+// Repeat for billing, inventory, orders, purchasing, sales...
+
+// API GATEWAY MODULE
+module apiGatewayModule 'api-gateway/api-gateway.module.bicep' = {
+  name: 'api-gateway-app'
+  scope: rg
+  params: {
+    location: location
+    containerAppsEnvironmentName: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME
+    containerRegistryName: resources.outputs.AZURE_CONTAINER_REGISTRY_NAME
+    imageTag: 'latest'
+    jwtSecretKeyName: keyVault.outputs.jwtSecretName
+    keyVaultUri: keyVault.outputs.keyVaultUri
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    frontendOrigin: frontendOrigin
+    appInsightsConnectionString: MyApp_ApplicationInsights.outputs.appInsightsConnectionString
+    tags: tags
+  }
+  dependsOn: [
+    authServiceModule  // Ensure services exist first
+    billingServiceModule
+    inventoryServiceModule
+    ordersServiceModule
+    purchasingServiceModule
+    salesServiceModule
+  ]
+}
+</code></pre>
+<hr>
+<h2 id="gap-12-add-resourcetoken-variable-to-mainbicep">Gap #12: Add resourceToken Variable to main.bicep</h2>
+<p><strong>Add after the <code>var tags</code> definition:</strong></p>
+<pre><code class="lang-bicep">var tags = {
+  'azd-env-name': environmentName
+}
+
+var resourceToken = uniqueString(subscription().id, resourceGroup().id)
+</code></pre>
+<hr>
+<h2 id="validation-script">Validation Script</h2>
+<p><strong>File:</strong> <code>validate-bicep-complete.ps1</code></p>
+<pre><code class="lang-powershell">param(
+  [string]$bicepPath = './infra',
+  [string]$resourceGroup = 'rg-myapp-dev',
+  [string]$location = 'eastus'
+)
+
+Write-Host &quot;🔍 Starting comprehensive Bicep validation...&quot; -ForegroundColor Cyan
+
+# Step 1: Validate main.bicep syntax
+Write-Host &quot;`n📝 Validating main.bicep syntax...&quot; -ForegroundColor Yellow
+try {
+  az bicep build --file &quot;$bicepPath/main.bicep&quot;
+  Write-Host &quot;✅ main.bicep syntax valid&quot; -ForegroundColor Green
+} catch {
+  Write-Host &quot;❌ main.bicep syntax error: $_&quot; -ForegroundColor Red
+  exit 1
+}
+
+# Step 2: Build main.bicep to ARM template
+Write-Host &quot;`n📦 Building main.bicep to ARM template...&quot; -ForegroundColor Yellow
+try {
+  az bicep build --file &quot;$bicepPath/main.bicep&quot; --outfile &quot;$bicepPath/main.json&quot;
+  Write-Host &quot;✅ main.bicep built successfully&quot; -ForegroundColor Green
+} catch {
+  Write-Host &quot;❌ Build error: $_&quot; -ForegroundColor Red
+  exit 1
+}
+
+# Step 3: Validate all module references
+Write-Host &quot;`n🔗 Validating module references...&quot; -ForegroundColor Yellow
+$modules = @(
+  'resources.bicep'
+  'core/database/redis.bicep'
+  'core/database/sql-server.bicep'
+  'core/security/keyvault-secrets.bicep'
+  'core/host/container-app.bicep'
+  'myapp-sqlserver/myapp-sqlserver.module.bicep'
+  'myapp-sqlserver-roles/myapp-sqlserver-roles.module.bicep'
+  'MyApp-ApplicationInsights/MyApp-ApplicationInsights.module.bicep'
+  'MyApp-LogAnalyticsWorkspace/MyApp-LogAnalyticsWorkspace.module.bicep'
+  'auth-service/auth-service.module.bicep'
+  'billing-service/billing-service.module.bicep'
+  'inventory-service/inventory-service.module.bicep'
+  'orders-service/orders-service.module.bicep'
+  'purchasing-service/purchasing-service.module.bicep'
+  'sales-service/sales-service.module.bicep'
+  'api-gateway/api-gateway.module.bicep'
+)
+
+foreach ($module in $modules) {
+  $path = &quot;$bicepPath/$module&quot;
+  if (Test-Path $path) {
+    Write-Host &quot;  ✅ Found: $module&quot;
+  } else {
+    Write-Host &quot;  ❌ MISSING: $module&quot; -ForegroundColor Red
+  }
+}
+
+# Step 4: Validate parameters
+Write-Host &quot;`n⚙️ Validating parameters...&quot; -ForegroundColor Yellow
+$requiredParams = @(
+  'jwtSecretKey'
+  'jwtIssuer'
+  'jwtAudience'
+  'frontendOrigin'
+  'password'
+  'cache_password'
+  'environmentName'
+  'location'
+  'principalId'
+)
+
+$content = Get-Content &quot;$bicepPath/main.bicep&quot; -Raw
+foreach ($param in $requiredParams) {
+  if ($content -match &quot;param $param&quot;) {
+    Write-Host &quot;  ✅ Parameter: $param&quot;
+  } else {
+    Write-Host &quot;  ❌ MISSING: $param&quot; -ForegroundColor Red
+  }
+}
+
+# Step 5: Validate Key Vault integration
+Write-Host &quot;`n🔐 Validating Key Vault integration...&quot; -ForegroundColor Yellow
+if ($content -match &quot;module keyVault.*keyvault-secrets.bicep&quot;) {
+  Write-Host &quot;  ✅ Key Vault module referenced&quot;
+} else {
+  Write-Host &quot;  ❌ MISSING: Key Vault module reference&quot; -ForegroundColor Red
+}
+
+if ($content -match &quot;enableKeyVault: true&quot;) {
+  Write-Host &quot;  ✅ Key Vault enabled&quot;
+} else {
+  Write-Host &quot;  ⚠️ WARNING: Key Vault may not be enabled&quot; -ForegroundColor Yellow
+}
+
+# Step 6: Validate service modules
+Write-Host &quot;`n🚀 Validating service modules...&quot; -ForegroundColor Yellow
+$services = @('auth-service', 'billing-service', 'inventory-service', 'orders-service', 'purchasing-service', 'sales-service')
+foreach ($service in $services) {
+  if ($content -match &quot;module ${service}Module&quot;) {
+    Write-Host &quot;  ✅ Module called: $service&quot;
+  } else {
+    Write-Host &quot;  ❌ Module NOT called: $service&quot; -ForegroundColor Red
+  }
+}
+
+# Step 7: Validate API Gateway module
+Write-Host &quot;`n🌐 Validating API Gateway...&quot; -ForegroundColor Yellow
+if ($content -match &quot;module apiGatewayModule&quot;) {
+  Write-Host &quot;  ✅ API Gateway module called&quot;
+} else {
+  Write-Host &quot;  ❌ API Gateway module NOT called&quot; -ForegroundColor Red
+}
+
+# Step 8: Validation summary
+Write-Host &quot;`n✅ Validation complete!&quot; -ForegroundColor Green
+Write-Host &quot;`nNext steps:`n&quot;
+Write-Host &quot;  1. Fix any ❌ MISSING items above&quot;
+Write-Host &quot;  2. Test deployment validation: az deployment group validate --resource-group $resourceGroup --template-file main.json&quot;
+Write-Host &quot;  3. Deploy: azd deploy&quot;
+</code></pre>
+<p><strong>Run it:</strong></p>
+<pre><code class="lang-powershell">./validate-bicep-complete.ps1 -bicepPath ./infra -resourceGroup rg-myapp-prod -location eastus
+</code></pre>
+<hr>
+<h2 id="summary-of-changes">Summary of Changes</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Changes</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>main.bicep</code></td>
+<td>Add JWT params, Key Vault call, Redis call, SQL Server call, resource token var</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><code>main.parameters.json</code></td>
+<td>Add JWT, CORS, ASPNETCORE_ENVIRONMENT params</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><code>myapp-sqlserver.module.bicep</code></td>
+<td>Add 6 database creation loop</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><code>core/host/container-app.bicep</code></td>
+<td>Add JWT, CORS, AppInsights env var support</td>
+<td>🟠 HIGH</td>
+</tr>
+<tr>
+<td><code>myapp-sqlserver-roles.module.bicep</code></td>
+<td>Complete role assignment implementation</td>
+<td>🟠 HIGH</td>
+</tr>
+<tr>
+<td><code>auth-service/auth-service.module.bicep</code></td>
+<td>CREATE NEW FILE</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><code>billing-service/billing-service.module.bicep</code></td>
+<td>CREATE NEW FILE</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><code>inventory-service/inventory-service.module.bicep</code></td>
+<td>CREATE NEW FILE</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><code>orders-service/orders-service.module.bicep</code></td>
+<td>CREATE NEW FILE</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><code>purchasing-service/purchasing-service.module.bicep</code></td>
+<td>CREATE NEW FILE</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><code>sales-service/sales-service.module.bicep</code></td>
+<td>CREATE NEW FILE</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><code>api-gateway/api-gateway.module.bicep</code></td>
+<td>CREATE NEW FILE</td>
+<td>🔴 CRITICAL</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><strong>Status:</strong> Ready for implementation<br>
+<strong>Estimated Time:</strong> 6-8 hours</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/infrastructure/BICEP_REMEDIATION_GUIDE.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

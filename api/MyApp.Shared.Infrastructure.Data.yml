@@ -1,0 +1,62 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Infrastructure.Data
+  commentId: N:MyApp.Shared.Infrastructure.Data
+  id: MyApp.Shared.Infrastructure.Data
+  children:
+  - MyApp.Shared.Infrastructure.Data.AuditableDbContext
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Shared.Infrastructure.Data
+  nameWithType: MyApp.Shared.Infrastructure.Data
+  fullName: MyApp.Shared.Infrastructure.Data
+  type: Namespace
+  assemblies:
+  - MyApp.Shared.Infrastructure
+references:
+- uid: MyApp.Shared.Infrastructure.Data.AuditableDbContext
+  commentId: T:MyApp.Shared.Infrastructure.Data.AuditableDbContext
+  parent: MyApp.Shared.Infrastructure.Data
+  href: MyApp.Shared.Infrastructure.Data.AuditableDbContext.html
+  name: AuditableDbContext
+  nameWithType: AuditableDbContext
+  fullName: MyApp.Shared.Infrastructure.Data.AuditableDbContext
+- uid: MyApp.Shared.Infrastructure.Data
+  commentId: N:MyApp.Shared.Infrastructure.Data
+  href: MyApp.html
+  name: MyApp.Shared.Infrastructure.Data
+  nameWithType: MyApp.Shared.Infrastructure.Data
+  fullName: MyApp.Shared.Infrastructure.Data
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Infrastructure
+    name: Infrastructure
+    href: MyApp.Shared.Infrastructure.html
+  - name: .
+  - uid: MyApp.Shared.Infrastructure.Data
+    name: Data
+    href: MyApp.Shared.Infrastructure.Data.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Infrastructure
+    name: Infrastructure
+    href: MyApp.Shared.Infrastructure.html
+  - name: .
+  - uid: MyApp.Shared.Infrastructure.Data
+    name: Data
+    href: MyApp.Shared.Infrastructure.Data.html

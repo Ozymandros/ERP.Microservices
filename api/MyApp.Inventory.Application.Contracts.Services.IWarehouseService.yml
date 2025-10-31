@@ -1,0 +1,584 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService
+  commentId: T:MyApp.Inventory.Application.Contracts.Services.IWarehouseService
+  id: IWarehouseService
+  parent: MyApp.Inventory.Application.Contracts.Services
+  children:
+  - MyApp.Inventory.Application.Contracts.Services.IWarehouseService.CreateWarehouseAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto)
+  - MyApp.Inventory.Application.Contracts.Services.IWarehouseService.DeleteWarehouseAsync(System.Guid)
+  - MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesAsync
+  - MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesPaginatedAsync(System.Int32,System.Int32)
+  - MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetWarehouseByIdAsync(System.Guid)
+  - MyApp.Inventory.Application.Contracts.Services.IWarehouseService.UpdateWarehouseAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto)
+  langs:
+  - csharp
+  - vb
+  name: IWarehouseService
+  nameWithType: IWarehouseService
+  fullName: MyApp.Inventory.Application.Contracts.Services.IWarehouseService
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IWarehouseService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: IWarehouseService
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IWarehouseService.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: public interface IWarehouseService
+    content.vb: Public Interface IWarehouseService
+- uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetWarehouseByIdAsync(System.Guid)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetWarehouseByIdAsync(System.Guid)
+  id: GetWarehouseByIdAsync(System.Guid)
+  parent: MyApp.Inventory.Application.Contracts.Services.IWarehouseService
+  langs:
+  - csharp
+  - vb
+  name: GetWarehouseByIdAsync(Guid)
+  nameWithType: IWarehouseService.GetWarehouseByIdAsync(Guid)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetWarehouseByIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IWarehouseService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetWarehouseByIdAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IWarehouseService.cs
+    startLine: 10
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: Task<WarehouseDto?> GetWarehouseByIdAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto}
+    content.vb: Function GetWarehouseByIdAsync(id As Guid) As Task(Of WarehouseDto)
+  overload: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetWarehouseByIdAsync*
+- uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesAsync
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesAsync
+  id: GetAllWarehousesAsync
+  parent: MyApp.Inventory.Application.Contracts.Services.IWarehouseService
+  langs:
+  - csharp
+  - vb
+  name: GetAllWarehousesAsync()
+  nameWithType: IWarehouseService.GetAllWarehousesAsync()
+  fullName: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesAsync()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IWarehouseService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllWarehousesAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IWarehouseService.cs
+    startLine: 11
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: Task<IEnumerable<WarehouseDto>> GetAllWarehousesAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto}}
+    content.vb: Function GetAllWarehousesAsync() As Task(Of IEnumerable(Of WarehouseDto))
+  overload: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesAsync*
+- uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesPaginatedAsync(System.Int32,System.Int32)
+  id: GetAllWarehousesPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Inventory.Application.Contracts.Services.IWarehouseService
+  langs:
+  - csharp
+  - vb
+  name: GetAllWarehousesPaginatedAsync(int, int)
+  nameWithType: IWarehouseService.GetAllWarehousesPaginatedAsync(int, int)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesPaginatedAsync(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IWarehouseService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllWarehousesPaginatedAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IWarehouseService.cs
+    startLine: 12
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: Task<PaginatedResult<WarehouseDto>> GetAllWarehousesPaginatedAsync(int pageNumber, int pageSize)
+    parameters:
+    - id: pageNumber
+      type: System.Int32
+    - id: pageSize
+      type: System.Int32
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto}}
+    content.vb: Function GetAllWarehousesPaginatedAsync(pageNumber As Integer, pageSize As Integer) As Task(Of PaginatedResult(Of WarehouseDto))
+  overload: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesPaginatedAsync*
+  nameWithType.vb: IWarehouseService.GetAllWarehousesPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesPaginatedAsync(Integer, Integer)
+  name.vb: GetAllWarehousesPaginatedAsync(Integer, Integer)
+- uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.CreateWarehouseAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IWarehouseService.CreateWarehouseAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto)
+  id: CreateWarehouseAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto)
+  parent: MyApp.Inventory.Application.Contracts.Services.IWarehouseService
+  langs:
+  - csharp
+  - vb
+  name: CreateWarehouseAsync(CreateUpdateWarehouseDto)
+  nameWithType: IWarehouseService.CreateWarehouseAsync(CreateUpdateWarehouseDto)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.CreateWarehouseAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IWarehouseService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateWarehouseAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IWarehouseService.cs
+    startLine: 13
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: Task<WarehouseDto> CreateWarehouseAsync(CreateUpdateWarehouseDto dto)
+    parameters:
+    - id: dto
+      type: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto}
+    content.vb: Function CreateWarehouseAsync(dto As CreateUpdateWarehouseDto) As Task(Of WarehouseDto)
+  overload: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.CreateWarehouseAsync*
+- uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.UpdateWarehouseAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IWarehouseService.UpdateWarehouseAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto)
+  id: UpdateWarehouseAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto)
+  parent: MyApp.Inventory.Application.Contracts.Services.IWarehouseService
+  langs:
+  - csharp
+  - vb
+  name: UpdateWarehouseAsync(Guid, CreateUpdateWarehouseDto)
+  nameWithType: IWarehouseService.UpdateWarehouseAsync(Guid, CreateUpdateWarehouseDto)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.UpdateWarehouseAsync(System.Guid, MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IWarehouseService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateWarehouseAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IWarehouseService.cs
+    startLine: 14
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: Task<WarehouseDto> UpdateWarehouseAsync(Guid id, CreateUpdateWarehouseDto dto)
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: dto
+      type: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto}
+    content.vb: Function UpdateWarehouseAsync(id As Guid, dto As CreateUpdateWarehouseDto) As Task(Of WarehouseDto)
+  overload: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.UpdateWarehouseAsync*
+- uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.DeleteWarehouseAsync(System.Guid)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IWarehouseService.DeleteWarehouseAsync(System.Guid)
+  id: DeleteWarehouseAsync(System.Guid)
+  parent: MyApp.Inventory.Application.Contracts.Services.IWarehouseService
+  langs:
+  - csharp
+  - vb
+  name: DeleteWarehouseAsync(Guid)
+  nameWithType: IWarehouseService.DeleteWarehouseAsync(Guid)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.DeleteWarehouseAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IWarehouseService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteWarehouseAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IWarehouseService.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: Task DeleteWarehouseAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function DeleteWarehouseAsync(id As Guid) As Task
+  overload: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.DeleteWarehouseAsync*
+references:
+- uid: MyApp.Inventory.Application.Contracts.Services
+  commentId: N:MyApp.Inventory.Application.Contracts.Services
+  href: MyApp.html
+  name: MyApp.Inventory.Application.Contracts.Services
+  nameWithType: MyApp.Inventory.Application.Contracts.Services
+  fullName: MyApp.Inventory.Application.Contracts.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.Services
+    name: Services
+    href: MyApp.Inventory.Application.Contracts.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.Services
+    name: Services
+    href: MyApp.Inventory.Application.Contracts.Services.html
+- uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetWarehouseByIdAsync*
+  commentId: Overload:MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetWarehouseByIdAsync
+  href: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.html#MyApp_Inventory_Application_Contracts_Services_IWarehouseService_GetWarehouseByIdAsync_System_Guid_
+  name: GetWarehouseByIdAsync
+  nameWithType: IWarehouseService.GetWarehouseByIdAsync
+  fullName: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetWarehouseByIdAsync
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<WarehouseDto>
+  nameWithType: Task<WarehouseDto>
+  fullName: System.Threading.Tasks.Task<MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto>
+  nameWithType.vb: Task(Of WarehouseDto)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto)
+  name.vb: Task(Of WarehouseDto)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto
+    name: WarehouseDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto
+    name: WarehouseDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesAsync*
+  commentId: Overload:MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesAsync
+  href: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.html#MyApp_Inventory_Application_Contracts_Services_IWarehouseService_GetAllWarehousesAsync
+  name: GetAllWarehousesAsync
+  nameWithType: IWarehouseService.GetAllWarehousesAsync
+  fullName: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<WarehouseDto>>
+  nameWithType: Task<IEnumerable<WarehouseDto>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto>>
+  nameWithType.vb: Task(Of IEnumerable(Of WarehouseDto))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto))
+  name.vb: Task(Of IEnumerable(Of WarehouseDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto
+    name: WarehouseDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto
+    name: WarehouseDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesPaginatedAsync*
+  commentId: Overload:MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesPaginatedAsync
+  href: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.html#MyApp_Inventory_Application_Contracts_Services_IWarehouseService_GetAllWarehousesPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllWarehousesPaginatedAsync
+  nameWithType: IWarehouseService.GetAllWarehousesPaginatedAsync
+  fullName: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.GetAllWarehousesPaginatedAsync
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto}}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PaginatedResult<WarehouseDto>>
+  nameWithType: Task<PaginatedResult<WarehouseDto>>
+  fullName: System.Threading.Tasks.Task<MyApp.Shared.Domain.Pagination.PaginatedResult<MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto>>
+  nameWithType.vb: Task(Of PaginatedResult(Of WarehouseDto))
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Shared.Domain.Pagination.PaginatedResult(Of MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto))
+  name.vb: Task(Of PaginatedResult(Of WarehouseDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+    href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html
+  - name: <
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto
+    name: WarehouseDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+    href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto
+    name: WarehouseDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.CreateWarehouseAsync*
+  commentId: Overload:MyApp.Inventory.Application.Contracts.Services.IWarehouseService.CreateWarehouseAsync
+  href: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.html#MyApp_Inventory_Application_Contracts_Services_IWarehouseService_CreateWarehouseAsync_MyApp_Inventory_Application_Contracts_DTOs_CreateUpdateWarehouseDto_
+  name: CreateWarehouseAsync
+  nameWithType: IWarehouseService.CreateWarehouseAsync
+  fullName: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.CreateWarehouseAsync
+- uid: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto
+  commentId: T:MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto
+  parent: MyApp.Inventory.Application.Contracts.DTOs
+  href: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto.html
+  name: CreateUpdateWarehouseDto
+  nameWithType: CreateUpdateWarehouseDto
+  fullName: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto
+- uid: MyApp.Inventory.Application.Contracts.DTOs
+  commentId: N:MyApp.Inventory.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Inventory.Application.Contracts.DTOs
+  nameWithType: MyApp.Inventory.Application.Contracts.DTOs
+  fullName: MyApp.Inventory.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Inventory.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Inventory.Application.Contracts.DTOs.html
+- uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.UpdateWarehouseAsync*
+  commentId: Overload:MyApp.Inventory.Application.Contracts.Services.IWarehouseService.UpdateWarehouseAsync
+  href: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.html#MyApp_Inventory_Application_Contracts_Services_IWarehouseService_UpdateWarehouseAsync_System_Guid_MyApp_Inventory_Application_Contracts_DTOs_CreateUpdateWarehouseDto_
+  name: UpdateWarehouseAsync
+  nameWithType: IWarehouseService.UpdateWarehouseAsync
+  fullName: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.UpdateWarehouseAsync
+- uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.DeleteWarehouseAsync*
+  commentId: Overload:MyApp.Inventory.Application.Contracts.Services.IWarehouseService.DeleteWarehouseAsync
+  href: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.html#MyApp_Inventory_Application_Contracts_Services_IWarehouseService_DeleteWarehouseAsync_System_Guid_
+  name: DeleteWarehouseAsync
+  nameWithType: IWarehouseService.DeleteWarehouseAsync
+  fullName: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.DeleteWarehouseAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task

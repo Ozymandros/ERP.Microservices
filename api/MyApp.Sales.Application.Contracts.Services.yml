@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Application.Contracts.Services
+  commentId: N:MyApp.Sales.Application.Contracts.Services
+  id: MyApp.Sales.Application.Contracts.Services
+  children:
+  - MyApp.Sales.Application.Contracts.Services.ICustomerService
+  - MyApp.Sales.Application.Contracts.Services.ISalesOrderService
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Sales.Application.Contracts.Services
+  nameWithType: MyApp.Sales.Application.Contracts.Services
+  fullName: MyApp.Sales.Application.Contracts.Services
+  type: Namespace
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+references:
+- uid: MyApp.Sales.Application.Contracts.Services.ICustomerService
+  commentId: T:MyApp.Sales.Application.Contracts.Services.ICustomerService
+  parent: MyApp.Sales.Application.Contracts.Services
+  href: MyApp.Sales.Application.Contracts.Services.ICustomerService.html
+  name: ICustomerService
+  nameWithType: ICustomerService
+  fullName: MyApp.Sales.Application.Contracts.Services.ICustomerService
+- uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService
+  commentId: T:MyApp.Sales.Application.Contracts.Services.ISalesOrderService
+  parent: MyApp.Sales.Application.Contracts.Services
+  href: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.html
+  name: ISalesOrderService
+  nameWithType: ISalesOrderService
+  fullName: MyApp.Sales.Application.Contracts.Services.ISalesOrderService
+- uid: MyApp.Sales.Application.Contracts.Services
+  commentId: N:MyApp.Sales.Application.Contracts.Services
+  href: MyApp.html
+  name: MyApp.Sales.Application.Contracts.Services
+  nameWithType: MyApp.Sales.Application.Contracts.Services
+  fullName: MyApp.Sales.Application.Contracts.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts
+    name: Contracts
+    href: MyApp.Sales.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts.Services
+    name: Services
+    href: MyApp.Sales.Application.Contracts.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts
+    name: Contracts
+    href: MyApp.Sales.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts.Services
+    name: Services
+    href: MyApp.Sales.Application.Contracts.Services.html

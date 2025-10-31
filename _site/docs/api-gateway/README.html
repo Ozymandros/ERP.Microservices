@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#127760; API Gateway &amp; Request Routing | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#127760; API Gateway &amp; Request Routing | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/api-gateway/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-api-gateway--request-routing">🌐 API Gateway &amp; Request Routing</h1>
+
+<p><strong>Ocelot API Gateway Configuration &amp; Operations</strong><br>
+Last Updated: October 27, 2025</p>
+<hr>
+<h2 id="-overview">📍 Overview</h2>
+<p>The API Gateway (Ocelot) is the single entry point for all external requests. It handles routing, authentication, rate limiting, and resilience patterns. This category explains the complete gateway configuration and operations.</p>
+<hr>
+<h2 id="-documents-in-this-category">📚 Documents in This Category</h2>
+<h3 id="ocelot_overviewmd"><a href="OCELOT_OVERVIEW.md">OCELOT_OVERVIEW.md</a></h3>
+<p><strong>Ocelot API Gateway concepts and architecture</strong></p>
+<ul>
+<li>Gateway responsibilities</li>
+<li>Route configuration</li>
+<li>Built-in security features</li>
+<li>Performance optimization</li>
+<li>Extensibility points</li>
+</ul>
+<h3 id="ocelot_configurationmd"><a href="OCELOT_CONFIGURATION.md">OCELOT_CONFIGURATION.md</a></h3>
+<p><strong>Complete configuration guide</strong></p>
+<ul>
+<li>Local development configuration (<code>ocelot.json</code>)</li>
+<li>Production configuration (<code>ocelot.Production.json</code>)</li>
+<li>Route definitions for all 6 services</li>
+<li>Rate limiting setup</li>
+<li>Circuit breaker configuration</li>
+</ul>
+<h3 id="authenticationmd"><a href="AUTHENTICATION.md">AUTHENTICATION.md</a></h3>
+<p><strong>JWT authentication and claims handling</strong></p>
+<ul>
+<li>Token validation flow</li>
+<li>Claims extraction and propagation</li>
+<li>Authorization policies</li>
+<li>Token refresh strategies</li>
+<li>Scopes and permissions</li>
+</ul>
+<h3 id="rate_limitingmd"><a href="RATE_LIMITING.md">RATE_LIMITING.md</a></h3>
+<p><strong>Rate limiting and quality of service</strong></p>
+<ul>
+<li>Rate limit configuration</li>
+<li>QoS (quality of service) settings</li>
+<li>Circuit breaker thresholds</li>
+<li>Timeout configuration</li>
+<li>Request/response pipelines</li>
+</ul>
+<h3 id="troubleshootingmd"><a href="TROUBLESHOOTING.md">TROUBLESHOOTING.md</a></h3>
+<p><strong>Common gateway issues and solutions</strong></p>
+<ul>
+<li>401 Unauthorized errors</li>
+<li>429 Rate Limited responses</li>
+<li>503 Service Unavailable</li>
+<li>Route not found</li>
+<li>Authentication failures</li>
+</ul>
+<hr>
+<h2 id="-quick-start">🎯 Quick Start</h2>
+<h3 id="test-the-gateway">Test the Gateway</h3>
+<pre><code class="lang-bash"># Check gateway health
+curl http://localhost:8000/health
+
+# Make authenticated request
+curl -H &quot;Authorization: Bearer YOUR_TOKEN&quot; \
+     http://localhost:8000/api/inventory
+
+# Gateway should respond or forward to service
+</code></pre>
+<h3 id="local-vs-production">Local vs Production</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Local</th>
+<th>Production</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Config File</strong></td>
+<td><code>ocelot.json</code></td>
+<td><code>ocelot.Production.json</code></td>
+</tr>
+<tr>
+<td><strong>Port</strong></td>
+<td>8000</td>
+<td>443 (HTTPS)</td>
+</tr>
+<tr>
+<td><strong>Rate Limit</strong></td>
+<td>100/min</td>
+<td>1000/min</td>
+</tr>
+<tr>
+<td><strong>Auth</strong></td>
+<td>JWT Bearer</td>
+<td>Azure AD + JWT</td>
+</tr>
+<tr>
+<td><strong>Timeouts</strong></td>
+<td>10s</td>
+<td>30s</td>
+</tr>
+<tr>
+<td><strong>Circuit Break</strong></td>
+<td>3 failures</td>
+<td>5 failures</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-request-flow">🔄 Request Flow</h2>
+<pre><code>External Client
+    ↓
+Gateway (8000)
+    ↓ [Authentication Check]
+    ↓ [Rate Limit Check]
+    ↓ [Route Match]
+    ↓
+Downstream Service (5001-5006)
+    ↓
+Database/Cache
+    ↓
+Response back through Gateway
+    ↓
+External Client
+</code></pre>
+<hr>
+<h2 id="-routed-services">📊 Routed Services</h2>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Service</th>
+<th>Port</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/api/auth</code></td>
+<td>Auth Service</td>
+<td>5001</td>
+<td>Authentication</td>
+</tr>
+<tr>
+<td><code>/api/inventory</code></td>
+<td>Inventory Service</td>
+<td>5002</td>
+<td>Inventory Management</td>
+</tr>
+<tr>
+<td><code>/api/orders</code></td>
+<td>Orders Service</td>
+<td>5003</td>
+<td>Order Processing</td>
+</tr>
+<tr>
+<td><code>/api/sales</code></td>
+<td>Sales Service</td>
+<td>5004</td>
+<td>Sales Management</td>
+</tr>
+<tr>
+<td><code>/api/billing</code></td>
+<td>Billing Service</td>
+<td>5005</td>
+<td>Billing &amp; Invoicing</td>
+</tr>
+<tr>
+<td><code>/api/purchasing</code></td>
+<td>Purchasing Service</td>
+<td>5006</td>
+<td>Procurement</td>
+</tr>
+<tr>
+<td><code>/health</code></td>
+<td>Gateway Health</td>
+<td>-</td>
+<td>Status check</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-common-tasks">🔍 Common Tasks</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>How</th>
+<th>See Also</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Add a new route</td>
+<td>Edit <code>ocelot.json</code></td>
+<td><a href="OCELOT_CONFIGURATION.md">OCELOT_CONFIGURATION.md</a></td>
+</tr>
+<tr>
+<td>Change rate limit</td>
+<td>Edit rate limit settings</td>
+<td><a href="RATE_LIMITING.md">RATE_LIMITING.md</a></td>
+</tr>
+<tr>
+<td>Debug auth failure</td>
+<td>Check JWT token</td>
+<td><a href="AUTHENTICATION.md">AUTHENTICATION.md</a></td>
+</tr>
+<tr>
+<td>Fix 503 error</td>
+<td>Check circuit breaker</td>
+<td><a href="TROUBLESHOOTING.md">TROUBLESHOOTING.md</a></td>
+</tr>
+<tr>
+<td>Test with curl</td>
+<td>Add Auth header</td>
+<td><a href="#testing">Testing Guide</a></td>
+</tr>
+<tr>
+<td>Monitor gateway</td>
+<td>Check health endpoint</td>
+<td><a href="OCELOT_OVERVIEW.md">OCELOT_OVERVIEW.md</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-security-features">🔐 Security Features</h2>
+<ul>
+<li><strong>JWT Bearer Authentication</strong> - Token validation on all routes</li>
+<li><strong>Rate Limiting</strong> - Protect against abuse (100-1000 req/min)</li>
+<li><strong>Circuit Breaker</strong> - Fail gracefully when service down</li>
+<li><strong>Request Tracing</strong> - X-Request-ID for debugging</li>
+<li><strong>Claims Propagation</strong> - Pass identity to downstream services</li>
+<li><strong>HTTPS</strong> - TLS in production</li>
+</ul>
+<hr>
+<h2 id="-key-concepts">💡 Key Concepts</h2>
+<h3 id="authentication">Authentication</h3>
+<ul>
+<li>All requests must include valid JWT token</li>
+<li>Token verified before routing</li>
+<li>Claims extracted and added to request headers</li>
+<li>Tokens expire; refresh required</li>
+</ul>
+<h3 id="rate-limiting">Rate Limiting</h3>
+<ul>
+<li>Prevents abuse and ensures fair usage</li>
+<li>Local: 100 requests/minute per client</li>
+<li>Production: 1000 requests/minute per client</li>
+<li>Returns 429 when exceeded</li>
+</ul>
+<h3 id="circuit-breaker">Circuit Breaker</h3>
+<ul>
+<li>Service unavailable? Circuit breaks</li>
+<li>Stops sending requests temporarily</li>
+<li>Local: 3 failures triggers break</li>
+<li>Production: 5 failures triggers break</li>
+<li>Returns 503 Service Unavailable</li>
+</ul>
+<h3 id="health-checks">Health Checks</h3>
+<ul>
+<li>Gateway itself responds to <code>/health</code></li>
+<li>Individual service health endpoints</li>
+<li>Used for monitoring and debugging</li>
+</ul>
+<hr>
+<h2 id="-related-categories">📚 Related Categories</h2>
+<ul>
+<li><strong>Security:</strong> <a href="../security/README.html">Security Documentation</a> - Authentication deep dive</li>
+<li><strong>Development:</strong> <a href="../development/DEVELOPMENT_SETUP.md">Development Setup</a> - Testing the gateway</li>
+<li><strong>Operations:</strong> <a href="../operations/MONITORING.md">Monitoring Guide</a> - Monitor gateway performance</li>
+<li><strong>Reference:</strong> <a href="../reference/API_ENDPOINTS.md">API Endpoints</a> - All endpoints</li>
+</ul>
+<hr>
+<h2 id="-reading-order">🔄 Reading Order</h2>
+<ol>
+<li>Start with <a href="OCELOT_OVERVIEW.md">OCELOT_OVERVIEW.md</a> to understand concepts</li>
+<li>Review <a href="OCELOT_CONFIGURATION.md">OCELOT_CONFIGURATION.md</a> for setup</li>
+<li>Study <a href="AUTHENTICATION.md">AUTHENTICATION.md</a> for security</li>
+<li>Learn <a href="RATE_LIMITING.md">RATE_LIMITING.md</a> for resilience</li>
+<li>Bookmark <a href="TROUBLESHOOTING.md">TROUBLESHOOTING.md</a> for issues</li>
+</ol>
+<hr>
+<h2 id="-troubleshooting-quick-links">🆘 Troubleshooting Quick Links</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Problem</strong></th>
+<th><strong>Solution</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Getting 401 Unauthorized</td>
+<td><a href="AUTHENTICATION.md">AUTHENTICATION.md</a></td>
+</tr>
+<tr>
+<td>Getting 429 Rate Limited</td>
+<td><a href="RATE_LIMITING.md">RATE_LIMITING.md</a></td>
+</tr>
+<tr>
+<td>Getting 503 Service Down</td>
+<td><a href="TROUBLESHOOTING.md">TROUBLESHOOTING.md</a></td>
+</tr>
+<tr>
+<td>Route not found</td>
+<td><a href="OCELOT_CONFIGURATION.md">OCELOT_CONFIGURATION.md</a></td>
+</tr>
+<tr>
+<td>Token expired</td>
+<td><a href="AUTHENTICATION.md">AUTHENTICATION.md</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-testing-examples">🧪 Testing Examples</h2>
+<h3 id="test-with-curl">Test with curl</h3>
+<pre><code class="lang-bash"># Get token
+TOKEN=$(curl -s -X POST http://localhost:5001/auth/token \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{&quot;username&quot;:&quot;test&quot;,&quot;password&quot;:&quot;test&quot;}' \
+  | jq -r '.token')
+
+# Use token to call service
+curl -H &quot;Authorization: Bearer $TOKEN&quot; \
+     http://localhost:8000/api/inventory/items
+
+# Should see inventory items
+</code></pre>
+<h3 id="test-rate-limiting">Test rate limiting</h3>
+<pre><code class="lang-bash"># Rapid-fire requests
+for i in {1..10}; do
+  curl -H &quot;Authorization: Bearer $TOKEN&quot; \
+       http://localhost:8000/api/inventory
+done
+# After ~100 requests, should get 429
+</code></pre>
+<hr>
+<h2 id="-verification-checklist">✅ Verification Checklist</h2>
+<p>When deploying gateway:</p>
+<ul>
+<li>[ ] Gateway starts without errors</li>
+<li>[ ] Health check responds: <code>curl http://localhost:8000/health</code></li>
+<li>[ ] Routes configured for all 6 services</li>
+<li>[ ] JWT authentication enabled</li>
+<li>[ ] Rate limiting configured per environment</li>
+<li>[ ] Circuit breaker thresholds set</li>
+<li>[ ] Health check endpoints configured</li>
+<li>[ ] HTTPS enabled (production only)</li>
+</ul>
+<hr>
+<h2 id="-configuration-status">📊 Configuration Status</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Local</th>
+<th>Production</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Routes</td>
+<td>All 6 services</td>
+<td>All 6 services</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td>JWT Bearer</td>
+<td>JWT Bearer + Azure AD</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Rate Limiting</td>
+<td>100/min</td>
+<td>1000/min</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Circuit Breaker</td>
+<td>3 failures</td>
+<td>5 failures</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Health Checks</td>
+<td>Enabled</td>
+<td>Enabled</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>HTTPS</td>
+<td>Optional</td>
+<td>Required</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-next-steps">📞 Next Steps</h2>
+<ul>
+<li><strong>First time?</strong> → <a href="OCELOT_OVERVIEW.md">OCELOT_OVERVIEW.md</a></li>
+<li><strong>Setup locally?</strong> → <a href="OCELOT_CONFIGURATION.md">OCELOT_CONFIGURATION.md</a></li>
+<li><strong>Need authentication?</strong> → <a href="AUTHENTICATION.md">AUTHENTICATION.md</a></li>
+<li><strong>Performance tuning?</strong> → <a href="RATE_LIMITING.md">RATE_LIMITING.md</a></li>
+<li><strong>Troubleshooting?</strong> → <a href="TROUBLESHOOTING.md">TROUBLESHOOTING.md</a></li>
+</ul>
+<hr>
+<h2 id="-full-document-map">🔗 Full Document Map</h2>
+<pre><code>api-gateway/
+├── README.md (this file)
+├── OCELOT_OVERVIEW.md
+├── OCELOT_CONFIGURATION.md
+├── AUTHENTICATION.md
+├── RATE_LIMITING.md
+└── TROUBLESHOOTING.md
+</code></pre>
+<hr>
+<p><strong>Last Updated:</strong> October 27, 2025<br>
+<strong>Category Status:</strong> ✅ Complete<br>
+<strong>Documents:</strong> 5 files<br>
+<strong>Gateway Endpoints:</strong> 7 total (1 health + 6 services)</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/api-gateway/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,102 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Domain
+  commentId: N:MyApp.Sales.Domain
+  id: MyApp.Sales.Domain
+  children:
+  - MyApp.Sales.Domain.ICustomerRepository
+  - MyApp.Sales.Domain.IRepository`2
+  - MyApp.Sales.Domain.ISalesOrderLineRepository
+  - MyApp.Sales.Domain.ISalesOrderRepository
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Sales.Domain
+  nameWithType: MyApp.Sales.Domain
+  fullName: MyApp.Sales.Domain
+  type: Namespace
+  assemblies:
+  - MyApp.Sales.Domain
+references:
+- uid: MyApp.Sales.Domain.ICustomerRepository
+  commentId: T:MyApp.Sales.Domain.ICustomerRepository
+  parent: MyApp.Sales.Domain
+  href: MyApp.Sales.Domain.ICustomerRepository.html
+  name: ICustomerRepository
+  nameWithType: ICustomerRepository
+  fullName: MyApp.Sales.Domain.ICustomerRepository
+- uid: MyApp.Sales.Domain.IRepository`2
+  commentId: T:MyApp.Sales.Domain.IRepository`2
+  href: MyApp.Sales.Domain.IRepository-2.html
+  name: IRepository<TEntity, TKey>
+  nameWithType: IRepository<TEntity, TKey>
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>
+  nameWithType.vb: IRepository(Of TEntity, TKey)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey)
+  name.vb: IRepository(Of TEntity, TKey)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2
+    name: IRepository
+    href: MyApp.Sales.Domain.IRepository-2.html
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2
+    name: IRepository
+    href: MyApp.Sales.Domain.IRepository-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+- uid: MyApp.Sales.Domain.ISalesOrderLineRepository
+  commentId: T:MyApp.Sales.Domain.ISalesOrderLineRepository
+  parent: MyApp.Sales.Domain
+  href: MyApp.Sales.Domain.ISalesOrderLineRepository.html
+  name: ISalesOrderLineRepository
+  nameWithType: ISalesOrderLineRepository
+  fullName: MyApp.Sales.Domain.ISalesOrderLineRepository
+- uid: MyApp.Sales.Domain.ISalesOrderRepository
+  commentId: T:MyApp.Sales.Domain.ISalesOrderRepository
+  parent: MyApp.Sales.Domain
+  href: MyApp.Sales.Domain.ISalesOrderRepository.html
+  name: ISalesOrderRepository
+  nameWithType: ISalesOrderRepository
+  fullName: MyApp.Sales.Domain.ISalesOrderRepository
+- uid: MyApp.Sales.Domain
+  commentId: N:MyApp.Sales.Domain
+  href: MyApp.html
+  name: MyApp.Sales.Domain
+  nameWithType: MyApp.Sales.Domain
+  fullName: MyApp.Sales.Domain
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Domain
+    name: Domain
+    href: MyApp.Sales.Domain.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Domain
+    name: Domain
+    href: MyApp.Sales.Domain.html

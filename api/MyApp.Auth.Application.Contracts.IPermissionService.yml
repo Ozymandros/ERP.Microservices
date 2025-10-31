@@ -1,0 +1,764 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Contracts.IPermissionService
+  commentId: T:MyApp.Auth.Application.Contracts.IPermissionService
+  id: IPermissionService
+  parent: MyApp.Auth.Application.Contracts
+  children:
+  - MyApp.Auth.Application.Contracts.IPermissionService.CreatePermissionAsync(MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto)
+  - MyApp.Auth.Application.Contracts.IPermissionService.DeletePermissionAsync(System.Guid)
+  - MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsAsync
+  - MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsPaginatedAsync(System.Int32,System.Int32)
+  - MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByIdAsync(System.Guid)
+  - MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByModuleActionAsync(System.String,System.String)
+  - MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync(System.Guid,System.String,System.String)
+  - MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync(System.String,System.String,System.String)
+  - MyApp.Auth.Application.Contracts.IPermissionService.UpdatePermissionAsync(System.Guid,MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto)
+  langs:
+  - csharp
+  - vb
+  name: IPermissionService
+  nameWithType: IPermissionService
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: IPermissionService
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+    startLine: 5
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts
+  syntax:
+    content: public interface IPermissionService
+    content.vb: Public Interface IPermissionService
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync(System.Guid,System.String,System.String)
+  commentId: M:MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync(System.Guid,System.String,System.String)
+  id: HasPermissionAsync(System.Guid,System.String,System.String)
+  parent: MyApp.Auth.Application.Contracts.IPermissionService
+  langs:
+  - csharp
+  - vb
+  name: HasPermissionAsync(Guid, string, string)
+  nameWithType: IPermissionService.HasPermissionAsync(Guid, string, string)
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync(System.Guid, string, string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: HasPermissionAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+    startLine: 10
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts
+  summary: Check if a user has a specific permission
+  example: []
+  syntax:
+    content: Task<bool> HasPermissionAsync(Guid userId, string module, string action)
+    parameters:
+    - id: userId
+      type: System.Guid
+    - id: module
+      type: System.String
+    - id: action
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function HasPermissionAsync(userId As Guid, [module] As String, action As String) As Task(Of Boolean)
+  overload: MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync*
+  nameWithType.vb: IPermissionService.HasPermissionAsync(Guid, String, String)
+  fullName.vb: MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync(System.Guid, String, String)
+  name.vb: HasPermissionAsync(Guid, String, String)
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync(System.String,System.String,System.String)
+  commentId: M:MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync(System.String,System.String,System.String)
+  id: HasPermissionAsync(System.String,System.String,System.String)
+  parent: MyApp.Auth.Application.Contracts.IPermissionService
+  langs:
+  - csharp
+  - vb
+  name: HasPermissionAsync(string?, string, string)
+  nameWithType: IPermissionService.HasPermissionAsync(string?, string, string)
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync(string?, string, string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: HasPermissionAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts
+  summary: Check if a user has a specific permission by username
+  example: []
+  syntax:
+    content: Task<bool> HasPermissionAsync(string? username, string module, string action)
+    parameters:
+    - id: username
+      type: System.String
+    - id: module
+      type: System.String
+    - id: action
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function HasPermissionAsync(username As String, [module] As String, action As String) As Task(Of Boolean)
+  overload: MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync*
+  nameWithType.vb: IPermissionService.HasPermissionAsync(String, String, String)
+  fullName.vb: MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync(String, String, String)
+  name.vb: HasPermissionAsync(String, String, String)
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsAsync
+  commentId: M:MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsAsync
+  id: GetAllPermissionsAsync
+  parent: MyApp.Auth.Application.Contracts.IPermissionService
+  langs:
+  - csharp
+  - vb
+  name: GetAllPermissionsAsync()
+  nameWithType: IPermissionService.GetAllPermissionsAsync()
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllPermissionsAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+    startLine: 20
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts
+  summary: Get all permissions
+  example: []
+  syntax:
+    content: Task<IEnumerable<PermissionDto>> GetAllPermissionsAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Application.Contracts.DTOs.PermissionDto}}
+    content.vb: Function GetAllPermissionsAsync() As Task(Of IEnumerable(Of PermissionDto))
+  overload: MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsAsync*
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsPaginatedAsync(System.Int32,System.Int32)
+  id: GetAllPermissionsPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Auth.Application.Contracts.IPermissionService
+  langs:
+  - csharp
+  - vb
+  name: GetAllPermissionsPaginatedAsync(int, int)
+  nameWithType: IPermissionService.GetAllPermissionsPaginatedAsync(int, int)
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsPaginatedAsync(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllPermissionsPaginatedAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+    startLine: 25
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts
+  summary: Get all permissions with pagination
+  example: []
+  syntax:
+    content: Task<PaginatedResult<PermissionDto>> GetAllPermissionsPaginatedAsync(int pageNumber, int pageSize)
+    parameters:
+    - id: pageNumber
+      type: System.Int32
+    - id: pageSize
+      type: System.Int32
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Auth.Application.Contracts.DTOs.PermissionDto}}
+    content.vb: Function GetAllPermissionsPaginatedAsync(pageNumber As Integer, pageSize As Integer) As Task(Of PaginatedResult(Of PermissionDto))
+  overload: MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsPaginatedAsync*
+  nameWithType.vb: IPermissionService.GetAllPermissionsPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsPaginatedAsync(Integer, Integer)
+  name.vb: GetAllPermissionsPaginatedAsync(Integer, Integer)
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByIdAsync(System.Guid)
+  commentId: M:MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByIdAsync(System.Guid)
+  id: GetPermissionByIdAsync(System.Guid)
+  parent: MyApp.Auth.Application.Contracts.IPermissionService
+  langs:
+  - csharp
+  - vb
+  name: GetPermissionByIdAsync(Guid)
+  nameWithType: IPermissionService.GetPermissionByIdAsync(Guid)
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPermissionByIdAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+    startLine: 30
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts
+  summary: Get permission by ID
+  example: []
+  syntax:
+    content: Task<PermissionDto?> GetPermissionByIdAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.PermissionDto}
+    content.vb: Function GetPermissionByIdAsync(id As Guid) As Task(Of PermissionDto)
+  overload: MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByIdAsync*
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByModuleActionAsync(System.String,System.String)
+  commentId: M:MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByModuleActionAsync(System.String,System.String)
+  id: GetPermissionByModuleActionAsync(System.String,System.String)
+  parent: MyApp.Auth.Application.Contracts.IPermissionService
+  langs:
+  - csharp
+  - vb
+  name: GetPermissionByModuleActionAsync(string, string)
+  nameWithType: IPermissionService.GetPermissionByModuleActionAsync(string, string)
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByModuleActionAsync(string, string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPermissionByModuleActionAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+    startLine: 35
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts
+  summary: Get permission by module and action
+  example: []
+  syntax:
+    content: Task<PermissionDto?> GetPermissionByModuleActionAsync(string module, string action)
+    parameters:
+    - id: module
+      type: System.String
+    - id: action
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.PermissionDto}
+    content.vb: Function GetPermissionByModuleActionAsync([module] As String, action As String) As Task(Of PermissionDto)
+  overload: MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByModuleActionAsync*
+  nameWithType.vb: IPermissionService.GetPermissionByModuleActionAsync(String, String)
+  fullName.vb: MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByModuleActionAsync(String, String)
+  name.vb: GetPermissionByModuleActionAsync(String, String)
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.CreatePermissionAsync(MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto)
+  commentId: M:MyApp.Auth.Application.Contracts.IPermissionService.CreatePermissionAsync(MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto)
+  id: CreatePermissionAsync(MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto)
+  parent: MyApp.Auth.Application.Contracts.IPermissionService
+  langs:
+  - csharp
+  - vb
+  name: CreatePermissionAsync(CreatePermissionDto)
+  nameWithType: IPermissionService.CreatePermissionAsync(CreatePermissionDto)
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.CreatePermissionAsync(MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreatePermissionAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+    startLine: 40
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts
+  summary: Create a new permission
+  example: []
+  syntax:
+    content: Task<PermissionDto?> CreatePermissionAsync(CreatePermissionDto createPermissionDto)
+    parameters:
+    - id: createPermissionDto
+      type: MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.PermissionDto}
+    content.vb: Function CreatePermissionAsync(createPermissionDto As CreatePermissionDto) As Task(Of PermissionDto)
+  overload: MyApp.Auth.Application.Contracts.IPermissionService.CreatePermissionAsync*
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.UpdatePermissionAsync(System.Guid,MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto)
+  commentId: M:MyApp.Auth.Application.Contracts.IPermissionService.UpdatePermissionAsync(System.Guid,MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto)
+  id: UpdatePermissionAsync(System.Guid,MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto)
+  parent: MyApp.Auth.Application.Contracts.IPermissionService
+  langs:
+  - csharp
+  - vb
+  name: UpdatePermissionAsync(Guid, UpdatePermissionDto)
+  nameWithType: IPermissionService.UpdatePermissionAsync(Guid, UpdatePermissionDto)
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.UpdatePermissionAsync(System.Guid, MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdatePermissionAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+    startLine: 45
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts
+  summary: Update an existing permission
+  example: []
+  syntax:
+    content: Task<bool> UpdatePermissionAsync(Guid id, UpdatePermissionDto updatePermissionDto)
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: updatePermissionDto
+      type: MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function UpdatePermissionAsync(id As Guid, updatePermissionDto As UpdatePermissionDto) As Task(Of Boolean)
+  overload: MyApp.Auth.Application.Contracts.IPermissionService.UpdatePermissionAsync*
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.DeletePermissionAsync(System.Guid)
+  commentId: M:MyApp.Auth.Application.Contracts.IPermissionService.DeletePermissionAsync(System.Guid)
+  id: DeletePermissionAsync(System.Guid)
+  parent: MyApp.Auth.Application.Contracts.IPermissionService
+  langs:
+  - csharp
+  - vb
+  name: DeletePermissionAsync(Guid)
+  nameWithType: IPermissionService.DeletePermissionAsync(Guid)
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.DeletePermissionAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeletePermissionAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IPermissionService.cs
+    startLine: 50
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts
+  summary: Delete a permission
+  example: []
+  syntax:
+    content: Task<bool> DeletePermissionAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function DeletePermissionAsync(id As Guid) As Task(Of Boolean)
+  overload: MyApp.Auth.Application.Contracts.IPermissionService.DeletePermissionAsync*
+references:
+- uid: MyApp.Auth.Application.Contracts
+  commentId: N:MyApp.Auth.Application.Contracts
+  href: MyApp.html
+  name: MyApp.Auth.Application.Contracts
+  nameWithType: MyApp.Auth.Application.Contracts
+  fullName: MyApp.Auth.Application.Contracts
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync
+  href: MyApp.Auth.Application.Contracts.IPermissionService.html#MyApp_Auth_Application_Contracts_IPermissionService_HasPermissionAsync_System_Guid_System_String_System_String_
+  name: HasPermissionAsync
+  nameWithType: IPermissionService.HasPermissionAsync
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.HasPermissionAsync
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsAsync
+  href: MyApp.Auth.Application.Contracts.IPermissionService.html#MyApp_Auth_Application_Contracts_IPermissionService_GetAllPermissionsAsync
+  name: GetAllPermissionsAsync
+  nameWithType: IPermissionService.GetAllPermissionsAsync
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Application.Contracts.DTOs.PermissionDto}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Application.Contracts.DTOs.PermissionDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<PermissionDto>>
+  nameWithType: Task<IEnumerable<PermissionDto>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Auth.Application.Contracts.DTOs.PermissionDto>>
+  nameWithType.vb: Task(Of IEnumerable(Of PermissionDto))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Auth.Application.Contracts.DTOs.PermissionDto))
+  name.vb: Task(Of IEnumerable(Of PermissionDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Auth.Application.Contracts.DTOs.PermissionDto
+    name: PermissionDto
+    href: MyApp.Auth.Application.Contracts.DTOs.PermissionDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Application.Contracts.DTOs.PermissionDto
+    name: PermissionDto
+    href: MyApp.Auth.Application.Contracts.DTOs.PermissionDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsPaginatedAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsPaginatedAsync
+  href: MyApp.Auth.Application.Contracts.IPermissionService.html#MyApp_Auth_Application_Contracts_IPermissionService_GetAllPermissionsPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllPermissionsPaginatedAsync
+  nameWithType: IPermissionService.GetAllPermissionsPaginatedAsync
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.GetAllPermissionsPaginatedAsync
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Auth.Application.Contracts.DTOs.PermissionDto}}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Auth.Application.Contracts.DTOs.PermissionDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PaginatedResult<PermissionDto>>
+  nameWithType: Task<PaginatedResult<PermissionDto>>
+  fullName: System.Threading.Tasks.Task<MyApp.Shared.Domain.Pagination.PaginatedResult<MyApp.Auth.Application.Contracts.DTOs.PermissionDto>>
+  nameWithType.vb: Task(Of PaginatedResult(Of PermissionDto))
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Shared.Domain.Pagination.PaginatedResult(Of MyApp.Auth.Application.Contracts.DTOs.PermissionDto))
+  name.vb: Task(Of PaginatedResult(Of PermissionDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+  - name: <
+  - uid: MyApp.Auth.Application.Contracts.DTOs.PermissionDto
+    name: PermissionDto
+    href: MyApp.Auth.Application.Contracts.DTOs.PermissionDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Application.Contracts.DTOs.PermissionDto
+    name: PermissionDto
+    href: MyApp.Auth.Application.Contracts.DTOs.PermissionDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByIdAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByIdAsync
+  href: MyApp.Auth.Application.Contracts.IPermissionService.html#MyApp_Auth_Application_Contracts_IPermissionService_GetPermissionByIdAsync_System_Guid_
+  name: GetPermissionByIdAsync
+  nameWithType: IPermissionService.GetPermissionByIdAsync
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByIdAsync
+- uid: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.PermissionDto}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.PermissionDto}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PermissionDto>
+  nameWithType: Task<PermissionDto>
+  fullName: System.Threading.Tasks.Task<MyApp.Auth.Application.Contracts.DTOs.PermissionDto>
+  nameWithType.vb: Task(Of PermissionDto)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Auth.Application.Contracts.DTOs.PermissionDto)
+  name.vb: Task(Of PermissionDto)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Auth.Application.Contracts.DTOs.PermissionDto
+    name: PermissionDto
+    href: MyApp.Auth.Application.Contracts.DTOs.PermissionDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Application.Contracts.DTOs.PermissionDto
+    name: PermissionDto
+    href: MyApp.Auth.Application.Contracts.DTOs.PermissionDto.html
+  - name: )
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByModuleActionAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByModuleActionAsync
+  href: MyApp.Auth.Application.Contracts.IPermissionService.html#MyApp_Auth_Application_Contracts_IPermissionService_GetPermissionByModuleActionAsync_System_String_System_String_
+  name: GetPermissionByModuleActionAsync
+  nameWithType: IPermissionService.GetPermissionByModuleActionAsync
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.GetPermissionByModuleActionAsync
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.CreatePermissionAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.IPermissionService.CreatePermissionAsync
+  href: MyApp.Auth.Application.Contracts.IPermissionService.html#MyApp_Auth_Application_Contracts_IPermissionService_CreatePermissionAsync_MyApp_Auth_Application_Contracts_DTOs_CreatePermissionDto_
+  name: CreatePermissionAsync
+  nameWithType: IPermissionService.CreatePermissionAsync
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.CreatePermissionAsync
+- uid: MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto.html
+  name: CreatePermissionDto
+  nameWithType: CreatePermissionDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto
+- uid: MyApp.Auth.Application.Contracts.DTOs
+  commentId: N:MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Auth.Application.Contracts.DTOs
+  nameWithType: MyApp.Auth.Application.Contracts.DTOs
+  fullName: MyApp.Auth.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Auth.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Auth.Application.Contracts.DTOs.html
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.UpdatePermissionAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.IPermissionService.UpdatePermissionAsync
+  href: MyApp.Auth.Application.Contracts.IPermissionService.html#MyApp_Auth_Application_Contracts_IPermissionService_UpdatePermissionAsync_System_Guid_MyApp_Auth_Application_Contracts_DTOs_UpdatePermissionDto_
+  name: UpdatePermissionAsync
+  nameWithType: IPermissionService.UpdatePermissionAsync
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.UpdatePermissionAsync
+- uid: MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto.html
+  name: UpdatePermissionDto
+  nameWithType: UpdatePermissionDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto
+- uid: MyApp.Auth.Application.Contracts.IPermissionService.DeletePermissionAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.IPermissionService.DeletePermissionAsync
+  href: MyApp.Auth.Application.Contracts.IPermissionService.html#MyApp_Auth_Application_Contracts_IPermissionService_DeletePermissionAsync_System_Guid_
+  name: DeletePermissionAsync
+  nameWithType: IPermissionService.DeletePermissionAsync
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService.DeletePermissionAsync

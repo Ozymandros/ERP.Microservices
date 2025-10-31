@@ -1,0 +1,84 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Application.Contracts.Dtos
+  commentId: N:MyApp.Orders.Application.Contracts.Dtos
+  id: MyApp.Orders.Application.Contracts.Dtos
+  children:
+  - MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+  - MyApp.Orders.Application.Contracts.Dtos.OrderDto
+  - MyApp.Orders.Application.Contracts.Dtos.OrderLineDto
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Orders.Application.Contracts.Dtos
+  nameWithType: MyApp.Orders.Application.Contracts.Dtos
+  fullName: MyApp.Orders.Application.Contracts.Dtos
+  type: Namespace
+  assemblies:
+  - MyApp.Orders.Application.Contracts
+references:
+- uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+  commentId: T:MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+  parent: MyApp.Orders.Application.Contracts.Dtos
+  href: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.html
+  name: CreateUpdateOrderDto
+  nameWithType: CreateUpdateOrderDto
+  fullName: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+- uid: MyApp.Orders.Application.Contracts.Dtos.OrderDto
+  commentId: T:MyApp.Orders.Application.Contracts.Dtos.OrderDto
+  href: MyApp.Orders.Application.Contracts.Dtos.OrderDto.html
+  name: OrderDto
+  nameWithType: OrderDto
+  fullName: MyApp.Orders.Application.Contracts.Dtos.OrderDto
+- uid: MyApp.Orders.Application.Contracts.Dtos.OrderLineDto
+  commentId: T:MyApp.Orders.Application.Contracts.Dtos.OrderLineDto
+  href: MyApp.Orders.Application.Contracts.Dtos.OrderLineDto.html
+  name: OrderLineDto
+  nameWithType: OrderLineDto
+  fullName: MyApp.Orders.Application.Contracts.Dtos.OrderLineDto
+- uid: MyApp.Orders.Application.Contracts.Dtos
+  commentId: N:MyApp.Orders.Application.Contracts.Dtos
+  href: MyApp.html
+  name: MyApp.Orders.Application.Contracts.Dtos
+  nameWithType: MyApp.Orders.Application.Contracts.Dtos
+  fullName: MyApp.Orders.Application.Contracts.Dtos
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Application
+    name: Application
+    href: MyApp.Orders.Application.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts
+    name: Contracts
+    href: MyApp.Orders.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts.Dtos
+    name: Dtos
+    href: MyApp.Orders.Application.Contracts.Dtos.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Application
+    name: Application
+    href: MyApp.Orders.Application.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts
+    name: Contracts
+    href: MyApp.Orders.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts.Dtos
+    name: Dtos
+    href: MyApp.Orders.Application.Contracts.Dtos.html

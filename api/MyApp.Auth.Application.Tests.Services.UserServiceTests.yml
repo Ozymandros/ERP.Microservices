@@ -1,0 +1,1569 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  commentId: T:MyApp.Auth.Application.Tests.Services.UserServiceTests
+  id: UserServiceTests
+  parent: MyApp.Auth.Application.Tests.Services
+  children:
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.#ctor
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_ShouldReturnMappedUsers
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithInvalidId_ShouldReturnNull
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithValidId_ShouldReturnMappedUser
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  langs:
+  - csharp
+  - vb
+  name: UserServiceTests
+  nameWithType: UserServiceTests
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UserServiceTests
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 17
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: 'public class UserServiceTests : BaseServiceTest'
+    content.vb: Public Class UserServiceTests Inherits BaseServiceTest
+  inheritance:
+  - System.Object
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  inheritedMembers:
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{{T}}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.#ctor
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.#ctor
+  id: '#ctor'
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: UserServiceTests()
+  nameWithType: UserServiceTests.UserServiceTests()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.UserServiceTests()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 27
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: public UserServiceTests()
+    content.vb: Public Sub New()
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.#ctor*
+  nameWithType.vb: UserServiceTests.New()
+  fullName.vb: MyApp.Auth.Application.Tests.Services.UserServiceTests.New()
+  name.vb: New()
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithValidId_ShouldReturnMappedUser
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithValidId_ShouldReturnMappedUser
+  id: GetUserByIdAsync_WithValidId_ShouldReturnMappedUser
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetUserByIdAsync_WithValidId_ShouldReturnMappedUser()
+  nameWithType: UserServiceTests.GetUserByIdAsync_WithValidId_ShouldReturnMappedUser()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithValidId_ShouldReturnMappedUser()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetUserByIdAsync_WithValidId_ShouldReturnMappedUser
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 48
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetUserByIdAsync_WithValidId_ShouldReturnMappedUser()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetUserByIdAsync_WithValidId_ShouldReturnMappedUser() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithValidId_ShouldReturnMappedUser*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithInvalidId_ShouldReturnNull
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithInvalidId_ShouldReturnNull
+  id: GetUserByIdAsync_WithInvalidId_ShouldReturnNull
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetUserByIdAsync_WithInvalidId_ShouldReturnNull()
+  nameWithType: UserServiceTests.GetUserByIdAsync_WithInvalidId_ShouldReturnNull()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithInvalidId_ShouldReturnNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetUserByIdAsync_WithInvalidId_ShouldReturnNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 72
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetUserByIdAsync_WithInvalidId_ShouldReturnNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetUserByIdAsync_WithInvalidId_ShouldReturnNull() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithInvalidId_ShouldReturnNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  id: GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+  nameWithType: UserServiceTests.GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 90
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser
+  id: GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser()
+  nameWithType: UserServiceTests.GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 113
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull
+  id: GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull()
+  nameWithType: UserServiceTests.GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 137
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_ShouldReturnMappedUsers
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_ShouldReturnMappedUsers
+  id: GetAllUsersAsync_ShouldReturnMappedUsers
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetAllUsersAsync_ShouldReturnMappedUsers()
+  nameWithType: UserServiceTests.GetAllUsersAsync_ShouldReturnMappedUsers()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_ShouldReturnMappedUsers()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllUsersAsync_ShouldReturnMappedUsers
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 159
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetAllUsersAsync_ShouldReturnMappedUsers()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetAllUsersAsync_ShouldReturnMappedUsers() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_ShouldReturnMappedUsers*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  id: GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+  nameWithType: UserServiceTests.GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 192
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  id: UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
+  nameWithType: UserServiceTests.UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 215
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  id: UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  nameWithType: UserServiceTests.UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 248
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue
+  id: ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue()
+  nameWithType: UserServiceTests.ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 276
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning
+  id: ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning()
+  nameWithType: UserServiceTests.ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 302
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue
+  id: DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue()
+  nameWithType: UserServiceTests.DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 337
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  id: DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  nameWithType: UserServiceTests.DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 360
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  id: AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue()
+  nameWithType: UserServiceTests.AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 383
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning
+  id: AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning()
+  nameWithType: UserServiceTests.AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 408
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  id: RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue()
+  nameWithType: UserServiceTests.RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 442
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles
+  id: GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles()
+  nameWithType: UserServiceTests.GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 471
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning
+  id: GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning()
+  nameWithType: UserServiceTests.GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 496
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser
+  id: GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser()
+  nameWithType: UserServiceTests.GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 520
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull
+  commentId: M:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull
+  id: GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull
+  parent: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull()
+  nameWithType: UserServiceTests.GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull()
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs
+    startLine: 550
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull() As Task
+  overload: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: MyApp.Auth.Application.Tests.Services
+  commentId: N:MyApp.Auth.Application.Tests.Services
+  href: MyApp.html
+  name: MyApp.Auth.Application.Tests.Services
+  nameWithType: MyApp.Auth.Application.Tests.Services
+  fullName: MyApp.Auth.Application.Tests.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Services
+    name: Services
+    href: MyApp.Auth.Application.Tests.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Services
+    name: Services
+    href: MyApp.Auth.Application.Tests.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  commentId: T:MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  parent: MyApp.Auth.Application.Tests.Common
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html
+  name: BaseServiceTest
+  nameWithType: BaseServiceTest
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+  commentId: F:MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_MockMapper
+  name: MockMapper
+  nameWithType: BaseServiceTest.MockMapper
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+  commentId: F:MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_Mapper
+  name: Mapper
+  nameWithType: BaseServiceTest.Mapper
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+  commentId: M:MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_CreateMockLogger__1
+  name: CreateMockLogger<T>()
+  nameWithType: BaseServiceTest.CreateMockLogger<T>()
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger<T>()
+  nameWithType.vb: BaseServiceTest.CreateMockLogger(Of T)()
+  fullName.vb: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger(Of T)()
+  name.vb: CreateMockLogger(Of T)()
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+    name: CreateMockLogger
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_CreateMockLogger__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+    name: CreateMockLogger
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_CreateMockLogger__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{{T}}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  commentId: M:MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  definition: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  name: VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  nameWithType: BaseServiceTest.VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled<T>(Moq.Mock<Microsoft.Extensions.Logging.ILogger<T>>, Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  nameWithType.vb: BaseServiceTest.VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  fullName.vb: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled(Of T)(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger(Of T)), Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  name.vb: VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: <
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Auth.Application.Tests.Common
+  commentId: N:MyApp.Auth.Application.Tests.Common
+  href: MyApp.html
+  name: MyApp.Auth.Application.Tests.Common
+  nameWithType: MyApp.Auth.Application.Tests.Common
+  fullName: MyApp.Auth.Application.Tests.Common
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Common
+    name: Common
+    href: MyApp.Auth.Application.Tests.Common.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Common
+    name: Common
+    href: MyApp.Auth.Application.Tests.Common.html
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  commentId: M:MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  isExternal: true
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  name: VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  nameWithType: BaseServiceTest.VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled<T>(Moq.Mock<Microsoft.Extensions.Logging.ILogger<T>>, Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  nameWithType.vb: BaseServiceTest.VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  fullName.vb: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled(Of T)(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger(Of T)), Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  name.vb: VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: <
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.#ctor*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.#ctor
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests__ctor
+  name: UserServiceTests
+  nameWithType: UserServiceTests.UserServiceTests
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.UserServiceTests
+  nameWithType.vb: UserServiceTests.New
+  fullName.vb: MyApp.Auth.Application.Tests.Services.UserServiceTests.New
+  name.vb: New
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithValidId_ShouldReturnMappedUser*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithValidId_ShouldReturnMappedUser
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByIdAsync_WithValidId_ShouldReturnMappedUser
+  name: GetUserByIdAsync_WithValidId_ShouldReturnMappedUser
+  nameWithType: UserServiceTests.GetUserByIdAsync_WithValidId_ShouldReturnMappedUser
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithValidId_ShouldReturnMappedUser
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithInvalidId_ShouldReturnNull*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithInvalidId_ShouldReturnNull
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByIdAsync_WithInvalidId_ShouldReturnNull
+  name: GetUserByIdAsync_WithInvalidId_ShouldReturnNull
+  nameWithType: UserServiceTests.GetUserByIdAsync_WithInvalidId_ShouldReturnNull
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithInvalidId_ShouldReturnNull
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  name: GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  nameWithType: UserServiceTests.GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser
+  name: GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser
+  nameWithType: UserServiceTests.GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull
+  name: GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull
+  nameWithType: UserServiceTests.GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_ShouldReturnMappedUsers*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_ShouldReturnMappedUsers
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_GetAllUsersAsync_ShouldReturnMappedUsers
+  name: GetAllUsersAsync_ShouldReturnMappedUsers
+  nameWithType: UserServiceTests.GetAllUsersAsync_ShouldReturnMappedUsers
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_ShouldReturnMappedUsers
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  name: GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  nameWithType: UserServiceTests.GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  name: UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  nameWithType: UserServiceTests.UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  name: UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  nameWithType: UserServiceTests.UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue
+  name: ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue
+  nameWithType: UserServiceTests.ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning
+  name: ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning
+  nameWithType: UserServiceTests.ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue
+  name: DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue
+  nameWithType: UserServiceTests.DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  name: DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  nameWithType: UserServiceTests.DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  name: AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  nameWithType: UserServiceTests.AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning
+  name: AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning
+  nameWithType: UserServiceTests.AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  name: RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  nameWithType: UserServiceTests.RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles
+  name: GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles
+  nameWithType: UserServiceTests.GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning
+  name: GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning
+  nameWithType: UserServiceTests.GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser
+  name: GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser
+  nameWithType: UserServiceTests.GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html#MyApp_Auth_Application_Tests_Services_UserServiceTests_GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull
+  name: GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull
+  nameWithType: UserServiceTests.GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull

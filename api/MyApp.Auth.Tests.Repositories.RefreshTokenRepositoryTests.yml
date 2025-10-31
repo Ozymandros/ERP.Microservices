@@ -1,0 +1,1163 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  commentId: T:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  id: RefreshTokenRepositoryTests
+  parent: MyApp.Auth.Tests.Repositories
+  children:
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.#ctor
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithEmptyToken_ReturnsNull
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithNonExistentToken_ReturnsNull
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithValidToken_ReturnsRefreshToken
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithNoTokens_ReturnsEmptyList
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_OnlyRevokesSpecificToken
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithNonExistentTokenId_DoesNotThrow
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithValidTokenId_RevokesSingleToken
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens
+  langs:
+  - csharp
+  - vb
+  name: RefreshTokenRepositoryTests
+  nameWithType: RefreshTokenRepositoryTests
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RefreshTokenRepositoryTests
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: public class RefreshTokenRepositoryTests
+    content.vb: Public Class RefreshTokenRepositoryTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.#ctor
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.#ctor
+  id: '#ctor'
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: RefreshTokenRepositoryTests()
+  nameWithType: RefreshTokenRepositoryTests.RefreshTokenRepositoryTests()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RefreshTokenRepositoryTests()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 13
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: public RefreshTokenRepositoryTests()
+    content.vb: Public Sub New()
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.#ctor*
+  nameWithType.vb: RefreshTokenRepositoryTests.New()
+  fullName.vb: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.New()
+  name.vb: New()
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithValidToken_ReturnsRefreshToken
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithValidToken_ReturnsRefreshToken
+  id: GetByTokenAsync_WithValidToken_ReturnsRefreshToken
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByTokenAsync_WithValidToken_ReturnsRefreshToken()
+  nameWithType: RefreshTokenRepositoryTests.GetByTokenAsync_WithValidToken_ReturnsRefreshToken()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithValidToken_ReturnsRefreshToken()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByTokenAsync_WithValidToken_ReturnsRefreshToken
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 36
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByTokenAsync_WithValidToken_ReturnsRefreshToken()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByTokenAsync_WithValidToken_ReturnsRefreshToken() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithValidToken_ReturnsRefreshToken*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithNonExistentToken_ReturnsNull
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithNonExistentToken_ReturnsNull
+  id: GetByTokenAsync_WithNonExistentToken_ReturnsNull
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByTokenAsync_WithNonExistentToken_ReturnsNull()
+  nameWithType: RefreshTokenRepositoryTests.GetByTokenAsync_WithNonExistentToken_ReturnsNull()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithNonExistentToken_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByTokenAsync_WithNonExistentToken_ReturnsNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 62
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByTokenAsync_WithNonExistentToken_ReturnsNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByTokenAsync_WithNonExistentToken_ReturnsNull() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithNonExistentToken_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithEmptyToken_ReturnsNull
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithEmptyToken_ReturnsNull
+  id: GetByTokenAsync_WithEmptyToken_ReturnsNull
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByTokenAsync_WithEmptyToken_ReturnsNull()
+  nameWithType: RefreshTokenRepositoryTests.GetByTokenAsync_WithEmptyToken_ReturnsNull()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithEmptyToken_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByTokenAsync_WithEmptyToken_ReturnsNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 72
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByTokenAsync_WithEmptyToken_ReturnsNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByTokenAsync_WithEmptyToken_ReturnsNull() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithEmptyToken_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens
+  id: GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens()
+  nameWithType: RefreshTokenRepositoryTests.GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 86
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithNoTokens_ReturnsEmptyList
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithNoTokens_ReturnsEmptyList
+  id: GetByUserIdAsync_WithNoTokens_ReturnsEmptyList
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByUserIdAsync_WithNoTokens_ReturnsEmptyList()
+  nameWithType: RefreshTokenRepositoryTests.GetByUserIdAsync_WithNoTokens_ReturnsEmptyList()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithNoTokens_ReturnsEmptyList()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByUserIdAsync_WithNoTokens_ReturnsEmptyList
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 122
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByUserIdAsync_WithNoTokens_ReturnsEmptyList()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByUserIdAsync_WithNoTokens_ReturnsEmptyList() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithNoTokens_ReturnsEmptyList*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens
+  id: GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens()
+  nameWithType: RefreshTokenRepositoryTests.GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 136
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken
+  id: GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken()
+  nameWithType: RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 173
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull
+  id: GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull()
+  nameWithType: RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 198
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull
+  id: GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull()
+  nameWithType: RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 222
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull
+  id: GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull()
+  nameWithType: RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 246
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken
+  id: CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken()
+  nameWithType: RefreshTokenRepositoryTests.CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 275
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithValidTokenId_RevokesSingleToken
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithValidTokenId_RevokesSingleToken
+  id: RevokeAsync_WithValidTokenId_RevokesSingleToken
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: RevokeAsync_WithValidTokenId_RevokesSingleToken()
+  nameWithType: RefreshTokenRepositoryTests.RevokeAsync_WithValidTokenId_RevokesSingleToken()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithValidTokenId_RevokesSingleToken()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RevokeAsync_WithValidTokenId_RevokesSingleToken
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 305
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RevokeAsync_WithValidTokenId_RevokesSingleToken()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RevokeAsync_WithValidTokenId_RevokesSingleToken() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithValidTokenId_RevokesSingleToken*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithNonExistentTokenId_DoesNotThrow
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithNonExistentTokenId_DoesNotThrow
+  id: RevokeAsync_WithNonExistentTokenId_DoesNotThrow
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: RevokeAsync_WithNonExistentTokenId_DoesNotThrow()
+  nameWithType: RefreshTokenRepositoryTests.RevokeAsync_WithNonExistentTokenId_DoesNotThrow()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithNonExistentTokenId_DoesNotThrow()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RevokeAsync_WithNonExistentTokenId_DoesNotThrow
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 331
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RevokeAsync_WithNonExistentTokenId_DoesNotThrow()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RevokeAsync_WithNonExistentTokenId_DoesNotThrow() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithNonExistentTokenId_DoesNotThrow*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_OnlyRevokesSpecificToken
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_OnlyRevokesSpecificToken
+  id: RevokeAsync_OnlyRevokesSpecificToken
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: RevokeAsync_OnlyRevokesSpecificToken()
+  nameWithType: RefreshTokenRepositoryTests.RevokeAsync_OnlyRevokesSpecificToken()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_OnlyRevokesSpecificToken()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RevokeAsync_OnlyRevokesSpecificToken
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 341
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RevokeAsync_OnlyRevokesSpecificToken()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RevokeAsync_OnlyRevokesSpecificToken() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_OnlyRevokesSpecificToken*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens
+  id: RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens()
+  nameWithType: RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 381
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens
+  id: RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens()
+  nameWithType: RefreshTokenRepositoryTests.RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 415
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked
+  commentId: M:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked
+  id: RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked
+  parent: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked()
+  nameWithType: RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked()
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RefreshTokenRepositoryTests.cs
+    startLine: 452
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked() As Task
+  overload: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: MyApp.Auth.Tests.Repositories
+  commentId: N:MyApp.Auth.Tests.Repositories
+  href: MyApp.html
+  name: MyApp.Auth.Tests.Repositories
+  nameWithType: MyApp.Auth.Tests.Repositories
+  fullName: MyApp.Auth.Tests.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Tests
+    name: Tests
+    href: MyApp.Auth.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Tests.Repositories
+    name: Repositories
+    href: MyApp.Auth.Tests.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Tests
+    name: Tests
+    href: MyApp.Auth.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Tests.Repositories
+    name: Repositories
+    href: MyApp.Auth.Tests.Repositories.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.#ctor*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.#ctor
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests__ctor
+  name: RefreshTokenRepositoryTests
+  nameWithType: RefreshTokenRepositoryTests.RefreshTokenRepositoryTests
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RefreshTokenRepositoryTests
+  nameWithType.vb: RefreshTokenRepositoryTests.New
+  fullName.vb: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.New
+  name.vb: New
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithValidToken_ReturnsRefreshToken*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithValidToken_ReturnsRefreshToken
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByTokenAsync_WithValidToken_ReturnsRefreshToken
+  name: GetByTokenAsync_WithValidToken_ReturnsRefreshToken
+  nameWithType: RefreshTokenRepositoryTests.GetByTokenAsync_WithValidToken_ReturnsRefreshToken
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithValidToken_ReturnsRefreshToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithNonExistentToken_ReturnsNull*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithNonExistentToken_ReturnsNull
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByTokenAsync_WithNonExistentToken_ReturnsNull
+  name: GetByTokenAsync_WithNonExistentToken_ReturnsNull
+  nameWithType: RefreshTokenRepositoryTests.GetByTokenAsync_WithNonExistentToken_ReturnsNull
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithNonExistentToken_ReturnsNull
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithEmptyToken_ReturnsNull*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithEmptyToken_ReturnsNull
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByTokenAsync_WithEmptyToken_ReturnsNull
+  name: GetByTokenAsync_WithEmptyToken_ReturnsNull
+  nameWithType: RefreshTokenRepositoryTests.GetByTokenAsync_WithEmptyToken_ReturnsNull
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByTokenAsync_WithEmptyToken_ReturnsNull
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens
+  name: GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens
+  nameWithType: RefreshTokenRepositoryTests.GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithNoTokens_ReturnsEmptyList*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithNoTokens_ReturnsEmptyList
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByUserIdAsync_WithNoTokens_ReturnsEmptyList
+  name: GetByUserIdAsync_WithNoTokens_ReturnsEmptyList
+  nameWithType: RefreshTokenRepositoryTests.GetByUserIdAsync_WithNoTokens_ReturnsEmptyList
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_WithNoTokens_ReturnsEmptyList
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens
+  name: GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens
+  nameWithType: RefreshTokenRepositoryTests.GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken
+  name: GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken
+  nameWithType: RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull
+  name: GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull
+  nameWithType: RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull
+  name: GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull
+  nameWithType: RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull
+  name: GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull
+  nameWithType: RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken
+  name: CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken
+  nameWithType: RefreshTokenRepositoryTests.CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithValidTokenId_RevokesSingleToken*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithValidTokenId_RevokesSingleToken
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeAsync_WithValidTokenId_RevokesSingleToken
+  name: RevokeAsync_WithValidTokenId_RevokesSingleToken
+  nameWithType: RefreshTokenRepositoryTests.RevokeAsync_WithValidTokenId_RevokesSingleToken
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithValidTokenId_RevokesSingleToken
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithNonExistentTokenId_DoesNotThrow*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithNonExistentTokenId_DoesNotThrow
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeAsync_WithNonExistentTokenId_DoesNotThrow
+  name: RevokeAsync_WithNonExistentTokenId_DoesNotThrow
+  nameWithType: RefreshTokenRepositoryTests.RevokeAsync_WithNonExistentTokenId_DoesNotThrow
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_WithNonExistentTokenId_DoesNotThrow
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_OnlyRevokesSpecificToken*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_OnlyRevokesSpecificToken
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeAsync_OnlyRevokesSpecificToken
+  name: RevokeAsync_OnlyRevokesSpecificToken
+  nameWithType: RefreshTokenRepositoryTests.RevokeAsync_OnlyRevokesSpecificToken
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeAsync_OnlyRevokesSpecificToken
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens
+  name: RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens
+  nameWithType: RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens
+  name: RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens
+  nameWithType: RefreshTokenRepositoryTests.RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html#MyApp_Auth_Tests_Repositories_RefreshTokenRepositoryTests_RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked
+  name: RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked
+  nameWithType: RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked

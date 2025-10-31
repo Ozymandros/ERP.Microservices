@@ -1,0 +1,834 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+  commentId: T:MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+  id: IPurchaseOrderRepository
+  parent: MyApp.Purchasing.Domain.Repositories
+  children:
+  - MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  - MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetBySuppliersIdAsync(System.Guid)
+  - MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetWithLinesAsync(System.Guid)
+  langs:
+  - csharp
+  - vb
+  name: IPurchaseOrderRepository
+  nameWithType: IPurchaseOrderRepository
+  fullName: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Repositories/IPurchaseOrderRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: IPurchaseOrderRepository
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Repositories/IPurchaseOrderRepository.cs
+    startLine: 5
+  assemblies:
+  - MyApp.Purchasing.Domain
+  namespace: MyApp.Purchasing.Domain.Repositories
+  syntax:
+    content: 'public interface IPurchaseOrderRepository : IRepository<PurchaseOrder, Guid>'
+    content.vb: Public Interface IPurchaseOrderRepository Inherits IRepository(Of PurchaseOrder, Guid)
+  inheritedMembers:
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetByIdAsync(System.Guid)
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetAllAsync
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.AddAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.UpdateAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.DeleteAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+- uid: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetBySuppliersIdAsync(System.Guid)
+  commentId: M:MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetBySuppliersIdAsync(System.Guid)
+  id: GetBySuppliersIdAsync(System.Guid)
+  parent: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+  langs:
+  - csharp
+  - vb
+  name: GetBySuppliersIdAsync(Guid)
+  nameWithType: IPurchaseOrderRepository.GetBySuppliersIdAsync(Guid)
+  fullName: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetBySuppliersIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Repositories/IPurchaseOrderRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetBySuppliersIdAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Repositories/IPurchaseOrderRepository.cs
+    startLine: 7
+  assemblies:
+  - MyApp.Purchasing.Domain
+  namespace: MyApp.Purchasing.Domain.Repositories
+  syntax:
+    content: Task<IEnumerable<PurchaseOrder>> GetBySuppliersIdAsync(Guid supplierId)
+    parameters:
+    - id: supplierId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Purchasing.Domain.Entities.PurchaseOrder}}
+    content.vb: Function GetBySuppliersIdAsync(supplierId As Guid) As Task(Of IEnumerable(Of PurchaseOrder))
+  overload: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetBySuppliersIdAsync*
+- uid: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  commentId: M:MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  id: GetByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  parent: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+  langs:
+  - csharp
+  - vb
+  name: GetByStatusAsync(PurchaseOrderStatus)
+  nameWithType: IPurchaseOrderRepository.GetByStatusAsync(PurchaseOrderStatus)
+  fullName: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Repositories/IPurchaseOrderRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByStatusAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Repositories/IPurchaseOrderRepository.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Purchasing.Domain
+  namespace: MyApp.Purchasing.Domain.Repositories
+  syntax:
+    content: Task<IEnumerable<PurchaseOrder>> GetByStatusAsync(PurchaseOrderStatus status)
+    parameters:
+    - id: status
+      type: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Purchasing.Domain.Entities.PurchaseOrder}}
+    content.vb: Function GetByStatusAsync(status As PurchaseOrderStatus) As Task(Of IEnumerable(Of PurchaseOrder))
+  overload: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetByStatusAsync*
+- uid: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetWithLinesAsync(System.Guid)
+  commentId: M:MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetWithLinesAsync(System.Guid)
+  id: GetWithLinesAsync(System.Guid)
+  parent: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+  langs:
+  - csharp
+  - vb
+  name: GetWithLinesAsync(Guid)
+  nameWithType: IPurchaseOrderRepository.GetWithLinesAsync(Guid)
+  fullName: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetWithLinesAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Repositories/IPurchaseOrderRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetWithLinesAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Repositories/IPurchaseOrderRepository.cs
+    startLine: 9
+  assemblies:
+  - MyApp.Purchasing.Domain
+  namespace: MyApp.Purchasing.Domain.Repositories
+  syntax:
+    content: Task<PurchaseOrder?> GetWithLinesAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Purchasing.Domain.Entities.PurchaseOrder}
+    content.vb: Function GetWithLinesAsync(id As Guid) As Task(Of PurchaseOrder)
+  overload: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetWithLinesAsync*
+references:
+- uid: MyApp.Purchasing.Domain.Repositories
+  commentId: N:MyApp.Purchasing.Domain.Repositories
+  href: MyApp.html
+  name: MyApp.Purchasing.Domain.Repositories
+  nameWithType: MyApp.Purchasing.Domain.Repositories
+  fullName: MyApp.Purchasing.Domain.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain
+    name: Domain
+    href: MyApp.Purchasing.Domain.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain.Repositories
+    name: Repositories
+    href: MyApp.Purchasing.Domain.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain
+    name: Domain
+    href: MyApp.Purchasing.Domain.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain.Repositories
+    name: Repositories
+    href: MyApp.Purchasing.Domain.Repositories.html
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetByIdAsync(System.Guid)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetByIdAsync(System.Guid)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  name: GetByIdAsync(Guid)
+  nameWithType: IRepository<PurchaseOrder, Guid>.GetByIdAsync(Guid)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Purchasing.Domain.Entities.PurchaseOrder, System.Guid>.GetByIdAsync(System.Guid)
+  nameWithType.vb: IRepository(Of PurchaseOrder, Guid).GetByIdAsync(Guid)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Purchasing.Domain.Entities.PurchaseOrder, System.Guid).GetByIdAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetAllAsync
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetAllAsync
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  name: GetAllAsync()
+  nameWithType: IRepository<PurchaseOrder, Guid>.GetAllAsync()
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Purchasing.Domain.Entities.PurchaseOrder, System.Guid>.GetAllAsync()
+  nameWithType.vb: IRepository(Of PurchaseOrder, Guid).GetAllAsync()
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Purchasing.Domain.Entities.PurchaseOrder, System.Guid).GetAllAsync()
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllPaginatedAsync(int, int)
+  nameWithType: IRepository<PurchaseOrder, Guid>.GetAllPaginatedAsync(int, int)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Purchasing.Domain.Entities.PurchaseOrder, System.Guid>.GetAllPaginatedAsync(int, int)
+  nameWithType.vb: IRepository(Of PurchaseOrder, Guid).GetAllPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Purchasing.Domain.Entities.PurchaseOrder, System.Guid).GetAllPaginatedAsync(Integer, Integer)
+  name.vb: GetAllPaginatedAsync(Integer, Integer)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.AddAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.AddAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  name: AddAsync(PurchaseOrder)
+  nameWithType: IRepository<PurchaseOrder, Guid>.AddAsync(PurchaseOrder)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Purchasing.Domain.Entities.PurchaseOrder, System.Guid>.AddAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  nameWithType.vb: IRepository(Of PurchaseOrder, Guid).AddAsync(PurchaseOrder)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Purchasing.Domain.Entities.PurchaseOrder, System.Guid).AddAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.AddAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+    name: AddAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  - name: (
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+    name: PurchaseOrder
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrder.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.AddAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+    name: AddAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  - name: (
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+    name: PurchaseOrder
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrder.html
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.UpdateAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.UpdateAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  name: UpdateAsync(PurchaseOrder)
+  nameWithType: IRepository<PurchaseOrder, Guid>.UpdateAsync(PurchaseOrder)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Purchasing.Domain.Entities.PurchaseOrder, System.Guid>.UpdateAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  nameWithType.vb: IRepository(Of PurchaseOrder, Guid).UpdateAsync(PurchaseOrder)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Purchasing.Domain.Entities.PurchaseOrder, System.Guid).UpdateAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.UpdateAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+    name: UpdateAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  - name: (
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+    name: PurchaseOrder
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrder.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.UpdateAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+    name: UpdateAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  - name: (
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+    name: PurchaseOrder
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrder.html
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.DeleteAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.DeleteAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  name: DeleteAsync(PurchaseOrder)
+  nameWithType: IRepository<PurchaseOrder, Guid>.DeleteAsync(PurchaseOrder)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Purchasing.Domain.Entities.PurchaseOrder, System.Guid>.DeleteAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  nameWithType.vb: IRepository(Of PurchaseOrder, Guid).DeleteAsync(PurchaseOrder)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Purchasing.Domain.Entities.PurchaseOrder, System.Guid).DeleteAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.DeleteAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+    name: DeleteAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  - name: (
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+    name: PurchaseOrder
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrder.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}.DeleteAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+    name: DeleteAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  - name: (
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+    name: PurchaseOrder
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrder.html
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  name: GetByIdAsync(TKey)
+  nameWithType: IRepository<TEntity, TKey>.GetByIdAsync(TKey)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.GetByIdAsync(TKey)
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetByIdAsync(TKey)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).GetByIdAsync(TKey)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+    name: GetByIdAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - name: TKey
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+    name: GetByIdAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - name: TKey
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}
+  commentId: T:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Purchasing.Domain.Entities.PurchaseOrder,System.Guid}
+  parent: MyApp.Shared.Domain.Repositories
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  name: IRepository<PurchaseOrder, Guid>
+  nameWithType: IRepository<PurchaseOrder, Guid>
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Purchasing.Domain.Entities.PurchaseOrder, System.Guid>
+  nameWithType.vb: IRepository(Of PurchaseOrder, Guid)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Purchasing.Domain.Entities.PurchaseOrder, System.Guid)
+  name.vb: IRepository(Of PurchaseOrder, Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  - name: <
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+    name: PurchaseOrder
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrder.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+    name: PurchaseOrder
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrder.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  name: GetAllAsync()
+  nameWithType: IRepository<TEntity, TKey>.GetAllAsync()
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.GetAllAsync()
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetAllAsync()
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).GetAllAsync()
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  isExternal: true
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllPaginatedAsync(int, int)
+  nameWithType: IRepository<TEntity, TKey>.GetAllPaginatedAsync(int, int)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.GetAllPaginatedAsync(int, int)
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetAllPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).GetAllPaginatedAsync(Integer, Integer)
+  name.vb: GetAllPaginatedAsync(Integer, Integer)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  name: AddAsync(TEntity)
+  nameWithType: IRepository<TEntity, TKey>.AddAsync(TEntity)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.AddAsync(TEntity)
+  nameWithType.vb: IRepository(Of TEntity, TKey).AddAsync(TEntity)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).AddAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+    name: AddAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+    name: AddAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  name: UpdateAsync(TEntity)
+  nameWithType: IRepository<TEntity, TKey>.UpdateAsync(TEntity)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.UpdateAsync(TEntity)
+  nameWithType.vb: IRepository(Of TEntity, TKey).UpdateAsync(TEntity)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).UpdateAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+    name: UpdateAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+    name: UpdateAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  name: DeleteAsync(TEntity)
+  nameWithType: IRepository<TEntity, TKey>.DeleteAsync(TEntity)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.DeleteAsync(TEntity)
+  nameWithType.vb: IRepository(Of TEntity, TKey).DeleteAsync(TEntity)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).DeleteAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+    name: DeleteAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+    name: DeleteAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2
+  commentId: T:MyApp.Shared.Domain.Repositories.IRepository`2
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  name: IRepository<TEntity, TKey>
+  nameWithType: IRepository<TEntity, TKey>
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>
+  nameWithType.vb: IRepository(Of TEntity, TKey)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey)
+  name.vb: IRepository(Of TEntity, TKey)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories
+  commentId: N:MyApp.Shared.Domain.Repositories
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Repositories
+  nameWithType: MyApp.Shared.Domain.Repositories
+  fullName: MyApp.Shared.Domain.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Repositories
+    name: Repositories
+    href: MyApp.Shared.Domain.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Repositories
+    name: Repositories
+    href: MyApp.Shared.Domain.Repositories.html
+- uid: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetBySuppliersIdAsync*
+  commentId: Overload:MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetBySuppliersIdAsync
+  href: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.html#MyApp_Purchasing_Domain_Repositories_IPurchaseOrderRepository_GetBySuppliersIdAsync_System_Guid_
+  name: GetBySuppliersIdAsync
+  nameWithType: IPurchaseOrderRepository.GetBySuppliersIdAsync
+  fullName: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetBySuppliersIdAsync
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Purchasing.Domain.Entities.PurchaseOrder}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Purchasing.Domain.Entities.PurchaseOrder}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<PurchaseOrder>>
+  nameWithType: Task<IEnumerable<PurchaseOrder>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Purchasing.Domain.Entities.PurchaseOrder>>
+  nameWithType.vb: Task(Of IEnumerable(Of PurchaseOrder))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Purchasing.Domain.Entities.PurchaseOrder))
+  name.vb: Task(Of IEnumerable(Of PurchaseOrder))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+    name: PurchaseOrder
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrder.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+    name: PurchaseOrder
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrder.html
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetByStatusAsync*
+  commentId: Overload:MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetByStatusAsync
+  href: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.html#MyApp_Purchasing_Domain_Repositories_IPurchaseOrderRepository_GetByStatusAsync_MyApp_Purchasing_Domain_Entities_PurchaseOrderStatus_
+  name: GetByStatusAsync
+  nameWithType: IPurchaseOrderRepository.GetByStatusAsync
+  fullName: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetByStatusAsync
+- uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  commentId: T:MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  parent: MyApp.Purchasing.Domain.Entities
+  href: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.html
+  name: PurchaseOrderStatus
+  nameWithType: PurchaseOrderStatus
+  fullName: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+- uid: MyApp.Purchasing.Domain.Entities
+  commentId: N:MyApp.Purchasing.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Purchasing.Domain.Entities
+  nameWithType: MyApp.Purchasing.Domain.Entities
+  fullName: MyApp.Purchasing.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain
+    name: Domain
+    href: MyApp.Purchasing.Domain.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain.Entities
+    name: Entities
+    href: MyApp.Purchasing.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain
+    name: Domain
+    href: MyApp.Purchasing.Domain.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain.Entities
+    name: Entities
+    href: MyApp.Purchasing.Domain.Entities.html
+- uid: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetWithLinesAsync*
+  commentId: Overload:MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetWithLinesAsync
+  href: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.html#MyApp_Purchasing_Domain_Repositories_IPurchaseOrderRepository_GetWithLinesAsync_System_Guid_
+  name: GetWithLinesAsync
+  nameWithType: IPurchaseOrderRepository.GetWithLinesAsync
+  fullName: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.GetWithLinesAsync
+- uid: System.Threading.Tasks.Task{MyApp.Purchasing.Domain.Entities.PurchaseOrder}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Purchasing.Domain.Entities.PurchaseOrder}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PurchaseOrder>
+  nameWithType: Task<PurchaseOrder>
+  fullName: System.Threading.Tasks.Task<MyApp.Purchasing.Domain.Entities.PurchaseOrder>
+  nameWithType.vb: Task(Of PurchaseOrder)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Purchasing.Domain.Entities.PurchaseOrder)
+  name.vb: Task(Of PurchaseOrder)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+    name: PurchaseOrder
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrder.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+    name: PurchaseOrder
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrder.html
+  - name: )

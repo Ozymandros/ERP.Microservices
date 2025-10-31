@@ -1,0 +1,44 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Tests.Services
+  commentId: N:MyApp.Auth.Application.Tests.Services
+  id: MyApp.Auth.Application.Tests.Services
+  children:
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  - MyApp.Auth.Application.Tests.Services.UserServiceTests
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Application.Tests.Services
+  nameWithType: MyApp.Auth.Application.Tests.Services
+  fullName: MyApp.Auth.Application.Tests.Services
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Application.Tests
+references:
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  commentId: T:MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html
+  name: AuthServiceTests
+  nameWithType: AuthServiceTests
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  commentId: T:MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html
+  name: PermissionServiceTests
+  nameWithType: PermissionServiceTests
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  commentId: T:MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html
+  name: RoleServiceTests
+  nameWithType: RoleServiceTests
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+- uid: MyApp.Auth.Application.Tests.Services.UserServiceTests
+  commentId: T:MyApp.Auth.Application.Tests.Services.UserServiceTests
+  href: MyApp.Auth.Application.Tests.Services.UserServiceTests.html
+  name: UserServiceTests
+  nameWithType: UserServiceTests
+  fullName: MyApp.Auth.Application.Tests.Services.UserServiceTests

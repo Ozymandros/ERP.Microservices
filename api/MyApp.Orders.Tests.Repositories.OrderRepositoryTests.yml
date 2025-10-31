@@ -1,0 +1,803 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests
+  commentId: T:MyApp.Orders.Tests.Repositories.OrderRepositoryTests
+  id: OrderRepositoryTests
+  parent: MyApp.Orders.Tests.Repositories
+  children:
+  - MyApp.Orders.Tests.Repositories.OrderRepositoryTests.#ctor
+  - MyApp.Orders.Tests.Repositories.OrderRepositoryTests.AddAsync_WithValidOrder_CreatesOrder
+  - MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithNonExistentId_DoesNotThrowException
+  - MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithValidId_DeletesOrder
+  - MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_IncludesOrderLines
+  - MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull
+  - MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithValidId_ReturnsOrder
+  - MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsAllOrders
+  - MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsEmptyList_WhenNoOrders
+  - MyApp.Orders.Tests.Repositories.OrderRepositoryTests.UpdateAsync_WithExistingOrder_UpdatesOrderData
+  langs:
+  - csharp
+  - vb
+  name: OrderRepositoryTests
+  nameWithType: OrderRepositoryTests
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: OrderRepositoryTests
+    path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+    startLine: 10
+  assemblies:
+  - MyApp.Orders.Infrastructure.Tests
+  namespace: MyApp.Orders.Tests.Repositories
+  syntax:
+    content: public class OrderRepositoryTests
+    content.vb: Public Class OrderRepositoryTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.#ctor
+  commentId: M:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.#ctor
+  id: '#ctor'
+  parent: MyApp.Orders.Tests.Repositories.OrderRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: OrderRepositoryTests()
+  nameWithType: OrderRepositoryTests.OrderRepositoryTests()
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.OrderRepositoryTests()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Orders.Infrastructure.Tests
+  namespace: MyApp.Orders.Tests.Repositories
+  syntax:
+    content: public OrderRepositoryTests()
+    content.vb: Public Sub New()
+  overload: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.#ctor*
+  nameWithType.vb: OrderRepositoryTests.New()
+  fullName.vb: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.New()
+  name.vb: New()
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithValidId_ReturnsOrder
+  commentId: M:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithValidId_ReturnsOrder
+  id: GetByIdAsync_WithValidId_ReturnsOrder
+  parent: MyApp.Orders.Tests.Repositories.OrderRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByIdAsync_WithValidId_ReturnsOrder()
+  nameWithType: OrderRepositoryTests.GetByIdAsync_WithValidId_ReturnsOrder()
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithValidId_ReturnsOrder()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByIdAsync_WithValidId_ReturnsOrder
+    path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+    startLine: 40
+  assemblies:
+  - MyApp.Orders.Infrastructure.Tests
+  namespace: MyApp.Orders.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByIdAsync_WithValidId_ReturnsOrder()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByIdAsync_WithValidId_ReturnsOrder() As Task
+  overload: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithValidId_ReturnsOrder*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull
+  commentId: M:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull
+  id: GetByIdAsync_WithNonExistentId_ReturnsNull
+  parent: MyApp.Orders.Tests.Repositories.OrderRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByIdAsync_WithNonExistentId_ReturnsNull()
+  nameWithType: OrderRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull()
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByIdAsync_WithNonExistentId_ReturnsNull
+    path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+    startLine: 55
+  assemblies:
+  - MyApp.Orders.Infrastructure.Tests
+  namespace: MyApp.Orders.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByIdAsync_WithNonExistentId_ReturnsNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByIdAsync_WithNonExistentId_ReturnsNull() As Task
+  overload: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_IncludesOrderLines
+  commentId: M:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_IncludesOrderLines
+  id: GetByIdAsync_IncludesOrderLines
+  parent: MyApp.Orders.Tests.Repositories.OrderRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByIdAsync_IncludesOrderLines()
+  nameWithType: OrderRepositoryTests.GetByIdAsync_IncludesOrderLines()
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_IncludesOrderLines()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByIdAsync_IncludesOrderLines
+    path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+    startLine: 68
+  assemblies:
+  - MyApp.Orders.Infrastructure.Tests
+  namespace: MyApp.Orders.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByIdAsync_IncludesOrderLines()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByIdAsync_IncludesOrderLines() As Task
+  overload: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_IncludesOrderLines*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsAllOrders
+  commentId: M:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsAllOrders
+  id: ListAsync_ReturnsAllOrders
+  parent: MyApp.Orders.Tests.Repositories.OrderRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: ListAsync_ReturnsAllOrders()
+  nameWithType: OrderRepositoryTests.ListAsync_ReturnsAllOrders()
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsAllOrders()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ListAsync_ReturnsAllOrders
+    path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+    startLine: 97
+  assemblies:
+  - MyApp.Orders.Infrastructure.Tests
+  namespace: MyApp.Orders.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task ListAsync_ReturnsAllOrders()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function ListAsync_ReturnsAllOrders() As Task
+  overload: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsAllOrders*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsEmptyList_WhenNoOrders
+  commentId: M:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsEmptyList_WhenNoOrders
+  id: ListAsync_ReturnsEmptyList_WhenNoOrders
+  parent: MyApp.Orders.Tests.Repositories.OrderRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: ListAsync_ReturnsEmptyList_WhenNoOrders()
+  nameWithType: OrderRepositoryTests.ListAsync_ReturnsEmptyList_WhenNoOrders()
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsEmptyList_WhenNoOrders()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ListAsync_ReturnsEmptyList_WhenNoOrders
+    path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+    startLine: 113
+  assemblies:
+  - MyApp.Orders.Infrastructure.Tests
+  namespace: MyApp.Orders.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task ListAsync_ReturnsEmptyList_WhenNoOrders()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function ListAsync_ReturnsEmptyList_WhenNoOrders() As Task
+  overload: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsEmptyList_WhenNoOrders*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.AddAsync_WithValidOrder_CreatesOrder
+  commentId: M:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.AddAsync_WithValidOrder_CreatesOrder
+  id: AddAsync_WithValidOrder_CreatesOrder
+  parent: MyApp.Orders.Tests.Repositories.OrderRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: AddAsync_WithValidOrder_CreatesOrder()
+  nameWithType: OrderRepositoryTests.AddAsync_WithValidOrder_CreatesOrder()
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.AddAsync_WithValidOrder_CreatesOrder()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: AddAsync_WithValidOrder_CreatesOrder
+    path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+    startLine: 132
+  assemblies:
+  - MyApp.Orders.Infrastructure.Tests
+  namespace: MyApp.Orders.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task AddAsync_WithValidOrder_CreatesOrder()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function AddAsync_WithValidOrder_CreatesOrder() As Task
+  overload: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.AddAsync_WithValidOrder_CreatesOrder*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.UpdateAsync_WithExistingOrder_UpdatesOrderData
+  commentId: M:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.UpdateAsync_WithExistingOrder_UpdatesOrderData
+  id: UpdateAsync_WithExistingOrder_UpdatesOrderData
+  parent: MyApp.Orders.Tests.Repositories.OrderRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: UpdateAsync_WithExistingOrder_UpdatesOrderData()
+  nameWithType: OrderRepositoryTests.UpdateAsync_WithExistingOrder_UpdatesOrderData()
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.UpdateAsync_WithExistingOrder_UpdatesOrderData()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateAsync_WithExistingOrder_UpdatesOrderData
+    path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+    startLine: 160
+  assemblies:
+  - MyApp.Orders.Infrastructure.Tests
+  namespace: MyApp.Orders.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdateAsync_WithExistingOrder_UpdatesOrderData()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdateAsync_WithExistingOrder_UpdatesOrderData() As Task
+  overload: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.UpdateAsync_WithExistingOrder_UpdatesOrderData*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithValidId_DeletesOrder
+  commentId: M:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithValidId_DeletesOrder
+  id: DeleteAsync_WithValidId_DeletesOrder
+  parent: MyApp.Orders.Tests.Repositories.OrderRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: DeleteAsync_WithValidId_DeletesOrder()
+  nameWithType: OrderRepositoryTests.DeleteAsync_WithValidId_DeletesOrder()
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithValidId_DeletesOrder()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteAsync_WithValidId_DeletesOrder
+    path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+    startLine: 182
+  assemblies:
+  - MyApp.Orders.Infrastructure.Tests
+  namespace: MyApp.Orders.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeleteAsync_WithValidId_DeletesOrder()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeleteAsync_WithValidId_DeletesOrder() As Task
+  overload: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithValidId_DeletesOrder*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithNonExistentId_DoesNotThrowException
+  commentId: M:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithNonExistentId_DoesNotThrowException
+  id: DeleteAsync_WithNonExistentId_DoesNotThrowException
+  parent: MyApp.Orders.Tests.Repositories.OrderRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: DeleteAsync_WithNonExistentId_DoesNotThrowException()
+  nameWithType: OrderRepositoryTests.DeleteAsync_WithNonExistentId_DoesNotThrowException()
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithNonExistentId_DoesNotThrowException()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteAsync_WithNonExistentId_DoesNotThrowException
+    path: src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/Repositories/OrderRepositoryTests.cs
+    startLine: 196
+  assemblies:
+  - MyApp.Orders.Infrastructure.Tests
+  namespace: MyApp.Orders.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeleteAsync_WithNonExistentId_DoesNotThrowException()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeleteAsync_WithNonExistentId_DoesNotThrowException() As Task
+  overload: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithNonExistentId_DoesNotThrowException*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: MyApp.Orders.Tests.Repositories
+  commentId: N:MyApp.Orders.Tests.Repositories
+  href: MyApp.html
+  name: MyApp.Orders.Tests.Repositories
+  nameWithType: MyApp.Orders.Tests.Repositories
+  fullName: MyApp.Orders.Tests.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Tests
+    name: Tests
+    href: MyApp.Orders.Tests.html
+  - name: .
+  - uid: MyApp.Orders.Tests.Repositories
+    name: Repositories
+    href: MyApp.Orders.Tests.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Tests
+    name: Tests
+    href: MyApp.Orders.Tests.html
+  - name: .
+  - uid: MyApp.Orders.Tests.Repositories
+    name: Repositories
+    href: MyApp.Orders.Tests.Repositories.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.#ctor*
+  commentId: Overload:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.#ctor
+  href: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.html#MyApp_Orders_Tests_Repositories_OrderRepositoryTests__ctor
+  name: OrderRepositoryTests
+  nameWithType: OrderRepositoryTests.OrderRepositoryTests
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.OrderRepositoryTests
+  nameWithType.vb: OrderRepositoryTests.New
+  fullName.vb: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.New
+  name.vb: New
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithValidId_ReturnsOrder*
+  commentId: Overload:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithValidId_ReturnsOrder
+  href: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.html#MyApp_Orders_Tests_Repositories_OrderRepositoryTests_GetByIdAsync_WithValidId_ReturnsOrder
+  name: GetByIdAsync_WithValidId_ReturnsOrder
+  nameWithType: OrderRepositoryTests.GetByIdAsync_WithValidId_ReturnsOrder
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithValidId_ReturnsOrder
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull*
+  commentId: Overload:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull
+  href: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.html#MyApp_Orders_Tests_Repositories_OrderRepositoryTests_GetByIdAsync_WithNonExistentId_ReturnsNull
+  name: GetByIdAsync_WithNonExistentId_ReturnsNull
+  nameWithType: OrderRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_WithNonExistentId_ReturnsNull
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_IncludesOrderLines*
+  commentId: Overload:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_IncludesOrderLines
+  href: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.html#MyApp_Orders_Tests_Repositories_OrderRepositoryTests_GetByIdAsync_IncludesOrderLines
+  name: GetByIdAsync_IncludesOrderLines
+  nameWithType: OrderRepositoryTests.GetByIdAsync_IncludesOrderLines
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.GetByIdAsync_IncludesOrderLines
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsAllOrders*
+  commentId: Overload:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsAllOrders
+  href: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.html#MyApp_Orders_Tests_Repositories_OrderRepositoryTests_ListAsync_ReturnsAllOrders
+  name: ListAsync_ReturnsAllOrders
+  nameWithType: OrderRepositoryTests.ListAsync_ReturnsAllOrders
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsAllOrders
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsEmptyList_WhenNoOrders*
+  commentId: Overload:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsEmptyList_WhenNoOrders
+  href: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.html#MyApp_Orders_Tests_Repositories_OrderRepositoryTests_ListAsync_ReturnsEmptyList_WhenNoOrders
+  name: ListAsync_ReturnsEmptyList_WhenNoOrders
+  nameWithType: OrderRepositoryTests.ListAsync_ReturnsEmptyList_WhenNoOrders
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.ListAsync_ReturnsEmptyList_WhenNoOrders
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.AddAsync_WithValidOrder_CreatesOrder*
+  commentId: Overload:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.AddAsync_WithValidOrder_CreatesOrder
+  href: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.html#MyApp_Orders_Tests_Repositories_OrderRepositoryTests_AddAsync_WithValidOrder_CreatesOrder
+  name: AddAsync_WithValidOrder_CreatesOrder
+  nameWithType: OrderRepositoryTests.AddAsync_WithValidOrder_CreatesOrder
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.AddAsync_WithValidOrder_CreatesOrder
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.UpdateAsync_WithExistingOrder_UpdatesOrderData*
+  commentId: Overload:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.UpdateAsync_WithExistingOrder_UpdatesOrderData
+  href: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.html#MyApp_Orders_Tests_Repositories_OrderRepositoryTests_UpdateAsync_WithExistingOrder_UpdatesOrderData
+  name: UpdateAsync_WithExistingOrder_UpdatesOrderData
+  nameWithType: OrderRepositoryTests.UpdateAsync_WithExistingOrder_UpdatesOrderData
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.UpdateAsync_WithExistingOrder_UpdatesOrderData
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithValidId_DeletesOrder*
+  commentId: Overload:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithValidId_DeletesOrder
+  href: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.html#MyApp_Orders_Tests_Repositories_OrderRepositoryTests_DeleteAsync_WithValidId_DeletesOrder
+  name: DeleteAsync_WithValidId_DeletesOrder
+  nameWithType: OrderRepositoryTests.DeleteAsync_WithValidId_DeletesOrder
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithValidId_DeletesOrder
+- uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithNonExistentId_DoesNotThrowException*
+  commentId: Overload:MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithNonExistentId_DoesNotThrowException
+  href: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.html#MyApp_Orders_Tests_Repositories_OrderRepositoryTests_DeleteAsync_WithNonExistentId_DoesNotThrowException
+  name: DeleteAsync_WithNonExistentId_DoesNotThrowException
+  nameWithType: OrderRepositoryTests.DeleteAsync_WithNonExistentId_DoesNotThrowException
+  fullName: MyApp.Orders.Tests.Repositories.OrderRepositoryTests.DeleteAsync_WithNonExistentId_DoesNotThrowException

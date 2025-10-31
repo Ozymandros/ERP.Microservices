@@ -1,0 +1,44 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Infrastructure.Data.Repositories
+  commentId: N:MyApp.Auth.Infrastructure.Data.Repositories
+  id: MyApp.Auth.Infrastructure.Data.Repositories
+  children:
+  - MyApp.Auth.Infrastructure.Data.Repositories.PermissionRepository
+  - MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+  - MyApp.Auth.Infrastructure.Data.Repositories.RoleRepository
+  - MyApp.Auth.Infrastructure.Data.Repositories.UserRepository
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Infrastructure.Data.Repositories
+  nameWithType: MyApp.Auth.Infrastructure.Data.Repositories
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Infrastructure
+references:
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.PermissionRepository
+  commentId: T:MyApp.Auth.Infrastructure.Data.Repositories.PermissionRepository
+  href: MyApp.Auth.Infrastructure.Data.Repositories.PermissionRepository.html
+  name: PermissionRepository
+  nameWithType: PermissionRepository
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.PermissionRepository
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+  commentId: T:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+  href: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.html
+  name: RefreshTokenRepository
+  nameWithType: RefreshTokenRepository
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RoleRepository
+  commentId: T:MyApp.Auth.Infrastructure.Data.Repositories.RoleRepository
+  href: MyApp.Auth.Infrastructure.Data.Repositories.RoleRepository.html
+  name: RoleRepository
+  nameWithType: RoleRepository
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RoleRepository
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.UserRepository
+  commentId: T:MyApp.Auth.Infrastructure.Data.Repositories.UserRepository
+  href: MyApp.Auth.Infrastructure.Data.Repositories.UserRepository.html
+  name: UserRepository
+  nameWithType: UserRepository
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.UserRepository

@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Tests.Services
+  commentId: N:MyApp.Auth.Tests.Services
+  id: MyApp.Auth.Tests.Services
+  children:
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Tests.Services
+  nameWithType: MyApp.Auth.Tests.Services
+  fullName: MyApp.Auth.Tests.Services
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+references:
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  commentId: T:MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html
+  name: JwtTokenProviderTests
+  nameWithType: JwtTokenProviderTests
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests

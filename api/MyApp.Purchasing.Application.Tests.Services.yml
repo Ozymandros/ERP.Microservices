@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Application.Tests.Services
+  commentId: N:MyApp.Purchasing.Application.Tests.Services
+  id: MyApp.Purchasing.Application.Tests.Services
+  children:
+  - MyApp.Purchasing.Application.Tests.Services.PurchaseOrderServiceTests
+  - MyApp.Purchasing.Application.Tests.Services.SupplierServiceTests
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Purchasing.Application.Tests.Services
+  nameWithType: MyApp.Purchasing.Application.Tests.Services
+  fullName: MyApp.Purchasing.Application.Tests.Services
+  type: Namespace
+  assemblies:
+  - MyApp.Purchasing.Application.Tests
+references:
+- uid: MyApp.Purchasing.Application.Tests.Services.PurchaseOrderServiceTests
+  commentId: T:MyApp.Purchasing.Application.Tests.Services.PurchaseOrderServiceTests
+  href: MyApp.Purchasing.Application.Tests.Services.PurchaseOrderServiceTests.html
+  name: PurchaseOrderServiceTests
+  nameWithType: PurchaseOrderServiceTests
+  fullName: MyApp.Purchasing.Application.Tests.Services.PurchaseOrderServiceTests
+- uid: MyApp.Purchasing.Application.Tests.Services.SupplierServiceTests
+  commentId: T:MyApp.Purchasing.Application.Tests.Services.SupplierServiceTests
+  href: MyApp.Purchasing.Application.Tests.Services.SupplierServiceTests.html
+  name: SupplierServiceTests
+  nameWithType: SupplierServiceTests
+  fullName: MyApp.Purchasing.Application.Tests.Services.SupplierServiceTests

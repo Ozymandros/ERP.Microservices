@@ -1,9 +1,8 @@
-- name: Home
-  href: README.md
-- name: Quick Start
-  href: QUICK_START_GUIDE.md
+- name: Introduction
+  href: introduction.md
+- name: Getting Started
+  href: getting-started.md
 - name: Guides
-  href: guides/
   items:
     - name: Start Here
       href: guides/00_START_HERE.md
@@ -12,32 +11,164 @@
     - name: Quick Reference
       href: guides/QUICK_REFERENCE.md
 - name: Architecture
-  href: architecture/
   items:
-    - name: Overview
-      href: architecture/README.md
-    - name: Architecture Documentation
+    - name: Architecture Overview
       href: architecture/ARCHITECTURE_DOCUMENTATION.md
     - name: Dependency Mapping
       href: architecture/DEPENDENCY_MAPPING.md
-- name: Deployment
-  href: deployment/
+    - name: README
+      href: architecture/README.md
+- name: Configuration
   items:
-    - name: Overview
-      href: deployment/README.md
-    - name: Deployment Guide
+    - name: App Configuration Integration
+      href: configuration/APP_CONFIGURATION_INTEGRATION.md
+    - name: ICacheService Implementation
+      href: configuration/ICACHESERVICE_IMPLEMENTATION_SUMMARY.md
+    - name: Ocelot Changes Summary
+      href: configuration/OCELOT_CHANGES_SUMMARY.md
+    - name: Ocelot Configuration Remediation
+      href: configuration/OCELOT_CONFIGURATION_REMEDIATION.md
+    - name: Ocelot Remediation Complete
+      href: configuration/OCELOT_REMEDIATION_COMPLETE.md
+    - name: Ocelot Verification Report
+      href: configuration/OCELOT_VERIFICATION_REPORT.md
+- name: Deployment
+  items:
+    - name: Build and Deploy Automation Summary
+      href: deployment/BUILD_AND_DEPLOY_AUTOMATION_SUMMARY.md
+    - name: Build and Deploy Automation
+      href: deployment/BUILD_AND_DEPLOY_AUTOMATION.md
+    - name: Deployment Automation Complete
+      href: deployment/DEPLOYMENT_AUTOMATION_COMPLETE.md
+    - name: Deployment Checklist
+      href: deployment/DEPLOYMENT_CHECKLIST.md
+    - name: Deployment Operations Guide
+      href: deployment/DEPLOYMENT_OPERATIONS_GUIDE.md
+    - name: Deployment Overview
       href: deployment/DEPLOYMENT.md
+    - name: GitHub Actions Architecture
+      href: deployment/GITHUB_ACTIONS_ARCHITECTURE.md
     - name: Pre-Deployment Checklist
       href: deployment/PRE_DEPLOYMENT_CHECKLIST.md
+    - name: Quick Start Build Deploy
+      href: deployment/QUICK_START_BUILD_DEPLOY.md
+    - name: Deployment README
+      href: deployment/README.md
+    - name: Workflows Refactoring October 31
+      href: deployment/WORKFLOWS_REFACTORING_OCTOBER_31.md
+    - name: Workflows Visual Diagrams
+      href: deployment/WORKFLOWS_VISUAL_DIAGRAMS.md
 - name: Infrastructure
-  href: infrastructure/
+  items:
+    - name: Bicep Audit Index
+      href: infrastructure/BICEP_AUDIT_INDEX.md
+    - name: Bicep Audit Visual Summary
+      href: infrastructure/BICEP_AUDIT_VISUAL_SUMMARY.md
+    - name: Bicep Changes Applied
+      href: infrastructure/BICEP_CHANGES_APPLIED.md
+    - name: Bicep Comprehensive Audit
+      href: infrastructure/BICEP_COMPREHENSIVE_AUDIT.md
+    - name: Bicep Deliverables Summary
+      href: infrastructure/BICEP_DELIVERABLES_SUMMARY.md
+    - name: Bicep Docker Compose Mapping
+      href: infrastructure/BICEP_DOCKER_COMPOSE_MAPPING.md
+    - name: Bicep Infrastructure Audit Summary
+      href: infrastructure/BICEP_INFRASTRUCTURE_AUDIT_SUMMARY.md
+    - name: Bicep Quick Checklist
+      href: infrastructure/BICEP_QUICK_CHECKLIST.md
+    - name: Bicep Quick Reference Card
+      href: infrastructure/BICEP_QUICK_REFERENCE_CARD.md
+    - name: Bicep Remediation Guide
+      href: infrastructure/BICEP_REMEDIATION_GUIDE.md
+    - name: Bicep Services Applied
+      href: infrastructure/BICEP_SERVICES_APPLIED.md
+    - name: Bicep Templates
+      href: infrastructure/BICEP_TEMPLATES.md
+    - name: Docker Compose Quick Reference
+      href: infrastructure/DOCKER_COMPOSE_QUICK_REFERENCE.md
+    - name: Docker Compose Remediation Complete
+      href: infrastructure/DOCKER_COMPOSE_REMEDIATION_COMPLETE.md
+    - name: Docker Compose Validation Report
+      href: infrastructure/DOCKER_COMPOSE_VALIDATION_REPORT.md
+    - name: Infrastructure README
+      href: infrastructure/README.md
+- name: Development
+  items:
+    - name: Add Dependencies Guide
+      href: development/add-dependencies.prompt.md
+    - name: Development README
+      href: development/README.md
+- name: Implementation
+  items:
+    - name: Implementation Summary
+      href: implementation/IMPLEMENTATION_SUMMARY.md
+    - name: Phase 2 Summary
+      href: implementation/PHASE_2_COMPLETION_SUMMARY.md
+    - name: Phase 3 Summary
+      href: implementation/PHASE_3_COMPLETION_SUMMARY.md
+    - name: Phase 3B Summary
+      href: implementation/PHASE_3B_COMPLETION_SUMMARY.md
+    - name: Remediation Complete
+      href: implementation/REMEDIATION_COMPLETE.md
 - name: Security
-  href: security/
-- name: Configuration
-  href: configuration/
-- name: Microservices
-  href: microservices/
+  items:
+    - name: Infrastructure Security Assessment
+      href: security/INFRASTRUCTURE_SECURITY_ASSESSMENT.md
+    - name: RBAC Fix Summary
+      href: security/RBAC_FIX_SUMMARY.md
+    - name: Security Fixes Summary
+      href: security/README_SECURITY_FIXES.md
+    - name: Security README
+      href: security/README.md
+    - name: Security Fixes Overview
+      href: security/SECURITY_FIXES_SUMMARY.md
+    - name: Security Identity Best Practices
+      href: security/SECURITY_IDENTITY_BEST_PRACTICES.md
+    - name: Security Remediation Plan
+      href: security/SECURITY_REMEDIATION_PLAN.md
+- name: Reference
+  items:
+    - name: Index
+      href: reference/INDEX.md
+    - name: README
+      href: reference/README.md
 - name: API Gateway
-  href: api-gateway/
+  items:
+    - name: README
+      href: api-gateway/README.md
+- name: Docker Compose
+  items:
+    - name: README
+      href: docker-compose/README.md
+- name: Microservices
+  items:
+    - name: Overview
+      href: microservices/README.md
+- name: Operations
+  items:
+    - name: Best Practices
+      href: operations/README.md
+- name: Additional Documentation
+  items:
+    - name: Build and Deploy Index
+      href: BUILD_AND_DEPLOY_INDEX.md
+    - name: Conventions
+      href: CONVENTIONS.md
+    - name: DocFX Guide
+      href: DOCFX_GUIDE.md
+    - name: Documentation Status
+      href: DOCUMENTATION_STATUS.md
+    - name: File Inventory
+      href: FILE_INVENTORY.md
+    - name: October 31 Update
+      href: OCTOBER_31_DOCUMENTATION_UPDATE.md
+    - name: Quick Start Guide
+      href: QUICK_START_GUIDE.md
+    - name: README
+      href: README.md
+    - name: Session Completion
+      href: SESSION_COMPLETION.md
+    - name: Sitemap
+      href: SITEMAP.md
 - name: API Reference
   href: api/

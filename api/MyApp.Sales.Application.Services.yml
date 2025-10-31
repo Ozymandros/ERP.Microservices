@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Application.Services
+  commentId: N:MyApp.Sales.Application.Services
+  id: MyApp.Sales.Application.Services
+  children:
+  - MyApp.Sales.Application.Services.CustomerService
+  - MyApp.Sales.Application.Services.SalesOrderService
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Sales.Application.Services
+  nameWithType: MyApp.Sales.Application.Services
+  fullName: MyApp.Sales.Application.Services
+  type: Namespace
+  assemblies:
+  - MyApp.Sales.Application
+references:
+- uid: MyApp.Sales.Application.Services.CustomerService
+  commentId: T:MyApp.Sales.Application.Services.CustomerService
+  href: MyApp.Sales.Application.Services.CustomerService.html
+  name: CustomerService
+  nameWithType: CustomerService
+  fullName: MyApp.Sales.Application.Services.CustomerService
+- uid: MyApp.Sales.Application.Services.SalesOrderService
+  commentId: T:MyApp.Sales.Application.Services.SalesOrderService
+  href: MyApp.Sales.Application.Services.SalesOrderService.html
+  name: SalesOrderService
+  nameWithType: SalesOrderService
+  fullName: MyApp.Sales.Application.Services.SalesOrderService

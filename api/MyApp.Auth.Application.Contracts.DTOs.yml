@@ -1,0 +1,158 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Contracts.DTOs
+  commentId: N:MyApp.Auth.Application.Contracts.DTOs
+  id: MyApp.Auth.Application.Contracts.DTOs
+  children:
+  - MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto
+  - MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto
+  - MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+  - MyApp.Auth.Application.Contracts.DTOs.LoginDto
+  - MyApp.Auth.Application.Contracts.DTOs.PermissionDto
+  - MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+  - MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+  - MyApp.Auth.Application.Contracts.DTOs.RoleDto
+  - MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto
+  - MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto
+  - MyApp.Auth.Application.Contracts.DTOs.UpdateUserDto
+  - MyApp.Auth.Application.Contracts.DTOs.UserDto
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Application.Contracts.DTOs
+  nameWithType: MyApp.Auth.Application.Contracts.DTOs
+  fullName: MyApp.Auth.Application.Contracts.DTOs
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+references:
+- uid: MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto.html
+  name: CreatePermissionDto
+  nameWithType: CreatePermissionDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto
+- uid: MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto.html
+  name: ExternalLoginDto
+  nameWithType: ExternalLoginDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+- uid: MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto.html
+  name: RefreshTokenDto
+  nameWithType: RefreshTokenDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+- uid: MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto.html
+  name: CreateRoleDto
+  nameWithType: CreateRoleDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto
+- uid: MyApp.Auth.Application.Contracts.DTOs.RoleDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.RoleDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.RoleDto.html
+  name: RoleDto
+  nameWithType: RoleDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.RoleDto
+- uid: MyApp.Auth.Application.Contracts.DTOs.UpdateUserDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.UpdateUserDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.UpdateUserDto.html
+  name: UpdateUserDto
+  nameWithType: UpdateUserDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.UpdateUserDto
+- uid: MyApp.Auth.Application.Contracts.DTOs.LoginDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.LoginDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.LoginDto.html
+  name: LoginDto
+  nameWithType: LoginDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.LoginDto
+- uid: MyApp.Auth.Application.Contracts.DTOs.PermissionDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.PermissionDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.PermissionDto.html
+  name: PermissionDto
+  nameWithType: PermissionDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.PermissionDto
+- uid: MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.RegisterDto.html
+  name: RegisterDto
+  nameWithType: RegisterDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+- uid: MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto.html
+  name: TokenResponseDto
+  nameWithType: TokenResponseDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto
+- uid: MyApp.Auth.Application.Contracts.DTOs.UserDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.UserDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.UserDto.html
+  name: UserDto
+  nameWithType: UserDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.UserDto
+- uid: MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto.html
+  name: UpdatePermissionDto
+  nameWithType: UpdatePermissionDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto
+- uid: MyApp.Auth.Application.Contracts.DTOs
+  commentId: N:MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Auth.Application.Contracts.DTOs
+  nameWithType: MyApp.Auth.Application.Contracts.DTOs
+  fullName: MyApp.Auth.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Auth.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Auth.Application.Contracts.DTOs.html

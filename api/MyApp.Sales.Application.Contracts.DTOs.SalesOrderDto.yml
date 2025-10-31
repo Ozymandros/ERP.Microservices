@@ -1,0 +1,767 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+  commentId: T:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+  id: SalesOrderDto
+  parent: MyApp.Sales.Application.Contracts.DTOs
+  children:
+  - MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Customer
+  - MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.CustomerId
+  - MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Id
+  - MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Lines
+  - MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderDate
+  - MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderNumber
+  - MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Status
+  - MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.TotalAmount
+  langs:
+  - csharp
+  - vb
+  name: SalesOrderDto
+  nameWithType: SalesOrderDto
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: SalesOrderDto
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+    startLine: 6
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.DTOs
+  syntax:
+    content: public class SalesOrderDto
+    content.vb: Public Class SalesOrderDto
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Id
+  commentId: P:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Id
+  id: Id
+  parent: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: SalesOrderDto.Id
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Id
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Id
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.DTOs
+  syntax:
+    content: public Guid Id { get; set; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public Property Id As Guid
+  overload: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Id*
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderNumber
+  commentId: P:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderNumber
+  id: OrderNumber
+  parent: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+  langs:
+  - csharp
+  - vb
+  name: OrderNumber
+  nameWithType: SalesOrderDto.OrderNumber
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderNumber
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: OrderNumber
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+    startLine: 9
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.DTOs
+  syntax:
+    content: public string OrderNumber { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property OrderNumber As String
+  overload: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderNumber*
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.CustomerId
+  commentId: P:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.CustomerId
+  id: CustomerId
+  parent: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+  langs:
+  - csharp
+  - vb
+  name: CustomerId
+  nameWithType: SalesOrderDto.CustomerId
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.CustomerId
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CustomerId
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+    startLine: 10
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.DTOs
+  syntax:
+    content: public Guid CustomerId { get; set; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public Property CustomerId As Guid
+  overload: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.CustomerId*
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderDate
+  commentId: P:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderDate
+  id: OrderDate
+  parent: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+  langs:
+  - csharp
+  - vb
+  name: OrderDate
+  nameWithType: SalesOrderDto.OrderDate
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderDate
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: OrderDate
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+    startLine: 11
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.DTOs
+  syntax:
+    content: public DateTime OrderDate { get; set; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Public Property OrderDate As Date
+  overload: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderDate*
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Status
+  commentId: P:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Status
+  id: Status
+  parent: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+  langs:
+  - csharp
+  - vb
+  name: Status
+  nameWithType: SalesOrderDto.Status
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Status
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Status
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+    startLine: 12
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.DTOs
+  syntax:
+    content: public int Status { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Status As Integer
+  overload: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Status*
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.TotalAmount
+  commentId: P:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.TotalAmount
+  id: TotalAmount
+  parent: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+  langs:
+  - csharp
+  - vb
+  name: TotalAmount
+  nameWithType: SalesOrderDto.TotalAmount
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.TotalAmount
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: TotalAmount
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+    startLine: 13
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.DTOs
+  syntax:
+    content: public decimal TotalAmount { get; set; }
+    parameters: []
+    return:
+      type: System.Decimal
+    content.vb: Public Property TotalAmount As Decimal
+  overload: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.TotalAmount*
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Customer
+  commentId: P:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Customer
+  id: Customer
+  parent: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+  langs:
+  - csharp
+  - vb
+  name: Customer
+  nameWithType: SalesOrderDto.Customer
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Customer
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Customer
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+    startLine: 14
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.DTOs
+  syntax:
+    content: public CustomerDto? Customer { get; set; }
+    parameters: []
+    return:
+      type: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+    content.vb: Public Property Customer As CustomerDto
+  overload: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Customer*
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Lines
+  commentId: P:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Lines
+  id: Lines
+  parent: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+  langs:
+  - csharp
+  - vb
+  name: Lines
+  nameWithType: SalesOrderDto.Lines
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Lines
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Lines
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/DTOs/SalesOrderDtos.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.DTOs
+  syntax:
+    content: public List<SalesOrderLineDto> Lines { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto}
+    content.vb: Public Property Lines As List(Of SalesOrderLineDto)
+  overload: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Lines*
+references:
+- uid: MyApp.Sales.Application.Contracts.DTOs
+  commentId: N:MyApp.Sales.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Sales.Application.Contracts.DTOs
+  nameWithType: MyApp.Sales.Application.Contracts.DTOs
+  fullName: MyApp.Sales.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts
+    name: Contracts
+    href: MyApp.Sales.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Sales.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts
+    name: Contracts
+    href: MyApp.Sales.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Sales.Application.Contracts.DTOs.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Id*
+  commentId: Overload:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Id
+  href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html#MyApp_Sales_Application_Contracts_DTOs_SalesOrderDto_Id
+  name: Id
+  nameWithType: SalesOrderDto.Id
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Id
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderNumber*
+  commentId: Overload:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderNumber
+  href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html#MyApp_Sales_Application_Contracts_DTOs_SalesOrderDto_OrderNumber
+  name: OrderNumber
+  nameWithType: SalesOrderDto.OrderNumber
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderNumber
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.CustomerId*
+  commentId: Overload:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.CustomerId
+  href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html#MyApp_Sales_Application_Contracts_DTOs_SalesOrderDto_CustomerId
+  name: CustomerId
+  nameWithType: SalesOrderDto.CustomerId
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.CustomerId
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderDate*
+  commentId: Overload:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderDate
+  href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html#MyApp_Sales_Application_Contracts_DTOs_SalesOrderDto_OrderDate
+  name: OrderDate
+  nameWithType: SalesOrderDto.OrderDate
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.OrderDate
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Status*
+  commentId: Overload:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Status
+  href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html#MyApp_Sales_Application_Contracts_DTOs_SalesOrderDto_Status
+  name: Status
+  nameWithType: SalesOrderDto.Status
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Status
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.TotalAmount*
+  commentId: Overload:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.TotalAmount
+  href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html#MyApp_Sales_Application_Contracts_DTOs_SalesOrderDto_TotalAmount
+  name: TotalAmount
+  nameWithType: SalesOrderDto.TotalAmount
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.TotalAmount
+- uid: System.Decimal
+  commentId: T:System.Decimal
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.decimal
+  name: decimal
+  nameWithType: decimal
+  fullName: decimal
+  nameWithType.vb: Decimal
+  fullName.vb: Decimal
+  name.vb: Decimal
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Customer*
+  commentId: Overload:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Customer
+  href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html#MyApp_Sales_Application_Contracts_DTOs_SalesOrderDto_Customer
+  name: Customer
+  nameWithType: SalesOrderDto.Customer
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Customer
+- uid: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+  commentId: T:MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+  parent: MyApp.Sales.Application.Contracts.DTOs
+  href: MyApp.Sales.Application.Contracts.DTOs.CustomerDto.html
+  name: CustomerDto
+  nameWithType: CustomerDto
+  fullName: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Lines*
+  commentId: Overload:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Lines
+  href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html#MyApp_Sales_Application_Contracts_DTOs_SalesOrderDto_Lines
+  name: Lines
+  nameWithType: SalesOrderDto.Lines
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.Lines
+- uid: System.Collections.Generic.List{MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto}
+  commentId: T:System.Collections.Generic.List{MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<SalesOrderLineDto>
+  nameWithType: List<SalesOrderLineDto>
+  fullName: System.Collections.Generic.List<MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto>
+  nameWithType.vb: List(Of SalesOrderLineDto)
+  fullName.vb: System.Collections.Generic.List(Of MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto)
+  name.vb: List(Of SalesOrderLineDto)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto
+    name: SalesOrderLineDto
+    href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto
+    name: SalesOrderLineDto
+    href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

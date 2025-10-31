@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Contracts
+  commentId: N:MyApp.Auth.Application.Contracts
+  id: MyApp.Auth.Application.Contracts
+  children:
+  - MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+  - MyApp.Auth.Application.Contracts.DeleteRolePermissionDto
+  - MyApp.Auth.Application.Contracts.IPermissionService
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Application.Contracts
+  nameWithType: MyApp.Auth.Application.Contracts
+  fullName: MyApp.Auth.Application.Contracts
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+references:
+- uid: MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+  commentId: T:MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+  parent: MyApp.Auth.Application.Contracts
+  href: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.html
+  name: CreateRolePermissionDto
+  nameWithType: CreateRolePermissionDto
+  fullName: MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+- uid: MyApp.Auth.Application.Contracts.DeleteRolePermissionDto
+  commentId: T:MyApp.Auth.Application.Contracts.DeleteRolePermissionDto
+  parent: MyApp.Auth.Application.Contracts
+  href: MyApp.Auth.Application.Contracts.DeleteRolePermissionDto.html
+  name: DeleteRolePermissionDto
+  nameWithType: DeleteRolePermissionDto
+  fullName: MyApp.Auth.Application.Contracts.DeleteRolePermissionDto
+- uid: MyApp.Auth.Application.Contracts.IPermissionService
+  commentId: T:MyApp.Auth.Application.Contracts.IPermissionService
+  parent: MyApp.Auth.Application.Contracts
+  href: MyApp.Auth.Application.Contracts.IPermissionService.html
+  name: IPermissionService
+  nameWithType: IPermissionService
+  fullName: MyApp.Auth.Application.Contracts.IPermissionService
+- uid: MyApp.Auth.Application.Contracts
+  commentId: N:MyApp.Auth.Application.Contracts
+  href: MyApp.html
+  name: MyApp.Auth.Application.Contracts
+  nameWithType: MyApp.Auth.Application.Contracts
+  fullName: MyApp.Auth.Application.Contracts
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html

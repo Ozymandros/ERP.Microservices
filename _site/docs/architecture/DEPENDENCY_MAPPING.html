@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#128202; MAPEO DE DEPENDENCIAS ASPIRE → AZURE BICEP | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#128202; MAPEO DE DEPENDENCIAS ASPIRE → AZURE BICEP | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/architecture/DEPENDENCY_MAPPING.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-mapeo-de-dependencias-aspire--azure-bicep">📊 MAPEO DE DEPENDENCIAS ASPIRE → AZURE BICEP</h1>
+
+<p>Visualización de cómo el código Aspire (<code>Program.cs</code>) se mapea a la infraestructura Bicep.</p>
+<hr>
+<h2 id="-arquitectura-general">🏗️ ARQUITECTURA GENERAL</h2>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│                   ASPIRE HOST (AppHost)                 │
+│  (local development + generates deployment manifests)   │
+└─────────────────────────────────────────────────────────┘
+                            │
+                            │ azd deploy
+                            ↓
+┌─────────────────────────────────────────────────────────┐
+│              AZURE BICEP TEMPLATES                      │
+│  (main.bicep + resource modules)                        │
+└─────────────────────────────────────────────────────────┘
+                            │
+                            │ Executes
+                            ↓
+┌─────────────────────────────────────────────────────────┐
+│              AZURE CONTAINER APPS                       │
+│  (microservices running in production)                  │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h2 id="-mapeo-detallado">📋 MAPEO DETALLADO</h2>
+<h3 id="1-aspire-sql-server-local">1. ASPIRE: SQL SERVER LOCAL</h3>
+<p><strong>Código en Program.cs (línea 36-44):</strong></p>
+<pre><code class="lang-csharp">if (isDeployment)
+{
+    var sqlServer = builder.AddAzureSqlServer(&quot;myapp-sqlserver&quot;);
+    projectBuilder = builder.CreateProjectBuilder();
+}
+else
+{
+    var sqlServer = builder.AddSqlServer(&quot;myapp-sqlserver&quot;, password, 1455)
+        .WithLifetime(ContainerLifetime.Persistent)
+        .WithDataVolume(&quot;sqlserver-data&quot;);
+    projectBuilder = builder.CreateProjectBuilder(sqlServer);
+}
+</code></pre>
+<p><strong>Mapeo a BICEP (main.bicep):</strong></p>
+<pre><code>✅ Existe: infra/myapp-sqlserver/myapp-sqlserver.module.bicep
+</code></pre>
+<p><strong>Recurso Azure creado:</strong></p>
+<pre><code class="lang-bicep">Microsoft.Sql/servers@2023-08-01
+  → nombre: myapp-sqlserver-{uniqueString}
+  → admin: Managed Identity (Azure AD)
+  → firewall: AllowAllAzureIps
+</code></pre>
+<hr>
+<h3 id="2-aspire-redis-cache">2. ASPIRE: REDIS CACHE</h3>
+<p><strong>Código en Program.cs (línea 19-24):</strong></p>
+<pre><code class="lang-csharp">var redis = builder.AddRedis(&quot;cache&quot;)
+    .WithRedisCommander()
+    .WithRedisInsight()
+    .WithDataVolume(&quot;redis-cache&quot;);
+</code></pre>
+<p><strong>Mapeo a BICEP:</strong></p>
+<pre><code>❌ FALTA: infra/core/database/redis.bicep NO se usa en main.bicep
+</code></pre>
+<p><strong>Recurso Azure necesario:</strong></p>
+<pre><code class="lang-bicep">Microsoft.Cache/redis@2023-08-01
+  → nombre: redis-{uniqueString}
+  → SKU: Standard
+  → capacity: 1
+  → Modo SSL/TLS
+</code></pre>
+<hr>
+<h3 id="3-aspire-servicios-microservicios">3. ASPIRE: SERVICIOS MICROSERVICIOS</h3>
+<p><strong>Código en Program.cs (línea 50-56):</strong></p>
+<pre><code class="lang-csharp">var authService = projectBuilder.AddWebProject&lt;Projects.MyApp_Auth_API&gt;(redis, origin, isDeployment, applicationInsights);
+var billingService = projectBuilder.AddWebProject&lt;Projects.MyApp_Billing_API&gt;(redis, origin, isDeployment, applicationInsights);
+// ... 4 servicios más
+</code></pre>
+<p><strong>Mapeo a BICEP:</strong></p>
+<pre><code>❌ FALTA x6:
+  - infra/auth-service/auth-service.module.bicep
+  - infra/billing-service/billing-service.module.bicep
+  - infra/inventory-service/inventory-service.module.bicep
+  - infra/orders-service/orders-service.module.bicep
+  - infra/purchasing-service/purchasing-service.module.bicep
+  - infra/sales-service/sales-service.module.bicep
+</code></pre>
+<p><strong>Recurso Azure necesario (x6):</strong></p>
+<pre><code class="lang-bicep">Microsoft.App/containerApps@2024-02-02-preview
+  → nombre: {serviceName}-service
+    • auth-service
+    • billing-service
+    • inventory-service
+    • orders-service
+    • purchasing-service
+    • sales-service
+  
+  → propiedades:
+    • containerAppsEnvironmentId: CAE
+    • image: {registry}/{serviceName}:latest
+    • ingress: false (solo acceso interno)
+    • env:
+      - ConnectionStrings__DefaultConnection: SQL
+      - Redis__ConnectionString: Redis
+      - Jwt__SecretKey: secret
+      - ApplicationInsights__ConnectionString: AppInsights
+</code></pre>
+<hr>
+<h3 id="4-aspire-api-gateway-ocelot">4. ASPIRE: API GATEWAY (OCELOT)</h3>
+<p><strong>Código en Program.cs (línea 69-85):</strong></p>
+<pre><code class="lang-csharp">if (isDeployment)
+{
+    var apiGateway = builder.AddProject&lt;Projects.ErpApiGateway&gt;(&quot;api-gateway&quot;)
+        .WaitFor(authService)
+        .WaitFor(billingService)
+        // ... wait for all services
+        .WithExternalHttpEndpoints()
+        .WithEnvironment(&quot;OCELOT_ENVIRONMENT&quot;, &quot;Production&quot;)
+        .PublishAsDockerFile();
+}
+</code></pre>
+<p><strong>Mapeo a BICEP:</strong></p>
+<pre><code>❌ FALTA: infra/api-gateway/api-gateway.module.bicep
+</code></pre>
+<p><strong>Recurso Azure necesario:</strong></p>
+<pre><code class="lang-bicep">Microsoft.App/containerApps@2024-02-02-preview
+  → nombre: api-gateway
+  → propiedades:
+    • image: {registry}/erpapigateway:latest
+    • ingress: true (EXTERNAL = punto de entrada público)
+    • port: 8080
+    • env:
+      - OCELOT_ENVIRONMENT: Production
+      - ASPNETCORE_ENVIRONMENT: Production
+    
+  → rutas (ocelot.Production.json):
+    • /auth/* → auth-service:8080
+    • /billing/* → billing-service:8080
+    • /inventory/* → inventory-service:8080
+    • /orders/* → orders-service:8080
+    • /purchasing/* → purchasing-service:8080
+    • /sales/* → sales-service:8080
+</code></pre>
+<hr>
+<h3 id="5-aspire-application-insights">5. ASPIRE: APPLICATION INSIGHTS</h3>
+<p><strong>Código en Program.cs (línea 10-13):</strong></p>
+<pre><code class="lang-csharp">var analyticsWorkspace = isDeployment ? builder
+    .AddAzureLogAnalyticsWorkspace(&quot;MyApp-LogAnalyticsWorkspace&quot;) : null;
+var applicationInsights = isDeployment ? builder
+    .AddAzureApplicationInsights(&quot;MyApp-ApplicationInsights&quot;)
+    .WithLogAnalyticsWorkspace(analyticsWorkspace) : null;
+</code></pre>
+<p><strong>Mapeo a BICEP:</strong></p>
+<pre><code>❌ FALTA: infra/MyApp-ApplicationInsights/MyApp-ApplicationInsights.module.bicep
+❌ FALTA: infra/MyApp-LogAnalyticsWorkspace/MyApp-LogAnalyticsWorkspace.module.bicep
+</code></pre>
+<p><strong>Recursos Azure necesarios:</strong></p>
+<pre><code class="lang-bicep">Microsoft.OperationalInsights/workspaces@2022-10-01
+  → nombre: law-{uniqueString}
+
+Microsoft.Insights/components@2020-02-02
+  → nombre: appins-{uniqueString}
+  → linked: Log Analytics Workspace
+  → Output: connection string
+</code></pre>
+<hr>
+<h3 id="6-aspire-health-checks">6. ASPIRE: HEALTH CHECKS</h3>
+<p><strong>Código en Program.cs (línea 15):</strong></p>
+<pre><code class="lang-csharp">builder.Services.AddHealthChecks();
+</code></pre>
+<p><strong>En AspireProjectBuilder.cs (línea 100):</strong></p>
+<pre><code class="lang-csharp">.WithHttpHealthCheck(path: &quot;/health&quot;, statusCode: 200)
+</code></pre>
+<p><strong>Mapeo a BICEP:</strong></p>
+<pre><code class="lang-bicep"># Cada container app tiene probes:
+probes: [
+  {
+    type: 'Liveness'
+    httpGet: {
+      path: '/health'
+      port: 8080
+      scheme: 'HTTP'
+    }
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    failureThreshold: 3
+  },
+  {
+    type: 'Readiness'
+    httpGet: {
+      path: '/health'
+      port: 8080
+      scheme: 'HTTP'
+    }
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 3
+  }
+]
+</code></pre>
+<p><strong>⚠️ CRÍTICO:</strong> Todos los servicios DEBEN responder en <code>/health</code> endpoint</p>
+<hr>
+<h2 id="-flujo-de-dependencias">🔗 FLUJO DE DEPENDENCIAS</h2>
+<pre><code>main.bicep (orquestador principal)
+    │
+    ├─ resources.bicep
+    │   ├─ Managed Identity
+    │   ├─ Container Registry
+    │   ├─ Log Analytics Workspace
+    │   └─ Container Apps Environment
+    │
+    ├─ MyApp-LogAnalyticsWorkspace.module.bicep
+    │   └─ Log Analytics Workspace
+    │
+    ├─ MyApp-ApplicationInsights.module.bicep
+    │   └─ Application Insights (depende de LAW)
+    │
+    ├─ myapp-sqlserver.module.bicep
+    │   ├─ SQL Server (Azure AD auth)
+    │   └─ Firewall rules
+    │
+    ├─ myapp-sqlserver-roles.module.bicep
+    │   └─ SQL Server roles (depende de SQL Server)
+    │
+    ├─ core/database/redis.bicep
+    │   └─ Redis Cache
+    │
+    ├─ auth-service.module.bicep
+    │   ├─ depende de: SQL Server, Redis, AppInsights, CAE, Registry
+    │   └─ crea: Container App (auth-service)
+    │
+    ├─ billing-service.module.bicep
+    │   └─ idem
+    │
+    ├─ inventory-service.module.bicep
+    │   └─ idem
+    │
+    ├─ orders-service.module.bicep
+    │   └─ idem
+    │
+    ├─ purchasing-service.module.bicep
+    │   └─ idem
+    │
+    ├─ sales-service.module.bicep
+    │   └─ idem
+    │
+    └─ api-gateway.module.bicep
+        ├─ depende de: CAE, Registry, AppInsights
+        └─ crea: Container App (api-gateway) con ingress externa
+</code></pre>
+<hr>
+<h2 id="-orden-de-deployment">🔄 ORDEN DE DEPLOYMENT</h2>
+<p>Bicep despliega automáticamente en orden correcto (resuelve dependencias):</p>
+<pre><code>1️⃣ resources.bicep
+   ↓
+2️⃣ MyApp-LogAnalyticsWorkspace
+   ↓
+3️⃣ MyApp-ApplicationInsights (depende 2)
+   ↓
+4️⃣ myapp-sqlserver
+   ↓
+5️⃣ myapp-sqlserver-roles (depende 4)
+   ↓
+6️⃣ redis
+   ↓
+7️⃣ auth-service (depende 1,3,4,6)
+8️⃣ billing-service (depende 1,3,4,6)
+9️⃣ inventory-service (depende 1,3,4,6)
+🔟 orders-service (depende 1,3,4,6)
+1️⃣1️⃣ purchasing-service (depende 1,3,4,6)
+1️⃣2️⃣ sales-service (depende 1,3,4,6)
+   ↓
+1️⃣3️⃣ api-gateway (depende 1,3 - servicios accesibles internamente)
+</code></pre>
+<hr>
+<h2 id="-matriz-de-acceso-y-permisos">🔐 MATRIZ DE ACCESO Y PERMISOS</h2>
+<table>
+<thead>
+<tr>
+<th>Componente</th>
+<th>Acceso a</th>
+<th>Tipo de auth</th>
+<th>Configurado en Bicep</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Servicios</td>
+<td>SQL Server</td>
+<td>Managed Identity</td>
+<td>❓ Parcial</td>
+</tr>
+<tr>
+<td>Servicios</td>
+<td>Redis</td>
+<td>Connection string + password</td>
+<td>❌ NO</td>
+</tr>
+<tr>
+<td>Servicios</td>
+<td>AppInsights</td>
+<td>Connection string</td>
+<td>❌ NO</td>
+</tr>
+<tr>
+<td>API Gateway</td>
+<td>Servicios</td>
+<td>Internal DNS</td>
+<td>✅ SI (Ocelot)</td>
+</tr>
+<tr>
+<td>Usuarios externos</td>
+<td>API Gateway</td>
+<td>HTTPS/HTTP</td>
+<td>✅ SI (ingress)</td>
+</tr>
+<tr>
+<td>Container Apps</td>
+<td>ACR</td>
+<td>Managed Identity</td>
+<td>✅ SI</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-outputs-de-bicep--variables-de-entorno">📤 OUTPUTS DE BICEP → VARIABLES DE ENTORNO</h2>
+<p>Después del deployment, estos outputs están disponibles para CI/CD o scripts:</p>
+<pre><code>MANAGED_IDENTITY_CLIENT_ID         → Para auth
+MANAGED_IDENTITY_NAME              → Para audit
+AZURE_CONTAINER_REGISTRY_ENDPOINT  → Para push imágenes
+AZURE_CONTAINER_REGISTRY_NAME      → Para pull imágenes
+AZURE_CONTAINER_APPS_ENVIRONMENT_ID → Para refs en Bicep
+AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN → Para service discovery
+MYAPP_SQLSERVER_SQLSERVERFQDN      → Connection string
+MYAPP_APPLICATIONINSIGHTS_APPINSIGHTSCONNECTIONSTRING → Para logging
+API_GATEWAY_URL                    → URL pública (NUEVO)
+AUTH_SERVICE_FQDN                  → Para testing (NUEVO)
+BILLING_SERVICE_FQDN               → Para testing (NUEVO)
+... (más servicios)
+</code></pre>
+<hr>
+<h2 id="-puntos-críticos-de-validación">⚠️ PUNTOS CRÍTICOS DE VALIDACIÓN</h2>
+<h3 id="1-service-discovery-names">1. Service Discovery Names</h3>
+<pre><code>Aspire nombres:        DEBE coincidir con        Bicep nombres:
+auth-service           ←→                        auth-service
+billing-service        ←→                        billing-service
+inventory-service      ←→                        inventory-service
+orders-service         ←→                        orders-service
+purchasing-service     ←→                        purchasing-service
+sales-service          ←→                        sales-service
+api-gateway            ←→                        api-gateway
+</code></pre>
+<p><strong>Validación:</strong> Ocelot <code>ocelot.Production.json</code> usa exactamente estos nombres</p>
+<h3 id="2-port-consistency">2. Port Consistency</h3>
+<pre><code>Local (Aspire):          Production (Bicep):
+localhost:5000 (gateway) ←→ api-gateway:8080
+localhost:5001 (auth)    ←→ auth-service:8080
+localhost:5002 (billing) ←→ billing-service:8080
+... etc
+</code></pre>
+<p><strong>Validación:</strong> Todos los servicios escuchan en puerto 8080 en Container Apps</p>
+<h3 id="3-health-check-paths">3. Health Check Paths</h3>
+<pre><code>Aspire config:                     Bicep liveness probe:
+WithHttpHealthCheck(path: &quot;/health&quot;) ←→ path: '/health'
+statusCode: 200                    ←→ expectedStatus: 200
+</code></pre>
+<p><strong>Validación:</strong> Todos los servicios DEBEN tener endpoint GET <code>/health</code> → 200 OK</p>
+<h3 id="4-environment-variables">4. Environment Variables</h3>
+<pre><code>Program.cs SetEnvironment:              Container App env:
+.WithEnvironment(&quot;Jwt__Issuer&quot;, value)  ←→ Jwt__Issuer: value
+</code></pre>
+<hr>
+<h2 id="-checklist-de-validación">🧪 CHECKLIST DE VALIDACIÓN</h2>
+<p>Antes de <code>azd deploy</code>:</p>
+<ul>
+<li>[ ] Todos los módulos <code>.bicep</code> existen</li>
+<li>[ ] <code>main.bicep</code> llama a todos los módulos</li>
+<li>[ ] Service names coinciden: Aspire = Ocelot routes = Container App names</li>
+<li>[ ] Todos los servicios tienen <code>/health</code> endpoint</li>
+<li>[ ] Todos los Dockerfiles existen</li>
+<li>[ ] Todas las imágenes están en ACR</li>
+<li>[ ] <code>ocelot.Production.json</code> tiene rutas para todos los servicios</li>
+<li>[ ] Variables de entorno configuradas en <code>azure.yaml</code> o <code>.env.local</code></li>
+<li>[ ] Conexión strings para SQL, Redis, AppInsights mapeadas</li>
+<li>[ ] Managed Identities configuradas para SQL Server</li>
+<li>[ ] Health checks retornan 200 OK en todos los servicios</li>
+</ul>
+<hr>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/architecture/DEPENDENCY_MAPPING.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

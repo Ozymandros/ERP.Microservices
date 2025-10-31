@@ -1,0 +1,44 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.API.Controllers
+  commentId: N:MyApp.Auth.API.Controllers
+  id: MyApp.Auth.API.Controllers
+  children:
+  - MyApp.Auth.API.Controllers.AuthController
+  - MyApp.Auth.API.Controllers.PermissionsController
+  - MyApp.Auth.API.Controllers.RolesController
+  - MyApp.Auth.API.Controllers.UsersController
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.API.Controllers
+  nameWithType: MyApp.Auth.API.Controllers
+  fullName: MyApp.Auth.API.Controllers
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.API
+references:
+- uid: MyApp.Auth.API.Controllers.AuthController
+  commentId: T:MyApp.Auth.API.Controllers.AuthController
+  href: MyApp.Auth.API.Controllers.AuthController.html
+  name: AuthController
+  nameWithType: AuthController
+  fullName: MyApp.Auth.API.Controllers.AuthController
+- uid: MyApp.Auth.API.Controllers.PermissionsController
+  commentId: T:MyApp.Auth.API.Controllers.PermissionsController
+  href: MyApp.Auth.API.Controllers.PermissionsController.html
+  name: PermissionsController
+  nameWithType: PermissionsController
+  fullName: MyApp.Auth.API.Controllers.PermissionsController
+- uid: MyApp.Auth.API.Controllers.RolesController
+  commentId: T:MyApp.Auth.API.Controllers.RolesController
+  href: MyApp.Auth.API.Controllers.RolesController.html
+  name: RolesController
+  nameWithType: RolesController
+  fullName: MyApp.Auth.API.Controllers.RolesController
+- uid: MyApp.Auth.API.Controllers.UsersController
+  commentId: T:MyApp.Auth.API.Controllers.UsersController
+  href: MyApp.Auth.API.Controllers.UsersController.html
+  name: UsersController
+  nameWithType: UsersController
+  fullName: MyApp.Auth.API.Controllers.UsersController

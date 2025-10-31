@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Infrastructure.Migrations
+  commentId: N:MyApp.Purchasing.Infrastructure.Migrations
+  id: MyApp.Purchasing.Infrastructure.Migrations
+  children:
+  - MyApp.Purchasing.Infrastructure.Migrations.AuditableEntities
+  - MyApp.Purchasing.Infrastructure.Migrations.InitialPurchasing
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Purchasing.Infrastructure.Migrations
+  nameWithType: MyApp.Purchasing.Infrastructure.Migrations
+  fullName: MyApp.Purchasing.Infrastructure.Migrations
+  type: Namespace
+  assemblies:
+  - MyApp.Purchasing.Infrastructure
+references:
+- uid: MyApp.Purchasing.Infrastructure.Migrations.InitialPurchasing
+  commentId: T:MyApp.Purchasing.Infrastructure.Migrations.InitialPurchasing
+  href: MyApp.Purchasing.Infrastructure.Migrations.InitialPurchasing.html
+  name: InitialPurchasing
+  nameWithType: InitialPurchasing
+  fullName: MyApp.Purchasing.Infrastructure.Migrations.InitialPurchasing
+- uid: MyApp.Purchasing.Infrastructure.Migrations.AuditableEntities
+  commentId: T:MyApp.Purchasing.Infrastructure.Migrations.AuditableEntities
+  href: MyApp.Purchasing.Infrastructure.Migrations.AuditableEntities.html
+  name: AuditableEntities
+  nameWithType: AuditableEntities
+  fullName: MyApp.Purchasing.Infrastructure.Migrations.AuditableEntities

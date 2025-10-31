@@ -1,0 +1,911 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Domain.Repositories.IRoleRepository
+  commentId: T:MyApp.Auth.Domain.Repositories.IRoleRepository
+  id: IRoleRepository
+  parent: MyApp.Auth.Domain.Repositories
+  children:
+  - MyApp.Auth.Domain.Repositories.IRoleRepository.GetByNameAsync(System.String)
+  - MyApp.Auth.Domain.Repositories.IRoleRepository.GetPermissionsForRoleAsync(System.Guid)
+  - MyApp.Auth.Domain.Repositories.IRoleRepository.GetRolesByUserIdAsync(System.Guid)
+  - MyApp.Auth.Domain.Repositories.IRoleRepository.NameExistsAsync(System.String)
+  langs:
+  - csharp
+  - vb
+  name: IRoleRepository
+  nameWithType: IRoleRepository
+  fullName: MyApp.Auth.Domain.Repositories.IRoleRepository
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Repositories/IRoleRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: IRoleRepository
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Repositories/IRoleRepository.cs
+    startLine: 5
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Repositories
+  syntax:
+    content: 'public interface IRoleRepository : IRepository<ApplicationRole, Guid>'
+    content.vb: Public Interface IRoleRepository Inherits IRepository(Of ApplicationRole, Guid)
+  inheritedMembers:
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetByIdAsync(System.Guid)
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetAllAsync
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.AddAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.UpdateAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.DeleteAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+- uid: MyApp.Auth.Domain.Repositories.IRoleRepository.GetByNameAsync(System.String)
+  commentId: M:MyApp.Auth.Domain.Repositories.IRoleRepository.GetByNameAsync(System.String)
+  id: GetByNameAsync(System.String)
+  parent: MyApp.Auth.Domain.Repositories.IRoleRepository
+  langs:
+  - csharp
+  - vb
+  name: GetByNameAsync(string)
+  nameWithType: IRoleRepository.GetByNameAsync(string)
+  fullName: MyApp.Auth.Domain.Repositories.IRoleRepository.GetByNameAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Repositories/IRoleRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByNameAsync
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Repositories/IRoleRepository.cs
+    startLine: 7
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Repositories
+  syntax:
+    content: Task<ApplicationRole?> GetByNameAsync(string name)
+    parameters:
+    - id: name
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Domain.Entities.ApplicationRole}
+    content.vb: Function GetByNameAsync(name As String) As Task(Of ApplicationRole)
+  overload: MyApp.Auth.Domain.Repositories.IRoleRepository.GetByNameAsync*
+  nameWithType.vb: IRoleRepository.GetByNameAsync(String)
+  fullName.vb: MyApp.Auth.Domain.Repositories.IRoleRepository.GetByNameAsync(String)
+  name.vb: GetByNameAsync(String)
+- uid: MyApp.Auth.Domain.Repositories.IRoleRepository.NameExistsAsync(System.String)
+  commentId: M:MyApp.Auth.Domain.Repositories.IRoleRepository.NameExistsAsync(System.String)
+  id: NameExistsAsync(System.String)
+  parent: MyApp.Auth.Domain.Repositories.IRoleRepository
+  langs:
+  - csharp
+  - vb
+  name: NameExistsAsync(string)
+  nameWithType: IRoleRepository.NameExistsAsync(string)
+  fullName: MyApp.Auth.Domain.Repositories.IRoleRepository.NameExistsAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Repositories/IRoleRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: NameExistsAsync
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Repositories/IRoleRepository.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Repositories
+  syntax:
+    content: Task<bool> NameExistsAsync(string name)
+    parameters:
+    - id: name
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function NameExistsAsync(name As String) As Task(Of Boolean)
+  overload: MyApp.Auth.Domain.Repositories.IRoleRepository.NameExistsAsync*
+  nameWithType.vb: IRoleRepository.NameExistsAsync(String)
+  fullName.vb: MyApp.Auth.Domain.Repositories.IRoleRepository.NameExistsAsync(String)
+  name.vb: NameExistsAsync(String)
+- uid: MyApp.Auth.Domain.Repositories.IRoleRepository.GetRolesByUserIdAsync(System.Guid)
+  commentId: M:MyApp.Auth.Domain.Repositories.IRoleRepository.GetRolesByUserIdAsync(System.Guid)
+  id: GetRolesByUserIdAsync(System.Guid)
+  parent: MyApp.Auth.Domain.Repositories.IRoleRepository
+  langs:
+  - csharp
+  - vb
+  name: GetRolesByUserIdAsync(Guid)
+  nameWithType: IRoleRepository.GetRolesByUserIdAsync(Guid)
+  fullName: MyApp.Auth.Domain.Repositories.IRoleRepository.GetRolesByUserIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Repositories/IRoleRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetRolesByUserIdAsync
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Repositories/IRoleRepository.cs
+    startLine: 9
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Repositories
+  syntax:
+    content: Task<IEnumerable<ApplicationRole>> GetRolesByUserIdAsync(Guid userId)
+    parameters:
+    - id: userId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Domain.Entities.ApplicationRole}}
+    content.vb: Function GetRolesByUserIdAsync(userId As Guid) As Task(Of IEnumerable(Of ApplicationRole))
+  overload: MyApp.Auth.Domain.Repositories.IRoleRepository.GetRolesByUserIdAsync*
+- uid: MyApp.Auth.Domain.Repositories.IRoleRepository.GetPermissionsForRoleAsync(System.Guid)
+  commentId: M:MyApp.Auth.Domain.Repositories.IRoleRepository.GetPermissionsForRoleAsync(System.Guid)
+  id: GetPermissionsForRoleAsync(System.Guid)
+  parent: MyApp.Auth.Domain.Repositories.IRoleRepository
+  langs:
+  - csharp
+  - vb
+  name: GetPermissionsForRoleAsync(Guid)
+  nameWithType: IRoleRepository.GetPermissionsForRoleAsync(Guid)
+  fullName: MyApp.Auth.Domain.Repositories.IRoleRepository.GetPermissionsForRoleAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Repositories/IRoleRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPermissionsForRoleAsync
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Repositories/IRoleRepository.cs
+    startLine: 10
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Repositories
+  syntax:
+    content: Task<IEnumerable<Permission>> GetPermissionsForRoleAsync(Guid roleId)
+    parameters:
+    - id: roleId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Permission}}
+    content.vb: Function GetPermissionsForRoleAsync(roleId As Guid) As Task(Of IEnumerable(Of Permission))
+  overload: MyApp.Auth.Domain.Repositories.IRoleRepository.GetPermissionsForRoleAsync*
+references:
+- uid: MyApp.Auth.Domain.Repositories
+  commentId: N:MyApp.Auth.Domain.Repositories
+  href: MyApp.html
+  name: MyApp.Auth.Domain.Repositories
+  nameWithType: MyApp.Auth.Domain.Repositories
+  fullName: MyApp.Auth.Domain.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Repositories
+    name: Repositories
+    href: MyApp.Auth.Domain.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Repositories
+    name: Repositories
+    href: MyApp.Auth.Domain.Repositories.html
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetByIdAsync(System.Guid)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetByIdAsync(System.Guid)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: GetByIdAsync(Guid)
+  nameWithType: IRepository<ApplicationRole, Guid>.GetByIdAsync(Guid)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Auth.Domain.Entities.ApplicationRole, System.Guid>.GetByIdAsync(System.Guid)
+  nameWithType.vb: IRepository(Of ApplicationRole, Guid).GetByIdAsync(Guid)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Auth.Domain.Entities.ApplicationRole, System.Guid).GetByIdAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetAllAsync
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetAllAsync
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+  name: GetAllAsync()
+  nameWithType: IRepository<ApplicationRole, Guid>.GetAllAsync()
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Auth.Domain.Entities.ApplicationRole, System.Guid>.GetAllAsync()
+  nameWithType.vb: IRepository(Of ApplicationRole, Guid).GetAllAsync()
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Auth.Domain.Entities.ApplicationRole, System.Guid).GetAllAsync()
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetAllAsync
+    name: GetAllAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetAllAsync
+    name: GetAllAsync
+  - name: (
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: GetAllPaginatedAsync(int, int)
+  nameWithType: IRepository<ApplicationRole, Guid>.GetAllPaginatedAsync(int, int)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Auth.Domain.Entities.ApplicationRole, System.Guid>.GetAllPaginatedAsync(int, int)
+  nameWithType.vb: IRepository(Of ApplicationRole, Guid).GetAllPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Auth.Domain.Entities.ApplicationRole, System.Guid).GetAllPaginatedAsync(Integer, Integer)
+  name.vb: GetAllPaginatedAsync(Integer, Integer)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.AddAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.AddAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  name: AddAsync(ApplicationRole)
+  nameWithType: IRepository<ApplicationRole, Guid>.AddAsync(ApplicationRole)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Auth.Domain.Entities.ApplicationRole, System.Guid>.AddAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+  nameWithType.vb: IRepository(Of ApplicationRole, Guid).AddAsync(ApplicationRole)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Auth.Domain.Entities.ApplicationRole, System.Guid).AddAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.AddAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+    name: AddAsync
+  - name: (
+  - uid: MyApp.Auth.Domain.Entities.ApplicationRole
+    name: ApplicationRole
+    href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.AddAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+    name: AddAsync
+  - name: (
+  - uid: MyApp.Auth.Domain.Entities.ApplicationRole
+    name: ApplicationRole
+    href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.UpdateAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.UpdateAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  name: UpdateAsync(ApplicationRole)
+  nameWithType: IRepository<ApplicationRole, Guid>.UpdateAsync(ApplicationRole)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Auth.Domain.Entities.ApplicationRole, System.Guid>.UpdateAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+  nameWithType.vb: IRepository(Of ApplicationRole, Guid).UpdateAsync(ApplicationRole)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Auth.Domain.Entities.ApplicationRole, System.Guid).UpdateAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.UpdateAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+    name: UpdateAsync
+  - name: (
+  - uid: MyApp.Auth.Domain.Entities.ApplicationRole
+    name: ApplicationRole
+    href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.UpdateAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+    name: UpdateAsync
+  - name: (
+  - uid: MyApp.Auth.Domain.Entities.ApplicationRole
+    name: ApplicationRole
+    href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.DeleteAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.DeleteAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  name: DeleteAsync(ApplicationRole)
+  nameWithType: IRepository<ApplicationRole, Guid>.DeleteAsync(ApplicationRole)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Auth.Domain.Entities.ApplicationRole, System.Guid>.DeleteAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+  nameWithType.vb: IRepository(Of ApplicationRole, Guid).DeleteAsync(ApplicationRole)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Auth.Domain.Entities.ApplicationRole, System.Guid).DeleteAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.DeleteAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+    name: DeleteAsync
+  - name: (
+  - uid: MyApp.Auth.Domain.Entities.ApplicationRole
+    name: ApplicationRole
+    href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}.DeleteAsync(MyApp.Auth.Domain.Entities.ApplicationRole)
+    name: DeleteAsync
+  - name: (
+  - uid: MyApp.Auth.Domain.Entities.ApplicationRole
+    name: ApplicationRole
+    href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  name: GetByIdAsync(TKey)
+  nameWithType: IRepository<TEntity, TKey>.GetByIdAsync(TKey)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.GetByIdAsync(TKey)
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetByIdAsync(TKey)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).GetByIdAsync(TKey)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+    name: GetByIdAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - name: TKey
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+    name: GetByIdAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - name: TKey
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}
+  commentId: T:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.ApplicationRole,System.Guid}
+  parent: MyApp.Shared.Domain.Repositories
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  name: IRepository<ApplicationRole, Guid>
+  nameWithType: IRepository<ApplicationRole, Guid>
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Auth.Domain.Entities.ApplicationRole, System.Guid>
+  nameWithType.vb: IRepository(Of ApplicationRole, Guid)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Auth.Domain.Entities.ApplicationRole, System.Guid)
+  name.vb: IRepository(Of ApplicationRole, Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+  - name: <
+  - uid: MyApp.Auth.Domain.Entities.ApplicationRole
+    name: ApplicationRole
+    href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Domain.Entities.ApplicationRole
+    name: ApplicationRole
+    href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  name: GetAllAsync()
+  nameWithType: IRepository<TEntity, TKey>.GetAllAsync()
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.GetAllAsync()
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetAllAsync()
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).GetAllAsync()
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  isExternal: true
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllPaginatedAsync(int, int)
+  nameWithType: IRepository<TEntity, TKey>.GetAllPaginatedAsync(int, int)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.GetAllPaginatedAsync(int, int)
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetAllPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).GetAllPaginatedAsync(Integer, Integer)
+  name.vb: GetAllPaginatedAsync(Integer, Integer)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  name: AddAsync(TEntity)
+  nameWithType: IRepository<TEntity, TKey>.AddAsync(TEntity)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.AddAsync(TEntity)
+  nameWithType.vb: IRepository(Of TEntity, TKey).AddAsync(TEntity)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).AddAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+    name: AddAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+    name: AddAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  name: UpdateAsync(TEntity)
+  nameWithType: IRepository<TEntity, TKey>.UpdateAsync(TEntity)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.UpdateAsync(TEntity)
+  nameWithType.vb: IRepository(Of TEntity, TKey).UpdateAsync(TEntity)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).UpdateAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+    name: UpdateAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+    name: UpdateAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  name: DeleteAsync(TEntity)
+  nameWithType: IRepository<TEntity, TKey>.DeleteAsync(TEntity)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.DeleteAsync(TEntity)
+  nameWithType.vb: IRepository(Of TEntity, TKey).DeleteAsync(TEntity)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).DeleteAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+    name: DeleteAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+    name: DeleteAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2
+  commentId: T:MyApp.Shared.Domain.Repositories.IRepository`2
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  name: IRepository<TEntity, TKey>
+  nameWithType: IRepository<TEntity, TKey>
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>
+  nameWithType.vb: IRepository(Of TEntity, TKey)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey)
+  name.vb: IRepository(Of TEntity, TKey)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories
+  commentId: N:MyApp.Shared.Domain.Repositories
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Repositories
+  nameWithType: MyApp.Shared.Domain.Repositories
+  fullName: MyApp.Shared.Domain.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Repositories
+    name: Repositories
+    href: MyApp.Shared.Domain.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Repositories
+    name: Repositories
+    href: MyApp.Shared.Domain.Repositories.html
+- uid: MyApp.Auth.Domain.Repositories.IRoleRepository.GetByNameAsync*
+  commentId: Overload:MyApp.Auth.Domain.Repositories.IRoleRepository.GetByNameAsync
+  href: MyApp.Auth.Domain.Repositories.IRoleRepository.html#MyApp_Auth_Domain_Repositories_IRoleRepository_GetByNameAsync_System_String_
+  name: GetByNameAsync
+  nameWithType: IRoleRepository.GetByNameAsync
+  fullName: MyApp.Auth.Domain.Repositories.IRoleRepository.GetByNameAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{MyApp.Auth.Domain.Entities.ApplicationRole}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Auth.Domain.Entities.ApplicationRole}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ApplicationRole>
+  nameWithType: Task<ApplicationRole>
+  fullName: System.Threading.Tasks.Task<MyApp.Auth.Domain.Entities.ApplicationRole>
+  nameWithType.vb: Task(Of ApplicationRole)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Auth.Domain.Entities.ApplicationRole)
+  name.vb: Task(Of ApplicationRole)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Auth.Domain.Entities.ApplicationRole
+    name: ApplicationRole
+    href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Domain.Entities.ApplicationRole
+    name: ApplicationRole
+    href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Domain.Repositories.IRoleRepository.NameExistsAsync*
+  commentId: Overload:MyApp.Auth.Domain.Repositories.IRoleRepository.NameExistsAsync
+  href: MyApp.Auth.Domain.Repositories.IRoleRepository.html#MyApp_Auth_Domain_Repositories_IRoleRepository_NameExistsAsync_System_String_
+  name: NameExistsAsync
+  nameWithType: IRoleRepository.NameExistsAsync
+  fullName: MyApp.Auth.Domain.Repositories.IRoleRepository.NameExistsAsync
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: MyApp.Auth.Domain.Repositories.IRoleRepository.GetRolesByUserIdAsync*
+  commentId: Overload:MyApp.Auth.Domain.Repositories.IRoleRepository.GetRolesByUserIdAsync
+  href: MyApp.Auth.Domain.Repositories.IRoleRepository.html#MyApp_Auth_Domain_Repositories_IRoleRepository_GetRolesByUserIdAsync_System_Guid_
+  name: GetRolesByUserIdAsync
+  nameWithType: IRoleRepository.GetRolesByUserIdAsync
+  fullName: MyApp.Auth.Domain.Repositories.IRoleRepository.GetRolesByUserIdAsync
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Domain.Entities.ApplicationRole}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Domain.Entities.ApplicationRole}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<ApplicationRole>>
+  nameWithType: Task<IEnumerable<ApplicationRole>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Auth.Domain.Entities.ApplicationRole>>
+  nameWithType.vb: Task(Of IEnumerable(Of ApplicationRole))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Auth.Domain.Entities.ApplicationRole))
+  name.vb: Task(Of IEnumerable(Of ApplicationRole))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Auth.Domain.Entities.ApplicationRole
+    name: ApplicationRole
+    href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Domain.Entities.ApplicationRole
+    name: ApplicationRole
+    href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  - name: )
+  - name: )
+- uid: MyApp.Auth.Domain.Repositories.IRoleRepository.GetPermissionsForRoleAsync*
+  commentId: Overload:MyApp.Auth.Domain.Repositories.IRoleRepository.GetPermissionsForRoleAsync
+  href: MyApp.Auth.Domain.Repositories.IRoleRepository.html#MyApp_Auth_Domain_Repositories_IRoleRepository_GetPermissionsForRoleAsync_System_Guid_
+  name: GetPermissionsForRoleAsync
+  nameWithType: IRoleRepository.GetPermissionsForRoleAsync
+  fullName: MyApp.Auth.Domain.Repositories.IRoleRepository.GetPermissionsForRoleAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Permission}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Permission}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<Permission>>
+  nameWithType: Task<IEnumerable<Permission>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Permission>>
+  nameWithType.vb: Task(Of IEnumerable(Of Permission))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of Permission))
+  name.vb: Task(Of IEnumerable(Of Permission))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Permission
+    name: Permission
+    href: Permission.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Permission
+    name: Permission
+    href: Permission.html
+  - name: )
+  - name: )

@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#128203; Documentation Conventions &amp; Standards | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#128203; Documentation Conventions &amp; Standards | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/CONVENTIONS.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-documentation-conventions--standards">📋 Documentation Conventions &amp; Standards</h1>
+
+<p><strong>Document Format, Standards &amp; Best Practices</strong><br>
+Last Updated: October 27, 2025</p>
+<hr>
+<h2 id="-document-structure-template">📐 <strong>Document Structure Template</strong></h2>
+<p>All documentation should follow this structure:</p>
+<h3 id="header-section-required">Header Section (Required)</h3>
+<pre><code class="lang-markdown"># [TITLE]
+
+**Purpose:** One-line description  
+**Audience:** Who should read this  
+**Prerequisites:** What to know first  
+**Last Updated:** Date  
+**Status:** ✅ Complete | ⏳ In Progress | 📌 Planned
+</code></pre>
+<h3 id="navigation-section-recommended">Navigation Section (Recommended)</h3>
+<pre><code class="lang-markdown">---
+
+## 📍 Quick Navigation
+
+**Related Documents:**
+- [Link 1](path/file.md)
+- [Link 2](path/file.md)
+
+**Previous:** [Prev Doc](path/prev.md) | **Next:** [Next Doc](path/next.md)
+
+---
+</code></pre>
+<h3 id="content-sections">Content Sections</h3>
+<ul>
+<li>Overview</li>
+<li>Table of Contents (if &gt; 1000 words)</li>
+<li>Main Content (broken into logical sections)</li>
+<li>Examples</li>
+<li>Troubleshooting</li>
+<li>Related Resources</li>
+</ul>
+<h3 id="footer-section-required">Footer Section (Required)</h3>
+<pre><code class="lang-markdown">---
+
+## 📞 Questions or Issues?
+
+- **Something unclear?** Check related documents above
+- **Found an error?** Submit a fix
+- **Have a question?** See [FAQ](../reference/GLOSSARY.md)
+
+**Last Updated:** October 27, 2025  
+**Maintained By:** [Team Name]  
+**Contributing:** [See CONTRIBUTING.md]
+</code></pre>
+<hr>
+<h2 id="-naming-conventions">🏷️ <strong>Naming Conventions</strong></h2>
+<h3 id="file-names">File Names</h3>
+<p><strong>Pattern:</strong> <code>CATEGORY_SUBCATEGORY.md</code> or <code>SPECIFIC_TOPIC.md</code></p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>✅ <code>ARCHITECTURE_OVERVIEW.md</code></li>
+<li>✅ <code>OCELOT_CONFIGURATION.md</code></li>
+<li>✅ <code>DEVELOPMENT_SETUP.md</code></li>
+<li>❌ <code>setup.md</code> (not descriptive enough)</li>
+<li>❌ <code>architecture overview.md</code> (spaces, lowercase)</li>
+<li>❌ <code>arch_overview.md</code> (abbreviated, confusing)</li>
+</ul>
+<p><strong>Special Files:</strong></p>
+<ul>
+<li><code>README.md</code> - Category overview or main entry point</li>
+<li><code>TROUBLESHOOTING.md</code> - Problem solving guide</li>
+<li><code>GLOSSARY.md</code> - Terms and definitions</li>
+<li><code>INDEX.md</code> - Cross-references and quick links</li>
+</ul>
+<h3 id="heading-hierarchy">Heading Hierarchy</h3>
+<pre><code class="lang-markdown"># Main Title (H1)
+## Major Section (H2)
+### Subsection (H3)
+#### Detail (H4)
+##### Sub-detail (H5)
+###### Minimal use (H6)
+</code></pre>
+<p><strong>Rules:</strong></p>
+<ul>
+<li>Use H1 once at top</li>
+<li>Use H2 for major sections</li>
+<li>Use H3 for subsections</li>
+<li>Don't skip levels (H2 → H4 is wrong)</li>
+<li>Maximum 3 levels deep for readability</li>
+</ul>
+<hr>
+<h2 id="-formatting-standards">🎨 <strong>Formatting Standards</strong></h2>
+<h3 id="emphasis">Emphasis</h3>
+<pre><code class="lang-markdown">**Bold text** - Important terms, button names, file names
+*Italic text* - Emphasis, variable names, technical terms
+`Code` - Inline code, commands, file paths, variable names
+***Bold italic*** - Critical emphasis (rare)
+</code></pre>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>✅ Click the <strong>Deploy</strong> button</li>
+<li>✅ Set the <code>REDIS_PASSWORD</code> environment variable</li>
+<li>✅ The <em>service</em> must be running</li>
+<li>✅ Use <code>docker compose up</code> to start</li>
+</ul>
+<h3 id="code-blocks">Code Blocks</h3>
+<p><strong>Proper Format:</strong></p>
+<pre><code class="lang-markdown">```language
+code here
+```
+</code></pre>
+<p><strong>Common Languages:</strong></p>
+<ul>
+<li><code>bash</code> / <code>shell</code> - Terminal/PowerShell commands</li>
+<li><code>csharp</code> / <code>cs</code> - C# code</li>
+<li><code>json</code> - JSON configuration</li>
+<li><code>yaml</code> - YAML files</li>
+<li><code>sql</code> - SQL queries</li>
+<li><code>http</code> - HTTP requests</li>
+<li><code>xml</code> - XML files</li>
+<li><code>dockerfile</code> - Docker files</li>
+<li><code>bicep</code> - Bicep templates</li>
+<li><code>markdown</code> - Markdown examples</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<pre><code class="lang-bash"># Good - Command with comment
+docker compose up -d
+</code></pre>
+<pre><code class="lang-csharp">// Good - C# code with context
+public class UserService
+{
+    public async Task&lt;User&gt; GetUserAsync(int id)
+    {
+        return await _repository.GetUserAsync(id);
+    }
+}
+</code></pre>
+<h3 id="lists">Lists</h3>
+<p><strong>Unordered (Bullets):</strong></p>
+<ul>
+<li>Use for: Sets, collections, non-sequential items</li>
+<li>Prefix with <code>-</code> or <code>*</code></li>
+<li>Indent with 2 spaces for nesting</li>
+</ul>
+<p><strong>Ordered (Numbered):</strong></p>
+<ul>
+<li>Use for: Steps, procedures, sequences</li>
+<li>Prefix with <code>1.</code>, <code>2.</code>, etc.</li>
+<li>Indent with 2 spaces for nesting</li>
+</ul>
+<p><strong>Definition Lists:</strong></p>
+<pre><code class="lang-markdown">**Term:** Definition or explanation
+**Another Term:** Its definition
+</code></pre>
+<hr>
+<h2 id="-linking-standards">🔗 <strong>Linking Standards</strong></h2>
+<h3 id="internal-links">Internal Links</h3>
+<p><strong>Format:</strong> <code>[Display Text](relative/path/to/file.md)</code></p>
+<p><strong>Examples:</strong></p>
+<pre><code class="lang-markdown"># Good - Relative paths
+See [Architecture Overview](../architecture/ARCHITECTURE_OVERVIEW.md)
+Read [Security Best Practices](../security/BEST_PRACTICES.md)
+Check [Troubleshooting Index](../reference/TROUBLESHOOTING_INDEX.md)
+
+# Good - Anchor links (section references)
+See [Authentication](#authentication) section below
+Jump to [Installation](#installation)
+
+# Bad - Absolute paths
+See /Users/name/docs/file.md
+See c:\Projects\file.md
+
+# Bad - External links in same project
+See https://github.com/.../docs/file.md
+</code></pre>
+<h3 id="heading-anchors">Heading Anchors</h3>
+<p>Automatic in most renderers. Reference with:</p>
+<pre><code class="lang-markdown">[Jump to section](#section-heading)
+</code></pre>
+<p>Heading &quot;## My Section&quot; → anchor <code>#my-section</code></p>
+<h3 id="external-links">External Links</h3>
+<p><strong>Format:</strong> <code>[Display Text](https://full-url)</code></p>
+<p><strong>Examples:</strong></p>
+<pre><code class="lang-markdown">Learn more: [Azure Documentation](https://learn.microsoft.com/azure)
+Reference: [DAPR Docs](https://dapr.io/docs/)
+Tool: [Docker](https://www.docker.com/)
+</code></pre>
+<hr>
+<h2 id="-table-standards">📊 <strong>Table Standards</strong></h2>
+<h3 id="basic-table">Basic Table</h3>
+<pre><code class="lang-markdown">| Header 1 | Header 2 | Header 3 |
+|----------|----------|----------|
+| Data 1   | Data 2   | Data 3   |
+| Data 4   | Data 5   | Data 6   |
+</code></pre>
+<h3 id="aligned-columns">Aligned Columns</h3>
+<pre><code class="lang-markdown">| Left | Center | Right |
+|:-----|:------:|------:|
+| L    | C      | R     |
+</code></pre>
+<h3 id="status-table">Status Table</h3>
+<pre><code class="lang-markdown">| Item | Status | Notes |
+|------|--------|-------|
+| Feature A | ✅ Complete | Ready for use |
+| Feature B | ⏳ In Progress | Est. 2 weeks |
+| Feature C | 📌 Planned | Q4 2025 |
+</code></pre>
+<hr>
+<h2 id="-status-badges">🏳️ <strong>Status Badges</strong></h2>
+<h3 id="document-status">Document Status</h3>
+<pre><code class="lang-markdown">**Status:** ✅ Complete | ⏳ In Progress | 📌 Planned | ⚠️ Outdated
+</code></pre>
+<h3 id="feature-status">Feature Status</h3>
+<pre><code class="lang-markdown">- ✅ Implemented
+- ⏳ In Progress
+- 📌 Planned
+- 🔄 Under Review
+- ❌ Deprecated
+- ⚠️ Needs Update
+</code></pre>
+<h3 id="compatibility">Compatibility</h3>
+<pre><code class="lang-markdown">- ✅ .NET 9.0+
+- ✅ Docker Desktop 4.0+
+- ✅ Azure Container Apps
+- ❌ .NET 8.0 (not supported)
+</code></pre>
+<hr>
+<h2 id="-special-callout-boxes">💡 <strong>Special Callout Boxes</strong></h2>
+<h3 id="tip-optional-information">Tip (Optional Information)</h3>
+<pre><code class="lang-markdown">&gt; 💡 **Tip:** Use this helpful shortcut for faster development.
+</code></pre>
+<h3 id="note-important-but-not-critical">Note (Important but not critical)</h3>
+<pre><code class="lang-markdown">&gt; 📝 **Note:** This configuration is environment-specific.
+</code></pre>
+<h3 id="warning-important">Warning (Important!)</h3>
+<pre><code class="lang-markdown">&gt; ⚠️ **Warning:** This action cannot be undone!
+</code></pre>
+<h3 id="critical-stop-and-read">Critical (Stop and read!)</h3>
+<pre><code class="lang-markdown">&gt; 🚨 **CRITICAL:** Failure to follow this will cause data loss!
+</code></pre>
+<h3 id="example">Example</h3>
+<pre><code class="lang-markdown">&gt; 📌 **Example:** Here's how to do this correctly...
+</code></pre>
+<h3 id="security">Security</h3>
+<pre><code class="lang-markdown">&gt; 🔒 **Security:** Never commit secrets to version control.
+</code></pre>
+<hr>
+<h2 id="-code-examples">📝 <strong>Code Examples</strong></h2>
+<h3 id="minimal-examples">Minimal Examples</h3>
+<pre><code class="lang-markdown">Quick example (1-3 lines):
+​```bash
+command here
+​```
+
+**Result:**
+Output description
+</code></pre>
+<h3 id="complete-examples">Complete Examples</h3>
+<pre><code class="lang-markdown">**Full Example:**
+​```csharp
+// Full implementation with context
+public class Example
+{
+    // Details...
+}
+​```
+
+**Explanation:**
+Line-by-line explanation of important parts
+</code></pre>
+<h3 id="beforeafter-examples">Before/After Examples</h3>
+<pre><code class="lang-markdown">**Before (Wrong):**
+​```csharp
+// Incorrect implementation
+​```
+
+**After (Correct):**
+​```csharp
+// Correct implementation
+​```
+
+**Key Differences:**
+- Point 1
+- Point 2
+</code></pre>
+<hr>
+<h2 id="-diagrams--visual-aids">📸 <strong>Diagrams &amp; Visual Aids</strong></h2>
+<h3 id="mermaid-diagrams">Mermaid Diagrams</h3>
+<pre><code class="lang-markdown">​```mermaid
+graph TD
+    A[Node A] --&gt;|Label| B[Node B]
+    B --&gt; C{Decision}
+    C --&gt;|Yes| D[Result Yes]
+    C --&gt;|No| E[Result No]
+​```
+</code></pre>
+<h3 id="flowcharts">Flowcharts</h3>
+<pre><code class="lang-markdown">​```mermaid
+flowchart LR
+    Start([Start]) --&gt; Step1[Step 1]
+    Step1 --&gt; Step2[Step 2]
+    Step2 --&gt; End([End])
+​```
+</code></pre>
+<h3 id="sequence-diagrams">Sequence Diagrams</h3>
+<pre><code class="lang-markdown">​```mermaid
+sequenceDiagram
+    participant Client
+    participant Gateway
+    participant Service
+    Client-&gt;&gt;Gateway: Request
+    Gateway-&gt;&gt;Service: Forward
+    Service--&gt;&gt;Gateway: Response
+    Gateway--&gt;&gt;Client: Return
+​```
+</code></pre>
+<h3 id="tables-instead-of-images">Tables Instead of Images</h3>
+<p>Use markdown tables for comparisons and data:</p>
+<pre><code class="lang-markdown">| Feature | Description | Status |
+|---------|-------------|--------|
+| Feature A | Does X | ✅ |
+| Feature B | Does Y | ⏳ |
+</code></pre>
+<hr>
+<h2 id="-checklist-template">📋 <strong>Checklist Template</strong></h2>
+<h3 id="quick-checklist">Quick Checklist</h3>
+<pre><code class="lang-markdown">**Prerequisites:**
+- [ ] Item 1 completed
+- [ ] Item 2 completed
+- [ ] Item 3 completed
+
+**Setup Steps:**
+- [ ] Step 1
+- [ ] Step 2
+- [ ] Step 3
+
+**Verification:**
+- [ ] Check A passes
+- [ ] Check B passes
+- [ ] Check C passes
+</code></pre>
+<h3 id="procedure-checklist">Procedure Checklist</h3>
+<pre><code class="lang-markdown">**Before You Start:**
+- [ ] Read [Prerequisite Doc](path/file.md)
+- [ ] Have [Required Tools](path/tools.md) installed
+- [ ] Access to [Resources](path/resources.md)
+
+**Execution:**
+1. [ ] First step
+2. [ ] Second step
+3. [ ] Third step
+
+**Verification:**
+- [ ] Verify X
+- [ ] Check Y
+- [ ] Confirm Z
+</code></pre>
+<hr>
+<h2 id="-writing-style-guide">🎯 <strong>Writing Style Guide</strong></h2>
+<h3 id="voice--tone">Voice &amp; Tone</h3>
+<ul>
+<li><strong>Professional</strong> but friendly</li>
+<li><strong>Clear</strong> over clever</li>
+<li><strong>Direct</strong> over verbose</li>
+<li><strong>Active</strong> voice preferred</li>
+<li><strong>Second person</strong> (you, your) when addressing reader</li>
+</ul>
+<h3 id="sentence-structure">Sentence Structure</h3>
+<ul>
+<li><strong>Short sentences</strong> (avg 15-20 words)</li>
+<li><strong>Active voice:</strong> &quot;You configure the gateway&quot; vs &quot;The gateway is configured&quot;</li>
+<li><strong>Imperative:</strong> &quot;Click Deploy&quot; not &quot;You should click Deploy&quot;</li>
+<li><strong>Present tense:</strong> &quot;The service runs&quot; not &quot;The service will run&quot;</li>
+</ul>
+<h3 id="word-choice">Word Choice</h3>
+<ul>
+<li><strong>Use:</strong> setup, enter, type, click, run, execute</li>
+<li><strong>Avoid:</strong> endeavor, facilitate, utilize, paradigm</li>
+<li><strong>Technical terms:</strong> Explain first time used</li>
+<li><strong>Acronyms:</strong> Spell out first time, then use (e.g., &quot;Role-Based Access Control (RBAC)&quot;)</li>
+</ul>
+<h3 id="grammar--punctuation">Grammar &amp; Punctuation</h3>
+<ul>
+<li>Use Oxford comma in lists: &quot;A, B, and C&quot;</li>
+<li>Avoid contractions: &quot;do not&quot; not &quot;don't&quot;</li>
+<li>Use single space after periods</li>
+<li>Capitalize: Proper nouns, product names, UI elements</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<p><strong>Good:</strong></p>
+<blockquote>
+<p>Run the deployment command. This creates the infrastructure and deploys your services. You should see confirmation messages.</p>
+</blockquote>
+<p><strong>Better:</strong></p>
+<blockquote>
+<p>Run <code>az deployment create -f main.bicep</code> to create the infrastructure and deploy your services. Watch for confirmation messages.</p>
+</blockquote>
+<p><strong>Best:</strong></p>
+<blockquote>
+<p>Run the deployment:</p>
+<pre><code class="lang-bash">az deployment create -f main.bicep
+</code></pre>
+<p>You'll see confirmation when complete.</p>
+</blockquote>
+<hr>
+<h2 id="-related-documents-link-pattern">🔄 <strong>Related Documents Link Pattern</strong></h2>
+<p>Every document should include related links:</p>
+<pre><code class="lang-markdown">---
+
+## 🔗 Related Documents
+
+**Read Next:**
+- [Next Logical Topic](path/file.md)
+- [Common Follow-up](path/file.md)
+
+**Prerequisites:**
+- [Needed First](path/file.md)
+- [Background Reading](path/file.md)
+
+**Deep Dives:**
+- [Advanced Topic](path/file.md)
+- [Alternative Approach](path/file.md)
+
+**See Also:**
+- [Reference Material](path/file.md)
+- [Glossary](../reference/GLOSSARY.md)
+</code></pre>
+<hr>
+<h2 id="-pre-publish-checklist">✅ <strong>Pre-Publish Checklist</strong></h2>
+<p>Before publishing a document:</p>
+<ul>
+<li><p>[ ] <strong>Spelling &amp; Grammar</strong></p>
+<ul>
+<li>[ ] Ran spell checker</li>
+<li>[ ] Grammar is correct</li>
+<li>[ ] Consistent terminology</li>
+</ul>
+</li>
+<li><p>[ ] <strong>Structure</strong></p>
+<ul>
+<li>[ ] Clear header with purpose/audience</li>
+<li>[ ] Logical sections with H2/H3</li>
+<li>[ ] Table of contents if &gt; 1000 words</li>
+<li>[ ] Examples provided</li>
+</ul>
+</li>
+<li><p>[ ] <strong>Formatting</strong></p>
+<ul>
+<li>[ ] Code blocks have language specified</li>
+<li>[ ] Bold/italic used correctly</li>
+<li>[ ] Lists are consistent</li>
+<li>[ ] Tables align properly</li>
+</ul>
+</li>
+<li><p>[ ] <strong>Links</strong></p>
+<ul>
+<li>[ ] All internal links work (relative paths)</li>
+<li>[ ] External links are current</li>
+<li>[ ] Anchors link to actual headers</li>
+<li>[ ] Related docs section complete</li>
+</ul>
+</li>
+<li><p>[ ] <strong>Content</strong></p>
+<ul>
+<li>[ ] Accurate and current</li>
+<li>[ ] Examples tested (if code)</li>
+<li>[ ] No broken references</li>
+<li>[ ] Metadata updated (date, author)</li>
+</ul>
+</li>
+<li><p>[ ] <strong>Navigation</strong></p>
+<ul>
+<li>[ ] Registered in README.md</li>
+<li>[ ] Added to SITEMAP.md</li>
+<li>[ ] Added to relevant category README</li>
+<li>[ ] Cross-references updated</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="-document-templates">📚 <strong>Document Templates</strong></h2>
+<h3 id="template-getting-started-guide">Template: Getting Started Guide</h3>
+<pre><code class="lang-markdown"># [Service/Feature] Getting Started
+
+**Purpose:** Get [item] running in 5 minutes  
+**Audience:** Developers  
+**Prerequisites:** [Prerequisites]
+
+## 📋 Requirements
+
+- [Requirement 1]
+- [Requirement 2]
+
+## ⚡ Quick Start
+
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+## ✅ Verify It Works
+
+- [ ] Check 1
+- [ ] Check 2
+
+## 🔗 Next Steps
+
+- [Topic 1](path/file.md)
+- [Topic 2](path/file.md)
+
+## ❓ Troubleshooting
+
+**Problem:** [Issue]  
+**Solution:** [Fix]
+</code></pre>
+<h3 id="template-reference-guide">Template: Reference Guide</h3>
+<pre><code class="lang-markdown"># [Component] Reference
+
+**Purpose:** Complete reference for [component]  
+**Audience:** [Who uses this]  
+**Last Updated:** [Date]
+
+## 📊 Overview
+
+| Property | Value | Description |
+|----------|-------|-------------|
+| [Prop 1] | [Val] | [Desc] |
+
+## 🔧 Configuration
+
+### [Section 1]
+[Content]
+
+### [Section 2]
+[Content]
+
+## 📌 Examples
+
+```bash
+# Example
+</code></pre>
+<h2 id="-see-also">🔗 See Also</h2>
+<ul>
+<li><a href="path/file.md">Related 1</a></li>
+<li><a href="path/file.md">Related 2</a></li>
+</ul>
+<pre><code>
+### Template: Troubleshooting Guide
+```markdown
+# [Component] Troubleshooting
+
+**Purpose:** Fix common issues with [component]  
+**Audience:** [Who gets issues]
+
+## ❌ Common Issues
+
+### Issue 1: [Problem Description]
+
+**Symptoms:** [How to recognize]
+
+**Causes:** [Why it happens]
+
+**Solutions:**
+1. [Solution 1]
+2. [Solution 2]
+
+### Issue 2: [Problem Description]
+
+**Symptoms:** [How to recognize]
+
+**Solutions:**
+1. [Solution]
+
+## 🆘 Still Stuck?
+
+- Check [Related Guide](path/file.md)
+- See [FAQ](path/file.md)
+</code></pre>
+<hr>
+<h2 id="-example-well-formatted-document-section">🎓 <strong>Example: Well-Formatted Document Section</strong></h2>
+<pre><code class="lang-markdown">## 🔐 Authentication Setup
+
+### Prerequisites
+
+Before configuring authentication, ensure you have:
+- JWT tokens enabled in your service
+- Access to Azure Key Vault
+- Required NuGet packages installed
+
+### Configuration Steps
+
+1. **Install NuGet Package**
+   ```bash
+   dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+</code></pre>
+<ol start="2">
+<li><p><strong>Add Configuration</strong></p>
+<pre><code class="lang-csharp">services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =&gt;
+    {
+        options.Authority = configuration[&quot;Auth:Authority&quot;];
+    });
+</code></pre>
+</li>
+<li><p><strong>Apply Middleware</strong></p>
+<pre><code class="lang-csharp">app.UseAuthentication();
+app.UseAuthorization();
+</code></pre>
+</li>
+</ol>
+<h3 id="verification">Verification</h3>
+<ul>
+<li>[ ] Service starts without errors</li>
+<li>[ ] <code>GET /health</code> returns 200</li>
+<li>[ ] <code>GET /protected</code> returns 401 (unauthorized)</li>
+<li>[ ] <code>GET /protected</code> with valid token returns data</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Tip:</strong> Store JWT secrets in Azure Key Vault, not in appsettings.</p>
+</blockquote>
+<h3 id="troubleshooting">Troubleshooting</h3>
+<p><strong>Problem:</strong> Getting 401 Unauthorized<br>
+<strong>Solution:</strong> Check that JWT token is current and signed correctly</p>
+<p><strong>Problem:</strong> 403 Forbidden even with valid token<br>
+<strong>Solution:</strong> Verify authorization policies match your token claims</p>
+<h3 id="see-also">See Also</h3>
+<ul>
+<li><a href="../security/BEST_PRACTICES.md">JWT Best Practices</a></li>
+<li><a href="../security/SECRETS_MANAGEMENT.md">Secrets Management</a></li>
+</ul>
+<pre><code>
+---
+
+## 📞 **Questions About Documentation?**
+
+- **Format question?** Check this file
+- **Example needed?** See templates above
+- **Style question?** See Writing Style Guide
+- **Something missing?** Submit an update
+
+---
+
+**Last Updated:** October 27, 2025  
+**Maintained By:** Documentation Team  
+**Version:** 1.0  
+**Status:** ✅ Complete
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/CONVENTIONS.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

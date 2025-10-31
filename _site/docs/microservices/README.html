@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#128295; Microservices Development | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#128295; Microservices Development | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/microservices/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-microservices-development">🔧 Microservices Development</h1>
+
+<p><strong>Service Architecture, DAPR Integration, Database Access &amp; Caching Patterns</strong><br>
+Last Updated: October 27, 2025</p>
+<hr>
+<h2 id="-overview">📍 Overview</h2>
+<p>This category covers building and maintaining individual microservices. From service templates and DAPR integration to database access patterns and event-driven communication. Designed for service developers and architects.</p>
+<hr>
+<h2 id="-documents-in-this-category">📚 Documents in This Category</h2>
+<h3 id="service_templatesmd"><a href="SERVICE_TEMPLATES.md">SERVICE_TEMPLATES.md</a></h3>
+<p><strong>Microservice architecture and templates</strong></p>
+<ul>
+<li>Service structure and layers</li>
+<li>Project layout</li>
+<li>Class templates</li>
+<li>API endpoint templates</li>
+<li>Dependency injection setup</li>
+</ul>
+<h3 id="dapr_integrationmd"><a href="DAPR_INTEGRATION.md">DAPR_INTEGRATION.md</a></h3>
+<p><strong>DAPR patterns and implementation</strong></p>
+<ul>
+<li>Service invocation patterns</li>
+<li>State management</li>
+<li>Configuration retrieval</li>
+<li>Service binding</li>
+<li>Error handling and resilience</li>
+</ul>
+<h3 id="database_accessmd"><a href="DATABASE_ACCESS.md">DATABASE_ACCESS.md</a></h3>
+<p><strong>Data access patterns and best practices</strong></p>
+<ul>
+<li>Entity Framework Core usage</li>
+<li>Repository pattern</li>
+<li>Migrations and versioning</li>
+<li>Connection pooling</li>
+<li>Transaction management</li>
+</ul>
+<h3 id="cachingmd"><a href="CACHING.md">CACHING.md</a></h3>
+<p><strong>Redis caching patterns</strong></p>
+<ul>
+<li>Cache invalidation</li>
+<li>TTL configuration</li>
+<li>Distributed caching</li>
+<li>Cache coherence</li>
+<li>Performance considerations</li>
+</ul>
+<h3 id="pub_submd"><a href="PUB_SUB.md">PUB_SUB.md</a></h3>
+<p><strong>Event-driven architecture</strong></p>
+<ul>
+<li>Event publishing</li>
+<li>Event subscription</li>
+<li>Event handlers</li>
+<li>Dead letter queues</li>
+<li>Saga pattern implementation</li>
+</ul>
+<hr>
+<h2 id="-service-architecture">🎯 Service Architecture</h2>
+<pre><code>┌──────────────────────────────────────┐
+│      API Layer (Controllers)          │
+│  - HTTP endpoints                     │
+│  - Request validation                 │
+│  - Response formatting                │
+├──────────────────────────────────────┤
+│     Application Layer (Services)      │
+│  - Business logic                     │
+│  - DAPR calls                         │
+│  - Event publishing                   │
+├──────────────────────────────────────┤
+│      Domain Layer (Models)            │
+│  - Domain entities                    │
+│  - Business rules                     │
+│  - Aggregates                         │
+├──────────────────────────────────────┤
+│     Infrastructure Layer              │
+│  - Database access                    │
+│  - Cache interaction                  │
+│  - External APIs                      │
+└──────────────────────────────────────┘
+</code></pre>
+<hr>
+<h2 id="-6-microservices">📊 6 Microservices</h2>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Port</th>
+<th>Database</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Auth Service</strong></td>
+<td>5001</td>
+<td>auth-db</td>
+<td>Authentication &amp; authorization</td>
+</tr>
+<tr>
+<td><strong>Inventory Service</strong></td>
+<td>5002</td>
+<td>inventory-db</td>
+<td>Product inventory</td>
+</tr>
+<tr>
+<td><strong>Orders Service</strong></td>
+<td>5003</td>
+<td>orders-db</td>
+<td>Order processing</td>
+</tr>
+<tr>
+<td><strong>Sales Service</strong></td>
+<td>5004</td>
+<td>sales-db</td>
+<td>Sales management</td>
+</tr>
+<tr>
+<td><strong>Billing Service</strong></td>
+<td>5005</td>
+<td>billing-db</td>
+<td>Billing &amp; invoicing</td>
+</tr>
+<tr>
+<td><strong>Purchasing Service</strong></td>
+<td>5006</td>
+<td>purchasing-db</td>
+<td>Procurement</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-common-service-patterns">🔄 Common Service Patterns</h2>
+<h3 id="pattern-1-synchronous-call">Pattern 1: Synchronous Call</h3>
+<pre><code class="lang-csharp">// Service A calls Service B via HTTP (direct call)
+var response = await _httpClient.GetAsync(
+    &quot;http://inventory-service/api/products/123&quot;);
+</code></pre>
+<h3 id="pattern-2-dapr-service-invocation">Pattern 2: DAPR Service Invocation</h3>
+<pre><code class="lang-csharp">// Service A calls Service B via DAPR (resilient)
+var response = await _daprClient.InvokeMethodAsync(
+    HttpMethod.Get, 
+    &quot;inventory-service&quot;, 
+    &quot;/api/products/123&quot;);
+</code></pre>
+<h3 id="pattern-3-event-publishing">Pattern 3: Event Publishing</h3>
+<pre><code class="lang-csharp">// Service publishes event
+await _daprClient.PublishEventAsync(
+    &quot;pubsub&quot;, 
+    &quot;order-created&quot;, 
+    orderEvent);
+</code></pre>
+<h3 id="pattern-4-event-subscription">Pattern 4: Event Subscription</h3>
+<pre><code class="lang-csharp">// Service subscribes to events
+[Topic(&quot;pubsub&quot;, &quot;order-created&quot;)]
+public async Task HandleOrderCreated(OrderCreatedEvent @event)
+{
+    // Handle event
+}
+</code></pre>
+<hr>
+<h2 id="-related-categories">📚 Related Categories</h2>
+<ul>
+<li><strong>Architecture:</strong> <a href="../architecture/README.html">Architecture Guide</a> - System design</li>
+<li><strong>Docker:</strong> <a href="../docker-compose/README.html">Docker Compose</a> - Local dev</li>
+<li><strong>Development:</strong> <a href="../development/README.html">Development Setup</a> - Coding practices</li>
+<li><strong>Operations:</strong> <a href="../operations/README.html">Operations Guide</a> - Production support</li>
+</ul>
+<hr>
+<h2 id="-reading-order">🔄 Reading Order</h2>
+<ol>
+<li>Start with <a href="SERVICE_TEMPLATES.md">SERVICE_TEMPLATES.md</a> for structure</li>
+<li>Read <a href="DAPR_INTEGRATION.md">DAPR_INTEGRATION.md</a> for communication</li>
+<li>Study <a href="DATABASE_ACCESS.md">DATABASE_ACCESS.md</a> for data</li>
+<li>Learn <a href="CACHING.md">CACHING.md</a> for performance</li>
+<li>Reference <a href="PUB_SUB.md">PUB_SUB.md</a> for events</li>
+</ol>
+<hr>
+<h2 id="-key-concepts">💡 Key Concepts</h2>
+<h3 id="service-boundaries">Service Boundaries</h3>
+<ul>
+<li>Each service owns its data</li>
+<li>Services communicate via APIs</li>
+<li>No shared databases</li>
+<li>Separate deployments</li>
+</ul>
+<h3 id="dapr-benefits">DAPR Benefits</h3>
+<ul>
+<li>Language-agnostic service invocation</li>
+<li>Built-in service discovery</li>
+<li>Automatic retries and timeouts</li>
+<li>Distributed tracing</li>
+<li>Security (mTLS)</li>
+</ul>
+<h3 id="event-driven">Event-Driven</h3>
+<ul>
+<li>Services publish domain events</li>
+<li>Other services subscribe</li>
+<li>Asynchronous, decoupled</li>
+<li>Improved scalability</li>
+<li>Better resilience</li>
+</ul>
+<h3 id="caching-strategy">Caching Strategy</h3>
+<ul>
+<li>Cache for read-heavy operations</li>
+<li>TTL based on data freshness</li>
+<li>Invalidate on updates</li>
+<li>Distributed across services</li>
+<li>Performance improvement</li>
+</ul>
+<hr>
+<h2 id="-service-checklist">✅ Service Checklist</h2>
+<p>When creating a new service:</p>
+<ul>
+<li>[ ] Project structure created</li>
+<li>[ ] API endpoints defined</li>
+<li>[ ] Database schema designed</li>
+<li>[ ] Connection string configured</li>
+<li>[ ] DAPR integration added</li>
+<li>[ ] Events defined and published</li>
+<li>[ ] Event handlers implemented</li>
+<li>[ ] Caching strategy implemented</li>
+<li>[ ] Error handling added</li>
+<li>[ ] Logging configured</li>
+<li>[ ] Health check endpoint added</li>
+<li>[ ] Integration tests written</li>
+<li>[ ] Documentation complete</li>
+</ul>
+<hr>
+<h2 id="-service-development-workflow">🚀 Service Development Workflow</h2>
+<pre><code>1. Define Service Contract
+   - API endpoints
+   - Events to publish
+   - Events to subscribe
+   ↓
+2. Create Project Structure
+   - Use template
+   - Setup dependencies
+   ↓
+3. Implement API Layer
+   - Controllers
+   - Request/response models
+   ↓
+4. Implement Services
+   - Business logic
+   - DAPR calls
+   - Event publishing
+   ↓
+5. Implement Repository
+   - Database access
+   - Migrations
+   ↓
+6. Add Caching
+   - Identify hot paths
+   - Implement cache layer
+   ↓
+7. Event Handlers
+   - Subscribe to events
+   - Handle async processing
+   ↓
+8. Testing
+   - Unit tests
+   - Integration tests
+   ↓
+9. Documentation
+   - API documentation
+   - Configuration guide
+</code></pre>
+<hr>
+<h2 id="-next-steps">📞 Next Steps</h2>
+<ul>
+<li><strong>New service?</strong> → <a href="SERVICE_TEMPLATES.md">SERVICE_TEMPLATES.md</a></li>
+<li><strong>DAPR integration?</strong> → <a href="DAPR_INTEGRATION.md">DAPR_INTEGRATION.md</a></li>
+<li><strong>Database access?</strong> → <a href="DATABASE_ACCESS.md">DATABASE_ACCESS.md</a></li>
+<li><strong>Caching needed?</strong> → <a href="CACHING.md">CACHING.md</a></li>
+<li><strong>Events?</strong> → <a href="PUB_SUB.md">PUB_SUB.md</a></li>
+</ul>
+<hr>
+<h2 id="-full-document-map">🔗 Full Document Map</h2>
+<pre><code>microservices/
+├── README.md (this file)
+├── SERVICE_TEMPLATES.md
+├── DAPR_INTEGRATION.md
+├── DATABASE_ACCESS.md
+├── CACHING.md
+└── PUB_SUB.md
+</code></pre>
+<hr>
+<p><strong>Last Updated:</strong> October 27, 2025<br>
+<strong>Category Status:</strong> ✅ Complete<br>
+<strong>Documents:</strong> 5 files<br>
+<strong>Services:</strong> 6 total</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/microservices/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

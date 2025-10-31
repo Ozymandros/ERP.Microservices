@@ -1,0 +1,174 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Domain.OrderStatus
+  commentId: T:MyApp.Orders.Domain.OrderStatus
+  id: OrderStatus
+  parent: MyApp.Orders.Domain
+  children:
+  - MyApp.Orders.Domain.OrderStatus.Cancelled
+  - MyApp.Orders.Domain.OrderStatus.Confirmed
+  - MyApp.Orders.Domain.OrderStatus.Draft
+  - MyApp.Orders.Domain.OrderStatus.Shipped
+  langs:
+  - csharp
+  - vb
+  name: OrderStatus
+  nameWithType: OrderStatus
+  fullName: MyApp.Orders.Domain.OrderStatus
+  type: Enum
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Domain/OrderStatus.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: OrderStatus
+    path: src/MyApp.Orders/MyApp.Orders.Domain/OrderStatus.cs
+    startLine: 2
+  assemblies:
+  - MyApp.Orders.Domain
+  namespace: MyApp.Orders.Domain
+  syntax:
+    content: public enum OrderStatus
+    content.vb: Public Enum OrderStatus
+- uid: MyApp.Orders.Domain.OrderStatus.Draft
+  commentId: F:MyApp.Orders.Domain.OrderStatus.Draft
+  id: Draft
+  parent: MyApp.Orders.Domain.OrderStatus
+  langs:
+  - csharp
+  - vb
+  name: Draft
+  nameWithType: OrderStatus.Draft
+  fullName: MyApp.Orders.Domain.OrderStatus.Draft
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Domain/OrderStatus.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Draft
+    path: src/MyApp.Orders/MyApp.Orders.Domain/OrderStatus.cs
+    startLine: 4
+  assemblies:
+  - MyApp.Orders.Domain
+  namespace: MyApp.Orders.Domain
+  syntax:
+    content: Draft = 0
+    return:
+      type: MyApp.Orders.Domain.OrderStatus
+- uid: MyApp.Orders.Domain.OrderStatus.Confirmed
+  commentId: F:MyApp.Orders.Domain.OrderStatus.Confirmed
+  id: Confirmed
+  parent: MyApp.Orders.Domain.OrderStatus
+  langs:
+  - csharp
+  - vb
+  name: Confirmed
+  nameWithType: OrderStatus.Confirmed
+  fullName: MyApp.Orders.Domain.OrderStatus.Confirmed
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Domain/OrderStatus.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Confirmed
+    path: src/MyApp.Orders/MyApp.Orders.Domain/OrderStatus.cs
+    startLine: 5
+  assemblies:
+  - MyApp.Orders.Domain
+  namespace: MyApp.Orders.Domain
+  syntax:
+    content: Confirmed = 1
+    return:
+      type: MyApp.Orders.Domain.OrderStatus
+- uid: MyApp.Orders.Domain.OrderStatus.Shipped
+  commentId: F:MyApp.Orders.Domain.OrderStatus.Shipped
+  id: Shipped
+  parent: MyApp.Orders.Domain.OrderStatus
+  langs:
+  - csharp
+  - vb
+  name: Shipped
+  nameWithType: OrderStatus.Shipped
+  fullName: MyApp.Orders.Domain.OrderStatus.Shipped
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Domain/OrderStatus.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Shipped
+    path: src/MyApp.Orders/MyApp.Orders.Domain/OrderStatus.cs
+    startLine: 6
+  assemblies:
+  - MyApp.Orders.Domain
+  namespace: MyApp.Orders.Domain
+  syntax:
+    content: Shipped = 2
+    return:
+      type: MyApp.Orders.Domain.OrderStatus
+- uid: MyApp.Orders.Domain.OrderStatus.Cancelled
+  commentId: F:MyApp.Orders.Domain.OrderStatus.Cancelled
+  id: Cancelled
+  parent: MyApp.Orders.Domain.OrderStatus
+  langs:
+  - csharp
+  - vb
+  name: Cancelled
+  nameWithType: OrderStatus.Cancelled
+  fullName: MyApp.Orders.Domain.OrderStatus.Cancelled
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Domain/OrderStatus.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Cancelled
+    path: src/MyApp.Orders/MyApp.Orders.Domain/OrderStatus.cs
+    startLine: 7
+  assemblies:
+  - MyApp.Orders.Domain
+  namespace: MyApp.Orders.Domain
+  syntax:
+    content: Cancelled = 3
+    return:
+      type: MyApp.Orders.Domain.OrderStatus
+references:
+- uid: MyApp.Orders.Domain
+  commentId: N:MyApp.Orders.Domain
+  href: MyApp.html
+  name: MyApp.Orders.Domain
+  nameWithType: MyApp.Orders.Domain
+  fullName: MyApp.Orders.Domain
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Domain
+    name: Domain
+    href: MyApp.Orders.Domain.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Domain
+    name: Domain
+    href: MyApp.Orders.Domain.html
+- uid: MyApp.Orders.Domain.OrderStatus
+  commentId: T:MyApp.Orders.Domain.OrderStatus
+  parent: MyApp.Orders.Domain
+  href: MyApp.Orders.Domain.OrderStatus.html
+  name: OrderStatus
+  nameWithType: OrderStatus
+  fullName: MyApp.Orders.Domain.OrderStatus

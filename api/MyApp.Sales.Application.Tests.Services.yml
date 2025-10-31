@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Application.Tests.Services
+  commentId: N:MyApp.Sales.Application.Tests.Services
+  id: MyApp.Sales.Application.Tests.Services
+  children:
+  - MyApp.Sales.Application.Tests.Services.CustomerServiceTests
+  - MyApp.Sales.Application.Tests.Services.SalesOrderServiceTests
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Sales.Application.Tests.Services
+  nameWithType: MyApp.Sales.Application.Tests.Services
+  fullName: MyApp.Sales.Application.Tests.Services
+  type: Namespace
+  assemblies:
+  - MyApp.Sales.Application.Tests
+references:
+- uid: MyApp.Sales.Application.Tests.Services.CustomerServiceTests
+  commentId: T:MyApp.Sales.Application.Tests.Services.CustomerServiceTests
+  href: MyApp.Sales.Application.Tests.Services.CustomerServiceTests.html
+  name: CustomerServiceTests
+  nameWithType: CustomerServiceTests
+  fullName: MyApp.Sales.Application.Tests.Services.CustomerServiceTests
+- uid: MyApp.Sales.Application.Tests.Services.SalesOrderServiceTests
+  commentId: T:MyApp.Sales.Application.Tests.Services.SalesOrderServiceTests
+  href: MyApp.Sales.Application.Tests.Services.SalesOrderServiceTests.html
+  name: SalesOrderServiceTests
+  nameWithType: SalesOrderServiceTests
+  fullName: MyApp.Sales.Application.Tests.Services.SalesOrderServiceTests

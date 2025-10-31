@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Inventory Module Clean Architecture Scaffold | ERP.Microservices </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Inventory Module Clean Architecture Scaffold | ERP.Microservices ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Inventory/ARCHITECTURE.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP.Microservices">
+            ERP.Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="inventory-module-clean-architecture-scaffold">Inventory Module Clean Architecture Scaffold</h1>
+
+<h2 id="overview">Overview</h2>
+<p>The Inventory module has been successfully scaffolded following Clean Architecture principles with full separation of concerns across Domain, Application, Infrastructure, and API layers.</p>
+<h2 id="directory-structure">Directory Structure</h2>
+<pre><code>MyApp.Inventory/
+├── MyApp.Inventory.Domain/
+│   ├── Entities/
+│   │   ├── Product.cs
+│   │   ├── Warehouse.cs
+│   │   └── InventoryTransaction.cs (with TransactionType enum)
+│   └── Repositories/
+│       ├── IProductRepository.cs
+│       ├── IWarehouseRepository.cs
+│       └── IInventoryTransactionRepository.cs
+├── MyApp.Inventory.Infrastructure/
+│   └── Data/
+│       ├── InventoryDbContext.cs
+│       ├── Configurations/
+│       │   ├── ProductConfiguration.cs
+│       │   ├── WarehouseConfiguration.cs
+│       │   └── InventoryTransactionConfiguration.cs
+│       └── Repositories/
+│           ├── ProductRepository.cs
+│           ├── WarehouseRepository.cs
+│           └── InventoryTransactionRepository.cs
+├── MyApp.Inventory.Application.Contracts/
+│   ├── DTOs/
+│   │   ├── ProductDtos.cs
+│   │   ├── WarehouseDtos.cs
+│   │   └── InventoryTransactionDtos.cs
+│   └── Services/
+│       ├── IProductService.cs
+│       ├── IWarehouseService.cs
+│       └── IInventoryTransactionService.cs
+├── MyApp.Inventory.Application/
+│   ├── Services/
+│   │   ├── ProductService.cs
+│   │   ├── WarehouseService.cs
+│   │   └── InventoryTransactionService.cs
+│   └── Mappings/
+│       └── InventoryMappingProfile.cs
+└── MyApp.Inventory.API/
+    ├── Controllers/
+    │   ├── ProductsController.cs
+    │   ├── WarehousesController.cs
+    │   └── InventoryTransactionsController.cs
+    └── Program.cs (configured with DI)
+</code></pre>
+<h2 id="layer-responsibilities">Layer Responsibilities</h2>
+<h3 id="domain-layer-myappinventorydomain">Domain Layer (MyApp.Inventory.Domain)</h3>
+<p><strong>Entities:</strong></p>
+<ul>
+<li><code>Product</code>: Id, SKU (unique), Name, Description, UnitPrice, QuantityInStock, ReorderLevel</li>
+<li><code>Warehouse</code>: Id, Name, Location</li>
+<li><code>InventoryTransaction</code>: Id, ProductId, WarehouseId, QuantityChange, TransactionType, TransactionDate</li>
+<li><code>TransactionType</code> Enum: Inbound, Outbound, Adjustment</li>
+</ul>
+<p><strong>Repository Interfaces:</strong></p>
+<ul>
+<li><code>IProductRepository</code>: GetBySkuAsync(), GetLowStockProductsAsync(), + base CRUD</li>
+<li><code>IWarehouseRepository</code>: GetByNameAsync(), + base CRUD</li>
+<li><code>IInventoryTransactionRepository</code>: GetByProductIdAsync(), GetByWarehouseIdAsync(), GetByTransactionTypeAsync(), + base CRUD</li>
+</ul>
+<p><strong>Database Constraints:</strong></p>
+<ul>
+<li>SKU is unique and indexed</li>
+<li>ProductId and WarehouseId are indexed</li>
+<li>TransactionDate is indexed</li>
+<li>Foreign key relationships configured with OnDelete(DeleteBehavior.Restrict)</li>
+</ul>
+<h3 id="infrastructure-layer-myappinventoryinfrastructure">Infrastructure Layer (MyApp.Inventory.Infrastructure)</h3>
+<p><strong>DbContext:</strong></p>
+<ul>
+<li><code>InventoryDbContext</code> with DbSet for Product, Warehouse, InventoryTransaction</li>
+<li>Connection string: <code>&quot;Server=localhost;Database=InventoryDb;Trusted_Connection=True;&quot;</code></li>
+</ul>
+<p><strong>EF Core Configurations:</strong></p>
+<ul>
+<li>Decimal precision set to (18,2) for prices</li>
+<li>Default values for QuantityInStock (0) and ReorderLevel (0)</li>
+<li>String length constraints applied</li>
+</ul>
+<p><strong>Repositories:</strong></p>
+<ul>
+<li><code>ProductRepository</code>: Implements IProductRepository with Linq queries for SKU lookup and low stock detection</li>
+<li><code>WarehouseRepository</code>: Implements IWarehouseRepository</li>
+<li><code>InventoryTransactionRepository</code>: Implements IInventoryTransactionRepository with filtering capabilities</li>
+</ul>
+<h3 id="applicationcontracts-layer">Application.Contracts Layer</h3>
+<p><strong>DTOs:</strong></p>
+<ul>
+<li><code>ProductDto</code>, <code>CreateUpdateProductDto</code></li>
+<li><code>WarehouseDto</code>, <code>CreateUpdateWarehouseDto</code></li>
+<li><code>InventoryTransactionDto</code>, <code>CreateUpdateInventoryTransactionDto</code></li>
+</ul>
+<p><strong>Validation Attributes:</strong></p>
+<ul>
+<li>SKU/Name: Required, StringLength</li>
+<li>UnitPrice: Range (0 to MaxValue)</li>
+<li>QuantityInStock: Range (0 to MaxValue)</li>
+<li>QuantityChange: Range (-1000000 to 1000000)</li>
+</ul>
+<p><strong>Service Interfaces:</strong></p>
+<ul>
+<li>All operations are async</li>
+<li>Comprehensive CRUD with specialized queries</li>
+<li>Exception handling with KeyNotFoundException and InvalidOperationException</li>
+</ul>
+<h3 id="application-layer-myappinventoryapplication">Application Layer (MyApp.Inventory.Application)</h3>
+<p><strong>Services with Business Logic:</strong></p>
+<ol>
+<li><p><strong>ProductService</strong></p>
+<ul>
+<li>✅ Prevents duplicate SKUs</li>
+<li>✅ Validates product existence before updates</li>
+<li>✅ Provides GetLowStockProductsAsync() for reorder alerts</li>
+</ul>
+</li>
+<li><p><strong>WarehouseService</strong></p>
+<ul>
+<li>✅ Prevents duplicate warehouse names</li>
+<li>✅ Standard CRUD operations with validation</li>
+</ul>
+</li>
+<li><p><strong>InventoryTransactionService</strong></p>
+<ul>
+<li>✅ <strong>Prevents negative stock levels</strong> - throws exception if stock would go negative</li>
+<li>✅ <strong>Auto-updates product stock</strong> when transactions are created/updated/deleted</li>
+<li>✅ <strong>Generates reorder alerts</strong> via GetLowStockProductsAsync()</li>
+<li>✅ Transaction reversals on update/delete to maintain stock accuracy</li>
+<li>✅ Verifies product and warehouse existence</li>
+</ul>
+</li>
+</ol>
+<p><strong>AutoMapper Profile:</strong></p>
+<ul>
+<li><code>InventoryMappingProfile</code>: Bidirectional mappings for all DTOs</li>
+<li>Nested object mapping (Product/Warehouse in InventoryTransactionDto)</li>
+</ul>
+<h3 id="api-layer-myappinventoryapi">API Layer (MyApp.Inventory.API)</h3>
+<p><strong>Controllers (RESTful):</strong></p>
+<ol>
+<li><p><strong>ProductsController</strong> (<code>/api/inventory/products</code>)</p>
+<ul>
+<li>GET / - List all products</li>
+<li>GET /{id} - Get by ID</li>
+<li>GET /sku/{sku} - Get by SKU</li>
+<li>GET /low-stock - Get products below reorder level</li>
+<li>POST - Create (returns 201 Created)</li>
+<li>PUT /{id} - Update</li>
+<li>DELETE /{id} - Delete</li>
+</ul>
+</li>
+<li><p><strong>WarehousesController</strong> (<code>/api/inventory/warehouses</code>)</p>
+<ul>
+<li>GET / - List all</li>
+<li>GET /{id} - Get by ID</li>
+<li>POST - Create</li>
+<li>PUT /{id} - Update</li>
+<li>DELETE /{id} - Delete</li>
+</ul>
+</li>
+<li><p><strong>InventoryTransactionsController</strong> (<code>/api/inventory/transactions</code>)</p>
+<ul>
+<li>GET / - List all</li>
+<li>GET /{id} - Get by ID</li>
+<li>GET /product/{productId} - Filter by product</li>
+<li>GET /warehouse/{warehouseId} - Filter by warehouse</li>
+<li>GET /type/{type} - Filter by transaction type</li>
+<li>POST - Create (validates stock levels)</li>
+<li>PUT /{id} - Update (reverses old &amp; applies new)</li>
+<li>DELETE /{id} - Delete (reverses transaction)</li>
+</ul>
+</li>
+</ol>
+<p><strong>Response Codes:</strong></p>
+<ul>
+<li>200 OK</li>
+<li>201 Created (for POST)</li>
+<li>204 No Content (for DELETE)</li>
+<li>400 Bad Request (validation errors)</li>
+<li>404 Not Found</li>
+<li>409 Conflict (business rule violations)</li>
+</ul>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Comprehensive logging via ILogger</li>
+<li>Model validation before processing</li>
+<li>Structured exception handling</li>
+<li>Swagger/OpenAPI documentation with ProducesResponseType attributes</li>
+</ul>
+<h2 id="dependency-injection-configuration">Dependency Injection Configuration</h2>
+<p><strong>Program.cs Setup:</strong></p>
+<pre><code class="lang-csharp">// Database
+builder.Services.AddDbContext&lt;InventoryDbContext&gt;(options =&gt;
+    options.UseSqlServer(connectionString));
+
+// Repositories
+builder.Services.AddScoped&lt;IProductRepository, ProductRepository&gt;();
+builder.Services.AddScoped&lt;IWarehouseRepository, WarehouseRepository&gt;();
+builder.Services.AddScoped&lt;IInventoryTransactionRepository, InventoryTransactionRepository&gt;();
+
+// Services
+builder.Services.AddScoped&lt;IProductService, ProductService&gt;();
+builder.Services.AddScoped&lt;IWarehouseService, WarehouseService&gt;();
+builder.Services.AddScoped&lt;IInventoryTransactionService, InventoryTransactionService&gt;();
+
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(InventoryMappingProfile));
+</code></pre>
+<h2 id="key-features">Key Features</h2>
+<h3 id="business-logic-implementation">Business Logic Implementation</h3>
+<ol>
+<li><p><strong>Stock Level Management</strong></p>
+<ul>
+<li>Prevents outbound transactions that would result in negative stock</li>
+<li>Automatically updates product stock on transaction create/update/delete</li>
+<li>Validates stock availability before allowing transactions</li>
+</ul>
+</li>
+<li><p><strong>Reorder Management</strong></p>
+<ul>
+<li>GetLowStockProductsAsync() returns products where QuantityInStock &lt; ReorderLevel</li>
+<li>Accessible via API endpoint <code>/api/inventory/products/low-stock</code></li>
+</ul>
+</li>
+<li><p><strong>Data Integrity</strong></p>
+<ul>
+<li>Unique SKU constraint at database level</li>
+<li>Foreign key relationships with restrict delete behavior</li>
+<li>Transaction reversals maintain data consistency</li>
+</ul>
+</li>
+<li><p><strong>Async/Await Throughout</strong></p>
+<ul>
+<li>All operations are fully async</li>
+<li>Repository pattern for data access</li>
+<li>Clean separation of concerns</li>
+</ul>
+</li>
+</ol>
+<h2 id="conventions-applied">Conventions Applied</h2>
+<ul>
+<li>✅ Async/await everywhere</li>
+<li>✅ RESTful route conventions</li>
+<li>✅ Validation attributes on all DTOs</li>
+<li>✅ Thin controllers (business logic in Application layer)</li>
+<li>✅ Dependency injection throughout</li>
+<li>✅ Comprehensive error handling</li>
+<li>✅ Structured logging</li>
+<li>✅ XML documentation ready for Swagger</li>
+<li>✅ Clean Architecture separation of concerns</li>
+</ul>
+<h2 id="build-status">Build Status</h2>
+<p>✅ <strong>Build Successful</strong></p>
+<ul>
+<li>All projects compile without errors</li>
+<li>0 Warnings (after version alignment)</li>
+<li>Ready for database migration and testing</li>
+</ul>
+<h2 id="next-steps">Next Steps</h2>
+<ol>
+<li>Create initial migration: <code>dotnet ef migrations add Initial -p MyApp.Inventory.Infrastructure</code></li>
+<li>Update database: <code>dotnet ef database update</code></li>
+<li>Run API: <code>dotnet run --project MyApp.Inventory.API</code></li>
+<li>Test endpoints via Swagger UI: <code>https://localhost:5001/swagger</code></li>
+<li>Add integration tests for business logic validation</li>
+<li>Implement additional domain-specific queries as needed</li>
+</ol>
+<h2 id="technical-stack">Technical Stack</h2>
+<ul>
+<li>.NET 8.0</li>
+<li>Entity Framework Core 8.0.0</li>
+<li>AutoMapper 12.0.1</li>
+<li>SQL Server</li>
+<li>ASP.NET Core Web API</li>
+<li>Swagger/OpenAPI for documentation</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Inventory/ARCHITECTURE.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

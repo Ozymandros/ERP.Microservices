@@ -1,0 +1,282 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Domain.Permissions.ModuleEnum
+  commentId: T:MyApp.Shared.Domain.Permissions.ModuleEnum
+  id: ModuleEnum
+  parent: MyApp.Shared.Domain.Permissions
+  children:
+  - MyApp.Shared.Domain.Permissions.ModuleEnum.Auth
+  - MyApp.Shared.Domain.Permissions.ModuleEnum.Billing
+  - MyApp.Shared.Domain.Permissions.ModuleEnum.Inventory
+  - MyApp.Shared.Domain.Permissions.ModuleEnum.Notification
+  - MyApp.Shared.Domain.Permissions.ModuleEnum.Orders
+  - MyApp.Shared.Domain.Permissions.ModuleEnum.Purchasing
+  - MyApp.Shared.Domain.Permissions.ModuleEnum.Sales
+  langs:
+  - csharp
+  - vb
+  name: ModuleEnum
+  nameWithType: ModuleEnum
+  fullName: MyApp.Shared.Domain.Permissions.ModuleEnum
+  type: Enum
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ModuleEnum
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 6
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: >-
+    Enumerates all modules in the ERP system.
+
+    Each module represents a functional area like Inventory, Purchasing, etc.
+  example: []
+  syntax:
+    content: public enum ModuleEnum
+    content.vb: Public Enum ModuleEnum
+- uid: MyApp.Shared.Domain.Permissions.ModuleEnum.Inventory
+  commentId: F:MyApp.Shared.Domain.Permissions.ModuleEnum.Inventory
+  id: Inventory
+  parent: MyApp.Shared.Domain.Permissions.ModuleEnum
+  langs:
+  - csharp
+  - vb
+  name: Inventory
+  nameWithType: ModuleEnum.Inventory
+  fullName: MyApp.Shared.Domain.Permissions.ModuleEnum.Inventory
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Inventory
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 9
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Inventory module - manages products, warehouses, and stock levels
+  example: []
+  syntax:
+    content: Inventory = 1
+    return:
+      type: MyApp.Shared.Domain.Permissions.ModuleEnum
+- uid: MyApp.Shared.Domain.Permissions.ModuleEnum.Purchasing
+  commentId: F:MyApp.Shared.Domain.Permissions.ModuleEnum.Purchasing
+  id: Purchasing
+  parent: MyApp.Shared.Domain.Permissions.ModuleEnum
+  langs:
+  - csharp
+  - vb
+  name: Purchasing
+  nameWithType: ModuleEnum.Purchasing
+  fullName: MyApp.Shared.Domain.Permissions.ModuleEnum.Purchasing
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Purchasing
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 12
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Purchasing module - manages suppliers and purchase orders
+  example: []
+  syntax:
+    content: Purchasing = 2
+    return:
+      type: MyApp.Shared.Domain.Permissions.ModuleEnum
+- uid: MyApp.Shared.Domain.Permissions.ModuleEnum.Orders
+  commentId: F:MyApp.Shared.Domain.Permissions.ModuleEnum.Orders
+  id: Orders
+  parent: MyApp.Shared.Domain.Permissions.ModuleEnum
+  langs:
+  - csharp
+  - vb
+  name: Orders
+  nameWithType: ModuleEnum.Orders
+  fullName: MyApp.Shared.Domain.Permissions.ModuleEnum.Orders
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Orders
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Orders module - manages customer orders
+  example: []
+  syntax:
+    content: Orders = 3
+    return:
+      type: MyApp.Shared.Domain.Permissions.ModuleEnum
+- uid: MyApp.Shared.Domain.Permissions.ModuleEnum.Sales
+  commentId: F:MyApp.Shared.Domain.Permissions.ModuleEnum.Sales
+  id: Sales
+  parent: MyApp.Shared.Domain.Permissions.ModuleEnum
+  langs:
+  - csharp
+  - vb
+  name: Sales
+  nameWithType: ModuleEnum.Sales
+  fullName: MyApp.Shared.Domain.Permissions.ModuleEnum.Sales
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Sales
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 18
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Sales module - manages sales orders and customers
+  example: []
+  syntax:
+    content: Sales = 4
+    return:
+      type: MyApp.Shared.Domain.Permissions.ModuleEnum
+- uid: MyApp.Shared.Domain.Permissions.ModuleEnum.Billing
+  commentId: F:MyApp.Shared.Domain.Permissions.ModuleEnum.Billing
+  id: Billing
+  parent: MyApp.Shared.Domain.Permissions.ModuleEnum
+  langs:
+  - csharp
+  - vb
+  name: Billing
+  nameWithType: ModuleEnum.Billing
+  fullName: MyApp.Shared.Domain.Permissions.ModuleEnum.Billing
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Billing
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 21
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Billing module - manages invoices and payments
+  example: []
+  syntax:
+    content: Billing = 5
+    return:
+      type: MyApp.Shared.Domain.Permissions.ModuleEnum
+- uid: MyApp.Shared.Domain.Permissions.ModuleEnum.Notification
+  commentId: F:MyApp.Shared.Domain.Permissions.ModuleEnum.Notification
+  id: Notification
+  parent: MyApp.Shared.Domain.Permissions.ModuleEnum
+  langs:
+  - csharp
+  - vb
+  name: Notification
+  nameWithType: ModuleEnum.Notification
+  fullName: MyApp.Shared.Domain.Permissions.ModuleEnum.Notification
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Notification
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 24
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Notification module - manages alerts and communications
+  example: []
+  syntax:
+    content: Notification = 6
+    return:
+      type: MyApp.Shared.Domain.Permissions.ModuleEnum
+- uid: MyApp.Shared.Domain.Permissions.ModuleEnum.Auth
+  commentId: F:MyApp.Shared.Domain.Permissions.ModuleEnum.Auth
+  id: Auth
+  parent: MyApp.Shared.Domain.Permissions.ModuleEnum
+  langs:
+  - csharp
+  - vb
+  name: Auth
+  nameWithType: ModuleEnum.Auth
+  fullName: MyApp.Shared.Domain.Permissions.ModuleEnum.Auth
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Auth
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 27
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Auth module - manages users, roles, and authentication
+  example: []
+  syntax:
+    content: Auth = 7
+    return:
+      type: MyApp.Shared.Domain.Permissions.ModuleEnum
+references:
+- uid: MyApp.Shared.Domain.Permissions
+  commentId: N:MyApp.Shared.Domain.Permissions
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Permissions
+  nameWithType: MyApp.Shared.Domain.Permissions
+  fullName: MyApp.Shared.Domain.Permissions
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions
+    name: Permissions
+    href: MyApp.Shared.Domain.Permissions.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions
+    name: Permissions
+    href: MyApp.Shared.Domain.Permissions.html
+- uid: MyApp.Shared.Domain.Permissions.ModuleEnum
+  commentId: T:MyApp.Shared.Domain.Permissions.ModuleEnum
+  parent: MyApp.Shared.Domain.Permissions
+  href: MyApp.Shared.Domain.Permissions.ModuleEnum.html
+  name: ModuleEnum
+  nameWithType: ModuleEnum
+  fullName: MyApp.Shared.Domain.Permissions.ModuleEnum

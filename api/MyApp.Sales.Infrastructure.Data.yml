@@ -1,0 +1,69 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Infrastructure.Data
+  commentId: N:MyApp.Sales.Infrastructure.Data
+  id: MyApp.Sales.Infrastructure.Data
+  children:
+  - MyApp.Sales.Infrastructure.Data.SalesDbContext
+  - MyApp.Sales.Infrastructure.Data.SalesDbContextFactory
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Sales.Infrastructure.Data
+  nameWithType: MyApp.Sales.Infrastructure.Data
+  fullName: MyApp.Sales.Infrastructure.Data
+  type: Namespace
+  assemblies:
+  - MyApp.Sales.Infrastructure
+references:
+- uid: MyApp.Sales.Infrastructure.Data.SalesDbContext
+  commentId: T:MyApp.Sales.Infrastructure.Data.SalesDbContext
+  parent: MyApp.Sales.Infrastructure.Data
+  href: MyApp.Sales.Infrastructure.Data.SalesDbContext.html
+  name: SalesDbContext
+  nameWithType: SalesDbContext
+  fullName: MyApp.Sales.Infrastructure.Data.SalesDbContext
+- uid: MyApp.Sales.Infrastructure.Data.SalesDbContextFactory
+  commentId: T:MyApp.Sales.Infrastructure.Data.SalesDbContextFactory
+  href: MyApp.Sales.Infrastructure.Data.SalesDbContextFactory.html
+  name: SalesDbContextFactory
+  nameWithType: SalesDbContextFactory
+  fullName: MyApp.Sales.Infrastructure.Data.SalesDbContextFactory
+- uid: MyApp.Sales.Infrastructure.Data
+  commentId: N:MyApp.Sales.Infrastructure.Data
+  href: MyApp.html
+  name: MyApp.Sales.Infrastructure.Data
+  nameWithType: MyApp.Sales.Infrastructure.Data
+  fullName: MyApp.Sales.Infrastructure.Data
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Infrastructure
+    name: Infrastructure
+    href: MyApp.Sales.Infrastructure.html
+  - name: .
+  - uid: MyApp.Sales.Infrastructure.Data
+    name: Data
+    href: MyApp.Sales.Infrastructure.Data.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Infrastructure
+    name: Infrastructure
+    href: MyApp.Sales.Infrastructure.html
+  - name: .
+  - uid: MyApp.Sales.Infrastructure.Data
+    name: Data
+    href: MyApp.Sales.Infrastructure.Data.html

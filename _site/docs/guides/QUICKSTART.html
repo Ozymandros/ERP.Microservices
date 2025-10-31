@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Quick Start Guide - Azure Deployment | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Quick Start Guide - Azure Deployment | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/guides/QUICKSTART.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="quick-start-guide---azure-deployment">Quick Start Guide - Azure Deployment</h1>
+
+<p>This guide will get you deploying to Azure Container Apps in under 10 minutes.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Install these tools:</p>
+<pre><code class="lang-bash"># Azure Developer CLI
+curl -fsSL https://aka.ms/install-azd.sh | bash
+
+# .NET SDK 9.0
+# Download from: https://dotnet.microsoft.com/download/dotnet/9.0
+
+# Docker Desktop
+# Download from: https://www.docker.com/products/docker-desktop
+</code></pre>
+<h2 id="5-minute-deployment">5-Minute Deployment</h2>
+<h3 id="1-clone-and-navigate">1. Clone and Navigate</h3>
+<pre><code class="lang-bash">git clone https://github.com/Ozymandros/ERP.Microservices.git
+cd ERP.Microservices
+</code></pre>
+<h3 id="2-initialize-azure-developer-cli">2. Initialize Azure Developer CLI</h3>
+<pre><code class="lang-bash">azd init
+</code></pre>
+<p>When prompted:</p>
+<ul>
+<li>Environment name: Choose any name (e.g., <code>erp-dev</code>)</li>
+<li>Azure location: Choose a region (e.g., <code>eastus</code>)</li>
+</ul>
+<h3 id="3-set-required-secrets">3. Set Required Secrets</h3>
+<pre><code class="lang-bash"># Set SQL Server admin password (must be strong)
+azd env set SQL_ADMIN_PASSWORD &quot;YourStrongPassword123!&quot; --secret
+
+# Set JWT secret key (generate a random string)
+azd env set JWT_SECRET_KEY &quot;your-super-secret-jwt-key-at-least-32-chars&quot; --secret
+</code></pre>
+<h3 id="4-optional-set-frontend-origin">4. (Optional) Set Frontend Origin</h3>
+<pre><code class="lang-bash">azd env set FRONTEND_ORIGIN &quot;https://yourdomain.com;https://localhost:3000&quot;
+</code></pre>
+<h3 id="5-deploy-everything">5. Deploy Everything</h3>
+<pre><code class="lang-bash">azd up
+</code></pre>
+<p>This single command will:</p>
+<ul>
+<li>✅ Create Azure resources (Container Apps, SQL, Redis, etc.)</li>
+<li>✅ Build Docker images for all 7 services</li>
+<li>✅ Push images to Azure Container Registry</li>
+<li>✅ Deploy all services to Azure Container Apps</li>
+<li>✅ Configure Dapr, secrets, and networking</li>
+</ul>
+<p><strong>Expected time</strong>: 10-15 minutes</p>
+<h3 id="6-get-your-gateway-url">6. Get Your Gateway URL</h3>
+<pre><code class="lang-bash">azd env get-values | grep GATEWAY_URL
+</code></pre>
+<p>Visit the URL shown to access your deployed application!</p>
+<h2 id="local-development">Local Development</h2>
+<p>Run locally with Aspire:</p>
+<pre><code class="lang-bash">cd AppHost
+dotnet run
+</code></pre>
+<p>Access the Aspire dashboard to monitor all services.</p>
+<h2 id="clean-up">Clean Up</h2>
+<p>Delete all Azure resources:</p>
+<pre><code class="lang-bash">azd down
+</code></pre>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li><a href="../deployment/DEPLOYMENT.html">Full Deployment Guide</a> - Detailed deployment options</li>
+<li><a href="#github-actions">GitHub Actions Setup</a> - Automated CI/CD</li>
+<li><a href="#monitoring">Monitoring Guide</a> - View logs and metrics</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="authentication-failed">&quot;Authentication failed&quot;</h3>
+<pre><code class="lang-bash"># Login to Azure
+az login
+azd auth login
+</code></pre>
+<h3 id="image-build-failed">&quot;Image build failed&quot;</h3>
+<p>Ensure Docker is running:</p>
+<pre><code class="lang-bash">docker ps
+</code></pre>
+<h3 id="deployment-timeout">&quot;Deployment timeout&quot;</h3>
+<p>Check service logs:</p>
+<pre><code class="lang-bash">az containerapp logs show --name auth-service --resource-group rg-&lt;env-name&gt; --follow
+</code></pre>
+<h2 id="github-actions-setup">GitHub Actions Setup</h2>
+<p>For automated deployments on every push:</p>
+<ol>
+<li><strong>Create Azure Service Principal</strong> with OIDC:</li>
+</ol>
+<pre><code class="lang-bash">azd pipeline config
+</code></pre>
+<ol start="2">
+<li><p><strong>Follow the prompts</strong> to:</p>
+<ul>
+<li>Create a GitHub connection</li>
+<li>Configure federated credentials</li>
+<li>Set repository secrets</li>
+</ul>
+</li>
+<li><p><strong>Push to main</strong> to trigger deployment:</p>
+</li>
+</ol>
+<pre><code class="lang-bash">git push origin main
+</code></pre>
+<p>The workflow in <code>.github/workflows/azure-deploy.yml</code> will run automatically.</p>
+<h2 id="common-commands">Common Commands</h2>
+<pre><code class="lang-bash"># Check deployment status
+azd show
+
+# View all environment variables
+azd env get-values
+
+# Update a secret
+azd env set JWT_SECRET_KEY &quot;new-secret&quot; --secret
+
+# Redeploy without reprovisioning
+azd deploy
+
+# View resource group in Azure Portal
+az group show --name rg-&lt;env-name&gt; --query properties.portalUrl
+</code></pre>
+<h2 id="architecture-overview">Architecture Overview</h2>
+<pre><code>Internet
+   |
+   v
+Gateway (External HTTPS)
+   |
+   +-- Auth Service (Internal, Dapr)
+   +-- Billing Service (Internal, Dapr)
+   +-- Inventory Service (Internal, Dapr)
+   +-- Orders Service (Internal, Dapr)
+   +-- Purchasing Service (Internal, Dapr)
+   +-- Sales Service (Internal, Dapr)
+        |
+        +-- Azure SQL Database
+        +-- Azure Cache for Redis
+</code></pre>
+<p>All services communicate internally via:</p>
+<ul>
+<li>HTTP through the gateway</li>
+<li>Dapr service invocation</li>
+<li>Shared Redis cache</li>
+<li>Individual SQL databases</li>
+</ul>
+<h2 id="what-gets-deployed">What Gets Deployed?</h2>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Container Apps Environment</td>
+<td>Microsoft.App/managedEnvironments</td>
+<td>Hosts all services with Dapr</td>
+</tr>
+<tr>
+<td>Gateway</td>
+<td>Microsoft.App/containerApps</td>
+<td>Public-facing reverse proxy</td>
+</tr>
+<tr>
+<td>6 Microservices</td>
+<td>Microsoft.App/containerApps</td>
+<td>Business logic services</td>
+</tr>
+<tr>
+<td>SQL Server</td>
+<td>Microsoft.Sql/servers</td>
+<td>Database server</td>
+</tr>
+<tr>
+<td>6 SQL Databases</td>
+<td>Microsoft.Sql/databases</td>
+<td>One per microservice</td>
+</tr>
+<tr>
+<td>Redis Cache</td>
+<td>Microsoft.Cache/redis</td>
+<td>Shared distributed cache</td>
+</tr>
+<tr>
+<td>Container Registry</td>
+<td>Microsoft.ContainerRegistry</td>
+<td>Stores Docker images</td>
+</tr>
+<tr>
+<td>Log Analytics</td>
+<td>Microsoft.OperationalInsights</td>
+<td>Centralized logging</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total</strong>: ~15 Azure resources</p>
+<h2 id="cost-estimate">Cost Estimate</h2>
+<p>Development environment (Basic tier):</p>
+<ul>
+<li>Container Apps: ~$15/month</li>
+<li>SQL Databases (6x Basic): ~$30/month</li>
+<li>Redis (Basic): ~$15/month</li>
+<li>Other services: ~$10/month</li>
+</ul>
+<p><strong>Total</strong>: ~$70/month</p>
+<blockquote>
+<p>Tip: Use <code>azd down</code> when not using to avoid charges.</p>
+</blockquote>
+<h2 id="support">Support</h2>
+<p>For issues:</p>
+<ol>
+<li>Check <a href="../deployment/DEPLOYMENT.html">DEPLOYMENT.md</a> for detailed troubleshooting</li>
+<li>Review logs in Azure Portal</li>
+<li>Open a GitHub issue</li>
+</ol>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/guides/QUICKSTART.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#128051; Docker-Compose &amp; Local Development | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#128051; Docker-Compose &amp; Local Development | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/docker-compose/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-docker-compose--local-development">🐳 Docker-Compose &amp; Local Development</h1>
+
+<p><strong>Local Development Environment Configuration</strong><br>
+Last Updated: October 27, 2025</p>
+<hr>
+<h2 id="-overview">📍 Overview</h2>
+<p>This category documents the complete local development environment using Docker Compose. All services, databases, caches, and supporting infrastructure run locally with full DAPR integration.</p>
+<hr>
+<h2 id="-documents-in-this-category">📚 Documents in This Category</h2>
+<h3 id="docker_compose_guidemd"><a href="DOCKER_COMPOSE_GUIDE.md">DOCKER_COMPOSE_GUIDE.md</a></h3>
+<p><strong>Complete Docker Compose setup and operations</strong></p>
+<ul>
+<li>Docker Compose file structure and components</li>
+<li>Service configuration details</li>
+<li>Container networking</li>
+<li>Volume management</li>
+<li>Environment configuration</li>
+</ul>
+<h3 id="services_referencemd"><a href="SERVICES_REFERENCE.md">SERVICES_REFERENCE.md</a></h3>
+<p><strong>Individual service reference guide</strong></p>
+<ul>
+<li>Each service's role and dependencies</li>
+<li>Service-specific configuration</li>
+<li>Port mappings</li>
+<li>Health check endpoints</li>
+<li>Service startup order</li>
+</ul>
+<h3 id="dapr_local_setupmd"><a href="DAPR_LOCAL_SETUP.md">DAPR_LOCAL_SETUP.md</a></h3>
+<p><strong>DAPR configuration for local development</strong></p>
+<ul>
+<li>DAPR CLI installation and setup</li>
+<li>Sidecar configuration</li>
+<li>Component setup (state store, pub/sub, config)</li>
+<li>Local development patterns</li>
+<li>Testing DAPR functionality</li>
+</ul>
+<h3 id="troubleshootingmd"><a href="TROUBLESHOOTING.md">TROUBLESHOOTING.md</a></h3>
+<p><strong>Common Docker Compose issues and solutions</strong></p>
+<ul>
+<li>Container won't start</li>
+<li>Services can't communicate</li>
+<li>Port conflicts</li>
+<li>Database connection issues</li>
+<li>DAPR sidecar problems</li>
+</ul>
+<hr>
+<h2 id="-quick-start">🎯 Quick Start</h2>
+<h3 id="5-minute-setup">5-Minute Setup</h3>
+<ol>
+<li><p><strong>Verify Prerequisites</strong></p>
+<pre><code class="lang-bash">docker --version  # Docker Desktop 4.0+
+docker compose version  # Docker Compose 2.0+
+</code></pre>
+</li>
+<li><p><strong>Start Services</strong></p>
+<pre><code class="lang-bash">cd /path/to/project
+docker compose up -d
+</code></pre>
+</li>
+<li><p><strong>Verify Running</strong></p>
+<pre><code class="lang-bash">docker compose ps
+curl http://localhost:5000/health
+</code></pre>
+</li>
+<li><p><strong>Stop Services</strong></p>
+<pre><code class="lang-bash">docker compose down
+</code></pre>
+</li>
+</ol>
+<hr>
+<h2 id="-services-overview">📊 Services Overview</h2>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Port</th>
+<th>Role</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SQL Server</strong></td>
+<td>1433</td>
+<td>Database</td>
+<td>✅ Running</td>
+</tr>
+<tr>
+<td><strong>Redis</strong></td>
+<td>6379</td>
+<td>Cache &amp; State</td>
+<td>✅ Running</td>
+</tr>
+<tr>
+<td><strong>Auth Service</strong></td>
+<td>5001</td>
+<td>Authentication</td>
+<td>✅ Running</td>
+</tr>
+<tr>
+<td><strong>Inventory Service</strong></td>
+<td>5002</td>
+<td>Inventory Mgmt</td>
+<td>✅ Running</td>
+</tr>
+<tr>
+<td><strong>Orders Service</strong></td>
+<td>5003</td>
+<td>Order Processing</td>
+<td>✅ Running</td>
+</tr>
+<tr>
+<td><strong>Sales Service</strong></td>
+<td>5004</td>
+<td>Sales Mgmt</td>
+<td>✅ Running</td>
+</tr>
+<tr>
+<td><strong>Billing Service</strong></td>
+<td>5005</td>
+<td>Billing</td>
+<td>✅ Running</td>
+</tr>
+<tr>
+<td><strong>Purchasing Service</strong></td>
+<td>5006</td>
+<td>Procurement</td>
+<td>✅ Running</td>
+</tr>
+<tr>
+<td><strong>API Gateway</strong></td>
+<td>8000</td>
+<td>Request Router</td>
+<td>✅ Running</td>
+</tr>
+<tr>
+<td><strong>DAPR Placement</strong></td>
+<td>50005</td>
+<td>Service Discovery</td>
+<td>✅ Running</td>
+</tr>
+<tr>
+<td><strong>DAPR Sentry</strong></td>
+<td>50001</td>
+<td>mTLS Authority</td>
+<td>✅ Running</td>
+</tr>
+<tr>
+<td><strong>Redis Commander</strong></td>
+<td>8081</td>
+<td>Redis UI</td>
+<td>✅ Running</td>
+</tr>
+<tr>
+<td><strong>Redis Insight</strong></td>
+<td>5540</td>
+<td>Redis Analytics</td>
+<td>✅ Running</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-common-tasks">🔍 Common Tasks</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Command</th>
+<th>See Also</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start everything</td>
+<td><code>docker compose up -d</code></td>
+<td><a href="DOCKER_COMPOSE_GUIDE.md">DOCKER_COMPOSE_GUIDE.md</a></td>
+</tr>
+<tr>
+<td>Stop everything</td>
+<td><code>docker compose down</code></td>
+<td><a href="DOCKER_COMPOSE_GUIDE.md">DOCKER_COMPOSE_GUIDE.md</a></td>
+</tr>
+<tr>
+<td>View logs</td>
+<td><code>docker compose logs -f [service]</code></td>
+<td><a href="DOCKER_COMPOSE_GUIDE.md">DOCKER_COMPOSE_GUIDE.md</a></td>
+</tr>
+<tr>
+<td>Restart service</td>
+<td><code>docker compose restart [service]</code></td>
+<td><a href="SERVICES_REFERENCE.md">SERVICES_REFERENCE.md</a></td>
+</tr>
+<tr>
+<td>Recreate service</td>
+<td><code>docker compose up -d --force-recreate [service]</code></td>
+<td><a href="TROUBLESHOOTING.md">TROUBLESHOOTING.md</a></td>
+</tr>
+<tr>
+<td>Check service health</td>
+<td><code>curl http://localhost:PORT/health</code></td>
+<td><a href="SERVICES_REFERENCE.md">SERVICES_REFERENCE.md</a></td>
+</tr>
+<tr>
+<td>Access database</td>
+<td><code>docker exec -it sqlserver /opt/mssql-tools/bin/sqlcmd</code></td>
+<td><a href="../microservices/DATABASE_ACCESS.md">DATABASE_ACCESS.md</a></td>
+</tr>
+<tr>
+<td>Clean everything</td>
+<td><code>docker compose down -v</code></td>
+<td><a href="DOCKER_COMPOSE_GUIDE.md">DOCKER_COMPOSE_GUIDE.md</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-key-files">📂 Key Files</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docker-compose.yml</code></td>
+<td>Main configuration (local dev)</td>
+</tr>
+<tr>
+<td><code>docker-compose.override.yml</code></td>
+<td>Local overrides</td>
+</tr>
+<tr>
+<td><code>.env.example</code></td>
+<td>Environment variables template</td>
+</tr>
+<tr>
+<td><code>deploy/dapr/components/*.yaml</code></td>
+<td>DAPR component definitions</td>
+</tr>
+<tr>
+<td><code>Dockerfile</code></td>
+<td>Application container image</td>
+</tr>
+<tr>
+<td><code>docker-compose.dcproj</code></td>
+<td>Docker project file</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-reading-order">🔄 Reading Order</h2>
+<ol>
+<li>Start with <a href="DOCKER_COMPOSE_GUIDE.md">DOCKER_COMPOSE_GUIDE.md</a> to understand the setup</li>
+<li>Review <a href="SERVICES_REFERENCE.md">SERVICES_REFERENCE.md</a> for individual services</li>
+<li>Read <a href="DAPR_LOCAL_SETUP.md">DAPR_LOCAL_SETUP.md</a> to understand DAPR</li>
+<li>Bookmark <a href="TROUBLESHOOTING.md">TROUBLESHOOTING.md</a> for common issues</li>
+</ol>
+<hr>
+<h2 id="-related-categories">📚 Related Categories</h2>
+<ul>
+<li><strong>Development:</strong> <a href="../development/DEVELOPMENT_SETUP.md">Development Setup</a> - Get your first service running</li>
+<li><strong>Infrastructure:</strong> <a href="../infrastructure/README.html">Infrastructure Guide</a> - Production deployment</li>
+<li><strong>Microservices:</strong> <a href="../microservices/README.html">Microservices Guide</a> - Service development</li>
+<li><strong>DAPR Integration:</strong> <a href="../microservices/DAPR_INTEGRATION.md">DAPR Guide</a> - Distributed patterns</li>
+</ul>
+<hr>
+<h2 id="-troubleshooting-quick-links">🐛 Troubleshooting Quick Links</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Problem</strong></th>
+<th><strong>Solution</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docker won't start</td>
+<td><a href="TROUBLESHOOTING.md#docker-wont-start">TROUBLESHOOTING.md</a></td>
+</tr>
+<tr>
+<td>Services can't communicate</td>
+<td><a href="TROUBLESHOOTING.md#services-cant-communicate">TROUBLESHOOTING.md</a></td>
+</tr>
+<tr>
+<td>Port already in use</td>
+<td><a href="TROUBLESHOOTING.md#port-already-in-use">TROUBLESHOOTING.md</a></td>
+</tr>
+<tr>
+<td>Database connection failed</td>
+<td><a href="TROUBLESHOOTING.md#database-connection-failed">TROUBLESHOOTING.md</a></td>
+</tr>
+<tr>
+<td>DAPR not working</td>
+<td><a href="TROUBLESHOOTING.md#dapr-issues">TROUBLESHOOTING.md</a></td>
+</tr>
+<tr>
+<td>Service keeps crashing</td>
+<td><a href="TROUBLESHOOTING.md#service-crash">TROUBLESHOOTING.md</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-key-concepts">💡 Key Concepts</h2>
+<h3 id="service-discovery">Service Discovery</h3>
+<ul>
+<li>DAPR Placement service handles service discovery</li>
+<li>Services discover each other via DAPR, not direct DNS</li>
+<li>Service location transparent to application code</li>
+</ul>
+<h3 id="state-management">State Management</h3>
+<ul>
+<li>DAPR State Store backed by Redis</li>
+<li>Provides distributed state across services</li>
+<li>Automatic persistence and consistency</li>
+</ul>
+<h3 id="event-system">Event System</h3>
+<ul>
+<li>DAPR Pub/Sub backed by Redis</li>
+<li>Services publish events to topics</li>
+<li>Other services subscribe and react</li>
+<li>Asynchronous, decoupled communication</li>
+</ul>
+<h3 id="security">Security</h3>
+<ul>
+<li>Services communicate on private bridge network</li>
+<li>Database and Redis password-protected</li>
+<li>DAPR mTLS via Sentry service</li>
+<li>Health checks for service status</li>
+</ul>
+<hr>
+<h2 id="-verification-checklist">✅ Verification Checklist</h2>
+<p>When starting local development:</p>
+<ul>
+<li>[ ] Docker Desktop running</li>
+<li>[ ] All containers running (<code>docker compose ps</code>)</li>
+<li>[ ] API Gateway health check passes (<code>curl http://localhost:8000/health</code>)</li>
+<li>[ ] Can access Redis Commander (<code>http://localhost:8081</code>)</li>
+<li>[ ] Can access Redis Insight (<code>http://localhost:5540</code>)</li>
+<li>[ ] Auth service running (<code>curl http://localhost:5001/health</code>)</li>
+<li>[ ] Database accessible</li>
+</ul>
+<hr>
+<h2 id="-environment-variables">🎓 Environment Variables</h2>
+<p>Key variables (see <code>.env.example</code> for complete list):</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>REDIS_PASSWORD</code></td>
+<td><code>Redis@Secure123!</code></td>
+<td>Redis authentication</td>
+</tr>
+<tr>
+<td><code>SQL_SA_PASSWORD</code></td>
+<td>(set in compose)</td>
+<td>SQL Server admin password</td>
+</tr>
+<tr>
+<td><code>DAPR_PLACEMENT_PORT</code></td>
+<td><code>50005</code></td>
+<td>DAPR placement service</td>
+</tr>
+<tr>
+<td><code>DAPR_SENTRY_PORT</code></td>
+<td><code>50001</code></td>
+<td>DAPR mTLS authority</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-next-steps">📞 Next Steps</h2>
+<ul>
+<li><strong>First time?</strong> → <a href="../development/DEVELOPMENT_SETUP.md">Development Setup</a></li>
+<li><strong>Want to code?</strong> → <a href="../microservices/SERVICE_TEMPLATES.md">Service Templates</a></li>
+<li><strong>Understanding DAPR?</strong> → <a href="../microservices/DAPR_INTEGRATION.md">DAPR Integration</a></li>
+<li><strong>Deploying to Azure?</strong> → <a href="../deployment/DEPLOYMENT_GUIDE.md">Deployment Guide</a></li>
+</ul>
+<hr>
+<h2 id="-full-document-map">🔗 Full Document Map</h2>
+<pre><code>docker-compose/
+├── README.md (this file)
+├── DOCKER_COMPOSE_GUIDE.md
+├── SERVICES_REFERENCE.md
+├── DAPR_LOCAL_SETUP.md
+└── TROUBLESHOOTING.md
+</code></pre>
+<hr>
+<p><strong>Last Updated:</strong> October 27, 2025<br>
+<strong>Category Status:</strong> ✅ Complete<br>
+<strong>Documents:</strong> 4 files<br>
+<strong>Services:</strong> 13 total (6 business + 7 infrastructure)</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/docker-compose/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

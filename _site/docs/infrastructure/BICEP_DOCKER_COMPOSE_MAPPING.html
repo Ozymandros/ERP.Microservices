@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#128202; Bicep vs docker-compose.yml: Complete Configuration Mapping | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#128202; Bicep vs docker-compose.yml: Complete Configuration Mapping | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/infrastructure/BICEP_DOCKER_COMPOSE_MAPPING.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-bicep-vs-docker-composeyml-complete-configuration-mapping">📊 Bicep vs docker-compose.yml: Complete Configuration Mapping</h1>
+
+<p>This document maps every configuration element from <code>docker-compose.yml</code> to its required Bicep implementation, identifying gaps.</p>
+<hr>
+<h2 id="1-global-configuration">1. Global Configuration</h2>
+<h3 id="docker-composeyml">docker-compose.yml</h3>
+<pre><code class="lang-yaml">version: &quot;3.9&quot;
+
+x-api-env: &amp;api-env
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_URLS: http://+:8080
+  FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+  Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
+  Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
+  Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
+  ConnectionStrings__cache: redis:6379
+</code></pre>
+<h3 id="bicep-implementation-status">Bicep Implementation Status</h3>
+<table>
+<thead>
+<tr>
+<th>Config</th>
+<th>docker-compose</th>
+<th>Bicep</th>
+<th>Status</th>
+<th>Gap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ASPNETCORE_ENVIRONMENT</code></td>
+<td>✅ <code>Development</code></td>
+<td>⚠️ Parameter only</td>
+<td>⚠️</td>
+<td>Need to pass to container apps</td>
+</tr>
+<tr>
+<td><code>ASPNETCORE_URLS</code></td>
+<td>✅ <code>http://+:8080</code></td>
+<td>✅ Hardcoded</td>
+<td>✅</td>
+<td>No gap</td>
+</tr>
+<tr>
+<td><code>FRONTEND_ORIGIN</code></td>
+<td>✅ Parameterized</td>
+<td>❌ Missing</td>
+<td>❌</td>
+<td>Add to main.bicep params</td>
+</tr>
+<tr>
+<td><code>Jwt__SecretKey</code></td>
+<td>✅ From env var</td>
+<td>❌ Missing from main</td>
+<td>❌</td>
+<td>Add @secure() param</td>
+</tr>
+<tr>
+<td><code>Jwt__Issuer</code></td>
+<td>✅ From env var</td>
+<td>⚠️ Hardcoded in KeyVault</td>
+<td>⚠️</td>
+<td>Make parameterized</td>
+</tr>
+<tr>
+<td><code>Jwt__Audience</code></td>
+<td>✅ From env var</td>
+<td>⚠️ Hardcoded in KeyVault</td>
+<td>⚠️</td>
+<td>Make parameterized</td>
+</tr>
+<tr>
+<td><code>ConnectionStrings__cache</code></td>
+<td>✅ <code>redis:6379</code></td>
+<td>❌ Missing from services</td>
+<td>❌</td>
+<td>Add to container-app env</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="2-infrastructure-services">2. Infrastructure Services</h2>
+<h3 id="sql-server-docker-composeyml-sqlserver-service">SQL Server (docker-compose.yml: <code>sqlserver</code> service)</h3>
+<p><strong>docker-compose Configuration:</strong></p>
+<pre><code class="lang-yaml">sqlserver:
+  image: mcr.microsoft.com/mssql/server:2022-latest
+  container_name: sqlserver
+  environment:
+    ACCEPT_EULA: &quot;Y&quot;
+    MSSQL_PID: Developer
+    MSSQL_SA_PASSWORD: ${SQL_PASSWORD:-P@ssw0rd12345!}
+  ports:
+    - &quot;1455:1433&quot;
+  volumes:
+    - sqlserver-data:/var/opt/mssql
+  healthcheck: [...]
+</code></pre>
+<p><strong>Bicep Requirements:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Implementation</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SQL Server resource</td>
+<td><code>Microsoft.Sql/servers</code></td>
+<td>✅ In core/database/sql-server.bicep</td>
+</tr>
+<tr>
+<td>SQL Server FQDN output</td>
+<td><code>sqlServer.properties.fullyQualifiedDomainName</code></td>
+<td>✅ Implemented</td>
+</tr>
+<tr>
+<td>Firewall rules</td>
+<td>AllowAllAzureIps</td>
+<td>✅ Implemented</td>
+</tr>
+<tr>
+<td><strong>Databases (6 total)</strong></td>
+<td>Loop create AuthDB, BillingDB, InventoryDB, OrderDB, PurchasingDB, SalesDB</td>
+<td>❌ <strong>MISSING</strong></td>
+</tr>
+<tr>
+<td>Admin password</td>
+<td>Parameterized</td>
+<td>⚠️ Passed but not to services</td>
+</tr>
+<tr>
+<td><strong>Database outputs</strong></td>
+<td>Connection string templates</td>
+<td>❌ <strong>MISSING</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gap Analysis:</strong></p>
+<pre><code class="lang-bicep">// MISSING: Database creation in myapp-sqlserver.module.bicep
+// MISSING: Connection string outputs
+// MISSING: Role assignments for service identities
+</code></pre>
+<hr>
+<h3 id="redis-cache-docker-composeyml-redis-service">Redis Cache (docker-compose.yml: <code>redis</code> service)</h3>
+<p><strong>docker-compose Configuration:</strong></p>
+<pre><code class="lang-yaml">redis:
+  image: redis:7-alpine
+  container_name: redis
+  command: [&quot;redis-server&quot;, &quot;--save&quot;, &quot;&quot;, &quot;--appendonly&quot;, &quot;no&quot;]
+  ports:
+    - &quot;6379:6379&quot;
+  volumes:
+    - redis-data:/data
+</code></pre>
+<p><strong>Bicep Requirements:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Implementation</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Redis resource</td>
+<td><code>Microsoft.Cache/redis</code></td>
+<td>✅ In core/database/redis.bicep</td>
+</tr>
+<tr>
+<td>SKU (Standard/Premium)</td>
+<td>Parameterized</td>
+<td>✅ Implemented</td>
+</tr>
+<tr>
+<td>TLS enforcement</td>
+<td>1.2 minimum</td>
+<td>✅ Implemented</td>
+</tr>
+<tr>
+<td>Primary key output</td>
+<td><code>redis.listKeys().primaryKey</code></td>
+<td>✅ Implemented</td>
+</tr>
+<tr>
+<td><strong>Module call</strong></td>
+<td>In main.bicep</td>
+<td>❌ <strong>MISSING CALL</strong></td>
+</tr>
+<tr>
+<td><strong>Connection string</strong></td>
+<td><code>hostName:port,password=X</code></td>
+<td>⚠️ Template exists, not used</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gap Analysis:</strong></p>
+<pre><code class="lang-bicep">// MISSING: Call to redis module from main.bicep
+// MISSING: Pass redis hostname to Key Vault
+// MISSING: Reference redis connection string in services
+</code></pre>
+<hr>
+<h3 id="dapr-placement-service">Dapr Placement Service</h3>
+<p><strong>docker-compose Configuration:</strong></p>
+<pre><code class="lang-yaml">dapr-placement:
+  image: daprio/dapr:1.13.0
+  container_name: dapr-placement
+  command: [&quot;./placement&quot;, &quot;-port&quot;, &quot;50005&quot;, &quot;-log-level&quot;, &quot;info&quot;]
+  ports:
+    - &quot;50005:50005&quot;
+</code></pre>
+<p><strong>Bicep Requirements:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Implementation</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Placement service</td>
+<td>Not needed in Azure (managed)</td>
+<td>✅ Azure handles automatically</td>
+</tr>
+<tr>
+<td>Service discovery</td>
+<td>Container Apps built-in</td>
+<td>✅ Native support</td>
+</tr>
+<tr>
+<td>Dapr sidecars</td>
+<td>Parameter in container-app.bicep</td>
+<td>✅ Implemented</td>
+</tr>
+<tr>
+<td><strong>Service-to-service communication</strong></td>
+<td>Via Dapr service invocation</td>
+<td>⚠️ Template supports but not configured</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-microservices-configuration">3. Microservices Configuration</h2>
+<h3 id="auth-service-example-docker-composeyml-auth-service">Auth Service Example (docker-compose.yml: <code>auth-service</code>)</h3>
+<p><strong>docker-compose Configuration:</strong></p>
+<pre><code class="lang-yaml">auth-service:
+  build:
+    context: .
+    dockerfile: MyApp.Auth/MyApp.Auth.API/Dockerfile
+  container_name: auth-service
+  environment:
+    &lt;&lt;: *api-env  # Inherits from x-api-env
+    ConnectionStrings__AuthDb: Server=sqlserver,1433;Database=AuthDb;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+    ConnectionStrings__AuthDB: Server=sqlserver,1433;Database=AuthDb;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+  depends_on:
+    - sqlserver
+    - redis
+    - dapr-placement
+  ports:
+    - &quot;5007:8080&quot;
+</code></pre>
+<p><strong>Bicep Mapping:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Config Element</th>
+<th>docker-compose</th>
+<th>Bicep</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Image</td>
+<td><code>auth-service:latest</code></td>
+<td><code>imageName: 'auth-service:latest'</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>ASPNETCORE_ENVIRONMENT</code></td>
+<td><code>Development</code></td>
+<td>⚠️ Parameter</td>
+<td>⚠️</td>
+</tr>
+<tr>
+<td><code>ASPNETCORE_URLS</code></td>
+<td><code>http://+:8080</code></td>
+<td>✅ Hardcoded</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>Jwt__SecretKey</code></td>
+<td>From env var</td>
+<td>❌ Missing</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><code>Jwt__Issuer</code></td>
+<td>From env var</td>
+<td>❌ Parameter missing</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><code>Jwt__Audience</code></td>
+<td>From env var</td>
+<td>❌ Parameter missing</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><code>ConnectionStrings__cache</code></td>
+<td><code>redis:6379</code></td>
+<td>❌ Missing</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><code>ConnectionStrings__AuthDb</code></td>
+<td><code>Server=sqlserver,...</code></td>
+<td>❌ Missing</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Dapr sidecar</td>
+<td>✅ Configured</td>
+<td>✅ Parameter support</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Service depends on Redis</td>
+<td>✅ Explicit</td>
+<td>✅ Parameter dependency</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Service module</strong></td>
+<td>N/A (docker-compose)</td>
+<td>❌ <strong>MISSING FILE</strong></td>
+<td>❌</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gap Analysis:</strong></p>
+<pre><code class="lang-bicep">// MISSING FILE: infra/auth-service/auth-service.module.bicep
+// This module needs to:
+// 1. Call core/host/container-app.bicep
+// 2. Pass all environment variables listed above
+// 3. Reference JWT secret from Key Vault
+// 4. Reference database connection from Key Vault
+// 5. Reference cache connection from Key Vault
+</code></pre>
+<hr>
+<h2 id="4-complete-environment-variable-mapping">4. Complete Environment Variable Mapping</h2>
+<h3 id="all-services-need-these-from-x-api-env">All Services Need These (from <code>x-api-env</code>):</h3>
+<pre><code class="lang-bicep">// GLOBAL - ALL SERVICES
+{
+  name: 'ASPNETCORE_ENVIRONMENT'
+  value: aspnetcoreEnvironment  // Parameter
+}
+{
+  name: 'ASPNETCORE_URLS'
+  value: 'http://+:8080'
+}
+{
+  name: 'FRONTEND_ORIGIN'
+  value: frontendOrigin  // Parameter
+}
+{
+  name: 'Jwt__Issuer'
+  value: jwtIssuer  // Parameter
+}
+{
+  name: 'Jwt__Audience'
+  value: jwtAudience  // Parameter
+}
+{
+  name: 'ConnectionStrings__cache'
+  value: 'redis:6379'  // FROM KEY VAULT SECRET
+}
+</code></pre>
+<h3 id="service-specific-connection-strings">Service-Specific Connection Strings:</h3>
+<pre><code class="lang-bicep">// AUTH SERVICE
+{
+  name: 'ConnectionStrings__AuthDb'
+  value: 'Server=myapp.database.windows.net;Database=AuthDB;...'  // FROM KEY VAULT
+}
+
+// BILLING SERVICE
+{
+  name: 'ConnectionStrings__BillingDB'
+  value: 'Server=myapp.database.windows.net;Database=BillingDB;...'  // FROM KEY VAULT
+}
+
+// INVENTORY SERVICE
+{
+  name: 'ConnectionStrings__InventoryDB'
+  value: '...'  // FROM KEY VAULT
+}
+
+// And so on for Orders, Purchasing, Sales
+</code></pre>
+<h3 id="bicep-current-status">Bicep Current Status:</h3>
+<table>
+<thead>
+<tr>
+<th>Global Env Var</th>
+<th>Parameter in main.bicep</th>
+<th>Passed to services</th>
+<th>In container-app.bicep</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ASPNETCORE_ENVIRONMENT</code></td>
+<td>❌</td>
+<td>❌</td>
+<td>⚠️ (template only)</td>
+<td>❌ <strong>GAP</strong></td>
+</tr>
+<tr>
+<td><code>ASPNETCORE_URLS</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>✅ (hardcoded)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>FRONTEND_ORIGIN</code></td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌ <strong>GAP</strong></td>
+</tr>
+<tr>
+<td><code>Jwt__Issuer</code></td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌ <strong>GAP</strong></td>
+</tr>
+<tr>
+<td><code>Jwt__Audience</code></td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌ <strong>GAP</strong></td>
+</tr>
+<tr>
+<td><code>ConnectionStrings__cache</code></td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌ <strong>GAP</strong></td>
+</tr>
+<tr>
+<td>Service DB connection strings</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌ <strong>GAP</strong> (6 gaps total)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="5-key-vault-secret-mapping">5. Key Vault Secret Mapping</h2>
+<h3 id="docker-composeyml-approach-local-dev">docker-compose.yml Approach (Local Dev):</h3>
+<pre><code class="lang-yaml"># Secrets stored as environment variables with defaults
+Jwt__SecretKey: ${JWT_SECRET:-hardcoded_default}
+MSSQL_SA_PASSWORD: ${SQL_PASSWORD:-P@ssw0rd12345!}
+</code></pre>
+<h3 id="bicep-approach-production">Bicep Approach (Production):</h3>
+<pre><code class="lang-bicep">// Secrets stored in Key Vault
+resource kvJwtSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
+  parent: keyVault
+  name: 'jwt-secret-key'
+  properties: {
+    value: jwtSecretKey  // From secure parameter
+  }
+}
+
+resource kvSqlSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
+  parent: keyVault
+  name: 'sql-connection-authdb'
+  properties: {
+    value: 'Server=${sqlFqdn};Database=AuthDB;...'
+  }
+}
+</code></pre>
+<h3 id="current-bicep-secret-status">Current Bicep Secret Status:</h3>
+<table>
+<thead>
+<tr>
+<th>Secret</th>
+<th>docker-compose</th>
+<th>Key Vault Module</th>
+<th>main.bicep call</th>
+<th>Container Ref</th>
+<th>Overall Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>jwt-secret-key</code></td>
+<td>✅ Env var</td>
+<td>✅ Defined</td>
+<td>❌ Not called</td>
+<td>❌ Not referenced</td>
+<td>❌ <strong>BROKEN</strong></td>
+</tr>
+<tr>
+<td><code>redis-connection</code></td>
+<td>✅ Env var</td>
+<td>✅ Defined</td>
+<td>❌ Not called</td>
+<td>❌ Not referenced</td>
+<td>❌ <strong>BROKEN</strong></td>
+</tr>
+<tr>
+<td><code>sql-connection-authdb</code></td>
+<td>✅ Env var</td>
+<td>✅ Defined</td>
+<td>❌ Not called</td>
+<td>❌ Not referenced</td>
+<td>❌ <strong>BROKEN</strong></td>
+</tr>
+<tr>
+<td><code>sql-connection-billingdb</code></td>
+<td>✅ Env var</td>
+<td>✅ Defined</td>
+<td>❌ Not called</td>
+<td>❌ Not referenced</td>
+<td>❌ <strong>BROKEN</strong></td>
+</tr>
+<tr>
+<td><code>sql-connection-inventorydb</code></td>
+<td>✅ Env var</td>
+<td>✅ Defined</td>
+<td>❌ Not called</td>
+<td>❌ Not referenced</td>
+<td>❌ <strong>BROKEN</strong></td>
+</tr>
+<tr>
+<td><code>sql-connection-ordersdb</code></td>
+<td>✅ Env var</td>
+<td>✅ Defined</td>
+<td>❌ Not called</td>
+<td>❌ Not referenced</td>
+<td>❌ <strong>BROKEN</strong></td>
+</tr>
+<tr>
+<td><code>sql-connection-purchasingdb</code></td>
+<td>✅ Env var</td>
+<td>✅ Defined</td>
+<td>❌ Not called</td>
+<td>❌ Not referenced</td>
+<td>❌ <strong>BROKEN</strong></td>
+</tr>
+<tr>
+<td><code>sql-connection-salesdb</code></td>
+<td>✅ Env var</td>
+<td>✅ Defined</td>
+<td>❌ Not called</td>
+<td>❌ Not referenced</td>
+<td>❌ <strong>BROKEN</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="6-api-gateway-configuration">6. API Gateway Configuration</h2>
+<h3 id="docker-composeyml-1">docker-compose.yml</h3>
+<pre><code class="lang-yaml">erpapigateway:
+  build:
+    context: .
+    dockerfile: ErpApiGateway/Dockerfile
+  environment:
+    &lt;&lt;: *api-env
+    Ocelot__Routes__0__DownstreamHostAndPorts__0__Host: auth-service
+    Ocelot__Routes__0__DownstreamHostAndPorts__0__Port: 8080
+    # ... repeat for all services
+  ports:
+    - &quot;5000:8080&quot;
+</code></pre>
+<h3 id="bicep-requirements">Bicep Requirements:</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Status</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API Gateway Container App</td>
+<td>❌ <strong>MISSING MODULE</strong></td>
+<td>No <code>api-gateway.module.bicep</code></td>
+</tr>
+<tr>
+<td>External Ingress</td>
+<td>✅ Possible</td>
+<td><code>externalIngress: true</code> in template</td>
+</tr>
+<tr>
+<td>Ocelot Routes as env vars</td>
+<td>⚠️ Possible</td>
+<td>Would need to pass as env array</td>
+</tr>
+<tr>
+<td>JWT authentication</td>
+<td>❌ Missing</td>
+<td>No JWT secret passed</td>
+</tr>
+<tr>
+<td>CORS headers</td>
+<td>❌ Missing</td>
+<td>No FRONTEND_ORIGIN passed</td>
+</tr>
+<tr>
+<td>Service discovery</td>
+<td>✅ Possible</td>
+<td>Container Apps DNS: <code>auth-service:8080</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="7-dapr-sidecar-configuration">7. Dapr Sidecar Configuration</h2>
+<h3 id="docker-composeyml-2">docker-compose.yml</h3>
+<pre><code class="lang-yaml">auth-service-dapr:
+  image: daprio/dapr:1.13.0
+  command:
+    - &quot;./daprd&quot;
+    - &quot;-app-id&quot;, &quot;auth-service&quot;
+    - &quot;-app-port&quot;, &quot;8080&quot;
+    - &quot;-placement-host-address&quot;, &quot;dapr-placement:50005&quot;
+</code></pre>
+<h3 id="bicep-implementation">Bicep Implementation:</h3>
+<pre><code class="lang-bicep">// In container-app.bicep
+dapr: daprEnabled ? {
+  enabled: true
+  appId: daprAppId
+  appPort: daprAppPort
+  appProtocol: 'http'
+  enableApiLogging: true
+} : null
+</code></pre>
+<h3 id="mapping">Mapping:</h3>
+<table>
+<thead>
+<tr>
+<th>Dapr Config</th>
+<th>docker-compose</th>
+<th>Bicep</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dapr enabled</td>
+<td>✅ Sidecar containers</td>
+<td>✅ Parameter <code>daprEnabled</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>App ID</td>
+<td>✅ <code>auth-service</code></td>
+<td>✅ Parameter <code>daprAppId</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>App port</td>
+<td>✅ <code>8080</code></td>
+<td>✅ Parameter <code>daprAppPort</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Placement host</td>
+<td>✅ <code>dapr-placement:50005</code></td>
+<td>✅ Auto in Container Apps</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>State stores</td>
+<td>❌ Not configured</td>
+<td>❌ Not configured</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Pub/Sub</td>
+<td>❌ Not configured</td>
+<td>❌ Not configured</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><strong>Module call</strong></td>
+<td>N/A</td>
+<td>❌ <strong>MISSING MODULES</strong></td>
+<td>❌</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="8-database-configuration">8. Database Configuration</h2>
+<h3 id="docker-composeyml-approach">docker-compose.yml Approach:</h3>
+<pre><code class="lang-yaml"># Each service has connection string with hardcoded database name
+auth-service:
+  environment:
+    ConnectionStrings__AuthDb: Server=sqlserver,1433;Database=AuthDb;...
+
+billing-service:
+  environment:
+    ConnectionStrings__billingdb: Server=sqlserver,1433;Database=BillingDB;...
+</code></pre>
+<h3 id="bicep-current-status-1">Bicep Current Status:</h3>
+<table>
+<thead>
+<tr>
+<th>Database</th>
+<th>docker-compose</th>
+<th>Bicep (sql-server.bicep)</th>
+<th>Bicep (myapp-sqlserver.module.bicep)</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AuthDB</td>
+<td>✅ Created</td>
+<td>✅ In array</td>
+<td>❌ Not called</td>
+<td>❌ <strong>NOT CREATED</strong></td>
+</tr>
+<tr>
+<td>BillingDB</td>
+<td>✅ Created</td>
+<td>✅ In array</td>
+<td>❌ Not called</td>
+<td>❌ <strong>NOT CREATED</strong></td>
+</tr>
+<tr>
+<td>InventoryDB</td>
+<td>✅ Created</td>
+<td>✅ In array</td>
+<td>❌ Not called</td>
+<td>❌ <strong>NOT CREATED</strong></td>
+</tr>
+<tr>
+<td>OrdersDB</td>
+<td>✅ Created</td>
+<td>✅ In array</td>
+<td>❌ Not called</td>
+<td>❌ <strong>NOT CREATED</strong></td>
+</tr>
+<tr>
+<td>PurchasingDB</td>
+<td>✅ Created</td>
+<td>✅ In array</td>
+<td>❌ Not called</td>
+<td>❌ <strong>NOT CREATED</strong></td>
+</tr>
+<tr>
+<td>SalesDB</td>
+<td>✅ Created</td>
+<td>✅ In array</td>
+<td>❌ Not called</td>
+<td>❌ <strong>NOT CREATED</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gap:</strong> The loop in <code>sql-server.bicep</code> is correct, but <code>myapp-sqlserver.module.bicep</code> doesn't create databases. It only creates the SQL Server.</p>
+<hr>
+<h2 id="9-health-checks">9. Health Checks</h2>
+<h3 id="docker-composeyml-3">docker-compose.yml</h3>
+<pre><code class="lang-yaml">sqlserver:
+  healthcheck:
+    test:
+      - CMD-SHELL
+      - &quot;/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P ... -Q 'SELECT 1' || exit 1&quot;
+</code></pre>
+<h3 id="bicep-implementation-1">Bicep Implementation:</h3>
+<pre><code class="lang-bicep">// In container-app.bicep
+probes: [
+  {
+    type: 'Liveness'
+    httpGet: {
+      path: '/health'
+      port: targetPort
+      scheme: 'HTTP'
+    }
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 5
+    failureThreshold: 3
+  }
+]
+</code></pre>
+<h3 id="mapping-1">Mapping:</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>docker-compose</th>
+<th>Bicep</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SQL Server health check</td>
+<td>✅ Configured</td>
+<td>⚠️ Not in Bicep (Azure handles)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Application health check</td>
+<td>✅ <code>/health</code> endpoint</td>
+<td>✅ Configured</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Liveness probe</td>
+<td>✅ HTTP</td>
+<td>✅ HTTP GET</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Readiness probe</td>
+<td>⚠️ Not explicit</td>
+<td>✅ HTTP GET</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="10-network--communication">10. Network &amp; Communication</h2>
+<h3 id="docker-composeyml-4">docker-compose.yml</h3>
+<pre><code class="lang-yaml">services:
+  auth-service:
+    depends_on:
+      - sqlserver
+      - redis
+      - dapr-placement
+    networks:
+      - erp
+</code></pre>
+<h3 id="bicep-equivalent">Bicep Equivalent:</h3>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>docker-compose</th>
+<th>Bicep</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Service network</td>
+<td>✅ <code>erp</code> bridge network</td>
+<td>✅ Container Apps Environment</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Service discovery</td>
+<td>✅ DNS by container name</td>
+<td>✅ DNS by container name</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Inter-service communication</td>
+<td>✅ <code>http://auth-service:8080</code></td>
+<td>✅ <code>http://auth-service:8080</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Port mapping</td>
+<td>✅ Mapped (5007→8080)</td>
+<td>✅ All services 8080</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>External access</td>
+<td>⚠️ Only gateway (5000)</td>
+<td>✅ Gateway ingress=true</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="summary-gap-table">Summary Gap Table</h2>
+<h3 id="critical-gaps-deployment-blocked">Critical Gaps (Deployment Blocked)</h3>
+<table>
+<thead>
+<tr>
+<th>Gap</th>
+<th>docker-compose</th>
+<th>Bicep</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JWT secret parameter</td>
+<td>✅ Configured</td>
+<td>❌ Missing</td>
+<td>🔴 P0</td>
+</tr>
+<tr>
+<td>Key Vault integration</td>
+<td>N/A (local)</td>
+<td>❌ Not called</td>
+<td>🔴 P0</td>
+</tr>
+<tr>
+<td>Service modules (6x)</td>
+<td>N/A (compose)</td>
+<td>❌ Missing</td>
+<td>🔴 P0</td>
+</tr>
+<tr>
+<td>API Gateway module</td>
+<td>N/A (compose)</td>
+<td>❌ Missing</td>
+<td>🔴 P0</td>
+</tr>
+<tr>
+<td>Database creation</td>
+<td>✅ 6 databases</td>
+<td>❌ Not created</td>
+<td>🔴 P0</td>
+</tr>
+<tr>
+<td>SQL connections in services</td>
+<td>✅ All 6</td>
+<td>❌ Not referenced</td>
+<td>🔴 P0</td>
+</tr>
+<tr>
+<td>Redis connection in services</td>
+<td>✅ Config</td>
+<td>❌ Not referenced</td>
+<td>🔴 P0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="high-priority-gaps">High Priority Gaps</h3>
+<table>
+<thead>
+<tr>
+<th>Gap</th>
+<th>docker-compose</th>
+<th>Bicep</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FRONTEND_ORIGIN parameter</td>
+<td>✅ Used</td>
+<td>❌ Missing</td>
+<td>🟠 P1</td>
+</tr>
+<tr>
+<td>JWT Issuer/Audience params</td>
+<td>✅ Env vars</td>
+<td>❌ Missing</td>
+<td>🟠 P1</td>
+</tr>
+<tr>
+<td>ASPNETCORE_ENVIRONMENT</td>
+<td>✅ Set per service</td>
+<td>⚠️ Parameter only</td>
+<td>🟠 P1</td>
+</tr>
+<tr>
+<td>Cache connection secret</td>
+<td>✅ Redis</td>
+<td>⚠️ Not referenced</td>
+<td>🟠 P1</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="validation-checklist">Validation Checklist</h2>
+<ul>
+<li>[ ] JWT secret key parameter added to main.bicep</li>
+<li>[ ] JWT issuer/audience parameters added</li>
+<li>[ ] FRONTEND_ORIGIN parameter added</li>
+<li>[ ] Key Vault module called from main.bicep with enableKeyVault=true</li>
+<li>[ ] Redis module called from main.bicep</li>
+<li>[ ] SQL Server module called with 6 database array</li>
+<li>[ ] Auth service module created and called</li>
+<li>[ ] Billing service module created and called</li>
+<li>[ ] Inventory service module created and called</li>
+<li>[ ] Orders service module created and called</li>
+<li>[ ] Purchasing service module created and called</li>
+<li>[ ] Sales service module created and called</li>
+<li>[ ] API Gateway module created and called</li>
+<li>[ ] All services configured with JWT environment variables</li>
+<li>[ ] All services reference Key Vault secrets for connections</li>
+<li>[ ] All services configured with Dapr if needed</li>
+<li>[ ] Gateway configured with external ingress</li>
+<li>[ ] All services reference cache connection</li>
+<li>[ ] All services reference their service database connection</li>
+<li>[ ] <code>az bicep build</code> passes all files</li>
+<li>[ ] <code>az deployment group validate</code> passes</li>
+</ul>
+<hr>
+<p><strong>Reference Date:</strong> October 27, 2025<br>
+<strong>Status:</strong> Complete mapping - Ready for implementation</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/infrastructure/BICEP_DOCKER_COMPOSE_MAPPING.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

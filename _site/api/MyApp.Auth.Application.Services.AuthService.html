@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class AuthService | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class AuthService | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/new/main/apiSpec/new?filename=MyApp_Auth_Application_Services_AuthService.md&amp;value=---%0Auid%3A%20MyApp.Auth.Application.Services.AuthService%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="MyApp.Auth.Application.Services.AuthService">
+
+
+
+  <h1 id="MyApp_Auth_Application_Services_AuthService" data-uid="MyApp.Auth.Application.Services.AuthService" class="text-break">
+Class AuthService  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="MyApp.html">MyApp</a>.<a class="xref" href="MyApp.Auth.html">Auth</a>.<a class="xref" href="MyApp.Auth.Application.html">Application</a>.<a class="xref" href="MyApp.Auth.Application.Services.html">Services</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>MyApp.Auth.Application.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class AuthService : IAuthService</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">AuthService</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="MyApp.Auth.Application.Contracts.Services.IAuthService.html">IAuthService</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="MyApp_Auth_Application_Services_AuthService__ctor_" data-uid="MyApp.Auth.Application.Services.AuthService.#ctor*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_AuthService__ctor_Microsoft_AspNetCore_Identity_UserManager_MyApp_Auth_Domain_Entities_ApplicationUser__MyApp_Auth_Infrastructure_Services_IJwtTokenProvider_MyApp_Auth_Domain_Repositories_IRefreshTokenRepository_MyApp_Auth_Domain_Repositories_IUserRepository_Microsoft_Extensions_Logging_ILogger_MyApp_Auth_Application_Services_AuthService__" data-uid="MyApp.Auth.Application.Services.AuthService.#ctor(Microsoft.AspNetCore.Identity.UserManager{MyApp.Auth.Domain.Entities.ApplicationUser},MyApp.Auth.Infrastructure.Services.IJwtTokenProvider,MyApp.Auth.Domain.Repositories.IRefreshTokenRepository,MyApp.Auth.Domain.Repositories.IUserRepository,Microsoft.Extensions.Logging.ILogger{MyApp.Auth.Application.Services.AuthService})">
+  AuthService(UserManager&lt;ApplicationUser&gt;, IJwtTokenProvider, IRefreshTokenRepository, IUserRepository, ILogger&lt;AuthService&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AuthService(UserManager&lt;ApplicationUser&gt; userManager, IJwtTokenProvider jwtTokenProvider, IRefreshTokenRepository refreshTokenRepository, IUserRepository userRepository, ILogger&lt;AuthService&gt; logger)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>userManager</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.usermanager-1">UserManager</a>&lt;<a class="xref" href="MyApp.Auth.Domain.Entities.ApplicationUser.html">ApplicationUser</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>jwtTokenProvider</code> <a class="xref" href="MyApp.Auth.Infrastructure.Services.IJwtTokenProvider.html">IJwtTokenProvider</a></dt>
+    <dd></dd>
+    <dt><code>refreshTokenRepository</code> <a class="xref" href="MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.html">IRefreshTokenRepository</a></dt>
+    <dd></dd>
+    <dt><code>userRepository</code> <a class="xref" href="MyApp.Auth.Domain.Repositories.IUserRepository.html">IUserRepository</a></dt>
+    <dd></dd>
+    <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="MyApp.Auth.Application.Services.AuthService.html">AuthService</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="MyApp_Auth_Application_Services_AuthService_ExternalLoginAsync_" data-uid="MyApp.Auth.Application.Services.AuthService.ExternalLoginAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_AuthService_ExternalLoginAsync_MyApp_Auth_Application_Contracts_DTOs_ExternalLoginDto_" data-uid="MyApp.Auth.Application.Services.AuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)">
+  ExternalLoginAsync(ExternalLoginDto)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs/#L118"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;TokenResponseDto?&gt; ExternalLoginAsync(ExternalLoginDto externalLoginDto)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>externalLoginDto</code> <a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto.html">ExternalLoginDto</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto.html">TokenResponseDto</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_AuthService_LoginAsync_" data-uid="MyApp.Auth.Application.Services.AuthService.LoginAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_AuthService_LoginAsync_MyApp_Auth_Application_Contracts_DTOs_LoginDto_" data-uid="MyApp.Auth.Application.Services.AuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)">
+  LoginAsync(LoginDto)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;TokenResponseDto?&gt; LoginAsync(LoginDto loginDto)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>loginDto</code> <a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.LoginDto.html">LoginDto</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto.html">TokenResponseDto</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_AuthService_LogoutAsync_" data-uid="MyApp.Auth.Application.Services.AuthService.LogoutAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_AuthService_LogoutAsync_System_Guid_" data-uid="MyApp.Auth.Application.Services.AuthService.LogoutAsync(System.Guid)">
+  LogoutAsync(Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task LogoutAsync(Guid userId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>userId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_AuthService_RefreshTokenAsync_" data-uid="MyApp.Auth.Application.Services.AuthService.RefreshTokenAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_AuthService_RefreshTokenAsync_MyApp_Auth_Application_Contracts_DTOs_RefreshTokenDto_" data-uid="MyApp.Auth.Application.Services.AuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)">
+  RefreshTokenAsync(RefreshTokenDto)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;TokenResponseDto?&gt; RefreshTokenAsync(RefreshTokenDto refreshTokenDto)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>refreshTokenDto</code> <a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto.html">RefreshTokenDto</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto.html">TokenResponseDto</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_AuthService_RegisterAsync_" data-uid="MyApp.Auth.Application.Services.AuthService.RegisterAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_AuthService_RegisterAsync_MyApp_Auth_Application_Contracts_DTOs_RegisterDto_" data-uid="MyApp.Auth.Application.Services.AuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)">
+  RegisterAsync(RegisterDto)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;TokenResponseDto?&gt; RegisterAsync(RegisterDto registerDto)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>registerDto</code> <a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.RegisterDto.html">RegisterDto</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto.html">TokenResponseDto</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs/#L12" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

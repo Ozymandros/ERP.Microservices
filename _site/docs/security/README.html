@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#128274; Security &amp; Compliance | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#128274; Security &amp; Compliance | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/security/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-security--compliance">🔒 Security &amp; Compliance</h1>
+
+<p><strong>Authentication, Authorization, Secrets &amp; Security Best Practices</strong><br>
+Last Updated: October 27, 2025</p>
+<hr>
+<h2 id="-overview">📍 Overview</h2>
+<p>This category covers all security aspects including authentication mechanisms, authorization models, secrets management, and security best practices. Designed for security engineers, architects, and all developers.</p>
+<hr>
+<h2 id="-documents-in-this-category">📚 Documents in This Category</h2>
+<h3 id="security_overviewmd"><a href="SECURITY_OVERVIEW.md">SECURITY_OVERVIEW.md</a></h3>
+<p><strong>Complete security model and architecture</strong></p>
+<ul>
+<li>Security zones and boundaries</li>
+<li>Authentication &amp; authorization flows</li>
+<li>Secrets management strategy</li>
+<li>Data protection approach</li>
+<li>Compliance considerations</li>
+</ul>
+<h3 id="rbac_fix_summarymd"><a href="RBAC_FIX_SUMMARY.html">RBAC_FIX_SUMMARY.md</a></h3>
+<p><strong>RBAC Role Definition Fix for Key Vault</strong></p>
+<ul>
+<li>Issue identification and resolution</li>
+<li>Azure role definition corrections</li>
+<li>Deployment error prevention</li>
+</ul>
+<h3 id="authenticationmd"><a href="AUTHENTICATION.md">AUTHENTICATION.md</a></h3>
+<p><strong>JWT authentication implementation</strong></p>
+<ul>
+<li>Token structure and claims</li>
+<li>Token generation and validation</li>
+<li>Token expiration and refresh</li>
+<li>Multi-tenancy in tokens</li>
+<li>Development vs production tokens</li>
+</ul>
+<h3 id="authorizationmd"><a href="AUTHORIZATION.md">AUTHORIZATION.md</a></h3>
+<p><strong>Role-based access control (RBAC)</strong></p>
+<ul>
+<li>Permission model</li>
+<li>Role definitions</li>
+<li>Claims-based authorization</li>
+<li>Service-to-service authorization</li>
+<li>Resource-level permissions</li>
+</ul>
+<h3 id="secrets_managementmd"><a href="SECRETS_MANAGEMENT.md">SECRETS_MANAGEMENT.md</a></h3>
+<p><strong>Handling secrets securely</strong></p>
+<ul>
+<li>Local development secrets</li>
+<li>Azure Key Vault integration</li>
+<li>Secrets rotation</li>
+<li>Emergency key revocation</li>
+<li>Audit logging of secret access</li>
+</ul>
+<h3 id="best_practicesmd"><a href="BEST_PRACTICES.md">BEST_PRACTICES.md</a></h3>
+<p><strong>Security guidelines for all developers</strong></p>
+<ul>
+<li>Secure coding practices</li>
+<li>Common vulnerabilities and prevention</li>
+<li>Logging without exposing secrets</li>
+<li>Security testing</li>
+<li>Incident response procedures</li>
+</ul>
+<hr>
+<h2 id="-security-layers">🎯 Security Layers</h2>
+<pre><code>┌─────────────────────────────────────┐
+│  External Request (HTTPS)           │
+├─────────────────────────────────────┤
+│  API Gateway (Ocelot)               │  Layer 1: API Security
+│  - JWT Validation                   │
+│  - Rate Limiting                    │
+│  - Request Logging                  │
+├─────────────────────────────────────┤
+│  Service-to-Service Communication   │  Layer 2: Internal Security
+│  - DAPR mTLS (Sentry)              │
+│  - Service-to-service auth         │
+│  - Encrypted channels              │
+├─────────────────────────────────────┤
+│  Database Access                    │  Layer 3: Data Security
+│  - Credential per service           │
+│  - Encrypted connections            │
+│  - Secrets in Key Vault             │
+├─────────────────────────────────────┤
+│  Application Level                  │  Layer 4: Application Security
+│  - Authorization checks             │
+│  - Input validation                 │
+│  - Secure error handling            │
+└─────────────────────────────────────┘
+</code></pre>
+<hr>
+<h2 id="-authentication-methods">📊 Authentication Methods</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Use Case</th>
+<th>Environment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>JWT Bearer Token</strong></td>
+<td>Service-to-service, API clients</td>
+<td>All</td>
+</tr>
+<tr>
+<td><strong>Azure AD</strong></td>
+<td>User authentication</td>
+<td>Production</td>
+</tr>
+<tr>
+<td><strong>Managed Identity</strong></td>
+<td>Service-to-resource auth</td>
+<td>Production</td>
+</tr>
+<tr>
+<td><strong>Connection String</strong></td>
+<td>Database access</td>
+<td>All</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-key-components">🔐 Key Components</h2>
+<h3 id="secrets-storage">Secrets Storage</h3>
+<p><strong>Local Development:</strong></p>
+<ul>
+<li>appsettings.json files</li>
+<li>.env files (non-production)</li>
+<li>User Secrets for sensitive local data</li>
+</ul>
+<p><strong>Production:</strong></p>
+<ul>
+<li>Azure Key Vault (primary)</li>
+<li>Managed Identities (automatic auth)</li>
+<li>Secrets rotation every 90 days</li>
+<li>Audit logging on all access</li>
+</ul>
+<h3 id="token-management">Token Management</h3>
+<ul>
+<li>Tokens signed with private key</li>
+<li>Tokens validated with public key</li>
+<li>Expiration: 1 hour (default)</li>
+<li>Refresh tokens: 7 days</li>
+<li>Claims include user ID, roles, scopes</li>
+</ul>
+<h3 id="authorization">Authorization</h3>
+<ul>
+<li>Role-Based Access Control (RBAC)</li>
+<li>Claims-based policies</li>
+<li>Service account for inter-service calls</li>
+<li>Admin role for operations</li>
+</ul>
+<hr>
+<h2 id="-reading-order">🔄 Reading Order</h2>
+<ol>
+<li>Start with <a href="SECURITY_OVERVIEW.md">SECURITY_OVERVIEW.md</a> for the big picture</li>
+<li>Read <a href="AUTHENTICATION.md">AUTHENTICATION.md</a> to understand tokens</li>
+<li>Study <a href="AUTHORIZATION.md">AUTHORIZATION.md</a> for access control</li>
+<li>Learn <a href="SECRETS_MANAGEMENT.md">SECRETS_MANAGEMENT.md</a> for secrets</li>
+<li>Reference <a href="BEST_PRACTICES.md">BEST_PRACTICES.md</a> regularly</li>
+</ol>
+<hr>
+<h2 id="-related-categories">📚 Related Categories</h2>
+<ul>
+<li><strong>API Gateway:</strong> <a href="../api-gateway/README.html">Gateway Documentation</a> - Where auth happens</li>
+<li><strong>Infrastructure:</strong> <a href="../infrastructure/README.html">Infrastructure Guide</a> - Key Vault setup</li>
+<li><strong>Operations:</strong> <a href="../operations/README.html">Operations Guide</a> - Monitoring security</li>
+<li><strong>Development:</strong> <a href="../development/DEVELOPMENT_SETUP.md">Development Setup</a> - Implementing auth</li>
+</ul>
+<hr>
+<h2 id="-security-checklist">🛡️ Security Checklist</h2>
+<h3 id="before-deployment">Before Deployment</h3>
+<ul>
+<li>[ ] All secrets in Azure Key Vault (not in code)</li>
+<li>[ ] JWT signing key securely generated</li>
+<li>[ ] Token expiration set appropriately</li>
+<li>[ ] HTTPS enabled on all endpoints</li>
+<li>[ ] Rate limiting configured</li>
+<li>[ ] Authentication enabled on all protected routes</li>
+<li>[ ] Authorization policies defined</li>
+<li>[ ] Secrets rotation schedule established</li>
+<li>[ ] Audit logging enabled</li>
+<li>[ ] Security testing completed</li>
+</ul>
+<h3 id="regular-review">Regular Review</h3>
+<ul>
+<li>[ ] Check for leaked secrets</li>
+<li>[ ] Rotate secrets per schedule</li>
+<li>[ ] Review access logs for anomalies</li>
+<li>[ ] Update security policies as needed</li>
+<li>[ ] Patch dependencies regularly</li>
+<li>[ ] Review authentication events</li>
+</ul>
+<hr>
+<h2 id="-common-scenarios">💡 Common Scenarios</h2>
+<h3 id="scenario-1-user-login">Scenario 1: User Login</h3>
+<pre><code>User submits credentials
+  ↓
+Auth Service validates
+  ↓
+JWT token generated with user claims
+  ↓
+Token returned to client
+  ↓
+Client includes token in Authorization header
+  ↓
+Gateway validates token
+  ↓
+Request forwarded to service
+</code></pre>
+<h3 id="scenario-2-service-to-service-call">Scenario 2: Service-to-Service Call</h3>
+<pre><code>Service A needs to call Service B
+  ↓
+Uses DAPR service invocation
+  ↓
+DAPR Sentry provides mTLS certificates
+  ↓
+Connection encrypted with mutual authentication
+  ↓
+Service B verifies caller identity
+  ↓
+Request processed
+</code></pre>
+<h3 id="scenario-3-secret-access">Scenario 3: Secret Access</h3>
+<pre><code>Service needs database password
+  ↓
+Uses Managed Identity to authenticate
+  ↓
+Calls Azure Key Vault
+  ↓
+Key Vault verifies Managed Identity
+  ↓
+Secret returned (cached locally)
+  ↓
+Access logged in audit trail
+</code></pre>
+<hr>
+<h2 id="-common-issues">🆘 Common Issues</h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>401 Unauthorized</td>
+<td>Invalid/expired token</td>
+<td><a href="AUTHENTICATION.md">AUTHENTICATION.md</a></td>
+</tr>
+<tr>
+<td>403 Forbidden</td>
+<td>Insufficient permissions</td>
+<td><a href="AUTHORIZATION.md">AUTHORIZATION.md</a></td>
+</tr>
+<tr>
+<td>Service-to-service failing</td>
+<td>mTLS issue</td>
+<td><a href="BEST_PRACTICES.md">BEST_PRACTICES.md</a></td>
+</tr>
+<tr>
+<td>Secret not found</td>
+<td>Key Vault issue</td>
+<td><a href="SECRETS_MANAGEMENT.md">SECRETS_MANAGEMENT.md</a></td>
+</tr>
+<tr>
+<td>Token claims missing</td>
+<td>Token generation issue</td>
+<td><a href="AUTHENTICATION.md">AUTHENTICATION.md</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-compliance-considerations">📋 Compliance Considerations</h2>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data encryption at rest</td>
+<td>Azure SQL with TDE</td>
+</tr>
+<tr>
+<td>Data encryption in transit</td>
+<td>HTTPS/TLS</td>
+</tr>
+<tr>
+<td>Access logging</td>
+<td>Application Insights</td>
+</tr>
+<tr>
+<td>Audit trail</td>
+<td>Azure Audit Logs</td>
+</tr>
+<tr>
+<td>Secret rotation</td>
+<td>Automated in Key Vault</td>
+</tr>
+<tr>
+<td>Least privilege</td>
+<td>RBAC with minimal scopes</td>
+</tr>
+<tr>
+<td>Network isolation</td>
+<td>Private endpoints</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-verification-checklist">✅ Verification Checklist</h2>
+<p>When implementing security:</p>
+<ul>
+<li>[ ] Authentication enabled on protected routes</li>
+<li>[ ] JWT tokens validated correctly</li>
+<li>[ ] Authorization policies applied</li>
+<li>[ ] Secrets not logged or exposed</li>
+<li>[ ] HTTPS enforced (production)</li>
+<li>[ ] Rate limiting prevents abuse</li>
+<li>[ ] Audit logging enabled</li>
+<li>[ ] Secrets rotated on schedule</li>
+<li>[ ] Emergency procedures documented</li>
+</ul>
+<hr>
+<h2 id="-next-steps">📞 Next Steps</h2>
+<ul>
+<li><strong>Setting up auth?</strong> → <a href="AUTHENTICATION.md">AUTHENTICATION.md</a></li>
+<li><strong>Configuring permissions?</strong> → <a href="AUTHORIZATION.md">AUTHORIZATION.md</a></li>
+<li><strong>Managing secrets?</strong> → <a href="SECRETS_MANAGEMENT.md">SECRETS_MANAGEMENT.md</a></li>
+<li><strong>Need best practices?</strong> → <a href="BEST_PRACTICES.md">BEST_PRACTICES.md</a></li>
+<li><strong>Deploying securely?</strong> → <a href="../infrastructure/README.html">Infrastructure Guide</a></li>
+</ul>
+<hr>
+<h2 id="-full-document-map">🔗 Full Document Map</h2>
+<pre><code>security/
+├── README.md (this file)
+├── SECURITY_OVERVIEW.md
+├── RBAC_FIX_SUMMARY.md
+├── AUTHENTICATION.md
+├── AUTHORIZATION.md
+├── SECRETS_MANAGEMENT.md
+└── BEST_PRACTICES.md
+</code></pre>
+<hr>
+<p><strong>Last Updated:</strong> October 27, 2025<br>
+<strong>Category Status:</strong> ✅ Complete<br>
+<strong>Documents:</strong> 5 files<br>
+<strong>Security Layers:</strong> 4 levels of protection</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/security/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

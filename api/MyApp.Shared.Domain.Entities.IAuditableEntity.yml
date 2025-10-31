@@ -1,0 +1,291 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity
+  commentId: T:MyApp.Shared.Domain.Entities.IAuditableEntity
+  id: IAuditableEntity
+  parent: MyApp.Shared.Domain.Entities
+  children:
+  - MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt
+  - MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy
+  - MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt
+  - MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy
+  langs:
+  - csharp
+  - vb
+  name: IAuditableEntity
+  nameWithType: IAuditableEntity
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IAuditableEntity.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: IAuditableEntity
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IAuditableEntity.cs
+    startLine: 9
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Entities
+  syntax:
+    content: public interface IAuditableEntity
+    content.vb: Public Interface IAuditableEntity
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt
+  commentId: P:MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt
+  id: CreatedAt
+  parent: MyApp.Shared.Domain.Entities.IAuditableEntity
+  langs:
+  - csharp
+  - vb
+  name: CreatedAt
+  nameWithType: IAuditableEntity.CreatedAt
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IAuditableEntity.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreatedAt
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IAuditableEntity.cs
+    startLine: 11
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Entities
+  syntax:
+    content: DateTime CreatedAt { get; set; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Property CreatedAt As Date
+  overload: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt*
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy
+  commentId: P:MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy
+  id: CreatedBy
+  parent: MyApp.Shared.Domain.Entities.IAuditableEntity
+  langs:
+  - csharp
+  - vb
+  name: CreatedBy
+  nameWithType: IAuditableEntity.CreatedBy
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IAuditableEntity.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreatedBy
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IAuditableEntity.cs
+    startLine: 12
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Entities
+  syntax:
+    content: string CreatedBy { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property CreatedBy As String
+  overload: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy*
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt
+  commentId: P:MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt
+  id: UpdatedAt
+  parent: MyApp.Shared.Domain.Entities.IAuditableEntity
+  langs:
+  - csharp
+  - vb
+  name: UpdatedAt
+  nameWithType: IAuditableEntity.UpdatedAt
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IAuditableEntity.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdatedAt
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IAuditableEntity.cs
+    startLine: 13
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Entities
+  syntax:
+    content: DateTime? UpdatedAt { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTime}
+    content.vb: Property UpdatedAt As Date?
+  overload: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt*
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy
+  commentId: P:MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy
+  id: UpdatedBy
+  parent: MyApp.Shared.Domain.Entities.IAuditableEntity
+  langs:
+  - csharp
+  - vb
+  name: UpdatedBy
+  nameWithType: IAuditableEntity.UpdatedBy
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IAuditableEntity.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdatedBy
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IAuditableEntity.cs
+    startLine: 14
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Entities
+  syntax:
+    content: string? UpdatedBy { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property UpdatedBy As String
+  overload: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy*
+references:
+- uid: MyApp.Shared.Domain.Entities
+  commentId: N:MyApp.Shared.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Entities
+  nameWithType: MyApp.Shared.Domain.Entities
+  fullName: MyApp.Shared.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Entities
+    name: Entities
+    href: MyApp.Shared.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Entities
+    name: Entities
+    href: MyApp.Shared.Domain.Entities.html
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt*
+  commentId: Overload:MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html#MyApp_Shared_Domain_Entities_IAuditableEntity_CreatedAt
+  name: CreatedAt
+  nameWithType: IAuditableEntity.CreatedAt
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy*
+  commentId: Overload:MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html#MyApp_Shared_Domain_Entities_IAuditableEntity_CreatedBy
+  name: CreatedBy
+  nameWithType: IAuditableEntity.CreatedBy
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt*
+  commentId: Overload:MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html#MyApp_Shared_Domain_Entities_IAuditableEntity_UpdatedAt
+  name: UpdatedAt
+  nameWithType: IAuditableEntity.UpdatedAt
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt
+- uid: System.Nullable{System.DateTime}
+  commentId: T:System.Nullable{System.DateTime}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime?
+  nameWithType: DateTime?
+  fullName: System.DateTime?
+  nameWithType.vb: Date?
+  fullName.vb: Date?
+  name.vb: Date?
+  spec.csharp:
+  - uid: System.DateTime
+    name: DateTime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+  spec.vb:
+  - uid: System.DateTime
+    name: Date
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy*
+  commentId: Overload:MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html#MyApp_Shared_Domain_Entities_IAuditableEntity_UpdatedBy
+  name: UpdatedBy
+  nameWithType: IAuditableEntity.UpdatedBy
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy
