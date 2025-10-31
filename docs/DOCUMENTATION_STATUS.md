@@ -29,11 +29,17 @@ docs/
 │   ├── DATA_FLOW.md
 │   └── DIAGRAMS.md
 │
-├── deployment/                          (5 files)
+├── deployment/                          (8 files)
 │   ├── README.md                       ← Category navigation
+│   ├── BUILD_AND_DEPLOY_AUTOMATION.md ⭐ NEW
+│   ├── QUICK_START_BUILD_DEPLOY.md   ⭐ NEW
+│   ├── DEPLOYMENT_AUTOMATION_COMPLETE.md ⭐ NEW
 │   ├── DEPLOYMENT_GUIDE.md
 │   ├── ENVIRONMENTS.md
 │   ├── AZURE_DEPLOYMENT.md
+│   ├── DEPLOYMENT_CHECKLIST.md
+│   ├── PRE_DEPLOYMENT_CHECKLIST.md
+│   ├── DEPLOYMENT_OPERATIONS_GUIDE.md
 │   └── TROUBLESHOOTING.md
 │
 ├── infrastructure/                      (8 files)

@@ -1,4 +1,4 @@
-import { containerRegistrySku, logAnalyticsSkuName, applicationInsightsKind, workloadProfileType, workloadProfileName, aspireDashboardComponentName, aspireDashboardComponentType, storageFileServiceName, storageKind, storageSkuName, storageFileShareQuota, tagAspireNamePrefix, tagAspireResourceName, azureRoleIdAcrPull } from 'config/constants.bicep'
+import { containerRegistrySku, logAnalyticsSkuName, applicationInsightsKind, workloadProfileType, workloadProfileName, aspireDashboardComponentName, aspireDashboardComponentType, storageFileServiceName, storageKind, storageSkuName, storageFileShareQuota, tagAspireResourceName, azureRoleIdAcrPull } from 'config/constants.bicep'
 
 @description('The location used for all deployed resources')
 param location string = resourceGroup().location
@@ -8,9 +8,6 @@ param tags object = {}
 
 @description('Base name prefix to apply to all resources (e.g., myapp-dev)')
 param namePrefix string
-
-@description('User-assigned managed identity name')
-param managedIdentityName string
 
 @description('Container registry name')
 param containerRegistryName string
@@ -33,12 +30,12 @@ param containerEnvironmentStorageName string
 @description('Container Apps Environment name')
 param containerAppsEnvironmentName string
 
+var managedIdentityName = take('${namePrefix}-user-assigned-identity', 128)
+
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: managedIdentityName
   location: location
-  tags: union(tags, {
-    '${tagAspireNamePrefix}': namePrefix
-  })
+  tags: tags
 }
 
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-07-01' = {
@@ -47,10 +44,14 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-07-01' =
   sku: {
     name: containerRegistrySku
   }
+  properties: {
+    adminUserEnabled: false
+  }
   tags: tags
 }
 
-resource caeMiRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+// Grant the User-Assigned Identity the AcrPull role on the Container Registry
+resource acrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(containerRegistry.id, managedIdentity.id, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdAcrPull))
   scope: containerRegistry
   properties: {
@@ -183,3 +184,7 @@ output AZURE_APPLICATION_INSIGHTS_ID string = applicationInsights.id
 output AZURE_APPLICATION_INSIGHTS_NAME string = applicationInsights.name
 output AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING string = applicationInsights.properties.ConnectionString
 output AZURE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY string = applicationInsights.properties.InstrumentationKey
+output AZURE_USER_ASSIGNED_IDENTITY_PRINCIPAL_ID string = managedIdentity.properties.principalId
+output AZURE_USER_ASSIGNED_IDENTITY_CLIENT_ID string = managedIdentity.properties.clientId
+output AZURE_USER_ASSIGNED_IDENTITY_ID string = managedIdentity.id
+output AZURE_LOCATION string = location

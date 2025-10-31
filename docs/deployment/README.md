@@ -13,6 +13,61 @@ This category covers deploying the microservices platform to Azure. From initial
 
 ## 📚 Documents in This Category
 
+### 🚀 **NEW: Automated Build & Deploy Pipeline**
+
+#### [BUILD_AND_DEPLOY_AUTOMATION.md](BUILD_AND_DEPLOY_AUTOMATION.md)
+**Complete automated build and deploy solution**
+- ✅ Fixes: "MANIFEST_UNKNOWN: manifest tagged by 'latest' is not found"
+- PowerShell build script for local development
+- GitHub Actions CI/CD pipeline
+- ACR image building and caching
+- Full troubleshooting guide
+
+#### [QUICK_START_BUILD_DEPLOY.md](QUICK_START_BUILD_DEPLOY.md)
+**Quick reference for automated deployments**
+- 3-option deployment process
+- One-command deploy setup
+- GitHub Actions setup
+- Performance metrics
+- Common troubleshooting
+
+#### [DEPLOYMENT_AUTOMATION_COMPLETE.md](DEPLOYMENT_AUTOMATION_COMPLETE.md)
+**Complete solution overview**
+- Architecture diagrams
+- File structure and purposes
+- Workflow examples
+- Security considerations
+- Best practices
+
+#### [BUILD_AND_DEPLOY_AUTOMATION_SUMMARY.md](BUILD_AND_DEPLOY_AUTOMATION_SUMMARY.md)
+**Problem/solution summary**
+- Problem identification
+- Complete solution overview
+- Files included and their purposes
+
+#### [GITHUB_ACTIONS_ARCHITECTURE.md](GITHUB_ACTIONS_ARCHITECTURE.md) ⭐ NEW
+**Complete CI/CD workflow architecture**
+- 3-phase optimized workflow pattern
+- Parallel execution with matrix builds
+- Federated credentials & security
+- Timing estimates & debugging
+
+#### [WORKFLOWS_VISUAL_DIAGRAMS.md](WORKFLOWS_VISUAL_DIAGRAMS.md) ⭐ NEW
+**Visual diagrams for GitHub Actions workflows**
+- ASCII diagrams for workflow flows
+- Timeline visualizations
+- Job dependency graphs
+- Failure scenario handling
+
+#### [WORKFLOWS_REFACTORING_OCTOBER_31.md](WORKFLOWS_REFACTORING_OCTOBER_31.md) ⭐ NEW
+**Modern Docker BuildX & metadata actions refactoring**
+- Docker Build Push Action v5 implementation
+- Automatic metadata tagging
+- Test artifact collection
+- Deployment summary reporting
+
+---
+
 ### [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)
 **Complete deployment to Azure**
 - Prerequisites and prerequisites
@@ -193,6 +248,9 @@ After deployment:
 
 ## 📞 Next Steps
 
+- **🚀 Just starting?** → [QUICK_START_BUILD_DEPLOY.md](QUICK_START_BUILD_DEPLOY.md) - Get deploying in minutes!
+- **Need automation?** → [BUILD_AND_DEPLOY_AUTOMATION.md](BUILD_AND_DEPLOY_AUTOMATION.md) - Complete technical guide
+- **Understanding the solution?** → [DEPLOYMENT_AUTOMATION_COMPLETE.md](DEPLOYMENT_AUTOMATION_COMPLETE.md) - Full overview
 - **First deployment?** → [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)
 - **Setup environments?** → [ENVIRONMENTS.md](ENVIRONMENTS.md)
 - **Azure-specific?** → [AZURE_DEPLOYMENT.md](AZURE_DEPLOYMENT.md)
@@ -206,7 +264,15 @@ After deployment:
 ```
 deployment/
 ├── README.md (this file)
-├── DEPLOYMENT_GUIDE.md
+├── BUILD_AND_DEPLOY_AUTOMATION.md ⭐ NEW
+├── QUICK_START_BUILD_DEPLOY.md ⭐ NEW
+├── DEPLOYMENT_AUTOMATION_COMPLETE.md ⭐ NEW
+├── BUILD_AND_DEPLOY_AUTOMATION_SUMMARY.md
+├── GITHUB_ACTIONS_ARCHITECTURE.md ⭐ NEW
+├── DEPLOYMENT.md
+├── DEPLOYMENT_CHECKLIST.md
+├── DEPLOYMENT_OPERATIONS_GUIDE.md
+├── PRE_DEPLOYMENT_CHECKLIST.md
 ├── ENVIRONMENTS.md
 ├── AZURE_DEPLOYMENT.md
 └── TROUBLESHOOTING.md
@@ -214,7 +280,7 @@ deployment/
 
 ---
 
-**Last Updated:** October 27, 2025  
+**Last Updated:** October 31, 2025  
 **Category Status:** ✅ Complete  
-**Documents:** 4 files  
+**Documents:** 11 files (3 new for Build & Deploy automation)  
 **Environments:** 3 total (Dev, Staging, Prod)

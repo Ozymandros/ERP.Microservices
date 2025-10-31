@@ -4,7 +4,7 @@ var isDeployment =
     args.Contains("--publisher") || // quan azd genera manifests
     Environment.GetEnvironmentVariable("IS_DEPLOYMENT") == "true";
 
-var builder = DistributedApplication.CreateBuilder(args);
+var builder = DistributedApplication.CreateBuilder(args).AddDapr();
 
 var stateStore = builder.AddDaprStateStore("statestore");
 var pubSub = builder.AddDaprPubSub("pubsub");

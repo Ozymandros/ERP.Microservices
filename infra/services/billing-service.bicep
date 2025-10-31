@@ -42,6 +42,9 @@ param imageTag string = 'latest'
 @description('Container Apps managed identity principal ID')
 param managedIdentityPrincipalId string = ''
 
+@description('User-Assigned Managed Identity ID')
+param userAssignedIdentityId string
+
 @description('Base resource name prefix for this deployment (e.g., myapp-dev)')
 param namePrefix string
 
@@ -89,6 +92,7 @@ module billingService 'container-app-service.bicep' = {
     ]
     logAnalyticsWorkspaceId: logAnalyticsWorkspaceId
     managedIdentityPrincipalId: managedIdentityPrincipalId
+    userAssignedIdentityId: userAssignedIdentityId
   }
 }
 
