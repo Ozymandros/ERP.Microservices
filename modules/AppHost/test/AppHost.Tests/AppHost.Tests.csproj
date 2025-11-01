@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.Testing" Version="9.5.1" />
+    <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AppHost\AppHost.csproj" />
+    <ProjectReference Include="..\..\..\ApiGateway\src\ErpApiGateway\ErpApiGateway.csproj" />
+    <ProjectReference Include="..\..\..\Auth\src\MyApp.Auth\MyApp.Auth.Application.Contracts\MyApp.Auth.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Auth\src\MyApp.Auth\MyApp.Auth.Domain\MyApp.Auth.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Auth\src\MyApp.Auth\MyApp.Auth.Infrastructure\MyApp.Auth.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\Billing\src\MyApp.Billing\MyApp.Billing.Domain\MyApp.Billing.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Inventory\src\MyApp.Inventory\MyApp.Inventory.Domain\MyApp.Inventory.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Orders\src\MyApp.Orders\MyApp.Orders.Domain\MyApp.Orders.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Purchasing\src\MyApp.Purchasing\MyApp.Purchasing.Domain\MyApp.Purchasing.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Sales\src\MyApp.Sales\MyApp.Sales.Domain\MyApp.Sales.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Shared\src\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="System.Net" />
+    <Using Include="Microsoft.Extensions.DependencyInjection" />
+    <Using Include="Aspire.Hosting.ApplicationModel" />
+    <Using Include="Aspire.Hosting.Testing" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>

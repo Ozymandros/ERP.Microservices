@@ -4,17 +4,9 @@
     {
       "src": [
         {
-          "src": ".",
+          "src": "modules",
           "files": [
-            "MyApp.Auth/**/*.csproj",
-            "MyApp.Billing/**/*.csproj",
-            "MyApp.Inventory/**/*.csproj",
-            "MyApp.Orders/**/*.csproj",
-            "MyApp.Purchasing/**/*.csproj",
-            "MyApp.Sales/**/*.csproj",
-            "MyApp.Shared/**/*.csproj",
-            "ErpApiGateway/**/*.csproj",
-            "AppHost/**/*.csproj"
+            "**/src/**/*.csproj"
           ],
           "exclude": [
             "**/bin/**",
