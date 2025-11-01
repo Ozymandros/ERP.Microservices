@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Infrastructure.Caching
+  commentId: N:MyApp.Shared.Infrastructure.Caching
+  id: MyApp.Shared.Infrastructure.Caching
+  children:
+  - MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Shared.Infrastructure.Caching
+  nameWithType: MyApp.Shared.Infrastructure.Caching
+  fullName: MyApp.Shared.Infrastructure.Caching
+  type: Namespace
+  assemblies:
+  - MyApp.Shared.Infrastructure
+references:
+- uid: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper
+  commentId: T:MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper
+  href: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.html
+  name: DistributedCacheWrapper
+  nameWithType: DistributedCacheWrapper
+  fullName: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper

@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Infrastructure.Data.Repositories
+  commentId: N:MyApp.Inventory.Infrastructure.Data.Repositories
+  id: MyApp.Inventory.Infrastructure.Data.Repositories
+  children:
+  - MyApp.Inventory.Infrastructure.Data.Repositories.InventoryTransactionRepository
+  - MyApp.Inventory.Infrastructure.Data.Repositories.ProductRepository
+  - MyApp.Inventory.Infrastructure.Data.Repositories.WarehouseRepository
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Inventory.Infrastructure.Data.Repositories
+  nameWithType: MyApp.Inventory.Infrastructure.Data.Repositories
+  fullName: MyApp.Inventory.Infrastructure.Data.Repositories
+  type: Namespace
+  assemblies:
+  - MyApp.Inventory.Infrastructure
+references:
+- uid: MyApp.Inventory.Infrastructure.Data.Repositories.InventoryTransactionRepository
+  commentId: T:MyApp.Inventory.Infrastructure.Data.Repositories.InventoryTransactionRepository
+  href: MyApp.Inventory.Infrastructure.Data.Repositories.InventoryTransactionRepository.html
+  name: InventoryTransactionRepository
+  nameWithType: InventoryTransactionRepository
+  fullName: MyApp.Inventory.Infrastructure.Data.Repositories.InventoryTransactionRepository
+- uid: MyApp.Inventory.Infrastructure.Data.Repositories.ProductRepository
+  commentId: T:MyApp.Inventory.Infrastructure.Data.Repositories.ProductRepository
+  href: MyApp.Inventory.Infrastructure.Data.Repositories.ProductRepository.html
+  name: ProductRepository
+  nameWithType: ProductRepository
+  fullName: MyApp.Inventory.Infrastructure.Data.Repositories.ProductRepository
+- uid: MyApp.Inventory.Infrastructure.Data.Repositories.WarehouseRepository
+  commentId: T:MyApp.Inventory.Infrastructure.Data.Repositories.WarehouseRepository
+  href: MyApp.Inventory.Infrastructure.Data.Repositories.WarehouseRepository.html
+  name: WarehouseRepository
+  nameWithType: WarehouseRepository
+  fullName: MyApp.Inventory.Infrastructure.Data.Repositories.WarehouseRepository

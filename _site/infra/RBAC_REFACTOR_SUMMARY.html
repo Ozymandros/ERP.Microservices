@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>RBAC Role IDs: Refactored from Hardcoded to Dynamic | ERP.Microservices </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="RBAC Role IDs: Refactored from Hardcoded to Dynamic | ERP.Microservices ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/infra/RBAC_REFACTOR_SUMMARY.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="ERP.Microservices">
+            ERP.Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="rbac-role-ids-refactored-from-hardcoded-to-dynamic">RBAC Role IDs: Refactored from Hardcoded to Dynamic</h1>
+
+<h2 id="summary-of-changes">Summary of Changes</h2>
+<p>This refactoring eliminates all hardcoded Azure role definition IDs from the infrastructure code. Instead, role IDs are now fetched dynamically at deployment time from the Azure subscription, ensuring compatibility across environments and preventing deployment failures due to incorrect role definitions.</p>
+<h2 id="what-changed">What Changed</h2>
+<h3 id="problem-hardcoded-role-ids-">Problem: Hardcoded Role IDs ❌</h3>
+<p>Previously, role definition IDs were embedded directly in Bicep templates:</p>
+<pre><code class="lang-bicep">var keyVaultSecretsUserRoleId = '4633458b-17de-408a-b874-0445c86d0e6e'  // ❌ Hardcoded
+var acrPullRoleDefinitionId = '7f951dda-4ed3-4680-a7ca-43fe172d538d'   // ❌ Hardcoded
+</code></pre>
+<p><strong>Issues with hardcoding:</strong></p>
+<ul>
+<li>Role IDs might change or vary by region</li>
+<li>No validation that the role exists</li>
+<li>Deployment breaks silently if ID is wrong</li>
+<li>Difficult to maintain across multiple environments</li>
+<li>No single source of truth</li>
+</ul>
+<h3 id="solution-dynamic-parameters-">Solution: Dynamic Parameters ✅</h3>
+<p>Role IDs are now passed as deployment parameters, fetched from the actual Azure subscription:</p>
+<pre><code class="lang-bicep">@description('Key Vault Secrets User role definition ID')
+param keyVaultSecretsUserRoleDefinitionId string
+
+@description('AcrPull role definition ID')
+param acrPullRoleDefinitionId string
+</code></pre>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>Role IDs are fetched from live Azure subscription</li>
+<li>Validates role exists before deployment</li>
+<li>Works across different Azure environments</li>
+<li>Clear deployment-time validation</li>
+<li>Single source of truth in Azure RBAC</li>
+</ul>
+<h2 id="files-changed">Files Changed</h2>
+<h3 id="1-mainbicep---main-orchestration-template">1. <strong>main.bicep</strong> - Main Orchestration Template</h3>
+<ul>
+<li><strong>Added:</strong> 4 new parameters for role definition IDs:
+<ul>
+<li><code>keyVaultSecretsUserRoleDefinitionId</code></li>
+<li><code>acrPullRoleDefinitionId</code></li>
+<li><code>appConfigurationDataReaderRoleDefinitionId</code></li>
+<li><code>sqlDbContributorRoleDefinitionId</code></li>
+</ul>
+</li>
+<li><strong>Updated:</strong> Module calls to pass role IDs to child modules</li>
+</ul>
+<h3 id="2-coresecuritykeyvault-rbacbicep---key-vault-rbac-module">2. <strong>core/security/keyvault-rbac.bicep</strong> - Key Vault RBAC Module</h3>
+<ul>
+<li><strong>Removed:</strong> Hardcoded <code>keyVaultSecretsUserRoleId</code> variable</li>
+<li><strong>Removed:</strong> Import from constants.bicep</li>
+<li><strong>Added:</strong> <code>roleDefinitionId</code> parameter</li>
+<li><strong>Updated:</strong> Role assignment to use parameter instead of hardcoded value</li>
+</ul>
+<h3 id="3-resourcesbicep---core-resources">3. <strong>resources.bicep</strong> - Core Resources</h3>
+<ul>
+<li><strong>Removed:</strong> Import of <code>acrPullRoleDefinitionId</code> from constants.bicep</li>
+<li><strong>Added:</strong> <code>acrPullRoleDefinitionId</code> parameter</li>
+<li><strong>Updated:</strong> Role assignment to use parameter instead of hardcoded value</li>
+</ul>
+<h3 id="4-configconstantsbicep---configuration-constants">4. <strong>config/constants.bicep</strong> - Configuration Constants</h3>
+<ul>
+<li><strong>Removed:</strong> Hardcoded role definition IDs:
+<ul>
+<li><del><code>var acrPullRoleDefinitionId = '7f951dda-4ed3-4680-a7ca-43fe172d538d'</code></del></li>
+<li><del><code>var keyVaultSecretsUserRoleDefinitionId = '4633458b-17de-408a-b874-0445c86d0e6e'</code></del></li>
+</ul>
+</li>
+<li><strong>Retained:</strong> Non-ID configuration (SKUs, names, etc.)</li>
+</ul>
+<h3 id="5-coresecurityrole-definitionsbicep-new">5. <strong>core/security/role-definitions.bicep</strong> (NEW)</h3>
+<ul>
+<li><strong>Purpose:</strong> Documents Azure built-in roles and their purposes</li>
+<li><strong>Contains:</strong> Role names, descriptions, and references to Azure documentation</li>
+<li><strong>Includes:</strong> Migration path and best practices</li>
+</ul>
+<h3 id="6-scriptsget-role-definitionsps1-new">6. <strong>scripts/get-role-definitions.ps1</strong> (NEW)</h3>
+<ul>
+<li><strong>Purpose:</strong> PowerShell utility to fetch role IDs dynamically</li>
+<li><strong>Supports:</strong> Both Azure CLI and Azure PowerShell</li>
+<li><strong>Usage:</strong> Deployed as part of deployment process</li>
+</ul>
+<h3 id="7-deployment_rolesmd-new">7. <strong>DEPLOYMENT_ROLES.md</strong> (NEW)</h3>
+<ul>
+<li><strong>Purpose:</strong> Complete guide for deploying with dynamic role IDs</li>
+<li><strong>Includes:</strong> Step-by-step instructions for fetching and deploying roles</li>
+<li><strong>Provides:</strong> Troubleshooting guide and best practices</li>
+</ul>
+<h2 id="migration-path">Migration Path</h2>
+<h3 id="for-developmenttesting">For Development/Testing</h3>
+<h4 id="option-1-using-azure-cli-quickest">Option 1: Using Azure CLI (Quickest)</h4>
+<pre><code class="lang-bash"># Fetch role IDs
+KEYVAULT_ROLE=$(az role definition list --query &quot;[?roleName=='Key Vault Secrets User'].id&quot; -o tsv)
+ACR_ROLE=$(az role definition list --query &quot;[?roleName=='AcrPull'].id&quot; -o tsv)
+APPCONFIG_ROLE=$(az role definition list --query &quot;[?roleName=='App Configuration Data Reader'].id&quot; -o tsv)
+SQLDB_ROLE=$(az role definition list --query &quot;[?roleName=='SQL DB Contributor'].id&quot; -o tsv)
+
+# Deploy
+azd deploy \
+  --parameter keyVaultSecretsUserRoleDefinitionId=$KEYVAULT_ROLE \
+  --parameter acrPullRoleDefinitionId=$ACR_ROLE \
+  --parameter appConfigurationDataReaderRoleDefinitionId=$APPCONFIG_ROLE \
+  --parameter sqlDbContributorRoleDefinitionId=$SQLDB_ROLE
+</code></pre>
+<h4 id="option-2-using-azure-powershell">Option 2: Using Azure PowerShell</h4>
+<pre><code class="lang-powershell">$roles = @{
+    keyVaultSecretsUserRoleDefinitionId = (Get-AzRoleDefinition -Name 'Key Vault Secrets User').Id
+    acrPullRoleDefinitionId = (Get-AzRoleDefinition -Name 'AcrPull').Id
+    appConfigurationDataReaderRoleDefinitionId = (Get-AzRoleDefinition -Name 'App Configuration Data Reader').Id
+    sqlDbContributorRoleDefinitionId = (Get-AzRoleDefinition -Name 'SQL DB Contributor').Id
+}
+
+# Pass to azd
+foreach ($role in $roles.GetEnumerator()) {
+    azd env set $role.Key $role.Value
+}
+
+azd deploy
+</code></pre>
+<h4 id="option-3-using-the-provided-script">Option 3: Using the Provided Script</h4>
+<pre><code class="lang-powershell">cd infra/scripts
+&amp; ./get-role-definitions.ps1 -RoleNames @(
+    'Key Vault Secrets User',
+    'AcrPull',
+    'App Configuration Data Reader',
+    'SQL DB Contributor'
+) -UseCommand cli
+</code></pre>
+<h3 id="for-production-deployment">For Production Deployment</h3>
+<ol>
+<li><strong>Before deployment:</strong> Run the role lookup script in your CI/CD pipeline</li>
+<li><strong>Store results:</strong> Save role IDs in secure parameter store (Azure Key Vault, etc.)</li>
+<li><strong>At deployment:</strong> Fetch from parameter store and pass to <code>azd deploy</code></li>
+<li><strong>Validation:</strong> Log fetched role IDs for audit trail</li>
+</ol>
+<p>Example GitHub Actions workflow:</p>
+<pre><code class="lang-yaml">- name: Fetch role definitions
+  id: roles
+  run: |
+    KEYVAULT_ROLE=$(az role definition list --query &quot;[?roleName=='Key Vault Secrets User'].id&quot; -o tsv)
+    echo &quot;keyvault-role=$KEYVAULT_ROLE&quot; &gt;&gt; $GITHUB_OUTPUT
+    # ... repeat for other roles
+
+- name: Deploy Infrastructure
+  run: |
+    azd deploy \
+      --parameter keyVaultSecretsUserRoleDefinitionId=${{ steps.roles.outputs.keyvault-role }} \
+      # ... other parameters
+</code></pre>
+<h2 id="technical-details">Technical Details</h2>
+<h3 id="role-definition-ids-reference">Role Definition IDs Reference</h3>
+<p>These are the <strong>typical</strong> Azure built-in role IDs (may vary by cloud/region):</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Typical ID</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Key Vault Secrets User</td>
+<td><code>4633458b-17de-408a-b874-0445c86d0e6e</code></td>
+<td>Read Key Vault secrets</td>
+</tr>
+<tr>
+<td>AcrPull</td>
+<td><code>7f951dda-4ed3-4680-a7ca-43fe172d538d</code></td>
+<td>Pull container images</td>
+</tr>
+<tr>
+<td>App Configuration Data Reader</td>
+<td><code>516239f1-63e1-4108-9233-9e7f68e97ce3</code></td>
+<td>Read App Configuration</td>
+</tr>
+<tr>
+<td>SQL DB Contributor</td>
+<td><code>9b7fa17d-e63e-47b0-bb0a-15c516ac86ec</code></td>
+<td>Manage SQL databases</td>
+</tr>
+</tbody>
+</table>
+<p><strong>⚠️ Important:</strong> Always fetch from your actual subscription - don't use these as defaults!</p>
+<h3 id="module-dependencies">Module Dependencies</h3>
+<pre><code>main.bicep (accepts 4 role ID params)
+├── resources.bicep
+│   ├── Accepts: acrPullRoleDefinitionId
+│   └── Creates: ACR role assignment
+├── core/security/keyvault-rbac.bicep
+│   ├── Accepts: keyVaultSecretsUserRoleDefinitionId
+│   └── Creates: Key Vault role assignment
+└── Other modules (unaffected)
+</code></pre>
+<h2 id="validation--testing">Validation &amp; Testing</h2>
+<h3 id="pre-deployment-validation">Pre-Deployment Validation</h3>
+<pre><code class="lang-bash"># Validate that all roles exist
+az role definition list --query &quot;[?roleName==('Key Vault Secrets User'||'AcrPull'||'App Configuration Data Reader'||'SQL DB Contributor')].{name:roleName, id:id}&quot;
+</code></pre>
+<h3 id="post-deployment-validation">Post-Deployment Validation</h3>
+<pre><code class="lang-bash"># Verify role assignments were created
+az role assignment list --resource-group &quot;&lt;your-rg&gt;&quot; --query &quot;[].{principal:principalName, role:roleDefinitionName}&quot;
+</code></pre>
+<h2 id="breaking-changes">Breaking Changes</h2>
+<p>⚠️ <strong>Breaking Change:</strong> Existing deployments using hardcoded role IDs will fail</p>
+<p><strong>Fix:</strong> Pass role definition IDs as parameters during deployment</p>
+<h2 id="rollback-plan">Rollback Plan</h2>
+<p>If issues occur:</p>
+<ol>
+<li>Revert changes to <code>main.bicep</code>, <code>resources.bicep</code>, and <code>keyvault-rbac.bicep</code></li>
+<li>Restore hardcoded role IDs in <code>config/constants.bicep</code></li>
+<li>Re-import from constants in modules</li>
+<li>Redeploy</li>
+</ol>
+<h2 id="next-steps">Next Steps</h2>
+<ol>
+<li><strong>Test in dev:</strong> Deploy with dynamic role IDs in development environment</li>
+<li><strong>Validate RBAC:</strong> Confirm all role assignments created successfully</li>
+<li><strong>Test functionality:</strong> Verify microservices can access Key Vault and ACR</li>
+<li><strong>Update CI/CD:</strong> Add role ID fetching to deployment pipelines</li>
+<li><strong>Document:</strong> Update team runbooks with new deployment process</li>
+</ol>
+<h2 id="questions">Questions?</h2>
+<p>Refer to:</p>
+<ul>
+<li><code>DEPLOYMENT_ROLES.md</code> - Deployment instructions</li>
+<li><code>core/security/role-definitions.bicep</code> - Role documentation</li>
+<li>Azure RBAC documentation: <a href="https://learn.microsoft.com/en-us/azure/role-based-access-control/">https://learn.microsoft.com/en-us/azure/role-based-access-control/</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/infra/RBAC_REFACTOR_SUMMARY.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

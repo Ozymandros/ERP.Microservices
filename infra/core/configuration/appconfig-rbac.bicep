@@ -9,7 +9,7 @@
 // Resources Created:
 // - App Configuration role assignment (App Configuration Data Reader role)
 // 
-// Input: principalId of the microservice managed identity
+// Input: principalId of the microservice managed identity, roleDefinitionId for the role
 // Output: Role assignment resource ID
 // ============================================================================
 
@@ -19,10 +19,15 @@ param appConfigId string
 @description('Principal ID to grant access (microservice managed identity)')
 param principalId string
 
+@description('Role Definition ID - App Configuration Data Reader role ID')
+@minLength(36)
+@maxLength(36)
+param roleDefinitionId string
+
 // App Configuration Data Reader role (built-in Azure role)
 // Allows: Read configuration keys and values (including Key Vault references)
 // Denies: Create, delete, modify configuration or access policies
-var appConfigDataReaderRoleId = '516239f1-63e1-4108-9233-9e7f68e97ce3'
+// Reference: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#app-configuration-data-reader
 
 // ============================================================================
 // Role Assignment: Grant microservice MI access to read App Configuration
@@ -36,12 +41,12 @@ var appConfigDataReaderRoleId = '516239f1-63e1-4108-9233-9e7f68e97ce3'
 // ============================================================================
 
 resource appConfigRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(appConfigId, principalId, appConfigDataReaderRoleId)
+  name: guid(appConfigId, principalId, roleDefinitionId)
   scope: resourceGroup()
   properties: {
     principalId: principalId
     principalType: 'ServicePrincipal'
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', appConfigDataReaderRoleId)
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
   }
 }
 
@@ -53,7 +58,7 @@ resource appConfigRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-0
 output roleAssignmentId string = appConfigRoleAssignment.id
 
 @description('Role definition ID granted')
-output roleDefinitionId string = appConfigDataReaderRoleId
+output grantedRoleDefinitionId string = roleDefinitionId
 
 @description('Principal ID that received access')
 output grantedPrincipalId string = principalId

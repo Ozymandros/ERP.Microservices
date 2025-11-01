@@ -1,0 +1,1101 @@
+### YamlMime:TableOfContent
+items:
+- uid: MyApp.Auth.API.Controllers
+  name: MyApp.Auth.API.Controllers
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.API.Controllers.AuthController
+    name: AuthController
+    type: Class
+  - uid: MyApp.Auth.API.Controllers.PermissionsController
+    name: PermissionsController
+    type: Class
+  - uid: MyApp.Auth.API.Controllers.RolesController
+    name: RolesController
+    type: Class
+  - uid: MyApp.Auth.API.Controllers.UsersController
+    name: UsersController
+    type: Class
+- uid: MyApp.Auth.Application.Contracts
+  name: MyApp.Auth.Application.Contracts
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+    name: CreateRolePermissionDto
+    type: Class
+  - uid: MyApp.Auth.Application.Contracts.DeleteRolePermissionDto
+    name: DeleteRolePermissionDto
+    type: Class
+  - uid: MyApp.Auth.Application.Contracts.IPermissionService
+    name: IPermissionService
+    type: Interface
+- uid: MyApp.Auth.Application.Contracts.DTOs
+  name: MyApp.Auth.Application.Contracts.DTOs
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto
+    name: CreatePermissionDto
+    type: Class
+  - uid: MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto
+    name: CreateRoleDto
+    type: Class
+  - uid: MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+    name: ExternalLoginDto
+    type: Class
+  - uid: MyApp.Auth.Application.Contracts.DTOs.LoginDto
+    name: LoginDto
+    type: Class
+  - uid: MyApp.Auth.Application.Contracts.DTOs.PermissionDto
+    name: PermissionDto
+    type: Class
+  - uid: MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+    name: RefreshTokenDto
+    type: Class
+  - uid: MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+    name: RegisterDto
+    type: Class
+  - uid: MyApp.Auth.Application.Contracts.DTOs.RoleDto
+    name: RoleDto
+    type: Class
+  - uid: MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto
+    name: TokenResponseDto
+    type: Class
+  - uid: MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto
+    name: UpdatePermissionDto
+    type: Class
+  - uid: MyApp.Auth.Application.Contracts.DTOs.UpdateUserDto
+    name: UpdateUserDto
+    type: Class
+  - uid: MyApp.Auth.Application.Contracts.DTOs.UserDto
+    name: UserDto
+    type: Class
+- uid: MyApp.Auth.Application.Contracts.Services
+  name: MyApp.Auth.Application.Contracts.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Application.Contracts.Services.IAuthService
+    name: IAuthService
+    type: Interface
+  - uid: MyApp.Auth.Application.Contracts.Services.IRoleService
+    name: IRoleService
+    type: Interface
+  - uid: MyApp.Auth.Application.Contracts.Services.IUserService
+    name: IUserService
+    type: Interface
+- uid: MyApp.Auth.Application.Mappings
+  name: MyApp.Auth.Application.Mappings
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Application.Mappings.AuthMappingProfile
+    name: AuthMappingProfile
+    type: Class
+- uid: MyApp.Auth.Application.Services
+  name: MyApp.Auth.Application.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Application.Services.AuthService
+    name: AuthService
+    type: Class
+  - uid: MyApp.Auth.Application.Services.PermissionService
+    name: PermissionService
+    type: Class
+  - uid: MyApp.Auth.Application.Services.RoleService
+    name: RoleService
+    type: Class
+  - uid: MyApp.Auth.Application.Services.UserService
+    name: UserService
+    type: Class
+- uid: MyApp.Auth.Application.Tests.Builders
+  name: MyApp.Auth.Application.Tests.Builders
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+    name: ApplicationRoleBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.CreatePermissionDtoBuilder
+    name: CreatePermissionDtoBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.CreateRoleDtoBuilder
+    name: CreateRoleDtoBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.ExternalLoginDtoBuilder
+    name: ExternalLoginDtoBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.LoginDtoBuilder
+    name: LoginDtoBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.PermissionBuilder
+    name: PermissionBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.PermissionDtoBuilder
+    name: PermissionDtoBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+    name: RefreshTokenBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.RegisterDtoBuilder
+    name: RegisterDtoBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.RoleBuilder
+    name: RoleBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.RoleDtoBuilder
+    name: RoleDtoBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.TokenResponseDtoBuilder
+    name: TokenResponseDtoBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.UpdateRoleDtoBuilder
+    name: UpdateRoleDtoBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.UpdateUserDtoBuilder
+    name: UpdateUserDtoBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.UserBuilder
+    name: UserBuilder
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Builders.UserDtoBuilder
+    name: UserDtoBuilder
+    type: Class
+- uid: MyApp.Auth.Application.Tests.Common
+  name: MyApp.Auth.Application.Tests.Common
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+    name: BaseServiceTest
+    type: Class
+- uid: MyApp.Auth.Application.Tests.Services
+  name: MyApp.Auth.Application.Tests.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+    name: AuthServiceTests
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+    name: PermissionServiceTests
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+    name: RoleServiceTests
+    type: Class
+  - uid: MyApp.Auth.Application.Tests.Services.UserServiceTests
+    name: UserServiceTests
+    type: Class
+- uid: MyApp.Auth.Domain.Entities
+  name: MyApp.Auth.Domain.Entities
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Domain.Entities.ApplicationRole
+    name: ApplicationRole
+    type: Class
+  - uid: MyApp.Auth.Domain.Entities.ApplicationUser
+    name: ApplicationUser
+    type: Class
+  - uid: MyApp.Auth.Domain.Entities.ApplicationUserRole
+    name: ApplicationUserRole
+    type: Class
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+    type: Class
+- uid: MyApp.Auth.Domain.Repositories
+  name: MyApp.Auth.Domain.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Domain.Repositories.IPermissionRepository
+    name: IPermissionRepository
+    type: Interface
+  - uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+    name: IRefreshTokenRepository
+    type: Interface
+  - uid: MyApp.Auth.Domain.Repositories.IRoleRepository
+    name: IRoleRepository
+    type: Interface
+  - uid: MyApp.Auth.Domain.Repositories.IUserRepository
+    name: IUserRepository
+    type: Interface
+- uid: MyApp.Auth.Infrastructure.Data
+  name: MyApp.Auth.Infrastructure.Data
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Infrastructure.Data.AuthDbContext
+    name: AuthDbContext
+    type: Class
+  - uid: MyApp.Auth.Infrastructure.Data.AuthDbContextFactory
+    name: AuthDbContextFactory
+    type: Class
+- uid: MyApp.Auth.Infrastructure.Data.Repositories
+  name: MyApp.Auth.Infrastructure.Data.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Infrastructure.Data.Repositories.PermissionRepository
+    name: PermissionRepository
+    type: Class
+  - uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+    name: RefreshTokenRepository
+    type: Class
+  - uid: MyApp.Auth.Infrastructure.Data.Repositories.RoleRepository
+    name: RoleRepository
+    type: Class
+  - uid: MyApp.Auth.Infrastructure.Data.Repositories.UserRepository
+    name: UserRepository
+    type: Class
+- uid: MyApp.Auth.Infrastructure.Data.Seeders
+  name: MyApp.Auth.Infrastructure.Data.Seeders
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Infrastructure.Data.Seeders.PermissionSeeder
+    name: PermissionSeeder
+    type: Class
+- uid: MyApp.Auth.Infrastructure.Migrations
+  name: MyApp.Auth.Infrastructure.Migrations
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Infrastructure.Migrations.AddPermissionDescription
+    name: AddPermissionDescription
+    type: Class
+  - uid: MyApp.Auth.Infrastructure.Migrations.EmptyMigration
+    name: EmptyMigration
+    type: Class
+  - uid: MyApp.Auth.Infrastructure.Migrations.InitialAuth
+    name: InitialAuth
+    type: Class
+  - uid: MyApp.Auth.Infrastructure.Migrations.NewAuditColumns
+    name: NewAuditColumns
+    type: Class
+  - uid: MyApp.Auth.Infrastructure.Migrations.Permissions
+    name: Permissions
+    type: Class
+  - uid: MyApp.Auth.Infrastructure.Migrations.UserRoles
+    name: UserRoles
+    type: Class
+- uid: MyApp.Auth.Infrastructure.Services
+  name: MyApp.Auth.Infrastructure.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Infrastructure.Services.IJwtTokenProvider
+    name: IJwtTokenProvider
+    type: Interface
+  - uid: MyApp.Auth.Infrastructure.Services.JwtTokenProvider
+    name: JwtTokenProvider
+    type: Class
+- uid: MyApp.Auth.Tests.Helpers
+  name: MyApp.Auth.Tests.Helpers
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Tests.Helpers.TestDbContextFactory
+    name: TestDbContextFactory
+    type: Class
+- uid: MyApp.Auth.Tests.Repositories
+  name: MyApp.Auth.Tests.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+    name: PermissionRepositoryTests
+    type: Class
+  - uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+    name: RefreshTokenRepositoryTests
+    type: Class
+  - uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+    name: RoleRepositoryTests
+    type: Class
+  - uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+    name: UserRepositoryTests
+    type: Class
+- uid: MyApp.Auth.Tests.Services
+  name: MyApp.Auth.Tests.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+    name: JwtTokenProviderTests
+    type: Class
+- uid: MyApp.Billing.API
+  name: MyApp.Billing.API
+  type: Namespace
+  items:
+  - uid: MyApp.Billing.API.ValuesController
+    name: ValuesController
+    type: Class
+- uid: MyApp.Inventory.API.Controllers
+  name: MyApp.Inventory.API.Controllers
+  type: Namespace
+  items:
+  - uid: MyApp.Inventory.API.Controllers.InventoryTransactionsController
+    name: InventoryTransactionsController
+    type: Class
+  - uid: MyApp.Inventory.API.Controllers.ProductsController
+    name: ProductsController
+    type: Class
+  - uid: MyApp.Inventory.API.Controllers.WarehousesController
+    name: WarehousesController
+    type: Class
+- uid: MyApp.Inventory.Application.Contracts.DTOs
+  name: MyApp.Inventory.Application.Contracts.DTOs
+  type: Namespace
+  items:
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto
+    name: CreateUpdateInventoryTransactionDto
+    type: Class
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto
+    name: CreateUpdateProductDto
+    type: Class
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto
+    name: CreateUpdateWarehouseDto
+    type: Class
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto
+    name: InventoryTransactionDto
+    type: Class
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.ProductDto
+    name: ProductDto
+    type: Class
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto
+    name: WarehouseDto
+    type: Class
+- uid: MyApp.Inventory.Application.Contracts.Services
+  name: MyApp.Inventory.Application.Contracts.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+    name: IInventoryTransactionService
+    type: Interface
+  - uid: MyApp.Inventory.Application.Contracts.Services.IProductService
+    name: IProductService
+    type: Interface
+  - uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService
+    name: IWarehouseService
+    type: Interface
+- uid: MyApp.Inventory.Application.Mappings
+  name: MyApp.Inventory.Application.Mappings
+  type: Namespace
+  items:
+  - uid: MyApp.Inventory.Application.Mappings.InventoryMappingProfile
+    name: InventoryMappingProfile
+    type: Class
+- uid: MyApp.Inventory.Application.Services
+  name: MyApp.Inventory.Application.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Inventory.Application.Services.InventoryTransactionService
+    name: InventoryTransactionService
+    type: Class
+  - uid: MyApp.Inventory.Application.Services.ProductService
+    name: ProductService
+    type: Class
+  - uid: MyApp.Inventory.Application.Services.WarehouseService
+    name: WarehouseService
+    type: Class
+- uid: MyApp.Inventory.Application.Tests.Services
+  name: MyApp.Inventory.Application.Tests.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+    name: InventoryTransactionServiceTests
+    type: Class
+  - uid: MyApp.Inventory.Application.Tests.Services.ProductServiceTests
+    name: ProductServiceTests
+    type: Class
+  - uid: MyApp.Inventory.Application.Tests.Services.WarehouseServiceTests
+    name: WarehouseServiceTests
+    type: Class
+- uid: MyApp.Inventory.Domain.Entities
+  name: MyApp.Inventory.Domain.Entities
+  type: Namespace
+  items:
+  - uid: MyApp.Inventory.Domain.Entities.InventoryTransaction
+    name: InventoryTransaction
+    type: Class
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+    type: Class
+  - uid: MyApp.Inventory.Domain.Entities.TransactionType
+    name: TransactionType
+    type: Enum
+  - uid: MyApp.Inventory.Domain.Entities.Warehouse
+    name: Warehouse
+    type: Class
+- uid: MyApp.Inventory.Domain.Repositories
+  name: MyApp.Inventory.Domain.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository
+    name: IInventoryTransactionRepository
+    type: Interface
+  - uid: MyApp.Inventory.Domain.Repositories.IProductRepository
+    name: IProductRepository
+    type: Interface
+  - uid: MyApp.Inventory.Domain.Repositories.IWarehouseRepository
+    name: IWarehouseRepository
+    type: Interface
+- uid: MyApp.Inventory.Infrastructure.Data
+  name: MyApp.Inventory.Infrastructure.Data
+  type: Namespace
+  items:
+  - uid: MyApp.Inventory.Infrastructure.Data.InventoryDbContext
+    name: InventoryDbContext
+    type: Class
+  - uid: MyApp.Inventory.Infrastructure.Data.InventoryDbContextFactory
+    name: InventoryDbContextFactory
+    type: Class
+- uid: MyApp.Inventory.Infrastructure.Data.Configurations
+  name: MyApp.Inventory.Infrastructure.Data.Configurations
+  type: Namespace
+  items:
+  - uid: MyApp.Inventory.Infrastructure.Data.Configurations.InventoryTransactionConfiguration
+    name: InventoryTransactionConfiguration
+    type: Class
+  - uid: MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration
+    name: ProductConfiguration
+    type: Class
+  - uid: MyApp.Inventory.Infrastructure.Data.Configurations.WarehouseConfiguration
+    name: WarehouseConfiguration
+    type: Class
+- uid: MyApp.Inventory.Infrastructure.Data.Repositories
+  name: MyApp.Inventory.Infrastructure.Data.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Inventory.Infrastructure.Data.Repositories.InventoryTransactionRepository
+    name: InventoryTransactionRepository
+    type: Class
+  - uid: MyApp.Inventory.Infrastructure.Data.Repositories.ProductRepository
+    name: ProductRepository
+    type: Class
+  - uid: MyApp.Inventory.Infrastructure.Data.Repositories.WarehouseRepository
+    name: WarehouseRepository
+    type: Class
+- uid: MyApp.Inventory.Infrastructure.Migrations
+  name: MyApp.Inventory.Infrastructure.Migrations
+  type: Namespace
+  items:
+  - uid: MyApp.Inventory.Infrastructure.Migrations.AuditableEntities
+    name: AuditableEntities
+    type: Class
+  - uid: MyApp.Inventory.Infrastructure.Migrations.InitialInventory
+    name: InitialInventory
+    type: Class
+  - uid: MyApp.Inventory.Infrastructure.Migrations.TransactionDate_HasDefaultValueSql_Fix
+    name: TransactionDate_HasDefaultValueSql_Fix
+    type: Class
+- uid: MyApp.Inventory.Tests.Helpers
+  name: MyApp.Inventory.Tests.Helpers
+  type: Namespace
+  items:
+  - uid: MyApp.Inventory.Tests.Helpers.TestDbContextFactory
+    name: TestDbContextFactory
+    type: Class
+- uid: MyApp.Inventory.Tests.Repositories
+  name: MyApp.Inventory.Tests.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Inventory.Tests.Repositories.ProductRepositoryTests
+    name: ProductRepositoryTests
+    type: Class
+- uid: MyApp.Orders.API
+  name: MyApp.Orders.API
+  type: Namespace
+  items:
+  - uid: MyApp.Orders.API.OrdersController
+    name: OrdersController
+    type: Class
+- uid: MyApp.Orders.Application.Contracts
+  name: MyApp.Orders.Application.Contracts
+  type: Namespace
+  items:
+  - uid: MyApp.Orders.Application.Contracts.IOrderService
+    name: IOrderService
+    type: Interface
+- uid: MyApp.Orders.Application.Contracts.Dtos
+  name: MyApp.Orders.Application.Contracts.Dtos
+  type: Namespace
+  items:
+  - uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+    name: CreateUpdateOrderDto
+    type: Class
+  - uid: MyApp.Orders.Application.Contracts.Dtos.OrderDto
+    name: OrderDto
+    type: Class
+  - uid: MyApp.Orders.Application.Contracts.Dtos.OrderLineDto
+    name: OrderLineDto
+    type: Class
+- uid: MyApp.Orders.Application.Mapping
+  name: MyApp.Orders.Application.Mapping
+  type: Namespace
+  items:
+  - uid: MyApp.Orders.Application.Mapping.OrderProfile
+    name: OrderProfile
+    type: Class
+- uid: MyApp.Orders.Application.Services
+  name: MyApp.Orders.Application.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Orders.Application.Services.OrderService
+    name: OrderService
+    type: Class
+- uid: MyApp.Orders.Application.Tests.Services
+  name: MyApp.Orders.Application.Tests.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Orders.Application.Tests.Services.OrderServiceTests
+    name: OrderServiceTests
+    type: Class
+- uid: MyApp.Orders.Domain
+  name: MyApp.Orders.Domain
+  type: Namespace
+  items:
+  - uid: MyApp.Orders.Domain.IOrderLineRepository
+    name: IOrderLineRepository
+    type: Interface
+  - uid: MyApp.Orders.Domain.IOrderRepository
+    name: IOrderRepository
+    type: Interface
+  - uid: MyApp.Orders.Domain.IRepository`2
+    name: IRepository<TEntity, TKey>
+    type: Interface
+  - uid: MyApp.Orders.Domain.OrderStatus
+    name: OrderStatus
+    type: Enum
+- uid: MyApp.Orders.Domain.Entities
+  name: MyApp.Orders.Domain.Entities
+  type: Namespace
+  items:
+  - uid: MyApp.Orders.Domain.Entities.Order
+    name: Order
+    type: Class
+  - uid: MyApp.Orders.Domain.Entities.OrderLine
+    name: OrderLine
+    type: Class
+- uid: MyApp.Orders.Infrastructure.Data
+  name: MyApp.Orders.Infrastructure.Data
+  type: Namespace
+  items:
+  - uid: MyApp.Orders.Infrastructure.Data.OrdersDbContext
+    name: OrdersDbContext
+    type: Class
+  - uid: MyApp.Orders.Infrastructure.Data.OrdersDbContextFactory
+    name: OrdersDbContextFactory
+    type: Class
+- uid: MyApp.Orders.Infrastructure.Data.Configurations
+  name: MyApp.Orders.Infrastructure.Data.Configurations
+  type: Namespace
+  items:
+  - uid: MyApp.Orders.Infrastructure.Data.Configurations.OrderConfiguration
+    name: OrderConfiguration
+    type: Class
+  - uid: MyApp.Orders.Infrastructure.Data.Configurations.OrderLineConfiguration
+    name: OrderLineConfiguration
+    type: Class
+- uid: MyApp.Orders.Infrastructure.Migrations
+  name: MyApp.Orders.Infrastructure.Migrations
+  type: Namespace
+  items:
+  - uid: MyApp.Orders.Infrastructure.Migrations.AuditableEntities
+    name: AuditableEntities
+    type: Class
+  - uid: MyApp.Orders.Infrastructure.Migrations.initialorders
+    name: initialorders
+    type: Class
+- uid: MyApp.Orders.Infrastructure.Repositories
+  name: MyApp.Orders.Infrastructure.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Orders.Infrastructure.Repositories.OrderLineRepository
+    name: OrderLineRepository
+    type: Class
+  - uid: MyApp.Orders.Infrastructure.Repositories.OrderRepository
+    name: OrderRepository
+    type: Class
+- uid: MyApp.Orders.Tests.Helpers
+  name: MyApp.Orders.Tests.Helpers
+  type: Namespace
+  items:
+  - uid: MyApp.Orders.Tests.Helpers.TestDbContextFactory
+    name: TestDbContextFactory
+    type: Class
+- uid: MyApp.Orders.Tests.Repositories
+  name: MyApp.Orders.Tests.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Orders.Tests.Repositories.OrderRepositoryTests
+    name: OrderRepositoryTests
+    type: Class
+- uid: MyApp.Purchasing.API.Controllers
+  name: MyApp.Purchasing.API.Controllers
+  type: Namespace
+  items:
+  - uid: MyApp.Purchasing.API.Controllers.PurchaseOrdersController
+    name: PurchaseOrdersController
+    type: Class
+  - uid: MyApp.Purchasing.API.Controllers.SuppliersController
+    name: SuppliersController
+    type: Class
+- uid: MyApp.Purchasing.Application.Contracts.DTOs
+  name: MyApp.Purchasing.Application.Contracts.DTOs
+  type: Namespace
+  items:
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto
+    name: CreateUpdatePurchaseOrderDto
+    type: Class
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderLineDto
+    name: CreateUpdatePurchaseOrderLineDto
+    type: Class
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto
+    name: CreateUpdateSupplierDto
+    type: Class
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto
+    name: PurchaseOrderDto
+    type: Class
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderLineDto
+    name: PurchaseOrderLineDto
+    type: Class
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto
+    name: SupplierDto
+    type: Class
+- uid: MyApp.Purchasing.Application.Contracts.Services
+  name: MyApp.Purchasing.Application.Contracts.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+    name: IPurchaseOrderService
+    type: Interface
+  - uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+    name: ISupplierService
+    type: Interface
+- uid: MyApp.Purchasing.Application.Mappings
+  name: MyApp.Purchasing.Application.Mappings
+  type: Namespace
+  items:
+  - uid: MyApp.Purchasing.Application.Mappings.PurchasingMappingProfile
+    name: PurchasingMappingProfile
+    type: Class
+- uid: MyApp.Purchasing.Application.Services
+  name: MyApp.Purchasing.Application.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Purchasing.Application.Services.PurchaseOrderService
+    name: PurchaseOrderService
+    type: Class
+  - uid: MyApp.Purchasing.Application.Services.SupplierService
+    name: SupplierService
+    type: Class
+- uid: MyApp.Purchasing.Application.Tests.Services
+  name: MyApp.Purchasing.Application.Tests.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Purchasing.Application.Tests.Services.PurchaseOrderServiceTests
+    name: PurchaseOrderServiceTests
+    type: Class
+  - uid: MyApp.Purchasing.Application.Tests.Services.SupplierServiceTests
+    name: SupplierServiceTests
+    type: Class
+- uid: MyApp.Purchasing.Domain.Entities
+  name: MyApp.Purchasing.Domain.Entities
+  type: Namespace
+  items:
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+    name: PurchaseOrder
+    type: Class
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderLine
+    name: PurchaseOrderLine
+    type: Class
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+    name: PurchaseOrderStatus
+    type: Enum
+  - uid: MyApp.Purchasing.Domain.Entities.Supplier
+    name: Supplier
+    type: Class
+- uid: MyApp.Purchasing.Domain.Repositories
+  name: MyApp.Purchasing.Domain.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository
+    name: IPurchaseOrderLineRepository
+    type: Interface
+  - uid: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+    name: IPurchaseOrderRepository
+    type: Interface
+  - uid: MyApp.Purchasing.Domain.Repositories.ISupplierRepository
+    name: ISupplierRepository
+    type: Interface
+- uid: MyApp.Purchasing.Infrastructure.Data
+  name: MyApp.Purchasing.Infrastructure.Data
+  type: Namespace
+  items:
+  - uid: MyApp.Purchasing.Infrastructure.Data.PurchasingDbContext
+    name: PurchasingDbContext
+    type: Class
+  - uid: MyApp.Purchasing.Infrastructure.Data.PurchasingDbContextFactory
+    name: PurchasingDbContextFactory
+    type: Class
+- uid: MyApp.Purchasing.Infrastructure.Data.Configurations
+  name: MyApp.Purchasing.Infrastructure.Data.Configurations
+  type: Namespace
+  items:
+  - uid: MyApp.Purchasing.Infrastructure.Data.Configurations.PurchaseOrderLineConfiguration
+    name: PurchaseOrderLineConfiguration
+    type: Class
+  - uid: MyApp.Purchasing.Infrastructure.Data.Configurations.SupplierConfiguration
+    name: SupplierConfiguration
+    type: Class
+- uid: MyApp.Purchasing.Infrastructure.Data.Repositories
+  name: MyApp.Purchasing.Infrastructure.Data.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderLineRepository
+    name: PurchaseOrderLineRepository
+    type: Class
+  - uid: MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderRepository
+    name: PurchaseOrderRepository
+    type: Class
+  - uid: MyApp.Purchasing.Infrastructure.Data.Repositories.SupplierRepository
+    name: SupplierRepository
+    type: Class
+- uid: MyApp.Purchasing.Infrastructure.Migrations
+  name: MyApp.Purchasing.Infrastructure.Migrations
+  type: Namespace
+  items:
+  - uid: MyApp.Purchasing.Infrastructure.Migrations.AuditableEntities
+    name: AuditableEntities
+    type: Class
+  - uid: MyApp.Purchasing.Infrastructure.Migrations.InitialPurchasing
+    name: InitialPurchasing
+    type: Class
+- uid: MyApp.Purchasing.Tests.Helpers
+  name: MyApp.Purchasing.Tests.Helpers
+  type: Namespace
+  items:
+  - uid: MyApp.Purchasing.Tests.Helpers.TestDbContextFactory
+    name: TestDbContextFactory
+    type: Class
+- uid: MyApp.Purchasing.Tests.Repositories
+  name: MyApp.Purchasing.Tests.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests
+    name: SupplierRepositoryTests
+    type: Class
+- uid: MyApp.Sales.API.Controllers
+  name: MyApp.Sales.API.Controllers
+  type: Namespace
+  items:
+  - uid: MyApp.Sales.API.Controllers.CustomersController
+    name: CustomersController
+    type: Class
+  - uid: MyApp.Sales.API.Controllers.SalesOrdersController
+    name: SalesOrdersController
+    type: Class
+- uid: MyApp.Sales.Application.Contracts.DTOs
+  name: MyApp.Sales.Application.Contracts.DTOs
+  type: Namespace
+  items:
+  - uid: MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto
+    name: CreateUpdateSalesOrderDto
+    type: Class
+  - uid: MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderLineDto
+    name: CreateUpdateSalesOrderLineDto
+    type: Class
+  - uid: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+    name: CustomerDto
+    type: Class
+  - uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+    name: SalesOrderDto
+    type: Class
+  - uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto
+    name: SalesOrderLineDto
+    type: Class
+- uid: MyApp.Sales.Application.Contracts.Services
+  name: MyApp.Sales.Application.Contracts.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Sales.Application.Contracts.Services.ICustomerService
+    name: ICustomerService
+    type: Interface
+  - uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService
+    name: ISalesOrderService
+    type: Interface
+- uid: MyApp.Sales.Application.Mapping
+  name: MyApp.Sales.Application.Mapping
+  type: Namespace
+  items:
+  - uid: MyApp.Sales.Application.Mapping.SalesOrderMappingProfile
+    name: SalesOrderMappingProfile
+    type: Class
+- uid: MyApp.Sales.Application.Services
+  name: MyApp.Sales.Application.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Sales.Application.Services.CustomerService
+    name: CustomerService
+    type: Class
+  - uid: MyApp.Sales.Application.Services.SalesOrderService
+    name: SalesOrderService
+    type: Class
+- uid: MyApp.Sales.Application.Tests.Services
+  name: MyApp.Sales.Application.Tests.Services
+  type: Namespace
+  items:
+  - uid: MyApp.Sales.Application.Tests.Services.CustomerServiceTests
+    name: CustomerServiceTests
+    type: Class
+  - uid: MyApp.Sales.Application.Tests.Services.SalesOrderServiceTests
+    name: SalesOrderServiceTests
+    type: Class
+- uid: MyApp.Sales.Domain
+  name: MyApp.Sales.Domain
+  type: Namespace
+  items:
+  - uid: MyApp.Sales.Domain.ICustomerRepository
+    name: ICustomerRepository
+    type: Interface
+  - uid: MyApp.Sales.Domain.IRepository`2
+    name: IRepository<TEntity, TKey>
+    type: Interface
+  - uid: MyApp.Sales.Domain.ISalesOrderLineRepository
+    name: ISalesOrderLineRepository
+    type: Interface
+  - uid: MyApp.Sales.Domain.ISalesOrderRepository
+    name: ISalesOrderRepository
+    type: Interface
+- uid: MyApp.Sales.Domain.Entities
+  name: MyApp.Sales.Domain.Entities
+  type: Namespace
+  items:
+  - uid: MyApp.Sales.Domain.Entities.Customer
+    name: Customer
+    type: Class
+  - uid: MyApp.Sales.Domain.Entities.SalesOrder
+    name: SalesOrder
+    type: Class
+  - uid: MyApp.Sales.Domain.Entities.SalesOrderLine
+    name: SalesOrderLine
+    type: Class
+  - uid: MyApp.Sales.Domain.Entities.SalesOrderStatus
+    name: SalesOrderStatus
+    type: Enum
+- uid: MyApp.Sales.Infrastructure.Data
+  name: MyApp.Sales.Infrastructure.Data
+  type: Namespace
+  items:
+  - uid: MyApp.Sales.Infrastructure.Data.SalesDbContext
+    name: SalesDbContext
+    type: Class
+  - uid: MyApp.Sales.Infrastructure.Data.SalesDbContextFactory
+    name: SalesDbContextFactory
+    type: Class
+- uid: MyApp.Sales.Infrastructure.Data.Configurations
+  name: MyApp.Sales.Infrastructure.Data.Configurations
+  type: Namespace
+  items:
+  - uid: MyApp.Sales.Infrastructure.Data.Configurations.CustomerConfiguration
+    name: CustomerConfiguration
+    type: Class
+  - uid: MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderConfiguration
+    name: SalesOrderConfiguration
+    type: Class
+  - uid: MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderLineConfiguration
+    name: SalesOrderLineConfiguration
+    type: Class
+- uid: MyApp.Sales.Infrastructure.Data.Repositories
+  name: MyApp.Sales.Infrastructure.Data.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Sales.Infrastructure.Data.Repositories.CustomerRepository
+    name: CustomerRepository
+    type: Class
+  - uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+    name: SalesOrderLineRepository
+    type: Class
+  - uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderRepository
+    name: SalesOrderRepository
+    type: Class
+- uid: MyApp.Sales.Infrastructure.Migrations
+  name: MyApp.Sales.Infrastructure.Migrations
+  type: Namespace
+  items:
+  - uid: MyApp.Sales.Infrastructure.Migrations.AuditableEntities
+    name: AuditableEntities
+    type: Class
+  - uid: MyApp.Sales.Infrastructure.Migrations.InitialSales
+    name: InitialSales
+    type: Class
+- uid: MyApp.Sales.Tests.Helpers
+  name: MyApp.Sales.Tests.Helpers
+  type: Namespace
+  items:
+  - uid: MyApp.Sales.Tests.Helpers.TestDbContextFactory
+    name: TestDbContextFactory
+    type: Class
+- uid: MyApp.Sales.Tests.Repositories
+  name: MyApp.Sales.Tests.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Sales.Tests.Repositories.CustomerRepositoryTests
+    name: CustomerRepositoryTests
+    type: Class
+- uid: MyApp.Shared.Domain.Caching
+  name: MyApp.Shared.Domain.Caching
+  type: Namespace
+  items:
+  - uid: MyApp.Shared.Domain.Caching.ICacheService
+    name: ICacheService
+    type: Interface
+- uid: MyApp.Shared.Domain.Entities
+  name: MyApp.Shared.Domain.Entities
+  type: Namespace
+  items:
+  - uid: MyApp.Shared.Domain.Entities.AuditableEntity`1
+    name: AuditableEntity<T>
+    type: Class
+  - uid: MyApp.Shared.Domain.Entities.DomainEntity`1
+    name: DomainEntity<T>
+    type: Class
+  - uid: MyApp.Shared.Domain.Entities.IAuditableEntity
+    name: IAuditableEntity
+    type: Interface
+  - uid: MyApp.Shared.Domain.Entities.IAuditableEntity`1
+    name: IAuditableEntity<T>
+    type: Interface
+  - uid: MyApp.Shared.Domain.Entities.IEntity`1
+    name: IEntity<T>
+    type: Interface
+- uid: MyApp.Shared.Domain.Pagination
+  name: MyApp.Shared.Domain.Pagination
+  type: Namespace
+  items:
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult<T>
+    type: Class
+  - uid: MyApp.Shared.Domain.Pagination.PaginationParams
+    name: PaginationParams
+    type: Class
+- uid: MyApp.Shared.Domain.Permissions
+  name: MyApp.Shared.Domain.Permissions
+  type: Namespace
+  items:
+  - uid: MyApp.Shared.Domain.Permissions.ActionEnum
+    name: ActionEnum
+    type: Enum
+  - uid: MyApp.Shared.Domain.Permissions.ModuleEnum
+    name: ModuleEnum
+    type: Enum
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    type: Class
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Auth
+    name: PermissionConstants.Auth
+    type: Class
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Billing
+    name: PermissionConstants.Billing
+    type: Class
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+    name: PermissionConstants.Inventory
+    type: Class
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Notification
+    name: PermissionConstants.Notification
+    type: Class
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Orders
+    name: PermissionConstants.Orders
+    type: Class
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Permissions
+    name: PermissionConstants.Permissions
+    type: Class
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Purchasing
+    name: PermissionConstants.Purchasing
+    type: Class
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Roles
+    name: PermissionConstants.Roles
+    type: Class
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Sales
+    name: PermissionConstants.Sales
+    type: Class
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Users
+    name: PermissionConstants.Users
+    type: Class
+  - uid: MyApp.Shared.Domain.Permissions.PermissionEnum
+    name: PermissionEnum
+    type: Class
+- uid: MyApp.Shared.Domain.Repositories
+  name: MyApp.Shared.Domain.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository<TEntity, TKey>
+    type: Interface
+- uid: MyApp.Shared.Infrastructure.Caching
+  name: MyApp.Shared.Infrastructure.Caching
+  type: Namespace
+  items:
+  - uid: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper
+    name: DistributedCacheWrapper
+    type: Class
+- uid: MyApp.Shared.Infrastructure.Data
+  name: MyApp.Shared.Infrastructure.Data
+  type: Namespace
+  items:
+  - uid: MyApp.Shared.Infrastructure.Data.AuditableDbContext
+    name: AuditableDbContext
+    type: Class
+- uid: MyApp.Shared.Infrastructure.Extensions
+  name: MyApp.Shared.Infrastructure.Extensions
+  type: Namespace
+  items:
+  - uid: MyApp.Shared.Infrastructure.Extensions.HealthChecksExtensions
+    name: HealthChecksExtensions
+    type: Class
+  - uid: MyApp.Shared.Infrastructure.Extensions.JwtAuthenticationExtensions
+    name: JwtAuthenticationExtensions
+    type: Class
+- uid: MyApp.Shared.Infrastructure.Repositories
+  name: MyApp.Shared.Infrastructure.Repositories
+  type: Namespace
+  items:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2
+    name: Repository<TEntity, TKey>
+    type: Class
+- uid: MyApp.Tests.Integration
+  name: MyApp.Tests.Integration
+  type: Namespace
+  items:
+  - uid: MyApp.Tests.Integration.AuthIntegrationTests
+    name: AuthIntegrationTests
+    type: Class
+  - uid: MyApp.Tests.Integration.IntegrationTest1
+    name: IntegrationTest1
+    type: Class
+  - uid: MyApp.Tests.Integration.InventoryServiceTests
+    name: InventoryServiceTests
+    type: Class
+  - uid: MyApp.Tests.Integration.OrdersServiceTests
+    name: OrdersServiceTests
+    type: Class
+  - uid: MyApp.Tests.Integration.PurchasingServiceTests
+    name: PurchasingServiceTests
+    type: Class
+  - uid: MyApp.Tests.Integration.SalesServiceTests
+    name: SalesServiceTests
+    type: Class
+- uid: Projects
+  name: Projects
+  type: Namespace
+  items:
+  - uid: Projects.AppHost
+    name: AppHost
+    type: Class
+  - uid: Projects.ErpApiGateway
+    name: ErpApiGateway
+    type: Class
+  - uid: Projects.MyApp_Auth_API
+    name: MyApp_Auth_API
+    type: Class
+  - uid: Projects.MyApp_Billing_API
+    name: MyApp_Billing_API
+    type: Class
+  - uid: Projects.MyApp_Inventory_API
+    name: MyApp_Inventory_API
+    type: Class
+  - uid: Projects.MyApp_Orders_API
+    name: MyApp_Orders_API
+    type: Class
+  - uid: Projects.MyApp_Purchasing_API
+    name: MyApp_Purchasing_API
+    type: Class
+  - uid: Projects.MyApp_Sales_API
+    name: MyApp_Sales_API
+    type: Class
+memberLayout: SamePage

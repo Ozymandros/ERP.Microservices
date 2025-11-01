@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#128205; Documentation Site Map | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#128205; Documentation Site Map | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/SITEMAP.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-documentation-site-map">📍 Documentation Site Map</h1>
+
+<p><strong>Visual Guide to All Documentation</strong><br>
+Last Updated: October 27, 2025</p>
+<hr>
+<h2 id="-complete-site-map">🗺️ <strong>Complete Site Map</strong></h2>
+<pre><code class="lang-mermaid">graph TB
+    ROOT[&quot;📚 Documentation Root&quot;]
+    
+    ROOT --&gt; README[&quot;README.md&lt;br/&gt;Main Entry Point&quot;]
+    ROOT --&gt; QUICKSTART[&quot;QUICKSTART.md&lt;br/&gt;5-Min Guide&quot;]
+    ROOT --&gt; SITEMAP[&quot;SITEMAP.md&lt;br/&gt;This File&quot;]
+    ROOT --&gt; CONVENTIONS[&quot;CONVENTIONS.md&lt;br/&gt;Standards&quot;]
+    
+    ROOT --&gt; ARCH[&quot;🏗️ ARCHITECTURE&quot;]
+    ARCH --&gt; ARCH_README[&quot;README.md&quot;]
+    ARCH --&gt; ARCH_OVERVIEW[&quot;ARCHITECTURE_OVERVIEW.md&quot;]
+    ARCH --&gt; ARCH_DESIGN[&quot;MICROSERVICES_DESIGN.md&quot;]
+    ARCH --&gt; ARCH_DATAFLOW[&quot;DATA_FLOW.md&quot;]
+    ARCH --&gt; ARCH_DIAGRAMS[&quot;DIAGRAMS.md&quot;]
+    
+    ROOT --&gt; DEPLOY[&quot;☁️ DEPLOYMENT&quot;]
+    DEPLOY --&gt; DEPLOY_README[&quot;README.md&quot;]
+    DEPLOY --&gt; DEPLOY_BUILD[&quot;🔥 BUILD &amp; DEPLOY&quot;]
+    DEPLOY_BUILD --&gt; DEPLOY_AUTO[&quot;BUILD_AND_DEPLOY_AUTOMATION.md&quot;]
+    DEPLOY_BUILD --&gt; DEPLOY_QUICKSTART[&quot;QUICK_START_BUILD_DEPLOY.md&quot;]
+    DEPLOY_BUILD --&gt; DEPLOY_COMPLETE[&quot;DEPLOYMENT_AUTOMATION_COMPLETE.md&quot;]
+    DEPLOY --&gt; DEPLOY_GUIDE[&quot;DEPLOYMENT_GUIDE.md&quot;]
+    DEPLOY --&gt; DEPLOY_ENV[&quot;ENVIRONMENTS.md&quot;]
+    DEPLOY --&gt; DEPLOY_AZURE[&quot;AZURE_DEPLOYMENT.md&quot;]
+    DEPLOY --&gt; DEPLOY_TROUBLE[&quot;TROUBLESHOOTING.md&quot;]
+    
+    ROOT --&gt; INFRA[&quot;⚙️ INFRASTRUCTURE&quot;]
+    INFRA --&gt; INFRA_README[&quot;README.md&quot;]
+    INFRA --&gt; INFRA_BICEP[&quot;BICEP_OVERVIEW.md&quot;]
+    INFRA --&gt; INFRA_MODULES[&quot;BICEP_MODULES.md&quot;]
+    INFRA --&gt; INFRA_VALIDATE[&quot;VALIDATION.md&quot;]
+    INFRA --&gt; PHASES[&quot;📋 PHASE_GUIDES/&quot;]
+    PHASES --&gt; PHASE1[&quot;PHASE_1_MANAGED_IDENTITIES.md&quot;]
+    PHASES --&gt; PHASE2[&quot;PHASE_2_SECRETS.md&quot;]
+    PHASES --&gt; PHASE3[&quot;PHASE_3_RBAC.md&quot;]
+    PHASES --&gt; PHASE4[&quot;PHASE_4_SQL_RBAC.md&quot;]
+    PHASES --&gt; PHASE5[&quot;PHASE_5_CONFIGURATION.md&quot;]
+    
+    ROOT --&gt; DOCKER[&quot;🐳 DOCKER-COMPOSE&quot;]
+    DOCKER --&gt; DOCKER_README[&quot;README.md&quot;]
+    DOCKER --&gt; DOCKER_GUIDE[&quot;DOCKER_COMPOSE_GUIDE.md&quot;]
+    DOCKER --&gt; DOCKER_SERVICES[&quot;SERVICES_REFERENCE.md&quot;]
+    DOCKER --&gt; DOCKER_DAPR[&quot;DAPR_LOCAL_SETUP.md&quot;]
+    DOCKER --&gt; DOCKER_TROUBLE[&quot;TROUBLESHOOTING.md&quot;]
+    
+    ROOT --&gt; GATEWAY[&quot;🌐 API-GATEWAY&quot;]
+    GATEWAY --&gt; GATEWAY_README[&quot;README.md&quot;]
+    GATEWAY --&gt; GATEWAY_OVERVIEW[&quot;OCELOT_OVERVIEW.md&quot;]
+    GATEWAY --&gt; GATEWAY_CONFIG[&quot;OCELOT_CONFIGURATION.md&quot;]
+    GATEWAY --&gt; GATEWAY_AUTH[&quot;AUTHENTICATION.md&quot;]
+    GATEWAY --&gt; GATEWAY_RATE[&quot;RATE_LIMITING.md&quot;]
+    GATEWAY --&gt; GATEWAY_TROUBLE[&quot;TROUBLESHOOTING.md&quot;]
+    
+    ROOT --&gt; MICRO[&quot;🔧 MICROSERVICES&quot;]
+    MICRO --&gt; MICRO_README[&quot;README.md&quot;]
+    MICRO --&gt; MICRO_TEMPLATES[&quot;SERVICE_TEMPLATES.md&quot;]
+    MICRO --&gt; MICRO_DAPR[&quot;DAPR_INTEGRATION.md&quot;]
+    MICRO --&gt; MICRO_DB[&quot;DATABASE_ACCESS.md&quot;]
+    MICRO --&gt; MICRO_CACHE[&quot;CACHING.md&quot;]
+    MICRO --&gt; MICRO_PUBSUB[&quot;PUB_SUB.md&quot;]
+    
+    ROOT --&gt; SEC[&quot;🔒 SECURITY&quot;]
+    SEC --&gt; SEC_README[&quot;README.md&quot;]
+    SEC --&gt; SEC_OVERVIEW[&quot;SECURITY_OVERVIEW.md&quot;]
+    SEC --&gt; SEC_AUTH[&quot;AUTHENTICATION.md&quot;]
+    SEC --&gt; SEC_AUTHZ[&quot;AUTHORIZATION.md&quot;]
+    SEC --&gt; SEC_SECRETS[&quot;SECRETS_MANAGEMENT.md&quot;]
+    SEC --&gt; SEC_BEST[&quot;BEST_PRACTICES.md&quot;]
+    
+    ROOT --&gt; OPS[&quot;📊 OPERATIONS&quot;]
+    OPS --&gt; OPS_README[&quot;README.md&quot;]
+    OPS --&gt; OPS_MONITOR[&quot;MONITORING.md&quot;]
+    OPS --&gt; OPS_LOG[&quot;LOGGING.md&quot;]
+    OPS --&gt; OPS_HEALTH[&quot;HEALTH_CHECKS.md&quot;]
+    OPS --&gt; OPS_SCALE[&quot;SCALING.md&quot;]
+    OPS --&gt; OPS_BACKUP[&quot;BACKUP_RECOVERY.md&quot;]
+    OPS --&gt; OPS_RUNBOOK[&quot;RUNBOOKS.md&quot;]
+    
+    ROOT --&gt; DEV[&quot;👨‍💻 DEVELOPMENT&quot;]
+    DEV --&gt; DEV_README[&quot;README.md&quot;]
+    DEV --&gt; DEV_SETUP[&quot;DEVELOPMENT_SETUP.md&quot;]
+    DEV --&gt; DEV_CODE[&quot;CODING_STANDARDS.md&quot;]
+    DEV --&gt; DEV_TEST[&quot;TESTING.md&quot;]
+    DEV --&gt; DEV_GIT[&quot;GIT_WORKFLOW.md&quot;]
+    DEV --&gt; DEV_DEBUG[&quot;DEBUGGING.md&quot;]
+    
+    ROOT --&gt; REF[&quot;📖 REFERENCE&quot;]
+    REF --&gt; REF_README[&quot;README.md&quot;]
+    REF --&gt; REF_GLOSSARY[&quot;GLOSSARY.md&quot;]
+    REF --&gt; REF_ENVS[&quot;ENVIRONMENT_VARIABLES.md&quot;]
+    REF --&gt; REF_PORTS[&quot;PORT_MAPPING.md&quot;]
+    REF --&gt; REF_API[&quot;API_ENDPOINTS.md&quot;]
+    REF --&gt; REF_TROUBLE[&quot;TROUBLESHOOTING_INDEX.md&quot;]
+    
+    style ROOT fill:#ff9999
+    style README fill:#99ff99
+    style ARCH fill:#99ccff
+    style DEPLOY fill:#99ccff
+    style INFRA fill:#99ccff
+    style DOCKER fill:#99ccff
+    style GATEWAY fill:#99ccff
+    style MICRO fill:#99ccff
+    style SEC fill:#99ccff
+    style OPS fill:#99ccff
+    style DEV fill:#99ccff
+    style REF fill:#99ccff
+</code></pre>
+<hr>
+<h2 id="-directory-structure">📂 <strong>Directory Structure</strong></h2>
+<pre><code>docs/
+├── README.md                      ← START HERE (Main navigation)
+├── QUICKSTART.md                  ← 5-minute quickstart
+├── SITEMAP.md                     ← This file (visual relationships)
+├── CONVENTIONS.md                 ← Documentation standards
+│
+├── architecture/                  ← System design &amp; patterns
+│   ├── README.md
+│   ├── ARCHITECTURE_OVERVIEW.md
+│   ├── MICROSERVICES_DESIGN.md
+│   ├── DATA_FLOW.md
+│   └── DIAGRAMS.md
+│
+├── deployment/                    ← Azure &amp; environment setup
+│   ├── README.md
+│   ├── DEPLOYMENT_GUIDE.md
+│   ├── ENVIRONMENTS.md
+│   ├── AZURE_DEPLOYMENT.md
+│   ├── TROUBLESHOOTING.md
+│   └── (migration guides)
+│
+├── infrastructure/                ← IaC &amp; Bicep
+│   ├── README.md
+│   ├── BICEP_OVERVIEW.md
+│   ├── BICEP_MODULES.md
+│   ├── VALIDATION.md
+│   └── PHASE_GUIDES/              ← Phased implementation
+│       ├── README.md
+│       ├── PHASE_1_MANAGED_IDENTITIES.md
+│       ├── PHASE_2_SECRETS.md
+│       ├── PHASE_3_RBAC.md
+│       ├── PHASE_4_SQL_RBAC.md
+│       └── PHASE_5_CONFIGURATION.md
+│
+├── docker-compose/                ← Local development
+│   ├── README.md
+│   ├── DOCKER_COMPOSE_GUIDE.md
+│   ├── SERVICES_REFERENCE.md
+│   ├── DAPR_LOCAL_SETUP.md
+│   ├── TROUBLESHOOTING.md
+│   └── (docker compose docs)
+│
+├── api-gateway/                   ← Ocelot gateway
+│   ├── README.md
+│   ├── OCELOT_OVERVIEW.md
+│   ├── OCELOT_CONFIGURATION.md
+│   ├── AUTHENTICATION.md
+│   ├── RATE_LIMITING.md
+│   └── TROUBLESHOOTING.md
+│
+├── microservices/                 ← Service development
+│   ├── README.md
+│   ├── SERVICE_TEMPLATES.md
+│   ├── DAPR_INTEGRATION.md
+│   ├── DATABASE_ACCESS.md
+│   ├── CACHING.md
+│   └── PUB_SUB.md
+│
+├── security/                      ← Security &amp; compliance
+│   ├── README.md
+│   ├── SECURITY_OVERVIEW.md
+│   ├── AUTHENTICATION.md
+│   ├── AUTHORIZATION.md
+│   ├── SECRETS_MANAGEMENT.md
+│   └── BEST_PRACTICES.md
+│
+├── operations/                    ← Production operations
+│   ├── README.md
+│   ├── MONITORING.md
+│   ├── LOGGING.md
+│   ├── HEALTH_CHECKS.md
+│   ├── SCALING.md
+│   ├── BACKUP_RECOVERY.md
+│   └── RUNBOOKS.md
+│
+├── development/                   ← Developer guidelines
+│   ├── README.md
+│   ├── DEVELOPMENT_SETUP.md
+│   ├── CODING_STANDARDS.md
+│   ├── TESTING.md
+│   ├── GIT_WORKFLOW.md
+│   └── DEBUGGING.md
+│
+└── reference/                     ← Quick reference
+    ├── README.md
+    ├── GLOSSARY.md
+    ├── ENVIRONMENT_VARIABLES.md
+    ├── PORT_MAPPING.md
+    ├── API_ENDPOINTS.md
+    └── TROUBLESHOOTING_INDEX.md
+</code></pre>
+<hr>
+<h2 id="-document-cross-references">🎯 <strong>Document Cross-References</strong></h2>
+<h3 id="entry-points">Entry Points</h3>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Purpose</th>
+<th>Audience</th>
+<th>Prerequisite</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>README.md</strong></td>
+<td>Navigation hub</td>
+<td>Everyone</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>QUICKSTART.md</strong></td>
+<td>5-minute setup</td>
+<td>New developers</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>SITEMAP.md</strong></td>
+<td>This file</td>
+<td>Everyone</td>
+<td>README</td>
+</tr>
+<tr>
+<td><strong>CONVENTIONS.md</strong></td>
+<td>Formatting standards</td>
+<td>Doc writers</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<h3 id="by-role">By Role</h3>
+<p><strong>👨‍💻 Developer</strong></p>
+<ul>
+<li>Entry: <a href="README.html">README.md</a> → Developer section</li>
+<li>Flow: Setup → Docker → Development → Coding → Testing → Debugging</li>
+</ul>
+<p><strong>🏗️ DevOps/Infrastructure</strong></p>
+<ul>
+<li>Entry: <a href="README.html">README.md</a> → DevOps section</li>
+<li>Flow: Architecture → Infrastructure → Phases → Deployment → Operations</li>
+</ul>
+<p><strong>🔒 Security</strong></p>
+<ul>
+<li>Entry: <a href="README.html">README.md</a> → Security section</li>
+<li>Flow: Security Overview → Auth → AuthZ → Secrets → Best Practices</li>
+</ul>
+<p><strong>📊 Operations/SRE</strong></p>
+<ul>
+<li>Entry: <a href="README.html">README.md</a> → Operations section</li>
+<li>Flow: Monitoring → Logging → Health Checks → Scaling → Runbooks</li>
+</ul>
+<p><strong>👥 Architect</strong></p>
+<ul>
+<li>Entry: <a href="README.html">README.md</a> → Architecture section</li>
+<li>Flow: Overview → Design → Data Flow → Diagrams</li>
+</ul>
+<hr>
+<h2 id="-common-navigation-paths">🔗 <strong>Common Navigation Paths</strong></h2>
+<h3 id="path-1-im-new-where-do-i-start">Path 1: &quot;I'm New, Where Do I Start?&quot;</h3>
+<pre><code>README.md 
+  ↓
+QUICKSTART.md
+  ↓
+development/DEVELOPMENT_SETUP.md
+  ↓
+docker-compose/DOCKER_COMPOSE_GUIDE.md
+  ↓
+development/TESTING.md
+</code></pre>
+<h3 id="path-2-how-do-i-deploy-this">Path 2: &quot;How Do I Deploy This?&quot;</h3>
+<pre><code>README.md
+  ↓
+deployment/DEPLOYMENT_GUIDE.md
+  ↓
+infrastructure/BICEP_OVERVIEW.md
+  ↓
+infrastructure/PHASE_GUIDES/README.md
+  ↓
+operations/HEALTH_CHECKS.md
+</code></pre>
+<h3 id="path-3-how-does-security-work">Path 3: &quot;How Does Security Work?&quot;</h3>
+<pre><code>README.md
+  ↓
+security/SECURITY_OVERVIEW.md
+  ↓
+security/AUTHENTICATION.md
+  ↓
+api-gateway/AUTHENTICATION.md
+  ↓
+security/AUTHORIZATION.md
+</code></pre>
+<h3 id="path-4-how-do-i-debug-an-issue">Path 4: &quot;How Do I Debug an Issue?&quot;</h3>
+<pre><code>README.md
+  ↓
+reference/TROUBLESHOOTING_INDEX.md
+  ↓
+[Specific troubleshooting guide]
+  ↓
+development/DEBUGGING.md
+</code></pre>
+<h3 id="path-5-how-does-dapr-work-here">Path 5: &quot;How Does DAPR Work Here?&quot;</h3>
+<pre><code>architecture/MICROSERVICES_DESIGN.md
+  ↓
+docker-compose/DAPR_LOCAL_SETUP.md
+  ↓
+microservices/DAPR_INTEGRATION.md
+  ↓
+microservices/PUB_SUB.md
+</code></pre>
+<hr>
+<h2 id="-content-relationship-map">📊 <strong>Content Relationship Map</strong></h2>
+<h3 id="documentation-dependencies">Documentation Dependencies</h3>
+<pre><code>ARCHITECTURE (Independent)
+    ↓ informs ↓
+INFRASTRUCTURE ← DEPLOYMENT ← OPERATIONS
+    ↓
+BICEP MODULES ← PHASE GUIDES
+    ↓
+DOCKER-COMPOSE (Local dev mirror)
+    ↓ uses ↓
+API GATEWAY ← MICROSERVICES
+    ↓
+SECURITY &amp; AUTH
+    ↓
+DEVELOPMENT &amp; CODING STANDARDS
+    ↓
+TESTING &amp; DEBUGGING
+    ↓
+REFERENCE (Supports all)
+</code></pre>
+<h3 id="how-documents-link-together">How Documents Link Together</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Links To</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Architecture</strong></td>
+<td>All others</td>
+<td>Design guide for everything</td>
+</tr>
+<tr>
+<td><strong>Deployment</strong></td>
+<td>Infrastructure, Operations</td>
+<td>Implementation path</td>
+</tr>
+<tr>
+<td><strong>Infrastructure</strong></td>
+<td>Deployment, DAPR, Security</td>
+<td>IaC defines everything</td>
+</tr>
+<tr>
+<td><strong>Docker-Compose</strong></td>
+<td>Microservices, DAPR, Gateway</td>
+<td>Local dev environment</td>
+</tr>
+<tr>
+<td><strong>API Gateway</strong></td>
+<td>Microservices, Security, Operations</td>
+<td>Routes all traffic</td>
+</tr>
+<tr>
+<td><strong>Microservices</strong></td>
+<td>DAPR, Database, Caching, Pub/Sub</td>
+<td>Service implementation</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Auth, Secrets, RBAC, Best Practices</td>
+<td>Cross-cutting concern</td>
+</tr>
+<tr>
+<td><strong>Operations</strong></td>
+<td>Monitoring, Logging, Health, Scaling</td>
+<td>Production readiness</td>
+</tr>
+<tr>
+<td><strong>Development</strong></td>
+<td>Testing, Debugging, Standards</td>
+<td>Developer workflow</td>
+</tr>
+<tr>
+<td><strong>Reference</strong></td>
+<td>All others</td>
+<td>Quick lookup</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-search-index">🔍 <strong>Search Index</strong></h2>
+<h3 id="by-topic">By Topic</h3>
+<p><strong>Authentication &amp; Security</strong></p>
+<ul>
+<li>api-gateway/AUTHENTICATION.md</li>
+<li>security/AUTHENTICATION.md</li>
+<li>security/AUTHORIZATION.md</li>
+<li>security/BEST_PRACTICES.md</li>
+</ul>
+<p><strong>Deployment &amp; Infrastructure</strong></p>
+<ul>
+<li>deployment/DEPLOYMENT_GUIDE.md</li>
+<li>infrastructure/BICEP_OVERVIEW.md</li>
+<li>infrastructure/PHASE_GUIDES/README.md</li>
+</ul>
+<p><strong>Local Development</strong></p>
+<ul>
+<li>development/DEVELOPMENT_SETUP.md</li>
+<li>docker-compose/DOCKER_COMPOSE_GUIDE.md</li>
+<li>docker-compose/DAPR_LOCAL_SETUP.md</li>
+</ul>
+<p><strong>Microservices &amp; DAPR</strong></p>
+<ul>
+<li>microservices/DAPR_INTEGRATION.md</li>
+<li>microservices/PUB_SUB.md</li>
+<li>microservices/DATABASE_ACCESS.md</li>
+</ul>
+<p><strong>Operations &amp; Monitoring</strong></p>
+<ul>
+<li>operations/MONITORING.md</li>
+<li>operations/HEALTH_CHECKS.md</li>
+<li>operations/RUNBOOKS.md</li>
+</ul>
+<p><strong>Troubleshooting</strong></p>
+<ul>
+<li>reference/TROUBLESHOOTING_INDEX.md</li>
+<li>docker-compose/TROUBLESHOOTING.md</li>
+<li>api-gateway/TROUBLESHOOTING.md</li>
+</ul>
+<hr>
+<h2 id="-document-checklist">📋 <strong>Document Checklist</strong></h2>
+<p>Use this to navigate documentation status:</p>
+<ul>
+<li><p>[ ] <strong>Core Setup</strong> (Read First)</p>
+<ul>
+<li>[x] README.md</li>
+<li>[ ] QUICKSTART.md</li>
+<li>[ ] architecture/ARCHITECTURE_OVERVIEW.md</li>
+</ul>
+</li>
+<li><p>[ ] <strong>Local Development</strong> (Setup Environment)</p>
+<ul>
+<li>[ ] development/DEVELOPMENT_SETUP.md</li>
+<li>[ ] docker-compose/DOCKER_COMPOSE_GUIDE.md</li>
+<li>[ ] docker-compose/DAPR_LOCAL_SETUP.md</li>
+</ul>
+</li>
+<li><p>[ ] <strong>Core Services</strong> (Understand Architecture)</p>
+<ul>
+<li>[ ] architecture/MICROSERVICES_DESIGN.md</li>
+<li>[ ] microservices/SERVICE_TEMPLATES.md</li>
+<li>[ ] microservices/DAPR_INTEGRATION.md</li>
+</ul>
+</li>
+<li><p>[ ] <strong>Gateway &amp; Security</strong> (API Access)</p>
+<ul>
+<li>[ ] api-gateway/OCELOT_OVERVIEW.md</li>
+<li>[ ] api-gateway/AUTHENTICATION.md</li>
+<li>[ ] security/SECURITY_OVERVIEW.md</li>
+</ul>
+</li>
+<li><p>[ ] <strong>Production Deployment</strong> (Deploy to Azure)</p>
+<ul>
+<li>[ ] deployment/DEPLOYMENT_GUIDE.md</li>
+<li>[ ] infrastructure/BICEP_OVERVIEW.md</li>
+<li>[ ] infrastructure/PHASE_GUIDES/README.md</li>
+</ul>
+</li>
+<li><p>[ ] <strong>Operations</strong> (Run in Production)</p>
+<ul>
+<li>[ ] operations/MONITORING.md</li>
+<li>[ ] operations/HEALTH_CHECKS.md</li>
+<li>[ ] operations/RUNBOOKS.md</li>
+</ul>
+</li>
+<li><p>[ ] <strong>Reference</strong> (Look Things Up)</p>
+<ul>
+<li>[ ] reference/GLOSSARY.md</li>
+<li>[ ] reference/ENVIRONMENT_VARIABLES.md</li>
+<li>[ ] reference/TROUBLESHOOTING_INDEX.md</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="-quick-links-by-question">🎓 <strong>Quick Links by Question</strong></h2>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Find Answer In</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&quot;How do I start?&quot;</td>
+<td>QUICKSTART.md</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>&quot;What's the architecture?&quot;</td>
+<td>architecture/ARCHITECTURE_OVERVIEW.md</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>&quot;How do I set up locally?&quot;</td>
+<td>development/DEVELOPMENT_SETUP.md</td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>&quot;How do I deploy?&quot;</td>
+<td>deployment/DEPLOYMENT_GUIDE.md</td>
+<td>1 hour</td>
+</tr>
+<tr>
+<td>&quot;How does auth work?&quot;</td>
+<td>security/AUTHENTICATION.md</td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>&quot;What ports are used?&quot;</td>
+<td>reference/PORT_MAPPING.md</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>&quot;How do I debug?&quot;</td>
+<td>development/DEBUGGING.md</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>&quot;Service X is down&quot;</td>
+<td>operations/RUNBOOKS.md</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>&quot;Something's broken&quot;</td>
+<td>reference/TROUBLESHOOTING_INDEX.md</td>
+<td>10 min</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-reading-flow-recommendations">🔄 <strong>Reading Flow Recommendations</strong></h2>
+<h3 id="first-time-in-project-total-2-hours">First Time in Project (Total: 2 hours)</h3>
+<ol>
+<li>README.md (10 min) - Overview</li>
+<li>QUICKSTART.md (5 min) - TL;DR</li>
+<li>architecture/ARCHITECTURE_OVERVIEW.md (15 min) - Big picture</li>
+<li>development/DEVELOPMENT_SETUP.md (30 min) - Get running</li>
+<li>docker-compose/DOCKER_COMPOSE_GUIDE.md (30 min) - Understand services</li>
+<li>development/CODING_STANDARDS.md (10 min) - How to code</li>
+</ol>
+<h3 id="deep-dive-security-total-15-hours">Deep Dive: Security (Total: 1.5 hours)</h3>
+<ol>
+<li>security/SECURITY_OVERVIEW.md (10 min)</li>
+<li>security/AUTHENTICATION.md (20 min)</li>
+<li>api-gateway/AUTHENTICATION.md (15 min)</li>
+<li>security/AUTHORIZATION.md (20 min)</li>
+<li>security/SECRETS_MANAGEMENT.md (15 min)</li>
+</ol>
+<h3 id="production-deployment-total-3-hours">Production Deployment (Total: 3 hours)</h3>
+<ol>
+<li>deployment/DEPLOYMENT_GUIDE.md (30 min)</li>
+<li>infrastructure/BICEP_OVERVIEW.md (20 min)</li>
+<li>infrastructure/PHASE_GUIDES/README.md (30 min)</li>
+<li>Each phase guide (15 min each = 75 min total)</li>
+<li>operations/HEALTH_CHECKS.md (15 min)</li>
+</ol>
+<hr>
+<p><strong>Last Updated:</strong> October 27, 2025<br>
+<strong>Total Documents:</strong> 50+<br>
+<strong>Total Categories:</strong> 8<br>
+<strong>Average Read Time:</strong> 90 minutes (complete system understanding)</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/SITEMAP.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

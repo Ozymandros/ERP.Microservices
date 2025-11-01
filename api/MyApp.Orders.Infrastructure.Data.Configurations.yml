@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Infrastructure.Data.Configurations
+  commentId: N:MyApp.Orders.Infrastructure.Data.Configurations
+  id: MyApp.Orders.Infrastructure.Data.Configurations
+  children:
+  - MyApp.Orders.Infrastructure.Data.Configurations.OrderConfiguration
+  - MyApp.Orders.Infrastructure.Data.Configurations.OrderLineConfiguration
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Orders.Infrastructure.Data.Configurations
+  nameWithType: MyApp.Orders.Infrastructure.Data.Configurations
+  fullName: MyApp.Orders.Infrastructure.Data.Configurations
+  type: Namespace
+  assemblies:
+  - MyApp.Orders.Infrastructure
+references:
+- uid: MyApp.Orders.Infrastructure.Data.Configurations.OrderConfiguration
+  commentId: T:MyApp.Orders.Infrastructure.Data.Configurations.OrderConfiguration
+  href: MyApp.Orders.Infrastructure.Data.Configurations.OrderConfiguration.html
+  name: OrderConfiguration
+  nameWithType: OrderConfiguration
+  fullName: MyApp.Orders.Infrastructure.Data.Configurations.OrderConfiguration
+- uid: MyApp.Orders.Infrastructure.Data.Configurations.OrderLineConfiguration
+  commentId: T:MyApp.Orders.Infrastructure.Data.Configurations.OrderLineConfiguration
+  href: MyApp.Orders.Infrastructure.Data.Configurations.OrderLineConfiguration.html
+  name: OrderLineConfiguration
+  nameWithType: OrderLineConfiguration
+  fullName: MyApp.Orders.Infrastructure.Data.Configurations.OrderLineConfiguration

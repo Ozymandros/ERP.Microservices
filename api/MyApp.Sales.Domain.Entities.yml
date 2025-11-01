@@ -1,0 +1,86 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Domain.Entities
+  commentId: N:MyApp.Sales.Domain.Entities
+  id: MyApp.Sales.Domain.Entities
+  children:
+  - MyApp.Sales.Domain.Entities.Customer
+  - MyApp.Sales.Domain.Entities.SalesOrder
+  - MyApp.Sales.Domain.Entities.SalesOrderLine
+  - MyApp.Sales.Domain.Entities.SalesOrderStatus
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Sales.Domain.Entities
+  nameWithType: MyApp.Sales.Domain.Entities
+  fullName: MyApp.Sales.Domain.Entities
+  type: Namespace
+  assemblies:
+  - MyApp.Sales.Domain
+references:
+- uid: MyApp.Sales.Domain.Entities.Customer
+  commentId: T:MyApp.Sales.Domain.Entities.Customer
+  parent: MyApp.Sales.Domain.Entities
+  href: MyApp.Sales.Domain.Entities.Customer.html
+  name: Customer
+  nameWithType: Customer
+  fullName: MyApp.Sales.Domain.Entities.Customer
+- uid: MyApp.Sales.Domain.Entities.SalesOrder
+  commentId: T:MyApp.Sales.Domain.Entities.SalesOrder
+  parent: MyApp.Sales.Domain.Entities
+  href: MyApp.Sales.Domain.Entities.SalesOrder.html
+  name: SalesOrder
+  nameWithType: SalesOrder
+  fullName: MyApp.Sales.Domain.Entities.SalesOrder
+- uid: MyApp.Sales.Domain.Entities.SalesOrderLine
+  commentId: T:MyApp.Sales.Domain.Entities.SalesOrderLine
+  parent: MyApp.Sales.Domain.Entities
+  href: MyApp.Sales.Domain.Entities.SalesOrderLine.html
+  name: SalesOrderLine
+  nameWithType: SalesOrderLine
+  fullName: MyApp.Sales.Domain.Entities.SalesOrderLine
+- uid: MyApp.Sales.Domain.Entities.SalesOrderStatus
+  commentId: T:MyApp.Sales.Domain.Entities.SalesOrderStatus
+  parent: MyApp.Sales.Domain.Entities
+  href: MyApp.Sales.Domain.Entities.SalesOrderStatus.html
+  name: SalesOrderStatus
+  nameWithType: SalesOrderStatus
+  fullName: MyApp.Sales.Domain.Entities.SalesOrderStatus
+- uid: MyApp.Sales.Domain.Entities
+  commentId: N:MyApp.Sales.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Sales.Domain.Entities
+  nameWithType: MyApp.Sales.Domain.Entities
+  fullName: MyApp.Sales.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Domain
+    name: Domain
+    href: MyApp.Sales.Domain.html
+  - name: .
+  - uid: MyApp.Sales.Domain.Entities
+    name: Entities
+    href: MyApp.Sales.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Domain
+    name: Domain
+    href: MyApp.Sales.Domain.html
+  - name: .
+  - uid: MyApp.Sales.Domain.Entities
+    name: Entities
+    href: MyApp.Sales.Domain.Entities.html

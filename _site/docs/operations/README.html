@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#128202; Operations &amp; Production Readiness | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#128202; Operations &amp; Production Readiness | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/operations/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-operations--production-readiness">📊 Operations &amp; Production Readiness</h1>
+
+<p><strong>Monitoring, Logging, Health Checks, Scaling &amp; Disaster Recovery</strong><br>
+Last Updated: October 27, 2025</p>
+<hr>
+<h2 id="-overview">📍 Overview</h2>
+<p>This category covers everything needed to run the system in production. From monitoring and logging to auto-scaling and disaster recovery. Designed for DevOps, SRE, and operations teams.</p>
+<hr>
+<h2 id="-documents-in-this-category">📚 Documents in This Category</h2>
+<h3 id="monitoringmd"><a href="MONITORING.md">MONITORING.md</a></h3>
+<p><strong>Observability and monitoring setup</strong></p>
+<ul>
+<li>Application Insights configuration</li>
+<li>Metrics collection</li>
+<li>Custom dashboards</li>
+<li>Alert configuration</li>
+<li>Anomaly detection</li>
+</ul>
+<h3 id="loggingmd"><a href="LOGGING.md">LOGGING.md</a></h3>
+<p><strong>Centralized logging and log analysis</strong></p>
+<ul>
+<li>Log aggregation setup</li>
+<li>Log levels and verbosity</li>
+<li>Structured logging</li>
+<li>Log retention policies</li>
+<li>Log querying and analysis</li>
+</ul>
+<h3 id="health_checksmd"><a href="HEALTH_CHECKS.md">HEALTH_CHECKS.md</a></h3>
+<p><strong>Service health monitoring</strong></p>
+<ul>
+<li>Liveness probes</li>
+<li>Readiness probes</li>
+<li>Startup probes</li>
+<li>Health check implementation</li>
+<li>Failure detection and remediation</li>
+</ul>
+<h3 id="scalingmd"><a href="SCALING.md">SCALING.md</a></h3>
+<p><strong>Auto-scaling configuration</strong></p>
+<ul>
+<li>Horizontal Pod Autoscaling (HPA)</li>
+<li>Vertical scaling considerations</li>
+<li>Scaling policies and thresholds</li>
+<li>Performance testing</li>
+<li>Load testing results</li>
+</ul>
+<h3 id="backup_recoverymd"><a href="BACKUP_RECOVERY.md">BACKUP_RECOVERY.md</a></h3>
+<p><strong>Disaster recovery and backups</strong></p>
+<ul>
+<li>Database backup strategy</li>
+<li>Backup retention policies</li>
+<li>Recovery time objectives (RTO)</li>
+<li>Recovery point objectives (RPO)</li>
+<li>Failover procedures</li>
+</ul>
+<h3 id="runbooksmd"><a href="RUNBOOKS.md">RUNBOOKS.md</a></h3>
+<p><strong>Standard operational procedures</strong></p>
+<ul>
+<li>Common operational tasks</li>
+<li>Incident response procedures</li>
+<li>Emergency procedures</li>
+<li>Escalation paths</li>
+<li>Contact information</li>
+</ul>
+<hr>
+<h2 id="-quick-start">🎯 Quick Start</h2>
+<h3 id="monitor-the-system">Monitor the System</h3>
+<pre><code class="lang-bash"># Check all services healthy
+kubectl get pods -n erp
+
+# View recent logs
+kubectl logs -f deployment/auth-service -n erp
+
+# Check metrics
+kubectl top nodes
+kubectl top pods -n erp
+
+# Access monitoring dashboard
+# Application Insights: https://portal.azure.com/
+</code></pre>
+<h3 id="common-operational-tasks">Common Operational Tasks</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Time</th>
+<th>See Also</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Check service status</td>
+<td>2 min</td>
+<td><a href="HEALTH_CHECKS.md">HEALTH_CHECKS.md</a></td>
+</tr>
+<tr>
+<td>View application logs</td>
+<td>5 min</td>
+<td><a href="LOGGING.md">LOGGING.md</a></td>
+</tr>
+<tr>
+<td>Review metrics</td>
+<td>5 min</td>
+<td><a href="MONITORING.md">MONITORING.md</a></td>
+</tr>
+<tr>
+<td>Handle service outage</td>
+<td>15 min</td>
+<td><a href="RUNBOOKS.md">RUNBOOKS.md</a></td>
+</tr>
+<tr>
+<td>Restore from backup</td>
+<td>30 min</td>
+<td><a href="BACKUP_RECOVERY.md">BACKUP_RECOVERY.md</a></td>
+</tr>
+<tr>
+<td>Scale service up</td>
+<td>5 min</td>
+<td><a href="SCALING.md">SCALING.md</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-key-metrics">📊 Key Metrics</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Normal</th>
+<th>Warning</th>
+<th>Critical</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pod CPU</strong></td>
+<td>&lt; 30%</td>
+<td>50-75%</td>
+<td>&gt; 90%</td>
+</tr>
+<tr>
+<td><strong>Pod Memory</strong></td>
+<td>&lt; 40%</td>
+<td>60-80%</td>
+<td>&gt; 90%</td>
+</tr>
+<tr>
+<td><strong>Request Latency</strong></td>
+<td>&lt; 100ms</td>
+<td>100-500ms</td>
+<td>&gt; 1000ms</td>
+</tr>
+<tr>
+<td><strong>Error Rate</strong></td>
+<td>&lt; 0.1%</td>
+<td>0.1-1%</td>
+<td>&gt; 1%</td>
+</tr>
+<tr>
+<td><strong>API Gateway CPU</strong></td>
+<td>&lt; 40%</td>
+<td>60-80%</td>
+<td>&gt; 90%</td>
+</tr>
+<tr>
+<td><strong>Database Connections</strong></td>
+<td>&lt; 50%</td>
+<td>50-80%</td>
+<td>&gt; 95%</td>
+</tr>
+<tr>
+<td><strong>Cache Hit Rate</strong></td>
+<td>&gt; 80%</td>
+<td>50-80%</td>
+<td>&lt; 50%</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-common-operational-scenarios">🔍 Common Operational Scenarios</h2>
+<h3 id="scenario-1-service-degradation">Scenario 1: Service Degradation</h3>
+<pre><code>Alert: Service latency &gt; 500ms
+  ↓
+Check service metrics (MONITORING.md)
+  ↓
+Check application logs (LOGGING.md)
+  ↓
+Scale service (SCALING.md) OR Restart (RUNBOOKS.md)
+  ↓
+Monitor recovery
+  ↓
+Post-incident review
+</code></pre>
+<h3 id="scenario-2-high-error-rate">Scenario 2: High Error Rate</h3>
+<pre><code>Alert: Error rate &gt; 1%
+  ↓
+Check error logs (LOGGING.md)
+  ↓
+Identify affected service
+  ↓
+Check service health (HEALTH_CHECKS.md)
+  ↓
+Restart service or rollback
+  ↓
+Investigate root cause
+</code></pre>
+<h3 id="scenario-3-out-of-memory">Scenario 3: Out of Memory</h3>
+<pre><code>Alert: Memory usage &gt; 90%
+  ↓
+Identify memory leak (MONITORING.md)
+  ↓
+Increase pod memory limits (SCALING.md)
+  ↓
+Or scale horizontally (SCALING.md)
+  ↓
+Update resource limits permanently
+  ↓
+Monitor memory trends
+</code></pre>
+<hr>
+<h2 id="-incident-response">🚨 Incident Response</h2>
+<h3 id="critical-issues">Critical Issues</h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>RTO</th>
+<th>Procedure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Database down</td>
+<td>5 min</td>
+<td><a href="BACKUP_RECOVERY.md">BACKUP_RECOVERY.md</a></td>
+</tr>
+<tr>
+<td>API Gateway down</td>
+<td>2 min</td>
+<td><a href="RUNBOOKS.md">RUNBOOKS.md</a></td>
+</tr>
+<tr>
+<td>Service cascade failure</td>
+<td>10 min</td>
+<td><a href="RUNBOOKS.md">RUNBOOKS.md</a></td>
+</tr>
+<tr>
+<td>Data loss</td>
+<td>1 hour</td>
+<td><a href="BACKUP_RECOVERY.md">BACKUP_RECOVERY.md</a></td>
+</tr>
+<tr>
+<td>Security incident</td>
+<td>15 min</td>
+<td><a href="../security/BEST_PRACTICES.md">Security guide</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-related-categories">📚 Related Categories</h2>
+<ul>
+<li><strong>Infrastructure:</strong> <a href="../infrastructure/README.html">Infrastructure Guide</a> - Cloud resources</li>
+<li><strong>Security:</strong> <a href="../security/README.html">Security Documentation</a> - Security monitoring</li>
+<li><strong>Development:</strong> <a href="../development/DEVELOPMENT_SETUP.md">Development Setup</a> - Local testing</li>
+<li><strong>Docker:</strong> <a href="../docker-compose/README.html">Docker Compose</a> - Local monitoring</li>
+</ul>
+<hr>
+<h2 id="-reading-order">🔄 Reading Order</h2>
+<ol>
+<li>Start with <a href="MONITORING.md">MONITORING.md</a> to understand observability</li>
+<li>Read <a href="LOGGING.md">LOGGING.md</a> for log analysis</li>
+<li>Study <a href="HEALTH_CHECKS.md">HEALTH_CHECKS.md</a> for service health</li>
+<li>Learn <a href="SCALING.md">SCALING.md</a> for performance</li>
+<li>Reference <a href="RUNBOOKS.md">RUNBOOKS.md</a> for daily operations</li>
+<li>Keep <a href="BACKUP_RECOVERY.md">BACKUP_RECOVERY.md</a> ready</li>
+</ol>
+<hr>
+<h2 id="-success-metrics">🎯 Success Metrics</h2>
+<table>
+<thead>
+<tr>
+<th>KPI</th>
+<th>Target</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Uptime</strong></td>
+<td>99.95%</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>MTTR</strong> (Mean Time To Repair)</td>
+<td>&lt; 15 min</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>MTTD</strong> (Mean Time To Detect)</td>
+<td>&lt; 2 min</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>RTO</strong> (Recovery Time Objective)</td>
+<td>&lt; 30 min</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>RPO</strong> (Recovery Point Objective)</td>
+<td>&lt; 5 min</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Error Rate</strong></td>
+<td>&lt; 0.1%</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>P99 Latency</strong></td>
+<td>&lt; 500ms</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-operational-best-practices">💡 Operational Best Practices</h2>
+<ul>
+<li><strong>Monitor Continuously</strong> - Dashboards always visible</li>
+<li><strong>Alert Intelligently</strong> - Alert on business impact, not noise</li>
+<li><strong>Test Recovery</strong> - Regular DR drills</li>
+<li><strong>Document Everything</strong> - Runbooks for all procedures</li>
+<li><strong>Communicate Proactively</strong> - Status page updates</li>
+<li><strong>Automate Remediation</strong> - Auto-scale and auto-heal</li>
+<li><strong>Log Everything</strong> - Immutable audit trail</li>
+<li><strong>Review Regularly</strong> - Post-incident retrospectives</li>
+</ul>
+<hr>
+<h2 id="-operational-checklist">✅ Operational Checklist</h2>
+<h3 id="daily">Daily</h3>
+<ul>
+<li>[ ] Check system health dashboard</li>
+<li>[ ] Review error rates and latency</li>
+<li>[ ] Verify backup completion</li>
+<li>[ ] Check security alerts</li>
+</ul>
+<h3 id="weekly">Weekly</h3>
+<ul>
+<li>[ ] Review performance trends</li>
+<li>[ ] Test failover procedures</li>
+<li>[ ] Update runbooks if needed</li>
+<li>[ ] Review scaling policies</li>
+</ul>
+<h3 id="monthly">Monthly</h3>
+<ul>
+<li>[ ] Full disaster recovery test</li>
+<li>[ ] Capacity planning review</li>
+<li>[ ] Update monitoring thresholds</li>
+<li>[ ] Review security logs</li>
+</ul>
+<h3 id="quarterly">Quarterly</h3>
+<ul>
+<li>[ ] Comprehensive security audit</li>
+<li>[ ] Performance optimization review</li>
+<li>[ ] Update disaster recovery plan</li>
+<li>[ ] Train team on new procedures</li>
+</ul>
+<hr>
+<h2 id="-escalation-path">📞 Escalation Path</h2>
+<table>
+<thead>
+<tr>
+<th>Severity</th>
+<th>Time</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Critical</strong></td>
+<td>Immediate</td>
+<td>Page on-call engineer</td>
+</tr>
+<tr>
+<td><strong>High</strong></td>
+<td>15 min</td>
+<td>Create incident ticket</td>
+</tr>
+<tr>
+<td><strong>Medium</strong></td>
+<td>1 hour</td>
+<td>Schedule engineering review</td>
+</tr>
+<tr>
+<td><strong>Low</strong></td>
+<td>Next week</td>
+<td>Add to backlog</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-full-document-map">🔗 Full Document Map</h2>
+<pre><code>operations/
+├── README.md (this file)
+├── MONITORING.md
+├── LOGGING.md
+├── HEALTH_CHECKS.md
+├── SCALING.md
+├── BACKUP_RECOVERY.md
+└── RUNBOOKS.md
+</code></pre>
+<hr>
+<h2 id="-next-steps">📞 Next Steps</h2>
+<ul>
+<li><strong>Monitor services?</strong> → <a href="MONITORING.md">MONITORING.md</a></li>
+<li><strong>Debug issues?</strong> → <a href="LOGGING.md">LOGGING.md</a></li>
+<li><strong>Check health?</strong> → <a href="HEALTH_CHECKS.md">HEALTH_CHECKS.md</a></li>
+<li><strong>Handle incident?</strong> → <a href="RUNBOOKS.md">RUNBOOKS.md</a></li>
+<li><strong>Scale system?</strong> → <a href="SCALING.md">SCALING.md</a></li>
+<li><strong>Disaster recovery?</strong> → <a href="BACKUP_RECOVERY.md">BACKUP_RECOVERY.md</a></li>
+</ul>
+<hr>
+<p><strong>Last Updated:</strong> October 27, 2025<br>
+<strong>Category Status:</strong> ✅ Complete<br>
+<strong>Documents:</strong> 6 files<br>
+<strong>Target Uptime:</strong> 99.95%</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/operations/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#128218; &#205;NDICE MAESTRO - REVISI&#211;N COMPLETA DE INFRAESTRUCTURA | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#128218; &#205;NDICE MAESTRO - REVISI&#211;N COMPLETA DE INFRAESTRUCTURA | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/reference/INDEX.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-índice-maestro---revisión-completa-de-infraestructura">📚 ÍNDICE MAESTRO - REVISIÓN COMPLETA DE INFRAESTRUCTURA</h1>
+
+<p>Compilación de toda la revisión realizada al código Aspire y la infraestructura Bicep.</p>
+<hr>
+<h2 id="-empezar-aquí">🎯 EMPEZAR AQUÍ</h2>
+<p><strong>Todos los usuarios:</strong></p>
+<ol>
+<li>Leer: <code>VISUAL_SUMMARY.txt</code> (2 min)</li>
+<li>Leer: <code>README_INFRA_REVIEW.md</code> (5 min)</li>
+<li>Decidir acción según rol</li>
+</ol>
+<hr>
+<h2 id="-guías-por-rol">👥 GUÍAS POR ROL</h2>
+<h3 id="-para-gerentes--líderes-técnicos">👨‍💼 Para Gerentes / Líderes Técnicos</h3>
+<pre><code>Objetivo: Entender la situación y decisiones
+Documentos:
+  1. VISUAL_SUMMARY.txt (visión general visual)
+  2. SUMMARY_ACTIONS.md (resumen ejecutivo)
+  3. DEPENDENCY_MAPPING.md (arquitectura visual)
+
+Tiempo: 10 minutos
+Resultado: Entiende qué falta y por qué es crítico
+</code></pre>
+<h3 id="-para-developers-implementando">👨‍💻 Para Developers Implementando</h3>
+<pre><code>Objetivo: Crear módulos Bicep
+Documentos:
+  1. QUICK_REFERENCE.md (pasos numerados)
+  2. BICEP_TEMPLATES.md (código listo para copiar)
+  3. MAIN_BICEP_UPDATE.md (cambios específicos)
+  4. validate-infra.ps1 (validar)
+
+Tiempo: 3-4 horas
+Resultado: Infraestructura completa y validada
+</code></pre>
+<h3 id="-para-devops--infraestructura">👨‍🔧 Para DevOps / Infraestructura</h3>
+<pre><code>Objetivo: Validar y desplegar
+Documentos:
+  1. DEPENDENCY_MAPPING.md (entender flujos)
+  2. MAIN_BICEP_UPDATE.md (cambios a revisar)
+  3. validate-infra.ps1 (ejecutar validación)
+  4. INFRA_REVIEW.md (problemas específicos)
+
+Tiempo: 2 horas
+Resultado: Deployment exitoso a Azure
+</code></pre>
+<h3 id="-para-code-reviewers--arquitectos">🔍 Para Code Reviewers / Arquitectos</h3>
+<pre><code>Objetivo: Verificar completitud y calidad
+Documentos:
+  1. INFRA_REVIEW.md (análisis completo)
+  2. DEPENDENCY_MAPPING.md (validar dependencias)
+  3. BICEP_TEMPLATES.md (revisar patrones)
+
+Tiempo: 1 hora
+Resultado: Aprobación de diseño
+</code></pre>
+<hr>
+<h2 id="-mapa-de-documentos">📑 MAPA DE DOCUMENTOS</h2>
+<pre><code>src/
+├── VISUAL_SUMMARY.txt              ← 📍 EMPEZAR (visión general ASCII art)
+│
+├── README_INFRA_REVIEW.md          ← Índice + guía de lectura
+│
+├── SUMMARY_ACTIONS.md              ← Resumen ejecutivo (5 min)
+├── QUICK_REFERENCE.md              ← Tarjeta rápida (3-4 h)
+├── INFRA_REVIEW.md                 ← Análisis completo (20 min)
+├── DEPENDENCY_MAPPING.md           ← Arquitectura visual (15 min)
+│
+├── BICEP_TEMPLATES.md              ← Plantillas de código Bicep
+├── MAIN_BICEP_UPDATE.md            ← main.bicep actualizado
+│
+└── validate-infra.ps1              ← Script de validación
+
+Documentos de entrada (ya existentes):
+├── AppHost/Program.cs              ← Código Aspire a implementar
+├── AppHost/AspireProjectBuilder.cs ← Lógica de configuración
+├── ErpApiGateway/ocelot.Production.json ← Rutas de gateway
+└── infra/                          ← Estructura Bicep existente
+</code></pre>
+<hr>
+<h2 id="-buscar-solución-a-problema-específico">🔍 BUSCAR SOLUCIÓN A PROBLEMA ESPECÍFICO</h2>
+<h3 id="qué-falta">&quot;¿Qué falta?&quot;</h3>
+<p>→ Ver: <code>SUMMARY_ACTIONS.md</code> sección &quot;Problemas Críticos&quot;</p>
+<h3 id="cómo-creo-un-módulo">&quot;¿Cómo creo un módulo?&quot;</h3>
+<p>→ Ver: <code>BICEP_TEMPLATES.md</code> sección &quot;PLANTILLA: Service Module&quot;</p>
+<h3 id="por-qué-falla-el-deployment">&quot;¿Por qué falla el deployment?&quot;</h3>
+<p>→ Ver: <code>INFRA_REVIEW.md</code> sección &quot;PROBLEMAS CRÍTICOS&quot;</p>
+<h3 id="cómo-se-mapea-aspire-a-bicep">&quot;¿Cómo se mapea Aspire a Bicep?&quot;</h3>
+<p>→ Ver: <code>DEPENDENCY_MAPPING.md</code> sección &quot;MAPEO DETALLADO&quot;</p>
+<h3 id="qué-orden-de-pasos-debo-seguir">&quot;¿Qué orden de pasos debo seguir?&quot;</h3>
+<p>→ Ver: <code>QUICK_REFERENCE.md</code> sección &quot;PASO A PASO&quot;</p>
+<h3 id="cómo-valido-antes-de-deploy">&quot;¿Cómo valido antes de deploy?&quot;</h3>
+<p>→ Ver: <code>validate-infra.ps1</code> (ejecutar script)</p>
+<h3 id="qué-nombres-deben-coincidir">&quot;¿Qué nombres deben coincidir?&quot;</h3>
+<p>→ Ver: <code>QUICK_REFERENCE.md</code> sección &quot;NOMBRES - DEBEN COINCIDIR&quot;</p>
+<h3 id="qué-ports-uses">&quot;¿Qué ports uses?&quot;</h3>
+<p>→ Ver: <code>DEPENDENCY_MAPPING.md</code> sección &quot;Port Consistency&quot;</p>
+<hr>
+<h2 id="-checklist-completo">✅ CHECKLIST COMPLETO</h2>
+<h3 id="fase-1-planificación">Fase 1: Planificación</h3>
+<ul>
+<li>[ ] Leer VISUAL_SUMMARY.txt</li>
+<li>[ ] Leer README_INFRA_REVIEW.md</li>
+<li>[ ] Leer SUMMARY_ACTIONS.md</li>
+<li>[ ] Entender problemas críticos</li>
+</ul>
+<h3 id="fase-2-preparación">Fase 2: Preparación</h3>
+<ul>
+<li>[ ] Crear estructura de carpetas</li>
+<li>[ ] Descargar templates de BICEP_TEMPLATES.md</li>
+<li>[ ] Tener editor Bicep listo</li>
+</ul>
+<h3 id="fase-3-implementación">Fase 3: Implementación</h3>
+<ul>
+<li>[ ] Crear 6 módulos para servicios</li>
+<li>[ ] Crear módulo API Gateway</li>
+<li>[ ] Crear 3 módulos de componentes core</li>
+<li>[ ] Actualizar main.bicep</li>
+<li>[ ] Actualizar main.parameters.json</li>
+</ul>
+<h3 id="fase-4-validación">Fase 4: Validación</h3>
+<ul>
+<li>[ ] Ejecutar validate-infra.ps1</li>
+<li>[ ] Ejecutar azd validate</li>
+<li>[ ] Revisar outputs de validación</li>
+<li>[ ] Corregir errores si los hay</li>
+</ul>
+<h3 id="fase-5-pre-deployment">Fase 5: Pre-deployment</h3>
+<ul>
+<li>[ ] Confirmar imágenes en ACR</li>
+<li>[ ] Configurar variables de entorno</li>
+<li>[ ] Verificar health endpoints</li>
+<li>[ ] Final check: validate-infra.ps1</li>
+</ul>
+<h3 id="fase-6-deployment">Fase 6: Deployment</h3>
+<ul>
+<li>[ ] Ejecutar azd deploy</li>
+<li>[ ] Monitorear Azure Portal</li>
+<li>[ ] Verificar servicios desplegados</li>
+<li>[ ] Probar endpoint del gateway</li>
+</ul>
+<hr>
+<h2 id="-estadísticas-de-la-revisión">📊 ESTADÍSTICAS DE LA REVISIÓN</h2>
+<pre><code>Problemas encontrados:    15
+├─ Críticos:               6
+├─ Altos:                  6
+└─ Medios:                 3
+
+Módulos faltantes:        10
+├─ Servicios:              6
+├─ Gateway:                1
+└─ Componentes core:       3
+
+Archivos a crear:         10
+Archivos a modificar:      2
+Archivos de documentación: 8
+
+Tiempo de implementación: 3-4 horas
+Complejidad:             Media
+Riesgo:                  Alto (si no se implementa)
+</code></pre>
+<hr>
+<h2 id="-matriz-de-responsabilidades">🎯 MATRIZ DE RESPONSABILIDADES</h2>
+<table>
+<thead>
+<tr>
+<th>Rol</th>
+<th>Tarea</th>
+<th>Documentos</th>
+<th>Tiempo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gerente</td>
+<td>Entender situación</td>
+<td>SUMMARY_ACTIONS</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>Architect</td>
+<td>Validar diseño</td>
+<td>INFRA_REVIEW</td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>Dev Lead</td>
+<td>Asignar trabajo</td>
+<td>QUICK_REFERENCE</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>Dev</td>
+<td>Implementar</td>
+<td>BICEP_TEMPLATES</td>
+<td>2 horas</td>
+</tr>
+<tr>
+<td>DevOps</td>
+<td>Validar</td>
+<td>validate-infra.ps1</td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>DevOps</td>
+<td>Desplegar</td>
+<td>MAIN_BICEP_UPDATE</td>
+<td>30 min</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-flujo-de-trabajo-recomendado">🚀 FLUJO DE TRABAJO RECOMENDADO</h2>
+<pre><code>DAY 1 (Lunes 9:00-17:00):
+  09:00-09:30   Gerente/Lead: Lee SUMMARY_ACTIONS
+  09:30-10:00   Team: Reunión alineación
+  10:00-11:30   Dev: Crea módulos (fase 1-3)
+  11:30-12:00   Dev: Valida módulos (fase 4)
+  12:00-13:00   LUNCH
+  13:00-14:00   Dev: Termina implementación (fase 3)
+  14:00-14:30   Dev: Segunda validación
+  14:30-15:00   DevOps: Revisa cambios
+  15:00-16:00   DevOps: Prepara variables de entorno
+  16:00-17:00   Dev+DevOps: Testing pre-deploy
+
+DAY 2 (Martes 9:00-12:00):
+  09:00-09:15   Todos: Final checks
+  09:15-09:30   DevOps: Deploy a Azure
+  09:30-10:00   DevOps: Monitorear deployment
+  10:00-10:30   Dev: Probar endpoints
+  10:30-11:00   Team: Validación post-deploy
+  11:00-12:00   Celebración + documentación
+</code></pre>
+<hr>
+<h2 id="-checklist-de-seguridad">🔐 CHECKLIST DE SEGURIDAD</h2>
+<ul>
+<li>[ ] Secretos en Key Vault (no hardcodeados)</li>
+<li>[ ] Managed Identities configuradas</li>
+<li>[ ] SQL Server con Azure AD auth</li>
+<li>[ ] Network policies validadas</li>
+<li>[ ] RBAC roles asignados correctamente</li>
+<li>[ ] Health checks sin datos sensibles</li>
+<li>[ ] Logs enviados a Application Insights</li>
+<li>[ ] Monitoring configurado</li>
+</ul>
+<hr>
+<h2 id="-contacto-y-soporte">📞 CONTACTO Y SOPORTE</h2>
+<p>En caso de dudas durante la implementación:</p>
+<ol>
+<li><strong>Revisar primero:</strong> Documento relevante en la lista</li>
+<li><strong>Buscar en:</strong> Sección correspondiente del documento</li>
+<li><strong>Ejecutar:</strong> validate-infra.ps1 para diagnosticar</li>
+<li><strong>Leer:</strong> INFRA_REVIEW.md sección del problema</li>
+</ol>
+<hr>
+<h2 id="-resultado-final">✨ RESULTADO FINAL</h2>
+<p>Después de seguir esta guía:</p>
+<pre><code>ANTES:
+❌ 0/6 servicios deployables
+❌ 0/1 gateway deployable
+❌ 0/1 redis deployable
+❌ main.bicep incompleto
+❌ azd validate falla
+❌ azd deploy imposible
+
+DESPUÉS:
+✅ 6/6 servicios deployables
+✅ 1/1 gateway deployable
+✅ 1/1 redis deployable
+✅ main.bicep completo
+✅ azd validate pasa
+✅ azd deploy exitoso
+✅ ✨ PRODUCCIÓN LISTA ✨
+</code></pre>
+<hr>
+<h2 id="-próximas-acciones">📅 PRÓXIMAS ACCIONES</h2>
+<ol>
+<li><strong>HOY:</strong> Leer VISUAL_SUMMARY.txt + README_INFRA_REVIEW.md</li>
+<li><strong>HOY (tarde):</strong> Empezar implementación con QUICK_REFERENCE.md</li>
+<li><strong>MAÑANA (mañana):</strong> Validar con validate-infra.ps1</li>
+<li><strong>MAÑANA (tarde):</strong> Deploy a Azure con azd deploy</li>
+<li><strong>DÍAS PRÓXIMOS:</strong> Monitoring y ajustes post-deploy</li>
+</ol>
+<hr>
+<h2 id="-lectura-recomendada">📖 LECTURA RECOMENDADA</h2>
+<table>
+<thead>
+<tr>
+<th>Documento</th>
+<th>Cuándo</th>
+<th>Propósito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VISUAL_SUMMARY.txt</td>
+<td>Ahora</td>
+<td>Visión general rápida</td>
+</tr>
+<tr>
+<td>README_INFRA_REVIEW.md</td>
+<td>Ahora</td>
+<td>Índice y guía</td>
+</tr>
+<tr>
+<td>SUMMARY_ACTIONS.md</td>
+<td>Después</td>
+<td>Resumen ejecutivo</td>
+</tr>
+<tr>
+<td>QUICK_REFERENCE.md</td>
+<td>Implementación</td>
+<td>Pasos específicos</td>
+</tr>
+<tr>
+<td>BICEP_TEMPLATES.md</td>
+<td>Implementación</td>
+<td>Código a copiar</td>
+</tr>
+<tr>
+<td>validate-infra.ps1</td>
+<td>Validación</td>
+<td>Verificar completitud</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><strong>¿Listo para comenzar?</strong></p>
+<ol>
+<li>Abre: <code>VISUAL_SUMMARY.txt</code></li>
+<li>Luego: <code>README_INFRA_REVIEW.md</code></li>
+<li>Sigue: <code>QUICK_REFERENCE.md</code></li>
+</ol>
+<p>🚀 <strong>¡A producción!</strong></p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/reference/INDEX.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

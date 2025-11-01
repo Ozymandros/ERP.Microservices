@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>⚡ QUICK REFERENCE - INFRAESTRUCTURA ASPIRE → AZURE | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="⚡ QUICK REFERENCE - INFRAESTRUCTURA ASPIRE → AZURE | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/guides/QUICK_REFERENCE.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-quick-reference---infraestructura-aspire--azure">⚡ QUICK REFERENCE - INFRAESTRUCTURA ASPIRE → AZURE</h1>
+
+<p>Tarjeta rápida de referencia para implementar correcciones.</p>
+<hr>
+<h2 id="-qué-falta-7-cosas">🎯 QUÉ FALTA (7 cosas)</h2>
+<pre><code>1. ❌ auth-service.module.bicep
+2. ❌ billing-service.module.bicep
+3. ❌ inventory-service.module.bicep
+4. ❌ orders-service.module.bicep
+5. ❌ purchasing-service.module.bicep
+6. ❌ sales-service.module.bicep
+7. ❌ api-gateway.module.bicep
+8. ❌ MyApp-ApplicationInsights.module.bicep
+9. ❌ MyApp-LogAnalyticsWorkspace.module.bicep
+10. ❌ myapp-sqlserver-roles.module.bicep
+</code></pre>
+<hr>
+<h2 id="-paso-a-paso-3-horas">🛠️ PASO A PASO (3 HORAS)</h2>
+<h3 id="paso-1-crear-carpetas-2-min">PASO 1: Crear carpetas (2 min)</h3>
+<pre><code class="lang-powershell">$services = 'auth-service','billing-service','inventory-service','orders-service','purchasing-service','sales-service'
+foreach ($s in $services) { mkdir &quot;infra/$s&quot; -Force }
+mkdir &quot;infra/MyApp-ApplicationInsights&quot; -Force
+mkdir &quot;infra/MyApp-LogAnalyticsWorkspace&quot; -Force  
+mkdir &quot;infra/myapp-sqlserver-roles&quot; -Force
+</code></pre>
+<h3 id="paso-2-crear-módulos-15-horas">PASO 2: Crear módulos (1.5 horas)</h3>
+<p>Copiar cada template de <code>BICEP_TEMPLATES.md</code> a su archivo <code>.bicep</code> correspondiente</p>
+<p><strong>6x Servicios:</strong> Usar template &quot;PLANTILLA: Service Module&quot;</p>
+<pre><code>infra/auth-service/auth-service.module.bicep (copiar template, cambiar serviceName: 'auth', databaseName: 'AuthDB')
+infra/billing-service/billing-service.module.bicep (serviceName: 'billing', databaseName: 'BillingDB')
+...etc
+</code></pre>
+<p><strong>1x API Gateway:</strong> Usar template &quot;PLANTILLA: API Gateway Module&quot;</p>
+<pre><code>infra/api-gateway/api-gateway.module.bicep
+</code></pre>
+<p><strong>3x Componentes Core:</strong> Usar templates especializados</p>
+<pre><code>infra/MyApp-ApplicationInsights/MyApp-ApplicationInsights.module.bicep
+infra/MyApp-LogAnalyticsWorkspace/MyApp-LogAnalyticsWorkspace.module.bicep
+infra/myapp-sqlserver-roles/myapp-sqlserver-roles.module.bicep
+</code></pre>
+<h3 id="paso-3-actualizar-mainbicep-20-min">PASO 3: Actualizar main.bicep (20 min)</h3>
+<p>Reemplazar contenido completo con código de <code>MAIN_BICEP_UPDATE.md</code></p>
+<h3 id="paso-4-actualizar-parámetros-10-min">PASO 4: Actualizar parámetros (10 min)</h3>
+<p>Actualizar <code>infra/main.parameters.json</code> con nuevos parámetros del documento</p>
+<h3 id="paso-5-validar-5-min">PASO 5: Validar (5 min)</h3>
+<pre><code class="lang-powershell">cd src
+./validate-infra.ps1
+</code></pre>
+<p><strong>Si dice ✅ OK → Ir a PASO 6</strong><br>
+<strong>Si dice ❌ ERROR → Revisar y corregir</strong></p>
+<h3 id="paso-6-preparar-deployment-10-min">PASO 6: Preparar deployment (10 min)</h3>
+<pre><code class="lang-powershell"># Ver qué imágenes existen en ACR
+az acr repository list --name &lt;registry-name&gt;
+
+# Configurar variables (o en .env.local)
+azd env set JWT_SECRET_KEY &quot;tu-secret-key&quot;
+azd env set JWT_ISSUER &quot;tu-issuer&quot;
+azd env set JWT_AUDIENCE &quot;tu-audience&quot;
+azd env set FRONTEND_ORIGIN &quot;https://tudominio.com&quot;
+</code></pre>
+<h3 id="paso-7-deploy-10-min">PASO 7: Deploy (10 min)</h3>
+<pre><code class="lang-powershell">azd validate    # Validar templates
+azd deploy      # Desplegar a Azure
+</code></pre>
+<hr>
+<h2 id="-templates-esenciales">📋 TEMPLATES ESENCIALES</h2>
+<h3 id="template-mínimo-para-servicio">Template MÍNIMO para Servicio</h3>
+<pre><code class="lang-bicep"># Nombre: infra/{serviceName}/{serviceName}.module.bicep
+@description('Location for the resources')
+param location string
+
+@description('Container Apps Environment Name')
+param containerAppsEnvironmentName string
+
+@description('Container Registry Name')
+param containerRegistryName string
+
+@description('Service name')
+param serviceName string
+
+resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
+  name: containerAppsEnvironmentName
+}
+
+resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' existing = {
+  name: containerRegistryName
+}
+
+resource containerApp 'Microsoft.App/containerApps@2024-02-02-preview' = {
+  name: '${serviceName}-service'
+  location: location
+  identity: { type: 'SystemAssigned' }
+  properties: {
+    managedEnvironmentId: containerAppsEnvironment.id
+    configuration: {
+      ingress: {
+        external: false  # NO es público
+        targetPort: 8080
+      }
+      registries: [{ server: containerRegistry.properties.loginServer, identity: 'system-assigned' }]
+    }
+    template: {
+      containers: [{
+        name: serviceName
+        image: '${containerRegistry.properties.loginServer}/myapp.${serviceName}.api:latest'
+        resources: { cpu: json('1.0'), memory: '2.0Gi' }
+        env: [
+          { name: 'ASPNETCORE_ENVIRONMENT', value: 'Production' }
+          { name: 'ASPNETCORE_URLS', value: 'http://+:8080' }
+        ]
+      }]
+      scale: { minReplicas: 2, maxReplicas: 5 }
+    }
+  }
+}
+</code></pre>
+<h3 id="template-mainbicep---agregar-módulos">Template main.bicep - Agregar módulos</h3>
+<pre><code class="lang-bicep">module {serviceName}_service '{serviceName}-service/{serviceName}-service.module.bicep' = {
+  name: '{serviceName}-service'
+  scope: rg
+  params: {
+    location: location
+    tags: tags
+    containerAppsEnvironmentName: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME
+    containerRegistryName: resources.outputs.AZURE_CONTAINER_REGISTRY_NAME
+    serviceName: '{serviceName}'
+    databaseName: '{DatabaseName}DB'
+    imageName: 'myapp.{serviceName}.api:latest'
+  }
+}
+</code></pre>
+<hr>
+<h2 id="-nombres---deben-coincidir">🔗 NOMBRES - DEBEN COINCIDIR</h2>
+<table>
+<thead>
+<tr>
+<th>Aspire</th>
+<th>Bicep Module</th>
+<th>Container App</th>
+<th>Ocelot Route</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auth-service</code></td>
+<td><code>auth-service.module.bicep</code></td>
+<td><code>auth-service</code></td>
+<td><code>Host: auth-service:8080</code></td>
+</tr>
+<tr>
+<td><code>billing-service</code></td>
+<td><code>billing-service.module.bicep</code></td>
+<td><code>billing-service</code></td>
+<td><code>Host: billing-service:8080</code></td>
+</tr>
+<tr>
+<td><code>inventory-service</code></td>
+<td><code>inventory-service.module.bicep</code></td>
+<td><code>inventory-service</code></td>
+<td><code>Host: inventory-service:8080</code></td>
+</tr>
+<tr>
+<td><code>orders-service</code></td>
+<td><code>orders-service.module.bicep</code></td>
+<td><code>orders-service</code></td>
+<td><code>Host: orders-service:8080</code></td>
+</tr>
+<tr>
+<td><code>purchasing-service</code></td>
+<td><code>purchasing-service.module.bicep</code></td>
+<td><code>purchasing-service</code></td>
+<td><code>Host: purchasing-service:8080</code></td>
+</tr>
+<tr>
+<td><code>sales-service</code></td>
+<td><code>sales-service.module.bicep</code></td>
+<td><code>sales-service</code></td>
+<td><code>Host: sales-service:8080</code></td>
+</tr>
+<tr>
+<td><code>api-gateway</code></td>
+<td><code>api-gateway.module.bicep</code></td>
+<td><code>api-gateway</code></td>
+<td>N/A (es público)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-troubleshooting-rápido">⚡ TROUBLESHOOTING RÁPIDO</h2>
+<h3 id="error-module-not-found">Error: &quot;Module not found&quot;</h3>
+<pre><code>❌ module auth-service 'auth-service/auth-service.module.bicep'
+✅ Crear: infra/auth-service/auth-service.module.bicep
+</code></pre>
+<h3 id="error-parameter-missing">Error: &quot;Parameter missing&quot;</h3>
+<pre><code>❌ jwtSecretKey parameter not defined
+✅ Agregar en main.bicep parámetros de MAIN_BICEP_UPDATE.md
+</code></pre>
+<h3 id="error-connection-string-invalid">Error: &quot;Connection string invalid&quot;</h3>
+<pre><code>❌ Server=tcp:localhost,1433
+✅ Server=tcp:myappsqlserver-xxx.database.windows.net,1433
+</code></pre>
+<h3 id="error-service-not-found">Error: &quot;Service not found&quot;</h3>
+<pre><code>❌ Host: 'auth-service' Puerto: 5001
+✅ Host: 'auth-service' Puerto: 8080
+</code></pre>
+<h3 id="error-image-not-found-in-registry">Error: &quot;Image not found in registry&quot;</h3>
+<pre><code>❌ image: '${registry}/auth.api:latest'
+✅ image: '${registry}/myapp.auth.api:latest'
+</code></pre>
+<hr>
+<h2 id="-matriz-de-dependencias">📊 MATRIZ DE DEPENDENCIAS</h2>
+<pre><code>SQLServer     Redis     AppInsights
+    │           │            │
+    └───┬───────┴────┬───────┘
+        │            │
+        v            v
+  ┌─────────────────────────┐
+  │  Auth/Billing/Inventory │
+  │  Orders/Purchasing/Sales│
+  └─────────────────────────┘
+          │
+          v
+    ┌──────────────┐
+    │  API Gateway │ → Público
+    └──────────────┘
+</code></pre>
+<hr>
+<h2 id="-comandos-clave">🚀 COMANDOS CLAVE</h2>
+<pre><code class="lang-powershell"># 1. Validar
+azd validate
+
+# 2. Desplegar
+azd deploy
+
+# 3. Ver status
+azd show
+
+# 4. Ver servicios desplegados
+az containerapp list -g rg-&lt;env-name&gt;
+
+# 5. Ver logs de servicio
+az containerapp logs show --name auth-service -g rg-&lt;env-name&gt;
+
+# 6. Probar API Gateway
+curl https://&lt;gateway-fqdn&gt;/health
+
+# 7. Limpiar (si necesitas rollback)
+az group delete -g rg-&lt;env-name&gt; -y
+</code></pre>
+<hr>
+<h2 id="-checklist-pre-deploy">✅ CHECKLIST PRE-DEPLOY</h2>
+<ul>
+<li>[ ] ¿Existen todos los 10 módulos <code>.bicep</code>?</li>
+<li>[ ] ¿Contiene <code>main.bicep</code> todas las referencias?</li>
+<li>[ ] ¿<code>validate-infra.ps1</code> retorna OK?</li>
+<li>[ ] ¿Todas las imágenes en ACR?</li>
+<li>[ ] ¿Variables de entorno configuradas?</li>
+<li>[ ] ¿<code>azd validate</code> pasa sin errores?</li>
+</ul>
+<hr>
+<h2 id="-documentación-completa">📞 DOCUMENTACIÓN COMPLETA</h2>
+<p>Si necesitas más detalles:</p>
+<ul>
+<li><strong>Visión general:</strong> <code>SUMMARY_ACTIONS.md</code></li>
+<li><strong>Todos los problemas:</strong> <code>INFRA_REVIEW.md</code></li>
+<li><strong>Templates completos:</strong> <code>BICEP_TEMPLATES.md</code></li>
+<li><strong>main.bicep completo:</strong> <code>MAIN_BICEP_UPDATE.md</code></li>
+<li><strong>Arquitectura:</strong> <code>DEPENDENCY_MAPPING.md</code></li>
+</ul>
+<hr>
+<p><strong>⏱️ Tiempo total: 3-4 horas</strong><br>
+<strong>🎯 Resultado: Infraestructura lista para producción</strong></p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/guides/QUICK_REFERENCE.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

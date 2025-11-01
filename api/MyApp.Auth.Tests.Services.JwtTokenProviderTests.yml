@@ -1,0 +1,1143 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  commentId: T:MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  id: JwtTokenProviderTests
+  parent: MyApp.Auth.Tests.Services
+  children:
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.#ctor
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingAudience_ThrowsArgumentNullException
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingIssuer_ThrowsArgumentNullException
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingSecretKey_ThrowsArgumentNullException
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenContainsCorrectClaims
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenExpirationIsCorrect
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_GeneratesDifferentTokensEachTime
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsBase64EncodedString
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsNonEmptyString
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_TokenIsOfExpectedLength
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims
+  - MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull
+  langs:
+  - csharp
+  - vb
+  name: JwtTokenProviderTests
+  nameWithType: JwtTokenProviderTests
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: JwtTokenProviderTests
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 12
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: public class JwtTokenProviderTests
+    content.vb: Public Class JwtTokenProviderTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.#ctor
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.#ctor
+  id: '#ctor'
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: JwtTokenProviderTests()
+  nameWithType: JwtTokenProviderTests.JwtTokenProviderTests()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.JwtTokenProviderTests()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 21
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: public JwtTokenProviderTests()
+    content.vb: Public Sub New()
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.#ctor*
+  nameWithType.vb: JwtTokenProviderTests.New()
+  fullName.vb: MyApp.Auth.Tests.Services.JwtTokenProviderTests.New()
+  name.vb: New()
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken
+  id: GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken()
+  nameWithType: JwtTokenProviderTests.GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 38
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken() As Task
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded
+  id: GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded()
+  nameWithType: JwtTokenProviderTests.GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 60
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded() As Task
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenContainsCorrectClaims
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenContainsCorrectClaims
+  id: GenerateAccessTokenAsync_TokenContainsCorrectClaims
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: GenerateAccessTokenAsync_TokenContainsCorrectClaims()
+  nameWithType: JwtTokenProviderTests.GenerateAccessTokenAsync_TokenContainsCorrectClaims()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenContainsCorrectClaims()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GenerateAccessTokenAsync_TokenContainsCorrectClaims
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 84
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GenerateAccessTokenAsync_TokenContainsCorrectClaims()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GenerateAccessTokenAsync_TokenContainsCorrectClaims() As Task
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenContainsCorrectClaims*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenExpirationIsCorrect
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenExpirationIsCorrect
+  id: GenerateAccessTokenAsync_TokenExpirationIsCorrect
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: GenerateAccessTokenAsync_TokenExpirationIsCorrect()
+  nameWithType: JwtTokenProviderTests.GenerateAccessTokenAsync_TokenExpirationIsCorrect()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenExpirationIsCorrect()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GenerateAccessTokenAsync_TokenExpirationIsCorrect
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 117
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GenerateAccessTokenAsync_TokenExpirationIsCorrect()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GenerateAccessTokenAsync_TokenExpirationIsCorrect() As Task
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenExpirationIsCorrect*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken
+  id: GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken()
+  nameWithType: JwtTokenProviderTests.GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 144
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken() As Task
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsNonEmptyString
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsNonEmptyString
+  id: GenerateRefreshToken_ReturnsNonEmptyString
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: GenerateRefreshToken_ReturnsNonEmptyString()
+  nameWithType: JwtTokenProviderTests.GenerateRefreshToken_ReturnsNonEmptyString()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsNonEmptyString()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GenerateRefreshToken_ReturnsNonEmptyString
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 167
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public void GenerateRefreshToken_ReturnsNonEmptyString()
+    content.vb: >-
+      <Fact>
+
+      Public Sub GenerateRefreshToken_ReturnsNonEmptyString()
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsNonEmptyString*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsBase64EncodedString
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsBase64EncodedString
+  id: GenerateRefreshToken_ReturnsBase64EncodedString
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: GenerateRefreshToken_ReturnsBase64EncodedString()
+  nameWithType: JwtTokenProviderTests.GenerateRefreshToken_ReturnsBase64EncodedString()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsBase64EncodedString()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GenerateRefreshToken_ReturnsBase64EncodedString
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 178
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public void GenerateRefreshToken_ReturnsBase64EncodedString()
+    content.vb: >-
+      <Fact>
+
+      Public Sub GenerateRefreshToken_ReturnsBase64EncodedString()
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsBase64EncodedString*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_GeneratesDifferentTokensEachTime
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_GeneratesDifferentTokensEachTime
+  id: GenerateRefreshToken_GeneratesDifferentTokensEachTime
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: GenerateRefreshToken_GeneratesDifferentTokensEachTime()
+  nameWithType: JwtTokenProviderTests.GenerateRefreshToken_GeneratesDifferentTokensEachTime()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_GeneratesDifferentTokensEachTime()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GenerateRefreshToken_GeneratesDifferentTokensEachTime
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 197
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public void GenerateRefreshToken_GeneratesDifferentTokensEachTime()
+    content.vb: >-
+      <Fact>
+
+      Public Sub GenerateRefreshToken_GeneratesDifferentTokensEachTime()
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_GeneratesDifferentTokensEachTime*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_TokenIsOfExpectedLength
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_TokenIsOfExpectedLength
+  id: GenerateRefreshToken_TokenIsOfExpectedLength
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: GenerateRefreshToken_TokenIsOfExpectedLength()
+  nameWithType: JwtTokenProviderTests.GenerateRefreshToken_TokenIsOfExpectedLength()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_TokenIsOfExpectedLength()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GenerateRefreshToken_TokenIsOfExpectedLength
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 208
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public void GenerateRefreshToken_TokenIsOfExpectedLength()
+    content.vb: >-
+      <Fact>
+
+      Public Sub GenerateRefreshToken_TokenIsOfExpectedLength()
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_TokenIsOfExpectedLength*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal
+  id: GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal()
+  nameWithType: JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 223
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal() As Task
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims
+  id: GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims()
+  nameWithType: JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 245
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims() As Task
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull
+  id: GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull()
+  nameWithType: JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 270
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public void GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull()
+    content.vb: >-
+      <Fact>
+
+      Public Sub GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull()
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull
+  id: GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull()
+  nameWithType: JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 283
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public void GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull()
+    content.vb: >-
+      <Fact>
+
+      Public Sub GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull()
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull
+  id: GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull()
+  nameWithType: JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 296
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public void GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull()
+    content.vb: >-
+      <Fact>
+
+      Public Sub GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull()
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingSecretKey_ThrowsArgumentNullException
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingSecretKey_ThrowsArgumentNullException
+  id: Constructor_WithMissingSecretKey_ThrowsArgumentNullException
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: Constructor_WithMissingSecretKey_ThrowsArgumentNullException()
+  nameWithType: JwtTokenProviderTests.Constructor_WithMissingSecretKey_ThrowsArgumentNullException()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingSecretKey_ThrowsArgumentNullException()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Constructor_WithMissingSecretKey_ThrowsArgumentNullException
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 322
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Constructor_WithMissingSecretKey_ThrowsArgumentNullException()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Constructor_WithMissingSecretKey_ThrowsArgumentNullException()
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingSecretKey_ThrowsArgumentNullException*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingIssuer_ThrowsArgumentNullException
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingIssuer_ThrowsArgumentNullException
+  id: Constructor_WithMissingIssuer_ThrowsArgumentNullException
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: Constructor_WithMissingIssuer_ThrowsArgumentNullException()
+  nameWithType: JwtTokenProviderTests.Constructor_WithMissingIssuer_ThrowsArgumentNullException()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingIssuer_ThrowsArgumentNullException()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Constructor_WithMissingIssuer_ThrowsArgumentNullException
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 336
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Constructor_WithMissingIssuer_ThrowsArgumentNullException()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Constructor_WithMissingIssuer_ThrowsArgumentNullException()
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingIssuer_ThrowsArgumentNullException*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingAudience_ThrowsArgumentNullException
+  commentId: M:MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingAudience_ThrowsArgumentNullException
+  id: Constructor_WithMissingAudience_ThrowsArgumentNullException
+  parent: MyApp.Auth.Tests.Services.JwtTokenProviderTests
+  langs:
+  - csharp
+  - vb
+  name: Constructor_WithMissingAudience_ThrowsArgumentNullException()
+  nameWithType: JwtTokenProviderTests.Constructor_WithMissingAudience_ThrowsArgumentNullException()
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingAudience_ThrowsArgumentNullException()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Constructor_WithMissingAudience_ThrowsArgumentNullException
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Services/JwtTokenProviderTests.cs
+    startLine: 350
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Constructor_WithMissingAudience_ThrowsArgumentNullException()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Constructor_WithMissingAudience_ThrowsArgumentNullException()
+  overload: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingAudience_ThrowsArgumentNullException*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: MyApp.Auth.Tests.Services
+  commentId: N:MyApp.Auth.Tests.Services
+  href: MyApp.html
+  name: MyApp.Auth.Tests.Services
+  nameWithType: MyApp.Auth.Tests.Services
+  fullName: MyApp.Auth.Tests.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Tests
+    name: Tests
+    href: MyApp.Auth.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Tests.Services
+    name: Services
+    href: MyApp.Auth.Tests.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Tests
+    name: Tests
+    href: MyApp.Auth.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Tests.Services
+    name: Services
+    href: MyApp.Auth.Tests.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.#ctor*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.#ctor
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests__ctor
+  name: JwtTokenProviderTests
+  nameWithType: JwtTokenProviderTests.JwtTokenProviderTests
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.JwtTokenProviderTests
+  nameWithType.vb: JwtTokenProviderTests.New
+  fullName.vb: MyApp.Auth.Tests.Services.JwtTokenProviderTests.New
+  name.vb: New
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken
+  name: GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken
+  nameWithType: JwtTokenProviderTests.GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded
+  name: GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded
+  nameWithType: JwtTokenProviderTests.GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenContainsCorrectClaims*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenContainsCorrectClaims
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_GenerateAccessTokenAsync_TokenContainsCorrectClaims
+  name: GenerateAccessTokenAsync_TokenContainsCorrectClaims
+  nameWithType: JwtTokenProviderTests.GenerateAccessTokenAsync_TokenContainsCorrectClaims
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenContainsCorrectClaims
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenExpirationIsCorrect*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenExpirationIsCorrect
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_GenerateAccessTokenAsync_TokenExpirationIsCorrect
+  name: GenerateAccessTokenAsync_TokenExpirationIsCorrect
+  nameWithType: JwtTokenProviderTests.GenerateAccessTokenAsync_TokenExpirationIsCorrect
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_TokenExpirationIsCorrect
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken
+  name: GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken
+  nameWithType: JwtTokenProviderTests.GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsNonEmptyString*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsNonEmptyString
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_GenerateRefreshToken_ReturnsNonEmptyString
+  name: GenerateRefreshToken_ReturnsNonEmptyString
+  nameWithType: JwtTokenProviderTests.GenerateRefreshToken_ReturnsNonEmptyString
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsNonEmptyString
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsBase64EncodedString*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsBase64EncodedString
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_GenerateRefreshToken_ReturnsBase64EncodedString
+  name: GenerateRefreshToken_ReturnsBase64EncodedString
+  nameWithType: JwtTokenProviderTests.GenerateRefreshToken_ReturnsBase64EncodedString
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_ReturnsBase64EncodedString
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_GeneratesDifferentTokensEachTime*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_GeneratesDifferentTokensEachTime
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_GenerateRefreshToken_GeneratesDifferentTokensEachTime
+  name: GenerateRefreshToken_GeneratesDifferentTokensEachTime
+  nameWithType: JwtTokenProviderTests.GenerateRefreshToken_GeneratesDifferentTokensEachTime
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_GeneratesDifferentTokensEachTime
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_TokenIsOfExpectedLength*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_TokenIsOfExpectedLength
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_GenerateRefreshToken_TokenIsOfExpectedLength
+  name: GenerateRefreshToken_TokenIsOfExpectedLength
+  nameWithType: JwtTokenProviderTests.GenerateRefreshToken_TokenIsOfExpectedLength
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GenerateRefreshToken_TokenIsOfExpectedLength
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal
+  name: GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal
+  nameWithType: JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims
+  name: GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims
+  nameWithType: JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull
+  name: GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull
+  nameWithType: JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull
+  name: GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull
+  nameWithType: JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull
+  name: GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull
+  nameWithType: JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingSecretKey_ThrowsArgumentNullException*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingSecretKey_ThrowsArgumentNullException
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_Constructor_WithMissingSecretKey_ThrowsArgumentNullException
+  name: Constructor_WithMissingSecretKey_ThrowsArgumentNullException
+  nameWithType: JwtTokenProviderTests.Constructor_WithMissingSecretKey_ThrowsArgumentNullException
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingSecretKey_ThrowsArgumentNullException
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingIssuer_ThrowsArgumentNullException*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingIssuer_ThrowsArgumentNullException
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_Constructor_WithMissingIssuer_ThrowsArgumentNullException
+  name: Constructor_WithMissingIssuer_ThrowsArgumentNullException
+  nameWithType: JwtTokenProviderTests.Constructor_WithMissingIssuer_ThrowsArgumentNullException
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingIssuer_ThrowsArgumentNullException
+- uid: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingAudience_ThrowsArgumentNullException*
+  commentId: Overload:MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingAudience_ThrowsArgumentNullException
+  href: MyApp.Auth.Tests.Services.JwtTokenProviderTests.html#MyApp_Auth_Tests_Services_JwtTokenProviderTests_Constructor_WithMissingAudience_ThrowsArgumentNullException
+  name: Constructor_WithMissingAudience_ThrowsArgumentNullException
+  nameWithType: JwtTokenProviderTests.Constructor_WithMissingAudience_ThrowsArgumentNullException
+  fullName: MyApp.Auth.Tests.Services.JwtTokenProviderTests.Constructor_WithMissingAudience_ThrowsArgumentNullException

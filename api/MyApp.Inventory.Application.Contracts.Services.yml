@@ -1,0 +1,86 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Application.Contracts.Services
+  commentId: N:MyApp.Inventory.Application.Contracts.Services
+  id: MyApp.Inventory.Application.Contracts.Services
+  children:
+  - MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  - MyApp.Inventory.Application.Contracts.Services.IProductService
+  - MyApp.Inventory.Application.Contracts.Services.IWarehouseService
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Inventory.Application.Contracts.Services
+  nameWithType: MyApp.Inventory.Application.Contracts.Services
+  fullName: MyApp.Inventory.Application.Contracts.Services
+  type: Namespace
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+references:
+- uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  commentId: T:MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  parent: MyApp.Inventory.Application.Contracts.Services
+  href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html
+  name: IInventoryTransactionService
+  nameWithType: IInventoryTransactionService
+  fullName: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService
+  commentId: T:MyApp.Inventory.Application.Contracts.Services.IProductService
+  parent: MyApp.Inventory.Application.Contracts.Services
+  href: MyApp.Inventory.Application.Contracts.Services.IProductService.html
+  name: IProductService
+  nameWithType: IProductService
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService
+- uid: MyApp.Inventory.Application.Contracts.Services.IWarehouseService
+  commentId: T:MyApp.Inventory.Application.Contracts.Services.IWarehouseService
+  parent: MyApp.Inventory.Application.Contracts.Services
+  href: MyApp.Inventory.Application.Contracts.Services.IWarehouseService.html
+  name: IWarehouseService
+  nameWithType: IWarehouseService
+  fullName: MyApp.Inventory.Application.Contracts.Services.IWarehouseService
+- uid: MyApp.Inventory.Application.Contracts.Services
+  commentId: N:MyApp.Inventory.Application.Contracts.Services
+  href: MyApp.html
+  name: MyApp.Inventory.Application.Contracts.Services
+  nameWithType: MyApp.Inventory.Application.Contracts.Services
+  fullName: MyApp.Inventory.Application.Contracts.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.Services
+    name: Services
+    href: MyApp.Inventory.Application.Contracts.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.Services
+    name: Services
+    href: MyApp.Inventory.Application.Contracts.Services.html

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Azure Container Apps Deployment Guide | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Azure Container Apps Deployment Guide | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/deployment/DEPLOYMENT.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="azure-container-apps-deployment-guide">Azure Container Apps Deployment Guide</h1>
+
+<p>This guide explains how to deploy the ERP Microservices application to Azure Container Apps using Azure Developer CLI (azd).</p>
+<h2 id="architecture">Architecture</h2>
+<p>The application consists of:</p>
+<ul>
+<li><strong>6 Microservices</strong>: Auth, Billing, Inventory, Orders, Purchasing, Sales</li>
+<li><strong>YARP Gateway</strong>: Reverse proxy with external ingress (HTTPS)</li>
+<li><strong>Azure SQL Database</strong>: One database per microservice</li>
+<li><strong>Azure Cache for Redis</strong>: Shared cache for all services</li>
+<li><strong>Dapr</strong>: Service-to-service communication, pub/sub, and state management</li>
+</ul>
+<h3 id="service-configuration">Service Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Ingress</th>
+<th>Dapr</th>
+<th>App ID</th>
+<th>Port</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gateway</td>
+<td>External (HTTPS)</td>
+<td>No</td>
+<td>-</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>Internal</td>
+<td>Yes</td>
+<td>auth-service</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>Billing</td>
+<td>Internal</td>
+<td>Yes</td>
+<td>billing-service</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td>Internal</td>
+<td>Yes</td>
+<td>inventory-service</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>Orders</td>
+<td>Internal</td>
+<td>Yes</td>
+<td>orders-service</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>Purchasing</td>
+<td>Internal</td>
+<td>Yes</td>
+<td>purchasing-service</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>Sales</td>
+<td>Internal</td>
+<td>Yes</td>
+<td>sales-service</td>
+<td>8080</td>
+</tr>
+</tbody>
+</table>
+<h2 id="prerequisites">Prerequisites</h2>
+<ol>
+<li><strong>Azure Developer CLI (azd)</strong>: <a href="https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd">Install azd</a></li>
+<li><strong>.NET 9.0 SDK</strong>: <a href="https://dotnet.microsoft.com/download">Install .NET</a></li>
+<li><strong>Docker</strong>: <a href="https://docs.docker.com/get-docker/">Install Docker</a></li>
+<li><strong>Azure Subscription</strong>: Active Azure subscription with permissions to create resources</li>
+</ol>
+<h2 id="local-development">Local Development</h2>
+<p>The local development environment uses Aspire with Docker containers for SQL Server and Redis:</p>
+<pre><code class="lang-bash"># Run the application locally
+cd AppHost
+dotnet run
+</code></pre>
+<p>This will start:</p>
+<ul>
+<li>Redis container with RedisCommander and RedisInsight</li>
+<li>SQL Server container with persistent volumes</li>
+<li>All 6 microservices with Dapr sidecars</li>
+<li>YARP Gateway on port 5000</li>
+</ul>
+<p>The Aspire dashboard will open automatically at <code>https://localhost:15888</code> (or similar).</p>
+<h2 id="azure-deployment">Azure Deployment</h2>
+<h3 id="one-time-setup">One-Time Setup</h3>
+<ol>
+<li><p><strong>Initialize Azure Developer CLI</strong>:</p>
+<pre><code class="lang-bash">azd init
+</code></pre>
+</li>
+<li><p><strong>Set environment variables</strong>:</p>
+<pre><code class="lang-bash">azd env set AZURE_ENV_NAME &lt;your-environment-name&gt;
+azd env set AZURE_LOCATION &lt;azure-region&gt;
+azd env set FRONTEND_ORIGIN &lt;frontend-url&gt;
+</code></pre>
+</li>
+<li><p><strong>Set secrets</strong>:</p>
+<pre><code class="lang-bash">azd env set SQL_ADMIN_PASSWORD &lt;strong-password&gt; --secret
+azd env set JWT_SECRET_KEY &lt;jwt-secret-key&gt; --secret
+</code></pre>
+</li>
+</ol>
+<h3 id="deploy-to-azure">Deploy to Azure</h3>
+<pre><code class="lang-bash"># Provision infrastructure and deploy all services
+azd up
+</code></pre>
+<p>This command will:</p>
+<ol>
+<li>Create a resource group</li>
+<li>Provision Azure Container Apps Environment with Dapr</li>
+<li>Create Azure SQL Server with 6 databases</li>
+<li>Create Azure Cache for Redis</li>
+<li>Create Azure Container Registry</li>
+<li>Build and push Docker images for all services</li>
+<li>Deploy all services to Container Apps</li>
+<li>Configure ingress, secrets, and environment variables</li>
+</ol>
+<h3 id="individual-operations">Individual Operations</h3>
+<pre><code class="lang-bash"># Only provision infrastructure
+azd provision
+
+# Only deploy code (after infrastructure exists)
+azd deploy
+
+# View environment details
+azd env list
+
+# Delete all resources
+azd down
+</code></pre>
+<h2 id="cicd-with-github-actions">CI/CD with GitHub Actions</h2>
+<p>The repository includes a GitHub Actions workflow (<code>.github/workflows/azure-deploy.yml</code>) for automated deployment.</p>
+<h3 id="setup-github-actions">Setup GitHub Actions</h3>
+<ol>
+<li><p><strong>Configure OIDC authentication</strong> (recommended):</p>
+<ul>
+<li>Create an Azure AD App Registration</li>
+<li>Configure federated credentials for GitHub</li>
+<li>Set repository secrets:
+<ul>
+<li><code>AZURE_CLIENT_ID</code></li>
+<li><code>AZURE_TENANT_ID</code></li>
+<li><code>AZURE_SUBSCRIPTION_ID</code></li>
+<li><code>SQL_ADMIN_PASSWORD</code></li>
+<li><code>JWT_SECRET_KEY</code></li>
+</ul>
+</li>
+<li>Set repository variables:
+<ul>
+<li><code>AZURE_ENV_NAME</code></li>
+<li><code>AZURE_LOCATION</code></li>
+<li><code>FRONTEND_ORIGIN</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Push to main branch</strong> to trigger deployment:</p>
+<pre><code class="lang-bash">git push origin main
+</code></pre>
+</li>
+</ol>
+<h2 id="access-the-application">Access the Application</h2>
+<p>After deployment, you can access:</p>
+<ul>
+<li><strong>Gateway URL</strong>: The output of <code>azd up</code> will show the gateway URL</li>
+<li><strong>Service URLs</strong>: All services are internal-only, accessible via Dapr service invocation or through the gateway</li>
+</ul>
+<pre><code class="lang-bash"># Get the gateway URL
+azd env get-values | grep GATEWAY_URL
+</code></pre>
+<h2 id="environment-variables">Environment Variables</h2>
+<h3 id="required-secrets">Required Secrets</h3>
+<ul>
+<li><code>SQL_ADMIN_PASSWORD</code>: Password for Azure SQL Server admin account</li>
+<li><code>JWT_SECRET_KEY</code>: Secret key for JWT token generation and validation</li>
+</ul>
+<h3 id="optional-variables">Optional Variables</h3>
+<ul>
+<li><code>FRONTEND_ORIGIN</code>: Allowed CORS origins (default: <code>https://localhost:3000</code>)</li>
+<li><code>AZURE_ENV_NAME</code>: Environment name used in resource naming</li>
+<li><code>AZURE_LOCATION</code>: Azure region for deployment</li>
+</ul>
+<h2 id="service-to-service-communication">Service-to-Service Communication</h2>
+<p>Services communicate using Dapr service invocation:</p>
+<pre><code class="lang-csharp">// Example: Calling the auth service from another service
+var daprClient = new DaprClientBuilder().Build();
+var result = await daprClient.InvokeMethodAsync&lt;RequestDto, ResponseDto&gt;(
+    HttpMethod.Post,
+    &quot;auth-service&quot;,
+    &quot;api/auth/validate&quot;,
+    request
+);
+</code></pre>
+<h2 id="monitoring-and-logs">Monitoring and Logs</h2>
+<ul>
+<li><strong>Azure Portal</strong>: View logs and metrics in the Azure Portal</li>
+<li><strong>Log Analytics</strong>: All services send logs to a shared Log Analytics workspace</li>
+<li><strong>Dapr Dashboard</strong>: Available in the Container Apps Environment</li>
+</ul>
+<pre><code class="lang-bash"># View logs for a specific service
+az containerapp logs show \
+  --name auth-service \
+  --resource-group rg-&lt;env-name&gt; \
+  --follow
+</code></pre>
+<h2 id="scaling">Scaling</h2>
+<p>Each service is configured with:</p>
+<ul>
+<li><strong>Min replicas</strong>: 1</li>
+<li><strong>Max replicas</strong>: 10</li>
+<li><strong>Scaling rule</strong>: HTTP-based (100 concurrent requests per replica)</li>
+</ul>
+<p>To customize scaling:</p>
+<ol>
+<li>Edit <code>infra/core/host/container-app.bicep</code></li>
+<li>Modify the <code>minReplicas</code>, <code>maxReplicas</code>, or scaling rules</li>
+<li>Redeploy: <code>azd deploy</code></li>
+</ol>
+<h2 id="health-checks">Health Checks</h2>
+<p>All services expose a <code>/health</code> endpoint:</p>
+<ul>
+<li><strong>Liveness probe</strong>: Checks if the service is running</li>
+<li><strong>Readiness probe</strong>: Checks if the service is ready to accept traffic</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="build-failures">Build Failures</h3>
+<pre><code class="lang-bash"># Check build logs
+azd deploy --debug
+</code></pre>
+<h3 id="service-not-starting">Service Not Starting</h3>
+<pre><code class="lang-bash"># Check service logs
+az containerapp logs show --name &lt;service-name&gt; --resource-group rg-&lt;env-name&gt;
+</code></pre>
+<h3 id="database-connection-issues">Database Connection Issues</h3>
+<ul>
+<li>Verify SQL Server firewall rules allow Container Apps</li>
+<li>Check connection strings in Container App environment variables</li>
+<li>Ensure SQL admin password is correct</li>
+</ul>
+<h3 id="dapr-issues">Dapr Issues</h3>
+<ul>
+<li>Check Dapr sidecar logs in the Container App</li>
+<li>Verify Dapr components are configured in the Container Apps Environment</li>
+<li>Ensure <code>daprAppId</code> matches the service name</li>
+</ul>
+<h2 id="cost-optimization">Cost Optimization</h2>
+<p>To reduce costs in development environments:</p>
+<ol>
+<li><p><strong>Use smaller SKUs</strong>:</p>
+<ul>
+<li>SQL: Basic tier</li>
+<li>Redis: Basic C0</li>
+<li>Container Registry: Basic</li>
+</ul>
+</li>
+<li><p><strong>Scale down when not in use</strong>:</p>
+<pre><code class="lang-bash"># Scale all services to 0 replicas
+az containerapp update --name &lt;service-name&gt; --min-replicas 0
+</code></pre>
+</li>
+<li><p><strong>Delete resources when not needed</strong>:</p>
+<pre><code class="lang-bash">azd down
+</code></pre>
+</li>
+</ol>
+<h2 id="migration-from-local-to-production">Migration from Local to Production</h2>
+<p>The codebase is designed to work seamlessly in both environments:</p>
+<ul>
+<li><strong>Local</strong>: Aspire manages containers and configuration</li>
+<li><strong>Production</strong>: Azure Container Apps with managed services</li>
+</ul>
+<p>No code changes are required. Environment variables and connection strings are automatically configured based on the deployment target.</p>
+<h2 id="additional-resources">Additional Resources</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/azure/container-apps/">Azure Container Apps Documentation</a></li>
+<li><a href="https://learn.microsoft.com/azure/developer/azure-developer-cli/">Azure Developer CLI Documentation</a></li>
+<li><a href="https://learn.microsoft.com/azure/container-apps/dapr-overview">Dapr on Azure Container Apps</a></li>
+<li><a href="https://learn.microsoft.com/dotnet/aspire/">.NET Aspire Documentation</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/deployment/DEPLOYMENT.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

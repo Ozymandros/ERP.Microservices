@@ -1,0 +1,69 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Infrastructure.Data
+  commentId: N:MyApp.Auth.Infrastructure.Data
+  id: MyApp.Auth.Infrastructure.Data
+  children:
+  - MyApp.Auth.Infrastructure.Data.AuthDbContext
+  - MyApp.Auth.Infrastructure.Data.AuthDbContextFactory
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Infrastructure.Data
+  nameWithType: MyApp.Auth.Infrastructure.Data
+  fullName: MyApp.Auth.Infrastructure.Data
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Infrastructure
+references:
+- uid: MyApp.Auth.Infrastructure.Data.AuthDbContext
+  commentId: T:MyApp.Auth.Infrastructure.Data.AuthDbContext
+  parent: MyApp.Auth.Infrastructure.Data
+  href: MyApp.Auth.Infrastructure.Data.AuthDbContext.html
+  name: AuthDbContext
+  nameWithType: AuthDbContext
+  fullName: MyApp.Auth.Infrastructure.Data.AuthDbContext
+- uid: MyApp.Auth.Infrastructure.Data.AuthDbContextFactory
+  commentId: T:MyApp.Auth.Infrastructure.Data.AuthDbContextFactory
+  href: MyApp.Auth.Infrastructure.Data.AuthDbContextFactory.html
+  name: AuthDbContextFactory
+  nameWithType: AuthDbContextFactory
+  fullName: MyApp.Auth.Infrastructure.Data.AuthDbContextFactory
+- uid: MyApp.Auth.Infrastructure.Data
+  commentId: N:MyApp.Auth.Infrastructure.Data
+  href: MyApp.html
+  name: MyApp.Auth.Infrastructure.Data
+  nameWithType: MyApp.Auth.Infrastructure.Data
+  fullName: MyApp.Auth.Infrastructure.Data
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure
+    name: Infrastructure
+    href: MyApp.Auth.Infrastructure.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure.Data
+    name: Data
+    href: MyApp.Auth.Infrastructure.Data.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure
+    name: Infrastructure
+    href: MyApp.Auth.Infrastructure.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure.Data
+    name: Data
+    href: MyApp.Auth.Infrastructure.Data.html

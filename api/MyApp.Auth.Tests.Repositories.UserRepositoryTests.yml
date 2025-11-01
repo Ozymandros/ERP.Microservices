@@ -1,0 +1,1208 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  commentId: T:MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  id: UserRepositoryTests
+  parent: MyApp.Auth.Tests.Repositories
+  children:
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.#ctor
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.AddAsync_WithValidUser_CreatesUser
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.DeleteAsync_WithValidUserId_DeletesUser
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_IsCaseSensitive
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithEmptyString_ReturnsFalse
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithExistingEmail_ReturnsTrue
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithNonExistentEmail_ReturnsFalse
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetAllAsync_ReturnsAllUsers
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_IncludesRefreshTokens
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithDifferentCasing_ReturnsNull
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsUser
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithDifferentProvider_ReturnsNull
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithNonExistentId_ReturnsNull
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests.UpdateAsync_WithExistingUser_UpdatesUserData
+  langs:
+  - csharp
+  - vb
+  name: UserRepositoryTests
+  nameWithType: UserRepositoryTests
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UserRepositoryTests
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 9
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: public class UserRepositoryTests
+    content.vb: Public Class UserRepositoryTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.#ctor
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.#ctor
+  id: '#ctor'
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: UserRepositoryTests()
+  nameWithType: UserRepositoryTests.UserRepositoryTests()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.UserRepositoryTests()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 14
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: public UserRepositoryTests()
+    content.vb: Public Sub New()
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.#ctor*
+  nameWithType.vb: UserRepositoryTests.New()
+  fullName.vb: MyApp.Auth.Tests.Repositories.UserRepositoryTests.New()
+  name.vb: New()
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsUser
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsUser
+  id: GetByEmailAsync_WithValidEmail_ReturnsUser
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByEmailAsync_WithValidEmail_ReturnsUser()
+  nameWithType: UserRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsUser()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsUser()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByEmailAsync_WithValidEmail_ReturnsUser
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 40
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByEmailAsync_WithValidEmail_ReturnsUser()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByEmailAsync_WithValidEmail_ReturnsUser() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsUser*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  id: GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByEmailAsync_WithNonExistentEmail_ReturnsNull()
+  nameWithType: UserRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 55
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByEmailAsync_WithNonExistentEmail_ReturnsNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByEmailAsync_WithNonExistentEmail_ReturnsNull() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithDifferentCasing_ReturnsNull
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithDifferentCasing_ReturnsNull
+  id: GetByEmailAsync_WithDifferentCasing_ReturnsNull
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByEmailAsync_WithDifferentCasing_ReturnsNull()
+  nameWithType: UserRepositoryTests.GetByEmailAsync_WithDifferentCasing_ReturnsNull()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithDifferentCasing_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByEmailAsync_WithDifferentCasing_ReturnsNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 65
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByEmailAsync_WithDifferentCasing_ReturnsNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByEmailAsync_WithDifferentCasing_ReturnsNull() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithDifferentCasing_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_IncludesRefreshTokens
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_IncludesRefreshTokens
+  id: GetByEmailAsync_IncludesRefreshTokens
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByEmailAsync_IncludesRefreshTokens()
+  nameWithType: UserRepositoryTests.GetByEmailAsync_IncludesRefreshTokens()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_IncludesRefreshTokens()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByEmailAsync_IncludesRefreshTokens
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 79
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByEmailAsync_IncludesRefreshTokens()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByEmailAsync_IncludesRefreshTokens() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_IncludesRefreshTokens*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser
+  id: GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser()
+  nameWithType: UserRepositoryTests.GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 109
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithNonExistentId_ReturnsNull
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithNonExistentId_ReturnsNull
+  id: GetByExternalIdAsync_WithNonExistentId_ReturnsNull
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByExternalIdAsync_WithNonExistentId_ReturnsNull()
+  nameWithType: UserRepositoryTests.GetByExternalIdAsync_WithNonExistentId_ReturnsNull()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithNonExistentId_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByExternalIdAsync_WithNonExistentId_ReturnsNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 134
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByExternalIdAsync_WithNonExistentId_ReturnsNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByExternalIdAsync_WithNonExistentId_ReturnsNull() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithNonExistentId_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithDifferentProvider_ReturnsNull
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithDifferentProvider_ReturnsNull
+  id: GetByExternalIdAsync_WithDifferentProvider_ReturnsNull
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByExternalIdAsync_WithDifferentProvider_ReturnsNull()
+  nameWithType: UserRepositoryTests.GetByExternalIdAsync_WithDifferentProvider_ReturnsNull()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithDifferentProvider_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByExternalIdAsync_WithDifferentProvider_ReturnsNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 144
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByExternalIdAsync_WithDifferentProvider_ReturnsNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByExternalIdAsync_WithDifferentProvider_ReturnsNull() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithDifferentProvider_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole
+  id: GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole()
+  nameWithType: UserRepositoryTests.GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 170
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList
+  id: GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList()
+  nameWithType: UserRepositoryTests.GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 198
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList
+  id: GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList()
+  nameWithType: UserRepositoryTests.GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 209
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithExistingEmail_ReturnsTrue
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithExistingEmail_ReturnsTrue
+  id: EmailExistsAsync_WithExistingEmail_ReturnsTrue
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: EmailExistsAsync_WithExistingEmail_ReturnsTrue()
+  nameWithType: UserRepositoryTests.EmailExistsAsync_WithExistingEmail_ReturnsTrue()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithExistingEmail_ReturnsTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: EmailExistsAsync_WithExistingEmail_ReturnsTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 224
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task EmailExistsAsync_WithExistingEmail_ReturnsTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function EmailExistsAsync_WithExistingEmail_ReturnsTrue() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithExistingEmail_ReturnsTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithNonExistentEmail_ReturnsFalse
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithNonExistentEmail_ReturnsFalse
+  id: EmailExistsAsync_WithNonExistentEmail_ReturnsFalse
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: EmailExistsAsync_WithNonExistentEmail_ReturnsFalse()
+  nameWithType: UserRepositoryTests.EmailExistsAsync_WithNonExistentEmail_ReturnsFalse()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithNonExistentEmail_ReturnsFalse()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: EmailExistsAsync_WithNonExistentEmail_ReturnsFalse
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 237
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task EmailExistsAsync_WithNonExistentEmail_ReturnsFalse()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function EmailExistsAsync_WithNonExistentEmail_ReturnsFalse() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithNonExistentEmail_ReturnsFalse*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_IsCaseSensitive
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_IsCaseSensitive
+  id: EmailExistsAsync_IsCaseSensitive
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: EmailExistsAsync_IsCaseSensitive()
+  nameWithType: UserRepositoryTests.EmailExistsAsync_IsCaseSensitive()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_IsCaseSensitive()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: EmailExistsAsync_IsCaseSensitive
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 247
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task EmailExistsAsync_IsCaseSensitive()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function EmailExistsAsync_IsCaseSensitive() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_IsCaseSensitive*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithEmptyString_ReturnsFalse
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithEmptyString_ReturnsFalse
+  id: EmailExistsAsync_WithEmptyString_ReturnsFalse
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: EmailExistsAsync_WithEmptyString_ReturnsFalse()
+  nameWithType: UserRepositoryTests.EmailExistsAsync_WithEmptyString_ReturnsFalse()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithEmptyString_ReturnsFalse()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: EmailExistsAsync_WithEmptyString_ReturnsFalse
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 261
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task EmailExistsAsync_WithEmptyString_ReturnsFalse()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function EmailExistsAsync_WithEmptyString_ReturnsFalse() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithEmptyString_ReturnsFalse*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.AddAsync_WithValidUser_CreatesUser
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.AddAsync_WithValidUser_CreatesUser
+  id: AddAsync_WithValidUser_CreatesUser
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: AddAsync_WithValidUser_CreatesUser()
+  nameWithType: UserRepositoryTests.AddAsync_WithValidUser_CreatesUser()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.AddAsync_WithValidUser_CreatesUser()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: AddAsync_WithValidUser_CreatesUser
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 275
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task AddAsync_WithValidUser_CreatesUser()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function AddAsync_WithValidUser_CreatesUser() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.AddAsync_WithValidUser_CreatesUser*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.UpdateAsync_WithExistingUser_UpdatesUserData
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.UpdateAsync_WithExistingUser_UpdatesUserData
+  id: UpdateAsync_WithExistingUser_UpdatesUserData
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: UpdateAsync_WithExistingUser_UpdatesUserData()
+  nameWithType: UserRepositoryTests.UpdateAsync_WithExistingUser_UpdatesUserData()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.UpdateAsync_WithExistingUser_UpdatesUserData()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateAsync_WithExistingUser_UpdatesUserData
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 300
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdateAsync_WithExistingUser_UpdatesUserData()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdateAsync_WithExistingUser_UpdatesUserData() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.UpdateAsync_WithExistingUser_UpdatesUserData*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.DeleteAsync_WithValidUserId_DeletesUser
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.DeleteAsync_WithValidUserId_DeletesUser
+  id: DeleteAsync_WithValidUserId_DeletesUser
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: DeleteAsync_WithValidUserId_DeletesUser()
+  nameWithType: UserRepositoryTests.DeleteAsync_WithValidUserId_DeletesUser()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.DeleteAsync_WithValidUserId_DeletesUser()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteAsync_WithValidUserId_DeletesUser
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 322
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeleteAsync_WithValidUserId_DeletesUser()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeleteAsync_WithValidUserId_DeletesUser() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.DeleteAsync_WithValidUserId_DeletesUser*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetAllAsync_ReturnsAllUsers
+  commentId: M:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetAllAsync_ReturnsAllUsers
+  id: GetAllAsync_ReturnsAllUsers
+  parent: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetAllAsync_ReturnsAllUsers()
+  nameWithType: UserRepositoryTests.GetAllAsync_ReturnsAllUsers()
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetAllAsync_ReturnsAllUsers()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllAsync_ReturnsAllUsers
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/UserRepositoryTests.cs
+    startLine: 340
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetAllAsync_ReturnsAllUsers()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetAllAsync_ReturnsAllUsers() As Task
+  overload: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetAllAsync_ReturnsAllUsers*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: MyApp.Auth.Tests.Repositories
+  commentId: N:MyApp.Auth.Tests.Repositories
+  href: MyApp.html
+  name: MyApp.Auth.Tests.Repositories
+  nameWithType: MyApp.Auth.Tests.Repositories
+  fullName: MyApp.Auth.Tests.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Tests
+    name: Tests
+    href: MyApp.Auth.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Tests.Repositories
+    name: Repositories
+    href: MyApp.Auth.Tests.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Tests
+    name: Tests
+    href: MyApp.Auth.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Tests.Repositories
+    name: Repositories
+    href: MyApp.Auth.Tests.Repositories.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.#ctor*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.#ctor
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests__ctor
+  name: UserRepositoryTests
+  nameWithType: UserRepositoryTests.UserRepositoryTests
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.UserRepositoryTests
+  nameWithType.vb: UserRepositoryTests.New
+  fullName.vb: MyApp.Auth.Tests.Repositories.UserRepositoryTests.New
+  name.vb: New
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsUser*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsUser
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_GetByEmailAsync_WithValidEmail_ReturnsUser
+  name: GetByEmailAsync_WithValidEmail_ReturnsUser
+  nameWithType: UserRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsUser
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithValidEmail_ReturnsUser
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  name: GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  nameWithType: UserRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithNonExistentEmail_ReturnsNull
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithDifferentCasing_ReturnsNull*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithDifferentCasing_ReturnsNull
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_GetByEmailAsync_WithDifferentCasing_ReturnsNull
+  name: GetByEmailAsync_WithDifferentCasing_ReturnsNull
+  nameWithType: UserRepositoryTests.GetByEmailAsync_WithDifferentCasing_ReturnsNull
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_WithDifferentCasing_ReturnsNull
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_IncludesRefreshTokens*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_IncludesRefreshTokens
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_GetByEmailAsync_IncludesRefreshTokens
+  name: GetByEmailAsync_IncludesRefreshTokens
+  nameWithType: UserRepositoryTests.GetByEmailAsync_IncludesRefreshTokens
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByEmailAsync_IncludesRefreshTokens
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser
+  name: GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser
+  nameWithType: UserRepositoryTests.GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithNonExistentId_ReturnsNull*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithNonExistentId_ReturnsNull
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_GetByExternalIdAsync_WithNonExistentId_ReturnsNull
+  name: GetByExternalIdAsync_WithNonExistentId_ReturnsNull
+  nameWithType: UserRepositoryTests.GetByExternalIdAsync_WithNonExistentId_ReturnsNull
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithNonExistentId_ReturnsNull
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithDifferentProvider_ReturnsNull*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithDifferentProvider_ReturnsNull
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_GetByExternalIdAsync_WithDifferentProvider_ReturnsNull
+  name: GetByExternalIdAsync_WithDifferentProvider_ReturnsNull
+  nameWithType: UserRepositoryTests.GetByExternalIdAsync_WithDifferentProvider_ReturnsNull
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByExternalIdAsync_WithDifferentProvider_ReturnsNull
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole
+  name: GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole
+  nameWithType: UserRepositoryTests.GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList
+  name: GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList
+  nameWithType: UserRepositoryTests.GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList
+  name: GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList
+  nameWithType: UserRepositoryTests.GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithExistingEmail_ReturnsTrue*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithExistingEmail_ReturnsTrue
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_EmailExistsAsync_WithExistingEmail_ReturnsTrue
+  name: EmailExistsAsync_WithExistingEmail_ReturnsTrue
+  nameWithType: UserRepositoryTests.EmailExistsAsync_WithExistingEmail_ReturnsTrue
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithExistingEmail_ReturnsTrue
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithNonExistentEmail_ReturnsFalse*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithNonExistentEmail_ReturnsFalse
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_EmailExistsAsync_WithNonExistentEmail_ReturnsFalse
+  name: EmailExistsAsync_WithNonExistentEmail_ReturnsFalse
+  nameWithType: UserRepositoryTests.EmailExistsAsync_WithNonExistentEmail_ReturnsFalse
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithNonExistentEmail_ReturnsFalse
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_IsCaseSensitive*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_IsCaseSensitive
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_EmailExistsAsync_IsCaseSensitive
+  name: EmailExistsAsync_IsCaseSensitive
+  nameWithType: UserRepositoryTests.EmailExistsAsync_IsCaseSensitive
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_IsCaseSensitive
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithEmptyString_ReturnsFalse*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithEmptyString_ReturnsFalse
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_EmailExistsAsync_WithEmptyString_ReturnsFalse
+  name: EmailExistsAsync_WithEmptyString_ReturnsFalse
+  nameWithType: UserRepositoryTests.EmailExistsAsync_WithEmptyString_ReturnsFalse
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.EmailExistsAsync_WithEmptyString_ReturnsFalse
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.AddAsync_WithValidUser_CreatesUser*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.AddAsync_WithValidUser_CreatesUser
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_AddAsync_WithValidUser_CreatesUser
+  name: AddAsync_WithValidUser_CreatesUser
+  nameWithType: UserRepositoryTests.AddAsync_WithValidUser_CreatesUser
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.AddAsync_WithValidUser_CreatesUser
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.UpdateAsync_WithExistingUser_UpdatesUserData*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.UpdateAsync_WithExistingUser_UpdatesUserData
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_UpdateAsync_WithExistingUser_UpdatesUserData
+  name: UpdateAsync_WithExistingUser_UpdatesUserData
+  nameWithType: UserRepositoryTests.UpdateAsync_WithExistingUser_UpdatesUserData
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.UpdateAsync_WithExistingUser_UpdatesUserData
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.DeleteAsync_WithValidUserId_DeletesUser*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.DeleteAsync_WithValidUserId_DeletesUser
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_DeleteAsync_WithValidUserId_DeletesUser
+  name: DeleteAsync_WithValidUserId_DeletesUser
+  nameWithType: UserRepositoryTests.DeleteAsync_WithValidUserId_DeletesUser
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.DeleteAsync_WithValidUserId_DeletesUser
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetAllAsync_ReturnsAllUsers*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetAllAsync_ReturnsAllUsers
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html#MyApp_Auth_Tests_Repositories_UserRepositoryTests_GetAllAsync_ReturnsAllUsers
+  name: GetAllAsync_ReturnsAllUsers
+  nameWithType: UserRepositoryTests.GetAllAsync_ReturnsAllUsers
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests.GetAllAsync_ReturnsAllUsers

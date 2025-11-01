@@ -1,0 +1,584 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService
+  commentId: T:MyApp.Sales.Application.Contracts.Services.ISalesOrderService
+  id: ISalesOrderService
+  parent: MyApp.Sales.Application.Contracts.Services
+  children:
+  - MyApp.Sales.Application.Contracts.Services.ISalesOrderService.CreateSalesOrderAsync(MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto)
+  - MyApp.Sales.Application.Contracts.Services.ISalesOrderService.DeleteSalesOrderAsync(System.Guid)
+  - MyApp.Sales.Application.Contracts.Services.ISalesOrderService.GetSalesOrderByIdAsync(System.Guid)
+  - MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersAsync
+  - MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersPaginatedAsync(System.Int32,System.Int32)
+  - MyApp.Sales.Application.Contracts.Services.ISalesOrderService.UpdateSalesOrderAsync(System.Guid,MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto)
+  langs:
+  - csharp
+  - vb
+  name: ISalesOrderService
+  nameWithType: ISalesOrderService
+  fullName: MyApp.Sales.Application.Contracts.Services.ISalesOrderService
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/Services/ISalesOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ISalesOrderService
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/Services/ISalesOrderService.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.Services
+  syntax:
+    content: public interface ISalesOrderService
+    content.vb: Public Interface ISalesOrderService
+- uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.GetSalesOrderByIdAsync(System.Guid)
+  commentId: M:MyApp.Sales.Application.Contracts.Services.ISalesOrderService.GetSalesOrderByIdAsync(System.Guid)
+  id: GetSalesOrderByIdAsync(System.Guid)
+  parent: MyApp.Sales.Application.Contracts.Services.ISalesOrderService
+  langs:
+  - csharp
+  - vb
+  name: GetSalesOrderByIdAsync(Guid)
+  nameWithType: ISalesOrderService.GetSalesOrderByIdAsync(Guid)
+  fullName: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.GetSalesOrderByIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/Services/ISalesOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetSalesOrderByIdAsync
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/Services/ISalesOrderService.cs
+    startLine: 10
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.Services
+  syntax:
+    content: Task<SalesOrderDto?> GetSalesOrderByIdAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto}
+    content.vb: Function GetSalesOrderByIdAsync(id As Guid) As Task(Of SalesOrderDto)
+  overload: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.GetSalesOrderByIdAsync*
+- uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersAsync
+  commentId: M:MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersAsync
+  id: ListSalesOrdersAsync
+  parent: MyApp.Sales.Application.Contracts.Services.ISalesOrderService
+  langs:
+  - csharp
+  - vb
+  name: ListSalesOrdersAsync()
+  nameWithType: ISalesOrderService.ListSalesOrdersAsync()
+  fullName: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersAsync()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/Services/ISalesOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ListSalesOrdersAsync
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/Services/ISalesOrderService.cs
+    startLine: 11
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.Services
+  syntax:
+    content: Task<IEnumerable<SalesOrderDto>> ListSalesOrdersAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto}}
+    content.vb: Function ListSalesOrdersAsync() As Task(Of IEnumerable(Of SalesOrderDto))
+  overload: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersAsync*
+- uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersPaginatedAsync(System.Int32,System.Int32)
+  id: ListSalesOrdersPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Sales.Application.Contracts.Services.ISalesOrderService
+  langs:
+  - csharp
+  - vb
+  name: ListSalesOrdersPaginatedAsync(int, int)
+  nameWithType: ISalesOrderService.ListSalesOrdersPaginatedAsync(int, int)
+  fullName: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersPaginatedAsync(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/Services/ISalesOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ListSalesOrdersPaginatedAsync
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/Services/ISalesOrderService.cs
+    startLine: 12
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.Services
+  syntax:
+    content: Task<PaginatedResult<SalesOrderDto>> ListSalesOrdersPaginatedAsync(int pageNumber, int pageSize)
+    parameters:
+    - id: pageNumber
+      type: System.Int32
+    - id: pageSize
+      type: System.Int32
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto}}
+    content.vb: Function ListSalesOrdersPaginatedAsync(pageNumber As Integer, pageSize As Integer) As Task(Of PaginatedResult(Of SalesOrderDto))
+  overload: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersPaginatedAsync*
+  nameWithType.vb: ISalesOrderService.ListSalesOrdersPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersPaginatedAsync(Integer, Integer)
+  name.vb: ListSalesOrdersPaginatedAsync(Integer, Integer)
+- uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.CreateSalesOrderAsync(MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto)
+  commentId: M:MyApp.Sales.Application.Contracts.Services.ISalesOrderService.CreateSalesOrderAsync(MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto)
+  id: CreateSalesOrderAsync(MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto)
+  parent: MyApp.Sales.Application.Contracts.Services.ISalesOrderService
+  langs:
+  - csharp
+  - vb
+  name: CreateSalesOrderAsync(CreateUpdateSalesOrderDto)
+  nameWithType: ISalesOrderService.CreateSalesOrderAsync(CreateUpdateSalesOrderDto)
+  fullName: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.CreateSalesOrderAsync(MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/Services/ISalesOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateSalesOrderAsync
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/Services/ISalesOrderService.cs
+    startLine: 13
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.Services
+  syntax:
+    content: Task<SalesOrderDto> CreateSalesOrderAsync(CreateUpdateSalesOrderDto dto)
+    parameters:
+    - id: dto
+      type: MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto}
+    content.vb: Function CreateSalesOrderAsync(dto As CreateUpdateSalesOrderDto) As Task(Of SalesOrderDto)
+  overload: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.CreateSalesOrderAsync*
+- uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.UpdateSalesOrderAsync(System.Guid,MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto)
+  commentId: M:MyApp.Sales.Application.Contracts.Services.ISalesOrderService.UpdateSalesOrderAsync(System.Guid,MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto)
+  id: UpdateSalesOrderAsync(System.Guid,MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto)
+  parent: MyApp.Sales.Application.Contracts.Services.ISalesOrderService
+  langs:
+  - csharp
+  - vb
+  name: UpdateSalesOrderAsync(Guid, CreateUpdateSalesOrderDto)
+  nameWithType: ISalesOrderService.UpdateSalesOrderAsync(Guid, CreateUpdateSalesOrderDto)
+  fullName: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.UpdateSalesOrderAsync(System.Guid, MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/Services/ISalesOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateSalesOrderAsync
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/Services/ISalesOrderService.cs
+    startLine: 14
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.Services
+  syntax:
+    content: Task<SalesOrderDto> UpdateSalesOrderAsync(Guid id, CreateUpdateSalesOrderDto dto)
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: dto
+      type: MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto}
+    content.vb: Function UpdateSalesOrderAsync(id As Guid, dto As CreateUpdateSalesOrderDto) As Task(Of SalesOrderDto)
+  overload: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.UpdateSalesOrderAsync*
+- uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.DeleteSalesOrderAsync(System.Guid)
+  commentId: M:MyApp.Sales.Application.Contracts.Services.ISalesOrderService.DeleteSalesOrderAsync(System.Guid)
+  id: DeleteSalesOrderAsync(System.Guid)
+  parent: MyApp.Sales.Application.Contracts.Services.ISalesOrderService
+  langs:
+  - csharp
+  - vb
+  name: DeleteSalesOrderAsync(Guid)
+  nameWithType: ISalesOrderService.DeleteSalesOrderAsync(Guid)
+  fullName: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.DeleteSalesOrderAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/Services/ISalesOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteSalesOrderAsync
+    path: src/MyApp.Sales/MyApp.Sales.Application.Contracts/Services/ISalesOrderService.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+  namespace: MyApp.Sales.Application.Contracts.Services
+  syntax:
+    content: Task DeleteSalesOrderAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function DeleteSalesOrderAsync(id As Guid) As Task
+  overload: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.DeleteSalesOrderAsync*
+references:
+- uid: MyApp.Sales.Application.Contracts.Services
+  commentId: N:MyApp.Sales.Application.Contracts.Services
+  href: MyApp.html
+  name: MyApp.Sales.Application.Contracts.Services
+  nameWithType: MyApp.Sales.Application.Contracts.Services
+  fullName: MyApp.Sales.Application.Contracts.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts
+    name: Contracts
+    href: MyApp.Sales.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts.Services
+    name: Services
+    href: MyApp.Sales.Application.Contracts.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts
+    name: Contracts
+    href: MyApp.Sales.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts.Services
+    name: Services
+    href: MyApp.Sales.Application.Contracts.Services.html
+- uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.GetSalesOrderByIdAsync*
+  commentId: Overload:MyApp.Sales.Application.Contracts.Services.ISalesOrderService.GetSalesOrderByIdAsync
+  href: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.html#MyApp_Sales_Application_Contracts_Services_ISalesOrderService_GetSalesOrderByIdAsync_System_Guid_
+  name: GetSalesOrderByIdAsync
+  nameWithType: ISalesOrderService.GetSalesOrderByIdAsync
+  fullName: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.GetSalesOrderByIdAsync
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task{MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<SalesOrderDto>
+  nameWithType: Task<SalesOrderDto>
+  fullName: System.Threading.Tasks.Task<MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto>
+  nameWithType.vb: Task(Of SalesOrderDto)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto)
+  name.vb: Task(Of SalesOrderDto)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+    name: SalesOrderDto
+    href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+    name: SalesOrderDto
+    href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersAsync*
+  commentId: Overload:MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersAsync
+  href: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.html#MyApp_Sales_Application_Contracts_Services_ISalesOrderService_ListSalesOrdersAsync
+  name: ListSalesOrdersAsync
+  nameWithType: ISalesOrderService.ListSalesOrdersAsync
+  fullName: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<SalesOrderDto>>
+  nameWithType: Task<IEnumerable<SalesOrderDto>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto>>
+  nameWithType.vb: Task(Of IEnumerable(Of SalesOrderDto))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto))
+  name.vb: Task(Of IEnumerable(Of SalesOrderDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+    name: SalesOrderDto
+    href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+    name: SalesOrderDto
+    href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersPaginatedAsync*
+  commentId: Overload:MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersPaginatedAsync
+  href: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.html#MyApp_Sales_Application_Contracts_Services_ISalesOrderService_ListSalesOrdersPaginatedAsync_System_Int32_System_Int32_
+  name: ListSalesOrdersPaginatedAsync
+  nameWithType: ISalesOrderService.ListSalesOrdersPaginatedAsync
+  fullName: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.ListSalesOrdersPaginatedAsync
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto}}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PaginatedResult<SalesOrderDto>>
+  nameWithType: Task<PaginatedResult<SalesOrderDto>>
+  fullName: System.Threading.Tasks.Task<MyApp.Shared.Domain.Pagination.PaginatedResult<MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto>>
+  nameWithType.vb: Task(Of PaginatedResult(Of SalesOrderDto))
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Shared.Domain.Pagination.PaginatedResult(Of MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto))
+  name.vb: Task(Of PaginatedResult(Of SalesOrderDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+    href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html
+  - name: <
+  - uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+    name: SalesOrderDto
+    href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+    href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+    name: SalesOrderDto
+    href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.CreateSalesOrderAsync*
+  commentId: Overload:MyApp.Sales.Application.Contracts.Services.ISalesOrderService.CreateSalesOrderAsync
+  href: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.html#MyApp_Sales_Application_Contracts_Services_ISalesOrderService_CreateSalesOrderAsync_MyApp_Sales_Application_Contracts_DTOs_CreateUpdateSalesOrderDto_
+  name: CreateSalesOrderAsync
+  nameWithType: ISalesOrderService.CreateSalesOrderAsync
+  fullName: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.CreateSalesOrderAsync
+- uid: MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto
+  commentId: T:MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto
+  parent: MyApp.Sales.Application.Contracts.DTOs
+  href: MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto.html
+  name: CreateUpdateSalesOrderDto
+  nameWithType: CreateUpdateSalesOrderDto
+  fullName: MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto
+- uid: MyApp.Sales.Application.Contracts.DTOs
+  commentId: N:MyApp.Sales.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Sales.Application.Contracts.DTOs
+  nameWithType: MyApp.Sales.Application.Contracts.DTOs
+  fullName: MyApp.Sales.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts
+    name: Contracts
+    href: MyApp.Sales.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Sales.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts
+    name: Contracts
+    href: MyApp.Sales.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Sales.Application.Contracts.DTOs.html
+- uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.UpdateSalesOrderAsync*
+  commentId: Overload:MyApp.Sales.Application.Contracts.Services.ISalesOrderService.UpdateSalesOrderAsync
+  href: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.html#MyApp_Sales_Application_Contracts_Services_ISalesOrderService_UpdateSalesOrderAsync_System_Guid_MyApp_Sales_Application_Contracts_DTOs_CreateUpdateSalesOrderDto_
+  name: UpdateSalesOrderAsync
+  nameWithType: ISalesOrderService.UpdateSalesOrderAsync
+  fullName: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.UpdateSalesOrderAsync
+- uid: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.DeleteSalesOrderAsync*
+  commentId: Overload:MyApp.Sales.Application.Contracts.Services.ISalesOrderService.DeleteSalesOrderAsync
+  href: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.html#MyApp_Sales_Application_Contracts_Services_ISalesOrderService_DeleteSalesOrderAsync_System_Guid_
+  name: DeleteSalesOrderAsync
+  nameWithType: ISalesOrderService.DeleteSalesOrderAsync
+  fullName: MyApp.Sales.Application.Contracts.Services.ISalesOrderService.DeleteSalesOrderAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task

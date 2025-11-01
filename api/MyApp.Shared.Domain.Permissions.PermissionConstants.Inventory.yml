@@ -1,0 +1,556 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+  commentId: T:MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+  id: PermissionConstants.Inventory
+  parent: MyApp.Shared.Domain.Permissions
+  children:
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.All
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Delete
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Execute
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Export
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Import
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Read
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Write
+  langs:
+  - csharp
+  - vb
+  name: PermissionConstants.Inventory
+  nameWithType: PermissionConstants.Inventory
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Inventory
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+    startLine: 16
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Inventory module permissions
+  example: []
+  syntax:
+    content: public static class PermissionConstants.Inventory
+    content.vb: Public Module PermissionConstants.Inventory
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Read
+  commentId: F:MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Read
+  id: Read
+  parent: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+  langs:
+  - csharp
+  - vb
+  name: Read
+  nameWithType: PermissionConstants.Inventory.Read
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Read
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Read
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+    startLine: 18
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  syntax:
+    content: public const string Read = "Inventory.Read"
+    return:
+      type: System.String
+    content.vb: Public Const Read As String = "Inventory.Read"
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Write
+  commentId: F:MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Write
+  id: Write
+  parent: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+  langs:
+  - csharp
+  - vb
+  name: Write
+  nameWithType: PermissionConstants.Inventory.Write
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Write
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Write
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+    startLine: 19
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  syntax:
+    content: public const string Write = "Inventory.Write"
+    return:
+      type: System.String
+    content.vb: Public Const Write As String = "Inventory.Write"
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Delete
+  commentId: F:MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Delete
+  id: Delete
+  parent: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+  langs:
+  - csharp
+  - vb
+  name: Delete
+  nameWithType: PermissionConstants.Inventory.Delete
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Delete
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Delete
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+    startLine: 20
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  syntax:
+    content: public const string Delete = "Inventory.Delete"
+    return:
+      type: System.String
+    content.vb: Public Const Delete As String = "Inventory.Delete"
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Execute
+  commentId: F:MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Execute
+  id: Execute
+  parent: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+  langs:
+  - csharp
+  - vb
+  name: Execute
+  nameWithType: PermissionConstants.Inventory.Execute
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Execute
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Execute
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+    startLine: 21
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  syntax:
+    content: public const string Execute = "Inventory.Execute"
+    return:
+      type: System.String
+    content.vb: Public Const Execute As String = "Inventory.Execute"
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Export
+  commentId: F:MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Export
+  id: Export
+  parent: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+  langs:
+  - csharp
+  - vb
+  name: Export
+  nameWithType: PermissionConstants.Inventory.Export
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Export
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Export
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+    startLine: 22
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  syntax:
+    content: public const string Export = "Inventory.Export"
+    return:
+      type: System.String
+    content.vb: Public Const Export As String = "Inventory.Export"
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Import
+  commentId: F:MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Import
+  id: Import
+  parent: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+  langs:
+  - csharp
+  - vb
+  name: Import
+  nameWithType: PermissionConstants.Inventory.Import
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.Import
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Import
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+    startLine: 23
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  syntax:
+    content: public const string Import = "Inventory.Import"
+    return:
+      type: System.String
+    content.vb: Public Const Import As String = "Inventory.Import"
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.All
+  commentId: P:MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.All
+  id: All
+  parent: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+  langs:
+  - csharp
+  - vb
+  name: All
+  nameWithType: PermissionConstants.Inventory.All
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.All
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: All
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+    startLine: 26
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: All Inventory permissions
+  example: []
+  syntax:
+    content: public static string[] All { get; }
+    parameters: []
+    return:
+      type: System.String[]
+    content.vb: Public Shared ReadOnly Property All As String()
+  overload: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.All*
+references:
+- uid: MyApp.Shared.Domain.Permissions
+  commentId: N:MyApp.Shared.Domain.Permissions
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Permissions
+  nameWithType: MyApp.Shared.Domain.Permissions
+  fullName: MyApp.Shared.Domain.Permissions
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions
+    name: Permissions
+    href: MyApp.Shared.Domain.Permissions.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions
+    name: Permissions
+    href: MyApp.Shared.Domain.Permissions.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.All*
+  commentId: Overload:MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.All
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.html#MyApp_Shared_Domain_Permissions_PermissionConstants_Inventory_All
+  name: All
+  nameWithType: PermissionConstants.Inventory.All
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.All
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )

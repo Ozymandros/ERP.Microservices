@@ -1,0 +1,69 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Infrastructure.Data
+  commentId: N:MyApp.Orders.Infrastructure.Data
+  id: MyApp.Orders.Infrastructure.Data
+  children:
+  - MyApp.Orders.Infrastructure.Data.OrdersDbContext
+  - MyApp.Orders.Infrastructure.Data.OrdersDbContextFactory
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Orders.Infrastructure.Data
+  nameWithType: MyApp.Orders.Infrastructure.Data
+  fullName: MyApp.Orders.Infrastructure.Data
+  type: Namespace
+  assemblies:
+  - MyApp.Orders.Infrastructure
+references:
+- uid: MyApp.Orders.Infrastructure.Data.OrdersDbContext
+  commentId: T:MyApp.Orders.Infrastructure.Data.OrdersDbContext
+  parent: MyApp.Orders.Infrastructure.Data
+  href: MyApp.Orders.Infrastructure.Data.OrdersDbContext.html
+  name: OrdersDbContext
+  nameWithType: OrdersDbContext
+  fullName: MyApp.Orders.Infrastructure.Data.OrdersDbContext
+- uid: MyApp.Orders.Infrastructure.Data.OrdersDbContextFactory
+  commentId: T:MyApp.Orders.Infrastructure.Data.OrdersDbContextFactory
+  href: MyApp.Orders.Infrastructure.Data.OrdersDbContextFactory.html
+  name: OrdersDbContextFactory
+  nameWithType: OrdersDbContextFactory
+  fullName: MyApp.Orders.Infrastructure.Data.OrdersDbContextFactory
+- uid: MyApp.Orders.Infrastructure.Data
+  commentId: N:MyApp.Orders.Infrastructure.Data
+  href: MyApp.html
+  name: MyApp.Orders.Infrastructure.Data
+  nameWithType: MyApp.Orders.Infrastructure.Data
+  fullName: MyApp.Orders.Infrastructure.Data
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Infrastructure
+    name: Infrastructure
+    href: MyApp.Orders.Infrastructure.html
+  - name: .
+  - uid: MyApp.Orders.Infrastructure.Data
+    name: Data
+    href: MyApp.Orders.Infrastructure.Data.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Infrastructure
+    name: Infrastructure
+    href: MyApp.Orders.Infrastructure.html
+  - name: .
+  - uid: MyApp.Orders.Infrastructure.Data
+    name: Data
+    href: MyApp.Orders.Infrastructure.Data.html

@@ -1,0 +1,1628 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+  commentId: T:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+  id: RefreshTokenRepository
+  parent: MyApp.Auth.Infrastructure.Data.Repositories
+  children:
+  - MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.#ctor(MyApp.Auth.Infrastructure.Data.AuthDbContext)
+  - MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.CreateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  - MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByTokenAsync(System.String)
+  - MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByUserIdAsync(System.Guid)
+  - MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetValidRefreshTokenAsync(System.Guid,System.String)
+  - MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeAsync(System.Guid)
+  - MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeUserTokensAsync(System.Guid)
+  langs:
+  - csharp
+  - vb
+  name: RefreshTokenRepository
+  nameWithType: RefreshTokenRepository
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RefreshTokenRepository
+    path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+    startLine: 7
+  assemblies:
+  - MyApp.Auth.Infrastructure
+  namespace: MyApp.Auth.Infrastructure.Data.Repositories
+  syntax:
+    content: 'public class RefreshTokenRepository : Repository<RefreshToken, Guid>, IRefreshTokenRepository, IRepository<RefreshToken, Guid>'
+    content.vb: Public Class RefreshTokenRepository Inherits Repository(Of RefreshToken, Guid) Implements IRefreshTokenRepository, IRepository(Of RefreshToken, Guid)
+  inheritance:
+  - System.Object
+  - MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}
+  implements:
+  - MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}
+  inheritedMembers:
+  - MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}._dbContext
+  - MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetByIdAsync(System.Guid)
+  - MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetAllAsync
+  - MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  - MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.AddAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  - MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.UpdateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  - MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.DeleteAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.#ctor(MyApp.Auth.Infrastructure.Data.AuthDbContext)
+  commentId: M:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.#ctor(MyApp.Auth.Infrastructure.Data.AuthDbContext)
+  id: '#ctor(MyApp.Auth.Infrastructure.Data.AuthDbContext)'
+  parent: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+  langs:
+  - csharp
+  - vb
+  name: RefreshTokenRepository(AuthDbContext)
+  nameWithType: RefreshTokenRepository.RefreshTokenRepository(AuthDbContext)
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RefreshTokenRepository(MyApp.Auth.Infrastructure.Data.AuthDbContext)
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+    startLine: 11
+  assemblies:
+  - MyApp.Auth.Infrastructure
+  namespace: MyApp.Auth.Infrastructure.Data.Repositories
+  syntax:
+    content: public RefreshTokenRepository(AuthDbContext context)
+    parameters:
+    - id: context
+      type: MyApp.Auth.Infrastructure.Data.AuthDbContext
+    content.vb: Public Sub New(context As AuthDbContext)
+  overload: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.#ctor*
+  nameWithType.vb: RefreshTokenRepository.New(AuthDbContext)
+  fullName.vb: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.New(MyApp.Auth.Infrastructure.Data.AuthDbContext)
+  name.vb: New(AuthDbContext)
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByTokenAsync(System.String)
+  commentId: M:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByTokenAsync(System.String)
+  id: GetByTokenAsync(System.String)
+  parent: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+  langs:
+  - csharp
+  - vb
+  name: GetByTokenAsync(string)
+  nameWithType: RefreshTokenRepository.GetByTokenAsync(string)
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByTokenAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByTokenAsync
+    path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+    startLine: 16
+  assemblies:
+  - MyApp.Auth.Infrastructure
+  namespace: MyApp.Auth.Infrastructure.Data.Repositories
+  example: []
+  syntax:
+    content: public Task<RefreshToken?> GetByTokenAsync(string token)
+    parameters:
+    - id: token
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Domain.Entities.RefreshToken}
+    content.vb: Public Function GetByTokenAsync(token As String) As Task(Of RefreshToken)
+  overload: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByTokenAsync*
+  implements:
+  - MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetByTokenAsync(System.String)
+  nameWithType.vb: RefreshTokenRepository.GetByTokenAsync(String)
+  fullName.vb: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByTokenAsync(String)
+  name.vb: GetByTokenAsync(String)
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByUserIdAsync(System.Guid)
+  commentId: M:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByUserIdAsync(System.Guid)
+  id: GetByUserIdAsync(System.Guid)
+  parent: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+  langs:
+  - csharp
+  - vb
+  name: GetByUserIdAsync(Guid)
+  nameWithType: RefreshTokenRepository.GetByUserIdAsync(Guid)
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByUserIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByUserIdAsync
+    path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+    startLine: 22
+  assemblies:
+  - MyApp.Auth.Infrastructure
+  namespace: MyApp.Auth.Infrastructure.Data.Repositories
+  example: []
+  syntax:
+    content: public Task<IEnumerable<RefreshToken>> GetByUserIdAsync(Guid userId)
+    parameters:
+    - id: userId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Domain.Entities.RefreshToken}}
+    content.vb: Public Function GetByUserIdAsync(userId As Guid) As Task(Of IEnumerable(Of RefreshToken))
+  overload: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByUserIdAsync*
+  implements:
+  - MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetByUserIdAsync(System.Guid)
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetValidRefreshTokenAsync(System.Guid,System.String)
+  commentId: M:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetValidRefreshTokenAsync(System.Guid,System.String)
+  id: GetValidRefreshTokenAsync(System.Guid,System.String)
+  parent: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+  langs:
+  - csharp
+  - vb
+  name: GetValidRefreshTokenAsync(Guid, string)
+  nameWithType: RefreshTokenRepository.GetValidRefreshTokenAsync(Guid, string)
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetValidRefreshTokenAsync(System.Guid, string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetValidRefreshTokenAsync
+    path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+    startLine: 29
+  assemblies:
+  - MyApp.Auth.Infrastructure
+  namespace: MyApp.Auth.Infrastructure.Data.Repositories
+  example: []
+  syntax:
+    content: public Task<RefreshToken?> GetValidRefreshTokenAsync(Guid userId, string token)
+    parameters:
+    - id: userId
+      type: System.Guid
+    - id: token
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Domain.Entities.RefreshToken}
+    content.vb: Public Function GetValidRefreshTokenAsync(userId As Guid, token As String) As Task(Of RefreshToken)
+  overload: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetValidRefreshTokenAsync*
+  implements:
+  - MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetValidRefreshTokenAsync(System.Guid,System.String)
+  nameWithType.vb: RefreshTokenRepository.GetValidRefreshTokenAsync(Guid, String)
+  fullName.vb: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetValidRefreshTokenAsync(System.Guid, String)
+  name.vb: GetValidRefreshTokenAsync(Guid, String)
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.CreateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  commentId: M:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.CreateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  id: CreateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  parent: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+  langs:
+  - csharp
+  - vb
+  name: CreateAsync(RefreshToken)
+  nameWithType: RefreshTokenRepository.CreateAsync(RefreshToken)
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.CreateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateAsync
+    path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+    startLine: 38
+  assemblies:
+  - MyApp.Auth.Infrastructure
+  namespace: MyApp.Auth.Infrastructure.Data.Repositories
+  example: []
+  syntax:
+    content: public Task<RefreshToken> CreateAsync(RefreshToken refreshToken)
+    parameters:
+    - id: refreshToken
+      type: MyApp.Auth.Domain.Entities.RefreshToken
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Domain.Entities.RefreshToken}
+    content.vb: Public Function CreateAsync(refreshToken As RefreshToken) As Task(Of RefreshToken)
+  overload: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.CreateAsync*
+  implements:
+  - MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.CreateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeAsync(System.Guid)
+  commentId: M:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeAsync(System.Guid)
+  id: RevokeAsync(System.Guid)
+  parent: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+  langs:
+  - csharp
+  - vb
+  name: RevokeAsync(Guid)
+  nameWithType: RefreshTokenRepository.RevokeAsync(Guid)
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RevokeAsync
+    path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+    startLine: 45
+  assemblies:
+  - MyApp.Auth.Infrastructure
+  namespace: MyApp.Auth.Infrastructure.Data.Repositories
+  example: []
+  syntax:
+    content: public Task RevokeAsync(Guid tokenId)
+    parameters:
+    - id: tokenId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function RevokeAsync(tokenId As Guid) As Task
+  overload: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeAsync*
+  implements:
+  - MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.RevokeAsync(System.Guid)
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeUserTokensAsync(System.Guid)
+  commentId: M:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeUserTokensAsync(System.Guid)
+  id: RevokeUserTokensAsync(System.Guid)
+  parent: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository
+  langs:
+  - csharp
+  - vb
+  name: RevokeUserTokensAsync(Guid)
+  nameWithType: RefreshTokenRepository.RevokeUserTokensAsync(Guid)
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeUserTokensAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RevokeUserTokensAsync
+    path: src/MyApp.Auth/MyApp.Auth.Infrastructure/Data/Repositories/RefreshTokenRepository.cs
+    startLine: 55
+  assemblies:
+  - MyApp.Auth.Infrastructure
+  namespace: MyApp.Auth.Infrastructure.Data.Repositories
+  example: []
+  syntax:
+    content: public Task RevokeUserTokensAsync(Guid userId)
+    parameters:
+    - id: userId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function RevokeUserTokensAsync(userId As Guid) As Task
+  overload: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeUserTokensAsync*
+  implements:
+  - MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.RevokeUserTokensAsync(System.Guid)
+references:
+- uid: MyApp.Auth.Infrastructure.Data.Repositories
+  commentId: N:MyApp.Auth.Infrastructure.Data.Repositories
+  href: MyApp.html
+  name: MyApp.Auth.Infrastructure.Data.Repositories
+  nameWithType: MyApp.Auth.Infrastructure.Data.Repositories
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure
+    name: Infrastructure
+    href: MyApp.Auth.Infrastructure.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure.Data
+    name: Data
+    href: MyApp.Auth.Infrastructure.Data.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure.Data.Repositories
+    name: Repositories
+    href: MyApp.Auth.Infrastructure.Data.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure
+    name: Infrastructure
+    href: MyApp.Auth.Infrastructure.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure.Data
+    name: Data
+    href: MyApp.Auth.Infrastructure.Data.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure.Data.Repositories
+    name: Repositories
+    href: MyApp.Auth.Infrastructure.Data.Repositories.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}
+  commentId: T:MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}
+  parent: MyApp.Shared.Infrastructure.Repositories
+  definition: MyApp.Shared.Infrastructure.Repositories.Repository`2
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Repository<RefreshToken, Guid>
+  nameWithType: Repository<RefreshToken, Guid>
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<MyApp.Auth.Domain.Entities.RefreshToken, System.Guid>
+  nameWithType.vb: Repository(Of RefreshToken, Guid)
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of MyApp.Auth.Domain.Entities.RefreshToken, System.Guid)
+  name.vb: Repository(Of RefreshToken, Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2
+    name: Repository
+  - name: <
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2
+    name: Repository
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+  commentId: T:MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+  parent: MyApp.Auth.Domain.Repositories
+  href: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.html
+  name: IRefreshTokenRepository
+  nameWithType: IRefreshTokenRepository
+  fullName: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}
+  commentId: T:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}
+  parent: MyApp.Shared.Domain.Repositories
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2
+  href: MyApp.Auth.Domain.Entities.RefreshToken.html
+  name: IRepository<RefreshToken, Guid>
+  nameWithType: IRepository<RefreshToken, Guid>
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Auth.Domain.Entities.RefreshToken, System.Guid>
+  nameWithType.vb: IRepository(Of RefreshToken, Guid)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Auth.Domain.Entities.RefreshToken, System.Guid)
+  name.vb: IRepository(Of RefreshToken, Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+  - name: <
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+    href: MyApp.Auth.Domain.Entities.RefreshToken.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+    href: MyApp.Auth.Domain.Entities.RefreshToken.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}._dbContext
+  commentId: F:MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}._dbContext
+  parent: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}
+  definition: MyApp.Shared.Infrastructure.Repositories.Repository`2._dbContext
+  name: _dbContext
+  nameWithType: Repository<RefreshToken, Guid>._dbContext
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<MyApp.Auth.Domain.Entities.RefreshToken, System.Guid>._dbContext
+  nameWithType.vb: Repository(Of RefreshToken, Guid)._dbContext
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of MyApp.Auth.Domain.Entities.RefreshToken, System.Guid)._dbContext
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetByIdAsync(System.Guid)
+  commentId: M:MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetByIdAsync(System.Guid)
+  parent: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}
+  definition: MyApp.Shared.Infrastructure.Repositories.Repository`2.GetByIdAsync(`1)
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: GetByIdAsync(Guid)
+  nameWithType: Repository<RefreshToken, Guid>.GetByIdAsync(Guid)
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<MyApp.Auth.Domain.Entities.RefreshToken, System.Guid>.GetByIdAsync(System.Guid)
+  nameWithType.vb: Repository(Of RefreshToken, Guid).GetByIdAsync(Guid)
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of MyApp.Auth.Domain.Entities.RefreshToken, System.Guid).GetByIdAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetAllAsync
+  commentId: M:MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetAllAsync
+  parent: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}
+  definition: MyApp.Shared.Infrastructure.Repositories.Repository`2.GetAllAsync
+  name: GetAllAsync()
+  nameWithType: Repository<RefreshToken, Guid>.GetAllAsync()
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<MyApp.Auth.Domain.Entities.RefreshToken, System.Guid>.GetAllAsync()
+  nameWithType.vb: Repository(Of RefreshToken, Guid).GetAllAsync()
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of MyApp.Auth.Domain.Entities.RefreshToken, System.Guid).GetAllAsync()
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetAllAsync
+    name: GetAllAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetAllAsync
+    name: GetAllAsync
+  - name: (
+  - name: )
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}
+  definition: MyApp.Shared.Infrastructure.Repositories.Repository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: GetAllPaginatedAsync(int, int)
+  nameWithType: Repository<RefreshToken, Guid>.GetAllPaginatedAsync(int, int)
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<MyApp.Auth.Domain.Entities.RefreshToken, System.Guid>.GetAllPaginatedAsync(int, int)
+  nameWithType.vb: Repository(Of RefreshToken, Guid).GetAllPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of MyApp.Auth.Domain.Entities.RefreshToken, System.Guid).GetAllPaginatedAsync(Integer, Integer)
+  name.vb: GetAllPaginatedAsync(Integer, Integer)
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.AddAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  commentId: M:MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.AddAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  parent: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}
+  definition: MyApp.Shared.Infrastructure.Repositories.Repository`2.AddAsync(`0)
+  name: AddAsync(RefreshToken)
+  nameWithType: Repository<RefreshToken, Guid>.AddAsync(RefreshToken)
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<MyApp.Auth.Domain.Entities.RefreshToken, System.Guid>.AddAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  nameWithType.vb: Repository(Of RefreshToken, Guid).AddAsync(RefreshToken)
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of MyApp.Auth.Domain.Entities.RefreshToken, System.Guid).AddAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.AddAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+    name: AddAsync
+  - name: (
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.AddAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+    name: AddAsync
+  - name: (
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+  - name: )
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.UpdateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  commentId: M:MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.UpdateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  parent: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}
+  definition: MyApp.Shared.Infrastructure.Repositories.Repository`2.UpdateAsync(`0)
+  name: UpdateAsync(RefreshToken)
+  nameWithType: Repository<RefreshToken, Guid>.UpdateAsync(RefreshToken)
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<MyApp.Auth.Domain.Entities.RefreshToken, System.Guid>.UpdateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  nameWithType.vb: Repository(Of RefreshToken, Guid).UpdateAsync(RefreshToken)
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of MyApp.Auth.Domain.Entities.RefreshToken, System.Guid).UpdateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.UpdateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+    name: UpdateAsync
+  - name: (
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.UpdateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+    name: UpdateAsync
+  - name: (
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+  - name: )
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.DeleteAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  commentId: M:MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.DeleteAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  parent: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}
+  definition: MyApp.Shared.Infrastructure.Repositories.Repository`2.DeleteAsync(`0)
+  name: DeleteAsync(RefreshToken)
+  nameWithType: Repository<RefreshToken, Guid>.DeleteAsync(RefreshToken)
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<MyApp.Auth.Domain.Entities.RefreshToken, System.Guid>.DeleteAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  nameWithType.vb: Repository(Of RefreshToken, Guid).DeleteAsync(RefreshToken)
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of MyApp.Auth.Domain.Entities.RefreshToken, System.Guid).DeleteAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.DeleteAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+    name: DeleteAsync
+  - name: (
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository{MyApp.Auth.Domain.Entities.RefreshToken,System.Guid}.DeleteAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+    name: DeleteAsync
+  - name: (
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository`2
+  commentId: T:MyApp.Shared.Infrastructure.Repositories.Repository`2
+  href: MyApp.Shared.Infrastructure.Repositories.Repository-2.html
+  name: Repository<TEntity, TKey>
+  nameWithType: Repository<TEntity, TKey>
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<TEntity, TKey>
+  nameWithType.vb: Repository(Of TEntity, TKey)
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of TEntity, TKey)
+  name.vb: Repository(Of TEntity, TKey)
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2
+    name: Repository
+    href: MyApp.Shared.Infrastructure.Repositories.Repository-2.html
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2
+    name: Repository
+    href: MyApp.Shared.Infrastructure.Repositories.Repository-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+- uid: MyApp.Shared.Infrastructure.Repositories
+  commentId: N:MyApp.Shared.Infrastructure.Repositories
+  href: MyApp.html
+  name: MyApp.Shared.Infrastructure.Repositories
+  nameWithType: MyApp.Shared.Infrastructure.Repositories
+  fullName: MyApp.Shared.Infrastructure.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Infrastructure
+    name: Infrastructure
+    href: MyApp.Shared.Infrastructure.html
+  - name: .
+  - uid: MyApp.Shared.Infrastructure.Repositories
+    name: Repositories
+    href: MyApp.Shared.Infrastructure.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Infrastructure
+    name: Infrastructure
+    href: MyApp.Shared.Infrastructure.html
+  - name: .
+  - uid: MyApp.Shared.Infrastructure.Repositories
+    name: Repositories
+    href: MyApp.Shared.Infrastructure.Repositories.html
+- uid: MyApp.Auth.Domain.Repositories
+  commentId: N:MyApp.Auth.Domain.Repositories
+  href: MyApp.html
+  name: MyApp.Auth.Domain.Repositories
+  nameWithType: MyApp.Auth.Domain.Repositories
+  fullName: MyApp.Auth.Domain.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Repositories
+    name: Repositories
+    href: MyApp.Auth.Domain.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Repositories
+    name: Repositories
+    href: MyApp.Auth.Domain.Repositories.html
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2
+  commentId: T:MyApp.Shared.Domain.Repositories.IRepository`2
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  name: IRepository<TEntity, TKey>
+  nameWithType: IRepository<TEntity, TKey>
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>
+  nameWithType.vb: IRepository(Of TEntity, TKey)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey)
+  name.vb: IRepository(Of TEntity, TKey)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories
+  commentId: N:MyApp.Shared.Domain.Repositories
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Repositories
+  nameWithType: MyApp.Shared.Domain.Repositories
+  fullName: MyApp.Shared.Domain.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Repositories
+    name: Repositories
+    href: MyApp.Shared.Domain.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Repositories
+    name: Repositories
+    href: MyApp.Shared.Domain.Repositories.html
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository`2._dbContext
+  commentId: F:MyApp.Shared.Infrastructure.Repositories.Repository`2._dbContext
+  name: _dbContext
+  nameWithType: Repository<TEntity, TKey>._dbContext
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<TEntity, TKey>._dbContext
+  nameWithType.vb: Repository(Of TEntity, TKey)._dbContext
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of TEntity, TKey)._dbContext
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.GetByIdAsync(`1)
+  commentId: M:MyApp.Shared.Infrastructure.Repositories.Repository`2.GetByIdAsync(`1)
+  name: GetByIdAsync(TKey)
+  nameWithType: Repository<TEntity, TKey>.GetByIdAsync(TKey)
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<TEntity, TKey>.GetByIdAsync(TKey)
+  nameWithType.vb: Repository(Of TEntity, TKey).GetByIdAsync(TKey)
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of TEntity, TKey).GetByIdAsync(TKey)
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.GetByIdAsync(`1)
+    name: GetByIdAsync
+  - name: (
+  - name: TKey
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.GetByIdAsync(`1)
+    name: GetByIdAsync
+  - name: (
+  - name: TKey
+  - name: )
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.GetAllAsync
+  commentId: M:MyApp.Shared.Infrastructure.Repositories.Repository`2.GetAllAsync
+  name: GetAllAsync()
+  nameWithType: Repository<TEntity, TKey>.GetAllAsync()
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<TEntity, TKey>.GetAllAsync()
+  nameWithType.vb: Repository(Of TEntity, TKey).GetAllAsync()
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of TEntity, TKey).GetAllAsync()
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.GetAllAsync
+    name: GetAllAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.GetAllAsync
+    name: GetAllAsync
+  - name: (
+  - name: )
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Shared.Infrastructure.Repositories.Repository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: GetAllPaginatedAsync(int, int)
+  nameWithType: Repository<TEntity, TKey>.GetAllPaginatedAsync(int, int)
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<TEntity, TKey>.GetAllPaginatedAsync(int, int)
+  nameWithType.vb: Repository(Of TEntity, TKey).GetAllPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of TEntity, TKey).GetAllPaginatedAsync(Integer, Integer)
+  name.vb: GetAllPaginatedAsync(Integer, Integer)
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.AddAsync(`0)
+  commentId: M:MyApp.Shared.Infrastructure.Repositories.Repository`2.AddAsync(`0)
+  name: AddAsync(TEntity)
+  nameWithType: Repository<TEntity, TKey>.AddAsync(TEntity)
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<TEntity, TKey>.AddAsync(TEntity)
+  nameWithType.vb: Repository(Of TEntity, TKey).AddAsync(TEntity)
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of TEntity, TKey).AddAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.AddAsync(`0)
+    name: AddAsync
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.AddAsync(`0)
+    name: AddAsync
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.UpdateAsync(`0)
+  commentId: M:MyApp.Shared.Infrastructure.Repositories.Repository`2.UpdateAsync(`0)
+  name: UpdateAsync(TEntity)
+  nameWithType: Repository<TEntity, TKey>.UpdateAsync(TEntity)
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<TEntity, TKey>.UpdateAsync(TEntity)
+  nameWithType.vb: Repository(Of TEntity, TKey).UpdateAsync(TEntity)
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of TEntity, TKey).UpdateAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.UpdateAsync(`0)
+    name: UpdateAsync
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.UpdateAsync(`0)
+    name: UpdateAsync
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.DeleteAsync(`0)
+  commentId: M:MyApp.Shared.Infrastructure.Repositories.Repository`2.DeleteAsync(`0)
+  name: DeleteAsync(TEntity)
+  nameWithType: Repository<TEntity, TKey>.DeleteAsync(TEntity)
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<TEntity, TKey>.DeleteAsync(TEntity)
+  nameWithType.vb: Repository(Of TEntity, TKey).DeleteAsync(TEntity)
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of TEntity, TKey).DeleteAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.DeleteAsync(`0)
+    name: DeleteAsync
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2.DeleteAsync(`0)
+    name: DeleteAsync
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.#ctor*
+  commentId: Overload:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.#ctor
+  href: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.html#MyApp_Auth_Infrastructure_Data_Repositories_RefreshTokenRepository__ctor_MyApp_Auth_Infrastructure_Data_AuthDbContext_
+  name: RefreshTokenRepository
+  nameWithType: RefreshTokenRepository.RefreshTokenRepository
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RefreshTokenRepository
+  nameWithType.vb: RefreshTokenRepository.New
+  fullName.vb: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.New
+  name.vb: New
+- uid: MyApp.Auth.Infrastructure.Data.AuthDbContext
+  commentId: T:MyApp.Auth.Infrastructure.Data.AuthDbContext
+  parent: MyApp.Auth.Infrastructure.Data
+  href: MyApp.Auth.Infrastructure.Data.AuthDbContext.html
+  name: AuthDbContext
+  nameWithType: AuthDbContext
+  fullName: MyApp.Auth.Infrastructure.Data.AuthDbContext
+- uid: MyApp.Auth.Infrastructure.Data
+  commentId: N:MyApp.Auth.Infrastructure.Data
+  href: MyApp.html
+  name: MyApp.Auth.Infrastructure.Data
+  nameWithType: MyApp.Auth.Infrastructure.Data
+  fullName: MyApp.Auth.Infrastructure.Data
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure
+    name: Infrastructure
+    href: MyApp.Auth.Infrastructure.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure.Data
+    name: Data
+    href: MyApp.Auth.Infrastructure.Data.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure
+    name: Infrastructure
+    href: MyApp.Auth.Infrastructure.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure.Data
+    name: Data
+    href: MyApp.Auth.Infrastructure.Data.html
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByTokenAsync*
+  commentId: Overload:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByTokenAsync
+  href: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.html#MyApp_Auth_Infrastructure_Data_Repositories_RefreshTokenRepository_GetByTokenAsync_System_String_
+  name: GetByTokenAsync
+  nameWithType: RefreshTokenRepository.GetByTokenAsync
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByTokenAsync
+- uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetByTokenAsync(System.String)
+  commentId: M:MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetByTokenAsync(System.String)
+  parent: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: GetByTokenAsync(string)
+  nameWithType: IRefreshTokenRepository.GetByTokenAsync(string)
+  fullName: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetByTokenAsync(string)
+  nameWithType.vb: IRefreshTokenRepository.GetByTokenAsync(String)
+  fullName.vb: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetByTokenAsync(String)
+  name.vb: GetByTokenAsync(String)
+  spec.csharp:
+  - uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetByTokenAsync(System.String)
+    name: GetByTokenAsync
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetByTokenAsync(System.String)
+    name: GetByTokenAsync
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{MyApp.Auth.Domain.Entities.RefreshToken}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Auth.Domain.Entities.RefreshToken}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<RefreshToken>
+  nameWithType: Task<RefreshToken>
+  fullName: System.Threading.Tasks.Task<MyApp.Auth.Domain.Entities.RefreshToken>
+  nameWithType.vb: Task(Of RefreshToken)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Auth.Domain.Entities.RefreshToken)
+  name.vb: Task(Of RefreshToken)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+    href: MyApp.Auth.Domain.Entities.RefreshToken.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+    href: MyApp.Auth.Domain.Entities.RefreshToken.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByUserIdAsync*
+  commentId: Overload:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByUserIdAsync
+  href: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.html#MyApp_Auth_Infrastructure_Data_Repositories_RefreshTokenRepository_GetByUserIdAsync_System_Guid_
+  name: GetByUserIdAsync
+  nameWithType: RefreshTokenRepository.GetByUserIdAsync
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetByUserIdAsync
+- uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetByUserIdAsync(System.Guid)
+  commentId: M:MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetByUserIdAsync(System.Guid)
+  parent: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: GetByUserIdAsync(Guid)
+  nameWithType: IRefreshTokenRepository.GetByUserIdAsync(Guid)
+  fullName: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetByUserIdAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetByUserIdAsync(System.Guid)
+    name: GetByUserIdAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetByUserIdAsync(System.Guid)
+    name: GetByUserIdAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Domain.Entities.RefreshToken}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Domain.Entities.RefreshToken}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<RefreshToken>>
+  nameWithType: Task<IEnumerable<RefreshToken>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Auth.Domain.Entities.RefreshToken>>
+  nameWithType.vb: Task(Of IEnumerable(Of RefreshToken))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Auth.Domain.Entities.RefreshToken))
+  name.vb: Task(Of IEnumerable(Of RefreshToken))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+    href: MyApp.Auth.Domain.Entities.RefreshToken.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+    href: MyApp.Auth.Domain.Entities.RefreshToken.html
+  - name: )
+  - name: )
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetValidRefreshTokenAsync*
+  commentId: Overload:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetValidRefreshTokenAsync
+  href: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.html#MyApp_Auth_Infrastructure_Data_Repositories_RefreshTokenRepository_GetValidRefreshTokenAsync_System_Guid_System_String_
+  name: GetValidRefreshTokenAsync
+  nameWithType: RefreshTokenRepository.GetValidRefreshTokenAsync
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.GetValidRefreshTokenAsync
+- uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetValidRefreshTokenAsync(System.Guid,System.String)
+  commentId: M:MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetValidRefreshTokenAsync(System.Guid,System.String)
+  parent: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: GetValidRefreshTokenAsync(Guid, string)
+  nameWithType: IRefreshTokenRepository.GetValidRefreshTokenAsync(Guid, string)
+  fullName: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetValidRefreshTokenAsync(System.Guid, string)
+  nameWithType.vb: IRefreshTokenRepository.GetValidRefreshTokenAsync(Guid, String)
+  fullName.vb: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetValidRefreshTokenAsync(System.Guid, String)
+  name.vb: GetValidRefreshTokenAsync(Guid, String)
+  spec.csharp:
+  - uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetValidRefreshTokenAsync(System.Guid,System.String)
+    name: GetValidRefreshTokenAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.GetValidRefreshTokenAsync(System.Guid,System.String)
+    name: GetValidRefreshTokenAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.CreateAsync*
+  commentId: Overload:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.CreateAsync
+  href: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.html#MyApp_Auth_Infrastructure_Data_Repositories_RefreshTokenRepository_CreateAsync_MyApp_Auth_Domain_Entities_RefreshToken_
+  name: CreateAsync
+  nameWithType: RefreshTokenRepository.CreateAsync
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.CreateAsync
+- uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.CreateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  commentId: M:MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.CreateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  parent: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+  name: CreateAsync(RefreshToken)
+  nameWithType: IRefreshTokenRepository.CreateAsync(RefreshToken)
+  fullName: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.CreateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+  spec.csharp:
+  - uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.CreateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+    name: CreateAsync
+  - name: (
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.CreateAsync(MyApp.Auth.Domain.Entities.RefreshToken)
+    name: CreateAsync
+  - name: (
+  - uid: MyApp.Auth.Domain.Entities.RefreshToken
+    name: RefreshToken
+  - name: )
+- uid: MyApp.Auth.Domain.Entities.RefreshToken
+  commentId: T:MyApp.Auth.Domain.Entities.RefreshToken
+  parent: MyApp.Auth.Domain.Entities
+  href: MyApp.Auth.Domain.Entities.RefreshToken.html
+  name: RefreshToken
+  nameWithType: RefreshToken
+  fullName: MyApp.Auth.Domain.Entities.RefreshToken
+- uid: MyApp.Auth.Domain.Entities
+  commentId: N:MyApp.Auth.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Auth.Domain.Entities
+  nameWithType: MyApp.Auth.Domain.Entities
+  fullName: MyApp.Auth.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Entities
+    name: Entities
+    href: MyApp.Auth.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Entities
+    name: Entities
+    href: MyApp.Auth.Domain.Entities.html
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeAsync*
+  commentId: Overload:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeAsync
+  href: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.html#MyApp_Auth_Infrastructure_Data_Repositories_RefreshTokenRepository_RevokeAsync_System_Guid_
+  name: RevokeAsync
+  nameWithType: RefreshTokenRepository.RevokeAsync
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeAsync
+- uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.RevokeAsync(System.Guid)
+  commentId: M:MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.RevokeAsync(System.Guid)
+  parent: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: RevokeAsync(Guid)
+  nameWithType: IRefreshTokenRepository.RevokeAsync(Guid)
+  fullName: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.RevokeAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.RevokeAsync(System.Guid)
+    name: RevokeAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.RevokeAsync(System.Guid)
+    name: RevokeAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeUserTokensAsync*
+  commentId: Overload:MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeUserTokensAsync
+  href: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.html#MyApp_Auth_Infrastructure_Data_Repositories_RefreshTokenRepository_RevokeUserTokensAsync_System_Guid_
+  name: RevokeUserTokensAsync
+  nameWithType: RefreshTokenRepository.RevokeUserTokensAsync
+  fullName: MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.RevokeUserTokensAsync
+- uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.RevokeUserTokensAsync(System.Guid)
+  commentId: M:MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.RevokeUserTokensAsync(System.Guid)
+  parent: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: RevokeUserTokensAsync(Guid)
+  nameWithType: IRefreshTokenRepository.RevokeUserTokensAsync(Guid)
+  fullName: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.RevokeUserTokensAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.RevokeUserTokensAsync(System.Guid)
+    name: RevokeUserTokensAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.RevokeUserTokensAsync(System.Guid)
+    name: RevokeUserTokensAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )

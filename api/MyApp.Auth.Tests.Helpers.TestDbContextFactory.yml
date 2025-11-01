@@ -1,0 +1,432 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Tests.Helpers.TestDbContextFactory
+  commentId: T:MyApp.Auth.Tests.Helpers.TestDbContextFactory
+  id: TestDbContextFactory
+  parent: MyApp.Auth.Tests.Helpers
+  children:
+  - MyApp.Auth.Tests.Helpers.TestDbContextFactory.CreateInMemoryContext
+  - MyApp.Auth.Tests.Helpers.TestDbContextFactory.SeedTestData(MyApp.Auth.Infrastructure.Data.AuthDbContext)
+  langs:
+  - csharp
+  - vb
+  name: TestDbContextFactory
+  nameWithType: TestDbContextFactory
+  fullName: MyApp.Auth.Tests.Helpers.TestDbContextFactory
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Helpers/TestDbContextFactory.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: TestDbContextFactory
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Helpers/TestDbContextFactory.cs
+    startLine: 10
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Helpers
+  summary: Helper class for creating in-memory AuthDbContext instances for testing
+  example: []
+  syntax:
+    content: public static class TestDbContextFactory
+    content.vb: Public Module TestDbContextFactory
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Tests.Helpers.TestDbContextFactory.CreateInMemoryContext
+  commentId: M:MyApp.Auth.Tests.Helpers.TestDbContextFactory.CreateInMemoryContext
+  id: CreateInMemoryContext
+  parent: MyApp.Auth.Tests.Helpers.TestDbContextFactory
+  langs:
+  - csharp
+  - vb
+  name: CreateInMemoryContext()
+  nameWithType: TestDbContextFactory.CreateInMemoryContext()
+  fullName: MyApp.Auth.Tests.Helpers.TestDbContextFactory.CreateInMemoryContext()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Helpers/TestDbContextFactory.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateInMemoryContext
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Helpers/TestDbContextFactory.cs
+    startLine: 12
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Helpers
+  syntax:
+    content: public static AuthDbContext CreateInMemoryContext()
+    return:
+      type: MyApp.Auth.Infrastructure.Data.AuthDbContext
+    content.vb: Public Shared Function CreateInMemoryContext() As AuthDbContext
+  overload: MyApp.Auth.Tests.Helpers.TestDbContextFactory.CreateInMemoryContext*
+- uid: MyApp.Auth.Tests.Helpers.TestDbContextFactory.SeedTestData(MyApp.Auth.Infrastructure.Data.AuthDbContext)
+  commentId: M:MyApp.Auth.Tests.Helpers.TestDbContextFactory.SeedTestData(MyApp.Auth.Infrastructure.Data.AuthDbContext)
+  id: SeedTestData(MyApp.Auth.Infrastructure.Data.AuthDbContext)
+  parent: MyApp.Auth.Tests.Helpers.TestDbContextFactory
+  langs:
+  - csharp
+  - vb
+  name: SeedTestData(AuthDbContext)
+  nameWithType: TestDbContextFactory.SeedTestData(AuthDbContext)
+  fullName: MyApp.Auth.Tests.Helpers.TestDbContextFactory.SeedTestData(MyApp.Auth.Infrastructure.Data.AuthDbContext)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Helpers/TestDbContextFactory.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: SeedTestData
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Helpers/TestDbContextFactory.cs
+    startLine: 23
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Helpers
+  syntax:
+    content: public static void SeedTestData(AuthDbContext context)
+    parameters:
+    - id: context
+      type: MyApp.Auth.Infrastructure.Data.AuthDbContext
+    content.vb: Public Shared Sub SeedTestData(context As AuthDbContext)
+  overload: MyApp.Auth.Tests.Helpers.TestDbContextFactory.SeedTestData*
+references:
+- uid: MyApp.Auth.Tests.Helpers
+  commentId: N:MyApp.Auth.Tests.Helpers
+  href: MyApp.html
+  name: MyApp.Auth.Tests.Helpers
+  nameWithType: MyApp.Auth.Tests.Helpers
+  fullName: MyApp.Auth.Tests.Helpers
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Tests
+    name: Tests
+    href: MyApp.Auth.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Tests.Helpers
+    name: Helpers
+    href: MyApp.Auth.Tests.Helpers.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Tests
+    name: Tests
+    href: MyApp.Auth.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Tests.Helpers
+    name: Helpers
+    href: MyApp.Auth.Tests.Helpers.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Auth.Tests.Helpers.TestDbContextFactory.CreateInMemoryContext*
+  commentId: Overload:MyApp.Auth.Tests.Helpers.TestDbContextFactory.CreateInMemoryContext
+  href: MyApp.Auth.Tests.Helpers.TestDbContextFactory.html#MyApp_Auth_Tests_Helpers_TestDbContextFactory_CreateInMemoryContext
+  name: CreateInMemoryContext
+  nameWithType: TestDbContextFactory.CreateInMemoryContext
+  fullName: MyApp.Auth.Tests.Helpers.TestDbContextFactory.CreateInMemoryContext
+- uid: MyApp.Auth.Infrastructure.Data.AuthDbContext
+  commentId: T:MyApp.Auth.Infrastructure.Data.AuthDbContext
+  parent: MyApp.Auth.Infrastructure.Data
+  href: MyApp.Auth.Infrastructure.Data.AuthDbContext.html
+  name: AuthDbContext
+  nameWithType: AuthDbContext
+  fullName: MyApp.Auth.Infrastructure.Data.AuthDbContext
+- uid: MyApp.Auth.Infrastructure.Data
+  commentId: N:MyApp.Auth.Infrastructure.Data
+  href: MyApp.html
+  name: MyApp.Auth.Infrastructure.Data
+  nameWithType: MyApp.Auth.Infrastructure.Data
+  fullName: MyApp.Auth.Infrastructure.Data
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure
+    name: Infrastructure
+    href: MyApp.Auth.Infrastructure.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure.Data
+    name: Data
+    href: MyApp.Auth.Infrastructure.Data.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure
+    name: Infrastructure
+    href: MyApp.Auth.Infrastructure.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure.Data
+    name: Data
+    href: MyApp.Auth.Infrastructure.Data.html
+- uid: MyApp.Auth.Tests.Helpers.TestDbContextFactory.SeedTestData*
+  commentId: Overload:MyApp.Auth.Tests.Helpers.TestDbContextFactory.SeedTestData
+  href: MyApp.Auth.Tests.Helpers.TestDbContextFactory.html#MyApp_Auth_Tests_Helpers_TestDbContextFactory_SeedTestData_MyApp_Auth_Infrastructure_Data_AuthDbContext_
+  name: SeedTestData
+  nameWithType: TestDbContextFactory.SeedTestData
+  fullName: MyApp.Auth.Tests.Helpers.TestDbContextFactory.SeedTestData

@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Application.Contracts.Services
+  commentId: N:MyApp.Purchasing.Application.Contracts.Services
+  id: MyApp.Purchasing.Application.Contracts.Services
+  children:
+  - MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+  - MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Purchasing.Application.Contracts.Services
+  nameWithType: MyApp.Purchasing.Application.Contracts.Services
+  fullName: MyApp.Purchasing.Application.Contracts.Services
+  type: Namespace
+  assemblies:
+  - MyApp.Purchasing.Application.Contracts
+references:
+- uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+  commentId: T:MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+  parent: MyApp.Purchasing.Application.Contracts.Services
+  href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html
+  name: IPurchaseOrderService
+  nameWithType: IPurchaseOrderService
+  fullName: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+  commentId: T:MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+  parent: MyApp.Purchasing.Application.Contracts.Services
+  href: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.html
+  name: ISupplierService
+  nameWithType: ISupplierService
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+- uid: MyApp.Purchasing.Application.Contracts.Services
+  commentId: N:MyApp.Purchasing.Application.Contracts.Services
+  href: MyApp.html
+  name: MyApp.Purchasing.Application.Contracts.Services
+  nameWithType: MyApp.Purchasing.Application.Contracts.Services
+  fullName: MyApp.Purchasing.Application.Contracts.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Application
+    name: Application
+    href: MyApp.Purchasing.Application.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts
+    name: Contracts
+    href: MyApp.Purchasing.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts.Services
+    name: Services
+    href: MyApp.Purchasing.Application.Contracts.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Application
+    name: Application
+    href: MyApp.Purchasing.Application.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts
+    name: Contracts
+    href: MyApp.Purchasing.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts.Services
+    name: Services
+    href: MyApp.Purchasing.Application.Contracts.Services.html

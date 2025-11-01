@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.API.Controllers
+  commentId: N:MyApp.Sales.API.Controllers
+  id: MyApp.Sales.API.Controllers
+  children:
+  - MyApp.Sales.API.Controllers.CustomersController
+  - MyApp.Sales.API.Controllers.SalesOrdersController
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Sales.API.Controllers
+  nameWithType: MyApp.Sales.API.Controllers
+  fullName: MyApp.Sales.API.Controllers
+  type: Namespace
+  assemblies:
+  - MyApp.Sales.API
+references:
+- uid: MyApp.Sales.API.Controllers.CustomersController
+  commentId: T:MyApp.Sales.API.Controllers.CustomersController
+  href: MyApp.Sales.API.Controllers.CustomersController.html
+  name: CustomersController
+  nameWithType: CustomersController
+  fullName: MyApp.Sales.API.Controllers.CustomersController
+- uid: MyApp.Sales.API.Controllers.SalesOrdersController
+  commentId: T:MyApp.Sales.API.Controllers.SalesOrdersController
+  href: MyApp.Sales.API.Controllers.SalesOrdersController.html
+  name: SalesOrdersController
+  nameWithType: SalesOrdersController
+  fullName: MyApp.Sales.API.Controllers.SalesOrdersController

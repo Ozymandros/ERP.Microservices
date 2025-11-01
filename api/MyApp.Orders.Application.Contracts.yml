@@ -1,0 +1,62 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Application.Contracts
+  commentId: N:MyApp.Orders.Application.Contracts
+  id: MyApp.Orders.Application.Contracts
+  children:
+  - MyApp.Orders.Application.Contracts.IOrderService
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Orders.Application.Contracts
+  nameWithType: MyApp.Orders.Application.Contracts
+  fullName: MyApp.Orders.Application.Contracts
+  type: Namespace
+  assemblies:
+  - MyApp.Orders.Application.Contracts
+references:
+- uid: MyApp.Orders.Application.Contracts.IOrderService
+  commentId: T:MyApp.Orders.Application.Contracts.IOrderService
+  parent: MyApp.Orders.Application.Contracts
+  href: MyApp.Orders.Application.Contracts.IOrderService.html
+  name: IOrderService
+  nameWithType: IOrderService
+  fullName: MyApp.Orders.Application.Contracts.IOrderService
+- uid: MyApp.Orders.Application.Contracts
+  commentId: N:MyApp.Orders.Application.Contracts
+  href: MyApp.html
+  name: MyApp.Orders.Application.Contracts
+  nameWithType: MyApp.Orders.Application.Contracts
+  fullName: MyApp.Orders.Application.Contracts
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Application
+    name: Application
+    href: MyApp.Orders.Application.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts
+    name: Contracts
+    href: MyApp.Orders.Application.Contracts.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Application
+    name: Application
+    href: MyApp.Orders.Application.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts
+    name: Contracts
+    href: MyApp.Orders.Application.Contracts.html

@@ -1,0 +1,155 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Domain.Entities.TransactionType
+  commentId: T:MyApp.Inventory.Domain.Entities.TransactionType
+  id: TransactionType
+  parent: MyApp.Inventory.Domain.Entities
+  children:
+  - MyApp.Inventory.Domain.Entities.TransactionType.Adjustment
+  - MyApp.Inventory.Domain.Entities.TransactionType.Inbound
+  - MyApp.Inventory.Domain.Entities.TransactionType.Outbound
+  langs:
+  - csharp
+  - vb
+  name: TransactionType
+  nameWithType: TransactionType
+  fullName: MyApp.Inventory.Domain.Entities.TransactionType
+  type: Enum
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: TransactionType
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+    startLine: 4
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Entities
+  syntax:
+    content: public enum TransactionType
+    content.vb: Public Enum TransactionType
+- uid: MyApp.Inventory.Domain.Entities.TransactionType.Inbound
+  commentId: F:MyApp.Inventory.Domain.Entities.TransactionType.Inbound
+  id: Inbound
+  parent: MyApp.Inventory.Domain.Entities.TransactionType
+  langs:
+  - csharp
+  - vb
+  name: Inbound
+  nameWithType: TransactionType.Inbound
+  fullName: MyApp.Inventory.Domain.Entities.TransactionType.Inbound
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Inbound
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+    startLine: 6
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Entities
+  syntax:
+    content: Inbound = 0
+    return:
+      type: MyApp.Inventory.Domain.Entities.TransactionType
+- uid: MyApp.Inventory.Domain.Entities.TransactionType.Outbound
+  commentId: F:MyApp.Inventory.Domain.Entities.TransactionType.Outbound
+  id: Outbound
+  parent: MyApp.Inventory.Domain.Entities.TransactionType
+  langs:
+  - csharp
+  - vb
+  name: Outbound
+  nameWithType: TransactionType.Outbound
+  fullName: MyApp.Inventory.Domain.Entities.TransactionType.Outbound
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Outbound
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+    startLine: 7
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Entities
+  syntax:
+    content: Outbound = 1
+    return:
+      type: MyApp.Inventory.Domain.Entities.TransactionType
+- uid: MyApp.Inventory.Domain.Entities.TransactionType.Adjustment
+  commentId: F:MyApp.Inventory.Domain.Entities.TransactionType.Adjustment
+  id: Adjustment
+  parent: MyApp.Inventory.Domain.Entities.TransactionType
+  langs:
+  - csharp
+  - vb
+  name: Adjustment
+  nameWithType: TransactionType.Adjustment
+  fullName: MyApp.Inventory.Domain.Entities.TransactionType.Adjustment
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Adjustment
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Entities
+  syntax:
+    content: Adjustment = 2
+    return:
+      type: MyApp.Inventory.Domain.Entities.TransactionType
+references:
+- uid: MyApp.Inventory.Domain.Entities
+  commentId: N:MyApp.Inventory.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Inventory.Domain.Entities
+  nameWithType: MyApp.Inventory.Domain.Entities
+  fullName: MyApp.Inventory.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Entities
+    name: Entities
+    href: MyApp.Inventory.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Entities
+    name: Entities
+    href: MyApp.Inventory.Domain.Entities.html
+- uid: MyApp.Inventory.Domain.Entities.TransactionType
+  commentId: T:MyApp.Inventory.Domain.Entities.TransactionType
+  parent: MyApp.Inventory.Domain.Entities
+  href: MyApp.Inventory.Domain.Entities.TransactionType.html
+  name: TransactionType
+  nameWithType: TransactionType
+  fullName: MyApp.Inventory.Domain.Entities.TransactionType

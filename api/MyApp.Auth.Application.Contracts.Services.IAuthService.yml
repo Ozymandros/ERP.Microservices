@@ -1,0 +1,460 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService
+  commentId: T:MyApp.Auth.Application.Contracts.Services.IAuthService
+  id: IAuthService
+  parent: MyApp.Auth.Application.Contracts.Services
+  children:
+  - MyApp.Auth.Application.Contracts.Services.IAuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+  - MyApp.Auth.Application.Contracts.Services.IAuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+  - MyApp.Auth.Application.Contracts.Services.IAuthService.LogoutAsync(System.Guid)
+  - MyApp.Auth.Application.Contracts.Services.IAuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+  - MyApp.Auth.Application.Contracts.Services.IAuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+  langs:
+  - csharp
+  - vb
+  name: IAuthService
+  nameWithType: IAuthService
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IAuthService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: IAuthService
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IAuthService.cs
+    startLine: 4
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: public interface IAuthService
+    content.vb: Public Interface IAuthService
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IAuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+  id: LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+  parent: MyApp.Auth.Application.Contracts.Services.IAuthService
+  langs:
+  - csharp
+  - vb
+  name: LoginAsync(LoginDto)
+  nameWithType: IAuthService.LoginAsync(LoginDto)
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IAuthService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: LoginAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IAuthService.cs
+    startLine: 6
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<TokenResponseDto?> LoginAsync(LoginDto loginDto)
+    parameters:
+    - id: loginDto
+      type: MyApp.Auth.Application.Contracts.DTOs.LoginDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto}
+    content.vb: Function LoginAsync(loginDto As LoginDto) As Task(Of TokenResponseDto)
+  overload: MyApp.Auth.Application.Contracts.Services.IAuthService.LoginAsync*
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IAuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+  id: RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+  parent: MyApp.Auth.Application.Contracts.Services.IAuthService
+  langs:
+  - csharp
+  - vb
+  name: RegisterAsync(RegisterDto)
+  nameWithType: IAuthService.RegisterAsync(RegisterDto)
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IAuthService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RegisterAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IAuthService.cs
+    startLine: 7
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<TokenResponseDto?> RegisterAsync(RegisterDto registerDto)
+    parameters:
+    - id: registerDto
+      type: MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto}
+    content.vb: Function RegisterAsync(registerDto As RegisterDto) As Task(Of TokenResponseDto)
+  overload: MyApp.Auth.Application.Contracts.Services.IAuthService.RegisterAsync*
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IAuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+  id: RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+  parent: MyApp.Auth.Application.Contracts.Services.IAuthService
+  langs:
+  - csharp
+  - vb
+  name: RefreshTokenAsync(RefreshTokenDto)
+  nameWithType: IAuthService.RefreshTokenAsync(RefreshTokenDto)
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IAuthService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RefreshTokenAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IAuthService.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
+    parameters:
+    - id: refreshTokenDto
+      type: MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto}
+    content.vb: Function RefreshTokenAsync(refreshTokenDto As RefreshTokenDto) As Task(Of TokenResponseDto)
+  overload: MyApp.Auth.Application.Contracts.Services.IAuthService.RefreshTokenAsync*
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IAuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+  id: ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+  parent: MyApp.Auth.Application.Contracts.Services.IAuthService
+  langs:
+  - csharp
+  - vb
+  name: ExternalLoginAsync(ExternalLoginDto)
+  nameWithType: IAuthService.ExternalLoginAsync(ExternalLoginDto)
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IAuthService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ExternalLoginAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IAuthService.cs
+    startLine: 9
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<TokenResponseDto?> ExternalLoginAsync(ExternalLoginDto externalLoginDto)
+    parameters:
+    - id: externalLoginDto
+      type: MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto}
+    content.vb: Function ExternalLoginAsync(externalLoginDto As ExternalLoginDto) As Task(Of TokenResponseDto)
+  overload: MyApp.Auth.Application.Contracts.Services.IAuthService.ExternalLoginAsync*
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.LogoutAsync(System.Guid)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IAuthService.LogoutAsync(System.Guid)
+  id: LogoutAsync(System.Guid)
+  parent: MyApp.Auth.Application.Contracts.Services.IAuthService
+  langs:
+  - csharp
+  - vb
+  name: LogoutAsync(Guid)
+  nameWithType: IAuthService.LogoutAsync(Guid)
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.LogoutAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IAuthService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: LogoutAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IAuthService.cs
+    startLine: 10
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task LogoutAsync(Guid userId)
+    parameters:
+    - id: userId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function LogoutAsync(userId As Guid) As Task
+  overload: MyApp.Auth.Application.Contracts.Services.IAuthService.LogoutAsync*
+references:
+- uid: MyApp.Auth.Application.Contracts.Services
+  commentId: N:MyApp.Auth.Application.Contracts.Services
+  href: MyApp.html
+  name: MyApp.Auth.Application.Contracts.Services
+  nameWithType: MyApp.Auth.Application.Contracts.Services
+  fullName: MyApp.Auth.Application.Contracts.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.Services
+    name: Services
+    href: MyApp.Auth.Application.Contracts.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.Services
+    name: Services
+    href: MyApp.Auth.Application.Contracts.Services.html
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.LoginAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IAuthService.LoginAsync
+  href: MyApp.Auth.Application.Contracts.Services.IAuthService.html#MyApp_Auth_Application_Contracts_Services_IAuthService_LoginAsync_MyApp_Auth_Application_Contracts_DTOs_LoginDto_
+  name: LoginAsync
+  nameWithType: IAuthService.LoginAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.LoginAsync
+- uid: MyApp.Auth.Application.Contracts.DTOs.LoginDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.LoginDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.LoginDto.html
+  name: LoginDto
+  nameWithType: LoginDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.LoginDto
+- uid: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TokenResponseDto>
+  nameWithType: Task<TokenResponseDto>
+  fullName: System.Threading.Tasks.Task<MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto>
+  nameWithType.vb: Task(Of TokenResponseDto)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto)
+  name.vb: Task(Of TokenResponseDto)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto
+    name: TokenResponseDto
+    href: MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto
+    name: TokenResponseDto
+    href: MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto.html
+  - name: )
+- uid: MyApp.Auth.Application.Contracts.DTOs
+  commentId: N:MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Auth.Application.Contracts.DTOs
+  nameWithType: MyApp.Auth.Application.Contracts.DTOs
+  fullName: MyApp.Auth.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Auth.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Auth.Application.Contracts.DTOs.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.RegisterAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IAuthService.RegisterAsync
+  href: MyApp.Auth.Application.Contracts.Services.IAuthService.html#MyApp_Auth_Application_Contracts_Services_IAuthService_RegisterAsync_MyApp_Auth_Application_Contracts_DTOs_RegisterDto_
+  name: RegisterAsync
+  nameWithType: IAuthService.RegisterAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.RegisterAsync
+- uid: MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.RegisterDto.html
+  name: RegisterDto
+  nameWithType: RegisterDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.RefreshTokenAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IAuthService.RefreshTokenAsync
+  href: MyApp.Auth.Application.Contracts.Services.IAuthService.html#MyApp_Auth_Application_Contracts_Services_IAuthService_RefreshTokenAsync_MyApp_Auth_Application_Contracts_DTOs_RefreshTokenDto_
+  name: RefreshTokenAsync
+  nameWithType: IAuthService.RefreshTokenAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.RefreshTokenAsync
+- uid: MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto.html
+  name: RefreshTokenDto
+  nameWithType: RefreshTokenDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.ExternalLoginAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IAuthService.ExternalLoginAsync
+  href: MyApp.Auth.Application.Contracts.Services.IAuthService.html#MyApp_Auth_Application_Contracts_Services_IAuthService_ExternalLoginAsync_MyApp_Auth_Application_Contracts_DTOs_ExternalLoginDto_
+  name: ExternalLoginAsync
+  nameWithType: IAuthService.ExternalLoginAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.ExternalLoginAsync
+- uid: MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto.html
+  name: ExternalLoginDto
+  nameWithType: ExternalLoginDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.LogoutAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IAuthService.LogoutAsync
+  href: MyApp.Auth.Application.Contracts.Services.IAuthService.html#MyApp_Auth_Application_Contracts_Services_IAuthService_LogoutAsync_System_Guid_
+  name: LogoutAsync
+  nameWithType: IAuthService.LogoutAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.LogoutAsync
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

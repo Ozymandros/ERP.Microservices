@@ -1,0 +1,438 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+  commentId: T:MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+  id: CreateRolePermissionDto
+  parent: MyApp.Auth.Application.Contracts
+  children:
+  - MyApp.Auth.Application.Contracts.CreateRolePermissionDto.#ctor(System.Guid,System.Guid)
+  - MyApp.Auth.Application.Contracts.CreateRolePermissionDto.PermissionId
+  - MyApp.Auth.Application.Contracts.CreateRolePermissionDto.RoleId
+  langs:
+  - csharp
+  - vb
+  name: CreateRolePermissionDto
+  nameWithType: CreateRolePermissionDto
+  fullName: MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/CreateRolePermissionDto.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateRolePermissionDto
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/CreateRolePermissionDto.cs
+    startLine: 2
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts
+  syntax:
+    content: public class CreateRolePermissionDto
+    content.vb: Public Class CreateRolePermissionDto
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.RoleId
+  commentId: P:MyApp.Auth.Application.Contracts.CreateRolePermissionDto.RoleId
+  id: RoleId
+  parent: MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+  langs:
+  - csharp
+  - vb
+  name: RoleId
+  nameWithType: CreateRolePermissionDto.RoleId
+  fullName: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.RoleId
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/CreateRolePermissionDto.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RoleId
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/CreateRolePermissionDto.cs
+    startLine: 4
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts
+  syntax:
+    content: public Guid RoleId { get; set; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public Property RoleId As Guid
+  overload: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.RoleId*
+- uid: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.PermissionId
+  commentId: P:MyApp.Auth.Application.Contracts.CreateRolePermissionDto.PermissionId
+  id: PermissionId
+  parent: MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+  langs:
+  - csharp
+  - vb
+  name: PermissionId
+  nameWithType: CreateRolePermissionDto.PermissionId
+  fullName: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.PermissionId
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/CreateRolePermissionDto.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: PermissionId
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/CreateRolePermissionDto.cs
+    startLine: 5
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts
+  syntax:
+    content: public Guid PermissionId { get; set; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public Property PermissionId As Guid
+  overload: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.PermissionId*
+- uid: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.#ctor(System.Guid,System.Guid)
+  commentId: M:MyApp.Auth.Application.Contracts.CreateRolePermissionDto.#ctor(System.Guid,System.Guid)
+  id: '#ctor(System.Guid,System.Guid)'
+  parent: MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+  langs:
+  - csharp
+  - vb
+  name: CreateRolePermissionDto(Guid, Guid)
+  nameWithType: CreateRolePermissionDto.CreateRolePermissionDto(Guid, Guid)
+  fullName: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.CreateRolePermissionDto(System.Guid, System.Guid)
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/CreateRolePermissionDto.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/CreateRolePermissionDto.cs
+    startLine: 7
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts
+  syntax:
+    content: public CreateRolePermissionDto(Guid roleId, Guid permissionId)
+    parameters:
+    - id: roleId
+      type: System.Guid
+    - id: permissionId
+      type: System.Guid
+    content.vb: Public Sub New(roleId As Guid, permissionId As Guid)
+  overload: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.#ctor*
+  nameWithType.vb: CreateRolePermissionDto.New(Guid, Guid)
+  fullName.vb: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.New(System.Guid, System.Guid)
+  name.vb: New(Guid, Guid)
+references:
+- uid: MyApp.Auth.Application.Contracts
+  commentId: N:MyApp.Auth.Application.Contracts
+  href: MyApp.html
+  name: MyApp.Auth.Application.Contracts
+  nameWithType: MyApp.Auth.Application.Contracts
+  fullName: MyApp.Auth.Application.Contracts
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.RoleId*
+  commentId: Overload:MyApp.Auth.Application.Contracts.CreateRolePermissionDto.RoleId
+  href: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.html#MyApp_Auth_Application_Contracts_CreateRolePermissionDto_RoleId
+  name: RoleId
+  nameWithType: CreateRolePermissionDto.RoleId
+  fullName: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.RoleId
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.PermissionId*
+  commentId: Overload:MyApp.Auth.Application.Contracts.CreateRolePermissionDto.PermissionId
+  href: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.html#MyApp_Auth_Application_Contracts_CreateRolePermissionDto_PermissionId
+  name: PermissionId
+  nameWithType: CreateRolePermissionDto.PermissionId
+  fullName: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.PermissionId
+- uid: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.#ctor*
+  commentId: Overload:MyApp.Auth.Application.Contracts.CreateRolePermissionDto.#ctor
+  href: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.html#MyApp_Auth_Application_Contracts_CreateRolePermissionDto__ctor_System_Guid_System_Guid_
+  name: CreateRolePermissionDto
+  nameWithType: CreateRolePermissionDto.CreateRolePermissionDto
+  fullName: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.CreateRolePermissionDto
+  nameWithType.vb: CreateRolePermissionDto.New
+  fullName.vb: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.New
+  name.vb: New

@@ -1,0 +1,1389 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  commentId: T:MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  id: RoleServiceTests
+  parent: MyApp.Auth.Application.Tests.Services
+  children:
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.#ctor
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_ShouldReturnMappedRoles
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithInvalidId_ShouldReturnNull
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  - MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  langs:
+  - csharp
+  - vb
+  name: RoleServiceTests
+  nameWithType: RoleServiceTests
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RoleServiceTests
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 16
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: 'public class RoleServiceTests : BaseServiceTest'
+    content.vb: Public Class RoleServiceTests Inherits BaseServiceTest
+  inheritance:
+  - System.Object
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  inheritedMembers:
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{{T}}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.#ctor
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.#ctor
+  id: '#ctor'
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: RoleServiceTests()
+  nameWithType: RoleServiceTests.RoleServiceTests()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.RoleServiceTests()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 25
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: public RoleServiceTests()
+    content.vb: Public Sub New()
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.#ctor*
+  nameWithType.vb: RoleServiceTests.New()
+  fullName.vb: MyApp.Auth.Application.Tests.Services.RoleServiceTests.New()
+  name.vb: New()
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_ShouldReturnMappedRoles
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_ShouldReturnMappedRoles
+  id: GetAllRolesAsync_ShouldReturnMappedRoles
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetAllRolesAsync_ShouldReturnMappedRoles()
+  nameWithType: RoleServiceTests.GetAllRolesAsync_ShouldReturnMappedRoles()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_ShouldReturnMappedRoles()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllRolesAsync_ShouldReturnMappedRoles
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 44
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetAllRolesAsync_ShouldReturnMappedRoles()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetAllRolesAsync_ShouldReturnMappedRoles() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_ShouldReturnMappedRoles*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  id: GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+  nameWithType: RoleServiceTests.GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 77
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole
+  id: GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole()
+  nameWithType: RoleServiceTests.GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 100
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithInvalidId_ShouldReturnNull
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithInvalidId_ShouldReturnNull
+  id: GetRoleByIdAsync_WithInvalidId_ShouldReturnNull
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetRoleByIdAsync_WithInvalidId_ShouldReturnNull()
+  nameWithType: RoleServiceTests.GetRoleByIdAsync_WithInvalidId_ShouldReturnNull()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithInvalidId_ShouldReturnNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetRoleByIdAsync_WithInvalidId_ShouldReturnNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 124
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetRoleByIdAsync_WithInvalidId_ShouldReturnNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetRoleByIdAsync_WithInvalidId_ShouldReturnNull() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithInvalidId_ShouldReturnNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole
+  id: CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole()
+  nameWithType: RoleServiceTests.CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 146
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning
+  id: CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning()
+  nameWithType: RoleServiceTests.CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 185
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  id: UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
+  nameWithType: RoleServiceTests.UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 216
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  id: UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  nameWithType: RoleServiceTests.UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 247
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue
+  id: DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue()
+  nameWithType: RoleServiceTests.DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 275
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  id: DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  nameWithType: RoleServiceTests.DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 298
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue
+  id: AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue()
+  nameWithType: RoleServiceTests.AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 321
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue
+  id: RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue()
+  nameWithType: RoleServiceTests.RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 340
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue
+  id: HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue()
+  nameWithType: RoleServiceTests.HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 359
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse
+  id: HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse()
+  nameWithType: RoleServiceTests.HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 373
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions
+  id: GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions()
+  nameWithType: RoleServiceTests.GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 391
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  commentId: M:MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  id: GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  parent: MyApp.Auth.Application.Tests.Services.RoleServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+  nameWithType: RoleServiceTests.GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/RoleServiceTests.cs
+    startLine: 425
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError() As Task
+  overload: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: MyApp.Auth.Application.Tests.Services
+  commentId: N:MyApp.Auth.Application.Tests.Services
+  href: MyApp.html
+  name: MyApp.Auth.Application.Tests.Services
+  nameWithType: MyApp.Auth.Application.Tests.Services
+  fullName: MyApp.Auth.Application.Tests.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Services
+    name: Services
+    href: MyApp.Auth.Application.Tests.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Services
+    name: Services
+    href: MyApp.Auth.Application.Tests.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  commentId: T:MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  parent: MyApp.Auth.Application.Tests.Common
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html
+  name: BaseServiceTest
+  nameWithType: BaseServiceTest
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+  commentId: F:MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_MockMapper
+  name: MockMapper
+  nameWithType: BaseServiceTest.MockMapper
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+  commentId: F:MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_Mapper
+  name: Mapper
+  nameWithType: BaseServiceTest.Mapper
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+  commentId: M:MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_CreateMockLogger__1
+  name: CreateMockLogger<T>()
+  nameWithType: BaseServiceTest.CreateMockLogger<T>()
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger<T>()
+  nameWithType.vb: BaseServiceTest.CreateMockLogger(Of T)()
+  fullName.vb: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger(Of T)()
+  name.vb: CreateMockLogger(Of T)()
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+    name: CreateMockLogger
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_CreateMockLogger__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+    name: CreateMockLogger
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_CreateMockLogger__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{{T}}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  commentId: M:MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  definition: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  name: VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  nameWithType: BaseServiceTest.VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled<T>(Moq.Mock<Microsoft.Extensions.Logging.ILogger<T>>, Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  nameWithType.vb: BaseServiceTest.VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  fullName.vb: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled(Of T)(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger(Of T)), Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  name.vb: VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: <
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Auth.Application.Tests.Common
+  commentId: N:MyApp.Auth.Application.Tests.Common
+  href: MyApp.html
+  name: MyApp.Auth.Application.Tests.Common
+  nameWithType: MyApp.Auth.Application.Tests.Common
+  fullName: MyApp.Auth.Application.Tests.Common
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Common
+    name: Common
+    href: MyApp.Auth.Application.Tests.Common.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Common
+    name: Common
+    href: MyApp.Auth.Application.Tests.Common.html
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  commentId: M:MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  isExternal: true
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  name: VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  nameWithType: BaseServiceTest.VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled<T>(Moq.Mock<Microsoft.Extensions.Logging.ILogger<T>>, Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  nameWithType.vb: BaseServiceTest.VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  fullName.vb: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled(Of T)(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger(Of T)), Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  name.vb: VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: <
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.#ctor*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.#ctor
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests__ctor
+  name: RoleServiceTests
+  nameWithType: RoleServiceTests.RoleServiceTests
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.RoleServiceTests
+  nameWithType.vb: RoleServiceTests.New
+  fullName.vb: MyApp.Auth.Application.Tests.Services.RoleServiceTests.New
+  name.vb: New
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_ShouldReturnMappedRoles*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_ShouldReturnMappedRoles
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_GetAllRolesAsync_ShouldReturnMappedRoles
+  name: GetAllRolesAsync_ShouldReturnMappedRoles
+  nameWithType: RoleServiceTests.GetAllRolesAsync_ShouldReturnMappedRoles
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_ShouldReturnMappedRoles
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  name: GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  nameWithType: RoleServiceTests.GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetAllRolesAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole
+  name: GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole
+  nameWithType: RoleServiceTests.GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithInvalidId_ShouldReturnNull*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithInvalidId_ShouldReturnNull
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_GetRoleByIdAsync_WithInvalidId_ShouldReturnNull
+  name: GetRoleByIdAsync_WithInvalidId_ShouldReturnNull
+  nameWithType: RoleServiceTests.GetRoleByIdAsync_WithInvalidId_ShouldReturnNull
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetRoleByIdAsync_WithInvalidId_ShouldReturnNull
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole
+  name: CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole
+  nameWithType: RoleServiceTests.CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning
+  name: CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning
+  nameWithType: RoleServiceTests.CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  name: UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  nameWithType: RoleServiceTests.UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  name: UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  nameWithType: RoleServiceTests.UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue
+  name: DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue
+  nameWithType: RoleServiceTests.DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  name: DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  nameWithType: RoleServiceTests.DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue
+  name: AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue
+  nameWithType: RoleServiceTests.AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue
+  name: RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue
+  nameWithType: RoleServiceTests.RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue
+  name: HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue
+  nameWithType: RoleServiceTests.HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse
+  name: HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse
+  nameWithType: RoleServiceTests.HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions
+  name: GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions
+  nameWithType: RoleServiceTests.GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions
+- uid: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  href: MyApp.Auth.Application.Tests.Services.RoleServiceTests.html#MyApp_Auth_Application_Tests_Services_RoleServiceTests_GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  name: GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  nameWithType: RoleServiceTests.GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError
+  fullName: MyApp.Auth.Application.Tests.Services.RoleServiceTests.GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError

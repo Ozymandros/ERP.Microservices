@@ -1,0 +1,122 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Domain.Entities.IEntity`1
+  commentId: T:MyApp.Shared.Domain.Entities.IEntity`1
+  id: IEntity`1
+  parent: MyApp.Shared.Domain.Entities
+  children:
+  - MyApp.Shared.Domain.Entities.IEntity`1.Id
+  langs:
+  - csharp
+  - vb
+  name: IEntity<T>
+  nameWithType: IEntity<T>
+  fullName: MyApp.Shared.Domain.Entities.IEntity<T>
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IDomainEntity.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: IEntity
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IDomainEntity.cs
+    startLine: 3
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Entities
+  syntax:
+    content: 'public interface IEntity<T> where T : IComparable, IComparable<T>, IEquatable<T>, IFormattable, IParsable<T>'
+    typeParameters:
+    - id: T
+    content.vb: Public Interface IEntity(Of T As {IComparable, IComparable(Of T), IEquatable(Of T), IFormattable, IParsable(Of T)})
+  nameWithType.vb: IEntity(Of T)
+  fullName.vb: MyApp.Shared.Domain.Entities.IEntity(Of T)
+  name.vb: IEntity(Of T)
+- uid: MyApp.Shared.Domain.Entities.IEntity`1.Id
+  commentId: P:MyApp.Shared.Domain.Entities.IEntity`1.Id
+  id: Id
+  parent: MyApp.Shared.Domain.Entities.IEntity`1
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: IEntity<T>.Id
+  fullName: MyApp.Shared.Domain.Entities.IEntity<T>.Id
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IDomainEntity.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Id
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IDomainEntity.cs
+    startLine: 5
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Entities
+  syntax:
+    content: T Id { get; set; }
+    parameters: []
+    return:
+      type: '{T}'
+    content.vb: Property Id As T
+  overload: MyApp.Shared.Domain.Entities.IEntity`1.Id*
+  nameWithType.vb: IEntity(Of T).Id
+  fullName.vb: MyApp.Shared.Domain.Entities.IEntity(Of T).Id
+references:
+- uid: MyApp.Shared.Domain.Entities
+  commentId: N:MyApp.Shared.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Entities
+  nameWithType: MyApp.Shared.Domain.Entities
+  fullName: MyApp.Shared.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Entities
+    name: Entities
+    href: MyApp.Shared.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Entities
+    name: Entities
+    href: MyApp.Shared.Domain.Entities.html
+- uid: MyApp.Shared.Domain.Entities.IEntity`1.Id*
+  commentId: Overload:MyApp.Shared.Domain.Entities.IEntity`1.Id
+  href: MyApp.Shared.Domain.Entities.IEntity-1.html#MyApp_Shared_Domain_Entities_IEntity_1_Id
+  name: Id
+  nameWithType: IEntity<T>.Id
+  fullName: MyApp.Shared.Domain.Entities.IEntity<T>.Id
+  nameWithType.vb: IEntity(Of T).Id
+  fullName.vb: MyApp.Shared.Domain.Entities.IEntity(Of T).Id
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T

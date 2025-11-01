@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#127919; GitHub Actions Workflows - Visual Diagrams | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#127919; GitHub Actions Workflows - Visual Diagrams | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/deployment/WORKFLOWS_VISUAL_DIAGRAMS.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-github-actions-workflows---visual-diagrams">🎯 GitHub Actions Workflows - Visual Diagrams</h1>
+
+<p><strong>Quick Visual Reference for CI/CD Pipeline</strong></p>
+<hr>
+<h2 id="1-overall-workflow-trigger-strategy">1️⃣ Overall Workflow Trigger Strategy</h2>
+<pre><code>┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃              GITHUB REPOSITORY EVENTS                 ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+    ┌─────────────────┐
+    │  Pull Request   │
+    │ (any branch)    │
+    └────────┬────────┘
+             │ Triggers
+             ▼
+    ┌─────────────────────┐
+    │   dotnet.yml        │
+    │  (15 min)           │
+    │ ✅ Restore          │
+    │ ✅ Build            │
+    │ ✅ Test             │
+    │ ❌ No Deploy        │
+    └─────────────────────┘
+
+
+    ┌─────────────────┐
+    │  Push to        │
+    │  develop        │
+    └────────┬────────┘
+             │ Triggers
+             ▼
+    ┌─────────────────────┐
+    │ azure-dev.yml       │
+    │  (42 min)           │
+    │ ✅ Test             │
+    │ ✅ Build Images (7) │
+    │ ✅ Deploy to DEV    │
+    └─────────────────────┘
+
+
+    ┌─────────────────┐
+    │  Push to        │
+    │  main           │
+    └────────┬────────┘
+             │ Triggers
+             ▼
+    ┌─────────────────────┐
+    │ azure-deploy.yml    │
+    │  (47 min)           │
+    │ ✅ Test (strict)    │
+    │ ✅ Build Images (7) │
+    │ ✅ Deploy to PROD   │
+    └─────────────────────┘
+</code></pre>
+<hr>
+<h2 id="2-development-workflow-pull-request--develop--main">2️⃣ Development Workflow (Pull Request → Develop → Main)</h2>
+<pre><code>┌──────────────────────────────────────────────────────────────────┐
+│ Step 1: Developer creates feature branch &amp; commits code          │
+└──────────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌──────────────────────────────────────────────────────────────────┐
+│ Step 2: Push to GitHub &amp; Create Pull Request                     │
+└──────────────────────────────────────────────────────────────────┘
+    │
+    ├──────────────────────────────────────┐
+    │                                      │
+    ▼                                      ▼
+    
+  ┌─────────────────┐            ┌──────────────────────┐
+  │  Branch exists  │            │ GitHub detects PR    │
+  │  (local)        │            │                      │
+  └────────┬────────┘            └──────────┬───────────┘
+           │                               │
+           ▼                               ▼
+           
+   CHECKOUT &amp; SETUP              WORKFLOW TRIGGERED
+   ────────────────────          ──────────────────
+   
+   ┌─────────────────────────┐   ┌──────────────────────────┐
+   │  dotnet.yml             │   │  Branch: PR to develop   │
+   │  (in GitHub)            │   │  Files changed detected  │
+   │                         │   │                          │
+   │  Job: test              │   │  Auto-triggered by GitHub│
+   │  ├─ Restore (-2s ⚡)   │   │                          │
+   │  ├─ Build (5 min)      │   └──────────┬───────────────┘
+   │  ├─ Test (8 min)       │               │
+   │  └─ ✅ PASS (15 min)  │               ▼
+   └─────────────────────────┘
+                                   ┌──────────────────────────┐
+                                   │  GitHub Status Check     │
+                                   │  (shows in PR)           │
+                                   │                          │
+                                   │  ✅ All checks passed    │
+                                   │  &quot;Ready to merge&quot;        │
+                                   └──────────┬───────────────┘
+                                              │
+                                              ▼
+                                   ┌──────────────────────────┐
+                                   │  Code Review (optional)  │
+                                   │  - Reviewer approves     │
+                                   │  - Maintainer merges     │
+                                   └──────────┬───────────────┘
+                                              │
+                                              ▼
+
+┌──────────────────────────────────────────────────────────────────┐
+│ Step 3: Merge to develop (automatic workflow trigger)            │
+└──────────────────────────────────────────────────────────────────┘
+    │
+    ├────────────────────────────────────────────────────────────┐
+    │                                                            │
+    ▼                                                            │
+    
+  ┌────────────────────────────────────────────────────────┐   │
+  │  azure-dev.yml TRIGGERED                               │   │
+  │  (Branch: develop)                                     │   │
+  │  ◄═══════════════════════════════════════════════════ │   │
+  │                                                        │   │
+  │  PHASE 1: TEST (5 min)                                │   │
+  │  ─────────────────────────                           │   │
+  │  ├─ Checkout                                         │   │
+  │  ├─ Setup .NET (8, 9)                               │   │
+  │  ├─ Cache NuGet                                      │   │
+  │  ├─ Restore &amp; Build (Release)                        │   │
+  │  └─ Run tests (continue-on-error: true)             │   │
+  │     └─ ✅ Phase 1 complete                           │   │
+  │                                                        │   │
+  │  PHASE 2: BUILD IMAGES (7 parallel, 12 min)         │   │
+  │  ──────────────────────────────────────────         │   │
+  │  │                                                    │   │
+  │  ├─ Job[0]: auth-service                           │   │
+  │  │  ├─ Checkout                                     │   │
+  │  │  ├─ Azure login (federated)                      │   │
+  │  │  ├─ ACR login                                    │   │
+  │  │  ├─ az acr build                                 │   │
+  │  │  │  ├─ docker build (cache ⚡)                  │   │
+  │  │  │  ├─ --image auth-service:latest              │   │
+  │  │  │  ├─ --image auth-service:a1b2c3d             │   │
+  │  │  │  └─ Push to ACR                               │   │
+  │  │  └─ ✅ Complete                                  │   │
+  │  │                                                    │   │
+  │  ├─ Job[1]: billing-service   ┐                     │   │
+  │  ├─ Job[2]: inventory-service │ All 7 in PARALLEL  │   │
+  │  ├─ Job[3]: orders-service    │ (2 min each)       │   │
+  │  ├─ Job[4]: purchasing-service│ = 12 min total    │   │
+  │  ├─ Job[5]: sales-service     │ (not 14 min ⚡)   │   │
+  │  └─ Job[6]: erp-api-gateway   ┘                     │   │
+  │     └─ ✅ All images ready                          │   │
+  │                                                        │   │
+  │  PHASE 3: DEPLOY (15 min)                            │   │
+  │  ─────────────────────                              │   │
+  │  ├─ Checkout                                         │   │
+  │  ├─ Install azd                                      │   │
+  │  ├─ Azure login (federated)                          │   │
+  │  ├─ azd provision                                    │   │
+  │  │  └─ Create infrastructure (ResourceGroups, SQL,   │   │
+  │  │     Redis, Container Apps, etc)                  │   │
+  │  ├─ azd deploy                                       │   │
+  │  │  └─ Pull images from ACR &amp; deploy                │   │
+  │  ├─ Verify deployment                               │   │
+  │  └─ ✅ DEV Environment Ready                        │   │
+  │                                                        │   │
+  │  Total: 5 + 12 + 15 = 42 minutes                    │   │
+  └────────────────────────────────────────────────────────┘   │
+    │                                                           │
+    └───────────────────────────────────────────────────────────┘
+                        │
+                        ▼
+
+┌──────────────────────────────────────────────────────────────────┐
+│ Step 4: Create PR from develop → main (same as Step 2)          │
+└──────────────────────────────────────────────────────────────────┘
+    │
+    ▼
+  ┌─────────────────────┐
+  │  dotnet.yml         │
+  │  (PR validation)    │
+  │  ✅ Tests pass      │
+  └────────┬────────────┘
+           │
+           ▼
+    ┌────────────────┐
+    │ PR Approved    │
+    └────────┬───────┘
+             │
+             ▼
+
+┌──────────────────────────────────────────────────────────────────┐
+│ Step 5: Merge to main (PRODUCTION deployment)                   │
+└──────────────────────────────────────────────────────────────────┘
+    │
+    ▼
+  ┌────────────────────────────────────────────────────────┐
+  │  azure-deploy.yml TRIGGERED                            │
+  │  (Branch: main / PRODUCTION)                           │
+  │  ◄═══════════════════════════════════════════════════ │
+  │                                                        │
+  │  PHASE 1: TEST (STRICT: must pass) (5 min)           │
+  │  ─────────────────────────────────────────           │
+  │  ├─ Continue-on-error: FALSE ← FAIL STOPS DEPLOY    │
+  │  └─ ✅ All tests pass (required)                    │
+  │                                                        │
+  │  PHASE 2: BUILD IMAGES (12 min, 7 parallel)         │
+  │  ──────────────────────────────────────────         │
+  │  ├─ Same matrix as dev (auth, billing, etc)         │
+  │  ├─ Push to PRODUCTION ACR (different registry)     │
+  │  └─ ✅ All images tagged &amp; pushed                   │
+  │                                                        │
+  │  PHASE 3: DEPLOY (20 min, strict)                   │
+  │  ──────────────────────────────                    │
+  │  ├─ azd provision (production setup)                │
+  │  │  └─ Production resource group &amp; configs         │
+  │  ├─ azd deploy (production deployment)              │
+  │  │  └─ Blue-green ready, canary capable            │
+  │  └─ ✅ PRODUCTION Ready                            │
+  │                                                        │
+  │  Total: 5 + 12 + 20 = 47 minutes                    │
+  └────────────────────────────────────────────────────────┘
+    │
+    ▼
+  ┌──────────────────────────────────────┐
+  │ ✅ ALL SERVICES IN PRODUCTION        │
+  │ (7 services running at scale)        │
+  └──────────────────────────────────────┘
+</code></pre>
+<hr>
+<h2 id="3-parallel-execution-timeline">3️⃣ Parallel Execution Timeline</h2>
+<pre><code>DEVELOPMENT WORKFLOW (from develop branch push)
+
+TIME    PHASE 1           PHASE 2 (Matrix)                   PHASE 3
+────    ─────────         ──────────────────                ────────
+0:00                      
+        ┌───────┐         
+        │ START │         
+        │ test  │         
+        │ job   │         
+        │       │         
+5:00    │  ✅   │         
+        │ END   │         
+        └───┬───┘         
+            │         ┌────────────────────────────────┐
+            │         │ PARALLEL BUILD MATRIX          │
+            ├────────→│ (7 jobs simultaneous)          │
+            │         │                                │
+            │         │ auth-service                   │
+            │         │ billing-service                │
+            │         │ inventory-service              │
+            │         │ orders-service                 │
+            │         │ purchasing-service             │
+            │         │ sales-service                  │
+            │         │ erp-api-gateway                │
+            │         │                                │
+17:00       │         │ (Each ~2 min)                  │
+            │         │ (All parallel = 2 min ⚡)      │
+            │         │                                │
+            │         └────┬───────────────────────────┘
+            │              │
+            │              │ All images ready
+            │              │
+            │              ├─────────────→┌────────────────┐
+            │              │              │ PHASE 3: DEPLOY│
+            │              │              │ (15 min)       │
+            │              │              │ - azd provision│
+            │              │              │ - azd deploy   │
+            │              │              │ - verify       │
+            │              │              │                │
+32:00       │              │              │ ✅ COMPLETE   │
+            │              │              └────────────────┘
+            │              │
+            └──────────────┘
+                   42 min total
+
+EXECUTION SAVINGS:
+─────────────────
+Sequential:     5 + (7×2) + 15 = 34 min + waiting = ~42 min
+But if sequential: 5 + 14 + 15 = 34 min (without matrix benefits)
+
+⚡ Matrix parallelization saves ~12 minutes!
+</code></pre>
+<hr>
+<h2 id="4-job-dependency-graph">4️⃣ Job Dependency Graph</h2>
+<pre><code>azure-dev.yml &amp; azure-deploy.yml structure:
+
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│  job: test                                              │
+│  ├─ No dependencies                                     │
+│  ├─ Starts immediately                                  │
+│  └─ Completes in ~5 min                                │
+│                                                         │
+│  ┌──────────────────────────────┐                      │
+│  │                              │                      │
+│  ▼                              ▼                      │
+│                                                         │
+│  job: build-images             (needs: test)           │
+│  ├─ Matrix: 7 parallel jobs                            │
+│  ├─ Each service independent                           │
+│  ├─ Start after test complete                          │
+│  └─ All complete in ~12 min                            │
+│                                                         │
+│  ┌──────────────────────────────┐                      │
+│  │      All 7 images done        │                      │
+│  └──────────────┬───────────────┘                      │
+│                 │                                      │
+│                 ▼                                      │
+│                                                         │
+│  job: deploy                   (needs: build-images)   │
+│  ├─ Single sequential job                              │
+│  ├─ Provision infrastructure                           │
+│  ├─ Deploy services                                    │
+│  └─ Completes in ~15 min                              │
+│                                                         │
+│  ✅ Deployment complete                                │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+
+YAML representation:
+───────────────────
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    # No dependencies
+    
+  build-images:
+    needs: test           ← Waits for test to complete
+    strategy:
+      matrix:
+        service: [...]    ← 7 jobs in parallel
+        
+  deploy:
+    needs: build-images   ← Waits for all 7 images
+</code></pre>
+<hr>
+<h2 id="5-docker-image-tagging-strategy">5️⃣ Docker Image Tagging Strategy</h2>
+<pre><code>Each image gets TWO tags:
+
+┌────────────────────────────────────────────┐
+│ SERVICE: auth-service                      │
+├────────────────────────────────────────────┤
+│                                            │
+│  ACR Build Command:                        │
+│  ─────────────────                         │
+│  az acr build \                            │
+│    --image auth-service:latest \           │
+│    --image auth-service:&lt;commit-sha&gt; \    │
+│    --file Dockerfile                       │
+│                                            │
+├────────────────────────────────────────────┤
+│  Result: TWO IMAGES IN ACR                │
+│  ────────────────────────                 │
+│                                            │
+│  1. auth-service:latest                   │
+│     ├─ Always points to most recent build │
+│     ├─ Used by &quot;latest&quot; deployments       │
+│     └─ Example: Can be replaced daily     │
+│                                            │
+│  2. auth-service:a1b2c3d7 (commit SHA)    │
+│     ├─ Points to specific commit          │
+│     ├─ Immutable tag                      │
+│     ├─ For production tracing             │
+│     └─ Example: rollback to specific ver  │
+│                                            │
+└────────────────────────────────────────────┘
+
+Benefits:
+─────────
+✅ Can quickly identify which build is running
+✅ Can rollback to any specific commit
+✅ Debugging is easier (&quot;it was from build a1b2c3d7&quot;)
+✅ Production stability (&quot;pin to specific commit&quot;)
+</code></pre>
+<hr>
+<h2 id="6-federated-credentials-flow">6️⃣ Federated Credentials Flow</h2>
+<pre><code>GitHub Actions Workflow Step:
+───────────────────────────────
+
+Step: &quot;Log in with Azure (Federated Credentials)&quot;
+
+  ┌─────────────────────────────────────────┐
+  │  GitHub Action Pushes Event             │
+  │  ├─ Event: push to develop              │
+  │  ├─ Repository: Ozymandros/ERP.Micro...│
+  │  ├─ Branch: develop                     │
+  │  └─ Signed by: GitHub certificate      │
+  └──────────────┬──────────────────────────┘
+                 │
+                 ▼
+  ┌──────────────────────────────────────────┐
+  │  Azure AD (Entra ID) Receives Request    │
+  │  ├─ Provider: github.com                │
+  │  ├─ Subject: &lt;github-org&gt;/&lt;repository&gt; │
+  │  ├─ Certificate chain validation        │
+  │  └─ OIDC token validation               │
+  └──────────────┬───────────────────────────┘
+                 │
+                 ▼
+  ┌──────────────────────────────────────────┐
+  │  Azure AD Issues Access Token            │
+  │  ├─ Audience: Azure API                 │
+  │  ├─ Subject: GitHub Actions            │
+  │  ├─ Duration: 1 hour                    │
+  │  ├─ Scope: AZURE_SUBSCRIPTION_ID        │
+  │  └─ ⚠️ NO STORED SECRETS NEEDED        │
+  └──────────────┬───────────────────────────┘
+                 │
+                 ▼
+  ┌──────────────────────────────────────────┐
+  │  Workflow Uses Token                     │
+  │  ├─ azd auth login ...                   │
+  │  ├─ az acr login ...                     │
+  │  ├─ az ... (any Azure command)           │
+  │  └─ ✅ Authenticated to Azure            │
+  └──────────────────────────────────────────┘
+
+Security Benefits:
+──────────────────
+✅ No secrets stored in GitHub
+✅ No credentials in logs
+✅ Time-limited tokens (1 hour)
+✅ Automatic renewal per job
+✅ Tied to specific branch
+✅ Tied to specific repository
+</code></pre>
+<hr>
+<h2 id="7-failure-scenarios">7️⃣ Failure Scenarios</h2>
+<pre><code>DEVELOPMENT (azure-dev.yml):
+────────────────────────────
+
+Test Phase Fails:
+  │
+  ├─ continue-on-error: true  ← Doesn't stop
+  │
+  ├─→ Build Images Phase: ✅ CONTINUES
+  │   (Images built despite test failure)
+  │
+  └─→ Deploy Phase: ✅ CONTINUES
+      (Deployment proceeds to DEV)
+      
+  ⚠️ Risk: DEV may have broken code
+
+
+Image Build Fails (e.g., billing-service):
+  │
+  ├─ fail-fast: false  ← Other builds continue
+  │
+  ├─→ auth-service: ✅ Continues
+  ├─→ billing-service: ❌ FAILED
+  ├─→ inventory-service: ✅ Continues
+  │   ... (remaining services)
+  │
+  └─→ Deploy Phase: ❌ BLOCKED
+      (Deployment blocked if any image missing)
+
+
+PRODUCTION (azure-deploy.yml):
+──────────────────────────────
+
+Test Phase Fails:
+  │
+  ├─ continue-on-error: FALSE  ← STOPS HERE
+  │
+  ├─→ Build Images Phase: ❌ SKIPPED
+  │   (No images built)
+  │
+  └─→ Deploy Phase: ❌ SKIPPED
+      (No deployment to production)
+      
+  ✅ Production protected
+
+
+Image Build Fails:
+  │
+  ├─ fail-fast: false  ← Other builds continue
+  │
+  └─→ Deploy Phase: ❌ BLOCKED
+      (Missing images = no deployment)
+      
+  ✅ Partial deployments prevented
+</code></pre>
+<hr>
+<h2 id="8-caching-strategy">8️⃣ Caching Strategy</h2>
+<pre><code>Workflow Caching for NuGet Packages:
+────────────────────────────────────
+
+First Run (no cache):
+  │
+  ├─→ Restore: Download all packages → 60s
+  │
+  └─→ cache action stores ~/.nuget/packages
+      Key: ubunut-nuget-&lt;csproj-hash&gt;
+
+
+Second Run (cache hit ⚡):
+  │
+  ├─→ Cache restored: ~/.nuget/packages
+  │   └─ Hit: ~2s instead of 60s
+  │
+  └─→ Restore: Verify packages → 10s total
+      (58s faster!)
+
+
+Third Run (different csproj):
+  │
+  ├─→ Cache key mismatch
+  │   (different hash = different cache)
+  │
+  ├─→ restore-keys used: ubunut-nuget-
+  │   └─ Partial match: 30s (some packages reused)
+  │
+  └─→ New packages downloaded
+
+
+Benefits:
+─────────
+✅ Speeds up workflow by ~50s per run
+✅ Reduces GitHub bandwidth
+✅ Faster CI/CD feedback to developers
+✅ Automatic invalidation on csproj changes
+</code></pre>
+<hr>
+<h2 id="9-branch-strategy-summary">9️⃣ Branch Strategy Summary</h2>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│ BRANCH FLOW DIAGRAM                                     │
+└─────────────────────────────────────────────────────────┘
+
+                        Feature/Dev Work
+                        ────────────────
+                        
+┌─────────────────────────┐
+│ feature/my-feature ↘    │
+│ (local development)  \  │
+│                       \ │
+│ commits &amp; pushes        │
+│        │                │
+│        ▼                │
+│ Push to GitHub          │
+└─────────────────────────┘
+        │
+        ▼
+┌─────────────────────────────────────┐
+│ CREATE PULL REQUEST                 │
+│ (feature/my-feature → develop)      │
+└──────────┬────────────────────────────┘
+           │
+           ▼
+┌──────────────────────────────────────────┐
+│ WORKFLOW: dotnet.yml                     │
+│ ├─ Restore                               │
+│ ├─ Build                                 │
+│ ├─ Test                    (15 min)      │
+│ └─ Status Check: ✅ PASS                │
+└──────────┬────────────────────────────────┘
+           │
+           ▼
+┌──────────────────────────────────────────┐
+│ REVIEW &amp; APPROVAL                        │
+│ (optional: code review, discussions)     │
+└──────────┬────────────────────────────────┘
+           │
+           ▼
+┌──────────────────────────────────────────┐
+│ MERGE TO develop                         │
+│ (feature/my-feature → develop)           │
+└──────────┬────────────────────────────────┘
+           │
+           ▼
+┌────────────────────────────────────┐
+│ WORKFLOW: azure-dev.yml            │
+│ ├─ Test          (5 min)           │
+│ ├─ Build Images  (12 min)          │
+│ └─ Deploy to DEV (15 min)  (42min) │
+│    Status: ✅ DEPLOYED to dev      │
+└────────────────────────────────────┘
+           │
+           │ After dev verification
+           │
+           ▼
+┌──────────────────────────────────────┐
+│ CREATE PULL REQUEST                  │
+│ (develop → main)                     │
+└──────────┬───────────────────────────┘
+           │
+           ▼
+┌──────────────────────────────────────────┐
+│ WORKFLOW: dotnet.yml                     │
+│ (Same validation as before)              │
+│ Status Check: ✅ PASS                   │
+└──────────┬───────────────────────────────┘
+           │
+           ▼
+┌──────────────────────────────────────────┐
+│ REVIEW &amp; FINAL APPROVAL                  │
+│ (Required for production)                │
+└──────────┬───────────────────────────────┘
+           │
+           ▼
+┌──────────────────────────────────────────┐
+│ MERGE TO main                            │
+│ (develop → main)                         │
+└──────────┬───────────────────────────────┘
+           │
+           ▼
+┌────────────────────────────────────┐
+│ WORKFLOW: azure-deploy.yml         │
+│ ├─ Test (strict)  (5 min)          │
+│ ├─ Build Images   (12 min)         │
+│ └─ Deploy to PROD (20 min) (47min) │
+│    Status: ✅ DEPLOYED to prod     │
+└────────────────────────────────────┘
+           │
+           ▼
+   ✅ PRODUCTION READY
+</code></pre>
+<hr>
+<h2 id="-environment-comparison">🔟 Environment Comparison</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│ ENVIRONMENT DIFFERENCES                                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│                     DEV         PROD                        │
+│                     ───         ────                        │
+│  Trigger Branch:    develop     main                       │
+│  Workflow:          azure-dev   azure-deploy              │
+│  Time:              42 min      47 min                     │
+│  Test strictness:   lenient     strict                     │
+│  ACR Registry:      dev         prod                       │
+│  Resource Tier:     Standard    Premium                    │
+│  Replicas:          1-2         3+                        │
+│  Database:          Basic       Premium                    │
+│  SLA:               None        99.95%                     │
+│  Monitoring:        App Insights (both)                    │
+│  Alerts:            Dev team    On-call team              │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<p><strong>Last Updated:</strong> October 31, 2025<br>
+<strong>Status:</strong> ✅ Complete with visual references</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/deployment/WORKFLOWS_VISUAL_DIAGRAMS.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

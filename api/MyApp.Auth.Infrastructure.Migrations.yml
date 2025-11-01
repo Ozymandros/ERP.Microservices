@@ -1,0 +1,58 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Infrastructure.Migrations
+  commentId: N:MyApp.Auth.Infrastructure.Migrations
+  id: MyApp.Auth.Infrastructure.Migrations
+  children:
+  - MyApp.Auth.Infrastructure.Migrations.AddPermissionDescription
+  - MyApp.Auth.Infrastructure.Migrations.EmptyMigration
+  - MyApp.Auth.Infrastructure.Migrations.InitialAuth
+  - MyApp.Auth.Infrastructure.Migrations.NewAuditColumns
+  - MyApp.Auth.Infrastructure.Migrations.Permissions
+  - MyApp.Auth.Infrastructure.Migrations.UserRoles
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Infrastructure.Migrations
+  nameWithType: MyApp.Auth.Infrastructure.Migrations
+  fullName: MyApp.Auth.Infrastructure.Migrations
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Infrastructure
+references:
+- uid: MyApp.Auth.Infrastructure.Migrations.InitialAuth
+  commentId: T:MyApp.Auth.Infrastructure.Migrations.InitialAuth
+  href: MyApp.Auth.Infrastructure.Migrations.InitialAuth.html
+  name: InitialAuth
+  nameWithType: InitialAuth
+  fullName: MyApp.Auth.Infrastructure.Migrations.InitialAuth
+- uid: MyApp.Auth.Infrastructure.Migrations.Permissions
+  commentId: T:MyApp.Auth.Infrastructure.Migrations.Permissions
+  href: MyApp.Auth.Infrastructure.Migrations.Permissions.html
+  name: Permissions
+  nameWithType: Permissions
+  fullName: MyApp.Auth.Infrastructure.Migrations.Permissions
+- uid: MyApp.Auth.Infrastructure.Migrations.AddPermissionDescription
+  commentId: T:MyApp.Auth.Infrastructure.Migrations.AddPermissionDescription
+  href: MyApp.Auth.Infrastructure.Migrations.AddPermissionDescription.html
+  name: AddPermissionDescription
+  nameWithType: AddPermissionDescription
+  fullName: MyApp.Auth.Infrastructure.Migrations.AddPermissionDescription
+- uid: MyApp.Auth.Infrastructure.Migrations.NewAuditColumns
+  commentId: T:MyApp.Auth.Infrastructure.Migrations.NewAuditColumns
+  href: MyApp.Auth.Infrastructure.Migrations.NewAuditColumns.html
+  name: NewAuditColumns
+  nameWithType: NewAuditColumns
+  fullName: MyApp.Auth.Infrastructure.Migrations.NewAuditColumns
+- uid: MyApp.Auth.Infrastructure.Migrations.UserRoles
+  commentId: T:MyApp.Auth.Infrastructure.Migrations.UserRoles
+  href: MyApp.Auth.Infrastructure.Migrations.UserRoles.html
+  name: UserRoles
+  nameWithType: UserRoles
+  fullName: MyApp.Auth.Infrastructure.Migrations.UserRoles
+- uid: MyApp.Auth.Infrastructure.Migrations.EmptyMigration
+  commentId: T:MyApp.Auth.Infrastructure.Migrations.EmptyMigration
+  href: MyApp.Auth.Infrastructure.Migrations.EmptyMigration.html
+  name: EmptyMigration
+  nameWithType: EmptyMigration
+  fullName: MyApp.Auth.Infrastructure.Migrations.EmptyMigration

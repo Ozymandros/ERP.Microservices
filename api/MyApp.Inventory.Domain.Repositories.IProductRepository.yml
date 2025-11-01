@@ -1,0 +1,754 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Domain.Repositories.IProductRepository
+  commentId: T:MyApp.Inventory.Domain.Repositories.IProductRepository
+  id: IProductRepository
+  parent: MyApp.Inventory.Domain.Repositories
+  children:
+  - MyApp.Inventory.Domain.Repositories.IProductRepository.GetBySkuAsync(System.String)
+  - MyApp.Inventory.Domain.Repositories.IProductRepository.GetLowStockProductsAsync
+  langs:
+  - csharp
+  - vb
+  name: IProductRepository
+  nameWithType: IProductRepository
+  fullName: MyApp.Inventory.Domain.Repositories.IProductRepository
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Repositories/IProductRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: IProductRepository
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Repositories/IProductRepository.cs
+    startLine: 5
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Repositories
+  syntax:
+    content: 'public interface IProductRepository : IRepository<Product, Guid>'
+    content.vb: Public Interface IProductRepository Inherits IRepository(Of Product, Guid)
+  inheritedMembers:
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetByIdAsync(System.Guid)
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetAllAsync
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.AddAsync(MyApp.Inventory.Domain.Entities.Product)
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.UpdateAsync(MyApp.Inventory.Domain.Entities.Product)
+  - MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.DeleteAsync(MyApp.Inventory.Domain.Entities.Product)
+- uid: MyApp.Inventory.Domain.Repositories.IProductRepository.GetBySkuAsync(System.String)
+  commentId: M:MyApp.Inventory.Domain.Repositories.IProductRepository.GetBySkuAsync(System.String)
+  id: GetBySkuAsync(System.String)
+  parent: MyApp.Inventory.Domain.Repositories.IProductRepository
+  langs:
+  - csharp
+  - vb
+  name: GetBySkuAsync(string)
+  nameWithType: IProductRepository.GetBySkuAsync(string)
+  fullName: MyApp.Inventory.Domain.Repositories.IProductRepository.GetBySkuAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Repositories/IProductRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetBySkuAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Repositories/IProductRepository.cs
+    startLine: 7
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Repositories
+  syntax:
+    content: Task<Product?> GetBySkuAsync(string sku)
+    parameters:
+    - id: sku
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Inventory.Domain.Entities.Product}
+    content.vb: Function GetBySkuAsync(sku As String) As Task(Of Product)
+  overload: MyApp.Inventory.Domain.Repositories.IProductRepository.GetBySkuAsync*
+  nameWithType.vb: IProductRepository.GetBySkuAsync(String)
+  fullName.vb: MyApp.Inventory.Domain.Repositories.IProductRepository.GetBySkuAsync(String)
+  name.vb: GetBySkuAsync(String)
+- uid: MyApp.Inventory.Domain.Repositories.IProductRepository.GetLowStockProductsAsync
+  commentId: M:MyApp.Inventory.Domain.Repositories.IProductRepository.GetLowStockProductsAsync
+  id: GetLowStockProductsAsync
+  parent: MyApp.Inventory.Domain.Repositories.IProductRepository
+  langs:
+  - csharp
+  - vb
+  name: GetLowStockProductsAsync()
+  nameWithType: IProductRepository.GetLowStockProductsAsync()
+  fullName: MyApp.Inventory.Domain.Repositories.IProductRepository.GetLowStockProductsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Repositories/IProductRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetLowStockProductsAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Repositories/IProductRepository.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Repositories
+  syntax:
+    content: Task<IEnumerable<Product>> GetLowStockProductsAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Domain.Entities.Product}}
+    content.vb: Function GetLowStockProductsAsync() As Task(Of IEnumerable(Of Product))
+  overload: MyApp.Inventory.Domain.Repositories.IProductRepository.GetLowStockProductsAsync*
+references:
+- uid: MyApp.Inventory.Domain.Repositories
+  commentId: N:MyApp.Inventory.Domain.Repositories
+  href: MyApp.html
+  name: MyApp.Inventory.Domain.Repositories
+  nameWithType: MyApp.Inventory.Domain.Repositories
+  fullName: MyApp.Inventory.Domain.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Repositories
+    name: Repositories
+    href: MyApp.Inventory.Domain.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Repositories
+    name: Repositories
+    href: MyApp.Inventory.Domain.Repositories.html
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetByIdAsync(System.Guid)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetByIdAsync(System.Guid)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  name: GetByIdAsync(Guid)
+  nameWithType: IRepository<Product, Guid>.GetByIdAsync(Guid)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Inventory.Domain.Entities.Product, System.Guid>.GetByIdAsync(System.Guid)
+  nameWithType.vb: IRepository(Of Product, Guid).GetByIdAsync(Guid)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Inventory.Domain.Entities.Product, System.Guid).GetByIdAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetAllAsync
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetAllAsync
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  name: GetAllAsync()
+  nameWithType: IRepository<Product, Guid>.GetAllAsync()
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Inventory.Domain.Entities.Product, System.Guid>.GetAllAsync()
+  nameWithType.vb: IRepository(Of Product, Guid).GetAllAsync()
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Inventory.Domain.Entities.Product, System.Guid).GetAllAsync()
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllPaginatedAsync(int, int)
+  nameWithType: IRepository<Product, Guid>.GetAllPaginatedAsync(int, int)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Inventory.Domain.Entities.Product, System.Guid>.GetAllPaginatedAsync(int, int)
+  nameWithType.vb: IRepository(Of Product, Guid).GetAllPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Inventory.Domain.Entities.Product, System.Guid).GetAllPaginatedAsync(Integer, Integer)
+  name.vb: GetAllPaginatedAsync(Integer, Integer)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.AddAsync(MyApp.Inventory.Domain.Entities.Product)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.AddAsync(MyApp.Inventory.Domain.Entities.Product)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  name: AddAsync(Product)
+  nameWithType: IRepository<Product, Guid>.AddAsync(Product)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Inventory.Domain.Entities.Product, System.Guid>.AddAsync(MyApp.Inventory.Domain.Entities.Product)
+  nameWithType.vb: IRepository(Of Product, Guid).AddAsync(Product)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Inventory.Domain.Entities.Product, System.Guid).AddAsync(MyApp.Inventory.Domain.Entities.Product)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.AddAsync(MyApp.Inventory.Domain.Entities.Product)
+    name: AddAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  - name: (
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+    href: MyApp.Inventory.Domain.Entities.Product.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.AddAsync(MyApp.Inventory.Domain.Entities.Product)
+    name: AddAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  - name: (
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+    href: MyApp.Inventory.Domain.Entities.Product.html
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.UpdateAsync(MyApp.Inventory.Domain.Entities.Product)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.UpdateAsync(MyApp.Inventory.Domain.Entities.Product)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  name: UpdateAsync(Product)
+  nameWithType: IRepository<Product, Guid>.UpdateAsync(Product)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Inventory.Domain.Entities.Product, System.Guid>.UpdateAsync(MyApp.Inventory.Domain.Entities.Product)
+  nameWithType.vb: IRepository(Of Product, Guid).UpdateAsync(Product)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Inventory.Domain.Entities.Product, System.Guid).UpdateAsync(MyApp.Inventory.Domain.Entities.Product)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.UpdateAsync(MyApp.Inventory.Domain.Entities.Product)
+    name: UpdateAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  - name: (
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+    href: MyApp.Inventory.Domain.Entities.Product.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.UpdateAsync(MyApp.Inventory.Domain.Entities.Product)
+    name: UpdateAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  - name: (
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+    href: MyApp.Inventory.Domain.Entities.Product.html
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.DeleteAsync(MyApp.Inventory.Domain.Entities.Product)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.DeleteAsync(MyApp.Inventory.Domain.Entities.Product)
+  parent: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  name: DeleteAsync(Product)
+  nameWithType: IRepository<Product, Guid>.DeleteAsync(Product)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Inventory.Domain.Entities.Product, System.Guid>.DeleteAsync(MyApp.Inventory.Domain.Entities.Product)
+  nameWithType.vb: IRepository(Of Product, Guid).DeleteAsync(Product)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Inventory.Domain.Entities.Product, System.Guid).DeleteAsync(MyApp.Inventory.Domain.Entities.Product)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.DeleteAsync(MyApp.Inventory.Domain.Entities.Product)
+    name: DeleteAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  - name: (
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+    href: MyApp.Inventory.Domain.Entities.Product.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}.DeleteAsync(MyApp.Inventory.Domain.Entities.Product)
+    name: DeleteAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  - name: (
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+    href: MyApp.Inventory.Domain.Entities.Product.html
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  name: GetByIdAsync(TKey)
+  nameWithType: IRepository<TEntity, TKey>.GetByIdAsync(TKey)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.GetByIdAsync(TKey)
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetByIdAsync(TKey)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).GetByIdAsync(TKey)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+    name: GetByIdAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - name: TKey
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetByIdAsync(`1)
+    name: GetByIdAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - name: TKey
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}
+  commentId: T:MyApp.Shared.Domain.Repositories.IRepository{MyApp.Inventory.Domain.Entities.Product,System.Guid}
+  parent: MyApp.Shared.Domain.Repositories
+  definition: MyApp.Shared.Domain.Repositories.IRepository`2
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  name: IRepository<Product, Guid>
+  nameWithType: IRepository<Product, Guid>
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<MyApp.Inventory.Domain.Entities.Product, System.Guid>
+  nameWithType.vb: IRepository(Of Product, Guid)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of MyApp.Inventory.Domain.Entities.Product, System.Guid)
+  name.vb: IRepository(Of Product, Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  - name: <
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+    href: MyApp.Inventory.Domain.Entities.Product.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+    href: MyApp.Inventory.Domain.Entities.Product.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  name: GetAllAsync()
+  nameWithType: IRepository<TEntity, TKey>.GetAllAsync()
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.GetAllAsync()
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetAllAsync()
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).GetAllAsync()
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  isExternal: true
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllPaginatedAsync(int, int)
+  nameWithType: IRepository<TEntity, TKey>.GetAllPaginatedAsync(int, int)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.GetAllPaginatedAsync(int, int)
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetAllPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).GetAllPaginatedAsync(Integer, Integer)
+  name.vb: GetAllPaginatedAsync(Integer, Integer)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  name: AddAsync(TEntity)
+  nameWithType: IRepository<TEntity, TKey>.AddAsync(TEntity)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.AddAsync(TEntity)
+  nameWithType.vb: IRepository(Of TEntity, TKey).AddAsync(TEntity)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).AddAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+    name: AddAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.AddAsync(`0)
+    name: AddAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_AddAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  name: UpdateAsync(TEntity)
+  nameWithType: IRepository<TEntity, TKey>.UpdateAsync(TEntity)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.UpdateAsync(TEntity)
+  nameWithType.vb: IRepository(Of TEntity, TKey).UpdateAsync(TEntity)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).UpdateAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+    name: UpdateAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.UpdateAsync(`0)
+    name: UpdateAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_UpdateAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+  commentId: M:MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  name: DeleteAsync(TEntity)
+  nameWithType: IRepository<TEntity, TKey>.DeleteAsync(TEntity)
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>.DeleteAsync(TEntity)
+  nameWithType.vb: IRepository(Of TEntity, TKey).DeleteAsync(TEntity)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey).DeleteAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+    name: DeleteAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2.DeleteAsync(`0)
+    name: DeleteAsync
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html#MyApp_Shared_Domain_Repositories_IRepository_2_DeleteAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories.IRepository`2
+  commentId: T:MyApp.Shared.Domain.Repositories.IRepository`2
+  href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  name: IRepository<TEntity, TKey>
+  nameWithType: IRepository<TEntity, TKey>
+  fullName: MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>
+  nameWithType.vb: IRepository(Of TEntity, TKey)
+  fullName.vb: MyApp.Shared.Domain.Repositories.IRepository(Of TEntity, TKey)
+  name.vb: IRepository(Of TEntity, TKey)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Repositories.IRepository`2
+    name: IRepository
+    href: MyApp.Shared.Domain.Repositories.IRepository-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+- uid: MyApp.Shared.Domain.Repositories
+  commentId: N:MyApp.Shared.Domain.Repositories
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Repositories
+  nameWithType: MyApp.Shared.Domain.Repositories
+  fullName: MyApp.Shared.Domain.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Repositories
+    name: Repositories
+    href: MyApp.Shared.Domain.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Repositories
+    name: Repositories
+    href: MyApp.Shared.Domain.Repositories.html
+- uid: MyApp.Inventory.Domain.Repositories.IProductRepository.GetBySkuAsync*
+  commentId: Overload:MyApp.Inventory.Domain.Repositories.IProductRepository.GetBySkuAsync
+  href: MyApp.Inventory.Domain.Repositories.IProductRepository.html#MyApp_Inventory_Domain_Repositories_IProductRepository_GetBySkuAsync_System_String_
+  name: GetBySkuAsync
+  nameWithType: IProductRepository.GetBySkuAsync
+  fullName: MyApp.Inventory.Domain.Repositories.IProductRepository.GetBySkuAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{MyApp.Inventory.Domain.Entities.Product}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Inventory.Domain.Entities.Product}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Product>
+  nameWithType: Task<Product>
+  fullName: System.Threading.Tasks.Task<MyApp.Inventory.Domain.Entities.Product>
+  nameWithType.vb: Task(Of Product)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Inventory.Domain.Entities.Product)
+  name.vb: Task(Of Product)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+    href: MyApp.Inventory.Domain.Entities.Product.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+    href: MyApp.Inventory.Domain.Entities.Product.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Inventory.Domain.Repositories.IProductRepository.GetLowStockProductsAsync*
+  commentId: Overload:MyApp.Inventory.Domain.Repositories.IProductRepository.GetLowStockProductsAsync
+  href: MyApp.Inventory.Domain.Repositories.IProductRepository.html#MyApp_Inventory_Domain_Repositories_IProductRepository_GetLowStockProductsAsync
+  name: GetLowStockProductsAsync
+  nameWithType: IProductRepository.GetLowStockProductsAsync
+  fullName: MyApp.Inventory.Domain.Repositories.IProductRepository.GetLowStockProductsAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Domain.Entities.Product}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Domain.Entities.Product}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<Product>>
+  nameWithType: Task<IEnumerable<Product>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Inventory.Domain.Entities.Product>>
+  nameWithType.vb: Task(Of IEnumerable(Of Product))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Inventory.Domain.Entities.Product))
+  name.vb: Task(Of IEnumerable(Of Product))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+    href: MyApp.Inventory.Domain.Entities.Product.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+    href: MyApp.Inventory.Domain.Entities.Product.html
+  - name: )
+  - name: )

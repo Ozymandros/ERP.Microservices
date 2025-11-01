@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Application.Mapping
+  commentId: N:MyApp.Orders.Application.Mapping
+  id: MyApp.Orders.Application.Mapping
+  children:
+  - MyApp.Orders.Application.Mapping.OrderProfile
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Orders.Application.Mapping
+  nameWithType: MyApp.Orders.Application.Mapping
+  fullName: MyApp.Orders.Application.Mapping
+  type: Namespace
+  assemblies:
+  - MyApp.Orders.Application
+references:
+- uid: MyApp.Orders.Application.Mapping.OrderProfile
+  commentId: T:MyApp.Orders.Application.Mapping.OrderProfile
+  href: MyApp.Orders.Application.Mapping.OrderProfile.html
+  name: OrderProfile
+  nameWithType: OrderProfile
+  fullName: MyApp.Orders.Application.Mapping.OrderProfile

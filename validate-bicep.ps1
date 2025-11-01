@@ -140,7 +140,7 @@ Write-Host ""
 
 # Check for module calls
 Write-Host "Module Calls:" -ForegroundColor Cyan
-$moduleNames = @("redis", "sqlServer", "keyVault")
+$moduleNames = @("redis", "myapp_sqlserver", "keyVault")
 foreach ($moduleName in $moduleNames) {
     if ($mainBicepContent -match "module $moduleName") {
         Write-Host "  ✓ $moduleName module call" -ForegroundColor Green
@@ -153,8 +153,8 @@ Write-Host ""
 
 # Check Key Vault enablement
 Write-Host "Critical Security Check:" -ForegroundColor Cyan
-if ($mainBicepContent -match "enableKeyVault:\s*true") {
-    Write-Host "  ✓ Key Vault enabled (enableKeyVault: true)" -ForegroundColor Green
+if ($mainBicepContent -match "module keyVault.*keyvault-secrets") {
+    Write-Host "  ✓ Key Vault module enabled" -ForegroundColor Green
 } else {
     Write-Host "  ✗ Key Vault NOT enabled - CRITICAL!" -ForegroundColor Red
 }

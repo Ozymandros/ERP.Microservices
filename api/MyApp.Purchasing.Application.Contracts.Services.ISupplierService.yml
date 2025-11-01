@@ -1,0 +1,578 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+  commentId: T:MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+  id: ISupplierService
+  parent: MyApp.Purchasing.Application.Contracts.Services
+  children:
+  - MyApp.Purchasing.Application.Contracts.Services.ISupplierService.CreateSupplierAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto)
+  - MyApp.Purchasing.Application.Contracts.Services.ISupplierService.DeleteSupplierAsync(System.Guid)
+  - MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetAllSuppliersAsync
+  - MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByEmailAsync(System.String)
+  - MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByIdAsync(System.Guid)
+  - MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSuppliersByNameAsync(System.String)
+  - MyApp.Purchasing.Application.Contracts.Services.ISupplierService.UpdateSupplierAsync(System.Guid,MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto)
+  langs:
+  - csharp
+  - vb
+  name: ISupplierService
+  nameWithType: ISupplierService
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ISupplierService
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+    startLine: 7
+  assemblies:
+  - MyApp.Purchasing.Application.Contracts
+  namespace: MyApp.Purchasing.Application.Contracts.Services
+  syntax:
+    content: public interface ISupplierService
+    content.vb: Public Interface ISupplierService
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByIdAsync(System.Guid)
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByIdAsync(System.Guid)
+  id: GetSupplierByIdAsync(System.Guid)
+  parent: MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+  langs:
+  - csharp
+  - vb
+  name: GetSupplierByIdAsync(Guid)
+  nameWithType: ISupplierService.GetSupplierByIdAsync(Guid)
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetSupplierByIdAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+    startLine: 9
+  assemblies:
+  - MyApp.Purchasing.Application.Contracts
+  namespace: MyApp.Purchasing.Application.Contracts.Services
+  syntax:
+    content: Task<SupplierDto?> GetSupplierByIdAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto}
+    content.vb: Function GetSupplierByIdAsync(id As Guid) As Task(Of SupplierDto)
+  overload: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByIdAsync*
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByEmailAsync(System.String)
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByEmailAsync(System.String)
+  id: GetSupplierByEmailAsync(System.String)
+  parent: MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+  langs:
+  - csharp
+  - vb
+  name: GetSupplierByEmailAsync(string)
+  nameWithType: ISupplierService.GetSupplierByEmailAsync(string)
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByEmailAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetSupplierByEmailAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+    startLine: 10
+  assemblies:
+  - MyApp.Purchasing.Application.Contracts
+  namespace: MyApp.Purchasing.Application.Contracts.Services
+  syntax:
+    content: Task<SupplierDto?> GetSupplierByEmailAsync(string email)
+    parameters:
+    - id: email
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto}
+    content.vb: Function GetSupplierByEmailAsync(email As String) As Task(Of SupplierDto)
+  overload: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByEmailAsync*
+  nameWithType.vb: ISupplierService.GetSupplierByEmailAsync(String)
+  fullName.vb: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByEmailAsync(String)
+  name.vb: GetSupplierByEmailAsync(String)
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSuppliersByNameAsync(System.String)
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSuppliersByNameAsync(System.String)
+  id: GetSuppliersByNameAsync(System.String)
+  parent: MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+  langs:
+  - csharp
+  - vb
+  name: GetSuppliersByNameAsync(string)
+  nameWithType: ISupplierService.GetSuppliersByNameAsync(string)
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSuppliersByNameAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetSuppliersByNameAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+    startLine: 11
+  assemblies:
+  - MyApp.Purchasing.Application.Contracts
+  namespace: MyApp.Purchasing.Application.Contracts.Services
+  syntax:
+    content: Task<IEnumerable<SupplierDto>> GetSuppliersByNameAsync(string name)
+    parameters:
+    - id: name
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto}}
+    content.vb: Function GetSuppliersByNameAsync(name As String) As Task(Of IEnumerable(Of SupplierDto))
+  overload: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSuppliersByNameAsync*
+  nameWithType.vb: ISupplierService.GetSuppliersByNameAsync(String)
+  fullName.vb: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSuppliersByNameAsync(String)
+  name.vb: GetSuppliersByNameAsync(String)
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetAllSuppliersAsync
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetAllSuppliersAsync
+  id: GetAllSuppliersAsync
+  parent: MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+  langs:
+  - csharp
+  - vb
+  name: GetAllSuppliersAsync()
+  nameWithType: ISupplierService.GetAllSuppliersAsync()
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetAllSuppliersAsync()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllSuppliersAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+    startLine: 12
+  assemblies:
+  - MyApp.Purchasing.Application.Contracts
+  namespace: MyApp.Purchasing.Application.Contracts.Services
+  syntax:
+    content: Task<IEnumerable<SupplierDto>> GetAllSuppliersAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto}}
+    content.vb: Function GetAllSuppliersAsync() As Task(Of IEnumerable(Of SupplierDto))
+  overload: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetAllSuppliersAsync*
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.CreateSupplierAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto)
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.ISupplierService.CreateSupplierAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto)
+  id: CreateSupplierAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto)
+  parent: MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+  langs:
+  - csharp
+  - vb
+  name: CreateSupplierAsync(CreateUpdateSupplierDto)
+  nameWithType: ISupplierService.CreateSupplierAsync(CreateUpdateSupplierDto)
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.CreateSupplierAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateSupplierAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+    startLine: 13
+  assemblies:
+  - MyApp.Purchasing.Application.Contracts
+  namespace: MyApp.Purchasing.Application.Contracts.Services
+  syntax:
+    content: Task<SupplierDto> CreateSupplierAsync(CreateUpdateSupplierDto dto)
+    parameters:
+    - id: dto
+      type: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto}
+    content.vb: Function CreateSupplierAsync(dto As CreateUpdateSupplierDto) As Task(Of SupplierDto)
+  overload: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.CreateSupplierAsync*
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.UpdateSupplierAsync(System.Guid,MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto)
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.ISupplierService.UpdateSupplierAsync(System.Guid,MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto)
+  id: UpdateSupplierAsync(System.Guid,MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto)
+  parent: MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+  langs:
+  - csharp
+  - vb
+  name: UpdateSupplierAsync(Guid, CreateUpdateSupplierDto)
+  nameWithType: ISupplierService.UpdateSupplierAsync(Guid, CreateUpdateSupplierDto)
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.UpdateSupplierAsync(System.Guid, MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateSupplierAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+    startLine: 14
+  assemblies:
+  - MyApp.Purchasing.Application.Contracts
+  namespace: MyApp.Purchasing.Application.Contracts.Services
+  syntax:
+    content: Task<SupplierDto> UpdateSupplierAsync(Guid id, CreateUpdateSupplierDto dto)
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: dto
+      type: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto}
+    content.vb: Function UpdateSupplierAsync(id As Guid, dto As CreateUpdateSupplierDto) As Task(Of SupplierDto)
+  overload: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.UpdateSupplierAsync*
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.DeleteSupplierAsync(System.Guid)
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.ISupplierService.DeleteSupplierAsync(System.Guid)
+  id: DeleteSupplierAsync(System.Guid)
+  parent: MyApp.Purchasing.Application.Contracts.Services.ISupplierService
+  langs:
+  - csharp
+  - vb
+  name: DeleteSupplierAsync(Guid)
+  nameWithType: ISupplierService.DeleteSupplierAsync(Guid)
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.DeleteSupplierAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteSupplierAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application.Contracts/Services/ISupplierService.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Purchasing.Application.Contracts
+  namespace: MyApp.Purchasing.Application.Contracts.Services
+  syntax:
+    content: Task DeleteSupplierAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function DeleteSupplierAsync(id As Guid) As Task
+  overload: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.DeleteSupplierAsync*
+references:
+- uid: MyApp.Purchasing.Application.Contracts.Services
+  commentId: N:MyApp.Purchasing.Application.Contracts.Services
+  href: MyApp.html
+  name: MyApp.Purchasing.Application.Contracts.Services
+  nameWithType: MyApp.Purchasing.Application.Contracts.Services
+  fullName: MyApp.Purchasing.Application.Contracts.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Application
+    name: Application
+    href: MyApp.Purchasing.Application.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts
+    name: Contracts
+    href: MyApp.Purchasing.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts.Services
+    name: Services
+    href: MyApp.Purchasing.Application.Contracts.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Application
+    name: Application
+    href: MyApp.Purchasing.Application.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts
+    name: Contracts
+    href: MyApp.Purchasing.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts.Services
+    name: Services
+    href: MyApp.Purchasing.Application.Contracts.Services.html
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByIdAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByIdAsync
+  href: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.html#MyApp_Purchasing_Application_Contracts_Services_ISupplierService_GetSupplierByIdAsync_System_Guid_
+  name: GetSupplierByIdAsync
+  nameWithType: ISupplierService.GetSupplierByIdAsync
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByIdAsync
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task{MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<SupplierDto>
+  nameWithType: Task<SupplierDto>
+  fullName: System.Threading.Tasks.Task<MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto>
+  nameWithType.vb: Task(Of SupplierDto)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto)
+  name.vb: Task(Of SupplierDto)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto
+    name: SupplierDto
+    href: MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto
+    name: SupplierDto
+    href: MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByEmailAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByEmailAsync
+  href: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.html#MyApp_Purchasing_Application_Contracts_Services_ISupplierService_GetSupplierByEmailAsync_System_String_
+  name: GetSupplierByEmailAsync
+  nameWithType: ISupplierService.GetSupplierByEmailAsync
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSupplierByEmailAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSuppliersByNameAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSuppliersByNameAsync
+  href: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.html#MyApp_Purchasing_Application_Contracts_Services_ISupplierService_GetSuppliersByNameAsync_System_String_
+  name: GetSuppliersByNameAsync
+  nameWithType: ISupplierService.GetSuppliersByNameAsync
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetSuppliersByNameAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<SupplierDto>>
+  nameWithType: Task<IEnumerable<SupplierDto>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto>>
+  nameWithType.vb: Task(Of IEnumerable(Of SupplierDto))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto))
+  name.vb: Task(Of IEnumerable(Of SupplierDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto
+    name: SupplierDto
+    href: MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto
+    name: SupplierDto
+    href: MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetAllSuppliersAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetAllSuppliersAsync
+  href: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.html#MyApp_Purchasing_Application_Contracts_Services_ISupplierService_GetAllSuppliersAsync
+  name: GetAllSuppliersAsync
+  nameWithType: ISupplierService.GetAllSuppliersAsync
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.GetAllSuppliersAsync
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.CreateSupplierAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Contracts.Services.ISupplierService.CreateSupplierAsync
+  href: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.html#MyApp_Purchasing_Application_Contracts_Services_ISupplierService_CreateSupplierAsync_MyApp_Purchasing_Application_Contracts_DTOs_CreateUpdateSupplierDto_
+  name: CreateSupplierAsync
+  nameWithType: ISupplierService.CreateSupplierAsync
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.CreateSupplierAsync
+- uid: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto
+  commentId: T:MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto
+  parent: MyApp.Purchasing.Application.Contracts.DTOs
+  href: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto.html
+  name: CreateUpdateSupplierDto
+  nameWithType: CreateUpdateSupplierDto
+  fullName: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto
+- uid: MyApp.Purchasing.Application.Contracts.DTOs
+  commentId: N:MyApp.Purchasing.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Purchasing.Application.Contracts.DTOs
+  nameWithType: MyApp.Purchasing.Application.Contracts.DTOs
+  fullName: MyApp.Purchasing.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Application
+    name: Application
+    href: MyApp.Purchasing.Application.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts
+    name: Contracts
+    href: MyApp.Purchasing.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Purchasing.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Application
+    name: Application
+    href: MyApp.Purchasing.Application.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts
+    name: Contracts
+    href: MyApp.Purchasing.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Purchasing.Application.Contracts.DTOs.html
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.UpdateSupplierAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Contracts.Services.ISupplierService.UpdateSupplierAsync
+  href: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.html#MyApp_Purchasing_Application_Contracts_Services_ISupplierService_UpdateSupplierAsync_System_Guid_MyApp_Purchasing_Application_Contracts_DTOs_CreateUpdateSupplierDto_
+  name: UpdateSupplierAsync
+  nameWithType: ISupplierService.UpdateSupplierAsync
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.UpdateSupplierAsync
+- uid: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.DeleteSupplierAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Contracts.Services.ISupplierService.DeleteSupplierAsync
+  href: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.html#MyApp_Purchasing_Application_Contracts_Services_ISupplierService_DeleteSupplierAsync_System_Guid_
+  name: DeleteSupplierAsync
+  nameWithType: ISupplierService.DeleteSupplierAsync
+  fullName: MyApp.Purchasing.Application.Contracts.Services.ISupplierService.DeleteSupplierAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task

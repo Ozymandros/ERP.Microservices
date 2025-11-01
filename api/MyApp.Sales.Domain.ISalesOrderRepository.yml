@@ -1,0 +1,565 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Domain.ISalesOrderRepository
+  commentId: T:MyApp.Sales.Domain.ISalesOrderRepository
+  id: ISalesOrderRepository
+  parent: MyApp.Sales.Domain
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: ISalesOrderRepository
+  nameWithType: ISalesOrderRepository
+  fullName: MyApp.Sales.Domain.ISalesOrderRepository
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Domain/ISalesOrderRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ISalesOrderRepository
+    path: src/MyApp.Sales/MyApp.Sales.Domain/ISalesOrderRepository.cs
+    startLine: 5
+  assemblies:
+  - MyApp.Sales.Domain
+  namespace: MyApp.Sales.Domain
+  syntax:
+    content: 'public interface ISalesOrderRepository : IRepository<SalesOrder, Guid>'
+    content.vb: Public Interface ISalesOrderRepository Inherits IRepository(Of SalesOrder, Guid)
+  inheritedMembers:
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetByIdAsync(System.Guid)
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.ListAsync
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetAllAsync
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.AddAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.UpdateAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.DeleteAsync(System.Guid)
+references:
+- uid: MyApp.Sales.Domain
+  commentId: N:MyApp.Sales.Domain
+  href: MyApp.html
+  name: MyApp.Sales.Domain
+  nameWithType: MyApp.Sales.Domain
+  fullName: MyApp.Sales.Domain
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Domain
+    name: Domain
+    href: MyApp.Sales.Domain.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Domain
+    name: Domain
+    href: MyApp.Sales.Domain.html
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetByIdAsync(System.Guid)
+  commentId: M:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetByIdAsync(System.Guid)
+  parent: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}
+  definition: MyApp.Sales.Domain.IRepository`2.GetByIdAsync(`1)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetByIdAsync__1_
+  name: GetByIdAsync(Guid)
+  nameWithType: IRepository<SalesOrder, Guid>.GetByIdAsync(Guid)
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrder, System.Guid>.GetByIdAsync(System.Guid)
+  nameWithType.vb: IRepository(Of SalesOrder, Guid).GetByIdAsync(Guid)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrder, System.Guid).GetByIdAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.ListAsync
+  commentId: M:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.ListAsync
+  parent: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}
+  definition: MyApp.Sales.Domain.IRepository`2.ListAsync
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_ListAsync
+  name: ListAsync()
+  nameWithType: IRepository<SalesOrder, Guid>.ListAsync()
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrder, System.Guid>.ListAsync()
+  nameWithType.vb: IRepository(Of SalesOrder, Guid).ListAsync()
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrder, System.Guid).ListAsync()
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.ListAsync
+    name: ListAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_ListAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.ListAsync
+    name: ListAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_ListAsync
+  - name: (
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetAllAsync
+  commentId: M:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetAllAsync
+  parent: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}
+  definition: MyApp.Sales.Domain.IRepository`2.GetAllAsync
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllAsync
+  name: GetAllAsync()
+  nameWithType: IRepository<SalesOrder, Guid>.GetAllAsync()
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrder, System.Guid>.GetAllAsync()
+  nameWithType.vb: IRepository(Of SalesOrder, Guid).GetAllAsync()
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrder, System.Guid).GetAllAsync()
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}
+  definition: MyApp.Sales.Domain.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllPaginatedAsync(int, int)
+  nameWithType: IRepository<SalesOrder, Guid>.GetAllPaginatedAsync(int, int)
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrder, System.Guid>.GetAllPaginatedAsync(int, int)
+  nameWithType.vb: IRepository(Of SalesOrder, Guid).GetAllPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrder, System.Guid).GetAllPaginatedAsync(Integer, Integer)
+  name.vb: GetAllPaginatedAsync(Integer, Integer)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.AddAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  commentId: M:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.AddAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  parent: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}
+  definition: MyApp.Sales.Domain.IRepository`2.AddAsync(`0)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_AddAsync__0_
+  name: AddAsync(SalesOrder)
+  nameWithType: IRepository<SalesOrder, Guid>.AddAsync(SalesOrder)
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrder, System.Guid>.AddAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  nameWithType.vb: IRepository(Of SalesOrder, Guid).AddAsync(SalesOrder)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrder, System.Guid).AddAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.AddAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+    name: AddAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_AddAsync__0_
+  - name: (
+  - uid: MyApp.Sales.Domain.Entities.SalesOrder
+    name: SalesOrder
+    href: MyApp.Sales.Domain.Entities.SalesOrder.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.AddAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+    name: AddAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_AddAsync__0_
+  - name: (
+  - uid: MyApp.Sales.Domain.Entities.SalesOrder
+    name: SalesOrder
+    href: MyApp.Sales.Domain.Entities.SalesOrder.html
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.UpdateAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  commentId: M:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.UpdateAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  parent: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}
+  definition: MyApp.Sales.Domain.IRepository`2.UpdateAsync(`0)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_UpdateAsync__0_
+  name: UpdateAsync(SalesOrder)
+  nameWithType: IRepository<SalesOrder, Guid>.UpdateAsync(SalesOrder)
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrder, System.Guid>.UpdateAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  nameWithType.vb: IRepository(Of SalesOrder, Guid).UpdateAsync(SalesOrder)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrder, System.Guid).UpdateAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.UpdateAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+    name: UpdateAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_UpdateAsync__0_
+  - name: (
+  - uid: MyApp.Sales.Domain.Entities.SalesOrder
+    name: SalesOrder
+    href: MyApp.Sales.Domain.Entities.SalesOrder.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.UpdateAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+    name: UpdateAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_UpdateAsync__0_
+  - name: (
+  - uid: MyApp.Sales.Domain.Entities.SalesOrder
+    name: SalesOrder
+    href: MyApp.Sales.Domain.Entities.SalesOrder.html
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  commentId: M:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  parent: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}
+  definition: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`0)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__0_
+  name: DeleteAsync(SalesOrder)
+  nameWithType: IRepository<SalesOrder, Guid>.DeleteAsync(SalesOrder)
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrder, System.Guid>.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  nameWithType.vb: IRepository(Of SalesOrder, Guid).DeleteAsync(SalesOrder)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrder, System.Guid).DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__0_
+  - name: (
+  - uid: MyApp.Sales.Domain.Entities.SalesOrder
+    name: SalesOrder
+    href: MyApp.Sales.Domain.Entities.SalesOrder.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrder)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__0_
+  - name: (
+  - uid: MyApp.Sales.Domain.Entities.SalesOrder
+    name: SalesOrder
+    href: MyApp.Sales.Domain.Entities.SalesOrder.html
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.DeleteAsync(System.Guid)
+  commentId: M:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.DeleteAsync(System.Guid)
+  parent: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}
+  definition: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`1)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__1_
+  name: DeleteAsync(Guid)
+  nameWithType: IRepository<SalesOrder, Guid>.DeleteAsync(Guid)
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrder, System.Guid>.DeleteAsync(System.Guid)
+  nameWithType.vb: IRepository(Of SalesOrder, Guid).DeleteAsync(Guid)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrder, System.Guid).DeleteAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.DeleteAsync(System.Guid)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__1_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}.DeleteAsync(System.Guid)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__1_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2.GetByIdAsync(`1)
+  commentId: M:MyApp.Sales.Domain.IRepository`2.GetByIdAsync(`1)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetByIdAsync__1_
+  name: GetByIdAsync(TKey)
+  nameWithType: IRepository<TEntity, TKey>.GetByIdAsync(TKey)
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>.GetByIdAsync(TKey)
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetByIdAsync(TKey)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey).GetByIdAsync(TKey)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2.GetByIdAsync(`1)
+    name: GetByIdAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - name: TKey
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2.GetByIdAsync(`1)
+    name: GetByIdAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - name: TKey
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}
+  commentId: T:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrder,System.Guid}
+  parent: MyApp.Sales.Domain
+  definition: MyApp.Sales.Domain.IRepository`2
+  href: MyApp.Sales.Domain.IRepository-2.html
+  name: IRepository<SalesOrder, Guid>
+  nameWithType: IRepository<SalesOrder, Guid>
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrder, System.Guid>
+  nameWithType.vb: IRepository(Of SalesOrder, Guid)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrder, System.Guid)
+  name.vb: IRepository(Of SalesOrder, Guid)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2
+    name: IRepository
+    href: MyApp.Sales.Domain.IRepository-2.html
+  - name: <
+  - uid: MyApp.Sales.Domain.Entities.SalesOrder
+    name: SalesOrder
+    href: MyApp.Sales.Domain.Entities.SalesOrder.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2
+    name: IRepository
+    href: MyApp.Sales.Domain.IRepository-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Sales.Domain.Entities.SalesOrder
+    name: SalesOrder
+    href: MyApp.Sales.Domain.Entities.SalesOrder.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2.ListAsync
+  commentId: M:MyApp.Sales.Domain.IRepository`2.ListAsync
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_ListAsync
+  name: ListAsync()
+  nameWithType: IRepository<TEntity, TKey>.ListAsync()
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>.ListAsync()
+  nameWithType.vb: IRepository(Of TEntity, TKey).ListAsync()
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey).ListAsync()
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2.ListAsync
+    name: ListAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_ListAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2.ListAsync
+    name: ListAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_ListAsync
+  - name: (
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2.GetAllAsync
+  commentId: M:MyApp.Sales.Domain.IRepository`2.GetAllAsync
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllAsync
+  name: GetAllAsync()
+  nameWithType: IRepository<TEntity, TKey>.GetAllAsync()
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>.GetAllAsync()
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetAllAsync()
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey).GetAllAsync()
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Sales.Domain.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  isExternal: true
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllPaginatedAsync(int, int)
+  nameWithType: IRepository<TEntity, TKey>.GetAllPaginatedAsync(int, int)
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>.GetAllPaginatedAsync(int, int)
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetAllPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey).GetAllPaginatedAsync(Integer, Integer)
+  name.vb: GetAllPaginatedAsync(Integer, Integer)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2.AddAsync(`0)
+  commentId: M:MyApp.Sales.Domain.IRepository`2.AddAsync(`0)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_AddAsync__0_
+  name: AddAsync(TEntity)
+  nameWithType: IRepository<TEntity, TKey>.AddAsync(TEntity)
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>.AddAsync(TEntity)
+  nameWithType.vb: IRepository(Of TEntity, TKey).AddAsync(TEntity)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey).AddAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2.AddAsync(`0)
+    name: AddAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_AddAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2.AddAsync(`0)
+    name: AddAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_AddAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2.UpdateAsync(`0)
+  commentId: M:MyApp.Sales.Domain.IRepository`2.UpdateAsync(`0)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_UpdateAsync__0_
+  name: UpdateAsync(TEntity)
+  nameWithType: IRepository<TEntity, TKey>.UpdateAsync(TEntity)
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>.UpdateAsync(TEntity)
+  nameWithType.vb: IRepository(Of TEntity, TKey).UpdateAsync(TEntity)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey).UpdateAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2.UpdateAsync(`0)
+    name: UpdateAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_UpdateAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2.UpdateAsync(`0)
+    name: UpdateAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_UpdateAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`0)
+  commentId: M:MyApp.Sales.Domain.IRepository`2.DeleteAsync(`0)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__0_
+  name: DeleteAsync(TEntity)
+  nameWithType: IRepository<TEntity, TKey>.DeleteAsync(TEntity)
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>.DeleteAsync(TEntity)
+  nameWithType.vb: IRepository(Of TEntity, TKey).DeleteAsync(TEntity)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey).DeleteAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`0)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`0)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`1)
+  commentId: M:MyApp.Sales.Domain.IRepository`2.DeleteAsync(`1)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__1_
+  name: DeleteAsync(TKey)
+  nameWithType: IRepository<TEntity, TKey>.DeleteAsync(TKey)
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>.DeleteAsync(TKey)
+  nameWithType.vb: IRepository(Of TEntity, TKey).DeleteAsync(TKey)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey).DeleteAsync(TKey)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`1)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__1_
+  - name: (
+  - name: TKey
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`1)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__1_
+  - name: (
+  - name: TKey
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2
+  commentId: T:MyApp.Sales.Domain.IRepository`2
+  href: MyApp.Sales.Domain.IRepository-2.html
+  name: IRepository<TEntity, TKey>
+  nameWithType: IRepository<TEntity, TKey>
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>
+  nameWithType.vb: IRepository(Of TEntity, TKey)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey)
+  name.vb: IRepository(Of TEntity, TKey)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2
+    name: IRepository
+    href: MyApp.Sales.Domain.IRepository-2.html
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2
+    name: IRepository
+    href: MyApp.Sales.Domain.IRepository-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )

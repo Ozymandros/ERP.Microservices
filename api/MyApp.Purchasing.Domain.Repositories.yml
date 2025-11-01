@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Domain.Repositories
+  commentId: N:MyApp.Purchasing.Domain.Repositories
+  id: MyApp.Purchasing.Domain.Repositories
+  children:
+  - MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository
+  - MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+  - MyApp.Purchasing.Domain.Repositories.ISupplierRepository
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Purchasing.Domain.Repositories
+  nameWithType: MyApp.Purchasing.Domain.Repositories
+  fullName: MyApp.Purchasing.Domain.Repositories
+  type: Namespace
+  assemblies:
+  - MyApp.Purchasing.Domain
+references:
+- uid: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository
+  commentId: T:MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository
+  parent: MyApp.Purchasing.Domain.Repositories
+  href: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository.html
+  name: IPurchaseOrderLineRepository
+  nameWithType: IPurchaseOrderLineRepository
+  fullName: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository
+- uid: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+  commentId: T:MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+  parent: MyApp.Purchasing.Domain.Repositories
+  href: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.html
+  name: IPurchaseOrderRepository
+  nameWithType: IPurchaseOrderRepository
+  fullName: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+- uid: MyApp.Purchasing.Domain.Repositories.ISupplierRepository
+  commentId: T:MyApp.Purchasing.Domain.Repositories.ISupplierRepository
+  parent: MyApp.Purchasing.Domain.Repositories
+  href: MyApp.Purchasing.Domain.Repositories.ISupplierRepository.html
+  name: ISupplierRepository
+  nameWithType: ISupplierRepository
+  fullName: MyApp.Purchasing.Domain.Repositories.ISupplierRepository
+- uid: MyApp.Purchasing.Domain.Repositories
+  commentId: N:MyApp.Purchasing.Domain.Repositories
+  href: MyApp.html
+  name: MyApp.Purchasing.Domain.Repositories
+  nameWithType: MyApp.Purchasing.Domain.Repositories
+  fullName: MyApp.Purchasing.Domain.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain
+    name: Domain
+    href: MyApp.Purchasing.Domain.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain.Repositories
+    name: Repositories
+    href: MyApp.Purchasing.Domain.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain
+    name: Domain
+    href: MyApp.Purchasing.Domain.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain.Repositories
+    name: Repositories
+    href: MyApp.Purchasing.Domain.Repositories.html

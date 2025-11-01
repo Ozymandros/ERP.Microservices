@@ -1,0 +1,19 @@
+### Auth Login Test
+
+@baseUrl = http://localhost:5000
+@apiPath = /api/auth
+
+### Login with admin credentials
+POST {{baseUrl}}{{apiPath}}/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "admin@myapp.local",
+  "password": "Admin123!"
+}
+
+###
+GET /api/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImE0OGYzZDUwLTljNGEtNGQ4Zi04NDBlLTA4ZGUxNGI3NmEwMSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluQG15YXBwLmxvY2FsIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImFkbWluQG15YXBwLmxvY2FsIiwiRmlyc3ROYW1lIjoiIiwiTGFzdE5hbWUiOiIiLCJFbWFpbENvbmZpcm1lZCI6IlRydWUiLCJJc0V4dGVybmFsTG9naW4iOiJGYWxzZSIsIkV4dGVybmFsUHJvdmlkZXIiOiIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc2MTkxMDA1MywiaXNzIjoiTXlBcHAuQXV0aCIsImF1ZCI6Ik15QXBwLkFsbCJ9.RT9I3_LR9NfpyNfvOsU-GbLOd5V6EoNnn3V3vTV6pus
+Accept: application/json

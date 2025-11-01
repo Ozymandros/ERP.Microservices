@@ -1,0 +1,1004 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Application.Services.OrderService
+  commentId: T:MyApp.Orders.Application.Services.OrderService
+  id: OrderService
+  parent: MyApp.Orders.Application.Services
+  children:
+  - MyApp.Orders.Application.Services.OrderService.#ctor(MyApp.Orders.Domain.IOrderRepository,MyApp.Orders.Domain.IOrderLineRepository,AutoMapper.IMapper)
+  - MyApp.Orders.Application.Services.OrderService.CreateAsync(MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  - MyApp.Orders.Application.Services.OrderService.DeleteAsync(System.Guid)
+  - MyApp.Orders.Application.Services.OrderService.GetByIdAsync(System.Guid)
+  - MyApp.Orders.Application.Services.OrderService.ListAsync
+  - MyApp.Orders.Application.Services.OrderService.UpdateAsync(System.Guid,MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  langs:
+  - csharp
+  - vb
+  name: OrderService
+  nameWithType: OrderService
+  fullName: MyApp.Orders.Application.Services.OrderService
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Application/Services/OrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: OrderService
+    path: src/MyApp.Orders/MyApp.Orders.Application/Services/OrderService.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Orders.Application
+  namespace: MyApp.Orders.Application.Services
+  syntax:
+    content: 'public class OrderService : IOrderService'
+    content.vb: Public Class OrderService Implements IOrderService
+  inheritance:
+  - System.Object
+  implements:
+  - MyApp.Orders.Application.Contracts.IOrderService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Orders.Application.Services.OrderService.#ctor(MyApp.Orders.Domain.IOrderRepository,MyApp.Orders.Domain.IOrderLineRepository,AutoMapper.IMapper)
+  commentId: M:MyApp.Orders.Application.Services.OrderService.#ctor(MyApp.Orders.Domain.IOrderRepository,MyApp.Orders.Domain.IOrderLineRepository,AutoMapper.IMapper)
+  id: '#ctor(MyApp.Orders.Domain.IOrderRepository,MyApp.Orders.Domain.IOrderLineRepository,AutoMapper.IMapper)'
+  parent: MyApp.Orders.Application.Services.OrderService
+  langs:
+  - csharp
+  - vb
+  name: OrderService(IOrderRepository, IOrderLineRepository, IMapper)
+  nameWithType: OrderService.OrderService(IOrderRepository, IOrderLineRepository, IMapper)
+  fullName: MyApp.Orders.Application.Services.OrderService.OrderService(MyApp.Orders.Domain.IOrderRepository, MyApp.Orders.Domain.IOrderLineRepository, AutoMapper.IMapper)
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Application/Services/OrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Orders/MyApp.Orders.Application/Services/OrderService.cs
+    startLine: 14
+  assemblies:
+  - MyApp.Orders.Application
+  namespace: MyApp.Orders.Application.Services
+  syntax:
+    content: public OrderService(IOrderRepository orders, IOrderLineRepository lines, IMapper mapper)
+    parameters:
+    - id: orders
+      type: MyApp.Orders.Domain.IOrderRepository
+    - id: lines
+      type: MyApp.Orders.Domain.IOrderLineRepository
+    - id: mapper
+      type: AutoMapper.IMapper
+    content.vb: Public Sub New(orders As IOrderRepository, lines As IOrderLineRepository, mapper As IMapper)
+  overload: MyApp.Orders.Application.Services.OrderService.#ctor*
+  nameWithType.vb: OrderService.New(IOrderRepository, IOrderLineRepository, IMapper)
+  fullName.vb: MyApp.Orders.Application.Services.OrderService.New(MyApp.Orders.Domain.IOrderRepository, MyApp.Orders.Domain.IOrderLineRepository, AutoMapper.IMapper)
+  name.vb: New(IOrderRepository, IOrderLineRepository, IMapper)
+- uid: MyApp.Orders.Application.Services.OrderService.CreateAsync(MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  commentId: M:MyApp.Orders.Application.Services.OrderService.CreateAsync(MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  id: CreateAsync(MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  parent: MyApp.Orders.Application.Services.OrderService
+  langs:
+  - csharp
+  - vb
+  name: CreateAsync(CreateUpdateOrderDto)
+  nameWithType: OrderService.CreateAsync(CreateUpdateOrderDto)
+  fullName: MyApp.Orders.Application.Services.OrderService.CreateAsync(MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Application/Services/OrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateAsync
+    path: src/MyApp.Orders/MyApp.Orders.Application/Services/OrderService.cs
+    startLine: 21
+  assemblies:
+  - MyApp.Orders.Application
+  namespace: MyApp.Orders.Application.Services
+  example: []
+  syntax:
+    content: public Task<OrderDto> CreateAsync(CreateUpdateOrderDto dto)
+    parameters:
+    - id: dto
+      type: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Orders.Application.Contracts.Dtos.OrderDto}
+    content.vb: Public Function CreateAsync(dto As CreateUpdateOrderDto) As Task(Of OrderDto)
+  overload: MyApp.Orders.Application.Services.OrderService.CreateAsync*
+  implements:
+  - MyApp.Orders.Application.Contracts.IOrderService.CreateAsync(MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+- uid: MyApp.Orders.Application.Services.OrderService.DeleteAsync(System.Guid)
+  commentId: M:MyApp.Orders.Application.Services.OrderService.DeleteAsync(System.Guid)
+  id: DeleteAsync(System.Guid)
+  parent: MyApp.Orders.Application.Services.OrderService
+  langs:
+  - csharp
+  - vb
+  name: DeleteAsync(Guid)
+  nameWithType: OrderService.DeleteAsync(Guid)
+  fullName: MyApp.Orders.Application.Services.OrderService.DeleteAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Application/Services/OrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteAsync
+    path: src/MyApp.Orders/MyApp.Orders.Application/Services/OrderService.cs
+    startLine: 40
+  assemblies:
+  - MyApp.Orders.Application
+  namespace: MyApp.Orders.Application.Services
+  example: []
+  syntax:
+    content: public Task DeleteAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function DeleteAsync(id As Guid) As Task
+  overload: MyApp.Orders.Application.Services.OrderService.DeleteAsync*
+  implements:
+  - MyApp.Orders.Application.Contracts.IOrderService.DeleteAsync(System.Guid)
+- uid: MyApp.Orders.Application.Services.OrderService.GetByIdAsync(System.Guid)
+  commentId: M:MyApp.Orders.Application.Services.OrderService.GetByIdAsync(System.Guid)
+  id: GetByIdAsync(System.Guid)
+  parent: MyApp.Orders.Application.Services.OrderService
+  langs:
+  - csharp
+  - vb
+  name: GetByIdAsync(Guid)
+  nameWithType: OrderService.GetByIdAsync(Guid)
+  fullName: MyApp.Orders.Application.Services.OrderService.GetByIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Application/Services/OrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByIdAsync
+    path: src/MyApp.Orders/MyApp.Orders.Application/Services/OrderService.cs
+    startLine: 45
+  assemblies:
+  - MyApp.Orders.Application
+  namespace: MyApp.Orders.Application.Services
+  example: []
+  syntax:
+    content: public Task<OrderDto> GetByIdAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Orders.Application.Contracts.Dtos.OrderDto}
+    content.vb: Public Function GetByIdAsync(id As Guid) As Task(Of OrderDto)
+  overload: MyApp.Orders.Application.Services.OrderService.GetByIdAsync*
+  implements:
+  - MyApp.Orders.Application.Contracts.IOrderService.GetByIdAsync(System.Guid)
+- uid: MyApp.Orders.Application.Services.OrderService.ListAsync
+  commentId: M:MyApp.Orders.Application.Services.OrderService.ListAsync
+  id: ListAsync
+  parent: MyApp.Orders.Application.Services.OrderService
+  langs:
+  - csharp
+  - vb
+  name: ListAsync()
+  nameWithType: OrderService.ListAsync()
+  fullName: MyApp.Orders.Application.Services.OrderService.ListAsync()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Application/Services/OrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ListAsync
+    path: src/MyApp.Orders/MyApp.Orders.Application/Services/OrderService.cs
+    startLine: 51
+  assemblies:
+  - MyApp.Orders.Application
+  namespace: MyApp.Orders.Application.Services
+  example: []
+  syntax:
+    content: public Task<IEnumerable<OrderDto>> ListAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Orders.Application.Contracts.Dtos.OrderDto}}
+    content.vb: Public Function ListAsync() As Task(Of IEnumerable(Of OrderDto))
+  overload: MyApp.Orders.Application.Services.OrderService.ListAsync*
+  implements:
+  - MyApp.Orders.Application.Contracts.IOrderService.ListAsync
+- uid: MyApp.Orders.Application.Services.OrderService.UpdateAsync(System.Guid,MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  commentId: M:MyApp.Orders.Application.Services.OrderService.UpdateAsync(System.Guid,MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  id: UpdateAsync(System.Guid,MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  parent: MyApp.Orders.Application.Services.OrderService
+  langs:
+  - csharp
+  - vb
+  name: UpdateAsync(Guid, CreateUpdateOrderDto)
+  nameWithType: OrderService.UpdateAsync(Guid, CreateUpdateOrderDto)
+  fullName: MyApp.Orders.Application.Services.OrderService.UpdateAsync(System.Guid, MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Application/Services/OrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateAsync
+    path: src/MyApp.Orders/MyApp.Orders.Application/Services/OrderService.cs
+    startLine: 57
+  assemblies:
+  - MyApp.Orders.Application
+  namespace: MyApp.Orders.Application.Services
+  example: []
+  syntax:
+    content: public Task UpdateAsync(Guid id, CreateUpdateOrderDto dto)
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: dto
+      type: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function UpdateAsync(id As Guid, dto As CreateUpdateOrderDto) As Task
+  overload: MyApp.Orders.Application.Services.OrderService.UpdateAsync*
+  implements:
+  - MyApp.Orders.Application.Contracts.IOrderService.UpdateAsync(System.Guid,MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+references:
+- uid: MyApp.Orders.Application.Services
+  commentId: N:MyApp.Orders.Application.Services
+  href: MyApp.html
+  name: MyApp.Orders.Application.Services
+  nameWithType: MyApp.Orders.Application.Services
+  fullName: MyApp.Orders.Application.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Application
+    name: Application
+    href: MyApp.Orders.Application.html
+  - name: .
+  - uid: MyApp.Orders.Application.Services
+    name: Services
+    href: MyApp.Orders.Application.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Application
+    name: Application
+    href: MyApp.Orders.Application.html
+  - name: .
+  - uid: MyApp.Orders.Application.Services
+    name: Services
+    href: MyApp.Orders.Application.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MyApp.Orders.Application.Contracts.IOrderService
+  commentId: T:MyApp.Orders.Application.Contracts.IOrderService
+  parent: MyApp.Orders.Application.Contracts
+  href: MyApp.Orders.Application.Contracts.IOrderService.html
+  name: IOrderService
+  nameWithType: IOrderService
+  fullName: MyApp.Orders.Application.Contracts.IOrderService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Orders.Application.Contracts
+  commentId: N:MyApp.Orders.Application.Contracts
+  href: MyApp.html
+  name: MyApp.Orders.Application.Contracts
+  nameWithType: MyApp.Orders.Application.Contracts
+  fullName: MyApp.Orders.Application.Contracts
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Application
+    name: Application
+    href: MyApp.Orders.Application.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts
+    name: Contracts
+    href: MyApp.Orders.Application.Contracts.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Application
+    name: Application
+    href: MyApp.Orders.Application.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts
+    name: Contracts
+    href: MyApp.Orders.Application.Contracts.html
+- uid: MyApp.Orders.Application.Services.OrderService.#ctor*
+  commentId: Overload:MyApp.Orders.Application.Services.OrderService.#ctor
+  href: MyApp.Orders.Application.Services.OrderService.html#MyApp_Orders_Application_Services_OrderService__ctor_MyApp_Orders_Domain_IOrderRepository_MyApp_Orders_Domain_IOrderLineRepository_AutoMapper_IMapper_
+  name: OrderService
+  nameWithType: OrderService.OrderService
+  fullName: MyApp.Orders.Application.Services.OrderService.OrderService
+  nameWithType.vb: OrderService.New
+  fullName.vb: MyApp.Orders.Application.Services.OrderService.New
+  name.vb: New
+- uid: MyApp.Orders.Domain.IOrderRepository
+  commentId: T:MyApp.Orders.Domain.IOrderRepository
+  parent: MyApp.Orders.Domain
+  href: MyApp.Orders.Domain.IOrderRepository.html
+  name: IOrderRepository
+  nameWithType: IOrderRepository
+  fullName: MyApp.Orders.Domain.IOrderRepository
+- uid: MyApp.Orders.Domain.IOrderLineRepository
+  commentId: T:MyApp.Orders.Domain.IOrderLineRepository
+  parent: MyApp.Orders.Domain
+  href: MyApp.Orders.Domain.IOrderLineRepository.html
+  name: IOrderLineRepository
+  nameWithType: IOrderLineRepository
+  fullName: MyApp.Orders.Domain.IOrderLineRepository
+- uid: AutoMapper.IMapper
+  commentId: T:AutoMapper.IMapper
+  parent: AutoMapper
+  isExternal: true
+  name: IMapper
+  nameWithType: IMapper
+  fullName: AutoMapper.IMapper
+- uid: MyApp.Orders.Domain
+  commentId: N:MyApp.Orders.Domain
+  href: MyApp.html
+  name: MyApp.Orders.Domain
+  nameWithType: MyApp.Orders.Domain
+  fullName: MyApp.Orders.Domain
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Domain
+    name: Domain
+    href: MyApp.Orders.Domain.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Domain
+    name: Domain
+    href: MyApp.Orders.Domain.html
+- uid: AutoMapper
+  commentId: N:AutoMapper
+  isExternal: true
+  name: AutoMapper
+  nameWithType: AutoMapper
+  fullName: AutoMapper
+- uid: MyApp.Orders.Application.Services.OrderService.CreateAsync*
+  commentId: Overload:MyApp.Orders.Application.Services.OrderService.CreateAsync
+  href: MyApp.Orders.Application.Services.OrderService.html#MyApp_Orders_Application_Services_OrderService_CreateAsync_MyApp_Orders_Application_Contracts_Dtos_CreateUpdateOrderDto_
+  name: CreateAsync
+  nameWithType: OrderService.CreateAsync
+  fullName: MyApp.Orders.Application.Services.OrderService.CreateAsync
+- uid: MyApp.Orders.Application.Contracts.IOrderService.CreateAsync(MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  commentId: M:MyApp.Orders.Application.Contracts.IOrderService.CreateAsync(MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  parent: MyApp.Orders.Application.Contracts.IOrderService
+  name: CreateAsync(CreateUpdateOrderDto)
+  nameWithType: IOrderService.CreateAsync(CreateUpdateOrderDto)
+  fullName: MyApp.Orders.Application.Contracts.IOrderService.CreateAsync(MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  spec.csharp:
+  - uid: MyApp.Orders.Application.Contracts.IOrderService.CreateAsync(MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+    name: CreateAsync
+  - name: (
+  - uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+    name: CreateUpdateOrderDto
+  - name: )
+  spec.vb:
+  - uid: MyApp.Orders.Application.Contracts.IOrderService.CreateAsync(MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+    name: CreateAsync
+  - name: (
+  - uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+    name: CreateUpdateOrderDto
+  - name: )
+- uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+  commentId: T:MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+  parent: MyApp.Orders.Application.Contracts.Dtos
+  href: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.html
+  name: CreateUpdateOrderDto
+  nameWithType: CreateUpdateOrderDto
+  fullName: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+- uid: System.Threading.Tasks.Task{MyApp.Orders.Application.Contracts.Dtos.OrderDto}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Orders.Application.Contracts.Dtos.OrderDto}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<OrderDto>
+  nameWithType: Task<OrderDto>
+  fullName: System.Threading.Tasks.Task<MyApp.Orders.Application.Contracts.Dtos.OrderDto>
+  nameWithType.vb: Task(Of OrderDto)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Orders.Application.Contracts.Dtos.OrderDto)
+  name.vb: Task(Of OrderDto)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Orders.Application.Contracts.Dtos.OrderDto
+    name: OrderDto
+    href: MyApp.Orders.Application.Contracts.Dtos.OrderDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Orders.Application.Contracts.Dtos.OrderDto
+    name: OrderDto
+    href: MyApp.Orders.Application.Contracts.Dtos.OrderDto.html
+  - name: )
+- uid: MyApp.Orders.Application.Contracts.Dtos
+  commentId: N:MyApp.Orders.Application.Contracts.Dtos
+  href: MyApp.html
+  name: MyApp.Orders.Application.Contracts.Dtos
+  nameWithType: MyApp.Orders.Application.Contracts.Dtos
+  fullName: MyApp.Orders.Application.Contracts.Dtos
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Application
+    name: Application
+    href: MyApp.Orders.Application.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts
+    name: Contracts
+    href: MyApp.Orders.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts.Dtos
+    name: Dtos
+    href: MyApp.Orders.Application.Contracts.Dtos.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Application
+    name: Application
+    href: MyApp.Orders.Application.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts
+    name: Contracts
+    href: MyApp.Orders.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts.Dtos
+    name: Dtos
+    href: MyApp.Orders.Application.Contracts.Dtos.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Orders.Application.Services.OrderService.DeleteAsync*
+  commentId: Overload:MyApp.Orders.Application.Services.OrderService.DeleteAsync
+  href: MyApp.Orders.Application.Services.OrderService.html#MyApp_Orders_Application_Services_OrderService_DeleteAsync_System_Guid_
+  name: DeleteAsync
+  nameWithType: OrderService.DeleteAsync
+  fullName: MyApp.Orders.Application.Services.OrderService.DeleteAsync
+- uid: MyApp.Orders.Application.Contracts.IOrderService.DeleteAsync(System.Guid)
+  commentId: M:MyApp.Orders.Application.Contracts.IOrderService.DeleteAsync(System.Guid)
+  parent: MyApp.Orders.Application.Contracts.IOrderService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: DeleteAsync(Guid)
+  nameWithType: IOrderService.DeleteAsync(Guid)
+  fullName: MyApp.Orders.Application.Contracts.IOrderService.DeleteAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Orders.Application.Contracts.IOrderService.DeleteAsync(System.Guid)
+    name: DeleteAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Orders.Application.Contracts.IOrderService.DeleteAsync(System.Guid)
+    name: DeleteAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: MyApp.Orders.Application.Services.OrderService.GetByIdAsync*
+  commentId: Overload:MyApp.Orders.Application.Services.OrderService.GetByIdAsync
+  href: MyApp.Orders.Application.Services.OrderService.html#MyApp_Orders_Application_Services_OrderService_GetByIdAsync_System_Guid_
+  name: GetByIdAsync
+  nameWithType: OrderService.GetByIdAsync
+  fullName: MyApp.Orders.Application.Services.OrderService.GetByIdAsync
+- uid: MyApp.Orders.Application.Contracts.IOrderService.GetByIdAsync(System.Guid)
+  commentId: M:MyApp.Orders.Application.Contracts.IOrderService.GetByIdAsync(System.Guid)
+  parent: MyApp.Orders.Application.Contracts.IOrderService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: GetByIdAsync(Guid)
+  nameWithType: IOrderService.GetByIdAsync(Guid)
+  fullName: MyApp.Orders.Application.Contracts.IOrderService.GetByIdAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Orders.Application.Contracts.IOrderService.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Orders.Application.Contracts.IOrderService.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Orders.Application.Services.OrderService.ListAsync*
+  commentId: Overload:MyApp.Orders.Application.Services.OrderService.ListAsync
+  href: MyApp.Orders.Application.Services.OrderService.html#MyApp_Orders_Application_Services_OrderService_ListAsync
+  name: ListAsync
+  nameWithType: OrderService.ListAsync
+  fullName: MyApp.Orders.Application.Services.OrderService.ListAsync
+- uid: MyApp.Orders.Application.Contracts.IOrderService.ListAsync
+  commentId: M:MyApp.Orders.Application.Contracts.IOrderService.ListAsync
+  parent: MyApp.Orders.Application.Contracts.IOrderService
+  name: ListAsync()
+  nameWithType: IOrderService.ListAsync()
+  fullName: MyApp.Orders.Application.Contracts.IOrderService.ListAsync()
+  spec.csharp:
+  - uid: MyApp.Orders.Application.Contracts.IOrderService.ListAsync
+    name: ListAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Orders.Application.Contracts.IOrderService.ListAsync
+    name: ListAsync
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Orders.Application.Contracts.Dtos.OrderDto}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Orders.Application.Contracts.Dtos.OrderDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<OrderDto>>
+  nameWithType: Task<IEnumerable<OrderDto>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Orders.Application.Contracts.Dtos.OrderDto>>
+  nameWithType.vb: Task(Of IEnumerable(Of OrderDto))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Orders.Application.Contracts.Dtos.OrderDto))
+  name.vb: Task(Of IEnumerable(Of OrderDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Orders.Application.Contracts.Dtos.OrderDto
+    name: OrderDto
+    href: MyApp.Orders.Application.Contracts.Dtos.OrderDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Orders.Application.Contracts.Dtos.OrderDto
+    name: OrderDto
+    href: MyApp.Orders.Application.Contracts.Dtos.OrderDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Orders.Application.Services.OrderService.UpdateAsync*
+  commentId: Overload:MyApp.Orders.Application.Services.OrderService.UpdateAsync
+  href: MyApp.Orders.Application.Services.OrderService.html#MyApp_Orders_Application_Services_OrderService_UpdateAsync_System_Guid_MyApp_Orders_Application_Contracts_Dtos_CreateUpdateOrderDto_
+  name: UpdateAsync
+  nameWithType: OrderService.UpdateAsync
+  fullName: MyApp.Orders.Application.Services.OrderService.UpdateAsync
+- uid: MyApp.Orders.Application.Contracts.IOrderService.UpdateAsync(System.Guid,MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  commentId: M:MyApp.Orders.Application.Contracts.IOrderService.UpdateAsync(System.Guid,MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  parent: MyApp.Orders.Application.Contracts.IOrderService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: UpdateAsync(Guid, CreateUpdateOrderDto)
+  nameWithType: IOrderService.UpdateAsync(Guid, CreateUpdateOrderDto)
+  fullName: MyApp.Orders.Application.Contracts.IOrderService.UpdateAsync(System.Guid, MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+  spec.csharp:
+  - uid: MyApp.Orders.Application.Contracts.IOrderService.UpdateAsync(System.Guid,MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+    name: UpdateAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+    name: CreateUpdateOrderDto
+  - name: )
+  spec.vb:
+  - uid: MyApp.Orders.Application.Contracts.IOrderService.UpdateAsync(System.Guid,MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto)
+    name: UpdateAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+    name: CreateUpdateOrderDto
+  - name: )

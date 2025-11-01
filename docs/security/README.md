@@ -21,6 +21,12 @@ This category covers all security aspects including authentication mechanisms, a
 - Data protection approach
 - Compliance considerations
 
+### [RBAC_FIX_SUMMARY.md](RBAC_FIX_SUMMARY.md)
+**RBAC Role Definition Fix for Key Vault**
+- Issue identification and resolution
+- Azure role definition corrections
+- Deployment error prevention
+
 ### [AUTHENTICATION.md](AUTHENTICATION.md)
 **JWT authentication implementation**
 - Token structure and claims
@@ -282,6 +288,7 @@ When implementing security:
 security/
 ├── README.md (this file)
 ├── SECURITY_OVERVIEW.md
+├── RBAC_FIX_SUMMARY.md
 ├── AUTHENTICATION.md
 ├── AUTHORIZATION.md
 ├── SECRETS_MANAGEMENT.md

@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Domain.Repositories
+  commentId: N:MyApp.Inventory.Domain.Repositories
+  id: MyApp.Inventory.Domain.Repositories
+  children:
+  - MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository
+  - MyApp.Inventory.Domain.Repositories.IProductRepository
+  - MyApp.Inventory.Domain.Repositories.IWarehouseRepository
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Inventory.Domain.Repositories
+  nameWithType: MyApp.Inventory.Domain.Repositories
+  fullName: MyApp.Inventory.Domain.Repositories
+  type: Namespace
+  assemblies:
+  - MyApp.Inventory.Domain
+references:
+- uid: MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository
+  commentId: T:MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository
+  parent: MyApp.Inventory.Domain.Repositories
+  href: MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository.html
+  name: IInventoryTransactionRepository
+  nameWithType: IInventoryTransactionRepository
+  fullName: MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository
+- uid: MyApp.Inventory.Domain.Repositories.IProductRepository
+  commentId: T:MyApp.Inventory.Domain.Repositories.IProductRepository
+  parent: MyApp.Inventory.Domain.Repositories
+  href: MyApp.Inventory.Domain.Repositories.IProductRepository.html
+  name: IProductRepository
+  nameWithType: IProductRepository
+  fullName: MyApp.Inventory.Domain.Repositories.IProductRepository
+- uid: MyApp.Inventory.Domain.Repositories.IWarehouseRepository
+  commentId: T:MyApp.Inventory.Domain.Repositories.IWarehouseRepository
+  parent: MyApp.Inventory.Domain.Repositories
+  href: MyApp.Inventory.Domain.Repositories.IWarehouseRepository.html
+  name: IWarehouseRepository
+  nameWithType: IWarehouseRepository
+  fullName: MyApp.Inventory.Domain.Repositories.IWarehouseRepository
+- uid: MyApp.Inventory.Domain.Repositories
+  commentId: N:MyApp.Inventory.Domain.Repositories
+  href: MyApp.html
+  name: MyApp.Inventory.Domain.Repositories
+  nameWithType: MyApp.Inventory.Domain.Repositories
+  fullName: MyApp.Inventory.Domain.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Repositories
+    name: Repositories
+    href: MyApp.Inventory.Domain.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Repositories
+    name: Repositories
+    href: MyApp.Inventory.Domain.Repositories.html

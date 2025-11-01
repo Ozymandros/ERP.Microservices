@@ -1,22 +1,27 @@
-@description('The location for the resource(s) to be deployed.')
-param location string = resourceGroup().location
-
 param myapp_sqlserver_outputs_name string
 
-param myapp_sqlserver_outputs_sqlserveradminname string
+param principalName string
 
+@description('Principal ID of the managed identity requiring SQL access')
 param principalId string
 
-param principalName string
+@description('Role Definition ID - SQL DB Contributor role ID')
+@minLength(36)
+@maxLength(36)
+param roleDefinitionId string
 
 resource myapp_sqlserver 'Microsoft.Sql/servers@2023-08-01' existing = {
   name: myapp_sqlserver_outputs_name
 }
 
-resource sqlServerAdmin 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' existing = {
-  name: myapp_sqlserver_outputs_sqlserveradminname
-}
+var managedIdentityId = resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', principalName)
 
-resource mi 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' existing = {
-  name: principalName
+resource sqlDataContributorAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(myapp_sqlserver.id, managedIdentityId, 'sql-db-contributor')
+  scope: myapp_sqlserver
+  properties: {
+    principalId: principalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
+  }
 }

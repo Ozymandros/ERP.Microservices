@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ApplicationUser | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ApplicationUser | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/new/main/apiSpec/new?filename=MyApp_Auth_Domain_Entities_ApplicationUser.md&amp;value=---%0Auid%3A%20MyApp.Auth.Domain.Entities.ApplicationUser%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="MyApp.Auth.Domain.Entities.ApplicationUser">
+
+
+
+  <h1 id="MyApp_Auth_Domain_Entities_ApplicationUser" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser" class="text-break">
+Class ApplicationUser  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L6"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="MyApp.html">MyApp</a>.<a class="xref" href="MyApp.Auth.html">Auth</a>.<a class="xref" href="MyApp.Auth.Domain.html">Domain</a>.<a class="xref" href="MyApp.Auth.Domain.Entities.html">Entities</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>MyApp.Auth.Domain.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ApplicationUser : IdentityUser&lt;Guid&gt;, IAuditableEntity&lt;Guid&gt;, IAuditableEntity, IEntity&lt;Guid&gt;</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1">IdentityUser</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</div>
+      <div><span class="xref">ApplicationUser</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="MyApp.Shared.Domain.Entities.IAuditableEntity-1.html">IAuditableEntity</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</div>
+      <div><a class="xref" href="MyApp.Shared.Domain.Entities.IAuditableEntity.html">IAuditableEntity</a></div>
+      <div><a class="xref" href="MyApp.Shared.Domain.Entities.IEntity-1.html">IEntity</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.tostring">IdentityUser&lt;Guid&gt;.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.id">IdentityUser&lt;Guid&gt;.Id</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.username">IdentityUser&lt;Guid&gt;.UserName</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.normalizedusername">IdentityUser&lt;Guid&gt;.NormalizedUserName</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.email">IdentityUser&lt;Guid&gt;.Email</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.normalizedemail">IdentityUser&lt;Guid&gt;.NormalizedEmail</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.emailconfirmed">IdentityUser&lt;Guid&gt;.EmailConfirmed</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.passwordhash">IdentityUser&lt;Guid&gt;.PasswordHash</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.securitystamp">IdentityUser&lt;Guid&gt;.SecurityStamp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.concurrencystamp">IdentityUser&lt;Guid&gt;.ConcurrencyStamp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.phonenumber">IdentityUser&lt;Guid&gt;.PhoneNumber</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.phonenumberconfirmed">IdentityUser&lt;Guid&gt;.PhoneNumberConfirmed</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.twofactorenabled">IdentityUser&lt;Guid&gt;.TwoFactorEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.lockoutend">IdentityUser&lt;Guid&gt;.LockoutEnd</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.lockoutenabled">IdentityUser&lt;Guid&gt;.LockoutEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuser-1.accessfailedcount">IdentityUser&lt;Guid&gt;.AccessFailedCount</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="MyApp_Auth_Domain_Entities_ApplicationUser_CreatedAt_" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.CreatedAt*"></a>
+
+  <h3 id="MyApp_Auth_Domain_Entities_ApplicationUser_CreatedAt" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.CreatedAt">
+  CreatedAt
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTime CreatedAt { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Domain_Entities_ApplicationUser_CreatedBy_" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.CreatedBy*"></a>
+
+  <h3 id="MyApp_Auth_Domain_Entities_ApplicationUser_CreatedBy" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.CreatedBy">
+  CreatedBy
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string CreatedBy { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Domain_Entities_ApplicationUser_ExternalId_" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.ExternalId*"></a>
+
+  <h3 id="MyApp_Auth_Domain_Entities_ApplicationUser_ExternalId" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.ExternalId">
+  ExternalId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? ExternalId { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Domain_Entities_ApplicationUser_ExternalProvider_" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.ExternalProvider*"></a>
+
+  <h3 id="MyApp_Auth_Domain_Entities_ApplicationUser_ExternalProvider" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.ExternalProvider">
+  ExternalProvider
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? ExternalProvider { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Domain_Entities_ApplicationUser_FirstName_" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.FirstName*"></a>
+
+  <h3 id="MyApp_Auth_Domain_Entities_ApplicationUser_FirstName" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.FirstName">
+  FirstName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? FirstName { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Domain_Entities_ApplicationUser_IsActive_" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.IsActive*"></a>
+
+  <h3 id="MyApp_Auth_Domain_Entities_ApplicationUser_IsActive" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.IsActive">
+  IsActive
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsActive { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Domain_Entities_ApplicationUser_IsExternalLogin_" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.IsExternalLogin*"></a>
+
+  <h3 id="MyApp_Auth_Domain_Entities_ApplicationUser_IsExternalLogin" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.IsExternalLogin">
+  IsExternalLogin
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsExternalLogin { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Domain_Entities_ApplicationUser_LastName_" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.LastName*"></a>
+
+  <h3 id="MyApp_Auth_Domain_Entities_ApplicationUser_LastName" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.LastName">
+  LastName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? LastName { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Domain_Entities_ApplicationUser_RefreshTokens_" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.RefreshTokens*"></a>
+
+  <h3 id="MyApp_Auth_Domain_Entities_ApplicationUser_RefreshTokens" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.RefreshTokens">
+  RefreshTokens
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual ICollection&lt;RefreshToken&gt; RefreshTokens { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="MyApp.Auth.Domain.Entities.RefreshToken.html">RefreshToken</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Domain_Entities_ApplicationUser_UpdatedAt_" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.UpdatedAt*"></a>
+
+  <h3 id="MyApp_Auth_Domain_Entities_ApplicationUser_UpdatedAt" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.UpdatedAt">
+  UpdatedAt
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTime? UpdatedAt { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Domain_Entities_ApplicationUser_UpdatedBy_" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.UpdatedBy*"></a>
+
+  <h3 id="MyApp_Auth_Domain_Entities_ApplicationUser_UpdatedBy" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.UpdatedBy">
+  UpdatedBy
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? UpdatedBy { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Domain_Entities_ApplicationUser_UserClaims_" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.UserClaims*"></a>
+
+  <h3 id="MyApp_Auth_Domain_Entities_ApplicationUser_UserClaims" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.UserClaims">
+  UserClaims
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual ICollection&lt;IdentityUserClaim&lt;Guid&gt;&gt; UserClaims { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuserclaim-1">IdentityUserClaim</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Domain_Entities_ApplicationUser_UserLogins_" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.UserLogins*"></a>
+
+  <h3 id="MyApp_Auth_Domain_Entities_ApplicationUser_UserLogins" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.UserLogins">
+  UserLogins
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual ICollection&lt;IdentityUserLogin&lt;Guid&gt;&gt; UserLogins { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityuserlogin-1">IdentityUserLogin</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Domain_Entities_ApplicationUser_UserRoles_" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.UserRoles*"></a>
+
+  <h3 id="MyApp_Auth_Domain_Entities_ApplicationUser_UserRoles" data-uid="MyApp.Auth.Domain.Entities.ApplicationUser.UserRoles">
+  UserRoles
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual ICollection&lt;ApplicationUserRole&gt; UserRoles { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="MyApp.Auth.Domain.Entities.ApplicationUserRole.html">ApplicationUserRole</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationUser.cs/#L6" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

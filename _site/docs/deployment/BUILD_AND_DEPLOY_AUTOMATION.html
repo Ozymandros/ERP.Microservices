@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Automated Build &amp; Deploy Solution | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Automated Build &amp; Deploy Solution | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/deployment/BUILD_AND_DEPLOY_AUTOMATION.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="automated-build--deploy-solution">Automated Build &amp; Deploy Solution</h1>
+
+<h2 id="overview">Overview</h2>
+<p>This solution ensures that <strong>Docker images are built and pushed to Azure Container Registry (ACR) BEFORE Container Apps attempts to deploy them</strong>.</p>
+<p>The issue you encountered was: <code>MANIFEST_UNKNOWN: manifest tagged by &quot;latest&quot; is not found</code></p>
+<p><strong>Root cause:</strong> Container Apps tried to pull images that hadn't been built yet.</p>
+<p><strong>Solution:</strong> Automate image building as part of the deployment pipeline.</p>
+<hr>
+<h2 id="architecture">Architecture</h2>
+<pre><code>Local Dev:
+  azd up
+    ↓
+  1. Bicep provisions infrastructure
+    ↓
+  2. PowerShell script builds &amp; pushes images to ACR
+    ↓
+  3. Container Apps pulls images and deploys
+    ↓
+  4. Services running ✓
+
+CI/CD (GitHub Actions):
+  Push to main/develop
+    ↓
+  1. Build images in ACR (parallel builds, cached layers)
+    ↓
+  2. Tag as: commit-hash AND latest
+    ↓
+  3. Run azd deploy
+    ↓
+  4. Container Apps automatically pulls new images
+</code></pre>
+<hr>
+<h2 id="setup-options">Setup Options</h2>
+<h3 id="option-1-local-development-easiest">Option 1: Local Development (EASIEST)</h3>
+<p>Run the PowerShell script BEFORE deploying:</p>
+<pre><code class="lang-powershell"># Navigate to repo root
+cd C:\Projects\ERP_ASPIRE_APP\src
+
+# Step 1: Build images in ACR
+./infra/scripts/build-push-images.ps1
+
+# Step 2: Deploy with azd
+azd up
+</code></pre>
+<p><strong>What it does:</strong></p>
+<ul>
+<li>Builds all 7 services in ACR (parallel builds)</li>
+<li>Pushes images with <code>latest</code> tag</li>
+<li>Returns when complete</li>
+<li>Then <code>azd up</code> deploys the infrastructure and Container Apps</li>
+</ul>
+<h3 id="option-2-github-actions-recommended-for-cicd">Option 2: GitHub Actions (RECOMMENDED for CI/CD)</h3>
+<p>This is already configured in <code>.github/workflows/azure-build-deploy.yml</code></p>
+<p><strong>Setup required:</strong></p>
+<ol>
+<li><p><strong>Add GitHub Secrets</strong> (in your GitHub repo settings):</p>
+<pre><code>AZURE_CLIENT_ID          (Azure app registration ID)
+AZURE_TENANT_ID          (Your Azure AD tenant ID)
+AZURE_SUBSCRIPTION_ID    (Your Azure subscription ID)
+</code></pre>
+</li>
+<li><p><strong>Enable Federated Credentials</strong> in Azure:</p>
+<pre><code class="lang-powershell"># Create app registration and federated credentials for GitHub
+# See: https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure
+</code></pre>
+</li>
+<li><p><strong>Push to main or develop</strong> to trigger the workflow automatically</p>
+</li>
+</ol>
+<p><strong>What it does:</strong></p>
+<ul>
+<li>Automatically builds all images on every push</li>
+<li>Tags with both commit hash (for traceability) AND latest</li>
+<li>Automatically deploys with <code>azd deploy</code></li>
+<li>Verifies deployment health</li>
+<li>Logs all steps</li>
+</ul>
+<h3 id="option-3-manual-build-before-deploy">Option 3: Manual Build Before Deploy</h3>
+<p>If you just want to test locally without automation:</p>
+<pre><code class="lang-powershell"># Login to Azure
+az login
+az account set --subscription &quot;your-subscription-id&quot;
+
+# Build each service
+az acr login --name myappdevcontainerregistry
+
+$REGISTRY = &quot;myappdevcontainerregistry.azurecr.io&quot;
+
+# Build Auth Service
+az acr build --registry myappdevcontainerregistry `
+    --image auth-service:latest `
+    --file MyApp.Auth/MyApp.Auth.API/Dockerfile `
+    MyApp.Auth/MyApp.Auth.API
+
+# Repeat for other services...
+
+# Then deploy
+azd up
+</code></pre>
+<hr>
+<h2 id="files-overview">Files Overview</h2>
+<h3 id="1-infrascriptsbuild-push-imagesps1">1. <code>infra/scripts/build-push-images.ps1</code></h3>
+<p><strong>Purpose:</strong> PowerShell script for local development</p>
+<p><strong>Usage:</strong></p>
+<pre><code class="lang-powershell">./infra/scripts/build-push-images.ps1
+</code></pre>
+<p><strong>What it does:</strong></p>
+<ul>
+<li>Reads Azure credentials from <code>az login</code> session</li>
+<li>Builds all 7 services in ACR</li>
+<li>Uses parallel builds (faster than sequential)</li>
+<li>Retries on failure</li>
+<li>Provides detailed progress output</li>
+</ul>
+<p><strong>Output:</strong></p>
+<pre><code>═══════════════════════════════════════════════════════════════
+🔍 VALIDATING ENVIRONMENT
+═══════════════════════════════════════════════════════════════
+→ ResourceGroup: rg-myapp-dev-core
+→ Registry: myappdevcontainerregistry
+...
+✓ Environment validation passed
+
+═══════════════════════════════════════════════════════════════
+🐳 BUILDING &amp; PUSHING DOCKER IMAGES
+═══════════════════════════════════════════════════════════════
+→ Building: auth-service
+  Service Path: MyApp.Auth/MyApp.Auth.API
+  Image URI: myappdevcontainerregistry.azurecr.io/auth-service:latest
+✓ Successfully built and pushed auth-service:latest
+
+...
+
+═══════════════════════════════════════════════════════════════
+📊 BUILD SUMMARY
+═══════════════════════════════════════════════════════════════
+Total Services: 7
+Successful: 7
+Failed: 0
+
+✓ All images built and pushed successfully!
+</code></pre>
+<h3 id="2-githubworkflowsazure-build-deployyml">2. <code>.github/workflows/azure-build-deploy.yml</code></h3>
+<p><strong>Purpose:</strong> Automate entire build + deploy pipeline in CI/CD</p>
+<p><strong>Triggers:</strong> On push to main/develop or manual workflow dispatch</p>
+<p><strong>Jobs:</strong></p>
+<ol>
+<li><code>build-and-push-images</code> - Build all services in ACR</li>
+<li><code>deploy-to-azure</code> - Run azd deploy</li>
+<li><code>verify-deployment</code> - Health check Container Apps</li>
+</ol>
+<h3 id="3-infracorebuildacr-buildbicep">3. <code>infra/core/build/acr-build.bicep</code></h3>
+<p><strong>Purpose:</strong> Documentation module for Bicep</p>
+<p>Currently this is a placeholder with documentation. In the future, could use Bicep deployment scripts for more integration.</p>
+<h3 id="4-azureyaml">4. <code>azure.yaml</code></h3>
+<p><strong>Purpose:</strong> Azure Developer CLI configuration</p>
+<p>No postprovision hook (not supported), so we use:</p>
+<ul>
+<li>Local: <code>build-push-images.ps1</code> before <code>azd up</code></li>
+<li>CI/CD: GitHub Actions workflow</li>
+</ul>
+<hr>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="problem-manifest_unknown-manifest-tagged-by-latest-is-not-found">Problem: &quot;MANIFEST_UNKNOWN: manifest tagged by &quot;latest&quot; is not found&quot;</h3>
+<p><strong>Cause:</strong> Images weren't built before Container Apps tried to deploy</p>
+<p><strong>Solution:</strong></p>
+<pre><code class="lang-powershell"># Option 1: Run build script
+./infra/scripts/build-push-images.ps1
+azd up
+
+# Option 2: Check if images exist in ACR
+az acr repository list --name myappdevcontainerregistry
+
+# Option 3: Check ACR build logs
+az acr task logs --name build-task-id --registry myappdevcontainerregistry
+</code></pre>
+<h3 id="problem-no-credential-provided-to-access-acr">Problem: &quot;No credential provided to access ACR&quot;</h3>
+<p><strong>Cause:</strong> Not authenticated to Azure</p>
+<p><strong>Solution:</strong></p>
+<pre><code class="lang-powershell">az login
+az account set --subscription &quot;your-subscription-id&quot;
+</code></pre>
+<h3 id="problem-build-script-is-slow">Problem: &quot;Build script is slow&quot;</h3>
+<p><strong>Cause:</strong> Sequential builds</p>
+<p><strong>Solution:</strong> The script uses ACR's parallel build capability (<code>az acr build</code>), which is faster than local Docker builds</p>
+<p><strong>To speed up further:</strong></p>
+<ul>
+<li>Use GitHub Actions (runs in Azure's data center, faster uploads)</li>
+<li>Use <code>--no-logs</code> flag for non-interactive mode</li>
+</ul>
+<h3 id="problem-running-out-of-acr-storage-quota">Problem: &quot;Running out of ACR storage quota&quot;</h3>
+<p><strong>Cause:</strong> Too many image tags accumulated</p>
+<p><strong>Solution:</strong></p>
+<pre><code class="lang-powershell"># Delete old images
+az acr repository delete --name myappdevcontainerregistry --image auth-service --tag old-tag
+
+# Or use ACR purge:
+az acr run --registry myappdevcontainerregistry \
+  --cmd &quot;acr purge --filter 'auth-service:.*' --ago 30d&quot; /dev/null
+</code></pre>
+<hr>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="1-use-commit-hash-as-image-tag-production">1. Use Commit Hash as Image Tag (Production)</h3>
+<pre><code class="lang-powershell"># In GitHub Actions, uses: ${{ github.sha }}
+# This ensures traceability and allows rolling back
+az acr build --image auth-service:${commit-hash}
+</code></pre>
+<h3 id="2-always-tag-with-latest">2. Always Tag With <code>latest</code></h3>
+<pre><code class="lang-powershell"># Makes it easy for development
+# Production should use specific version tags
+az acr build --image auth-service:latest
+</code></pre>
+<h3 id="3-validate-images-before-deploying">3. Validate Images Before Deploying</h3>
+<pre><code class="lang-powershell"># Verify all services are in ACR
+az acr repository list --name myappdevcontainerregistry
+
+# Check specific image
+az acr repository show-tags --name myappdevcontainerregistry --repository auth-service
+</code></pre>
+<h3 id="4-monitor-build-status">4. Monitor Build Status</h3>
+<pre><code class="lang-powershell"># In Azure Portal:
+# 1. Go to Container Registry
+# 2. Click &quot;Webhooks&quot; or &quot;Build tasks&quot; to see history
+# 3. Or use CLI:
+az acr build-task show --name task-name --registry myappdevcontainerregistry
+</code></pre>
+<h3 id="5-use-bicep-parameters-for-image-tag">5. Use Bicep Parameters for Image Tag</h3>
+<p>Currently, service Bicep files use hardcoded <code>latest</code> tag:</p>
+<pre><code class="lang-bicep">param imageTag string = 'latest'
+</code></pre>
+<p>For production, consider:</p>
+<pre><code class="lang-bicep">param imageTag string // Required, no default
+</code></pre>
+<p>Then pass from <code>azure.yaml</code>:</p>
+<pre><code class="lang-yaml">imageTag:
+  value: ${IMAGE_TAG=latest}
+</code></pre>
+<hr>
+<h2 id="complete-workflow-example">Complete Workflow Example</h2>
+<h3 id="local-development">Local Development</h3>
+<pre><code class="lang-powershell"># 1. Make code changes
+# 2. Build and push images
+./infra/scripts/build-push-images.ps1
+
+# 3. Deploy
+azd up
+
+# 4. Test services
+curl http://localhost:8080/health
+</code></pre>
+<h3 id="continuous-deployment-github-actions">Continuous Deployment (GitHub Actions)</h3>
+<pre><code class="lang-bash"># 1. Commit and push changes
+git add .
+git commit -m &quot;feat: add new endpoint&quot;
+git push origin main
+
+# 2. GitHub Actions automatically:
+#    - Builds images (triggers after 30 sec)
+#    - Pushes to ACR
+#    - Deploys with azd
+#    - Verifies health
+
+# 3. Check status:
+#    - GitHub Actions tab shows progress
+#    - Azure Portal shows Container App status
+#    - Services available at configured FQDNs
+</code></pre>
+<hr>
+<h2 id="summary">Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Method</th>
+<th>Time</th>
+<th>Automation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Local dev</td>
+<td><code>build-push-images.ps1</code> + <code>azd up</code></td>
+<td>10-15 min</td>
+<td>Manual script</td>
+</tr>
+<tr>
+<td>Testing before commit</td>
+<td>Manual <code>az acr build</code></td>
+<td>5-10 min</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Production CI/CD</td>
+<td>GitHub Actions</td>
+<td>15-20 min</td>
+<td>Full automation</td>
+</tr>
+<tr>
+<td>One-time deploy</td>
+<td><code>azd up</code> (assumes images exist)</td>
+<td>10 min</td>
+<td>Infrastructure only</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="next-steps">Next Steps</h2>
+<ol>
+<li><p>✅ <strong>Run local build script:</strong></p>
+<pre><code class="lang-powershell">./infra/scripts/build-push-images.ps1
+azd up
+</code></pre>
+</li>
+<li><p>✅ <strong>Test deployment:</strong></p>
+<ul>
+<li>Check Container Apps in Azure Portal</li>
+<li>Verify services are running</li>
+</ul>
+</li>
+<li><p>✅ <strong>Setup GitHub Actions (optional):</strong></p>
+<ul>
+<li>Add secrets to GitHub repo</li>
+<li>Push to main branch</li>
+<li>Observe automatic deployment</li>
+</ul>
+</li>
+<li><p>✅ <strong>Monitor:</strong></p>
+<ul>
+<li>Container App revisions</li>
+<li>Image registry</li>
+<li>Deployment history</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-quickstart-task-cli">Azure Container Registry Build Documentation</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/container-apps/">Azure Container Apps Documentation</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/developer/github/">GitHub Actions with Azure</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/">Azure Developer CLI</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/deployment/BUILD_AND_DEPLOY_AUTOMATION.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

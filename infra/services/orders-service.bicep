@@ -42,7 +42,13 @@ param imageTag string = 'latest'
 @description('Container Apps managed identity principal ID')
 param managedIdentityPrincipalId string = ''
 
-var serviceName = 'orders-service'
+@description('User-Assigned Managed Identity ID')
+param userAssignedIdentityId string
+
+@description('Base resource name prefix for this deployment (e.g., myapp-dev)')
+param namePrefix string
+
+var serviceName = '${namePrefix}-orders-service'
 var imageName = 'orders-service'
 
 module ordersService 'container-app-service.bicep' = {
@@ -86,6 +92,7 @@ module ordersService 'container-app-service.bicep' = {
     ]
     logAnalyticsWorkspaceId: logAnalyticsWorkspaceId
     managedIdentityPrincipalId: managedIdentityPrincipalId
+    userAssignedIdentityId: userAssignedIdentityId
   }
 }
 

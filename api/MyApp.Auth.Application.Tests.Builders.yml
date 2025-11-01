@@ -1,0 +1,190 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Tests.Builders
+  commentId: N:MyApp.Auth.Application.Tests.Builders
+  id: MyApp.Auth.Application.Tests.Builders
+  children:
+  - MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  - MyApp.Auth.Application.Tests.Builders.CreatePermissionDtoBuilder
+  - MyApp.Auth.Application.Tests.Builders.CreateRoleDtoBuilder
+  - MyApp.Auth.Application.Tests.Builders.ExternalLoginDtoBuilder
+  - MyApp.Auth.Application.Tests.Builders.LoginDtoBuilder
+  - MyApp.Auth.Application.Tests.Builders.PermissionBuilder
+  - MyApp.Auth.Application.Tests.Builders.PermissionDtoBuilder
+  - MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  - MyApp.Auth.Application.Tests.Builders.RegisterDtoBuilder
+  - MyApp.Auth.Application.Tests.Builders.RoleBuilder
+  - MyApp.Auth.Application.Tests.Builders.RoleDtoBuilder
+  - MyApp.Auth.Application.Tests.Builders.TokenResponseDtoBuilder
+  - MyApp.Auth.Application.Tests.Builders.UpdateRoleDtoBuilder
+  - MyApp.Auth.Application.Tests.Builders.UpdateUserDtoBuilder
+  - MyApp.Auth.Application.Tests.Builders.UserBuilder
+  - MyApp.Auth.Application.Tests.Builders.UserDtoBuilder
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Application.Tests.Builders
+  nameWithType: MyApp.Auth.Application.Tests.Builders
+  fullName: MyApp.Auth.Application.Tests.Builders
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Application.Tests
+references:
+- uid: MyApp.Auth.Application.Tests.Builders.UserBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.UserBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.UserBuilder.html
+  name: UserBuilder
+  nameWithType: UserBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.UserBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.LoginDtoBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.LoginDtoBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.LoginDtoBuilder.html
+  name: LoginDtoBuilder
+  nameWithType: LoginDtoBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.LoginDtoBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.RegisterDtoBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.RegisterDtoBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.RegisterDtoBuilder.html
+  name: RegisterDtoBuilder
+  nameWithType: RegisterDtoBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.RegisterDtoBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.TokenResponseDtoBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.TokenResponseDtoBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.TokenResponseDtoBuilder.html
+  name: TokenResponseDtoBuilder
+  nameWithType: TokenResponseDtoBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.TokenResponseDtoBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.ExternalLoginDtoBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.ExternalLoginDtoBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.ExternalLoginDtoBuilder.html
+  name: ExternalLoginDtoBuilder
+  nameWithType: ExternalLoginDtoBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.ExternalLoginDtoBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.html
+  name: RefreshTokenBuilder
+  nameWithType: RefreshTokenBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.PermissionBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.PermissionBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.PermissionBuilder.html
+  name: PermissionBuilder
+  nameWithType: PermissionBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.PermissionBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.PermissionDtoBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.PermissionDtoBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.PermissionDtoBuilder.html
+  name: PermissionDtoBuilder
+  nameWithType: PermissionDtoBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.PermissionDtoBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.CreatePermissionDtoBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.CreatePermissionDtoBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.CreatePermissionDtoBuilder.html
+  name: CreatePermissionDtoBuilder
+  nameWithType: CreatePermissionDtoBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.CreatePermissionDtoBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.html
+  name: ApplicationRoleBuilder
+  nameWithType: ApplicationRoleBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.RoleBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.RoleBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.RoleBuilder.html
+  name: RoleBuilder
+  nameWithType: RoleBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.RoleBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.RoleDtoBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.RoleDtoBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.RoleDtoBuilder.html
+  name: RoleDtoBuilder
+  nameWithType: RoleDtoBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.RoleDtoBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.CreateRoleDtoBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.CreateRoleDtoBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.CreateRoleDtoBuilder.html
+  name: CreateRoleDtoBuilder
+  nameWithType: CreateRoleDtoBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.CreateRoleDtoBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.UpdateRoleDtoBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.UpdateRoleDtoBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.UpdateRoleDtoBuilder.html
+  name: UpdateRoleDtoBuilder
+  nameWithType: UpdateRoleDtoBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.UpdateRoleDtoBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.UserDtoBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.UserDtoBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.UserDtoBuilder.html
+  name: UserDtoBuilder
+  nameWithType: UserDtoBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.UserDtoBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.UpdateUserDtoBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.UpdateUserDtoBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.UpdateUserDtoBuilder.html
+  name: UpdateUserDtoBuilder
+  nameWithType: UpdateUserDtoBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.UpdateUserDtoBuilder
+- uid: MyApp.Auth.Application.Tests.Builders
+  commentId: N:MyApp.Auth.Application.Tests.Builders
+  href: MyApp.html
+  name: MyApp.Auth.Application.Tests.Builders
+  nameWithType: MyApp.Auth.Application.Tests.Builders
+  fullName: MyApp.Auth.Application.Tests.Builders
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Builders
+    name: Builders
+    href: MyApp.Auth.Application.Tests.Builders.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Builders
+    name: Builders
+    href: MyApp.Auth.Application.Tests.Builders.html
