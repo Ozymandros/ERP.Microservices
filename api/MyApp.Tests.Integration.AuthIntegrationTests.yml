@@ -1,0 +1,981 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Tests.Integration.AuthIntegrationTests
+  commentId: T:MyApp.Tests.Integration.AuthIntegrationTests
+  id: AuthIntegrationTests
+  parent: MyApp.Tests.Integration
+  children:
+  - MyApp.Tests.Integration.AuthIntegrationTests.ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest
+  - MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithInvalidProvider_ReturnsBadRequest
+  - MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithValidProvider_ReturnsRedirect
+  - MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidCredentials_ReturnsUnauthorized
+  - MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidModel_ReturnsBadRequest
+  - MyApp.Tests.Integration.AuthIntegrationTests.Login_WithVInvalidCredentials_ReturnsUnauthorized
+  - MyApp.Tests.Integration.AuthIntegrationTests.Login_WithValidCredentials_ReturnsOk
+  - MyApp.Tests.Integration.AuthIntegrationTests.Logout_WithValidToken_ReturnsNoContent
+  - MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidModel_ReturnsBadRequest
+  - MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidToken_ReturnsUnauthorized
+  - MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithValidToken_ReturnsOk
+  - MyApp.Tests.Integration.AuthIntegrationTests.Register_WithExistingEmail_ReturnsConflict
+  - MyApp.Tests.Integration.AuthIntegrationTests.Register_WithInvalidModel_ReturnsBadRequest
+  - MyApp.Tests.Integration.AuthIntegrationTests.Register_WithValidData_ReturnsCreated
+  langs:
+  - csharp
+  - vb
+  name: AuthIntegrationTests
+  nameWithType: AuthIntegrationTests
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests
+  type: Class
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: AuthIntegrationTests
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 10
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: public class AuthIntegrationTests
+    content.vb: Public Class AuthIntegrationTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithVInvalidCredentials_ReturnsUnauthorized
+  commentId: M:MyApp.Tests.Integration.AuthIntegrationTests.Login_WithVInvalidCredentials_ReturnsUnauthorized
+  id: Login_WithVInvalidCredentials_ReturnsUnauthorized
+  parent: MyApp.Tests.Integration.AuthIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Login_WithVInvalidCredentials_ReturnsUnauthorized()
+  nameWithType: AuthIntegrationTests.Login_WithVInvalidCredentials_ReturnsUnauthorized()
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithVInvalidCredentials_ReturnsUnauthorized()
+  type: Method
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Login_WithVInvalidCredentials_ReturnsUnauthorized
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 12
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Login_WithVInvalidCredentials_ReturnsUnauthorized()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Login_WithVInvalidCredentials_ReturnsUnauthorized() As Task
+  overload: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithVInvalidCredentials_ReturnsUnauthorized*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithValidCredentials_ReturnsOk
+  commentId: M:MyApp.Tests.Integration.AuthIntegrationTests.Login_WithValidCredentials_ReturnsOk
+  id: Login_WithValidCredentials_ReturnsOk
+  parent: MyApp.Tests.Integration.AuthIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Login_WithValidCredentials_ReturnsOk()
+  nameWithType: AuthIntegrationTests.Login_WithValidCredentials_ReturnsOk()
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithValidCredentials_ReturnsOk()
+  type: Method
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Login_WithValidCredentials_ReturnsOk
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 38
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Login_WithValidCredentials_ReturnsOk()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Login_WithValidCredentials_ReturnsOk() As Task
+  overload: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithValidCredentials_ReturnsOk*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidCredentials_ReturnsUnauthorized
+  commentId: M:MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidCredentials_ReturnsUnauthorized
+  id: Login_WithInvalidCredentials_ReturnsUnauthorized
+  parent: MyApp.Tests.Integration.AuthIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Login_WithInvalidCredentials_ReturnsUnauthorized()
+  nameWithType: AuthIntegrationTests.Login_WithInvalidCredentials_ReturnsUnauthorized()
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidCredentials_ReturnsUnauthorized()
+  type: Method
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Login_WithInvalidCredentials_ReturnsUnauthorized
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 64
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Login_WithInvalidCredentials_ReturnsUnauthorized()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Login_WithInvalidCredentials_ReturnsUnauthorized() As Task
+  overload: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidCredentials_ReturnsUnauthorized*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidModel_ReturnsBadRequest
+  commentId: M:MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidModel_ReturnsBadRequest
+  id: Login_WithInvalidModel_ReturnsBadRequest
+  parent: MyApp.Tests.Integration.AuthIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Login_WithInvalidModel_ReturnsBadRequest()
+  nameWithType: AuthIntegrationTests.Login_WithInvalidModel_ReturnsBadRequest()
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidModel_ReturnsBadRequest()
+  type: Method
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Login_WithInvalidModel_ReturnsBadRequest
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 90
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Login_WithInvalidModel_ReturnsBadRequest()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Login_WithInvalidModel_ReturnsBadRequest() As Task
+  overload: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidModel_ReturnsBadRequest*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithValidData_ReturnsCreated
+  commentId: M:MyApp.Tests.Integration.AuthIntegrationTests.Register_WithValidData_ReturnsCreated
+  id: Register_WithValidData_ReturnsCreated
+  parent: MyApp.Tests.Integration.AuthIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Register_WithValidData_ReturnsCreated()
+  nameWithType: AuthIntegrationTests.Register_WithValidData_ReturnsCreated()
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithValidData_ReturnsCreated()
+  type: Method
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Register_WithValidData_ReturnsCreated
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 116
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Register_WithValidData_ReturnsCreated()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Register_WithValidData_ReturnsCreated() As Task
+  overload: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithValidData_ReturnsCreated*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithExistingEmail_ReturnsConflict
+  commentId: M:MyApp.Tests.Integration.AuthIntegrationTests.Register_WithExistingEmail_ReturnsConflict
+  id: Register_WithExistingEmail_ReturnsConflict
+  parent: MyApp.Tests.Integration.AuthIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Register_WithExistingEmail_ReturnsConflict()
+  nameWithType: AuthIntegrationTests.Register_WithExistingEmail_ReturnsConflict()
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithExistingEmail_ReturnsConflict()
+  type: Method
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Register_WithExistingEmail_ReturnsConflict
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 146
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Register_WithExistingEmail_ReturnsConflict()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Register_WithExistingEmail_ReturnsConflict() As Task
+  overload: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithExistingEmail_ReturnsConflict*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithInvalidModel_ReturnsBadRequest
+  commentId: M:MyApp.Tests.Integration.AuthIntegrationTests.Register_WithInvalidModel_ReturnsBadRequest
+  id: Register_WithInvalidModel_ReturnsBadRequest
+  parent: MyApp.Tests.Integration.AuthIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Register_WithInvalidModel_ReturnsBadRequest()
+  nameWithType: AuthIntegrationTests.Register_WithInvalidModel_ReturnsBadRequest()
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithInvalidModel_ReturnsBadRequest()
+  type: Method
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Register_WithInvalidModel_ReturnsBadRequest
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 176
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Register_WithInvalidModel_ReturnsBadRequest()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Register_WithInvalidModel_ReturnsBadRequest() As Task
+  overload: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithInvalidModel_ReturnsBadRequest*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithValidToken_ReturnsOk
+  commentId: M:MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithValidToken_ReturnsOk
+  id: RefreshToken_WithValidToken_ReturnsOk
+  parent: MyApp.Tests.Integration.AuthIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: RefreshToken_WithValidToken_ReturnsOk()
+  nameWithType: AuthIntegrationTests.RefreshToken_WithValidToken_ReturnsOk()
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithValidToken_ReturnsOk()
+  type: Method
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RefreshToken_WithValidToken_ReturnsOk
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 206
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RefreshToken_WithValidToken_ReturnsOk()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RefreshToken_WithValidToken_ReturnsOk() As Task
+  overload: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithValidToken_ReturnsOk*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidToken_ReturnsUnauthorized
+  commentId: M:MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidToken_ReturnsUnauthorized
+  id: RefreshToken_WithInvalidToken_ReturnsUnauthorized
+  parent: MyApp.Tests.Integration.AuthIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: RefreshToken_WithInvalidToken_ReturnsUnauthorized()
+  nameWithType: AuthIntegrationTests.RefreshToken_WithInvalidToken_ReturnsUnauthorized()
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidToken_ReturnsUnauthorized()
+  type: Method
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RefreshToken_WithInvalidToken_ReturnsUnauthorized
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 232
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RefreshToken_WithInvalidToken_ReturnsUnauthorized()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RefreshToken_WithInvalidToken_ReturnsUnauthorized() As Task
+  overload: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidToken_ReturnsUnauthorized*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidModel_ReturnsBadRequest
+  commentId: M:MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidModel_ReturnsBadRequest
+  id: RefreshToken_WithInvalidModel_ReturnsBadRequest
+  parent: MyApp.Tests.Integration.AuthIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: RefreshToken_WithInvalidModel_ReturnsBadRequest()
+  nameWithType: AuthIntegrationTests.RefreshToken_WithInvalidModel_ReturnsBadRequest()
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidModel_ReturnsBadRequest()
+  type: Method
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RefreshToken_WithInvalidModel_ReturnsBadRequest
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 258
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RefreshToken_WithInvalidModel_ReturnsBadRequest()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RefreshToken_WithInvalidModel_ReturnsBadRequest() As Task
+  overload: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidModel_ReturnsBadRequest*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithValidProvider_ReturnsRedirect
+  commentId: M:MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithValidProvider_ReturnsRedirect
+  id: ExternalLogin_WithValidProvider_ReturnsRedirect
+  parent: MyApp.Tests.Integration.AuthIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: ExternalLogin_WithValidProvider_ReturnsRedirect()
+  nameWithType: AuthIntegrationTests.ExternalLogin_WithValidProvider_ReturnsRedirect()
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithValidProvider_ReturnsRedirect()
+  type: Method
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ExternalLogin_WithValidProvider_ReturnsRedirect
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 283
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task ExternalLogin_WithValidProvider_ReturnsRedirect()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function ExternalLogin_WithValidProvider_ReturnsRedirect() As Task
+  overload: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithValidProvider_ReturnsRedirect*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithInvalidProvider_ReturnsBadRequest
+  commentId: M:MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithInvalidProvider_ReturnsBadRequest
+  id: ExternalLogin_WithInvalidProvider_ReturnsBadRequest
+  parent: MyApp.Tests.Integration.AuthIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: ExternalLogin_WithInvalidProvider_ReturnsBadRequest()
+  nameWithType: AuthIntegrationTests.ExternalLogin_WithInvalidProvider_ReturnsBadRequest()
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithInvalidProvider_ReturnsBadRequest()
+  type: Method
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ExternalLogin_WithInvalidProvider_ReturnsBadRequest
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 306
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task ExternalLogin_WithInvalidProvider_ReturnsBadRequest()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function ExternalLogin_WithInvalidProvider_ReturnsBadRequest() As Task
+  overload: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithInvalidProvider_ReturnsBadRequest*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest
+  commentId: M:MyApp.Tests.Integration.AuthIntegrationTests.ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest
+  id: ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest
+  parent: MyApp.Tests.Integration.AuthIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest()
+  nameWithType: AuthIntegrationTests.ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest()
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest()
+  type: Method
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 328
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest() As Task
+  overload: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Logout_WithValidToken_ReturnsNoContent
+  commentId: M:MyApp.Tests.Integration.AuthIntegrationTests.Logout_WithValidToken_ReturnsNoContent
+  id: Logout_WithValidToken_ReturnsNoContent
+  parent: MyApp.Tests.Integration.AuthIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Logout_WithValidToken_ReturnsNoContent()
+  nameWithType: AuthIntegrationTests.Logout_WithValidToken_ReturnsNoContent()
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Logout_WithValidToken_ReturnsNoContent()
+  type: Method
+  source:
+    remote:
+      path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Logout_WithValidToken_ReturnsNoContent
+    path: src/AppHost.Tests/Tests/AuthServiceTests.cs
+    startLine: 369
+  assemblies:
+  - AppHost.Tests
+  namespace: MyApp.Tests.Integration
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Logout_WithValidToken_ReturnsNoContent()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Logout_WithValidToken_ReturnsNoContent() As Task
+  overload: MyApp.Tests.Integration.AuthIntegrationTests.Logout_WithValidToken_ReturnsNoContent*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: MyApp.Tests.Integration
+  commentId: N:MyApp.Tests.Integration
+  href: MyApp.html
+  name: MyApp.Tests.Integration
+  nameWithType: MyApp.Tests.Integration
+  fullName: MyApp.Tests.Integration
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Tests
+    name: Tests
+    href: MyApp.Tests.html
+  - name: .
+  - uid: MyApp.Tests.Integration
+    name: Integration
+    href: MyApp.Tests.Integration.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Tests
+    name: Tests
+    href: MyApp.Tests.html
+  - name: .
+  - uid: MyApp.Tests.Integration
+    name: Integration
+    href: MyApp.Tests.Integration.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithVInvalidCredentials_ReturnsUnauthorized*
+  commentId: Overload:MyApp.Tests.Integration.AuthIntegrationTests.Login_WithVInvalidCredentials_ReturnsUnauthorized
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html#MyApp_Tests_Integration_AuthIntegrationTests_Login_WithVInvalidCredentials_ReturnsUnauthorized
+  name: Login_WithVInvalidCredentials_ReturnsUnauthorized
+  nameWithType: AuthIntegrationTests.Login_WithVInvalidCredentials_ReturnsUnauthorized
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithVInvalidCredentials_ReturnsUnauthorized
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithValidCredentials_ReturnsOk*
+  commentId: Overload:MyApp.Tests.Integration.AuthIntegrationTests.Login_WithValidCredentials_ReturnsOk
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html#MyApp_Tests_Integration_AuthIntegrationTests_Login_WithValidCredentials_ReturnsOk
+  name: Login_WithValidCredentials_ReturnsOk
+  nameWithType: AuthIntegrationTests.Login_WithValidCredentials_ReturnsOk
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithValidCredentials_ReturnsOk
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidCredentials_ReturnsUnauthorized*
+  commentId: Overload:MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidCredentials_ReturnsUnauthorized
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html#MyApp_Tests_Integration_AuthIntegrationTests_Login_WithInvalidCredentials_ReturnsUnauthorized
+  name: Login_WithInvalidCredentials_ReturnsUnauthorized
+  nameWithType: AuthIntegrationTests.Login_WithInvalidCredentials_ReturnsUnauthorized
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidCredentials_ReturnsUnauthorized
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidModel_ReturnsBadRequest*
+  commentId: Overload:MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidModel_ReturnsBadRequest
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html#MyApp_Tests_Integration_AuthIntegrationTests_Login_WithInvalidModel_ReturnsBadRequest
+  name: Login_WithInvalidModel_ReturnsBadRequest
+  nameWithType: AuthIntegrationTests.Login_WithInvalidModel_ReturnsBadRequest
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Login_WithInvalidModel_ReturnsBadRequest
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithValidData_ReturnsCreated*
+  commentId: Overload:MyApp.Tests.Integration.AuthIntegrationTests.Register_WithValidData_ReturnsCreated
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html#MyApp_Tests_Integration_AuthIntegrationTests_Register_WithValidData_ReturnsCreated
+  name: Register_WithValidData_ReturnsCreated
+  nameWithType: AuthIntegrationTests.Register_WithValidData_ReturnsCreated
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithValidData_ReturnsCreated
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithExistingEmail_ReturnsConflict*
+  commentId: Overload:MyApp.Tests.Integration.AuthIntegrationTests.Register_WithExistingEmail_ReturnsConflict
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html#MyApp_Tests_Integration_AuthIntegrationTests_Register_WithExistingEmail_ReturnsConflict
+  name: Register_WithExistingEmail_ReturnsConflict
+  nameWithType: AuthIntegrationTests.Register_WithExistingEmail_ReturnsConflict
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithExistingEmail_ReturnsConflict
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithInvalidModel_ReturnsBadRequest*
+  commentId: Overload:MyApp.Tests.Integration.AuthIntegrationTests.Register_WithInvalidModel_ReturnsBadRequest
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html#MyApp_Tests_Integration_AuthIntegrationTests_Register_WithInvalidModel_ReturnsBadRequest
+  name: Register_WithInvalidModel_ReturnsBadRequest
+  nameWithType: AuthIntegrationTests.Register_WithInvalidModel_ReturnsBadRequest
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Register_WithInvalidModel_ReturnsBadRequest
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithValidToken_ReturnsOk*
+  commentId: Overload:MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithValidToken_ReturnsOk
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html#MyApp_Tests_Integration_AuthIntegrationTests_RefreshToken_WithValidToken_ReturnsOk
+  name: RefreshToken_WithValidToken_ReturnsOk
+  nameWithType: AuthIntegrationTests.RefreshToken_WithValidToken_ReturnsOk
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithValidToken_ReturnsOk
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidToken_ReturnsUnauthorized*
+  commentId: Overload:MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidToken_ReturnsUnauthorized
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html#MyApp_Tests_Integration_AuthIntegrationTests_RefreshToken_WithInvalidToken_ReturnsUnauthorized
+  name: RefreshToken_WithInvalidToken_ReturnsUnauthorized
+  nameWithType: AuthIntegrationTests.RefreshToken_WithInvalidToken_ReturnsUnauthorized
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidToken_ReturnsUnauthorized
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidModel_ReturnsBadRequest*
+  commentId: Overload:MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidModel_ReturnsBadRequest
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html#MyApp_Tests_Integration_AuthIntegrationTests_RefreshToken_WithInvalidModel_ReturnsBadRequest
+  name: RefreshToken_WithInvalidModel_ReturnsBadRequest
+  nameWithType: AuthIntegrationTests.RefreshToken_WithInvalidModel_ReturnsBadRequest
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.RefreshToken_WithInvalidModel_ReturnsBadRequest
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithValidProvider_ReturnsRedirect*
+  commentId: Overload:MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithValidProvider_ReturnsRedirect
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html#MyApp_Tests_Integration_AuthIntegrationTests_ExternalLogin_WithValidProvider_ReturnsRedirect
+  name: ExternalLogin_WithValidProvider_ReturnsRedirect
+  nameWithType: AuthIntegrationTests.ExternalLogin_WithValidProvider_ReturnsRedirect
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithValidProvider_ReturnsRedirect
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithInvalidProvider_ReturnsBadRequest*
+  commentId: Overload:MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithInvalidProvider_ReturnsBadRequest
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html#MyApp_Tests_Integration_AuthIntegrationTests_ExternalLogin_WithInvalidProvider_ReturnsBadRequest
+  name: ExternalLogin_WithInvalidProvider_ReturnsBadRequest
+  nameWithType: AuthIntegrationTests.ExternalLogin_WithInvalidProvider_ReturnsBadRequest
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLogin_WithInvalidProvider_ReturnsBadRequest
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest*
+  commentId: Overload:MyApp.Tests.Integration.AuthIntegrationTests.ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html#MyApp_Tests_Integration_AuthIntegrationTests_ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest
+  name: ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest
+  nameWithType: AuthIntegrationTests.ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest
+- uid: MyApp.Tests.Integration.AuthIntegrationTests.Logout_WithValidToken_ReturnsNoContent*
+  commentId: Overload:MyApp.Tests.Integration.AuthIntegrationTests.Logout_WithValidToken_ReturnsNoContent
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html#MyApp_Tests_Integration_AuthIntegrationTests_Logout_WithValidToken_ReturnsNoContent
+  name: Logout_WithValidToken_ReturnsNoContent
+  nameWithType: AuthIntegrationTests.Logout_WithValidToken_ReturnsNoContent
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests.Logout_WithValidToken_ReturnsNoContent

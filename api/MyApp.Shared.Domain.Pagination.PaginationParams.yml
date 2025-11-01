@@ -1,0 +1,477 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Domain.Pagination.PaginationParams
+  commentId: T:MyApp.Shared.Domain.Pagination.PaginationParams
+  id: PaginationParams
+  parent: MyApp.Shared.Domain.Pagination
+  children:
+  - MyApp.Shared.Domain.Pagination.PaginationParams.#ctor
+  - MyApp.Shared.Domain.Pagination.PaginationParams.#ctor(System.Int32,System.Int32)
+  - MyApp.Shared.Domain.Pagination.PaginationParams.PageNumber
+  - MyApp.Shared.Domain.Pagination.PaginationParams.PageSize
+  langs:
+  - csharp
+  - vb
+  name: PaginationParams
+  nameWithType: PaginationParams
+  fullName: MyApp.Shared.Domain.Pagination.PaginationParams
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginationParams.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: PaginationParams
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginationParams.cs
+    startLine: 5
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  summary: Pagination parameters for list requests
+  example: []
+  syntax:
+    content: public class PaginationParams
+    content.vb: Public Class PaginationParams
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Shared.Domain.Pagination.PaginationParams.PageNumber
+  commentId: P:MyApp.Shared.Domain.Pagination.PaginationParams.PageNumber
+  id: PageNumber
+  parent: MyApp.Shared.Domain.Pagination.PaginationParams
+  langs:
+  - csharp
+  - vb
+  name: PageNumber
+  nameWithType: PaginationParams.PageNumber
+  fullName: MyApp.Shared.Domain.Pagination.PaginationParams.PageNumber
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginationParams.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: PageNumber
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginationParams.cs
+    startLine: 10
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  summary: Page number (1-indexed)
+  example: []
+  syntax:
+    content: public int PageNumber { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property PageNumber As Integer
+  overload: MyApp.Shared.Domain.Pagination.PaginationParams.PageNumber*
+- uid: MyApp.Shared.Domain.Pagination.PaginationParams.PageSize
+  commentId: P:MyApp.Shared.Domain.Pagination.PaginationParams.PageSize
+  id: PageSize
+  parent: MyApp.Shared.Domain.Pagination.PaginationParams
+  langs:
+  - csharp
+  - vb
+  name: PageSize
+  nameWithType: PaginationParams.PageSize
+  fullName: MyApp.Shared.Domain.Pagination.PaginationParams.PageSize
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginationParams.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: PageSize
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginationParams.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  summary: Number of items per page
+  example: []
+  syntax:
+    content: public int PageSize { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property PageSize As Integer
+  overload: MyApp.Shared.Domain.Pagination.PaginationParams.PageSize*
+- uid: MyApp.Shared.Domain.Pagination.PaginationParams.#ctor
+  commentId: M:MyApp.Shared.Domain.Pagination.PaginationParams.#ctor
+  id: '#ctor'
+  parent: MyApp.Shared.Domain.Pagination.PaginationParams
+  langs:
+  - csharp
+  - vb
+  name: PaginationParams()
+  nameWithType: PaginationParams.PaginationParams()
+  fullName: MyApp.Shared.Domain.Pagination.PaginationParams.PaginationParams()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginationParams.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginationParams.cs
+    startLine: 17
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  syntax:
+    content: public PaginationParams()
+    content.vb: Public Sub New()
+  overload: MyApp.Shared.Domain.Pagination.PaginationParams.#ctor*
+  nameWithType.vb: PaginationParams.New()
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginationParams.New()
+  name.vb: New()
+- uid: MyApp.Shared.Domain.Pagination.PaginationParams.#ctor(System.Int32,System.Int32)
+  commentId: M:MyApp.Shared.Domain.Pagination.PaginationParams.#ctor(System.Int32,System.Int32)
+  id: '#ctor(System.Int32,System.Int32)'
+  parent: MyApp.Shared.Domain.Pagination.PaginationParams
+  langs:
+  - csharp
+  - vb
+  name: PaginationParams(int, int)
+  nameWithType: PaginationParams.PaginationParams(int, int)
+  fullName: MyApp.Shared.Domain.Pagination.PaginationParams.PaginationParams(int, int)
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginationParams.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginationParams.cs
+    startLine: 21
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  syntax:
+    content: public PaginationParams(int pageNumber, int pageSize)
+    parameters:
+    - id: pageNumber
+      type: System.Int32
+    - id: pageSize
+      type: System.Int32
+    content.vb: Public Sub New(pageNumber As Integer, pageSize As Integer)
+  overload: MyApp.Shared.Domain.Pagination.PaginationParams.#ctor*
+  nameWithType.vb: PaginationParams.New(Integer, Integer)
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginationParams.New(Integer, Integer)
+  name.vb: New(Integer, Integer)
+references:
+- uid: MyApp.Shared.Domain.Pagination
+  commentId: N:MyApp.Shared.Domain.Pagination
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Pagination
+  nameWithType: MyApp.Shared.Domain.Pagination
+  fullName: MyApp.Shared.Domain.Pagination
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Pagination
+    name: Pagination
+    href: MyApp.Shared.Domain.Pagination.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Pagination
+    name: Pagination
+    href: MyApp.Shared.Domain.Pagination.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Shared.Domain.Pagination.PaginationParams.PageNumber*
+  commentId: Overload:MyApp.Shared.Domain.Pagination.PaginationParams.PageNumber
+  href: MyApp.Shared.Domain.Pagination.PaginationParams.html#MyApp_Shared_Domain_Pagination_PaginationParams_PageNumber
+  name: PageNumber
+  nameWithType: PaginationParams.PageNumber
+  fullName: MyApp.Shared.Domain.Pagination.PaginationParams.PageNumber
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: MyApp.Shared.Domain.Pagination.PaginationParams.PageSize*
+  commentId: Overload:MyApp.Shared.Domain.Pagination.PaginationParams.PageSize
+  href: MyApp.Shared.Domain.Pagination.PaginationParams.html#MyApp_Shared_Domain_Pagination_PaginationParams_PageSize
+  name: PageSize
+  nameWithType: PaginationParams.PageSize
+  fullName: MyApp.Shared.Domain.Pagination.PaginationParams.PageSize
+- uid: MyApp.Shared.Domain.Pagination.PaginationParams.#ctor*
+  commentId: Overload:MyApp.Shared.Domain.Pagination.PaginationParams.#ctor
+  href: MyApp.Shared.Domain.Pagination.PaginationParams.html#MyApp_Shared_Domain_Pagination_PaginationParams__ctor
+  name: PaginationParams
+  nameWithType: PaginationParams.PaginationParams
+  fullName: MyApp.Shared.Domain.Pagination.PaginationParams.PaginationParams
+  nameWithType.vb: PaginationParams.New
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginationParams.New
+  name.vb: New

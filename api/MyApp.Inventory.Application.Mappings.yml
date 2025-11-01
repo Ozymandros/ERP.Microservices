@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Application.Mappings
+  commentId: N:MyApp.Inventory.Application.Mappings
+  id: MyApp.Inventory.Application.Mappings
+  children:
+  - MyApp.Inventory.Application.Mappings.InventoryMappingProfile
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Inventory.Application.Mappings
+  nameWithType: MyApp.Inventory.Application.Mappings
+  fullName: MyApp.Inventory.Application.Mappings
+  type: Namespace
+  assemblies:
+  - MyApp.Inventory.Application
+references:
+- uid: MyApp.Inventory.Application.Mappings.InventoryMappingProfile
+  commentId: T:MyApp.Inventory.Application.Mappings.InventoryMappingProfile
+  href: MyApp.Inventory.Application.Mappings.InventoryMappingProfile.html
+  name: InventoryMappingProfile
+  nameWithType: InventoryMappingProfile
+  fullName: MyApp.Inventory.Application.Mappings.InventoryMappingProfile

@@ -1,0 +1,44 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Services
+  commentId: N:MyApp.Auth.Application.Services
+  id: MyApp.Auth.Application.Services
+  children:
+  - MyApp.Auth.Application.Services.AuthService
+  - MyApp.Auth.Application.Services.PermissionService
+  - MyApp.Auth.Application.Services.RoleService
+  - MyApp.Auth.Application.Services.UserService
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Application.Services
+  nameWithType: MyApp.Auth.Application.Services
+  fullName: MyApp.Auth.Application.Services
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Application
+references:
+- uid: MyApp.Auth.Application.Services.AuthService
+  commentId: T:MyApp.Auth.Application.Services.AuthService
+  href: MyApp.Auth.Application.Services.AuthService.html
+  name: AuthService
+  nameWithType: AuthService
+  fullName: MyApp.Auth.Application.Services.AuthService
+- uid: MyApp.Auth.Application.Services.PermissionService
+  commentId: T:MyApp.Auth.Application.Services.PermissionService
+  href: MyApp.Auth.Application.Services.PermissionService.html
+  name: PermissionService
+  nameWithType: PermissionService
+  fullName: MyApp.Auth.Application.Services.PermissionService
+- uid: MyApp.Auth.Application.Services.RoleService
+  commentId: T:MyApp.Auth.Application.Services.RoleService
+  href: MyApp.Auth.Application.Services.RoleService.html
+  name: RoleService
+  nameWithType: RoleService
+  fullName: MyApp.Auth.Application.Services.RoleService
+- uid: MyApp.Auth.Application.Services.UserService
+  commentId: T:MyApp.Auth.Application.Services.UserService
+  href: MyApp.Auth.Application.Services.UserService.html
+  name: UserService
+  nameWithType: UserService
+  fullName: MyApp.Auth.Application.Services.UserService

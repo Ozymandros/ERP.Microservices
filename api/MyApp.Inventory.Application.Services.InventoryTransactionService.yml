@@ -1,0 +1,1430 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService
+  commentId: T:MyApp.Inventory.Application.Services.InventoryTransactionService
+  id: InventoryTransactionService
+  parent: MyApp.Inventory.Application.Services
+  children:
+  - MyApp.Inventory.Application.Services.InventoryTransactionService.#ctor(MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository,MyApp.Inventory.Domain.Repositories.IProductRepository,AutoMapper.IMapper)
+  - MyApp.Inventory.Application.Services.InventoryTransactionService.CreateTransactionAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  - MyApp.Inventory.Application.Services.InventoryTransactionService.DeleteTransactionAsync(System.Guid)
+  - MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsAsync
+  - MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsPaginatedAsync(System.Int32,System.Int32)
+  - MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionByIdAsync(System.Guid)
+  - MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByProductIdAsync(System.Guid)
+  - MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByTypeAsync(MyApp.Inventory.Domain.Entities.TransactionType)
+  - MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByWarehouseIdAsync(System.Guid)
+  - MyApp.Inventory.Application.Services.InventoryTransactionService.UpdateTransactionAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  langs:
+  - csharp
+  - vb
+  name: InventoryTransactionService
+  nameWithType: InventoryTransactionService
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: InventoryTransactionService
+    path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+    startLine: 9
+  assemblies:
+  - MyApp.Inventory.Application
+  namespace: MyApp.Inventory.Application.Services
+  syntax:
+    content: 'public class InventoryTransactionService : IInventoryTransactionService'
+    content.vb: Public Class InventoryTransactionService Implements IInventoryTransactionService
+  inheritance:
+  - System.Object
+  implements:
+  - MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.#ctor(MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository,MyApp.Inventory.Domain.Repositories.IProductRepository,AutoMapper.IMapper)
+  commentId: M:MyApp.Inventory.Application.Services.InventoryTransactionService.#ctor(MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository,MyApp.Inventory.Domain.Repositories.IProductRepository,AutoMapper.IMapper)
+  id: '#ctor(MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository,MyApp.Inventory.Domain.Repositories.IProductRepository,AutoMapper.IMapper)'
+  parent: MyApp.Inventory.Application.Services.InventoryTransactionService
+  langs:
+  - csharp
+  - vb
+  name: InventoryTransactionService(IInventoryTransactionRepository, IProductRepository, IMapper)
+  nameWithType: InventoryTransactionService.InventoryTransactionService(IInventoryTransactionRepository, IProductRepository, IMapper)
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.InventoryTransactionService(MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository, MyApp.Inventory.Domain.Repositories.IProductRepository, AutoMapper.IMapper)
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Inventory.Application
+  namespace: MyApp.Inventory.Application.Services
+  syntax:
+    content: public InventoryTransactionService(IInventoryTransactionRepository transactionRepository, IProductRepository productRepository, IMapper mapper)
+    parameters:
+    - id: transactionRepository
+      type: MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository
+    - id: productRepository
+      type: MyApp.Inventory.Domain.Repositories.IProductRepository
+    - id: mapper
+      type: AutoMapper.IMapper
+    content.vb: Public Sub New(transactionRepository As IInventoryTransactionRepository, productRepository As IProductRepository, mapper As IMapper)
+  overload: MyApp.Inventory.Application.Services.InventoryTransactionService.#ctor*
+  nameWithType.vb: InventoryTransactionService.New(IInventoryTransactionRepository, IProductRepository, IMapper)
+  fullName.vb: MyApp.Inventory.Application.Services.InventoryTransactionService.New(MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository, MyApp.Inventory.Domain.Repositories.IProductRepository, AutoMapper.IMapper)
+  name.vb: New(IInventoryTransactionRepository, IProductRepository, IMapper)
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionByIdAsync(System.Guid)
+  commentId: M:MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionByIdAsync(System.Guid)
+  id: GetTransactionByIdAsync(System.Guid)
+  parent: MyApp.Inventory.Application.Services.InventoryTransactionService
+  langs:
+  - csharp
+  - vb
+  name: GetTransactionByIdAsync(Guid)
+  nameWithType: InventoryTransactionService.GetTransactionByIdAsync(Guid)
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionByIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetTransactionByIdAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+    startLine: 25
+  assemblies:
+  - MyApp.Inventory.Application
+  namespace: MyApp.Inventory.Application.Services
+  example: []
+  syntax:
+    content: public Task<InventoryTransactionDto?> GetTransactionByIdAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto}
+    content.vb: Public Function GetTransactionByIdAsync(id As Guid) As Task(Of InventoryTransactionDto)
+  overload: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionByIdAsync*
+  implements:
+  - MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionByIdAsync(System.Guid)
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByProductIdAsync(System.Guid)
+  commentId: M:MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByProductIdAsync(System.Guid)
+  id: GetTransactionsByProductIdAsync(System.Guid)
+  parent: MyApp.Inventory.Application.Services.InventoryTransactionService
+  langs:
+  - csharp
+  - vb
+  name: GetTransactionsByProductIdAsync(Guid)
+  nameWithType: InventoryTransactionService.GetTransactionsByProductIdAsync(Guid)
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByProductIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetTransactionsByProductIdAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+    startLine: 31
+  assemblies:
+  - MyApp.Inventory.Application
+  namespace: MyApp.Inventory.Application.Services
+  example: []
+  syntax:
+    content: public Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByProductIdAsync(Guid productId)
+    parameters:
+    - id: productId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto}}
+    content.vb: Public Function GetTransactionsByProductIdAsync(productId As Guid) As Task(Of IEnumerable(Of InventoryTransactionDto))
+  overload: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByProductIdAsync*
+  implements:
+  - MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByProductIdAsync(System.Guid)
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByWarehouseIdAsync(System.Guid)
+  commentId: M:MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByWarehouseIdAsync(System.Guid)
+  id: GetTransactionsByWarehouseIdAsync(System.Guid)
+  parent: MyApp.Inventory.Application.Services.InventoryTransactionService
+  langs:
+  - csharp
+  - vb
+  name: GetTransactionsByWarehouseIdAsync(Guid)
+  nameWithType: InventoryTransactionService.GetTransactionsByWarehouseIdAsync(Guid)
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByWarehouseIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetTransactionsByWarehouseIdAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+    startLine: 37
+  assemblies:
+  - MyApp.Inventory.Application
+  namespace: MyApp.Inventory.Application.Services
+  example: []
+  syntax:
+    content: public Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByWarehouseIdAsync(Guid warehouseId)
+    parameters:
+    - id: warehouseId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto}}
+    content.vb: Public Function GetTransactionsByWarehouseIdAsync(warehouseId As Guid) As Task(Of IEnumerable(Of InventoryTransactionDto))
+  overload: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByWarehouseIdAsync*
+  implements:
+  - MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByWarehouseIdAsync(System.Guid)
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByTypeAsync(MyApp.Inventory.Domain.Entities.TransactionType)
+  commentId: M:MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByTypeAsync(MyApp.Inventory.Domain.Entities.TransactionType)
+  id: GetTransactionsByTypeAsync(MyApp.Inventory.Domain.Entities.TransactionType)
+  parent: MyApp.Inventory.Application.Services.InventoryTransactionService
+  langs:
+  - csharp
+  - vb
+  name: GetTransactionsByTypeAsync(TransactionType)
+  nameWithType: InventoryTransactionService.GetTransactionsByTypeAsync(TransactionType)
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByTypeAsync(MyApp.Inventory.Domain.Entities.TransactionType)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetTransactionsByTypeAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+    startLine: 43
+  assemblies:
+  - MyApp.Inventory.Application
+  namespace: MyApp.Inventory.Application.Services
+  example: []
+  syntax:
+    content: public Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByTypeAsync(TransactionType transactionType)
+    parameters:
+    - id: transactionType
+      type: MyApp.Inventory.Domain.Entities.TransactionType
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto}}
+    content.vb: Public Function GetTransactionsByTypeAsync(transactionType As TransactionType) As Task(Of IEnumerable(Of InventoryTransactionDto))
+  overload: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByTypeAsync*
+  implements:
+  - MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByTypeAsync(MyApp.Inventory.Domain.Entities.TransactionType)
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsAsync
+  commentId: M:MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsAsync
+  id: GetAllTransactionsAsync
+  parent: MyApp.Inventory.Application.Services.InventoryTransactionService
+  langs:
+  - csharp
+  - vb
+  name: GetAllTransactionsAsync()
+  nameWithType: InventoryTransactionService.GetAllTransactionsAsync()
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllTransactionsAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+    startLine: 49
+  assemblies:
+  - MyApp.Inventory.Application
+  namespace: MyApp.Inventory.Application.Services
+  example: []
+  syntax:
+    content: public Task<IEnumerable<InventoryTransactionDto>> GetAllTransactionsAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto}}
+    content.vb: Public Function GetAllTransactionsAsync() As Task(Of IEnumerable(Of InventoryTransactionDto))
+  overload: MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsAsync*
+  implements:
+  - MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetAllTransactionsAsync
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsPaginatedAsync(System.Int32,System.Int32)
+  id: GetAllTransactionsPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Inventory.Application.Services.InventoryTransactionService
+  langs:
+  - csharp
+  - vb
+  name: GetAllTransactionsPaginatedAsync(int, int)
+  nameWithType: InventoryTransactionService.GetAllTransactionsPaginatedAsync(int, int)
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsPaginatedAsync(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllTransactionsPaginatedAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+    startLine: 55
+  assemblies:
+  - MyApp.Inventory.Application
+  namespace: MyApp.Inventory.Application.Services
+  example: []
+  syntax:
+    content: public Task<PaginatedResult<InventoryTransactionDto>> GetAllTransactionsPaginatedAsync(int pageNumber, int pageSize)
+    parameters:
+    - id: pageNumber
+      type: System.Int32
+    - id: pageSize
+      type: System.Int32
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto}}
+    content.vb: Public Function GetAllTransactionsPaginatedAsync(pageNumber As Integer, pageSize As Integer) As Task(Of PaginatedResult(Of InventoryTransactionDto))
+  overload: MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsPaginatedAsync*
+  implements:
+  - MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetAllTransactionsPaginatedAsync(System.Int32,System.Int32)
+  nameWithType.vb: InventoryTransactionService.GetAllTransactionsPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsPaginatedAsync(Integer, Integer)
+  name.vb: GetAllTransactionsPaginatedAsync(Integer, Integer)
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.CreateTransactionAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  commentId: M:MyApp.Inventory.Application.Services.InventoryTransactionService.CreateTransactionAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  id: CreateTransactionAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  parent: MyApp.Inventory.Application.Services.InventoryTransactionService
+  langs:
+  - csharp
+  - vb
+  name: CreateTransactionAsync(CreateUpdateInventoryTransactionDto)
+  nameWithType: InventoryTransactionService.CreateTransactionAsync(CreateUpdateInventoryTransactionDto)
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.CreateTransactionAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateTransactionAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+    startLine: 62
+  assemblies:
+  - MyApp.Inventory.Application
+  namespace: MyApp.Inventory.Application.Services
+  example: []
+  syntax:
+    content: public Task<InventoryTransactionDto> CreateTransactionAsync(CreateUpdateInventoryTransactionDto dto)
+    parameters:
+    - id: dto
+      type: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto}
+    content.vb: Public Function CreateTransactionAsync(dto As CreateUpdateInventoryTransactionDto) As Task(Of InventoryTransactionDto)
+  overload: MyApp.Inventory.Application.Services.InventoryTransactionService.CreateTransactionAsync*
+  implements:
+  - MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.CreateTransactionAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.UpdateTransactionAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  commentId: M:MyApp.Inventory.Application.Services.InventoryTransactionService.UpdateTransactionAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  id: UpdateTransactionAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  parent: MyApp.Inventory.Application.Services.InventoryTransactionService
+  langs:
+  - csharp
+  - vb
+  name: UpdateTransactionAsync(Guid, CreateUpdateInventoryTransactionDto)
+  nameWithType: InventoryTransactionService.UpdateTransactionAsync(Guid, CreateUpdateInventoryTransactionDto)
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.UpdateTransactionAsync(System.Guid, MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateTransactionAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+    startLine: 92
+  assemblies:
+  - MyApp.Inventory.Application
+  namespace: MyApp.Inventory.Application.Services
+  example: []
+  syntax:
+    content: public Task<InventoryTransactionDto> UpdateTransactionAsync(Guid id, CreateUpdateInventoryTransactionDto dto)
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: dto
+      type: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto}
+    content.vb: Public Function UpdateTransactionAsync(id As Guid, dto As CreateUpdateInventoryTransactionDto) As Task(Of InventoryTransactionDto)
+  overload: MyApp.Inventory.Application.Services.InventoryTransactionService.UpdateTransactionAsync*
+  implements:
+  - MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.UpdateTransactionAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.DeleteTransactionAsync(System.Guid)
+  commentId: M:MyApp.Inventory.Application.Services.InventoryTransactionService.DeleteTransactionAsync(System.Guid)
+  id: DeleteTransactionAsync(System.Guid)
+  parent: MyApp.Inventory.Application.Services.InventoryTransactionService
+  langs:
+  - csharp
+  - vb
+  name: DeleteTransactionAsync(Guid)
+  nameWithType: InventoryTransactionService.DeleteTransactionAsync(Guid)
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.DeleteTransactionAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteTransactionAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application/Services/InventoryTransactionService.cs
+    startLine: 127
+  assemblies:
+  - MyApp.Inventory.Application
+  namespace: MyApp.Inventory.Application.Services
+  example: []
+  syntax:
+    content: public Task DeleteTransactionAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function DeleteTransactionAsync(id As Guid) As Task
+  overload: MyApp.Inventory.Application.Services.InventoryTransactionService.DeleteTransactionAsync*
+  implements:
+  - MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.DeleteTransactionAsync(System.Guid)
+references:
+- uid: MyApp.Inventory.Application.Services
+  commentId: N:MyApp.Inventory.Application.Services
+  href: MyApp.html
+  name: MyApp.Inventory.Application.Services
+  nameWithType: MyApp.Inventory.Application.Services
+  fullName: MyApp.Inventory.Application.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Services
+    name: Services
+    href: MyApp.Inventory.Application.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Services
+    name: Services
+    href: MyApp.Inventory.Application.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  commentId: T:MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  parent: MyApp.Inventory.Application.Contracts.Services
+  href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html
+  name: IInventoryTransactionService
+  nameWithType: IInventoryTransactionService
+  fullName: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Inventory.Application.Contracts.Services
+  commentId: N:MyApp.Inventory.Application.Contracts.Services
+  href: MyApp.html
+  name: MyApp.Inventory.Application.Contracts.Services
+  nameWithType: MyApp.Inventory.Application.Contracts.Services
+  fullName: MyApp.Inventory.Application.Contracts.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.Services
+    name: Services
+    href: MyApp.Inventory.Application.Contracts.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.Services
+    name: Services
+    href: MyApp.Inventory.Application.Contracts.Services.html
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.#ctor*
+  commentId: Overload:MyApp.Inventory.Application.Services.InventoryTransactionService.#ctor
+  href: MyApp.Inventory.Application.Services.InventoryTransactionService.html#MyApp_Inventory_Application_Services_InventoryTransactionService__ctor_MyApp_Inventory_Domain_Repositories_IInventoryTransactionRepository_MyApp_Inventory_Domain_Repositories_IProductRepository_AutoMapper_IMapper_
+  name: InventoryTransactionService
+  nameWithType: InventoryTransactionService.InventoryTransactionService
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.InventoryTransactionService
+  nameWithType.vb: InventoryTransactionService.New
+  fullName.vb: MyApp.Inventory.Application.Services.InventoryTransactionService.New
+  name.vb: New
+- uid: MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository
+  commentId: T:MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository
+  parent: MyApp.Inventory.Domain.Repositories
+  href: MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository.html
+  name: IInventoryTransactionRepository
+  nameWithType: IInventoryTransactionRepository
+  fullName: MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository
+- uid: MyApp.Inventory.Domain.Repositories.IProductRepository
+  commentId: T:MyApp.Inventory.Domain.Repositories.IProductRepository
+  parent: MyApp.Inventory.Domain.Repositories
+  href: MyApp.Inventory.Domain.Repositories.IProductRepository.html
+  name: IProductRepository
+  nameWithType: IProductRepository
+  fullName: MyApp.Inventory.Domain.Repositories.IProductRepository
+- uid: AutoMapper.IMapper
+  commentId: T:AutoMapper.IMapper
+  parent: AutoMapper
+  isExternal: true
+  name: IMapper
+  nameWithType: IMapper
+  fullName: AutoMapper.IMapper
+- uid: MyApp.Inventory.Domain.Repositories
+  commentId: N:MyApp.Inventory.Domain.Repositories
+  href: MyApp.html
+  name: MyApp.Inventory.Domain.Repositories
+  nameWithType: MyApp.Inventory.Domain.Repositories
+  fullName: MyApp.Inventory.Domain.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Repositories
+    name: Repositories
+    href: MyApp.Inventory.Domain.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Repositories
+    name: Repositories
+    href: MyApp.Inventory.Domain.Repositories.html
+- uid: AutoMapper
+  commentId: N:AutoMapper
+  isExternal: true
+  name: AutoMapper
+  nameWithType: AutoMapper
+  fullName: AutoMapper
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionByIdAsync*
+  commentId: Overload:MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionByIdAsync
+  href: MyApp.Inventory.Application.Services.InventoryTransactionService.html#MyApp_Inventory_Application_Services_InventoryTransactionService_GetTransactionByIdAsync_System_Guid_
+  name: GetTransactionByIdAsync
+  nameWithType: InventoryTransactionService.GetTransactionByIdAsync
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionByIdAsync
+- uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionByIdAsync(System.Guid)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionByIdAsync(System.Guid)
+  parent: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  isExternal: true
+  href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetTransactionByIdAsync_System_Guid_
+  name: GetTransactionByIdAsync(Guid)
+  nameWithType: IInventoryTransactionService.GetTransactionByIdAsync(Guid)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionByIdAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionByIdAsync(System.Guid)
+    name: GetTransactionByIdAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetTransactionByIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionByIdAsync(System.Guid)
+    name: GetTransactionByIdAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetTransactionByIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<InventoryTransactionDto>
+  nameWithType: Task<InventoryTransactionDto>
+  fullName: System.Threading.Tasks.Task<MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto>
+  nameWithType.vb: Task(Of InventoryTransactionDto)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto)
+  name.vb: Task(Of InventoryTransactionDto)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto
+    name: InventoryTransactionDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto
+    name: InventoryTransactionDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByProductIdAsync*
+  commentId: Overload:MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByProductIdAsync
+  href: MyApp.Inventory.Application.Services.InventoryTransactionService.html#MyApp_Inventory_Application_Services_InventoryTransactionService_GetTransactionsByProductIdAsync_System_Guid_
+  name: GetTransactionsByProductIdAsync
+  nameWithType: InventoryTransactionService.GetTransactionsByProductIdAsync
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByProductIdAsync
+- uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByProductIdAsync(System.Guid)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByProductIdAsync(System.Guid)
+  parent: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  isExternal: true
+  href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetTransactionsByProductIdAsync_System_Guid_
+  name: GetTransactionsByProductIdAsync(Guid)
+  nameWithType: IInventoryTransactionService.GetTransactionsByProductIdAsync(Guid)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByProductIdAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByProductIdAsync(System.Guid)
+    name: GetTransactionsByProductIdAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetTransactionsByProductIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByProductIdAsync(System.Guid)
+    name: GetTransactionsByProductIdAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetTransactionsByProductIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<InventoryTransactionDto>>
+  nameWithType: Task<IEnumerable<InventoryTransactionDto>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto>>
+  nameWithType.vb: Task(Of IEnumerable(Of InventoryTransactionDto))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto))
+  name.vb: Task(Of IEnumerable(Of InventoryTransactionDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto
+    name: InventoryTransactionDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto
+    name: InventoryTransactionDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByWarehouseIdAsync*
+  commentId: Overload:MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByWarehouseIdAsync
+  href: MyApp.Inventory.Application.Services.InventoryTransactionService.html#MyApp_Inventory_Application_Services_InventoryTransactionService_GetTransactionsByWarehouseIdAsync_System_Guid_
+  name: GetTransactionsByWarehouseIdAsync
+  nameWithType: InventoryTransactionService.GetTransactionsByWarehouseIdAsync
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByWarehouseIdAsync
+- uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByWarehouseIdAsync(System.Guid)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByWarehouseIdAsync(System.Guid)
+  parent: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  isExternal: true
+  href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetTransactionsByWarehouseIdAsync_System_Guid_
+  name: GetTransactionsByWarehouseIdAsync(Guid)
+  nameWithType: IInventoryTransactionService.GetTransactionsByWarehouseIdAsync(Guid)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByWarehouseIdAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByWarehouseIdAsync(System.Guid)
+    name: GetTransactionsByWarehouseIdAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetTransactionsByWarehouseIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByWarehouseIdAsync(System.Guid)
+    name: GetTransactionsByWarehouseIdAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetTransactionsByWarehouseIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByTypeAsync*
+  commentId: Overload:MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByTypeAsync
+  href: MyApp.Inventory.Application.Services.InventoryTransactionService.html#MyApp_Inventory_Application_Services_InventoryTransactionService_GetTransactionsByTypeAsync_MyApp_Inventory_Domain_Entities_TransactionType_
+  name: GetTransactionsByTypeAsync
+  nameWithType: InventoryTransactionService.GetTransactionsByTypeAsync
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.GetTransactionsByTypeAsync
+- uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByTypeAsync(MyApp.Inventory.Domain.Entities.TransactionType)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByTypeAsync(MyApp.Inventory.Domain.Entities.TransactionType)
+  parent: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetTransactionsByTypeAsync_MyApp_Inventory_Domain_Entities_TransactionType_
+  name: GetTransactionsByTypeAsync(TransactionType)
+  nameWithType: IInventoryTransactionService.GetTransactionsByTypeAsync(TransactionType)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByTypeAsync(MyApp.Inventory.Domain.Entities.TransactionType)
+  spec.csharp:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByTypeAsync(MyApp.Inventory.Domain.Entities.TransactionType)
+    name: GetTransactionsByTypeAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetTransactionsByTypeAsync_MyApp_Inventory_Domain_Entities_TransactionType_
+  - name: (
+  - uid: MyApp.Inventory.Domain.Entities.TransactionType
+    name: TransactionType
+    href: MyApp.Inventory.Domain.Entities.TransactionType.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetTransactionsByTypeAsync(MyApp.Inventory.Domain.Entities.TransactionType)
+    name: GetTransactionsByTypeAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetTransactionsByTypeAsync_MyApp_Inventory_Domain_Entities_TransactionType_
+  - name: (
+  - uid: MyApp.Inventory.Domain.Entities.TransactionType
+    name: TransactionType
+    href: MyApp.Inventory.Domain.Entities.TransactionType.html
+  - name: )
+- uid: MyApp.Inventory.Domain.Entities.TransactionType
+  commentId: T:MyApp.Inventory.Domain.Entities.TransactionType
+  parent: MyApp.Inventory.Domain.Entities
+  href: MyApp.Inventory.Domain.Entities.TransactionType.html
+  name: TransactionType
+  nameWithType: TransactionType
+  fullName: MyApp.Inventory.Domain.Entities.TransactionType
+- uid: MyApp.Inventory.Domain.Entities
+  commentId: N:MyApp.Inventory.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Inventory.Domain.Entities
+  nameWithType: MyApp.Inventory.Domain.Entities
+  fullName: MyApp.Inventory.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Entities
+    name: Entities
+    href: MyApp.Inventory.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Entities
+    name: Entities
+    href: MyApp.Inventory.Domain.Entities.html
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsAsync*
+  commentId: Overload:MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsAsync
+  href: MyApp.Inventory.Application.Services.InventoryTransactionService.html#MyApp_Inventory_Application_Services_InventoryTransactionService_GetAllTransactionsAsync
+  name: GetAllTransactionsAsync
+  nameWithType: InventoryTransactionService.GetAllTransactionsAsync
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsAsync
+- uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetAllTransactionsAsync
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetAllTransactionsAsync
+  parent: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetAllTransactionsAsync
+  name: GetAllTransactionsAsync()
+  nameWithType: IInventoryTransactionService.GetAllTransactionsAsync()
+  fullName: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetAllTransactionsAsync()
+  spec.csharp:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetAllTransactionsAsync
+    name: GetAllTransactionsAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetAllTransactionsAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetAllTransactionsAsync
+    name: GetAllTransactionsAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetAllTransactionsAsync
+  - name: (
+  - name: )
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsPaginatedAsync*
+  commentId: Overload:MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsPaginatedAsync
+  href: MyApp.Inventory.Application.Services.InventoryTransactionService.html#MyApp_Inventory_Application_Services_InventoryTransactionService_GetAllTransactionsPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllTransactionsPaginatedAsync
+  nameWithType: InventoryTransactionService.GetAllTransactionsPaginatedAsync
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.GetAllTransactionsPaginatedAsync
+- uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetAllTransactionsPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetAllTransactionsPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  isExternal: true
+  href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetAllTransactionsPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllTransactionsPaginatedAsync(int, int)
+  nameWithType: IInventoryTransactionService.GetAllTransactionsPaginatedAsync(int, int)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetAllTransactionsPaginatedAsync(int, int)
+  nameWithType.vb: IInventoryTransactionService.GetAllTransactionsPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetAllTransactionsPaginatedAsync(Integer, Integer)
+  name.vb: GetAllTransactionsPaginatedAsync(Integer, Integer)
+  spec.csharp:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetAllTransactionsPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllTransactionsPaginatedAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetAllTransactionsPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.GetAllTransactionsPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllTransactionsPaginatedAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_GetAllTransactionsPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto}}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PaginatedResult<InventoryTransactionDto>>
+  nameWithType: Task<PaginatedResult<InventoryTransactionDto>>
+  fullName: System.Threading.Tasks.Task<MyApp.Shared.Domain.Pagination.PaginatedResult<MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto>>
+  nameWithType.vb: Task(Of PaginatedResult(Of InventoryTransactionDto))
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Shared.Domain.Pagination.PaginatedResult(Of MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto))
+  name.vb: Task(Of PaginatedResult(Of InventoryTransactionDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+    href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html
+  - name: <
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto
+    name: InventoryTransactionDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+    href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto
+    name: InventoryTransactionDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.CreateTransactionAsync*
+  commentId: Overload:MyApp.Inventory.Application.Services.InventoryTransactionService.CreateTransactionAsync
+  href: MyApp.Inventory.Application.Services.InventoryTransactionService.html#MyApp_Inventory_Application_Services_InventoryTransactionService_CreateTransactionAsync_MyApp_Inventory_Application_Contracts_DTOs_CreateUpdateInventoryTransactionDto_
+  name: CreateTransactionAsync
+  nameWithType: InventoryTransactionService.CreateTransactionAsync
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.CreateTransactionAsync
+- uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.CreateTransactionAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.CreateTransactionAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  parent: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_CreateTransactionAsync_MyApp_Inventory_Application_Contracts_DTOs_CreateUpdateInventoryTransactionDto_
+  name: CreateTransactionAsync(CreateUpdateInventoryTransactionDto)
+  nameWithType: IInventoryTransactionService.CreateTransactionAsync(CreateUpdateInventoryTransactionDto)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.CreateTransactionAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  spec.csharp:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.CreateTransactionAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+    name: CreateTransactionAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_CreateTransactionAsync_MyApp_Inventory_Application_Contracts_DTOs_CreateUpdateInventoryTransactionDto_
+  - name: (
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto
+    name: CreateUpdateInventoryTransactionDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.CreateTransactionAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+    name: CreateTransactionAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_CreateTransactionAsync_MyApp_Inventory_Application_Contracts_DTOs_CreateUpdateInventoryTransactionDto_
+  - name: (
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto
+    name: CreateUpdateInventoryTransactionDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto.html
+  - name: )
+- uid: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto
+  commentId: T:MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto
+  parent: MyApp.Inventory.Application.Contracts.DTOs
+  href: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto.html
+  name: CreateUpdateInventoryTransactionDto
+  nameWithType: CreateUpdateInventoryTransactionDto
+  fullName: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto
+- uid: MyApp.Inventory.Application.Contracts.DTOs
+  commentId: N:MyApp.Inventory.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Inventory.Application.Contracts.DTOs
+  nameWithType: MyApp.Inventory.Application.Contracts.DTOs
+  fullName: MyApp.Inventory.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Inventory.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Inventory.Application.Contracts.DTOs.html
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.UpdateTransactionAsync*
+  commentId: Overload:MyApp.Inventory.Application.Services.InventoryTransactionService.UpdateTransactionAsync
+  href: MyApp.Inventory.Application.Services.InventoryTransactionService.html#MyApp_Inventory_Application_Services_InventoryTransactionService_UpdateTransactionAsync_System_Guid_MyApp_Inventory_Application_Contracts_DTOs_CreateUpdateInventoryTransactionDto_
+  name: UpdateTransactionAsync
+  nameWithType: InventoryTransactionService.UpdateTransactionAsync
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.UpdateTransactionAsync
+- uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.UpdateTransactionAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.UpdateTransactionAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  parent: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  isExternal: true
+  href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_UpdateTransactionAsync_System_Guid_MyApp_Inventory_Application_Contracts_DTOs_CreateUpdateInventoryTransactionDto_
+  name: UpdateTransactionAsync(Guid, CreateUpdateInventoryTransactionDto)
+  nameWithType: IInventoryTransactionService.UpdateTransactionAsync(Guid, CreateUpdateInventoryTransactionDto)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.UpdateTransactionAsync(System.Guid, MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+  spec.csharp:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.UpdateTransactionAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+    name: UpdateTransactionAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_UpdateTransactionAsync_System_Guid_MyApp_Inventory_Application_Contracts_DTOs_CreateUpdateInventoryTransactionDto_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto
+    name: CreateUpdateInventoryTransactionDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.UpdateTransactionAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto)
+    name: UpdateTransactionAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_UpdateTransactionAsync_System_Guid_MyApp_Inventory_Application_Contracts_DTOs_CreateUpdateInventoryTransactionDto_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto
+    name: CreateUpdateInventoryTransactionDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto.html
+  - name: )
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService.DeleteTransactionAsync*
+  commentId: Overload:MyApp.Inventory.Application.Services.InventoryTransactionService.DeleteTransactionAsync
+  href: MyApp.Inventory.Application.Services.InventoryTransactionService.html#MyApp_Inventory_Application_Services_InventoryTransactionService_DeleteTransactionAsync_System_Guid_
+  name: DeleteTransactionAsync
+  nameWithType: InventoryTransactionService.DeleteTransactionAsync
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService.DeleteTransactionAsync
+- uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.DeleteTransactionAsync(System.Guid)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.DeleteTransactionAsync(System.Guid)
+  parent: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService
+  isExternal: true
+  href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_DeleteTransactionAsync_System_Guid_
+  name: DeleteTransactionAsync(Guid)
+  nameWithType: IInventoryTransactionService.DeleteTransactionAsync(Guid)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.DeleteTransactionAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.DeleteTransactionAsync(System.Guid)
+    name: DeleteTransactionAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_DeleteTransactionAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.DeleteTransactionAsync(System.Guid)
+    name: DeleteTransactionAsync
+    href: MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html#MyApp_Inventory_Application_Contracts_Services_IInventoryTransactionService_DeleteTransactionAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task

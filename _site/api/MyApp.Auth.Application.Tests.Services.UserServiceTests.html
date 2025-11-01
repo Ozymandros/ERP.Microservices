@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class UserServiceTests | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class UserServiceTests | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/new/main/apiSpec/new?filename=MyApp_Auth_Application_Tests_Services_UserServiceTests.md&amp;value=---%0Auid%3A%20MyApp.Auth.Application.Tests.Services.UserServiceTests%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests">
+
+
+
+  <h1 id="MyApp_Auth_Application_Tests_Services_UserServiceTests" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests" class="text-break">
+Class UserServiceTests  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="MyApp.html">MyApp</a>.<a class="xref" href="MyApp.Auth.html">Auth</a>.<a class="xref" href="MyApp.Auth.Application.html">Application</a>.<a class="xref" href="MyApp.Auth.Application.Tests.html">Tests</a>.<a class="xref" href="MyApp.Auth.Application.Tests.Services.html">Services</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>MyApp.Auth.Application.Tests.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class UserServiceTests : BaseServiceTest</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="MyApp.Auth.Application.Tests.Common.BaseServiceTest.html">BaseServiceTest</a></div>
+      <div><span class="xref">UserServiceTests</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_MockMapper">BaseServiceTest.MockMapper</a>
+    </div>
+    <div>
+      <a class="xref" href="MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_Mapper">BaseServiceTest.Mapper</a>
+    </div>
+    <div>
+      <a class="xref" href="MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_CreateMockLogger__1">BaseServiceTest.CreateMockLogger&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_">BaseServiceTest.VerifyLoggerCalled&lt;T&gt;(Mock&lt;ILogger&lt;T&gt;&gt;, LogLevel, Times)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests__ctor_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.#ctor*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests__ctor" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.#ctor">
+  UserServiceTests()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UserServiceTests()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning">
+  AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L409"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue">
+  AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L384"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning">
+  ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L303"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue">
+  ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L277"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning">
+  DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L361"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue">
+  DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L338"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetAllUsersAsync_ShouldReturnMappedUsers_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_ShouldReturnMappedUsers*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetAllUsersAsync_ShouldReturnMappedUsers" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_ShouldReturnMappedUsers">
+  GetAllUsersAsync_ShouldReturnMappedUsers()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetAllUsersAsync_ShouldReturnMappedUsers()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError">
+  GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L193"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull">
+  GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L551"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser">
+  GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L521"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull">
+  GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser">
+  GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByIdAsync_WithInvalidId_ShouldReturnNull_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithInvalidId_ShouldReturnNull*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByIdAsync_WithInvalidId_ShouldReturnNull" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithInvalidId_ShouldReturnNull">
+  GetUserByIdAsync_WithInvalidId_ShouldReturnNull()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetUserByIdAsync_WithInvalidId_ShouldReturnNull()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError">
+  GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByIdAsync_WithValidId_ShouldReturnMappedUser_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithValidId_ShouldReturnMappedUser*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserByIdAsync_WithValidId_ShouldReturnMappedUser" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserByIdAsync_WithValidId_ShouldReturnMappedUser">
+  GetUserByIdAsync_WithValidId_ShouldReturnMappedUser()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetUserByIdAsync_WithValidId_ShouldReturnMappedUser()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning">
+  GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L497"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles">
+  GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L472"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue">
+  RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L443"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning">
+  UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L249"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Tests_Services_UserServiceTests_UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue_" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue*"></a>
+
+  <h3 id="MyApp_Auth_Application_Tests_Services_UserServiceTests_UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue" data-uid="MyApp.Auth.Application.Tests.Services.UserServiceTests.UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue">
+  UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L216"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Fact]
+public Task UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/UserServiceTests.cs/#L18" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

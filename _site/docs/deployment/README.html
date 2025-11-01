@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>☁️ Deployment &amp; Azure | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="☁️ Deployment &amp; Azure | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/deployment/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-deployment--azure">☁️ Deployment &amp; Azure</h1>
+
+<p><strong>Azure Deployment Guides, Environment Configuration &amp; Bicep Infrastructure</strong><br>
+Last Updated: October 27, 2025</p>
+<hr>
+<h2 id="-overview">📍 Overview</h2>
+<p>This category covers deploying the microservices platform to Azure. From initial infrastructure setup with Bicep to environment configuration and production deployments. Designed for DevOps and infrastructure teams.</p>
+<hr>
+<h2 id="-documents-in-this-category">📚 Documents in This Category</h2>
+<h3 id="-new-automated-build--deploy-pipeline">🚀 <strong>NEW: Automated Build &amp; Deploy Pipeline</strong></h3>
+<h4 id="build_and_deploy_automationmd"><a href="BUILD_AND_DEPLOY_AUTOMATION.html">BUILD_AND_DEPLOY_AUTOMATION.md</a></h4>
+<p><strong>Complete automated build and deploy solution</strong></p>
+<ul>
+<li>✅ Fixes: &quot;MANIFEST_UNKNOWN: manifest tagged by 'latest' is not found&quot;</li>
+<li>PowerShell build script for local development</li>
+<li>GitHub Actions CI/CD pipeline</li>
+<li>ACR image building and caching</li>
+<li>Full troubleshooting guide</li>
+</ul>
+<h4 id="quick_start_build_deploymd"><a href="QUICK_START_BUILD_DEPLOY.html">QUICK_START_BUILD_DEPLOY.md</a></h4>
+<p><strong>Quick reference for automated deployments</strong></p>
+<ul>
+<li>3-option deployment process</li>
+<li>One-command deploy setup</li>
+<li>GitHub Actions setup</li>
+<li>Performance metrics</li>
+<li>Common troubleshooting</li>
+</ul>
+<h4 id="deployment_automation_completemd"><a href="DEPLOYMENT_AUTOMATION_COMPLETE.html">DEPLOYMENT_AUTOMATION_COMPLETE.md</a></h4>
+<p><strong>Complete solution overview</strong></p>
+<ul>
+<li>Architecture diagrams</li>
+<li>File structure and purposes</li>
+<li>Workflow examples</li>
+<li>Security considerations</li>
+<li>Best practices</li>
+</ul>
+<h4 id="build_and_deploy_automation_summarymd"><a href="BUILD_AND_DEPLOY_AUTOMATION_SUMMARY.html">BUILD_AND_DEPLOY_AUTOMATION_SUMMARY.md</a></h4>
+<p><strong>Problem/solution summary</strong></p>
+<ul>
+<li>Problem identification</li>
+<li>Complete solution overview</li>
+<li>Files included and their purposes</li>
+</ul>
+<h4 id="github_actions_architecturemd--new"><a href="GITHUB_ACTIONS_ARCHITECTURE.html">GITHUB_ACTIONS_ARCHITECTURE.md</a> ⭐ NEW</h4>
+<p><strong>Complete CI/CD workflow architecture</strong></p>
+<ul>
+<li>3-phase optimized workflow pattern</li>
+<li>Parallel execution with matrix builds</li>
+<li>Federated credentials &amp; security</li>
+<li>Timing estimates &amp; debugging</li>
+</ul>
+<h4 id="workflows_visual_diagramsmd--new"><a href="WORKFLOWS_VISUAL_DIAGRAMS.html">WORKFLOWS_VISUAL_DIAGRAMS.md</a> ⭐ NEW</h4>
+<p><strong>Visual diagrams for GitHub Actions workflows</strong></p>
+<ul>
+<li>ASCII diagrams for workflow flows</li>
+<li>Timeline visualizations</li>
+<li>Job dependency graphs</li>
+<li>Failure scenario handling</li>
+</ul>
+<h4 id="workflows_refactoring_october_31md--new"><a href="WORKFLOWS_REFACTORING_OCTOBER_31.html">WORKFLOWS_REFACTORING_OCTOBER_31.md</a> ⭐ NEW</h4>
+<p><strong>Modern Docker BuildX &amp; metadata actions refactoring</strong></p>
+<ul>
+<li>Docker Build Push Action v5 implementation</li>
+<li>Automatic metadata tagging</li>
+<li>Test artifact collection</li>
+<li>Deployment summary reporting</li>
+</ul>
+<hr>
+<h3 id="deployment_guidemd"><a href="DEPLOYMENT_GUIDE.md">DEPLOYMENT_GUIDE.md</a></h3>
+<p><strong>Complete deployment to Azure</strong></p>
+<ul>
+<li>Prerequisites and prerequisites</li>
+<li>Deployment steps</li>
+<li>Configuration validation</li>
+<li>Post-deployment verification</li>
+<li>Troubleshooting deployment issues</li>
+</ul>
+<h3 id="environmentsmd"><a href="ENVIRONMENTS.md">ENVIRONMENTS.md</a></h3>
+<p><strong>Environment setup and management</strong></p>
+<ul>
+<li>Development environment</li>
+<li>Staging environment</li>
+<li>Production environment</li>
+<li>Environment parity</li>
+<li>Environment-specific configuration</li>
+</ul>
+<h3 id="azure_deploymentmd"><a href="AZURE_DEPLOYMENT.md">AZURE_DEPLOYMENT.md</a></h3>
+<p><strong>Azure-specific deployment procedures</strong></p>
+<ul>
+<li>Container Apps deployment</li>
+<li>Database setup</li>
+<li>Key Vault configuration</li>
+<li>Managed identities setup</li>
+<li>Monitoring and observability setup</li>
+</ul>
+<h3 id="troubleshootingmd"><a href="TROUBLESHOOTING.md">TROUBLESHOOTING.md</a></h3>
+<p><strong>Common deployment issues</strong></p>
+<ul>
+<li>Deployment failures</li>
+<li>Configuration errors</li>
+<li>Networking issues</li>
+<li>Permission problems</li>
+<li>Resource quota exceeded</li>
+</ul>
+<hr>
+<h2 id="-quick-start">🎯 Quick Start</h2>
+<h3 id="deploy-to-azure">Deploy to Azure</h3>
+<pre><code class="lang-bash"># 1. Authenticate to Azure
+az login
+
+# 2. Set subscription
+az account set --subscription &quot;subscription-id&quot;
+
+# 3. Create resource group
+az group create -n erp-rg -l eastus
+
+# 4. Deploy infrastructure
+az deployment group create \
+  -g erp-rg \
+  -f infra/main.bicep \
+  -p infra/main.parameters.json
+
+# 5. Deploy services
+kubectl apply -f deploy/kubernetes/
+</code></pre>
+<hr>
+<h2 id="-environment-comparison">📊 Environment Comparison</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Dev</th>
+<th>Staging</th>
+<th>Production</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Region</strong></td>
+<td>eastus</td>
+<td>eastus</td>
+<td>eastus2</td>
+</tr>
+<tr>
+<td><strong>Replicas</strong></td>
+<td>1</td>
+<td>2</td>
+<td>3+</td>
+</tr>
+<tr>
+<td><strong>CPU/Memory</strong></td>
+<td>0.5/1Gi</td>
+<td>1/2Gi</td>
+<td>2/4Gi</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>Standard</td>
+<td>General Purpose</td>
+<td>Premium</td>
+</tr>
+<tr>
+<td><strong>Cache</strong></td>
+<td>Basic</td>
+<td>Standard</td>
+<td>Premium</td>
+</tr>
+<tr>
+<td><strong>Rate Limit</strong></td>
+<td>100/min</td>
+<td>500/min</td>
+<td>1000/min</td>
+</tr>
+<tr>
+<td><strong>Backups</strong></td>
+<td>Manual</td>
+<td>Daily</td>
+<td>Hourly</td>
+</tr>
+<tr>
+<td><strong>SLA</strong></td>
+<td>None</td>
+<td>99.5%</td>
+<td>99.95%</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-deployment-process">🔄 Deployment Process</h2>
+<pre><code>1. Code Commit
+   ↓
+2. Build Pipeline (CI)
+   - Compile code
+   - Run tests
+   - Build container images
+   - Push to registry
+   ↓
+3. Deploy to Staging (CD)
+   - Deploy infrastructure
+   - Deploy services
+   - Run smoke tests
+   - Run integration tests
+   ↓
+4. Approval Gate
+   - Manual approval required
+   ↓
+5. Deploy to Production
+   - Blue-green deployment
+   - Canary testing
+   - Rollback ready
+   ↓
+6. Monitor &amp; Alert
+   - Watch metrics
+   - Check logs
+   - Verify services
+</code></pre>
+<hr>
+<h2 id="-related-categories">📚 Related Categories</h2>
+<ul>
+<li><strong>Infrastructure:</strong> <a href="../infrastructure/README.html">Infrastructure Guide</a> - Bicep &amp; IaC</li>
+<li><strong>Operations:</strong> <a href="../operations/README.html">Operations Guide</a> - Production support</li>
+<li><strong>Security:</strong> <a href="../security/README.html">Security Documentation</a> - Secure deployment</li>
+<li><strong>Development:</strong> <a href="../development/README.html">Development Setup</a> - Local testing</li>
+</ul>
+<hr>
+<h2 id="-pre-deployment-checklist">🔐 Pre-Deployment Checklist</h2>
+<p>Before deploying to production:</p>
+<ul>
+<li>[ ] All tests passing locally</li>
+<li>[ ] Code reviewed and approved</li>
+<li>[ ] Security scan completed</li>
+<li>[ ] Secrets in Key Vault (not in code)</li>
+<li>[ ] Staging deployment validated</li>
+<li>[ ] Performance tests passed</li>
+<li>[ ] Disaster recovery plan reviewed</li>
+<li>[ ] Runbooks updated</li>
+<li>[ ] Team notified of deployment</li>
+<li>[ ] Monitoring/alerts configured</li>
+</ul>
+<hr>
+<h2 id="-common-issues">🆘 Common Issues</h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deployment timeout</td>
+<td>Check resource quotas</td>
+</tr>
+<tr>
+<td>Authentication failed</td>
+<td>Verify credentials</td>
+</tr>
+<tr>
+<td>Port conflicts</td>
+<td>Check existing resources</td>
+</tr>
+<tr>
+<td>Insufficient quota</td>
+<td>Request increase</td>
+</tr>
+<tr>
+<td>DNS resolution fails</td>
+<td>Check DNS settings</td>
+</tr>
+<tr>
+<td>Database connection fails</td>
+<td>Verify connection string</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-post-deployment-verification">✅ Post-Deployment Verification</h2>
+<p>After deployment:</p>
+<ul>
+<li>[ ] All services running (<code>az containerapp list</code>)</li>
+<li>[ ] Health checks passing</li>
+<li>[ ] Can access API gateway</li>
+<li>[ ] Database tables created</li>
+<li>[ ] Caching working</li>
+<li>[ ] Logging configured</li>
+<li>[ ] Monitoring active</li>
+<li>[ ] Alerts configured</li>
+<li>[ ] Backups scheduled</li>
+<li>[ ] Disaster recovery tested</li>
+</ul>
+<hr>
+<h2 id="-deployment-tracking">📊 Deployment Tracking</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Time</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Infrastructure creation</td>
+<td>15 min</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Service deployment</td>
+<td>10 min</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Database migration</td>
+<td>5 min</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Cache initialization</td>
+<td>2 min</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Health checks</td>
+<td>3 min</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Smoke tests</td>
+<td>5 min</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>~40 min</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-next-steps">📞 Next Steps</h2>
+<ul>
+<li><strong>🚀 Just starting?</strong> → <a href="QUICK_START_BUILD_DEPLOY.html">QUICK_START_BUILD_DEPLOY.md</a> - Get deploying in minutes!</li>
+<li><strong>Need automation?</strong> → <a href="BUILD_AND_DEPLOY_AUTOMATION.html">BUILD_AND_DEPLOY_AUTOMATION.md</a> - Complete technical guide</li>
+<li><strong>Understanding the solution?</strong> → <a href="DEPLOYMENT_AUTOMATION_COMPLETE.html">DEPLOYMENT_AUTOMATION_COMPLETE.md</a> - Full overview</li>
+<li><strong>First deployment?</strong> → <a href="DEPLOYMENT_GUIDE.md">DEPLOYMENT_GUIDE.md</a></li>
+<li><strong>Setup environments?</strong> → <a href="ENVIRONMENTS.md">ENVIRONMENTS.md</a></li>
+<li><strong>Azure-specific?</strong> → <a href="AZURE_DEPLOYMENT.md">AZURE_DEPLOYMENT.md</a></li>
+<li><strong>Having issues?</strong> → <a href="TROUBLESHOOTING.md">TROUBLESHOOTING.md</a></li>
+<li><strong>Infrastructure?</strong> → <a href="../infrastructure/README.html">Infrastructure Guide</a></li>
+</ul>
+<hr>
+<h2 id="-full-document-map">🔗 Full Document Map</h2>
+<pre><code>deployment/
+├── README.md (this file)
+├── BUILD_AND_DEPLOY_AUTOMATION.md ⭐ NEW
+├── QUICK_START_BUILD_DEPLOY.md ⭐ NEW
+├── DEPLOYMENT_AUTOMATION_COMPLETE.md ⭐ NEW
+├── BUILD_AND_DEPLOY_AUTOMATION_SUMMARY.md
+├── GITHUB_ACTIONS_ARCHITECTURE.md ⭐ NEW
+├── DEPLOYMENT.md
+├── DEPLOYMENT_CHECKLIST.md
+├── DEPLOYMENT_OPERATIONS_GUIDE.md
+├── PRE_DEPLOYMENT_CHECKLIST.md
+├── ENVIRONMENTS.md
+├── AZURE_DEPLOYMENT.md
+└── TROUBLESHOOTING.md
+</code></pre>
+<hr>
+<p><strong>Last Updated:</strong> October 31, 2025<br>
+<strong>Category Status:</strong> ✅ Complete<br>
+<strong>Documents:</strong> 11 files (3 new for Build &amp; Deploy automation)<br>
+<strong>Environments:</strong> 3 total (Dev, Staging, Prod)</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/deployment/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Application.Services
+  commentId: N:MyApp.Purchasing.Application.Services
+  id: MyApp.Purchasing.Application.Services
+  children:
+  - MyApp.Purchasing.Application.Services.PurchaseOrderService
+  - MyApp.Purchasing.Application.Services.SupplierService
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Purchasing.Application.Services
+  nameWithType: MyApp.Purchasing.Application.Services
+  fullName: MyApp.Purchasing.Application.Services
+  type: Namespace
+  assemblies:
+  - MyApp.Purchasing.Application
+references:
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService
+  commentId: T:MyApp.Purchasing.Application.Services.PurchaseOrderService
+  href: MyApp.Purchasing.Application.Services.PurchaseOrderService.html
+  name: PurchaseOrderService
+  nameWithType: PurchaseOrderService
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService
+- uid: MyApp.Purchasing.Application.Services.SupplierService
+  commentId: T:MyApp.Purchasing.Application.Services.SupplierService
+  href: MyApp.Purchasing.Application.Services.SupplierService.html
+  name: SupplierService
+  nameWithType: SupplierService
+  fullName: MyApp.Purchasing.Application.Services.SupplierService

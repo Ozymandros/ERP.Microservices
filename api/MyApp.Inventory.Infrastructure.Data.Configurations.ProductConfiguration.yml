@@ -1,0 +1,688 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration
+  commentId: T:MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration
+  id: ProductConfiguration
+  parent: MyApp.Inventory.Infrastructure.Data.Configurations
+  children:
+  - MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{MyApp.Inventory.Domain.Entities.Product})
+  langs:
+  - csharp
+  - vb
+  name: ProductConfiguration
+  nameWithType: ProductConfiguration
+  fullName: MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Infrastructure/Data/Configurations/ProductConfiguration.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ProductConfiguration
+    path: src/MyApp.Inventory/MyApp.Inventory.Infrastructure/Data/Configurations/ProductConfiguration.cs
+    startLine: 6
+  assemblies:
+  - MyApp.Inventory.Infrastructure
+  namespace: MyApp.Inventory.Infrastructure.Data.Configurations
+  syntax:
+    content: 'public class ProductConfiguration : IEntityTypeConfiguration<Product>'
+    content.vb: Public Class ProductConfiguration Implements IEntityTypeConfiguration(Of Product)
+  inheritance:
+  - System.Object
+  implements:
+  - Microsoft.EntityFrameworkCore.IEntityTypeConfiguration{MyApp.Inventory.Domain.Entities.Product}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{MyApp.Inventory.Domain.Entities.Product})
+  commentId: M:MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{MyApp.Inventory.Domain.Entities.Product})
+  id: Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{MyApp.Inventory.Domain.Entities.Product})
+  parent: MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration
+  langs:
+  - csharp
+  - vb
+  name: Configure(EntityTypeBuilder<Product>)
+  nameWithType: ProductConfiguration.Configure(EntityTypeBuilder<Product>)
+  fullName: MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<MyApp.Inventory.Domain.Entities.Product>)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Infrastructure/Data/Configurations/ProductConfiguration.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Configure
+    path: src/MyApp.Inventory/MyApp.Inventory.Infrastructure/Data/Configurations/ProductConfiguration.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Inventory.Infrastructure
+  namespace: MyApp.Inventory.Infrastructure.Data.Configurations
+  summary: Configures the entity of type <xref href="MyApp.Inventory.Domain.Entities.Product" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public void Configure(EntityTypeBuilder<Product> builder)
+    parameters:
+    - id: builder
+      type: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{MyApp.Inventory.Domain.Entities.Product}
+      description: The builder to be used to configure the entity type.
+    content.vb: Public Sub Configure(builder As EntityTypeBuilder(Of Product))
+  overload: MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration.Configure*
+  implements:
+  - Microsoft.EntityFrameworkCore.IEntityTypeConfiguration{MyApp.Inventory.Domain.Entities.Product}.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{MyApp.Inventory.Domain.Entities.Product})
+  nameWithType.vb: ProductConfiguration.Configure(EntityTypeBuilder(Of Product))
+  fullName.vb: MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder(Of MyApp.Inventory.Domain.Entities.Product))
+  name.vb: Configure(EntityTypeBuilder(Of Product))
+references:
+- uid: MyApp.Inventory.Infrastructure.Data.Configurations
+  commentId: N:MyApp.Inventory.Infrastructure.Data.Configurations
+  href: MyApp.html
+  name: MyApp.Inventory.Infrastructure.Data.Configurations
+  nameWithType: MyApp.Inventory.Infrastructure.Data.Configurations
+  fullName: MyApp.Inventory.Infrastructure.Data.Configurations
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Infrastructure
+    name: Infrastructure
+    href: MyApp.Inventory.Infrastructure.html
+  - name: .
+  - uid: MyApp.Inventory.Infrastructure.Data
+    name: Data
+    href: MyApp.Inventory.Infrastructure.Data.html
+  - name: .
+  - uid: MyApp.Inventory.Infrastructure.Data.Configurations
+    name: Configurations
+    href: MyApp.Inventory.Infrastructure.Data.Configurations.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Infrastructure
+    name: Infrastructure
+    href: MyApp.Inventory.Infrastructure.html
+  - name: .
+  - uid: MyApp.Inventory.Infrastructure.Data
+    name: Data
+    href: MyApp.Inventory.Infrastructure.Data.html
+  - name: .
+  - uid: MyApp.Inventory.Infrastructure.Data.Configurations
+    name: Configurations
+    href: MyApp.Inventory.Infrastructure.Data.Configurations.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration{MyApp.Inventory.Domain.Entities.Product}
+  commentId: T:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration{MyApp.Inventory.Domain.Entities.Product}
+  parent: Microsoft.EntityFrameworkCore
+  definition: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.ientitytypeconfiguration-1
+  name: IEntityTypeConfiguration<Product>
+  nameWithType: IEntityTypeConfiguration<Product>
+  fullName: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<MyApp.Inventory.Domain.Entities.Product>
+  nameWithType.vb: IEntityTypeConfiguration(Of Product)
+  fullName.vb: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration(Of MyApp.Inventory.Domain.Entities.Product)
+  name.vb: IEntityTypeConfiguration(Of Product)
+  spec.csharp:
+  - uid: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1
+    name: IEntityTypeConfiguration
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.ientitytypeconfiguration-1
+  - name: <
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1
+    name: IEntityTypeConfiguration
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.ientitytypeconfiguration-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1
+  commentId: T:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.ientitytypeconfiguration-1
+  name: IEntityTypeConfiguration<TEntity>
+  nameWithType: IEntityTypeConfiguration<TEntity>
+  fullName: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<TEntity>
+  nameWithType.vb: IEntityTypeConfiguration(Of TEntity)
+  fullName.vb: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration(Of TEntity)
+  name.vb: IEntityTypeConfiguration(Of TEntity)
+  spec.csharp:
+  - uid: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1
+    name: IEntityTypeConfiguration
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.ientitytypeconfiguration-1
+  - name: <
+  - name: TEntity
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1
+    name: IEntityTypeConfiguration
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.ientitytypeconfiguration-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: )
+- uid: Microsoft.EntityFrameworkCore
+  commentId: N:Microsoft.EntityFrameworkCore
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.EntityFrameworkCore
+  nameWithType: Microsoft.EntityFrameworkCore
+  fullName: Microsoft.EntityFrameworkCore
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.EntityFrameworkCore
+    name: EntityFrameworkCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.EntityFrameworkCore
+    name: EntityFrameworkCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore
+- uid: MyApp.Inventory.Domain.Entities.Product
+  commentId: T:MyApp.Inventory.Domain.Entities.Product
+  parent: MyApp.Inventory.Domain.Entities
+  href: MyApp.Inventory.Domain.Entities.Product.html
+  name: Product
+  nameWithType: Product
+  fullName: MyApp.Inventory.Domain.Entities.Product
+- uid: MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration.Configure*
+  commentId: Overload:MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration.Configure
+  href: MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration.html#MyApp_Inventory_Infrastructure_Data_Configurations_ProductConfiguration_Configure_Microsoft_EntityFrameworkCore_Metadata_Builders_EntityTypeBuilder_MyApp_Inventory_Domain_Entities_Product__
+  name: Configure
+  nameWithType: ProductConfiguration.Configure
+  fullName: MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration.Configure
+- uid: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration{MyApp.Inventory.Domain.Entities.Product}.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{MyApp.Inventory.Domain.Entities.Product})
+  commentId: M:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration{MyApp.Inventory.Domain.Entities.Product}.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{MyApp.Inventory.Domain.Entities.Product})
+  parent: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration{MyApp.Inventory.Domain.Entities.Product}
+  definition: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{`0})
+  href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.ientitytypeconfiguration-1.configure
+  name: Configure(EntityTypeBuilder<Product>)
+  nameWithType: IEntityTypeConfiguration<Product>.Configure(EntityTypeBuilder<Product>)
+  fullName: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<MyApp.Inventory.Domain.Entities.Product>.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<MyApp.Inventory.Domain.Entities.Product>)
+  nameWithType.vb: IEntityTypeConfiguration(Of Product).Configure(EntityTypeBuilder(Of Product))
+  fullName.vb: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration(Of MyApp.Inventory.Domain.Entities.Product).Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder(Of MyApp.Inventory.Domain.Entities.Product))
+  name.vb: Configure(EntityTypeBuilder(Of Product))
+  spec.csharp:
+  - uid: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration{MyApp.Inventory.Domain.Entities.Product}.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{MyApp.Inventory.Domain.Entities.Product})
+    name: Configure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.ientitytypeconfiguration-1.configure
+  - name: (
+  - uid: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1
+    name: EntityTypeBuilder
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder-1
+  - name: <
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration{MyApp.Inventory.Domain.Entities.Product}.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{MyApp.Inventory.Domain.Entities.Product})
+    name: Configure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.ientitytypeconfiguration-1.configure
+  - name: (
+  - uid: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1
+    name: EntityTypeBuilder
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+  - name: )
+  - name: )
+- uid: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{MyApp.Inventory.Domain.Entities.Product}
+  commentId: T:Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{MyApp.Inventory.Domain.Entities.Product}
+  parent: Microsoft.EntityFrameworkCore.Metadata.Builders
+  definition: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder-1
+  name: EntityTypeBuilder<Product>
+  nameWithType: EntityTypeBuilder<Product>
+  fullName: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<MyApp.Inventory.Domain.Entities.Product>
+  nameWithType.vb: EntityTypeBuilder(Of Product)
+  fullName.vb: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder(Of MyApp.Inventory.Domain.Entities.Product)
+  name.vb: EntityTypeBuilder(Of Product)
+  spec.csharp:
+  - uid: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1
+    name: EntityTypeBuilder
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder-1
+  - name: <
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1
+    name: EntityTypeBuilder
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Domain.Entities.Product
+    name: Product
+  - name: )
+- uid: MyApp.Inventory.Domain.Entities
+  commentId: N:MyApp.Inventory.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Inventory.Domain.Entities
+  nameWithType: MyApp.Inventory.Domain.Entities
+  fullName: MyApp.Inventory.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Entities
+    name: Entities
+    href: MyApp.Inventory.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Entities
+    name: Entities
+    href: MyApp.Inventory.Domain.Entities.html
+- uid: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{`0})
+  commentId: M:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{`0})
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.ientitytypeconfiguration-1.configure
+  name: Configure(EntityTypeBuilder<TEntity>)
+  nameWithType: IEntityTypeConfiguration<TEntity>.Configure(EntityTypeBuilder<TEntity>)
+  fullName: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<TEntity>.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<TEntity>)
+  nameWithType.vb: IEntityTypeConfiguration(Of TEntity).Configure(EntityTypeBuilder(Of TEntity))
+  fullName.vb: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration(Of TEntity).Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder(Of TEntity))
+  name.vb: Configure(EntityTypeBuilder(Of TEntity))
+  spec.csharp:
+  - uid: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{`0})
+    name: Configure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.ientitytypeconfiguration-1.configure
+  - name: (
+  - uid: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1
+    name: EntityTypeBuilder
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder-1
+  - name: <
+  - name: TEntity
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{`0})
+    name: Configure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.ientitytypeconfiguration-1.configure
+  - name: (
+  - uid: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1
+    name: EntityTypeBuilder
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: )
+  - name: )
+- uid: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1
+  commentId: T:Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder-1
+  name: EntityTypeBuilder<TEntity>
+  nameWithType: EntityTypeBuilder<TEntity>
+  fullName: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<TEntity>
+  nameWithType.vb: EntityTypeBuilder(Of TEntity)
+  fullName.vb: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder(Of TEntity)
+  name.vb: EntityTypeBuilder(Of TEntity)
+  spec.csharp:
+  - uid: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1
+    name: EntityTypeBuilder
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder-1
+  - name: <
+  - name: TEntity
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1
+    name: EntityTypeBuilder
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: )
+- uid: Microsoft.EntityFrameworkCore.Metadata.Builders
+  commentId: N:Microsoft.EntityFrameworkCore.Metadata.Builders
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.EntityFrameworkCore.Metadata.Builders
+  nameWithType: Microsoft.EntityFrameworkCore.Metadata.Builders
+  fullName: Microsoft.EntityFrameworkCore.Metadata.Builders
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.EntityFrameworkCore
+    name: EntityFrameworkCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore
+  - name: .
+  - uid: Microsoft.EntityFrameworkCore.Metadata
+    name: Metadata
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata
+  - name: .
+  - uid: Microsoft.EntityFrameworkCore.Metadata.Builders
+    name: Builders
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata.builders
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.EntityFrameworkCore
+    name: EntityFrameworkCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore
+  - name: .
+  - uid: Microsoft.EntityFrameworkCore.Metadata
+    name: Metadata
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata
+  - name: .
+  - uid: Microsoft.EntityFrameworkCore.Metadata.Builders
+    name: Builders
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.metadata.builders

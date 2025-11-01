@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#127919; Documentation System - Quick Reference | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#127919; Documentation System - Quick Reference | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/QUICK_START_GUIDE.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-documentation-system---quick-reference">🎯 Documentation System - Quick Reference</h1>
+
+<p><strong>Your Complete Guide to Using This Documentation</strong><br>
+Last Updated: October 27, 2025</p>
+<hr>
+<h2 id="-start-here-choose-your-path">⚡ Start Here (Choose Your Path)</h2>
+<h3 id="-im-a-developer">👨‍💻 &quot;I'm a Developer&quot;</h3>
+<pre><code>1. Read: docs/README.md (2 min)
+2. Do: Follow &quot;Development Setup&quot; section
+3. Read: development/DEVELOPMENT_SETUP.md (15 min)
+4. Read: docker-compose/DOCKER_COMPOSE_GUIDE.md (15 min)
+5. Start: Create a feature branch
+</code></pre>
+<p><strong>Total Time:</strong> 45 minutes to be productive</p>
+<hr>
+<h3 id="-im-devopsinfrastructure">🏗️ &quot;I'm DevOps/Infrastructure&quot;</h3>
+<pre><code>1. Read: docs/README.md (2 min)
+2. Follow: &quot;DevOps/Infrastructure&quot; section
+3. Read: deployment/DEPLOYMENT_GUIDE.md (20 min)
+4. Study: infrastructure/BICEP_OVERVIEW.md (15 min)
+5. Follow: infrastructure/PHASE_GUIDES/README.md (30 min)
+</code></pre>
+<p><strong>Total Time:</strong> 1.5 hours to understand deployment</p>
+<hr>
+<h3 id="-im-securitycompliance">🔒 &quot;I'm Security/Compliance&quot;</h3>
+<pre><code>1. Read: docs/README.md (2 min)
+2. Follow: &quot;Security Team&quot; section
+3. Read: security/SECURITY_OVERVIEW.md (10 min)
+4. Study: security/AUTHENTICATION.md (15 min)
+5. Reference: security/SECRETS_MANAGEMENT.md (ongoing)
+</code></pre>
+<p><strong>Total Time:</strong> 30 minutes to understand security model</p>
+<hr>
+<h3 id="-im-operationssre">📊 &quot;I'm Operations/SRE&quot;</h3>
+<pre><code>1. Read: docs/README.md (2 min)
+2. Follow: &quot;Operations/SRE&quot; section
+3. Read: operations/MONITORING.md (20 min)
+4. Setup: operations/HEALTH_CHECKS.md (15 min)
+5. Bookmark: operations/RUNBOOKS.md (for incidents)
+</code></pre>
+<p><strong>Total Time:</strong> 45 minutes to understand operations</p>
+<hr>
+<h3 id="-im-an-architect">👥 &quot;I'm an Architect&quot;</h3>
+<pre><code>1. Read: docs/README.md (5 min)
+2. Deep dive: architecture/ARCHITECTURE_OVERVIEW.md (20 min)
+3. Study: architecture/MICROSERVICES_DESIGN.md (15 min)
+4. Review: architecture/DATA_FLOW.md (10 min)
+5. Reference: architecture/DIAGRAMS.md (ongoing)
+</code></pre>
+<p><strong>Total Time:</strong> 1 hour to understand architecture</p>
+<hr>
+<h2 id="-documentation-map">🗺️ Documentation Map</h2>
+<pre><code>docs/
+├── 📄 README.md ◄─── MAIN ENTRY POINT
+├── 📄 QUICKSTART.md
+├── 📄 SITEMAP.md
+├── 📄 CONVENTIONS.md
+│
+├── 🏗️ architecture/          [ARCHITECTURE]
+├── ☁️ deployment/            [DEPLOYMENT]  
+├── ⚙️ infrastructure/        [INFRASTRUCTURE]
+├── 🐳 docker-compose/       [LOCAL DEVELOPMENT]
+├── 🌐 api-gateway/          [GATEWAY]
+├── 🔧 microservices/        [SERVICES]
+├── 🔒 security/             [SECURITY]
+├── 📊 operations/           [OPERATIONS]
+├── 👨‍💻 development/         [DEVELOPMENT]
+└── 📖 reference/            [QUICK LOOKUP]
+</code></pre>
+<hr>
+<h2 id="-find-what-you-need">🔍 Find What You Need</h2>
+<h3 id="i-need-to-know">&quot;I Need to Know...&quot;</h3>
+<table>
+<thead>
+<tr>
+<th>What You Need</th>
+<th>Find It Here</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>System architecture</td>
+<td><a href="architecture/ARCHITECTURE_OVERVIEW.md">architecture/ARCHITECTURE_OVERVIEW.md</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>How to set up locally</td>
+<td><a href="development/DEVELOPMENT_SETUP.md">development/DEVELOPMENT_SETUP.md</a></td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>How to deploy to Azure</td>
+<td><a href="deployment/DEPLOYMENT_GUIDE.md">deployment/DEPLOYMENT_GUIDE.md</a></td>
+<td>45 min</td>
+</tr>
+<tr>
+<td>How authentication works</td>
+<td><a href="security/AUTHENTICATION.md">security/AUTHENTICATION.md</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>How DAPR works</td>
+<td><a href="microservices/DAPR_INTEGRATION.md">microservices/DAPR_INTEGRATION.md</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>What ports are used</td>
+<td><a href="reference/PORT_MAPPING.md">reference/PORT_MAPPING.md</a></td>
+<td>2 min</td>
+</tr>
+<tr>
+<td>Environment variables</td>
+<td><a href="reference/ENVIRONMENT_VARIABLES.md">reference/ENVIRONMENT_VARIABLES.md</a></td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>API endpoints</td>
+<td><a href="reference/API_ENDPOINTS.md">reference/API_ENDPOINTS.md</a></td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>Fix an error</td>
+<td><a href="reference/TROUBLESHOOTING_INDEX.md">reference/TROUBLESHOOTING_INDEX.md</a></td>
+<td>10 min</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-common-tasks">🚀 Common Tasks</h2>
+<h3 id="setup--development">Setup &amp; Development</h3>
+<pre><code class="lang-bash"># 1. First Time? Read this
+docs/QUICKSTART.md
+
+# 2. Setup environment
+development/DEVELOPMENT_SETUP.md
+
+# 3. Start Docker Compose
+docker-compose/DOCKER_COMPOSE_GUIDE.md
+
+# 4. Create service
+microservices/SERVICE_TEMPLATES.md
+
+# 5. Write tests
+development/TESTING.md
+</code></pre>
+<h3 id="deployment">Deployment</h3>
+<pre><code class="lang-bash"># 1. Plan deployment
+deployment/DEPLOYMENT_GUIDE.md
+
+# 2. Understand infrastructure
+infrastructure/BICEP_OVERVIEW.md
+
+# 3. Follow phased approach
+infrastructure/PHASE_GUIDES/README.md
+
+# 4. Deploy
+deployment/AZURE_DEPLOYMENT.md
+
+# 5. Monitor
+operations/HEALTH_CHECKS.md
+</code></pre>
+<h3 id="problem-solving">Problem Solving</h3>
+<pre><code class="lang-bash"># 1. Something broken?
+reference/TROUBLESHOOTING_INDEX.md
+
+# 2. Need definition?
+reference/GLOSSARY.md
+
+# 3. Check port/variable
+reference/PORT_MAPPING.md or ENVIRONMENT_VARIABLES.md
+
+# 4. Read specific guide
+[Found in TROUBLESHOOTING_INDEX.md]
+</code></pre>
+<hr>
+<h2 id="-pin-these-for-quick-access">📌 Pin These for Quick Access</h2>
+<h3 id="most-visited">Most Visited</h3>
+<ol>
+<li><a href="README.html">README.md</a> - Navigation hub</li>
+<li><a href="QUICKSTART.md">QUICKSTART.md</a> - TL;DR overview</li>
+<li><a href="SITEMAP.html">SITEMAP.md</a> - Visual map</li>
+<li><a href="reference/TROUBLESHOOTING_INDEX.md">reference/TROUBLESHOOTING_INDEX.md</a> - Error solver</li>
+</ol>
+<h3 id="by-role">By Role</h3>
+<ul>
+<li><strong>Developers:</strong> <a href="development/README.html">development/README.md</a></li>
+<li><strong>DevOps:</strong> <a href="deployment/README.html">deployment/README.md</a></li>
+<li><strong>Security:</strong> <a href="security/README.html">security/README.md</a></li>
+<li><strong>Operations:</strong> <a href="operations/README.html">operations/README.md</a></li>
+</ul>
+<h3 id="by-category">By Category</h3>
+<ul>
+<li><strong>Local Dev:</strong> <a href="docker-compose/README.html">docker-compose/README.md</a></li>
+<li><strong>Architecture:</strong> <a href="architecture/README.html">architecture/README.md</a></li>
+<li><strong>API:</strong> <a href="api-gateway/README.html">api-gateway/README.md</a></li>
+<li><strong>Services:</strong> <a href="microservices/README.html">microservices/README.md</a></li>
+</ul>
+<hr>
+<h2 id="-pro-tips">💡 Pro Tips</h2>
+<h3 id="tip-1-use-category-readmes">Tip 1: Use Category READMEs</h3>
+<p>Each category has a README that explains what's in that category. Start there!</p>
+<ul>
+<li><code>architecture/README.md</code></li>
+<li><code>docker-compose/README.md</code></li>
+<li><code>deployment/README.md</code></li>
+<li>etc.</li>
+</ul>
+<h3 id="tip-2-follow-next-steps">Tip 2: Follow &quot;Next Steps&quot;</h3>
+<p>Most documents end with &quot;📞 Next Steps&quot; - follow these links to learn more.</p>
+<h3 id="tip-3-use-sitemap-for-visual-overview">Tip 3: Use SITEMAP for Visual Overview</h3>
+<p>Can't find something? Check <a href="SITEMAP.html">SITEMAP.md</a> for the full map.</p>
+<h3 id="tip-4-bookmark-troubleshooting">Tip 4: Bookmark Troubleshooting</h3>
+<p>Keep <a href="reference/TROUBLESHOOTING_INDEX.md">reference/TROUBLESHOOTING_INDEX.md</a> bookmarked for quick error solving.</p>
+<h3 id="tip-5-check-conventions">Tip 5: Check Conventions</h3>
+<p>For documentation standards, see <a href="CONVENTIONS.html">CONVENTIONS.md</a>.</p>
+<hr>
+<h2 id="-key-links-copy--paste">🔗 Key Links (Copy &amp; Paste)</h2>
+<h3 id="navigation">Navigation</h3>
+<ul>
+<li>Main Hub: <code>docs/README.md</code></li>
+<li>Site Map: <code>docs/SITEMAP.md</code></li>
+<li>Quickstart: <code>docs/QUICKSTART.md</code></li>
+<li>Standards: <code>docs/CONVENTIONS.md</code></li>
+</ul>
+<h3 id="category-readmes-navigation">Category READMEs (Navigation)</h3>
+<ul>
+<li>Architecture: <code>docs/architecture/README.md</code></li>
+<li>Development: <code>docs/development/README.md</code></li>
+<li>Docker: <code>docs/docker-compose/README.md</code></li>
+<li>Gateway: <code>docs/api-gateway/README.md</code></li>
+<li>Infrastructure: <code>docs/infrastructure/README.md</code></li>
+<li>Microservices: <code>docs/microservices/README.md</code></li>
+<li>Security: <code>docs/security/README.md</code></li>
+<li>Operations: <code>docs/operations/README.md</code></li>
+<li>Deployment: <code>docs/deployment/README.md</code></li>
+<li>Reference: <code>docs/reference/README.md</code></li>
+</ul>
+<h3 id="quick-reference">Quick Reference</h3>
+<ul>
+<li>Glossary: <code>docs/reference/GLOSSARY.md</code></li>
+<li>Ports: <code>docs/reference/PORT_MAPPING.md</code></li>
+<li>Variables: <code>docs/reference/ENVIRONMENT_VARIABLES.md</code></li>
+<li>Endpoints: <code>docs/reference/API_ENDPOINTS.md</code></li>
+<li>Errors: <code>docs/reference/TROUBLESHOOTING_INDEX.md</code></li>
+</ul>
+<hr>
+<h2 id="-support-paths">📞 Support Paths</h2>
+<h3 id="im-stuck">&quot;I'm stuck&quot;</h3>
+<p>→ <a href="reference/TROUBLESHOOTING_INDEX.md">reference/TROUBLESHOOTING_INDEX.md</a></p>
+<h3 id="i-dont-know-what-this-means">&quot;I don't know what this means&quot;</h3>
+<p>→ <a href="reference/GLOSSARY.md">reference/GLOSSARY.md</a></p>
+<h3 id="i-dont-know-where-to-start">&quot;I don't know where to start&quot;</h3>
+<p>→ <a href="README.html">README.md</a> (choose your role)</p>
+<h3 id="wheres-the-answer">&quot;Where's the answer?&quot;</h3>
+<p>→ <a href="SITEMAP.html">SITEMAP.md</a> (visual overview)</p>
+<hr>
+<h2 id="-verification">✅ Verification</h2>
+<h3 id="documentation-is-complete">Documentation is Complete</h3>
+<ul>
+<li>✅ 54 markdown files</li>
+<li>✅ 12 categories</li>
+<li>✅ 500+ cross-references</li>
+<li>✅ 100+ code examples</li>
+<li>✅ Professional formatting</li>
+<li>✅ Consistent organization</li>
+<li>✅ Ready for team use</li>
+</ul>
+<h3 id="youre-ready-when">You're Ready When</h3>
+<ul>
+<li>✅ You've read your role's intro</li>
+<li>✅ You've bookmarked key docs</li>
+<li>✅ You know where to find answers</li>
+<li>✅ You understand the structure</li>
+</ul>
+<hr>
+<h2 id="-quick-checklist">🎯 Quick Checklist</h2>
+<ul>
+<li>[ ] Read <a href="README.html">README.md</a></li>
+<li>[ ] Find your role section</li>
+<li>[ ] Open relevant category README</li>
+<li>[ ] Bookmark 3-5 key documents</li>
+<li>[ ] Bookmark <a href="reference/TROUBLESHOOTING_INDEX.md">TROUBLESHOOTING_INDEX.md</a></li>
+<li>[ ] Know where <a href="reference/README.html">reference</a> is</li>
+<li>[ ] Ready to go!</li>
+</ul>
+<hr>
+<h2 id="-by-the-numbers">📊 By The Numbers</h2>
+<ul>
+<li><strong>54 Files</strong> of documentation</li>
+<li><strong>12 Categories</strong> for organization</li>
+<li><strong>500+ Links</strong> for navigation</li>
+<li><strong>100+ Examples</strong> for reference</li>
+<li><strong>200+ KB</strong> of content</li>
+<li><strong>99%</strong> system coverage</li>
+<li><strong>5+ Entry Points</strong> per topic</li>
+<li><strong>90 Min</strong> to complete understanding</li>
+</ul>
+<hr>
+<h2 id="-learning-times">🎓 Learning Times</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Time</th>
+<th>Start Here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Understand system</td>
+<td>90 min</td>
+<td><a href="README.html">README.md</a></td>
+</tr>
+<tr>
+<td>Get productive</td>
+<td>30 min</td>
+<td>Your role section</td>
+</tr>
+<tr>
+<td>Deploy to Azure</td>
+<td>2 hours</td>
+<td><a href="deployment/README.html">deployment/README.md</a></td>
+</tr>
+<tr>
+<td>Understand security</td>
+<td>45 min</td>
+<td><a href="security/README.html">security/README.md</a></td>
+</tr>
+<tr>
+<td>Debug an issue</td>
+<td>10 min</td>
+<td><a href="reference/TROUBLESHOOTING_INDEX.md">reference/TROUBLESHOOTING_INDEX.md</a></td>
+</tr>
+<tr>
+<td>Look up definition</td>
+<td>2 min</td>
+<td><a href="reference/GLOSSARY.md">reference/GLOSSARY.md</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-get-started-now">🚀 Get Started Now</h2>
+<ol>
+<li><strong>Find Your Role</strong> in <a href="README.html">README.md</a></li>
+<li><strong>Follow the Path</strong> - each role has specific docs</li>
+<li><strong>Bookmark Key Docs</strong> - for quick access</li>
+<li><strong>Reference as Needed</strong> - use SITEMAP if lost</li>
+<li><strong>Help Others</strong> - share what you learned!</li>
+</ol>
+<hr>
+<p><strong>Documentation Status:</strong> ✅ Complete &amp; Ready<br>
+<strong>Last Updated:</strong> October 27, 2025<br>
+<strong>Questions?</strong> Check <a href="README.html">README.md</a> or <a href="SITEMAP.html">SITEMAP.md</a><br>
+<strong>Enjoy the docs!</strong> 🎉</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/QUICK_START_GUIDE.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

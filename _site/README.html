@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>ERP Microservices | ERP.Microservices </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="ERP Microservices | ERP.Microservices ">
+      
+      
+      <link rel="icon" href="favicon.ico">
+      <link rel="stylesheet" href="public/docfx.min.css">
+      <link rel="stylesheet" href="public/main.css">
+      <meta name="docfx:navrel" content="toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="index.html">
+            <img id="logo" class="svg" src="logo.svg" alt="ERP.Microservices">
+            ERP.Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="erp-microservices">ERP Microservices</h1>
+
+<p>A cloud-native ERP system built with .NET 9, Aspire, Dapr, and deployed to Azure Container Apps.</p>
+<h2 id="-features">🚀 Features</h2>
+<ul>
+<li><strong>Microservices Architecture</strong>: 6 independent services (Auth, Billing, Inventory, Orders, Purchasing, Sales)</li>
+<li><strong>API Gateway</strong>: YARP-based reverse proxy with external HTTPS ingress</li>
+<li><strong>Dapr Integration</strong>: Service invocation, pub/sub, and state management</li>
+<li><strong>Azure Container Apps</strong>: Production-ready deployment with auto-scaling</li>
+<li><strong>Local Development</strong>: Full stack runs locally with Aspire and Docker</li>
+<li><strong>CI/CD Ready</strong>: GitHub Actions workflow included</li>
+</ul>
+<h2 id="-architecture">📋 Architecture</h2>
+<h3 id="services">Services</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Responsibility</th>
+<th>Database</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Auth</strong></td>
+<td>Authentication &amp; Authorization</td>
+<td>AuthDB</td>
+</tr>
+<tr>
+<td><strong>Billing</strong></td>
+<td>Invoice and billing management</td>
+<td>BillingDB</td>
+</tr>
+<tr>
+<td><strong>Inventory</strong></td>
+<td>Stock and warehouse management</td>
+<td>InventoryDB</td>
+</tr>
+<tr>
+<td><strong>Orders</strong></td>
+<td>Order processing</td>
+<td>OrderDB</td>
+</tr>
+<tr>
+<td><strong>Purchasing</strong></td>
+<td>Procurement management</td>
+<td>PurchasingDB</td>
+</tr>
+<tr>
+<td><strong>Sales</strong></td>
+<td>Sales operations</td>
+<td>SalesDB</td>
+</tr>
+</tbody>
+</table>
+<h3 id="infrastructure">Infrastructure</h3>
+<ul>
+<li><strong>Gateway</strong>: External HTTPS endpoint, routes to internal services</li>
+<li><strong>Azure SQL</strong>: One database per microservice</li>
+<li><strong>Azure Redis</strong>: Shared distributed cache</li>
+<li><strong>Dapr</strong>: Service mesh for microservices communication</li>
+<li><strong>Container Apps</strong>: Managed Kubernetes-based hosting</li>
+</ul>
+<h2 id="-quick-start">🏃 Quick Start</h2>
+<h3 id="local-development">Local Development</h3>
+<pre><code class="lang-bash"># Prerequisites: .NET 9 SDK, Docker
+cd AppHost
+dotnet run
+</code></pre>
+<p>The Aspire dashboard will open automatically showing all services.</p>
+<h3 id="deploy-to-azure">Deploy to Azure</h3>
+<pre><code class="lang-bash"># Prerequisites: Azure Developer CLI (azd)
+azd up
+</code></pre>
+<p>See <a href="docs/guides/QUICKSTART.html">QUICKSTART.md</a> for detailed 5-minute deployment guide.</p>
+<h2 id="-documentation">📚 Documentation</h2>
+<p>Browse the complete documentation site at <strong><a href="https://ozymandros.github.io/ERP.Microservices/">https://ozymandros.github.io/ERP.Microservices/</a></strong> (generated with DocFX)</p>
+<h3 id="quick-links">Quick Links</h3>
+<ul>
+<li><strong><a href="docs/guides/QUICKSTART.html">Quick Start Guide</a></strong> - Get started in 5 minutes</li>
+<li><strong><a href="docs/deployment/DEPLOYMENT.html">Deployment Guide</a></strong> - Comprehensive deployment documentation</li>
+<li><strong><a href="docs/architecture/ARCHITECTURE_DOCUMENTATION.html">Architecture Guide</a></strong> - System architecture and design</li>
+<li><strong><a href="https://ozymandros.github.io/ERP.Microservices/api/">API Reference</a></strong> - Complete API documentation</li>
+</ul>
+<h2 id="-technology-stack">🛠️ Technology Stack</h2>
+<ul>
+<li><strong>.NET 9</strong>: Latest .NET framework</li>
+<li><strong>Aspire</strong>: Cloud-native orchestration for local development</li>
+<li><strong>Dapr</strong>: Distributed application runtime</li>
+<li><strong>Azure Container Apps</strong>: Managed container hosting</li>
+<li><strong>Azure SQL Database</strong>: Relational database</li>
+<li><strong>Azure Cache for Redis</strong>: Distributed caching</li>
+<li><strong>Entity Framework Core</strong>: ORM</li>
+<li><strong>Ocelot</strong>: API Gateway</li>
+<li><strong>JWT</strong>: Authentication</li>
+</ul>
+<h2 id="-project-structure">🏗️ Project Structure</h2>
+<pre><code>ERP.Microservices/
+├── AppHost/                      # Aspire orchestration
+├── ErpApiGateway/               # YARP API Gateway
+├── MyApp.Auth/                  # Auth microservice
+├── MyApp.Billing/               # Billing microservice
+├── MyApp.Inventory/             # Inventory microservice
+├── MyApp.Orders/                # Orders microservice
+├── MyApp.Purchasing/            # Purchasing microservice
+├── MyApp.Sales/                 # Sales microservice
+├── MyApp.Shared/                # Shared libraries
+├── infra/                       # Azure infrastructure (Bicep)
+│   ├── core/                    # Reusable Bicep modules
+│   ├── main.bicep              # Main infrastructure definition
+│   └── main.parameters.json    # Parameters template
+├── .github/workflows/           # CI/CD pipelines
+├── docs/                        # Documentation
+├── azure.yaml                   # Azure Developer CLI config
+└── README.md                    # This file
+</code></pre>
+<p>Each microservice follows Clean Architecture:</p>
+<pre><code>MyApp.[Service]/
+├── MyApp.[Service].API/         # Web API layer
+├── MyApp.[Service].Application/ # Application logic
+├── MyApp.[Service].Domain/      # Domain entities
+└── MyApp.[Service].Infrastructure/ # Data access
+</code></pre>
+<h2 id="-development">🔧 Development</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>.NET 9.0 SDK</li>
+<li>Docker Desktop</li>
+<li>Visual Studio 2022 / VS Code / Rider</li>
+<li>Azure Developer CLI (for deployment)</li>
+</ul>
+<h3 id="build">Build</h3>
+<pre><code class="lang-bash"># Restore dependencies
+dotnet restore
+
+# Build all projects
+dotnet build
+
+# Run tests
+dotnet test
+</code></pre>
+<h3 id="run-locally">Run Locally</h3>
+<pre><code class="lang-bash"># Using Aspire (recommended)
+cd AppHost
+dotnet run
+
+# Or run individual services
+cd MyApp.Auth/MyApp.Auth.API
+dotnet run
+</code></pre>
+<h3 id="environment-variables">Environment Variables</h3>
+<p>Local development uses <code>appsettings.Development.json</code> in AppHost:</p>
+<pre><code class="lang-json">{
+  &quot;Jwt&quot;: {
+    &quot;SecretKey&quot;: &quot;your-secret-key&quot;,
+    &quot;Issuer&quot;: &quot;MyApp.Auth&quot;,
+    &quot;Audience&quot;: &quot;MyApp.All&quot;
+  },
+  &quot;Parameters&quot;: {
+    &quot;FrontendOrigin&quot;: &quot;http://localhost:3000&quot;
+  }
+}
+</code></pre>
+<p>Production uses Azure Container Apps secrets and environment variables.</p>
+<h2 id="-deployment">🚢 Deployment</h2>
+<h3 id="azure-container-apps-recommended">Azure Container Apps (Recommended)</h3>
+<pre><code class="lang-bash"># One command deployment
+azd up
+</code></pre>
+<p>This deploys:</p>
+<ul>
+<li>✅ All microservices with Dapr sidecars</li>
+<li>✅ API Gateway with external HTTPS</li>
+<li>✅ Azure SQL with 6 databases</li>
+<li>✅ Azure Cache for Redis</li>
+<li>✅ Auto-scaling and health checks</li>
+</ul>
+<p>See <a href="docs/deployment/DEPLOYMENT.html">DEPLOYMENT.md</a> for details.</p>
+<h3 id="github-actions-cicd">GitHub Actions (CI/CD)</h3>
+<p>Automated deployment on push to <code>main</code>:</p>
+<ol>
+<li>Configure Azure credentials (OIDC recommended)</li>
+<li>Set repository secrets</li>
+<li>Push to main branch</li>
+</ol>
+<p>Workflow: <code>.github/workflows/azure-deploy.yml</code></p>
+<h2 id="-security">🔐 Security</h2>
+<ul>
+<li><strong>JWT Authentication</strong>: Bearer token authentication</li>
+<li><strong>Role-Based Access Control</strong>: Fine-grained permissions</li>
+<li><strong>Azure Managed Identities</strong>: No credentials in code</li>
+<li><strong>Secrets Management</strong>: Azure Container Apps secrets</li>
+<li><strong>HTTPS Only</strong>: TLS termination at gateway</li>
+<li><strong>CORS</strong>: Configurable allowed origins</li>
+</ul>
+<h2 id="-monitoring">📊 Monitoring</h2>
+<ul>
+<li><strong>Application Insights</strong>: Performance monitoring (coming soon)</li>
+<li><strong>Log Analytics</strong>: Centralized logging</li>
+<li><strong>Health Checks</strong>: Liveness and readiness probes</li>
+<li><strong>Dapr Dashboard</strong>: Service mesh visibility</li>
+</ul>
+<h2 id="-contributing">🤝 Contributing</h2>
+<p>Contributions welcome! Please:</p>
+<ol>
+<li>Fork the repository</li>
+<li>Create a feature branch</li>
+<li>Make your changes</li>
+<li>Submit a pull request</li>
+</ol>
+<h2 id="-license">📄 License</h2>
+<p>This project is licensed under the MIT License.</p>
+<h2 id="-links">🔗 Links</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/azure/container-apps/">Azure Container Apps Docs</a></li>
+<li><a href="https://learn.microsoft.com/dotnet/aspire/">.NET Aspire Docs</a></li>
+<li><a href="https://docs.dapr.io/">Dapr Docs</a></li>
+</ul>
+<h2 id="-tips">💡 Tips</h2>
+<ul>
+<li>Use <code>azd down</code> to delete resources when not in use</li>
+<li>Check logs with <code>az containerapp logs show</code></li>
+<li>Monitor costs in Azure Portal</li>
+<li>Scale services independently as needed</li>
+</ul>
+<h2 id="-support">🆘 Support</h2>
+<ul>
+<li><a href="https://github.com/Ozymandros/ERP.Microservices/issues">Report Issues</a></li>
+<li><a href="docs/deployment/DEPLOYMENT.html">Deployment Guide</a></li>
+<li><a href="docs/guides/QUICKSTART.html">Quick Start</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

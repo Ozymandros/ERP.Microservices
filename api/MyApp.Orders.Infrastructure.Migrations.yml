@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Infrastructure.Migrations
+  commentId: N:MyApp.Orders.Infrastructure.Migrations
+  id: MyApp.Orders.Infrastructure.Migrations
+  children:
+  - MyApp.Orders.Infrastructure.Migrations.AuditableEntities
+  - MyApp.Orders.Infrastructure.Migrations.initialorders
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Orders.Infrastructure.Migrations
+  nameWithType: MyApp.Orders.Infrastructure.Migrations
+  fullName: MyApp.Orders.Infrastructure.Migrations
+  type: Namespace
+  assemblies:
+  - MyApp.Orders.Infrastructure
+references:
+- uid: MyApp.Orders.Infrastructure.Migrations.initialorders
+  commentId: T:MyApp.Orders.Infrastructure.Migrations.initialorders
+  href: MyApp.Orders.Infrastructure.Migrations.initialorders.html
+  name: initialorders
+  nameWithType: initialorders
+  fullName: MyApp.Orders.Infrastructure.Migrations.initialorders
+- uid: MyApp.Orders.Infrastructure.Migrations.AuditableEntities
+  commentId: T:MyApp.Orders.Infrastructure.Migrations.AuditableEntities
+  href: MyApp.Orders.Infrastructure.Migrations.AuditableEntities.html
+  name: AuditableEntities
+  nameWithType: AuditableEntities
+  fullName: MyApp.Orders.Infrastructure.Migrations.AuditableEntities

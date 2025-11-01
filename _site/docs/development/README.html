@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#128104;‍&#128187; Development Guidelines | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#128104;‍&#128187; Development Guidelines | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/development/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-development-guidelines">👨‍💻 Development Guidelines</h1>
+
+<p><strong>Setup, Coding Standards, Testing, Git Workflow &amp; Debugging</strong><br>
+Last Updated: October 27, 2025</p>
+<hr>
+<h2 id="-overview">📍 Overview</h2>
+<p>This category covers everything a developer needs to get productive. From local setup to coding standards, testing practices, Git workflows, and debugging techniques. Designed for all developers on the team.</p>
+<hr>
+<h2 id="-documents-in-this-category">📚 Documents in This Category</h2>
+<h3 id="development_setupmd"><a href="DEVELOPMENT_SETUP.md">DEVELOPMENT_SETUP.md</a></h3>
+<p><strong>Local development environment setup</strong></p>
+<ul>
+<li>Prerequisites and installation</li>
+<li>Repository cloning</li>
+<li>Dependencies and tools</li>
+<li>First service startup</li>
+<li>Verification steps</li>
+</ul>
+<h3 id="coding_standardsmd"><a href="CODING_STANDARDS.md">CODING_STANDARDS.md</a></h3>
+<p><strong>Code style and conventions</strong></p>
+<ul>
+<li>Naming conventions</li>
+<li>C# style guidelines</li>
+<li>Project organization</li>
+<li>File structure</li>
+<li>Documentation requirements</li>
+</ul>
+<h3 id="testingmd"><a href="TESTING.md">TESTING.md</a></h3>
+<p><strong>Testing practices and frameworks</strong></p>
+<ul>
+<li>Unit testing with xUnit</li>
+<li>Integration testing</li>
+<li>Test organization</li>
+<li>Test data setup</li>
+<li>Coverage requirements</li>
+</ul>
+<h3 id="git_workflowmd"><a href="GIT_WORKFLOW.md">GIT_WORKFLOW.md</a></h3>
+<p><strong>Git branching and commit practices</strong></p>
+<ul>
+<li>Branch naming</li>
+<li>Commit message format</li>
+<li>Pull request process</li>
+<li>Code review guidelines</li>
+<li>Merge strategies</li>
+</ul>
+<h3 id="debuggingmd"><a href="DEBUGGING.md">DEBUGGING.md</a></h3>
+<p><strong>Debugging techniques and tools</strong></p>
+<ul>
+<li>Visual Studio debugging</li>
+<li>Remote debugging</li>
+<li>Log analysis</li>
+<li>Common issues</li>
+<li>Performance profiling</li>
+</ul>
+<hr>
+<h2 id="-developer-journey">🎯 Developer Journey</h2>
+<h3 id="day-1-setup">Day 1: Setup</h3>
+<ol>
+<li>Read <a href="DEVELOPMENT_SETUP.md">DEVELOPMENT_SETUP.md</a></li>
+<li>Follow setup steps</li>
+<li>Get first service running</li>
+<li>Verify with health check</li>
+</ol>
+<h3 id="day-2-code">Day 2: Code</h3>
+<ol>
+<li>Read <a href="CODING_STANDARDS.md">CODING_STANDARDS.md</a></li>
+<li>Create feature branch</li>
+<li>Make code changes</li>
+<li>Run tests locally</li>
+</ol>
+<h3 id="day-3-testing--review">Day 3: Testing &amp; Review</h3>
+<ol>
+<li>Write unit tests</li>
+<li>Run all tests locally</li>
+<li>Create pull request</li>
+<li>Follow <a href="GIT_WORKFLOW.md">GIT_WORKFLOW.md</a></li>
+</ol>
+<h3 id="day-4-debug--deploy">Day 4+: Debug &amp; Deploy</h3>
+<ol>
+<li>Review feedback</li>
+<li>Use <a href="DEBUGGING.md">DEBUGGING.md</a> for issues</li>
+<li>Merge and deploy</li>
+<li>Monitor in production</li>
+</ol>
+<hr>
+<h2 id="-quick-reference">📊 Quick Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Time</th>
+<th>See Also</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>First-time setup</td>
+<td>30 min</td>
+<td><a href="DEVELOPMENT_SETUP.md">DEVELOPMENT_SETUP.md</a></td>
+</tr>
+<tr>
+<td>Create new feature</td>
+<td>15 min</td>
+<td><a href="GIT_WORKFLOW.md">GIT_WORKFLOW.md</a></td>
+</tr>
+<tr>
+<td>Write unit test</td>
+<td>10 min</td>
+<td><a href="TESTING.md">TESTING.md</a></td>
+</tr>
+<tr>
+<td>Debug issue</td>
+<td>15 min</td>
+<td><a href="DEBUGGING.md">DEBUGGING.md</a></td>
+</tr>
+<tr>
+<td>Code review</td>
+<td>20 min</td>
+<td><a href="CODING_STANDARDS.md">CODING_STANDARDS.md</a></td>
+</tr>
+<tr>
+<td>Commit changes</td>
+<td>5 min</td>
+<td><a href="GIT_WORKFLOW.md">GIT_WORKFLOW.md</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-developer-toolbox">🔧 Developer Toolbox</h2>
+<h3 id="required-tools">Required Tools</h3>
+<ul>
+<li>Visual Studio 2022 or VS Code</li>
+<li>.NET SDK 9.0+</li>
+<li>Docker Desktop</li>
+<li>Git</li>
+<li>Azure CLI</li>
+</ul>
+<h3 id="recommended-tools">Recommended Tools</h3>
+<ul>
+<li>Postman or Insomnia (API testing)</li>
+<li>Azure Data Studio (database)</li>
+<li>Redis Commander (cache)</li>
+<li>Application Insights (monitoring)</li>
+</ul>
+<hr>
+<h2 id="-development-workflow">🔄 Development Workflow</h2>
+<pre><code>1. Pull latest code
+   ↓
+2. Create feature branch (git workflow)
+   ↓
+3. Make code changes (coding standards)
+   ↓
+4. Run tests locally (testing guide)
+   ↓
+5. Test in Docker Compose
+   ↓
+6. Commit with good messages (git workflow)
+   ↓
+7. Push and create PR
+   ↓
+8. Code review
+   ↓
+9. Address feedback
+   ↓
+10. Merge to main
+    ↓
+11. CI/CD pipeline runs
+    ↓
+12. Deployed to staging
+    ↓
+13. Manual testing
+    ↓
+14. Deployed to production
+</code></pre>
+<hr>
+<h2 id="-related-categories">📚 Related Categories</h2>
+<ul>
+<li><strong>Architecture:</strong> <a href="../architecture/README.html">Architecture Guide</a> - Understand design</li>
+<li><strong>Microservices:</strong> <a href="../microservices/README.html">Microservices Guide</a> - Service patterns</li>
+<li><strong>Docker:</strong> <a href="../docker-compose/README.html">Docker Compose</a> - Local environment</li>
+<li><strong>Security:</strong> <a href="../security/README.html">Security Guide</a> - Secure coding</li>
+</ul>
+<hr>
+<h2 id="-reading-order">🔄 Reading Order</h2>
+<ol>
+<li>Start with <a href="DEVELOPMENT_SETUP.md">DEVELOPMENT_SETUP.md</a> on day 1</li>
+<li>Read <a href="CODING_STANDARDS.md">CODING_STANDARDS.md</a> before coding</li>
+<li>Reference <a href="TESTING.md">TESTING.md</a> when writing tests</li>
+<li>Follow <a href="GIT_WORKFLOW.md">GIT_WORKFLOW.md</a> for commits</li>
+<li>Bookmark <a href="DEBUGGING.md">DEBUGGING.md</a> for troubleshooting</li>
+</ol>
+<hr>
+<h2 id="-developer-checklist">✅ Developer Checklist</h2>
+<h3 id="when-starting">When Starting</h3>
+<ul>
+<li>[ ] Environment set up correctly</li>
+<li>[ ] Can run services locally</li>
+<li>[ ] Can access databases</li>
+<li>[ ] Health checks passing</li>
+</ul>
+<h3 id="before-coding">Before Coding</h3>
+<ul>
+<li>[ ] Read coding standards</li>
+<li>[ ] Understand service architecture</li>
+<li>[ ] Know database schema</li>
+<li>[ ] Have test database ready</li>
+</ul>
+<h3 id="before-committing">Before Committing</h3>
+<ul>
+<li>[ ] Code follows standards</li>
+<li>[ ] Unit tests written</li>
+<li>[ ] All tests passing</li>
+<li>[ ] No console errors</li>
+<li>[ ] Commit message clear</li>
+<li>[ ] Branch name correct</li>
+</ul>
+<h3 id="before-creating-pr">Before Creating PR</h3>
+<ul>
+<li>[ ] Latest main merged</li>
+<li>[ ] Integration tests pass</li>
+<li>[ ] Manual testing done</li>
+<li>[ ] Documentation updated</li>
+<li>[ ] No sensitive data committed</li>
+</ul>
+<hr>
+<h2 id="-development-best-practices">💡 Development Best Practices</h2>
+<h3 id="code-quality">Code Quality</h3>
+<ul>
+<li>Write testable code</li>
+<li>Keep functions small</li>
+<li>Use meaningful names</li>
+<li>Add helpful comments</li>
+<li>Follow SOLID principles</li>
+</ul>
+<h3 id="testing">Testing</h3>
+<ul>
+<li>Write tests first (TDD)</li>
+<li>Test edge cases</li>
+<li>Aim for &gt; 80% coverage</li>
+<li>Integration tests matter</li>
+<li>Mock external dependencies</li>
+</ul>
+<h3 id="git-discipline">Git Discipline</h3>
+<ul>
+<li>Commit frequently</li>
+<li>Clear commit messages</li>
+<li>Small, focused PRs</li>
+<li>Timely reviews</li>
+<li>No force pushes to main</li>
+</ul>
+<h3 id="performance">Performance</h3>
+<ul>
+<li>Profile before optimizing</li>
+<li>Use caching strategically</li>
+<li>Lazy load when possible</li>
+<li>Batch operations</li>
+<li>Monitor in production</li>
+</ul>
+<h3 id="security">Security</h3>
+<ul>
+<li>Never commit secrets</li>
+<li>Validate all inputs</li>
+<li>Use parameterized queries</li>
+<li>Log securely</li>
+<li>Check dependencies</li>
+</ul>
+<hr>
+<h2 id="-common-developer-issues">🆘 Common Developer Issues</h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Can't run Docker</td>
+<td><a href="DEVELOPMENT_SETUP.md">DEVELOPMENT_SETUP.md</a></td>
+</tr>
+<tr>
+<td>Tests failing</td>
+<td><a href="TESTING.md">TESTING.md</a></td>
+</tr>
+<tr>
+<td>Code style questions</td>
+<td><a href="CODING_STANDARDS.md">CODING_STANDARDS.md</a></td>
+</tr>
+<tr>
+<td>Git confuse</td>
+<td><a href="GIT_WORKFLOW.md">GIT_WORKFLOW.md</a></td>
+</tr>
+<tr>
+<td>Debugging service</td>
+<td><a href="DEBUGGING.md">DEBUGGING.md</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-team-metrics">📊 Team Metrics</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Target</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Test Coverage</strong></td>
+<td>&gt; 80%</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Code Review Time</strong></td>
+<td>&lt; 24 hours</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Build Time</strong></td>
+<td>&lt; 5 min</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Test Suite Time</strong></td>
+<td>&lt; 3 min</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Deploy Time</strong></td>
+<td>&lt; 10 min</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-next-steps">📞 Next Steps</h2>
+<ul>
+<li><strong>New to team?</strong> → <a href="DEVELOPMENT_SETUP.md">DEVELOPMENT_SETUP.md</a></li>
+<li><strong>Starting to code?</strong> → <a href="CODING_STANDARDS.md">CODING_STANDARDS.md</a></li>
+<li><strong>Writing tests?</strong> → <a href="TESTING.md">TESTING.md</a></li>
+<li><strong>Submitting PR?</strong> → <a href="GIT_WORKFLOW.md">GIT_WORKFLOW.md</a></li>
+<li><strong>Debugging?</strong> → <a href="DEBUGGING.md">DEBUGGING.md</a></li>
+</ul>
+<hr>
+<h2 id="-full-document-map">🔗 Full Document Map</h2>
+<pre><code>development/
+├── README.md (this file)
+├── DEVELOPMENT_SETUP.md
+├── CODING_STANDARDS.md
+├── TESTING.md
+├── GIT_WORKFLOW.md
+└── DEBUGGING.md
+</code></pre>
+<hr>
+<p><strong>Last Updated:</strong> October 27, 2025<br>
+<strong>Category Status:</strong> ✅ Complete<br>
+<strong>Documents:</strong> 5 files<br>
+<strong>Target Coverage:</strong> &gt; 80%</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/development/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

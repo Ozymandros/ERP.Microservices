@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class RoleService | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class RoleService | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/new/main/apiSpec/new?filename=MyApp_Auth_Application_Services_RoleService.md&amp;value=---%0Auid%3A%20MyApp.Auth.Application.Services.RoleService%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="MyApp.Auth.Application.Services.RoleService">
+
+
+
+  <h1 id="MyApp_Auth_Application_Services_RoleService" data-uid="MyApp.Auth.Application.Services.RoleService" class="text-break">
+Class RoleService  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="MyApp.html">MyApp</a>.<a class="xref" href="MyApp.Auth.html">Auth</a>.<a class="xref" href="MyApp.Auth.Application.html">Application</a>.<a class="xref" href="MyApp.Auth.Application.Services.html">Services</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>MyApp.Auth.Application.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class RoleService : IRoleService</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">RoleService</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="MyApp.Auth.Application.Contracts.Services.IRoleService.html">IRoleService</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="MyApp_Auth_Application_Services_RoleService__ctor_" data-uid="MyApp.Auth.Application.Services.RoleService.#ctor*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_RoleService__ctor_Microsoft_AspNetCore_Identity_RoleManager_MyApp_Auth_Domain_Entities_ApplicationRole__Microsoft_AspNetCore_Identity_UserManager_MyApp_Auth_Domain_Entities_ApplicationUser__MyApp_Auth_Domain_Repositories_IRoleRepository_MyApp_Auth_Domain_Repositories_IUserRepository_AutoMapper_IMapper_Microsoft_Extensions_Logging_ILogger_MyApp_Auth_Application_Services_RoleService__" data-uid="MyApp.Auth.Application.Services.RoleService.#ctor(Microsoft.AspNetCore.Identity.RoleManager{MyApp.Auth.Domain.Entities.ApplicationRole},Microsoft.AspNetCore.Identity.UserManager{MyApp.Auth.Domain.Entities.ApplicationUser},MyApp.Auth.Domain.Repositories.IRoleRepository,MyApp.Auth.Domain.Repositories.IUserRepository,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{MyApp.Auth.Application.Services.RoleService})">
+  RoleService(RoleManager&lt;ApplicationRole&gt;, UserManager&lt;ApplicationUser&gt;, IRoleRepository, IUserRepository, IMapper, ILogger&lt;RoleService&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RoleService(RoleManager&lt;ApplicationRole&gt; roleManager, UserManager&lt;ApplicationUser&gt; userManager, IRoleRepository roleRepository, IUserRepository userRepository, IMapper mapper, ILogger&lt;RoleService&gt; logger)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>roleManager</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.rolemanager-1">RoleManager</a>&lt;<a class="xref" href="MyApp.Auth.Domain.Entities.ApplicationRole.html">ApplicationRole</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>userManager</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.usermanager-1">UserManager</a>&lt;<a class="xref" href="MyApp.Auth.Domain.Entities.ApplicationUser.html">ApplicationUser</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>roleRepository</code> <a class="xref" href="MyApp.Auth.Domain.Repositories.IRoleRepository.html">IRoleRepository</a></dt>
+    <dd></dd>
+    <dt><code>userRepository</code> <a class="xref" href="MyApp.Auth.Domain.Repositories.IUserRepository.html">IUserRepository</a></dt>
+    <dd></dd>
+    <dt><code>mapper</code> <span class="xref">IMapper</span></dt>
+    <dd></dd>
+    <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="MyApp.Auth.Application.Services.RoleService.html">RoleService</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="MyApp_Auth_Application_Services_RoleService_AddPermissionToRole_" data-uid="MyApp.Auth.Application.Services.RoleService.AddPermissionToRole*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_RoleService_AddPermissionToRole_MyApp_Auth_Application_Contracts_CreateRolePermissionDto_" data-uid="MyApp.Auth.Application.Services.RoleService.AddPermissionToRole(MyApp.Auth.Application.Contracts.CreateRolePermissionDto)">
+  AddPermissionToRole(CreateRolePermissionDto)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L137"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; AddPermissionToRole(CreateRolePermissionDto createDto)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>createDto</code> <a class="xref" href="MyApp.Auth.Application.Contracts.CreateRolePermissionDto.html">CreateRolePermissionDto</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_RoleService_CreateRoleAsync_" data-uid="MyApp.Auth.Application.Services.RoleService.CreateRoleAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_RoleService_CreateRoleAsync_MyApp_Auth_Application_Contracts_DTOs_CreateRoleDto_" data-uid="MyApp.Auth.Application.Services.RoleService.CreateRoleAsync(MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto)">
+  CreateRoleAsync(CreateRoleDto)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;RoleDto?&gt; CreateRoleAsync(CreateRoleDto createRoleDto)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>createRoleDto</code> <a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto.html">CreateRoleDto</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.RoleDto.html">RoleDto</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_RoleService_DeleteRoleAsync_" data-uid="MyApp.Auth.Application.Services.RoleService.DeleteRoleAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_RoleService_DeleteRoleAsync_System_Guid_" data-uid="MyApp.Auth.Application.Services.RoleService.DeleteRoleAsync(System.Guid)">
+  DeleteRoleAsync(Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; DeleteRoleAsync(Guid roleId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>roleId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_RoleService_GetAllRolesAsync_" data-uid="MyApp.Auth.Application.Services.RoleService.GetAllRolesAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_RoleService_GetAllRolesAsync" data-uid="MyApp.Auth.Application.Services.RoleService.GetAllRolesAsync">
+  GetAllRolesAsync()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;RoleDto&gt;&gt; GetAllRolesAsync()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.RoleDto.html">RoleDto</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_RoleService_GetAllRolesPaginatedAsync_" data-uid="MyApp.Auth.Application.Services.RoleService.GetAllRolesPaginatedAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_RoleService_GetAllRolesPaginatedAsync_System_Int32_System_Int32_" data-uid="MyApp.Auth.Application.Services.RoleService.GetAllRolesPaginatedAsync(System.Int32,System.Int32)">
+  GetAllRolesPaginatedAsync(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;PaginatedResult&lt;RoleDto&gt;&gt; GetAllRolesPaginatedAsync(int pageNumber, int pageSize)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>pageNumber</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>pageSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MyApp.Shared.Domain.Pagination.PaginatedResult-1.html">PaginatedResult</a>&lt;<a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.RoleDto.html">RoleDto</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_RoleService_GetPermissionsForRoleAsync_" data-uid="MyApp.Auth.Application.Services.RoleService.GetPermissionsForRoleAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_RoleService_GetPermissionsForRoleAsync_System_Guid_" data-uid="MyApp.Auth.Application.Services.RoleService.GetPermissionsForRoleAsync(System.Guid)">
+  GetPermissionsForRoleAsync(Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L173"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;PermissionDto&gt;&gt; GetPermissionsForRoleAsync(Guid roleId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>roleId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.PermissionDto.html">PermissionDto</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_RoleService_GetRoleByIdAsync_" data-uid="MyApp.Auth.Application.Services.RoleService.GetRoleByIdAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_RoleService_GetRoleByIdAsync_System_Guid_" data-uid="MyApp.Auth.Application.Services.RoleService.GetRoleByIdAsync(System.Guid)">
+  GetRoleByIdAsync(Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;RoleDto?&gt; GetRoleByIdAsync(Guid roleId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>roleId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.RoleDto.html">RoleDto</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_RoleService_GetRoleByNameAsync_" data-uid="MyApp.Auth.Application.Services.RoleService.GetRoleByNameAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_RoleService_GetRoleByNameAsync_System_String_" data-uid="MyApp.Auth.Application.Services.RoleService.GetRoleByNameAsync(System.String)">
+  GetRoleByNameAsync(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;RoleDto?&gt; GetRoleByNameAsync(string name)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.RoleDto.html">RoleDto</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_RoleService_GetUsersInRoleAsync_" data-uid="MyApp.Auth.Application.Services.RoleService.GetUsersInRoleAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_RoleService_GetUsersInRoleAsync_System_String_" data-uid="MyApp.Auth.Application.Services.RoleService.GetUsersInRoleAsync(System.String)">
+  GetUsersInRoleAsync(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L131"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;UserDto&gt;&gt; GetUsersInRoleAsync(string roleName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>roleName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.UserDto.html">UserDto</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_RoleService_HasPermissionAsync_" data-uid="MyApp.Auth.Application.Services.RoleService.HasPermissionAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_RoleService_HasPermissionAsync_System_Guid_System_Guid_" data-uid="MyApp.Auth.Application.Services.RoleService.HasPermissionAsync(System.Guid,System.Guid)">
+  HasPermissionAsync(Guid, Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L168"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; HasPermissionAsync(Guid roleId, Guid permissionId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>roleId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+    <dt><code>permissionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_RoleService_RemovePermissionFromRoleAsync_" data-uid="MyApp.Auth.Application.Services.RoleService.RemovePermissionFromRoleAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_RoleService_RemovePermissionFromRoleAsync_MyApp_Auth_Application_Contracts_DeleteRolePermissionDto_" data-uid="MyApp.Auth.Application.Services.RoleService.RemovePermissionFromRoleAsync(MyApp.Auth.Application.Contracts.DeleteRolePermissionDto)">
+  RemovePermissionFromRoleAsync(DeleteRolePermissionDto)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L163"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; RemovePermissionFromRoleAsync(DeleteRolePermissionDto deleteDto)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>deleteDto</code> <a class="xref" href="MyApp.Auth.Application.Contracts.DeleteRolePermissionDto.html">DeleteRolePermissionDto</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Auth_Application_Services_RoleService_UpdateRoleAsync_" data-uid="MyApp.Auth.Application.Services.RoleService.UpdateRoleAsync*"></a>
+
+  <h3 id="MyApp_Auth_Application_Services_RoleService_UpdateRoleAsync_System_Guid_MyApp_Auth_Application_Contracts_DTOs_CreateRoleDto_" data-uid="MyApp.Auth.Application.Services.RoleService.UpdateRoleAsync(System.Guid,MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto)">
+  UpdateRoleAsync(Guid, CreateRoleDto)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; UpdateRoleAsync(Guid roleId, CreateRoleDto updateRoleDto)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>roleId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+    <dt><code>updateRoleDto</code> <a class="xref" href="MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto.html">CreateRoleDto</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Auth/MyApp.Auth.Application/Services/RoleService.cs/#L13" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

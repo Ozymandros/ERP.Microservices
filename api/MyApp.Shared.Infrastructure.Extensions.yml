@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Infrastructure.Extensions
+  commentId: N:MyApp.Shared.Infrastructure.Extensions
+  id: MyApp.Shared.Infrastructure.Extensions
+  children:
+  - MyApp.Shared.Infrastructure.Extensions.HealthChecksExtensions
+  - MyApp.Shared.Infrastructure.Extensions.JwtAuthenticationExtensions
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Shared.Infrastructure.Extensions
+  nameWithType: MyApp.Shared.Infrastructure.Extensions
+  fullName: MyApp.Shared.Infrastructure.Extensions
+  type: Namespace
+  assemblies:
+  - MyApp.Shared.Domain
+references:
+- uid: MyApp.Shared.Infrastructure.Extensions.JwtAuthenticationExtensions
+  commentId: T:MyApp.Shared.Infrastructure.Extensions.JwtAuthenticationExtensions
+  href: MyApp.Shared.Infrastructure.Extensions.JwtAuthenticationExtensions.html
+  name: JwtAuthenticationExtensions
+  nameWithType: JwtAuthenticationExtensions
+  fullName: MyApp.Shared.Infrastructure.Extensions.JwtAuthenticationExtensions
+- uid: MyApp.Shared.Infrastructure.Extensions.HealthChecksExtensions
+  commentId: T:MyApp.Shared.Infrastructure.Extensions.HealthChecksExtensions
+  href: MyApp.Shared.Infrastructure.Extensions.HealthChecksExtensions.html
+  name: HealthChecksExtensions
+  nameWithType: HealthChecksExtensions
+  fullName: MyApp.Shared.Infrastructure.Extensions.HealthChecksExtensions

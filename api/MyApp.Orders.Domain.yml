@@ -1,0 +1,102 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Domain
+  commentId: N:MyApp.Orders.Domain
+  id: MyApp.Orders.Domain
+  children:
+  - MyApp.Orders.Domain.IOrderLineRepository
+  - MyApp.Orders.Domain.IOrderRepository
+  - MyApp.Orders.Domain.IRepository`2
+  - MyApp.Orders.Domain.OrderStatus
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Orders.Domain
+  nameWithType: MyApp.Orders.Domain
+  fullName: MyApp.Orders.Domain
+  type: Namespace
+  assemblies:
+  - MyApp.Orders.Domain
+references:
+- uid: MyApp.Orders.Domain.IOrderLineRepository
+  commentId: T:MyApp.Orders.Domain.IOrderLineRepository
+  parent: MyApp.Orders.Domain
+  href: MyApp.Orders.Domain.IOrderLineRepository.html
+  name: IOrderLineRepository
+  nameWithType: IOrderLineRepository
+  fullName: MyApp.Orders.Domain.IOrderLineRepository
+- uid: MyApp.Orders.Domain.IOrderRepository
+  commentId: T:MyApp.Orders.Domain.IOrderRepository
+  parent: MyApp.Orders.Domain
+  href: MyApp.Orders.Domain.IOrderRepository.html
+  name: IOrderRepository
+  nameWithType: IOrderRepository
+  fullName: MyApp.Orders.Domain.IOrderRepository
+- uid: MyApp.Orders.Domain.IRepository`2
+  commentId: T:MyApp.Orders.Domain.IRepository`2
+  href: MyApp.Orders.Domain.IRepository-2.html
+  name: IRepository<TEntity, TKey>
+  nameWithType: IRepository<TEntity, TKey>
+  fullName: MyApp.Orders.Domain.IRepository<TEntity, TKey>
+  nameWithType.vb: IRepository(Of TEntity, TKey)
+  fullName.vb: MyApp.Orders.Domain.IRepository(Of TEntity, TKey)
+  name.vb: IRepository(Of TEntity, TKey)
+  spec.csharp:
+  - uid: MyApp.Orders.Domain.IRepository`2
+    name: IRepository
+    href: MyApp.Orders.Domain.IRepository-2.html
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Orders.Domain.IRepository`2
+    name: IRepository
+    href: MyApp.Orders.Domain.IRepository-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+- uid: MyApp.Orders.Domain.OrderStatus
+  commentId: T:MyApp.Orders.Domain.OrderStatus
+  parent: MyApp.Orders.Domain
+  href: MyApp.Orders.Domain.OrderStatus.html
+  name: OrderStatus
+  nameWithType: OrderStatus
+  fullName: MyApp.Orders.Domain.OrderStatus
+- uid: MyApp.Orders.Domain
+  commentId: N:MyApp.Orders.Domain
+  href: MyApp.html
+  name: MyApp.Orders.Domain
+  nameWithType: MyApp.Orders.Domain
+  fullName: MyApp.Orders.Domain
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Domain
+    name: Domain
+    href: MyApp.Orders.Domain.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Domain
+    name: Domain
+    href: MyApp.Orders.Domain.html

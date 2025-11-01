@@ -1,0 +1,58 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Tests.Integration
+  commentId: N:MyApp.Tests.Integration
+  id: MyApp.Tests.Integration
+  children:
+  - MyApp.Tests.Integration.AuthIntegrationTests
+  - MyApp.Tests.Integration.IntegrationTest1
+  - MyApp.Tests.Integration.InventoryServiceTests
+  - MyApp.Tests.Integration.OrdersServiceTests
+  - MyApp.Tests.Integration.PurchasingServiceTests
+  - MyApp.Tests.Integration.SalesServiceTests
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Tests.Integration
+  nameWithType: MyApp.Tests.Integration
+  fullName: MyApp.Tests.Integration
+  type: Namespace
+  assemblies:
+  - AppHost.Tests
+references:
+- uid: MyApp.Tests.Integration.IntegrationTest1
+  commentId: T:MyApp.Tests.Integration.IntegrationTest1
+  href: MyApp.Tests.Integration.IntegrationTest1.html
+  name: IntegrationTest1
+  nameWithType: IntegrationTest1
+  fullName: MyApp.Tests.Integration.IntegrationTest1
+- uid: MyApp.Tests.Integration.AuthIntegrationTests
+  commentId: T:MyApp.Tests.Integration.AuthIntegrationTests
+  href: MyApp.Tests.Integration.AuthIntegrationTests.html
+  name: AuthIntegrationTests
+  nameWithType: AuthIntegrationTests
+  fullName: MyApp.Tests.Integration.AuthIntegrationTests
+- uid: MyApp.Tests.Integration.InventoryServiceTests
+  commentId: T:MyApp.Tests.Integration.InventoryServiceTests
+  href: MyApp.Tests.Integration.InventoryServiceTests.html
+  name: InventoryServiceTests
+  nameWithType: InventoryServiceTests
+  fullName: MyApp.Tests.Integration.InventoryServiceTests
+- uid: MyApp.Tests.Integration.OrdersServiceTests
+  commentId: T:MyApp.Tests.Integration.OrdersServiceTests
+  href: MyApp.Tests.Integration.OrdersServiceTests.html
+  name: OrdersServiceTests
+  nameWithType: OrdersServiceTests
+  fullName: MyApp.Tests.Integration.OrdersServiceTests
+- uid: MyApp.Tests.Integration.PurchasingServiceTests
+  commentId: T:MyApp.Tests.Integration.PurchasingServiceTests
+  href: MyApp.Tests.Integration.PurchasingServiceTests.html
+  name: PurchasingServiceTests
+  nameWithType: PurchasingServiceTests
+  fullName: MyApp.Tests.Integration.PurchasingServiceTests
+- uid: MyApp.Tests.Integration.SalesServiceTests
+  commentId: T:MyApp.Tests.Integration.SalesServiceTests
+  href: MyApp.Tests.Integration.SalesServiceTests.html
+  name: SalesServiceTests
+  nameWithType: SalesServiceTests
+  fullName: MyApp.Tests.Integration.SalesServiceTests

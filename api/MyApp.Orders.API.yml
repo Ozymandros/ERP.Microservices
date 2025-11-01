@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.API
+  commentId: N:MyApp.Orders.API
+  id: MyApp.Orders.API
+  children:
+  - MyApp.Orders.API.OrdersController
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Orders.API
+  nameWithType: MyApp.Orders.API
+  fullName: MyApp.Orders.API
+  type: Namespace
+  assemblies:
+  - MyApp.Orders.API
+references:
+- uid: MyApp.Orders.API.OrdersController
+  commentId: T:MyApp.Orders.API.OrdersController
+  href: MyApp.Orders.API.OrdersController.html
+  name: OrdersController
+  nameWithType: OrdersController
+  fullName: MyApp.Orders.API.OrdersController

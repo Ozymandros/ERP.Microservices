@@ -1,0 +1,86 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Domain.Repositories
+  commentId: N:MyApp.Auth.Domain.Repositories
+  id: MyApp.Auth.Domain.Repositories
+  children:
+  - MyApp.Auth.Domain.Repositories.IPermissionRepository
+  - MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+  - MyApp.Auth.Domain.Repositories.IRoleRepository
+  - MyApp.Auth.Domain.Repositories.IUserRepository
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Domain.Repositories
+  nameWithType: MyApp.Auth.Domain.Repositories
+  fullName: MyApp.Auth.Domain.Repositories
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Domain
+references:
+- uid: MyApp.Auth.Domain.Repositories.IPermissionRepository
+  commentId: T:MyApp.Auth.Domain.Repositories.IPermissionRepository
+  parent: MyApp.Auth.Domain.Repositories
+  href: MyApp.Auth.Domain.Repositories.IPermissionRepository.html
+  name: IPermissionRepository
+  nameWithType: IPermissionRepository
+  fullName: MyApp.Auth.Domain.Repositories.IPermissionRepository
+- uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+  commentId: T:MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+  parent: MyApp.Auth.Domain.Repositories
+  href: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.html
+  name: IRefreshTokenRepository
+  nameWithType: IRefreshTokenRepository
+  fullName: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+- uid: MyApp.Auth.Domain.Repositories.IRoleRepository
+  commentId: T:MyApp.Auth.Domain.Repositories.IRoleRepository
+  parent: MyApp.Auth.Domain.Repositories
+  href: MyApp.Auth.Domain.Repositories.IRoleRepository.html
+  name: IRoleRepository
+  nameWithType: IRoleRepository
+  fullName: MyApp.Auth.Domain.Repositories.IRoleRepository
+- uid: MyApp.Auth.Domain.Repositories.IUserRepository
+  commentId: T:MyApp.Auth.Domain.Repositories.IUserRepository
+  parent: MyApp.Auth.Domain.Repositories
+  href: MyApp.Auth.Domain.Repositories.IUserRepository.html
+  name: IUserRepository
+  nameWithType: IUserRepository
+  fullName: MyApp.Auth.Domain.Repositories.IUserRepository
+- uid: MyApp.Auth.Domain.Repositories
+  commentId: N:MyApp.Auth.Domain.Repositories
+  href: MyApp.html
+  name: MyApp.Auth.Domain.Repositories
+  nameWithType: MyApp.Auth.Domain.Repositories
+  fullName: MyApp.Auth.Domain.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Repositories
+    name: Repositories
+    href: MyApp.Auth.Domain.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Repositories
+    name: Repositories
+    href: MyApp.Auth.Domain.Repositories.html

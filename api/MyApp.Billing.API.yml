@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Billing.API
+  commentId: N:MyApp.Billing.API
+  id: MyApp.Billing.API
+  children:
+  - MyApp.Billing.API.ValuesController
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Billing.API
+  nameWithType: MyApp.Billing.API
+  fullName: MyApp.Billing.API
+  type: Namespace
+  assemblies:
+  - MyApp.Billing.API
+references:
+- uid: MyApp.Billing.API.ValuesController
+  commentId: T:MyApp.Billing.API.ValuesController
+  href: MyApp.Billing.API.ValuesController.html
+  name: ValuesController
+  nameWithType: ValuesController
+  fullName: MyApp.Billing.API.ValuesController

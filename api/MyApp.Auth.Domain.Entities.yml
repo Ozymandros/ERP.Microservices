@@ -1,0 +1,85 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Domain.Entities
+  commentId: N:MyApp.Auth.Domain.Entities
+  id: MyApp.Auth.Domain.Entities
+  children:
+  - MyApp.Auth.Domain.Entities.ApplicationRole
+  - MyApp.Auth.Domain.Entities.ApplicationUser
+  - MyApp.Auth.Domain.Entities.ApplicationUserRole
+  - MyApp.Auth.Domain.Entities.RefreshToken
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Domain.Entities
+  nameWithType: MyApp.Auth.Domain.Entities
+  fullName: MyApp.Auth.Domain.Entities
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Domain
+references:
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole
+  commentId: T:MyApp.Auth.Domain.Entities.ApplicationRole
+  parent: MyApp.Auth.Domain.Entities
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  name: ApplicationRole
+  nameWithType: ApplicationRole
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole
+- uid: MyApp.Auth.Domain.Entities.ApplicationUser
+  commentId: T:MyApp.Auth.Domain.Entities.ApplicationUser
+  parent: MyApp.Auth.Domain.Entities
+  href: MyApp.Auth.Domain.Entities.ApplicationUser.html
+  name: ApplicationUser
+  nameWithType: ApplicationUser
+  fullName: MyApp.Auth.Domain.Entities.ApplicationUser
+- uid: MyApp.Auth.Domain.Entities.ApplicationUserRole
+  commentId: T:MyApp.Auth.Domain.Entities.ApplicationUserRole
+  href: MyApp.Auth.Domain.Entities.ApplicationUserRole.html
+  name: ApplicationUserRole
+  nameWithType: ApplicationUserRole
+  fullName: MyApp.Auth.Domain.Entities.ApplicationUserRole
+- uid: MyApp.Auth.Domain.Entities.RefreshToken
+  commentId: T:MyApp.Auth.Domain.Entities.RefreshToken
+  parent: MyApp.Auth.Domain.Entities
+  href: MyApp.Auth.Domain.Entities.RefreshToken.html
+  name: RefreshToken
+  nameWithType: RefreshToken
+  fullName: MyApp.Auth.Domain.Entities.RefreshToken
+- uid: MyApp.Auth.Domain.Entities
+  commentId: N:MyApp.Auth.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Auth.Domain.Entities
+  nameWithType: MyApp.Auth.Domain.Entities
+  fullName: MyApp.Auth.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Entities
+    name: Entities
+    href: MyApp.Auth.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Entities
+    name: Entities
+    href: MyApp.Auth.Domain.Entities.html

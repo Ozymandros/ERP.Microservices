@@ -1,0 +1,109 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Application.Contracts.DTOs
+  commentId: N:MyApp.Inventory.Application.Contracts.DTOs
+  id: MyApp.Inventory.Application.Contracts.DTOs
+  children:
+  - MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto
+  - MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto
+  - MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto
+  - MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto
+  - MyApp.Inventory.Application.Contracts.DTOs.ProductDto
+  - MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Inventory.Application.Contracts.DTOs
+  nameWithType: MyApp.Inventory.Application.Contracts.DTOs
+  fullName: MyApp.Inventory.Application.Contracts.DTOs
+  type: Namespace
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+references:
+- uid: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto
+  commentId: T:MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto
+  href: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto.html
+  name: InventoryTransactionDto
+  nameWithType: InventoryTransactionDto
+  fullName: MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto
+- uid: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto
+  commentId: T:MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto
+  parent: MyApp.Inventory.Application.Contracts.DTOs
+  href: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto.html
+  name: CreateUpdateInventoryTransactionDto
+  nameWithType: CreateUpdateInventoryTransactionDto
+  fullName: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto
+- uid: MyApp.Inventory.Application.Contracts.DTOs.ProductDto
+  commentId: T:MyApp.Inventory.Application.Contracts.DTOs.ProductDto
+  parent: MyApp.Inventory.Application.Contracts.DTOs
+  href: MyApp.Inventory.Application.Contracts.DTOs.ProductDto.html
+  name: ProductDto
+  nameWithType: ProductDto
+  fullName: MyApp.Inventory.Application.Contracts.DTOs.ProductDto
+- uid: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto
+  commentId: T:MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto
+  parent: MyApp.Inventory.Application.Contracts.DTOs
+  href: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto.html
+  name: CreateUpdateProductDto
+  nameWithType: CreateUpdateProductDto
+  fullName: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto
+- uid: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto
+  commentId: T:MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto
+  parent: MyApp.Inventory.Application.Contracts.DTOs
+  href: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto.html
+  name: WarehouseDto
+  nameWithType: WarehouseDto
+  fullName: MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto
+- uid: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto
+  commentId: T:MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto
+  parent: MyApp.Inventory.Application.Contracts.DTOs
+  href: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto.html
+  name: CreateUpdateWarehouseDto
+  nameWithType: CreateUpdateWarehouseDto
+  fullName: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto
+- uid: MyApp.Inventory.Application.Contracts.DTOs
+  commentId: N:MyApp.Inventory.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Inventory.Application.Contracts.DTOs
+  nameWithType: MyApp.Inventory.Application.Contracts.DTOs
+  fullName: MyApp.Inventory.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Inventory.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Inventory.Application.Contracts.DTOs.html

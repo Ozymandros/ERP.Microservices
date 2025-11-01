@@ -1,0 +1,48 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Infrastructure.Repositories
+  commentId: N:MyApp.Shared.Infrastructure.Repositories
+  id: MyApp.Shared.Infrastructure.Repositories
+  children:
+  - MyApp.Shared.Infrastructure.Repositories.Repository`2
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Shared.Infrastructure.Repositories
+  nameWithType: MyApp.Shared.Infrastructure.Repositories
+  fullName: MyApp.Shared.Infrastructure.Repositories
+  type: Namespace
+  assemblies:
+  - MyApp.Shared.Infrastructure
+references:
+- uid: MyApp.Shared.Infrastructure.Repositories.Repository`2
+  commentId: T:MyApp.Shared.Infrastructure.Repositories.Repository`2
+  href: MyApp.Shared.Infrastructure.Repositories.Repository-2.html
+  name: Repository<TEntity, TKey>
+  nameWithType: Repository<TEntity, TKey>
+  fullName: MyApp.Shared.Infrastructure.Repositories.Repository<TEntity, TKey>
+  nameWithType.vb: Repository(Of TEntity, TKey)
+  fullName.vb: MyApp.Shared.Infrastructure.Repositories.Repository(Of TEntity, TKey)
+  name.vb: Repository(Of TEntity, TKey)
+  spec.csharp:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2
+    name: Repository
+    href: MyApp.Shared.Infrastructure.Repositories.Repository-2.html
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Infrastructure.Repositories.Repository`2
+    name: Repository
+    href: MyApp.Shared.Infrastructure.Repositories.Repository-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )

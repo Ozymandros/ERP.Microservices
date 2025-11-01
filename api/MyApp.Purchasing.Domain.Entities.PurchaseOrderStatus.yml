@@ -1,0 +1,182 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  commentId: T:MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  id: PurchaseOrderStatus
+  parent: MyApp.Purchasing.Domain.Entities
+  children:
+  - MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Approved
+  - MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Cancelled
+  - MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Draft
+  - MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Received
+  langs:
+  - csharp
+  - vb
+  name: PurchaseOrderStatus
+  nameWithType: PurchaseOrderStatus
+  fullName: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  type: Enum
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Entities/PurchaseOrder.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: PurchaseOrderStatus
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Entities/PurchaseOrder.cs
+    startLine: 4
+  assemblies:
+  - MyApp.Purchasing.Domain
+  namespace: MyApp.Purchasing.Domain.Entities
+  syntax:
+    content: public enum PurchaseOrderStatus
+    content.vb: Public Enum PurchaseOrderStatus
+- uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Draft
+  commentId: F:MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Draft
+  id: Draft
+  parent: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  langs:
+  - csharp
+  - vb
+  name: Draft
+  nameWithType: PurchaseOrderStatus.Draft
+  fullName: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Draft
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Entities/PurchaseOrder.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Draft
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Entities/PurchaseOrder.cs
+    startLine: 6
+  assemblies:
+  - MyApp.Purchasing.Domain
+  namespace: MyApp.Purchasing.Domain.Entities
+  syntax:
+    content: Draft = 0
+    return:
+      type: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+- uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Approved
+  commentId: F:MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Approved
+  id: Approved
+  parent: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  langs:
+  - csharp
+  - vb
+  name: Approved
+  nameWithType: PurchaseOrderStatus.Approved
+  fullName: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Approved
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Entities/PurchaseOrder.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Approved
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Entities/PurchaseOrder.cs
+    startLine: 7
+  assemblies:
+  - MyApp.Purchasing.Domain
+  namespace: MyApp.Purchasing.Domain.Entities
+  syntax:
+    content: Approved = 1
+    return:
+      type: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+- uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Received
+  commentId: F:MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Received
+  id: Received
+  parent: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  langs:
+  - csharp
+  - vb
+  name: Received
+  nameWithType: PurchaseOrderStatus.Received
+  fullName: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Received
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Entities/PurchaseOrder.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Received
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Entities/PurchaseOrder.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Purchasing.Domain
+  namespace: MyApp.Purchasing.Domain.Entities
+  syntax:
+    content: Received = 2
+    return:
+      type: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+- uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Cancelled
+  commentId: F:MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Cancelled
+  id: Cancelled
+  parent: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  langs:
+  - csharp
+  - vb
+  name: Cancelled
+  nameWithType: PurchaseOrderStatus.Cancelled
+  fullName: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.Cancelled
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Entities/PurchaseOrder.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Cancelled
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Domain/Entities/PurchaseOrder.cs
+    startLine: 9
+  assemblies:
+  - MyApp.Purchasing.Domain
+  namespace: MyApp.Purchasing.Domain.Entities
+  syntax:
+    content: Cancelled = 3
+    return:
+      type: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+references:
+- uid: MyApp.Purchasing.Domain.Entities
+  commentId: N:MyApp.Purchasing.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Purchasing.Domain.Entities
+  nameWithType: MyApp.Purchasing.Domain.Entities
+  fullName: MyApp.Purchasing.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain
+    name: Domain
+    href: MyApp.Purchasing.Domain.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain.Entities
+    name: Entities
+    href: MyApp.Purchasing.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain
+    name: Domain
+    href: MyApp.Purchasing.Domain.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain.Entities
+    name: Entities
+    href: MyApp.Purchasing.Domain.Entities.html
+- uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  commentId: T:MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  parent: MyApp.Purchasing.Domain.Entities
+  href: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.html
+  name: PurchaseOrderStatus
+  nameWithType: PurchaseOrderStatus
+  fullName: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus

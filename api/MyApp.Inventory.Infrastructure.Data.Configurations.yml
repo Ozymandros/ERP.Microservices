@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Infrastructure.Data.Configurations
+  commentId: N:MyApp.Inventory.Infrastructure.Data.Configurations
+  id: MyApp.Inventory.Infrastructure.Data.Configurations
+  children:
+  - MyApp.Inventory.Infrastructure.Data.Configurations.InventoryTransactionConfiguration
+  - MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration
+  - MyApp.Inventory.Infrastructure.Data.Configurations.WarehouseConfiguration
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Inventory.Infrastructure.Data.Configurations
+  nameWithType: MyApp.Inventory.Infrastructure.Data.Configurations
+  fullName: MyApp.Inventory.Infrastructure.Data.Configurations
+  type: Namespace
+  assemblies:
+  - MyApp.Inventory.Infrastructure
+references:
+- uid: MyApp.Inventory.Infrastructure.Data.Configurations.InventoryTransactionConfiguration
+  commentId: T:MyApp.Inventory.Infrastructure.Data.Configurations.InventoryTransactionConfiguration
+  href: MyApp.Inventory.Infrastructure.Data.Configurations.InventoryTransactionConfiguration.html
+  name: InventoryTransactionConfiguration
+  nameWithType: InventoryTransactionConfiguration
+  fullName: MyApp.Inventory.Infrastructure.Data.Configurations.InventoryTransactionConfiguration
+- uid: MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration
+  commentId: T:MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration
+  href: MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration.html
+  name: ProductConfiguration
+  nameWithType: ProductConfiguration
+  fullName: MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration
+- uid: MyApp.Inventory.Infrastructure.Data.Configurations.WarehouseConfiguration
+  commentId: T:MyApp.Inventory.Infrastructure.Data.Configurations.WarehouseConfiguration
+  href: MyApp.Inventory.Infrastructure.Data.Configurations.WarehouseConfiguration.html
+  name: WarehouseConfiguration
+  nameWithType: WarehouseConfiguration
+  fullName: MyApp.Inventory.Infrastructure.Data.Configurations.WarehouseConfiguration

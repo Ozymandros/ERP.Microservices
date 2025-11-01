@@ -1,0 +1,1002 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService
+  commentId: T:MyApp.Auth.Application.Contracts.Services.IRoleService
+  id: IRoleService
+  parent: MyApp.Auth.Application.Contracts.Services
+  children:
+  - MyApp.Auth.Application.Contracts.Services.IRoleService.AddPermissionToRole(MyApp.Auth.Application.Contracts.CreateRolePermissionDto)
+  - MyApp.Auth.Application.Contracts.Services.IRoleService.CreateRoleAsync(MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto)
+  - MyApp.Auth.Application.Contracts.Services.IRoleService.DeleteRoleAsync(System.Guid)
+  - MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesAsync
+  - MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesPaginatedAsync(System.Int32,System.Int32)
+  - MyApp.Auth.Application.Contracts.Services.IRoleService.GetPermissionsForRoleAsync(System.Guid)
+  - MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByIdAsync(System.Guid)
+  - MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByNameAsync(System.String)
+  - MyApp.Auth.Application.Contracts.Services.IRoleService.GetUsersInRoleAsync(System.String)
+  - MyApp.Auth.Application.Contracts.Services.IRoleService.HasPermissionAsync(System.Guid,System.Guid)
+  - MyApp.Auth.Application.Contracts.Services.IRoleService.RemovePermissionFromRoleAsync(MyApp.Auth.Application.Contracts.DeleteRolePermissionDto)
+  - MyApp.Auth.Application.Contracts.Services.IRoleService.UpdateRoleAsync(System.Guid,MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto)
+  langs:
+  - csharp
+  - vb
+  name: IRoleService
+  nameWithType: IRoleService
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: IRoleService
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+    startLine: 5
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: public interface IRoleService
+    content.vb: Public Interface IRoleService
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByIdAsync(System.Guid)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByIdAsync(System.Guid)
+  id: GetRoleByIdAsync(System.Guid)
+  parent: MyApp.Auth.Application.Contracts.Services.IRoleService
+  langs:
+  - csharp
+  - vb
+  name: GetRoleByIdAsync(Guid)
+  nameWithType: IRoleService.GetRoleByIdAsync(Guid)
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetRoleByIdAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+    startLine: 7
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<RoleDto?> GetRoleByIdAsync(Guid roleId)
+    parameters:
+    - id: roleId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.RoleDto}
+    content.vb: Function GetRoleByIdAsync(roleId As Guid) As Task(Of RoleDto)
+  overload: MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByIdAsync*
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByNameAsync(System.String)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByNameAsync(System.String)
+  id: GetRoleByNameAsync(System.String)
+  parent: MyApp.Auth.Application.Contracts.Services.IRoleService
+  langs:
+  - csharp
+  - vb
+  name: GetRoleByNameAsync(string)
+  nameWithType: IRoleService.GetRoleByNameAsync(string)
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByNameAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetRoleByNameAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<RoleDto?> GetRoleByNameAsync(string name)
+    parameters:
+    - id: name
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.RoleDto}
+    content.vb: Function GetRoleByNameAsync(name As String) As Task(Of RoleDto)
+  overload: MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByNameAsync*
+  nameWithType.vb: IRoleService.GetRoleByNameAsync(String)
+  fullName.vb: MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByNameAsync(String)
+  name.vb: GetRoleByNameAsync(String)
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesAsync
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesAsync
+  id: GetAllRolesAsync
+  parent: MyApp.Auth.Application.Contracts.Services.IRoleService
+  langs:
+  - csharp
+  - vb
+  name: GetAllRolesAsync()
+  nameWithType: IRoleService.GetAllRolesAsync()
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesAsync()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllRolesAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+    startLine: 9
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<IEnumerable<RoleDto>> GetAllRolesAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Application.Contracts.DTOs.RoleDto}}
+    content.vb: Function GetAllRolesAsync() As Task(Of IEnumerable(Of RoleDto))
+  overload: MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesAsync*
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesPaginatedAsync(System.Int32,System.Int32)
+  id: GetAllRolesPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Auth.Application.Contracts.Services.IRoleService
+  langs:
+  - csharp
+  - vb
+  name: GetAllRolesPaginatedAsync(int, int)
+  nameWithType: IRoleService.GetAllRolesPaginatedAsync(int, int)
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesPaginatedAsync(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllRolesPaginatedAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+    startLine: 10
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<PaginatedResult<RoleDto>> GetAllRolesPaginatedAsync(int pageNumber, int pageSize)
+    parameters:
+    - id: pageNumber
+      type: System.Int32
+    - id: pageSize
+      type: System.Int32
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Auth.Application.Contracts.DTOs.RoleDto}}
+    content.vb: Function GetAllRolesPaginatedAsync(pageNumber As Integer, pageSize As Integer) As Task(Of PaginatedResult(Of RoleDto))
+  overload: MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesPaginatedAsync*
+  nameWithType.vb: IRoleService.GetAllRolesPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesPaginatedAsync(Integer, Integer)
+  name.vb: GetAllRolesPaginatedAsync(Integer, Integer)
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.CreateRoleAsync(MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IRoleService.CreateRoleAsync(MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto)
+  id: CreateRoleAsync(MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto)
+  parent: MyApp.Auth.Application.Contracts.Services.IRoleService
+  langs:
+  - csharp
+  - vb
+  name: CreateRoleAsync(CreateRoleDto)
+  nameWithType: IRoleService.CreateRoleAsync(CreateRoleDto)
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.CreateRoleAsync(MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateRoleAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+    startLine: 11
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<RoleDto?> CreateRoleAsync(CreateRoleDto createRoleDto)
+    parameters:
+    - id: createRoleDto
+      type: MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.RoleDto}
+    content.vb: Function CreateRoleAsync(createRoleDto As CreateRoleDto) As Task(Of RoleDto)
+  overload: MyApp.Auth.Application.Contracts.Services.IRoleService.CreateRoleAsync*
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.UpdateRoleAsync(System.Guid,MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IRoleService.UpdateRoleAsync(System.Guid,MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto)
+  id: UpdateRoleAsync(System.Guid,MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto)
+  parent: MyApp.Auth.Application.Contracts.Services.IRoleService
+  langs:
+  - csharp
+  - vb
+  name: UpdateRoleAsync(Guid, CreateRoleDto)
+  nameWithType: IRoleService.UpdateRoleAsync(Guid, CreateRoleDto)
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.UpdateRoleAsync(System.Guid, MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateRoleAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+    startLine: 12
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<bool> UpdateRoleAsync(Guid roleId, CreateRoleDto updateRoleDto)
+    parameters:
+    - id: roleId
+      type: System.Guid
+    - id: updateRoleDto
+      type: MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function UpdateRoleAsync(roleId As Guid, updateRoleDto As CreateRoleDto) As Task(Of Boolean)
+  overload: MyApp.Auth.Application.Contracts.Services.IRoleService.UpdateRoleAsync*
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.DeleteRoleAsync(System.Guid)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IRoleService.DeleteRoleAsync(System.Guid)
+  id: DeleteRoleAsync(System.Guid)
+  parent: MyApp.Auth.Application.Contracts.Services.IRoleService
+  langs:
+  - csharp
+  - vb
+  name: DeleteRoleAsync(Guid)
+  nameWithType: IRoleService.DeleteRoleAsync(Guid)
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.DeleteRoleAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteRoleAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+    startLine: 13
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<bool> DeleteRoleAsync(Guid roleId)
+    parameters:
+    - id: roleId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function DeleteRoleAsync(roleId As Guid) As Task(Of Boolean)
+  overload: MyApp.Auth.Application.Contracts.Services.IRoleService.DeleteRoleAsync*
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.GetUsersInRoleAsync(System.String)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IRoleService.GetUsersInRoleAsync(System.String)
+  id: GetUsersInRoleAsync(System.String)
+  parent: MyApp.Auth.Application.Contracts.Services.IRoleService
+  langs:
+  - csharp
+  - vb
+  name: GetUsersInRoleAsync(string)
+  nameWithType: IRoleService.GetUsersInRoleAsync(string)
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.GetUsersInRoleAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetUsersInRoleAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+    startLine: 14
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<IEnumerable<UserDto>> GetUsersInRoleAsync(string roleName)
+    parameters:
+    - id: roleName
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Application.Contracts.DTOs.UserDto}}
+    content.vb: Function GetUsersInRoleAsync(roleName As String) As Task(Of IEnumerable(Of UserDto))
+  overload: MyApp.Auth.Application.Contracts.Services.IRoleService.GetUsersInRoleAsync*
+  nameWithType.vb: IRoleService.GetUsersInRoleAsync(String)
+  fullName.vb: MyApp.Auth.Application.Contracts.Services.IRoleService.GetUsersInRoleAsync(String)
+  name.vb: GetUsersInRoleAsync(String)
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.AddPermissionToRole(MyApp.Auth.Application.Contracts.CreateRolePermissionDto)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IRoleService.AddPermissionToRole(MyApp.Auth.Application.Contracts.CreateRolePermissionDto)
+  id: AddPermissionToRole(MyApp.Auth.Application.Contracts.CreateRolePermissionDto)
+  parent: MyApp.Auth.Application.Contracts.Services.IRoleService
+  langs:
+  - csharp
+  - vb
+  name: AddPermissionToRole(CreateRolePermissionDto)
+  nameWithType: IRoleService.AddPermissionToRole(CreateRolePermissionDto)
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.AddPermissionToRole(MyApp.Auth.Application.Contracts.CreateRolePermissionDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: AddPermissionToRole
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<bool> AddPermissionToRole(CreateRolePermissionDto createDto)
+    parameters:
+    - id: createDto
+      type: MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function AddPermissionToRole(createDto As CreateRolePermissionDto) As Task(Of Boolean)
+  overload: MyApp.Auth.Application.Contracts.Services.IRoleService.AddPermissionToRole*
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.RemovePermissionFromRoleAsync(MyApp.Auth.Application.Contracts.DeleteRolePermissionDto)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IRoleService.RemovePermissionFromRoleAsync(MyApp.Auth.Application.Contracts.DeleteRolePermissionDto)
+  id: RemovePermissionFromRoleAsync(MyApp.Auth.Application.Contracts.DeleteRolePermissionDto)
+  parent: MyApp.Auth.Application.Contracts.Services.IRoleService
+  langs:
+  - csharp
+  - vb
+  name: RemovePermissionFromRoleAsync(DeleteRolePermissionDto)
+  nameWithType: IRoleService.RemovePermissionFromRoleAsync(DeleteRolePermissionDto)
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.RemovePermissionFromRoleAsync(MyApp.Auth.Application.Contracts.DeleteRolePermissionDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RemovePermissionFromRoleAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+    startLine: 16
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<bool> RemovePermissionFromRoleAsync(DeleteRolePermissionDto deleteDto)
+    parameters:
+    - id: deleteDto
+      type: MyApp.Auth.Application.Contracts.DeleteRolePermissionDto
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function RemovePermissionFromRoleAsync(deleteDto As DeleteRolePermissionDto) As Task(Of Boolean)
+  overload: MyApp.Auth.Application.Contracts.Services.IRoleService.RemovePermissionFromRoleAsync*
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.HasPermissionAsync(System.Guid,System.Guid)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IRoleService.HasPermissionAsync(System.Guid,System.Guid)
+  id: HasPermissionAsync(System.Guid,System.Guid)
+  parent: MyApp.Auth.Application.Contracts.Services.IRoleService
+  langs:
+  - csharp
+  - vb
+  name: HasPermissionAsync(Guid, Guid)
+  nameWithType: IRoleService.HasPermissionAsync(Guid, Guid)
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.HasPermissionAsync(System.Guid, System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: HasPermissionAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+    startLine: 17
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId)
+    parameters:
+    - id: roleId
+      type: System.Guid
+    - id: permissionId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function HasPermissionAsync(roleId As Guid, permissionId As Guid) As Task(Of Boolean)
+  overload: MyApp.Auth.Application.Contracts.Services.IRoleService.HasPermissionAsync*
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.GetPermissionsForRoleAsync(System.Guid)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IRoleService.GetPermissionsForRoleAsync(System.Guid)
+  id: GetPermissionsForRoleAsync(System.Guid)
+  parent: MyApp.Auth.Application.Contracts.Services.IRoleService
+  langs:
+  - csharp
+  - vb
+  name: GetPermissionsForRoleAsync(Guid)
+  nameWithType: IRoleService.GetPermissionsForRoleAsync(Guid)
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.GetPermissionsForRoleAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPermissionsForRoleAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application.Contracts/Services/IRoleService.cs
+    startLine: 19
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+  namespace: MyApp.Auth.Application.Contracts.Services
+  syntax:
+    content: Task<IEnumerable<PermissionDto>> GetPermissionsForRoleAsync(Guid roleId)
+    parameters:
+    - id: roleId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Application.Contracts.DTOs.PermissionDto}}
+    content.vb: Function GetPermissionsForRoleAsync(roleId As Guid) As Task(Of IEnumerable(Of PermissionDto))
+  overload: MyApp.Auth.Application.Contracts.Services.IRoleService.GetPermissionsForRoleAsync*
+references:
+- uid: MyApp.Auth.Application.Contracts.Services
+  commentId: N:MyApp.Auth.Application.Contracts.Services
+  href: MyApp.html
+  name: MyApp.Auth.Application.Contracts.Services
+  nameWithType: MyApp.Auth.Application.Contracts.Services
+  fullName: MyApp.Auth.Application.Contracts.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.Services
+    name: Services
+    href: MyApp.Auth.Application.Contracts.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.Services
+    name: Services
+    href: MyApp.Auth.Application.Contracts.Services.html
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByIdAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByIdAsync
+  href: MyApp.Auth.Application.Contracts.Services.IRoleService.html#MyApp_Auth_Application_Contracts_Services_IRoleService_GetRoleByIdAsync_System_Guid_
+  name: GetRoleByIdAsync
+  nameWithType: IRoleService.GetRoleByIdAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByIdAsync
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.RoleDto}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.RoleDto}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<RoleDto>
+  nameWithType: Task<RoleDto>
+  fullName: System.Threading.Tasks.Task<MyApp.Auth.Application.Contracts.DTOs.RoleDto>
+  nameWithType.vb: Task(Of RoleDto)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Auth.Application.Contracts.DTOs.RoleDto)
+  name.vb: Task(Of RoleDto)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Auth.Application.Contracts.DTOs.RoleDto
+    name: RoleDto
+    href: MyApp.Auth.Application.Contracts.DTOs.RoleDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Application.Contracts.DTOs.RoleDto
+    name: RoleDto
+    href: MyApp.Auth.Application.Contracts.DTOs.RoleDto.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByNameAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByNameAsync
+  href: MyApp.Auth.Application.Contracts.Services.IRoleService.html#MyApp_Auth_Application_Contracts_Services_IRoleService_GetRoleByNameAsync_System_String_
+  name: GetRoleByNameAsync
+  nameWithType: IRoleService.GetRoleByNameAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.GetRoleByNameAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesAsync
+  href: MyApp.Auth.Application.Contracts.Services.IRoleService.html#MyApp_Auth_Application_Contracts_Services_IRoleService_GetAllRolesAsync
+  name: GetAllRolesAsync
+  nameWithType: IRoleService.GetAllRolesAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Application.Contracts.DTOs.RoleDto}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Application.Contracts.DTOs.RoleDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<RoleDto>>
+  nameWithType: Task<IEnumerable<RoleDto>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Auth.Application.Contracts.DTOs.RoleDto>>
+  nameWithType.vb: Task(Of IEnumerable(Of RoleDto))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Auth.Application.Contracts.DTOs.RoleDto))
+  name.vb: Task(Of IEnumerable(Of RoleDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Auth.Application.Contracts.DTOs.RoleDto
+    name: RoleDto
+    href: MyApp.Auth.Application.Contracts.DTOs.RoleDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Application.Contracts.DTOs.RoleDto
+    name: RoleDto
+    href: MyApp.Auth.Application.Contracts.DTOs.RoleDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesPaginatedAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesPaginatedAsync
+  href: MyApp.Auth.Application.Contracts.Services.IRoleService.html#MyApp_Auth_Application_Contracts_Services_IRoleService_GetAllRolesPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllRolesPaginatedAsync
+  nameWithType: IRoleService.GetAllRolesPaginatedAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.GetAllRolesPaginatedAsync
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Auth.Application.Contracts.DTOs.RoleDto}}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Auth.Application.Contracts.DTOs.RoleDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PaginatedResult<RoleDto>>
+  nameWithType: Task<PaginatedResult<RoleDto>>
+  fullName: System.Threading.Tasks.Task<MyApp.Shared.Domain.Pagination.PaginatedResult<MyApp.Auth.Application.Contracts.DTOs.RoleDto>>
+  nameWithType.vb: Task(Of PaginatedResult(Of RoleDto))
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Shared.Domain.Pagination.PaginatedResult(Of MyApp.Auth.Application.Contracts.DTOs.RoleDto))
+  name.vb: Task(Of PaginatedResult(Of RoleDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+  - name: <
+  - uid: MyApp.Auth.Application.Contracts.DTOs.RoleDto
+    name: RoleDto
+    href: MyApp.Auth.Application.Contracts.DTOs.RoleDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Application.Contracts.DTOs.RoleDto
+    name: RoleDto
+    href: MyApp.Auth.Application.Contracts.DTOs.RoleDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.CreateRoleAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IRoleService.CreateRoleAsync
+  href: MyApp.Auth.Application.Contracts.Services.IRoleService.html#MyApp_Auth_Application_Contracts_Services_IRoleService_CreateRoleAsync_MyApp_Auth_Application_Contracts_DTOs_CreateRoleDto_
+  name: CreateRoleAsync
+  nameWithType: IRoleService.CreateRoleAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.CreateRoleAsync
+- uid: MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto.html
+  name: CreateRoleDto
+  nameWithType: CreateRoleDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto
+- uid: MyApp.Auth.Application.Contracts.DTOs
+  commentId: N:MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Auth.Application.Contracts.DTOs
+  nameWithType: MyApp.Auth.Application.Contracts.DTOs
+  fullName: MyApp.Auth.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Auth.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Auth.Application.Contracts.DTOs.html
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.UpdateRoleAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IRoleService.UpdateRoleAsync
+  href: MyApp.Auth.Application.Contracts.Services.IRoleService.html#MyApp_Auth_Application_Contracts_Services_IRoleService_UpdateRoleAsync_System_Guid_MyApp_Auth_Application_Contracts_DTOs_CreateRoleDto_
+  name: UpdateRoleAsync
+  nameWithType: IRoleService.UpdateRoleAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.UpdateRoleAsync
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.DeleteRoleAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IRoleService.DeleteRoleAsync
+  href: MyApp.Auth.Application.Contracts.Services.IRoleService.html#MyApp_Auth_Application_Contracts_Services_IRoleService_DeleteRoleAsync_System_Guid_
+  name: DeleteRoleAsync
+  nameWithType: IRoleService.DeleteRoleAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.DeleteRoleAsync
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.GetUsersInRoleAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IRoleService.GetUsersInRoleAsync
+  href: MyApp.Auth.Application.Contracts.Services.IRoleService.html#MyApp_Auth_Application_Contracts_Services_IRoleService_GetUsersInRoleAsync_System_String_
+  name: GetUsersInRoleAsync
+  nameWithType: IRoleService.GetUsersInRoleAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.GetUsersInRoleAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Application.Contracts.DTOs.UserDto}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Application.Contracts.DTOs.UserDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<UserDto>>
+  nameWithType: Task<IEnumerable<UserDto>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Auth.Application.Contracts.DTOs.UserDto>>
+  nameWithType.vb: Task(Of IEnumerable(Of UserDto))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Auth.Application.Contracts.DTOs.UserDto))
+  name.vb: Task(Of IEnumerable(Of UserDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Auth.Application.Contracts.DTOs.UserDto
+    name: UserDto
+    href: MyApp.Auth.Application.Contracts.DTOs.UserDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Application.Contracts.DTOs.UserDto
+    name: UserDto
+    href: MyApp.Auth.Application.Contracts.DTOs.UserDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.AddPermissionToRole*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IRoleService.AddPermissionToRole
+  href: MyApp.Auth.Application.Contracts.Services.IRoleService.html#MyApp_Auth_Application_Contracts_Services_IRoleService_AddPermissionToRole_MyApp_Auth_Application_Contracts_CreateRolePermissionDto_
+  name: AddPermissionToRole
+  nameWithType: IRoleService.AddPermissionToRole
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.AddPermissionToRole
+- uid: MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+  commentId: T:MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+  parent: MyApp.Auth.Application.Contracts
+  href: MyApp.Auth.Application.Contracts.CreateRolePermissionDto.html
+  name: CreateRolePermissionDto
+  nameWithType: CreateRolePermissionDto
+  fullName: MyApp.Auth.Application.Contracts.CreateRolePermissionDto
+- uid: MyApp.Auth.Application.Contracts
+  commentId: N:MyApp.Auth.Application.Contracts
+  href: MyApp.html
+  name: MyApp.Auth.Application.Contracts
+  nameWithType: MyApp.Auth.Application.Contracts
+  fullName: MyApp.Auth.Application.Contracts
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.RemovePermissionFromRoleAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IRoleService.RemovePermissionFromRoleAsync
+  href: MyApp.Auth.Application.Contracts.Services.IRoleService.html#MyApp_Auth_Application_Contracts_Services_IRoleService_RemovePermissionFromRoleAsync_MyApp_Auth_Application_Contracts_DeleteRolePermissionDto_
+  name: RemovePermissionFromRoleAsync
+  nameWithType: IRoleService.RemovePermissionFromRoleAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.RemovePermissionFromRoleAsync
+- uid: MyApp.Auth.Application.Contracts.DeleteRolePermissionDto
+  commentId: T:MyApp.Auth.Application.Contracts.DeleteRolePermissionDto
+  parent: MyApp.Auth.Application.Contracts
+  href: MyApp.Auth.Application.Contracts.DeleteRolePermissionDto.html
+  name: DeleteRolePermissionDto
+  nameWithType: DeleteRolePermissionDto
+  fullName: MyApp.Auth.Application.Contracts.DeleteRolePermissionDto
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.HasPermissionAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IRoleService.HasPermissionAsync
+  href: MyApp.Auth.Application.Contracts.Services.IRoleService.html#MyApp_Auth_Application_Contracts_Services_IRoleService_HasPermissionAsync_System_Guid_System_Guid_
+  name: HasPermissionAsync
+  nameWithType: IRoleService.HasPermissionAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.HasPermissionAsync
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService.GetPermissionsForRoleAsync*
+  commentId: Overload:MyApp.Auth.Application.Contracts.Services.IRoleService.GetPermissionsForRoleAsync
+  href: MyApp.Auth.Application.Contracts.Services.IRoleService.html#MyApp_Auth_Application_Contracts_Services_IRoleService_GetPermissionsForRoleAsync_System_Guid_
+  name: GetPermissionsForRoleAsync
+  nameWithType: IRoleService.GetPermissionsForRoleAsync
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService.GetPermissionsForRoleAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Application.Contracts.DTOs.PermissionDto}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Auth.Application.Contracts.DTOs.PermissionDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<PermissionDto>>
+  nameWithType: Task<IEnumerable<PermissionDto>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Auth.Application.Contracts.DTOs.PermissionDto>>
+  nameWithType.vb: Task(Of IEnumerable(Of PermissionDto))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Auth.Application.Contracts.DTOs.PermissionDto))
+  name.vb: Task(Of IEnumerable(Of PermissionDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Auth.Application.Contracts.DTOs.PermissionDto
+    name: PermissionDto
+    href: MyApp.Auth.Application.Contracts.DTOs.PermissionDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Application.Contracts.DTOs.PermissionDto
+    name: PermissionDto
+    href: MyApp.Auth.Application.Contracts.DTOs.PermissionDto.html
+  - name: )
+  - name: )

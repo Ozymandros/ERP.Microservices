@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Application.Tests.Services
+  commentId: N:MyApp.Inventory.Application.Tests.Services
+  id: MyApp.Inventory.Application.Tests.Services
+  children:
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  - MyApp.Inventory.Application.Tests.Services.ProductServiceTests
+  - MyApp.Inventory.Application.Tests.Services.WarehouseServiceTests
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Inventory.Application.Tests.Services
+  nameWithType: MyApp.Inventory.Application.Tests.Services
+  fullName: MyApp.Inventory.Application.Tests.Services
+  type: Namespace
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+references:
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  commentId: T:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html
+  name: InventoryTransactionServiceTests
+  nameWithType: InventoryTransactionServiceTests
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+- uid: MyApp.Inventory.Application.Tests.Services.ProductServiceTests
+  commentId: T:MyApp.Inventory.Application.Tests.Services.ProductServiceTests
+  href: MyApp.Inventory.Application.Tests.Services.ProductServiceTests.html
+  name: ProductServiceTests
+  nameWithType: ProductServiceTests
+  fullName: MyApp.Inventory.Application.Tests.Services.ProductServiceTests
+- uid: MyApp.Inventory.Application.Tests.Services.WarehouseServiceTests
+  commentId: T:MyApp.Inventory.Application.Tests.Services.WarehouseServiceTests
+  href: MyApp.Inventory.Application.Tests.Services.WarehouseServiceTests.html
+  name: WarehouseServiceTests
+  nameWithType: WarehouseServiceTests
+  fullName: MyApp.Inventory.Application.Tests.Services.WarehouseServiceTests

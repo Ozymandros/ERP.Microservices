@@ -1,0 +1,376 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Domain.Caching.ICacheService
+  commentId: T:MyApp.Shared.Domain.Caching.ICacheService
+  id: ICacheService
+  parent: MyApp.Shared.Domain.Caching
+  children:
+  - MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync``1(System.String)
+  - MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync(System.String)
+  - MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+  langs:
+  - csharp
+  - vb
+  name: ICacheService
+  nameWithType: ICacheService
+  fullName: MyApp.Shared.Domain.Caching.ICacheService
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Caching/ICacheService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ICacheService
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Caching/ICacheService.cs
+    startLine: 2
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Caching
+  syntax:
+    content: public interface ICacheService
+    content.vb: Public Interface ICacheService
+- uid: MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync``1(System.String)
+  commentId: M:MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync``1(System.String)
+  id: GetStateAsync``1(System.String)
+  parent: MyApp.Shared.Domain.Caching.ICacheService
+  langs:
+  - csharp
+  - vb
+  name: GetStateAsync<T>(string)
+  nameWithType: ICacheService.GetStateAsync<T>(string)
+  fullName: MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync<T>(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Caching/ICacheService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetStateAsync
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Caching/ICacheService.cs
+    startLine: 5
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Caching
+  syntax:
+    content: 'Task<T?> GetStateAsync<T>(string key) where T : class'
+    parameters:
+    - id: key
+      type: System.String
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Function GetStateAsync(Of T As Class)(key As String) As Task(Of T)
+  overload: MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync*
+  nameWithType.vb: ICacheService.GetStateAsync(Of T)(String)
+  fullName.vb: MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync(Of T)(String)
+  name.vb: GetStateAsync(Of T)(String)
+- uid: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+  commentId: M:MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+  id: SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+  parent: MyApp.Shared.Domain.Caching.ICacheService
+  langs:
+  - csharp
+  - vb
+  name: SaveStateAsync<T>(string, T, TimeSpan?)
+  nameWithType: ICacheService.SaveStateAsync<T>(string, T, TimeSpan?)
+  fullName: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync<T>(string, T, System.TimeSpan?)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Caching/ICacheService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: SaveStateAsync
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Caching/ICacheService.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Caching
+  syntax:
+    content: 'Task SaveStateAsync<T>(string key, T value, TimeSpan? expiration = null) where T : class'
+    parameters:
+    - id: key
+      type: System.String
+    - id: value
+      type: '{T}'
+    - id: expiration
+      type: System.Nullable{System.TimeSpan}
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function SaveStateAsync(Of T As Class)(key As String, value As T, expiration As TimeSpan? = Nothing) As Task
+  overload: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync*
+  nameWithType.vb: ICacheService.SaveStateAsync(Of T)(String, T, TimeSpan?)
+  fullName.vb: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync(Of T)(String, T, System.TimeSpan?)
+  name.vb: SaveStateAsync(Of T)(String, T, TimeSpan?)
+- uid: MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync(System.String)
+  commentId: M:MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync(System.String)
+  id: RemoveStateAsync(System.String)
+  parent: MyApp.Shared.Domain.Caching.ICacheService
+  langs:
+  - csharp
+  - vb
+  name: RemoveStateAsync(string)
+  nameWithType: ICacheService.RemoveStateAsync(string)
+  fullName: MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Caching/ICacheService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RemoveStateAsync
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Caching/ICacheService.cs
+    startLine: 11
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Caching
+  syntax:
+    content: Task RemoveStateAsync(string key)
+    parameters:
+    - id: key
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function RemoveStateAsync(key As String) As Task
+  overload: MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync*
+  nameWithType.vb: ICacheService.RemoveStateAsync(String)
+  fullName.vb: MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync(String)
+  name.vb: RemoveStateAsync(String)
+references:
+- uid: MyApp.Shared.Domain.Caching
+  commentId: N:MyApp.Shared.Domain.Caching
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Caching
+  nameWithType: MyApp.Shared.Domain.Caching
+  fullName: MyApp.Shared.Domain.Caching
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Caching
+    name: Caching
+    href: MyApp.Shared.Domain.Caching.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Caching
+    name: Caching
+    href: MyApp.Shared.Domain.Caching.html
+- uid: MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync*
+  commentId: Overload:MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync
+  href: MyApp.Shared.Domain.Caching.ICacheService.html#MyApp_Shared_Domain_Caching_ICacheService_GetStateAsync__1_System_String_
+  name: GetStateAsync
+  nameWithType: ICacheService.GetStateAsync
+  fullName: MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync*
+  commentId: Overload:MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync
+  href: MyApp.Shared.Domain.Caching.ICacheService.html#MyApp_Shared_Domain_Caching_ICacheService_SaveStateAsync__1_System_String___0_System_Nullable_System_TimeSpan__
+  name: SaveStateAsync
+  nameWithType: ICacheService.SaveStateAsync
+  fullName: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Nullable{System.TimeSpan}
+  commentId: T:System.Nullable{System.TimeSpan}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan?
+  nameWithType: TimeSpan?
+  fullName: System.TimeSpan?
+  spec.csharp:
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  spec.vb:
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync*
+  commentId: Overload:MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync
+  href: MyApp.Shared.Domain.Caching.ICacheService.html#MyApp_Shared_Domain_Caching_ICacheService_RemoveStateAsync_System_String_
+  name: RemoveStateAsync
+  nameWithType: ICacheService.RemoveStateAsync
+  fullName: MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync

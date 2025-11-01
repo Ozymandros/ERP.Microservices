@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#127919; Bicep Audit - Quick Reference Card | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#127919; Bicep Audit - Quick Reference Card | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/infrastructure/BICEP_QUICK_REFERENCE_CARD.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-bicep-audit---quick-reference-card">🎯 Bicep Audit - Quick Reference Card</h1>
+
+<p><strong>Print this page or bookmark it during implementation</strong></p>
+<hr>
+<h2 id="-document-quick-links">📑 Document Quick Links</h2>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Document</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Overview</strong></td>
+<td><code>BICEP_AUDIT_VISUAL_SUMMARY.md</code></td>
+<td>Dashboard (top)</td>
+</tr>
+<tr>
+<td><strong>Executive Brief</strong></td>
+<td><code>BICEP_INFRASTRUCTURE_AUDIT_SUMMARY.md</code></td>
+<td>Key Findings</td>
+</tr>
+<tr>
+<td><strong>Technical Deep-Dive</strong></td>
+<td><code>BICEP_COMPREHENSIVE_AUDIT.md</code></td>
+<td>File-by-File Analysis</td>
+</tr>
+<tr>
+<td><strong>Implementation</strong></td>
+<td><code>BICEP_QUICK_CHECKLIST.md</code></td>
+<td>Phase 1 → Phase 8</td>
+</tr>
+<tr>
+<td><strong>Fix Code</strong></td>
+<td><code>BICEP_REMEDIATION_GUIDE.md</code></td>
+<td>Gaps #1-12</td>
+</tr>
+<tr>
+<td><strong>Config Mapping</strong></td>
+<td><code>BICEP_DOCKER_COMPOSE_MAPPING.md</code></td>
+<td>Global Configuration</td>
+</tr>
+<tr>
+<td><strong>Index</strong></td>
+<td><code>BICEP_AUDIT_INDEX.md</code></td>
+<td>This Index</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-critical-gaps-must-fix">🔴 Critical Gaps (Must Fix)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Gap</th>
+<th>File</th>
+<th>Fix Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>JWT secret parameter</td>
+<td><code>main.bicep</code></td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Key Vault module call</td>
+<td><code>main.bicep</code></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Redis module call</td>
+<td><code>main.bicep</code></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td>SQL Server module call</td>
+<td><code>main.bicep</code></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Database creation</td>
+<td><code>myapp-sqlserver.module.bicep</code></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>6-11</td>
+<td>Service modules (6x)</td>
+<td>New files</td>
+<td>90 min</td>
+</tr>
+<tr>
+<td>12</td>
+<td>API Gateway module</td>
+<td>New file</td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>13</td>
+<td>JWT in env vars</td>
+<td><code>container-app.bicep</code></td>
+<td>15 min</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total: 6-8 hours</strong></p>
+<hr>
+<h2 id="-implementation-phases">🎯 Implementation Phases</h2>
+<h3 id="phase-1-core-infrastructure-2-hrs">Phase 1: Core Infrastructure (2 hrs)</h3>
+<ul>
+<li>[ ] Add JWT parameters to main.bicep</li>
+<li>[ ] Add resourceToken variable</li>
+<li>[ ] Call redis, sqlServer, keyVault modules</li>
+<li>[ ] Update main.parameters.json</li>
+<li><strong>Reference:</strong> <code>BICEP_QUICK_CHECKLIST.md</code> → Phase 1</li>
+</ul>
+<h3 id="phase-2-database-setup-1-hr">Phase 2: Database Setup (1 hr)</h3>
+<ul>
+<li>[ ] Add 6-database loop to SQL Server module</li>
+<li><strong>Reference:</strong> <code>BICEP_REMEDIATION_GUIDE.md</code> → Gap #5</li>
+</ul>
+<h3 id="phase-3-template-updates-1-hr">Phase 3: Template Updates (1 hr)</h3>
+<ul>
+<li>[ ] Add JWT+CORS parameters to container-app.bicep</li>
+<li><strong>Reference:</strong> <code>BICEP_REMEDIATION_GUIDE.md</code> → Gap #8</li>
+</ul>
+<h3 id="phase-4-service-modules-3-4-hrs">Phase 4: Service Modules (3-4 hrs)</h3>
+<ul>
+<li>[ ] Create 6 service modules</li>
+<li>[ ] Create API Gateway module</li>
+<li><strong>Reference:</strong> <code>BICEP_REMEDIATION_GUIDE.md</code> → Gaps #9-12</li>
+</ul>
+<h3 id="phase-5-integration-30-min">Phase 5: Integration (30 min)</h3>
+<ul>
+<li>[ ] Add all 7 module calls to main.bicep</li>
+<li><strong>Reference:</strong> <code>BICEP_QUICK_CHECKLIST.md</code> → Phase 5</li>
+</ul>
+<h3 id="phase-6-validation-30-min">Phase 6: Validation (30 min)</h3>
+<ul>
+<li>[ ] Validate all bicep files</li>
+<li>[ ] Check parameters</li>
+<li><strong>Reference:</strong> <code>BICEP_REMEDIATION_GUIDE.md</code> → Validation Script</li>
+</ul>
+<h3 id="phase-7-configuration-30-min">Phase 7: Configuration (30 min)</h3>
+<ul>
+<li>[ ] Set up .azure/myenv/.env</li>
+<li><strong>Reference:</strong> <code>BICEP_QUICK_CHECKLIST.md</code> → Phase 7</li>
+</ul>
+<h3 id="phase-8-deployment-1-hr">Phase 8: Deployment (1 hr)</h3>
+<ul>
+<li>[ ] Push images to ACR</li>
+<li>[ ] Run azd deploy</li>
+<li><strong>Reference:</strong> <code>BICEP_QUICK_CHECKLIST.md</code> → Phase 8</li>
+</ul>
+<hr>
+<h2 id="-essential-commands">💻 Essential Commands</h2>
+<pre><code class="lang-powershell"># Validate single file
+az bicep build --file infra/main.bicep
+
+# Build to ARM template
+az bicep build --file infra/main.bicep --outfile infra/main.json
+
+# Validate parameters
+az deployment group validate `
+  --template-file infra/main.json `
+  --parameters infra/main.parameters.json
+
+# Validate entire deployment
+azd validate
+
+# Deploy to Azure
+azd deploy
+
+# List deployed services
+az containerapp list --resource-group rg-myapp-prod
+
+# Check Key Vault secrets
+az keyvault secret list --vault-name &lt;vault-name&gt;
+
+# Get API Gateway FQDN
+az containerapp show --name api-gateway --resource-group rg-myapp-prod `
+  --query properties.configuration.ingress.fqdn
+</code></pre>
+<hr>
+<h2 id="-files-to-create-7-new-files">📋 Files to Create (7 New Files)</h2>
+<pre><code>✨ NEW FILES TO CREATE:
+
+infra/auth-service/auth-service.module.bicep
+infra/billing-service/billing-service.module.bicep
+infra/inventory-service/inventory-service.module.bicep
+infra/orders-service/orders-service.module.bicep
+infra/purchasing-service/purchasing-service.module.bicep
+infra/sales-service/sales-service.module.bicep
+infra/api-gateway/api-gateway.module.bicep
+</code></pre>
+<p><strong>Get templates from:</strong> <code>BICEP_REMEDIATION_GUIDE.md</code> → Gaps #9-12</p>
+<hr>
+<h2 id="-files-to-modify-5-files">✏️ Files to Modify (5 Files)</h2>
+<pre><code>📝 FILES TO MODIFY:
+
+infra/main.bicep
+  - Add JWT parameters
+  - Add module calls
+  - Add service module calls
+
+infra/main.parameters.json
+  - Add JWT parameters
+  - Add CORS parameter
+
+infra/myapp-sqlserver/myapp-sqlserver.module.bicep
+  - Add 6-database loop
+
+infra/core/host/container-app.bicep
+  - Add JWT+CORS parameters
+  - Add env variable mapping
+
+infra/myapp-sqlserver-roles/myapp-sqlserver-roles.module.bicep
+  - Add role assignments
+</code></pre>
+<p><strong>Get exact changes from:</strong> <code>BICEP_REMEDIATION_GUIDE.md</code> → Gaps #1-8</p>
+<hr>
+<h2 id="-key-parameters-to-add">🔑 Key Parameters to Add</h2>
+<pre><code class="lang-bicep">// Add to main.bicep:
+
+@secure()
+param jwtSecretKey string
+
+param jwtIssuer string = 'MyApp.Auth'
+
+param jwtAudience string = 'MyApp.All'
+
+param frontendOrigin string = 'http://localhost:3000;http://localhost:5000'
+
+param aspnetcoreEnvironment string = 'Production'
+
+var resourceToken = uniqueString(subscription().id, resourceGroup().id)
+</code></pre>
+<hr>
+<h2 id="-key-vault-setup">🔐 Key Vault Setup</h2>
+<pre><code class="lang-bicep">// Add to main.bicep:
+
+module keyVault 'core/security/keyvault-secrets.bicep' = {
+  name: 'keyvault'
+  scope: rg
+  params: {
+    name: 'kv-${resourceToken}'
+    location: location
+    tags: tags
+    jwtSecretKey: jwtSecretKey  // ← CRITICAL
+    redisHostName: redis.outputs.hostName
+    redisPrimaryKey: redis.outputs.primaryKey
+    sqlFqdn: myapp_sqlserver.outputs.sqlServerFqdn
+    sqlAdminPassword: password
+    enableKeyVault: true  // ← MUST BE TRUE
+  }
+  dependsOn: [
+    redis
+    myapp_sqlserver
+  ]
+}
+</code></pre>
+<p><strong>Critical:</strong> <code>enableKeyVault: true</code> - if false, secrets won't be created!</p>
+<hr>
+<h2 id="-module-call-template">🎁 Module Call Template</h2>
+<pre><code class="lang-bicep">// Use this pattern for all 6 services + gateway:
+
+module authService 'auth-service/auth-service.module.bicep' = {
+  name: 'auth-service'
+  scope: rg
+  params: {
+    location: location
+    containerAppsEnvironmentName: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME
+    containerRegistryName: resources.outputs.AZURE_CONTAINER_REGISTRY_NAME
+    imageTag: 'latest'
+    jwtSecretKeyName: keyVault.outputs.jwtSecretName
+    sqlConnectionSecretName: keyVault.outputs.sqlAuthSecretName
+    redisConnectionSecretName: keyVault.outputs.redisSecretName
+    keyVaultUri: keyVault.outputs.keyVaultUri
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    frontendOrigin: frontendOrigin
+    appInsightsConnectionString: MyApp_ApplicationInsights.outputs.appInsightsConnectionString
+    tags: tags
+  }
+  dependsOn: [
+    keyVault
+    redis
+    myapp_sqlserver
+  ]
+}
+</code></pre>
+<hr>
+<h2 id="-success-checklist">✅ Success Checklist</h2>
+<p><strong>Before deploying:</strong></p>
+<ul>
+<li>[ ] All bicep validate passes</li>
+<li>[ ] All 7 service modules created</li>
+<li>[ ] All module calls in main.bicep</li>
+<li>[ ] JWT parameters in main.bicep</li>
+<li>[ ] Key Vault module called (enableKeyVault: true)</li>
+<li>[ ] Redis module called</li>
+<li>[ ] SQL Server module called</li>
+<li>[ ] 6-database loop in myapp-sqlserver.module.bicep</li>
+<li>[ ] main.parameters.json updated</li>
+<li>[ ] container-app.bicep updated with env vars</li>
+<li>[ ] No hardcoded secrets found</li>
+<li>[ ] azd validate passes</li>
+<li>[ ] Deployment validates without errors</li>
+</ul>
+<hr>
+<h2 id="-troubleshooting-quick-fixes">🐛 Troubleshooting Quick Fixes</h2>
+<h3 id="error-module-not-found">Error: &quot;Module not found&quot;</h3>
+<pre><code class="lang-bicep">// ❌ WRONG:
+module redis './core/database/redis.bicep' = { ... }
+
+// ✅ RIGHT:
+module redis 'core/database/redis.bicep' = { ... }
+</code></pre>
+<h3 id="error-parameter-not-defined">Error: &quot;Parameter not defined&quot;</h3>
+<pre><code class="lang-bicep">// Add parameter at top of main.bicep
+@secure()
+param jwtSecretKey string
+
+// Then use in module
+params: {
+  jwtSecretKey: jwtSecretKey
+}
+</code></pre>
+<h3 id="error-enablekeyvault-is-not-recognized">Error: &quot;enableKeyVault is not recognized&quot;</h3>
+<pre><code class="lang-bicep">// Check parameter exists in keyvault-secrets.bicep:
+param enableKeyVault bool = false
+
+// Set to true in main.bicep call:
+enableKeyVault: true  // ← CRITICAL
+</code></pre>
+<h3 id="error-missing-dependency">Error: &quot;Missing dependency&quot;</h3>
+<pre><code class="lang-bicep">// Add explicit dependsOn:
+dependsOn: [
+  keyVault
+  redis
+  myapp_sqlserver
+]
+</code></pre>
+<hr>
+<h2 id="-verification-checklist">📊 Verification Checklist</h2>
+<p><strong>After each phase:</strong></p>
+<p>Phase 1 ✅</p>
+<pre><code class="lang-powershell">az bicep build --file infra/main.bicep
+</code></pre>
+<p>Phase 4 ✅</p>
+<pre><code class="lang-powershell">foreach ($service in @('auth', 'billing', 'inventory', 'orders', 'purchasing', 'sales')) {
+  az bicep build --file &quot;infra/$service-service/$service-service.module.bicep&quot;
+}
+</code></pre>
+<p>Phase 6 ✅</p>
+<pre><code class="lang-powershell">az bicep build --file infra/main.bicep --outfile infra/main.json
+az deployment group validate --template-file infra/main.json --parameters infra/main.parameters.json
+</code></pre>
+<p>Phase 8 ✅</p>
+<pre><code class="lang-bash">azd deploy
+</code></pre>
+<hr>
+<h2 id="-time-breakdown">🎯 Time Breakdown</h2>
+<pre><code>Phase 1: Core Infrastructure ......... 2 hours
+Phase 2: Database Setup .............. 1 hour
+Phase 3: Template Updates ............ 1 hour
+Phase 4: Service Modules ............ 3-4 hours
+Phase 5: Integration ................. 30 min
+Phase 6: Validation .................. 30 min
+Phase 7: Configuration ............... 30 min
+Phase 8: Deployment .................. 1 hour
+─────────────────────────────────────────────
+TOTAL ................................. 6-8 HOURS
+</code></pre>
+<hr>
+<h2 id="-quick-start">🚀 Quick Start</h2>
+<pre><code>1. Read this card (5 min)
+2. Open BICEP_QUICK_CHECKLIST.md
+3. Open BICEP_REMEDIATION_GUIDE.md
+4. Start Phase 1
+5. Follow checklist
+6. Reference guide as needed
+7. Validate each phase
+8. Deploy ✅
+</code></pre>
+<hr>
+<h2 id="-document-links">🔗 Document Links</h2>
+<ul>
+<li><code>BICEP_AUDIT_VISUAL_SUMMARY.md</code> - Visual overview</li>
+<li><code>BICEP_INFRASTRUCTURE_AUDIT_SUMMARY.md</code> - Executive summary</li>
+<li><code>BICEP_COMPREHENSIVE_AUDIT.md</code> - Technical deep-dive</li>
+<li><code>BICEP_QUICK_CHECKLIST.md</code> - Implementation guide ⭐</li>
+<li><code>BICEP_REMEDIATION_GUIDE.md</code> - Code fixes ⭐</li>
+<li><code>BICEP_DOCKER_COMPOSE_MAPPING.md</code> - Configuration reference</li>
+<li><code>BICEP_AUDIT_INDEX.md</code> - Document index</li>
+</ul>
+<hr>
+<h2 id="-when-stuck">📞 When Stuck</h2>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Don't understand a gap</td>
+<td>→ Comprehensive Audit</td>
+</tr>
+<tr>
+<td>Need exact code to fix</td>
+<td>→ Remediation Guide</td>
+</tr>
+<tr>
+<td>Need to verify progress</td>
+<td>→ Quick Checklist</td>
+</tr>
+<tr>
+<td>Validation errors</td>
+<td>→ Troubleshooting section above</td>
+</tr>
+<tr>
+<td>General questions</td>
+<td>→ Executive Summary</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-key-takeaways">✨ Key Takeaways</h2>
+<p>✅ <strong>All gaps identified and documented</strong><br>
+✅ <strong>All solutions provided with code</strong><br>
+✅ <strong>All validation steps included</strong><br>
+✅ <strong>High confidence implementation</strong><br>
+✅ <strong>6-8 hour timeline realistic</strong></p>
+<p>🚀 <strong>Ready to execute!</strong></p>
+<hr>
+<p><strong>Bookmark this for quick reference during implementation</strong></p>
+<p><em>Last Updated: October 27, 2025</em></p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/infrastructure/BICEP_QUICK_REFERENCE_CARD.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

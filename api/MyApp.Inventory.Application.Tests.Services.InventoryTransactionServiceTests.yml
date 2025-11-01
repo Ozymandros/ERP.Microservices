@@ -1,0 +1,1081 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  commentId: T:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  id: InventoryTransactionServiceTests
+  parent: MyApp.Inventory.Application.Tests.Services
+  children:
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.#ctor
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetAllTransactionsAsync_ReturnsAllTransactions
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithNonExistentId_ReturnsNull
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByTypeAsync_ReturnsTransactionsOfType
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  - MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock
+  langs:
+  - csharp
+  - vb
+  name: InventoryTransactionServiceTests
+  nameWithType: InventoryTransactionServiceTests
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: InventoryTransactionServiceTests
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 10
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: public class InventoryTransactionServiceTests
+    content.vb: Public Class InventoryTransactionServiceTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.#ctor
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.#ctor
+  id: '#ctor'
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: InventoryTransactionServiceTests()
+  nameWithType: InventoryTransactionServiceTests.InventoryTransactionServiceTests()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.InventoryTransactionServiceTests()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 17
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: public InventoryTransactionServiceTests()
+    content.vb: Public Sub New()
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.#ctor*
+  nameWithType.vb: InventoryTransactionServiceTests.New()
+  fullName.vb: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.New()
+  name.vb: New()
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto
+  id: GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto()
+  nameWithType: InventoryTransactionServiceTests.GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 29
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithNonExistentId_ReturnsNull
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithNonExistentId_ReturnsNull
+  id: GetTransactionByIdAsync_WithNonExistentId_ReturnsNull
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetTransactionByIdAsync_WithNonExistentId_ReturnsNull()
+  nameWithType: InventoryTransactionServiceTests.GetTransactionByIdAsync_WithNonExistentId_ReturnsNull()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithNonExistentId_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetTransactionByIdAsync_WithNonExistentId_ReturnsNull
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 48
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetTransactionByIdAsync_WithNonExistentId_ReturnsNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetTransactionByIdAsync_WithNonExistentId_ReturnsNull() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithNonExistentId_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct
+  id: GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct()
+  nameWithType: InventoryTransactionServiceTests.GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 62
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse
+  id: GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse()
+  nameWithType: InventoryTransactionServiceTests.GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 87
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByTypeAsync_ReturnsTransactionsOfType
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByTypeAsync_ReturnsTransactionsOfType
+  id: GetTransactionsByTypeAsync_ReturnsTransactionsOfType
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetTransactionsByTypeAsync_ReturnsTransactionsOfType()
+  nameWithType: InventoryTransactionServiceTests.GetTransactionsByTypeAsync_ReturnsTransactionsOfType()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByTypeAsync_ReturnsTransactionsOfType()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetTransactionsByTypeAsync_ReturnsTransactionsOfType
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 112
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetTransactionsByTypeAsync_ReturnsTransactionsOfType()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetTransactionsByTypeAsync_ReturnsTransactionsOfType() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByTypeAsync_ReturnsTransactionsOfType*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetAllTransactionsAsync_ReturnsAllTransactions
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetAllTransactionsAsync_ReturnsAllTransactions
+  id: GetAllTransactionsAsync_ReturnsAllTransactions
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetAllTransactionsAsync_ReturnsAllTransactions()
+  nameWithType: InventoryTransactionServiceTests.GetAllTransactionsAsync_ReturnsAllTransactions()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetAllTransactionsAsync_ReturnsAllTransactions()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllTransactionsAsync_ReturnsAllTransactions
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 137
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetAllTransactionsAsync_ReturnsAllTransactions()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetAllTransactionsAsync_ReturnsAllTransactions() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetAllTransactionsAsync_ReturnsAllTransactions*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock
+  id: CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock()
+  nameWithType: InventoryTransactionServiceTests.CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 163
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException
+  id: CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException()
+  nameWithType: InventoryTransactionServiceTests.CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 194
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  id: CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException()
+  nameWithType: InventoryTransactionServiceTests.CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 211
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock
+  id: UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock()
+  nameWithType: InventoryTransactionServiceTests.UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 236
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  id: UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException()
+  nameWithType: InventoryTransactionServiceTests.UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 273
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  id: UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException()
+  nameWithType: InventoryTransactionServiceTests.UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 290
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock
+  id: DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock()
+  nameWithType: InventoryTransactionServiceTests.DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 320
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  id: DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException()
+  nameWithType: InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 346
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction
+  commentId: M:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction
+  id: DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction
+  parent: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction()
+  nameWithType: InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction()
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction
+    path: src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/Services/InventoryTransactionServiceTests.cs
+    startLine: 361
+  assemblies:
+  - MyApp.Inventory.Application.Tests
+  namespace: MyApp.Inventory.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction() As Task
+  overload: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: MyApp.Inventory.Application.Tests.Services
+  commentId: N:MyApp.Inventory.Application.Tests.Services
+  href: MyApp.html
+  name: MyApp.Inventory.Application.Tests.Services
+  nameWithType: MyApp.Inventory.Application.Tests.Services
+  fullName: MyApp.Inventory.Application.Tests.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Tests
+    name: Tests
+    href: MyApp.Inventory.Application.Tests.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Tests.Services
+    name: Services
+    href: MyApp.Inventory.Application.Tests.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Tests
+    name: Tests
+    href: MyApp.Inventory.Application.Tests.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Tests.Services
+    name: Services
+    href: MyApp.Inventory.Application.Tests.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.#ctor*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.#ctor
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests__ctor
+  name: InventoryTransactionServiceTests
+  nameWithType: InventoryTransactionServiceTests.InventoryTransactionServiceTests
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.InventoryTransactionServiceTests
+  nameWithType.vb: InventoryTransactionServiceTests.New
+  fullName.vb: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.New
+  name.vb: New
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto
+  name: GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto
+  nameWithType: InventoryTransactionServiceTests.GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithNonExistentId_ReturnsNull*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithNonExistentId_ReturnsNull
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_GetTransactionByIdAsync_WithNonExistentId_ReturnsNull
+  name: GetTransactionByIdAsync_WithNonExistentId_ReturnsNull
+  nameWithType: InventoryTransactionServiceTests.GetTransactionByIdAsync_WithNonExistentId_ReturnsNull
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionByIdAsync_WithNonExistentId_ReturnsNull
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct
+  name: GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct
+  nameWithType: InventoryTransactionServiceTests.GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse
+  name: GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse
+  nameWithType: InventoryTransactionServiceTests.GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByTypeAsync_ReturnsTransactionsOfType*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByTypeAsync_ReturnsTransactionsOfType
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_GetTransactionsByTypeAsync_ReturnsTransactionsOfType
+  name: GetTransactionsByTypeAsync_ReturnsTransactionsOfType
+  nameWithType: InventoryTransactionServiceTests.GetTransactionsByTypeAsync_ReturnsTransactionsOfType
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetTransactionsByTypeAsync_ReturnsTransactionsOfType
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetAllTransactionsAsync_ReturnsAllTransactions*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetAllTransactionsAsync_ReturnsAllTransactions
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_GetAllTransactionsAsync_ReturnsAllTransactions
+  name: GetAllTransactionsAsync_ReturnsAllTransactions
+  nameWithType: InventoryTransactionServiceTests.GetAllTransactionsAsync_ReturnsAllTransactions
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.GetAllTransactionsAsync_ReturnsAllTransactions
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock
+  name: CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock
+  nameWithType: InventoryTransactionServiceTests.CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException
+  name: CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException
+  nameWithType: InventoryTransactionServiceTests.CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  name: CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  nameWithType: InventoryTransactionServiceTests.CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock
+  name: UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock
+  nameWithType: InventoryTransactionServiceTests.UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  name: UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  nameWithType: InventoryTransactionServiceTests.UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  name: UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  nameWithType: InventoryTransactionServiceTests.UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock
+  name: DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock
+  nameWithType: InventoryTransactionServiceTests.DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  name: DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  nameWithType: InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException
+- uid: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction*
+  commentId: Overload:MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction
+  href: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html#MyApp_Inventory_Application_Tests_Services_InventoryTransactionServiceTests_DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction
+  name: DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction
+  nameWithType: InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction
+  fullName: MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction

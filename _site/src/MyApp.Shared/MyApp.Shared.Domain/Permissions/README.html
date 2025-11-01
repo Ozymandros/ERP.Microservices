@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Permission System Documentation | ERP.Microservices </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Permission System Documentation | ERP.Microservices ">
+      
+      
+      <link rel="icon" href="../../../../favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Shared/MyApp.Shared.Domain/Permissions/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../logo.svg" alt="ERP.Microservices">
+            ERP.Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="permission-system-documentation">Permission System Documentation</h1>
+
+<h2 id="overview">Overview</h2>
+<p>The permission system in MyApp is based on a <strong>Module + Action</strong> pattern, where permissions are defined as combinations of a module (e.g., Inventory, Purchasing) and an action (e.g., Read, Create, Update, Delete).</p>
+<h2 id="permission-format">Permission Format</h2>
+<p>All permissions follow the pattern: <code>{Module}.{Action}</code></p>
+<p>Examples:</p>
+<ul>
+<li><code>Inventory.Read</code> - Read access to Inventory module</li>
+<li><code>Purchasing.Create</code> - Create access to Purchasing module</li>
+<li><code>Orders.Update</code> - Update access to Orders module</li>
+<li><code>Sales.Delete</code> - Delete access to Sales module</li>
+</ul>
+<h2 id="available-modules">Available Modules</h2>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Inventory</code></td>
+<td>Manages products, warehouses, and stock levels</td>
+</tr>
+<tr>
+<td><code>Purchasing</code></td>
+<td>Manages suppliers and purchase orders</td>
+</tr>
+<tr>
+<td><code>Orders</code></td>
+<td>Manages customer orders</td>
+</tr>
+<tr>
+<td><code>Sales</code></td>
+<td>Manages sales orders and customers</td>
+</tr>
+<tr>
+<td><code>Billing</code></td>
+<td>Manages invoices and payments</td>
+</tr>
+<tr>
+<td><code>Notification</code></td>
+<td>Manages alerts and communications</td>
+</tr>
+<tr>
+<td><code>Auth</code></td>
+<td>Manages users, roles, and authentication</td>
+</tr>
+</tbody>
+</table>
+<h2 id="available-actions">Available Actions</h2>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Read</code></td>
+<td>1</td>
+<td>View/retrieve data</td>
+</tr>
+<tr>
+<td><code>Create</code></td>
+<td>2</td>
+<td>Create new data</td>
+</tr>
+<tr>
+<td><code>Update</code></td>
+<td>3</td>
+<td>Modify existing data</td>
+</tr>
+<tr>
+<td><code>Delete</code></td>
+<td>4</td>
+<td>Remove data</td>
+</tr>
+<tr>
+<td><code>Execute</code></td>
+<td>5</td>
+<td>Run operations and commands</td>
+</tr>
+<tr>
+<td><code>Export</code></td>
+<td>6</td>
+<td>Export data</td>
+</tr>
+<tr>
+<td><code>Import</code></td>
+<td>7</td>
+<td>Import data</td>
+</tr>
+</tbody>
+</table>
+<h2 id="using-permissions-in-code">Using Permissions in Code</h2>
+<h3 id="option-1-using-permissionconstants-recommended">Option 1: Using PermissionConstants (Recommended)</h3>
+<pre><code class="lang-csharp">using MyApp.Shared.Domain.Permissions;
+
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class InventoryController : ControllerBase
+{
+    // Use predefined constants for type safety
+    [HttpGet(&quot;products&quot;)]
+    [Authorize]
+    [Permission(PermissionConstants.Inventory.Read)]
+    public async Task&lt;IActionResult&gt; GetProducts()
+    {
+        return Ok();
+    }
+
+    [HttpPost(&quot;products&quot;)]
+    [Authorize]
+    [Permission(PermissionConstants.Inventory.Create)]
+    public async Task&lt;IActionResult&gt; CreateProduct()
+    {
+        return Ok();
+    }
+
+    [HttpPut(&quot;products/{id}&quot;)]
+    [Authorize]
+    [Permission(PermissionConstants.Inventory.Update)]
+    public async Task&lt;IActionResult&gt; UpdateProduct(Guid id)
+    {
+        return Ok();
+    }
+}
+</code></pre>
+<h3 id="option-2-using-permissionenum">Option 2: Using PermissionEnum</h3>
+<pre><code class="lang-csharp">using MyApp.Shared.Domain.Permissions;
+
+// Create a permission enum
+var permission = new PermissionEnum 
+{ 
+    Module = ModuleEnum.Inventory, 
+    Action = ActionEnum.Read 
+};
+
+// Convert to string
+string permissionString = permission.ToString(); // &quot;Inventory.Read&quot;
+</code></pre>
+<h3 id="option-3-using-string-constants">Option 3: Using String Constants</h3>
+<pre><code class="lang-csharp">using MyApp.Shared.Domain.Permissions;
+
+[HttpGet(&quot;products&quot;)]
+[Authorize]
+[Permission(&quot;Inventory.Read&quot;)]
+public async Task&lt;IActionResult&gt; GetProducts()
+{
+    return Ok();
+}
+</code></pre>
+<h2 id="common-usage-patterns">Common Usage Patterns</h2>
+<h3 id="get-all-permissions-for-a-module">Get All Permissions for a Module</h3>
+<pre><code class="lang-csharp">var inventoryPermissions = PermissionConstants.GetModulePermissions(ModuleEnum.Inventory);
+// Returns: [&quot;Inventory.Read&quot;, &quot;Inventory.Write&quot;, &quot;Inventory.Delete&quot;, &quot;Inventory.Execute&quot;, &quot;Inventory.Export&quot;, &quot;Inventory.Import&quot;]
+</code></pre>
+<h3 id="get-all-system-permissions">Get All System Permissions</h3>
+<pre><code class="lang-csharp">var allPermissions = PermissionConstants.GetAllPermissions();
+</code></pre>
+<h3 id="create-permission-dynamically">Create Permission Dynamically</h3>
+<pre><code class="lang-csharp">var permission = PermissionConstants.Create(ModuleEnum.Inventory, ActionEnum.Read);
+// Result: &quot;Inventory.Read&quot;
+</code></pre>
+<h3 id="parse-permission-string">Parse Permission String</h3>
+<pre><code class="lang-csharp">var permission = PermissionEnum.Parse(&quot;Inventory.Read&quot;);
+if (permission != null)
+{
+    var module = permission.Module; // ModuleEnum.Inventory
+    var action = permission.Action; // ActionEnum.Read
+}
+
+// Or use TryParse
+if (PermissionEnum.TryParse(&quot;Inventory.Read&quot;, out var parsedPermission))
+{
+    // Use parsedPermission
+}
+</code></pre>
+<h3 id="extract-module-or-action-from-string">Extract Module or Action from String</h3>
+<pre><code class="lang-csharp">var module = PermissionConstants.GetModule(&quot;Inventory.Read&quot;); // &quot;Inventory&quot;
+var action = PermissionConstants.GetAction(&quot;Inventory.Read&quot;);  // &quot;Read&quot;
+</code></pre>
+<h2 id="permission-attribute-implementation">Permission Attribute Implementation</h2>
+<p>To use the <code>[Permission]</code> attribute shown in the examples above, you need to create a custom authorization attribute:</p>
+<pre><code class="lang-csharp">using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using MyApp.Shared.Domain.Permissions;
+
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
+public class PermissionAttribute : AuthorizeAttribute, IAsyncAuthorizationFilter
+{
+    private readonly string _permission;
+
+    public PermissionAttribute(string permission)
+    {
+        _permission = permission;
+    }
+
+    public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
+    {
+        var user = context.HttpContext.User;
+        
+        if (!user.Identity?.IsAuthenticated ?? true)
+        {
+            context.Result = new UnauthorizedResult();
+            return;
+        }
+
+        var permissionService = context.HttpContext.RequestServices
+            .GetRequiredService&lt;IPermissionService&gt;();
+
+        var userId = Guid.Parse(user.FindFirst(&quot;sub&quot;)?.Value ?? &quot;&quot;);
+        var hasPermission = await permissionService.HasPermissionAsync(userId, 
+            PermissionConstants.GetModule(_permission),
+            PermissionConstants.GetAction(_permission));
+
+        if (!hasPermission)
+        {
+            context.Result = new ForbidResult();
+        }
+    }
+}
+</code></pre>
+<h2 id="integration-with-auth-module">Integration with Auth Module</h2>
+<p>The Auth module manages permission assignments through:</p>
+<ol>
+<li><strong>Role Permissions</strong>: Permissions assigned to roles (via <code>RolePermission</code> join table)</li>
+<li><strong>User Permissions</strong>: Direct permissions assigned to users (via <code>UserPermission</code> join table)</li>
+</ol>
+<p>When a user makes a request:</p>
+<ol>
+<li>The JWT token is validated</li>
+<li>The user's ID is extracted from the token</li>
+<li>Permission check queries both user-specific and role-based permissions</li>
+<li>Access is granted only if at least one matching permission exists</li>
+</ol>
+<h2 id="database-schema">Database Schema</h2>
+<h3 id="permission-table">Permission Table</h3>
+<pre><code class="lang-sql">CREATE TABLE [asp].[Permission] (
+    [Id] UNIQUEIDENTIFIER PRIMARY KEY,
+    [Module] NVARCHAR(50) NOT NULL,      -- e.g., &quot;Inventory&quot;
+    [Action] NVARCHAR(50) NOT NULL       -- e.g., &quot;Read&quot;
+);
+</code></pre>
+<h3 id="rolepermission-join-table">RolePermission Join Table</h3>
+<pre><code class="lang-sql">CREATE TABLE [auth].[RolePermission] (
+    [RoleId] UNIQUEIDENTIFIER NOT NULL,
+    [PermissionId] UNIQUEIDENTIFIER NOT NULL,
+    FOREIGN KEY ([RoleId]) REFERENCES [AspNetRoles](Id),
+    FOREIGN KEY ([PermissionId]) REFERENCES [asp].[Permission](Id)
+);
+</code></pre>
+<h3 id="userpermission-join-table">UserPermission Join Table</h3>
+<pre><code class="lang-sql">CREATE TABLE [auth].[UserPermission] (
+    [UserId] UNIQUEIDENTIFIER NOT NULL,
+    [PermissionId] UNIQUEIDENTIFIER NOT NULL,
+    FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers](Id),
+    FOREIGN KEY ([PermissionId]) REFERENCES [asp].[Permission](Id)
+);
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Use PermissionConstants for Type Safety</strong>: Always use <code>PermissionConstants</code> rather than magic strings</li>
+<li><strong>Apply Consistently</strong>: Apply permission checks to all endpoints that modify data</li>
+<li><strong>Combine with Roles</strong>: Use role-based permissions for common patterns, user-specific permissions for exceptions</li>
+<li><strong>Document Required Permissions</strong>: Document which permissions are required for each endpoint</li>
+<li><strong>Audit Permissions</strong>: Log all permission checks for security audit trails</li>
+</ol>
+<h2 id="migration-seeding-initial-permissions">Migration: Seeding Initial Permissions</h2>
+<p>To seed the database with initial permissions:</p>
+<pre><code class="lang-csharp">// In a migration or seeding method
+var permissions = new[]
+{
+    new Permission { Id = Guid.NewGuid(), Module = &quot;Inventory&quot;, Action = &quot;Read&quot; },
+    new Permission { Id = Guid.NewGuid(), Module = &quot;Inventory&quot;, Action = &quot;Create&quot; },
+    new Permission { Id = Guid.NewGuid(), Module = &quot;Inventory&quot;, Action = &quot;Update&quot; },
+    new Permission { Id = Guid.NewGuid(), Module = &quot;Inventory&quot;, Action = &quot;Delete&quot; },
+    // ... add all other module/action combinations
+};
+
+dbContext.Set&lt;Permission&gt;().AddRange(permissions);
+await dbContext.SaveChangesAsync();
+</code></pre>
+<p>Or use the helper method:</p>
+<pre><code class="lang-csharp">var allPermissions = PermissionConstants.GetAllPermissions()
+    .Select(p =&gt; new Permission 
+    { 
+        Id = Guid.NewGuid(),
+        Module = PermissionConstants.GetModule(p),
+        Action = PermissionConstants.GetAction(p)
+    })
+    .ToList();
+
+dbContext.Set&lt;Permission&gt;().AddRange(allPermissions);
+await dbContext.SaveChangesAsync();
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Shared/MyApp.Shared.Domain/Permissions/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

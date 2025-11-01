@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>⚙️ Infrastructure &amp; Infrastructure as Code | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="⚙️ Infrastructure &amp; Infrastructure as Code | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/infrastructure/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-infrastructure--infrastructure-as-code">⚙️ Infrastructure &amp; Infrastructure as Code</h1>
+
+<p><strong>Bicep Templates, Phase-Based Implementation &amp; Validation</strong><br>
+Last Updated: October 27, 2025</p>
+<hr>
+<h2 id="-overview">📍 Overview</h2>
+<p>This category covers infrastructure as code using Bicep. From module templates to phased implementation guides for managed identities, secrets, RBAC, and Azure resources. Designed for infrastructure engineers and DevOps teams.</p>
+<hr>
+<h2 id="-documents-in-this-category">📚 Documents in This Category</h2>
+<h3 id="bicep_overviewmd"><a href="BICEP_OVERVIEW.md">BICEP_OVERVIEW.md</a></h3>
+<p><strong>Bicep and Infrastructure as Code concepts</strong></p>
+<ul>
+<li>Bicep language basics</li>
+<li>Module structure and reusability</li>
+<li>Parameter files</li>
+<li>Outputs and dependencies</li>
+<li>Best practices</li>
+</ul>
+<h3 id="bicep_modulesmd"><a href="BICEP_MODULES.md">BICEP_MODULES.md</a></h3>
+<p><strong>Available Bicep modules and templates</strong></p>
+<ul>
+<li>Module catalog</li>
+<li>Resource coverage</li>
+<li>Module parameters</li>
+<li>Usage examples</li>
+<li>Extending modules</li>
+</ul>
+<h3 id="validationmd"><a href="VALIDATION.md">VALIDATION.md</a></h3>
+<p><strong>Bicep template validation</strong></p>
+<ul>
+<li>Linting and validation</li>
+<li>Testing templates</li>
+<li>Parameter validation</li>
+<li>Output verification</li>
+<li>Common validation issues</li>
+</ul>
+<h3 id="phase_guides-5-files">PHASE_GUIDES/ (5 files)</h3>
+<p><strong>Phased implementation approach</strong></p>
+<h4 id="phase_guidesreadmemd"><a href="PHASE_GUIDES/README.md">PHASE_GUIDES/README.md</a></h4>
+<ul>
+<li>Phase overview</li>
+<li>Dependencies between phases</li>
+<li>Timeline</li>
+<li>Rollback procedures</li>
+</ul>
+<h4 id="phase_1_managed_identitiesmd"><a href="PHASE_GUIDES/PHASE_1_MANAGED_IDENTITIES.md">PHASE_1_MANAGED_IDENTITIES.md</a></h4>
+<ul>
+<li>System-assigned identities</li>
+<li>User-assigned identities</li>
+<li>Identity assignment</li>
+<li>Verification steps</li>
+</ul>
+<h4 id="phase_2_secretsmd"><a href="PHASE_GUIDES/PHASE_2_SECRETS.md">PHASE_2_SECRETS.md</a></h4>
+<ul>
+<li>Key Vault creation</li>
+<li>Secret migration</li>
+<li>Secret rotation</li>
+<li>Emergency rotation</li>
+</ul>
+<h4 id="phase_3_rbacmd"><a href="PHASE_GUIDES/PHASE_3_RBAC.md">PHASE_3_RBAC.md</a></h4>
+<ul>
+<li>Role definitions</li>
+<li>Role assignments</li>
+<li>Custom roles</li>
+<li>Least privilege</li>
+</ul>
+<h4 id="phase_4_sql_rbacmd"><a href="PHASE_GUIDES/PHASE_4_SQL_RBAC.md">PHASE_4_SQL_RBAC.md</a></h4>
+<ul>
+<li>SQL Server setup</li>
+<li>Database-level RBAC</li>
+<li>User management</li>
+<li>Permission verification</li>
+</ul>
+<h4 id="phase_5_configurationmd"><a href="PHASE_GUIDES/PHASE_5_CONFIGURATION.md">PHASE_5_CONFIGURATION.md</a></h4>
+<ul>
+<li>App Configuration setup</li>
+<li>Configuration migration</li>
+<li>Feature flags</li>
+<li>Configuration updates</li>
+</ul>
+<hr>
+<h2 id="-infrastructure-architecture">🎯 Infrastructure Architecture</h2>
+<pre><code>┌─────────────────────────────────────┐
+│  Resource Group                     │
+├─────────────────────────────────────┤
+│  ├─ Container Registry (ACR)        │
+│  ├─ Container Apps Environment      │
+│  │  ├─ Auth Service                │
+│  │  ├─ Inventory Service           │
+│  │  ├─ Orders Service              │
+│  │  ├─ Sales Service               │
+│  │  ├─ Billing Service             │
+│  │  └─ Purchasing Service          │
+│  ├─ API Gateway Service            │
+│  ├─ SQL Database                   │
+│  ├─ Redis Cache                    │
+│  ├─ Key Vault                      │
+│  ├─ App Configuration              │
+│  ├─ Application Insights           │
+│  ├─ Log Analytics Workspace        │
+│  └─ Managed Identities             │
+└─────────────────────────────────────┘
+</code></pre>
+<hr>
+<h2 id="-infrastructure-components">📊 Infrastructure Components</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Container Apps</strong></td>
+<td>Compute</td>
+<td>Host microservices</td>
+</tr>
+<tr>
+<td><strong>API Gateway</strong></td>
+<td>Networking</td>
+<td>External access</td>
+</tr>
+<tr>
+<td><strong>SQL Database</strong></td>
+<td>Data</td>
+<td>Persistent storage</td>
+</tr>
+<tr>
+<td><strong>Redis Cache</strong></td>
+<td>Cache</td>
+<td>State &amp; caching</td>
+</tr>
+<tr>
+<td><strong>Key Vault</strong></td>
+<td>Security</td>
+<td>Secrets management</td>
+</tr>
+<tr>
+<td><strong>App Configuration</strong></td>
+<td>Config</td>
+<td>Configuration center</td>
+</tr>
+<tr>
+<td><strong>Application Insights</strong></td>
+<td>Monitoring</td>
+<td>Application telemetry</td>
+</tr>
+<tr>
+<td><strong>Log Analytics</strong></td>
+<td>Logging</td>
+<td>Centralized logging</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-phased-approach">🔄 Phased Approach</h2>
+<h3 id="phase-1-managed-identities">Phase 1: Managed Identities</h3>
+<ul>
+<li>Create identities</li>
+<li>Assign to services</li>
+<li>Test connectivity</li>
+<li><strong>Duration:</strong> 1 day</li>
+</ul>
+<h3 id="phase-2-secrets-management">Phase 2: Secrets Management</h3>
+<ul>
+<li>Create Key Vault</li>
+<li>Migrate secrets</li>
+<li>Setup rotation</li>
+<li><strong>Duration:</strong> 2 days</li>
+</ul>
+<h3 id="phase-3-rbac">Phase 3: RBAC</h3>
+<ul>
+<li>Define roles</li>
+<li>Assign permissions</li>
+<li>Verify access</li>
+<li><strong>Duration:</strong> 2 days</li>
+</ul>
+<h3 id="phase-4-sql-rbac">Phase 4: SQL RBAC</h3>
+<ul>
+<li>Create SQL logins</li>
+<li>Grant permissions</li>
+<li>Test access</li>
+<li><strong>Duration:</strong> 1 day</li>
+</ul>
+<h3 id="phase-5-configuration">Phase 5: Configuration</h3>
+<ul>
+<li>Setup App Configuration</li>
+<li>Migrate settings</li>
+<li>Configure features</li>
+<li><strong>Duration:</strong> 1 day</li>
+</ul>
+<p><strong>Total Timeline:</strong> 1 week</p>
+<hr>
+<h2 id="-related-categories">📚 Related Categories</h2>
+<ul>
+<li><strong>Deployment:</strong> <a href="../deployment/README.html">Deployment Guide</a> - Deployment procedures</li>
+<li><strong>Security:</strong> <a href="../security/README.html">Security Guide</a> - Security architecture</li>
+<li><strong>Operations:</strong> <a href="../operations/README.html">Operations Guide</a> - Production support</li>
+<li><strong>Development:</strong> <a href="../development/README.html">Development Setup</a> - Local development</li>
+</ul>
+<hr>
+<h2 id="-reading-order">🔄 Reading Order</h2>
+<ol>
+<li>Start with <a href="BICEP_OVERVIEW.md">BICEP_OVERVIEW.md</a> to understand IaC</li>
+<li>Review <a href="BICEP_MODULES.md">BICEP_MODULES.md</a> for available modules</li>
+<li>Read <a href="PHASE_GUIDES/README.md">PHASE_GUIDES/README.md</a> for implementation plan</li>
+<li>Follow each phase guide in order</li>
+<li>Reference <a href="VALIDATION.md">VALIDATION.md</a> for validation</li>
+</ol>
+<hr>
+<h2 id="-key-bicep-files">📋 Key Bicep Files</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>infra/main.bicep</code></td>
+<td>Main orchestration</td>
+</tr>
+<tr>
+<td><code>infra/main.parameters.json</code></td>
+<td>Parameter values</td>
+</tr>
+<tr>
+<td><code>infra/core/main.bicep</code></td>
+<td>Core resources</td>
+</tr>
+<tr>
+<td><code>infra/*/main.bicep</code></td>
+<td>Service-specific resources</td>
+</tr>
+<tr>
+<td><code>infra/resources.bicep</code></td>
+<td>Shared resources</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-infrastructure-checklist">✅ Infrastructure Checklist</h2>
+<h3 id="before-deployment">Before Deployment</h3>
+<ul>
+<li>[ ] All Bicep files validated</li>
+<li>[ ] Parameters configured correctly</li>
+<li>[ ] Prerequisites met</li>
+<li>[ ] Resource quotas sufficient</li>
+<li>[ ] Naming conventions followed</li>
+<li>[ ] Tags applied consistently</li>
+</ul>
+<h3 id="after-deployment">After Deployment</h3>
+<ul>
+<li>[ ] All resources created</li>
+<li>[ ] Identities assigned</li>
+<li>[ ] Secrets configured</li>
+<li>[ ] RBAC applied</li>
+<li>[ ] Monitoring enabled</li>
+<li>[ ] Backup configured</li>
+</ul>
+<h3 id="ongoing">Ongoing</h3>
+<ul>
+<li>[ ] Templates version controlled</li>
+<li>[ ] Changes peer-reviewed</li>
+<li>[ ] Documentation updated</li>
+<li>[ ] Disaster recovery tested</li>
+<li>[ ] Cost monitoring active</li>
+</ul>
+<hr>
+<h2 id="-key-concepts">💡 Key Concepts</h2>
+<h3 id="infrastructure-as-code">Infrastructure as Code</h3>
+<ul>
+<li>Version controlled</li>
+<li>Repeatable deployments</li>
+<li>Consistent environments</li>
+<li>Rollback capability</li>
+<li>Documentation</li>
+</ul>
+<h3 id="managed-identities">Managed Identities</h3>
+<ul>
+<li>No credential management</li>
+<li>Automatic token refresh</li>
+<li>Azure-native security</li>
+<li>Audit trails</li>
+<li>Least privilege</li>
+</ul>
+<h3 id="key-vault">Key Vault</h3>
+<ul>
+<li>Centralized secrets</li>
+<li>Access control</li>
+<li>Audit logging</li>
+<li>Automatic rotation</li>
+<li>Disaster recovery</li>
+</ul>
+<h3 id="rbac">RBAC</h3>
+<ul>
+<li>Fine-grained control</li>
+<li>Custom roles</li>
+<li>Built-in roles</li>
+<li>Service principal support</li>
+<li>Time-limited access</li>
+</ul>
+<hr>
+<h2 id="-common-issues">🆘 Common Issues</h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Template validation fails</td>
+<td><a href="VALIDATION.md">VALIDATION.md</a></td>
+</tr>
+<tr>
+<td>Deployment timeout</td>
+<td>Check resource quotas</td>
+</tr>
+<tr>
+<td>Permission denied</td>
+<td>Check RBAC setup</td>
+</tr>
+<tr>
+<td>Identity not working</td>
+<td>See <a href="PHASE_GUIDES/PHASE_1_MANAGED_IDENTITIES.md">PHASE_1</a></td>
+</tr>
+<tr>
+<td>Secret access fails</td>
+<td>See <a href="PHASE_GUIDES/PHASE_2_SECRETS.md">PHASE_2</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-resource-status">📊 Resource Status</h2>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Deployed</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Container Apps</td>
+<td>✅</td>
+<td>All 6 services</td>
+</tr>
+<tr>
+<td>API Gateway</td>
+<td>✅</td>
+<td>Running</td>
+</tr>
+<tr>
+<td>SQL Database</td>
+<td>✅</td>
+<td>With RBAC</td>
+</tr>
+<tr>
+<td>Redis Cache</td>
+<td>✅</td>
+<td>Authenticated</td>
+</tr>
+<tr>
+<td>Key Vault</td>
+<td>✅</td>
+<td>10+ secrets</td>
+</tr>
+<tr>
+<td>Managed Identity</td>
+<td>✅</td>
+<td>6 services</td>
+</tr>
+<tr>
+<td>App Configuration</td>
+<td>✅</td>
+<td>20+ settings</td>
+</tr>
+<tr>
+<td>Monitoring</td>
+<td>✅</td>
+<td>Full telemetry</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-next-steps">📞 Next Steps</h2>
+<ul>
+<li><strong>Learning Bicep?</strong> → <a href="BICEP_OVERVIEW.md">BICEP_OVERVIEW.md</a></li>
+<li><strong>Need modules?</strong> → <a href="BICEP_MODULES.md">BICEP_MODULES.md</a></li>
+<li><strong>Validating templates?</strong> → <a href="VALIDATION.md">VALIDATION.md</a></li>
+<li><strong>Phase 1: Identities?</strong> → <a href="PHASE_GUIDES/PHASE_1_MANAGED_IDENTITIES.md">PHASE_1</a></li>
+<li><strong>Phase 2: Secrets?</strong> → <a href="PHASE_GUIDES/PHASE_2_SECRETS.md">PHASE_2</a></li>
+<li><strong>Phase 3: RBAC?</strong> → <a href="PHASE_GUIDES/PHASE_3_RBAC.md">PHASE_3</a></li>
+<li><strong>Phase 4: SQL RBAC?</strong> → <a href="PHASE_GUIDES/PHASE_4_SQL_RBAC.md">PHASE_4</a></li>
+<li><strong>Phase 5: Configuration?</strong> → <a href="PHASE_GUIDES/PHASE_5_CONFIGURATION.md">PHASE_5</a></li>
+</ul>
+<hr>
+<h2 id="-full-document-map">🔗 Full Document Map</h2>
+<pre><code>infrastructure/
+├── README.md (this file)
+├── BICEP_OVERVIEW.md
+├── BICEP_MODULES.md
+├── VALIDATION.md
+└── PHASE_GUIDES/
+    ├── README.md
+    ├── PHASE_1_MANAGED_IDENTITIES.md
+    ├── PHASE_2_SECRETS.md
+    ├── PHASE_3_RBAC.md
+    ├── PHASE_4_SQL_RBAC.md
+    └── PHASE_5_CONFIGURATION.md
+</code></pre>
+<hr>
+<p><strong>Last Updated:</strong> October 27, 2025<br>
+<strong>Category Status:</strong> ✅ Complete<br>
+<strong>Documents:</strong> 8 files (1 + 1 + 1 + 5 phases)<br>
+<strong>Phased Approach:</strong> 5 phases, 1 week total</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/infrastructure/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

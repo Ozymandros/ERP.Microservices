@@ -1,0 +1,1254 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  commentId: T:MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  id: AuthServiceTests
+  parent: MyApp.Auth.Application.Tests.Services
+  children:
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests.#ctor
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidEmail_ShouldReturnNull
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidPassword_ShouldReturnNull
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithValidCredentials_ShouldReturnTokenResponse
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithRepositoryException_ShouldLogError
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithValidRefreshToken_ShouldRevokeToken
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithExpiredToken_ShouldReturnNull
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithInvalidToken_ShouldReturnNull
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithExistingEmail_ShouldReturnNull
+  - MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithValidData_ShouldReturnTokenResponse
+  langs:
+  - csharp
+  - vb
+  name: AuthServiceTests
+  nameWithType: AuthServiceTests
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: AuthServiceTests
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 16
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: 'public class AuthServiceTests : BaseServiceTest'
+    content.vb: Public Class AuthServiceTests Inherits BaseServiceTest
+  inheritance:
+  - System.Object
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  inheritedMembers:
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{{T}}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.#ctor
+  commentId: M:MyApp.Auth.Application.Tests.Services.AuthServiceTests.#ctor
+  id: '#ctor'
+  parent: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  langs:
+  - csharp
+  - vb
+  name: AuthServiceTests()
+  nameWithType: AuthServiceTests.AuthServiceTests()
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.AuthServiceTests()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 27
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: public AuthServiceTests()
+    content.vb: Public Sub New()
+  overload: MyApp.Auth.Application.Tests.Services.AuthServiceTests.#ctor*
+  nameWithType.vb: AuthServiceTests.New()
+  fullName.vb: MyApp.Auth.Application.Tests.Services.AuthServiceTests.New()
+  name.vb: New()
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithValidCredentials_ShouldReturnTokenResponse
+  commentId: M:MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithValidCredentials_ShouldReturnTokenResponse
+  id: LoginAsync_WithValidCredentials_ShouldReturnTokenResponse
+  parent: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  langs:
+  - csharp
+  - vb
+  name: LoginAsync_WithValidCredentials_ShouldReturnTokenResponse()
+  nameWithType: AuthServiceTests.LoginAsync_WithValidCredentials_ShouldReturnTokenResponse()
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithValidCredentials_ShouldReturnTokenResponse()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: LoginAsync_WithValidCredentials_ShouldReturnTokenResponse
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 47
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task LoginAsync_WithValidCredentials_ShouldReturnTokenResponse()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function LoginAsync_WithValidCredentials_ShouldReturnTokenResponse() As Task
+  overload: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithValidCredentials_ShouldReturnTokenResponse*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidEmail_ShouldReturnNull
+  commentId: M:MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidEmail_ShouldReturnNull
+  id: LoginAsync_WithInvalidEmail_ShouldReturnNull
+  parent: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  langs:
+  - csharp
+  - vb
+  name: LoginAsync_WithInvalidEmail_ShouldReturnNull()
+  nameWithType: AuthServiceTests.LoginAsync_WithInvalidEmail_ShouldReturnNull()
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidEmail_ShouldReturnNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: LoginAsync_WithInvalidEmail_ShouldReturnNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 94
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task LoginAsync_WithInvalidEmail_ShouldReturnNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function LoginAsync_WithInvalidEmail_ShouldReturnNull() As Task
+  overload: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidEmail_ShouldReturnNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidPassword_ShouldReturnNull
+  commentId: M:MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidPassword_ShouldReturnNull
+  id: LoginAsync_WithInvalidPassword_ShouldReturnNull
+  parent: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  langs:
+  - csharp
+  - vb
+  name: LoginAsync_WithInvalidPassword_ShouldReturnNull()
+  nameWithType: AuthServiceTests.LoginAsync_WithInvalidPassword_ShouldReturnNull()
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidPassword_ShouldReturnNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: LoginAsync_WithInvalidPassword_ShouldReturnNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 116
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task LoginAsync_WithInvalidPassword_ShouldReturnNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function LoginAsync_WithInvalidPassword_ShouldReturnNull() As Task
+  overload: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidPassword_ShouldReturnNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning
+  commentId: M:MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning
+  id: LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning
+  parent: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  langs:
+  - csharp
+  - vb
+  name: LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning()
+  nameWithType: AuthServiceTests.LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning()
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 150
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning() As Task
+  overload: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithValidData_ShouldReturnTokenResponse
+  commentId: M:MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithValidData_ShouldReturnTokenResponse
+  id: RegisterAsync_WithValidData_ShouldReturnTokenResponse
+  parent: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  langs:
+  - csharp
+  - vb
+  name: RegisterAsync_WithValidData_ShouldReturnTokenResponse()
+  nameWithType: AuthServiceTests.RegisterAsync_WithValidData_ShouldReturnTokenResponse()
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithValidData_ShouldReturnTokenResponse()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RegisterAsync_WithValidData_ShouldReturnTokenResponse
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 187
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RegisterAsync_WithValidData_ShouldReturnTokenResponse()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RegisterAsync_WithValidData_ShouldReturnTokenResponse() As Task
+  overload: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithValidData_ShouldReturnTokenResponse*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithExistingEmail_ShouldReturnNull
+  commentId: M:MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithExistingEmail_ShouldReturnNull
+  id: RegisterAsync_WithExistingEmail_ShouldReturnNull
+  parent: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  langs:
+  - csharp
+  - vb
+  name: RegisterAsync_WithExistingEmail_ShouldReturnNull()
+  nameWithType: AuthServiceTests.RegisterAsync_WithExistingEmail_ShouldReturnNull()
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithExistingEmail_ShouldReturnNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RegisterAsync_WithExistingEmail_ShouldReturnNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 236
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RegisterAsync_WithExistingEmail_ShouldReturnNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RegisterAsync_WithExistingEmail_ShouldReturnNull() As Task
+  overload: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithExistingEmail_ShouldReturnNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse
+  commentId: M:MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse
+  id: RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse
+  parent: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  langs:
+  - csharp
+  - vb
+  name: RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse()
+  nameWithType: AuthServiceTests.RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse()
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 268
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse() As Task
+  overload: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithInvalidToken_ShouldReturnNull
+  commentId: M:MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithInvalidToken_ShouldReturnNull
+  id: RefreshTokenAsync_WithInvalidToken_ShouldReturnNull
+  parent: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  langs:
+  - csharp
+  - vb
+  name: RefreshTokenAsync_WithInvalidToken_ShouldReturnNull()
+  nameWithType: AuthServiceTests.RefreshTokenAsync_WithInvalidToken_ShouldReturnNull()
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithInvalidToken_ShouldReturnNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RefreshTokenAsync_WithInvalidToken_ShouldReturnNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 316
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RefreshTokenAsync_WithInvalidToken_ShouldReturnNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RefreshTokenAsync_WithInvalidToken_ShouldReturnNull() As Task
+  overload: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithInvalidToken_ShouldReturnNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithExpiredToken_ShouldReturnNull
+  commentId: M:MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithExpiredToken_ShouldReturnNull
+  id: RefreshTokenAsync_WithExpiredToken_ShouldReturnNull
+  parent: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  langs:
+  - csharp
+  - vb
+  name: RefreshTokenAsync_WithExpiredToken_ShouldReturnNull()
+  nameWithType: AuthServiceTests.RefreshTokenAsync_WithExpiredToken_ShouldReturnNull()
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithExpiredToken_ShouldReturnNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RefreshTokenAsync_WithExpiredToken_ShouldReturnNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 340
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task RefreshTokenAsync_WithExpiredToken_ShouldReturnNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function RefreshTokenAsync_WithExpiredToken_ShouldReturnNull() As Task
+  overload: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithExpiredToken_ShouldReturnNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithValidRefreshToken_ShouldRevokeToken
+  commentId: M:MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithValidRefreshToken_ShouldRevokeToken
+  id: LogoutAsync_WithValidRefreshToken_ShouldRevokeToken
+  parent: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  langs:
+  - csharp
+  - vb
+  name: LogoutAsync_WithValidRefreshToken_ShouldRevokeToken()
+  nameWithType: AuthServiceTests.LogoutAsync_WithValidRefreshToken_ShouldRevokeToken()
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithValidRefreshToken_ShouldRevokeToken()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: LogoutAsync_WithValidRefreshToken_ShouldRevokeToken
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 368
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task LogoutAsync_WithValidRefreshToken_ShouldRevokeToken()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function LogoutAsync_WithValidRefreshToken_ShouldRevokeToken() As Task
+  overload: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithValidRefreshToken_ShouldRevokeToken*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithRepositoryException_ShouldLogError
+  commentId: M:MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithRepositoryException_ShouldLogError
+  id: LogoutAsync_WithRepositoryException_ShouldLogError
+  parent: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  langs:
+  - csharp
+  - vb
+  name: LogoutAsync_WithRepositoryException_ShouldLogError()
+  nameWithType: AuthServiceTests.LogoutAsync_WithRepositoryException_ShouldLogError()
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithRepositoryException_ShouldLogError()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: LogoutAsync_WithRepositoryException_ShouldLogError
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 385
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task LogoutAsync_WithRepositoryException_ShouldLogError()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function LogoutAsync_WithRepositoryException_ShouldLogError() As Task
+  overload: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithRepositoryException_ShouldLogError*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse
+  commentId: M:MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse
+  id: ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse
+  parent: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  langs:
+  - csharp
+  - vb
+  name: ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse()
+  nameWithType: AuthServiceTests.ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse()
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 407
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse() As Task
+  overload: MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse
+  commentId: M:MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse
+  id: ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse
+  parent: MyApp.Auth.Application.Tests.Services.AuthServiceTests
+  langs:
+  - csharp
+  - vb
+  name: ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse()
+  nameWithType: AuthServiceTests.ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse()
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/AuthServiceTests.cs
+    startLine: 450
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse() As Task
+  overload: MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: MyApp.Auth.Application.Tests.Services
+  commentId: N:MyApp.Auth.Application.Tests.Services
+  href: MyApp.html
+  name: MyApp.Auth.Application.Tests.Services
+  nameWithType: MyApp.Auth.Application.Tests.Services
+  fullName: MyApp.Auth.Application.Tests.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Services
+    name: Services
+    href: MyApp.Auth.Application.Tests.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Services
+    name: Services
+    href: MyApp.Auth.Application.Tests.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  commentId: T:MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  parent: MyApp.Auth.Application.Tests.Common
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html
+  name: BaseServiceTest
+  nameWithType: BaseServiceTest
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+  commentId: F:MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_MockMapper
+  name: MockMapper
+  nameWithType: BaseServiceTest.MockMapper
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+  commentId: F:MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_Mapper
+  name: Mapper
+  nameWithType: BaseServiceTest.Mapper
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+  commentId: M:MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_CreateMockLogger__1
+  name: CreateMockLogger<T>()
+  nameWithType: BaseServiceTest.CreateMockLogger<T>()
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger<T>()
+  nameWithType.vb: BaseServiceTest.CreateMockLogger(Of T)()
+  fullName.vb: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger(Of T)()
+  name.vb: CreateMockLogger(Of T)()
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+    name: CreateMockLogger
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_CreateMockLogger__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+    name: CreateMockLogger
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_CreateMockLogger__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{{T}}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  commentId: M:MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  definition: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  name: VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  nameWithType: BaseServiceTest.VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled<T>(Moq.Mock<Microsoft.Extensions.Logging.ILogger<T>>, Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  nameWithType.vb: BaseServiceTest.VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  fullName.vb: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled(Of T)(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger(Of T)), Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  name.vb: VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: <
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Auth.Application.Tests.Common
+  commentId: N:MyApp.Auth.Application.Tests.Common
+  href: MyApp.html
+  name: MyApp.Auth.Application.Tests.Common
+  nameWithType: MyApp.Auth.Application.Tests.Common
+  fullName: MyApp.Auth.Application.Tests.Common
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Common
+    name: Common
+    href: MyApp.Auth.Application.Tests.Common.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Common
+    name: Common
+    href: MyApp.Auth.Application.Tests.Common.html
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  commentId: M:MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  isExternal: true
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  name: VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  nameWithType: BaseServiceTest.VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled<T>(Moq.Mock<Microsoft.Extensions.Logging.ILogger<T>>, Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  nameWithType.vb: BaseServiceTest.VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  fullName.vb: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled(Of T)(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger(Of T)), Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  name.vb: VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: <
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.#ctor*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.AuthServiceTests.#ctor
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html#MyApp_Auth_Application_Tests_Services_AuthServiceTests__ctor
+  name: AuthServiceTests
+  nameWithType: AuthServiceTests.AuthServiceTests
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.AuthServiceTests
+  nameWithType.vb: AuthServiceTests.New
+  fullName.vb: MyApp.Auth.Application.Tests.Services.AuthServiceTests.New
+  name.vb: New
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithValidCredentials_ShouldReturnTokenResponse*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithValidCredentials_ShouldReturnTokenResponse
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html#MyApp_Auth_Application_Tests_Services_AuthServiceTests_LoginAsync_WithValidCredentials_ShouldReturnTokenResponse
+  name: LoginAsync_WithValidCredentials_ShouldReturnTokenResponse
+  nameWithType: AuthServiceTests.LoginAsync_WithValidCredentials_ShouldReturnTokenResponse
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithValidCredentials_ShouldReturnTokenResponse
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidEmail_ShouldReturnNull*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidEmail_ShouldReturnNull
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html#MyApp_Auth_Application_Tests_Services_AuthServiceTests_LoginAsync_WithInvalidEmail_ShouldReturnNull
+  name: LoginAsync_WithInvalidEmail_ShouldReturnNull
+  nameWithType: AuthServiceTests.LoginAsync_WithInvalidEmail_ShouldReturnNull
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidEmail_ShouldReturnNull
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidPassword_ShouldReturnNull*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidPassword_ShouldReturnNull
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html#MyApp_Auth_Application_Tests_Services_AuthServiceTests_LoginAsync_WithInvalidPassword_ShouldReturnNull
+  name: LoginAsync_WithInvalidPassword_ShouldReturnNull
+  nameWithType: AuthServiceTests.LoginAsync_WithInvalidPassword_ShouldReturnNull
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithInvalidPassword_ShouldReturnNull
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html#MyApp_Auth_Application_Tests_Services_AuthServiceTests_LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning
+  name: LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning
+  nameWithType: AuthServiceTests.LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithValidData_ShouldReturnTokenResponse*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithValidData_ShouldReturnTokenResponse
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html#MyApp_Auth_Application_Tests_Services_AuthServiceTests_RegisterAsync_WithValidData_ShouldReturnTokenResponse
+  name: RegisterAsync_WithValidData_ShouldReturnTokenResponse
+  nameWithType: AuthServiceTests.RegisterAsync_WithValidData_ShouldReturnTokenResponse
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithValidData_ShouldReturnTokenResponse
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithExistingEmail_ShouldReturnNull*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithExistingEmail_ShouldReturnNull
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html#MyApp_Auth_Application_Tests_Services_AuthServiceTests_RegisterAsync_WithExistingEmail_ShouldReturnNull
+  name: RegisterAsync_WithExistingEmail_ShouldReturnNull
+  nameWithType: AuthServiceTests.RegisterAsync_WithExistingEmail_ShouldReturnNull
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RegisterAsync_WithExistingEmail_ShouldReturnNull
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html#MyApp_Auth_Application_Tests_Services_AuthServiceTests_RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse
+  name: RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse
+  nameWithType: AuthServiceTests.RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithInvalidToken_ShouldReturnNull*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithInvalidToken_ShouldReturnNull
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html#MyApp_Auth_Application_Tests_Services_AuthServiceTests_RefreshTokenAsync_WithInvalidToken_ShouldReturnNull
+  name: RefreshTokenAsync_WithInvalidToken_ShouldReturnNull
+  nameWithType: AuthServiceTests.RefreshTokenAsync_WithInvalidToken_ShouldReturnNull
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithInvalidToken_ShouldReturnNull
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithExpiredToken_ShouldReturnNull*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithExpiredToken_ShouldReturnNull
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html#MyApp_Auth_Application_Tests_Services_AuthServiceTests_RefreshTokenAsync_WithExpiredToken_ShouldReturnNull
+  name: RefreshTokenAsync_WithExpiredToken_ShouldReturnNull
+  nameWithType: AuthServiceTests.RefreshTokenAsync_WithExpiredToken_ShouldReturnNull
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.RefreshTokenAsync_WithExpiredToken_ShouldReturnNull
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithValidRefreshToken_ShouldRevokeToken*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithValidRefreshToken_ShouldRevokeToken
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html#MyApp_Auth_Application_Tests_Services_AuthServiceTests_LogoutAsync_WithValidRefreshToken_ShouldRevokeToken
+  name: LogoutAsync_WithValidRefreshToken_ShouldRevokeToken
+  nameWithType: AuthServiceTests.LogoutAsync_WithValidRefreshToken_ShouldRevokeToken
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithValidRefreshToken_ShouldRevokeToken
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithRepositoryException_ShouldLogError*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithRepositoryException_ShouldLogError
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html#MyApp_Auth_Application_Tests_Services_AuthServiceTests_LogoutAsync_WithRepositoryException_ShouldLogError
+  name: LogoutAsync_WithRepositoryException_ShouldLogError
+  nameWithType: AuthServiceTests.LogoutAsync_WithRepositoryException_ShouldLogError
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.LogoutAsync_WithRepositoryException_ShouldLogError
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html#MyApp_Auth_Application_Tests_Services_AuthServiceTests_ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse
+  name: ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse
+  nameWithType: AuthServiceTests.ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse
+- uid: MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse
+  href: MyApp.Auth.Application.Tests.Services.AuthServiceTests.html#MyApp_Auth_Application_Tests_Services_AuthServiceTests_ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse
+  name: ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse
+  nameWithType: AuthServiceTests.ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse
+  fullName: MyApp.Auth.Application.Tests.Services.AuthServiceTests.ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse

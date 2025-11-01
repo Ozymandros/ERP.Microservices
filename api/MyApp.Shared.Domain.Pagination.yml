@@ -1,0 +1,49 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Domain.Pagination
+  commentId: N:MyApp.Shared.Domain.Pagination
+  id: MyApp.Shared.Domain.Pagination
+  children:
+  - MyApp.Shared.Domain.Pagination.PaginatedResult`1
+  - MyApp.Shared.Domain.Pagination.PaginationParams
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Shared.Domain.Pagination
+  nameWithType: MyApp.Shared.Domain.Pagination
+  fullName: MyApp.Shared.Domain.Pagination
+  type: Namespace
+  assemblies:
+  - MyApp.Shared.Domain
+references:
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+  commentId: T:MyApp.Shared.Domain.Pagination.PaginatedResult`1
+  href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html
+  name: PaginatedResult<T>
+  nameWithType: PaginatedResult<T>
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>
+  nameWithType.vb: PaginatedResult(Of T)
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T)
+  name.vb: PaginatedResult(Of T)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+    href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+    href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MyApp.Shared.Domain.Pagination.PaginationParams
+  commentId: T:MyApp.Shared.Domain.Pagination.PaginationParams
+  href: MyApp.Shared.Domain.Pagination.PaginationParams.html
+  name: PaginationParams
+  nameWithType: PaginationParams
+  fullName: MyApp.Shared.Domain.Pagination.PaginationParams

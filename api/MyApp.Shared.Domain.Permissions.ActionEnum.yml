@@ -1,0 +1,282 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Domain.Permissions.ActionEnum
+  commentId: T:MyApp.Shared.Domain.Permissions.ActionEnum
+  id: ActionEnum
+  parent: MyApp.Shared.Domain.Permissions
+  children:
+  - MyApp.Shared.Domain.Permissions.ActionEnum.Create
+  - MyApp.Shared.Domain.Permissions.ActionEnum.Delete
+  - MyApp.Shared.Domain.Permissions.ActionEnum.Execute
+  - MyApp.Shared.Domain.Permissions.ActionEnum.Export
+  - MyApp.Shared.Domain.Permissions.ActionEnum.Import
+  - MyApp.Shared.Domain.Permissions.ActionEnum.Read
+  - MyApp.Shared.Domain.Permissions.ActionEnum.Update
+  langs:
+  - csharp
+  - vb
+  name: ActionEnum
+  nameWithType: ActionEnum
+  fullName: MyApp.Shared.Domain.Permissions.ActionEnum
+  type: Enum
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ActionEnum
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 34
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: >-
+    Enumerates all permission actions that can be performed in the ERP system.
+
+    These actions represent CRUD operations and other common actions.
+  example: []
+  syntax:
+    content: public enum ActionEnum
+    content.vb: Public Enum ActionEnum
+- uid: MyApp.Shared.Domain.Permissions.ActionEnum.Read
+  commentId: F:MyApp.Shared.Domain.Permissions.ActionEnum.Read
+  id: Read
+  parent: MyApp.Shared.Domain.Permissions.ActionEnum
+  langs:
+  - csharp
+  - vb
+  name: Read
+  nameWithType: ActionEnum.Read
+  fullName: MyApp.Shared.Domain.Permissions.ActionEnum.Read
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Read
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 37
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Read/View permission - allows viewing/retrieving data
+  example: []
+  syntax:
+    content: Read = 1
+    return:
+      type: MyApp.Shared.Domain.Permissions.ActionEnum
+- uid: MyApp.Shared.Domain.Permissions.ActionEnum.Create
+  commentId: F:MyApp.Shared.Domain.Permissions.ActionEnum.Create
+  id: Create
+  parent: MyApp.Shared.Domain.Permissions.ActionEnum
+  langs:
+  - csharp
+  - vb
+  name: Create
+  nameWithType: ActionEnum.Create
+  fullName: MyApp.Shared.Domain.Permissions.ActionEnum.Create
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Create
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 40
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Create permission - allows creating new data
+  example: []
+  syntax:
+    content: Create = 2
+    return:
+      type: MyApp.Shared.Domain.Permissions.ActionEnum
+- uid: MyApp.Shared.Domain.Permissions.ActionEnum.Update
+  commentId: F:MyApp.Shared.Domain.Permissions.ActionEnum.Update
+  id: Update
+  parent: MyApp.Shared.Domain.Permissions.ActionEnum
+  langs:
+  - csharp
+  - vb
+  name: Update
+  nameWithType: ActionEnum.Update
+  fullName: MyApp.Shared.Domain.Permissions.ActionEnum.Update
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Update
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 43
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Update permission - allows modifying existing data
+  example: []
+  syntax:
+    content: Update = 3
+    return:
+      type: MyApp.Shared.Domain.Permissions.ActionEnum
+- uid: MyApp.Shared.Domain.Permissions.ActionEnum.Delete
+  commentId: F:MyApp.Shared.Domain.Permissions.ActionEnum.Delete
+  id: Delete
+  parent: MyApp.Shared.Domain.Permissions.ActionEnum
+  langs:
+  - csharp
+  - vb
+  name: Delete
+  nameWithType: ActionEnum.Delete
+  fullName: MyApp.Shared.Domain.Permissions.ActionEnum.Delete
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Delete
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 46
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Delete permission - allows removing data
+  example: []
+  syntax:
+    content: Delete = 4
+    return:
+      type: MyApp.Shared.Domain.Permissions.ActionEnum
+- uid: MyApp.Shared.Domain.Permissions.ActionEnum.Execute
+  commentId: F:MyApp.Shared.Domain.Permissions.ActionEnum.Execute
+  id: Execute
+  parent: MyApp.Shared.Domain.Permissions.ActionEnum
+  langs:
+  - csharp
+  - vb
+  name: Execute
+  nameWithType: ActionEnum.Execute
+  fullName: MyApp.Shared.Domain.Permissions.ActionEnum.Execute
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Execute
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 49
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Execute permission - allows running operations and commands
+  example: []
+  syntax:
+    content: Execute = 5
+    return:
+      type: MyApp.Shared.Domain.Permissions.ActionEnum
+- uid: MyApp.Shared.Domain.Permissions.ActionEnum.Export
+  commentId: F:MyApp.Shared.Domain.Permissions.ActionEnum.Export
+  id: Export
+  parent: MyApp.Shared.Domain.Permissions.ActionEnum
+  langs:
+  - csharp
+  - vb
+  name: Export
+  nameWithType: ActionEnum.Export
+  fullName: MyApp.Shared.Domain.Permissions.ActionEnum.Export
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Export
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 52
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Export permission - allows exporting data
+  example: []
+  syntax:
+    content: Export = 6
+    return:
+      type: MyApp.Shared.Domain.Permissions.ActionEnum
+- uid: MyApp.Shared.Domain.Permissions.ActionEnum.Import
+  commentId: F:MyApp.Shared.Domain.Permissions.ActionEnum.Import
+  id: Import
+  parent: MyApp.Shared.Domain.Permissions.ActionEnum
+  langs:
+  - csharp
+  - vb
+  name: Import
+  nameWithType: ActionEnum.Import
+  fullName: MyApp.Shared.Domain.Permissions.ActionEnum.Import
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Import
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionEnum.cs
+    startLine: 55
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Import permission - allows importing data
+  example: []
+  syntax:
+    content: Import = 7
+    return:
+      type: MyApp.Shared.Domain.Permissions.ActionEnum
+references:
+- uid: MyApp.Shared.Domain.Permissions
+  commentId: N:MyApp.Shared.Domain.Permissions
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Permissions
+  nameWithType: MyApp.Shared.Domain.Permissions
+  fullName: MyApp.Shared.Domain.Permissions
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions
+    name: Permissions
+    href: MyApp.Shared.Domain.Permissions.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions
+    name: Permissions
+    href: MyApp.Shared.Domain.Permissions.html
+- uid: MyApp.Shared.Domain.Permissions.ActionEnum
+  commentId: T:MyApp.Shared.Domain.Permissions.ActionEnum
+  parent: MyApp.Shared.Domain.Permissions
+  href: MyApp.Shared.Domain.Permissions.ActionEnum.html
+  name: ActionEnum
+  nameWithType: ActionEnum
+  fullName: MyApp.Shared.Domain.Permissions.ActionEnum

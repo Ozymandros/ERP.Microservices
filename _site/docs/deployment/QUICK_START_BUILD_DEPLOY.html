@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Quick Start: Automated Build &amp; Deploy | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Quick Start: Automated Build &amp; Deploy | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/deployment/QUICK_START_BUILD_DEPLOY.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="quick-start-automated-build--deploy">Quick Start: Automated Build &amp; Deploy</h1>
+
+<h2 id="the-problem-fixed-">The Problem (Fixed ✓)</h2>
+<pre><code>ERROR: MANIFEST_UNKNOWN: manifest tagged by &quot;latest&quot; is not found
+</code></pre>
+<p><strong>Why:</strong> Container Apps tried to pull images that weren't built yet.</p>
+<h2 id="the-solution-complete-">The Solution (Complete ✓)</h2>
+<p>Docker images are now <strong>automatically built and pushed to ACR</strong> before deployment.</p>
+<hr>
+<h2 id="local-development---3-steps">Local Development - 3 Steps</h2>
+<h3 id="step-1-build-images">Step 1: Build Images</h3>
+<pre><code class="lang-powershell">cd C:\Projects\ERP_ASPIRE_APP\src
+./infra/scripts/build-push-images.ps1
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>✓ Successful: 7
+✓ Failed: 0
+✓ All images built and pushed successfully!
+</code></pre>
+<h3 id="step-2-deploy-infrastructure">Step 2: Deploy Infrastructure</h3>
+<pre><code class="lang-powershell">azd up
+</code></pre>
+<h3 id="step-3-verify-services">Step 3: Verify Services</h3>
+<pre><code class="lang-powershell"># Check Container Apps
+az containerapp list --resource-group rg-myapp-dev-core --output table
+
+# Test service health
+curl https://myapp-dev-auth-service.blueyellow.azurewebsites.net/health
+</code></pre>
+<hr>
+<h2 id="github-actions---fully-automatic-">GitHub Actions - Fully Automatic ✓</h2>
+<p><strong>Setup:</strong></p>
+<ol>
+<li><p>Add 3 secrets to GitHub repo:</p>
+<ul>
+<li><code>AZURE_CLIENT_ID</code></li>
+<li><code>AZURE_TENANT_ID</code></li>
+<li><code>AZURE_SUBSCRIPTION_ID</code></li>
+</ul>
+</li>
+<li><p>Push to <code>main</code> or <code>develop</code> branch</p>
+</li>
+</ol>
+<p><strong>What happens automatically:</strong></p>
+<ul>
+<li>✓ Builds all 7 services in ACR (parallel)</li>
+<li>✓ Tags images with commit hash + <code>latest</code></li>
+<li>✓ Deploys with <code>azd deploy</code></li>
+<li>✓ Verifies all services are running</li>
+<li>✓ Logs everything to GitHub Actions</li>
+</ul>
+<p><strong>View status:</strong></p>
+<ul>
+<li>GitHub Actions tab shows progress</li>
+<li>Takes ~15-20 minutes total</li>
+</ul>
+<hr>
+<h2 id="files-created">Files Created</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>infra/scripts/build-push-images.ps1</code></td>
+<td>PowerShell script for local builds</td>
+</tr>
+<tr>
+<td><code>.github/workflows/azure-build-deploy.yml</code></td>
+<td>GitHub Actions CI/CD pipeline</td>
+</tr>
+<tr>
+<td><code>infra/core/build/acr-build.bicep</code></td>
+<td>Bicep documentation module</td>
+</tr>
+<tr>
+<td><code>docs/deployment/BUILD_AND_DEPLOY_AUTOMATION.md</code></td>
+<td>Complete documentation</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="what-changed">What Changed</h2>
+<h3 id="before">Before</h3>
+<pre><code>azd up → Error: Images not found in ACR ✗
+</code></pre>
+<h3 id="after">After</h3>
+<pre><code>Step 1: ./build-push-images.ps1  → Builds all images ✓
+Step 2: azd up                    → Deploys with images ready ✓
+Step 3: Services running          → Everything works ✓
+</code></pre>
+<hr>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p><strong>Problem:</strong> Script fails to authenticate</p>
+<pre><code class="lang-powershell">az login
+az account set --subscription &quot;your-subscription-id&quot;
+</code></pre>
+<p><strong>Problem:</strong> Images still not found</p>
+<pre><code class="lang-powershell"># Check if images were built
+az acr repository list --name myappdevcontainerregistry
+</code></pre>
+<p><strong>Problem:</strong> Deployment timeout</p>
+<pre><code class="lang-powershell"># Check Container App status
+az containerapp show --name myapp-dev-auth-service \
+    --resource-group rg-myapp-dev-core \
+    --query &quot;properties.latestRevisionFqdn&quot;
+</code></pre>
+<hr>
+<h2 id="next-steps">Next Steps</h2>
+<p>✅ <strong>Immediate:</strong></p>
+<pre><code class="lang-powershell">./infra/scripts/build-push-images.ps1
+azd up
+</code></pre>
+<p>✅ <strong>Optional - Setup GitHub Actions:</strong></p>
+<ul>
+<li>Add secrets (AZURE_CLIENT_ID, etc.)</li>
+<li>Push to GitHub</li>
+<li>Automatic CI/CD pipeline starts</li>
+</ul>
+<hr>
+<h2 id="key-benefits">Key Benefits</h2>
+<p>✓ <strong>Works locally</strong> - Build images before deploying<br>
+✓ <strong>Works in CI/CD</strong> - Fully automated with GitHub Actions<br>
+✓ <strong>No manual steps</strong> - PowerShell script handles everything<br>
+✓ <strong>Fast</strong> - Parallel ACR builds (faster than sequential Docker builds)<br>
+✓ <strong>Traceable</strong> - Images tagged with commit hash<br>
+✓ <strong>Reliable</strong> - Bicep + Bicep modules ensure consistency</p>
+<hr>
+<p><strong>Ready to deploy?</strong></p>
+<pre><code class="lang-powershell">./infra/scripts/build-push-images.ps1 &amp;&amp; azd up
+</code></pre>
+<p>See <code>docs/deployment/BUILD_AND_DEPLOY_AUTOMATION.md</code> for details.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/deployment/QUICK_START_BUILD_DEPLOY.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#128295; RBAC Role Definition Fix - Deployment Error Resolution | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#128295; RBAC Role Definition Fix - Deployment Error Resolution | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/security/RBAC_FIX_SUMMARY.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-rbac-role-definition-fix---deployment-error-resolution">🔧 RBAC Role Definition Fix - Deployment Error Resolution</h1>
+
+<h2 id="issue-identified">Issue Identified</h2>
+<p><strong>Error:</strong> <code>RoleDefinitionDoesNotExist: The specified role definition with ID '4633458b17de408ab8740445c86d0e6e' does not exist</code></p>
+<p><strong>Root Cause:</strong> Typo in <code>infra/config/constants.bicep</code> line 90</p>
+<h2 id="the-problem">The Problem</h2>
+<h3 id="incorrect-value-was">Incorrect Value (Was):</h3>
+<pre><code class="lang-bicep">// infra/config/constants.bicep line 90
+var keyVaultSecretsUserRoleId = '4633458b-17de-408a-b8b7-0445c86d0e6e'
+                                                      ^^^^ TYPO HERE (b8b7 instead of b874)
+</code></pre>
+<h3 id="correct-value-now">Correct Value (Now):</h3>
+<pre><code class="lang-bicep">// infra/config/constants.bicep line 90
+var keyVaultSecretsUserRoleId = '4633458b-17de-408a-b874-0445c86d0e6e'
+                                                      ^^^^ FIXED (b874 is correct)
+</code></pre>
+<h2 id="what-this-role-is">What This Role Is</h2>
+<p><strong>Azure Role:</strong> Key Vault Secrets User (Built-in)</p>
+<ul>
+<li><strong>Role ID:</strong> <code>4633458b-17de-408a-b874-0445c86d0e6e</code></li>
+<li><strong>Purpose:</strong> Allows reading secrets from Key Vault</li>
+<li><strong>Applied To:</strong> Container App managed identities so they can access:
+<ul>
+<li>JWT secret keys</li>
+<li>Redis cache passwords</li>
+<li>SQL connection strings</li>
+</ul>
+</li>
+</ul>
+<h2 id="files-affected">Files Affected</h2>
+<p>✅ <strong>Fixed:</strong></p>
+<ul>
+<li><code>infra/config/constants.bicep</code> - Corrected the typo in line 90</li>
+</ul>
+<p>✅ <strong>Already Correct:</strong></p>
+<ul>
+<li><code>infra/core/security/keyvault-rbac.bicep</code> - Had the correct value all along</li>
+</ul>
+<h2 id="impact">Impact</h2>
+<p>This fix resolves:</p>
+<ol>
+<li>✅ The <code>RoleDefinitionDoesNotExist</code> error that was preventing Container Apps deployment</li>
+<li>✅ The cascading &quot;Operation expired&quot; timeout errors (Container Apps couldn't start because they couldn't get RBAC permissions)</li>
+<li>✅ Container App managed identities can now authenticate to Key Vault and pull configuration</li>
+</ol>
+<h2 id="next-steps">Next Steps</h2>
+<ol>
+<li><p><strong>Redeploy Infrastructure:</strong></p>
+<pre><code class="lang-bash">cd infra
+azd deploy
+</code></pre>
+</li>
+<li><p><strong>Verify Deployment:</strong></p>
+<ul>
+<li>Check Container Apps status in Azure Portal</li>
+<li>Verify Container App revisions are active (not timed out)</li>
+<li>Check Container App logs for successful startup</li>
+</ul>
+</li>
+<li><p><strong>Validation:</strong></p>
+<ul>
+<li>Ensure Container Apps can pull secrets from Key Vault</li>
+<li>Verify connection to Redis and SQL Server working</li>
+</ul>
+</li>
+</ol>
+<h2 id="testing-commands">Testing Commands</h2>
+<pre><code class="lang-bash"># Check role assignments on Key Vault
+az role assignment list --resource-group myapp-rg \
+  --scope &quot;/subscriptions/{sub-id}/resourceGroups/myapp-rg/providers/Microsoft.KeyVault/vaults/myapp-dev-kv&quot;
+
+# Verify Container App status
+az containerapp show --resource-group myapp-rg --name myapp-dev-auth-service --query properties.provisioningState
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/security/RBAC_FIX_SUMMARY.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

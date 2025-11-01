@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Infrastructure.Data.Repositories
+  commentId: N:MyApp.Purchasing.Infrastructure.Data.Repositories
+  id: MyApp.Purchasing.Infrastructure.Data.Repositories
+  children:
+  - MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderLineRepository
+  - MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderRepository
+  - MyApp.Purchasing.Infrastructure.Data.Repositories.SupplierRepository
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Purchasing.Infrastructure.Data.Repositories
+  nameWithType: MyApp.Purchasing.Infrastructure.Data.Repositories
+  fullName: MyApp.Purchasing.Infrastructure.Data.Repositories
+  type: Namespace
+  assemblies:
+  - MyApp.Purchasing.Infrastructure
+references:
+- uid: MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderLineRepository
+  commentId: T:MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderLineRepository
+  href: MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderLineRepository.html
+  name: PurchaseOrderLineRepository
+  nameWithType: PurchaseOrderLineRepository
+  fullName: MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderLineRepository
+- uid: MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderRepository
+  commentId: T:MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderRepository
+  href: MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderRepository.html
+  name: PurchaseOrderRepository
+  nameWithType: PurchaseOrderRepository
+  fullName: MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderRepository
+- uid: MyApp.Purchasing.Infrastructure.Data.Repositories.SupplierRepository
+  commentId: T:MyApp.Purchasing.Infrastructure.Data.Repositories.SupplierRepository
+  href: MyApp.Purchasing.Infrastructure.Data.Repositories.SupplierRepository.html
+  name: SupplierRepository
+  nameWithType: SupplierRepository
+  fullName: MyApp.Purchasing.Infrastructure.Data.Repositories.SupplierRepository

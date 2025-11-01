@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>⚡ Quick Implementation Checklist | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="⚡ Quick Implementation Checklist | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/infrastructure/BICEP_QUICK_CHECKLIST.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-quick-implementation-checklist">⚡ Quick Implementation Checklist</h1>
+
+<p><strong>Status:</strong> Ready for implementation<br>
+<strong>Estimated Time:</strong> 6-8 hours<br>
+<strong>Priority:</strong> 🔴 CRITICAL - Blocks Azure deployment</p>
+<hr>
+<h2 id="phase-1-core-infrastructure-2-hours">Phase 1: Core Infrastructure (2 hours)</h2>
+<h3 id="step-11-update-mainbicep-with-parameters">Step 1.1: Update <code>main.bicep</code> with Parameters</h3>
+<ul>
+<li>[ ] Add JWT secret parameter (line after <code>cache_password</code>)</li>
+<li>[ ] Add JWT issuer parameter</li>
+<li>[ ] Add JWT audience parameter</li>
+<li>[ ] Add FRONTEND_ORIGIN parameter</li>
+<li>[ ] Add ASPNETCORE_ENVIRONMENT parameter</li>
+<li>[ ] Add <code>resourceToken</code> variable</li>
+</ul>
+<p><strong>File:</strong> <code>infra/main.bicep</code><br>
+<strong>Lines to add:</strong> ~15 lines after existing parameters</p>
+<h3 id="step-12-call-infrastructure-modules">Step 1.2: Call Infrastructure Modules</h3>
+<ul>
+<li>[ ] Add redis module call</li>
+<li>[ ] Add sqlServer module call</li>
+<li>[ ] Add keyVault module call (with enableKeyVault: true)</li>
+<li>[ ] Set module dependencies with <code>dependsOn</code></li>
+</ul>
+<p><strong>File:</strong> <code>infra/main.bicep</code><br>
+<strong>Lines to add:</strong> ~30 lines after resources module<br>
+<strong>Critical:</strong> Set <code>enableKeyVault: true</code></p>
+<h3 id="step-13-update-mainparametersjson">Step 1.3: Update <code>main.parameters.json</code></h3>
+<ul>
+<li>[ ] Add jwtSecretKey parameter</li>
+<li>[ ] Add jwtIssuer parameter</li>
+<li>[ ] Add jwtAudience parameter</li>
+<li>[ ] Add frontendOrigin parameter</li>
+<li>[ ] Add aspnetcoreEnvironment parameter</li>
+</ul>
+<p><strong>File:</strong> <code>infra/main.parameters.json</code><br>
+<strong>Lines to add:</strong> ~20 lines</p>
+<h3 id="step-14-test-phase-1">Step 1.4: Test Phase 1</h3>
+<pre><code class="lang-powershell">az bicep build --file infra/main.bicep
+az bicep build --file infra/main.bicep --outfile infra/main.json
+</code></pre>
+<hr>
+<h2 id="phase-2-database-configuration-1-hour">Phase 2: Database Configuration (1 hour)</h2>
+<h3 id="step-21-update-myapp-sqlservermodulebicep">Step 2.1: Update <code>myapp-sqlserver.module.bicep</code></h3>
+<ul>
+<li>[ ] Add 6-database creation loop</li>
+<li>[ ] Add database outputs</li>
+<li>[ ] Update tags</li>
+</ul>
+<p><strong>File:</strong> <code>infra/myapp-sqlserver/myapp-sqlserver.module.bicep</code><br>
+<strong>Lines to add:</strong> ~25 lines<br>
+<strong>Critical:</strong> Loop creates: AuthDB, BillingDB, InventoryDB, OrdersDB, PurchasingDB, SalesDB</p>
+<h3 id="step-22-test-phase-2">Step 2.2: Test Phase 2</h3>
+<pre><code class="lang-powershell">az bicep build --file infra/myapp-sqlserver/myapp-sqlserver.module.bicep
+</code></pre>
+<hr>
+<h2 id="phase-3-container-app-template-updates-1-hour">Phase 3: Container App Template Updates (1 hour)</h2>
+<h3 id="step-31-update-corehostcontainer-appbicep-parameters">Step 3.1: Update <code>core/host/container-app.bicep</code> Parameters</h3>
+<ul>
+<li>[ ] Add frontendOrigin parameter</li>
+<li>[ ] Add jwtIssuer parameter</li>
+<li>[ ] Add jwtAudience parameter</li>
+<li>[ ] Add aspnetcoreEnvironment parameter</li>
+<li>[ ] Add appInsightsConnectionString parameter</li>
+</ul>
+<p><strong>File:</strong> <code>infra/core/host/container-app.bicep</code><br>
+<strong>Lines to add:</strong> ~20 lines (after line 28)</p>
+<h3 id="step-32-update-container-configuration">Step 3.2: Update Container Configuration</h3>
+<ul>
+<li>[ ] Add env variable mapping for JWT config</li>
+<li>[ ] Add env variable for ASPNETCORE_ENVIRONMENT</li>
+<li>[ ] Add env variable for FRONTEND_ORIGIN</li>
+<li>[ ] Add env variable for Application Insights</li>
+</ul>
+<p><strong>File:</strong> <code>infra/core/host/container-app.bicep</code><br>
+<strong>Lines to modify:</strong> <code>template.containers[0].env</code> section</p>
+<h3 id="step-33-test-phase-3">Step 3.3: Test Phase 3</h3>
+<pre><code class="lang-powershell">az bicep build --file infra/core/host/container-app.bicep
+</code></pre>
+<hr>
+<h2 id="phase-4-service-modules-3-4-hours">Phase 4: Service Modules (3-4 hours)</h2>
+<h3 id="step-41-create-auth-service-module">Step 4.1: Create Auth Service Module</h3>
+<ul>
+<li>[ ] Create file: <code>infra/auth-service/auth-service.module.bicep</code></li>
+<li>[ ] Copy template from remediation guide</li>
+<li>[ ] Update service name references</li>
+<li>[ ] Update secret references (use sql-connection-authdb)</li>
+<li>[ ] Set daprEnabled: true, externalIngress: false</li>
+</ul>
+<p><strong>File:</strong> <code>infra/auth-service/auth-service.module.bicep</code> (<strong>NEW</strong>)</p>
+<h3 id="step-42-create-billing-service-module">Step 4.2: Create Billing Service Module</h3>
+<ul>
+<li>[ ] Create file: <code>infra/billing-service/billing-service.module.bicep</code></li>
+<li>[ ] Copy from auth-service template</li>
+<li>[ ] Change service name → <code>billing-service</code></li>
+<li>[ ] Change secret name → <code>sql-connection-billingdb</code></li>
+</ul>
+<p><strong>File:</strong> <code>infra/billing-service/billing-service.module.bicep</code> (<strong>NEW</strong>)</p>
+<h3 id="step-43-create-inventory-service-module">Step 4.3: Create Inventory Service Module</h3>
+<ul>
+<li>[ ] Create file: <code>infra/inventory-service/inventory-service.module.bicep</code></li>
+<li>[ ] Change service name → <code>inventory-service</code></li>
+<li>[ ] Change secret name → <code>sql-connection-inventorydb</code></li>
+</ul>
+<p><strong>File:</strong> <code>infra/inventory-service/inventory-service.module.bicep</code> (<strong>NEW</strong>)</p>
+<h3 id="step-44-create-orders-service-module">Step 4.4: Create Orders Service Module</h3>
+<ul>
+<li>[ ] Create file: <code>infra/orders-service/orders-service.module.bicep</code></li>
+<li>[ ] Change service name → <code>orders-service</code></li>
+<li>[ ] Change secret name → <code>sql-connection-ordersdb</code></li>
+</ul>
+<p><strong>File:</strong> <code>infra/orders-service/orders-service.module.bicep</code> (<strong>NEW</strong>)</p>
+<h3 id="step-45-create-purchasing-service-module">Step 4.5: Create Purchasing Service Module</h3>
+<ul>
+<li>[ ] Create file: <code>infra/purchasing-service/purchasing-service.module.bicep</code></li>
+<li>[ ] Change service name → <code>purchasing-service</code></li>
+<li>[ ] Change secret name → <code>sql-connection-purchasingdb</code></li>
+</ul>
+<p><strong>File:</strong> <code>infra/purchasing-service/purchasing-service.module.bicep</code> (<strong>NEW</strong>)</p>
+<h3 id="step-46-create-sales-service-module">Step 4.6: Create Sales Service Module</h3>
+<ul>
+<li>[ ] Create file: <code>infra/sales-service/sales-service.module.bicep</code></li>
+<li>[ ] Change service name → <code>sales-service</code></li>
+<li>[ ] Change secret name → <code>sql-connection-salesdb</code></li>
+</ul>
+<p><strong>File:</strong> <code>infra/sales-service/sales-service.module.bicep</code> (<strong>NEW</strong>)</p>
+<h3 id="step-47-create-api-gateway-module">Step 4.7: Create API Gateway Module</h3>
+<ul>
+<li>[ ] Create file: <code>infra/api-gateway/api-gateway.module.bicep</code> (<strong>NEW</strong>)</li>
+<li>[ ] Copy from service template</li>
+<li>[ ] Set externalIngress: true (public facing)</li>
+<li>[ ] Set daprEnabled: false (gateway doesn't need Dapr)</li>
+<li>[ ] Add Ocelot route environment variables</li>
+<li>[ ] Set maxReplicas: 10 (higher for public endpoint)</li>
+</ul>
+<p><strong>File:</strong> <code>infra/api-gateway/api-gateway.module.bicep</code> (<strong>NEW</strong>)</p>
+<h3 id="step-48-test-phase-4">Step 4.8: Test Phase 4</h3>
+<pre><code class="lang-powershell">foreach ($service in @('auth', 'billing', 'inventory', 'orders', 'purchasing', 'sales')) {
+  az bicep build --file &quot;infra/$service-service/$service-service.module.bicep&quot;
+}
+az bicep build --file infra/api-gateway/api-gateway.module.bicep
+</code></pre>
+<hr>
+<h2 id="phase-5-mainbicep-service-module-calls-30-min">Phase 5: Main.bicep Service Module Calls (30 min)</h2>
+<h3 id="step-51-add-auth-service-module-call">Step 5.1: Add Auth Service Module Call</h3>
+<ul>
+<li>[ ] Call auth-service module from main.bicep</li>
+<li>[ ] Pass parameters: containerAppsEnvironmentName, containerRegistryName, keyVaultUri</li>
+<li>[ ] Set dependencies: keyVault, redis, myapp_sqlserver</li>
+</ul>
+<p><strong>File:</strong> <code>infra/main.bicep</code><br>
+<strong>Location:</strong> After keyVault module definition</p>
+<h3 id="step-52-add-billing-service-module-call">Step 5.2: Add Billing Service Module Call</h3>
+<ul>
+<li>[ ] Call billing-service module</li>
+<li>[ ] Repeat parameter passing pattern</li>
+</ul>
+<h3 id="step-53-add-inventory-service-module-call">Step 5.3: Add Inventory Service Module Call</h3>
+<ul>
+<li>[ ] Call inventory-service module</li>
+</ul>
+<h3 id="step-54-add-orders-service-module-call">Step 5.4: Add Orders Service Module Call</h3>
+<ul>
+<li>[ ] Call orders-service module</li>
+</ul>
+<h3 id="step-55-add-purchasing-service-module-call">Step 5.5: Add Purchasing Service Module Call</h3>
+<ul>
+<li>[ ] Call purchasing-service module</li>
+</ul>
+<h3 id="step-56-add-sales-service-module-call">Step 5.6: Add Sales Service Module Call</h3>
+<ul>
+<li>[ ] Call sales-service module</li>
+</ul>
+<h3 id="step-57-add-api-gateway-module-call">Step 5.7: Add API Gateway Module Call</h3>
+<ul>
+<li>[ ] Call api-gateway module</li>
+<li>[ ] Set dependencies on all 6 service modules</li>
+<li>[ ] Ensure gateway deploys after services</li>
+</ul>
+<p><strong>File:</strong> <code>infra/main.bicep</code><br>
+<strong>Location:</strong> After all service modules<br>
+<strong>Critical:</strong> API Gateway depends on services for service discovery</p>
+<h3 id="step-58-test-phase-5">Step 5.8: Test Phase 5</h3>
+<pre><code class="lang-powershell">az bicep build --file infra/main.bicep
+az bicep build --file infra/main.bicep --outfile infra/main.json
+</code></pre>
+<hr>
+<h2 id="phase-6-validation--debugging-30-min">Phase 6: Validation &amp; Debugging (30 min)</h2>
+<h3 id="step-61-validate-all-bicep-files">Step 6.1: Validate All Bicep Files</h3>
+<pre><code class="lang-powershell">$files = @(
+  'infra/main.bicep'
+  'infra/resources.bicep'
+  'infra/myapp-sqlserver/myapp-sqlserver.module.bicep'
+  'infra/core/host/container-app.bicep'
+  'infra/core/database/redis.bicep'
+  'infra/core/database/sql-server.bicep'
+  'infra/core/security/keyvault-secrets.bicep'
+  'infra/auth-service/auth-service.module.bicep'
+  'infra/billing-service/billing-service.module.bicep'
+  'infra/inventory-service/inventory-service.module.bicep'
+  'infra/orders-service/orders-service.module.bicep'
+  'infra/purchasing-service/purchasing-service.module.bicep'
+  'infra/sales-service/sales-service.module.bicep'
+  'infra/api-gateway/api-gateway.module.bicep'
+)
+
+foreach ($file in $files) {
+  Write-Host &quot;Validating $file...&quot;
+  az bicep build --file $file
+}
+</code></pre>
+<ul>
+<li>[ ] All bicep validate passes</li>
+<li>[ ] No syntax errors</li>
+<li>[ ] No undefined variables</li>
+<li>[ ] No missing module references</li>
+</ul>
+<h3 id="step-62-validate-parameters">Step 6.2: Validate Parameters</h3>
+<pre><code class="lang-powershell">az deployment group validate `
+  --template-file infra/main.json `
+  --parameters infra/main.parameters.json
+</code></pre>
+<ul>
+<li>[ ] Parameter types correct</li>
+<li>[ ] All required parameters provided</li>
+<li>[ ] No duplicate parameter names</li>
+</ul>
+<h3 id="step-63-check-module-references">Step 6.3: Check Module References</h3>
+<ul>
+<li>[ ] Each service module references correct container-app template</li>
+<li>[ ] Each service module references correct Key Vault secrets</li>
+<li>[ ] API Gateway references all services</li>
+<li>[ ] All module paths resolve correctly</li>
+</ul>
+<h3 id="step-64-verify-environment-variables">Step 6.4: Verify Environment Variables</h3>
+<ul>
+<li>[ ] All 6 services have JWT parameters</li>
+<li>[ ] All 6 services have database connection reference</li>
+<li>[ ] All services have cache connection reference</li>
+<li>[ ] API Gateway has Ocelot routes configured</li>
+<li>[ ] All services have Dapr sidecar enabled (except gateway)</li>
+</ul>
+<h3 id="step-65-test-phase-6">Step 6.5: Test Phase 6</h3>
+<pre><code class="lang-powershell"># Run validation script
+./validate-bicep-complete.ps1 -bicepPath ./infra
+</code></pre>
+<hr>
+<h2 id="phase-7-configuration-setup-30-min">Phase 7: Configuration Setup (30 min)</h2>
+<h3 id="step-71-create-azuremyenvenv-file">Step 7.1: Create <code>.azure/myenv/.env</code> File</h3>
+<pre><code class="lang-bash">AZURE_ENV_NAME=myapp-dev
+AZURE_LOCATION=eastus
+AZURE_PRINCIPAL_ID=00000000-0000-0000-0000-000000000000  # Your AAD principal ID
+AZURE_SQL_PASSWORD=ComplexP@ssw0rd123!
+AZURE_REDIS_PASSWORD=ComplexRedisP@ssw0rd123!
+AZURE_JWT_SECRET_KEY=your_very_long_secret_key_minimum_32_chars_exactly
+AZURE_JWT_ISSUER=MyApp.Auth
+AZURE_JWT_AUDIENCE=MyApp.All
+AZURE_FRONTEND_ORIGIN=https://yourdomain.com
+ASPNETCORE_ENVIRONMENT=Production
+</code></pre>
+<ul>
+<li>[ ] Set strong passwords (20+ chars)</li>
+<li>[ ] Generate secure JWT secret</li>
+<li>[ ] Set correct principal ID</li>
+<li>[ ] Set correct frontend origin</li>
+</ul>
+<h3 id="step-72-container-registry-setup">Step 7.2: Container Registry Setup</h3>
+<ul>
+<li>[ ] Build and push auth-service image to ACR</li>
+<li>[ ] Build and push billing-service image to ACR</li>
+<li>[ ] Build and push inventory-service image to ACR</li>
+<li>[ ] Build and push orders-service image to ACR</li>
+<li>[ ] Build and push purchasing-service image to ACR</li>
+<li>[ ] Build and push sales-service image to ACR</li>
+<li>[ ] Build and push api-gateway image to ACR</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-bash">az acr build --registry $ACR_NAME --image auth-service:latest -f MyApp.Auth/MyApp.Auth.API/Dockerfile .
+</code></pre>
+<hr>
+<h2 id="phase-8-deployment-1-hour">Phase 8: Deployment (1 hour)</h2>
+<h3 id="step-81-validate-deployment">Step 8.1: Validate Deployment</h3>
+<pre><code class="lang-bash">azd env set AZURE_ENV_NAME myapp-prod
+azd validate
+</code></pre>
+<ul>
+<li>[ ] No validation errors</li>
+<li>[ ] All resources have correct dependencies</li>
+<li>[ ] All parameters have values</li>
+</ul>
+<h3 id="step-82-deploy-to-azure">Step 8.2: Deploy to Azure</h3>
+<pre><code class="lang-bash">azd deploy
+</code></pre>
+<ul>
+<li>[ ] Deployment starts successfully</li>
+<li>[ ] Resource group created</li>
+<li>[ ] Container Apps deployed</li>
+<li>[ ] Key Vault secrets created</li>
+<li>[ ] Databases created</li>
+</ul>
+<h3 id="step-83-verify-deployment">Step 8.3: Verify Deployment</h3>
+<pre><code class="lang-bash"># Check Container Apps
+az containerapp list --resource-group rg-myapp-prod
+
+# Check Key Vault secrets
+az keyvault secret list --vault-name &lt;vault-name&gt;
+
+# Check SQL databases
+az sql db list --server &lt;server-name&gt; --resource-group rg-myapp-prod
+
+# Get API Gateway FQDN
+az containerapp show --name api-gateway --resource-group rg-myapp-prod --query properties.configuration.ingress.fqdn
+</code></pre>
+<ul>
+<li>[ ] 7 Container Apps created (6 services + gateway)</li>
+<li>[ ] 8 Key Vault secrets created</li>
+<li>[ ] 6 SQL databases created</li>
+<li>[ ] API Gateway has FQDN</li>
+<li>[ ] Services have internal FQDNs</li>
+</ul>
+<hr>
+<h2 id="critical-success-criteria">Critical Success Criteria</h2>
+<p>✅ <strong>All Bicep files validate without errors</strong></p>
+<pre><code class="lang-powershell">az bicep build --file infra/main.bicep
+</code></pre>
+<p>✅ <strong>Parameter validation passes</strong></p>
+<pre><code class="lang-powershell">az deployment group validate --template-file infra/main.json --parameters infra/main.parameters.json
+</code></pre>
+<p>✅ <strong>All required modules exist and are called</strong></p>
+<ul>
+<li>6 service modules</li>
+<li>1 API gateway module</li>
+<li>1 Key Vault module (with enableKeyVault: true)</li>
+<li>1 Redis module</li>
+<li>1 SQL Server module</li>
+</ul>
+<p>✅ <strong>Environment variables properly configured</strong></p>
+<ul>
+<li>JWT parameters in main.bicep</li>
+<li>FRONTEND_ORIGIN in main.bicep</li>
+<li>All parameters in main.parameters.json</li>
+<li>Service environment variables in container-app-bicep</li>
+</ul>
+<p>✅ <strong>Secrets properly referenced</strong></p>
+<ul>
+<li>JWT secret from Key Vault</li>
+<li>SQL connections from Key Vault</li>
+<li>Redis connection from Key Vault</li>
+<li>All services access secrets via secretRef</li>
+</ul>
+<p>✅ <strong>Key Vault integrated</strong></p>
+<ul>
+<li>Module called from main.bicep</li>
+<li>enableKeyVault parameter set to true</li>
+<li>Managed Identity has Get secret permission</li>
+<li>All 8 secrets created</li>
+</ul>
+<hr>
+<h2 id="troubleshooting-guide">Troubleshooting Guide</h2>
+<h3 id="issue-module-not-found-error">Issue: &quot;Module not found&quot; error</h3>
+<p><strong>Solution:</strong> Check file paths are relative to <code>main.bicep</code></p>
+<pre><code class="lang-bicep">// Correct:
+module redis 'core/database/redis.bicep' = { ... }
+
+// Incorrect:
+module redis './core/database/redis.bicep' = { ... }
+module redis 'infra/core/database/redis.bicep' = { ... }
+</code></pre>
+<h3 id="issue-parameter-not-defined-error">Issue: &quot;Parameter not defined&quot; error</h3>
+<p><strong>Solution:</strong> Ensure parameter is defined before module call</p>
+<pre><code class="lang-bicep">// Must be at top of main.bicep with other params
+@secure()
+param jwtSecretKey string
+
+// Then can be used in module call
+params: {
+  jwtSecretKey: jwtSecretKey
+}
+</code></pre>
+<h3 id="issue-enablekeyvault-true-doesnt-work">Issue: &quot;enableKeyVault: true doesn't work&quot;</h3>
+<p><strong>Solution:</strong> Check main.bicep module call</p>
+<pre><code class="lang-bicep">// CORRECT:
+module keyVault 'core/security/keyvault-secrets.bicep' = {
+  params: {
+    enableKeyVault: true  // ✅ Must be true
+  }
+}
+
+// WRONG:
+module keyVault 'core/security/keyvault-secrets.bicep' = {
+  params: {
+    enableKeyVault: false  // ❌ Secrets won't be created
+  }
+}
+</code></pre>
+<h3 id="issue-module-dependencies-not-working">Issue: &quot;Module dependencies not working&quot;</h3>
+<p><strong>Solution:</strong> Use explicit dependsOn</p>
+<pre><code class="lang-bicep">module authService 'auth-service/auth-service.module.bicep' = {
+  name: 'auth-service'
+  params: { ... }
+  dependsOn: [
+    keyVault      // ✅ Explicit dependency
+    redis         // ✅ Explicit dependency
+    myapp_sqlserver  // ✅ Explicit dependency
+  ]
+}
+</code></pre>
+<hr>
+<h2 id="quick-reference-commands">Quick Reference Commands</h2>
+<pre><code class="lang-powershell"># Validate all bicep files
+Get-ChildItem -Path ./infra -Filter &quot;*.bicep&quot; -Recurse | ForEach-Object {
+  Write-Host &quot;Validating $_&quot;
+  az bicep build --file $_.FullName
+}
+
+# Build main.bicep
+az bicep build --file infra/main.bicep --outfile infra/main.json
+
+# Validate parameters
+az deployment group validate `
+  --template-file infra/main.json `
+  --parameters infra/main.parameters.json `
+  --resource-group rg-myapp-dev
+
+# Test deployment (no actual deployment)
+azd validate
+
+# Deploy to Azure
+azd deploy
+
+# Check deployment status
+az deployment group show --name main --resource-group rg-myapp-prod
+
+# View created resources
+az resource list --resource-group rg-myapp-prod --output table
+</code></pre>
+<hr>
+<h2 id="files-to-create-summary">Files to Create (Summary)</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Type</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>infra/auth-service/auth-service.module.bicep</code></td>
+<td>NEW</td>
+<td>🔴 Priority</td>
+</tr>
+<tr>
+<td><code>infra/billing-service/billing-service.module.bicep</code></td>
+<td>NEW</td>
+<td>🔴 Priority</td>
+</tr>
+<tr>
+<td><code>infra/inventory-service/inventory-service.module.bicep</code></td>
+<td>NEW</td>
+<td>🔴 Priority</td>
+</tr>
+<tr>
+<td><code>infra/orders-service/orders-service.module.bicep</code></td>
+<td>NEW</td>
+<td>🔴 Priority</td>
+</tr>
+<tr>
+<td><code>infra/purchasing-service/purchasing-service.module.bicep</code></td>
+<td>NEW</td>
+<td>🔴 Priority</td>
+</tr>
+<tr>
+<td><code>infra/sales-service/sales-service.module.bicep</code></td>
+<td>NEW</td>
+<td>🔴 Priority</td>
+</tr>
+<tr>
+<td><code>infra/api-gateway/api-gateway.module.bicep</code></td>
+<td>NEW</td>
+<td>🔴 Priority</td>
+</tr>
+</tbody>
+</table>
+<h2 id="files-to-modify-summary">Files to Modify (Summary)</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Changes</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>infra/main.bicep</code></td>
+<td>Add parameters, module calls</td>
+<td>🔴 Priority</td>
+</tr>
+<tr>
+<td><code>infra/main.parameters.json</code></td>
+<td>Add parameter definitions</td>
+<td>🔴 Priority</td>
+</tr>
+<tr>
+<td><code>infra/myapp-sqlserver/myapp-sqlserver.module.bicep</code></td>
+<td>Add 6-database loop</td>
+<td>🔴 Priority</td>
+</tr>
+<tr>
+<td><code>infra/core/host/container-app.bicep</code></td>
+<td>Add env vars, JWT config</td>
+<td>🟠 High</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><strong>Status:</strong> Ready to execute<br>
+<strong>Estimated Time:</strong> 6-8 hours<br>
+<strong>Success Rate:</strong> High (detailed templates provided)<br>
+<strong>Blockers:</strong> None identified - all information provided</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/infrastructure/BICEP_QUICK_CHECKLIST.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

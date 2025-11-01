@@ -1,0 +1,183 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity`1
+  commentId: T:MyApp.Shared.Domain.Entities.IAuditableEntity`1
+  id: IAuditableEntity`1
+  parent: MyApp.Shared.Domain.Entities
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: IAuditableEntity<T>
+  nameWithType: IAuditableEntity<T>
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity<T>
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IAuditableEntity.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: IAuditableEntity
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Entities/IAuditableEntity.cs
+    startLine: 3
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Entities
+  syntax:
+    content: 'public interface IAuditableEntity<T> : IAuditableEntity, IEntity<T> where T : IComparable, IComparable<T>, IEquatable<T>, IFormattable, IParsable<T>'
+    typeParameters:
+    - id: T
+    content.vb: Public Interface IAuditableEntity(Of T As {IComparable, IComparable(Of T), IEquatable(Of T), IFormattable, IParsable(Of T)}) Inherits IAuditableEntity, IEntity(Of T)
+  inheritedMembers:
+  - MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt
+  - MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy
+  - MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt
+  - MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy
+  - MyApp.Shared.Domain.Entities.IEntity{{T}}.Id
+  nameWithType.vb: IAuditableEntity(Of T)
+  fullName.vb: MyApp.Shared.Domain.Entities.IAuditableEntity(Of T)
+  name.vb: IAuditableEntity(Of T)
+references:
+- uid: MyApp.Shared.Domain.Entities
+  commentId: N:MyApp.Shared.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Entities
+  nameWithType: MyApp.Shared.Domain.Entities
+  fullName: MyApp.Shared.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Entities
+    name: Entities
+    href: MyApp.Shared.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Entities
+    name: Entities
+    href: MyApp.Shared.Domain.Entities.html
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt
+  commentId: P:MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt
+  parent: MyApp.Shared.Domain.Entities.IAuditableEntity
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html#MyApp_Shared_Domain_Entities_IAuditableEntity_CreatedAt
+  name: CreatedAt
+  nameWithType: IAuditableEntity.CreatedAt
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy
+  commentId: P:MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy
+  parent: MyApp.Shared.Domain.Entities.IAuditableEntity
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html#MyApp_Shared_Domain_Entities_IAuditableEntity_CreatedBy
+  name: CreatedBy
+  nameWithType: IAuditableEntity.CreatedBy
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt
+  commentId: P:MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt
+  parent: MyApp.Shared.Domain.Entities.IAuditableEntity
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html#MyApp_Shared_Domain_Entities_IAuditableEntity_UpdatedAt
+  name: UpdatedAt
+  nameWithType: IAuditableEntity.UpdatedAt
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy
+  commentId: P:MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy
+  parent: MyApp.Shared.Domain.Entities.IAuditableEntity
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html#MyApp_Shared_Domain_Entities_IAuditableEntity_UpdatedBy
+  name: UpdatedBy
+  nameWithType: IAuditableEntity.UpdatedBy
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy
+- uid: MyApp.Shared.Domain.Entities.IEntity{{T}}.Id
+  commentId: P:MyApp.Shared.Domain.Entities.IEntity{`0}.Id
+  parent: MyApp.Shared.Domain.Entities.IEntity{{T}}
+  definition: MyApp.Shared.Domain.Entities.IEntity`1.Id
+  href: MyApp.Shared.Domain.Entities.IEntity-1.html#MyApp_Shared_Domain_Entities_IEntity_1_Id
+  name: Id
+  nameWithType: IEntity<T>.Id
+  fullName: MyApp.Shared.Domain.Entities.IEntity<T>.Id
+  nameWithType.vb: IEntity(Of T).Id
+  fullName.vb: MyApp.Shared.Domain.Entities.IEntity(Of T).Id
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity
+  commentId: T:MyApp.Shared.Domain.Entities.IAuditableEntity
+  parent: MyApp.Shared.Domain.Entities
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html
+  name: IAuditableEntity
+  nameWithType: IAuditableEntity
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity
+- uid: MyApp.Shared.Domain.Entities.IEntity`1.Id
+  commentId: P:MyApp.Shared.Domain.Entities.IEntity`1.Id
+  href: MyApp.Shared.Domain.Entities.IEntity-1.html#MyApp_Shared_Domain_Entities_IEntity_1_Id
+  name: Id
+  nameWithType: IEntity<T>.Id
+  fullName: MyApp.Shared.Domain.Entities.IEntity<T>.Id
+  nameWithType.vb: IEntity(Of T).Id
+  fullName.vb: MyApp.Shared.Domain.Entities.IEntity(Of T).Id
+- uid: MyApp.Shared.Domain.Entities.IEntity{{T}}
+  commentId: T:MyApp.Shared.Domain.Entities.IEntity{`0}
+  parent: MyApp.Shared.Domain.Entities
+  definition: MyApp.Shared.Domain.Entities.IEntity`1
+  href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  name: IEntity<T>
+  nameWithType: IEntity<T>
+  fullName: MyApp.Shared.Domain.Entities.IEntity<T>
+  nameWithType.vb: IEntity(Of T)
+  fullName.vb: MyApp.Shared.Domain.Entities.IEntity(Of T)
+  name.vb: IEntity(Of T)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Entities.IEntity`1
+    name: IEntity
+    href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Entities.IEntity`1
+    name: IEntity
+    href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MyApp.Shared.Domain.Entities.IEntity`1
+  commentId: T:MyApp.Shared.Domain.Entities.IEntity`1
+  href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  name: IEntity<T>
+  nameWithType: IEntity<T>
+  fullName: MyApp.Shared.Domain.Entities.IEntity<T>
+  nameWithType.vb: IEntity(Of T)
+  fullName.vb: MyApp.Shared.Domain.Entities.IEntity(Of T)
+  name.vb: IEntity(Of T)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Entities.IEntity`1
+    name: IEntity
+    href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Entities.IEntity`1
+    name: IEntity
+    href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

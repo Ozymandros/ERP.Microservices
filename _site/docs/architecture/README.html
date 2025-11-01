@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#127959;️ Architecture &amp; Design | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#127959;️ Architecture &amp; Design | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/architecture/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-architecture--design">🏗️ Architecture &amp; Design</h1>
+
+<p><strong>Understanding the ERP Microservices Architecture</strong><br>
+Last Updated: October 27, 2025</p>
+<hr>
+<h2 id="-overview">📍 Overview</h2>
+<p>This category covers the complete system architecture, design patterns, and system diagrams. Start here if you want to understand the &quot;big picture&quot; of how all components fit together.</p>
+<hr>
+<h2 id="-documents-in-this-category">📚 Documents in This Category</h2>
+<h3 id="architecture_overviewmd"><a href="ARCHITECTURE_OVERVIEW.md">ARCHITECTURE_OVERVIEW.md</a></h3>
+<p><strong>Complete system architecture and component relationships</strong></p>
+<ul>
+<li>System-wide architecture diagrams</li>
+<li>Component interactions</li>
+<li>Data flow across services</li>
+<li>Technology stack overview</li>
+<li>Service communication patterns</li>
+</ul>
+<h3 id="microservices_designmd"><a href="MICROSERVICES_DESIGN.md">MICROSERVICES_DESIGN.md</a></h3>
+<p><strong>Microservices design patterns and principles</strong></p>
+<ul>
+<li>Service boundaries and responsibilities</li>
+<li>Database per service pattern</li>
+<li>Event-driven architecture</li>
+<li>DAPR integration points</li>
+<li>Service mesh considerations</li>
+</ul>
+<h3 id="data_flowmd"><a href="DATA_FLOW.md">DATA_FLOW.md</a></h3>
+<p><strong>Data movement and transformations</strong></p>
+<ul>
+<li>Request/response flows</li>
+<li>Event publication and subscription</li>
+<li>State management patterns</li>
+<li>Caching strategies</li>
+<li>Database access patterns</li>
+</ul>
+<h3 id="diagramsmd"><a href="DIAGRAMS.md">DIAGRAMS.md</a></h3>
+<p><strong>Visual representations of architecture</strong></p>
+<ul>
+<li>Service interaction diagrams</li>
+<li>Deployment architecture</li>
+<li>Data flow diagrams</li>
+<li>Network topology</li>
+<li>Security boundaries</li>
+</ul>
+<hr>
+<h2 id="-quick-links">🎯 Quick Links</h2>
+<p><strong>I want to understand...</strong></p>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Document</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The overall system</td>
+<td><a href="ARCHITECTURE_OVERVIEW.md">Architecture Overview</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>How services work together</td>
+<td><a href="MICROSERVICES_DESIGN.md">Microservices Design</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>How data flows</td>
+<td><a href="DATA_FLOW.md">Data Flow</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>Visual diagrams</td>
+<td><a href="DIAGRAMS.md">Diagrams</a></td>
+<td>10 min</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-reading-order">🔄 Reading Order</h2>
+<ol>
+<li>Start with <a href="ARCHITECTURE_OVERVIEW.md">ARCHITECTURE_OVERVIEW.md</a> for the big picture</li>
+<li>Read <a href="MICROSERVICES_DESIGN.md">MICROSERVICES_DESIGN.md</a> to understand service patterns</li>
+<li>Study <a href="DATA_FLOW.md">DATA_FLOW.md</a> for data interactions</li>
+<li>Review <a href="DIAGRAMS.md">DIAGRAMS.md</a> for visual understanding</li>
+</ol>
+<hr>
+<h2 id="-related-categories">📚 Related Categories</h2>
+<ul>
+<li><strong>Infrastructure:</strong> <a href="../infrastructure/README.html">Infrastructure Documentation</a> - Deploying architecture to cloud</li>
+<li><strong>Development:</strong> <a href="../development/README.html">Development Guidelines</a> - Building within this architecture</li>
+<li><strong>API Gateway:</strong> <a href="../api-gateway/README.html">Gateway Documentation</a> - How external requests enter system</li>
+<li><strong>Microservices:</strong> <a href="../microservices/README.html">Microservices Guide</a> - Individual service development</li>
+</ul>
+<hr>
+<h2 id="-key-concepts">🎓 Key Concepts</h2>
+<h3 id="6-microservices">6 Microservices</h3>
+<ul>
+<li><strong>Auth Service</strong> - Authentication &amp; authorization</li>
+<li><strong>Inventory Service</strong> - Product inventory management</li>
+<li><strong>Orders Service</strong> - Order processing</li>
+<li><strong>Sales Service</strong> - Sales management</li>
+<li><strong>Billing Service</strong> - Billing &amp; invoicing</li>
+<li><strong>Purchasing Service</strong> - Procurement</li>
+</ul>
+<h3 id="core-technologies">Core Technologies</h3>
+<ul>
+<li><strong>.NET Aspire</strong> - Microservices orchestration</li>
+<li><strong>DAPR</strong> - Distributed Application Runtime</li>
+<li><strong>Redis</strong> - Caching &amp; state store</li>
+<li><strong>SQL Server</strong> - Persistent storage</li>
+<li><strong>Ocelot</strong> - API Gateway</li>
+<li><strong>Azure Container Apps</strong> - Production hosting</li>
+</ul>
+<h3 id="key-patterns">Key Patterns</h3>
+<ul>
+<li>Service-to-service communication via HTTP &amp; DAPR</li>
+<li>Event-driven architecture with Redis Pub/Sub</li>
+<li>Database per service (polyglot persistence)</li>
+<li>API gateway for external access</li>
+<li>Circuit breaker for resilience</li>
+<li>Health checks for observability</li>
+</ul>
+<hr>
+<h2 id="-common-questions">💡 Common Questions</h2>
+<p><strong>Q: How do services communicate?</strong><br>
+A: Services use HTTP for synchronous calls and DAPR Pub/Sub (Redis) for asynchronous events. See <a href="MICROSERVICES_DESIGN.md">Microservices Design</a> for details.</p>
+<p><strong>Q: How is data stored?</strong><br>
+A: Each service has its own database. See <a href="DATA_FLOW.md">Data Flow</a> for data access patterns.</p>
+<p><strong>Q: What is DAPR?</strong><br>
+A: DAPR (Distributed Application Runtime) provides cross-platform APIs for building distributed systems. See <a href="ARCHITECTURE_OVERVIEW.md">ARCHITECTURE_OVERVIEW.md</a>.</p>
+<p><strong>Q: How does the API gateway work?</strong><br>
+A: Ocelot routes all external requests to appropriate services with authentication and rate limiting. See <a href="../api-gateway/README.html">Gateway Documentation</a>.</p>
+<hr>
+<h2 id="-full-document-map">🔗 Full Document Map</h2>
+<pre><code>architecture/
+├── README.md (this file)
+├── ARCHITECTURE_OVERVIEW.md
+├── MICROSERVICES_DESIGN.md
+├── DATA_FLOW.md
+└── DIAGRAMS.md
+</code></pre>
+<hr>
+<h2 id="-when-to-read-this-category">✅ When to Read This Category</h2>
+<ul>
+<li>✅ Starting a new role in the project</li>
+<li>✅ Proposing architectural changes</li>
+<li>✅ Understanding system design</li>
+<li>✅ Onboarding new team members</li>
+<li>✅ Reviewing deployment strategy</li>
+</ul>
+<hr>
+<h2 id="-next-steps">📞 Next Steps</h2>
+<ul>
+<li><strong>Ready to code?</strong> → <a href="../development/DEVELOPMENT_SETUP.md">Development Setup</a></li>
+<li><strong>Deploying to Azure?</strong> → <a href="../deployment/DEPLOYMENT_GUIDE.md">Deployment Guide</a></li>
+<li><strong>Understanding specific service?</strong> → <a href="../microservices/README.html">Microservices Guide</a></li>
+<li><strong>Working with gateway?</strong> → <a href="../api-gateway/README.html">Gateway Documentation</a></li>
+</ul>
+<hr>
+<p><strong>Last Updated:</strong> October 27, 2025<br>
+<strong>Category Status:</strong> ✅ Complete<br>
+<strong>Documents:</strong> 4 files</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/architecture/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

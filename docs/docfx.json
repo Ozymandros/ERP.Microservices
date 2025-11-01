@@ -1,0 +1,103 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "..",
+          "files": [
+            "MyApp.Auth/**/*.csproj",
+            "MyApp.Billing/**/*.csproj",
+            "MyApp.Inventory/**/*.csproj",
+            "MyApp.Orders/**/*.csproj",
+            "MyApp.Purchasing/**/*.csproj",
+            "MyApp.Sales/**/*.csproj",
+            "MyApp.Shared/**/*.csproj",
+            "ErpApiGateway/**/*.csproj",
+            "AppHost/**/*.csproj"
+          ],
+          "exclude": [
+            "**/bin/**",
+            "**/obj/**",
+            "**/test/**",
+            "**/*.Tests/**"
+          ]
+        }
+      ],
+      "dest": "api",
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false,
+      "includePrivateMembers": false,
+      "properties": {
+        "TargetFramework": "net9.0"
+      }
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/**.yml",
+          "api/index.md"
+        ]
+      },
+      {
+        "files": [
+          "*.md",
+          "guides/**.md",
+          "architecture/**.md",
+          "deployment/**.md",
+          "infrastructure/**.md",
+          "security/**.md",
+          "configuration/**.md",
+          "implementation/**.md",
+          "reference/**.md",
+          "api-gateway/**.md",
+          "docker-compose/**.md",
+          "microservices/**.md",
+          "operations/**.md",
+          "development/**.md"
+        ],
+        "exclude": [
+          "_site/**",
+          "obj/**"
+        ]
+      },
+      {
+        "files": [
+          "toc.yml"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**",
+          "diagrams/**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "globalMetadataFiles": [],
+    "fileMetadataFiles": [],
+    "template": [
+      "default",
+      "modern"
+    ],
+    "postProcessors": [],
+    "keepFileLink": false,
+    "disableGitFeatures": false,
+    "globalMetadata": {
+      "_appTitle": "ERP Microservices Documentation",
+      "_appName": "ERP Microservices",
+      "_appFooter": "ERP Microservices - A cloud-native ERP system built with .NET 9",
+      "_enableSearch": true,
+      "_enableNewTab": true,
+      "_disableContribution": false,
+      "_gitContribute": {
+        "repo": "https://github.com/Ozymandros/ERP.Microservices",
+        "branch": "main"
+      }
+    }
+  }
+}

@@ -35,13 +35,13 @@ jobs:
           
           # Define services to build
           declare -a SERVICES=(
-              "MyApp.Auth/MyApp.Auth.API:auth-service"
-              "MyApp.Billing/MyApp.Billing.API:billing-service"
-              "MyApp.Inventory/MyApp.Inventory.API:inventory-service"
-              "MyApp.Orders/MyApp.Orders.API:orders-service"
-              "MyApp.Purchasing/MyApp.Purchasing.API:purchasing-service"
-              "MyApp.Sales/MyApp.Sales.API:sales-service"
-              "ErpApiGateway:erp-api-gateway"
+              "src/MyApp.Auth/MyApp.Auth.API:auth-service"
+              "src/MyApp.Billing/MyApp.Billing.API:billing-service"
+              "src/MyApp.Inventory/MyApp.Inventory.API:inventory-service"
+              "src/MyApp.Orders/MyApp.Orders.API:orders-service"
+              "src/MyApp.Purchasing/MyApp.Purchasing.API:purchasing-service"
+              "src/MyApp.Sales/MyApp.Sales.API:sales-service"
+              "src/ErpApiGateway:erp-api-gateway"
           )
           
           # Get Git commit hash for image tag

@@ -1,0 +1,85 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Domain.Entities
+  commentId: N:MyApp.Purchasing.Domain.Entities
+  id: MyApp.Purchasing.Domain.Entities
+  children:
+  - MyApp.Purchasing.Domain.Entities.PurchaseOrder
+  - MyApp.Purchasing.Domain.Entities.PurchaseOrderLine
+  - MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  - MyApp.Purchasing.Domain.Entities.Supplier
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Purchasing.Domain.Entities
+  nameWithType: MyApp.Purchasing.Domain.Entities
+  fullName: MyApp.Purchasing.Domain.Entities
+  type: Namespace
+  assemblies:
+  - MyApp.Purchasing.Domain
+references:
+- uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  commentId: T:MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  parent: MyApp.Purchasing.Domain.Entities
+  href: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.html
+  name: PurchaseOrderStatus
+  nameWithType: PurchaseOrderStatus
+  fullName: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+- uid: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+  commentId: T:MyApp.Purchasing.Domain.Entities.PurchaseOrder
+  parent: MyApp.Purchasing.Domain.Entities
+  href: MyApp.Purchasing.Domain.Entities.PurchaseOrder.html
+  name: PurchaseOrder
+  nameWithType: PurchaseOrder
+  fullName: MyApp.Purchasing.Domain.Entities.PurchaseOrder
+- uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderLine
+  commentId: T:MyApp.Purchasing.Domain.Entities.PurchaseOrderLine
+  href: MyApp.Purchasing.Domain.Entities.PurchaseOrderLine.html
+  name: PurchaseOrderLine
+  nameWithType: PurchaseOrderLine
+  fullName: MyApp.Purchasing.Domain.Entities.PurchaseOrderLine
+- uid: MyApp.Purchasing.Domain.Entities.Supplier
+  commentId: T:MyApp.Purchasing.Domain.Entities.Supplier
+  parent: MyApp.Purchasing.Domain.Entities
+  href: MyApp.Purchasing.Domain.Entities.Supplier.html
+  name: Supplier
+  nameWithType: Supplier
+  fullName: MyApp.Purchasing.Domain.Entities.Supplier
+- uid: MyApp.Purchasing.Domain.Entities
+  commentId: N:MyApp.Purchasing.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Purchasing.Domain.Entities
+  nameWithType: MyApp.Purchasing.Domain.Entities
+  fullName: MyApp.Purchasing.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain
+    name: Domain
+    href: MyApp.Purchasing.Domain.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain.Entities
+    name: Entities
+    href: MyApp.Purchasing.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain
+    name: Domain
+    href: MyApp.Purchasing.Domain.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain.Entities
+    name: Entities
+    href: MyApp.Purchasing.Domain.Entities.html

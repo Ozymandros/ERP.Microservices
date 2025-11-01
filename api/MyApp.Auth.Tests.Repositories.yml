@@ -1,0 +1,44 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Tests.Repositories
+  commentId: N:MyApp.Auth.Tests.Repositories
+  id: MyApp.Auth.Tests.Repositories
+  children:
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  - MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  - MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Tests.Repositories
+  nameWithType: MyApp.Auth.Tests.Repositories
+  fullName: MyApp.Auth.Tests.Repositories
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+references:
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  commentId: T:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html
+  name: PermissionRepositoryTests
+  nameWithType: PermissionRepositoryTests
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+- uid: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  commentId: T:MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+  href: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html
+  name: RefreshTokenRepositoryTests
+  nameWithType: RefreshTokenRepositoryTests
+  fullName: MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  commentId: T:MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html
+  name: RoleRepositoryTests
+  nameWithType: RoleRepositoryTests
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+- uid: MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  commentId: T:MyApp.Auth.Tests.Repositories.UserRepositoryTests
+  href: MyApp.Auth.Tests.Repositories.UserRepositoryTests.html
+  name: UserRepositoryTests
+  nameWithType: UserRepositoryTests
+  fullName: MyApp.Auth.Tests.Repositories.UserRepositoryTests

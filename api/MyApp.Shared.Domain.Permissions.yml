@@ -1,0 +1,315 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Domain.Permissions
+  commentId: N:MyApp.Shared.Domain.Permissions
+  id: MyApp.Shared.Domain.Permissions
+  children:
+  - MyApp.Shared.Domain.Permissions.ActionEnum
+  - MyApp.Shared.Domain.Permissions.ModuleEnum
+  - MyApp.Shared.Domain.Permissions.PermissionConstants
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Auth
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Billing
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Notification
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Orders
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Permissions
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Purchasing
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Roles
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Sales
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Users
+  - MyApp.Shared.Domain.Permissions.PermissionEnum
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Shared.Domain.Permissions
+  nameWithType: MyApp.Shared.Domain.Permissions
+  fullName: MyApp.Shared.Domain.Permissions
+  type: Namespace
+  assemblies:
+  - MyApp.Shared.Domain
+references:
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+  commentId: T:MyApp.Shared.Domain.Permissions.PermissionConstants
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  name: PermissionConstants
+  nameWithType: PermissionConstants
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+  commentId: T:MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  name: PermissionConstants.Inventory
+  nameWithType: PermissionConstants.Inventory
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+    name: Inventory
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.html
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory
+    name: Inventory
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.html
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Purchasing
+  commentId: T:MyApp.Shared.Domain.Permissions.PermissionConstants.Purchasing
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  name: PermissionConstants.Purchasing
+  nameWithType: PermissionConstants.Purchasing
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Purchasing
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Purchasing
+    name: Purchasing
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Purchasing.html
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Purchasing
+    name: Purchasing
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Purchasing.html
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Orders
+  commentId: T:MyApp.Shared.Domain.Permissions.PermissionConstants.Orders
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  name: PermissionConstants.Orders
+  nameWithType: PermissionConstants.Orders
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Orders
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Orders
+    name: Orders
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Orders.html
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Orders
+    name: Orders
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Orders.html
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Sales
+  commentId: T:MyApp.Shared.Domain.Permissions.PermissionConstants.Sales
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  name: PermissionConstants.Sales
+  nameWithType: PermissionConstants.Sales
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Sales
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Sales
+    name: Sales
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Sales.html
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Sales
+    name: Sales
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Sales.html
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Billing
+  commentId: T:MyApp.Shared.Domain.Permissions.PermissionConstants.Billing
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  name: PermissionConstants.Billing
+  nameWithType: PermissionConstants.Billing
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Billing
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Billing
+    name: Billing
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Billing.html
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Billing
+    name: Billing
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Billing.html
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Notification
+  commentId: T:MyApp.Shared.Domain.Permissions.PermissionConstants.Notification
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  name: PermissionConstants.Notification
+  nameWithType: PermissionConstants.Notification
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Notification
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Notification
+    name: Notification
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Notification.html
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Notification
+    name: Notification
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Notification.html
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Auth
+  commentId: T:MyApp.Shared.Domain.Permissions.PermissionConstants.Auth
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  name: PermissionConstants.Auth
+  nameWithType: PermissionConstants.Auth
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Auth
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Auth
+    name: Auth
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Auth.html
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Auth
+    name: Auth
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Auth.html
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Users
+  commentId: T:MyApp.Shared.Domain.Permissions.PermissionConstants.Users
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  name: PermissionConstants.Users
+  nameWithType: PermissionConstants.Users
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Users
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Users
+    name: Users
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Users.html
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Users
+    name: Users
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Users.html
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Roles
+  commentId: T:MyApp.Shared.Domain.Permissions.PermissionConstants.Roles
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  name: PermissionConstants.Roles
+  nameWithType: PermissionConstants.Roles
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Roles
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Roles
+    name: Roles
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Roles.html
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Roles
+    name: Roles
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Roles.html
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Permissions
+  commentId: T:MyApp.Shared.Domain.Permissions.PermissionConstants.Permissions
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  name: PermissionConstants.Permissions
+  nameWithType: PermissionConstants.Permissions
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Permissions
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Permissions
+    name: Permissions
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Permissions.html
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+    name: PermissionConstants
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Permissions
+    name: Permissions
+    href: MyApp.Shared.Domain.Permissions.PermissionConstants.Permissions.html
+- uid: MyApp.Shared.Domain.Permissions.ModuleEnum
+  commentId: T:MyApp.Shared.Domain.Permissions.ModuleEnum
+  parent: MyApp.Shared.Domain.Permissions
+  href: MyApp.Shared.Domain.Permissions.ModuleEnum.html
+  name: ModuleEnum
+  nameWithType: ModuleEnum
+  fullName: MyApp.Shared.Domain.Permissions.ModuleEnum
+- uid: MyApp.Shared.Domain.Permissions.ActionEnum
+  commentId: T:MyApp.Shared.Domain.Permissions.ActionEnum
+  parent: MyApp.Shared.Domain.Permissions
+  href: MyApp.Shared.Domain.Permissions.ActionEnum.html
+  name: ActionEnum
+  nameWithType: ActionEnum
+  fullName: MyApp.Shared.Domain.Permissions.ActionEnum
+- uid: MyApp.Shared.Domain.Permissions.PermissionEnum
+  commentId: T:MyApp.Shared.Domain.Permissions.PermissionEnum
+  parent: MyApp.Shared.Domain.Permissions
+  href: MyApp.Shared.Domain.Permissions.PermissionEnum.html
+  name: PermissionEnum
+  nameWithType: PermissionEnum
+  fullName: MyApp.Shared.Domain.Permissions.PermissionEnum
+- uid: MyApp.Shared.Domain.Permissions
+  commentId: N:MyApp.Shared.Domain.Permissions
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Permissions
+  nameWithType: MyApp.Shared.Domain.Permissions
+  fullName: MyApp.Shared.Domain.Permissions
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions
+    name: Permissions
+    href: MyApp.Shared.Domain.Permissions.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions
+    name: Permissions
+    href: MyApp.Shared.Domain.Permissions.html

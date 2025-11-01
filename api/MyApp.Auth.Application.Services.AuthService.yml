@@ -1,0 +1,1209 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Services.AuthService
+  commentId: T:MyApp.Auth.Application.Services.AuthService
+  id: AuthService
+  parent: MyApp.Auth.Application.Services
+  children:
+  - MyApp.Auth.Application.Services.AuthService.#ctor(Microsoft.AspNetCore.Identity.UserManager{MyApp.Auth.Domain.Entities.ApplicationUser},MyApp.Auth.Infrastructure.Services.IJwtTokenProvider,MyApp.Auth.Domain.Repositories.IRefreshTokenRepository,MyApp.Auth.Domain.Repositories.IUserRepository,Microsoft.Extensions.Logging.ILogger{MyApp.Auth.Application.Services.AuthService})
+  - MyApp.Auth.Application.Services.AuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+  - MyApp.Auth.Application.Services.AuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+  - MyApp.Auth.Application.Services.AuthService.LogoutAsync(System.Guid)
+  - MyApp.Auth.Application.Services.AuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+  - MyApp.Auth.Application.Services.AuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+  langs:
+  - csharp
+  - vb
+  name: AuthService
+  nameWithType: AuthService
+  fullName: MyApp.Auth.Application.Services.AuthService
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: AuthService
+    path: src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs
+    startLine: 11
+  assemblies:
+  - MyApp.Auth.Application
+  namespace: MyApp.Auth.Application.Services
+  syntax:
+    content: 'public class AuthService : IAuthService'
+    content.vb: Public Class AuthService Implements IAuthService
+  inheritance:
+  - System.Object
+  implements:
+  - MyApp.Auth.Application.Contracts.Services.IAuthService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Application.Services.AuthService.#ctor(Microsoft.AspNetCore.Identity.UserManager{MyApp.Auth.Domain.Entities.ApplicationUser},MyApp.Auth.Infrastructure.Services.IJwtTokenProvider,MyApp.Auth.Domain.Repositories.IRefreshTokenRepository,MyApp.Auth.Domain.Repositories.IUserRepository,Microsoft.Extensions.Logging.ILogger{MyApp.Auth.Application.Services.AuthService})
+  commentId: M:MyApp.Auth.Application.Services.AuthService.#ctor(Microsoft.AspNetCore.Identity.UserManager{MyApp.Auth.Domain.Entities.ApplicationUser},MyApp.Auth.Infrastructure.Services.IJwtTokenProvider,MyApp.Auth.Domain.Repositories.IRefreshTokenRepository,MyApp.Auth.Domain.Repositories.IUserRepository,Microsoft.Extensions.Logging.ILogger{MyApp.Auth.Application.Services.AuthService})
+  id: '#ctor(Microsoft.AspNetCore.Identity.UserManager{MyApp.Auth.Domain.Entities.ApplicationUser},MyApp.Auth.Infrastructure.Services.IJwtTokenProvider,MyApp.Auth.Domain.Repositories.IRefreshTokenRepository,MyApp.Auth.Domain.Repositories.IUserRepository,Microsoft.Extensions.Logging.ILogger{MyApp.Auth.Application.Services.AuthService})'
+  parent: MyApp.Auth.Application.Services.AuthService
+  langs:
+  - csharp
+  - vb
+  name: AuthService(UserManager<ApplicationUser>, IJwtTokenProvider, IRefreshTokenRepository, IUserRepository, ILogger<AuthService>)
+  nameWithType: AuthService.AuthService(UserManager<ApplicationUser>, IJwtTokenProvider, IRefreshTokenRepository, IUserRepository, ILogger<AuthService>)
+  fullName: MyApp.Auth.Application.Services.AuthService.AuthService(Microsoft.AspNetCore.Identity.UserManager<MyApp.Auth.Domain.Entities.ApplicationUser>, MyApp.Auth.Infrastructure.Services.IJwtTokenProvider, MyApp.Auth.Domain.Repositories.IRefreshTokenRepository, MyApp.Auth.Domain.Repositories.IUserRepository, Microsoft.Extensions.Logging.ILogger<MyApp.Auth.Application.Services.AuthService>)
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs
+    startLine: 19
+  assemblies:
+  - MyApp.Auth.Application
+  namespace: MyApp.Auth.Application.Services
+  syntax:
+    content: public AuthService(UserManager<ApplicationUser> userManager, IJwtTokenProvider jwtTokenProvider, IRefreshTokenRepository refreshTokenRepository, IUserRepository userRepository, ILogger<AuthService> logger)
+    parameters:
+    - id: userManager
+      type: Microsoft.AspNetCore.Identity.UserManager{MyApp.Auth.Domain.Entities.ApplicationUser}
+    - id: jwtTokenProvider
+      type: MyApp.Auth.Infrastructure.Services.IJwtTokenProvider
+    - id: refreshTokenRepository
+      type: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+    - id: userRepository
+      type: MyApp.Auth.Domain.Repositories.IUserRepository
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{MyApp.Auth.Application.Services.AuthService}
+    content.vb: Public Sub New(userManager As UserManager(Of ApplicationUser), jwtTokenProvider As IJwtTokenProvider, refreshTokenRepository As IRefreshTokenRepository, userRepository As IUserRepository, logger As ILogger(Of AuthService))
+  overload: MyApp.Auth.Application.Services.AuthService.#ctor*
+  nameWithType.vb: AuthService.New(UserManager(Of ApplicationUser), IJwtTokenProvider, IRefreshTokenRepository, IUserRepository, ILogger(Of AuthService))
+  fullName.vb: MyApp.Auth.Application.Services.AuthService.New(Microsoft.AspNetCore.Identity.UserManager(Of MyApp.Auth.Domain.Entities.ApplicationUser), MyApp.Auth.Infrastructure.Services.IJwtTokenProvider, MyApp.Auth.Domain.Repositories.IRefreshTokenRepository, MyApp.Auth.Domain.Repositories.IUserRepository, Microsoft.Extensions.Logging.ILogger(Of MyApp.Auth.Application.Services.AuthService))
+  name.vb: New(UserManager(Of ApplicationUser), IJwtTokenProvider, IRefreshTokenRepository, IUserRepository, ILogger(Of AuthService))
+- uid: MyApp.Auth.Application.Services.AuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+  commentId: M:MyApp.Auth.Application.Services.AuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+  id: LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+  parent: MyApp.Auth.Application.Services.AuthService
+  langs:
+  - csharp
+  - vb
+  name: LoginAsync(LoginDto)
+  nameWithType: AuthService.LoginAsync(LoginDto)
+  fullName: MyApp.Auth.Application.Services.AuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: LoginAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs
+    startLine: 33
+  assemblies:
+  - MyApp.Auth.Application
+  namespace: MyApp.Auth.Application.Services
+  example: []
+  syntax:
+    content: public Task<TokenResponseDto?> LoginAsync(LoginDto loginDto)
+    parameters:
+    - id: loginDto
+      type: MyApp.Auth.Application.Contracts.DTOs.LoginDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto}
+    content.vb: Public Function LoginAsync(loginDto As LoginDto) As Task(Of TokenResponseDto)
+  overload: MyApp.Auth.Application.Services.AuthService.LoginAsync*
+  implements:
+  - MyApp.Auth.Application.Contracts.Services.IAuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+- uid: MyApp.Auth.Application.Services.AuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+  commentId: M:MyApp.Auth.Application.Services.AuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+  id: RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+  parent: MyApp.Auth.Application.Services.AuthService
+  langs:
+  - csharp
+  - vb
+  name: RegisterAsync(RegisterDto)
+  nameWithType: AuthService.RegisterAsync(RegisterDto)
+  fullName: MyApp.Auth.Application.Services.AuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RegisterAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs
+    startLine: 52
+  assemblies:
+  - MyApp.Auth.Application
+  namespace: MyApp.Auth.Application.Services
+  example: []
+  syntax:
+    content: public Task<TokenResponseDto?> RegisterAsync(RegisterDto registerDto)
+    parameters:
+    - id: registerDto
+      type: MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto}
+    content.vb: Public Function RegisterAsync(registerDto As RegisterDto) As Task(Of TokenResponseDto)
+  overload: MyApp.Auth.Application.Services.AuthService.RegisterAsync*
+  implements:
+  - MyApp.Auth.Application.Contracts.Services.IAuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+- uid: MyApp.Auth.Application.Services.AuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+  commentId: M:MyApp.Auth.Application.Services.AuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+  id: RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+  parent: MyApp.Auth.Application.Services.AuthService
+  langs:
+  - csharp
+  - vb
+  name: RefreshTokenAsync(RefreshTokenDto)
+  nameWithType: AuthService.RefreshTokenAsync(RefreshTokenDto)
+  fullName: MyApp.Auth.Application.Services.AuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RefreshTokenAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs
+    startLine: 84
+  assemblies:
+  - MyApp.Auth.Application
+  namespace: MyApp.Auth.Application.Services
+  example: []
+  syntax:
+    content: public Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
+    parameters:
+    - id: refreshTokenDto
+      type: MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto}
+    content.vb: Public Function RefreshTokenAsync(refreshTokenDto As RefreshTokenDto) As Task(Of TokenResponseDto)
+  overload: MyApp.Auth.Application.Services.AuthService.RefreshTokenAsync*
+  implements:
+  - MyApp.Auth.Application.Contracts.Services.IAuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+- uid: MyApp.Auth.Application.Services.AuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+  commentId: M:MyApp.Auth.Application.Services.AuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+  id: ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+  parent: MyApp.Auth.Application.Services.AuthService
+  langs:
+  - csharp
+  - vb
+  name: ExternalLoginAsync(ExternalLoginDto)
+  nameWithType: AuthService.ExternalLoginAsync(ExternalLoginDto)
+  fullName: MyApp.Auth.Application.Services.AuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ExternalLoginAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs
+    startLine: 117
+  assemblies:
+  - MyApp.Auth.Application
+  namespace: MyApp.Auth.Application.Services
+  example: []
+  syntax:
+    content: public Task<TokenResponseDto?> ExternalLoginAsync(ExternalLoginDto externalLoginDto)
+    parameters:
+    - id: externalLoginDto
+      type: MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto}
+    content.vb: Public Function ExternalLoginAsync(externalLoginDto As ExternalLoginDto) As Task(Of TokenResponseDto)
+  overload: MyApp.Auth.Application.Services.AuthService.ExternalLoginAsync*
+  implements:
+  - MyApp.Auth.Application.Contracts.Services.IAuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+- uid: MyApp.Auth.Application.Services.AuthService.LogoutAsync(System.Guid)
+  commentId: M:MyApp.Auth.Application.Services.AuthService.LogoutAsync(System.Guid)
+  id: LogoutAsync(System.Guid)
+  parent: MyApp.Auth.Application.Services.AuthService
+  langs:
+  - csharp
+  - vb
+  name: LogoutAsync(Guid)
+  nameWithType: AuthService.LogoutAsync(Guid)
+  fullName: MyApp.Auth.Application.Services.AuthService.LogoutAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: LogoutAsync
+    path: src/MyApp.Auth/MyApp.Auth.Application/Services/AuthService.cs
+    startLine: 152
+  assemblies:
+  - MyApp.Auth.Application
+  namespace: MyApp.Auth.Application.Services
+  example: []
+  syntax:
+    content: public Task LogoutAsync(Guid userId)
+    parameters:
+    - id: userId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function LogoutAsync(userId As Guid) As Task
+  overload: MyApp.Auth.Application.Services.AuthService.LogoutAsync*
+  implements:
+  - MyApp.Auth.Application.Contracts.Services.IAuthService.LogoutAsync(System.Guid)
+references:
+- uid: MyApp.Auth.Application.Services
+  commentId: N:MyApp.Auth.Application.Services
+  href: MyApp.html
+  name: MyApp.Auth.Application.Services
+  nameWithType: MyApp.Auth.Application.Services
+  fullName: MyApp.Auth.Application.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Services
+    name: Services
+    href: MyApp.Auth.Application.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Services
+    name: Services
+    href: MyApp.Auth.Application.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService
+  commentId: T:MyApp.Auth.Application.Contracts.Services.IAuthService
+  parent: MyApp.Auth.Application.Contracts.Services
+  href: MyApp.Auth.Application.Contracts.Services.IAuthService.html
+  name: IAuthService
+  nameWithType: IAuthService
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Auth.Application.Contracts.Services
+  commentId: N:MyApp.Auth.Application.Contracts.Services
+  href: MyApp.html
+  name: MyApp.Auth.Application.Contracts.Services
+  nameWithType: MyApp.Auth.Application.Contracts.Services
+  fullName: MyApp.Auth.Application.Contracts.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.Services
+    name: Services
+    href: MyApp.Auth.Application.Contracts.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.Services
+    name: Services
+    href: MyApp.Auth.Application.Contracts.Services.html
+- uid: MyApp.Auth.Application.Services.AuthService.#ctor*
+  commentId: Overload:MyApp.Auth.Application.Services.AuthService.#ctor
+  href: MyApp.Auth.Application.Services.AuthService.html#MyApp_Auth_Application_Services_AuthService__ctor_Microsoft_AspNetCore_Identity_UserManager_MyApp_Auth_Domain_Entities_ApplicationUser__MyApp_Auth_Infrastructure_Services_IJwtTokenProvider_MyApp_Auth_Domain_Repositories_IRefreshTokenRepository_MyApp_Auth_Domain_Repositories_IUserRepository_Microsoft_Extensions_Logging_ILogger_MyApp_Auth_Application_Services_AuthService__
+  name: AuthService
+  nameWithType: AuthService.AuthService
+  fullName: MyApp.Auth.Application.Services.AuthService.AuthService
+  nameWithType.vb: AuthService.New
+  fullName.vb: MyApp.Auth.Application.Services.AuthService.New
+  name.vb: New
+- uid: Microsoft.AspNetCore.Identity.UserManager{MyApp.Auth.Domain.Entities.ApplicationUser}
+  commentId: T:Microsoft.AspNetCore.Identity.UserManager{MyApp.Auth.Domain.Entities.ApplicationUser}
+  parent: Microsoft.AspNetCore.Identity
+  definition: Microsoft.AspNetCore.Identity.UserManager`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.usermanager-1
+  name: UserManager<ApplicationUser>
+  nameWithType: UserManager<ApplicationUser>
+  fullName: Microsoft.AspNetCore.Identity.UserManager<MyApp.Auth.Domain.Entities.ApplicationUser>
+  nameWithType.vb: UserManager(Of ApplicationUser)
+  fullName.vb: Microsoft.AspNetCore.Identity.UserManager(Of MyApp.Auth.Domain.Entities.ApplicationUser)
+  name.vb: UserManager(Of ApplicationUser)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.UserManager`1
+    name: UserManager
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.usermanager-1
+  - name: <
+  - uid: MyApp.Auth.Domain.Entities.ApplicationUser
+    name: ApplicationUser
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.UserManager`1
+    name: UserManager
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.usermanager-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Domain.Entities.ApplicationUser
+    name: ApplicationUser
+  - name: )
+- uid: MyApp.Auth.Infrastructure.Services.IJwtTokenProvider
+  commentId: T:MyApp.Auth.Infrastructure.Services.IJwtTokenProvider
+  parent: MyApp.Auth.Infrastructure.Services
+  href: MyApp.Auth.Infrastructure.Services.IJwtTokenProvider.html
+  name: IJwtTokenProvider
+  nameWithType: IJwtTokenProvider
+  fullName: MyApp.Auth.Infrastructure.Services.IJwtTokenProvider
+- uid: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+  commentId: T:MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+  parent: MyApp.Auth.Domain.Repositories
+  href: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.html
+  name: IRefreshTokenRepository
+  nameWithType: IRefreshTokenRepository
+  fullName: MyApp.Auth.Domain.Repositories.IRefreshTokenRepository
+- uid: MyApp.Auth.Domain.Repositories.IUserRepository
+  commentId: T:MyApp.Auth.Domain.Repositories.IUserRepository
+  parent: MyApp.Auth.Domain.Repositories
+  href: MyApp.Auth.Domain.Repositories.IUserRepository.html
+  name: IUserRepository
+  nameWithType: IUserRepository
+  fullName: MyApp.Auth.Domain.Repositories.IUserRepository
+- uid: Microsoft.Extensions.Logging.ILogger{MyApp.Auth.Application.Services.AuthService}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{MyApp.Auth.Application.Services.AuthService}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<AuthService>
+  nameWithType: ILogger<AuthService>
+  fullName: Microsoft.Extensions.Logging.ILogger<MyApp.Auth.Application.Services.AuthService>
+  nameWithType.vb: ILogger(Of AuthService)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of MyApp.Auth.Application.Services.AuthService)
+  name.vb: ILogger(Of AuthService)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: MyApp.Auth.Application.Services.AuthService
+    name: AuthService
+    href: MyApp.Auth.Application.Services.AuthService.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Application.Services.AuthService
+    name: AuthService
+    href: MyApp.Auth.Application.Services.AuthService.html
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.UserManager`1
+  commentId: T:Microsoft.AspNetCore.Identity.UserManager`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.usermanager-1
+  name: UserManager<TUser>
+  nameWithType: UserManager<TUser>
+  fullName: Microsoft.AspNetCore.Identity.UserManager<TUser>
+  nameWithType.vb: UserManager(Of TUser)
+  fullName.vb: Microsoft.AspNetCore.Identity.UserManager(Of TUser)
+  name.vb: UserManager(Of TUser)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.UserManager`1
+    name: UserManager
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.usermanager-1
+  - name: <
+  - name: TUser
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.UserManager`1
+    name: UserManager
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.usermanager-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TUser
+  - name: )
+- uid: Microsoft.AspNetCore.Identity
+  commentId: N:Microsoft.AspNetCore.Identity
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.AspNetCore.Identity
+  nameWithType: Microsoft.AspNetCore.Identity
+  fullName: Microsoft.AspNetCore.Identity
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Identity
+    name: Identity
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Identity
+    name: Identity
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity
+- uid: MyApp.Auth.Infrastructure.Services
+  commentId: N:MyApp.Auth.Infrastructure.Services
+  href: MyApp.html
+  name: MyApp.Auth.Infrastructure.Services
+  nameWithType: MyApp.Auth.Infrastructure.Services
+  fullName: MyApp.Auth.Infrastructure.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure
+    name: Infrastructure
+    href: MyApp.Auth.Infrastructure.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure.Services
+    name: Services
+    href: MyApp.Auth.Infrastructure.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure
+    name: Infrastructure
+    href: MyApp.Auth.Infrastructure.html
+  - name: .
+  - uid: MyApp.Auth.Infrastructure.Services
+    name: Services
+    href: MyApp.Auth.Infrastructure.Services.html
+- uid: MyApp.Auth.Domain.Repositories
+  commentId: N:MyApp.Auth.Domain.Repositories
+  href: MyApp.html
+  name: MyApp.Auth.Domain.Repositories
+  nameWithType: MyApp.Auth.Domain.Repositories
+  fullName: MyApp.Auth.Domain.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Repositories
+    name: Repositories
+    href: MyApp.Auth.Domain.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Repositories
+    name: Repositories
+    href: MyApp.Auth.Domain.Repositories.html
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: MyApp.Auth.Application.Services.AuthService.LoginAsync*
+  commentId: Overload:MyApp.Auth.Application.Services.AuthService.LoginAsync
+  href: MyApp.Auth.Application.Services.AuthService.html#MyApp_Auth_Application_Services_AuthService_LoginAsync_MyApp_Auth_Application_Contracts_DTOs_LoginDto_
+  name: LoginAsync
+  nameWithType: AuthService.LoginAsync
+  fullName: MyApp.Auth.Application.Services.AuthService.LoginAsync
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IAuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+  parent: MyApp.Auth.Application.Contracts.Services.IAuthService
+  name: LoginAsync(LoginDto)
+  nameWithType: IAuthService.LoginAsync(LoginDto)
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Contracts.Services.IAuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+    name: LoginAsync
+  - name: (
+  - uid: MyApp.Auth.Application.Contracts.DTOs.LoginDto
+    name: LoginDto
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Contracts.Services.IAuthService.LoginAsync(MyApp.Auth.Application.Contracts.DTOs.LoginDto)
+    name: LoginAsync
+  - name: (
+  - uid: MyApp.Auth.Application.Contracts.DTOs.LoginDto
+    name: LoginDto
+  - name: )
+- uid: MyApp.Auth.Application.Contracts.DTOs.LoginDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.LoginDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.LoginDto.html
+  name: LoginDto
+  nameWithType: LoginDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.LoginDto
+- uid: System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TokenResponseDto>
+  nameWithType: Task<TokenResponseDto>
+  fullName: System.Threading.Tasks.Task<MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto>
+  nameWithType.vb: Task(Of TokenResponseDto)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto)
+  name.vb: Task(Of TokenResponseDto)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto
+    name: TokenResponseDto
+    href: MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto
+    name: TokenResponseDto
+    href: MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto.html
+  - name: )
+- uid: MyApp.Auth.Application.Contracts.DTOs
+  commentId: N:MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Auth.Application.Contracts.DTOs
+  nameWithType: MyApp.Auth.Application.Contracts.DTOs
+  fullName: MyApp.Auth.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Auth.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Auth.Application.Contracts.DTOs.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Application.Services.AuthService.RegisterAsync*
+  commentId: Overload:MyApp.Auth.Application.Services.AuthService.RegisterAsync
+  href: MyApp.Auth.Application.Services.AuthService.html#MyApp_Auth_Application_Services_AuthService_RegisterAsync_MyApp_Auth_Application_Contracts_DTOs_RegisterDto_
+  name: RegisterAsync
+  nameWithType: AuthService.RegisterAsync
+  fullName: MyApp.Auth.Application.Services.AuthService.RegisterAsync
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IAuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+  parent: MyApp.Auth.Application.Contracts.Services.IAuthService
+  name: RegisterAsync(RegisterDto)
+  nameWithType: IAuthService.RegisterAsync(RegisterDto)
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Contracts.Services.IAuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+    name: RegisterAsync
+  - name: (
+  - uid: MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+    name: RegisterDto
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Contracts.Services.IAuthService.RegisterAsync(MyApp.Auth.Application.Contracts.DTOs.RegisterDto)
+    name: RegisterAsync
+  - name: (
+  - uid: MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+    name: RegisterDto
+  - name: )
+- uid: MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.RegisterDto.html
+  name: RegisterDto
+  nameWithType: RegisterDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.RegisterDto
+- uid: MyApp.Auth.Application.Services.AuthService.RefreshTokenAsync*
+  commentId: Overload:MyApp.Auth.Application.Services.AuthService.RefreshTokenAsync
+  href: MyApp.Auth.Application.Services.AuthService.html#MyApp_Auth_Application_Services_AuthService_RefreshTokenAsync_MyApp_Auth_Application_Contracts_DTOs_RefreshTokenDto_
+  name: RefreshTokenAsync
+  nameWithType: AuthService.RefreshTokenAsync
+  fullName: MyApp.Auth.Application.Services.AuthService.RefreshTokenAsync
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IAuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+  parent: MyApp.Auth.Application.Contracts.Services.IAuthService
+  name: RefreshTokenAsync(RefreshTokenDto)
+  nameWithType: IAuthService.RefreshTokenAsync(RefreshTokenDto)
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Contracts.Services.IAuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+    name: RefreshTokenAsync
+  - name: (
+  - uid: MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+    name: RefreshTokenDto
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Contracts.Services.IAuthService.RefreshTokenAsync(MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto)
+    name: RefreshTokenAsync
+  - name: (
+  - uid: MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+    name: RefreshTokenDto
+  - name: )
+- uid: MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto.html
+  name: RefreshTokenDto
+  nameWithType: RefreshTokenDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto
+- uid: MyApp.Auth.Application.Services.AuthService.ExternalLoginAsync*
+  commentId: Overload:MyApp.Auth.Application.Services.AuthService.ExternalLoginAsync
+  href: MyApp.Auth.Application.Services.AuthService.html#MyApp_Auth_Application_Services_AuthService_ExternalLoginAsync_MyApp_Auth_Application_Contracts_DTOs_ExternalLoginDto_
+  name: ExternalLoginAsync
+  nameWithType: AuthService.ExternalLoginAsync
+  fullName: MyApp.Auth.Application.Services.AuthService.ExternalLoginAsync
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IAuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+  parent: MyApp.Auth.Application.Contracts.Services.IAuthService
+  name: ExternalLoginAsync(ExternalLoginDto)
+  nameWithType: IAuthService.ExternalLoginAsync(ExternalLoginDto)
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Contracts.Services.IAuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+    name: ExternalLoginAsync
+  - name: (
+  - uid: MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+    name: ExternalLoginDto
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Contracts.Services.IAuthService.ExternalLoginAsync(MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto)
+    name: ExternalLoginAsync
+  - name: (
+  - uid: MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+    name: ExternalLoginDto
+  - name: )
+- uid: MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+  commentId: T:MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+  parent: MyApp.Auth.Application.Contracts.DTOs
+  href: MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto.html
+  name: ExternalLoginDto
+  nameWithType: ExternalLoginDto
+  fullName: MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto
+- uid: MyApp.Auth.Application.Services.AuthService.LogoutAsync*
+  commentId: Overload:MyApp.Auth.Application.Services.AuthService.LogoutAsync
+  href: MyApp.Auth.Application.Services.AuthService.html#MyApp_Auth_Application_Services_AuthService_LogoutAsync_System_Guid_
+  name: LogoutAsync
+  nameWithType: AuthService.LogoutAsync
+  fullName: MyApp.Auth.Application.Services.AuthService.LogoutAsync
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService.LogoutAsync(System.Guid)
+  commentId: M:MyApp.Auth.Application.Contracts.Services.IAuthService.LogoutAsync(System.Guid)
+  parent: MyApp.Auth.Application.Contracts.Services.IAuthService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: LogoutAsync(Guid)
+  nameWithType: IAuthService.LogoutAsync(Guid)
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService.LogoutAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Contracts.Services.IAuthService.LogoutAsync(System.Guid)
+    name: LogoutAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Contracts.Services.IAuthService.LogoutAsync(System.Guid)
+    name: LogoutAsync
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task

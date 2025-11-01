@@ -1,0 +1,1306 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService
+  commentId: T:MyApp.Purchasing.Application.Services.PurchaseOrderService
+  id: PurchaseOrderService
+  parent: MyApp.Purchasing.Application.Services
+  children:
+  - MyApp.Purchasing.Application.Services.PurchaseOrderService.#ctor(MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository,MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository,MyApp.Purchasing.Domain.Repositories.ISupplierRepository,AutoMapper.IMapper)
+  - MyApp.Purchasing.Application.Services.PurchaseOrderService.CreatePurchaseOrderAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  - MyApp.Purchasing.Application.Services.PurchaseOrderService.DeletePurchaseOrderAsync(System.Guid)
+  - MyApp.Purchasing.Application.Services.PurchaseOrderService.GetAllPurchaseOrdersAsync
+  - MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrderByIdAsync(System.Guid)
+  - MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  - MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersBySupplierAsync(System.Guid)
+  - MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderAsync(System.Guid,MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  - MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderStatusAsync(System.Guid,MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  langs:
+  - csharp
+  - vb
+  name: PurchaseOrderService
+  nameWithType: PurchaseOrderService
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: PurchaseOrderService
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Purchasing.Application
+  namespace: MyApp.Purchasing.Application.Services
+  syntax:
+    content: 'public class PurchaseOrderService : IPurchaseOrderService'
+    content.vb: Public Class PurchaseOrderService Implements IPurchaseOrderService
+  inheritance:
+  - System.Object
+  implements:
+  - MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.#ctor(MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository,MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository,MyApp.Purchasing.Domain.Repositories.ISupplierRepository,AutoMapper.IMapper)
+  commentId: M:MyApp.Purchasing.Application.Services.PurchaseOrderService.#ctor(MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository,MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository,MyApp.Purchasing.Domain.Repositories.ISupplierRepository,AutoMapper.IMapper)
+  id: '#ctor(MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository,MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository,MyApp.Purchasing.Domain.Repositories.ISupplierRepository,AutoMapper.IMapper)'
+  parent: MyApp.Purchasing.Application.Services.PurchaseOrderService
+  langs:
+  - csharp
+  - vb
+  name: PurchaseOrderService(IPurchaseOrderRepository, IPurchaseOrderLineRepository, ISupplierRepository, IMapper)
+  nameWithType: PurchaseOrderService.PurchaseOrderService(IPurchaseOrderRepository, IPurchaseOrderLineRepository, ISupplierRepository, IMapper)
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.PurchaseOrderService(MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository, MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository, MyApp.Purchasing.Domain.Repositories.ISupplierRepository, AutoMapper.IMapper)
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Purchasing.Application
+  namespace: MyApp.Purchasing.Application.Services
+  syntax:
+    content: public PurchaseOrderService(IPurchaseOrderRepository purchaseOrderRepository, IPurchaseOrderLineRepository lineRepository, ISupplierRepository supplierRepository, IMapper mapper)
+    parameters:
+    - id: purchaseOrderRepository
+      type: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+    - id: lineRepository
+      type: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository
+    - id: supplierRepository
+      type: MyApp.Purchasing.Domain.Repositories.ISupplierRepository
+    - id: mapper
+      type: AutoMapper.IMapper
+    content.vb: Public Sub New(purchaseOrderRepository As IPurchaseOrderRepository, lineRepository As IPurchaseOrderLineRepository, supplierRepository As ISupplierRepository, mapper As IMapper)
+  overload: MyApp.Purchasing.Application.Services.PurchaseOrderService.#ctor*
+  nameWithType.vb: PurchaseOrderService.New(IPurchaseOrderRepository, IPurchaseOrderLineRepository, ISupplierRepository, IMapper)
+  fullName.vb: MyApp.Purchasing.Application.Services.PurchaseOrderService.New(MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository, MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository, MyApp.Purchasing.Domain.Repositories.ISupplierRepository, AutoMapper.IMapper)
+  name.vb: New(IPurchaseOrderRepository, IPurchaseOrderLineRepository, ISupplierRepository, IMapper)
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrderByIdAsync(System.Guid)
+  commentId: M:MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrderByIdAsync(System.Guid)
+  id: GetPurchaseOrderByIdAsync(System.Guid)
+  parent: MyApp.Purchasing.Application.Services.PurchaseOrderService
+  langs:
+  - csharp
+  - vb
+  name: GetPurchaseOrderByIdAsync(Guid)
+  nameWithType: PurchaseOrderService.GetPurchaseOrderByIdAsync(Guid)
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrderByIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPurchaseOrderByIdAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+    startLine: 27
+  assemblies:
+  - MyApp.Purchasing.Application
+  namespace: MyApp.Purchasing.Application.Services
+  example: []
+  syntax:
+    content: public Task<PurchaseOrderDto?> GetPurchaseOrderByIdAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto}
+    content.vb: Public Function GetPurchaseOrderByIdAsync(id As Guid) As Task(Of PurchaseOrderDto)
+  overload: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrderByIdAsync*
+  implements:
+  - MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrderByIdAsync(System.Guid)
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetAllPurchaseOrdersAsync
+  commentId: M:MyApp.Purchasing.Application.Services.PurchaseOrderService.GetAllPurchaseOrdersAsync
+  id: GetAllPurchaseOrdersAsync
+  parent: MyApp.Purchasing.Application.Services.PurchaseOrderService
+  langs:
+  - csharp
+  - vb
+  name: GetAllPurchaseOrdersAsync()
+  nameWithType: PurchaseOrderService.GetAllPurchaseOrdersAsync()
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetAllPurchaseOrdersAsync()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllPurchaseOrdersAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+    startLine: 33
+  assemblies:
+  - MyApp.Purchasing.Application
+  namespace: MyApp.Purchasing.Application.Services
+  example: []
+  syntax:
+    content: public Task<IEnumerable<PurchaseOrderDto>> GetAllPurchaseOrdersAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto}}
+    content.vb: Public Function GetAllPurchaseOrdersAsync() As Task(Of IEnumerable(Of PurchaseOrderDto))
+  overload: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetAllPurchaseOrdersAsync*
+  implements:
+  - MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetAllPurchaseOrdersAsync
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersBySupplierAsync(System.Guid)
+  commentId: M:MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersBySupplierAsync(System.Guid)
+  id: GetPurchaseOrdersBySupplierAsync(System.Guid)
+  parent: MyApp.Purchasing.Application.Services.PurchaseOrderService
+  langs:
+  - csharp
+  - vb
+  name: GetPurchaseOrdersBySupplierAsync(Guid)
+  nameWithType: PurchaseOrderService.GetPurchaseOrdersBySupplierAsync(Guid)
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersBySupplierAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPurchaseOrdersBySupplierAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+    startLine: 39
+  assemblies:
+  - MyApp.Purchasing.Application
+  namespace: MyApp.Purchasing.Application.Services
+  example: []
+  syntax:
+    content: public Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersBySupplierAsync(Guid supplierId)
+    parameters:
+    - id: supplierId
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto}}
+    content.vb: Public Function GetPurchaseOrdersBySupplierAsync(supplierId As Guid) As Task(Of IEnumerable(Of PurchaseOrderDto))
+  overload: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersBySupplierAsync*
+  implements:
+  - MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrdersBySupplierAsync(System.Guid)
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  commentId: M:MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  id: GetPurchaseOrdersByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  parent: MyApp.Purchasing.Application.Services.PurchaseOrderService
+  langs:
+  - csharp
+  - vb
+  name: GetPurchaseOrdersByStatusAsync(PurchaseOrderStatus)
+  nameWithType: PurchaseOrderService.GetPurchaseOrdersByStatusAsync(PurchaseOrderStatus)
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPurchaseOrdersByStatusAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+    startLine: 45
+  assemblies:
+  - MyApp.Purchasing.Application
+  namespace: MyApp.Purchasing.Application.Services
+  example: []
+  syntax:
+    content: public Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersByStatusAsync(PurchaseOrderStatus status)
+    parameters:
+    - id: status
+      type: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto}}
+    content.vb: Public Function GetPurchaseOrdersByStatusAsync(status As PurchaseOrderStatus) As Task(Of IEnumerable(Of PurchaseOrderDto))
+  overload: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersByStatusAsync*
+  implements:
+  - MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrdersByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.CreatePurchaseOrderAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  commentId: M:MyApp.Purchasing.Application.Services.PurchaseOrderService.CreatePurchaseOrderAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  id: CreatePurchaseOrderAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  parent: MyApp.Purchasing.Application.Services.PurchaseOrderService
+  langs:
+  - csharp
+  - vb
+  name: CreatePurchaseOrderAsync(CreateUpdatePurchaseOrderDto)
+  nameWithType: PurchaseOrderService.CreatePurchaseOrderAsync(CreateUpdatePurchaseOrderDto)
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.CreatePurchaseOrderAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreatePurchaseOrderAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+    startLine: 51
+  assemblies:
+  - MyApp.Purchasing.Application
+  namespace: MyApp.Purchasing.Application.Services
+  example: []
+  syntax:
+    content: public Task<PurchaseOrderDto> CreatePurchaseOrderAsync(CreateUpdatePurchaseOrderDto dto)
+    parameters:
+    - id: dto
+      type: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto}
+    content.vb: Public Function CreatePurchaseOrderAsync(dto As CreateUpdatePurchaseOrderDto) As Task(Of PurchaseOrderDto)
+  overload: MyApp.Purchasing.Application.Services.PurchaseOrderService.CreatePurchaseOrderAsync*
+  implements:
+  - MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.CreatePurchaseOrderAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderAsync(System.Guid,MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  commentId: M:MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderAsync(System.Guid,MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  id: UpdatePurchaseOrderAsync(System.Guid,MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  parent: MyApp.Purchasing.Application.Services.PurchaseOrderService
+  langs:
+  - csharp
+  - vb
+  name: UpdatePurchaseOrderAsync(Guid, CreateUpdatePurchaseOrderDto)
+  nameWithType: PurchaseOrderService.UpdatePurchaseOrderAsync(Guid, CreateUpdatePurchaseOrderDto)
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderAsync(System.Guid, MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdatePurchaseOrderAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+    startLine: 73
+  assemblies:
+  - MyApp.Purchasing.Application
+  namespace: MyApp.Purchasing.Application.Services
+  example: []
+  syntax:
+    content: public Task<PurchaseOrderDto> UpdatePurchaseOrderAsync(Guid id, CreateUpdatePurchaseOrderDto dto)
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: dto
+      type: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto}
+    content.vb: Public Function UpdatePurchaseOrderAsync(id As Guid, dto As CreateUpdatePurchaseOrderDto) As Task(Of PurchaseOrderDto)
+  overload: MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderAsync*
+  implements:
+  - MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.UpdatePurchaseOrderAsync(System.Guid,MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderStatusAsync(System.Guid,MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  commentId: M:MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderStatusAsync(System.Guid,MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  id: UpdatePurchaseOrderStatusAsync(System.Guid,MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  parent: MyApp.Purchasing.Application.Services.PurchaseOrderService
+  langs:
+  - csharp
+  - vb
+  name: UpdatePurchaseOrderStatusAsync(Guid, PurchaseOrderStatus)
+  nameWithType: PurchaseOrderService.UpdatePurchaseOrderStatusAsync(Guid, PurchaseOrderStatus)
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderStatusAsync(System.Guid, MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdatePurchaseOrderStatusAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+    startLine: 104
+  assemblies:
+  - MyApp.Purchasing.Application
+  namespace: MyApp.Purchasing.Application.Services
+  example: []
+  syntax:
+    content: public Task<PurchaseOrderDto> UpdatePurchaseOrderStatusAsync(Guid id, PurchaseOrderStatus status)
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: status
+      type: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto}
+    content.vb: Public Function UpdatePurchaseOrderStatusAsync(id As Guid, status As PurchaseOrderStatus) As Task(Of PurchaseOrderDto)
+  overload: MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderStatusAsync*
+  implements:
+  - MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.UpdatePurchaseOrderStatusAsync(System.Guid,MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.DeletePurchaseOrderAsync(System.Guid)
+  commentId: M:MyApp.Purchasing.Application.Services.PurchaseOrderService.DeletePurchaseOrderAsync(System.Guid)
+  id: DeletePurchaseOrderAsync(System.Guid)
+  parent: MyApp.Purchasing.Application.Services.PurchaseOrderService
+  langs:
+  - csharp
+  - vb
+  name: DeletePurchaseOrderAsync(Guid)
+  nameWithType: PurchaseOrderService.DeletePurchaseOrderAsync(Guid)
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.DeletePurchaseOrderAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeletePurchaseOrderAsync
+    path: src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs
+    startLine: 118
+  assemblies:
+  - MyApp.Purchasing.Application
+  namespace: MyApp.Purchasing.Application.Services
+  example: []
+  syntax:
+    content: public Task DeletePurchaseOrderAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function DeletePurchaseOrderAsync(id As Guid) As Task
+  overload: MyApp.Purchasing.Application.Services.PurchaseOrderService.DeletePurchaseOrderAsync*
+  implements:
+  - MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.DeletePurchaseOrderAsync(System.Guid)
+references:
+- uid: MyApp.Purchasing.Application.Services
+  commentId: N:MyApp.Purchasing.Application.Services
+  href: MyApp.html
+  name: MyApp.Purchasing.Application.Services
+  nameWithType: MyApp.Purchasing.Application.Services
+  fullName: MyApp.Purchasing.Application.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Application
+    name: Application
+    href: MyApp.Purchasing.Application.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Services
+    name: Services
+    href: MyApp.Purchasing.Application.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Application
+    name: Application
+    href: MyApp.Purchasing.Application.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Services
+    name: Services
+    href: MyApp.Purchasing.Application.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+  commentId: T:MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+  parent: MyApp.Purchasing.Application.Contracts.Services
+  href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html
+  name: IPurchaseOrderService
+  nameWithType: IPurchaseOrderService
+  fullName: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Purchasing.Application.Contracts.Services
+  commentId: N:MyApp.Purchasing.Application.Contracts.Services
+  href: MyApp.html
+  name: MyApp.Purchasing.Application.Contracts.Services
+  nameWithType: MyApp.Purchasing.Application.Contracts.Services
+  fullName: MyApp.Purchasing.Application.Contracts.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Application
+    name: Application
+    href: MyApp.Purchasing.Application.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts
+    name: Contracts
+    href: MyApp.Purchasing.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts.Services
+    name: Services
+    href: MyApp.Purchasing.Application.Contracts.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Application
+    name: Application
+    href: MyApp.Purchasing.Application.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts
+    name: Contracts
+    href: MyApp.Purchasing.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts.Services
+    name: Services
+    href: MyApp.Purchasing.Application.Contracts.Services.html
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.#ctor*
+  commentId: Overload:MyApp.Purchasing.Application.Services.PurchaseOrderService.#ctor
+  href: MyApp.Purchasing.Application.Services.PurchaseOrderService.html#MyApp_Purchasing_Application_Services_PurchaseOrderService__ctor_MyApp_Purchasing_Domain_Repositories_IPurchaseOrderRepository_MyApp_Purchasing_Domain_Repositories_IPurchaseOrderLineRepository_MyApp_Purchasing_Domain_Repositories_ISupplierRepository_AutoMapper_IMapper_
+  name: PurchaseOrderService
+  nameWithType: PurchaseOrderService.PurchaseOrderService
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.PurchaseOrderService
+  nameWithType.vb: PurchaseOrderService.New
+  fullName.vb: MyApp.Purchasing.Application.Services.PurchaseOrderService.New
+  name.vb: New
+- uid: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+  commentId: T:MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+  parent: MyApp.Purchasing.Domain.Repositories
+  href: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.html
+  name: IPurchaseOrderRepository
+  nameWithType: IPurchaseOrderRepository
+  fullName: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository
+- uid: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository
+  commentId: T:MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository
+  parent: MyApp.Purchasing.Domain.Repositories
+  href: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository.html
+  name: IPurchaseOrderLineRepository
+  nameWithType: IPurchaseOrderLineRepository
+  fullName: MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository
+- uid: MyApp.Purchasing.Domain.Repositories.ISupplierRepository
+  commentId: T:MyApp.Purchasing.Domain.Repositories.ISupplierRepository
+  parent: MyApp.Purchasing.Domain.Repositories
+  href: MyApp.Purchasing.Domain.Repositories.ISupplierRepository.html
+  name: ISupplierRepository
+  nameWithType: ISupplierRepository
+  fullName: MyApp.Purchasing.Domain.Repositories.ISupplierRepository
+- uid: AutoMapper.IMapper
+  commentId: T:AutoMapper.IMapper
+  parent: AutoMapper
+  isExternal: true
+  name: IMapper
+  nameWithType: IMapper
+  fullName: AutoMapper.IMapper
+- uid: MyApp.Purchasing.Domain.Repositories
+  commentId: N:MyApp.Purchasing.Domain.Repositories
+  href: MyApp.html
+  name: MyApp.Purchasing.Domain.Repositories
+  nameWithType: MyApp.Purchasing.Domain.Repositories
+  fullName: MyApp.Purchasing.Domain.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain
+    name: Domain
+    href: MyApp.Purchasing.Domain.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain.Repositories
+    name: Repositories
+    href: MyApp.Purchasing.Domain.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain
+    name: Domain
+    href: MyApp.Purchasing.Domain.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain.Repositories
+    name: Repositories
+    href: MyApp.Purchasing.Domain.Repositories.html
+- uid: AutoMapper
+  commentId: N:AutoMapper
+  isExternal: true
+  name: AutoMapper
+  nameWithType: AutoMapper
+  fullName: AutoMapper
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrderByIdAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrderByIdAsync
+  href: MyApp.Purchasing.Application.Services.PurchaseOrderService.html#MyApp_Purchasing_Application_Services_PurchaseOrderService_GetPurchaseOrderByIdAsync_System_Guid_
+  name: GetPurchaseOrderByIdAsync
+  nameWithType: PurchaseOrderService.GetPurchaseOrderByIdAsync
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrderByIdAsync
+- uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrderByIdAsync(System.Guid)
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrderByIdAsync(System.Guid)
+  parent: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+  isExternal: true
+  href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_GetPurchaseOrderByIdAsync_System_Guid_
+  name: GetPurchaseOrderByIdAsync(Guid)
+  nameWithType: IPurchaseOrderService.GetPurchaseOrderByIdAsync(Guid)
+  fullName: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrderByIdAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrderByIdAsync(System.Guid)
+    name: GetPurchaseOrderByIdAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_GetPurchaseOrderByIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrderByIdAsync(System.Guid)
+    name: GetPurchaseOrderByIdAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_GetPurchaseOrderByIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task{MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PurchaseOrderDto>
+  nameWithType: Task<PurchaseOrderDto>
+  fullName: System.Threading.Tasks.Task<MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto>
+  nameWithType.vb: Task(Of PurchaseOrderDto)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto)
+  name.vb: Task(Of PurchaseOrderDto)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto
+    name: PurchaseOrderDto
+    href: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto
+    name: PurchaseOrderDto
+    href: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetAllPurchaseOrdersAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Services.PurchaseOrderService.GetAllPurchaseOrdersAsync
+  href: MyApp.Purchasing.Application.Services.PurchaseOrderService.html#MyApp_Purchasing_Application_Services_PurchaseOrderService_GetAllPurchaseOrdersAsync
+  name: GetAllPurchaseOrdersAsync
+  nameWithType: PurchaseOrderService.GetAllPurchaseOrdersAsync
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetAllPurchaseOrdersAsync
+- uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetAllPurchaseOrdersAsync
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetAllPurchaseOrdersAsync
+  parent: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+  href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_GetAllPurchaseOrdersAsync
+  name: GetAllPurchaseOrdersAsync()
+  nameWithType: IPurchaseOrderService.GetAllPurchaseOrdersAsync()
+  fullName: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetAllPurchaseOrdersAsync()
+  spec.csharp:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetAllPurchaseOrdersAsync
+    name: GetAllPurchaseOrdersAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_GetAllPurchaseOrdersAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetAllPurchaseOrdersAsync
+    name: GetAllPurchaseOrdersAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_GetAllPurchaseOrdersAsync
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<PurchaseOrderDto>>
+  nameWithType: Task<IEnumerable<PurchaseOrderDto>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto>>
+  nameWithType.vb: Task(Of IEnumerable(Of PurchaseOrderDto))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto))
+  name.vb: Task(Of IEnumerable(Of PurchaseOrderDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto
+    name: PurchaseOrderDto
+    href: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto
+    name: PurchaseOrderDto
+    href: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersBySupplierAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersBySupplierAsync
+  href: MyApp.Purchasing.Application.Services.PurchaseOrderService.html#MyApp_Purchasing_Application_Services_PurchaseOrderService_GetPurchaseOrdersBySupplierAsync_System_Guid_
+  name: GetPurchaseOrdersBySupplierAsync
+  nameWithType: PurchaseOrderService.GetPurchaseOrdersBySupplierAsync
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersBySupplierAsync
+- uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrdersBySupplierAsync(System.Guid)
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrdersBySupplierAsync(System.Guid)
+  parent: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+  isExternal: true
+  href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_GetPurchaseOrdersBySupplierAsync_System_Guid_
+  name: GetPurchaseOrdersBySupplierAsync(Guid)
+  nameWithType: IPurchaseOrderService.GetPurchaseOrdersBySupplierAsync(Guid)
+  fullName: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrdersBySupplierAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrdersBySupplierAsync(System.Guid)
+    name: GetPurchaseOrdersBySupplierAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_GetPurchaseOrdersBySupplierAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrdersBySupplierAsync(System.Guid)
+    name: GetPurchaseOrdersBySupplierAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_GetPurchaseOrdersBySupplierAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersByStatusAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersByStatusAsync
+  href: MyApp.Purchasing.Application.Services.PurchaseOrderService.html#MyApp_Purchasing_Application_Services_PurchaseOrderService_GetPurchaseOrdersByStatusAsync_MyApp_Purchasing_Domain_Entities_PurchaseOrderStatus_
+  name: GetPurchaseOrdersByStatusAsync
+  nameWithType: PurchaseOrderService.GetPurchaseOrdersByStatusAsync
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersByStatusAsync
+- uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrdersByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrdersByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  parent: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+  href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_GetPurchaseOrdersByStatusAsync_MyApp_Purchasing_Domain_Entities_PurchaseOrderStatus_
+  name: GetPurchaseOrdersByStatusAsync(PurchaseOrderStatus)
+  nameWithType: IPurchaseOrderService.GetPurchaseOrdersByStatusAsync(PurchaseOrderStatus)
+  fullName: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrdersByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  spec.csharp:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrdersByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+    name: GetPurchaseOrdersByStatusAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_GetPurchaseOrdersByStatusAsync_MyApp_Purchasing_Domain_Entities_PurchaseOrderStatus_
+  - name: (
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+    name: PurchaseOrderStatus
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.GetPurchaseOrdersByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+    name: GetPurchaseOrdersByStatusAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_GetPurchaseOrdersByStatusAsync_MyApp_Purchasing_Domain_Entities_PurchaseOrderStatus_
+  - name: (
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+    name: PurchaseOrderStatus
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.html
+  - name: )
+- uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  commentId: T:MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+  parent: MyApp.Purchasing.Domain.Entities
+  href: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.html
+  name: PurchaseOrderStatus
+  nameWithType: PurchaseOrderStatus
+  fullName: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+- uid: MyApp.Purchasing.Domain.Entities
+  commentId: N:MyApp.Purchasing.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Purchasing.Domain.Entities
+  nameWithType: MyApp.Purchasing.Domain.Entities
+  fullName: MyApp.Purchasing.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain
+    name: Domain
+    href: MyApp.Purchasing.Domain.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain.Entities
+    name: Entities
+    href: MyApp.Purchasing.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain
+    name: Domain
+    href: MyApp.Purchasing.Domain.html
+  - name: .
+  - uid: MyApp.Purchasing.Domain.Entities
+    name: Entities
+    href: MyApp.Purchasing.Domain.Entities.html
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.CreatePurchaseOrderAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Services.PurchaseOrderService.CreatePurchaseOrderAsync
+  href: MyApp.Purchasing.Application.Services.PurchaseOrderService.html#MyApp_Purchasing_Application_Services_PurchaseOrderService_CreatePurchaseOrderAsync_MyApp_Purchasing_Application_Contracts_DTOs_CreateUpdatePurchaseOrderDto_
+  name: CreatePurchaseOrderAsync
+  nameWithType: PurchaseOrderService.CreatePurchaseOrderAsync
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.CreatePurchaseOrderAsync
+- uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.CreatePurchaseOrderAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.CreatePurchaseOrderAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  parent: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+  href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_CreatePurchaseOrderAsync_MyApp_Purchasing_Application_Contracts_DTOs_CreateUpdatePurchaseOrderDto_
+  name: CreatePurchaseOrderAsync(CreateUpdatePurchaseOrderDto)
+  nameWithType: IPurchaseOrderService.CreatePurchaseOrderAsync(CreateUpdatePurchaseOrderDto)
+  fullName: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.CreatePurchaseOrderAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  spec.csharp:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.CreatePurchaseOrderAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+    name: CreatePurchaseOrderAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_CreatePurchaseOrderAsync_MyApp_Purchasing_Application_Contracts_DTOs_CreateUpdatePurchaseOrderDto_
+  - name: (
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto
+    name: CreateUpdatePurchaseOrderDto
+    href: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.CreatePurchaseOrderAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+    name: CreatePurchaseOrderAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_CreatePurchaseOrderAsync_MyApp_Purchasing_Application_Contracts_DTOs_CreateUpdatePurchaseOrderDto_
+  - name: (
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto
+    name: CreateUpdatePurchaseOrderDto
+    href: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto.html
+  - name: )
+- uid: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto
+  commentId: T:MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto
+  parent: MyApp.Purchasing.Application.Contracts.DTOs
+  href: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto.html
+  name: CreateUpdatePurchaseOrderDto
+  nameWithType: CreateUpdatePurchaseOrderDto
+  fullName: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto
+- uid: MyApp.Purchasing.Application.Contracts.DTOs
+  commentId: N:MyApp.Purchasing.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Purchasing.Application.Contracts.DTOs
+  nameWithType: MyApp.Purchasing.Application.Contracts.DTOs
+  fullName: MyApp.Purchasing.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Application
+    name: Application
+    href: MyApp.Purchasing.Application.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts
+    name: Contracts
+    href: MyApp.Purchasing.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Purchasing.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Application
+    name: Application
+    href: MyApp.Purchasing.Application.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts
+    name: Contracts
+    href: MyApp.Purchasing.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Purchasing.Application.Contracts.DTOs.html
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderAsync
+  href: MyApp.Purchasing.Application.Services.PurchaseOrderService.html#MyApp_Purchasing_Application_Services_PurchaseOrderService_UpdatePurchaseOrderAsync_System_Guid_MyApp_Purchasing_Application_Contracts_DTOs_CreateUpdatePurchaseOrderDto_
+  name: UpdatePurchaseOrderAsync
+  nameWithType: PurchaseOrderService.UpdatePurchaseOrderAsync
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderAsync
+- uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.UpdatePurchaseOrderAsync(System.Guid,MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.UpdatePurchaseOrderAsync(System.Guid,MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  parent: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+  isExternal: true
+  href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_UpdatePurchaseOrderAsync_System_Guid_MyApp_Purchasing_Application_Contracts_DTOs_CreateUpdatePurchaseOrderDto_
+  name: UpdatePurchaseOrderAsync(Guid, CreateUpdatePurchaseOrderDto)
+  nameWithType: IPurchaseOrderService.UpdatePurchaseOrderAsync(Guid, CreateUpdatePurchaseOrderDto)
+  fullName: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.UpdatePurchaseOrderAsync(System.Guid, MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+  spec.csharp:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.UpdatePurchaseOrderAsync(System.Guid,MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+    name: UpdatePurchaseOrderAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_UpdatePurchaseOrderAsync_System_Guid_MyApp_Purchasing_Application_Contracts_DTOs_CreateUpdatePurchaseOrderDto_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto
+    name: CreateUpdatePurchaseOrderDto
+    href: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.UpdatePurchaseOrderAsync(System.Guid,MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)
+    name: UpdatePurchaseOrderAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_UpdatePurchaseOrderAsync_System_Guid_MyApp_Purchasing_Application_Contracts_DTOs_CreateUpdatePurchaseOrderDto_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto
+    name: CreateUpdatePurchaseOrderDto
+    href: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto.html
+  - name: )
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderStatusAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderStatusAsync
+  href: MyApp.Purchasing.Application.Services.PurchaseOrderService.html#MyApp_Purchasing_Application_Services_PurchaseOrderService_UpdatePurchaseOrderStatusAsync_System_Guid_MyApp_Purchasing_Domain_Entities_PurchaseOrderStatus_
+  name: UpdatePurchaseOrderStatusAsync
+  nameWithType: PurchaseOrderService.UpdatePurchaseOrderStatusAsync
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderStatusAsync
+- uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.UpdatePurchaseOrderStatusAsync(System.Guid,MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.UpdatePurchaseOrderStatusAsync(System.Guid,MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  parent: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+  isExternal: true
+  href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_UpdatePurchaseOrderStatusAsync_System_Guid_MyApp_Purchasing_Domain_Entities_PurchaseOrderStatus_
+  name: UpdatePurchaseOrderStatusAsync(Guid, PurchaseOrderStatus)
+  nameWithType: IPurchaseOrderService.UpdatePurchaseOrderStatusAsync(Guid, PurchaseOrderStatus)
+  fullName: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.UpdatePurchaseOrderStatusAsync(System.Guid, MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+  spec.csharp:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.UpdatePurchaseOrderStatusAsync(System.Guid,MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+    name: UpdatePurchaseOrderStatusAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_UpdatePurchaseOrderStatusAsync_System_Guid_MyApp_Purchasing_Domain_Entities_PurchaseOrderStatus_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+    name: PurchaseOrderStatus
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.UpdatePurchaseOrderStatusAsync(System.Guid,MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)
+    name: UpdatePurchaseOrderStatusAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_UpdatePurchaseOrderStatusAsync_System_Guid_MyApp_Purchasing_Domain_Entities_PurchaseOrderStatus_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus
+    name: PurchaseOrderStatus
+    href: MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.html
+  - name: )
+- uid: MyApp.Purchasing.Application.Services.PurchaseOrderService.DeletePurchaseOrderAsync*
+  commentId: Overload:MyApp.Purchasing.Application.Services.PurchaseOrderService.DeletePurchaseOrderAsync
+  href: MyApp.Purchasing.Application.Services.PurchaseOrderService.html#MyApp_Purchasing_Application_Services_PurchaseOrderService_DeletePurchaseOrderAsync_System_Guid_
+  name: DeletePurchaseOrderAsync
+  nameWithType: PurchaseOrderService.DeletePurchaseOrderAsync
+  fullName: MyApp.Purchasing.Application.Services.PurchaseOrderService.DeletePurchaseOrderAsync
+- uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.DeletePurchaseOrderAsync(System.Guid)
+  commentId: M:MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.DeletePurchaseOrderAsync(System.Guid)
+  parent: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService
+  isExternal: true
+  href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_DeletePurchaseOrderAsync_System_Guid_
+  name: DeletePurchaseOrderAsync(Guid)
+  nameWithType: IPurchaseOrderService.DeletePurchaseOrderAsync(Guid)
+  fullName: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.DeletePurchaseOrderAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.DeletePurchaseOrderAsync(System.Guid)
+    name: DeletePurchaseOrderAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_DeletePurchaseOrderAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.DeletePurchaseOrderAsync(System.Guid)
+    name: DeletePurchaseOrderAsync
+    href: MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html#MyApp_Purchasing_Application_Contracts_Services_IPurchaseOrderService_DeletePurchaseOrderAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
