@@ -21,7 +21,7 @@
     <ProjectReference Include="..\..\src\MyApp.Inventory\MyApp.Inventory.Domain\MyApp.Inventory.Domain.csproj" />
     <ProjectReference Include="..\..\src\MyApp.Inventory\MyApp.Inventory.Application.Contracts\MyApp.Inventory.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\src\MyApp.Inventory\MyApp.Inventory.Infrastructure\MyApp.Inventory.Infrastructure.csproj" />
-      <ProjectReference Include="..\..\..\..\Shared\src\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Shared\src\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
   </ItemGroup>
 
 </Project>
