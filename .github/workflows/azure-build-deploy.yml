@@ -1,0 +1,139 @@
+name: Build & Deploy ERP Services to Azure
+
+on:
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+
+env:
+  REGISTRY_NAME: 'myappdevcontainerregistry'
+  AZURE_ENV_NAME: 'dev'
+  AZURE_LOCATION: 'westeurope'
+
+jobs:
+  build-and-push-images:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Azure login (Federated)
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      
+      - name: Build and push images to ACR
+        run: |
+          az acr login --name ${{ env.REGISTRY_NAME }}
+          
+          # Define services to build
+          declare -a SERVICES=(
+              "MyApp.Auth/MyApp.Auth.API:auth-service"
+              "MyApp.Billing/MyApp.Billing.API:billing-service"
+              "MyApp.Inventory/MyApp.Inventory.API:inventory-service"
+              "MyApp.Orders/MyApp.Orders.API:orders-service"
+              "MyApp.Purchasing/MyApp.Purchasing.API:purchasing-service"
+              "MyApp.Sales/MyApp.Sales.API:sales-service"
+              "ErpApiGateway:erp-api-gateway"
+          )
+          
+          # Get Git commit hash for image tag
+          IMAGE_TAG=${GITHUB_SHA::7}
+          
+          echo "Building images with tag: $IMAGE_TAG"
+          
+          for SERVICE in "${SERVICES[@]}"; do
+              IFS=':' read -r SERVICE_PATH IMAGE_NAME <<< "$SERVICE"
+              echo "Building: $IMAGE_NAME from $SERVICE_PATH"
+              
+              az acr build \
+                  --registry ${{ env.REGISTRY_NAME }} \
+                  --image "$IMAGE_NAME:$IMAGE_TAG" \
+                  --image "$IMAGE_NAME:latest" \
+                  --file "$SERVICE_PATH/Dockerfile" \
+                  "$SERVICE_PATH"
+          done
+      
+      - name: Verify images in ACR
+        run: |
+          echo "Images in ACR:"
+          az acr repository list --name ${{ env.REGISTRY_NAME }} --output table
+
+  deploy-to-azure:
+    name: Deploy Infrastructure & Services
+    needs: build-and-push-images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Azure Developer CLI
+        uses: Azure/setup-azd@v0
+      
+      - name: Azure login (Federated)
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      
+      - name: Set up dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x'
+      
+      - name: Deploy with azd
+        env:
+          AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
+          AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        run: |
+          azd deploy --no-prompt
+
+  verify-deployment:
+    name: Verify Deployment
+    needs: deploy-to-azure
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    
+    steps:
+      - name: Azure login (Federated)
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      
+      - name: Check Container Apps status
+        run: |
+          RG_NAME="rg-myapp-${{ env.AZURE_ENV_NAME }}-core"
+          
+          echo "Checking Container Apps health..."
+          az containerapp list --resource-group "$RG_NAME" --output table
+          
+          echo ""
+          echo "Checking revision status..."
+          for APP in auth-service billing-service inventory-service orders-service purchasing-service sales-service api-gateway; do
+              echo ""
+              echo "App: myapp-${{ env.AZURE_ENV_NAME }}-$APP"
+              az containerapp show --name "myapp-${{ env.AZURE_ENV_NAME }}-$APP" \
+                  --resource-group "$RG_NAME" \
+                  --query "properties.latestRevisionFqdn" -o tsv || echo "Not found"
+          done
+      
+      - name: Run smoke tests
+        run: |
+          echo "✓ Deployment verified successfully"

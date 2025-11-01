@@ -39,8 +39,6 @@ var namePrefix = 'myapp-${envSlug}'
 var flatPrefix = toLower(replace(namePrefix, '-', ''))
 
 var resourceGroupName = 'rg-${namePrefix}-core'
-
-var managedIdentityName = take('${namePrefix}-user-assigned-identity', 128)
 var containerRegistryName = take('${flatPrefix}containerregistry', 50)
 var logAnalyticsWorkspaceName = take('${namePrefix}-log-analytics-workspace', 63)
 var applicationInsightsName = take('${namePrefix}-application-insights', 260)
@@ -91,7 +89,6 @@ module resources 'resources.bicep' = {
     location: location
     tags: tags
     namePrefix: namePrefix
-    managedIdentityName: managedIdentityName
     containerRegistryName: containerRegistryName
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
     applicationInsightsName: applicationInsightsName
@@ -193,6 +190,7 @@ module authServiceModule 'services/auth-service.bicep' = {
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
     namePrefix: namePrefix
+    userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
 }
 
@@ -214,6 +212,7 @@ module billingServiceModule 'services/billing-service.bicep' = {
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
     namePrefix: namePrefix
+    userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
 }
 
@@ -235,6 +234,7 @@ module inventoryServiceModule 'services/inventory-service.bicep' = {
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
     namePrefix: namePrefix
+    userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
 }
 
@@ -256,6 +256,7 @@ module ordersServiceModule 'services/orders-service.bicep' = {
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
     namePrefix: namePrefix
+    userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
 }
 
@@ -277,6 +278,7 @@ module purchasingServiceModule 'services/purchasing-service.bicep' = {
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
     namePrefix: namePrefix
+    userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
 }
 
@@ -298,6 +300,7 @@ module salesServiceModule 'services/sales-service.bicep' = {
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
     namePrefix: namePrefix
+    userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
 }
 
@@ -319,6 +322,7 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
     namePrefix: namePrefix
+    userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
 }
 
@@ -359,11 +363,11 @@ module rbacAssignments 'rbac-assignments.bicep' = {
   }
 }
 
-output MANAGED_IDENTITY_CLIENT_ID string = resources.outputs.MANAGED_IDENTITY_CLIENT_ID
+output MANAGED_IDENTITY_CLIENT_ID string = resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_CLIENT_ID
 output MANAGED_IDENTITY_NAME string = resources.outputs.MANAGED_IDENTITY_NAME
 output AZURE_LOG_ANALYTICS_WORKSPACE_NAME string = resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_NAME
 output AZURE_CONTAINER_REGISTRY_ENDPOINT string = resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
-output AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID string = resources.outputs.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID
+output AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID string = resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
 output AZURE_CONTAINER_REGISTRY_NAME string = resources.outputs.AZURE_CONTAINER_REGISTRY_NAME
 output AZURE_CONTAINER_APPS_ENVIRONMENT_NAME string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME
 output AZURE_CONTAINER_APPS_ENVIRONMENT_ID string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID

@@ -75,6 +75,9 @@ param logAnalyticsWorkspaceId string
 @description('Managed Identity Principal ID for RBAC role assignments')
 param managedIdentityPrincipalId string
 
+@description('User-Assigned Managed Identity ID')
+param userAssignedIdentityId string
+
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
   name: split(containerAppsEnvironmentId, '/')[8]
 }
@@ -153,7 +156,10 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
     } : {}
   )
   identity: {
-    type: 'SystemAssigned'
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${userAssignedIdentityId}': {}
+    }
   }
   properties: {
     managedEnvironmentId: containerAppsEnvironment.id
@@ -178,7 +184,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
       registries: [
         {
           server: containerRegistry.properties.loginServer
-          identity: 'system'
+          identity: userAssignedIdentityId
         }
       ]
       dapr: daprEnabled ? {
@@ -247,6 +253,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
 }
 
 // Assign ACR Pull role to the container app
+/*
 resource acrPullRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(containerApp.id, containerRegistry.id, 'acrpull')
   scope: containerRegistry
@@ -256,6 +263,7 @@ resource acrPullRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
   }
 }
+*/
 
 output id string = containerApp.id
 output name string = containerApp.name

@@ -20,10 +20,15 @@ System architecture and design documentation.
 ### 🚢 [Deployment](./deployment/)
 Deployment guides, checklists, and operations.
 
+- [BUILD_AND_DEPLOY_AUTOMATION.md](./deployment/BUILD_AND_DEPLOY_AUTOMATION.md) - **NEW:** Complete automated build & deploy guide
+- [QUICK_START_BUILD_DEPLOY.md](./deployment/QUICK_START_BUILD_DEPLOY.md) - **NEW:** Quick reference for build & deploy automation
+- [DEPLOYMENT_AUTOMATION_COMPLETE.md](./deployment/DEPLOYMENT_AUTOMATION_COMPLETE.md) - **NEW:** Full solution overview for image building
+- [GITHUB_ACTIONS_ARCHITECTURE.md](./deployment/GITHUB_ACTIONS_ARCHITECTURE.md) - **NEW:** CI/CD workflow architecture & patterns
 - [DEPLOYMENT.md](./deployment/DEPLOYMENT.md) - Comprehensive deployment guide
 - [DEPLOYMENT_CHECKLIST.md](./deployment/DEPLOYMENT_CHECKLIST.md) - Deployment checklist
 - [DEPLOYMENT_OPERATIONS_GUIDE.md](./deployment/DEPLOYMENT_OPERATIONS_GUIDE.md) - Operations guide
 - [PRE_DEPLOYMENT_CHECKLIST.md](./deployment/PRE_DEPLOYMENT_CHECKLIST.md) - Pre-deployment validation
+- [README.md](./deployment/README.md) - Deployment directory overview
 
 ### 🏢 [Infrastructure](./infrastructure/)
 Infrastructure as Code (Bicep) and Docker Compose documentation.
@@ -70,10 +75,20 @@ Internal development notes and prompts.
 
 - [add-dependencies.prompt.md](./development/add-dependencies.prompt.md) - Project dependency setup guide
 
-## 🔗 Quick Links
+## � Documentation Index Files
+
+These special index files help you navigate to important topics quickly:
+
+- **[BUILD_AND_DEPLOY_INDEX.md](./BUILD_AND_DEPLOY_INDEX.md)** - 🚀 **NEW:** Fast access to build & deploy automation
+- [FILE_INVENTORY.md](./FILE_INVENTORY.md) - Complete file listing
+- [SITEMAP.md](./SITEMAP.md) - Visual documentation map
+- [QUICK_START_GUIDE.md](./QUICK_START_GUIDE.md) - Getting started
+
+---
 
 - [Main README](../README.md) - Project overview and quick start
 - [Quick Start Guide](./guides/QUICKSTART.md) - Get started in 5 minutes
+- **[🚀 Build & Deploy Automation](./deployment/BUILD_AND_DEPLOY_AUTOMATION.md)** - **NEW:** Automated image building & deployment
 - [Deployment Guide](./deployment/DEPLOYMENT.md) - Full deployment instructions
 - [Architecture Overview](./architecture/ARCHITECTURE_DOCUMENTATION.md) - System architecture
 
@@ -85,9 +100,11 @@ Internal development notes and prompts.
 3. [QUICKSTART.md](./guides/QUICKSTART.md)
 
 ### For Deploying to Production
-1. [PRE_DEPLOYMENT_CHECKLIST.md](./deployment/PRE_DEPLOYMENT_CHECKLIST.md)
-2. [DEPLOYMENT.md](./deployment/DEPLOYMENT.md)
-3. [DEPLOYMENT_OPERATIONS_GUIDE.md](./deployment/DEPLOYMENT_OPERATIONS_GUIDE.md)
+1. [QUICK_START_BUILD_DEPLOY.md](./deployment/QUICK_START_BUILD_DEPLOY.md) - **Start here:** Automated build & deploy
+2. [BUILD_AND_DEPLOY_AUTOMATION.md](./deployment/BUILD_AND_DEPLOY_AUTOMATION.md) - Complete technical guide
+3. [PRE_DEPLOYMENT_CHECKLIST.md](./deployment/PRE_DEPLOYMENT_CHECKLIST.md)
+4. [DEPLOYMENT.md](./deployment/DEPLOYMENT.md)
+5. [DEPLOYMENT_OPERATIONS_GUIDE.md](./deployment/DEPLOYMENT_OPERATIONS_GUIDE.md)
 
 ### For Understanding the Architecture
 1. [ARCHITECTURE_DOCUMENTATION.md](./architecture/ARCHITECTURE_DOCUMENTATION.md)

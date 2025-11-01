@@ -2,17 +2,19 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# Copy solution file
-COPY ["ERP.Microservices.sln", "./"]
-
-# Copy Gateway project
+# Copy only the Gateway project file for restore
 COPY ["ErpApiGateway/ErpApiGateway.csproj", "ErpApiGateway/"]
+
+# Copy shared projects
+COPY ["MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
+COPY ["MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.csproj", "MyApp.Shared/MyApp.Shared.Infrastructure/"]
 
 # Restore dependencies
 RUN dotnet restore "ErpApiGateway/ErpApiGateway.csproj"
 
-# Copy all source files
-COPY . .
+# Copy source files for Gateway
+COPY ["ErpApiGateway/", "ErpApiGateway/"]
+COPY ["MyApp.Shared/", "MyApp.Shared/"]
 
 # Build the project
 WORKDIR "/src/ErpApiGateway"
