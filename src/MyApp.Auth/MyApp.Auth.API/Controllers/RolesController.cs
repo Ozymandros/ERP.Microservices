@@ -68,7 +68,7 @@ public class RolesController : ControllerBase
     [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<RoleDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<PaginatedResult<RoleDto>>> GetAllPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    public async Task<ActionResult<PaginatedResult<RoleDto>>> GetAllPaginated([FromQuery(Name = "page")] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
         try
         {

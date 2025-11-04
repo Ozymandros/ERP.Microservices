@@ -40,7 +40,7 @@ public class InventoryTransactionsController : ControllerBase
     [HttpGet("paginated")]
     [HasPermission("Inventory", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<InventoryTransactionDto>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<PaginatedResult<InventoryTransactionDto>>> GetAllTransactionsPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    public async Task<ActionResult<PaginatedResult<InventoryTransactionDto>>> GetAllTransactionsPaginated([FromQuery(Name = "page")] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
         try
         {

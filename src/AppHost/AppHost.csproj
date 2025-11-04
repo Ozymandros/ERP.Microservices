@@ -8,7 +8,7 @@
     <Nullable>enable</Nullable>
     <IsAspireHost>true</IsAspireHost>
     <UserSecretsId>6dd05225-6440-435e-80fe-b6a08cab3e21</UserSecretsId>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
   <Sdk Name="Aspire.AppHost.Sdk" Version="9.0.0" />
@@ -24,6 +24,7 @@
     <PackageReference Include="Aspire.Hosting.Azure.ApplicationInsights" Version="9.5.2" />
     <PackageReference Include="Aspire.Hosting.Azure.OperationalInsights" Version="9.5.2" />
     <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="9.5.2" />
+    <PackageReference Include="Aspire.Hosting.NodeJs" Version="9.5.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyApp.Auth\MyApp.Auth.API\MyApp.Auth.API.csproj" />

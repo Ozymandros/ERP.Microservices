@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace MyApp.Shared.Domain.Pagination;
 
 /// <summary>
@@ -14,6 +16,7 @@ public class PaginatedResult<T>
     /// <summary>
     /// Current page number (1-indexed)
     /// </summary>
+    [JsonPropertyName("page")]
     public int PageNumber { get; set; }
 
     /// <summary>
@@ -24,6 +27,7 @@ public class PaginatedResult<T>
     /// <summary>
     /// Total number of items across all pages
     /// </summary>
+    [JsonPropertyName("total")] 
     public int TotalCount { get; set; }
 
     /// <summary>

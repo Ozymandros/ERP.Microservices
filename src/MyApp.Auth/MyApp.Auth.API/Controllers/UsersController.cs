@@ -58,7 +58,7 @@ public class UsersController : ControllerBase
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<PaginatedResult<UserDto>>> GetAllPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    public async Task<ActionResult<PaginatedResult<UserDto>>> GetAllPaginated([FromQuery(Name = "page")] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
         try
         {
