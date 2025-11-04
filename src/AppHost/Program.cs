@@ -93,15 +93,6 @@ if (isDeployment)
             .WaitFor(applicationInsights)
             .WithReference(applicationInsights);
     }
-
-    // Add React Vite frontend for deployment
-    var webClient = builder.AddNodeApp("react-frontend", "../../erp-frontend")
-        .WithArgs("run", "dev")
-        .WithHttpEndpoint(port: 3000, env: "PORT")
-        .WithEnvironment("VITE_API_URL", "https://api-gateway")
-        .WithEnvironment("VITE_ENVIRONMENT", "production")
-        .WithExternalHttpEndpoints()
-        .WaitFor(apiGateway);
 }
 else
 {

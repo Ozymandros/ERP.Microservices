@@ -1,3 +1,5 @@
+using MyApp.Shared.Domain.DTOs;
+
 namespace MyApp.Auth.Application.Contracts.DTOs;
 
 public class ExternalLoginDto
@@ -21,7 +23,7 @@ public class CreateRoleDto
     public string? Description { get; set; }
 }
 
-public class RoleDto
+public class RoleDto : AuditableGuidDto
 {
     public Guid Id { get; set; }
     public string? Name { get; set; }

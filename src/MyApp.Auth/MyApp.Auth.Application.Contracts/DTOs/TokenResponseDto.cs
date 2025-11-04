@@ -1,4 +1,6 @@
 
+using MyApp.Shared.Domain.DTOs;
+
 namespace MyApp.Auth.Application.Contracts.DTOs;
 
 public class TokenResponseDto
@@ -10,7 +12,7 @@ public class TokenResponseDto
     public UserDto? User { get; set; }
 }
 
-public class UserDto
+public class UserDto : AuditableGuidDto
 {
     public Guid Id { get; set; }
     public string? Email { get; set; }
