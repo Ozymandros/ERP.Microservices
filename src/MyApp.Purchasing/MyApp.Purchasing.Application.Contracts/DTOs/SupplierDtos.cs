@@ -1,10 +1,11 @@
+using MyApp.Shared.Domain.DTOs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Purchasing.Application.Contracts.DTOs;
 
-public class SupplierDto
+public class SupplierDto : AuditableGuidDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;

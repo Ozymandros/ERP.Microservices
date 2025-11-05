@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
+using MyApp.Shared.Domain.DTOs;
 using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Sales.Application.Contracts.DTOs
 {
-    public class SalesOrderDto
+    public class SalesOrderDto : AuditableGuidDto
     {
-        public Guid Id { get; set; }
         public string OrderNumber { get; set; } = string.Empty;
         public Guid CustomerId { get; set; }
         public DateTime OrderDate { get; set; }

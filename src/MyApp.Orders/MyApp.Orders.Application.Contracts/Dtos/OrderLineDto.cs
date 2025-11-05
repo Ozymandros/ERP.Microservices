@@ -1,9 +1,10 @@
+using MyApp.Shared.Domain.DTOs;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Orders.Application.Contracts.Dtos
 {
-    public class OrderLineDto
+    public class OrderLineDto : AuditableGuidDto
     {
         public Guid Id { get; set; }
         public Guid ProductId { get; set; }

@@ -1,8 +1,9 @@
+using MyApp.Shared.Domain.DTOs;
 using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
-public class ProductDto
+public class ProductDto : AuditableGuidDto
 {
     public Guid Id { get; set; }
 

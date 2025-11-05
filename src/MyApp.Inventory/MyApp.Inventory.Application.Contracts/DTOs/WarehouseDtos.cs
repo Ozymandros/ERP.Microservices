@@ -1,9 +1,9 @@
-using MyApp.Shared.Domain.Entities;
+using MyApp.Shared.Domain.DTOs;
 using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
-public class WarehouseDto : AuditableEntity<Guid>
+public class WarehouseDto : AuditableGuidDto
 {
     public string Name { get; set; } = string.Empty;
     public string Location { get; set; } = string.Empty;
