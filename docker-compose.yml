@@ -100,7 +100,7 @@ services:
 
   erpapigateway:
     build:
-      context: .
+      context: ./src
       dockerfile: ErpApiGateway/Dockerfile
     container_name: gateway
     environment:
@@ -146,7 +146,7 @@ services:
 
   auth-service:
     build:
-      context: .
+      context: ./src
       dockerfile: MyApp.Auth/MyApp.Auth.API/Dockerfile
     container_name: auth-service
     environment:
@@ -195,7 +195,7 @@ services:
 
   billing-service:
     build:
-      context: .
+      context: ./src
       dockerfile: MyApp.Billing/MyApp.Billing.API/Dockerfile
     container_name: billing-service
     environment:
@@ -244,7 +244,7 @@ services:
 
   inventory-service:
     build:
-      context: .
+      context: ./src
       dockerfile: MyApp.Inventory/MyApp.Inventory.API/Dockerfile
     container_name: inventory-service
     environment:
@@ -293,7 +293,7 @@ services:
 
   orders-service:
     build:
-      context: .
+      context: ./src
       dockerfile: MyApp.Orders/MyApp.Orders.API/Dockerfile
     container_name: orders-service
     environment:
@@ -342,7 +342,7 @@ services:
 
   purchasing-service:
     build:
-      context: .
+      context: ./src
       dockerfile: MyApp.Purchasing/MyApp.Purchasing.API/Dockerfile
     container_name: purchasing-service
     environment:
@@ -391,7 +391,7 @@ services:
 
   sales-service:
     build:
-      context: .
+      context: ./src
       dockerfile: MyApp.Sales/MyApp.Sales.API/Dockerfile
     container_name: sales-service
     environment:

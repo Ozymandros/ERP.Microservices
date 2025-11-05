@@ -73,6 +73,29 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
+    /// Create a new user
+    /// </summary>
+    /// <param name="user">User to create</param>
+    /// <returns>Created user</returns>
+    [HttpPost("create")]
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<UserDto>> CreateUser([FromBody] CreateUserDto user)
+    {
+        try
+        {
+            var result = await _userService.CreateUserAsync(user);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating user");
+            return StatusCode(500, new { message = "An error occurred creating user" });
+        }
+    }
+
+    /// <summary>
     /// Get current user
     /// </summary>
     [HttpGet("me")]
