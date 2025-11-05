@@ -1,10 +1,10 @@
 ﻿namespace MyApp.Shared.Domain.Entities
 {
-    public class AuditableEntity<T> : DomainEntity<T>, IAuditableEntity<T> where T : IComparable, IComparable<T>, IEquatable<T>, IFormattable, IParsable<T>
+    public abstract class AuditableEntity<T> : DomainEntity<T>, IAuditableEntity<T> where T : IComparable, IComparable<T>, IEquatable<T>, IFormattable, IParsable<T>
     {
-        public DateTime CreatedAt { get; set; }
-        public string CreatedBy { get; set; } = string.Empty;
-        public DateTime? UpdatedAt { get; set; }
-        public string? UpdatedBy { get; set; }
+        public virtual DateTime CreatedAt { get; set; }
+        public virtual string CreatedBy { get; set; } = string.Empty;
+        public virtual DateTime? UpdatedAt { get; set; }
+        public virtual string? UpdatedBy { get; set; }
     }
 }
