@@ -1,0 +1,1659 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  commentId: T:MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  id: PermissionServiceTests
+  parent: MyApp.Auth.Application.Tests.Services
+  children:
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.#ctor
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetAllPermissionsAsync_ShouldReturnMappedPermissions
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithNullUsername_ShouldReturnFalse
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  - MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  langs:
+  - csharp
+  - vb
+  name: PermissionServiceTests
+  nameWithType: PermissionServiceTests
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: PermissionServiceTests
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: 'public class PermissionServiceTests : BaseServiceTest'
+    content.vb: Public Class PermissionServiceTests Inherits BaseServiceTest
+  inheritance:
+  - System.Object
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  inheritedMembers:
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{{T}}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.#ctor
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.#ctor
+  id: '#ctor'
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: PermissionServiceTests()
+  nameWithType: PermissionServiceTests.PermissionServiceTests()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.PermissionServiceTests()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 22
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: public PermissionServiceTests()
+    content.vb: Public Sub New()
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.#ctor*
+  nameWithType.vb: PermissionServiceTests.New()
+  fullName.vb: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.New()
+  name.vb: New()
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue
+  id: HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue()
+  nameWithType: PermissionServiceTests.HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 36
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse
+  id: HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse()
+  nameWithType: PermissionServiceTests.HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 60
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  id: HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
+  nameWithType: PermissionServiceTests.HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 83
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue
+  id: HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue()
+  nameWithType: PermissionServiceTests.HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 108
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithNullUsername_ShouldReturnFalse
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithNullUsername_ShouldReturnFalse
+  id: HasPermissionAsync_WithNullUsername_ShouldReturnFalse
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: HasPermissionAsync_WithNullUsername_ShouldReturnFalse()
+  nameWithType: PermissionServiceTests.HasPermissionAsync_WithNullUsername_ShouldReturnFalse()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithNullUsername_ShouldReturnFalse()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: HasPermissionAsync_WithNullUsername_ShouldReturnFalse
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 132
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task HasPermissionAsync_WithNullUsername_ShouldReturnFalse()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function HasPermissionAsync_WithNullUsername_ShouldReturnFalse() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithNullUsername_ShouldReturnFalse*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse
+  id: HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse()
+  nameWithType: PermissionServiceTests.HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 148
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions
+  id: HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions()
+  nameWithType: PermissionServiceTests.HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 164
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetAllPermissionsAsync_ShouldReturnMappedPermissions
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetAllPermissionsAsync_ShouldReturnMappedPermissions
+  id: GetAllPermissionsAsync_ShouldReturnMappedPermissions
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetAllPermissionsAsync_ShouldReturnMappedPermissions()
+  nameWithType: PermissionServiceTests.GetAllPermissionsAsync_ShouldReturnMappedPermissions()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetAllPermissionsAsync_ShouldReturnMappedPermissions()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllPermissionsAsync_ShouldReturnMappedPermissions
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 197
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetAllPermissionsAsync_ShouldReturnMappedPermissions()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetAllPermissionsAsync_ShouldReturnMappedPermissions() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetAllPermissionsAsync_ShouldReturnMappedPermissions*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission
+  id: GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission()
+  nameWithType: PermissionServiceTests.GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 234
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull
+  id: GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull()
+  nameWithType: PermissionServiceTests.GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 258
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission
+  id: GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission()
+  nameWithType: PermissionServiceTests.GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 280
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull
+  id: GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull()
+  nameWithType: PermissionServiceTests.GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 305
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  id: GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+  nameWithType: PermissionServiceTests.GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 324
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission
+  id: CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission()
+  nameWithType: PermissionServiceTests.CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 348
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning
+  id: CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning()
+  nameWithType: PermissionServiceTests.CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 387
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  id: CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+  nameWithType: PermissionServiceTests.CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 414
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  id: UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
+  nameWithType: PermissionServiceTests.UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 437
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  id: UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  nameWithType: PermissionServiceTests.UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 470
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  id: UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
+  nameWithType: PermissionServiceTests.UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 494
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue
+  id: DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue()
+  nameWithType: PermissionServiceTests.DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 523
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  id: DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  nameWithType: PermissionServiceTests.DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 546
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  commentId: M:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  id: DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  parent: MyApp.Auth.Application.Tests.Services.PermissionServiceTests
+  langs:
+  - csharp
+  - vb
+  name: DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
+  nameWithType: PermissionServiceTests.DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Services/PermissionServiceTests.cs
+    startLine: 565
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Services
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError() As Task
+  overload: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: MyApp.Auth.Application.Tests.Services
+  commentId: N:MyApp.Auth.Application.Tests.Services
+  href: MyApp.html
+  name: MyApp.Auth.Application.Tests.Services
+  nameWithType: MyApp.Auth.Application.Tests.Services
+  fullName: MyApp.Auth.Application.Tests.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Services
+    name: Services
+    href: MyApp.Auth.Application.Tests.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Services
+    name: Services
+    href: MyApp.Auth.Application.Tests.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  commentId: T:MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  parent: MyApp.Auth.Application.Tests.Common
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html
+  name: BaseServiceTest
+  nameWithType: BaseServiceTest
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+  commentId: F:MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_MockMapper
+  name: MockMapper
+  nameWithType: BaseServiceTest.MockMapper
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.MockMapper
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+  commentId: F:MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_Mapper
+  name: Mapper
+  nameWithType: BaseServiceTest.Mapper
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.Mapper
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+  commentId: M:MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_CreateMockLogger__1
+  name: CreateMockLogger<T>()
+  nameWithType: BaseServiceTest.CreateMockLogger<T>()
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger<T>()
+  nameWithType.vb: BaseServiceTest.CreateMockLogger(Of T)()
+  fullName.vb: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger(Of T)()
+  name.vb: CreateMockLogger(Of T)()
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+    name: CreateMockLogger
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_CreateMockLogger__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.CreateMockLogger``1
+    name: CreateMockLogger
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_CreateMockLogger__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{{T}}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  commentId: M:MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  parent: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  definition: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  name: VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  nameWithType: BaseServiceTest.VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled<T>(Moq.Mock<Microsoft.Extensions.Logging.ILogger<T>>, Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  nameWithType.vb: BaseServiceTest.VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  fullName.vb: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled(Of T)(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger(Of T)), Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  name.vb: VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: <
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Auth.Application.Tests.Common
+  commentId: N:MyApp.Auth.Application.Tests.Common
+  href: MyApp.html
+  name: MyApp.Auth.Application.Tests.Common
+  nameWithType: MyApp.Auth.Application.Tests.Common
+  fullName: MyApp.Auth.Application.Tests.Common
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Common
+    name: Common
+    href: MyApp.Auth.Application.Tests.Common.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Common
+    name: Common
+    href: MyApp.Auth.Application.Tests.Common.html
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  commentId: M:MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+  isExternal: true
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  name: VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  nameWithType: BaseServiceTest.VerifyLoggerCalled<T>(Mock<ILogger<T>>, LogLevel, Times)
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled<T>(Moq.Mock<Microsoft.Extensions.Logging.ILogger<T>>, Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  nameWithType.vb: BaseServiceTest.VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  fullName.vb: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled(Of T)(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger(Of T)), Microsoft.Extensions.Logging.LogLevel, Moq.Times)
+  name.vb: VerifyLoggerCalled(Of T)(Mock(Of ILogger(Of T)), LogLevel, Times)
+  spec.csharp:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: <
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest.VerifyLoggerCalled``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger{``0}},Microsoft.Extensions.Logging.LogLevel,Moq.Times)
+    name: VerifyLoggerCalled
+    href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html#MyApp_Auth_Application_Tests_Common_BaseServiceTest_VerifyLoggerCalled__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger___0___Microsoft_Extensions_Logging_LogLevel_Moq_Times_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.#ctor*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.#ctor
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests__ctor
+  name: PermissionServiceTests
+  nameWithType: PermissionServiceTests.PermissionServiceTests
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.PermissionServiceTests
+  nameWithType.vb: PermissionServiceTests.New
+  fullName.vb: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.New
+  name.vb: New
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue
+  name: HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue
+  nameWithType: PermissionServiceTests.HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse
+  name: HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse
+  nameWithType: PermissionServiceTests.HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  name: HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  nameWithType: PermissionServiceTests.HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue
+  name: HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue
+  nameWithType: PermissionServiceTests.HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithNullUsername_ShouldReturnFalse*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithNullUsername_ShouldReturnFalse
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_HasPermissionAsync_WithNullUsername_ShouldReturnFalse
+  name: HasPermissionAsync_WithNullUsername_ShouldReturnFalse
+  nameWithType: PermissionServiceTests.HasPermissionAsync_WithNullUsername_ShouldReturnFalse
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithNullUsername_ShouldReturnFalse
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse
+  name: HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse
+  nameWithType: PermissionServiceTests.HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions
+  name: HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions
+  nameWithType: PermissionServiceTests.HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetAllPermissionsAsync_ShouldReturnMappedPermissions*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetAllPermissionsAsync_ShouldReturnMappedPermissions
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_GetAllPermissionsAsync_ShouldReturnMappedPermissions
+  name: GetAllPermissionsAsync_ShouldReturnMappedPermissions
+  nameWithType: PermissionServiceTests.GetAllPermissionsAsync_ShouldReturnMappedPermissions
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetAllPermissionsAsync_ShouldReturnMappedPermissions
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission
+  name: GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission
+  nameWithType: PermissionServiceTests.GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull
+  name: GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull
+  nameWithType: PermissionServiceTests.GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission
+  name: GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission
+  nameWithType: PermissionServiceTests.GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull
+  name: GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull
+  nameWithType: PermissionServiceTests.GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  name: GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  nameWithType: PermissionServiceTests.GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission
+  name: CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission
+  nameWithType: PermissionServiceTests.CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning
+  name: CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning
+  nameWithType: PermissionServiceTests.CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  name: CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  nameWithType: PermissionServiceTests.CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  name: UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  nameWithType: PermissionServiceTests.UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  name: UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  nameWithType: PermissionServiceTests.UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  name: UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  nameWithType: PermissionServiceTests.UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue
+  name: DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue
+  nameWithType: PermissionServiceTests.DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  name: DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  nameWithType: PermissionServiceTests.DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning
+- uid: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError*
+  commentId: Overload:MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  href: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html#MyApp_Auth_Application_Tests_Services_PermissionServiceTests_DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  name: DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  nameWithType: PermissionServiceTests.DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError
+  fullName: MyApp.Auth.Application.Tests.Services.PermissionServiceTests.DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError

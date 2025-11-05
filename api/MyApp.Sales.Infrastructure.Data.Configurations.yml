@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Infrastructure.Data.Configurations
+  commentId: N:MyApp.Sales.Infrastructure.Data.Configurations
+  id: MyApp.Sales.Infrastructure.Data.Configurations
+  children:
+  - MyApp.Sales.Infrastructure.Data.Configurations.CustomerConfiguration
+  - MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderConfiguration
+  - MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderLineConfiguration
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Sales.Infrastructure.Data.Configurations
+  nameWithType: MyApp.Sales.Infrastructure.Data.Configurations
+  fullName: MyApp.Sales.Infrastructure.Data.Configurations
+  type: Namespace
+  assemblies:
+  - MyApp.Sales.Infrastructure
+references:
+- uid: MyApp.Sales.Infrastructure.Data.Configurations.CustomerConfiguration
+  commentId: T:MyApp.Sales.Infrastructure.Data.Configurations.CustomerConfiguration
+  href: MyApp.Sales.Infrastructure.Data.Configurations.CustomerConfiguration.html
+  name: CustomerConfiguration
+  nameWithType: CustomerConfiguration
+  fullName: MyApp.Sales.Infrastructure.Data.Configurations.CustomerConfiguration
+- uid: MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderConfiguration
+  commentId: T:MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderConfiguration
+  href: MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderConfiguration.html
+  name: SalesOrderConfiguration
+  nameWithType: SalesOrderConfiguration
+  fullName: MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderConfiguration
+- uid: MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderLineConfiguration
+  commentId: T:MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderLineConfiguration
+  href: MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderLineConfiguration.html
+  name: SalesOrderLineConfiguration
+  nameWithType: SalesOrderLineConfiguration
+  fullName: MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderLineConfiguration

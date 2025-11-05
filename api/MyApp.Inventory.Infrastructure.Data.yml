@@ -1,0 +1,69 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Infrastructure.Data
+  commentId: N:MyApp.Inventory.Infrastructure.Data
+  id: MyApp.Inventory.Infrastructure.Data
+  children:
+  - MyApp.Inventory.Infrastructure.Data.InventoryDbContext
+  - MyApp.Inventory.Infrastructure.Data.InventoryDbContextFactory
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Inventory.Infrastructure.Data
+  nameWithType: MyApp.Inventory.Infrastructure.Data
+  fullName: MyApp.Inventory.Infrastructure.Data
+  type: Namespace
+  assemblies:
+  - MyApp.Inventory.Infrastructure
+references:
+- uid: MyApp.Inventory.Infrastructure.Data.InventoryDbContext
+  commentId: T:MyApp.Inventory.Infrastructure.Data.InventoryDbContext
+  parent: MyApp.Inventory.Infrastructure.Data
+  href: MyApp.Inventory.Infrastructure.Data.InventoryDbContext.html
+  name: InventoryDbContext
+  nameWithType: InventoryDbContext
+  fullName: MyApp.Inventory.Infrastructure.Data.InventoryDbContext
+- uid: MyApp.Inventory.Infrastructure.Data.InventoryDbContextFactory
+  commentId: T:MyApp.Inventory.Infrastructure.Data.InventoryDbContextFactory
+  href: MyApp.Inventory.Infrastructure.Data.InventoryDbContextFactory.html
+  name: InventoryDbContextFactory
+  nameWithType: InventoryDbContextFactory
+  fullName: MyApp.Inventory.Infrastructure.Data.InventoryDbContextFactory
+- uid: MyApp.Inventory.Infrastructure.Data
+  commentId: N:MyApp.Inventory.Infrastructure.Data
+  href: MyApp.html
+  name: MyApp.Inventory.Infrastructure.Data
+  nameWithType: MyApp.Inventory.Infrastructure.Data
+  fullName: MyApp.Inventory.Infrastructure.Data
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Infrastructure
+    name: Infrastructure
+    href: MyApp.Inventory.Infrastructure.html
+  - name: .
+  - uid: MyApp.Inventory.Infrastructure.Data
+    name: Data
+    href: MyApp.Inventory.Infrastructure.Data.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Infrastructure
+    name: Infrastructure
+    href: MyApp.Inventory.Infrastructure.html
+  - name: .
+  - uid: MyApp.Inventory.Infrastructure.Data
+    name: Data
+    href: MyApp.Inventory.Infrastructure.Data.html

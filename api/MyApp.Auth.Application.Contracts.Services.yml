@@ -1,0 +1,86 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Contracts.Services
+  commentId: N:MyApp.Auth.Application.Contracts.Services
+  id: MyApp.Auth.Application.Contracts.Services
+  children:
+  - MyApp.Auth.Application.Contracts.Services.IAuthService
+  - MyApp.Auth.Application.Contracts.Services.IRoleService
+  - MyApp.Auth.Application.Contracts.Services.IUserService
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Application.Contracts.Services
+  nameWithType: MyApp.Auth.Application.Contracts.Services
+  fullName: MyApp.Auth.Application.Contracts.Services
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Application.Contracts
+references:
+- uid: MyApp.Auth.Application.Contracts.Services.IAuthService
+  commentId: T:MyApp.Auth.Application.Contracts.Services.IAuthService
+  parent: MyApp.Auth.Application.Contracts.Services
+  href: MyApp.Auth.Application.Contracts.Services.IAuthService.html
+  name: IAuthService
+  nameWithType: IAuthService
+  fullName: MyApp.Auth.Application.Contracts.Services.IAuthService
+- uid: MyApp.Auth.Application.Contracts.Services.IRoleService
+  commentId: T:MyApp.Auth.Application.Contracts.Services.IRoleService
+  parent: MyApp.Auth.Application.Contracts.Services
+  href: MyApp.Auth.Application.Contracts.Services.IRoleService.html
+  name: IRoleService
+  nameWithType: IRoleService
+  fullName: MyApp.Auth.Application.Contracts.Services.IRoleService
+- uid: MyApp.Auth.Application.Contracts.Services.IUserService
+  commentId: T:MyApp.Auth.Application.Contracts.Services.IUserService
+  parent: MyApp.Auth.Application.Contracts.Services
+  href: MyApp.Auth.Application.Contracts.Services.IUserService.html
+  name: IUserService
+  nameWithType: IUserService
+  fullName: MyApp.Auth.Application.Contracts.Services.IUserService
+- uid: MyApp.Auth.Application.Contracts.Services
+  commentId: N:MyApp.Auth.Application.Contracts.Services
+  href: MyApp.html
+  name: MyApp.Auth.Application.Contracts.Services
+  nameWithType: MyApp.Auth.Application.Contracts.Services
+  fullName: MyApp.Auth.Application.Contracts.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.Services
+    name: Services
+    href: MyApp.Auth.Application.Contracts.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts
+    name: Contracts
+    href: MyApp.Auth.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Auth.Application.Contracts.Services
+    name: Services
+    href: MyApp.Auth.Application.Contracts.Services.html

@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>&#128269; Bicep Infrastructure Comprehensive Audit Report | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="&#128269; Bicep Infrastructure Comprehensive Audit Report | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/infrastructure/BICEP_COMPREHENSIVE_AUDIT.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-bicep-infrastructure-comprehensive-audit-report">🔍 Bicep Infrastructure Comprehensive Audit Report</h1>
+
+<p><strong>Date:</strong> October 27, 2025<br>
+<strong>Focus:</strong> Alignment with <code>azd</code> best practices &amp; <code>docker-compose.yml</code> pattern<br>
+<strong>Scope:</strong> All <code>.bicep</code> files in <code>/infra</code> directory</p>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>After systematic review of the Bicep infrastructure against <code>azd</code> best practices and the <code>docker-compose.yml</code> reference pattern, <strong>11 critical gaps</strong> have been identified. The infrastructure requires significant updates to achieve production-readiness.</p>
+<h3 id="-critical-findings">🔴 Critical Findings:</h3>
+<ul>
+<li><strong>Zero (0) service modules</strong> exist for 6 microservices (Auth, Billing, Inventory, Orders, Purchasing, Sales)</li>
+<li><strong>Zero (0) API Gateway</strong> module exists</li>
+<li><strong>Key Vault is NOT integrated</strong> into main.bicep (defined but unused)</li>
+<li><strong>Missing JWT secret parameters</strong> in main.bicep and main.parameters.json</li>
+<li><strong>Missing database initialization</strong> for microservice databases</li>
+<li><strong>No Dapr sidecar configuration</strong> in container app template</li>
+<li><strong>Missing service-to-service communication</strong> setup</li>
+<li><strong>No CORS/FRONTEND_ORIGIN</strong> configuration support</li>
+<li><strong>Incomplete secret management</strong> strategy</li>
+<li><strong>No managed identity</strong> setup for database access</li>
+</ul>
+<hr>
+<h2 id="-file-by-file-analysis">📋 File-by-File Analysis</h2>
+<h3 id="1-mainbicep----incomplete">1. <code>main.bicep</code> - ❌ INCOMPLETE</h3>
+<p><strong>Current State:</strong></p>
+<pre><code class="lang-bicep">targetScope = 'subscription'
+param environmentName string
+param location string
+param principalId string = ''
+@secure()
+param cache_password string
+@secure()
+param password string
+</code></pre>
+<p><strong>Issues Identified:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Missing JWT secret parameter</td>
+<td>🔴 CRITICAL</td>
+<td><code>Jwt__SecretKey</code> not defined as secure parameter</td>
+</tr>
+<tr>
+<td>Missing frontend origin parameter</td>
+<td>🔴 CRITICAL</td>
+<td><code>FRONTEND_ORIGIN</code> env var not supported</td>
+</tr>
+<tr>
+<td>Missing JWT issuer/audience params</td>
+<td>🔴 CRITICAL</td>
+<td><code>Jwt__Issuer</code>, <code>Jwt__Audience</code> hardcoded in docker-compose</td>
+</tr>
+<tr>
+<td>Key Vault not referenced</td>
+<td>🔴 CRITICAL</td>
+<td><code>keyvault-secrets.bicep</code> defined but never called</td>
+</tr>
+<tr>
+<td>No service modules</td>
+<td>🔴 CRITICAL</td>
+<td>6 services + gateway have no modules</td>
+</tr>
+<tr>
+<td>Missing database list</td>
+<td>🟠 HIGH</td>
+<td>No way to specify which databases to create</td>
+</tr>
+<tr>
+<td>Parameter naming inconsistent</td>
+<td>🟡 MEDIUM</td>
+<td><code>cache_password</code> vs <code>password</code> vs best practice naming</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Comparison with <code>docker-compose.yml</code> requirements:</strong></p>
+<table>
+<thead>
+<tr>
+<th>docker-compose.yml Pattern</th>
+<th>Bicep Implementation</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Jwt__SecretKey</code></td>
+<td>❌ Missing parameter</td>
+<td>Missing</td>
+</tr>
+<tr>
+<td><code>Jwt__Issuer</code></td>
+<td>❌ Hardcoded in keyvault-secrets.bicep</td>
+<td>Missing</td>
+</tr>
+<tr>
+<td><code>Jwt__Audience</code></td>
+<td>❌ Hardcoded in keyvault-secrets.bicep</td>
+<td>Missing</td>
+</tr>
+<tr>
+<td><code>FRONTEND_ORIGIN</code></td>
+<td>❌ Not in main.bicep</td>
+<td>Missing</td>
+</tr>
+<tr>
+<td><code>ConnectionStrings__cache</code></td>
+<td>❌ Not passed to services</td>
+<td>Missing</td>
+</tr>
+<tr>
+<td>Service-specific databases</td>
+<td>❌ No service modules</td>
+<td>Missing</td>
+</tr>
+<tr>
+<td><code>ASPNETCORE_ENVIRONMENT</code></td>
+<td>❌ Not set in container app template</td>
+<td>Missing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What <code>azd</code> does (reference pattern):</strong></p>
+<pre><code class="lang-bicep">// azd includes parameters for EVERY environment variable
+@secure()
+param jwtSecretKey string
+param jwtIssuer string
+param jwtAudience string
+param frontendOrigin string
+// Then passes them via module outputs to service modules
+</code></pre>
+<hr>
+<h3 id="2-mainparametersjson----incomplete">2. <code>main.parameters.json</code> - ❌ INCOMPLETE</h3>
+<p><strong>Current State:</strong></p>
+<pre><code class="lang-json">{
+  &quot;parameters&quot;: {
+    &quot;principalId&quot;: {&quot;value&quot;: &quot;${AZURE_PRINCIPAL_ID}&quot;},
+    &quot;cache_password&quot;: {&quot;value&quot;: &quot;${AZURE_CACHE_PASSWORD}&quot;},
+    &quot;password&quot;: {&quot;value&quot;: &quot;${AZURE_PASSWORD}&quot;},
+    &quot;environmentName&quot;: {&quot;value&quot;: &quot;${AZURE_ENV_NAME}&quot;},
+    &quot;location&quot;: {&quot;value&quot;: &quot;${AZURE_LOCATION}&quot;}
+  }
+}
+</code></pre>
+<p><strong>Issues Identified:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Missing JWT secret</strong></td>
+<td>🔴 CRITICAL</td>
+<td><code>jwtSecretKey</code> not in parameters</td>
+</tr>
+<tr>
+<td><strong>Missing JWT issuer</strong></td>
+<td>🔴 CRITICAL</td>
+<td><code>jwtIssuer</code> not in parameters</td>
+</tr>
+<tr>
+<td><strong>Missing JWT audience</strong></td>
+<td>🔴 CRITICAL</td>
+<td><code>jwtAudience</code> not in parameters</td>
+</tr>
+<tr>
+<td><strong>Missing FRONTEND_ORIGIN</strong></td>
+<td>🔴 CRITICAL</td>
+<td>Not configurable via azd</td>
+</tr>
+<tr>
+<td><strong>Missing SQL database list</strong></td>
+<td>🔴 CRITICAL</td>
+<td>No way to specify 6 service databases</td>
+</tr>
+<tr>
+<td><strong>Parameter naming inconsistent</strong></td>
+<td>🟡 MEDIUM</td>
+<td>Should be <code>azure_jwt_secret_key</code> or similar</td>
+</tr>
+<tr>
+<td><strong>Missing environment identifier</strong></td>
+<td>🟡 MEDIUM</td>
+<td>No way to distinguish Dev/Staging/Prod secrets</td>
+</tr>
+</tbody>
+</table>
+<p><strong>azd Best Practice Pattern:</strong></p>
+<pre><code class="lang-json">{
+  &quot;parameters&quot;: {
+    &quot;jwtSecretKey&quot;: {&quot;value&quot;: &quot;${AZURE_JWT_SECRET_KEY}&quot;},
+    &quot;jwtIssuer&quot;: {&quot;value&quot;: &quot;${AZURE_JWT_ISSUER}&quot;},
+    &quot;jwtAudience&quot;: {&quot;value&quot;: &quot;${AZURE_JWT_AUDIENCE}&quot;},
+    &quot;frontendOrigin&quot;: {&quot;value&quot;: &quot;${AZURE_FRONTEND_ORIGIN}&quot;},
+    &quot;sqlServerAdminPassword&quot;: {&quot;value&quot;: &quot;${AZURE_SQL_PASSWORD}&quot;},
+    &quot;serviceDatabaseConfigs&quot;: {
+      &quot;value&quot;: [
+        {&quot;name&quot;: &quot;AuthDB&quot;, &quot;collation&quot;: &quot;SQL_Latin1_General_CP1_CI_AS&quot;},
+        {&quot;name&quot;: &quot;BillingDB&quot;, ...},
+        // ... 6 databases total
+      ]
+    }
+  }
+}
+</code></pre>
+<hr>
+<h3 id="3-resourcesbicep----partial">3. <code>resources.bicep</code> - 🟡 PARTIAL</h3>
+<p><strong>Current State:</strong></p>
+<pre><code class="lang-bicep">// Creates:
+- Managed Identity
+- Container Registry
+- Log Analytics Workspace
+- Storage Volume (for Cache Redis)
+- Container App Environment
+- Cache Redis File Share
+</code></pre>
+<p><strong>Issues Identified:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>No Key Vault resource</strong></td>
+<td>🔴 CRITICAL</td>
+<td>Should be created here with Managed Identity access</td>
+</tr>
+<tr>
+<td><strong>No Redis Cache instance</strong></td>
+<td>🔴 CRITICAL</td>
+<td>File share created but no actual Redis resource</td>
+</tr>
+<tr>
+<td><strong>No SQL Server resource</strong></td>
+<td>🔴 CRITICAL</td>
+<td>Module calls it but resources.bicep doesn't create it</td>
+</tr>
+<tr>
+<td><strong>No database initialization</strong></td>
+<td>🟠 HIGH</td>
+<td>No script to create 6 service databases</td>
+</tr>
+<tr>
+<td><strong>Managed Identity has no Key Vault access</strong></td>
+<td>🟠 HIGH</td>
+<td><code>Get</code> secret permission not granted</td>
+</tr>
+<tr>
+<td><strong>No Application Insights reference</strong></td>
+<td>🟠 HIGH</td>
+<td>Should wire MI to AppInsights</td>
+</tr>
+<tr>
+<td><strong>Hard-coded resource tokens</strong></td>
+<td>🟡 MEDIUM</td>
+<td><code>uniqueString(resourceGroup().id)</code> used directly (not parameterized)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What should be here (following <code>azd</code>):</strong></p>
+<pre><code class="lang-bicep">// Should include:
+- Key Vault with Managed Identity access policy
+- Redis Cache (not just file share)
+- SQL Server (delegated to module, but referenced)
+- Role assignments for MI → Key Vault Get secrets
+- Role assignments for MI → Container Registry pull
+</code></pre>
+<hr>
+<h3 id="4-coresecuritykeyvault-secretsbicep----not-integrated">4. <code>core/security/keyvault-secrets.bicep</code> - ❌ NOT INTEGRATED</h3>
+<p><strong>Current State:</strong></p>
+<pre><code class="lang-bicep">param enableKeyVault bool = false
+// Conditionally creates Key Vault with secrets:
+- redis-connection
+- jwt-secret-key
+- sql-connection-authdb
+- sql-connection-billingdb
+- sql-connection-inventorydb
+- sql-connection-ordersdb
+- sql-connection-purchasingdb
+- sql-connection-salesdb
+</code></pre>
+<p><strong>Critical Issues:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NOT CALLED FROM main.bicep</strong></td>
+<td>🔴 CRITICAL</td>
+<td>Module exists but never invoked</td>
+</tr>
+<tr>
+<td><strong>enableKeyVault parameter always false</strong></td>
+<td>🔴 CRITICAL</td>
+<td>Secrets never created</td>
+</tr>
+<tr>
+<td><strong>Hardcoded connection strings</strong></td>
+<td>🟠 HIGH</td>
+<td>Should accept sqlFqdn as parameter</td>
+</tr>
+<tr>
+<td><strong>No access policies</strong></td>
+<td>🟠 HIGH</td>
+<td>Managed Identity can't read these secrets</td>
+</tr>
+<tr>
+<td><strong>Missing Ocelot routing secrets</strong></td>
+<td>🟠 HIGH</td>
+<td>No <code>ocelot-config</code> secret for API Gateway</td>
+</tr>
+<tr>
+<td><strong>No schema validation</strong></td>
+<td>🟡 MEDIUM</td>
+<td>Should validate secret names match Container App references</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Correct Pattern (azd):</strong></p>
+<pre><code class="lang-bicep">// main.bicep MUST call this:
+module keyVault 'core/security/keyvault-secrets.bicep' = {
+  name: 'keyvault'
+  scope: rg
+  params: {
+    name: 'kv-${resourceToken}'
+    location: location
+    jwtSecretKey: jwtSecretKey  // FROM MAIN PARAMETER
+    redisHostName: redis.outputs.hostName
+    redisPrimaryKey: redis.outputs.primaryKey
+    sqlFqdn: sqlServer.outputs.fqdn
+    sqlAdminPassword: password
+    enableKeyVault: true  // MUST BE TRUE
+  }
+}
+
+// Then pass to services:
+output kvJwtSecretName string = keyVault.outputs.jwtSecretName
+</code></pre>
+<hr>
+<h3 id="5-coredatabaseredisbicep----partial">5. <code>core/database/redis.bicep</code> - 🟡 PARTIAL</h3>
+<p><strong>Current State:</strong></p>
+<pre><code class="lang-bicep">// Generic Redis template with:
+- SKU, family, capacity parameterized
+- TLS 1.2 enforced
+- Outputs: id, name, hostName, sslPort, primaryKey
+</code></pre>
+<p><strong>Issues Identified:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NOT CALLED FROM main.bicep</strong></td>
+<td>🔴 CRITICAL</td>
+<td>Module exists but never invoked</td>
+</tr>
+<tr>
+<td><strong>Public network access enabled</strong></td>
+<td>🟠 HIGH</td>
+<td>Should restrict to Container App ENV only</td>
+</tr>
+<tr>
+<td><strong>No Private Endpoint support</strong></td>
+<td>🟠 HIGH</td>
+<td>Production should use private link</td>
+</tr>
+<tr>
+<td><strong>Naming not parameterized</strong></td>
+<td>🟡 MEDIUM</td>
+<td>Should accept name prefix parameter</td>
+</tr>
+<tr>
+<td><strong>No monitoring reference</strong></td>
+<td>🟡 MEDIUM</td>
+<td>Should accept diagnosticSettingsName</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How it should be called:</strong></p>
+<pre><code class="lang-bicep">module redis 'core/database/redis.bicep' = {
+  name: 'redis'
+  scope: rg
+  params: {
+    name: 'redis-${resourceToken}'
+    location: location
+    sku: 'Basic'  // or parameterized
+    family: 'C'
+    capacity: 1  // For Standard tier
+    tags: tags
+  }
+}
+</code></pre>
+<hr>
+<h3 id="6-coredatabasesql-serverbicep----partial">6. <code>core/database/sql-server.bicep</code> - 🟡 PARTIAL</h3>
+<p><strong>Current State:</strong></p>
+<pre><code class="lang-bicep">// Generic SQL Server template with:
+- Admin login parameterized
+- Firewall rules (AllowAllAzureIps)
+- Database array support
+- TLS 1.2 enforced
+</code></pre>
+<p><strong>Issues Identified:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NOT CALLED FROM main.bicep</strong></td>
+<td>🔴 CRITICAL</td>
+<td>Should be called with database list</td>
+</tr>
+<tr>
+<td><strong>Admin password passed in plaintext</strong></td>
+<td>🟠 HIGH</td>
+<td>Should be @secure() parameter</td>
+</tr>
+<tr>
+<td><strong>No audit logging</strong></td>
+<td>🟠 HIGH</td>
+<td>Should enable server audit settings</td>
+</tr>
+<tr>
+<td><strong>No firewall restrictions</strong></td>
+<td>🟠 HIGH</td>
+<td>Opens to <code>0.0.0.0/0</code> for Azure services only (ok) but should be more restrictive</td>
+</tr>
+<tr>
+<td><strong>No RBAC-based access</strong></td>
+<td>🟠 HIGH</td>
+<td>Should use SQL Managed Identity instead of SQL admin</td>
+</tr>
+<tr>
+<td><strong>Database loop not tested</strong></td>
+<td>🟡 MEDIUM</td>
+<td>The <code>[for db in databases: {...}]</code> syntax works but untested</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What it should look like:</strong></p>
+<pre><code class="lang-bicep">module sqlServer 'core/database/sql-server.bicep' = {
+  name: 'sqlserver'
+  scope: rg
+  params: {
+    name: 'sql-${resourceToken}'
+    location: location
+    administratorLogin: 'sqladmin'
+    administratorLoginPassword: password  // FROM SECURE PARAM
+    databases: [
+      {name: 'AuthDB'},
+      {name: 'BillingDB'},
+      {name: 'InventoryDB'},
+      {name: 'OrdersDB'},
+      {name: 'PurchasingDB'},
+      {name: 'SalesDB'}
+    ]
+    tags: tags
+  }
+}
+</code></pre>
+<hr>
+<h3 id="7-corehostcontainer-appbicep----partial">7. <code>core/host/container-app.bicep</code> - 🟡 PARTIAL</h3>
+<p><strong>Current State:</strong></p>
+<pre><code class="lang-bicep">// Generic Container App template supporting:
+- External/internal ingress
+- Dapr sidecars
+- Health checks (liveness &amp; readiness)
+- Environment variables
+- Secrets management
+- Min/max replicas
+- CPU/Memory limits
+</code></pre>
+<p><strong>Issues Identified:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>No JWT environment variable support</strong></td>
+<td>🔴 CRITICAL</td>
+<td>Needs params for all JWT-related envvars</td>
+</tr>
+<tr>
+<td><strong>No connection string handling</strong></td>
+<td>🔴 CRITICAL</td>
+<td>Missing params for service-specific database connections</td>
+</tr>
+<tr>
+<td><strong>No Key Vault secret reference</strong></td>
+<td>🔴 CRITICAL</td>
+<td>Should support <code>secretRef</code> with Key Vault references</td>
+</tr>
+<tr>
+<td><strong>Dapr configuration minimal</strong></td>
+<td>🟠 HIGH</td>
+<td>Missing <code>stateStores</code>, <code>pubsub</code> component bindings</td>
+</tr>
+<tr>
+<td><strong>Health check endpoint hardcoded</strong></td>
+<td>🟠 HIGH</td>
+<td>Should parameterize <code>/health</code> path</td>
+</tr>
+<tr>
+<td><strong>No CORS configuration</strong></td>
+<td>🟠 HIGH</td>
+<td>Should support <code>FRONTEND_ORIGIN</code> env var</td>
+</tr>
+<tr>
+<td><strong>ACR pull role assignment wrong</strong></td>
+<td>🟠 HIGH</td>
+<td>Role ID <code>7f951dda-4ed3-4680-a7ca-43fe172d538d</code> is <code>AcrPull</code> but should verify ACR context</td>
+</tr>
+<tr>
+<td><strong>No Application Insights instrumentation</strong></td>
+<td>🟡 MEDIUM</td>
+<td>Should auto-inject AppInsights connection string</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How services should use this:</strong></p>
+<pre><code class="lang-bicep">module authService 'core/host/container-app.bicep' = {
+  name: 'auth-service'
+  scope: rg
+  params: {
+    name: 'auth-service'
+    containerAppsEnvironmentName: containerAppsEnvironmentName
+    containerRegistryName: containerRegistryName
+    imageName: 'auth-service:latest'
+    daprEnabled: true
+    daprAppId: 'auth-service'
+    externalIngress: false  // Not public
+    env: [
+      {name: 'ASPNETCORE_ENVIRONMENT', value: 'Production'}
+      {name: 'ASPNETCORE_URLS', value: 'http://+:8080'}
+      {name: 'Jwt__Issuer', value: jwtIssuer}
+      {name: 'Jwt__Audience', value: jwtAudience}
+      {name: 'FRONTEND_ORIGIN', value: frontendOrigin}
+      {name: 'ConnectionStrings__cache', value: 'redis-connection'}  // Reference secret
+      {name: 'ConnectionStrings__AuthDb', value: 'sql-connection-authdb'}  // Reference secret
+    ]
+    secrets: [
+      {name: 'jwt-secret-key', keyVaultUrl: keyVault.outputs.kvJwtSecretUri}
+      {name: 'redis-connection', keyVaultUrl: keyVault.outputs.kvRedisSecretUri}
+      {name: 'sql-connection-authdb', keyVaultUrl: keyVault.outputs.kvSqlAuthSecretUri}
+    ]
+  }
+}
+</code></pre>
+<hr>
+<h3 id="8-13-service-module-files----all-missing">8-13. <strong>Service Module Files - ❌ ALL MISSING</strong></h3>
+<p><strong>Missing modules:</strong></p>
+<ul>
+<li><code>infra/auth-service/auth-service.module.bicep</code> ❌</li>
+<li><code>infra/billing-service/billing-service.module.bicep</code> ❌</li>
+<li><code>infra/inventory-service/inventory-service.module.bicep</code> ❌</li>
+<li><code>infra/orders-service/orders-service.module.bicep</code> ❌</li>
+<li><code>infra/purchasing-service/purchasing-service.module.bicep</code> ❌</li>
+<li><code>infra/sales-service/sales-service.module.bicep</code> ❌</li>
+</ul>
+<p><strong>Impact:</strong> 🔴 <strong>DEPLOYMENT BLOCKED</strong> - No services can be deployed to Azure</p>
+<hr>
+<h3 id="14-api-gateway-module----missing">14. <strong>API Gateway Module - ❌ MISSING</strong></h3>
+<p><strong>Missing module:</strong></p>
+<ul>
+<li><code>infra/api-gateway/api-gateway.module.bicep</code> ❌</li>
+</ul>
+<p><strong>Impact:</strong> 🔴 <strong>DEPLOYMENT BLOCKED</strong> - No public entry point to microservices</p>
+<hr>
+<h3 id="15-myapp-sqlservermodulebicep----incomplete">15. <code>myapp-sqlserver.module.bicep</code> - 🟠 INCOMPLETE</h3>
+<p><strong>Current State:</strong></p>
+<pre><code class="lang-bicep">// Creates SQL Server with Managed Identity admin but NO DATABASES
+resource myapp_sqlserver 'Microsoft.Sql/servers@2023-08-01' = {
+  administrators: {
+    administratorType: 'ActiveDirectory'
+    login: sqlServerAdminManagedIdentity.name
+    ...
+  }
+}
+</code></pre>
+<p><strong>Issues Identified:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>No databases created</strong></td>
+<td>🔴 CRITICAL</td>
+<td>6 databases missing - must create all 6</td>
+</tr>
+<tr>
+<td><strong>No parameters for database list</strong></td>
+<td>🔴 CRITICAL</td>
+<td>Should accept array of database configs</td>
+</tr>
+<tr>
+<td><strong>No Managed Identity setup for services</strong></td>
+<td>🟠 HIGH</td>
+<td>Services should use MI for SQL auth, not password</td>
+</tr>
+<tr>
+<td><strong>No output for connection strings</strong></td>
+<td>🟠 HIGH</td>
+<td>Should export connection string templates</td>
+</tr>
+<tr>
+<td><strong>Firewall rule name incorrect</strong></td>
+<td>🟡 MEDIUM</td>
+<td>Should be parameterized</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Should be updated to:</strong></p>
+<pre><code class="lang-bicep">param databases array = [
+  {name: 'AuthDB'},
+  {name: 'BillingDB'},
+  {name: 'InventoryDB'},
+  {name: 'OrdersDB'},
+  {name: 'PurchasingDB'},
+  {name: 'SalesDB'}
+]
+
+resource sqlDatabases 'Microsoft.Sql/servers/databases@2023-05-01-preview' = [for db in databases: {
+  name: db.name
+  parent: myapp_sqlserver
+  location: location
+  sku: {
+    name: 'Basic'
+  }
+  properties: {
+    collation: 'SQL_Latin1_General_CP1_CI_AS'
+    maxSizeBytes: 2147483648
+  }
+}]
+</code></pre>
+<hr>
+<h3 id="16-myapp-sqlserver-rolesmodulebicep----incomplete">16. <code>myapp-sqlserver-roles.module.bicep</code> - ❌ INCOMPLETE</h3>
+<p><strong>Current State:</strong></p>
+<pre><code class="lang-bicep">// References existing resources but does NOTHING
+resource myapp_sqlserver 'Microsoft.Sql/servers@2023-08-01' existing = {
+  name: myapp_sqlserver_outputs_name
+}
+resource sqlServerAdmin 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' existing = {
+  name: myapp_sqlserver_outputs_sqlserveradminname
+}
+// ... but no role assignments!
+</code></pre>
+<p><strong>Issues Identified:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>No role assignments created</strong></td>
+<td>🔴 CRITICAL</td>
+<td>File is empty - just references resources</td>
+</tr>
+<tr>
+<td><strong>No purpose statement</strong></td>
+<td>🔴 CRITICAL</td>
+<td>Unclear what this module should do</td>
+</tr>
+<tr>
+<td><strong>Should create SQL roles</strong></td>
+<td>🟠 HIGH</td>
+<td>Each service MI should have db_owner on their database</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="17-myapp-applicationinsightsmodulebicep----partial">17. <code>MyApp-ApplicationInsights.module.bicep</code> - 🟡 PARTIAL</h3>
+<p><strong>Current State:</strong></p>
+<pre><code class="lang-bicep">resource MyApp_ApplicationInsights 'Microsoft.Insights/components@2020-02-02' = {
+  // Works but minimal
+}
+</code></pre>
+<p><strong>Issues Identified:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>No sampling rules</strong></td>
+<td>🟠 HIGH</td>
+<td>Should configure adaptive sampling</td>
+</tr>
+<tr>
+<td><strong>No log retention</strong></td>
+<td>🟠 HIGH</td>
+<td>Should set retention policy (30 days recommended)</td>
+</tr>
+<tr>
+<td><strong>No export configuration</strong></td>
+<td>🟡 MEDIUM</td>
+<td>Should wire to Log Analytics for long-term retention</td>
+</tr>
+<tr>
+<td><strong>Hardcoded kind='web'</strong></td>
+<td>🟡 MEDIUM</td>
+<td>Should be parameterized</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="18-myapp-loganalyticsworkspacemodulebicep----partial">18. <code>MyApp-LogAnalyticsWorkspace.module.bicep</code> - 🟡 PARTIAL</h3>
+<p><strong>Current State:</strong></p>
+<pre><code class="lang-bicep">resource MyApp_LogAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2025-02-01' = {
+  sku: {name: 'PerGB2018'}
+}
+</code></pre>
+<p><strong>Issues Identified:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>No retention configured</strong></td>
+<td>🟠 HIGH</td>
+<td>Should set <code>retentionInDays</code> (default: 30)</td>
+</tr>
+<tr>
+<td><strong>No daily quota</strong></td>
+<td>🟡 MEDIUM</td>
+<td>Should set daily ingestion quota to prevent runaway costs</td>
+</tr>
+<tr>
+<td><strong>No solutions installed</strong></td>
+<td>🟡 MEDIUM</td>
+<td>Missing Container Monitoring, SQL Analytics solutions</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-comparison-matrix-docker-composeyml-vs-bicep">🆚 Comparison Matrix: docker-compose.yml vs Bicep</h2>
+<table>
+<thead>
+<tr>
+<th>Configuration</th>
+<th>docker-compose.yml</th>
+<th>Bicep</th>
+<th>Gap</th>
+<th>Severity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>JWT Secret</strong></td>
+<td><code>Jwt__SecretKey</code> ✅</td>
+<td>❌ Missing param</td>
+<td>❌</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><strong>JWT Issuer</strong></td>
+<td><code>Jwt__Issuer: MyApp.Auth</code> ✅</td>
+<td>❌ Only in KeyVault</td>
+<td>❌</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><strong>JWT Audience</strong></td>
+<td><code>Jwt__Audience: MyApp.All</code> ✅</td>
+<td>❌ Only in KeyVault</td>
+<td>❌</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><strong>Frontend Origin</strong></td>
+<td><code>FRONTEND_ORIGIN</code> ✅</td>
+<td>❌ Missing</td>
+<td>❌</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><strong>Cache Connection</strong></td>
+<td><code>ConnectionStrings__cache: redis:6379</code> ✅</td>
+<td>✅ In template but not used</td>
+<td>⚠️</td>
+<td>🟠 HIGH</td>
+</tr>
+<tr>
+<td><strong>SQL Connections</strong></td>
+<td><code>ConnectionStrings__AuthDb</code> etc ✅</td>
+<td>✅ In template but hardcoded</td>
+<td>⚠️</td>
+<td>🟠 HIGH</td>
+</tr>
+<tr>
+<td><strong>ASPNETCORE_ENVIRONMENT</strong></td>
+<td><code>Development</code> ✅</td>
+<td>❌ Missing from container-app.bicep</td>
+<td>❌</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><strong>ASPNETCORE_URLS</strong></td>
+<td><code>http://+:8080</code> ✅</td>
+<td>✅ Assumed in template</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Service Count</strong></td>
+<td>6 services ✅</td>
+<td>❌ Zero service modules</td>
+<td>❌</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><strong>Database Count</strong></td>
+<td>6 databases ✅</td>
+<td>❌ No initialization</td>
+<td>❌</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><strong>Dapr Sidecars</strong></td>
+<td>✅ Configured per service</td>
+<td>⚠️ Generic template only</td>
+<td>⚠️</td>
+<td>🟠 HIGH</td>
+</tr>
+<tr>
+<td><strong>Health Checks</strong></td>
+<td>✅ SQL Server</td>
+<td>✅ <code>/health</code> endpoint</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Key Vault Secrets</strong></td>
+<td>❌ Not used (local only)</td>
+<td>✅ Defined but not integrated</td>
+<td>⚠️</td>
+<td>🔴 CRITICAL</td>
+</tr>
+<tr>
+<td><strong>Network</strong></td>
+<td>Docker network</td>
+<td>Container Apps Environment</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Registry</strong></td>
+<td>Docker Hub</td>
+<td>ACR</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-root-cause-analysis">🛠️ Root Cause Analysis</h2>
+<h3 id="why-are-10-modules-missing">Why are 10 modules missing?</h3>
+<p><strong>Theory:</strong> The infrastructure was scaffolded from an <code>azd</code> template but services were NOT deployed, so the service-specific modules were never created. The <code>main.bicep</code> file references modules (<code>MyApp-ApplicationInsights</code>, <code>MyApp-LogAnalyticsWorkspace</code>, <code>myapp-sqlserver-roles</code>) that exist, but 6 critical service modules + gateway module were never added.</p>
+<h3 id="why-isnt-key-vault-integrated">Why isn't Key Vault integrated?</h3>
+<p><strong>Theory:</strong> The <code>keyvault-secrets.bicep</code> template was created as a reference implementation but never connected to <code>main.bicep</code>. The <code>enableKeyVault</code> parameter defaults to <code>false</code>, so secrets are never created. This is likely intentional (for dev/test), but production deployment requires this to be enabled.</p>
+<h3 id="why-is-jwt-configuration-split">Why is JWT configuration split?</h3>
+<p><strong>Theory:</strong> JWT configuration is hard-coded in:</p>
+<ul>
+<li><code>keyvault-secrets.bicep</code> (as &quot;MyApp.Auth&quot; issuer)</li>
+<li><code>docker-compose.yml</code> (as environment variables)</li>
+<li>But NOT parameterized in <code>main.bicep</code></li>
+</ul>
+<p>This violates the 12-factor app principle: configuration should be environment-specific, not hard-coded.</p>
+<h3 id="why-are-services-not-created">Why are services not created?</h3>
+<p><strong>Theory:</strong> The solution was scaffolded but the service deployment pipeline was never completed. Each service needs a module that:</p>
+<ol>
+<li>Pulls image from ACR</li>
+<li>Configures all environment variables</li>
+<li>Sets up database connections (from Key Vault)</li>
+<li>Configures Dapr</li>
+<li>Sets up ingress (internal for services, external for gateway)</li>
+</ol>
+<hr>
+<h2 id="-recommendations-7-step-fix-plan">✅ Recommendations: 7-Step Fix Plan</h2>
+<h3 id="priority-1-enable-key-vault-integration-1-2-hours"><strong>Priority 1: Enable Key Vault Integration</strong> (1-2 hours)</h3>
+<pre><code class="lang-bicep">// main.bicep - ADD THIS:
+@secure()
+param jwtSecretKey string
+
+@description('JWT token issuer')
+param jwtIssuer string = 'MyApp.Auth'
+
+@description('JWT token audience')
+param jwtAudience string = 'MyApp.All'
+
+@description('Frontend origin for CORS')
+param frontendOrigin string = 'http://localhost:3000'
+
+// Then call the module:
+module keyVault 'core/security/keyvault-secrets.bicep' = {
+  name: 'keyvault'
+  scope: rg
+  params: {
+    name: 'kv-${resourceToken}'
+    location: location
+    jwtSecretKey: jwtSecretKey  // FROM PARAMETER
+    redisHostName: redis.outputs.hostName
+    redisPrimaryKey: redis.outputs.primaryKey
+    sqlFqdn: sqlServer.outputs.fqdn
+    sqlAdminPassword: password
+    enableKeyVault: true  // ENABLE IT
+  }
+}
+</code></pre>
+<h3 id="priority-2-create-service-modules-4-6-hours"><strong>Priority 2: Create Service Modules</strong> (4-6 hours)</h3>
+<p>Create each of:</p>
+<ul>
+<li><code>infra/auth-service/auth-service.module.bicep</code></li>
+<li><code>infra/billing-service/billing-service.module.bicep</code></li>
+<li><code>infra/inventory-service/inventory-service.module.bicep</code></li>
+<li><code>infra/orders-service/orders-service.module.bicep</code></li>
+<li><code>infra/purchasing-service/purchasing-service.module.bicep</code></li>
+<li><code>infra/sales-service/sales-service.module.bicep</code></li>
+<li><code>infra/api-gateway/api-gateway.module.bicep</code></li>
+</ul>
+<p>Each should follow this pattern:</p>
+<pre><code class="lang-bicep">module serviceName 'core/host/container-app.bicep' = {
+  name: 'service-name'
+  scope: rg
+  params: {
+    name: 'service-name'
+    containerAppsEnvironmentName: containerAppsEnvironmentName
+    imageName: 'service-name:${imageTag}'
+    daprEnabled: true
+    daprAppId: 'service-name'
+    externalIngress: false  // true only for gateway
+    env: [
+      // All environment variables from docker-compose.yml
+    ]
+    secrets: [
+      // References to Key Vault secrets
+    ]
+  }
+}
+</code></pre>
+<h3 id="priority-3-update-sql-server-module-1-hour"><strong>Priority 3: Update SQL Server Module</strong> (1 hour)</h3>
+<p>Add database creation:</p>
+<pre><code class="lang-bicep">param databases array = [
+  {name: 'AuthDB'},
+  {name: 'BillingDB'},
+  {name: 'InventoryDB'},
+  {name: 'OrdersDB'},
+  {name: 'PurchasingDB'},
+  {name: 'SalesDB'}
+]
+
+resource sqlDatabases 'Microsoft.Sql/servers/databases@2023-05-01-preview' = [for db in databases: {
+  name: db.name
+  parent: myapp_sqlserver
+  // ...
+}]
+</code></pre>
+<h3 id="priority-4-call-redis--sql-modules-30-minutes"><strong>Priority 4: Call Redis &amp; SQL Modules</strong> (30 minutes)</h3>
+<p>In <code>main.bicep</code>, add:</p>
+<pre><code class="lang-bicep">module redis 'core/database/redis.bicep' = {
+  name: 'redis'
+  scope: rg
+  params: {
+    name: 'redis-${resourceToken}'
+    location: location
+    sku: 'Basic'
+    family: 'C'
+    capacity: 1
+    tags: tags
+  }
+}
+
+module sqlServer 'core/database/sql-server.bicep' = {
+  name: 'sqlserver'
+  scope: rg
+  params: {
+    name: 'sql-${resourceToken}'
+    location: location
+    administratorLogin: 'sqladmin'
+    administratorLoginPassword: password
+    databases: [
+      {name: 'AuthDB'},
+      {name: 'BillingDB'},
+      // ...
+    ]
+    tags: tags
+  }
+}
+</code></pre>
+<h3 id="priority-5-update-mainparametersjson-15-minutes"><strong>Priority 5: Update main.parameters.json</strong> (15 minutes)</h3>
+<pre><code class="lang-json">{
+  &quot;parameters&quot;: {
+    &quot;jwtSecretKey&quot;: {&quot;value&quot;: &quot;${AZURE_JWT_SECRET_KEY}&quot;},
+    &quot;jwtIssuer&quot;: {&quot;value&quot;: &quot;${AZURE_JWT_ISSUER:-MyApp.Auth}&quot;},
+    &quot;jwtAudience&quot;: {&quot;value&quot;: &quot;${AZURE_JWT_AUDIENCE:-MyApp.All}&quot;},
+    &quot;frontendOrigin&quot;: {&quot;value&quot;: &quot;${AZURE_FRONTEND_ORIGIN}&quot;},
+    &quot;password&quot;: {&quot;value&quot;: &quot;${AZURE_SQL_PASSWORD}&quot;},
+    &quot;cache_password&quot;: {&quot;value&quot;: &quot;${AZURE_REDIS_PASSWORD}&quot;}
+  }
+}
+</code></pre>
+<h3 id="priority-6-implement-sql-roles-module-1-hour"><strong>Priority 6: Implement SQL Roles Module</strong> (1 hour)</h3>
+<p>Complete <code>myapp-sqlserver-roles.module.bicep</code>:</p>
+<pre><code class="lang-bicep">resource dbOwnerRole 'Microsoft.Sql/servers/databases/roleAssignments@2021-02-01' = [for service in serviceIdentities: {
+  // Assign each service MI to its database with db_owner role
+}]
+</code></pre>
+<h3 id="priority-7-validate--test-1-2-hours"><strong>Priority 7: Validate &amp; Test</strong> (1-2 hours)</h3>
+<pre><code class="lang-powershell"># Validate main.bicep
+az bicep build --file main.bicep
+
+# Validate parameters
+az deployment group validate \
+  --template-file main.bicep \
+  --parameters main.parameters.json
+</code></pre>
+<hr>
+<h2 id="-dependency-graph">📊 Dependency Graph</h2>
+<pre><code>main.bicep
+├── resources.bicep (core infra)
+│   ├── Managed Identity
+│   ├── Container Registry
+│   ├── Log Analytics Workspace
+│   └── Container App Environment
+├── redis (core/database/redis.bicep) ⬅️ NEEDS CALL
+├── sqlServer (core/database/sql-server.bicep) ⬅️ NEEDS CALL
+├── keyVault (core/security/keyvault-secrets.bicep) ⬅️ NEEDS CALL
+├── MyApp-ApplicationInsights (uses LogAnalytics) ✅
+├── MyApp-LogAnalyticsWorkspace ✅
+├── myapp_sqlserver (SQL server + firewall rules)
+├── myapp_sqlserver_roles (SQL role assignments) ⬅️ INCOMPLETE
+├── auth-service (core/host/container-app.bicep) ⬅️ MISSING MODULE
+├── billing-service ⬅️ MISSING MODULE
+├── inventory-service ⬅️ MISSING MODULE
+├── orders-service ⬅️ MISSING MODULE
+├── purchasing-service ⬅️ MISSING MODULE
+├── sales-service ⬅️ MISSING MODULE
+└── api-gateway ⬅️ MISSING MODULE
+</code></pre>
+<hr>
+<h2 id="-security-best-practices-alignment">🔒 Security Best Practices Alignment</h2>
+<table>
+<thead>
+<tr>
+<th>azd Best Practice</th>
+<th>Current Status</th>
+<th>Required Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Secrets in Key Vault</td>
+<td>⚠️ Defined but not used</td>
+<td>Enable and integrate</td>
+</tr>
+<tr>
+<td>Managed Identities for Azure services</td>
+<td>✅ Partially done</td>
+<td>Complete SQL access setup</td>
+</tr>
+<tr>
+<td>RBAC for role assignments</td>
+<td>✅ Partially done</td>
+<td>Implement SQL role assignments</td>
+</tr>
+<tr>
+<td>TLS 1.2 enforcement</td>
+<td>✅ Enabled</td>
+<td>✅ Already configured</td>
+</tr>
+<tr>
+<td>Public network access restricted</td>
+<td>❌ SQL/Redis open to Azure</td>
+<td>⚠️ Add private endpoints for prod</td>
+</tr>
+<tr>
+<td>Secure parameter handling</td>
+<td>❌ Missing JWT params</td>
+<td>Add @secure() params</td>
+</tr>
+<tr>
+<td>No hardcoded secrets</td>
+<td>⚠️ Partially done</td>
+<td>Complete Key Vault integration</td>
+</tr>
+<tr>
+<td>Container security scanning</td>
+<td>❌ Not configured</td>
+<td>Enable ACR scanning</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-success-criteria">🎯 Success Criteria</h2>
+<p>After implementing these fixes, the infrastructure should:</p>
+<p>✅ <strong>Parameter Management:</strong></p>
+<ul>
+<li>All secrets passed as @secure() parameters</li>
+<li>JWT configuration environment-specific</li>
+<li>No hardcoded values in bicep files</li>
+</ul>
+<p>✅ <strong>Service Deployment:</strong></p>
+<ul>
+<li>All 6 services deployable to Container Apps</li>
+<li>API Gateway publicly accessible</li>
+<li>Internal services not exposed</li>
+</ul>
+<p>✅ <strong>Configuration:</strong></p>
+<ul>
+<li>All environment variables from docker-compose.yml mapped to Bicep</li>
+<li>Connection strings sourced from Key Vault</li>
+<li>CORS properly configured</li>
+</ul>
+<p>✅ <strong>Security:</strong></p>
+<ul>
+<li>Managed Identities used for all resource access</li>
+<li>Key Vault secrets for all sensitive data</li>
+<li>SQL role assignments in place</li>
+</ul>
+<p>✅ <strong>Validation:</strong></p>
+<ul>
+<li><code>az bicep build</code> passes</li>
+<li><code>az deployment group validate</code> passes</li>
+<li>No unresolved module references</li>
+</ul>
+<hr>
+<h2 id="-checklist">📋 Checklist</h2>
+<ul>
+<li>[ ] Add JWT parameters to main.bicep</li>
+<li>[ ] Add FRONTEND_ORIGIN parameter</li>
+<li>[ ] Call Key Vault module with enableKeyVault=true</li>
+<li>[ ] Call Redis module</li>
+<li>[ ] Call SQL Server module</li>
+<li>[ ] Update main.parameters.json with new parameters</li>
+<li>[ ] Create 6 service modules</li>
+<li>[ ] Create API Gateway module</li>
+<li>[ ] Complete SQL roles module</li>
+<li>[ ] Update container-app template with environment variables</li>
+<li>[ ] Validate all bicep files</li>
+<li>[ ] Test deployment validation</li>
+<li>[ ] Verify Key Vault secrets created</li>
+<li>[ ] Verify all services deploy successfully</li>
+</ul>
+<hr>
+<p><strong>Generated:</strong> October 27, 2025<br>
+<strong>Status:</strong> Comprehensive audit complete - Ready for implementation</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/infrastructure/BICEP_COMPREHENSIVE_AUDIT.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

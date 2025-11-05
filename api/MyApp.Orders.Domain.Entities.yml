@@ -1,0 +1,70 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Domain.Entities
+  commentId: N:MyApp.Orders.Domain.Entities
+  id: MyApp.Orders.Domain.Entities
+  children:
+  - MyApp.Orders.Domain.Entities.Order
+  - MyApp.Orders.Domain.Entities.OrderLine
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Orders.Domain.Entities
+  nameWithType: MyApp.Orders.Domain.Entities
+  fullName: MyApp.Orders.Domain.Entities
+  type: Namespace
+  assemblies:
+  - MyApp.Orders.Domain
+references:
+- uid: MyApp.Orders.Domain.Entities.Order
+  commentId: T:MyApp.Orders.Domain.Entities.Order
+  parent: MyApp.Orders.Domain.Entities
+  href: MyApp.Orders.Domain.Entities.Order.html
+  name: Order
+  nameWithType: Order
+  fullName: MyApp.Orders.Domain.Entities.Order
+- uid: MyApp.Orders.Domain.Entities.OrderLine
+  commentId: T:MyApp.Orders.Domain.Entities.OrderLine
+  parent: MyApp.Orders.Domain.Entities
+  href: MyApp.Orders.Domain.Entities.OrderLine.html
+  name: OrderLine
+  nameWithType: OrderLine
+  fullName: MyApp.Orders.Domain.Entities.OrderLine
+- uid: MyApp.Orders.Domain.Entities
+  commentId: N:MyApp.Orders.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Orders.Domain.Entities
+  nameWithType: MyApp.Orders.Domain.Entities
+  fullName: MyApp.Orders.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Domain
+    name: Domain
+    href: MyApp.Orders.Domain.html
+  - name: .
+  - uid: MyApp.Orders.Domain.Entities
+    name: Entities
+    href: MyApp.Orders.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Domain
+    name: Domain
+    href: MyApp.Orders.Domain.html
+  - name: .
+  - uid: MyApp.Orders.Domain.Entities
+    name: Entities
+    href: MyApp.Orders.Domain.Entities.html

@@ -1,0 +1,1415 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  commentId: T:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  id: SalesOrderLineRepository
+  parent: MyApp.Sales.Infrastructure.Data.Repositories
+  children:
+  - MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.#ctor(MyApp.Sales.Infrastructure.Data.SalesDbContext)
+  - MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.AddAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  - MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  - MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.DeleteAsync(System.Guid)
+  - MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllAsync
+  - MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllPaginatedAsync(System.Int32,System.Int32)
+  - MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetByIdAsync(System.Guid)
+  - MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.ListAsync
+  - MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.UpdateAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  langs:
+  - csharp
+  - vb
+  name: SalesOrderLineRepository
+  nameWithType: SalesOrderLineRepository
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: SalesOrderLineRepository
+    path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+    startLine: 11
+  assemblies:
+  - MyApp.Sales.Infrastructure
+  namespace: MyApp.Sales.Infrastructure.Data.Repositories
+  syntax:
+    content: 'public class SalesOrderLineRepository : ISalesOrderLineRepository, IRepository<SalesOrderLine, Guid>'
+    content.vb: Public Class SalesOrderLineRepository Implements ISalesOrderLineRepository, IRepository(Of SalesOrderLine, Guid)
+  inheritance:
+  - System.Object
+  implements:
+  - MyApp.Sales.Domain.ISalesOrderLineRepository
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.#ctor(MyApp.Sales.Infrastructure.Data.SalesDbContext)
+  commentId: M:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.#ctor(MyApp.Sales.Infrastructure.Data.SalesDbContext)
+  id: '#ctor(MyApp.Sales.Infrastructure.Data.SalesDbContext)'
+  parent: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  langs:
+  - csharp
+  - vb
+  name: SalesOrderLineRepository(SalesDbContext)
+  nameWithType: SalesOrderLineRepository.SalesOrderLineRepository(SalesDbContext)
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.SalesOrderLineRepository(MyApp.Sales.Infrastructure.Data.SalesDbContext)
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Sales.Infrastructure
+  namespace: MyApp.Sales.Infrastructure.Data.Repositories
+  syntax:
+    content: public SalesOrderLineRepository(SalesDbContext context)
+    parameters:
+    - id: context
+      type: MyApp.Sales.Infrastructure.Data.SalesDbContext
+    content.vb: Public Sub New(context As SalesDbContext)
+  overload: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.#ctor*
+  nameWithType.vb: SalesOrderLineRepository.New(SalesDbContext)
+  fullName.vb: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.New(MyApp.Sales.Infrastructure.Data.SalesDbContext)
+  name.vb: New(SalesDbContext)
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetByIdAsync(System.Guid)
+  commentId: M:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetByIdAsync(System.Guid)
+  id: GetByIdAsync(System.Guid)
+  parent: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  langs:
+  - csharp
+  - vb
+  name: GetByIdAsync(Guid)
+  nameWithType: SalesOrderLineRepository.GetByIdAsync(Guid)
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetByIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByIdAsync
+    path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+    startLine: 20
+  assemblies:
+  - MyApp.Sales.Infrastructure
+  namespace: MyApp.Sales.Infrastructure.Data.Repositories
+  example: []
+  syntax:
+    content: public Task<SalesOrderLine?> GetByIdAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Sales.Domain.Entities.SalesOrderLine}
+    content.vb: Public Function GetByIdAsync(id As Guid) As Task(Of SalesOrderLine)
+  overload: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetByIdAsync*
+  implements:
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetByIdAsync(System.Guid)
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.ListAsync
+  commentId: M:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.ListAsync
+  id: ListAsync
+  parent: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  langs:
+  - csharp
+  - vb
+  name: ListAsync()
+  nameWithType: SalesOrderLineRepository.ListAsync()
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.ListAsync()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ListAsync
+    path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+    startLine: 25
+  assemblies:
+  - MyApp.Sales.Infrastructure
+  namespace: MyApp.Sales.Infrastructure.Data.Repositories
+  example: []
+  syntax:
+    content: public Task<IEnumerable<SalesOrderLine>> ListAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Sales.Domain.Entities.SalesOrderLine}}
+    content.vb: Public Function ListAsync() As Task(Of IEnumerable(Of SalesOrderLine))
+  overload: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.ListAsync*
+  implements:
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.ListAsync
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.AddAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  commentId: M:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.AddAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  id: AddAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  parent: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  langs:
+  - csharp
+  - vb
+  name: AddAsync(SalesOrderLine)
+  nameWithType: SalesOrderLineRepository.AddAsync(SalesOrderLine)
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.AddAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: AddAsync
+    path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+    startLine: 30
+  assemblies:
+  - MyApp.Sales.Infrastructure
+  namespace: MyApp.Sales.Infrastructure.Data.Repositories
+  syntax:
+    content: public Task AddAsync(SalesOrderLine entity)
+    parameters:
+    - id: entity
+      type: MyApp.Sales.Domain.Entities.SalesOrderLine
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function AddAsync(entity As SalesOrderLine) As Task
+  overload: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.AddAsync*
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.UpdateAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  commentId: M:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.UpdateAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  id: UpdateAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  parent: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  langs:
+  - csharp
+  - vb
+  name: UpdateAsync(SalesOrderLine)
+  nameWithType: SalesOrderLineRepository.UpdateAsync(SalesOrderLine)
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.UpdateAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateAsync
+    path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+    startLine: 36
+  assemblies:
+  - MyApp.Sales.Infrastructure
+  namespace: MyApp.Sales.Infrastructure.Data.Repositories
+  syntax:
+    content: public Task UpdateAsync(SalesOrderLine entity)
+    parameters:
+    - id: entity
+      type: MyApp.Sales.Domain.Entities.SalesOrderLine
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function UpdateAsync(entity As SalesOrderLine) As Task
+  overload: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.UpdateAsync*
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.DeleteAsync(System.Guid)
+  commentId: M:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.DeleteAsync(System.Guid)
+  id: DeleteAsync(System.Guid)
+  parent: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  langs:
+  - csharp
+  - vb
+  name: DeleteAsync(Guid)
+  nameWithType: SalesOrderLineRepository.DeleteAsync(Guid)
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.DeleteAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteAsync
+    path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+    startLine: 42
+  assemblies:
+  - MyApp.Sales.Infrastructure
+  namespace: MyApp.Sales.Infrastructure.Data.Repositories
+  example: []
+  syntax:
+    content: public Task DeleteAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function DeleteAsync(id As Guid) As Task
+  overload: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.DeleteAsync*
+  implements:
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.DeleteAsync(System.Guid)
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllAsync
+  commentId: M:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllAsync
+  id: GetAllAsync
+  parent: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  langs:
+  - csharp
+  - vb
+  name: GetAllAsync()
+  nameWithType: SalesOrderLineRepository.GetAllAsync()
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllAsync()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllAsync
+    path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+    startLine: 52
+  assemblies:
+  - MyApp.Sales.Infrastructure
+  namespace: MyApp.Sales.Infrastructure.Data.Repositories
+  example: []
+  syntax:
+    content: public Task<IEnumerable<SalesOrderLine>> GetAllAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Sales.Domain.Entities.SalesOrderLine}}
+    content.vb: Public Function GetAllAsync() As Task(Of IEnumerable(Of SalesOrderLine))
+  overload: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllAsync*
+  implements:
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetAllAsync
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllPaginatedAsync(System.Int32,System.Int32)
+  id: GetAllPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  langs:
+  - csharp
+  - vb
+  name: GetAllPaginatedAsync(int, int)
+  nameWithType: SalesOrderLineRepository.GetAllPaginatedAsync(int, int)
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllPaginatedAsync(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllPaginatedAsync
+    path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+    startLine: 57
+  assemblies:
+  - MyApp.Sales.Infrastructure
+  namespace: MyApp.Sales.Infrastructure.Data.Repositories
+  example: []
+  syntax:
+    content: public Task<PaginatedResult<SalesOrderLine>> GetAllPaginatedAsync(int pageNumber, int pageSize)
+    parameters:
+    - id: pageNumber
+      type: System.Int32
+    - id: pageSize
+      type: System.Int32
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Sales.Domain.Entities.SalesOrderLine}}
+    content.vb: Public Function GetAllPaginatedAsync(pageNumber As Integer, pageSize As Integer) As Task(Of PaginatedResult(Of SalesOrderLine))
+  overload: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllPaginatedAsync*
+  implements:
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  nameWithType.vb: SalesOrderLineRepository.GetAllPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllPaginatedAsync(Integer, Integer)
+  name.vb: GetAllPaginatedAsync(Integer, Integer)
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  commentId: M:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  id: DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  parent: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  langs:
+  - csharp
+  - vb
+  name: DeleteAsync(SalesOrderLine)
+  nameWithType: SalesOrderLineRepository.DeleteAsync(SalesOrderLine)
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteAsync
+    path: src/MyApp.Sales/MyApp.Sales.Infrastructure/Data/Repositories/SalesOrderLineRepository.cs
+    startLine: 72
+  assemblies:
+  - MyApp.Sales.Infrastructure
+  namespace: MyApp.Sales.Infrastructure.Data.Repositories
+  example: []
+  syntax:
+    content: public Task DeleteAsync(SalesOrderLine entity)
+    parameters:
+    - id: entity
+      type: MyApp.Sales.Domain.Entities.SalesOrderLine
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function DeleteAsync(entity As SalesOrderLine) As Task
+  overload: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.DeleteAsync*
+  implements:
+  - MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+references:
+- uid: MyApp.Sales.Infrastructure.Data.Repositories
+  commentId: N:MyApp.Sales.Infrastructure.Data.Repositories
+  href: MyApp.html
+  name: MyApp.Sales.Infrastructure.Data.Repositories
+  nameWithType: MyApp.Sales.Infrastructure.Data.Repositories
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Infrastructure
+    name: Infrastructure
+    href: MyApp.Sales.Infrastructure.html
+  - name: .
+  - uid: MyApp.Sales.Infrastructure.Data
+    name: Data
+    href: MyApp.Sales.Infrastructure.Data.html
+  - name: .
+  - uid: MyApp.Sales.Infrastructure.Data.Repositories
+    name: Repositories
+    href: MyApp.Sales.Infrastructure.Data.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Infrastructure
+    name: Infrastructure
+    href: MyApp.Sales.Infrastructure.html
+  - name: .
+  - uid: MyApp.Sales.Infrastructure.Data
+    name: Data
+    href: MyApp.Sales.Infrastructure.Data.html
+  - name: .
+  - uid: MyApp.Sales.Infrastructure.Data.Repositories
+    name: Repositories
+    href: MyApp.Sales.Infrastructure.Data.Repositories.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MyApp.Sales.Domain.ISalesOrderLineRepository
+  commentId: T:MyApp.Sales.Domain.ISalesOrderLineRepository
+  parent: MyApp.Sales.Domain
+  href: MyApp.Sales.Domain.ISalesOrderLineRepository.html
+  name: ISalesOrderLineRepository
+  nameWithType: ISalesOrderLineRepository
+  fullName: MyApp.Sales.Domain.ISalesOrderLineRepository
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}
+  commentId: T:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}
+  parent: MyApp.Sales.Domain
+  definition: MyApp.Sales.Domain.IRepository`2
+  href: MyApp.Sales.Domain.IRepository-2.html
+  name: IRepository<SalesOrderLine, Guid>
+  nameWithType: IRepository<SalesOrderLine, Guid>
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrderLine, System.Guid>
+  nameWithType.vb: IRepository(Of SalesOrderLine, Guid)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrderLine, System.Guid)
+  name.vb: IRepository(Of SalesOrderLine, Guid)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2
+    name: IRepository
+    href: MyApp.Sales.Domain.IRepository-2.html
+  - name: <
+  - uid: MyApp.Sales.Domain.Entities.SalesOrderLine
+    name: SalesOrderLine
+    href: MyApp.Sales.Domain.Entities.SalesOrderLine.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2
+    name: IRepository
+    href: MyApp.Sales.Domain.IRepository-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Sales.Domain.Entities.SalesOrderLine
+    name: SalesOrderLine
+    href: MyApp.Sales.Domain.Entities.SalesOrderLine.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Sales.Domain
+  commentId: N:MyApp.Sales.Domain
+  href: MyApp.html
+  name: MyApp.Sales.Domain
+  nameWithType: MyApp.Sales.Domain
+  fullName: MyApp.Sales.Domain
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Domain
+    name: Domain
+    href: MyApp.Sales.Domain.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Domain
+    name: Domain
+    href: MyApp.Sales.Domain.html
+- uid: MyApp.Sales.Domain.IRepository`2
+  commentId: T:MyApp.Sales.Domain.IRepository`2
+  href: MyApp.Sales.Domain.IRepository-2.html
+  name: IRepository<TEntity, TKey>
+  nameWithType: IRepository<TEntity, TKey>
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>
+  nameWithType.vb: IRepository(Of TEntity, TKey)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey)
+  name.vb: IRepository(Of TEntity, TKey)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2
+    name: IRepository
+    href: MyApp.Sales.Domain.IRepository-2.html
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2
+    name: IRepository
+    href: MyApp.Sales.Domain.IRepository-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.#ctor*
+  commentId: Overload:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.#ctor
+  href: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.html#MyApp_Sales_Infrastructure_Data_Repositories_SalesOrderLineRepository__ctor_MyApp_Sales_Infrastructure_Data_SalesDbContext_
+  name: SalesOrderLineRepository
+  nameWithType: SalesOrderLineRepository.SalesOrderLineRepository
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.SalesOrderLineRepository
+  nameWithType.vb: SalesOrderLineRepository.New
+  fullName.vb: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.New
+  name.vb: New
+- uid: MyApp.Sales.Infrastructure.Data.SalesDbContext
+  commentId: T:MyApp.Sales.Infrastructure.Data.SalesDbContext
+  parent: MyApp.Sales.Infrastructure.Data
+  href: MyApp.Sales.Infrastructure.Data.SalesDbContext.html
+  name: SalesDbContext
+  nameWithType: SalesDbContext
+  fullName: MyApp.Sales.Infrastructure.Data.SalesDbContext
+- uid: MyApp.Sales.Infrastructure.Data
+  commentId: N:MyApp.Sales.Infrastructure.Data
+  href: MyApp.html
+  name: MyApp.Sales.Infrastructure.Data
+  nameWithType: MyApp.Sales.Infrastructure.Data
+  fullName: MyApp.Sales.Infrastructure.Data
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Infrastructure
+    name: Infrastructure
+    href: MyApp.Sales.Infrastructure.html
+  - name: .
+  - uid: MyApp.Sales.Infrastructure.Data
+    name: Data
+    href: MyApp.Sales.Infrastructure.Data.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Infrastructure
+    name: Infrastructure
+    href: MyApp.Sales.Infrastructure.html
+  - name: .
+  - uid: MyApp.Sales.Infrastructure.Data
+    name: Data
+    href: MyApp.Sales.Infrastructure.Data.html
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetByIdAsync*
+  commentId: Overload:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetByIdAsync
+  href: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.html#MyApp_Sales_Infrastructure_Data_Repositories_SalesOrderLineRepository_GetByIdAsync_System_Guid_
+  name: GetByIdAsync
+  nameWithType: SalesOrderLineRepository.GetByIdAsync
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetByIdAsync
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetByIdAsync(System.Guid)
+  commentId: M:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetByIdAsync(System.Guid)
+  parent: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}
+  definition: MyApp.Sales.Domain.IRepository`2.GetByIdAsync(`1)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetByIdAsync__1_
+  name: GetByIdAsync(Guid)
+  nameWithType: IRepository<SalesOrderLine, Guid>.GetByIdAsync(Guid)
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrderLine, System.Guid>.GetByIdAsync(System.Guid)
+  nameWithType.vb: IRepository(Of SalesOrderLine, Guid).GetByIdAsync(Guid)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrderLine, System.Guid).GetByIdAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task{MyApp.Sales.Domain.Entities.SalesOrderLine}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Sales.Domain.Entities.SalesOrderLine}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<SalesOrderLine>
+  nameWithType: Task<SalesOrderLine>
+  fullName: System.Threading.Tasks.Task<MyApp.Sales.Domain.Entities.SalesOrderLine>
+  nameWithType.vb: Task(Of SalesOrderLine)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Sales.Domain.Entities.SalesOrderLine)
+  name.vb: Task(Of SalesOrderLine)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Sales.Domain.Entities.SalesOrderLine
+    name: SalesOrderLine
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Sales.Domain.Entities.SalesOrderLine
+    name: SalesOrderLine
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2.GetByIdAsync(`1)
+  commentId: M:MyApp.Sales.Domain.IRepository`2.GetByIdAsync(`1)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetByIdAsync__1_
+  name: GetByIdAsync(TKey)
+  nameWithType: IRepository<TEntity, TKey>.GetByIdAsync(TKey)
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>.GetByIdAsync(TKey)
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetByIdAsync(TKey)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey).GetByIdAsync(TKey)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2.GetByIdAsync(`1)
+    name: GetByIdAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - name: TKey
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2.GetByIdAsync(`1)
+    name: GetByIdAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetByIdAsync__1_
+  - name: (
+  - name: TKey
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.ListAsync*
+  commentId: Overload:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.ListAsync
+  href: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.html#MyApp_Sales_Infrastructure_Data_Repositories_SalesOrderLineRepository_ListAsync
+  name: ListAsync
+  nameWithType: SalesOrderLineRepository.ListAsync
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.ListAsync
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.ListAsync
+  commentId: M:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.ListAsync
+  parent: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}
+  definition: MyApp.Sales.Domain.IRepository`2.ListAsync
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_ListAsync
+  name: ListAsync()
+  nameWithType: IRepository<SalesOrderLine, Guid>.ListAsync()
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrderLine, System.Guid>.ListAsync()
+  nameWithType.vb: IRepository(Of SalesOrderLine, Guid).ListAsync()
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrderLine, System.Guid).ListAsync()
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.ListAsync
+    name: ListAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_ListAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.ListAsync
+    name: ListAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_ListAsync
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Sales.Domain.Entities.SalesOrderLine}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Sales.Domain.Entities.SalesOrderLine}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<SalesOrderLine>>
+  nameWithType: Task<IEnumerable<SalesOrderLine>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Sales.Domain.Entities.SalesOrderLine>>
+  nameWithType.vb: Task(Of IEnumerable(Of SalesOrderLine))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Sales.Domain.Entities.SalesOrderLine))
+  name.vb: Task(Of IEnumerable(Of SalesOrderLine))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Sales.Domain.Entities.SalesOrderLine
+    name: SalesOrderLine
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Sales.Domain.Entities.SalesOrderLine
+    name: SalesOrderLine
+  - name: )
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2.ListAsync
+  commentId: M:MyApp.Sales.Domain.IRepository`2.ListAsync
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_ListAsync
+  name: ListAsync()
+  nameWithType: IRepository<TEntity, TKey>.ListAsync()
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>.ListAsync()
+  nameWithType.vb: IRepository(Of TEntity, TKey).ListAsync()
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey).ListAsync()
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2.ListAsync
+    name: ListAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_ListAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2.ListAsync
+    name: ListAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_ListAsync
+  - name: (
+  - name: )
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.AddAsync*
+  commentId: Overload:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.AddAsync
+  href: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.html#MyApp_Sales_Infrastructure_Data_Repositories_SalesOrderLineRepository_AddAsync_MyApp_Sales_Domain_Entities_SalesOrderLine_
+  name: AddAsync
+  nameWithType: SalesOrderLineRepository.AddAsync
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.AddAsync
+- uid: MyApp.Sales.Domain.Entities.SalesOrderLine
+  commentId: T:MyApp.Sales.Domain.Entities.SalesOrderLine
+  parent: MyApp.Sales.Domain.Entities
+  href: MyApp.Sales.Domain.Entities.SalesOrderLine.html
+  name: SalesOrderLine
+  nameWithType: SalesOrderLine
+  fullName: MyApp.Sales.Domain.Entities.SalesOrderLine
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: MyApp.Sales.Domain.Entities
+  commentId: N:MyApp.Sales.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Sales.Domain.Entities
+  nameWithType: MyApp.Sales.Domain.Entities
+  fullName: MyApp.Sales.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Domain
+    name: Domain
+    href: MyApp.Sales.Domain.html
+  - name: .
+  - uid: MyApp.Sales.Domain.Entities
+    name: Entities
+    href: MyApp.Sales.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Domain
+    name: Domain
+    href: MyApp.Sales.Domain.html
+  - name: .
+  - uid: MyApp.Sales.Domain.Entities
+    name: Entities
+    href: MyApp.Sales.Domain.Entities.html
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.UpdateAsync*
+  commentId: Overload:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.UpdateAsync
+  href: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.html#MyApp_Sales_Infrastructure_Data_Repositories_SalesOrderLineRepository_UpdateAsync_MyApp_Sales_Domain_Entities_SalesOrderLine_
+  name: UpdateAsync
+  nameWithType: SalesOrderLineRepository.UpdateAsync
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.UpdateAsync
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.DeleteAsync*
+  commentId: Overload:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.DeleteAsync
+  href: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.html#MyApp_Sales_Infrastructure_Data_Repositories_SalesOrderLineRepository_DeleteAsync_System_Guid_
+  name: DeleteAsync
+  nameWithType: SalesOrderLineRepository.DeleteAsync
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.DeleteAsync
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.DeleteAsync(System.Guid)
+  commentId: M:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.DeleteAsync(System.Guid)
+  parent: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}
+  definition: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`1)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__1_
+  name: DeleteAsync(Guid)
+  nameWithType: IRepository<SalesOrderLine, Guid>.DeleteAsync(Guid)
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrderLine, System.Guid>.DeleteAsync(System.Guid)
+  nameWithType.vb: IRepository(Of SalesOrderLine, Guid).DeleteAsync(Guid)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrderLine, System.Guid).DeleteAsync(System.Guid)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.DeleteAsync(System.Guid)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__1_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.DeleteAsync(System.Guid)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__1_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`1)
+  commentId: M:MyApp.Sales.Domain.IRepository`2.DeleteAsync(`1)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__1_
+  name: DeleteAsync(TKey)
+  nameWithType: IRepository<TEntity, TKey>.DeleteAsync(TKey)
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>.DeleteAsync(TKey)
+  nameWithType.vb: IRepository(Of TEntity, TKey).DeleteAsync(TKey)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey).DeleteAsync(TKey)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`1)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__1_
+  - name: (
+  - name: TKey
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`1)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__1_
+  - name: (
+  - name: TKey
+  - name: )
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllAsync*
+  commentId: Overload:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllAsync
+  href: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.html#MyApp_Sales_Infrastructure_Data_Repositories_SalesOrderLineRepository_GetAllAsync
+  name: GetAllAsync
+  nameWithType: SalesOrderLineRepository.GetAllAsync
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllAsync
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetAllAsync
+  commentId: M:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetAllAsync
+  parent: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}
+  definition: MyApp.Sales.Domain.IRepository`2.GetAllAsync
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllAsync
+  name: GetAllAsync()
+  nameWithType: IRepository<SalesOrderLine, Guid>.GetAllAsync()
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrderLine, System.Guid>.GetAllAsync()
+  nameWithType.vb: IRepository(Of SalesOrderLine, Guid).GetAllAsync()
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrderLine, System.Guid).GetAllAsync()
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2.GetAllAsync
+  commentId: M:MyApp.Sales.Domain.IRepository`2.GetAllAsync
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllAsync
+  name: GetAllAsync()
+  nameWithType: IRepository<TEntity, TKey>.GetAllAsync()
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>.GetAllAsync()
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetAllAsync()
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey).GetAllAsync()
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2.GetAllAsync
+    name: GetAllAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllAsync
+  - name: (
+  - name: )
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllPaginatedAsync*
+  commentId: Overload:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllPaginatedAsync
+  href: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.html#MyApp_Sales_Infrastructure_Data_Repositories_SalesOrderLineRepository_GetAllPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllPaginatedAsync
+  nameWithType: SalesOrderLineRepository.GetAllPaginatedAsync
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.GetAllPaginatedAsync
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}
+  definition: MyApp.Sales.Domain.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllPaginatedAsync(int, int)
+  nameWithType: IRepository<SalesOrderLine, Guid>.GetAllPaginatedAsync(int, int)
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrderLine, System.Guid>.GetAllPaginatedAsync(int, int)
+  nameWithType.vb: IRepository(Of SalesOrderLine, Guid).GetAllPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrderLine, System.Guid).GetAllPaginatedAsync(Integer, Integer)
+  name.vb: GetAllPaginatedAsync(Integer, Integer)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Sales.Domain.Entities.SalesOrderLine}}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Sales.Domain.Entities.SalesOrderLine}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PaginatedResult<SalesOrderLine>>
+  nameWithType: Task<PaginatedResult<SalesOrderLine>>
+  fullName: System.Threading.Tasks.Task<MyApp.Shared.Domain.Pagination.PaginatedResult<MyApp.Sales.Domain.Entities.SalesOrderLine>>
+  nameWithType.vb: Task(Of PaginatedResult(Of SalesOrderLine))
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Shared.Domain.Pagination.PaginatedResult(Of MyApp.Sales.Domain.Entities.SalesOrderLine))
+  name.vb: Task(Of PaginatedResult(Of SalesOrderLine))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+  - name: <
+  - uid: MyApp.Sales.Domain.Entities.SalesOrderLine
+    name: SalesOrderLine
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Sales.Domain.Entities.SalesOrderLine
+    name: SalesOrderLine
+  - name: )
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Sales.Domain.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+  isExternal: true
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllPaginatedAsync(int, int)
+  nameWithType: IRepository<TEntity, TKey>.GetAllPaginatedAsync(int, int)
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>.GetAllPaginatedAsync(int, int)
+  nameWithType.vb: IRepository(Of TEntity, TKey).GetAllPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey).GetAllPaginatedAsync(Integer, Integer)
+  name.vb: GetAllPaginatedAsync(Integer, Integer)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2.GetAllPaginatedAsync(System.Int32,System.Int32)
+    name: GetAllPaginatedAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_GetAllPaginatedAsync_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  commentId: M:MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  parent: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}
+  definition: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`0)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__0_
+  name: DeleteAsync(SalesOrderLine)
+  nameWithType: IRepository<SalesOrderLine, Guid>.DeleteAsync(SalesOrderLine)
+  fullName: MyApp.Sales.Domain.IRepository<MyApp.Sales.Domain.Entities.SalesOrderLine, System.Guid>.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  nameWithType.vb: IRepository(Of SalesOrderLine, Guid).DeleteAsync(SalesOrderLine)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of MyApp.Sales.Domain.Entities.SalesOrderLine, System.Guid).DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__0_
+  - name: (
+  - uid: MyApp.Sales.Domain.Entities.SalesOrderLine
+    name: SalesOrderLine
+    href: MyApp.Sales.Domain.Entities.SalesOrderLine.html
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository{MyApp.Sales.Domain.Entities.SalesOrderLine,System.Guid}.DeleteAsync(MyApp.Sales.Domain.Entities.SalesOrderLine)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__0_
+  - name: (
+  - uid: MyApp.Sales.Domain.Entities.SalesOrderLine
+    name: SalesOrderLine
+    href: MyApp.Sales.Domain.Entities.SalesOrderLine.html
+  - name: )
+- uid: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`0)
+  commentId: M:MyApp.Sales.Domain.IRepository`2.DeleteAsync(`0)
+  href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__0_
+  name: DeleteAsync(TEntity)
+  nameWithType: IRepository<TEntity, TKey>.DeleteAsync(TEntity)
+  fullName: MyApp.Sales.Domain.IRepository<TEntity, TKey>.DeleteAsync(TEntity)
+  nameWithType.vb: IRepository(Of TEntity, TKey).DeleteAsync(TEntity)
+  fullName.vb: MyApp.Sales.Domain.IRepository(Of TEntity, TKey).DeleteAsync(TEntity)
+  spec.csharp:
+  - uid: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`0)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )
+  spec.vb:
+  - uid: MyApp.Sales.Domain.IRepository`2.DeleteAsync(`0)
+    name: DeleteAsync
+    href: MyApp.Sales.Domain.IRepository-2.html#MyApp_Sales_Domain_IRepository_2_DeleteAsync__0_
+  - name: (
+  - name: TEntity
+  - name: )

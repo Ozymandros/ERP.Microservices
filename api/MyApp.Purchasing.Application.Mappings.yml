@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Application.Mappings
+  commentId: N:MyApp.Purchasing.Application.Mappings
+  id: MyApp.Purchasing.Application.Mappings
+  children:
+  - MyApp.Purchasing.Application.Mappings.PurchasingMappingProfile
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Purchasing.Application.Mappings
+  nameWithType: MyApp.Purchasing.Application.Mappings
+  fullName: MyApp.Purchasing.Application.Mappings
+  type: Namespace
+  assemblies:
+  - MyApp.Purchasing.Application
+references:
+- uid: MyApp.Purchasing.Application.Mappings.PurchasingMappingProfile
+  commentId: T:MyApp.Purchasing.Application.Mappings.PurchasingMappingProfile
+  href: MyApp.Purchasing.Application.Mappings.PurchasingMappingProfile.html
+  name: PurchasingMappingProfile
+  nameWithType: PurchasingMappingProfile
+  fullName: MyApp.Purchasing.Application.Mappings.PurchasingMappingProfile

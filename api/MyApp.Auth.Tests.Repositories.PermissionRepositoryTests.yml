@@ -1,0 +1,1208 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  commentId: T:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  id: PermissionRepositoryTests
+  parent: MyApp.Auth.Tests.Repositories
+  children:
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.#ctor
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.AddAsync_WithNewPermission_CreatesPermission
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.DeleteAsync_WithValidPermissionId_DeletesPermission
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetAllAsync_ReturnsAllPermissions
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByIdAsync_WithValidPermissionId_ReturnsPermission
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNonExistentRole_ReturnsEmptyList
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNullParameters_ReturnsEmptyList
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithDifferentCasings_ReturnsEmptyList
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithEmptyStringParameters_ReturnsEmptyList
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNonExistentUser_ReturnsEmptyList
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNullParameters_ReturnsEmptyList
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithValidUserAndPermission_ReturnsPermissions
+  - MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.UpdateAsync_WithExistingPermission_UpdatesPermission
+  langs:
+  - csharp
+  - vb
+  name: PermissionRepositoryTests
+  nameWithType: PermissionRepositoryTests
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: PermissionRepositoryTests
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 9
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: public class PermissionRepositoryTests
+    content.vb: Public Class PermissionRepositoryTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.#ctor
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.#ctor
+  id: '#ctor'
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: PermissionRepositoryTests()
+  nameWithType: PermissionRepositoryTests.PermissionRepositoryTests()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.PermissionRepositoryTests()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 14
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: public PermissionRepositoryTests()
+    content.vb: Public Sub New()
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.#ctor*
+  nameWithType.vb: PermissionRepositoryTests.New()
+  fullName.vb: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.New()
+  name.vb: New()
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions
+  id: GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions()
+  nameWithType: PermissionRepositoryTests.GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 65
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNonExistentRole_ReturnsEmptyList
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNonExistentRole_ReturnsEmptyList
+  id: GetByRoleName_WithNonExistentRole_ReturnsEmptyList
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByRoleName_WithNonExistentRole_ReturnsEmptyList()
+  nameWithType: PermissionRepositoryTests.GetByRoleName_WithNonExistentRole_ReturnsEmptyList()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNonExistentRole_ReturnsEmptyList()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByRoleName_WithNonExistentRole_ReturnsEmptyList
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 90
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByRoleName_WithNonExistentRole_ReturnsEmptyList()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByRoleName_WithNonExistentRole_ReturnsEmptyList() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNonExistentRole_ReturnsEmptyList*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  id: GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList()
+  nameWithType: PermissionRepositoryTests.GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 101
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNullParameters_ReturnsEmptyList
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNullParameters_ReturnsEmptyList
+  id: GetByRoleName_WithNullParameters_ReturnsEmptyList
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByRoleName_WithNullParameters_ReturnsEmptyList()
+  nameWithType: PermissionRepositoryTests.GetByRoleName_WithNullParameters_ReturnsEmptyList()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNullParameters_ReturnsEmptyList()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByRoleName_WithNullParameters_ReturnsEmptyList
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 125
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByRoleName_WithNullParameters_ReturnsEmptyList()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByRoleName_WithNullParameters_ReturnsEmptyList() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNullParameters_ReturnsEmptyList*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList
+  id: GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList()
+  nameWithType: PermissionRepositoryTests.GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 139
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions
+  id: GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions()
+  nameWithType: PermissionRepositoryTests.GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 153
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithValidUserAndPermission_ReturnsPermissions
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithValidUserAndPermission_ReturnsPermissions
+  id: GetByUserName_WithValidUserAndPermission_ReturnsPermissions
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByUserName_WithValidUserAndPermission_ReturnsPermissions()
+  nameWithType: PermissionRepositoryTests.GetByUserName_WithValidUserAndPermission_ReturnsPermissions()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithValidUserAndPermission_ReturnsPermissions()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByUserName_WithValidUserAndPermission_ReturnsPermissions
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 181
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByUserName_WithValidUserAndPermission_ReturnsPermissions()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByUserName_WithValidUserAndPermission_ReturnsPermissions() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithValidUserAndPermission_ReturnsPermissions*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNonExistentUser_ReturnsEmptyList
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNonExistentUser_ReturnsEmptyList
+  id: GetByUserName_WithNonExistentUser_ReturnsEmptyList
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByUserName_WithNonExistentUser_ReturnsEmptyList()
+  nameWithType: PermissionRepositoryTests.GetByUserName_WithNonExistentUser_ReturnsEmptyList()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNonExistentUser_ReturnsEmptyList()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByUserName_WithNonExistentUser_ReturnsEmptyList
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 206
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByUserName_WithNonExistentUser_ReturnsEmptyList()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByUserName_WithNonExistentUser_ReturnsEmptyList() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNonExistentUser_ReturnsEmptyList*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  id: GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList()
+  nameWithType: PermissionRepositoryTests.GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 217
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNullParameters_ReturnsEmptyList
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNullParameters_ReturnsEmptyList
+  id: GetByUserName_WithNullParameters_ReturnsEmptyList
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByUserName_WithNullParameters_ReturnsEmptyList()
+  nameWithType: PermissionRepositoryTests.GetByUserName_WithNullParameters_ReturnsEmptyList()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNullParameters_ReturnsEmptyList()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByUserName_WithNullParameters_ReturnsEmptyList
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 241
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByUserName_WithNullParameters_ReturnsEmptyList()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByUserName_WithNullParameters_ReturnsEmptyList() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNullParameters_ReturnsEmptyList*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithEmptyStringParameters_ReturnsEmptyList
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithEmptyStringParameters_ReturnsEmptyList
+  id: GetByUserName_WithEmptyStringParameters_ReturnsEmptyList
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByUserName_WithEmptyStringParameters_ReturnsEmptyList()
+  nameWithType: PermissionRepositoryTests.GetByUserName_WithEmptyStringParameters_ReturnsEmptyList()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithEmptyStringParameters_ReturnsEmptyList()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByUserName_WithEmptyStringParameters_ReturnsEmptyList
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 255
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByUserName_WithEmptyStringParameters_ReturnsEmptyList()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByUserName_WithEmptyStringParameters_ReturnsEmptyList() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithEmptyStringParameters_ReturnsEmptyList*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission
+  id: GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission()
+  nameWithType: PermissionRepositoryTests.GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 269
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithDifferentCasings_ReturnsEmptyList
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithDifferentCasings_ReturnsEmptyList
+  id: GetByUserName_WithDifferentCasings_ReturnsEmptyList
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByUserName_WithDifferentCasings_ReturnsEmptyList()
+  nameWithType: PermissionRepositoryTests.GetByUserName_WithDifferentCasings_ReturnsEmptyList()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithDifferentCasings_ReturnsEmptyList()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByUserName_WithDifferentCasings_ReturnsEmptyList
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 293
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByUserName_WithDifferentCasings_ReturnsEmptyList()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByUserName_WithDifferentCasings_ReturnsEmptyList() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithDifferentCasings_ReturnsEmptyList*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByIdAsync_WithValidPermissionId_ReturnsPermission
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByIdAsync_WithValidPermissionId_ReturnsPermission
+  id: GetByIdAsync_WithValidPermissionId_ReturnsPermission
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByIdAsync_WithValidPermissionId_ReturnsPermission()
+  nameWithType: PermissionRepositoryTests.GetByIdAsync_WithValidPermissionId_ReturnsPermission()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByIdAsync_WithValidPermissionId_ReturnsPermission()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByIdAsync_WithValidPermissionId_ReturnsPermission
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 321
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByIdAsync_WithValidPermissionId_ReturnsPermission()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByIdAsync_WithValidPermissionId_ReturnsPermission() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByIdAsync_WithValidPermissionId_ReturnsPermission*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetAllAsync_ReturnsAllPermissions
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetAllAsync_ReturnsAllPermissions
+  id: GetAllAsync_ReturnsAllPermissions
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetAllAsync_ReturnsAllPermissions()
+  nameWithType: PermissionRepositoryTests.GetAllAsync_ReturnsAllPermissions()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetAllAsync_ReturnsAllPermissions()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllAsync_ReturnsAllPermissions
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 337
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetAllAsync_ReturnsAllPermissions()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetAllAsync_ReturnsAllPermissions() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetAllAsync_ReturnsAllPermissions*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.AddAsync_WithNewPermission_CreatesPermission
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.AddAsync_WithNewPermission_CreatesPermission
+  id: AddAsync_WithNewPermission_CreatesPermission
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: AddAsync_WithNewPermission_CreatesPermission()
+  nameWithType: PermissionRepositoryTests.AddAsync_WithNewPermission_CreatesPermission()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.AddAsync_WithNewPermission_CreatesPermission()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: AddAsync_WithNewPermission_CreatesPermission
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 353
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task AddAsync_WithNewPermission_CreatesPermission()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function AddAsync_WithNewPermission_CreatesPermission() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.AddAsync_WithNewPermission_CreatesPermission*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.UpdateAsync_WithExistingPermission_UpdatesPermission
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.UpdateAsync_WithExistingPermission_UpdatesPermission
+  id: UpdateAsync_WithExistingPermission_UpdatesPermission
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: UpdateAsync_WithExistingPermission_UpdatesPermission()
+  nameWithType: PermissionRepositoryTests.UpdateAsync_WithExistingPermission_UpdatesPermission()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.UpdateAsync_WithExistingPermission_UpdatesPermission()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateAsync_WithExistingPermission_UpdatesPermission
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 374
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdateAsync_WithExistingPermission_UpdatesPermission()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdateAsync_WithExistingPermission_UpdatesPermission() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.UpdateAsync_WithExistingPermission_UpdatesPermission*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.DeleteAsync_WithValidPermissionId_DeletesPermission
+  commentId: M:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.DeleteAsync_WithValidPermissionId_DeletesPermission
+  id: DeleteAsync_WithValidPermissionId_DeletesPermission
+  parent: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: DeleteAsync_WithValidPermissionId_DeletesPermission()
+  nameWithType: PermissionRepositoryTests.DeleteAsync_WithValidPermissionId_DeletesPermission()
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.DeleteAsync_WithValidPermissionId_DeletesPermission()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteAsync_WithValidPermissionId_DeletesPermission
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/PermissionRepositoryTests.cs
+    startLine: 390
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeleteAsync_WithValidPermissionId_DeletesPermission()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeleteAsync_WithValidPermissionId_DeletesPermission() As Task
+  overload: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.DeleteAsync_WithValidPermissionId_DeletesPermission*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: MyApp.Auth.Tests.Repositories
+  commentId: N:MyApp.Auth.Tests.Repositories
+  href: MyApp.html
+  name: MyApp.Auth.Tests.Repositories
+  nameWithType: MyApp.Auth.Tests.Repositories
+  fullName: MyApp.Auth.Tests.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Tests
+    name: Tests
+    href: MyApp.Auth.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Tests.Repositories
+    name: Repositories
+    href: MyApp.Auth.Tests.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Tests
+    name: Tests
+    href: MyApp.Auth.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Tests.Repositories
+    name: Repositories
+    href: MyApp.Auth.Tests.Repositories.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.#ctor*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.#ctor
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests__ctor
+  name: PermissionRepositoryTests
+  nameWithType: PermissionRepositoryTests.PermissionRepositoryTests
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.PermissionRepositoryTests
+  nameWithType.vb: PermissionRepositoryTests.New
+  fullName.vb: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.New
+  name.vb: New
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions
+  name: GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions
+  nameWithType: PermissionRepositoryTests.GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNonExistentRole_ReturnsEmptyList*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNonExistentRole_ReturnsEmptyList
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetByRoleName_WithNonExistentRole_ReturnsEmptyList
+  name: GetByRoleName_WithNonExistentRole_ReturnsEmptyList
+  nameWithType: PermissionRepositoryTests.GetByRoleName_WithNonExistentRole_ReturnsEmptyList
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNonExistentRole_ReturnsEmptyList
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  name: GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  nameWithType: PermissionRepositoryTests.GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNullParameters_ReturnsEmptyList*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNullParameters_ReturnsEmptyList
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetByRoleName_WithNullParameters_ReturnsEmptyList
+  name: GetByRoleName_WithNullParameters_ReturnsEmptyList
+  nameWithType: PermissionRepositoryTests.GetByRoleName_WithNullParameters_ReturnsEmptyList
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithNullParameters_ReturnsEmptyList
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList
+  name: GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList
+  nameWithType: PermissionRepositoryTests.GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions
+  name: GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions
+  nameWithType: PermissionRepositoryTests.GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithValidUserAndPermission_ReturnsPermissions*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithValidUserAndPermission_ReturnsPermissions
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetByUserName_WithValidUserAndPermission_ReturnsPermissions
+  name: GetByUserName_WithValidUserAndPermission_ReturnsPermissions
+  nameWithType: PermissionRepositoryTests.GetByUserName_WithValidUserAndPermission_ReturnsPermissions
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithValidUserAndPermission_ReturnsPermissions
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNonExistentUser_ReturnsEmptyList*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNonExistentUser_ReturnsEmptyList
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetByUserName_WithNonExistentUser_ReturnsEmptyList
+  name: GetByUserName_WithNonExistentUser_ReturnsEmptyList
+  nameWithType: PermissionRepositoryTests.GetByUserName_WithNonExistentUser_ReturnsEmptyList
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNonExistentUser_ReturnsEmptyList
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  name: GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  nameWithType: PermissionRepositoryTests.GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNullParameters_ReturnsEmptyList*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNullParameters_ReturnsEmptyList
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetByUserName_WithNullParameters_ReturnsEmptyList
+  name: GetByUserName_WithNullParameters_ReturnsEmptyList
+  nameWithType: PermissionRepositoryTests.GetByUserName_WithNullParameters_ReturnsEmptyList
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithNullParameters_ReturnsEmptyList
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithEmptyStringParameters_ReturnsEmptyList*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithEmptyStringParameters_ReturnsEmptyList
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetByUserName_WithEmptyStringParameters_ReturnsEmptyList
+  name: GetByUserName_WithEmptyStringParameters_ReturnsEmptyList
+  nameWithType: PermissionRepositoryTests.GetByUserName_WithEmptyStringParameters_ReturnsEmptyList
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithEmptyStringParameters_ReturnsEmptyList
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission
+  name: GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission
+  nameWithType: PermissionRepositoryTests.GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithDifferentCasings_ReturnsEmptyList*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithDifferentCasings_ReturnsEmptyList
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetByUserName_WithDifferentCasings_ReturnsEmptyList
+  name: GetByUserName_WithDifferentCasings_ReturnsEmptyList
+  nameWithType: PermissionRepositoryTests.GetByUserName_WithDifferentCasings_ReturnsEmptyList
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByUserName_WithDifferentCasings_ReturnsEmptyList
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByIdAsync_WithValidPermissionId_ReturnsPermission*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByIdAsync_WithValidPermissionId_ReturnsPermission
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetByIdAsync_WithValidPermissionId_ReturnsPermission
+  name: GetByIdAsync_WithValidPermissionId_ReturnsPermission
+  nameWithType: PermissionRepositoryTests.GetByIdAsync_WithValidPermissionId_ReturnsPermission
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetByIdAsync_WithValidPermissionId_ReturnsPermission
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetAllAsync_ReturnsAllPermissions*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetAllAsync_ReturnsAllPermissions
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_GetAllAsync_ReturnsAllPermissions
+  name: GetAllAsync_ReturnsAllPermissions
+  nameWithType: PermissionRepositoryTests.GetAllAsync_ReturnsAllPermissions
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.GetAllAsync_ReturnsAllPermissions
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.AddAsync_WithNewPermission_CreatesPermission*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.AddAsync_WithNewPermission_CreatesPermission
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_AddAsync_WithNewPermission_CreatesPermission
+  name: AddAsync_WithNewPermission_CreatesPermission
+  nameWithType: PermissionRepositoryTests.AddAsync_WithNewPermission_CreatesPermission
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.AddAsync_WithNewPermission_CreatesPermission
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.UpdateAsync_WithExistingPermission_UpdatesPermission*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.UpdateAsync_WithExistingPermission_UpdatesPermission
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_UpdateAsync_WithExistingPermission_UpdatesPermission
+  name: UpdateAsync_WithExistingPermission_UpdatesPermission
+  nameWithType: PermissionRepositoryTests.UpdateAsync_WithExistingPermission_UpdatesPermission
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.UpdateAsync_WithExistingPermission_UpdatesPermission
+- uid: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.DeleteAsync_WithValidPermissionId_DeletesPermission*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.DeleteAsync_WithValidPermissionId_DeletesPermission
+  href: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html#MyApp_Auth_Tests_Repositories_PermissionRepositoryTests_DeleteAsync_WithValidPermissionId_DeletesPermission
+  name: DeleteAsync_WithValidPermissionId_DeletesPermission
+  nameWithType: PermissionRepositoryTests.DeleteAsync_WithValidPermissionId_DeletesPermission
+  fullName: MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.DeleteAsync_WithValidPermissionId_DeletesPermission

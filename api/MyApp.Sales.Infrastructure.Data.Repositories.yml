@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Infrastructure.Data.Repositories
+  commentId: N:MyApp.Sales.Infrastructure.Data.Repositories
+  id: MyApp.Sales.Infrastructure.Data.Repositories
+  children:
+  - MyApp.Sales.Infrastructure.Data.Repositories.CustomerRepository
+  - MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  - MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderRepository
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Sales.Infrastructure.Data.Repositories
+  nameWithType: MyApp.Sales.Infrastructure.Data.Repositories
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories
+  type: Namespace
+  assemblies:
+  - MyApp.Sales.Infrastructure
+references:
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.CustomerRepository
+  commentId: T:MyApp.Sales.Infrastructure.Data.Repositories.CustomerRepository
+  href: MyApp.Sales.Infrastructure.Data.Repositories.CustomerRepository.html
+  name: CustomerRepository
+  nameWithType: CustomerRepository
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.CustomerRepository
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  commentId: T:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+  href: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.html
+  name: SalesOrderLineRepository
+  nameWithType: SalesOrderLineRepository
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository
+- uid: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderRepository
+  commentId: T:MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderRepository
+  href: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderRepository.html
+  name: SalesOrderRepository
+  nameWithType: SalesOrderRepository
+  fullName: MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderRepository

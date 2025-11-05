@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Infrastructure.Migrations
+  commentId: N:MyApp.Inventory.Infrastructure.Migrations
+  id: MyApp.Inventory.Infrastructure.Migrations
+  children:
+  - MyApp.Inventory.Infrastructure.Migrations.AuditableEntities
+  - MyApp.Inventory.Infrastructure.Migrations.InitialInventory
+  - MyApp.Inventory.Infrastructure.Migrations.TransactionDate_HasDefaultValueSql_Fix
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Inventory.Infrastructure.Migrations
+  nameWithType: MyApp.Inventory.Infrastructure.Migrations
+  fullName: MyApp.Inventory.Infrastructure.Migrations
+  type: Namespace
+  assemblies:
+  - MyApp.Inventory.Infrastructure
+references:
+- uid: MyApp.Inventory.Infrastructure.Migrations.InitialInventory
+  commentId: T:MyApp.Inventory.Infrastructure.Migrations.InitialInventory
+  href: MyApp.Inventory.Infrastructure.Migrations.InitialInventory.html
+  name: InitialInventory
+  nameWithType: InitialInventory
+  fullName: MyApp.Inventory.Infrastructure.Migrations.InitialInventory
+- uid: MyApp.Inventory.Infrastructure.Migrations.TransactionDate_HasDefaultValueSql_Fix
+  commentId: T:MyApp.Inventory.Infrastructure.Migrations.TransactionDate_HasDefaultValueSql_Fix
+  href: MyApp.Inventory.Infrastructure.Migrations.TransactionDate_HasDefaultValueSql_Fix.html
+  name: TransactionDate_HasDefaultValueSql_Fix
+  nameWithType: TransactionDate_HasDefaultValueSql_Fix
+  fullName: MyApp.Inventory.Infrastructure.Migrations.TransactionDate_HasDefaultValueSql_Fix
+- uid: MyApp.Inventory.Infrastructure.Migrations.AuditableEntities
+  commentId: T:MyApp.Inventory.Infrastructure.Migrations.AuditableEntities
+  href: MyApp.Inventory.Infrastructure.Migrations.AuditableEntities.html
+  name: AuditableEntities
+  nameWithType: AuditableEntities
+  fullName: MyApp.Inventory.Infrastructure.Migrations.AuditableEntities

@@ -1,0 +1,591 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants
+  commentId: T:MyApp.Shared.Domain.Permissions.PermissionConstants
+  id: PermissionConstants
+  parent: MyApp.Shared.Domain.Permissions
+  children:
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.Create(MyApp.Shared.Domain.Permissions.ModuleEnum,MyApp.Shared.Domain.Permissions.ActionEnum)
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.GetAction(System.String)
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.GetAllPermissions
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.GetModule(System.String)
+  - MyApp.Shared.Domain.Permissions.PermissionConstants.GetModulePermissions(MyApp.Shared.Domain.Permissions.ModuleEnum)
+  langs:
+  - csharp
+  - vb
+  name: PermissionConstants
+  nameWithType: PermissionConstants
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: PermissionConstants
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+    startLine: 13
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: >-
+    Provides predefined permission constants for all module and action combinations.
+
+    These constants can be used in authorization policies and permission checks.
+
+
+    Usage:
+
+    <pre><code class="lang-csharp">[Authorize(Roles = "Admin")]
+
+    [Permission(PermissionConstants.Inventory.Read)]
+
+    public IActionResult GetProducts() =&gt; Ok();</code></pre>
+  example: []
+  syntax:
+    content: public static class PermissionConstants
+    content.vb: Public Module PermissionConstants
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.GetModulePermissions(MyApp.Shared.Domain.Permissions.ModuleEnum)
+  commentId: M:MyApp.Shared.Domain.Permissions.PermissionConstants.GetModulePermissions(MyApp.Shared.Domain.Permissions.ModuleEnum)
+  id: GetModulePermissions(MyApp.Shared.Domain.Permissions.ModuleEnum)
+  parent: MyApp.Shared.Domain.Permissions.PermissionConstants
+  langs:
+  - csharp
+  - vb
+  name: GetModulePermissions(ModuleEnum)
+  nameWithType: PermissionConstants.GetModulePermissions(ModuleEnum)
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.GetModulePermissions(MyApp.Shared.Domain.Permissions.ModuleEnum)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetModulePermissions
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+    startLine: 169
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Gets all permissions for a specific module.
+  example: []
+  syntax:
+    content: public static string[] GetModulePermissions(ModuleEnum module)
+    parameters:
+    - id: module
+      type: MyApp.Shared.Domain.Permissions.ModuleEnum
+      description: The module to get permissions for
+    return:
+      type: System.String[]
+      description: Array of all permission strings for that module
+    content.vb: Public Shared Function GetModulePermissions([module] As ModuleEnum) As String()
+  overload: MyApp.Shared.Domain.Permissions.PermissionConstants.GetModulePermissions*
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.GetAllPermissions
+  commentId: M:MyApp.Shared.Domain.Permissions.PermissionConstants.GetAllPermissions
+  id: GetAllPermissions
+  parent: MyApp.Shared.Domain.Permissions.PermissionConstants
+  langs:
+  - csharp
+  - vb
+  name: GetAllPermissions()
+  nameWithType: PermissionConstants.GetAllPermissions()
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.GetAllPermissions()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllPermissions
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+    startLine: 187
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Gets all permissions across all modules.
+  example: []
+  syntax:
+    content: public static string[] GetAllPermissions()
+    return:
+      type: System.String[]
+      description: Array of all permission strings
+    content.vb: Public Shared Function GetAllPermissions() As String()
+  overload: MyApp.Shared.Domain.Permissions.PermissionConstants.GetAllPermissions*
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Create(MyApp.Shared.Domain.Permissions.ModuleEnum,MyApp.Shared.Domain.Permissions.ActionEnum)
+  commentId: M:MyApp.Shared.Domain.Permissions.PermissionConstants.Create(MyApp.Shared.Domain.Permissions.ModuleEnum,MyApp.Shared.Domain.Permissions.ActionEnum)
+  id: Create(MyApp.Shared.Domain.Permissions.ModuleEnum,MyApp.Shared.Domain.Permissions.ActionEnum)
+  parent: MyApp.Shared.Domain.Permissions.PermissionConstants
+  langs:
+  - csharp
+  - vb
+  name: Create(ModuleEnum, ActionEnum)
+  nameWithType: PermissionConstants.Create(ModuleEnum, ActionEnum)
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Create(MyApp.Shared.Domain.Permissions.ModuleEnum, MyApp.Shared.Domain.Permissions.ActionEnum)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Create
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+    startLine: 205
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Creates a permission string from module and action enums.
+  example: []
+  syntax:
+    content: public static string Create(ModuleEnum module, ActionEnum action)
+    parameters:
+    - id: module
+      type: MyApp.Shared.Domain.Permissions.ModuleEnum
+      description: The module
+    - id: action
+      type: MyApp.Shared.Domain.Permissions.ActionEnum
+      description: The action
+    return:
+      type: System.String
+      description: Permission string in format "Module.Action"
+    content.vb: Public Shared Function Create([module] As ModuleEnum, action As ActionEnum) As String
+  overload: MyApp.Shared.Domain.Permissions.PermissionConstants.Create*
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.GetModule(System.String)
+  commentId: M:MyApp.Shared.Domain.Permissions.PermissionConstants.GetModule(System.String)
+  id: GetModule(System.String)
+  parent: MyApp.Shared.Domain.Permissions.PermissionConstants
+  langs:
+  - csharp
+  - vb
+  name: GetModule(string)
+  nameWithType: PermissionConstants.GetModule(string)
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.GetModule(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetModule
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+    startLine: 213
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Gets the module name from a permission string.
+  example: []
+  syntax:
+    content: public static string? GetModule(string permission)
+    parameters:
+    - id: permission
+      type: System.String
+      description: Permission string (e.g., "Inventory.Read")
+    return:
+      type: System.String
+      description: The module name, or null if invalid
+    content.vb: Public Shared Function GetModule(permission As String) As String
+  overload: MyApp.Shared.Domain.Permissions.PermissionConstants.GetModule*
+  nameWithType.vb: PermissionConstants.GetModule(String)
+  fullName.vb: MyApp.Shared.Domain.Permissions.PermissionConstants.GetModule(String)
+  name.vb: GetModule(String)
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.GetAction(System.String)
+  commentId: M:MyApp.Shared.Domain.Permissions.PermissionConstants.GetAction(System.String)
+  id: GetAction(System.String)
+  parent: MyApp.Shared.Domain.Permissions.PermissionConstants
+  langs:
+  - csharp
+  - vb
+  name: GetAction(string)
+  nameWithType: PermissionConstants.GetAction(string)
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.GetAction(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAction
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Permissions/PermissionConstants.cs
+    startLine: 224
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Permissions
+  summary: Gets the action name from a permission string.
+  example: []
+  syntax:
+    content: public static string? GetAction(string permission)
+    parameters:
+    - id: permission
+      type: System.String
+      description: Permission string (e.g., "Inventory.Read")
+    return:
+      type: System.String
+      description: The action name, or null if invalid
+    content.vb: Public Shared Function GetAction(permission As String) As String
+  overload: MyApp.Shared.Domain.Permissions.PermissionConstants.GetAction*
+  nameWithType.vb: PermissionConstants.GetAction(String)
+  fullName.vb: MyApp.Shared.Domain.Permissions.PermissionConstants.GetAction(String)
+  name.vb: GetAction(String)
+references:
+- uid: MyApp.Shared.Domain.Permissions
+  commentId: N:MyApp.Shared.Domain.Permissions
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Permissions
+  nameWithType: MyApp.Shared.Domain.Permissions
+  fullName: MyApp.Shared.Domain.Permissions
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions
+    name: Permissions
+    href: MyApp.Shared.Domain.Permissions.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Permissions
+    name: Permissions
+    href: MyApp.Shared.Domain.Permissions.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.GetModulePermissions*
+  commentId: Overload:MyApp.Shared.Domain.Permissions.PermissionConstants.GetModulePermissions
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html#MyApp_Shared_Domain_Permissions_PermissionConstants_GetModulePermissions_MyApp_Shared_Domain_Permissions_ModuleEnum_
+  name: GetModulePermissions
+  nameWithType: PermissionConstants.GetModulePermissions
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.GetModulePermissions
+- uid: MyApp.Shared.Domain.Permissions.ModuleEnum
+  commentId: T:MyApp.Shared.Domain.Permissions.ModuleEnum
+  parent: MyApp.Shared.Domain.Permissions
+  href: MyApp.Shared.Domain.Permissions.ModuleEnum.html
+  name: ModuleEnum
+  nameWithType: ModuleEnum
+  fullName: MyApp.Shared.Domain.Permissions.ModuleEnum
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.GetAllPermissions*
+  commentId: Overload:MyApp.Shared.Domain.Permissions.PermissionConstants.GetAllPermissions
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html#MyApp_Shared_Domain_Permissions_PermissionConstants_GetAllPermissions
+  name: GetAllPermissions
+  nameWithType: PermissionConstants.GetAllPermissions
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.GetAllPermissions
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.Create*
+  commentId: Overload:MyApp.Shared.Domain.Permissions.PermissionConstants.Create
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html#MyApp_Shared_Domain_Permissions_PermissionConstants_Create_MyApp_Shared_Domain_Permissions_ModuleEnum_MyApp_Shared_Domain_Permissions_ActionEnum_
+  name: Create
+  nameWithType: PermissionConstants.Create
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.Create
+- uid: MyApp.Shared.Domain.Permissions.ActionEnum
+  commentId: T:MyApp.Shared.Domain.Permissions.ActionEnum
+  parent: MyApp.Shared.Domain.Permissions
+  href: MyApp.Shared.Domain.Permissions.ActionEnum.html
+  name: ActionEnum
+  nameWithType: ActionEnum
+  fullName: MyApp.Shared.Domain.Permissions.ActionEnum
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.GetModule*
+  commentId: Overload:MyApp.Shared.Domain.Permissions.PermissionConstants.GetModule
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html#MyApp_Shared_Domain_Permissions_PermissionConstants_GetModule_System_String_
+  name: GetModule
+  nameWithType: PermissionConstants.GetModule
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.GetModule
+- uid: MyApp.Shared.Domain.Permissions.PermissionConstants.GetAction*
+  commentId: Overload:MyApp.Shared.Domain.Permissions.PermissionConstants.GetAction
+  href: MyApp.Shared.Domain.Permissions.PermissionConstants.html#MyApp_Shared_Domain_Permissions_PermissionConstants_GetAction_System_String_
+  name: GetAction
+  nameWithType: PermissionConstants.GetAction
+  fullName: MyApp.Shared.Domain.Permissions.PermissionConstants.GetAction

@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Tests.Helpers
+  commentId: N:MyApp.Auth.Tests.Helpers
+  id: MyApp.Auth.Tests.Helpers
+  children:
+  - MyApp.Auth.Tests.Helpers.TestDbContextFactory
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Tests.Helpers
+  nameWithType: MyApp.Auth.Tests.Helpers
+  fullName: MyApp.Auth.Tests.Helpers
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+references:
+- uid: MyApp.Auth.Tests.Helpers.TestDbContextFactory
+  commentId: T:MyApp.Auth.Tests.Helpers.TestDbContextFactory
+  href: MyApp.Auth.Tests.Helpers.TestDbContextFactory.html
+  name: TestDbContextFactory
+  nameWithType: TestDbContextFactory
+  fullName: MyApp.Auth.Tests.Helpers.TestDbContextFactory

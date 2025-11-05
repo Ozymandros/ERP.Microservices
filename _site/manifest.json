@@ -1,0 +1,5483 @@
+{
+  "source_base_path": "C:/Projects/ERP_ASPIRE_APP/src",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.API.Controllers.AuthController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.API.Controllers.AuthController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.API.Controllers.AuthController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.API.Controllers.PermissionsController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.API.Controllers.PermissionsController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.API.Controllers.PermissionsController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.API.Controllers.RolesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.API.Controllers.RolesController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.API.Controllers.RolesController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.API.Controllers.UsersController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.API.Controllers.UsersController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.API.Controllers.UsersController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.API.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.API.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.API.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.CreateRolePermissionDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.CreateRolePermissionDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.CreateRolePermissionDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.DTOs.CreateRoleDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.DTOs.ExternalLoginDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.LoginDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.LoginDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.DTOs.LoginDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.PermissionDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.PermissionDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.DTOs.PermissionDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.DTOs.RefreshTokenDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.RegisterDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.RegisterDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.DTOs.RegisterDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.RoleDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.RoleDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.DTOs.RoleDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.DTOs.TokenResponseDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.UpdateUserDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.UpdateUserDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.DTOs.UpdateUserDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.UserDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.UserDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.DTOs.UserDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.DTOs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.DTOs",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.DeleteRolePermissionDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.DeleteRolePermissionDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.DeleteRolePermissionDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.IPermissionService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.IPermissionService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.IPermissionService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.Services.IAuthService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.Services.IAuthService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.Services.IAuthService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.Services.IRoleService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.Services.IRoleService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.Services.IRoleService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.Services.IUserService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.Services.IUserService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.Services.IUserService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Contracts.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Contracts.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Contracts",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Mappings.AuthMappingProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Mappings.AuthMappingProfile.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Mappings.AuthMappingProfile",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Mappings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Mappings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Mappings",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Services.AuthService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Services.AuthService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Services.AuthService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Services.PermissionService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Services.PermissionService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Services.PermissionService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Services.RoleService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Services.RoleService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Services.RoleService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Services.UserService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Services.UserService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Services.UserService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.CreatePermissionDtoBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.CreatePermissionDtoBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.CreatePermissionDtoBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.CreateRoleDtoBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.CreateRoleDtoBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.CreateRoleDtoBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.ExternalLoginDtoBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.ExternalLoginDtoBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.ExternalLoginDtoBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.LoginDtoBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.LoginDtoBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.LoginDtoBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.PermissionBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.PermissionBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.PermissionBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.PermissionDtoBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.PermissionDtoBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.PermissionDtoBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.RegisterDtoBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.RegisterDtoBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.RegisterDtoBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.RoleBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.RoleBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.RoleBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.RoleDtoBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.RoleDtoBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.RoleDtoBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.TokenResponseDtoBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.TokenResponseDtoBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.TokenResponseDtoBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.UpdateRoleDtoBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.UpdateRoleDtoBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.UpdateRoleDtoBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.UpdateUserDtoBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.UpdateUserDtoBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.UpdateUserDtoBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.UserBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.UserBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.UserBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.UserDtoBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.UserDtoBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders.UserDtoBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Builders.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Builders.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Builders",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Common.BaseServiceTest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Common.BaseServiceTest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Common.BaseServiceTest",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Common.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Common.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Common",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Services.AuthServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Services.AuthServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Services.AuthServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Services.PermissionServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Services.PermissionServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Services.PermissionServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Services.RoleServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Services.RoleServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Services.RoleServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Services.UserServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Services.UserServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Services.UserServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Application.Tests.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Application.Tests.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Application.Tests.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Domain.Entities.ApplicationRole.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Domain.Entities.ApplicationRole.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Domain.Entities.ApplicationRole",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Domain.Entities.ApplicationUser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Domain.Entities.ApplicationUser.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Domain.Entities.ApplicationUser",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Domain.Entities.ApplicationUserRole.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Domain.Entities.ApplicationUserRole.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Domain.Entities.ApplicationUserRole",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Domain.Entities.RefreshToken.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Domain.Entities.RefreshToken.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Domain.Entities.RefreshToken",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Domain.Entities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Domain.Entities.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Domain.Entities",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Domain.Repositories.IPermissionRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Domain.Repositories.IPermissionRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Domain.Repositories.IPermissionRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Domain.Repositories.IRefreshTokenRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Domain.Repositories.IRefreshTokenRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Domain.Repositories.IRoleRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Domain.Repositories.IRoleRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Domain.Repositories.IRoleRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Domain.Repositories.IUserRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Domain.Repositories.IUserRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Domain.Repositories.IUserRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Domain.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Domain.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Domain.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Data.AuthDbContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Data.AuthDbContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Data.AuthDbContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Data.AuthDbContextFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Data.AuthDbContextFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Data.AuthDbContextFactory",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Data.Repositories.PermissionRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Data.Repositories.PermissionRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Data.Repositories.PermissionRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Data.Repositories.RefreshTokenRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Data.Repositories.RoleRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Data.Repositories.RoleRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Data.Repositories.RoleRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Data.Repositories.UserRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Data.Repositories.UserRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Data.Repositories.UserRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Data.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Data.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Data.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Data.Seeders.PermissionSeeder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Data.Seeders.PermissionSeeder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Data.Seeders.PermissionSeeder",
+      "Summary": "<p sourcefile=\"api/MyApp.Auth.Infrastructure.Data.Seeders.PermissionSeeder.yml\" sourcestartlinenumber=\"1\">Seeds the database with default permissions for all modules and actions.\nThis seeder ensures that the Permission table is populated with all\npermission combinations defined in PermissionConstants.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Data.Seeders.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Data.Seeders.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Data.Seeders",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Data.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Data.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Data",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Migrations.AddPermissionDescription.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Migrations.AddPermissionDescription.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Migrations.AddPermissionDescription",
+      "Summary": "<p sourcefile=\"api/MyApp.Auth.Infrastructure.Migrations.AddPermissionDescription.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Migrations.EmptyMigration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Migrations.EmptyMigration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Migrations.EmptyMigration",
+      "Summary": "<p sourcefile=\"api/MyApp.Auth.Infrastructure.Migrations.EmptyMigration.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Migrations.InitialAuth.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Migrations.InitialAuth.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Migrations.InitialAuth",
+      "Summary": "<p sourcefile=\"api/MyApp.Auth.Infrastructure.Migrations.InitialAuth.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Migrations.NewAuditColumns.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Migrations.NewAuditColumns.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Migrations.NewAuditColumns",
+      "Summary": "<p sourcefile=\"api/MyApp.Auth.Infrastructure.Migrations.NewAuditColumns.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Migrations.Permissions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Migrations.Permissions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Migrations.Permissions",
+      "Summary": "<p sourcefile=\"api/MyApp.Auth.Infrastructure.Migrations.Permissions.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Migrations.UserRoles.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Migrations.UserRoles.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Migrations.UserRoles",
+      "Summary": "<p sourcefile=\"api/MyApp.Auth.Infrastructure.Migrations.UserRoles.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Migrations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Migrations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Migrations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Services.IJwtTokenProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Services.IJwtTokenProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Services.IJwtTokenProvider",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Services.JwtTokenProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Services.JwtTokenProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Services.JwtTokenProvider",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Infrastructure.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Infrastructure.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Infrastructure.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Tests.Helpers.TestDbContextFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Tests.Helpers.TestDbContextFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Tests.Helpers.TestDbContextFactory",
+      "Summary": "<p sourcefile=\"api/MyApp.Auth.Tests.Helpers.TestDbContextFactory.yml\" sourcestartlinenumber=\"1\">Helper class for creating in-memory AuthDbContext instances for testing</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Tests.Helpers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Tests.Helpers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Tests.Helpers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Tests.Repositories.PermissionRepositoryTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Tests.Repositories.PermissionRepositoryTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Tests.Repositories.RefreshTokenRepositoryTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Tests.Repositories.RoleRepositoryTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Tests.Repositories.RoleRepositoryTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Tests.Repositories.UserRepositoryTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Tests.Repositories.UserRepositoryTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Tests.Repositories.UserRepositoryTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Tests.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Tests.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Tests.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Tests.Services.JwtTokenProviderTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Tests.Services.JwtTokenProviderTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Tests.Services.JwtTokenProviderTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Auth.Tests.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Auth.Tests.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Auth.Tests.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Billing.API.ValuesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Billing.API.ValuesController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Billing.API.ValuesController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Billing.API.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Billing.API.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Billing.API",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.API.Controllers.InventoryTransactionsController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.API.Controllers.InventoryTransactionsController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.API.Controllers.InventoryTransactionsController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.API.Controllers.ProductsController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.API.Controllers.ProductsController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.API.Controllers.ProductsController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.API.Controllers.WarehousesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.API.Controllers.WarehousesController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.API.Controllers.WarehousesController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.API.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.API.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.API.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateInventoryTransactionDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateWarehouseDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Contracts.DTOs.InventoryTransactionDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Contracts.DTOs.ProductDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Contracts.DTOs.ProductDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Contracts.DTOs.ProductDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Contracts.DTOs.WarehouseDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Contracts.DTOs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Contracts.DTOs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Contracts.DTOs",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Contracts.Services.IProductService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Contracts.Services.IProductService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Contracts.Services.IProductService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Contracts.Services.IWarehouseService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Contracts.Services.IWarehouseService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Contracts.Services.IWarehouseService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Contracts.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Contracts.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Contracts.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Mappings.InventoryMappingProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Mappings.InventoryMappingProfile.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Mappings.InventoryMappingProfile",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Mappings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Mappings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Mappings",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Services.InventoryTransactionService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Services.InventoryTransactionService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Services.InventoryTransactionService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Services.ProductService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Services.ProductService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Services.ProductService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Services.WarehouseService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Services.WarehouseService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Services.WarehouseService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Tests.Services.InventoryTransactionServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Tests.Services.ProductServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Tests.Services.ProductServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Tests.Services.ProductServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Tests.Services.WarehouseServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Tests.Services.WarehouseServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Tests.Services.WarehouseServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Application.Tests.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Application.Tests.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Application.Tests.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Domain.Entities.InventoryTransaction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Domain.Entities.InventoryTransaction.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Domain.Entities.InventoryTransaction",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Domain.Entities.Product.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Domain.Entities.Product.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Domain.Entities.Product",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Domain.Entities.TransactionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Domain.Entities.TransactionType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Domain.Entities.TransactionType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Domain.Entities.Warehouse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Domain.Entities.Warehouse.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Domain.Entities.Warehouse",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Domain.Entities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Domain.Entities.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Domain.Entities",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Domain.Repositories.IProductRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Domain.Repositories.IProductRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Domain.Repositories.IProductRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Domain.Repositories.IWarehouseRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Domain.Repositories.IWarehouseRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Domain.Repositories.IWarehouseRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Domain.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Domain.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Domain.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Data.Configurations.InventoryTransactionConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Data.Configurations.InventoryTransactionConfiguration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Data.Configurations.InventoryTransactionConfiguration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Data.Configurations.ProductConfiguration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Data.Configurations.WarehouseConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Data.Configurations.WarehouseConfiguration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Data.Configurations.WarehouseConfiguration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Data.Configurations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Data.Configurations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Data.Configurations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Data.InventoryDbContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Data.InventoryDbContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Data.InventoryDbContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Data.InventoryDbContextFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Data.InventoryDbContextFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Data.InventoryDbContextFactory",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Data.Repositories.InventoryTransactionRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Data.Repositories.InventoryTransactionRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Data.Repositories.InventoryTransactionRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Data.Repositories.ProductRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Data.Repositories.ProductRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Data.Repositories.ProductRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Data.Repositories.WarehouseRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Data.Repositories.WarehouseRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Data.Repositories.WarehouseRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Data.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Data.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Data.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Data.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Data.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Data",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Migrations.AuditableEntities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Migrations.AuditableEntities.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Migrations.AuditableEntities",
+      "Summary": "<p sourcefile=\"api/MyApp.Inventory.Infrastructure.Migrations.AuditableEntities.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Migrations.InitialInventory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Migrations.InitialInventory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Migrations.InitialInventory",
+      "Summary": "<p sourcefile=\"api/MyApp.Inventory.Infrastructure.Migrations.InitialInventory.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Migrations.TransactionDate_HasDefaultValueSql_Fix.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Migrations.TransactionDate_HasDefaultValueSql_Fix.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Migrations.TransactionDate_HasDefaultValueSql_Fix",
+      "Summary": "<p sourcefile=\"api/MyApp.Inventory.Infrastructure.Migrations.TransactionDate_HasDefaultValueSql_Fix.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Infrastructure.Migrations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Infrastructure.Migrations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Infrastructure.Migrations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Tests.Helpers.TestDbContextFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Tests.Helpers.TestDbContextFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Tests.Helpers.TestDbContextFactory",
+      "Summary": "<p sourcefile=\"api/MyApp.Inventory.Tests.Helpers.TestDbContextFactory.yml\" sourcestartlinenumber=\"1\">Helper class for creating in-memory InventoryDbContext instances for testing</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Tests.Helpers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Tests.Helpers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Tests.Helpers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Tests.Repositories.ProductRepositoryTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Tests.Repositories.ProductRepositoryTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Tests.Repositories.ProductRepositoryTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Inventory.Tests.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Inventory.Tests.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Inventory.Tests.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.API.OrdersController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.API.OrdersController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.API.OrdersController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.API.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.API.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.API",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Application.Contracts.Dtos.OrderDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Application.Contracts.Dtos.OrderDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Application.Contracts.Dtos.OrderDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Application.Contracts.Dtos.OrderLineDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Application.Contracts.Dtos.OrderLineDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Application.Contracts.Dtos.OrderLineDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Application.Contracts.Dtos.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Application.Contracts.Dtos.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Application.Contracts.Dtos",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Application.Contracts.IOrderService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Application.Contracts.IOrderService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Application.Contracts.IOrderService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Application.Contracts.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Application.Contracts.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Application.Contracts",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Application.Mapping.OrderProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Application.Mapping.OrderProfile.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Application.Mapping.OrderProfile",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Application.Mapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Application.Mapping.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Application.Mapping",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Application.Services.OrderService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Application.Services.OrderService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Application.Services.OrderService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Application.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Application.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Application.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Application.Tests.Services.OrderServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Application.Tests.Services.OrderServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Application.Tests.Services.OrderServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Application.Tests.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Application.Tests.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Application.Tests.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Domain.Entities.Order.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Domain.Entities.Order.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Domain.Entities.Order",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Domain.Entities.OrderLine.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Domain.Entities.OrderLine.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Domain.Entities.OrderLine",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Domain.Entities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Domain.Entities.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Domain.Entities",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Domain.IOrderLineRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Domain.IOrderLineRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Domain.IOrderLineRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Domain.IOrderRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Domain.IOrderRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Domain.IOrderRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Domain.IRepository-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Domain.IRepository-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Domain.IRepository<TEntity, TKey>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Domain.OrderStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Domain.OrderStatus.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Domain.OrderStatus",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Domain.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Domain.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Domain",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Infrastructure.Data.Configurations.OrderConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Infrastructure.Data.Configurations.OrderConfiguration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Infrastructure.Data.Configurations.OrderConfiguration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Infrastructure.Data.Configurations.OrderLineConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Infrastructure.Data.Configurations.OrderLineConfiguration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Infrastructure.Data.Configurations.OrderLineConfiguration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Infrastructure.Data.Configurations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Infrastructure.Data.Configurations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Infrastructure.Data.Configurations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Infrastructure.Data.OrdersDbContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Infrastructure.Data.OrdersDbContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Infrastructure.Data.OrdersDbContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Infrastructure.Data.OrdersDbContextFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Infrastructure.Data.OrdersDbContextFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Infrastructure.Data.OrdersDbContextFactory",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Infrastructure.Data.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Infrastructure.Data.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Infrastructure.Data",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Infrastructure.Migrations.AuditableEntities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Infrastructure.Migrations.AuditableEntities.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Infrastructure.Migrations.AuditableEntities",
+      "Summary": "<p sourcefile=\"api/MyApp.Orders.Infrastructure.Migrations.AuditableEntities.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Infrastructure.Migrations.initialorders.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Infrastructure.Migrations.initialorders.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Infrastructure.Migrations.initialorders",
+      "Summary": "<p sourcefile=\"api/MyApp.Orders.Infrastructure.Migrations.initialorders.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Infrastructure.Migrations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Infrastructure.Migrations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Infrastructure.Migrations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Infrastructure.Repositories.OrderLineRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Infrastructure.Repositories.OrderLineRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Infrastructure.Repositories.OrderLineRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Infrastructure.Repositories.OrderRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Infrastructure.Repositories.OrderRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Infrastructure.Repositories.OrderRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Infrastructure.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Infrastructure.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Infrastructure.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Tests.Helpers.TestDbContextFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Tests.Helpers.TestDbContextFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Tests.Helpers.TestDbContextFactory",
+      "Summary": "<p sourcefile=\"api/MyApp.Orders.Tests.Helpers.TestDbContextFactory.yml\" sourcestartlinenumber=\"1\">Helper class for creating in-memory OrdersDbContext instances for testing</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Tests.Helpers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Tests.Helpers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Tests.Helpers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Tests.Repositories.OrderRepositoryTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Tests.Repositories.OrderRepositoryTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Tests.Repositories.OrderRepositoryTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Orders.Tests.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Orders.Tests.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Orders.Tests.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.API.Controllers.PurchaseOrdersController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.API.Controllers.PurchaseOrdersController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.API.Controllers.PurchaseOrdersController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.API.Controllers.SuppliersController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.API.Controllers.SuppliersController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.API.Controllers.SuppliersController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.API.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.API.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.API.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderLineDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderLineDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderLineDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderLineDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderLineDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderLineDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Contracts.DTOs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Contracts.DTOs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Contracts.DTOs",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Contracts.Services.ISupplierService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Contracts.Services.ISupplierService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Contracts.Services.ISupplierService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Contracts.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Contracts.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Contracts.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Mappings.PurchasingMappingProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Mappings.PurchasingMappingProfile.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Mappings.PurchasingMappingProfile",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Mappings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Mappings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Mappings",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Services.PurchaseOrderService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Services.PurchaseOrderService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Services.PurchaseOrderService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Services.SupplierService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Services.SupplierService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Services.SupplierService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Tests.Services.PurchaseOrderServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Tests.Services.PurchaseOrderServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Tests.Services.PurchaseOrderServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Tests.Services.SupplierServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Tests.Services.SupplierServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Tests.Services.SupplierServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Application.Tests.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Application.Tests.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Application.Tests.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Domain.Entities.PurchaseOrder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Domain.Entities.PurchaseOrder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Domain.Entities.PurchaseOrder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Domain.Entities.PurchaseOrderLine.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Domain.Entities.PurchaseOrderLine.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Domain.Entities.PurchaseOrderLine",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Domain.Entities.Supplier.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Domain.Entities.Supplier.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Domain.Entities.Supplier",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Domain.Entities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Domain.Entities.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Domain.Entities",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Domain.Repositories.ISupplierRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Domain.Repositories.ISupplierRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Domain.Repositories.ISupplierRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Domain.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Domain.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Domain.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Infrastructure.Data.Configurations.PurchaseOrderLineConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Infrastructure.Data.Configurations.PurchaseOrderLineConfiguration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Infrastructure.Data.Configurations.PurchaseOrderLineConfiguration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Infrastructure.Data.Configurations.SupplierConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Infrastructure.Data.Configurations.SupplierConfiguration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Infrastructure.Data.Configurations.SupplierConfiguration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Infrastructure.Data.Configurations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Infrastructure.Data.Configurations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Infrastructure.Data.Configurations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Infrastructure.Data.PurchasingDbContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Infrastructure.Data.PurchasingDbContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Infrastructure.Data.PurchasingDbContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Infrastructure.Data.PurchasingDbContextFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Infrastructure.Data.PurchasingDbContextFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Infrastructure.Data.PurchasingDbContextFactory",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderLineRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderLineRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderLineRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Infrastructure.Data.Repositories.PurchaseOrderRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Infrastructure.Data.Repositories.SupplierRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Infrastructure.Data.Repositories.SupplierRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Infrastructure.Data.Repositories.SupplierRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Infrastructure.Data.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Infrastructure.Data.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Infrastructure.Data.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Infrastructure.Data.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Infrastructure.Data.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Infrastructure.Data",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Infrastructure.Migrations.AuditableEntities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Infrastructure.Migrations.AuditableEntities.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Infrastructure.Migrations.AuditableEntities",
+      "Summary": "<p sourcefile=\"api/MyApp.Purchasing.Infrastructure.Migrations.AuditableEntities.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Infrastructure.Migrations.InitialPurchasing.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Infrastructure.Migrations.InitialPurchasing.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Infrastructure.Migrations.InitialPurchasing",
+      "Summary": "<p sourcefile=\"api/MyApp.Purchasing.Infrastructure.Migrations.InitialPurchasing.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Infrastructure.Migrations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Infrastructure.Migrations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Infrastructure.Migrations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Tests.Helpers.TestDbContextFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Tests.Helpers.TestDbContextFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Tests.Helpers.TestDbContextFactory",
+      "Summary": "<p sourcefile=\"api/MyApp.Purchasing.Tests.Helpers.TestDbContextFactory.yml\" sourcestartlinenumber=\"1\">Helper class for creating in-memory PurchasingDbContext instances for testing</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Tests.Helpers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Tests.Helpers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Tests.Helpers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Tests.Repositories.SupplierRepositoryTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Purchasing.Tests.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Purchasing.Tests.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Purchasing.Tests.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.API.Controllers.CustomersController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.API.Controllers.CustomersController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.API.Controllers.CustomersController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.API.Controllers.SalesOrdersController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.API.Controllers.SalesOrdersController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.API.Controllers.SalesOrdersController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.API.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.API.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.API.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderLineDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderLineDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderLineDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Contracts.DTOs.CustomerDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Contracts.DTOs.CustomerDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Contracts.DTOs.CustomerDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Contracts.DTOs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Contracts.DTOs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Contracts.DTOs",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Contracts.Services.ICustomerService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Contracts.Services.ICustomerService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Contracts.Services.ICustomerService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Contracts.Services.ISalesOrderService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Contracts.Services.ISalesOrderService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Contracts.Services.ISalesOrderService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Contracts.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Contracts.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Contracts.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Mapping.SalesOrderMappingProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Mapping.SalesOrderMappingProfile.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Mapping.SalesOrderMappingProfile",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Mapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Mapping.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Mapping",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Services.CustomerService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Services.CustomerService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Services.CustomerService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Services.SalesOrderService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Services.SalesOrderService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Services.SalesOrderService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Tests.Services.CustomerServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Tests.Services.CustomerServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Tests.Services.CustomerServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Tests.Services.SalesOrderServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Tests.Services.SalesOrderServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Tests.Services.SalesOrderServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Application.Tests.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Application.Tests.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Application.Tests.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Domain.Entities.Customer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Domain.Entities.Customer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Domain.Entities.Customer",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Domain.Entities.SalesOrder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Domain.Entities.SalesOrder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Domain.Entities.SalesOrder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Domain.Entities.SalesOrderLine.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Domain.Entities.SalesOrderLine.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Domain.Entities.SalesOrderLine",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Domain.Entities.SalesOrderStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Domain.Entities.SalesOrderStatus.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Domain.Entities.SalesOrderStatus",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Domain.Entities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Domain.Entities.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Domain.Entities",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Domain.ICustomerRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Domain.ICustomerRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Domain.ICustomerRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Domain.IRepository-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Domain.IRepository-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Domain.IRepository<TEntity, TKey>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Domain.ISalesOrderLineRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Domain.ISalesOrderLineRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Domain.ISalesOrderLineRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Domain.ISalesOrderRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Domain.ISalesOrderRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Domain.ISalesOrderRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Domain.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Domain.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Domain",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Infrastructure.Data.Configurations.CustomerConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Infrastructure.Data.Configurations.CustomerConfiguration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Infrastructure.Data.Configurations.CustomerConfiguration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderConfiguration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderConfiguration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderLineConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderLineConfiguration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Infrastructure.Data.Configurations.SalesOrderLineConfiguration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Infrastructure.Data.Configurations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Infrastructure.Data.Configurations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Infrastructure.Data.Configurations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Infrastructure.Data.Repositories.CustomerRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Infrastructure.Data.Repositories.CustomerRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Infrastructure.Data.Repositories.CustomerRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderLineRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Infrastructure.Data.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Infrastructure.Data.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Infrastructure.Data.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Infrastructure.Data.SalesDbContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Infrastructure.Data.SalesDbContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Infrastructure.Data.SalesDbContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Infrastructure.Data.SalesDbContextFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Infrastructure.Data.SalesDbContextFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Infrastructure.Data.SalesDbContextFactory",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Infrastructure.Data.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Infrastructure.Data.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Infrastructure.Data",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Infrastructure.Migrations.AuditableEntities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Infrastructure.Migrations.AuditableEntities.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Infrastructure.Migrations.AuditableEntities",
+      "Summary": "<p sourcefile=\"api/MyApp.Sales.Infrastructure.Migrations.AuditableEntities.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Infrastructure.Migrations.InitialSales.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Infrastructure.Migrations.InitialSales.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Infrastructure.Migrations.InitialSales",
+      "Summary": "<p sourcefile=\"api/MyApp.Sales.Infrastructure.Migrations.InitialSales.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Infrastructure.Migrations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Infrastructure.Migrations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Infrastructure.Migrations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Tests.Helpers.TestDbContextFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Tests.Helpers.TestDbContextFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Tests.Helpers.TestDbContextFactory",
+      "Summary": "<p sourcefile=\"api/MyApp.Sales.Tests.Helpers.TestDbContextFactory.yml\" sourcestartlinenumber=\"1\">Helper class for creating in-memory SalesDbContext instances for testing</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Tests.Helpers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Tests.Helpers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Tests.Helpers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Tests.Repositories.CustomerRepositoryTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Tests.Repositories.CustomerRepositoryTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Tests.Repositories.CustomerRepositoryTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Sales.Tests.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Sales.Tests.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Sales.Tests.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Caching.ICacheService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Caching.ICacheService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Caching.ICacheService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Caching.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Caching.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Caching",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Entities.AuditableEntity-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Entities.AuditableEntity-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Entities.AuditableEntity<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Entities.DomainEntity-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Entities.DomainEntity-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Entities.DomainEntity<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Entities.IAuditableEntity-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Entities.IAuditableEntity-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Entities.IAuditableEntity<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Entities.IAuditableEntity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Entities.IAuditableEntity.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Entities.IAuditableEntity",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Entities.IEntity-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Entities.IEntity-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Entities.IEntity<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Entities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Entities.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Entities",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Pagination.PaginatedResult-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Pagination.PaginatedResult-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Pagination.PaginatedResult<T>",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Pagination.PaginatedResult-1.yml\" sourcestartlinenumber=\"1\">Generic paginated result wrapper for list responses</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Pagination.PaginationParams.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Pagination.PaginationParams.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Pagination.PaginationParams",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Pagination.PaginationParams.yml\" sourcestartlinenumber=\"1\">Pagination parameters for list requests</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Pagination.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Pagination.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Pagination",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.ActionEnum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.ActionEnum.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions.ActionEnum",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.ActionEnum.yml\" sourcestartlinenumber=\"1\">Enumerates all permission actions that can be performed in the ERP system.\nThese actions represent CRUD operations and other common actions.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.ModuleEnum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.ModuleEnum.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions.ModuleEnum",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.ModuleEnum.yml\" sourcestartlinenumber=\"1\">Enumerates all modules in the ERP system.\nEach module represents a functional area like Inventory, Purchasing, etc.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Auth.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Auth.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions.PermissionConstants.Auth",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.PermissionConstants.Auth.yml\" sourcestartlinenumber=\"1\">Auth module permissions</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Billing.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Billing.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions.PermissionConstants.Billing",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.PermissionConstants.Billing.yml\" sourcestartlinenumber=\"1\">Billing module permissions</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.PermissionConstants.Inventory.yml\" sourcestartlinenumber=\"1\">Inventory module permissions</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Notification.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Notification.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions.PermissionConstants.Notification",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.PermissionConstants.Notification.yml\" sourcestartlinenumber=\"1\">Notification module permissions</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Orders.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Orders.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions.PermissionConstants.Orders",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.PermissionConstants.Orders.yml\" sourcestartlinenumber=\"1\">Orders module permissions</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Permissions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Permissions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions.PermissionConstants.Permissions",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.PermissionConstants.Permissions.yml\" sourcestartlinenumber=\"1\">Permissions management permissions</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Purchasing.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Purchasing.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions.PermissionConstants.Purchasing",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.PermissionConstants.Purchasing.yml\" sourcestartlinenumber=\"1\">Purchasing module permissions</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Roles.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Roles.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions.PermissionConstants.Roles",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.PermissionConstants.Roles.yml\" sourcestartlinenumber=\"1\">Roles management permissions</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Sales.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Sales.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions.PermissionConstants.Sales",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.PermissionConstants.Sales.yml\" sourcestartlinenumber=\"1\">Sales module permissions</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Users.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.Users.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions.PermissionConstants.Users",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.PermissionConstants.Users.yml\" sourcestartlinenumber=\"1\">Users management permissions</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionConstants.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions.PermissionConstants",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.PermissionConstants.yml\" sourcestartlinenumber=\"1\">Provides predefined permission constants for all module and action combinations.\nThese constants can be used in authorization policies and permission checks.</p>\n<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.PermissionConstants.yml\" sourcestartlinenumber=\"4\">Usage:</p>\n<pre><code class=\"lang-csharp\">[Authorize(Roles = \"Admin\")]\n[Permission(PermissionConstants.Inventory.Read)]\npublic IActionResult GetProducts() =&gt; Ok();</code></pre>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionEnum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.PermissionEnum.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions.PermissionEnum",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.PermissionEnum.yml\" sourcestartlinenumber=\"1\">Represents a permission as a combination of a module and an action.\nExample: Inventory.Read, Purchasing.Write, Orders.Delete</p>\n<p sourcefile=\"api/MyApp.Shared.Domain.Permissions.PermissionEnum.yml\" sourcestartlinenumber=\"4\">Usage:</p>\n<pre><code class=\"lang-csharp\">var permission = new PermissionEnum \n{ \n    Module = ModuleEnum.Inventory, \n    Action = ActionEnum.Read \n};\nstring permissionString = permission.ToString(); // \"Inventory.Read\"</code></pre>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Permissions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Permissions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Permissions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Repositories.IRepository-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Repositories.IRepository-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Domain.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Domain.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Domain.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Infrastructure.Caching.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Infrastructure.Caching.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Infrastructure.Caching",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Infrastructure.Data.AuditableDbContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Infrastructure.Data.AuditableDbContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Infrastructure.Data.AuditableDbContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Infrastructure.Data.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Infrastructure.Data.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Infrastructure.Data",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Infrastructure.Extensions.HealthChecksExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Infrastructure.Extensions.HealthChecksExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Infrastructure.Extensions.HealthChecksExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Infrastructure.Extensions.JwtAuthenticationExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Infrastructure.Extensions.JwtAuthenticationExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Infrastructure.Extensions.JwtAuthenticationExtensions",
+      "Summary": "<p sourcefile=\"api/MyApp.Shared.Infrastructure.Extensions.JwtAuthenticationExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods for configuring JWT Bearer authentication across microservices</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Infrastructure.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Infrastructure.Extensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Infrastructure.Extensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Infrastructure.Repositories.Repository-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Infrastructure.Repositories.Repository-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Infrastructure.Repositories.Repository<TEntity, TKey>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Shared.Infrastructure.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Shared.Infrastructure.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Shared.Infrastructure.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Tests.Integration.AuthIntegrationTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Tests.Integration.AuthIntegrationTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Tests.Integration.AuthIntegrationTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Tests.Integration.IntegrationTest1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Tests.Integration.IntegrationTest1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Tests.Integration.IntegrationTest1",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Tests.Integration.InventoryServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Tests.Integration.InventoryServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Tests.Integration.InventoryServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Tests.Integration.OrdersServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Tests.Integration.OrdersServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Tests.Integration.OrdersServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Tests.Integration.PurchasingServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Tests.Integration.PurchasingServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Tests.Integration.PurchasingServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Tests.Integration.SalesServiceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Tests.Integration.SalesServiceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Tests.Integration.SalesServiceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/MyApp.Tests.Integration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MyApp.Tests.Integration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "MyApp.Tests.Integration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Projects.AppHost.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Projects.AppHost.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Projects.AppHost",
+      "Summary": "<p sourcefile=\"api/Projects.AppHost.yml\" sourcestartlinenumber=\"1\">Metadata for the Aspire Host project.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Projects.ErpApiGateway.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Projects.ErpApiGateway.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Projects.ErpApiGateway",
+      "Summary": "<p sourcefile=\"api/Projects.ErpApiGateway.yml\" sourcestartlinenumber=\"1\">Metadata for the ErpApiGateway project.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Projects.MyApp_Auth_API.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Projects.MyApp_Auth_API.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Projects.MyApp_Auth_API",
+      "Summary": "<p sourcefile=\"api/Projects.MyApp_Auth_API.yml\" sourcestartlinenumber=\"1\">Metadata for the MyApp_Auth_API project.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Projects.MyApp_Billing_API.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Projects.MyApp_Billing_API.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Projects.MyApp_Billing_API",
+      "Summary": "<p sourcefile=\"api/Projects.MyApp_Billing_API.yml\" sourcestartlinenumber=\"1\">Metadata for the MyApp_Billing_API project.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Projects.MyApp_Inventory_API.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Projects.MyApp_Inventory_API.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Projects.MyApp_Inventory_API",
+      "Summary": "<p sourcefile=\"api/Projects.MyApp_Inventory_API.yml\" sourcestartlinenumber=\"1\">Metadata for the MyApp_Inventory_API project.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Projects.MyApp_Orders_API.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Projects.MyApp_Orders_API.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Projects.MyApp_Orders_API",
+      "Summary": "<p sourcefile=\"api/Projects.MyApp_Orders_API.yml\" sourcestartlinenumber=\"1\">Metadata for the MyApp_Orders_API project.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Projects.MyApp_Purchasing_API.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Projects.MyApp_Purchasing_API.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Projects.MyApp_Purchasing_API",
+      "Summary": "<p sourcefile=\"api/Projects.MyApp_Purchasing_API.yml\" sourcestartlinenumber=\"1\">Metadata for the MyApp_Purchasing_API project.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Projects.MyApp_Sales_API.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Projects.MyApp_Sales_API.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Projects.MyApp_Sales_API",
+      "Summary": "<p sourcefile=\"api/Projects.MyApp_Sales_API.yml\" sourcestartlinenumber=\"1\">Metadata for the MyApp_Sales_API project.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Projects.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Projects.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Projects",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/BUILD_AND_DEPLOY_INDEX.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/BUILD_AND_DEPLOY_INDEX.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/CONVENTIONS.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/CONVENTIONS.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/DOCFX_GUIDE.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/DOCFX_GUIDE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/DOCUMENTATION_STATUS.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/DOCUMENTATION_STATUS.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/FILE_INVENTORY.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/FILE_INVENTORY.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/OCTOBER_31_DOCUMENTATION_UPDATE.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/OCTOBER_31_DOCUMENTATION_UPDATE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/QUICK_START_GUIDE.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/QUICK_START_GUIDE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SESSION_COMPLETION.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SESSION_COMPLETION.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/SITEMAP.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/SITEMAP.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/api-gateway/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/api-gateway/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/architecture/ARCHITECTURE_DOCUMENTATION.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/architecture/ARCHITECTURE_DOCUMENTATION.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/architecture/DEPENDENCY_MAPPING.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/architecture/DEPENDENCY_MAPPING.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/architecture/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/architecture/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/configuration/APP_CONFIGURATION_INTEGRATION.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/configuration/APP_CONFIGURATION_INTEGRATION.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/configuration/ICACHESERVICE_IMPLEMENTATION_SUMMARY.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/configuration/ICACHESERVICE_IMPLEMENTATION_SUMMARY.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/configuration/OCELOT_CHANGES_SUMMARY.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/configuration/OCELOT_CHANGES_SUMMARY.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/configuration/OCELOT_CONFIGURATION_REMEDIATION.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/configuration/OCELOT_CONFIGURATION_REMEDIATION.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/configuration/OCELOT_REMEDIATION_COMPLETE.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/configuration/OCELOT_REMEDIATION_COMPLETE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/configuration/OCELOT_VERIFICATION_REPORT.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/configuration/OCELOT_VERIFICATION_REPORT.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/deployment/BUILD_AND_DEPLOY_AUTOMATION.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/deployment/BUILD_AND_DEPLOY_AUTOMATION.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/deployment/BUILD_AND_DEPLOY_AUTOMATION_SUMMARY.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/deployment/BUILD_AND_DEPLOY_AUTOMATION_SUMMARY.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/deployment/DEPLOYMENT.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/deployment/DEPLOYMENT.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/deployment/DEPLOYMENT_AUTOMATION_COMPLETE.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/deployment/DEPLOYMENT_AUTOMATION_COMPLETE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/deployment/DEPLOYMENT_CHECKLIST.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/deployment/DEPLOYMENT_CHECKLIST.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/deployment/DEPLOYMENT_OPERATIONS_GUIDE.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/deployment/DEPLOYMENT_OPERATIONS_GUIDE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/deployment/GITHUB_ACTIONS_ARCHITECTURE.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/deployment/GITHUB_ACTIONS_ARCHITECTURE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/deployment/PRE_DEPLOYMENT_CHECKLIST.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/deployment/PRE_DEPLOYMENT_CHECKLIST.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/deployment/QUICK_START_BUILD_DEPLOY.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/deployment/QUICK_START_BUILD_DEPLOY.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/deployment/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/deployment/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/deployment/WORKFLOWS_REFACTORING_OCTOBER_31.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/deployment/WORKFLOWS_REFACTORING_OCTOBER_31.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/deployment/WORKFLOWS_VISUAL_DIAGRAMS.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/deployment/WORKFLOWS_VISUAL_DIAGRAMS.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/development/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/development/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/development/add-dependencies.prompt.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/development/add-dependencies.prompt.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/docker-compose/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/docker-compose/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/guides/00_START_HERE.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/guides/00_START_HERE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/guides/QUICKSTART.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/guides/QUICKSTART.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/guides/QUICK_REFERENCE.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/guides/QUICK_REFERENCE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/implementation/IMPLEMENTATION_SUMMARY.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/implementation/IMPLEMENTATION_SUMMARY.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/implementation/PHASE_2_COMPLETION_SUMMARY.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/implementation/PHASE_2_COMPLETION_SUMMARY.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/implementation/PHASE_3B_COMPLETION_SUMMARY.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/implementation/PHASE_3B_COMPLETION_SUMMARY.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/implementation/PHASE_3_COMPLETION_SUMMARY.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/implementation/PHASE_3_COMPLETION_SUMMARY.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/implementation/REMEDIATION_COMPLETE.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/implementation/REMEDIATION_COMPLETE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/BICEP_AUDIT_INDEX.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/BICEP_AUDIT_INDEX.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/BICEP_AUDIT_VISUAL_SUMMARY.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/BICEP_AUDIT_VISUAL_SUMMARY.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/BICEP_CHANGES_APPLIED.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/BICEP_CHANGES_APPLIED.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/BICEP_COMPREHENSIVE_AUDIT.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/BICEP_COMPREHENSIVE_AUDIT.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/BICEP_DELIVERABLES_SUMMARY.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/BICEP_DELIVERABLES_SUMMARY.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/BICEP_DOCKER_COMPOSE_MAPPING.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/BICEP_DOCKER_COMPOSE_MAPPING.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/BICEP_INFRASTRUCTURE_AUDIT_SUMMARY.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/BICEP_INFRASTRUCTURE_AUDIT_SUMMARY.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/BICEP_QUICK_CHECKLIST.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/BICEP_QUICK_CHECKLIST.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/BICEP_QUICK_REFERENCE_CARD.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/BICEP_QUICK_REFERENCE_CARD.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/BICEP_REMEDIATION_GUIDE.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/BICEP_REMEDIATION_GUIDE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/BICEP_SERVICES_APPLIED.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/BICEP_SERVICES_APPLIED.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/BICEP_TEMPLATES.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/BICEP_TEMPLATES.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/DOCKER_COMPOSE_QUICK_REFERENCE.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/DOCKER_COMPOSE_QUICK_REFERENCE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/DOCKER_COMPOSE_REMEDIATION_COMPLETE.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/DOCKER_COMPOSE_REMEDIATION_COMPLETE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/DOCKER_COMPOSE_VALIDATION_REPORT.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/DOCKER_COMPOSE_VALIDATION_REPORT.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/infrastructure/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/infrastructure/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/microservices/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/microservices/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/operations/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/operations/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/reference/INDEX.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/reference/INDEX.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/reference/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/reference/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/security/INFRASTRUCTURE_SECURITY_ASSESSMENT.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/security/INFRASTRUCTURE_SECURITY_ASSESSMENT.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/security/RBAC_FIX_SUMMARY.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/security/RBAC_FIX_SUMMARY.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/security/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/security/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/security/README_SECURITY_FIXES.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/security/README_SECURITY_FIXES.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/security/SECURITY_FIXES_SUMMARY.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/security/SECURITY_FIXES_SUMMARY.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/security/SECURITY_IDENTITY_BEST_PRACTICES.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/security/SECURITY_IDENTITY_BEST_PRACTICES.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/security/SECURITY_REMEDIATION_PLAN.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/security/SECURITY_REMEDIATION_PLAN.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

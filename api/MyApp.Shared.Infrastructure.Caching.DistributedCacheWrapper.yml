@@ -1,0 +1,948 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper
+  commentId: T:MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper
+  id: DistributedCacheWrapper
+  parent: MyApp.Shared.Infrastructure.Caching
+  children:
+  - MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.#ctor(Microsoft.Extensions.Caching.Distributed.IDistributedCache)
+  - MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.GetStateAsync``1(System.String)
+  - MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.RemoveStateAsync(System.String)
+  - MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+  langs:
+  - csharp
+  - vb
+  name: DistributedCacheWrapper
+  nameWithType: DistributedCacheWrapper
+  fullName: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Infrastructure/Caching/DistributedCacheWrapper.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DistributedCacheWrapper
+    path: src/MyApp.Shared/MyApp.Shared.Infrastructure/Caching/DistributedCacheWrapper.cs
+    startLine: 10
+  assemblies:
+  - MyApp.Shared.Infrastructure
+  namespace: MyApp.Shared.Infrastructure.Caching
+  syntax:
+    content: 'public class DistributedCacheWrapper : ICacheService'
+    content.vb: Public Class DistributedCacheWrapper Implements ICacheService
+  inheritance:
+  - System.Object
+  implements:
+  - MyApp.Shared.Domain.Caching.ICacheService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.#ctor(Microsoft.Extensions.Caching.Distributed.IDistributedCache)
+  commentId: M:MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.#ctor(Microsoft.Extensions.Caching.Distributed.IDistributedCache)
+  id: '#ctor(Microsoft.Extensions.Caching.Distributed.IDistributedCache)'
+  parent: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper
+  langs:
+  - csharp
+  - vb
+  name: DistributedCacheWrapper(IDistributedCache)
+  nameWithType: DistributedCacheWrapper.DistributedCacheWrapper(IDistributedCache)
+  fullName: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.DistributedCacheWrapper(Microsoft.Extensions.Caching.Distributed.IDistributedCache)
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Infrastructure/Caching/DistributedCacheWrapper.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Shared/MyApp.Shared.Infrastructure/Caching/DistributedCacheWrapper.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Shared.Infrastructure
+  namespace: MyApp.Shared.Infrastructure.Caching
+  syntax:
+    content: public DistributedCacheWrapper(IDistributedCache distributedCache)
+    parameters:
+    - id: distributedCache
+      type: Microsoft.Extensions.Caching.Distributed.IDistributedCache
+    content.vb: Public Sub New(distributedCache As IDistributedCache)
+  overload: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.#ctor*
+  nameWithType.vb: DistributedCacheWrapper.New(IDistributedCache)
+  fullName.vb: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.New(Microsoft.Extensions.Caching.Distributed.IDistributedCache)
+  name.vb: New(IDistributedCache)
+- uid: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.GetStateAsync``1(System.String)
+  commentId: M:MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.GetStateAsync``1(System.String)
+  id: GetStateAsync``1(System.String)
+  parent: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper
+  langs:
+  - csharp
+  - vb
+  name: GetStateAsync<T>(string)
+  nameWithType: DistributedCacheWrapper.GetStateAsync<T>(string)
+  fullName: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.GetStateAsync<T>(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Infrastructure/Caching/DistributedCacheWrapper.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetStateAsync
+    path: src/MyApp.Shared/MyApp.Shared.Infrastructure/Caching/DistributedCacheWrapper.cs
+    startLine: 20
+  assemblies:
+  - MyApp.Shared.Infrastructure
+  namespace: MyApp.Shared.Infrastructure.Caching
+  example: []
+  syntax:
+    content: 'public Task<T?> GetStateAsync<T>(string key) where T : class'
+    parameters:
+    - id: key
+      type: System.String
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Public Function GetStateAsync(Of T As Class)(key As String) As Task(Of T)
+  overload: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.GetStateAsync*
+  implements:
+  - MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync``1(System.String)
+  nameWithType.vb: DistributedCacheWrapper.GetStateAsync(Of T)(String)
+  fullName.vb: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.GetStateAsync(Of T)(String)
+  name.vb: GetStateAsync(Of T)(String)
+- uid: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+  commentId: M:MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+  id: SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+  parent: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper
+  langs:
+  - csharp
+  - vb
+  name: SaveStateAsync<T>(string, T, TimeSpan?)
+  nameWithType: DistributedCacheWrapper.SaveStateAsync<T>(string, T, TimeSpan?)
+  fullName: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.SaveStateAsync<T>(string, T, System.TimeSpan?)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Infrastructure/Caching/DistributedCacheWrapper.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: SaveStateAsync
+    path: src/MyApp.Shared/MyApp.Shared.Infrastructure/Caching/DistributedCacheWrapper.cs
+    startLine: 44
+  assemblies:
+  - MyApp.Shared.Infrastructure
+  namespace: MyApp.Shared.Infrastructure.Caching
+  example: []
+  syntax:
+    content: 'public Task SaveStateAsync<T>(string key, T value, TimeSpan? expiration = null) where T : class'
+    parameters:
+    - id: key
+      type: System.String
+    - id: value
+      type: '{T}'
+    - id: expiration
+      type: System.Nullable{System.TimeSpan}
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function SaveStateAsync(Of T As Class)(key As String, value As T, expiration As TimeSpan? = Nothing) As Task
+  overload: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.SaveStateAsync*
+  implements:
+  - MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync``1(System.String,{T},System.Nullable{System.TimeSpan})
+  nameWithType.vb: DistributedCacheWrapper.SaveStateAsync(Of T)(String, T, TimeSpan?)
+  fullName.vb: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.SaveStateAsync(Of T)(String, T, System.TimeSpan?)
+  name.vb: SaveStateAsync(Of T)(String, T, TimeSpan?)
+- uid: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.RemoveStateAsync(System.String)
+  commentId: M:MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.RemoveStateAsync(System.String)
+  id: RemoveStateAsync(System.String)
+  parent: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper
+  langs:
+  - csharp
+  - vb
+  name: RemoveStateAsync(string)
+  nameWithType: DistributedCacheWrapper.RemoveStateAsync(string)
+  fullName: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.RemoveStateAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Infrastructure/Caching/DistributedCacheWrapper.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RemoveStateAsync
+    path: src/MyApp.Shared/MyApp.Shared.Infrastructure/Caching/DistributedCacheWrapper.cs
+    startLine: 60
+  assemblies:
+  - MyApp.Shared.Infrastructure
+  namespace: MyApp.Shared.Infrastructure.Caching
+  example: []
+  syntax:
+    content: public Task RemoveStateAsync(string key)
+    parameters:
+    - id: key
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function RemoveStateAsync(key As String) As Task
+  overload: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.RemoveStateAsync*
+  implements:
+  - MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync(System.String)
+  nameWithType.vb: DistributedCacheWrapper.RemoveStateAsync(String)
+  fullName.vb: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.RemoveStateAsync(String)
+  name.vb: RemoveStateAsync(String)
+references:
+- uid: MyApp.Shared.Infrastructure.Caching
+  commentId: N:MyApp.Shared.Infrastructure.Caching
+  href: MyApp.html
+  name: MyApp.Shared.Infrastructure.Caching
+  nameWithType: MyApp.Shared.Infrastructure.Caching
+  fullName: MyApp.Shared.Infrastructure.Caching
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Infrastructure
+    name: Infrastructure
+    href: MyApp.Shared.Infrastructure.html
+  - name: .
+  - uid: MyApp.Shared.Infrastructure.Caching
+    name: Caching
+    href: MyApp.Shared.Infrastructure.Caching.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Infrastructure
+    name: Infrastructure
+    href: MyApp.Shared.Infrastructure.html
+  - name: .
+  - uid: MyApp.Shared.Infrastructure.Caching
+    name: Caching
+    href: MyApp.Shared.Infrastructure.Caching.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MyApp.Shared.Domain.Caching.ICacheService
+  commentId: T:MyApp.Shared.Domain.Caching.ICacheService
+  parent: MyApp.Shared.Domain.Caching
+  href: MyApp.Shared.Domain.Caching.ICacheService.html
+  name: ICacheService
+  nameWithType: ICacheService
+  fullName: MyApp.Shared.Domain.Caching.ICacheService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Shared.Domain.Caching
+  commentId: N:MyApp.Shared.Domain.Caching
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Caching
+  nameWithType: MyApp.Shared.Domain.Caching
+  fullName: MyApp.Shared.Domain.Caching
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Caching
+    name: Caching
+    href: MyApp.Shared.Domain.Caching.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Caching
+    name: Caching
+    href: MyApp.Shared.Domain.Caching.html
+- uid: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.#ctor*
+  commentId: Overload:MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.#ctor
+  href: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.html#MyApp_Shared_Infrastructure_Caching_DistributedCacheWrapper__ctor_Microsoft_Extensions_Caching_Distributed_IDistributedCache_
+  name: DistributedCacheWrapper
+  nameWithType: DistributedCacheWrapper.DistributedCacheWrapper
+  fullName: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.DistributedCacheWrapper
+  nameWithType.vb: DistributedCacheWrapper.New
+  fullName.vb: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.New
+  name.vb: New
+- uid: Microsoft.Extensions.Caching.Distributed.IDistributedCache
+  commentId: T:Microsoft.Extensions.Caching.Distributed.IDistributedCache
+  parent: Microsoft.Extensions.Caching.Distributed
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.caching.distributed.idistributedcache
+  name: IDistributedCache
+  nameWithType: IDistributedCache
+  fullName: Microsoft.Extensions.Caching.Distributed.IDistributedCache
+- uid: Microsoft.Extensions.Caching.Distributed
+  commentId: N:Microsoft.Extensions.Caching.Distributed
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Caching.Distributed
+  nameWithType: Microsoft.Extensions.Caching.Distributed
+  fullName: Microsoft.Extensions.Caching.Distributed
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Caching
+    name: Caching
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.caching
+  - name: .
+  - uid: Microsoft.Extensions.Caching.Distributed
+    name: Distributed
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.caching.distributed
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Caching
+    name: Caching
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.caching
+  - name: .
+  - uid: Microsoft.Extensions.Caching.Distributed
+    name: Distributed
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.caching.distributed
+- uid: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.GetStateAsync*
+  commentId: Overload:MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.GetStateAsync
+  href: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.html#MyApp_Shared_Infrastructure_Caching_DistributedCacheWrapper_GetStateAsync__1_System_String_
+  name: GetStateAsync
+  nameWithType: DistributedCacheWrapper.GetStateAsync
+  fullName: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.GetStateAsync
+- uid: MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync``1(System.String)
+  commentId: M:MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync``1(System.String)
+  parent: MyApp.Shared.Domain.Caching.ICacheService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: GetStateAsync<T>(string)
+  nameWithType: ICacheService.GetStateAsync<T>(string)
+  fullName: MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync<T>(string)
+  nameWithType.vb: ICacheService.GetStateAsync(Of T)(String)
+  fullName.vb: MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync(Of T)(String)
+  name.vb: GetStateAsync(Of T)(String)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync``1(System.String)
+    name: GetStateAsync
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Caching.ICacheService.GetStateAsync``1(System.String)
+    name: GetStateAsync
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.SaveStateAsync*
+  commentId: Overload:MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.SaveStateAsync
+  href: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.html#MyApp_Shared_Infrastructure_Caching_DistributedCacheWrapper_SaveStateAsync__1_System_String___0_System_Nullable_System_TimeSpan__
+  name: SaveStateAsync
+  nameWithType: DistributedCacheWrapper.SaveStateAsync
+  fullName: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.SaveStateAsync
+- uid: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync``1(System.String,{T},System.Nullable{System.TimeSpan})
+  commentId: M:MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+  parent: MyApp.Shared.Domain.Caching.ICacheService
+  definition: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: SaveStateAsync<T>(string, T, TimeSpan?)
+  nameWithType: ICacheService.SaveStateAsync<T>(string, T, TimeSpan?)
+  fullName: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync<T>(string, T, System.TimeSpan?)
+  nameWithType.vb: ICacheService.SaveStateAsync(Of T)(String, T, TimeSpan?)
+  fullName.vb: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync(Of T)(String, T, System.TimeSpan?)
+  name.vb: SaveStateAsync(Of T)(String, T, TimeSpan?)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+    name: SaveStateAsync
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+    name: SaveStateAsync
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  - name: )
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Nullable{System.TimeSpan}
+  commentId: T:System.Nullable{System.TimeSpan}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan?
+  nameWithType: TimeSpan?
+  fullName: System.TimeSpan?
+  spec.csharp:
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  spec.vb:
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+  commentId: M:MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: SaveStateAsync<T>(string, T, TimeSpan?)
+  nameWithType: ICacheService.SaveStateAsync<T>(string, T, TimeSpan?)
+  fullName: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync<T>(string, T, System.TimeSpan?)
+  nameWithType.vb: ICacheService.SaveStateAsync(Of T)(String, T, TimeSpan?)
+  fullName.vb: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync(Of T)(String, T, System.TimeSpan?)
+  name.vb: SaveStateAsync(Of T)(String, T, TimeSpan?)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+    name: SaveStateAsync
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Caching.ICacheService.SaveStateAsync``1(System.String,``0,System.Nullable{System.TimeSpan})
+    name: SaveStateAsync
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  - name: )
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.RemoveStateAsync*
+  commentId: Overload:MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.RemoveStateAsync
+  href: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.html#MyApp_Shared_Infrastructure_Caching_DistributedCacheWrapper_RemoveStateAsync_System_String_
+  name: RemoveStateAsync
+  nameWithType: DistributedCacheWrapper.RemoveStateAsync
+  fullName: MyApp.Shared.Infrastructure.Caching.DistributedCacheWrapper.RemoveStateAsync
+- uid: MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync(System.String)
+  commentId: M:MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync(System.String)
+  parent: MyApp.Shared.Domain.Caching.ICacheService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: RemoveStateAsync(string)
+  nameWithType: ICacheService.RemoveStateAsync(string)
+  fullName: MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync(string)
+  nameWithType.vb: ICacheService.RemoveStateAsync(String)
+  fullName.vb: MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync(String)
+  name.vb: RemoveStateAsync(String)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync(System.String)
+    name: RemoveStateAsync
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Caching.ICacheService.RemoveStateAsync(System.String)
+    name: RemoveStateAsync
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )

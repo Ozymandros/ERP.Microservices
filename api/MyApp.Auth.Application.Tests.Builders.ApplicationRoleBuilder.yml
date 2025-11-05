@@ -1,0 +1,740 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  id: ApplicationRoleBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  children:
+  - MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.Build
+  - MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithCreatedAt(System.DateTime)
+  - MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithDescription(System.String)
+  - MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithId(System.Guid)
+  - MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithIsActive(System.Boolean)
+  - MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithName(System.String)
+  - MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithUpdatedAt(System.DateTime)
+  - MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.op_Implicit(MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder)~MyApp.Auth.Domain.Entities.ApplicationRole
+  langs:
+  - csharp
+  - vb
+  name: ApplicationRoleBuilder
+  nameWithType: ApplicationRoleBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ApplicationRoleBuilder
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+    startLine: 5
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public class ApplicationRoleBuilder
+    content.vb: Public Class ApplicationRoleBuilder
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithId(System.Guid)
+  commentId: M:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithId(System.Guid)
+  id: WithId(System.Guid)
+  parent: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithId(Guid)
+  nameWithType: ApplicationRoleBuilder.WithId(Guid)
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithId(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: WithId
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+    startLine: 16
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public ApplicationRoleBuilder WithId(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+    content.vb: Public Function WithId(id As Guid) As ApplicationRoleBuilder
+  overload: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithId*
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithName(System.String)
+  commentId: M:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithName(System.String)
+  id: WithName(System.String)
+  parent: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithName(string)
+  nameWithType: ApplicationRoleBuilder.WithName(string)
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithName(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: WithName
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+    startLine: 22
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public ApplicationRoleBuilder WithName(string name)
+    parameters:
+    - id: name
+      type: System.String
+    return:
+      type: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+    content.vb: Public Function WithName(name As String) As ApplicationRoleBuilder
+  overload: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithName*
+  nameWithType.vb: ApplicationRoleBuilder.WithName(String)
+  fullName.vb: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithName(String)
+  name.vb: WithName(String)
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithDescription(System.String)
+  commentId: M:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithDescription(System.String)
+  id: WithDescription(System.String)
+  parent: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithDescription(string)
+  nameWithType: ApplicationRoleBuilder.WithDescription(string)
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithDescription(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: WithDescription
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+    startLine: 28
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public ApplicationRoleBuilder WithDescription(string description)
+    parameters:
+    - id: description
+      type: System.String
+    return:
+      type: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+    content.vb: Public Function WithDescription(description As String) As ApplicationRoleBuilder
+  overload: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithDescription*
+  nameWithType.vb: ApplicationRoleBuilder.WithDescription(String)
+  fullName.vb: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithDescription(String)
+  name.vb: WithDescription(String)
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithCreatedAt(System.DateTime)
+  commentId: M:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithCreatedAt(System.DateTime)
+  id: WithCreatedAt(System.DateTime)
+  parent: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithCreatedAt(DateTime)
+  nameWithType: ApplicationRoleBuilder.WithCreatedAt(DateTime)
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithCreatedAt(System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: WithCreatedAt
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+    startLine: 34
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public ApplicationRoleBuilder WithCreatedAt(DateTime createdAt)
+    parameters:
+    - id: createdAt
+      type: System.DateTime
+    return:
+      type: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+    content.vb: Public Function WithCreatedAt(createdAt As Date) As ApplicationRoleBuilder
+  overload: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithCreatedAt*
+  nameWithType.vb: ApplicationRoleBuilder.WithCreatedAt(Date)
+  fullName.vb: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithCreatedAt(Date)
+  name.vb: WithCreatedAt(Date)
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithUpdatedAt(System.DateTime)
+  commentId: M:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithUpdatedAt(System.DateTime)
+  id: WithUpdatedAt(System.DateTime)
+  parent: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithUpdatedAt(DateTime)
+  nameWithType: ApplicationRoleBuilder.WithUpdatedAt(DateTime)
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithUpdatedAt(System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: WithUpdatedAt
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+    startLine: 40
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public ApplicationRoleBuilder WithUpdatedAt(DateTime updatedAt)
+    parameters:
+    - id: updatedAt
+      type: System.DateTime
+    return:
+      type: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+    content.vb: Public Function WithUpdatedAt(updatedAt As Date) As ApplicationRoleBuilder
+  overload: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithUpdatedAt*
+  nameWithType.vb: ApplicationRoleBuilder.WithUpdatedAt(Date)
+  fullName.vb: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithUpdatedAt(Date)
+  name.vb: WithUpdatedAt(Date)
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithIsActive(System.Boolean)
+  commentId: M:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithIsActive(System.Boolean)
+  id: WithIsActive(System.Boolean)
+  parent: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithIsActive(bool)
+  nameWithType: ApplicationRoleBuilder.WithIsActive(bool)
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithIsActive(bool)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: WithIsActive
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+    startLine: 46
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public ApplicationRoleBuilder WithIsActive(bool isActive)
+    parameters:
+    - id: isActive
+      type: System.Boolean
+    return:
+      type: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+    content.vb: Public Function WithIsActive(isActive As Boolean) As ApplicationRoleBuilder
+  overload: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithIsActive*
+  nameWithType.vb: ApplicationRoleBuilder.WithIsActive(Boolean)
+  fullName.vb: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithIsActive(Boolean)
+  name.vb: WithIsActive(Boolean)
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.Build
+  commentId: M:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.Build
+  id: Build
+  parent: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  langs:
+  - csharp
+  - vb
+  name: Build()
+  nameWithType: ApplicationRoleBuilder.Build()
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.Build()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Build
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+    startLine: 52
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public ApplicationRole Build()
+    return:
+      type: MyApp.Auth.Domain.Entities.ApplicationRole
+    content.vb: Public Function Build() As ApplicationRole
+  overload: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.Build*
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.op_Implicit(MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder)~MyApp.Auth.Domain.Entities.ApplicationRole
+  commentId: M:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.op_Implicit(MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder)~MyApp.Auth.Domain.Entities.ApplicationRole
+  id: op_Implicit(MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder)~MyApp.Auth.Domain.Entities.ApplicationRole
+  parent: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  langs:
+  - csharp
+  - vb
+  name: implicit operator ApplicationRole(ApplicationRoleBuilder)
+  nameWithType: ApplicationRoleBuilder.implicit operator ApplicationRole(ApplicationRoleBuilder)
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.implicit operator MyApp.Auth.Domain.Entities.ApplicationRole(MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder)
+  type: Operator
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: op_Implicit
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/RoleBuilders.cs
+    startLine: 54
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public static implicit operator ApplicationRole(ApplicationRoleBuilder builder)
+    parameters:
+    - id: builder
+      type: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+    return:
+      type: MyApp.Auth.Domain.Entities.ApplicationRole
+    content.vb: Public Shared Widening Operator CType(builder As ApplicationRoleBuilder) As ApplicationRole
+  overload: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.op_Implicit*
+  nameWithType.vb: ApplicationRoleBuilder.CType(ApplicationRoleBuilder)
+  fullName.vb: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.CType(MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder)
+  name.vb: CType(ApplicationRoleBuilder)
+references:
+- uid: MyApp.Auth.Application.Tests.Builders
+  commentId: N:MyApp.Auth.Application.Tests.Builders
+  href: MyApp.html
+  name: MyApp.Auth.Application.Tests.Builders
+  nameWithType: MyApp.Auth.Application.Tests.Builders
+  fullName: MyApp.Auth.Application.Tests.Builders
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Builders
+    name: Builders
+    href: MyApp.Auth.Application.Tests.Builders.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Builders
+    name: Builders
+    href: MyApp.Auth.Application.Tests.Builders.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithId*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithId
+  href: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.html#MyApp_Auth_Application_Tests_Builders_ApplicationRoleBuilder_WithId_System_Guid_
+  name: WithId
+  nameWithType: ApplicationRoleBuilder.WithId
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithId
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.html
+  name: ApplicationRoleBuilder
+  nameWithType: ApplicationRoleBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithName*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithName
+  href: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.html#MyApp_Auth_Application_Tests_Builders_ApplicationRoleBuilder_WithName_System_String_
+  name: WithName
+  nameWithType: ApplicationRoleBuilder.WithName
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithDescription*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithDescription
+  href: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.html#MyApp_Auth_Application_Tests_Builders_ApplicationRoleBuilder_WithDescription_System_String_
+  name: WithDescription
+  nameWithType: ApplicationRoleBuilder.WithDescription
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithDescription
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithCreatedAt*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithCreatedAt
+  href: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.html#MyApp_Auth_Application_Tests_Builders_ApplicationRoleBuilder_WithCreatedAt_System_DateTime_
+  name: WithCreatedAt
+  nameWithType: ApplicationRoleBuilder.WithCreatedAt
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithCreatedAt
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithUpdatedAt*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithUpdatedAt
+  href: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.html#MyApp_Auth_Application_Tests_Builders_ApplicationRoleBuilder_WithUpdatedAt_System_DateTime_
+  name: WithUpdatedAt
+  nameWithType: ApplicationRoleBuilder.WithUpdatedAt
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithUpdatedAt
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithIsActive*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithIsActive
+  href: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.html#MyApp_Auth_Application_Tests_Builders_ApplicationRoleBuilder_WithIsActive_System_Boolean_
+  name: WithIsActive
+  nameWithType: ApplicationRoleBuilder.WithIsActive
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.WithIsActive
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.Build*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.Build
+  href: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.html#MyApp_Auth_Application_Tests_Builders_ApplicationRoleBuilder_Build
+  name: Build
+  nameWithType: ApplicationRoleBuilder.Build
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.Build
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole
+  commentId: T:MyApp.Auth.Domain.Entities.ApplicationRole
+  parent: MyApp.Auth.Domain.Entities
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html
+  name: ApplicationRole
+  nameWithType: ApplicationRole
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole
+- uid: MyApp.Auth.Domain.Entities
+  commentId: N:MyApp.Auth.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Auth.Domain.Entities
+  nameWithType: MyApp.Auth.Domain.Entities
+  fullName: MyApp.Auth.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Entities
+    name: Entities
+    href: MyApp.Auth.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Entities
+    name: Entities
+    href: MyApp.Auth.Domain.Entities.html
+- uid: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.op_Implicit*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.op_Implicit
+  name: implicit operator
+  nameWithType: ApplicationRoleBuilder.implicit operator
+  fullName: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.implicit operator
+  nameWithType.vb: ApplicationRoleBuilder.CType
+  fullName.vb: MyApp.Auth.Application.Tests.Builders.ApplicationRoleBuilder.CType
+  name.vb: CType
+  spec.csharp:
+  - name: implicit
+  - name: " "
+  - name: operator

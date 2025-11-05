@@ -1,0 +1,85 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Domain.Entities
+  commentId: N:MyApp.Inventory.Domain.Entities
+  id: MyApp.Inventory.Domain.Entities
+  children:
+  - MyApp.Inventory.Domain.Entities.InventoryTransaction
+  - MyApp.Inventory.Domain.Entities.Product
+  - MyApp.Inventory.Domain.Entities.TransactionType
+  - MyApp.Inventory.Domain.Entities.Warehouse
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Inventory.Domain.Entities
+  nameWithType: MyApp.Inventory.Domain.Entities
+  fullName: MyApp.Inventory.Domain.Entities
+  type: Namespace
+  assemblies:
+  - MyApp.Inventory.Domain
+references:
+- uid: MyApp.Inventory.Domain.Entities.TransactionType
+  commentId: T:MyApp.Inventory.Domain.Entities.TransactionType
+  parent: MyApp.Inventory.Domain.Entities
+  href: MyApp.Inventory.Domain.Entities.TransactionType.html
+  name: TransactionType
+  nameWithType: TransactionType
+  fullName: MyApp.Inventory.Domain.Entities.TransactionType
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction
+  commentId: T:MyApp.Inventory.Domain.Entities.InventoryTransaction
+  href: MyApp.Inventory.Domain.Entities.InventoryTransaction.html
+  name: InventoryTransaction
+  nameWithType: InventoryTransaction
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction
+- uid: MyApp.Inventory.Domain.Entities.Product
+  commentId: T:MyApp.Inventory.Domain.Entities.Product
+  parent: MyApp.Inventory.Domain.Entities
+  href: MyApp.Inventory.Domain.Entities.Product.html
+  name: Product
+  nameWithType: Product
+  fullName: MyApp.Inventory.Domain.Entities.Product
+- uid: MyApp.Inventory.Domain.Entities.Warehouse
+  commentId: T:MyApp.Inventory.Domain.Entities.Warehouse
+  parent: MyApp.Inventory.Domain.Entities
+  href: MyApp.Inventory.Domain.Entities.Warehouse.html
+  name: Warehouse
+  nameWithType: Warehouse
+  fullName: MyApp.Inventory.Domain.Entities.Warehouse
+- uid: MyApp.Inventory.Domain.Entities
+  commentId: N:MyApp.Inventory.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Inventory.Domain.Entities
+  nameWithType: MyApp.Inventory.Domain.Entities
+  fullName: MyApp.Inventory.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Entities
+    name: Entities
+    href: MyApp.Inventory.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Entities
+    name: Entities
+    href: MyApp.Inventory.Domain.Entities.html

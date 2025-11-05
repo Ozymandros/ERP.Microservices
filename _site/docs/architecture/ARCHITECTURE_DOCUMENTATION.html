@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>ERP Microservices Infrastructure Architecture Documentation | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="ERP Microservices Infrastructure Architecture Documentation | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/architecture/ARCHITECTURE_DOCUMENTATION.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="erp-microservices-infrastructure-architecture-documentation">ERP Microservices Infrastructure Architecture Documentation</h1>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#executive-summary">Executive Summary</a></li>
+<li><a href="#architecture-overview">Architecture Overview</a></li>
+<li><a href="#infrastructure-components">Infrastructure Components</a></li>
+<li><a href="#security-architecture">Security Architecture</a></li>
+<li><a href="#data-flow">Data Flow</a></li>
+<li><a href="#deployment-topology">Deployment Topology</a></li>
+<li><a href="#service-communication">Service Communication</a></li>
+<li><a href="#scaling--performance">Scaling &amp; Performance</a></li>
+<li><a href="#disaster-recovery">Disaster Recovery</a></li>
+<li><a href="#implementation-details">Implementation Details</a></li>
+</ol>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>This document describes the complete infrastructure architecture for the <strong>ERP Microservices Platform</strong> deployed on Azure using Bicep Infrastructure-as-Code templates.</p>
+<h3 id="key-metrics">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Microservices</strong></td>
+<td>7 (Auth, Billing, Inventory, Orders, Purchasing, Sales) + 1 API Gateway</td>
+</tr>
+<tr>
+<td><strong>Deployment Model</strong></td>
+<td>Azure Container Apps (serverless)</td>
+</tr>
+<tr>
+<td><strong>Availability</strong></td>
+<td>99.99% (across all managed services)</td>
+</tr>
+<tr>
+<td><strong>Auto-Scaling</strong></td>
+<td>Min 1 - Max 10 replicas per service</td>
+</tr>
+<tr>
+<td><strong>Security Model</strong></td>
+<td>Zero Trust with Managed Identities + RBAC</td>
+</tr>
+<tr>
+<td><strong>Databases</strong></td>
+<td>1 SQL Server with 6 microservice databases</td>
+</tr>
+<tr>
+<td><strong>Cache</strong></td>
+<td>Azure Redis Cache (Standard tier)</td>
+</tr>
+<tr>
+<td><strong>Secret Management</strong></td>
+<td>Azure Key Vault (centralized)</td>
+</tr>
+<tr>
+<td><strong>Configuration Management</strong></td>
+<td>Azure App Configuration (with Key Vault references)</td>
+</tr>
+<tr>
+<td><strong>Monitoring</strong></td>
+<td>Azure Log Analytics + Application Insights</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="architecture-overview">Architecture Overview</h2>
+<h3 id="high-level-system-architecture">High-Level System Architecture</h3>
+<pre><code class="lang-mermaid">graph TB
+    subgraph &quot;Client Layer&quot;
+        WEB[&quot;🌐 Web Frontend&lt;br/&gt;(React/Angular)&quot;]
+        MOBILE[&quot;📱 Mobile App&quot;]
+    end
+    
+    subgraph &quot;API Gateway&quot;
+        GATEWAY[&quot;🚪 API Gateway&lt;br/&gt;(Ocelot)&lt;br/&gt;Container App&quot;]
+    end
+    
+    subgraph &quot;Microservices Layer&quot;
+        AUTH[&quot;🔐 Auth Service&lt;br/&gt;Container App&quot;]
+        BILLING[&quot;💰 Billing Service&lt;br/&gt;Container App&quot;]
+        INVENTORY[&quot;📦 Inventory Service&lt;br/&gt;Container App&quot;]
+        ORDERS[&quot;📋 Orders Service&lt;br/&gt;Container App&quot;]
+        PURCHASING[&quot;🛒 Purchasing Service&lt;br/&gt;Container App&quot;]
+        SALES[&quot;💸 Sales Service&lt;br/&gt;Container App&quot;]
+    end
+    
+    subgraph &quot;Data Layer&quot;
+        REDIS[&quot;⚡ Redis Cache&lt;br/&gt;(Distributed Cache)&quot;]
+        SQLDB[&quot;🗄️ SQL Server&lt;br/&gt;(6 Databases)&quot;]
+    end
+    
+    subgraph &quot;Security &amp; Config&quot;
+        KEYVAULT[&quot;🔑 Key Vault&lt;br/&gt;(Secrets)&quot;]
+        APPCONFIG[&quot;⚙️ App Configuration&lt;br/&gt;(Settings + KV Refs)&quot;]
+    end
+    
+    subgraph &quot;Monitoring&quot;
+        LOGS[&quot;📊 Log Analytics&quot;]
+        INSIGHTS[&quot;🔍 App Insights&quot;]
+    end
+    
+    WEB --&gt; GATEWAY
+    MOBILE --&gt; GATEWAY
+    
+    GATEWAY --&gt; AUTH
+    GATEWAY --&gt; BILLING
+    GATEWAY --&gt; INVENTORY
+    GATEWAY --&gt; ORDERS
+    GATEWAY --&gt; PURCHASING
+    GATEWAY --&gt; SALES
+    
+    AUTH --&gt; SQLDB
+    BILLING --&gt; SQLDB
+    INVENTORY --&gt; SQLDB
+    ORDERS --&gt; SQLDB
+    PURCHASING --&gt; SQLDB
+    SALES --&gt; SQLDB
+    
+    AUTH --&gt; REDIS
+    BILLING --&gt; REDIS
+    INVENTORY --&gt; REDIS
+    ORDERS --&gt; REDIS
+    PURCHASING --&gt; REDIS
+    SALES --&gt; REDIS
+    
+    AUTH -.-&gt;|reads| APPCONFIG
+    BILLING -.-&gt;|reads| APPCONFIG
+    INVENTORY -.-&gt;|reads| APPCONFIG
+    ORDERS -.-&gt;|reads| APPCONFIG
+    PURCHASING -.-&gt;|reads| APPCONFIG
+    SALES -.-&gt;|reads| APPCONFIG
+    
+    APPCONFIG -.-&gt;|via MI| KEYVAULT
+    GATEWAY -.-&gt;|logs| LOGS
+    AUTH -.-&gt;|logs| LOGS
+    BILLING -.-&gt;|logs| LOGS
+    INVENTORY -.-&gt;|logs| LOGS
+    ORDERS -.-&gt;|logs| LOGS
+    PURCHASING -.-&gt;|logs| LOGS
+    SALES -.-&gt;|logs| LOGS
+    
+    GATEWAY -.-&gt;|events| INSIGHTS
+    AUTH -.-&gt;|events| INSIGHTS
+    
+    style GATEWAY fill:#FFB6C1
+    style AUTH fill:#87CEEB
+    style BILLING fill:#87CEEB
+    style INVENTORY fill:#87CEEB
+    style ORDERS fill:#87CEEB
+    style PURCHASING fill:#87CEEB
+    style SALES fill:#87CEEB
+    style REDIS fill:#90EE90
+    style SQLDB fill:#FFD700
+    style KEYVAULT fill:#FFA500
+    style APPCONFIG fill:#FFA500
+    style LOGS fill:#DDA0DD
+    style INSIGHTS fill:#DDA0DD
+</code></pre>
+<hr>
+<h2 id="infrastructure-components">Infrastructure Components</h2>
+<h3 id="1-container-apps-environment">1. Container Apps Environment</h3>
+<p><strong>Purpose:</strong> Serverless container hosting platform for microservices</p>
+<p><strong>Configuration:</strong></p>
+<pre><code class="lang-bicep">├─ Managed Environment (CAE)
+│  ├─ Workload Profiles: Consumption (auto-scaling)
+│  ├─ App Logs: Log Analytics integration
+│  ├─ Aspire Dashboard: Built-in
+│  └─ Storage Mounts: Azure Files (persistent)
+│
+└─ Container Apps (8 total)
+   ├─ API Gateway (1x)
+   ├─ Auth Service (1x)
+   ├─ Billing Service (1x)
+   ├─ Inventory Service (1x)
+   ├─ Orders Service (1x)
+   ├─ Purchasing Service (1x)
+   ├─ Sales Service (1x)
+   └─ Per Service:
+      ├─ CPU: 0.5 cores
+      ├─ Memory: 1 GB
+      ├─ Replicas: 1-10 (auto-scaling)
+      ├─ Ingress: Internal/External
+      ├─ Dapr: Enabled
+      ├─ System-Assigned MI: Enabled
+      └─ Environment Variables: 15-20 per service
+</code></pre>
+<p><strong>File:</strong> <code>core/host/container-app.bicep</code></p>
+<h3 id="2-database-infrastructure">2. Database Infrastructure</h3>
+<h4 id="sql-server">SQL Server</h4>
+<p><strong>Purpose:</strong> Relational data storage for all microservices</p>
+<p><strong>Configuration:</strong></p>
+<pre><code class="lang-bicep">Azure SQL Server
+├─ SKU: SQL Server 2022
+├─ TLS: Minimum 1.2
+├─ Admin User: sqladmin (Azure AD + SQL Auth)
+├─ Backup: Automatic retention
+│
+└─ Databases (6 total)
+   ├─ AuthDB (Users, Roles, Tokens)
+   ├─ BillingDB (Invoices, Payments, Reports)
+   ├─ InventoryDB (Products, Stock, Warehouses)
+   ├─ OrdersDB (Orders, Items, Tracking)
+   ├─ PurchasingDB (POs, Suppliers, Receipts)
+   └─ SalesDB (Transactions, Customers, Reports)
+</code></pre>
+<p><strong>File:</strong> <code>core/database/sql-server.bicep</code></p>
+<h4 id="redis-cache">Redis Cache</h4>
+<p><strong>Purpose:</strong> Distributed caching layer for session management, distributed locks</p>
+<p><strong>Configuration:</strong></p>
+<pre><code class="lang-bicep">Azure Redis Cache
+├─ Tier: Standard
+├─ Capacity: 1 GB
+├─ SKU Family: C (Clustered)
+├─ TLS: Enforced (port 6380)
+├─ Authentication: Enabled (requireauth: true)
+├─ Max Memory Policy: allkeys-lru (evict oldest)
+│
+└─ Use Cases:
+   ├─ Distributed Session State
+   ├─ Distributed Locks (coordination)
+   ├─ Caching Query Results
+   └─ Rate Limiting
+</code></pre>
+<p><strong>File:</strong> <code>core/database/redis.bicep</code></p>
+<h3 id="3-security-infrastructure">3. Security Infrastructure</h3>
+<h4 id="azure-key-vault">Azure Key Vault</h4>
+<p><strong>Purpose:</strong> Centralized secrets and cryptographic keys storage</p>
+<p><strong>Configuration:</strong></p>
+<pre><code class="lang-bicep">Key Vault
+├─ SKU: Standard
+├─ Access: RBAC + Access Policies
+├─ Network: Public (with firewall)
+├─ Purge Protection: Enabled
+├─ Soft Delete: Enabled (90 days)
+│
+└─ Stored Secrets (9 total)
+   ├─ jwt-secret-key (JWT signing)
+   ├─ redis-connection (Connection string with password)
+   ├─ redis-cache-password (Authentication password)
+   ├─ sql-connection-authdb (AuthDB connection)
+   ├─ sql-connection-billingdb (BillingDB connection)
+   ├─ sql-connection-inventorydb (InventoryDB connection)
+   ├─ sql-connection-ordersdb (OrdersDB connection)
+   ├─ sql-connection-purchasingdb (PurchasingDB connection)
+   └─ sql-connection-salesdb (SalesDB connection)
+</code></pre>
+<p><strong>File:</strong> <code>core/security/keyvault-secrets.bicep</code></p>
+<h4 id="azure-app-configuration">Azure App Configuration</h4>
+<p><strong>Purpose:</strong> Centralized configuration and feature flags with Key Vault integration</p>
+<p><strong>Configuration:</strong></p>
+<pre><code class="lang-bicep">App Configuration Store
+├─ SKU: Standard
+├─ Access: RBAC + Access Keys
+├─ Managed Identity: System-assigned
+│
+└─ Configuration Keys (20+ total)
+   ├─ Non-Sensitive Settings
+   │  ├─ Jwt:Issuer (e.g., &quot;MyApp.Auth&quot;)
+   │  ├─ Jwt:Audience (e.g., &quot;MyApp.All&quot;)
+   │  ├─ Frontend:Origin (CORS)
+   │  └─ ASPNETCORE_ENVIRONMENT (dev/prod)
+   │
+   └─ Key Vault References (resolved at runtime)
+      ├─ Jwt:SecretKey → kv:jwt-secret-key
+      ├─ Redis:Connection → kv:redis-connection
+      ├─ Redis:Password → kv:redis-cache-password
+      ├─ Sql:ConnectionStrings:AuthDb → kv:sql-connection-authdb
+      ├─ Sql:ConnectionStrings:BillingDb → kv:sql-connection-billingdb
+      ├─ Sql:ConnectionStrings:InventoryDb → kv:sql-connection-inventorydb
+      ├─ Sql:ConnectionStrings:OrdersDb → kv:sql-connection-ordersdb
+      ├─ Sql:ConnectionStrings:PurchasingDb → kv:sql-connection-purchasingdb
+      └─ Sql:ConnectionStrings:SalesDb → kv:sql-connection-salesdb
+</code></pre>
+<p><strong>File:</strong> <code>core/configuration/app-configuration.bicep</code></p>
+<h3 id="4-monitoring--diagnostics">4. Monitoring &amp; Diagnostics</h3>
+<h4 id="log-analytics-workspace">Log Analytics Workspace</h4>
+<p><strong>Purpose:</strong> Centralized logging for all services</p>
+<p><strong>Configuration:</strong></p>
+<pre><code class="lang-bicep">Log Analytics
+├─ SKU: PerGB2018
+├─ Retention: 30 days (default)
+│
+└─ Collected Logs
+   ├─ Container Apps logs
+   ├─ Application Insights events
+   ├─ SQL Query Store
+   └─ Redis metrics
+</code></pre>
+<h4 id="application-insights">Application Insights</h4>
+<p><strong>Purpose:</strong> Application performance monitoring and tracing</p>
+<p><strong>Configuration:</strong></p>
+<pre><code class="lang-bicep">Application Insights
+├─ Instrumentation Key: Auto-generated
+├─ Sampling: 100% (all events)
+│
+└─ Monitored Metrics
+   ├─ Request duration
+   ├─ Exception rate
+   ├─ Dependency calls
+   ├─ Performance counters
+   └─ Custom events
+</code></pre>
+<p><strong>Files:</strong></p>
+<ul>
+<li><code>MyApp-LogAnalyticsWorkspace/MyApp-LogAnalyticsWorkspace.module.bicep</code></li>
+<li><code>MyApp-ApplicationInsights/MyApp-ApplicationInsights.module.bicep</code></li>
+</ul>
+<hr>
+<h2 id="security-architecture">Security Architecture</h2>
+<h3 id="identity--access-management">Identity &amp; Access Management</h3>
+<h4 id="managed-identities">Managed Identities</h4>
+<pre><code class="lang-mermaid">graph LR
+    subgraph &quot;Azure Services&quot;
+        AUTH_MI[&quot;Auth Service MI&quot;]
+        BILLING_MI[&quot;Billing Service MI&quot;]
+        INVENTORY_MI[&quot;Inventory Service MI&quot;]
+        ORDERS_MI[&quot;Orders Service MI&quot;]
+        PURCHASING_MI[&quot;Purchasing Service MI&quot;]
+        SALES_MI[&quot;Sales Service MI&quot;]
+        GATEWAY_MI[&quot;API Gateway MI&quot;]
+        APPCONFIG_MI[&quot;App Config MI&quot;]
+    end
+    
+    subgraph &quot;Azure Resources&quot;
+        APPCONFIG[&quot;App Configuration&quot;]
+        KEYVAULT[&quot;Key Vault&quot;]
+        ACR[&quot;Container Registry&quot;]
+    end
+    
+    AUTH_MI --&gt;|RBAC| APPCONFIG
+    BILLING_MI --&gt;|RBAC| APPCONFIG
+    INVENTORY_MI --&gt;|RBAC| APPCONFIG
+    ORDERS_MI --&gt;|RBAC| APPCONFIG
+    PURCHASING_MI --&gt;|RBAC| APPCONFIG
+    SALES_MI --&gt;|RBAC| APPCONFIG
+    GATEWAY_MI --&gt;|RBAC| APPCONFIG
+    
+    APPCONFIG_MI --&gt;|RBAC| KEYVAULT
+    
+    AUTH_MI --&gt;|RBAC| ACR
+    BILLING_MI --&gt;|RBAC| ACR
+    INVENTORY_MI --&gt;|RBAC| ACR
+    ORDERS_MI --&gt;|RBAC| ACR
+    PURCHASING_MI --&gt;|RBAC| ACR
+    SALES_MI --&gt;|RBAC| ACR
+    GATEWAY_MI --&gt;|RBAC| ACR
+    
+    style AUTH_MI fill:#87CEEB
+    style BILLING_MI fill:#87CEEB
+    style INVENTORY_MI fill:#87CEEB
+    style ORDERS_MI fill:#87CEEB
+    style PURCHASING_MI fill:#87CEEB
+    style SALES_MI fill:#87CEEB
+    style GATEWAY_MI fill:#FFB6C1
+    style APPCONFIG_MI fill:#FFA500
+    style APPCONFIG fill:#FFA500
+    style KEYVAULT fill:#FF6347
+    style ACR fill:#9370DB
+</code></pre>
+<h4 id="rbac-roles--permissions">RBAC Roles &amp; Permissions</h4>
+<table>
+<thead>
+<tr>
+<th>Principal</th>
+<th>Role</th>
+<th>Target</th>
+<th>Permissions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Auth Service MI</td>
+<td>App Configuration Data Reader</td>
+<td>App Config</td>
+<td>Read keys, values</td>
+</tr>
+<tr>
+<td>Billing Service MI</td>
+<td>App Configuration Data Reader</td>
+<td>App Config</td>
+<td>Read keys, values</td>
+</tr>
+<tr>
+<td>Inventory Service MI</td>
+<td>App Configuration Data Reader</td>
+<td>App Config</td>
+<td>Read keys, values</td>
+</tr>
+<tr>
+<td>Orders Service MI</td>
+<td>App Configuration Data Reader</td>
+<td>App Config</td>
+<td>Read keys, values</td>
+</tr>
+<tr>
+<td>Purchasing Service MI</td>
+<td>App Configuration Data Reader</td>
+<td>App Config</td>
+<td>Read keys, values</td>
+</tr>
+<tr>
+<td>Sales Service MI</td>
+<td>App Configuration Data Reader</td>
+<td>App Config</td>
+<td>Read keys, values</td>
+</tr>
+<tr>
+<td>API Gateway MI</td>
+<td>App Configuration Data Reader</td>
+<td>App Config</td>
+<td>Read keys, values</td>
+</tr>
+<tr>
+<td>App Config MI</td>
+<td>Key Vault Secrets User</td>
+<td>Key Vault</td>
+<td>Read secrets only</td>
+</tr>
+<tr>
+<td>All Service MIs</td>
+<td>AcrPull</td>
+<td>Container Registry</td>
+<td>Pull images</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Files:</strong></p>
+<ul>
+<li><code>core/configuration/appconfig-rbac.bicep</code></li>
+<li><code>core/security/keyvault-rbac.bicep</code></li>
+<li><code>services/container-app-service.bicep</code> (ACR role assignment)</li>
+</ul>
+<h3 id="secret-management-flow">Secret Management Flow</h3>
+<pre><code class="lang-mermaid">sequenceDiagram
+    participant Service as Auth Service&lt;br/&gt;(MI: auth-service-mi)
+    participant AppConfig as App Configuration&lt;br/&gt;(MI: appconfig-mi)
+    participant KeyVault as Azure Key Vault
+    participant SQL as SQL Server&lt;br/&gt;AuthDB
+    
+    Service-&gt;&gt;AppConfig: 1. Request config key&lt;br/&gt;(Jwt:SecretKey)
+    activate AppConfig
+    
+    AppConfig-&gt;&gt;AppConfig: 2. Check local cache
+    
+    alt Cache Miss
+        AppConfig-&gt;&gt;KeyVault: 3. Resolve KV reference&lt;br/&gt;using appconfig-mi
+        activate KeyVault
+        KeyVault--&gt;&gt;AppConfig: 4. Return jwt-secret-key
+        deactivate KeyVault
+        AppConfig-&gt;&gt;AppConfig: 5. Cache locally
+    end
+    
+    AppConfig--&gt;&gt;Service: 6. Return secret value
+    deactivate AppConfig
+    
+    Service-&gt;&gt;Service: 7. Use JWT secret to&lt;br/&gt;sign/verify tokens
+    
+    Service-&gt;&gt;SQL: 8. Query with token
+    activate SQL
+    SQL--&gt;&gt;Service: 9. Return data
+    deactivate SQL
+</code></pre>
+<h3 id="zero-trust-security-principles-applied">Zero Trust Security Principles Applied</h3>
+<p>✅ <strong>Identity Verification</strong></p>
+<ul>
+<li>Managed Identities (no passwords)</li>
+<li>Multi-layer authentication</li>
+</ul>
+<p>✅ <strong>Least Privilege Access</strong></p>
+<ul>
+<li>Services only access App Configuration (not Key Vault)</li>
+<li>App Configuration only accesses specific secrets</li>
+<li>Database access limited by role (TBD Phase 4)</li>
+</ul>
+<p>✅ <strong>Encryption</strong></p>
+<ul>
+<li>TLS 1.2+ for all communications</li>
+<li>Secrets encrypted in Key Vault</li>
+<li>At-rest encryption on all storage</li>
+</ul>
+<p>✅ <strong>Monitoring &amp; Auditing</strong></p>
+<ul>
+<li>All access logged in Log Analytics</li>
+<li>Key Vault access logged with timestamps</li>
+<li>Service-to-service calls traced</li>
+</ul>
+<hr>
+<h2 id="data-flow">Data Flow</h2>
+<h3 id="request-flow-through-api-gateway">Request Flow Through API Gateway</h3>
+<pre><code class="lang-mermaid">sequenceDiagram
+    participant Client as External Client
+    participant APIGW as API Gateway&lt;br/&gt;(Ocelot)
+    participant Auth as Auth Service
+    participant BLL as Billing Service
+    participant APPCONFIG as App Configuration
+    participant CACHE as Redis Cache
+    participant DB as SQL Server
+    
+    Client-&gt;&gt;APIGW: 1. HTTP Request&lt;br/&gt;(POST /orders)
+    activate APIGW
+    
+    APIGW-&gt;&gt;APPCONFIG: 2. Load routing config
+    activate APPCONFIG
+    APPCONFIG--&gt;&gt;APIGW: 3. Return routes
+    deactivate APPCONFIG
+    
+    APIGW-&gt;&gt;Auth: 4. Forward request to Auth&lt;br/&gt;for JWT validation
+    activate Auth
+    Auth-&gt;&gt;APPCONFIG: 5. Get Jwt:SecretKey
+    APPCONFIG--&gt;&gt;Auth: 6. Return secret (via KV)
+    Auth-&gt;&gt;Auth: 7. Validate JWT
+    Auth--&gt;&gt;APIGW: 8. Token valid ✓
+    deactivate Auth
+    
+    APIGW-&gt;&gt;BLL: 9. Route to Billing Service
+    activate BLL
+    
+    BLL-&gt;&gt;CACHE: 10. Check cache key&lt;br/&gt;(billing:invoice:{id})
+    activate CACHE
+    alt Cache HIT
+        CACHE--&gt;&gt;BLL: 11. Return cached data
+    else Cache MISS
+        deactivate CACHE
+        BLL-&gt;&gt;DB: 12. Query database
+        activate DB
+        DB--&gt;&gt;BLL: 13. Return data
+        deactivate DB
+        BLL-&gt;&gt;CACHE: 14. Store in cache&lt;br/&gt;(TTL: 5 min)
+        activate CACHE
+        CACHE--&gt;&gt;BLL: 15. OK
+        deactivate CACHE
+    end
+    
+    BLL--&gt;&gt;APIGW: 16. Response data
+    deactivate BLL
+    
+    APIGW--&gt;&gt;Client: 17. HTTP Response&lt;br/&gt;(200 OK + data)
+    deactivate APIGW
+</code></pre>
+<h3 id="service-to-service-communication">Service-to-Service Communication</h3>
+<pre><code>┌──────────────────────────────────────────────────────────────┐
+│                     All Services Inside                      │
+│              Azure Container Apps Environment                │
+│                   (Private Network)                           │
+│                                                              │
+│   ┌─────────────┐    ┌─────────────┐    ┌─────────────┐   │
+│   │   Auth      │    │  Billing    │    │ Inventory   │   │
+│   │  Service    │───→│  Service    │───→│  Service    │   │
+│   └─────────────┘    └─────────────┘    └─────────────┘   │
+│         ↓                   ↓                    ↓           │
+│   ┌─────────────┐    ┌─────────────┐    ┌─────────────┐   │
+│   │   Orders    │    │ Purchasing  │    │  Sales      │   │
+│   │  Service    │    │  Service    │    │  Service    │   │
+│   └─────────────┘    └─────────────┘    └─────────────┘   │
+│         ↓                   ↓                    ↓           │
+│   └──────────────────────────────────────────────────────┘  │
+│              All services communicate via HTTP/2             │
+│            with Managed Identity authentication              │
+│              (Dapr service-to-service calls)                 │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Communication Pattern:</strong></p>
+<pre><code>Service A → Service B
+
+1. Service A gets own MI token (implicit)
+2. Service A calls Service B at https://service-b
+3. Service B validates caller's MI
+4. Communication established (mTLS)
+5. Response returned
+</code></pre>
+<hr>
+<h2 id="deployment-topology">Deployment Topology</h2>
+<h3 id="resource-group-organization">Resource Group Organization</h3>
+<pre><code>rg-{environment}
+├─ core/
+│  ├─ Container Apps Environment
+│  ├─ Container Registry
+│  ├─ Log Analytics Workspace
+│  └─ Storage Account (file shares)
+│
+├─ database/
+│  ├─ SQL Server
+│  │  ├─ AuthDB
+│  │  ├─ BillingDB
+│  │  ├─ InventoryDB
+│  │  ├─ OrdersDB
+│  │  ├─ PurchasingDB
+│  │  └─ SalesDB
+│  └─ Redis Cache
+│
+├─ security/
+│  ├─ Key Vault
+│  └─ Managed Identities (7 + 1)
+│
+├─ configuration/
+│  ├─ App Configuration
+│  └─ Application Insights
+│
+└─ services/
+   ├─ API Gateway (Container App)
+   ├─ Auth Service (Container App)
+   ├─ Billing Service (Container App)
+   ├─ Inventory Service (Container App)
+   ├─ Orders Service (Container App)
+   ├─ Purchasing Service (Container App)
+   └─ Sales Service (Container App)
+</code></pre>
+<h3 id="bicep-module-hierarchy">Bicep Module Hierarchy</h3>
+<pre><code>main.bicep (Orchestrator)
+├─ resources.bicep (shared resources)
+├─ core/
+│  ├─ host/container-app.bicep
+│  ├─ database/
+│  │  ├─ redis.bicep
+│  │  └─ sql-server.bicep
+│  ├─ security/
+│  │  ├─ keyvault-secrets.bicep
+│  │  └─ keyvault-rbac.bicep
+│  └─ configuration/
+│     ├─ app-configuration.bicep
+│     └─ appconfig-rbac.bicep
+├─ services/ (1 per microservice)
+│  ├─ auth-service.bicep
+│  ├─ billing-service.bicep
+│  ├─ inventory-service.bicep
+│  ├─ orders-service.bicep
+│  ├─ purchasing-service.bicep
+│  ├─ sales-service.bicep
+│  ├─ api-gateway.bicep
+│  └─ container-app-service.bicep (shared template)
+└─ Infrastructure-as-Code modules
+   ├─ myapp-sqlserver/
+   ├─ myapp-sqlserver-roles/
+   ├─ MyApp-ApplicationInsights/
+   └─ MyApp-LogAnalyticsWorkspace/
+</code></pre>
+<hr>
+<h2 id="service-communication">Service Communication</h2>
+<h3 id="intra-service-communication-pattern">Intra-Service Communication Pattern</h3>
+<pre><code class="lang-mermaid">graph LR
+    subgraph &quot;Caller&quot;
+        A[&quot;Service A&lt;br/&gt;Managed Identity&quot;]
+    end
+    
+    subgraph &quot;Azure&quot;
+        DAPR[&quot;Dapr Sidecar&lt;br/&gt;(Service Invocation)&quot;]
+        MTLS[&quot;mTLS Connection&quot;]
+    end
+    
+    subgraph &quot;Callee&quot;
+        B[&quot;Service B&lt;br/&gt;Managed Identity&quot;]
+    end
+    
+    A --&gt;|1. Invoke&lt;br/&gt;http://service-b| DAPR
+    DAPR --&gt;|2. Check MI&lt;br/&gt;credential| DAPR
+    DAPR --&gt;|3. Establish&lt;br/&gt;mTLS| MTLS
+    MTLS --&gt;|4. Forward&lt;br/&gt;request| B
+    B --&gt;|5. Process&lt;br/&gt;request| B
+    B --&gt;|6. Return&lt;br/&gt;response| MTLS
+    MTLS --&gt;|7. Forward&lt;br/&gt;response| DAPR
+    DAPR --&gt;|8. Return&lt;br/&gt;to caller| A
+    
+    style A fill:#87CEEB
+    style B fill:#87CEEB
+    style DAPR fill:#90EE90
+    style MTLS fill:#FFD700
+</code></pre>
+<h3 id="external-communication-pattern">External Communication Pattern</h3>
+<pre><code>┌─────────────────────────────────────────────────────┐
+│           Internet (Public)                         │
+│                                                     │
+│  ┌──────────────────────────────────────────────┐  │
+│  │  Client (Web/Mobile)                         │  │
+│  │  ├─ HTTPS TLS 1.2+                          │  │
+│  │  ├─ Certificate validation                   │  │
+│  │  └─ Header: Authorization: Bearer {JWT}      │  │
+│  └──────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────┐
+│           Azure Container Apps                      │
+│                                                     │
+│  ┌──────────────────────────────────────────────┐  │
+│  │  API Gateway (External Ingress Enabled)      │  │
+│  │  ├─ Ocelot (API Gateway middleware)          │  │
+│  │  ├─ HTTPS only                               │  │
+│  │  ├─ Rate limiting                            │  │
+│  │  └─ JWT validation                           │  │
+│  └──────────────────────────────────────────────┘  │
+│                        ↓                            │
+│  ┌──────────────────────────────────────────────┐  │
+│  │  Internal Services (Private Network)         │  │
+│  │  ├─ Auth Service                             │  │
+│  │  ├─ Billing Service                          │  │
+│  │  ├─ Inventory Service                        │  │
+│  │  ├─ Orders Service                           │  │
+│  │  ├─ Purchasing Service                       │  │
+│  │  └─ Sales Service                            │  │
+│  └──────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────┐
+│           Azure Data Services                       │
+│                                                     │
+│  ├─ SQL Server (Private endpoint)                  │
+│  ├─ Redis Cache (Private endpoint)                │
+│  ├─ Key Vault (Firewall rules)                    │
+│  └─ App Configuration (Firewall rules)            │
+└─────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h2 id="scaling--performance">Scaling &amp; Performance</h2>
+<h3 id="auto-scaling-configuration">Auto-Scaling Configuration</h3>
+<pre><code>┌─────────────────────────────────────────────┐
+│        Service Auto-Scaling Rules           │
+│                                             │
+│  Each Container App:                        │
+│  ├─ Min Replicas: 1                        │
+│  ├─ Max Replicas: 10                       │
+│  ├─ CPU per instance: 0.5 cores            │
+│  ├─ Memory per instance: 1 GB              │
+│  │                                         │
+│  └─ Scaling Rules:                         │
+│     ├─ HTTP Requests: Scale on 70% CPU    │
+│     ├─ Concurrency: Scale on connections  │
+│     └─ Queue Length: Scale on queue depth │
+│                                             │
+│  Scaling Behavior:                         │
+│  ├─ Scale-up: +2 replicas (60 seconds)    │
+│  ├─ Scale-down: -1 replica (300 seconds)  │
+│  └─ Max scale rate: +100% replicas/min    │
+│                                             │
+└─────────────────────────────────────────────┘
+</code></pre>
+<h3 id="performance-optimization">Performance Optimization</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Optimization</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Redis Cache</strong></td>
+<td>- allkeys-lru eviction policy<br>- 5-minute TTL for query results<br>- Connection pooling</td>
+</tr>
+<tr>
+<td><strong>SQL Server</strong></td>
+<td>- Query Store enabled<br>- Automatic statistics<br>- TempDB optimization<br>- Index maintenance</td>
+</tr>
+<tr>
+<td><strong>App Config</strong></td>
+<td>- 30-second cache in clients<br>- Key Vault reference caching<br>- Batch key reads</td>
+</tr>
+<tr>
+<td><strong>Services</strong></td>
+<td>- Connection pooling to DB<br>- Redis distributed caching<br>- Async/await patterns<br>- Dapr pub/sub for events</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="disaster-recovery">Disaster Recovery</h2>
+<h3 id="backup-strategy">Backup Strategy</h3>
+<pre><code>┌─────────────────────────────────────────────────┐
+│            Backup Strategy                      │
+│                                                 │
+│  Database Backups (SQL Server)                  │
+│  ├─ Full Backup: Daily (automatic)              │
+│  ├─ Differential: Every 4 hours                 │
+│  ├─ Transaction Log: Every 15 minutes           │
+│  ├─ Retention: 35 days                          │
+│  └─ Recovery: RPO &lt; 15 min, RTO &lt; 1 hour       │
+│                                                 │
+│  Configuration Backups                          │
+│  ├─ App Configuration: Version control (Git)    │
+│  ├─ Bicep templates: Git repository             │
+│  ├─ Key Vault: Enabled for recovery             │
+│  └─ Secrets: Not backed up (regenerate)         │
+│                                                 │
+│  Container Images                               │
+│  ├─ ACR: Geo-replication ready                  │
+│  ├─ Retention: Latest 10 versions               │
+│  └─ Scan: Continuous vulnerability scan         │
+│                                                 │
+└─────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="failover--recovery">Failover &amp; Recovery</h3>
+<pre><code class="lang-mermaid">graph TD
+    A[&quot;Failure Detected&lt;br/&gt;(Health check)&quot;] --&gt; B[&quot;Auto-scale triggered&quot;]
+    B --&gt; C{&quot;Failure Type?&quot;}
+    
+    C --&gt;|Pod Crash| D[&quot;Orchestrator spins&lt;br/&gt;new replica&quot;]
+    D --&gt; E[&quot;Service restored&lt;br/&gt;on new instance&quot;]
+    
+    C --&gt;|Zone Failure| F[&quot;Load balanced to&lt;br/&gt;other zones&quot;]
+    F --&gt; E
+    
+    C --&gt;|Service Degradation| G[&quot;Alert sent to&lt;br/&gt;Operations&quot;]
+    G --&gt; H[&quot;Manual intervention&lt;br/&gt;if needed&quot;]
+    
+    C --&gt;|Data Corruption| I[&quot;Restore from&lt;br/&gt;backup&quot;]
+    I --&gt; J[&quot;Point-in-time&lt;br/&gt;recovery&quot;]
+    J --&gt; K[&quot;Services resume&quot;]
+    
+    E --&gt; L[&quot;Health check passes&quot;]
+    K --&gt; L
+    L --&gt; M[&quot;Traffic restored&quot;]
+</code></pre>
+<hr>
+<h2 id="implementation-details">Implementation Details</h2>
+<h3 id="bicep-parameter-inputs">Bicep Parameter Inputs</h3>
+<pre><code class="lang-bicep">// Required Parameters
+param environmentName string              // e.g., &quot;prod&quot;
+param location string                     // e.g., &quot;eastus&quot;
+
+// Secure Parameters (generated)
+@secure() param cache_password string     // Redis authentication
+@secure() param password string           // SQL admin password
+@secure() param jwtSecretKey string       // JWT signing key
+
+// Configuration Parameters
+param jwtIssuer string                    // JWT token issuer
+param jwtAudience string                  // JWT token audience
+param frontendOrigin string                // CORS origins
+param aspnetcoreEnvironment string        // Dev/Staging/Prod
+</code></pre>
+<h3 id="container-app-configuration">Container App Configuration</h3>
+<pre><code class="lang-bicep">CPU:              0.5 cores
+Memory:           1 GB
+Replicas:         Min: 1, Max: 10
+Environment:      Container Apps Environment
+Ingress:          Enabled/Disabled per service
+External:         Enabled only for API Gateway
+Dapr:             Enabled for service-to-service
+Service Invocation: Enabled (mTLS)
+State Management: Redis-backed
+</code></pre>
+<h3 id="environment-variables-per-service">Environment Variables Per Service</h3>
+<pre><code class="lang-bicep">Common to All:
+├─ ASPNETCORE_ENVIRONMENT
+├─ ApplicationInsights__InstrumentationKey
+├─ Logging__LogLevel__Default
+└─ OpenTelemetry__Enabled
+
+Service-Specific:
+├─ Database connection (from App Config)
+├─ Cache connection (from App Config)
+├─ JWT configuration (from App Config)
+├─ Service-specific settings
+└─ Feature flags (from App Config)
+</code></pre>
+<hr>
+<h2 id="security-best-practices-implemented">Security Best Practices Implemented</h2>
+<h3 id="-authentication--authorization">✅ Authentication &amp; Authorization</h3>
+<ul>
+<li>[x] Managed Identities (no passwords)</li>
+<li>[x] Azure RBAC for resource access</li>
+<li>[x] JWT tokens for service-to-service calls</li>
+<li>[x] TLS 1.2+ enforcement</li>
+<li>[x] mTLS between services (Dapr)</li>
+</ul>
+<h3 id="-secret-management">✅ Secret Management</h3>
+<ul>
+<li>[x] Azure Key Vault for all secrets</li>
+<li>[x] No secrets in code or config files</li>
+<li>[x] Centralized access via App Configuration</li>
+<li>[x] Secrets never logged</li>
+<li>[x] Audit logging for all access</li>
+</ul>
+<h3 id="-network-security">✅ Network Security</h3>
+<ul>
+<li>[x] Firewall rules on Key Vault</li>
+<li>[x] Private endpoints (optional)</li>
+<li>[x] Network policies (NSGs)</li>
+<li>[x] DDoS protection (standard)</li>
+<li>[x] Service-to-service mTLS</li>
+</ul>
+<h3 id="-data-protection">✅ Data Protection</h3>
+<ul>
+<li>[x] Encryption in transit (TLS)</li>
+<li>[x] Encryption at rest (managed keys)</li>
+<li>[x] Database encryption (TDE)</li>
+<li>[x] Redis encryption (optional)</li>
+<li>[x] Key rotation (manual)</li>
+</ul>
+<h3 id="-monitoring--auditing">✅ Monitoring &amp; Auditing</h3>
+<ul>
+<li>[x] All resource access logged</li>
+<li>[x] Key Vault access audit trail</li>
+<li>[x] Service logs to Log Analytics</li>
+<li>[x] Application Insights tracing</li>
+<li>[x] Alerts for suspicious activity</li>
+</ul>
+<hr>
+<h2 id="deployment-process">Deployment Process</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<pre><code class="lang-powershell"># Azure CLI
+az --version  # 2.50+
+
+# Bicep
+az bicep version
+
+# PowerShell
+$PSVersionTable.PSVersion  # 5.1+
+
+# Authenticated to Azure
+az account show
+</code></pre>
+<h3 id="deployment-steps">Deployment Steps</h3>
+<pre><code class="lang-powershell"># 1. Generate secure parameters
+$jwtSecret = [Convert]::ToBase64String([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(48))
+$cachePassword = [Convert]::ToBase64String([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(32))
+$sqlPassword = &quot;P@ssw0rd!Complex&quot; # 8-128 chars, special chars required
+
+# 2. Create parameters file
+$params = @{
+    environmentName = &quot;prod&quot;
+    location = &quot;eastus&quot;
+    jwtSecretKey = $jwtSecret
+    cache_password = $cachePassword
+    password = $sqlPassword
+}
+
+# 3. Validate Bicep
+az bicep build --file main.bicep
+
+# 4. Validate deployment
+az deployment sub validate `
+  --template-file main.bicep `
+  --parameters $params `
+  --location eastus
+
+# 5. Deploy infrastructure
+az deployment sub create `
+  --template-file main.bicep `
+  --parameters $params `
+  --name &quot;erp-deployment-$(Get-Date -Format 'yyyyMMdd-HHmmss')&quot; `
+  --location eastus
+</code></pre>
+<hr>
+<h2 id="appendix-quick-reference">Appendix: Quick Reference</h2>
+<h3 id="important-urls">Important URLs</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>URL Pattern</th>
+<th>Access</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API Gateway</td>
+<td><code>https://{fqdn}.${location}.azurecontainerapps.io</code></td>
+<td>External</td>
+</tr>
+<tr>
+<td>Auth Service</td>
+<td><code>https://auth-service.${domain}</code></td>
+<td>Internal</td>
+</tr>
+<tr>
+<td>App Insights</td>
+<td><code>https://portal.azure.com</code></td>
+<td>Azure Portal</td>
+</tr>
+<tr>
+<td>Key Vault</td>
+<td><code>https://{vault-name}.vault.azure.net</code></td>
+<td>Azure Portal</td>
+</tr>
+<tr>
+<td>App Config</td>
+<td><code>https://{store-name}.azconfig.io</code></td>
+<td>Azure Portal</td>
+</tr>
+</tbody>
+</table>
+<h3 id="useful-azure-cli-commands">Useful Azure CLI Commands</h3>
+<pre><code class="lang-powershell"># List all services
+az containerapp list -g rg-{environment} -o table
+
+# View logs
+az containerapp logs show -g rg-{environment} -n {service-name}
+
+# Scale manually
+az containerapp update -g rg-{environment} -n {service-name} `
+  --min-replicas 2 --max-replicas 20
+
+# Get secrets from Key Vault
+az keyvault secret show --vault-name {vault-name} --name {secret-name}
+
+# View configuration
+az appconfig kv list --name {config-store-name}
+</code></pre>
+<h3 id="monitoring-queries-kql">Monitoring Queries (KQL)</h3>
+<pre><code class="lang-kusto">// Service errors (last 24h)
+traces
+| where severity == &quot;Error&quot;
+| where timestamp &gt; ago(24h)
+| summarize Count = count() by name
+
+// API response times
+customMetrics
+| where name == &quot;RequestDuration&quot;
+| summarize AvgDuration = avg(value) by bin(timestamp, 5m)
+
+// Service dependencies
+dependencies
+| summarize by type, name
+| sort by name
+</code></pre>
+<hr>
+<p><strong>Document Version:</strong> 1.0<br>
+<strong>Last Updated:</strong> 2024-10-27<br>
+<strong>Status:</strong> ✅ Complete - Production Ready</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/architecture/ARCHITECTURE_DOCUMENTATION.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

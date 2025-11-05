@@ -1,0 +1,995 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction
+  commentId: T:MyApp.Inventory.Domain.Entities.InventoryTransaction
+  id: InventoryTransaction
+  parent: MyApp.Inventory.Domain.Entities
+  children:
+  - MyApp.Inventory.Domain.Entities.InventoryTransaction.Product
+  - MyApp.Inventory.Domain.Entities.InventoryTransaction.ProductId
+  - MyApp.Inventory.Domain.Entities.InventoryTransaction.QuantityChange
+  - MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionDate
+  - MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionType
+  - MyApp.Inventory.Domain.Entities.InventoryTransaction.Warehouse
+  - MyApp.Inventory.Domain.Entities.InventoryTransaction.WarehouseId
+  langs:
+  - csharp
+  - vb
+  name: InventoryTransaction
+  nameWithType: InventoryTransaction
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: InventoryTransaction
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+    startLine: 11
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Entities
+  syntax:
+    content: 'public class InventoryTransaction : AuditableEntity<Guid>, IAuditableEntity<Guid>, IAuditableEntity, IEntity<Guid>'
+    content.vb: Public Class InventoryTransaction Inherits AuditableEntity(Of Guid) Implements IAuditableEntity(Of Guid), IAuditableEntity, IEntity(Of Guid)
+  inheritance:
+  - System.Object
+  - MyApp.Shared.Domain.Entities.DomainEntity{System.Guid}
+  - MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}
+  implements:
+  - MyApp.Shared.Domain.Entities.IAuditableEntity{System.Guid}
+  - MyApp.Shared.Domain.Entities.IAuditableEntity
+  - MyApp.Shared.Domain.Entities.IEntity{System.Guid}
+  inheritedMembers:
+  - MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}.CreatedAt
+  - MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}.CreatedBy
+  - MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}.UpdatedAt
+  - MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}.UpdatedBy
+  - MyApp.Shared.Domain.Entities.DomainEntity{System.Guid}.Id
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction.ProductId
+  commentId: P:MyApp.Inventory.Domain.Entities.InventoryTransaction.ProductId
+  id: ProductId
+  parent: MyApp.Inventory.Domain.Entities.InventoryTransaction
+  langs:
+  - csharp
+  - vb
+  name: ProductId
+  nameWithType: InventoryTransaction.ProductId
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction.ProductId
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ProductId
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+    startLine: 13
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Entities
+  syntax:
+    content: public Guid ProductId { get; set; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public Property ProductId As Guid
+  overload: MyApp.Inventory.Domain.Entities.InventoryTransaction.ProductId*
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction.WarehouseId
+  commentId: P:MyApp.Inventory.Domain.Entities.InventoryTransaction.WarehouseId
+  id: WarehouseId
+  parent: MyApp.Inventory.Domain.Entities.InventoryTransaction
+  langs:
+  - csharp
+  - vb
+  name: WarehouseId
+  nameWithType: InventoryTransaction.WarehouseId
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction.WarehouseId
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: WarehouseId
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+    startLine: 14
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Entities
+  syntax:
+    content: public Guid WarehouseId { get; set; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public Property WarehouseId As Guid
+  overload: MyApp.Inventory.Domain.Entities.InventoryTransaction.WarehouseId*
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction.QuantityChange
+  commentId: P:MyApp.Inventory.Domain.Entities.InventoryTransaction.QuantityChange
+  id: QuantityChange
+  parent: MyApp.Inventory.Domain.Entities.InventoryTransaction
+  langs:
+  - csharp
+  - vb
+  name: QuantityChange
+  nameWithType: InventoryTransaction.QuantityChange
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction.QuantityChange
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: QuantityChange
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Entities
+  syntax:
+    content: public int QuantityChange { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property QuantityChange As Integer
+  overload: MyApp.Inventory.Domain.Entities.InventoryTransaction.QuantityChange*
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionType
+  commentId: P:MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionType
+  id: TransactionType
+  parent: MyApp.Inventory.Domain.Entities.InventoryTransaction
+  langs:
+  - csharp
+  - vb
+  name: TransactionType
+  nameWithType: InventoryTransaction.TransactionType
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionType
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: TransactionType
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+    startLine: 16
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Entities
+  syntax:
+    content: public TransactionType TransactionType { get; set; }
+    parameters: []
+    return:
+      type: MyApp.Inventory.Domain.Entities.TransactionType
+    content.vb: Public Property TransactionType As TransactionType
+  overload: MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionType*
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionDate
+  commentId: P:MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionDate
+  id: TransactionDate
+  parent: MyApp.Inventory.Domain.Entities.InventoryTransaction
+  langs:
+  - csharp
+  - vb
+  name: TransactionDate
+  nameWithType: InventoryTransaction.TransactionDate
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionDate
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: TransactionDate
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+    startLine: 17
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Entities
+  syntax:
+    content: public DateTime TransactionDate { get; set; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Public Property TransactionDate As Date
+  overload: MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionDate*
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction.Product
+  commentId: P:MyApp.Inventory.Domain.Entities.InventoryTransaction.Product
+  id: Product
+  parent: MyApp.Inventory.Domain.Entities.InventoryTransaction
+  langs:
+  - csharp
+  - vb
+  name: Product
+  nameWithType: InventoryTransaction.Product
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction.Product
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Product
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+    startLine: 20
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Entities
+  syntax:
+    content: public Product? Product { get; set; }
+    parameters: []
+    return:
+      type: MyApp.Inventory.Domain.Entities.Product
+    content.vb: Public Property Product As Product
+  overload: MyApp.Inventory.Domain.Entities.InventoryTransaction.Product*
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction.Warehouse
+  commentId: P:MyApp.Inventory.Domain.Entities.InventoryTransaction.Warehouse
+  id: Warehouse
+  parent: MyApp.Inventory.Domain.Entities.InventoryTransaction
+  langs:
+  - csharp
+  - vb
+  name: Warehouse
+  nameWithType: InventoryTransaction.Warehouse
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction.Warehouse
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Warehouse
+    path: src/MyApp.Inventory/MyApp.Inventory.Domain/Entities/InventoryTransaction.cs
+    startLine: 21
+  assemblies:
+  - MyApp.Inventory.Domain
+  namespace: MyApp.Inventory.Domain.Entities
+  syntax:
+    content: public Warehouse? Warehouse { get; set; }
+    parameters: []
+    return:
+      type: MyApp.Inventory.Domain.Entities.Warehouse
+    content.vb: Public Property Warehouse As Warehouse
+  overload: MyApp.Inventory.Domain.Entities.InventoryTransaction.Warehouse*
+references:
+- uid: MyApp.Inventory.Domain.Entities
+  commentId: N:MyApp.Inventory.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Inventory.Domain.Entities
+  nameWithType: MyApp.Inventory.Domain.Entities
+  fullName: MyApp.Inventory.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Entities
+    name: Entities
+    href: MyApp.Inventory.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Domain
+    name: Domain
+    href: MyApp.Inventory.Domain.html
+  - name: .
+  - uid: MyApp.Inventory.Domain.Entities
+    name: Entities
+    href: MyApp.Inventory.Domain.Entities.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MyApp.Shared.Domain.Entities.DomainEntity{System.Guid}
+  commentId: T:MyApp.Shared.Domain.Entities.DomainEntity{System.Guid}
+  parent: MyApp.Shared.Domain.Entities
+  definition: MyApp.Shared.Domain.Entities.DomainEntity`1
+  href: MyApp.Shared.Domain.Entities.DomainEntity-1.html
+  name: DomainEntity<Guid>
+  nameWithType: DomainEntity<Guid>
+  fullName: MyApp.Shared.Domain.Entities.DomainEntity<System.Guid>
+  nameWithType.vb: DomainEntity(Of Guid)
+  fullName.vb: MyApp.Shared.Domain.Entities.DomainEntity(Of System.Guid)
+  name.vb: DomainEntity(Of Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Entities.DomainEntity`1
+    name: DomainEntity
+    href: MyApp.Shared.Domain.Entities.DomainEntity-1.html
+  - name: <
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Entities.DomainEntity`1
+    name: DomainEntity
+    href: MyApp.Shared.Domain.Entities.DomainEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}
+  commentId: T:MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}
+  parent: MyApp.Shared.Domain.Entities
+  definition: MyApp.Shared.Domain.Entities.AuditableEntity`1
+  href: MyApp.Shared.Domain.Entities.AuditableEntity-1.html
+  name: AuditableEntity<Guid>
+  nameWithType: AuditableEntity<Guid>
+  fullName: MyApp.Shared.Domain.Entities.AuditableEntity<System.Guid>
+  nameWithType.vb: AuditableEntity(Of Guid)
+  fullName.vb: MyApp.Shared.Domain.Entities.AuditableEntity(Of System.Guid)
+  name.vb: AuditableEntity(Of Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Entities.AuditableEntity`1
+    name: AuditableEntity
+    href: MyApp.Shared.Domain.Entities.AuditableEntity-1.html
+  - name: <
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Entities.AuditableEntity`1
+    name: AuditableEntity
+    href: MyApp.Shared.Domain.Entities.AuditableEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity{System.Guid}
+  commentId: T:MyApp.Shared.Domain.Entities.IAuditableEntity{System.Guid}
+  parent: MyApp.Shared.Domain.Entities
+  definition: MyApp.Shared.Domain.Entities.IAuditableEntity`1
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity-1.html
+  name: IAuditableEntity<Guid>
+  nameWithType: IAuditableEntity<Guid>
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity<System.Guid>
+  nameWithType.vb: IAuditableEntity(Of Guid)
+  fullName.vb: MyApp.Shared.Domain.Entities.IAuditableEntity(Of System.Guid)
+  name.vb: IAuditableEntity(Of Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Entities.IAuditableEntity`1
+    name: IAuditableEntity
+    href: MyApp.Shared.Domain.Entities.IAuditableEntity-1.html
+  - name: <
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Entities.IAuditableEntity`1
+    name: IAuditableEntity
+    href: MyApp.Shared.Domain.Entities.IAuditableEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity
+  commentId: T:MyApp.Shared.Domain.Entities.IAuditableEntity
+  parent: MyApp.Shared.Domain.Entities
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html
+  name: IAuditableEntity
+  nameWithType: IAuditableEntity
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity
+- uid: MyApp.Shared.Domain.Entities.IEntity{System.Guid}
+  commentId: T:MyApp.Shared.Domain.Entities.IEntity{System.Guid}
+  parent: MyApp.Shared.Domain.Entities
+  definition: MyApp.Shared.Domain.Entities.IEntity`1
+  href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  name: IEntity<Guid>
+  nameWithType: IEntity<Guid>
+  fullName: MyApp.Shared.Domain.Entities.IEntity<System.Guid>
+  nameWithType.vb: IEntity(Of Guid)
+  fullName.vb: MyApp.Shared.Domain.Entities.IEntity(Of System.Guid)
+  name.vb: IEntity(Of Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Entities.IEntity`1
+    name: IEntity
+    href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  - name: <
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Entities.IEntity`1
+    name: IEntity
+    href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}.CreatedAt
+  commentId: P:MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}.CreatedAt
+  parent: MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}
+  definition: MyApp.Shared.Domain.Entities.AuditableEntity`1.CreatedAt
+  href: MyApp.Shared.Domain.Entities.AuditableEntity-1.html#MyApp_Shared_Domain_Entities_AuditableEntity_1_CreatedAt
+  name: CreatedAt
+  nameWithType: AuditableEntity<Guid>.CreatedAt
+  fullName: MyApp.Shared.Domain.Entities.AuditableEntity<System.Guid>.CreatedAt
+  nameWithType.vb: AuditableEntity(Of Guid).CreatedAt
+  fullName.vb: MyApp.Shared.Domain.Entities.AuditableEntity(Of System.Guid).CreatedAt
+- uid: MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}.CreatedBy
+  commentId: P:MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}.CreatedBy
+  parent: MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}
+  definition: MyApp.Shared.Domain.Entities.AuditableEntity`1.CreatedBy
+  href: MyApp.Shared.Domain.Entities.AuditableEntity-1.html#MyApp_Shared_Domain_Entities_AuditableEntity_1_CreatedBy
+  name: CreatedBy
+  nameWithType: AuditableEntity<Guid>.CreatedBy
+  fullName: MyApp.Shared.Domain.Entities.AuditableEntity<System.Guid>.CreatedBy
+  nameWithType.vb: AuditableEntity(Of Guid).CreatedBy
+  fullName.vb: MyApp.Shared.Domain.Entities.AuditableEntity(Of System.Guid).CreatedBy
+- uid: MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}.UpdatedAt
+  commentId: P:MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}.UpdatedAt
+  parent: MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}
+  definition: MyApp.Shared.Domain.Entities.AuditableEntity`1.UpdatedAt
+  href: MyApp.Shared.Domain.Entities.AuditableEntity-1.html#MyApp_Shared_Domain_Entities_AuditableEntity_1_UpdatedAt
+  name: UpdatedAt
+  nameWithType: AuditableEntity<Guid>.UpdatedAt
+  fullName: MyApp.Shared.Domain.Entities.AuditableEntity<System.Guid>.UpdatedAt
+  nameWithType.vb: AuditableEntity(Of Guid).UpdatedAt
+  fullName.vb: MyApp.Shared.Domain.Entities.AuditableEntity(Of System.Guid).UpdatedAt
+- uid: MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}.UpdatedBy
+  commentId: P:MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}.UpdatedBy
+  parent: MyApp.Shared.Domain.Entities.AuditableEntity{System.Guid}
+  definition: MyApp.Shared.Domain.Entities.AuditableEntity`1.UpdatedBy
+  href: MyApp.Shared.Domain.Entities.AuditableEntity-1.html#MyApp_Shared_Domain_Entities_AuditableEntity_1_UpdatedBy
+  name: UpdatedBy
+  nameWithType: AuditableEntity<Guid>.UpdatedBy
+  fullName: MyApp.Shared.Domain.Entities.AuditableEntity<System.Guid>.UpdatedBy
+  nameWithType.vb: AuditableEntity(Of Guid).UpdatedBy
+  fullName.vb: MyApp.Shared.Domain.Entities.AuditableEntity(Of System.Guid).UpdatedBy
+- uid: MyApp.Shared.Domain.Entities.DomainEntity{System.Guid}.Id
+  commentId: P:MyApp.Shared.Domain.Entities.DomainEntity{System.Guid}.Id
+  parent: MyApp.Shared.Domain.Entities.DomainEntity{System.Guid}
+  definition: MyApp.Shared.Domain.Entities.DomainEntity`1.Id
+  href: MyApp.Shared.Domain.Entities.DomainEntity-1.html#MyApp_Shared_Domain_Entities_DomainEntity_1_Id
+  name: Id
+  nameWithType: DomainEntity<Guid>.Id
+  fullName: MyApp.Shared.Domain.Entities.DomainEntity<System.Guid>.Id
+  nameWithType.vb: DomainEntity(Of Guid).Id
+  fullName.vb: MyApp.Shared.Domain.Entities.DomainEntity(Of System.Guid).Id
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Shared.Domain.Entities.DomainEntity`1
+  commentId: T:MyApp.Shared.Domain.Entities.DomainEntity`1
+  href: MyApp.Shared.Domain.Entities.DomainEntity-1.html
+  name: DomainEntity<T>
+  nameWithType: DomainEntity<T>
+  fullName: MyApp.Shared.Domain.Entities.DomainEntity<T>
+  nameWithType.vb: DomainEntity(Of T)
+  fullName.vb: MyApp.Shared.Domain.Entities.DomainEntity(Of T)
+  name.vb: DomainEntity(Of T)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Entities.DomainEntity`1
+    name: DomainEntity
+    href: MyApp.Shared.Domain.Entities.DomainEntity-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Entities.DomainEntity`1
+    name: DomainEntity
+    href: MyApp.Shared.Domain.Entities.DomainEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MyApp.Shared.Domain.Entities
+  commentId: N:MyApp.Shared.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Entities
+  nameWithType: MyApp.Shared.Domain.Entities
+  fullName: MyApp.Shared.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Entities
+    name: Entities
+    href: MyApp.Shared.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Entities
+    name: Entities
+    href: MyApp.Shared.Domain.Entities.html
+- uid: MyApp.Shared.Domain.Entities.AuditableEntity`1
+  commentId: T:MyApp.Shared.Domain.Entities.AuditableEntity`1
+  href: MyApp.Shared.Domain.Entities.AuditableEntity-1.html
+  name: AuditableEntity<T>
+  nameWithType: AuditableEntity<T>
+  fullName: MyApp.Shared.Domain.Entities.AuditableEntity<T>
+  nameWithType.vb: AuditableEntity(Of T)
+  fullName.vb: MyApp.Shared.Domain.Entities.AuditableEntity(Of T)
+  name.vb: AuditableEntity(Of T)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Entities.AuditableEntity`1
+    name: AuditableEntity
+    href: MyApp.Shared.Domain.Entities.AuditableEntity-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Entities.AuditableEntity`1
+    name: AuditableEntity
+    href: MyApp.Shared.Domain.Entities.AuditableEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity`1
+  commentId: T:MyApp.Shared.Domain.Entities.IAuditableEntity`1
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity-1.html
+  name: IAuditableEntity<T>
+  nameWithType: IAuditableEntity<T>
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity<T>
+  nameWithType.vb: IAuditableEntity(Of T)
+  fullName.vb: MyApp.Shared.Domain.Entities.IAuditableEntity(Of T)
+  name.vb: IAuditableEntity(Of T)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Entities.IAuditableEntity`1
+    name: IAuditableEntity
+    href: MyApp.Shared.Domain.Entities.IAuditableEntity-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Entities.IAuditableEntity`1
+    name: IAuditableEntity
+    href: MyApp.Shared.Domain.Entities.IAuditableEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MyApp.Shared.Domain.Entities.IEntity`1
+  commentId: T:MyApp.Shared.Domain.Entities.IEntity`1
+  href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  name: IEntity<T>
+  nameWithType: IEntity<T>
+  fullName: MyApp.Shared.Domain.Entities.IEntity<T>
+  nameWithType.vb: IEntity(Of T)
+  fullName.vb: MyApp.Shared.Domain.Entities.IEntity(Of T)
+  name.vb: IEntity(Of T)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Entities.IEntity`1
+    name: IEntity
+    href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Entities.IEntity`1
+    name: IEntity
+    href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MyApp.Shared.Domain.Entities.AuditableEntity`1.CreatedAt
+  commentId: P:MyApp.Shared.Domain.Entities.AuditableEntity`1.CreatedAt
+  href: MyApp.Shared.Domain.Entities.AuditableEntity-1.html#MyApp_Shared_Domain_Entities_AuditableEntity_1_CreatedAt
+  name: CreatedAt
+  nameWithType: AuditableEntity<T>.CreatedAt
+  fullName: MyApp.Shared.Domain.Entities.AuditableEntity<T>.CreatedAt
+  nameWithType.vb: AuditableEntity(Of T).CreatedAt
+  fullName.vb: MyApp.Shared.Domain.Entities.AuditableEntity(Of T).CreatedAt
+- uid: MyApp.Shared.Domain.Entities.AuditableEntity`1.CreatedBy
+  commentId: P:MyApp.Shared.Domain.Entities.AuditableEntity`1.CreatedBy
+  href: MyApp.Shared.Domain.Entities.AuditableEntity-1.html#MyApp_Shared_Domain_Entities_AuditableEntity_1_CreatedBy
+  name: CreatedBy
+  nameWithType: AuditableEntity<T>.CreatedBy
+  fullName: MyApp.Shared.Domain.Entities.AuditableEntity<T>.CreatedBy
+  nameWithType.vb: AuditableEntity(Of T).CreatedBy
+  fullName.vb: MyApp.Shared.Domain.Entities.AuditableEntity(Of T).CreatedBy
+- uid: MyApp.Shared.Domain.Entities.AuditableEntity`1.UpdatedAt
+  commentId: P:MyApp.Shared.Domain.Entities.AuditableEntity`1.UpdatedAt
+  href: MyApp.Shared.Domain.Entities.AuditableEntity-1.html#MyApp_Shared_Domain_Entities_AuditableEntity_1_UpdatedAt
+  name: UpdatedAt
+  nameWithType: AuditableEntity<T>.UpdatedAt
+  fullName: MyApp.Shared.Domain.Entities.AuditableEntity<T>.UpdatedAt
+  nameWithType.vb: AuditableEntity(Of T).UpdatedAt
+  fullName.vb: MyApp.Shared.Domain.Entities.AuditableEntity(Of T).UpdatedAt
+- uid: MyApp.Shared.Domain.Entities.AuditableEntity`1.UpdatedBy
+  commentId: P:MyApp.Shared.Domain.Entities.AuditableEntity`1.UpdatedBy
+  href: MyApp.Shared.Domain.Entities.AuditableEntity-1.html#MyApp_Shared_Domain_Entities_AuditableEntity_1_UpdatedBy
+  name: UpdatedBy
+  nameWithType: AuditableEntity<T>.UpdatedBy
+  fullName: MyApp.Shared.Domain.Entities.AuditableEntity<T>.UpdatedBy
+  nameWithType.vb: AuditableEntity(Of T).UpdatedBy
+  fullName.vb: MyApp.Shared.Domain.Entities.AuditableEntity(Of T).UpdatedBy
+- uid: MyApp.Shared.Domain.Entities.DomainEntity`1.Id
+  commentId: P:MyApp.Shared.Domain.Entities.DomainEntity`1.Id
+  href: MyApp.Shared.Domain.Entities.DomainEntity-1.html#MyApp_Shared_Domain_Entities_DomainEntity_1_Id
+  name: Id
+  nameWithType: DomainEntity<T>.Id
+  fullName: MyApp.Shared.Domain.Entities.DomainEntity<T>.Id
+  nameWithType.vb: DomainEntity(Of T).Id
+  fullName.vb: MyApp.Shared.Domain.Entities.DomainEntity(Of T).Id
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction.ProductId*
+  commentId: Overload:MyApp.Inventory.Domain.Entities.InventoryTransaction.ProductId
+  href: MyApp.Inventory.Domain.Entities.InventoryTransaction.html#MyApp_Inventory_Domain_Entities_InventoryTransaction_ProductId
+  name: ProductId
+  nameWithType: InventoryTransaction.ProductId
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction.ProductId
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction.WarehouseId*
+  commentId: Overload:MyApp.Inventory.Domain.Entities.InventoryTransaction.WarehouseId
+  href: MyApp.Inventory.Domain.Entities.InventoryTransaction.html#MyApp_Inventory_Domain_Entities_InventoryTransaction_WarehouseId
+  name: WarehouseId
+  nameWithType: InventoryTransaction.WarehouseId
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction.WarehouseId
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction.QuantityChange*
+  commentId: Overload:MyApp.Inventory.Domain.Entities.InventoryTransaction.QuantityChange
+  href: MyApp.Inventory.Domain.Entities.InventoryTransaction.html#MyApp_Inventory_Domain_Entities_InventoryTransaction_QuantityChange
+  name: QuantityChange
+  nameWithType: InventoryTransaction.QuantityChange
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction.QuantityChange
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionType*
+  commentId: Overload:MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionType
+  href: MyApp.Inventory.Domain.Entities.InventoryTransaction.html#MyApp_Inventory_Domain_Entities_InventoryTransaction_TransactionType
+  name: TransactionType
+  nameWithType: InventoryTransaction.TransactionType
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionType
+- uid: MyApp.Inventory.Domain.Entities.TransactionType
+  commentId: T:MyApp.Inventory.Domain.Entities.TransactionType
+  parent: MyApp.Inventory.Domain.Entities
+  href: MyApp.Inventory.Domain.Entities.TransactionType.html
+  name: TransactionType
+  nameWithType: TransactionType
+  fullName: MyApp.Inventory.Domain.Entities.TransactionType
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionDate*
+  commentId: Overload:MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionDate
+  href: MyApp.Inventory.Domain.Entities.InventoryTransaction.html#MyApp_Inventory_Domain_Entities_InventoryTransaction_TransactionDate
+  name: TransactionDate
+  nameWithType: InventoryTransaction.TransactionDate
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction.TransactionDate
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction.Product*
+  commentId: Overload:MyApp.Inventory.Domain.Entities.InventoryTransaction.Product
+  href: MyApp.Inventory.Domain.Entities.InventoryTransaction.html#MyApp_Inventory_Domain_Entities_InventoryTransaction_Product
+  name: Product
+  nameWithType: InventoryTransaction.Product
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction.Product
+- uid: MyApp.Inventory.Domain.Entities.Product
+  commentId: T:MyApp.Inventory.Domain.Entities.Product
+  parent: MyApp.Inventory.Domain.Entities
+  href: MyApp.Inventory.Domain.Entities.Product.html
+  name: Product
+  nameWithType: Product
+  fullName: MyApp.Inventory.Domain.Entities.Product
+- uid: MyApp.Inventory.Domain.Entities.InventoryTransaction.Warehouse*
+  commentId: Overload:MyApp.Inventory.Domain.Entities.InventoryTransaction.Warehouse
+  href: MyApp.Inventory.Domain.Entities.InventoryTransaction.html#MyApp_Inventory_Domain_Entities_InventoryTransaction_Warehouse
+  name: Warehouse
+  nameWithType: InventoryTransaction.Warehouse
+  fullName: MyApp.Inventory.Domain.Entities.InventoryTransaction.Warehouse
+- uid: MyApp.Inventory.Domain.Entities.Warehouse
+  commentId: T:MyApp.Inventory.Domain.Entities.Warehouse
+  parent: MyApp.Inventory.Domain.Entities
+  href: MyApp.Inventory.Domain.Entities.Warehouse.html
+  name: Warehouse
+  nameWithType: Warehouse
+  fullName: MyApp.Inventory.Domain.Entities.Warehouse

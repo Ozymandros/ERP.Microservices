@@ -1,0 +1,671 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService
+  commentId: T:MyApp.Inventory.Application.Contracts.Services.IProductService
+  id: IProductService
+  parent: MyApp.Inventory.Application.Contracts.Services
+  children:
+  - MyApp.Inventory.Application.Contracts.Services.IProductService.CreateProductAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto)
+  - MyApp.Inventory.Application.Contracts.Services.IProductService.DeleteProductAsync(System.Guid)
+  - MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsAsync
+  - MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsPaginatedAsync(System.Int32,System.Int32)
+  - MyApp.Inventory.Application.Contracts.Services.IProductService.GetLowStockProductsAsync
+  - MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductByIdAsync(System.Guid)
+  - MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductBySkuAsync(System.String)
+  - MyApp.Inventory.Application.Contracts.Services.IProductService.UpdateProductAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto)
+  langs:
+  - csharp
+  - vb
+  name: IProductService
+  nameWithType: IProductService
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService
+  type: Interface
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: IProductService
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: public interface IProductService
+    content.vb: Public Interface IProductService
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductByIdAsync(System.Guid)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductByIdAsync(System.Guid)
+  id: GetProductByIdAsync(System.Guid)
+  parent: MyApp.Inventory.Application.Contracts.Services.IProductService
+  langs:
+  - csharp
+  - vb
+  name: GetProductByIdAsync(Guid)
+  nameWithType: IProductService.GetProductByIdAsync(Guid)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductByIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetProductByIdAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+    startLine: 10
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: Task<ProductDto?> GetProductByIdAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.ProductDto}
+    content.vb: Function GetProductByIdAsync(id As Guid) As Task(Of ProductDto)
+  overload: MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductByIdAsync*
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductBySkuAsync(System.String)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductBySkuAsync(System.String)
+  id: GetProductBySkuAsync(System.String)
+  parent: MyApp.Inventory.Application.Contracts.Services.IProductService
+  langs:
+  - csharp
+  - vb
+  name: GetProductBySkuAsync(string)
+  nameWithType: IProductService.GetProductBySkuAsync(string)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductBySkuAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetProductBySkuAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+    startLine: 11
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: Task<ProductDto?> GetProductBySkuAsync(string sku)
+    parameters:
+    - id: sku
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.ProductDto}
+    content.vb: Function GetProductBySkuAsync(sku As String) As Task(Of ProductDto)
+  overload: MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductBySkuAsync*
+  nameWithType.vb: IProductService.GetProductBySkuAsync(String)
+  fullName.vb: MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductBySkuAsync(String)
+  name.vb: GetProductBySkuAsync(String)
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsAsync
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsAsync
+  id: GetAllProductsAsync
+  parent: MyApp.Inventory.Application.Contracts.Services.IProductService
+  langs:
+  - csharp
+  - vb
+  name: GetAllProductsAsync()
+  nameWithType: IProductService.GetAllProductsAsync()
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllProductsAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+    startLine: 12
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: Task<IEnumerable<ProductDto>> GetAllProductsAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Application.Contracts.DTOs.ProductDto}}
+    content.vb: Function GetAllProductsAsync() As Task(Of IEnumerable(Of ProductDto))
+  overload: MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsAsync*
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsPaginatedAsync(System.Int32,System.Int32)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsPaginatedAsync(System.Int32,System.Int32)
+  id: GetAllProductsPaginatedAsync(System.Int32,System.Int32)
+  parent: MyApp.Inventory.Application.Contracts.Services.IProductService
+  langs:
+  - csharp
+  - vb
+  name: GetAllProductsPaginatedAsync(int, int)
+  nameWithType: IProductService.GetAllProductsPaginatedAsync(int, int)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsPaginatedAsync(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllProductsPaginatedAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+    startLine: 13
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: Task<PaginatedResult<ProductDto>> GetAllProductsPaginatedAsync(int pageNumber, int pageSize)
+    parameters:
+    - id: pageNumber
+      type: System.Int32
+    - id: pageSize
+      type: System.Int32
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Inventory.Application.Contracts.DTOs.ProductDto}}
+    content.vb: Function GetAllProductsPaginatedAsync(pageNumber As Integer, pageSize As Integer) As Task(Of PaginatedResult(Of ProductDto))
+  overload: MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsPaginatedAsync*
+  nameWithType.vb: IProductService.GetAllProductsPaginatedAsync(Integer, Integer)
+  fullName.vb: MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsPaginatedAsync(Integer, Integer)
+  name.vb: GetAllProductsPaginatedAsync(Integer, Integer)
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.GetLowStockProductsAsync
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IProductService.GetLowStockProductsAsync
+  id: GetLowStockProductsAsync
+  parent: MyApp.Inventory.Application.Contracts.Services.IProductService
+  langs:
+  - csharp
+  - vb
+  name: GetLowStockProductsAsync()
+  nameWithType: IProductService.GetLowStockProductsAsync()
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.GetLowStockProductsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetLowStockProductsAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+    startLine: 14
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: Task<IEnumerable<ProductDto>> GetLowStockProductsAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Application.Contracts.DTOs.ProductDto}}
+    content.vb: Function GetLowStockProductsAsync() As Task(Of IEnumerable(Of ProductDto))
+  overload: MyApp.Inventory.Application.Contracts.Services.IProductService.GetLowStockProductsAsync*
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.CreateProductAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IProductService.CreateProductAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto)
+  id: CreateProductAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto)
+  parent: MyApp.Inventory.Application.Contracts.Services.IProductService
+  langs:
+  - csharp
+  - vb
+  name: CreateProductAsync(CreateUpdateProductDto)
+  nameWithType: IProductService.CreateProductAsync(CreateUpdateProductDto)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.CreateProductAsync(MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateProductAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+    startLine: 15
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: Task<ProductDto> CreateProductAsync(CreateUpdateProductDto dto)
+    parameters:
+    - id: dto
+      type: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.ProductDto}
+    content.vb: Function CreateProductAsync(dto As CreateUpdateProductDto) As Task(Of ProductDto)
+  overload: MyApp.Inventory.Application.Contracts.Services.IProductService.CreateProductAsync*
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.UpdateProductAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IProductService.UpdateProductAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto)
+  id: UpdateProductAsync(System.Guid,MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto)
+  parent: MyApp.Inventory.Application.Contracts.Services.IProductService
+  langs:
+  - csharp
+  - vb
+  name: UpdateProductAsync(Guid, CreateUpdateProductDto)
+  nameWithType: IProductService.UpdateProductAsync(Guid, CreateUpdateProductDto)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.UpdateProductAsync(System.Guid, MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateProductAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+    startLine: 16
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: Task<ProductDto> UpdateProductAsync(Guid id, CreateUpdateProductDto dto)
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: dto
+      type: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto
+    return:
+      type: System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.ProductDto}
+    content.vb: Function UpdateProductAsync(id As Guid, dto As CreateUpdateProductDto) As Task(Of ProductDto)
+  overload: MyApp.Inventory.Application.Contracts.Services.IProductService.UpdateProductAsync*
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.DeleteProductAsync(System.Guid)
+  commentId: M:MyApp.Inventory.Application.Contracts.Services.IProductService.DeleteProductAsync(System.Guid)
+  id: DeleteProductAsync(System.Guid)
+  parent: MyApp.Inventory.Application.Contracts.Services.IProductService
+  langs:
+  - csharp
+  - vb
+  name: DeleteProductAsync(Guid)
+  nameWithType: IProductService.DeleteProductAsync(Guid)
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.DeleteProductAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteProductAsync
+    path: src/MyApp.Inventory/MyApp.Inventory.Application.Contracts/Services/IProductService.cs
+    startLine: 17
+  assemblies:
+  - MyApp.Inventory.Application.Contracts
+  namespace: MyApp.Inventory.Application.Contracts.Services
+  syntax:
+    content: Task DeleteProductAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function DeleteProductAsync(id As Guid) As Task
+  overload: MyApp.Inventory.Application.Contracts.Services.IProductService.DeleteProductAsync*
+references:
+- uid: MyApp.Inventory.Application.Contracts.Services
+  commentId: N:MyApp.Inventory.Application.Contracts.Services
+  href: MyApp.html
+  name: MyApp.Inventory.Application.Contracts.Services
+  nameWithType: MyApp.Inventory.Application.Contracts.Services
+  fullName: MyApp.Inventory.Application.Contracts.Services
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.Services
+    name: Services
+    href: MyApp.Inventory.Application.Contracts.Services.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.Services
+    name: Services
+    href: MyApp.Inventory.Application.Contracts.Services.html
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductByIdAsync*
+  commentId: Overload:MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductByIdAsync
+  href: MyApp.Inventory.Application.Contracts.Services.IProductService.html#MyApp_Inventory_Application_Contracts_Services_IProductService_GetProductByIdAsync_System_Guid_
+  name: GetProductByIdAsync
+  nameWithType: IProductService.GetProductByIdAsync
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductByIdAsync
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.ProductDto}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Inventory.Application.Contracts.DTOs.ProductDto}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ProductDto>
+  nameWithType: Task<ProductDto>
+  fullName: System.Threading.Tasks.Task<MyApp.Inventory.Application.Contracts.DTOs.ProductDto>
+  nameWithType.vb: Task(Of ProductDto)
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Inventory.Application.Contracts.DTOs.ProductDto)
+  name.vb: Task(Of ProductDto)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.ProductDto
+    name: ProductDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.ProductDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.ProductDto
+    name: ProductDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.ProductDto.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductBySkuAsync*
+  commentId: Overload:MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductBySkuAsync
+  href: MyApp.Inventory.Application.Contracts.Services.IProductService.html#MyApp_Inventory_Application_Contracts_Services_IProductService_GetProductBySkuAsync_System_String_
+  name: GetProductBySkuAsync
+  nameWithType: IProductService.GetProductBySkuAsync
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.GetProductBySkuAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsAsync*
+  commentId: Overload:MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsAsync
+  href: MyApp.Inventory.Application.Contracts.Services.IProductService.html#MyApp_Inventory_Application_Contracts_Services_IProductService_GetAllProductsAsync
+  name: GetAllProductsAsync
+  nameWithType: IProductService.GetAllProductsAsync
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Application.Contracts.DTOs.ProductDto}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{MyApp.Inventory.Application.Contracts.DTOs.ProductDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<ProductDto>>
+  nameWithType: Task<IEnumerable<ProductDto>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MyApp.Inventory.Application.Contracts.DTOs.ProductDto>>
+  nameWithType.vb: Task(Of IEnumerable(Of ProductDto))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of MyApp.Inventory.Application.Contracts.DTOs.ProductDto))
+  name.vb: Task(Of IEnumerable(Of ProductDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.ProductDto
+    name: ProductDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.ProductDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.ProductDto
+    name: ProductDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.ProductDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsPaginatedAsync*
+  commentId: Overload:MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsPaginatedAsync
+  href: MyApp.Inventory.Application.Contracts.Services.IProductService.html#MyApp_Inventory_Application_Contracts_Services_IProductService_GetAllProductsPaginatedAsync_System_Int32_System_Int32_
+  name: GetAllProductsPaginatedAsync
+  nameWithType: IProductService.GetAllProductsPaginatedAsync
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.GetAllProductsPaginatedAsync
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Inventory.Application.Contracts.DTOs.ProductDto}}
+  commentId: T:System.Threading.Tasks.Task{MyApp.Shared.Domain.Pagination.PaginatedResult{MyApp.Inventory.Application.Contracts.DTOs.ProductDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PaginatedResult<ProductDto>>
+  nameWithType: Task<PaginatedResult<ProductDto>>
+  fullName: System.Threading.Tasks.Task<MyApp.Shared.Domain.Pagination.PaginatedResult<MyApp.Inventory.Application.Contracts.DTOs.ProductDto>>
+  nameWithType.vb: Task(Of PaginatedResult(Of ProductDto))
+  fullName.vb: System.Threading.Tasks.Task(Of MyApp.Shared.Domain.Pagination.PaginatedResult(Of MyApp.Inventory.Application.Contracts.DTOs.ProductDto))
+  name.vb: Task(Of PaginatedResult(Of ProductDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+    href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html
+  - name: <
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.ProductDto
+    name: ProductDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.ProductDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+    name: PaginatedResult
+    href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Inventory.Application.Contracts.DTOs.ProductDto
+    name: ProductDto
+    href: MyApp.Inventory.Application.Contracts.DTOs.ProductDto.html
+  - name: )
+  - name: )
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.GetLowStockProductsAsync*
+  commentId: Overload:MyApp.Inventory.Application.Contracts.Services.IProductService.GetLowStockProductsAsync
+  href: MyApp.Inventory.Application.Contracts.Services.IProductService.html#MyApp_Inventory_Application_Contracts_Services_IProductService_GetLowStockProductsAsync
+  name: GetLowStockProductsAsync
+  nameWithType: IProductService.GetLowStockProductsAsync
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.GetLowStockProductsAsync
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.CreateProductAsync*
+  commentId: Overload:MyApp.Inventory.Application.Contracts.Services.IProductService.CreateProductAsync
+  href: MyApp.Inventory.Application.Contracts.Services.IProductService.html#MyApp_Inventory_Application_Contracts_Services_IProductService_CreateProductAsync_MyApp_Inventory_Application_Contracts_DTOs_CreateUpdateProductDto_
+  name: CreateProductAsync
+  nameWithType: IProductService.CreateProductAsync
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.CreateProductAsync
+- uid: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto
+  commentId: T:MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto
+  parent: MyApp.Inventory.Application.Contracts.DTOs
+  href: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto.html
+  name: CreateUpdateProductDto
+  nameWithType: CreateUpdateProductDto
+  fullName: MyApp.Inventory.Application.Contracts.DTOs.CreateUpdateProductDto
+- uid: MyApp.Inventory.Application.Contracts.DTOs
+  commentId: N:MyApp.Inventory.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Inventory.Application.Contracts.DTOs
+  nameWithType: MyApp.Inventory.Application.Contracts.DTOs
+  fullName: MyApp.Inventory.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Inventory.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Inventory
+    name: Inventory
+    href: MyApp.Inventory.html
+  - name: .
+  - uid: MyApp.Inventory.Application
+    name: Application
+    href: MyApp.Inventory.Application.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts
+    name: Contracts
+    href: MyApp.Inventory.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Inventory.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Inventory.Application.Contracts.DTOs.html
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.UpdateProductAsync*
+  commentId: Overload:MyApp.Inventory.Application.Contracts.Services.IProductService.UpdateProductAsync
+  href: MyApp.Inventory.Application.Contracts.Services.IProductService.html#MyApp_Inventory_Application_Contracts_Services_IProductService_UpdateProductAsync_System_Guid_MyApp_Inventory_Application_Contracts_DTOs_CreateUpdateProductDto_
+  name: UpdateProductAsync
+  nameWithType: IProductService.UpdateProductAsync
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.UpdateProductAsync
+- uid: MyApp.Inventory.Application.Contracts.Services.IProductService.DeleteProductAsync*
+  commentId: Overload:MyApp.Inventory.Application.Contracts.Services.IProductService.DeleteProductAsync
+  href: MyApp.Inventory.Application.Contracts.Services.IProductService.html#MyApp_Inventory_Application_Contracts_Services_IProductService_DeleteProductAsync_System_Guid_
+  name: DeleteProductAsync
+  nameWithType: IProductService.DeleteProductAsync
+  fullName: MyApp.Inventory.Application.Contracts.Services.IProductService.DeleteProductAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task

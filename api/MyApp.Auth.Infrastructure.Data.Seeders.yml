@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Infrastructure.Data.Seeders
+  commentId: N:MyApp.Auth.Infrastructure.Data.Seeders
+  id: MyApp.Auth.Infrastructure.Data.Seeders
+  children:
+  - MyApp.Auth.Infrastructure.Data.Seeders.PermissionSeeder
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Infrastructure.Data.Seeders
+  nameWithType: MyApp.Auth.Infrastructure.Data.Seeders
+  fullName: MyApp.Auth.Infrastructure.Data.Seeders
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Infrastructure
+references:
+- uid: MyApp.Auth.Infrastructure.Data.Seeders.PermissionSeeder
+  commentId: T:MyApp.Auth.Infrastructure.Data.Seeders.PermissionSeeder
+  href: MyApp.Auth.Infrastructure.Data.Seeders.PermissionSeeder.html
+  name: PermissionSeeder
+  nameWithType: PermissionSeeder
+  fullName: MyApp.Auth.Infrastructure.Data.Seeders.PermissionSeeder

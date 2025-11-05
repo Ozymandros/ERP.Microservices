@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PurchaseOrderService | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PurchaseOrderService | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/new/main/apiSpec/new?filename=MyApp_Purchasing_Application_Services_PurchaseOrderService.md&amp;value=---%0Auid%3A%20MyApp.Purchasing.Application.Services.PurchaseOrderService%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService">
+
+
+
+  <h1 id="MyApp_Purchasing_Application_Services_PurchaseOrderService" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService" class="text-break">
+Class PurchaseOrderService  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="MyApp.html">MyApp</a>.<a class="xref" href="MyApp.Purchasing.html">Purchasing</a>.<a class="xref" href="MyApp.Purchasing.Application.html">Application</a>.<a class="xref" href="MyApp.Purchasing.Application.Services.html">Services</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>MyApp.Purchasing.Application.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PurchaseOrderService : IPurchaseOrderService</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">PurchaseOrderService</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="MyApp.Purchasing.Application.Contracts.Services.IPurchaseOrderService.html">IPurchaseOrderService</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="MyApp_Purchasing_Application_Services_PurchaseOrderService__ctor_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.#ctor*"></a>
+
+  <h3 id="MyApp_Purchasing_Application_Services_PurchaseOrderService__ctor_MyApp_Purchasing_Domain_Repositories_IPurchaseOrderRepository_MyApp_Purchasing_Domain_Repositories_IPurchaseOrderLineRepository_MyApp_Purchasing_Domain_Repositories_ISupplierRepository_AutoMapper_IMapper_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.#ctor(MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository,MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository,MyApp.Purchasing.Domain.Repositories.ISupplierRepository,AutoMapper.IMapper)">
+  PurchaseOrderService(IPurchaseOrderRepository, IPurchaseOrderLineRepository, ISupplierRepository, IMapper)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PurchaseOrderService(IPurchaseOrderRepository purchaseOrderRepository, IPurchaseOrderLineRepository lineRepository, ISupplierRepository supplierRepository, IMapper mapper)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>purchaseOrderRepository</code> <a class="xref" href="MyApp.Purchasing.Domain.Repositories.IPurchaseOrderRepository.html">IPurchaseOrderRepository</a></dt>
+    <dd></dd>
+    <dt><code>lineRepository</code> <a class="xref" href="MyApp.Purchasing.Domain.Repositories.IPurchaseOrderLineRepository.html">IPurchaseOrderLineRepository</a></dt>
+    <dd></dd>
+    <dt><code>supplierRepository</code> <a class="xref" href="MyApp.Purchasing.Domain.Repositories.ISupplierRepository.html">ISupplierRepository</a></dt>
+    <dd></dd>
+    <dt><code>mapper</code> <span class="xref">IMapper</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="MyApp_Purchasing_Application_Services_PurchaseOrderService_CreatePurchaseOrderAsync_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.CreatePurchaseOrderAsync*"></a>
+
+  <h3 id="MyApp_Purchasing_Application_Services_PurchaseOrderService_CreatePurchaseOrderAsync_MyApp_Purchasing_Application_Contracts_DTOs_CreateUpdatePurchaseOrderDto_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.CreatePurchaseOrderAsync(MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)">
+  CreatePurchaseOrderAsync(CreateUpdatePurchaseOrderDto)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;PurchaseOrderDto&gt; CreatePurchaseOrderAsync(CreateUpdatePurchaseOrderDto dto)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dto</code> <a class="xref" href="MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto.html">CreateUpdatePurchaseOrderDto</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto.html">PurchaseOrderDto</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Purchasing_Application_Services_PurchaseOrderService_DeletePurchaseOrderAsync_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.DeletePurchaseOrderAsync*"></a>
+
+  <h3 id="MyApp_Purchasing_Application_Services_PurchaseOrderService_DeletePurchaseOrderAsync_System_Guid_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.DeletePurchaseOrderAsync(System.Guid)">
+  DeletePurchaseOrderAsync(Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task DeletePurchaseOrderAsync(Guid id)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Purchasing_Application_Services_PurchaseOrderService_GetAllPurchaseOrdersAsync_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.GetAllPurchaseOrdersAsync*"></a>
+
+  <h3 id="MyApp_Purchasing_Application_Services_PurchaseOrderService_GetAllPurchaseOrdersAsync" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.GetAllPurchaseOrdersAsync">
+  GetAllPurchaseOrdersAsync()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;PurchaseOrderDto&gt;&gt; GetAllPurchaseOrdersAsync()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto.html">PurchaseOrderDto</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Purchasing_Application_Services_PurchaseOrderService_GetPurchaseOrderByIdAsync_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrderByIdAsync*"></a>
+
+  <h3 id="MyApp_Purchasing_Application_Services_PurchaseOrderService_GetPurchaseOrderByIdAsync_System_Guid_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrderByIdAsync(System.Guid)">
+  GetPurchaseOrderByIdAsync(Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;PurchaseOrderDto?&gt; GetPurchaseOrderByIdAsync(Guid id)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto.html">PurchaseOrderDto</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Purchasing_Application_Services_PurchaseOrderService_GetPurchaseOrdersByStatusAsync_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersByStatusAsync*"></a>
+
+  <h3 id="MyApp_Purchasing_Application_Services_PurchaseOrderService_GetPurchaseOrdersByStatusAsync_MyApp_Purchasing_Domain_Entities_PurchaseOrderStatus_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersByStatusAsync(MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)">
+  GetPurchaseOrdersByStatusAsync(PurchaseOrderStatus)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;PurchaseOrderDto&gt;&gt; GetPurchaseOrdersByStatusAsync(PurchaseOrderStatus status)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>status</code> <a class="xref" href="MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.html">PurchaseOrderStatus</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto.html">PurchaseOrderDto</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Purchasing_Application_Services_PurchaseOrderService_GetPurchaseOrdersBySupplierAsync_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersBySupplierAsync*"></a>
+
+  <h3 id="MyApp_Purchasing_Application_Services_PurchaseOrderService_GetPurchaseOrdersBySupplierAsync_System_Guid_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.GetPurchaseOrdersBySupplierAsync(System.Guid)">
+  GetPurchaseOrdersBySupplierAsync(Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;PurchaseOrderDto&gt;&gt; GetPurchaseOrdersBySupplierAsync(Guid supplierId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>supplierId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto.html">PurchaseOrderDto</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Purchasing_Application_Services_PurchaseOrderService_UpdatePurchaseOrderAsync_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderAsync*"></a>
+
+  <h3 id="MyApp_Purchasing_Application_Services_PurchaseOrderService_UpdatePurchaseOrderAsync_System_Guid_MyApp_Purchasing_Application_Contracts_DTOs_CreateUpdatePurchaseOrderDto_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderAsync(System.Guid,MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto)">
+  UpdatePurchaseOrderAsync(Guid, CreateUpdatePurchaseOrderDto)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;PurchaseOrderDto&gt; UpdatePurchaseOrderAsync(Guid id, CreateUpdatePurchaseOrderDto dto)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+    <dt><code>dto</code> <a class="xref" href="MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto.html">CreateUpdatePurchaseOrderDto</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto.html">PurchaseOrderDto</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MyApp_Purchasing_Application_Services_PurchaseOrderService_UpdatePurchaseOrderStatusAsync_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderStatusAsync*"></a>
+
+  <h3 id="MyApp_Purchasing_Application_Services_PurchaseOrderService_UpdatePurchaseOrderStatusAsync_System_Guid_MyApp_Purchasing_Domain_Entities_PurchaseOrderStatus_" data-uid="MyApp.Purchasing.Application.Services.PurchaseOrderService.UpdatePurchaseOrderStatusAsync(System.Guid,MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus)">
+  UpdatePurchaseOrderStatusAsync(Guid, PurchaseOrderStatus)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;PurchaseOrderDto&gt; UpdatePurchaseOrderStatusAsync(Guid id, PurchaseOrderStatus status)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+    <dt><code>status</code> <a class="xref" href="MyApp.Purchasing.Domain.Entities.PurchaseOrderStatus.html">PurchaseOrderStatus</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto.html">PurchaseOrderDto</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/copilot/integrate-docfx-documentation/src/MyApp.Purchasing/MyApp.Purchasing.Application/Services/PurchaseOrderService.cs/#L9" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

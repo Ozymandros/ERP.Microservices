@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Infrastructure.Repositories
+  commentId: N:MyApp.Orders.Infrastructure.Repositories
+  id: MyApp.Orders.Infrastructure.Repositories
+  children:
+  - MyApp.Orders.Infrastructure.Repositories.OrderLineRepository
+  - MyApp.Orders.Infrastructure.Repositories.OrderRepository
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Orders.Infrastructure.Repositories
+  nameWithType: MyApp.Orders.Infrastructure.Repositories
+  fullName: MyApp.Orders.Infrastructure.Repositories
+  type: Namespace
+  assemblies:
+  - MyApp.Orders.Infrastructure
+references:
+- uid: MyApp.Orders.Infrastructure.Repositories.OrderLineRepository
+  commentId: T:MyApp.Orders.Infrastructure.Repositories.OrderLineRepository
+  href: MyApp.Orders.Infrastructure.Repositories.OrderLineRepository.html
+  name: OrderLineRepository
+  nameWithType: OrderLineRepository
+  fullName: MyApp.Orders.Infrastructure.Repositories.OrderLineRepository
+- uid: MyApp.Orders.Infrastructure.Repositories.OrderRepository
+  commentId: T:MyApp.Orders.Infrastructure.Repositories.OrderRepository
+  href: MyApp.Orders.Infrastructure.Repositories.OrderRepository.html
+  name: OrderRepository
+  nameWithType: OrderRepository
+  fullName: MyApp.Orders.Infrastructure.Repositories.OrderRepository

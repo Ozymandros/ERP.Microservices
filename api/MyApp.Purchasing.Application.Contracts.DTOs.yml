@@ -1,0 +1,107 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Application.Contracts.DTOs
+  commentId: N:MyApp.Purchasing.Application.Contracts.DTOs
+  id: MyApp.Purchasing.Application.Contracts.DTOs
+  children:
+  - MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto
+  - MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderLineDto
+  - MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto
+  - MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto
+  - MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderLineDto
+  - MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Purchasing.Application.Contracts.DTOs
+  nameWithType: MyApp.Purchasing.Application.Contracts.DTOs
+  fullName: MyApp.Purchasing.Application.Contracts.DTOs
+  type: Namespace
+  assemblies:
+  - MyApp.Purchasing.Application.Contracts
+references:
+- uid: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto
+  commentId: T:MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto
+  href: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto.html
+  name: PurchaseOrderDto
+  nameWithType: PurchaseOrderDto
+  fullName: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderDto
+- uid: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderLineDto
+  commentId: T:MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderLineDto
+  href: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderLineDto.html
+  name: PurchaseOrderLineDto
+  nameWithType: PurchaseOrderLineDto
+  fullName: MyApp.Purchasing.Application.Contracts.DTOs.PurchaseOrderLineDto
+- uid: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto
+  commentId: T:MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto
+  parent: MyApp.Purchasing.Application.Contracts.DTOs
+  href: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto.html
+  name: CreateUpdatePurchaseOrderDto
+  nameWithType: CreateUpdatePurchaseOrderDto
+  fullName: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderDto
+- uid: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderLineDto
+  commentId: T:MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderLineDto
+  href: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderLineDto.html
+  name: CreateUpdatePurchaseOrderLineDto
+  nameWithType: CreateUpdatePurchaseOrderLineDto
+  fullName: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdatePurchaseOrderLineDto
+- uid: MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto
+  commentId: T:MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto
+  parent: MyApp.Purchasing.Application.Contracts.DTOs
+  href: MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto.html
+  name: SupplierDto
+  nameWithType: SupplierDto
+  fullName: MyApp.Purchasing.Application.Contracts.DTOs.SupplierDto
+- uid: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto
+  commentId: T:MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto
+  parent: MyApp.Purchasing.Application.Contracts.DTOs
+  href: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto.html
+  name: CreateUpdateSupplierDto
+  nameWithType: CreateUpdateSupplierDto
+  fullName: MyApp.Purchasing.Application.Contracts.DTOs.CreateUpdateSupplierDto
+- uid: MyApp.Purchasing.Application.Contracts.DTOs
+  commentId: N:MyApp.Purchasing.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Purchasing.Application.Contracts.DTOs
+  nameWithType: MyApp.Purchasing.Application.Contracts.DTOs
+  fullName: MyApp.Purchasing.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Application
+    name: Application
+    href: MyApp.Purchasing.Application.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts
+    name: Contracts
+    href: MyApp.Purchasing.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Purchasing.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Application
+    name: Application
+    href: MyApp.Purchasing.Application.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts
+    name: Contracts
+    href: MyApp.Purchasing.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Purchasing.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Purchasing.Application.Contracts.DTOs.html

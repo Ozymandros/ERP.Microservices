@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>✅ BUILD &amp; DEPLOY AUTOMATION - COMPLETE SOLUTION | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="✅ BUILD &amp; DEPLOY AUTOMATION - COMPLETE SOLUTION | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/deployment/BUILD_AND_DEPLOY_AUTOMATION_SUMMARY.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="-build--deploy-automation---complete-solution">✅ BUILD &amp; DEPLOY AUTOMATION - COMPLETE SOLUTION</h1>
+
+<h2 id="-problem-solved">🎯 Problem Solved</h2>
+<p>Your deployment error:</p>
+<pre><code>ERROR: MANIFEST_UNKNOWN: manifest tagged by &quot;latest&quot; is not found
+</code></pre>
+<p><strong>Why it happened:</strong> Container Apps tried to deploy services before Docker images were built and pushed to ACR.</p>
+<p><strong>How it's fixed:</strong> Complete automated pipeline that builds images BEFORE deploying.</p>
+<hr>
+<h2 id="-complete-solution-includes">📦 Complete Solution Includes</h2>
+<h3 id="1-powershell-build-script">1. PowerShell Build Script</h3>
+<ul>
+<li><strong>File:</strong> <code>infra/scripts/build-push-images.ps1</code></li>
+<li><strong>Purpose:</strong> Builds all 7 Docker images and pushes to ACR</li>
+<li><strong>Usage:</strong> <code>./infra/scripts/build-push-images.ps1</code></li>
+<li><strong>Time:</strong> 5-10 minutes for all services</li>
+</ul>
+<h3 id="2-deploy-wrapper-script">2. Deploy Wrapper Script</h3>
+<ul>
+<li><strong>File:</strong> <code>Deploy.ps1</code></li>
+<li><strong>Purpose:</strong> One-command build + deploy + verify</li>
+<li><strong>Usage:</strong> <code>./Deploy.ps1</code> or <code>./Deploy.ps1 -Environment prod</code></li>
+<li><strong>Time:</strong> ~20 minutes total</li>
+</ul>
+<h3 id="3-github-actions-workflow">3. GitHub Actions Workflow</h3>
+<ul>
+<li><strong>File:</strong> <code>.github/workflows/azure-build-deploy.yml</code></li>
+<li><strong>Purpose:</strong> Automatic CI/CD on every push</li>
+<li><strong>Trigger:</strong> Push to main/develop branch</li>
+<li><strong>Features:</strong> Parallel builds, full logging, health checks</li>
+</ul>
+<h3 id="4-deployment-documentation">4. Deployment Documentation</h3>
+<ul>
+<li><strong>File:</strong> <code>docs/deployment/BUILD_AND_DEPLOY_AUTOMATION.md</code></li>
+<li><strong>Purpose:</strong> Complete technical guide with all options</li>
+<li><strong>File:</strong> <code>docs/deployment/QUICK_START_BUILD_DEPLOY.md</code></li>
+<li><strong>Purpose:</strong> Quick reference for common tasks</li>
+<li><strong>File:</strong> <code>docs/deployment/DEPLOYMENT_AUTOMATION_COMPLETE.md</code></li>
+<li><strong>Purpose:</strong> Full solution overview</li>
+</ul>
+<h3 id="5-quick-reference-guide">5. Quick Reference Guide</h3>
+<ul>
+<li><strong>File:</strong> <code>DEPLOYMENT_GUIDE.ps1</code></li>
+<li><strong>Purpose:</strong> Display usage options and workflows</li>
+<li><strong>Usage:</strong> <code>./DEPLOYMENT_GUIDE.ps1</code> or view as text</li>
+</ul>
+<hr>
+<h2 id="-how-to-use">🚀 How to Use</h2>
+<h3 id="option-1-one-command-deploy-easiest">Option 1: One-Command Deploy (Easiest)</h3>
+<pre><code class="lang-powershell">cd C:\Projects\ERP_ASPIRE_APP\src
+./Deploy.ps1
+</code></pre>
+<p>Takes ~20 minutes. Builds images, deploys everything, verifies health.</p>
+<h3 id="option-2-step-by-step">Option 2: Step-by-Step</h3>
+<pre><code class="lang-powershell"># Step 1: Build images
+./infra/scripts/build-push-images.ps1
+
+# Step 2: Deploy infrastructure
+azd up
+
+# Step 3: Verify
+./Deploy.ps1 -Verify
+</code></pre>
+<h3 id="option-3-github-actions-automatic">Option 3: GitHub Actions (Automatic)</h3>
+<ol>
+<li>Add GitHub Secrets (AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID)</li>
+<li>Push to main/develop</li>
+<li>Automatic build + deploy + verify</li>
+</ol>
+<hr>
+<h2 id="-what-gets-built">📋 What Gets Built</h2>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Image</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Auth Service</td>
+<td><code>auth-service:latest</code></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Billing Service</td>
+<td><code>billing-service:latest</code></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Inventory Service</td>
+<td><code>inventory-service:latest</code></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Orders Service</td>
+<td><code>orders-service:latest</code></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Purchasing Service</td>
+<td><code>purchasing-service:latest</code></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Sales Service</td>
+<td><code>sales-service:latest</code></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>API Gateway</td>
+<td><code>erp-api-gateway:latest</code></td>
+<td>✓</td>
+</tr>
+</tbody>
+</table>
+<p>All images are built in Azure Container Registry with parallel builds.</p>
+<hr>
+<h2 id="-process-flow">🔄 Process Flow</h2>
+<pre><code>Your Code
+    ↓
+./Deploy.ps1 or git push
+    ↓
+Build Phase:
+  - 7 Docker images built in parallel in ACR
+  - Tags: latest (and commit-hash in CI/CD)
+  - Cached layers speed up rebuilds
+    ↓
+Deploy Phase:
+  - Bicep provisions infrastructure
+  - Azure SQL databases created
+  - Redis cache provisioned
+  - Key Vault configured
+  - RBAC permissions set
+  - Container Apps deployed with images
+    ↓
+Verify Phase:
+  - All 7 services running
+  - Health checks passing
+  - Endpoints ready
+  - Logging enabled
+    ↓
+✅ Services Running
+  - Ready for traffic
+  - DAPR enabled
+  - Automatic scaling
+  - Monitoring active
+</code></pre>
+<hr>
+<h2 id="-performance">📊 Performance</h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Time</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>First deployment</td>
+<td>20-25 min</td>
+<td>Infrastructure + all images</td>
+</tr>
+<tr>
+<td>Redeploy (images exist)</td>
+<td>10-15 min</td>
+<td>Only infrastructure changes</td>
+</tr>
+<tr>
+<td>Image rebuild only</td>
+<td>5-10 min</td>
+<td>Parallel ACR builds</td>
+</tr>
+<tr>
+<td>GitHub Actions</td>
+<td>15-20 min</td>
+<td>Automatic, includes all steps</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-key-features">✨ Key Features</h2>
+<p>✅ <strong>Fully Automated</strong></p>
+<ul>
+<li>No manual Docker commands needed</li>
+<li>No manual ACR operations needed</li>
+<li>No manual Container Apps updates needed</li>
+</ul>
+<p>✅ <strong>Fast</strong></p>
+<ul>
+<li>Parallel image builds in ACR</li>
+<li>Cached Docker layers</li>
+<li>Efficient Bicep deployments</li>
+</ul>
+<p>✅ <strong>Reliable</strong></p>
+<ul>
+<li>Retry logic for failed builds</li>
+<li>Detailed error messages</li>
+<li>Health check verification</li>
+</ul>
+<p>✅ <strong>Traceable</strong></p>
+<ul>
+<li>Image tags include commit hash (CI/CD)</li>
+<li>Deployment logs captured</li>
+<li>Service status visible</li>
+</ul>
+<p>✅ <strong>Production Ready</strong></p>
+<ul>
+<li>Works locally and in cloud</li>
+<li>Supports multiple environments (dev/staging/prod)</li>
+<li>GitHub Actions integration</li>
+<li>Secure credential handling (no hardcoded secrets)</li>
+</ul>
+<hr>
+<h2 id="-what-each-file-does">🛠️ What Each File Does</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+<th>When Used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Deploy.ps1</code></td>
+<td>One-command wrapper</td>
+<td>Local dev, quick deploys</td>
+</tr>
+<tr>
+<td><code>infra/scripts/build-push-images.ps1</code></td>
+<td>Build images only</td>
+<td>Before <code>azd up</code>, testing builds</td>
+</tr>
+<tr>
+<td><code>.github/workflows/azure-build-deploy.yml</code></td>
+<td>CI/CD automation</td>
+<td>On every Git push</td>
+</tr>
+<tr>
+<td><code>infra/core/build/acr-build.bicep</code></td>
+<td>Documentation</td>
+<td>Reference, future enhancements</td>
+</tr>
+<tr>
+<td><code>docs/deployment/BUILD_AND_DEPLOY_AUTOMATION.md</code></td>
+<td>Complete guide</td>
+<td>Deep dive, troubleshooting</td>
+</tr>
+<tr>
+<td><code>docs/deployment/QUICK_START_BUILD_DEPLOY.md</code></td>
+<td>Quick reference</td>
+<td>Getting started, common tasks</td>
+</tr>
+<tr>
+<td><code>DEPLOYMENT_GUIDE.ps1</code></td>
+<td>Display guide</td>
+<td>Learning the process</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-learning-resources">🎓 Learning Resources</h2>
+<h3 id="quick-learning-5-minutes">Quick Learning (5 minutes)</h3>
+<ol>
+<li>Run: <code>./DEPLOYMENT_GUIDE.ps1</code> (this displays the guide)</li>
+<li>Read: <code>docs/deployment/QUICK_START_BUILD_DEPLOY.md</code></li>
+</ol>
+<h3 id="moderate-learning-30-minutes">Moderate Learning (30 minutes)</h3>
+<ol>
+<li>Read: <code>docs/deployment/BUILD_AND_DEPLOY_AUTOMATION.md</code></li>
+<li>Try: <code>./Deploy.ps1</code></li>
+<li>Explore Azure Portal resources</li>
+</ol>
+<h3 id="deep-learning-2-hours">Deep Learning (2 hours)</h3>
+<ol>
+<li>Read: All documentation files</li>
+<li>Study: PowerShell scripts</li>
+<li>Review: GitHub Actions workflow</li>
+<li>Examine: Bicep infrastructure files</li>
+</ol>
+<hr>
+<h2 id="-troubleshooting-quick-links">🔧 Troubleshooting Quick Links</h2>
+<p><strong>Issue: Authentication fails</strong></p>
+<pre><code class="lang-powershell">az login
+az account set --subscription &quot;your-subscription-id&quot;
+</code></pre>
+<p><strong>Issue: Images not in ACR</strong></p>
+<pre><code class="lang-powershell">az acr repository list --name myappdevcontainerregistry
+</code></pre>
+<p><strong>Issue: Services won't start</strong></p>
+<pre><code class="lang-powershell">az containerapp logs show --name myapp-dev-auth-service \
+    --resource-group rg-myapp-dev-core --tail 50
+</code></pre>
+<p>See <code>docs/deployment/BUILD_AND_DEPLOY_AUTOMATION.md</code> for complete troubleshooting guide.</p>
+<hr>
+<h2 id="-next-steps">🎯 Next Steps</h2>
+<h3 id="today">Today</h3>
+<pre><code class="lang-powershell">./Deploy.ps1
+</code></pre>
+<h3 id="this-week">This Week</h3>
+<ul>
+<li>[ ] Test all service endpoints</li>
+<li>[ ] Verify DAPR communication</li>
+<li>[ ] Run HTTP tests (auth-tests.http)</li>
+<li>[ ] Check Application Insights logs</li>
+</ul>
+<h3 id="this-month">This Month</h3>
+<ul>
+<li>[ ] Setup GitHub Actions secrets</li>
+<li>[ ] Enable automatic CI/CD deployments</li>
+<li>[ ] Configure deployment monitoring</li>
+<li>[ ] Set up alerting</li>
+</ul>
+<hr>
+<h2 id="-support">📞 Support</h2>
+<p><strong>Quick questions?</strong> See <code>docs/deployment/QUICK_START_BUILD_DEPLOY.md</code></p>
+<p><strong>Detailed help?</strong> See <code>docs/deployment/BUILD_AND_DEPLOY_AUTOMATION.md</code></p>
+<p><strong>Learning the process?</strong> Run <code>./DEPLOYMENT_GUIDE.ps1</code></p>
+<p><strong>Something broken?</strong> Check troubleshooting section above or the detailed documentation.</p>
+<hr>
+<h2 id="-summary">🎉 Summary</h2>
+<p>You now have:
+✅ Automated image building with <code>build-push-images.ps1</code>
+✅ One-command deployment with <code>Deploy.ps1</code>
+✅ CI/CD automation with GitHub Actions
+✅ Complete documentation
+✅ Production-ready infrastructure
+✅ Full solution to the &quot;manifest not found&quot; error</p>
+<p><strong>Ready to deploy?</strong></p>
+<pre><code class="lang-powershell">./Deploy.ps1
+</code></pre>
+<p><strong>Takes ~20 minutes. Sit back and enjoy the automation! 🚀</strong></p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/deployment/BUILD_AND_DEPLOY_AUTOMATION_SUMMARY.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

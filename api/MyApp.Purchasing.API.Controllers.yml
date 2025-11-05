@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.API.Controllers
+  commentId: N:MyApp.Purchasing.API.Controllers
+  id: MyApp.Purchasing.API.Controllers
+  children:
+  - MyApp.Purchasing.API.Controllers.PurchaseOrdersController
+  - MyApp.Purchasing.API.Controllers.SuppliersController
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Purchasing.API.Controllers
+  nameWithType: MyApp.Purchasing.API.Controllers
+  fullName: MyApp.Purchasing.API.Controllers
+  type: Namespace
+  assemblies:
+  - MyApp.Purchasing.API
+references:
+- uid: MyApp.Purchasing.API.Controllers.PurchaseOrdersController
+  commentId: T:MyApp.Purchasing.API.Controllers.PurchaseOrdersController
+  href: MyApp.Purchasing.API.Controllers.PurchaseOrdersController.html
+  name: PurchaseOrdersController
+  nameWithType: PurchaseOrdersController
+  fullName: MyApp.Purchasing.API.Controllers.PurchaseOrdersController
+- uid: MyApp.Purchasing.API.Controllers.SuppliersController
+  commentId: T:MyApp.Purchasing.API.Controllers.SuppliersController
+  href: MyApp.Purchasing.API.Controllers.SuppliersController.html
+  name: SuppliersController
+  nameWithType: SuppliersController
+  fullName: MyApp.Purchasing.API.Controllers.SuppliersController

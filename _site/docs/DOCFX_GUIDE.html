@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>DocFX Documentation Guide | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="DocFX Documentation Guide | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/DOCFX_GUIDE.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="docfx-documentation-guide">DocFX Documentation Guide</h1>
+
+<p>This project uses <a href="https://dotnet.github.io/docfx/">DocFX</a> to automatically generate technical documentation from source code and markdown files.</p>
+<h2 id="-documentation-site">📚 Documentation Site</h2>
+<p>The documentation is automatically published to GitHub Pages at:
+<strong><a href="https://ozymandros.github.io/ERP.Microservices/">https://ozymandros.github.io/ERP.Microservices/</a></strong></p>
+<h2 id="-building-documentation-locally">🔨 Building Documentation Locally</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>.NET 9 SDK</li>
+<li>DocFX (installed via <code>dotnet tool</code>)</li>
+</ul>
+<h3 id="install-docfx">Install DocFX</h3>
+<pre><code class="lang-bash">dotnet tool update -g docfx
+</code></pre>
+<h3 id="build-documentation">Build Documentation</h3>
+<pre><code class="lang-bash"># Navigate to docs directory
+cd docs
+
+# Build the documentation
+docfx docfx.json
+
+# Serve the documentation locally (optional)
+docfx serve _site
+</code></pre>
+<p>The documentation will be available at <code>http://localhost:8080</code></p>
+<h2 id="-adding-documentation">📝 Adding Documentation</h2>
+<h3 id="api-documentation">API Documentation</h3>
+<p>API documentation is automatically generated from XML comments in C# code:</p>
+<pre><code class="lang-csharp">/// &lt;summary&gt;
+/// Gets a user by ID
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;id&quot;&gt;The user ID&lt;/param&gt;
+/// &lt;returns&gt;The user details&lt;/returns&gt;
+public async Task&lt;UserDto&gt; GetUserByIdAsync(string id)
+{
+    // Implementation
+}
+</code></pre>
+<p>All projects have XML documentation enabled via <code>&lt;GenerateDocumentationFile&gt;true&lt;/GenerateDocumentationFile&gt;</code> in their <code>.csproj</code> files.</p>
+<h3 id="markdown-documentation">Markdown Documentation</h3>
+<p>Add or update markdown files in the <code>/docs</code> directory:</p>
+<ul>
+<li><strong>Guides</strong>: <code>/docs/guides/</code></li>
+<li><strong>Architecture</strong>: <code>/docs/architecture/</code></li>
+<li><strong>Deployment</strong>: <code>/docs/deployment/</code></li>
+<li><strong>Infrastructure</strong>: <code>/docs/infrastructure/</code></li>
+<li><strong>Security</strong>: <code>/docs/security/</code></li>
+</ul>
+<p>Update <code>/docs/toc.yml</code> to add new files to the navigation.</p>
+<h2 id="-deployment">🚀 Deployment</h2>
+<p>Documentation is automatically built and deployed to GitHub Pages when:</p>
+<ul>
+<li>Changes are pushed to the <code>main</code> or <code>master</code> branch</li>
+<li>The GitHub Actions workflow completes successfully</li>
+</ul>
+<p>See <code>.github/workflows/publish-docs.yml</code> for the deployment workflow.</p>
+<h2 id="-configuration">📋 Configuration</h2>
+<p>The DocFX configuration is in <code>docs/docfx.json</code>:</p>
+<ul>
+<li><strong>metadata</strong>: Defines which C# projects to extract API documentation from</li>
+<li><strong>build</strong>: Defines which content to include (markdown files, API references)</li>
+<li><strong>globalMetadata</strong>: Site-wide settings (title, footer, search, etc.)</li>
+</ul>
+<h2 id="-troubleshooting">🔍 Troubleshooting</h2>
+<h3 id="missing-api-documentation">Missing API Documentation</h3>
+<p>If API documentation is not showing:</p>
+<ol>
+<li>Ensure the project has <code>&lt;GenerateDocumentationFile&gt;true&lt;/GenerateDocumentationFile&gt;</code> in its <code>.csproj</code></li>
+<li>Add XML comments to public classes and methods</li>
+<li>Rebuild the project: <code>dotnet build</code></li>
+<li>Rebuild documentation: <code>docfx docs/docfx.json</code></li>
+</ol>
+<h3 id="build-warnings">Build Warnings</h3>
+<p>DocFX may show warnings for:</p>
+<ul>
+<li>Missing files referenced in TOC</li>
+<li>Invalid internal links</li>
+<li>Missing XML comments</li>
+</ul>
+<p>These are usually safe to ignore if the build succeeds.</p>
+<h2 id="-resources">📖 Resources</h2>
+<ul>
+<li><a href="https://dotnet.github.io/docfx/">DocFX Documentation</a></li>
+<li><a href="https://github.com/dotnet/docfx">DocFX on GitHub</a></li>
+<li><a href="https://dotnet.github.io/docfx/docs/markdown.html">Markdown Syntax Guide</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/DOCFX_GUIDE.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

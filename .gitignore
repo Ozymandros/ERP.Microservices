@@ -375,3 +375,9 @@ infra/.bicep
 
 # Bicep compiled ARM templates
 infra/**/*.json
+
+# DocFX generated files
+docs/_site/
+docs/api/*.yml
+docs/api/.manifest
+docs/obj/

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Security &amp; Identity Best Practices Guide | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Security &amp; Identity Best Practices Guide | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/security/SECURITY_IDENTITY_BEST_PRACTICES.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="security--identity-best-practices-guide">Security &amp; Identity Best Practices Guide</h1>
+
+<h2 id="-overview">🔐 Overview</h2>
+<p>This guide documents the security architecture and best practices for the ERP Microservices infrastructure. All services must securely connect to dependencies using managed identities, RBAC, and Key Vault.</p>
+<hr>
+<h2 id="-architecture">📋 Architecture</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    Container Apps                           │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
+│  │Auth Svc  │  │Billing   │  │Inventory │  │Orders    │   │
+│  │ (MI)     │  │ (MI)     │  │ (MI)     │  │ (MI)     │   │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘   │
+└───────┼─────────────┼─────────────┼─────────────┼──────────┘
+        │             │             │             │
+        └─────────────┴─────────────┴─────────────┘
+                      │
+        ┌─────────────┴─────────────────────────┐
+        │                                       │
+    ┌───┴───────┐                    ┌──────────┴─────┐
+    │ Key Vault │                    │ App Config     │
+    │(Secrets)  │◄───────────────────┤ (Settings)     │
+    │- JWT Key  │  Managed Identity  │- JWT Issuer    │
+    │- Redis PW │  Access Policy     │- CORS Origin   │
+    │- SQL Keys │  (principalId)     │- Env Config    │
+    └───┬───────┘                    └────────────────┘
+        │
+        └────────────────┬──────────────────┐
+                         │                  │
+                    ┌────┴────┐      ┌─────┴──────┐
+                    │ Redis   │      │ SQL Server │
+                    │(Secrets)│      │(Secrets)   │
+                    └─────────┘      └────────────┘
+</code></pre>
+<hr>
+<h2 id="-core-concepts">🔑 Core Concepts</h2>
+<h3 id="1-managed-identities"><strong>1. Managed Identities</strong></h3>
+<p>Each service has a <strong>system-assigned managed identity</strong> that enables:</p>
+<pre><code class="lang-bicep">identity: {
+  type: 'SystemAssigned'  // Azure-managed identity
+}
+</code></pre>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>✅ No password management</li>
+<li>✅ Automatic token rotation</li>
+<li>✅ RBAC-based access control</li>
+<li>✅ Audit trail in Azure Activity Log</li>
+</ul>
+<hr>
+<h3 id="2-rbac-policies-role-based-access-control"><strong>2. RBAC Policies (Role-Based Access Control)</strong></h3>
+<p>Services access resources through <strong>role assignments</strong> with minimum required permissions:</p>
+<pre><code class="lang-bicep">resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: keyVault
+  name: guid(resourceGroup().id, principalId, 'Key Vault Secrets User')
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
+    principalId: principalId  // ← Managed identity principal ID
+    principalType: 'ServicePrincipal'
+  }
+}
+</code></pre>
+<p><strong>Principle: Least Privilege</strong></p>
+<ul>
+<li>Each service gets <strong>only</strong> the permissions it needs</li>
+<li>No wildcard permissions</li>
+<li>Regular audit of access</li>
+</ul>
+<hr>
+<h3 id="3-key-vault-for-secrets"><strong>3. Key Vault for Secrets</strong></h3>
+<p><strong>Sensitive values stored in Key Vault:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Secret</th>
+<th>Purpose</th>
+<th>Used By</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>jwt-secret-key</code></td>
+<td>JWT signing</td>
+<td>All services (via App Config)</td>
+</tr>
+<tr>
+<td><code>redis-password</code></td>
+<td>Redis authentication</td>
+<td>All services</td>
+</tr>
+<tr>
+<td><code>sql-connection-strings</code></td>
+<td>SQL DB access</td>
+<td>Services that need DB</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Referenced via App Configuration:</strong></p>
+<pre><code class="lang-bicep">// In App Configuration
+resource jwtSecretReference 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  name: 'Jwt:SecretKey'
+  properties: {
+    value: '@Microsoft.KeyVault(SecretUri=https://keyvault-name.vault.azure.net/secrets/jwt-secret-key/)'
+    contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
+  }
+}
+</code></pre>
+<hr>
+<h2 id="-connection-security">🔌 Connection Security</h2>
+<h3 id="required-connections-for-each-service"><strong>Required Connections for Each Service</strong></h3>
+<h4 id="auth-service"><strong>Auth Service</strong></h4>
+<pre><code>Auth → Key Vault (read JWT secret)
+Auth → App Configuration (read settings)
+Auth → SQL Database (user auth data)
+</code></pre>
+<h4 id="inventory-service"><strong>Inventory Service</strong></h4>
+<pre><code>Inventory → Key Vault (read secrets)
+Inventory → App Configuration (read settings)
+Inventory → SQL Database (inventory data)
+Inventory → Redis (cache)
+</code></pre>
+<h4 id="orders-service"><strong>Orders Service</strong></h4>
+<pre><code>Orders → Key Vault (read secrets)
+Orders → App Configuration (read settings)
+Orders → SQL Database (orders data)
+Orders → Redis (cache)
+Orders → Auth Service (validate JWT)
+</code></pre>
+<hr>
+<h2 id="-implementation-checklist">🛠️ Implementation Checklist</h2>
+<h3 id="per-service"><strong>Per Service</strong></h3>
+<ul>
+<li><p>[ ] <strong>Managed Identity</strong></p>
+<ul>
+<li>[ ] System-assigned identity created</li>
+<li>[ ] Principal ID captured</li>
+<li>[ ] Identity enabled in container app</li>
+</ul>
+</li>
+<li><p>[ ] <strong>Key Vault Access</strong></p>
+<ul>
+<li>[ ] Role assignment: &quot;Key Vault Secrets User&quot;</li>
+<li>[ ] Scope: Specific Key Vault</li>
+<li>[ ] Principal: Service's managed identity</li>
+</ul>
+</li>
+<li><p>[ ] <strong>App Configuration Access</strong></p>
+<ul>
+<li>[ ] Role assignment: &quot;App Configuration Data Reader&quot;</li>
+<li>[ ] Scope: App Configuration store</li>
+<li>[ ] Principal: Service's managed identity</li>
+</ul>
+</li>
+<li><p>[ ] <strong>Database Access</strong></p>
+<ul>
+<li>[ ] Role assignment: &quot;SQL DB Contributor&quot; or &quot;SQL DB Reader&quot;</li>
+<li>[ ] Scope: Specific database</li>
+<li>[ ] Principal: Service's managed identity</li>
+</ul>
+</li>
+<li><p>[ ] <strong>Redis Access</strong></p>
+<ul>
+<li>[ ] Connection string with password in Key Vault</li>
+<li>[ ] Password set during Redis creation</li>
+<li>[ ] Referenced from App Configuration</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="-bicep-implementation-patterns">📝 Bicep Implementation Patterns</h2>
+<h3 id="pattern-1-create-managed-identity"><strong>Pattern 1: Create Managed Identity</strong></h3>
+<pre><code class="lang-bicep">resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+  name: '${serviceName}-identity'
+  location: location
+  tags: tags
+}
+
+output principalId string = managedIdentity.properties.principalId
+output clientId string = managedIdentity.properties.clientId
+output id string = managedIdentity.id
+</code></pre>
+<h3 id="pattern-2-assign-to-container-app"><strong>Pattern 2: Assign to Container App</strong></h3>
+<pre><code class="lang-bicep">resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
+  name: name
+  location: location
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentityResourceId}': {}
+    }
+  }
+  properties: {
+    // ... rest of configuration
+  }
+}
+</code></pre>
+<h3 id="pattern-3-grant-key-vault-access"><strong>Pattern 3: Grant Key Vault Access</strong></h3>
+<pre><code class="lang-bicep">@description('Managed Identity Principal ID for role assignment')
+param managedIdentityPrincipalId string
+
+resource keyVaultAccessPolicy 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: keyVault
+  name: guid(resourceGroup().id, managedIdentityPrincipalId, 'Key Vault Secrets User')
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
+    principalId: managedIdentityPrincipalId
+    principalType: 'ServicePrincipal'
+  }
+}
+</code></pre>
+<h3 id="pattern-4-grant-app-configuration-access"><strong>Pattern 4: Grant App Configuration Access</strong></h3>
+<pre><code class="lang-bicep">resource appConfigAccessPolicy 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: appConfig
+  name: guid(resourceGroup().id, managedIdentityPrincipalId, 'App Configuration Data Reader')
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '516239f1-63e1-4108-9b7f-3ee94da9555c')
+    principalId: managedIdentityPrincipalId
+    principalType: 'ServicePrincipal'
+  }
+}
+</code></pre>
+<h3 id="pattern-5-grant-database-access"><strong>Pattern 5: Grant Database Access</strong></h3>
+<pre><code class="lang-bicep">resource sqlRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: sqlDatabase
+  name: guid(resourceGroup().id, managedIdentityPrincipalId, 'SQL Database Contributor')
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9b7fa17d-e63a-4465-b752-700b8ab5191a')
+    principalId: managedIdentityPrincipalId
+    principalType: 'ServicePrincipal'
+  }
+}
+</code></pre>
+<hr>
+<h2 id="-azure-role-definitions">🔒 Azure Role Definitions</h2>
+<h3 id="required-roles"><strong>Required Roles</strong></h3>
+<table>
+<thead>
+<tr>
+<th>Role Name</th>
+<th>ID</th>
+<th>Purpose</th>
+<th>Least Privilege</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Key Vault Secrets User</td>
+<td><code>4633458b-17de-408a-b874-0445c86b69e6</code></td>
+<td>Read secrets</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Key Vault Certificates Officer</td>
+<td><code>a4417e6f-fecd-4d62-9efc-8de8ce7271d0</code></td>
+<td>Manage certs</td>
+<td>⚠️ Only if needed</td>
+</tr>
+<tr>
+<td>App Configuration Data Reader</td>
+<td><code>516239f1-63e1-4108-9b7f-3ee94da9555c</code></td>
+<td>Read settings</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>SQL DB Contributor</td>
+<td><code>9b7fa17d-e63a-4465-b752-700b8ab5191a</code></td>
+<td>Full DB access</td>
+<td>⚠️ Use Reader if read-only</td>
+</tr>
+<tr>
+<td>SQL DB Data Reader</td>
+<td><code>0564a8ad-ffdc-4c17-8920-9a551b01b06f</code></td>
+<td>Read-only DB access</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Redis Cache Data Contributor</td>
+<td><code>08a6b313-0511-4330-a7f3-07832e1f86be</code></td>
+<td>Full Redis access</td>
+<td>⚠️ Use Reader if read-only</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-testing--validation">🧪 Testing &amp; Validation</h2>
+<h3 id="post-deployment-verification"><strong>Post-Deployment Verification</strong></h3>
+<pre><code class="lang-powershell"># 1. Verify managed identity
+az identity show --resource-group $rg --name auth-service-identity
+
+# 2. Verify role assignments
+az role assignment list --resource-group $rg --scope &quot;/subscriptions/$sub&quot; --output table
+
+# 3. Test Key Vault access
+az keyvault secret show --vault-name $kvName --name jwt-secret-key
+
+# 4. Test App Configuration access
+az appconfig kv list --name $acName
+
+# 5. Test service connectivity
+kubectl logs -n containers deployment/auth-service  # Check for connection errors
+</code></pre>
+<h3 id="common-issues"><strong>Common Issues</strong></h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>403 Forbidden to Key Vault</td>
+<td>Missing role assignment</td>
+<td>Add &quot;Key Vault Secrets User&quot; role</td>
+</tr>
+<tr>
+<td>403 Forbidden to App Config</td>
+<td>Missing role assignment</td>
+<td>Add &quot;App Configuration Data Reader&quot; role</td>
+</tr>
+<tr>
+<td>Connection timeout to Redis</td>
+<td>Network/security group issue</td>
+<td>Check NSG rules, Redis firewall</td>
+</tr>
+<tr>
+<td>SQL authentication failed</td>
+<td>Missing DB user for identity</td>
+<td>Create SQL user for managed identity</td>
+</tr>
+<tr>
+<td>Secrets not resolving</td>
+<td>Key Vault reference format incorrect</td>
+<td>Verify format: <code>@Microsoft.KeyVault(SecretUri=...)</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-configuration-examples">📚 Configuration Examples</h2>
+<h3 id="c-service-configuration"><strong>C# Service Configuration</strong></h3>
+<pre><code class="lang-csharp">// Program.cs
+var builder = WebApplication.CreateBuilder(args);
+
+// 1. Add App Configuration
+var credentials = new DefaultAzureCredential();
+var configClient = new ConfigurationClient(
+    new Uri(builder.Configuration[&quot;AppConfiguration:Endpoint&quot;]),
+    credentials
+);
+
+builder.Configuration.AddAzureAppConfiguration(options =&gt;
+{
+    options.Client(configClient)
+        .Select(KeyFilter.Any, LabelFilter.Null)
+        .Select(KeyFilter.Any, builder.Environment.EnvironmentName);
+});
+
+// 2. Add Key Vault
+builder.Configuration.AddAzureKeyVault(
+    new Uri($&quot;https://{keyVaultName}.vault.azure.net/&quot;),
+    credentials
+);
+
+// 3. Configure services
+builder.Services.AddKeyVaultClient(credentials);
+builder.Services.AddRedisCache(configuration);
+builder.Services.AddSqlDatabase(configuration);
+
+var app = builder.Build();
+app.Run();
+</code></pre>
+<hr>
+<h2 id="-deployment-steps">🚀 Deployment Steps</h2>
+<ol>
+<li><p><strong>Create Key Vault</strong></p>
+<pre><code class="lang-bicep">module keyVault 'core/security/keyvault.bicep' = {
+  params: {
+    location: location
+    enableSecrets: true
+  }
+}
+</code></pre>
+</li>
+<li><p><strong>Create App Configuration</strong></p>
+<pre><code class="lang-bicep">module appConfig 'core/configuration/app-configuration.bicep' = {
+  params: {
+    location: location
+    keyVaultName: keyVault.outputs.name
+    jwtSecret: keyVault.outputs.jwtSecretId
+  }
+}
+</code></pre>
+</li>
+<li><p><strong>Create Services with Identities</strong></p>
+<pre><code class="lang-bicep">module authService 'services/auth-service.bicep' = {
+  params: {
+    managedIdentityPrincipalId: managedIdentity.outputs.principalId
+    keyVaultName: keyVault.outputs.name
+    appConfigName: appConfig.outputs.name
+  }
+}
+</code></pre>
+</li>
+<li><p><strong>Grant RBAC Permissions</strong></p>
+<pre><code class="lang-bicep">// Automatically created via RBAC module
+</code></pre>
+</li>
+<li><p><strong>Deploy &amp; Verify</strong></p>
+<pre><code class="lang-bash">./validate-bicep.ps1 -ShowDetails
+./validate-bicep--what-if.ps1 -Location &quot;eastus&quot;
+azd deploy
+</code></pre>
+</li>
+</ol>
+<hr>
+<h2 id="-compliance--best-practices">✅ Compliance &amp; Best Practices</h2>
+<ul>
+<li>✅ <strong>Zero Secrets in Code</strong> - All secrets in Key Vault</li>
+<li>✅ <strong>Managed Identities</strong> - No username/password auth</li>
+<li>✅ <strong>RBAC Least Privilege</strong> - Minimal required permissions</li>
+<li>✅ <strong>Audit Logging</strong> - All access logged in Activity Log</li>
+<li>✅ <strong>Encryption in Transit</strong> - TLS/SSL for all connections</li>
+<li>✅ <strong>Encryption at Rest</strong> - Key Vault encryption</li>
+<li>✅ <strong>Network Security</strong> - NSG rules, firewall rules</li>
+<li>✅ <strong>Secrets Rotation</strong> - Periodic key rotation</li>
+<li>✅ <strong>Monitoring &amp; Alerts</strong> - Application Insights tracking</li>
+</ul>
+<hr>
+<h2 id="-support--troubleshooting">📞 Support &amp; Troubleshooting</h2>
+<p>For connection issues:</p>
+<ol>
+<li>Check managed identity is created</li>
+<li>Verify RBAC role assignment</li>
+<li>Check network connectivity (NSG, firewall)</li>
+<li>Review Application Insights logs</li>
+<li>Check Azure Activity Log for authorization failures</li>
+</ol>
+<p>For security concerns:</p>
+<ol>
+<li>Review Key Vault access policies</li>
+<li>Audit role assignments</li>
+<li>Check App Configuration RBAC</li>
+<li>Verify secrets are not logged</li>
+<li>Review network configurations</li>
+</ol>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/security/SECURITY_IDENTITY_BEST_PRACTICES.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

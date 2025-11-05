@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.API.Controllers
+  commentId: N:MyApp.Inventory.API.Controllers
+  id: MyApp.Inventory.API.Controllers
+  children:
+  - MyApp.Inventory.API.Controllers.InventoryTransactionsController
+  - MyApp.Inventory.API.Controllers.ProductsController
+  - MyApp.Inventory.API.Controllers.WarehousesController
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Inventory.API.Controllers
+  nameWithType: MyApp.Inventory.API.Controllers
+  fullName: MyApp.Inventory.API.Controllers
+  type: Namespace
+  assemblies:
+  - MyApp.Inventory.API
+references:
+- uid: MyApp.Inventory.API.Controllers.InventoryTransactionsController
+  commentId: T:MyApp.Inventory.API.Controllers.InventoryTransactionsController
+  href: MyApp.Inventory.API.Controllers.InventoryTransactionsController.html
+  name: InventoryTransactionsController
+  nameWithType: InventoryTransactionsController
+  fullName: MyApp.Inventory.API.Controllers.InventoryTransactionsController
+- uid: MyApp.Inventory.API.Controllers.ProductsController
+  commentId: T:MyApp.Inventory.API.Controllers.ProductsController
+  href: MyApp.Inventory.API.Controllers.ProductsController.html
+  name: ProductsController
+  nameWithType: ProductsController
+  fullName: MyApp.Inventory.API.Controllers.ProductsController
+- uid: MyApp.Inventory.API.Controllers.WarehousesController
+  commentId: T:MyApp.Inventory.API.Controllers.WarehousesController
+  href: MyApp.Inventory.API.Controllers.WarehousesController.html
+  name: WarehousesController
+  nameWithType: WarehousesController
+  fullName: MyApp.Inventory.API.Controllers.WarehousesController

@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Inventory.Application.Services
+  commentId: N:MyApp.Inventory.Application.Services
+  id: MyApp.Inventory.Application.Services
+  children:
+  - MyApp.Inventory.Application.Services.InventoryTransactionService
+  - MyApp.Inventory.Application.Services.ProductService
+  - MyApp.Inventory.Application.Services.WarehouseService
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Inventory.Application.Services
+  nameWithType: MyApp.Inventory.Application.Services
+  fullName: MyApp.Inventory.Application.Services
+  type: Namespace
+  assemblies:
+  - MyApp.Inventory.Application
+references:
+- uid: MyApp.Inventory.Application.Services.InventoryTransactionService
+  commentId: T:MyApp.Inventory.Application.Services.InventoryTransactionService
+  href: MyApp.Inventory.Application.Services.InventoryTransactionService.html
+  name: InventoryTransactionService
+  nameWithType: InventoryTransactionService
+  fullName: MyApp.Inventory.Application.Services.InventoryTransactionService
+- uid: MyApp.Inventory.Application.Services.ProductService
+  commentId: T:MyApp.Inventory.Application.Services.ProductService
+  href: MyApp.Inventory.Application.Services.ProductService.html
+  name: ProductService
+  nameWithType: ProductService
+  fullName: MyApp.Inventory.Application.Services.ProductService
+- uid: MyApp.Inventory.Application.Services.WarehouseService
+  commentId: T:MyApp.Inventory.Application.Services.WarehouseService
+  href: MyApp.Inventory.Application.Services.WarehouseService.html
+  name: WarehouseService
+  nameWithType: WarehouseService
+  fullName: MyApp.Inventory.Application.Services.WarehouseService

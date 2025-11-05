@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  # 'id-token: write' és per a OIDC, el podem eliminar, però el mantindrem per si cal una futura actualització
   id-token: write
   contents: read
   packages: write
@@ -39,13 +40,13 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
-        run: dotnet restore src/
+        run: dotnet restore src/ERP.Microservices.sln
 
       - name: Build
-        run: dotnet build src/ --configuration Release --no-restore
+        run: dotnet build src/ERP.Microservices.sln --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test src/ --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+        run: dotnet test src/ERP.Microservices.sln --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
         
       - name: Upload test results
         uses: actions/upload-artifact@v4

@@ -1,0 +1,807 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  id: RefreshTokenBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  children:
+  - MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Build
+  - MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Expired
+  - MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Revoked
+  - MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithCreatedAt(System.DateTime)
+  - MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithExpiresAt(System.DateTime)
+  - MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithId(System.Guid)
+  - MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithIsRevoked(System.Boolean)
+  - MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithToken(System.String)
+  - MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithUserId(System.Guid)
+  - MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.op_Implicit(MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder)~MyApp.Auth.Domain.Entities.RefreshToken
+  langs:
+  - csharp
+  - vb
+  name: RefreshTokenBuilder
+  nameWithType: RefreshTokenBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RefreshTokenBuilder
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+    startLine: 225
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public class RefreshTokenBuilder
+    content.vb: Public Class RefreshTokenBuilder
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithId(System.Guid)
+  commentId: M:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithId(System.Guid)
+  id: WithId(System.Guid)
+  parent: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithId(Guid)
+  nameWithType: RefreshTokenBuilder.WithId(Guid)
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithId(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: WithId
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+    startLine: 237
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public RefreshTokenBuilder WithId(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+    content.vb: Public Function WithId(id As Guid) As RefreshTokenBuilder
+  overload: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithId*
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithToken(System.String)
+  commentId: M:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithToken(System.String)
+  id: WithToken(System.String)
+  parent: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithToken(string)
+  nameWithType: RefreshTokenBuilder.WithToken(string)
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithToken(string)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: WithToken
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+    startLine: 243
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public RefreshTokenBuilder WithToken(string token)
+    parameters:
+    - id: token
+      type: System.String
+    return:
+      type: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+    content.vb: Public Function WithToken(token As String) As RefreshTokenBuilder
+  overload: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithToken*
+  nameWithType.vb: RefreshTokenBuilder.WithToken(String)
+  fullName.vb: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithToken(String)
+  name.vb: WithToken(String)
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithUserId(System.Guid)
+  commentId: M:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithUserId(System.Guid)
+  id: WithUserId(System.Guid)
+  parent: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithUserId(Guid)
+  nameWithType: RefreshTokenBuilder.WithUserId(Guid)
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithUserId(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: WithUserId
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+    startLine: 249
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public RefreshTokenBuilder WithUserId(Guid userId)
+    parameters:
+    - id: userId
+      type: System.Guid
+    return:
+      type: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+    content.vb: Public Function WithUserId(userId As Guid) As RefreshTokenBuilder
+  overload: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithUserId*
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithExpiresAt(System.DateTime)
+  commentId: M:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithExpiresAt(System.DateTime)
+  id: WithExpiresAt(System.DateTime)
+  parent: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithExpiresAt(DateTime)
+  nameWithType: RefreshTokenBuilder.WithExpiresAt(DateTime)
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithExpiresAt(System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: WithExpiresAt
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+    startLine: 255
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public RefreshTokenBuilder WithExpiresAt(DateTime expiresAt)
+    parameters:
+    - id: expiresAt
+      type: System.DateTime
+    return:
+      type: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+    content.vb: Public Function WithExpiresAt(expiresAt As Date) As RefreshTokenBuilder
+  overload: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithExpiresAt*
+  nameWithType.vb: RefreshTokenBuilder.WithExpiresAt(Date)
+  fullName.vb: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithExpiresAt(Date)
+  name.vb: WithExpiresAt(Date)
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithIsRevoked(System.Boolean)
+  commentId: M:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithIsRevoked(System.Boolean)
+  id: WithIsRevoked(System.Boolean)
+  parent: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithIsRevoked(bool)
+  nameWithType: RefreshTokenBuilder.WithIsRevoked(bool)
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithIsRevoked(bool)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: WithIsRevoked
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+    startLine: 261
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public RefreshTokenBuilder WithIsRevoked(bool isRevoked)
+    parameters:
+    - id: isRevoked
+      type: System.Boolean
+    return:
+      type: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+    content.vb: Public Function WithIsRevoked(isRevoked As Boolean) As RefreshTokenBuilder
+  overload: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithIsRevoked*
+  nameWithType.vb: RefreshTokenBuilder.WithIsRevoked(Boolean)
+  fullName.vb: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithIsRevoked(Boolean)
+  name.vb: WithIsRevoked(Boolean)
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithCreatedAt(System.DateTime)
+  commentId: M:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithCreatedAt(System.DateTime)
+  id: WithCreatedAt(System.DateTime)
+  parent: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithCreatedAt(DateTime)
+  nameWithType: RefreshTokenBuilder.WithCreatedAt(DateTime)
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithCreatedAt(System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: WithCreatedAt
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+    startLine: 267
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public RefreshTokenBuilder WithCreatedAt(DateTime createdAt)
+    parameters:
+    - id: createdAt
+      type: System.DateTime
+    return:
+      type: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+    content.vb: Public Function WithCreatedAt(createdAt As Date) As RefreshTokenBuilder
+  overload: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithCreatedAt*
+  nameWithType.vb: RefreshTokenBuilder.WithCreatedAt(Date)
+  fullName.vb: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithCreatedAt(Date)
+  name.vb: WithCreatedAt(Date)
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Expired
+  commentId: M:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Expired
+  id: Expired
+  parent: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  langs:
+  - csharp
+  - vb
+  name: Expired()
+  nameWithType: RefreshTokenBuilder.Expired()
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Expired()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Expired
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+    startLine: 273
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public RefreshTokenBuilder Expired()
+    return:
+      type: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+    content.vb: Public Function Expired() As RefreshTokenBuilder
+  overload: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Expired*
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Revoked
+  commentId: M:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Revoked
+  id: Revoked
+  parent: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  langs:
+  - csharp
+  - vb
+  name: Revoked()
+  nameWithType: RefreshTokenBuilder.Revoked()
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Revoked()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Revoked
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+    startLine: 279
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public RefreshTokenBuilder Revoked()
+    return:
+      type: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+    content.vb: Public Function Revoked() As RefreshTokenBuilder
+  overload: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Revoked*
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Build
+  commentId: M:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Build
+  id: Build
+  parent: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  langs:
+  - csharp
+  - vb
+  name: Build()
+  nameWithType: RefreshTokenBuilder.Build()
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Build()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Build
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+    startLine: 285
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public RefreshToken Build()
+    return:
+      type: MyApp.Auth.Domain.Entities.RefreshToken
+    content.vb: Public Function Build() As RefreshToken
+  overload: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Build*
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.op_Implicit(MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder)~MyApp.Auth.Domain.Entities.RefreshToken
+  commentId: M:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.op_Implicit(MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder)~MyApp.Auth.Domain.Entities.RefreshToken
+  id: op_Implicit(MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder)~MyApp.Auth.Domain.Entities.RefreshToken
+  parent: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  langs:
+  - csharp
+  - vb
+  name: implicit operator RefreshToken(RefreshTokenBuilder)
+  nameWithType: RefreshTokenBuilder.implicit operator RefreshToken(RefreshTokenBuilder)
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.implicit operator MyApp.Auth.Domain.Entities.RefreshToken(MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder)
+  type: Operator
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: op_Implicit
+    path: src/MyApp.Auth/test/MyApp.Auth.Application.Tests/Builders/AuthBuilders.cs
+    startLine: 287
+  assemblies:
+  - MyApp.Auth.Application.Tests
+  namespace: MyApp.Auth.Application.Tests.Builders
+  syntax:
+    content: public static implicit operator RefreshToken(RefreshTokenBuilder builder)
+    parameters:
+    - id: builder
+      type: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+    return:
+      type: MyApp.Auth.Domain.Entities.RefreshToken
+    content.vb: Public Shared Widening Operator CType(builder As RefreshTokenBuilder) As RefreshToken
+  overload: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.op_Implicit*
+  nameWithType.vb: RefreshTokenBuilder.CType(RefreshTokenBuilder)
+  fullName.vb: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.CType(MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder)
+  name.vb: CType(RefreshTokenBuilder)
+references:
+- uid: MyApp.Auth.Application.Tests.Builders
+  commentId: N:MyApp.Auth.Application.Tests.Builders
+  href: MyApp.html
+  name: MyApp.Auth.Application.Tests.Builders
+  nameWithType: MyApp.Auth.Application.Tests.Builders
+  fullName: MyApp.Auth.Application.Tests.Builders
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Builders
+    name: Builders
+    href: MyApp.Auth.Application.Tests.Builders.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Builders
+    name: Builders
+    href: MyApp.Auth.Application.Tests.Builders.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithId*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithId
+  href: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.html#MyApp_Auth_Application_Tests_Builders_RefreshTokenBuilder_WithId_System_Guid_
+  name: WithId
+  nameWithType: RefreshTokenBuilder.WithId
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithId
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  commentId: T:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+  parent: MyApp.Auth.Application.Tests.Builders
+  href: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.html
+  name: RefreshTokenBuilder
+  nameWithType: RefreshTokenBuilder
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithToken*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithToken
+  href: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.html#MyApp_Auth_Application_Tests_Builders_RefreshTokenBuilder_WithToken_System_String_
+  name: WithToken
+  nameWithType: RefreshTokenBuilder.WithToken
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithToken
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithUserId*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithUserId
+  href: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.html#MyApp_Auth_Application_Tests_Builders_RefreshTokenBuilder_WithUserId_System_Guid_
+  name: WithUserId
+  nameWithType: RefreshTokenBuilder.WithUserId
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithUserId
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithExpiresAt*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithExpiresAt
+  href: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.html#MyApp_Auth_Application_Tests_Builders_RefreshTokenBuilder_WithExpiresAt_System_DateTime_
+  name: WithExpiresAt
+  nameWithType: RefreshTokenBuilder.WithExpiresAt
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithExpiresAt
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithIsRevoked*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithIsRevoked
+  href: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.html#MyApp_Auth_Application_Tests_Builders_RefreshTokenBuilder_WithIsRevoked_System_Boolean_
+  name: WithIsRevoked
+  nameWithType: RefreshTokenBuilder.WithIsRevoked
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithIsRevoked
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithCreatedAt*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithCreatedAt
+  href: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.html#MyApp_Auth_Application_Tests_Builders_RefreshTokenBuilder_WithCreatedAt_System_DateTime_
+  name: WithCreatedAt
+  nameWithType: RefreshTokenBuilder.WithCreatedAt
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.WithCreatedAt
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Expired*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Expired
+  href: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.html#MyApp_Auth_Application_Tests_Builders_RefreshTokenBuilder_Expired
+  name: Expired
+  nameWithType: RefreshTokenBuilder.Expired
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Expired
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Revoked*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Revoked
+  href: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.html#MyApp_Auth_Application_Tests_Builders_RefreshTokenBuilder_Revoked
+  name: Revoked
+  nameWithType: RefreshTokenBuilder.Revoked
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Revoked
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Build*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Build
+  href: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.html#MyApp_Auth_Application_Tests_Builders_RefreshTokenBuilder_Build
+  name: Build
+  nameWithType: RefreshTokenBuilder.Build
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.Build
+- uid: MyApp.Auth.Domain.Entities.RefreshToken
+  commentId: T:MyApp.Auth.Domain.Entities.RefreshToken
+  parent: MyApp.Auth.Domain.Entities
+  href: MyApp.Auth.Domain.Entities.RefreshToken.html
+  name: RefreshToken
+  nameWithType: RefreshToken
+  fullName: MyApp.Auth.Domain.Entities.RefreshToken
+- uid: MyApp.Auth.Domain.Entities
+  commentId: N:MyApp.Auth.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Auth.Domain.Entities
+  nameWithType: MyApp.Auth.Domain.Entities
+  fullName: MyApp.Auth.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Entities
+    name: Entities
+    href: MyApp.Auth.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Entities
+    name: Entities
+    href: MyApp.Auth.Domain.Entities.html
+- uid: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.op_Implicit*
+  commentId: Overload:MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.op_Implicit
+  name: implicit operator
+  nameWithType: RefreshTokenBuilder.implicit operator
+  fullName: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.implicit operator
+  nameWithType.vb: RefreshTokenBuilder.CType
+  fullName.vb: MyApp.Auth.Application.Tests.Builders.RefreshTokenBuilder.CType
+  name.vb: CType
+  spec.csharp:
+  - name: implicit
+  - name: " "
+  - name: operator

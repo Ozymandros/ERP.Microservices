@@ -1,0 +1,634 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+  commentId: T:MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+  id: CreateUpdateOrderDto
+  parent: MyApp.Orders.Application.Contracts.Dtos
+  children:
+  - MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.CustomerId
+  - MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.Lines
+  - MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderDate
+  - MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderNumber
+  langs:
+  - csharp
+  - vb
+  name: CreateUpdateOrderDto
+  nameWithType: CreateUpdateOrderDto
+  fullName: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Application.Contracts/Dtos/CreateUpdateOrderDto.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreateUpdateOrderDto
+    path: src/MyApp.Orders/MyApp.Orders.Application.Contracts/Dtos/CreateUpdateOrderDto.cs
+    startLine: 6
+  assemblies:
+  - MyApp.Orders.Application.Contracts
+  namespace: MyApp.Orders.Application.Contracts.Dtos
+  syntax:
+    content: public class CreateUpdateOrderDto
+    content.vb: Public Class CreateUpdateOrderDto
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderNumber
+  commentId: P:MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderNumber
+  id: OrderNumber
+  parent: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+  langs:
+  - csharp
+  - vb
+  name: OrderNumber
+  nameWithType: CreateUpdateOrderDto.OrderNumber
+  fullName: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderNumber
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Application.Contracts/Dtos/CreateUpdateOrderDto.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: OrderNumber
+    path: src/MyApp.Orders/MyApp.Orders.Application.Contracts/Dtos/CreateUpdateOrderDto.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Orders.Application.Contracts
+  namespace: MyApp.Orders.Application.Contracts.Dtos
+  syntax:
+    content: >-
+      [Required]
+
+      public string OrderNumber { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <Required>
+
+      Public Property OrderNumber As String
+  overload: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderNumber*
+  attributes:
+  - type: System.ComponentModel.DataAnnotations.RequiredAttribute
+    ctor: System.ComponentModel.DataAnnotations.RequiredAttribute.#ctor
+    arguments: []
+- uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.CustomerId
+  commentId: P:MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.CustomerId
+  id: CustomerId
+  parent: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+  langs:
+  - csharp
+  - vb
+  name: CustomerId
+  nameWithType: CreateUpdateOrderDto.CustomerId
+  fullName: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.CustomerId
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Application.Contracts/Dtos/CreateUpdateOrderDto.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CustomerId
+    path: src/MyApp.Orders/MyApp.Orders.Application.Contracts/Dtos/CreateUpdateOrderDto.cs
+    startLine: 11
+  assemblies:
+  - MyApp.Orders.Application.Contracts
+  namespace: MyApp.Orders.Application.Contracts.Dtos
+  syntax:
+    content: >-
+      [Required]
+
+      public Guid CustomerId { get; set; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: >-
+      <Required>
+
+      Public Property CustomerId As Guid
+  overload: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.CustomerId*
+  attributes:
+  - type: System.ComponentModel.DataAnnotations.RequiredAttribute
+    ctor: System.ComponentModel.DataAnnotations.RequiredAttribute.#ctor
+    arguments: []
+- uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderDate
+  commentId: P:MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderDate
+  id: OrderDate
+  parent: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+  langs:
+  - csharp
+  - vb
+  name: OrderDate
+  nameWithType: CreateUpdateOrderDto.OrderDate
+  fullName: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderDate
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Application.Contracts/Dtos/CreateUpdateOrderDto.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: OrderDate
+    path: src/MyApp.Orders/MyApp.Orders.Application.Contracts/Dtos/CreateUpdateOrderDto.cs
+    startLine: 14
+  assemblies:
+  - MyApp.Orders.Application.Contracts
+  namespace: MyApp.Orders.Application.Contracts.Dtos
+  syntax:
+    content: >-
+      [Required]
+
+      public DateTime OrderDate { get; set; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: >-
+      <Required>
+
+      Public Property OrderDate As Date
+  overload: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderDate*
+  attributes:
+  - type: System.ComponentModel.DataAnnotations.RequiredAttribute
+    ctor: System.ComponentModel.DataAnnotations.RequiredAttribute.#ctor
+    arguments: []
+- uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.Lines
+  commentId: P:MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.Lines
+  id: Lines
+  parent: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto
+  langs:
+  - csharp
+  - vb
+  name: Lines
+  nameWithType: CreateUpdateOrderDto.Lines
+  fullName: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.Lines
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Orders/MyApp.Orders.Application.Contracts/Dtos/CreateUpdateOrderDto.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Lines
+    path: src/MyApp.Orders/MyApp.Orders.Application.Contracts/Dtos/CreateUpdateOrderDto.cs
+    startLine: 17
+  assemblies:
+  - MyApp.Orders.Application.Contracts
+  namespace: MyApp.Orders.Application.Contracts.Dtos
+  syntax:
+    content: >-
+      [Required]
+
+      public List<OrderLineDto> Lines { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{MyApp.Orders.Application.Contracts.Dtos.OrderLineDto}
+    content.vb: >-
+      <Required>
+
+      Public Property Lines As List(Of OrderLineDto)
+  overload: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.Lines*
+  attributes:
+  - type: System.ComponentModel.DataAnnotations.RequiredAttribute
+    ctor: System.ComponentModel.DataAnnotations.RequiredAttribute.#ctor
+    arguments: []
+references:
+- uid: MyApp.Orders.Application.Contracts.Dtos
+  commentId: N:MyApp.Orders.Application.Contracts.Dtos
+  href: MyApp.html
+  name: MyApp.Orders.Application.Contracts.Dtos
+  nameWithType: MyApp.Orders.Application.Contracts.Dtos
+  fullName: MyApp.Orders.Application.Contracts.Dtos
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Application
+    name: Application
+    href: MyApp.Orders.Application.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts
+    name: Contracts
+    href: MyApp.Orders.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts.Dtos
+    name: Dtos
+    href: MyApp.Orders.Application.Contracts.Dtos.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Orders
+    name: Orders
+    href: MyApp.Orders.html
+  - name: .
+  - uid: MyApp.Orders.Application
+    name: Application
+    href: MyApp.Orders.Application.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts
+    name: Contracts
+    href: MyApp.Orders.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Orders.Application.Contracts.Dtos
+    name: Dtos
+    href: MyApp.Orders.Application.Contracts.Dtos.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderNumber*
+  commentId: Overload:MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderNumber
+  href: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.html#MyApp_Orders_Application_Contracts_Dtos_CreateUpdateOrderDto_OrderNumber
+  name: OrderNumber
+  nameWithType: CreateUpdateOrderDto.OrderNumber
+  fullName: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderNumber
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.CustomerId*
+  commentId: Overload:MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.CustomerId
+  href: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.html#MyApp_Orders_Application_Contracts_Dtos_CreateUpdateOrderDto_CustomerId
+  name: CustomerId
+  nameWithType: CreateUpdateOrderDto.CustomerId
+  fullName: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.CustomerId
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderDate*
+  commentId: Overload:MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderDate
+  href: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.html#MyApp_Orders_Application_Contracts_Dtos_CreateUpdateOrderDto_OrderDate
+  name: OrderDate
+  nameWithType: CreateUpdateOrderDto.OrderDate
+  fullName: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.OrderDate
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.Lines*
+  commentId: Overload:MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.Lines
+  href: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.html#MyApp_Orders_Application_Contracts_Dtos_CreateUpdateOrderDto_Lines
+  name: Lines
+  nameWithType: CreateUpdateOrderDto.Lines
+  fullName: MyApp.Orders.Application.Contracts.Dtos.CreateUpdateOrderDto.Lines
+- uid: System.Collections.Generic.List{MyApp.Orders.Application.Contracts.Dtos.OrderLineDto}
+  commentId: T:System.Collections.Generic.List{MyApp.Orders.Application.Contracts.Dtos.OrderLineDto}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<OrderLineDto>
+  nameWithType: List<OrderLineDto>
+  fullName: System.Collections.Generic.List<MyApp.Orders.Application.Contracts.Dtos.OrderLineDto>
+  nameWithType.vb: List(Of OrderLineDto)
+  fullName.vb: System.Collections.Generic.List(Of MyApp.Orders.Application.Contracts.Dtos.OrderLineDto)
+  name.vb: List(Of OrderLineDto)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: MyApp.Orders.Application.Contracts.Dtos.OrderLineDto
+    name: OrderLineDto
+    href: MyApp.Orders.Application.Contracts.Dtos.OrderLineDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Orders.Application.Contracts.Dtos.OrderLineDto
+    name: OrderLineDto
+    href: MyApp.Orders.Application.Contracts.Dtos.OrderLineDto.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

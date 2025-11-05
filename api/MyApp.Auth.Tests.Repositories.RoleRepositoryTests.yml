@@ -1,0 +1,1163 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  commentId: T:MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  id: RoleRepositoryTests
+  parent: MyApp.Auth.Tests.Repositories
+  children:
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.#ctor
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.AddAsync_WithValidRole_CreatesRole
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.DeleteAsync_WithValidRoleId_DeletesRole
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetAllAsync_ReturnsAllRoles
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IncludesRoleClaims
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IsCaseSensitive
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithNonExistentRole_ReturnsNull
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithValidRoleName_ReturnsRole
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_IncludesRoleClaims
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithEmptyString_ReturnsFalse
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithExistingRole_ReturnsTrue
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithMultipleRoles_ChecksCorrectly
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithNonExistentRole_ReturnsFalse
+  - MyApp.Auth.Tests.Repositories.RoleRepositoryTests.UpdateAsync_WithExistingRole_UpdatesRoleData
+  langs:
+  - csharp
+  - vb
+  name: RoleRepositoryTests
+  nameWithType: RoleRepositoryTests
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RoleRepositoryTests
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 9
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: public class RoleRepositoryTests
+    content.vb: Public Class RoleRepositoryTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.#ctor
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.#ctor
+  id: '#ctor'
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: RoleRepositoryTests()
+  nameWithType: RoleRepositoryTests.RoleRepositoryTests()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.RoleRepositoryTests()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 14
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: public RoleRepositoryTests()
+    content.vb: Public Sub New()
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.#ctor*
+  nameWithType.vb: RoleRepositoryTests.New()
+  fullName.vb: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.New()
+  name.vb: New()
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithValidRoleName_ReturnsRole
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithValidRoleName_ReturnsRole
+  id: GetByNameAsync_WithValidRoleName_ReturnsRole
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByNameAsync_WithValidRoleName_ReturnsRole()
+  nameWithType: RoleRepositoryTests.GetByNameAsync_WithValidRoleName_ReturnsRole()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithValidRoleName_ReturnsRole()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByNameAsync_WithValidRoleName_ReturnsRole
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 50
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByNameAsync_WithValidRoleName_ReturnsRole()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByNameAsync_WithValidRoleName_ReturnsRole() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithValidRoleName_ReturnsRole*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithNonExistentRole_ReturnsNull
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithNonExistentRole_ReturnsNull
+  id: GetByNameAsync_WithNonExistentRole_ReturnsNull
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByNameAsync_WithNonExistentRole_ReturnsNull()
+  nameWithType: RoleRepositoryTests.GetByNameAsync_WithNonExistentRole_ReturnsNull()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithNonExistentRole_ReturnsNull()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByNameAsync_WithNonExistentRole_ReturnsNull
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 65
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByNameAsync_WithNonExistentRole_ReturnsNull()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByNameAsync_WithNonExistentRole_ReturnsNull() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithNonExistentRole_ReturnsNull*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IsCaseSensitive
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IsCaseSensitive
+  id: GetByNameAsync_IsCaseSensitive
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByNameAsync_IsCaseSensitive()
+  nameWithType: RoleRepositoryTests.GetByNameAsync_IsCaseSensitive()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IsCaseSensitive()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByNameAsync_IsCaseSensitive
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 75
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByNameAsync_IsCaseSensitive()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByNameAsync_IsCaseSensitive() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IsCaseSensitive*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IncludesRoleClaims
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IncludesRoleClaims
+  id: GetByNameAsync_IncludesRoleClaims
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetByNameAsync_IncludesRoleClaims()
+  nameWithType: RoleRepositoryTests.GetByNameAsync_IncludesRoleClaims()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IncludesRoleClaims()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetByNameAsync_IncludesRoleClaims
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 90
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetByNameAsync_IncludesRoleClaims()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetByNameAsync_IncludesRoleClaims() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IncludesRoleClaims*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithExistingRole_ReturnsTrue
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithExistingRole_ReturnsTrue
+  id: NameExistsAsync_WithExistingRole_ReturnsTrue
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: NameExistsAsync_WithExistingRole_ReturnsTrue()
+  nameWithType: RoleRepositoryTests.NameExistsAsync_WithExistingRole_ReturnsTrue()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithExistingRole_ReturnsTrue()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: NameExistsAsync_WithExistingRole_ReturnsTrue
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 117
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task NameExistsAsync_WithExistingRole_ReturnsTrue()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function NameExistsAsync_WithExistingRole_ReturnsTrue() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithExistingRole_ReturnsTrue*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithNonExistentRole_ReturnsFalse
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithNonExistentRole_ReturnsFalse
+  id: NameExistsAsync_WithNonExistentRole_ReturnsFalse
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: NameExistsAsync_WithNonExistentRole_ReturnsFalse()
+  nameWithType: RoleRepositoryTests.NameExistsAsync_WithNonExistentRole_ReturnsFalse()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithNonExistentRole_ReturnsFalse()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: NameExistsAsync_WithNonExistentRole_ReturnsFalse
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 130
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task NameExistsAsync_WithNonExistentRole_ReturnsFalse()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function NameExistsAsync_WithNonExistentRole_ReturnsFalse() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithNonExistentRole_ReturnsFalse*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithEmptyString_ReturnsFalse
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithEmptyString_ReturnsFalse
+  id: NameExistsAsync_WithEmptyString_ReturnsFalse
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: NameExistsAsync_WithEmptyString_ReturnsFalse()
+  nameWithType: RoleRepositoryTests.NameExistsAsync_WithEmptyString_ReturnsFalse()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithEmptyString_ReturnsFalse()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: NameExistsAsync_WithEmptyString_ReturnsFalse
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 140
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task NameExistsAsync_WithEmptyString_ReturnsFalse()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function NameExistsAsync_WithEmptyString_ReturnsFalse() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithEmptyString_ReturnsFalse*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithMultipleRoles_ChecksCorrectly
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithMultipleRoles_ChecksCorrectly
+  id: NameExistsAsync_WithMultipleRoles_ChecksCorrectly
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: NameExistsAsync_WithMultipleRoles_ChecksCorrectly()
+  nameWithType: RoleRepositoryTests.NameExistsAsync_WithMultipleRoles_ChecksCorrectly()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithMultipleRoles_ChecksCorrectly()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: NameExistsAsync_WithMultipleRoles_ChecksCorrectly
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 150
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task NameExistsAsync_WithMultipleRoles_ChecksCorrectly()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function NameExistsAsync_WithMultipleRoles_ChecksCorrectly() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithMultipleRoles_ChecksCorrectly*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles
+  id: GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles()
+  nameWithType: RoleRepositoryTests.GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 175
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList
+  id: GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList()
+  nameWithType: RoleRepositoryTests.GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 199
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList
+  id: GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList()
+  nameWithType: RoleRepositoryTests.GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 213
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_IncludesRoleClaims
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_IncludesRoleClaims
+  id: GetRolesByUserIdAsync_IncludesRoleClaims
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetRolesByUserIdAsync_IncludesRoleClaims()
+  nameWithType: RoleRepositoryTests.GetRolesByUserIdAsync_IncludesRoleClaims()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_IncludesRoleClaims()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetRolesByUserIdAsync_IncludesRoleClaims
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 227
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetRolesByUserIdAsync_IncludesRoleClaims()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetRolesByUserIdAsync_IncludesRoleClaims() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_IncludesRoleClaims*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles
+  id: GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles()
+  nameWithType: RoleRepositoryTests.GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 255
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.AddAsync_WithValidRole_CreatesRole
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.AddAsync_WithValidRole_CreatesRole
+  id: AddAsync_WithValidRole_CreatesRole
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: AddAsync_WithValidRole_CreatesRole()
+  nameWithType: RoleRepositoryTests.AddAsync_WithValidRole_CreatesRole()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.AddAsync_WithValidRole_CreatesRole()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: AddAsync_WithValidRole_CreatesRole
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 285
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task AddAsync_WithValidRole_CreatesRole()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function AddAsync_WithValidRole_CreatesRole() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.AddAsync_WithValidRole_CreatesRole*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.UpdateAsync_WithExistingRole_UpdatesRoleData
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.UpdateAsync_WithExistingRole_UpdatesRoleData
+  id: UpdateAsync_WithExistingRole_UpdatesRoleData
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: UpdateAsync_WithExistingRole_UpdatesRoleData()
+  nameWithType: RoleRepositoryTests.UpdateAsync_WithExistingRole_UpdatesRoleData()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.UpdateAsync_WithExistingRole_UpdatesRoleData()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdateAsync_WithExistingRole_UpdatesRoleData
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 309
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task UpdateAsync_WithExistingRole_UpdatesRoleData()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function UpdateAsync_WithExistingRole_UpdatesRoleData() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.UpdateAsync_WithExistingRole_UpdatesRoleData*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.DeleteAsync_WithValidRoleId_DeletesRole
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.DeleteAsync_WithValidRoleId_DeletesRole
+  id: DeleteAsync_WithValidRoleId_DeletesRole
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: DeleteAsync_WithValidRoleId_DeletesRole()
+  nameWithType: RoleRepositoryTests.DeleteAsync_WithValidRoleId_DeletesRole()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.DeleteAsync_WithValidRoleId_DeletesRole()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: DeleteAsync_WithValidRoleId_DeletesRole
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 329
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task DeleteAsync_WithValidRoleId_DeletesRole()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function DeleteAsync_WithValidRoleId_DeletesRole() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.DeleteAsync_WithValidRoleId_DeletesRole*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetAllAsync_ReturnsAllRoles
+  commentId: M:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetAllAsync_ReturnsAllRoles
+  id: GetAllAsync_ReturnsAllRoles
+  parent: MyApp.Auth.Tests.Repositories.RoleRepositoryTests
+  langs:
+  - csharp
+  - vb
+  name: GetAllAsync_ReturnsAllRoles()
+  nameWithType: RoleRepositoryTests.GetAllAsync_ReturnsAllRoles()
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetAllAsync_ReturnsAllRoles()
+  type: Method
+  source:
+    remote:
+      path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: GetAllAsync_ReturnsAllRoles
+    path: src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/Repositories/RoleRepositoryTests.cs
+    startLine: 347
+  assemblies:
+  - MyApp.Auth.Infrastructure.Tests
+  namespace: MyApp.Auth.Tests.Repositories
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task GetAllAsync_ReturnsAllRoles()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function GetAllAsync_ReturnsAllRoles() As Task
+  overload: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetAllAsync_ReturnsAllRoles*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: MyApp.Auth.Tests.Repositories
+  commentId: N:MyApp.Auth.Tests.Repositories
+  href: MyApp.html
+  name: MyApp.Auth.Tests.Repositories
+  nameWithType: MyApp.Auth.Tests.Repositories
+  fullName: MyApp.Auth.Tests.Repositories
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Tests
+    name: Tests
+    href: MyApp.Auth.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Tests.Repositories
+    name: Repositories
+    href: MyApp.Auth.Tests.Repositories.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Tests
+    name: Tests
+    href: MyApp.Auth.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Tests.Repositories
+    name: Repositories
+    href: MyApp.Auth.Tests.Repositories.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.#ctor*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.#ctor
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests__ctor
+  name: RoleRepositoryTests
+  nameWithType: RoleRepositoryTests.RoleRepositoryTests
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.RoleRepositoryTests
+  nameWithType.vb: RoleRepositoryTests.New
+  fullName.vb: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.New
+  name.vb: New
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithValidRoleName_ReturnsRole*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithValidRoleName_ReturnsRole
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_GetByNameAsync_WithValidRoleName_ReturnsRole
+  name: GetByNameAsync_WithValidRoleName_ReturnsRole
+  nameWithType: RoleRepositoryTests.GetByNameAsync_WithValidRoleName_ReturnsRole
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithValidRoleName_ReturnsRole
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithNonExistentRole_ReturnsNull*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithNonExistentRole_ReturnsNull
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_GetByNameAsync_WithNonExistentRole_ReturnsNull
+  name: GetByNameAsync_WithNonExistentRole_ReturnsNull
+  nameWithType: RoleRepositoryTests.GetByNameAsync_WithNonExistentRole_ReturnsNull
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_WithNonExistentRole_ReturnsNull
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IsCaseSensitive*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IsCaseSensitive
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_GetByNameAsync_IsCaseSensitive
+  name: GetByNameAsync_IsCaseSensitive
+  nameWithType: RoleRepositoryTests.GetByNameAsync_IsCaseSensitive
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IsCaseSensitive
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IncludesRoleClaims*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IncludesRoleClaims
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_GetByNameAsync_IncludesRoleClaims
+  name: GetByNameAsync_IncludesRoleClaims
+  nameWithType: RoleRepositoryTests.GetByNameAsync_IncludesRoleClaims
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetByNameAsync_IncludesRoleClaims
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithExistingRole_ReturnsTrue*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithExistingRole_ReturnsTrue
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_NameExistsAsync_WithExistingRole_ReturnsTrue
+  name: NameExistsAsync_WithExistingRole_ReturnsTrue
+  nameWithType: RoleRepositoryTests.NameExistsAsync_WithExistingRole_ReturnsTrue
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithExistingRole_ReturnsTrue
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithNonExistentRole_ReturnsFalse*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithNonExistentRole_ReturnsFalse
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_NameExistsAsync_WithNonExistentRole_ReturnsFalse
+  name: NameExistsAsync_WithNonExistentRole_ReturnsFalse
+  nameWithType: RoleRepositoryTests.NameExistsAsync_WithNonExistentRole_ReturnsFalse
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithNonExistentRole_ReturnsFalse
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithEmptyString_ReturnsFalse*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithEmptyString_ReturnsFalse
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_NameExistsAsync_WithEmptyString_ReturnsFalse
+  name: NameExistsAsync_WithEmptyString_ReturnsFalse
+  nameWithType: RoleRepositoryTests.NameExistsAsync_WithEmptyString_ReturnsFalse
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithEmptyString_ReturnsFalse
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithMultipleRoles_ChecksCorrectly*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithMultipleRoles_ChecksCorrectly
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_NameExistsAsync_WithMultipleRoles_ChecksCorrectly
+  name: NameExistsAsync_WithMultipleRoles_ChecksCorrectly
+  nameWithType: RoleRepositoryTests.NameExistsAsync_WithMultipleRoles_ChecksCorrectly
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.NameExistsAsync_WithMultipleRoles_ChecksCorrectly
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles
+  name: GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles
+  nameWithType: RoleRepositoryTests.GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList
+  name: GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList
+  nameWithType: RoleRepositoryTests.GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList
+  name: GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList
+  nameWithType: RoleRepositoryTests.GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_IncludesRoleClaims*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_IncludesRoleClaims
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_GetRolesByUserIdAsync_IncludesRoleClaims
+  name: GetRolesByUserIdAsync_IncludesRoleClaims
+  nameWithType: RoleRepositoryTests.GetRolesByUserIdAsync_IncludesRoleClaims
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_IncludesRoleClaims
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles
+  name: GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles
+  nameWithType: RoleRepositoryTests.GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.AddAsync_WithValidRole_CreatesRole*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.AddAsync_WithValidRole_CreatesRole
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_AddAsync_WithValidRole_CreatesRole
+  name: AddAsync_WithValidRole_CreatesRole
+  nameWithType: RoleRepositoryTests.AddAsync_WithValidRole_CreatesRole
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.AddAsync_WithValidRole_CreatesRole
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.UpdateAsync_WithExistingRole_UpdatesRoleData*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.UpdateAsync_WithExistingRole_UpdatesRoleData
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_UpdateAsync_WithExistingRole_UpdatesRoleData
+  name: UpdateAsync_WithExistingRole_UpdatesRoleData
+  nameWithType: RoleRepositoryTests.UpdateAsync_WithExistingRole_UpdatesRoleData
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.UpdateAsync_WithExistingRole_UpdatesRoleData
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.DeleteAsync_WithValidRoleId_DeletesRole*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.DeleteAsync_WithValidRoleId_DeletesRole
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_DeleteAsync_WithValidRoleId_DeletesRole
+  name: DeleteAsync_WithValidRoleId_DeletesRole
+  nameWithType: RoleRepositoryTests.DeleteAsync_WithValidRoleId_DeletesRole
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.DeleteAsync_WithValidRoleId_DeletesRole
+- uid: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetAllAsync_ReturnsAllRoles*
+  commentId: Overload:MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetAllAsync_ReturnsAllRoles
+  href: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.html#MyApp_Auth_Tests_Repositories_RoleRepositoryTests_GetAllAsync_ReturnsAllRoles
+  name: GetAllAsync_ReturnsAllRoles
+  nameWithType: RoleRepositoryTests.GetAllAsync_ReturnsAllRoles
+  fullName: MyApp.Auth.Tests.Repositories.RoleRepositoryTests.GetAllAsync_ReturnsAllRoles

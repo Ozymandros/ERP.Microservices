@@ -1,0 +1,72 @@
+### YamlMime:ManagedReference
+items:
+- uid: Projects
+  commentId: N:Projects
+  id: Projects
+  children:
+  - Projects.AppHost
+  - Projects.ErpApiGateway
+  - Projects.MyApp_Auth_API
+  - Projects.MyApp_Billing_API
+  - Projects.MyApp_Inventory_API
+  - Projects.MyApp_Orders_API
+  - Projects.MyApp_Purchasing_API
+  - Projects.MyApp_Sales_API
+  langs:
+  - csharp
+  - vb
+  name: Projects
+  nameWithType: Projects
+  fullName: Projects
+  type: Namespace
+  assemblies:
+  - AppHost
+references:
+- uid: Projects.MyApp_Auth_API
+  commentId: T:Projects.MyApp_Auth_API
+  href: Projects.MyApp_Auth_API.html
+  name: MyApp_Auth_API
+  nameWithType: MyApp_Auth_API
+  fullName: Projects.MyApp_Auth_API
+- uid: Projects.MyApp_Sales_API
+  commentId: T:Projects.MyApp_Sales_API
+  href: Projects.MyApp_Sales_API.html
+  name: MyApp_Sales_API
+  nameWithType: MyApp_Sales_API
+  fullName: Projects.MyApp_Sales_API
+- uid: Projects.MyApp_Billing_API
+  commentId: T:Projects.MyApp_Billing_API
+  href: Projects.MyApp_Billing_API.html
+  name: MyApp_Billing_API
+  nameWithType: MyApp_Billing_API
+  fullName: Projects.MyApp_Billing_API
+- uid: Projects.MyApp_Inventory_API
+  commentId: T:Projects.MyApp_Inventory_API
+  href: Projects.MyApp_Inventory_API.html
+  name: MyApp_Inventory_API
+  nameWithType: MyApp_Inventory_API
+  fullName: Projects.MyApp_Inventory_API
+- uid: Projects.MyApp_Orders_API
+  commentId: T:Projects.MyApp_Orders_API
+  href: Projects.MyApp_Orders_API.html
+  name: MyApp_Orders_API
+  nameWithType: MyApp_Orders_API
+  fullName: Projects.MyApp_Orders_API
+- uid: Projects.MyApp_Purchasing_API
+  commentId: T:Projects.MyApp_Purchasing_API
+  href: Projects.MyApp_Purchasing_API.html
+  name: MyApp_Purchasing_API
+  nameWithType: MyApp_Purchasing_API
+  fullName: Projects.MyApp_Purchasing_API
+- uid: Projects.ErpApiGateway
+  commentId: T:Projects.ErpApiGateway
+  href: Projects.ErpApiGateway.html
+  name: ErpApiGateway
+  nameWithType: ErpApiGateway
+  fullName: Projects.ErpApiGateway
+- uid: Projects.AppHost
+  commentId: T:Projects.AppHost
+  href: Projects.AppHost.html
+  name: AppHost
+  nameWithType: AppHost
+  fullName: Projects.AppHost

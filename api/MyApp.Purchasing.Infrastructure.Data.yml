@@ -1,0 +1,69 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Infrastructure.Data
+  commentId: N:MyApp.Purchasing.Infrastructure.Data
+  id: MyApp.Purchasing.Infrastructure.Data
+  children:
+  - MyApp.Purchasing.Infrastructure.Data.PurchasingDbContext
+  - MyApp.Purchasing.Infrastructure.Data.PurchasingDbContextFactory
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Purchasing.Infrastructure.Data
+  nameWithType: MyApp.Purchasing.Infrastructure.Data
+  fullName: MyApp.Purchasing.Infrastructure.Data
+  type: Namespace
+  assemblies:
+  - MyApp.Purchasing.Infrastructure
+references:
+- uid: MyApp.Purchasing.Infrastructure.Data.PurchasingDbContext
+  commentId: T:MyApp.Purchasing.Infrastructure.Data.PurchasingDbContext
+  parent: MyApp.Purchasing.Infrastructure.Data
+  href: MyApp.Purchasing.Infrastructure.Data.PurchasingDbContext.html
+  name: PurchasingDbContext
+  nameWithType: PurchasingDbContext
+  fullName: MyApp.Purchasing.Infrastructure.Data.PurchasingDbContext
+- uid: MyApp.Purchasing.Infrastructure.Data.PurchasingDbContextFactory
+  commentId: T:MyApp.Purchasing.Infrastructure.Data.PurchasingDbContextFactory
+  href: MyApp.Purchasing.Infrastructure.Data.PurchasingDbContextFactory.html
+  name: PurchasingDbContextFactory
+  nameWithType: PurchasingDbContextFactory
+  fullName: MyApp.Purchasing.Infrastructure.Data.PurchasingDbContextFactory
+- uid: MyApp.Purchasing.Infrastructure.Data
+  commentId: N:MyApp.Purchasing.Infrastructure.Data
+  href: MyApp.html
+  name: MyApp.Purchasing.Infrastructure.Data
+  nameWithType: MyApp.Purchasing.Infrastructure.Data
+  fullName: MyApp.Purchasing.Infrastructure.Data
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Infrastructure
+    name: Infrastructure
+    href: MyApp.Purchasing.Infrastructure.html
+  - name: .
+  - uid: MyApp.Purchasing.Infrastructure.Data
+    name: Data
+    href: MyApp.Purchasing.Infrastructure.Data.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Purchasing
+    name: Purchasing
+    href: MyApp.Purchasing.html
+  - name: .
+  - uid: MyApp.Purchasing.Infrastructure
+    name: Infrastructure
+    href: MyApp.Purchasing.Infrastructure.html
+  - name: .
+  - uid: MyApp.Purchasing.Infrastructure.Data
+    name: Data
+    href: MyApp.Purchasing.Infrastructure.Data.html

@@ -1,0 +1,70 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Tests.Common
+  commentId: N:MyApp.Auth.Application.Tests.Common
+  id: MyApp.Auth.Application.Tests.Common
+  children:
+  - MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Application.Tests.Common
+  nameWithType: MyApp.Auth.Application.Tests.Common
+  fullName: MyApp.Auth.Application.Tests.Common
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Application.Tests
+references:
+- uid: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  commentId: T:MyApp.Auth.Application.Tests.Common.BaseServiceTest
+  parent: MyApp.Auth.Application.Tests.Common
+  href: MyApp.Auth.Application.Tests.Common.BaseServiceTest.html
+  name: BaseServiceTest
+  nameWithType: BaseServiceTest
+  fullName: MyApp.Auth.Application.Tests.Common.BaseServiceTest
+- uid: MyApp.Auth.Application.Tests.Common
+  commentId: N:MyApp.Auth.Application.Tests.Common
+  href: MyApp.html
+  name: MyApp.Auth.Application.Tests.Common
+  nameWithType: MyApp.Auth.Application.Tests.Common
+  fullName: MyApp.Auth.Application.Tests.Common
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Common
+    name: Common
+    href: MyApp.Auth.Application.Tests.Common.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Application
+    name: Application
+    href: MyApp.Auth.Application.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests
+    name: Tests
+    href: MyApp.Auth.Application.Tests.html
+  - name: .
+  - uid: MyApp.Auth.Application.Tests.Common
+    name: Common
+    href: MyApp.Auth.Application.Tests.Common.html

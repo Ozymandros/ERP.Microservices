@@ -1,0 +1,1383 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole
+  commentId: T:MyApp.Auth.Domain.Entities.ApplicationRole
+  id: ApplicationRole
+  parent: MyApp.Auth.Domain.Entities
+  children:
+  - MyApp.Auth.Domain.Entities.ApplicationRole.#ctor
+  - MyApp.Auth.Domain.Entities.ApplicationRole.#ctor(System.String)
+  - MyApp.Auth.Domain.Entities.ApplicationRole.CreatedAt
+  - MyApp.Auth.Domain.Entities.ApplicationRole.CreatedBy
+  - MyApp.Auth.Domain.Entities.ApplicationRole.Description
+  - MyApp.Auth.Domain.Entities.ApplicationRole.IsActive
+  - MyApp.Auth.Domain.Entities.ApplicationRole.RoleClaims
+  - MyApp.Auth.Domain.Entities.ApplicationRole.RolePermissions
+  - MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedAt
+  - MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedBy
+  - MyApp.Auth.Domain.Entities.ApplicationRole.UserRoles
+  langs:
+  - csharp
+  - vb
+  name: ApplicationRole
+  nameWithType: ApplicationRole
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: ApplicationRole
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+    startLine: 5
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Entities
+  syntax:
+    content: 'public class ApplicationRole : IdentityRole<Guid>, IAuditableEntity<Guid>, IAuditableEntity, IEntity<Guid>'
+    content.vb: Public Class ApplicationRole Inherits IdentityRole(Of Guid) Implements IAuditableEntity(Of Guid), IAuditableEntity, IEntity(Of Guid)
+  inheritance:
+  - System.Object
+  - Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}
+  implements:
+  - MyApp.Shared.Domain.Entities.IAuditableEntity{System.Guid}
+  - MyApp.Shared.Domain.Entities.IAuditableEntity
+  - MyApp.Shared.Domain.Entities.IEntity{System.Guid}
+  inheritedMembers:
+  - Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.ToString
+  - Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.Id
+  - Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.Name
+  - Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.NormalizedName
+  - Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.ConcurrencyStamp
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.#ctor(System.String)
+  commentId: M:MyApp.Auth.Domain.Entities.ApplicationRole.#ctor(System.String)
+  id: '#ctor(System.String)'
+  parent: MyApp.Auth.Domain.Entities.ApplicationRole
+  langs:
+  - csharp
+  - vb
+  name: ApplicationRole(string)
+  nameWithType: ApplicationRole.ApplicationRole(string)
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.ApplicationRole(string)
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+    startLine: 17
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Entities
+  syntax:
+    content: public ApplicationRole(string roleName)
+    parameters:
+    - id: roleName
+      type: System.String
+    content.vb: Public Sub New(roleName As String)
+  overload: MyApp.Auth.Domain.Entities.ApplicationRole.#ctor*
+  nameWithType.vb: ApplicationRole.New(String)
+  fullName.vb: MyApp.Auth.Domain.Entities.ApplicationRole.New(String)
+  name.vb: New(String)
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.#ctor
+  commentId: M:MyApp.Auth.Domain.Entities.ApplicationRole.#ctor
+  id: '#ctor'
+  parent: MyApp.Auth.Domain.Entities.ApplicationRole
+  langs:
+  - csharp
+  - vb
+  name: ApplicationRole()
+  nameWithType: ApplicationRole.ApplicationRole()
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.ApplicationRole()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+    startLine: 18
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Entities
+  syntax:
+    content: public ApplicationRole()
+    content.vb: Public Sub New()
+  overload: MyApp.Auth.Domain.Entities.ApplicationRole.#ctor*
+  nameWithType.vb: ApplicationRole.New()
+  fullName.vb: MyApp.Auth.Domain.Entities.ApplicationRole.New()
+  name.vb: New()
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.Description
+  commentId: P:MyApp.Auth.Domain.Entities.ApplicationRole.Description
+  id: Description
+  parent: MyApp.Auth.Domain.Entities.ApplicationRole
+  langs:
+  - csharp
+  - vb
+  name: Description
+  nameWithType: ApplicationRole.Description
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.Description
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Description
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+    startLine: 20
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Entities
+  syntax:
+    content: public string? Description { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Description As String
+  overload: MyApp.Auth.Domain.Entities.ApplicationRole.Description*
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.CreatedAt
+  commentId: P:MyApp.Auth.Domain.Entities.ApplicationRole.CreatedAt
+  id: CreatedAt
+  parent: MyApp.Auth.Domain.Entities.ApplicationRole
+  langs:
+  - csharp
+  - vb
+  name: CreatedAt
+  nameWithType: ApplicationRole.CreatedAt
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.CreatedAt
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreatedAt
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+    startLine: 22
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Entities
+  example: []
+  syntax:
+    content: public DateTime CreatedAt { get; set; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Public Property CreatedAt As Date
+  overload: MyApp.Auth.Domain.Entities.ApplicationRole.CreatedAt*
+  implements:
+  - MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.CreatedBy
+  commentId: P:MyApp.Auth.Domain.Entities.ApplicationRole.CreatedBy
+  id: CreatedBy
+  parent: MyApp.Auth.Domain.Entities.ApplicationRole
+  langs:
+  - csharp
+  - vb
+  name: CreatedBy
+  nameWithType: ApplicationRole.CreatedBy
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.CreatedBy
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: CreatedBy
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+    startLine: 23
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Entities
+  example: []
+  syntax:
+    content: public string CreatedBy { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property CreatedBy As String
+  overload: MyApp.Auth.Domain.Entities.ApplicationRole.CreatedBy*
+  implements:
+  - MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedAt
+  commentId: P:MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedAt
+  id: UpdatedAt
+  parent: MyApp.Auth.Domain.Entities.ApplicationRole
+  langs:
+  - csharp
+  - vb
+  name: UpdatedAt
+  nameWithType: ApplicationRole.UpdatedAt
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedAt
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdatedAt
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+    startLine: 24
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Entities
+  example: []
+  syntax:
+    content: public DateTime? UpdatedAt { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTime}
+    content.vb: Public Property UpdatedAt As Date?
+  overload: MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedAt*
+  implements:
+  - MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedBy
+  commentId: P:MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedBy
+  id: UpdatedBy
+  parent: MyApp.Auth.Domain.Entities.ApplicationRole
+  langs:
+  - csharp
+  - vb
+  name: UpdatedBy
+  nameWithType: ApplicationRole.UpdatedBy
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedBy
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UpdatedBy
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+    startLine: 25
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Entities
+  example: []
+  syntax:
+    content: public string? UpdatedBy { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property UpdatedBy As String
+  overload: MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedBy*
+  implements:
+  - MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.IsActive
+  commentId: P:MyApp.Auth.Domain.Entities.ApplicationRole.IsActive
+  id: IsActive
+  parent: MyApp.Auth.Domain.Entities.ApplicationRole
+  langs:
+  - csharp
+  - vb
+  name: IsActive
+  nameWithType: ApplicationRole.IsActive
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.IsActive
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: IsActive
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+    startLine: 27
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Entities
+  syntax:
+    content: public bool IsActive { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsActive As Boolean
+  overload: MyApp.Auth.Domain.Entities.ApplicationRole.IsActive*
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.UserRoles
+  commentId: P:MyApp.Auth.Domain.Entities.ApplicationRole.UserRoles
+  id: UserRoles
+  parent: MyApp.Auth.Domain.Entities.ApplicationRole
+  langs:
+  - csharp
+  - vb
+  name: UserRoles
+  nameWithType: ApplicationRole.UserRoles
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.UserRoles
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: UserRoles
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+    startLine: 30
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Entities
+  syntax:
+    content: public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.ICollection{MyApp.Auth.Domain.Entities.ApplicationUserRole}
+    content.vb: Public Overridable Property UserRoles As ICollection(Of ApplicationUserRole)
+  overload: MyApp.Auth.Domain.Entities.ApplicationRole.UserRoles*
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.RoleClaims
+  commentId: P:MyApp.Auth.Domain.Entities.ApplicationRole.RoleClaims
+  id: RoleClaims
+  parent: MyApp.Auth.Domain.Entities.ApplicationRole
+  langs:
+  - csharp
+  - vb
+  name: RoleClaims
+  nameWithType: ApplicationRole.RoleClaims
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.RoleClaims
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RoleClaims
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+    startLine: 31
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Entities
+  syntax:
+    content: public virtual ICollection<IdentityRoleClaim<Guid>> RoleClaims { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.ICollection{Microsoft.AspNetCore.Identity.IdentityRoleClaim{System.Guid}}
+    content.vb: Public Overridable Property RoleClaims As ICollection(Of IdentityRoleClaim(Of Guid))
+  overload: MyApp.Auth.Domain.Entities.ApplicationRole.RoleClaims*
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.RolePermissions
+  commentId: P:MyApp.Auth.Domain.Entities.ApplicationRole.RolePermissions
+  id: RolePermissions
+  parent: MyApp.Auth.Domain.Entities.ApplicationRole
+  langs:
+  - csharp
+  - vb
+  name: RolePermissions
+  nameWithType: ApplicationRole.RolePermissions
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.RolePermissions
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: RolePermissions
+    path: src/MyApp.Auth/MyApp.Auth.Domain/Entities/ApplicationRole.cs
+    startLine: 32
+  assemblies:
+  - MyApp.Auth.Domain
+  namespace: MyApp.Auth.Domain.Entities
+  syntax:
+    content: public virtual ICollection<RolePermission> RolePermissions { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.ICollection{RolePermission}
+    content.vb: Public Overridable Property RolePermissions As ICollection(Of RolePermission)
+  overload: MyApp.Auth.Domain.Entities.ApplicationRole.RolePermissions*
+references:
+- uid: MyApp.Auth.Domain.Entities
+  commentId: N:MyApp.Auth.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Auth.Domain.Entities
+  nameWithType: MyApp.Auth.Domain.Entities
+  fullName: MyApp.Auth.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Entities
+    name: Entities
+    href: MyApp.Auth.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Auth
+    name: Auth
+    href: MyApp.Auth.html
+  - name: .
+  - uid: MyApp.Auth.Domain
+    name: Domain
+    href: MyApp.Auth.Domain.html
+  - name: .
+  - uid: MyApp.Auth.Domain.Entities
+    name: Entities
+    href: MyApp.Auth.Domain.Entities.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}
+  commentId: T:Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}
+  parent: Microsoft.AspNetCore.Identity
+  definition: Microsoft.AspNetCore.Identity.IdentityRole`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1
+  name: IdentityRole<Guid>
+  nameWithType: IdentityRole<Guid>
+  fullName: Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>
+  nameWithType.vb: IdentityRole(Of Guid)
+  fullName.vb: Microsoft.AspNetCore.Identity.IdentityRole(Of System.Guid)
+  name.vb: IdentityRole(Of Guid)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IdentityRole`1
+    name: IdentityRole
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1
+  - name: <
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IdentityRole`1
+    name: IdentityRole
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity{System.Guid}
+  commentId: T:MyApp.Shared.Domain.Entities.IAuditableEntity{System.Guid}
+  parent: MyApp.Shared.Domain.Entities
+  definition: MyApp.Shared.Domain.Entities.IAuditableEntity`1
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity-1.html
+  name: IAuditableEntity<Guid>
+  nameWithType: IAuditableEntity<Guid>
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity<System.Guid>
+  nameWithType.vb: IAuditableEntity(Of Guid)
+  fullName.vb: MyApp.Shared.Domain.Entities.IAuditableEntity(Of System.Guid)
+  name.vb: IAuditableEntity(Of Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Entities.IAuditableEntity`1
+    name: IAuditableEntity
+    href: MyApp.Shared.Domain.Entities.IAuditableEntity-1.html
+  - name: <
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Entities.IAuditableEntity`1
+    name: IAuditableEntity
+    href: MyApp.Shared.Domain.Entities.IAuditableEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity
+  commentId: T:MyApp.Shared.Domain.Entities.IAuditableEntity
+  parent: MyApp.Shared.Domain.Entities
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html
+  name: IAuditableEntity
+  nameWithType: IAuditableEntity
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity
+- uid: MyApp.Shared.Domain.Entities.IEntity{System.Guid}
+  commentId: T:MyApp.Shared.Domain.Entities.IEntity{System.Guid}
+  parent: MyApp.Shared.Domain.Entities
+  definition: MyApp.Shared.Domain.Entities.IEntity`1
+  href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  name: IEntity<Guid>
+  nameWithType: IEntity<Guid>
+  fullName: MyApp.Shared.Domain.Entities.IEntity<System.Guid>
+  nameWithType.vb: IEntity(Of Guid)
+  fullName.vb: MyApp.Shared.Domain.Entities.IEntity(Of System.Guid)
+  name.vb: IEntity(Of Guid)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Entities.IEntity`1
+    name: IEntity
+    href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  - name: <
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Entities.IEntity`1
+    name: IEntity
+    href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.ToString
+  commentId: M:Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.ToString
+  parent: Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}
+  definition: Microsoft.AspNetCore.Identity.IdentityRole`1.ToString
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1.tostring
+  name: ToString()
+  nameWithType: IdentityRole<Guid>.ToString()
+  fullName: Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>.ToString()
+  nameWithType.vb: IdentityRole(Of Guid).ToString()
+  fullName.vb: Microsoft.AspNetCore.Identity.IdentityRole(Of System.Guid).ToString()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1.tostring
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.Id
+  commentId: P:Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.Id
+  parent: Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}
+  definition: Microsoft.AspNetCore.Identity.IdentityRole`1.Id
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1.id
+  name: Id
+  nameWithType: IdentityRole<Guid>.Id
+  fullName: Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>.Id
+  nameWithType.vb: IdentityRole(Of Guid).Id
+  fullName.vb: Microsoft.AspNetCore.Identity.IdentityRole(Of System.Guid).Id
+- uid: Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.Name
+  commentId: P:Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.Name
+  parent: Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}
+  definition: Microsoft.AspNetCore.Identity.IdentityRole`1.Name
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1.name
+  name: Name
+  nameWithType: IdentityRole<Guid>.Name
+  fullName: Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>.Name
+  nameWithType.vb: IdentityRole(Of Guid).Name
+  fullName.vb: Microsoft.AspNetCore.Identity.IdentityRole(Of System.Guid).Name
+- uid: Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.NormalizedName
+  commentId: P:Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.NormalizedName
+  parent: Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}
+  definition: Microsoft.AspNetCore.Identity.IdentityRole`1.NormalizedName
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1.normalizedname
+  name: NormalizedName
+  nameWithType: IdentityRole<Guid>.NormalizedName
+  fullName: Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>.NormalizedName
+  nameWithType.vb: IdentityRole(Of Guid).NormalizedName
+  fullName.vb: Microsoft.AspNetCore.Identity.IdentityRole(Of System.Guid).NormalizedName
+- uid: Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.ConcurrencyStamp
+  commentId: P:Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}.ConcurrencyStamp
+  parent: Microsoft.AspNetCore.Identity.IdentityRole{System.Guid}
+  definition: Microsoft.AspNetCore.Identity.IdentityRole`1.ConcurrencyStamp
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1.concurrencystamp
+  name: ConcurrencyStamp
+  nameWithType: IdentityRole<Guid>.ConcurrencyStamp
+  fullName: Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>.ConcurrencyStamp
+  nameWithType.vb: IdentityRole(Of Guid).ConcurrencyStamp
+  fullName.vb: Microsoft.AspNetCore.Identity.IdentityRole(Of System.Guid).ConcurrencyStamp
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Microsoft.AspNetCore.Identity.IdentityRole`1
+  commentId: T:Microsoft.AspNetCore.Identity.IdentityRole`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1
+  name: IdentityRole<TKey>
+  nameWithType: IdentityRole<TKey>
+  fullName: Microsoft.AspNetCore.Identity.IdentityRole<TKey>
+  nameWithType.vb: IdentityRole(Of TKey)
+  fullName.vb: Microsoft.AspNetCore.Identity.IdentityRole(Of TKey)
+  name.vb: IdentityRole(Of TKey)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IdentityRole`1
+    name: IdentityRole
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1
+  - name: <
+  - name: TKey
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IdentityRole`1
+    name: IdentityRole
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: )
+- uid: Microsoft.AspNetCore.Identity
+  commentId: N:Microsoft.AspNetCore.Identity
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.AspNetCore.Identity
+  nameWithType: Microsoft.AspNetCore.Identity
+  fullName: Microsoft.AspNetCore.Identity
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Identity
+    name: Identity
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Identity
+    name: Identity
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity`1
+  commentId: T:MyApp.Shared.Domain.Entities.IAuditableEntity`1
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity-1.html
+  name: IAuditableEntity<T>
+  nameWithType: IAuditableEntity<T>
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity<T>
+  nameWithType.vb: IAuditableEntity(Of T)
+  fullName.vb: MyApp.Shared.Domain.Entities.IAuditableEntity(Of T)
+  name.vb: IAuditableEntity(Of T)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Entities.IAuditableEntity`1
+    name: IAuditableEntity
+    href: MyApp.Shared.Domain.Entities.IAuditableEntity-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Entities.IAuditableEntity`1
+    name: IAuditableEntity
+    href: MyApp.Shared.Domain.Entities.IAuditableEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MyApp.Shared.Domain.Entities
+  commentId: N:MyApp.Shared.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Entities
+  nameWithType: MyApp.Shared.Domain.Entities
+  fullName: MyApp.Shared.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Entities
+    name: Entities
+    href: MyApp.Shared.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Entities
+    name: Entities
+    href: MyApp.Shared.Domain.Entities.html
+- uid: MyApp.Shared.Domain.Entities.IEntity`1
+  commentId: T:MyApp.Shared.Domain.Entities.IEntity`1
+  href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  name: IEntity<T>
+  nameWithType: IEntity<T>
+  fullName: MyApp.Shared.Domain.Entities.IEntity<T>
+  nameWithType.vb: IEntity(Of T)
+  fullName.vb: MyApp.Shared.Domain.Entities.IEntity(Of T)
+  name.vb: IEntity(Of T)
+  spec.csharp:
+  - uid: MyApp.Shared.Domain.Entities.IEntity`1
+    name: IEntity
+    href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MyApp.Shared.Domain.Entities.IEntity`1
+    name: IEntity
+    href: MyApp.Shared.Domain.Entities.IEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IdentityRole`1.ToString
+  commentId: M:Microsoft.AspNetCore.Identity.IdentityRole`1.ToString
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1.tostring
+  name: ToString()
+  nameWithType: IdentityRole<TKey>.ToString()
+  fullName: Microsoft.AspNetCore.Identity.IdentityRole<TKey>.ToString()
+  nameWithType.vb: IdentityRole(Of TKey).ToString()
+  fullName.vb: Microsoft.AspNetCore.Identity.IdentityRole(Of TKey).ToString()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IdentityRole`1.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IdentityRole`1.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1.tostring
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IdentityRole`1.Id
+  commentId: P:Microsoft.AspNetCore.Identity.IdentityRole`1.Id
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1.id
+  name: Id
+  nameWithType: IdentityRole<TKey>.Id
+  fullName: Microsoft.AspNetCore.Identity.IdentityRole<TKey>.Id
+  nameWithType.vb: IdentityRole(Of TKey).Id
+  fullName.vb: Microsoft.AspNetCore.Identity.IdentityRole(Of TKey).Id
+- uid: Microsoft.AspNetCore.Identity.IdentityRole`1.Name
+  commentId: P:Microsoft.AspNetCore.Identity.IdentityRole`1.Name
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1.name
+  name: Name
+  nameWithType: IdentityRole<TKey>.Name
+  fullName: Microsoft.AspNetCore.Identity.IdentityRole<TKey>.Name
+  nameWithType.vb: IdentityRole(Of TKey).Name
+  fullName.vb: Microsoft.AspNetCore.Identity.IdentityRole(Of TKey).Name
+- uid: Microsoft.AspNetCore.Identity.IdentityRole`1.NormalizedName
+  commentId: P:Microsoft.AspNetCore.Identity.IdentityRole`1.NormalizedName
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1.normalizedname
+  name: NormalizedName
+  nameWithType: IdentityRole<TKey>.NormalizedName
+  fullName: Microsoft.AspNetCore.Identity.IdentityRole<TKey>.NormalizedName
+  nameWithType.vb: IdentityRole(Of TKey).NormalizedName
+  fullName.vb: Microsoft.AspNetCore.Identity.IdentityRole(Of TKey).NormalizedName
+- uid: Microsoft.AspNetCore.Identity.IdentityRole`1.ConcurrencyStamp
+  commentId: P:Microsoft.AspNetCore.Identity.IdentityRole`1.ConcurrencyStamp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole-1.concurrencystamp
+  name: ConcurrencyStamp
+  nameWithType: IdentityRole<TKey>.ConcurrencyStamp
+  fullName: Microsoft.AspNetCore.Identity.IdentityRole<TKey>.ConcurrencyStamp
+  nameWithType.vb: IdentityRole(Of TKey).ConcurrencyStamp
+  fullName.vb: Microsoft.AspNetCore.Identity.IdentityRole(Of TKey).ConcurrencyStamp
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.#ctor*
+  commentId: Overload:MyApp.Auth.Domain.Entities.ApplicationRole.#ctor
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html#MyApp_Auth_Domain_Entities_ApplicationRole__ctor_System_String_
+  name: ApplicationRole
+  nameWithType: ApplicationRole.ApplicationRole
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.ApplicationRole
+  nameWithType.vb: ApplicationRole.New
+  fullName.vb: MyApp.Auth.Domain.Entities.ApplicationRole.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.Description*
+  commentId: Overload:MyApp.Auth.Domain.Entities.ApplicationRole.Description
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html#MyApp_Auth_Domain_Entities_ApplicationRole_Description
+  name: Description
+  nameWithType: ApplicationRole.Description
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.Description
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.CreatedAt*
+  commentId: Overload:MyApp.Auth.Domain.Entities.ApplicationRole.CreatedAt
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html#MyApp_Auth_Domain_Entities_ApplicationRole_CreatedAt
+  name: CreatedAt
+  nameWithType: ApplicationRole.CreatedAt
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.CreatedAt
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt
+  commentId: P:MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt
+  parent: MyApp.Shared.Domain.Entities.IAuditableEntity
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html#MyApp_Shared_Domain_Entities_IAuditableEntity_CreatedAt
+  name: CreatedAt
+  nameWithType: IAuditableEntity.CreatedAt
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedAt
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.CreatedBy*
+  commentId: Overload:MyApp.Auth.Domain.Entities.ApplicationRole.CreatedBy
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html#MyApp_Auth_Domain_Entities_ApplicationRole_CreatedBy
+  name: CreatedBy
+  nameWithType: ApplicationRole.CreatedBy
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.CreatedBy
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy
+  commentId: P:MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy
+  parent: MyApp.Shared.Domain.Entities.IAuditableEntity
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html#MyApp_Shared_Domain_Entities_IAuditableEntity_CreatedBy
+  name: CreatedBy
+  nameWithType: IAuditableEntity.CreatedBy
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.CreatedBy
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedAt*
+  commentId: Overload:MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedAt
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html#MyApp_Auth_Domain_Entities_ApplicationRole_UpdatedAt
+  name: UpdatedAt
+  nameWithType: ApplicationRole.UpdatedAt
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedAt
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt
+  commentId: P:MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt
+  parent: MyApp.Shared.Domain.Entities.IAuditableEntity
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html#MyApp_Shared_Domain_Entities_IAuditableEntity_UpdatedAt
+  name: UpdatedAt
+  nameWithType: IAuditableEntity.UpdatedAt
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedAt
+- uid: System.Nullable{System.DateTime}
+  commentId: T:System.Nullable{System.DateTime}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime?
+  nameWithType: DateTime?
+  fullName: System.DateTime?
+  nameWithType.vb: Date?
+  fullName.vb: Date?
+  name.vb: Date?
+  spec.csharp:
+  - uid: System.DateTime
+    name: DateTime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+  spec.vb:
+  - uid: System.DateTime
+    name: Date
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedBy*
+  commentId: Overload:MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedBy
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html#MyApp_Auth_Domain_Entities_ApplicationRole_UpdatedBy
+  name: UpdatedBy
+  nameWithType: ApplicationRole.UpdatedBy
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.UpdatedBy
+- uid: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy
+  commentId: P:MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy
+  parent: MyApp.Shared.Domain.Entities.IAuditableEntity
+  href: MyApp.Shared.Domain.Entities.IAuditableEntity.html#MyApp_Shared_Domain_Entities_IAuditableEntity_UpdatedBy
+  name: UpdatedBy
+  nameWithType: IAuditableEntity.UpdatedBy
+  fullName: MyApp.Shared.Domain.Entities.IAuditableEntity.UpdatedBy
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.IsActive*
+  commentId: Overload:MyApp.Auth.Domain.Entities.ApplicationRole.IsActive
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html#MyApp_Auth_Domain_Entities_ApplicationRole_IsActive
+  name: IsActive
+  nameWithType: ApplicationRole.IsActive
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.IsActive
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.UserRoles*
+  commentId: Overload:MyApp.Auth.Domain.Entities.ApplicationRole.UserRoles
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html#MyApp_Auth_Domain_Entities_ApplicationRole_UserRoles
+  name: UserRoles
+  nameWithType: ApplicationRole.UserRoles
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.UserRoles
+- uid: System.Collections.Generic.ICollection{MyApp.Auth.Domain.Entities.ApplicationUserRole}
+  commentId: T:System.Collections.Generic.ICollection{MyApp.Auth.Domain.Entities.ApplicationUserRole}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.ICollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  name: ICollection<ApplicationUserRole>
+  nameWithType: ICollection<ApplicationUserRole>
+  fullName: System.Collections.Generic.ICollection<MyApp.Auth.Domain.Entities.ApplicationUserRole>
+  nameWithType.vb: ICollection(Of ApplicationUserRole)
+  fullName.vb: System.Collections.Generic.ICollection(Of MyApp.Auth.Domain.Entities.ApplicationUserRole)
+  name.vb: ICollection(Of ApplicationUserRole)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: <
+  - uid: MyApp.Auth.Domain.Entities.ApplicationUserRole
+    name: ApplicationUserRole
+    href: MyApp.Auth.Domain.Entities.ApplicationUserRole.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MyApp.Auth.Domain.Entities.ApplicationUserRole
+    name: ApplicationUserRole
+    href: MyApp.Auth.Domain.Entities.ApplicationUserRole.html
+  - name: )
+- uid: System.Collections.Generic.ICollection`1
+  commentId: T:System.Collections.Generic.ICollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  name: ICollection<T>
+  nameWithType: ICollection<T>
+  fullName: System.Collections.Generic.ICollection<T>
+  nameWithType.vb: ICollection(Of T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T)
+  name.vb: ICollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.RoleClaims*
+  commentId: Overload:MyApp.Auth.Domain.Entities.ApplicationRole.RoleClaims
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html#MyApp_Auth_Domain_Entities_ApplicationRole_RoleClaims
+  name: RoleClaims
+  nameWithType: ApplicationRole.RoleClaims
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.RoleClaims
+- uid: System.Collections.Generic.ICollection{Microsoft.AspNetCore.Identity.IdentityRoleClaim{System.Guid}}
+  commentId: T:System.Collections.Generic.ICollection{Microsoft.AspNetCore.Identity.IdentityRoleClaim{System.Guid}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.ICollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  name: ICollection<IdentityRoleClaim<Guid>>
+  nameWithType: ICollection<IdentityRoleClaim<Guid>>
+  fullName: System.Collections.Generic.ICollection<Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>>
+  nameWithType.vb: ICollection(Of IdentityRoleClaim(Of Guid))
+  fullName.vb: System.Collections.Generic.ICollection(Of Microsoft.AspNetCore.Identity.IdentityRoleClaim(Of System.Guid))
+  name.vb: ICollection(Of IdentityRoleClaim(Of Guid))
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: <
+  - uid: Microsoft.AspNetCore.Identity.IdentityRoleClaim`1
+    name: IdentityRoleClaim
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityroleclaim-1
+  - name: <
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.AspNetCore.Identity.IdentityRoleClaim`1
+    name: IdentityRoleClaim
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityroleclaim-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  - name: )
+- uid: MyApp.Auth.Domain.Entities.ApplicationRole.RolePermissions*
+  commentId: Overload:MyApp.Auth.Domain.Entities.ApplicationRole.RolePermissions
+  href: MyApp.Auth.Domain.Entities.ApplicationRole.html#MyApp_Auth_Domain_Entities_ApplicationRole_RolePermissions
+  name: RolePermissions
+  nameWithType: ApplicationRole.RolePermissions
+  fullName: MyApp.Auth.Domain.Entities.ApplicationRole.RolePermissions
+- uid: System.Collections.Generic.ICollection{RolePermission}
+  commentId: T:System.Collections.Generic.ICollection{RolePermission}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.ICollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  name: ICollection<RolePermission>
+  nameWithType: ICollection<RolePermission>
+  fullName: System.Collections.Generic.ICollection<RolePermission>
+  nameWithType.vb: ICollection(Of RolePermission)
+  fullName.vb: System.Collections.Generic.ICollection(Of RolePermission)
+  name.vb: ICollection(Of RolePermission)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: <
+  - uid: RolePermission
+    name: RolePermission
+    href: RolePermission.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: RolePermission
+    name: RolePermission
+    href: RolePermission.html
+  - name: )

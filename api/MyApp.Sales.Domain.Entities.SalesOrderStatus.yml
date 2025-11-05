@@ -1,0 +1,209 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Domain.Entities.SalesOrderStatus
+  commentId: T:MyApp.Sales.Domain.Entities.SalesOrderStatus
+  id: SalesOrderStatus
+  parent: MyApp.Sales.Domain.Entities
+  children:
+  - MyApp.Sales.Domain.Entities.SalesOrderStatus.Cancelled
+  - MyApp.Sales.Domain.Entities.SalesOrderStatus.Confirmed
+  - MyApp.Sales.Domain.Entities.SalesOrderStatus.Draft
+  - MyApp.Sales.Domain.Entities.SalesOrderStatus.Invoiced
+  - MyApp.Sales.Domain.Entities.SalesOrderStatus.Shipped
+  langs:
+  - csharp
+  - vb
+  name: SalesOrderStatus
+  nameWithType: SalesOrderStatus
+  fullName: MyApp.Sales.Domain.Entities.SalesOrderStatus
+  type: Enum
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Domain/SalesOrderStatus.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: SalesOrderStatus
+    path: src/MyApp.Sales/MyApp.Sales.Domain/SalesOrderStatus.cs
+    startLine: 2
+  assemblies:
+  - MyApp.Sales.Domain
+  namespace: MyApp.Sales.Domain.Entities
+  syntax:
+    content: public enum SalesOrderStatus
+    content.vb: Public Enum SalesOrderStatus
+- uid: MyApp.Sales.Domain.Entities.SalesOrderStatus.Draft
+  commentId: F:MyApp.Sales.Domain.Entities.SalesOrderStatus.Draft
+  id: Draft
+  parent: MyApp.Sales.Domain.Entities.SalesOrderStatus
+  langs:
+  - csharp
+  - vb
+  name: Draft
+  nameWithType: SalesOrderStatus.Draft
+  fullName: MyApp.Sales.Domain.Entities.SalesOrderStatus.Draft
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Domain/SalesOrderStatus.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Draft
+    path: src/MyApp.Sales/MyApp.Sales.Domain/SalesOrderStatus.cs
+    startLine: 4
+  assemblies:
+  - MyApp.Sales.Domain
+  namespace: MyApp.Sales.Domain.Entities
+  syntax:
+    content: Draft = 0
+    return:
+      type: MyApp.Sales.Domain.Entities.SalesOrderStatus
+- uid: MyApp.Sales.Domain.Entities.SalesOrderStatus.Confirmed
+  commentId: F:MyApp.Sales.Domain.Entities.SalesOrderStatus.Confirmed
+  id: Confirmed
+  parent: MyApp.Sales.Domain.Entities.SalesOrderStatus
+  langs:
+  - csharp
+  - vb
+  name: Confirmed
+  nameWithType: SalesOrderStatus.Confirmed
+  fullName: MyApp.Sales.Domain.Entities.SalesOrderStatus.Confirmed
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Domain/SalesOrderStatus.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Confirmed
+    path: src/MyApp.Sales/MyApp.Sales.Domain/SalesOrderStatus.cs
+    startLine: 5
+  assemblies:
+  - MyApp.Sales.Domain
+  namespace: MyApp.Sales.Domain.Entities
+  syntax:
+    content: Confirmed = 1
+    return:
+      type: MyApp.Sales.Domain.Entities.SalesOrderStatus
+- uid: MyApp.Sales.Domain.Entities.SalesOrderStatus.Invoiced
+  commentId: F:MyApp.Sales.Domain.Entities.SalesOrderStatus.Invoiced
+  id: Invoiced
+  parent: MyApp.Sales.Domain.Entities.SalesOrderStatus
+  langs:
+  - csharp
+  - vb
+  name: Invoiced
+  nameWithType: SalesOrderStatus.Invoiced
+  fullName: MyApp.Sales.Domain.Entities.SalesOrderStatus.Invoiced
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Domain/SalesOrderStatus.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Invoiced
+    path: src/MyApp.Sales/MyApp.Sales.Domain/SalesOrderStatus.cs
+    startLine: 6
+  assemblies:
+  - MyApp.Sales.Domain
+  namespace: MyApp.Sales.Domain.Entities
+  syntax:
+    content: Invoiced = 2
+    return:
+      type: MyApp.Sales.Domain.Entities.SalesOrderStatus
+- uid: MyApp.Sales.Domain.Entities.SalesOrderStatus.Shipped
+  commentId: F:MyApp.Sales.Domain.Entities.SalesOrderStatus.Shipped
+  id: Shipped
+  parent: MyApp.Sales.Domain.Entities.SalesOrderStatus
+  langs:
+  - csharp
+  - vb
+  name: Shipped
+  nameWithType: SalesOrderStatus.Shipped
+  fullName: MyApp.Sales.Domain.Entities.SalesOrderStatus.Shipped
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Domain/SalesOrderStatus.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Shipped
+    path: src/MyApp.Sales/MyApp.Sales.Domain/SalesOrderStatus.cs
+    startLine: 7
+  assemblies:
+  - MyApp.Sales.Domain
+  namespace: MyApp.Sales.Domain.Entities
+  syntax:
+    content: Shipped = 3
+    return:
+      type: MyApp.Sales.Domain.Entities.SalesOrderStatus
+- uid: MyApp.Sales.Domain.Entities.SalesOrderStatus.Cancelled
+  commentId: F:MyApp.Sales.Domain.Entities.SalesOrderStatus.Cancelled
+  id: Cancelled
+  parent: MyApp.Sales.Domain.Entities.SalesOrderStatus
+  langs:
+  - csharp
+  - vb
+  name: Cancelled
+  nameWithType: SalesOrderStatus.Cancelled
+  fullName: MyApp.Sales.Domain.Entities.SalesOrderStatus.Cancelled
+  type: Field
+  source:
+    remote:
+      path: src/MyApp.Sales/MyApp.Sales.Domain/SalesOrderStatus.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Cancelled
+    path: src/MyApp.Sales/MyApp.Sales.Domain/SalesOrderStatus.cs
+    startLine: 8
+  assemblies:
+  - MyApp.Sales.Domain
+  namespace: MyApp.Sales.Domain.Entities
+  syntax:
+    content: Cancelled = 4
+    return:
+      type: MyApp.Sales.Domain.Entities.SalesOrderStatus
+references:
+- uid: MyApp.Sales.Domain.Entities
+  commentId: N:MyApp.Sales.Domain.Entities
+  href: MyApp.html
+  name: MyApp.Sales.Domain.Entities
+  nameWithType: MyApp.Sales.Domain.Entities
+  fullName: MyApp.Sales.Domain.Entities
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Domain
+    name: Domain
+    href: MyApp.Sales.Domain.html
+  - name: .
+  - uid: MyApp.Sales.Domain.Entities
+    name: Entities
+    href: MyApp.Sales.Domain.Entities.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Domain
+    name: Domain
+    href: MyApp.Sales.Domain.html
+  - name: .
+  - uid: MyApp.Sales.Domain.Entities
+    name: Entities
+    href: MyApp.Sales.Domain.Entities.html
+- uid: MyApp.Sales.Domain.Entities.SalesOrderStatus
+  commentId: T:MyApp.Sales.Domain.Entities.SalesOrderStatus
+  parent: MyApp.Sales.Domain.Entities
+  href: MyApp.Sales.Domain.Entities.SalesOrderStatus.html
+  name: SalesOrderStatus
+  nameWithType: SalesOrderStatus
+  fullName: MyApp.Sales.Domain.Entities.SalesOrderStatus

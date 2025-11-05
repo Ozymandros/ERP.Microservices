@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Auth.Application.Mappings
+  commentId: N:MyApp.Auth.Application.Mappings
+  id: MyApp.Auth.Application.Mappings
+  children:
+  - MyApp.Auth.Application.Mappings.AuthMappingProfile
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Auth.Application.Mappings
+  nameWithType: MyApp.Auth.Application.Mappings
+  fullName: MyApp.Auth.Application.Mappings
+  type: Namespace
+  assemblies:
+  - MyApp.Auth.Application
+references:
+- uid: MyApp.Auth.Application.Mappings.AuthMappingProfile
+  commentId: T:MyApp.Auth.Application.Mappings.AuthMappingProfile
+  href: MyApp.Auth.Application.Mappings.AuthMappingProfile.html
+  name: AuthMappingProfile
+  nameWithType: AuthMappingProfile
+  fullName: MyApp.Auth.Application.Mappings.AuthMappingProfile

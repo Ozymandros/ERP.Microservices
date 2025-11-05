@@ -1,0 +1,62 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Domain.Caching
+  commentId: N:MyApp.Shared.Domain.Caching
+  id: MyApp.Shared.Domain.Caching
+  children:
+  - MyApp.Shared.Domain.Caching.ICacheService
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Shared.Domain.Caching
+  nameWithType: MyApp.Shared.Domain.Caching
+  fullName: MyApp.Shared.Domain.Caching
+  type: Namespace
+  assemblies:
+  - MyApp.Shared.Domain
+references:
+- uid: MyApp.Shared.Domain.Caching.ICacheService
+  commentId: T:MyApp.Shared.Domain.Caching.ICacheService
+  parent: MyApp.Shared.Domain.Caching
+  href: MyApp.Shared.Domain.Caching.ICacheService.html
+  name: ICacheService
+  nameWithType: ICacheService
+  fullName: MyApp.Shared.Domain.Caching.ICacheService
+- uid: MyApp.Shared.Domain.Caching
+  commentId: N:MyApp.Shared.Domain.Caching
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Caching
+  nameWithType: MyApp.Shared.Domain.Caching
+  fullName: MyApp.Shared.Domain.Caching
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Caching
+    name: Caching
+    href: MyApp.Shared.Domain.Caching.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Caching
+    name: Caching
+    href: MyApp.Shared.Domain.Caching.html

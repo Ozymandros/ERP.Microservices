@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Security Remediation Plan | ERP Microservices Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Security Remediation Plan | ERP Microservices Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/security/SECURITY_REMEDIATION_PLAN.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="ERP Microservices">
+            ERP Microservices
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="security-remediation-plan">Security Remediation Plan</h1>
+
+<h2 id="-executive-summary">📊 Executive Summary</h2>
+<p>Your infrastructure has <strong>critical security gaps</strong> - unused parameters were actually <strong>required for security</strong>. This document outlines the remediation plan to implement proper:</p>
+<ul>
+<li>✅ Managed Identity authentication</li>
+<li>✅ RBAC role assignments</li>
+<li>✅ Key Vault secret management</li>
+<li>✅ App Configuration security</li>
+<li>✅ Secure service-to-service connections</li>
+</ul>
+<p><strong>Status:</strong> Partially Remediated (See sections below)</p>
+<hr>
+<h2 id="-critical-issues-found">🔴 Critical Issues Found</h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>managedIdentityPrincipalId</code> unused in container-app-service.bicep</td>
+<td>🔴 CRITICAL</td>
+<td>✅ Fixed</td>
+<td>Wired to RBAC outputs</td>
+</tr>
+<tr>
+<td><code>logAnalyticsWorkspaceId</code> unused in container-app-service.bicep</td>
+<td>🟡 MEDIUM</td>
+<td>✅ Fixed</td>
+<td>Confirmed unused (handled at env level)</td>
+</tr>
+<tr>
+<td><code>cache_password</code> unused in main.bicep</td>
+<td>🔴 CRITICAL</td>
+<td>⏳ Pending</td>
+<td>Wire to Redis password config</td>
+</tr>
+<tr>
+<td><code>principalId</code> unused in resources.bicep</td>
+<td>🔴 CRITICAL</td>
+<td>⏳ Pending</td>
+<td>Create RBAC role assignments</td>
+</tr>
+<tr>
+<td><code>principalId</code> unused in myapp-sqlserver-roles.module.bicep</td>
+<td>🔴 CRITICAL</td>
+<td>⏳ Pending</td>
+<td>Wire to database role assignments</td>
+</tr>
+<tr>
+<td><code>environmentName</code> unused in app-configuration.bicep</td>
+<td>🟡 MEDIUM</td>
+<td>⏳ Pending</td>
+<td>Use in config naming convention</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-completed-remediations">✅ Completed Remediations</h2>
+<h3 id="1-container-app-servicebicep---managed-identity"><strong>1. container-app-service.bicep - Managed Identity</strong></h3>
+<p><strong>Fixed:</strong> Added proper managed identity principal output</p>
+<pre><code class="lang-bicep"># BEFORE (Unused parameter)
+@description('Managed Identity Principal ID')
+param managedIdentityPrincipalId string = ''
+
+# AFTER (Required for RBAC)
+@description('Managed Identity Principal ID for RBAC role assignments')
+param managedIdentityPrincipalId string
+
+# Added output
+output managedIdentityPrincipalId string = containerApp.identity.principalId
+</code></pre>
+<p><strong>Why:</strong> Services need managed identity principal ID to:</p>
+<ul>
+<li>✅ Grant Key Vault access</li>
+<li>✅ Grant App Configuration access</li>
+<li>✅ Grant SQL Database access</li>
+<li>✅ Grant Redis access</li>
+</ul>
+<p><strong>Usage:</strong> Passed to RBAC role assignment modules</p>
+<hr>
+<h3 id="2-container-app-servicebicep---log-analytics"><strong>2. container-app-service.bicep - Log Analytics</strong></h3>
+<p><strong>Status:</strong> Confirmed unused parameter - correctly removed</p>
+<pre><code class="lang-bicep"># REMOVED (Not needed at service level)
+param logAnalyticsWorkspaceId string = ''
+
+# WHY: Container Apps Environment already configured with diagnostics
+# Logging handled at environment level, not service level
+</code></pre>
+<hr>
+<h2 id="-pending-remediations">⏳ Pending Remediations</h2>
+<h3 id="3-mainbicep---cache_password"><strong>3. main.bicep - cache_password</strong></h3>
+<p><strong>Status:</strong> ⏳ Pending Fix</p>
+<p><strong>Current Issue:</strong></p>
+<pre><code class="lang-bicep">@description('Redis cache password')
+@secure()
+param cache_password string = ''  # ❌ UNUSED
+</code></pre>
+<p><strong>Required Fix:</strong></p>
+<pre><code class="lang-bicep"># Step 1: Wire to Redis resource
+resource redis 'Microsoft.Cache/redis@2023-08-01' = {
+  name: redisCacheName
+  location: location
+  properties: {
+    sku: {
+      name: 'Standard'
+      family: 'C'
+      capacity: 1
+    }
+    minimumTlsVersion: '1.2'
+    publicNetworkAccess: 'Enabled'
+    # ✅ Wire password here
+    redisConfiguration: {
+      requireauth: 'true'
+      'maxmemory-policy': 'allkeys-lru'
+    }
+  }
+}
+
+# Step 2: Store in Key Vault
+resource redisCachePassword 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
+  parent: keyVault
+  name: 'redis-cache-password'
+  properties: {
+    value: cache_password
+  }
+}
+
+# Step 3: Reference in App Configuration
+resource redisPasswordRef 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  parent: appConfig
+  name: 'Redis:Password'
+  properties: {
+    value: '@Microsoft.KeyVault(SecretUri=https://keyvault-name.vault.azure.net/secrets/redis-cache-password/)'
+    contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
+  }
+}
+</code></pre>
+<p><strong>Why:</strong> Services need Redis password to:</p>
+<ul>
+<li>✅ Authenticate to Redis cache</li>
+<li>✅ Read from cache (inventory, orders, etc.)</li>
+<li>✅ Write to cache (session storage, etc.)</li>
+</ul>
+<hr>
+<h3 id="4-resourcesbicep---principalid-for-rbac"><strong>4. resources.bicep - principalId for RBAC</strong></h3>
+<p><strong>Status:</strong> ⏳ Pending Fix</p>
+<p><strong>Current Issue:</strong></p>
+<pre><code class="lang-bicep">param principalId string = ''  # ❌ UNUSED - Should be for RBAC
+</code></pre>
+<p><strong>Required Fix:</strong></p>
+<pre><code class="lang-bicep"># Create RBAC role assignments for Key Vault access
+resource keyVaultSecretsUserRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: keyVault
+  name: guid(resourceGroup().id, principalId, 'Key Vault Secrets User')
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
+    principalId: principalId  # ✅ Wire managed identity principal
+    principalType: 'ServicePrincipal'
+  }
+}
+
+# Create RBAC role assignments for App Configuration access
+resource appConfigDataReaderRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: appConfig
+  name: guid(resourceGroup().id, principalId, 'App Configuration Data Reader')
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '516239f1-63e1-4108-9b7f-3ee94da9555c')
+    principalId: principalId  # ✅ Wire managed identity principal
+    principalType: 'ServicePrincipal'
+  }
+}
+</code></pre>
+<p><strong>Why:</strong> Services need RBAC permissions to:</p>
+<ul>
+<li>✅ Read secrets from Key Vault (JWT secret, Redis password, SQL keys)</li>
+<li>✅ Read settings from App Configuration (JWT issuer, audience, CORS origin)</li>
+<li>✅ Ensure secure access without password sharing</li>
+</ul>
+<hr>
+<h3 id="5-myapp-sqlserver-rolesmodulebicep---principalid-for-database"><strong>5. myapp-sqlserver-roles.module.bicep - principalId for Database</strong></h3>
+<p><strong>Status:</strong> ⏳ Pending Fix</p>
+<p><strong>Current Issue:</strong></p>
+<pre><code class="lang-bicep">param principalId string = ''  # ❌ UNUSED
+resource myapp_sqlserver 'Microsoft.Sql/servers@...' existing { }  # ❌ UNUSED
+resource sqlServerAdmin 'Microsoft.ManagedIdentity/userAssignedIdentities@...' existing { }  # ❌ UNUSED
+resource mi 'Microsoft.ManagedIdentity/userAssignedIdentities@...' existing { }  # ❌ UNUSED
+</code></pre>
+<p><strong>Required Fix:</strong></p>
+<pre><code class="lang-bicep"># Use principalId for SQL database role assignment
+resource sqlDatabaseRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: sqlDatabase
+  name: guid(resourceGroup().id, principalId, 'SQL Database Contributor')
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9b7fa17d-e63a-4465-b752-700b8ab5191a')
+    principalId: principalId  # ✅ Wire managed identity principal
+    principalType: 'ServicePrincipal'
+  }
+}
+
+# Create SQL user for managed identity
+resource sqlUserCreation 'Microsoft.Sql/servers/databases/vulnerabilityAssessments/baselines@2023-02-01-preview' = {
+  parent: sqlDatabase
+  name: 'default'
+  properties: {
+    # SQL user created automatically when RBAC role assigned
+  }
+}
+</code></pre>
+<p><strong>Why:</strong> Services need database access to:</p>
+<ul>
+<li>✅ Auth service: Read user authentication data</li>
+<li>✅ Inventory service: Read/write inventory data</li>
+<li>✅ Orders service: Read/write order data</li>
+<li>✅ Billing service: Read/write billing data</li>
+</ul>
+<hr>
+<h3 id="6-app-configurationbicep---environmentname"><strong>6. app-configuration.bicep - environmentName</strong></h3>
+<p><strong>Status:</strong> ⏳ Pending Fix</p>
+<p><strong>Current Issue:</strong></p>
+<pre><code class="lang-bicep">param environmentName string = 'Production'  # ❌ UNUSED
+var appConfigName = 'appconfig-${uniqueString(resourceGroup().id)}'  # ❌ Missing environment
+</code></pre>
+<p><strong>Required Fix:</strong></p>
+<pre><code class="lang-bicep"># Use environmentName in naming
+var appConfigName = 'appconfig-${toLower(environmentName)}-${uniqueString(resourceGroup().id)}'
+var keyVaultName = 'kv-${toLower(environmentName)}-${uniqueString(resourceGroup().id)}'
+
+# Use environmentName for environment-specific configuration
+resource environmentLabel 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  parent: appConfig
+  name: 'Environment:Name'
+  properties: {
+    value: environmentName
+    label: 'app-metadata'
+  }
+}
+
+# Create environment-specific settings using labels
+resource productionSettings 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  parent: appConfig
+  name: 'Database:ConnectionString'
+  properties: {
+    value: '@Microsoft.KeyVault(SecretUri=https://${keyVaultName}.vault.azure.net/secrets/sql-${toLower(environmentName)}/)'
+    contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
+    label: environmentName  # ✅ Environment-specific label
+  }
+}
+</code></pre>
+<p><strong>Why:</strong> Environment-specific configuration needed for:</p>
+<ul>
+<li>✅ Different database connection strings (prod vs staging vs dev)</li>
+<li>✅ Different API endpoints (prod vs staging vs dev)</li>
+<li>✅ Different security settings per environment</li>
+<li>✅ Easy promotion across environments</li>
+</ul>
+<hr>
+<h2 id="-implementation-steps">🔧 Implementation Steps</h2>
+<h3 id="phase-1-fix-container-app-service--done"><strong>Phase 1: Fix Container App Service</strong> ✅ DONE</h3>
+<ul>
+<li>[x] Add managed identity principal output</li>
+<li>[x] Document why parameters are needed</li>
+<li>[x] Remove truly unused parameters</li>
+</ul>
+<h3 id="phase-2-fix-main-bicep--next"><strong>Phase 2: Fix Main Bicep</strong> ⏳ NEXT</h3>
+<ul>
+<li>[ ] Wire <code>cache_password</code> to Redis resource</li>
+<li>[ ] Create role assignment for Redis password in Key Vault</li>
+<li>[ ] Document Redis authentication flow</li>
+</ul>
+<h3 id="phase-3-fix-rbac-policies--next"><strong>Phase 3: Fix RBAC Policies</strong> ⏳ NEXT</h3>
+<ul>
+<li>[ ] Wire <code>principalId</code> to Key Vault role assignments</li>
+<li>[ ] Wire <code>principalId</code> to App Configuration role assignments</li>
+<li>[ ] Wire <code>principalId</code> to SQL Database role assignments</li>
+<li>[ ] Document RBAC permission model</li>
+</ul>
+<h3 id="phase-4-fix-database-roles--next"><strong>Phase 4: Fix Database Roles</strong> ⏳ NEXT</h3>
+<ul>
+<li>[ ] Wire database role assignments</li>
+<li>[ ] Create SQL users for managed identities</li>
+<li>[ ] Document database authentication flow</li>
+</ul>
+<h3 id="phase-5-fix-environment-config--next"><strong>Phase 5: Fix Environment Config</strong> ⏳ NEXT</h3>
+<ul>
+<li>[ ] Use <code>environmentName</code> in resource naming</li>
+<li>[ ] Create environment-specific App Configuration labels</li>
+<li>[ ] Support dev/staging/prod deployments</li>
+</ul>
+<h3 id="phase-6-validation--testing--final"><strong>Phase 6: Validation &amp; Testing</strong> ⏳ FINAL</h3>
+<ul>
+<li>[ ] Run <code>./validate-bicep.ps1</code></li>
+<li>[ ] Run <code>./validate-bicep--what-if.ps1</code></li>
+<li>[ ] Deploy to test environment</li>
+<li>[ ] Verify all connections work</li>
+</ul>
+<hr>
+<h2 id="-validation-commands">🧪 Validation Commands</h2>
+<pre><code class="lang-powershell"># Validate all Bicep files
+./validate-bicep.ps1 -ShowDetails
+
+# Preview deployment with security fixes
+./validate-bicep--what-if.ps1 -Location &quot;eastus&quot;
+
+# Deploy to Azure
+azd deploy
+
+# Verify managed identities created
+az identity list --resource-group myapp-rg --output table
+
+# Verify RBAC role assignments
+az role assignment list --resource-group myapp-rg --output table
+
+# Verify Key Vault access
+az keyvault secret list --vault-name &lt;keyvault-name&gt;
+
+# Verify App Configuration
+az appconfig kv list --name &lt;appconfig-name&gt;
+
+# Test service connectivity
+kubectl logs -n containers deployment/auth-service
+kubectl logs -n containers deployment/orders-service
+</code></pre>
+<hr>
+<h2 id="-deployment-checklist">📝 Deployment Checklist</h2>
+<p>Before deploying infrastructure:</p>
+<ul>
+<li>[ ] All Bicep files validate without errors</li>
+<li>[ ] All parameters are documented</li>
+<li>[ ] Managed identities are wired to RBAC roles</li>
+<li>[ ] Key Vault access policies are created</li>
+<li>[ ] App Configuration RBAC is created</li>
+<li>[ ] Database role assignments are configured</li>
+<li>[ ] Redis password is secured in Key Vault</li>
+<li>[ ] Environment-specific naming is implemented</li>
+</ul>
+<p>After deploying infrastructure:</p>
+<ul>
+<li>[ ] Verify all resources created in Azure</li>
+<li>[ ] Verify managed identities assigned</li>
+<li>[ ] Verify role assignments applied</li>
+<li>[ ] Verify Key Vault has all secrets</li>
+<li>[ ] Verify App Configuration has all settings</li>
+<li>[ ] Verify services can authenticate to Key Vault</li>
+<li>[ ] Verify services can read App Configuration</li>
+<li>[ ] Verify services can authenticate to databases</li>
+<li>[ ] Verify services can connect to Redis</li>
+</ul>
+<hr>
+<h2 id="-common-issues--fixes">🆘 Common Issues &amp; Fixes</h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>403 Forbidden to Key Vault</td>
+<td>Missing role assignment</td>
+<td>Verify RBAC role assigned to managed identity</td>
+</tr>
+<tr>
+<td>Redis connection refused</td>
+<td>Missing password</td>
+<td>Ensure password stored in Key Vault and referenced</td>
+</tr>
+<tr>
+<td>SQL authentication failed</td>
+<td>No DB user for identity</td>
+<td>Create user: <code>CREATE USER [identity-name] FROM EXTERNAL PROVIDER</code></td>
+</tr>
+<tr>
+<td>App Config read fails</td>
+<td>Missing role assignment</td>
+<td>Assign &quot;App Configuration Data Reader&quot; role</td>
+</tr>
+<tr>
+<td>Services can't find settings</td>
+<td>App Config not wired</td>
+<td>Verify AppConfiguration__ConnectionString env var</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-next-steps">📚 Next Steps</h2>
+<ol>
+<li><strong>Review</strong> the pending remediation steps (Phases 2-5)</li>
+<li><strong>Implement</strong> each phase following the provided Bicep examples</li>
+<li><strong>Validate</strong> using the commands provided</li>
+<li><strong>Deploy</strong> using <code>azd deploy</code></li>
+<li><strong>Verify</strong> post-deployment using the checklist</li>
+</ol>
+<p><strong>Recommendation:</strong> Proceed with Phase 2 (Fix Main Bicep) to secure Redis cache password handling.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Ozymandros/ERP.Microservices/blob/main/docs/security/SECURITY_REMEDIATION_PLAN.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          ERP Microservices - A cloud-native ERP system built with .NET 9
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

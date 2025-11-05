@@ -1,0 +1,100 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Sales.Application.Contracts.DTOs
+  commentId: N:MyApp.Sales.Application.Contracts.DTOs
+  id: MyApp.Sales.Application.Contracts.DTOs
+  children:
+  - MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto
+  - MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderLineDto
+  - MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+  - MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+  - MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Sales.Application.Contracts.DTOs
+  nameWithType: MyApp.Sales.Application.Contracts.DTOs
+  fullName: MyApp.Sales.Application.Contracts.DTOs
+  type: Namespace
+  assemblies:
+  - MyApp.Sales.Application.Contracts
+references:
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+  commentId: T:MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+  parent: MyApp.Sales.Application.Contracts.DTOs
+  href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto.html
+  name: SalesOrderDto
+  nameWithType: SalesOrderDto
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderDto
+- uid: MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto
+  commentId: T:MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto
+  href: MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto.html
+  name: SalesOrderLineDto
+  nameWithType: SalesOrderLineDto
+  fullName: MyApp.Sales.Application.Contracts.DTOs.SalesOrderLineDto
+- uid: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+  commentId: T:MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+  parent: MyApp.Sales.Application.Contracts.DTOs
+  href: MyApp.Sales.Application.Contracts.DTOs.CustomerDto.html
+  name: CustomerDto
+  nameWithType: CustomerDto
+  fullName: MyApp.Sales.Application.Contracts.DTOs.CustomerDto
+- uid: MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto
+  commentId: T:MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto
+  parent: MyApp.Sales.Application.Contracts.DTOs
+  href: MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto.html
+  name: CreateUpdateSalesOrderDto
+  nameWithType: CreateUpdateSalesOrderDto
+  fullName: MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderDto
+- uid: MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderLineDto
+  commentId: T:MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderLineDto
+  href: MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderLineDto.html
+  name: CreateUpdateSalesOrderLineDto
+  nameWithType: CreateUpdateSalesOrderLineDto
+  fullName: MyApp.Sales.Application.Contracts.DTOs.CreateUpdateSalesOrderLineDto
+- uid: MyApp.Sales.Application.Contracts.DTOs
+  commentId: N:MyApp.Sales.Application.Contracts.DTOs
+  href: MyApp.html
+  name: MyApp.Sales.Application.Contracts.DTOs
+  nameWithType: MyApp.Sales.Application.Contracts.DTOs
+  fullName: MyApp.Sales.Application.Contracts.DTOs
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts
+    name: Contracts
+    href: MyApp.Sales.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Sales.Application.Contracts.DTOs.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Sales
+    name: Sales
+    href: MyApp.Sales.html
+  - name: .
+  - uid: MyApp.Sales.Application
+    name: Application
+    href: MyApp.Sales.Application.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts
+    name: Contracts
+    href: MyApp.Sales.Application.Contracts.html
+  - name: .
+  - uid: MyApp.Sales.Application.Contracts.DTOs
+    name: DTOs
+    href: MyApp.Sales.Application.Contracts.DTOs.html

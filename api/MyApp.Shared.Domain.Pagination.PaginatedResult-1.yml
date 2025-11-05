@@ -1,0 +1,810 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+  commentId: T:MyApp.Shared.Domain.Pagination.PaginatedResult`1
+  id: PaginatedResult`1
+  parent: MyApp.Shared.Domain.Pagination
+  children:
+  - MyApp.Shared.Domain.Pagination.PaginatedResult`1.#ctor
+  - MyApp.Shared.Domain.Pagination.PaginatedResult`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Int32,System.Int32,System.Int32)
+  - MyApp.Shared.Domain.Pagination.PaginatedResult`1.HasNextPage
+  - MyApp.Shared.Domain.Pagination.PaginatedResult`1.HasPreviousPage
+  - MyApp.Shared.Domain.Pagination.PaginatedResult`1.Items
+  - MyApp.Shared.Domain.Pagination.PaginatedResult`1.PageNumber
+  - MyApp.Shared.Domain.Pagination.PaginatedResult`1.PageSize
+  - MyApp.Shared.Domain.Pagination.PaginatedResult`1.TotalCount
+  - MyApp.Shared.Domain.Pagination.PaginatedResult`1.TotalPages
+  langs:
+  - csharp
+  - vb
+  name: PaginatedResult<T>
+  nameWithType: PaginatedResult<T>
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>
+  type: Class
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: PaginatedResult
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+    startLine: 6
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  summary: Generic paginated result wrapper for list responses
+  example: []
+  syntax:
+    content: public class PaginatedResult<T>
+    typeParameters:
+    - id: T
+      description: Type of items in the result
+    content.vb: Public Class PaginatedResult(Of T)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  nameWithType.vb: PaginatedResult(Of T)
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T)
+  name.vb: PaginatedResult(Of T)
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.Items
+  commentId: P:MyApp.Shared.Domain.Pagination.PaginatedResult`1.Items
+  id: Items
+  parent: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+  langs:
+  - csharp
+  - vb
+  name: Items
+  nameWithType: PaginatedResult<T>.Items
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.Items
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: Items
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+    startLine: 11
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  summary: Items for the current page
+  example: []
+  syntax:
+    content: public IEnumerable<T> Items { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{{T}}
+    content.vb: Public Property Items As IEnumerable(Of T)
+  overload: MyApp.Shared.Domain.Pagination.PaginatedResult`1.Items*
+  nameWithType.vb: PaginatedResult(Of T).Items
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).Items
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.PageNumber
+  commentId: P:MyApp.Shared.Domain.Pagination.PaginatedResult`1.PageNumber
+  id: PageNumber
+  parent: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+  langs:
+  - csharp
+  - vb
+  name: PageNumber
+  nameWithType: PaginatedResult<T>.PageNumber
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.PageNumber
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: PageNumber
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+    startLine: 16
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  summary: Current page number (1-indexed)
+  example: []
+  syntax:
+    content: public int PageNumber { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property PageNumber As Integer
+  overload: MyApp.Shared.Domain.Pagination.PaginatedResult`1.PageNumber*
+  nameWithType.vb: PaginatedResult(Of T).PageNumber
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).PageNumber
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.PageSize
+  commentId: P:MyApp.Shared.Domain.Pagination.PaginatedResult`1.PageSize
+  id: PageSize
+  parent: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+  langs:
+  - csharp
+  - vb
+  name: PageSize
+  nameWithType: PaginatedResult<T>.PageSize
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.PageSize
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: PageSize
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+    startLine: 21
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  summary: Number of items per page
+  example: []
+  syntax:
+    content: public int PageSize { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property PageSize As Integer
+  overload: MyApp.Shared.Domain.Pagination.PaginatedResult`1.PageSize*
+  nameWithType.vb: PaginatedResult(Of T).PageSize
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).PageSize
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.TotalCount
+  commentId: P:MyApp.Shared.Domain.Pagination.PaginatedResult`1.TotalCount
+  id: TotalCount
+  parent: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+  langs:
+  - csharp
+  - vb
+  name: TotalCount
+  nameWithType: PaginatedResult<T>.TotalCount
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.TotalCount
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: TotalCount
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+    startLine: 26
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  summary: Total number of items across all pages
+  example: []
+  syntax:
+    content: public int TotalCount { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property TotalCount As Integer
+  overload: MyApp.Shared.Domain.Pagination.PaginatedResult`1.TotalCount*
+  nameWithType.vb: PaginatedResult(Of T).TotalCount
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).TotalCount
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.TotalPages
+  commentId: P:MyApp.Shared.Domain.Pagination.PaginatedResult`1.TotalPages
+  id: TotalPages
+  parent: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+  langs:
+  - csharp
+  - vb
+  name: TotalPages
+  nameWithType: PaginatedResult<T>.TotalPages
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.TotalPages
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: TotalPages
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+    startLine: 31
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  summary: Total number of pages
+  example: []
+  syntax:
+    content: public int TotalPages { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property TotalPages As Integer
+  overload: MyApp.Shared.Domain.Pagination.PaginatedResult`1.TotalPages*
+  nameWithType.vb: PaginatedResult(Of T).TotalPages
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).TotalPages
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.HasPreviousPage
+  commentId: P:MyApp.Shared.Domain.Pagination.PaginatedResult`1.HasPreviousPage
+  id: HasPreviousPage
+  parent: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+  langs:
+  - csharp
+  - vb
+  name: HasPreviousPage
+  nameWithType: PaginatedResult<T>.HasPreviousPage
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.HasPreviousPage
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: HasPreviousPage
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+    startLine: 36
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  summary: Whether there is a previous page
+  example: []
+  syntax:
+    content: public bool HasPreviousPage { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property HasPreviousPage As Boolean
+  overload: MyApp.Shared.Domain.Pagination.PaginatedResult`1.HasPreviousPage*
+  nameWithType.vb: PaginatedResult(Of T).HasPreviousPage
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).HasPreviousPage
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.HasNextPage
+  commentId: P:MyApp.Shared.Domain.Pagination.PaginatedResult`1.HasNextPage
+  id: HasNextPage
+  parent: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+  langs:
+  - csharp
+  - vb
+  name: HasNextPage
+  nameWithType: PaginatedResult<T>.HasNextPage
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.HasNextPage
+  type: Property
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: HasNextPage
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+    startLine: 41
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  summary: Whether there is a next page
+  example: []
+  syntax:
+    content: public bool HasNextPage { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property HasNextPage As Boolean
+  overload: MyApp.Shared.Domain.Pagination.PaginatedResult`1.HasNextPage*
+  nameWithType.vb: PaginatedResult(Of T).HasNextPage
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).HasNextPage
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.#ctor
+  commentId: M:MyApp.Shared.Domain.Pagination.PaginatedResult`1.#ctor
+  id: '#ctor'
+  parent: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+  langs:
+  - csharp
+  - vb
+  name: PaginatedResult()
+  nameWithType: PaginatedResult<T>.PaginatedResult()
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.PaginatedResult()
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+    startLine: 43
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  syntax:
+    content: public PaginatedResult()
+    content.vb: Public Sub New()
+  overload: MyApp.Shared.Domain.Pagination.PaginatedResult`1.#ctor*
+  nameWithType.vb: PaginatedResult(Of T).New()
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).New()
+  name.vb: New()
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Int32,System.Int32,System.Int32)
+  commentId: M:MyApp.Shared.Domain.Pagination.PaginatedResult`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Int32,System.Int32,System.Int32)
+  id: '#ctor(System.Collections.Generic.IEnumerable{`0},System.Int32,System.Int32,System.Int32)'
+  parent: MyApp.Shared.Domain.Pagination.PaginatedResult`1
+  langs:
+  - csharp
+  - vb
+  name: PaginatedResult(IEnumerable<T>, int, int, int)
+  nameWithType: PaginatedResult<T>.PaginatedResult(IEnumerable<T>, int, int, int)
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.PaginatedResult(System.Collections.Generic.IEnumerable<T>, int, int, int)
+  type: Constructor
+  source:
+    remote:
+      path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+      branch: copilot/integrate-docfx-documentation
+      repo: https://github.com/Ozymandros/ERP.Microservices.git
+    id: .ctor
+    path: src/MyApp.Shared/MyApp.Shared.Domain/Pagination/PaginatedResult.cs
+    startLine: 47
+  assemblies:
+  - MyApp.Shared.Domain
+  namespace: MyApp.Shared.Domain.Pagination
+  syntax:
+    content: public PaginatedResult(IEnumerable<T> items, int pageNumber, int pageSize, int totalCount)
+    parameters:
+    - id: items
+      type: System.Collections.Generic.IEnumerable{{T}}
+    - id: pageNumber
+      type: System.Int32
+    - id: pageSize
+      type: System.Int32
+    - id: totalCount
+      type: System.Int32
+    content.vb: Public Sub New(items As IEnumerable(Of T), pageNumber As Integer, pageSize As Integer, totalCount As Integer)
+  overload: MyApp.Shared.Domain.Pagination.PaginatedResult`1.#ctor*
+  nameWithType.vb: PaginatedResult(Of T).New(IEnumerable(Of T), Integer, Integer, Integer)
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).New(System.Collections.Generic.IEnumerable(Of T), Integer, Integer, Integer)
+  name.vb: New(IEnumerable(Of T), Integer, Integer, Integer)
+references:
+- uid: MyApp.Shared.Domain.Pagination
+  commentId: N:MyApp.Shared.Domain.Pagination
+  href: MyApp.html
+  name: MyApp.Shared.Domain.Pagination
+  nameWithType: MyApp.Shared.Domain.Pagination
+  fullName: MyApp.Shared.Domain.Pagination
+  spec.csharp:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Pagination
+    name: Pagination
+    href: MyApp.Shared.Domain.Pagination.html
+  spec.vb:
+  - uid: MyApp
+    name: MyApp
+    href: MyApp.html
+  - name: .
+  - uid: MyApp.Shared
+    name: Shared
+    href: MyApp.Shared.html
+  - name: .
+  - uid: MyApp.Shared.Domain
+    name: Domain
+    href: MyApp.Shared.Domain.html
+  - name: .
+  - uid: MyApp.Shared.Domain.Pagination
+    name: Pagination
+    href: MyApp.Shared.Domain.Pagination.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.Items*
+  commentId: Overload:MyApp.Shared.Domain.Pagination.PaginatedResult`1.Items
+  href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html#MyApp_Shared_Domain_Pagination_PaginatedResult_1_Items
+  name: Items
+  nameWithType: PaginatedResult<T>.Items
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.Items
+  nameWithType.vb: PaginatedResult(Of T).Items
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).Items
+- uid: System.Collections.Generic.IEnumerable{{T}}
+  commentId: T:System.Collections.Generic.IEnumerable{`0}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.PageNumber*
+  commentId: Overload:MyApp.Shared.Domain.Pagination.PaginatedResult`1.PageNumber
+  href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html#MyApp_Shared_Domain_Pagination_PaginatedResult_1_PageNumber
+  name: PageNumber
+  nameWithType: PaginatedResult<T>.PageNumber
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.PageNumber
+  nameWithType.vb: PaginatedResult(Of T).PageNumber
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).PageNumber
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.PageSize*
+  commentId: Overload:MyApp.Shared.Domain.Pagination.PaginatedResult`1.PageSize
+  href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html#MyApp_Shared_Domain_Pagination_PaginatedResult_1_PageSize
+  name: PageSize
+  nameWithType: PaginatedResult<T>.PageSize
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.PageSize
+  nameWithType.vb: PaginatedResult(Of T).PageSize
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).PageSize
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.TotalCount*
+  commentId: Overload:MyApp.Shared.Domain.Pagination.PaginatedResult`1.TotalCount
+  href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html#MyApp_Shared_Domain_Pagination_PaginatedResult_1_TotalCount
+  name: TotalCount
+  nameWithType: PaginatedResult<T>.TotalCount
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.TotalCount
+  nameWithType.vb: PaginatedResult(Of T).TotalCount
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).TotalCount
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.TotalPages*
+  commentId: Overload:MyApp.Shared.Domain.Pagination.PaginatedResult`1.TotalPages
+  href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html#MyApp_Shared_Domain_Pagination_PaginatedResult_1_TotalPages
+  name: TotalPages
+  nameWithType: PaginatedResult<T>.TotalPages
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.TotalPages
+  nameWithType.vb: PaginatedResult(Of T).TotalPages
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).TotalPages
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.HasPreviousPage*
+  commentId: Overload:MyApp.Shared.Domain.Pagination.PaginatedResult`1.HasPreviousPage
+  href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html#MyApp_Shared_Domain_Pagination_PaginatedResult_1_HasPreviousPage
+  name: HasPreviousPage
+  nameWithType: PaginatedResult<T>.HasPreviousPage
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.HasPreviousPage
+  nameWithType.vb: PaginatedResult(Of T).HasPreviousPage
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).HasPreviousPage
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.HasNextPage*
+  commentId: Overload:MyApp.Shared.Domain.Pagination.PaginatedResult`1.HasNextPage
+  href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html#MyApp_Shared_Domain_Pagination_PaginatedResult_1_HasNextPage
+  name: HasNextPage
+  nameWithType: PaginatedResult<T>.HasNextPage
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.HasNextPage
+  nameWithType.vb: PaginatedResult(Of T).HasNextPage
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).HasNextPage
+- uid: MyApp.Shared.Domain.Pagination.PaginatedResult`1.#ctor*
+  commentId: Overload:MyApp.Shared.Domain.Pagination.PaginatedResult`1.#ctor
+  href: MyApp.Shared.Domain.Pagination.PaginatedResult-1.html#MyApp_Shared_Domain_Pagination_PaginatedResult_1__ctor
+  name: PaginatedResult
+  nameWithType: PaginatedResult<T>.PaginatedResult
+  fullName: MyApp.Shared.Domain.Pagination.PaginatedResult<T>.PaginatedResult
+  nameWithType.vb: PaginatedResult(Of T).New
+  fullName.vb: MyApp.Shared.Domain.Pagination.PaginatedResult(Of T).New
+  name.vb: New

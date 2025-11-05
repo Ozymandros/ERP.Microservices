@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Orders.Tests.Helpers
+  commentId: N:MyApp.Orders.Tests.Helpers
+  id: MyApp.Orders.Tests.Helpers
+  children:
+  - MyApp.Orders.Tests.Helpers.TestDbContextFactory
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Orders.Tests.Helpers
+  nameWithType: MyApp.Orders.Tests.Helpers
+  fullName: MyApp.Orders.Tests.Helpers
+  type: Namespace
+  assemblies:
+  - MyApp.Orders.Infrastructure.Tests
+references:
+- uid: MyApp.Orders.Tests.Helpers.TestDbContextFactory
+  commentId: T:MyApp.Orders.Tests.Helpers.TestDbContextFactory
+  href: MyApp.Orders.Tests.Helpers.TestDbContextFactory.html
+  name: TestDbContextFactory
+  nameWithType: TestDbContextFactory
+  fullName: MyApp.Orders.Tests.Helpers.TestDbContextFactory

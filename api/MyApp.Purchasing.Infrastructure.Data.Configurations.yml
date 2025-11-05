@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MyApp.Purchasing.Infrastructure.Data.Configurations
+  commentId: N:MyApp.Purchasing.Infrastructure.Data.Configurations
+  id: MyApp.Purchasing.Infrastructure.Data.Configurations
+  children:
+  - MyApp.Purchasing.Infrastructure.Data.Configurations.PurchaseOrderLineConfiguration
+  - MyApp.Purchasing.Infrastructure.Data.Configurations.SupplierConfiguration
+  langs:
+  - csharp
+  - vb
+  name: MyApp.Purchasing.Infrastructure.Data.Configurations
+  nameWithType: MyApp.Purchasing.Infrastructure.Data.Configurations
+  fullName: MyApp.Purchasing.Infrastructure.Data.Configurations
+  type: Namespace
+  assemblies:
+  - MyApp.Purchasing.Infrastructure
+references:
+- uid: MyApp.Purchasing.Infrastructure.Data.Configurations.PurchaseOrderLineConfiguration
+  commentId: T:MyApp.Purchasing.Infrastructure.Data.Configurations.PurchaseOrderLineConfiguration
+  href: MyApp.Purchasing.Infrastructure.Data.Configurations.PurchaseOrderLineConfiguration.html
+  name: PurchaseOrderLineConfiguration
+  nameWithType: PurchaseOrderLineConfiguration
+  fullName: MyApp.Purchasing.Infrastructure.Data.Configurations.PurchaseOrderLineConfiguration
+- uid: MyApp.Purchasing.Infrastructure.Data.Configurations.SupplierConfiguration
+  commentId: T:MyApp.Purchasing.Infrastructure.Data.Configurations.SupplierConfiguration
+  href: MyApp.Purchasing.Infrastructure.Data.Configurations.SupplierConfiguration.html
+  name: SupplierConfiguration
+  nameWithType: SupplierConfiguration
+  fullName: MyApp.Purchasing.Infrastructure.Data.Configurations.SupplierConfiguration
