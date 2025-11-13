@@ -265,7 +265,8 @@ public class UserService : IUserService
         var result = await _userManager.CreateAsync(userEntity, user.Password);
         if (!result.Succeeded)
         {
-            _logger.LogWarning("Failed to create user: {UserId}", user.Id);
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            _logger.LogWarning("Failed to create user: {UserId}. Errors: {Errors}", user.Id, errors);
             return null;
         }
 
