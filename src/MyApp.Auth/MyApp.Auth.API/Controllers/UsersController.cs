@@ -90,7 +90,7 @@ public class UsersController : ControllerBase
             {
                 return BadRequest(new { message = "Failed to create user" });
             }
-            return Ok(result);
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
         catch (Exception ex)
         {
