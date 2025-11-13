@@ -17,7 +17,7 @@ public class TokenResponseDto
 public class CreateUserDto : AuditableGuidDto
 {
     [Required]
-    [MinLength(8)]
+    [EmailAddress]
     public string? Email { get; set; }
 
     [Required]

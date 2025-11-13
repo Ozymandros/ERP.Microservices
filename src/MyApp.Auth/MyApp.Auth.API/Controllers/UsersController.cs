@@ -112,7 +112,8 @@ public partial class UsersController : ControllerBase
     /// <param name="user">User to create</param>
     /// <returns>Created user</returns>
     [HttpPost("create")]
-    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+    [HasPermission("Users", "Create")]
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<UserDto>> CreateUser([FromBody] CreateUserDto user)
@@ -120,7 +121,11 @@ public partial class UsersController : ControllerBase
         try
         {
             var result = await _userService.CreateUserAsync(user);
-            return Ok(result);
+            if (result == null)
+            {
+                return BadRequest(new { message = "Failed to create user" });
+            }
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
         catch (Exception ex)
         {
