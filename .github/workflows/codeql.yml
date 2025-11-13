@@ -24,18 +24,22 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Setup .NET
+    # 👇 Instal·lem .NET 9 explícitament al runner
+    - name: Setup .NET 9
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '9.0.x'   # ajusta a la versió que uses
+        dotnet-version: '9.0.x'
 
+    # 👇 Inicialitzem CodeQL abans de compilar
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
 
+    # 👇 Compilem la solució principal (substitueix pel teu .sln real)
     - name: Build solution
       run: dotnet build YourSolution.sln --configuration Release
 
+    # 👇 Executem l’anàlisi
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
