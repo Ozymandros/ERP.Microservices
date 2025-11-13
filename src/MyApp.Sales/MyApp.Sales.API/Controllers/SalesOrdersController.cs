@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
+using MyApp.Sales.Domain.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Sales.API.Controllers
 {
@@ -88,6 +90,39 @@ namespace MyApp.Sales.API.Controllers
                 _logger.LogError(ex, "Error retrieving sales order {OrderId}", id);
                 var order = await _salesOrderService.GetSalesOrderByIdAsync(id);
                 return order == null ? NotFound(new { message = $"Order with ID {id} not found." }) : Ok(order);
+            }
+        }
+
+        /// <summary>
+        /// Search sales orders with advanced filtering, sorting, and pagination - Requires Sales.Read permission
+        /// </summary>
+        /// <remarks>
+        /// Supported filters: orderNumber, customerId, status, minTotal, maxTotal
+        /// Supported sort fields: id, orderNumber, status, totalAmount, createdAt, orderDate
+        /// </remarks>
+        [HttpGet("search")]
+        [HasPermission("Sales", "Read")]
+        [ProducesResponseType(typeof(PaginatedResult<SalesOrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Search([FromQuery] QuerySpec query)
+        {
+            try
+            {
+                query.Validate();
+                var spec = new SalesOrderQuerySpec(query);
+                var result = await _salesOrderService.QuerySalesOrdersAsync(spec);
+                _logger.LogInformation("Searched sales orders with query: Page {Page}, PageSize {PageSize}, SortBy {SortBy}", query.Page, query.PageSize, query.SortBy);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Invalid query specification");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching sales orders");
+                return StatusCode(500, new { message = "An error occurred searching sales orders" });
             }
         }
 

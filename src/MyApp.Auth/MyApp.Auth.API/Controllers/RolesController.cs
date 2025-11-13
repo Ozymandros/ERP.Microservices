@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
+using MyApp.Auth.Domain.Specifications;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using System;
@@ -79,6 +80,39 @@ public class RolesController : ControllerBase
         {
             _logger.LogError(ex, "Error retrieving paginated roles");
             return StatusCode(500, new { message = "An error occurred retrieving roles" });
+        }
+    }
+
+    /// <summary>
+    /// Search roles with advanced filtering, sorting, and pagination
+    /// </summary>
+    /// <remarks>
+    /// Supported filters: name, description
+    /// Supported sort fields: id, name, createdAt
+    /// </remarks>
+    [HttpGet("search")]
+    [HasPermission("Roles", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<RoleDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<PaginatedResult<RoleDto>>> Search([FromQuery] QuerySpec query)
+    {
+        try
+        {
+            query.Validate();
+            var spec = new RoleQuerySpec(query);
+            var result = await _roleService.QueryRolesAsync(spec);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Invalid query specification");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching roles");
+            return StatusCode(500, new { message = "An error occurred searching roles" });
         }
     }
 

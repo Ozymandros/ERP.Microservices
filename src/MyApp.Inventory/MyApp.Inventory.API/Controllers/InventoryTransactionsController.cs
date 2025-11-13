@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
+using MyApp.Inventory.Domain.Specifications;
 using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Inventory.API.Controllers;
@@ -52,6 +53,39 @@ public class InventoryTransactionsController : ControllerBase
         {
             _logger.LogError(ex, "Error retrieving paginated transactions");
             return StatusCode(500, new { message = "An error occurred retrieving transactions" });
+        }
+    }
+
+    /// <summary>
+    /// Search inventory transactions with advanced filtering, sorting, and pagination - Requires Inventory.Read permission
+    /// </summary>
+    /// <remarks>
+    /// Supported filters: type, productId, warehouseId, minQuantity, maxQuantity
+    /// Supported sort fields: id, transactionType, quantity, transactionDate, createdAt
+    /// </remarks>
+    [HttpGet("search")]
+    [HasPermission("Inventory", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<InventoryTransactionDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PaginatedResult<InventoryTransactionDto>>> Search([FromQuery] QuerySpec query)
+    {
+        try
+        {
+            query.Validate();
+            var spec = new InventoryTransactionQuerySpec(query);
+            var result = await _transactionService.QueryTransactionsAsync(spec);
+            _logger.LogInformation("Searched transactions with query: Page {Page}, PageSize {PageSize}, SortBy {SortBy}", query.Page, query.PageSize, query.SortBy);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Invalid query specification");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching transactions");
+            return StatusCode(500, new { message = "An error occurred searching transactions" });
         }
     }
 

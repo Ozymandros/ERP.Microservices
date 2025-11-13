@@ -6,7 +6,9 @@ using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Domain.Entities;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Auth.Application.Services;
 
@@ -270,5 +272,37 @@ public class UserService : IUserService
         }
 
         return _mapper.Map<UserDto>(userEntity);
+    }
+
+    /// <summary>
+    /// Query users with filtering, sorting, and pagination
+    /// </summary>
+    public async Task<PaginatedResult<UserDto>> QueryUsersAsync(ISpecification<ApplicationUser> spec)
+    {
+        try
+        {
+            var result = await _userRepository.QueryAsync(spec);
+            
+            var dtos = result.Items.Select(u => new UserDto
+            {
+                Id = u.Id,
+                Email = u.Email,
+                Username = u.UserName,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                EmailConfirmed = u.EmailConfirmed,
+                IsExternalLogin = u.IsExternalLogin,
+                ExternalProvider = u.ExternalProvider,
+                CreatedAt = u.CreatedAt,
+                UpdatedAt = u.UpdatedAt
+            }).ToList();
+            
+            return new PaginatedResult<UserDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error querying users");
+            throw;
+        }
     }
 }

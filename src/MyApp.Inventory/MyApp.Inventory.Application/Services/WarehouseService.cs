@@ -4,6 +4,7 @@ using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Inventory.Application.Services;
 
@@ -85,5 +86,15 @@ public class WarehouseService : IWarehouseService
         }
 
         await _warehouseRepository.DeleteAsync(warehouse);
+    }
+
+    /// <summary>
+    /// Query warehouses with filtering, sorting, and pagination
+    /// </summary>
+    public async Task<PaginatedResult<WarehouseDto>> QueryWarehousesAsync(ISpecification<Warehouse> spec)
+    {
+        var result = await _warehouseRepository.QueryAsync(spec);
+        var dtos = result.Items.Select(w => _mapper.Map<WarehouseDto>(w)).ToList();
+        return new PaginatedResult<WarehouseDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }
 }

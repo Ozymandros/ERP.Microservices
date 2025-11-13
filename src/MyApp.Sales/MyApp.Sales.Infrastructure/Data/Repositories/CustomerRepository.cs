@@ -1,24 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Sales.Infrastructure.Data.Repositories
 {
-    public class CustomerRepository : ICustomerRepository
+    public class CustomerRepository : Repository<Customer, Guid>, ICustomerRepository
     {
         private readonly SalesDbContext _context;
 
-        public CustomerRepository(SalesDbContext context)
+        public CustomerRepository(SalesDbContext context) : base(context)
         {
             _context = context;
         }
 
-        public async Task<Customer?> GetByIdAsync(Guid id)
+        public override async Task<Customer?> GetByIdAsync(Guid id)
         {
             return await _context.Customers
                 .Include(c => c.Orders)
@@ -32,18 +29,16 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Customer>> GetAllAsync()
+        public override async Task<IEnumerable<Customer>> GetAllAsync()
         {
-            return await _context.Customers
-                .Include(c => c.Orders)
-                .ToListAsync();
+            return await ListAsync();
         }
 
-        public async Task<PaginatedResult<Customer>> GetAllPaginatedAsync(int pageNumber, int pageSize)
+        public override async Task<PaginatedResult<Customer>> GetAllPaginatedAsync(int pageNumber, int pageSize)
         {
             var paginationParams = new PaginationParams(pageNumber, pageSize);
             var query = _context.Customers.Include(c => c.Orders);
-            
+
             var totalCount = await query.CountAsync();
             var items = await query
                 .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
@@ -51,26 +46,6 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
                 .ToListAsync();
 
             return new PaginatedResult<Customer>(items, paginationParams.PageNumber, paginationParams.PageSize, totalCount);
-        }
-
-        public async Task<Customer> AddAsync(Customer entity)
-        {
-            await _context.Customers.AddAsync(entity);
-            await _context.SaveChangesAsync();
-            return entity;
-        }
-
-        public async Task<Customer> UpdateAsync(Customer entity)
-        {
-            _context.Customers.Update(entity);
-            await _context.SaveChangesAsync();
-            return entity;
-        }
-
-        public async Task DeleteAsync(Customer entity)
-        {
-            _context.Customers.Remove(entity);
-            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Guid id)

@@ -4,6 +4,7 @@ using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Inventory.Application.Services;
 
@@ -97,5 +98,15 @@ public class ProductService : IProductService
         }
 
         await _productRepository.DeleteAsync(product);
+    }
+
+    /// <summary>
+    /// Query products with filtering, sorting, and pagination
+    /// </summary>
+    public async Task<PaginatedResult<ProductDto>> QueryProductsAsync(ISpecification<Product> spec)
+    {
+        var result = await _productRepository.QueryAsync(spec);
+        var dtos = result.Items.Select(p => _mapper.Map<ProductDto>(p)).ToList();
+        return new PaginatedResult<ProductDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }
 }

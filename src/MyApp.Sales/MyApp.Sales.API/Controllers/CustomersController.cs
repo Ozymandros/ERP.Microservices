@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
+using MyApp.Sales.Domain.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Sales.API.Controllers
 {
@@ -81,6 +83,39 @@ namespace MyApp.Sales.API.Controllers
                 _logger.LogError(ex, "Error retrieving customer {CustomerId}", id);
                 var customer = await _customerService.GetCustomerByIdAsync(id);
                 return customer == null ? NotFound(new { message = $"Customer with ID {id} not found." }) : Ok(customer);
+            }
+        }
+
+        /// <summary>
+        /// Search customers with advanced filtering, sorting, and pagination - Requires Sales.Read permission
+        /// </summary>
+        /// <remarks>
+        /// Supported filters: name, email, country, city, isActive
+        /// Supported sort fields: id, name, email, city, country, createdAt
+        /// </remarks>
+        [HttpGet("search")]
+        [HasPermission("Sales", "Read")]
+        [ProducesResponseType(typeof(PaginatedResult<CustomerDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Search([FromQuery] QuerySpec query)
+        {
+            try
+            {
+                query.Validate();
+                var spec = new CustomerQuerySpec(query);
+                var result = await _customerService.QueryCustomersAsync(spec);
+                _logger.LogInformation("Searched customers with query: Page {Page}, PageSize {PageSize}, SortBy {SortBy}", query.Page, query.PageSize, query.SortBy);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Invalid query specification");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching customers");
+                return StatusCode(500, new { message = "An error occurred searching customers" });
             }
         }
 

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
+using MyApp.Inventory.Domain.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Pagination;
 
@@ -51,6 +52,39 @@ public class WarehousesController : ControllerBase
         {
             _logger.LogError(ex, "Error retrieving paginated warehouses");
             return StatusCode(500, new { message = "An error occurred retrieving warehouses" });
+        }
+    }
+
+    /// <summary>
+    /// Search warehouses with advanced filtering, sorting, and pagination - Requires Inventory.Read permission
+    /// </summary>
+    /// <remarks>
+    /// Supported filters: name, location, city, country, isActive
+    /// Supported sort fields: id, name, location, city, country, createdAt
+    /// </remarks>
+    [HttpGet("search")]
+    [HasPermission("Inventory", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<WarehouseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PaginatedResult<WarehouseDto>>> Search([FromQuery] QuerySpec query)
+    {
+        try
+        {
+            query.Validate();
+            var spec = new WarehouseQuerySpec(query);
+            var result = await _warehouseService.QueryWarehousesAsync(spec);
+            _logger.LogInformation("Searched warehouses with query: Page {Page}, PageSize {PageSize}, SortBy {SortBy}", query.Page, query.PageSize, query.SortBy);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Invalid query specification");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching warehouses");
+            return StatusCode(500, new { message = "An error occurred searching warehouses" });
         }
     }
 

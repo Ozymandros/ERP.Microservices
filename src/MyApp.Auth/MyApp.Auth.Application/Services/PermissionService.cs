@@ -5,7 +5,9 @@ using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Domain.Entities;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Auth.Application.Services;
 
@@ -176,6 +178,34 @@ public class PermissionService : IPermissionService
         {
             _logger.LogError(ex, "Error deleting permission {PermissionId}", id);
             return false;
+        }
+    }
+
+    /// <summary>
+    /// Query permissions with filtering, sorting, and pagination
+    /// </summary>
+    public async Task<PaginatedResult<PermissionDto>> QueryPermissionsAsync(ISpecification<Permission> spec)
+    {
+        try
+        {
+            var result = await _permissionRepository.QueryAsync(spec);
+            
+            var dtos = result.Items.Select(p => new PermissionDto
+            {
+                Id = p.Id,
+                Module = p.Module,
+                Action = p.Action,
+                Description = p.Description,
+                CreatedAt = p.CreatedAt,
+                UpdatedAt = p.UpdatedAt
+            }).ToList();
+            
+            return new PaginatedResult<PermissionDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error querying permissions");
+            throw;
         }
     }
 }

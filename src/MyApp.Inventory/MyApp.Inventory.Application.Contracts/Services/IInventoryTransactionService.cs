@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Inventory.Application.Contracts.Services;
 
@@ -15,6 +16,7 @@ public interface IInventoryTransactionService
     Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByTypeAsync(TransactionType transactionType);
     Task<IEnumerable<InventoryTransactionDto>> GetAllTransactionsAsync();
     Task<PaginatedResult<InventoryTransactionDto>> GetAllTransactionsPaginatedAsync(int pageNumber, int pageSize);
+    Task<PaginatedResult<InventoryTransactionDto>> QueryTransactionsAsync(ISpecification<InventoryTransaction> spec);
     Task<InventoryTransactionDto> CreateTransactionAsync(CreateUpdateInventoryTransactionDto dto);
     Task<InventoryTransactionDto> UpdateTransactionAsync(Guid id, CreateUpdateInventoryTransactionDto dto);
     Task DeleteTransactionAsync(Guid id);

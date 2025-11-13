@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
+using MyApp.Auth.Domain.Specifications;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 
@@ -11,7 +12,7 @@ namespace MyApp.Auth.API.Controllers;
 [Route("api/[controller]")]
 [Authorize]
 [Produces("application/json")]
-public class UsersController : ControllerBase
+public partial class UsersController : ControllerBase
 {
     private readonly ICacheService _cacheService;
     private readonly IUserService _userService;
@@ -69,6 +70,39 @@ public class UsersController : ControllerBase
         {
             _logger.LogError(ex, "Error retrieving paginated users");
             return StatusCode(500, new { message = "An error occurred retrieving users" });
+        }
+    }
+
+    /// <summary>
+    /// Search users with advanced filtering, sorting, and pagination
+    /// </summary>
+    /// <remarks>
+    /// Supported filters: isActive, email, userName, isExternalLogin
+    /// Supported sort fields: createdAt, email, userName, firstName, lastName
+    /// </remarks>
+    [HttpGet("search")]
+    [HasPermission("Users", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<PaginatedResult<UserDto>>> Search([FromQuery] QuerySpec query)
+    {
+        try
+        {
+            query.Validate();
+            var spec = new ApplicationUserQuerySpec(query);
+            var result = await _userService.QueryUsersAsync(spec);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Invalid query specification");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching users");
+            return StatusCode(500, new { message = "An error occurred searching users" });
         }
     }
 

@@ -3,6 +3,8 @@ using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
+using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Purchasing.Application.Services;
 
@@ -89,5 +91,15 @@ public class SupplierService : ISupplierService
         }
 
         await _supplierRepository.DeleteAsync(supplier);
+    }
+
+    /// <summary>
+    /// Query suppliers with filtering, sorting, and pagination
+    /// </summary>
+    public async Task<PaginatedResult<SupplierDto>> QuerySuppliersAsync(ISpecification<Supplier> spec)
+    {
+        var result = await _supplierRepository.QueryAsync(spec);
+        var dtos = result.Items.Select(s => _mapper.Map<SupplierDto>(s)).ToList();
+        return new PaginatedResult<SupplierDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }
 }

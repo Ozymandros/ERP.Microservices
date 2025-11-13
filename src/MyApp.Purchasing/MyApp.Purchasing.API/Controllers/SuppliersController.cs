@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
+using MyApp.Purchasing.Domain.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Purchasing.API.Controllers;
 
@@ -117,6 +119,39 @@ public class SuppliersController : ControllerBase
         _logger.LogInformation("Searching suppliers with name: {Name}", name);
         var suppliers = await _supplierService.GetSuppliersByNameAsync(name);
         return Ok(suppliers);
+    }
+
+    /// <summary>
+    /// Search suppliers with advanced filtering, sorting, and pagination - Requires Purchasing.Read permission
+    /// </summary>
+    /// <remarks>
+    /// Supported filters: name, email, country, city, isActive
+    /// Supported sort fields: id, name, email, city, country, createdAt
+    /// </remarks>
+    [HttpGet("advanced-search")]
+    [HasPermission("Purchasing", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<SupplierDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PaginatedResult<SupplierDto>>> AdvancedSearch([FromQuery] QuerySpec query)
+    {
+        try
+        {
+            query.Validate();
+            var spec = new SupplierQuerySpec(query);
+            var result = await _supplierService.QuerySuppliersAsync(spec);
+            _logger.LogInformation("Searched suppliers with query: Page {Page}, PageSize {PageSize}, SortBy {SortBy}", query.Page, query.PageSize, query.SortBy);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Invalid query specification");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching suppliers");
+            return StatusCode(500, new { message = "An error occurred searching suppliers" });
+        }
     }
 
     /// <summary>

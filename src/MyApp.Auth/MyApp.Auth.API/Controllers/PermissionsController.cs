@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
+using MyApp.Auth.Domain.Specifications;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using System.Security.Claims;
@@ -77,6 +78,39 @@ public class PermissionsController : ControllerBase
         {
             _logger.LogError(ex, "Error retrieving paginated permissions");
             return StatusCode(500, new { message = "An error occurred retrieving permissions" });
+        }
+    }
+
+    /// <summary>
+    /// Search permissions with advanced filtering, sorting, and pagination
+    /// </summary>
+    /// <remarks>
+    /// Supported filters: resource, action, description
+    /// Supported sort fields: id, resource, action, createdAt
+    /// </remarks>
+    [HttpGet("search")]
+    [HasPermission("Permissions", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<PermissionDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<PaginatedResult<PermissionDto>>> Search([FromQuery] QuerySpec query)
+    {
+        try
+        {
+            query.Validate();
+            var spec = new PermissionQuerySpec(query);
+            var result = await _permissionService.QueryPermissionsAsync(spec);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Invalid query specification");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching permissions");
+            return StatusCode(500, new { message = "An error occurred searching permissions" });
         }
     }
 

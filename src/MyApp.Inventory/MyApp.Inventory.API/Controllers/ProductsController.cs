@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
+using MyApp.Inventory.Domain.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
@@ -71,6 +72,39 @@ public class ProductsController : ControllerBase
         {
             _logger.LogError(ex, "Error retrieving paginated products");
             return StatusCode(500, new { message = "An error occurred retrieving products" });
+        }
+    }
+
+    /// <summary>
+    /// Search products with advanced filtering, sorting, and pagination - Requires Inventory.Read permission
+    /// </summary>
+    /// <remarks>
+    /// Supported filters: sku, name, category, isActive, minPrice, maxPrice
+    /// Supported sort fields: id, sku, name, unitPrice, stock, createdAt
+    /// </remarks>
+    [HttpGet("search")]
+    [HasPermission("Inventory", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<ProductDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PaginatedResult<ProductDto>>> Search([FromQuery] QuerySpec query)
+    {
+        try
+        {
+            query.Validate();
+            var spec = new ProductQuerySpec(query);
+            var result = await _productService.QueryProductsAsync(spec);
+            _logger.LogInformation("Searched products with query: Page {Page}, PageSize {PageSize}, SortBy {SortBy}", query.Page, query.PageSize, query.SortBy);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Invalid query specification");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching products");
+            return StatusCode(500, new { message = "An error occurred searching products" });
         }
     }
 

@@ -4,6 +4,9 @@ using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
+using MyApp.Purchasing.Domain.Specifications;
 
 namespace MyApp.Purchasing.API.Controllers;
 
@@ -89,6 +92,39 @@ public class PurchaseOrdersController : ControllerBase
             _logger.LogError(ex, "Error retrieving purchase order {OrderId}", id);
             var order = await _purchaseOrderService.GetPurchaseOrderByIdAsync(id);
             return order == null ? NotFound() : Ok(order);
+        }
+    }
+
+    /// <summary>
+    /// Search purchase orders with advanced filtering, sorting, and pagination - Requires Purchasing.Read permission
+    /// </summary>
+    /// <remarks>
+    /// Supported filters: orderNumber, supplierId, status, minTotal, maxTotal
+    /// Supported sort fields: id, orderNumber, status, totalAmount, createdAt, orderDate
+    /// </remarks>
+    [HttpGet("search")]
+    [HasPermission("Purchasing", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<PurchaseOrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PaginatedResult<PurchaseOrderDto>>> Search([FromQuery] QuerySpec query)
+    {
+        try
+        {
+            query.Validate();
+            var spec = new PurchaseOrderQuerySpec(query);
+            var result = await _purchaseOrderService.QueryPurchaseOrdersAsync(spec);
+            _logger.LogInformation("Searched purchase orders with query: Page {Page}, PageSize {PageSize}, SortBy {SortBy}", query.Page, query.PageSize, query.SortBy);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Invalid query specification");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching purchase orders");
+            return StatusCode(500, new { message = "An error occurred searching purchase orders" });
         }
     }
 
