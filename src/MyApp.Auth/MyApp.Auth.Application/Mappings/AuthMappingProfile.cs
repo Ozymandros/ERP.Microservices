@@ -12,6 +12,9 @@ public class AuthMappingProfile : Profile
         CreateMap<ApplicationUser, UserDto>()
             .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserName));
 
+        CreateMap<CreateUserDto, ApplicationUser>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Username));
+
         CreateMap<UpdateUserDto, ApplicationUser>();
 
         // Role mappings
