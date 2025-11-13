@@ -5,8 +5,6 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-  schedule:
-    - cron: '0 0 * * 0'
 
 jobs:
   analyze:
@@ -20,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'csharp' ]   # 👈 Aquí indiquem C#
+        language: [ 'csharp' ]
 
     steps:
     - name: Checkout repository
@@ -29,12 +27,15 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '9.0.x'   # ajusta segons la versió que uses
+        dotnet-version: '9.0.x'   # ajusta a la versió que uses
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
 
+    - name: Build solution
+      run: dotnet build YourSolution.sln --configuration Release
+
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
