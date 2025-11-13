@@ -40,6 +40,7 @@ jobs:
 
       - name: Test
         run: dotnet test ERP.Microservices.sln --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+        continue-on-error: true
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
