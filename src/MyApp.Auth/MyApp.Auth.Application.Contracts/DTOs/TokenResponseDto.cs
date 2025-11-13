@@ -1,5 +1,7 @@
 
 using MyApp.Shared.Domain.DTOs;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Auth.Application.Contracts.DTOs;
 
@@ -10,6 +12,25 @@ public class TokenResponseDto
     public int ExpiresIn { get; set; }
     public string TokenType { get; set; } = "Bearer";
     public UserDto? User { get; set; }
+}
+
+public class CreateUserDto : AuditableGuidDto
+{
+    [Required]
+    [EmailAddress]
+    public string? Email { get; set; }
+
+    [Required]
+    [MinLength(8)]
+    public string? Username { get; set; }
+
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+
+    [Required]
+    [MinLength(8)]
+    [PasswordPropertyText]
+    public string Password { get; set; } = string.Empty;
 }
 
 public class UserDto : AuditableGuidDto

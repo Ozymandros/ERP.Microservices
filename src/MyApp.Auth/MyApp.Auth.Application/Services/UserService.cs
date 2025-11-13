@@ -253,4 +253,23 @@ public class UserService : IUserService
 
         return roles;
     }
+
+    public async Task<UserDto?> CreateUserAsync(CreateUserDto user)
+    {
+        if (user is null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+
+        var userEntity = _mapper.Map<ApplicationUser>(user);
+        var result = await _userManager.CreateAsync(userEntity, user.Password);
+        if (!result.Succeeded)
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            _logger.LogWarning("Failed to create user: {UserId}. Errors: {Errors}", user.Id, errors);
+            return null;
+        }
+
+        return _mapper.Map<UserDto>(userEntity);
+    }
 }
