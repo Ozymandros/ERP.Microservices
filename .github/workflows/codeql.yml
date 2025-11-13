@@ -38,7 +38,7 @@ jobs:
 
     # 👇 Compilem la solució principal (substitueix pel teu .sln real)
     - name: Build solution
-      run: dotnet build YourSolution.sln --configuration Release
+      run: dotnet build ERP.Microservices.sln --configuration Release
 
     # 👇 Executem l’anàlisi
     - name: Perform CodeQL Analysis
