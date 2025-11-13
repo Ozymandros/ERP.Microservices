@@ -86,6 +86,10 @@ public class UsersController : ControllerBase
         try
         {
             var result = await _userService.CreateUserAsync(user);
+            if (result == null)
+            {
+                return BadRequest(new { message = "Failed to create user" });
+            }
             return Ok(result);
         }
         catch (Exception ex)
