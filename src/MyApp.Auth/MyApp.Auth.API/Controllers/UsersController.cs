@@ -78,7 +78,7 @@ public class UsersController : ControllerBase
     /// <param name="user">User to create</param>
     /// <returns>Created user</returns>
     [HttpPost("create")]
-    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<UserDto>> CreateUser([FromBody] CreateUserDto user)
