@@ -33,13 +33,13 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
-        run: dotnet restore src/ERP.Microservices.sln
+        run: dotnet restore ERP.Microservices.sln
 
       - name: Build
-        run: dotnet build src/ERP.Microservices.sln --configuration Release --no-restore
+        run: dotnet build ERP.Microservices.sln --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test src/ERP.Microservices.sln --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+        run: dotnet test ERP.Microservices.sln --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
