@@ -1,0 +1,45 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'csharp' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # 👇 Instal·lem .NET 9 explícitament al runner
+    - name: Setup .NET 9
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.x'
+
+    # 👇 Inicialitzem CodeQL abans de compilar
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+
+    # 👇 Compilem la solució principal (substitueix pel teu .sln real)
+    - name: Build solution
+      run: dotnet build ERP.Microservices.sln --configuration Release
+
+    # 👇 Executem l’anàlisi
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
