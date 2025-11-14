@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
-public class InventoryTransactionDto
+public record InventoryTransactionDto
 {
     public Guid Id { get; set; }
 
@@ -16,7 +16,7 @@ public class InventoryTransactionDto
     public WarehouseDto? Warehouse { get; set; }
 }
 
-public class CreateUpdateInventoryTransactionDto
+public record CreateUpdateInventoryTransactionDto
 {
     [Required(ErrorMessage = "ProductId is required")]
     public Guid ProductId { get; set; }

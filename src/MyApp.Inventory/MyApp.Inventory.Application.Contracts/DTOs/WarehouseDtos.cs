@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
-public class WarehouseDto : AuditableGuidDto
+public record WarehouseDto : AuditableGuidDto
 {
     public string Name { get; set; } = string.Empty;
     public string Location { get; set; } = string.Empty;
 }
 
-public class CreateUpdateWarehouseDto
+public record CreateUpdateWarehouseDto
 {
     [Required(ErrorMessage = "Name is required")]
     [StringLength(255, MinimumLength = 1)]

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Orders.Application.Contracts.Dtos
 {
-    public class CreateUpdateOrderDto
+    public record CreateUpdateOrderDto
     {
         [Required]
         public string OrderNumber { get; set; } = string.Empty;

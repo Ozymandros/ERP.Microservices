@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
-public class ProductDto : AuditableGuidDto
+public record ProductDto : AuditableGuidDto
 {
     public Guid Id { get; set; }
 
@@ -15,7 +15,7 @@ public class ProductDto : AuditableGuidDto
     public int ReorderLevel { get; set; }
 }
 
-public class CreateUpdateProductDto
+public record CreateUpdateProductDto
 {
     [Required(ErrorMessage = "SKU is required")]
     [StringLength(64, MinimumLength = 1)]

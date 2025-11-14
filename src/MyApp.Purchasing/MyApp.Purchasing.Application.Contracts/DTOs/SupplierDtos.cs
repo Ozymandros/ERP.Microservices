@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Purchasing.Application.Contracts.DTOs;
 
-public class SupplierDto : AuditableGuidDto
+public record SupplierDto : AuditableGuidDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
@@ -15,7 +15,7 @@ public class SupplierDto : AuditableGuidDto
     public string Address { get; set; } = string.Empty;
 }
 
-public class CreateUpdateSupplierDto
+public record CreateUpdateSupplierDto
 {
     [Required(ErrorMessage = "Name is required")]
     [StringLength(255, MinimumLength = 1)]

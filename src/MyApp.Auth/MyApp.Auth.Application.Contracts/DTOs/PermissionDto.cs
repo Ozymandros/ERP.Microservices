@@ -2,7 +2,7 @@
 
 namespace MyApp.Auth.Application.Contracts.DTOs
 {
-    public class PermissionDto : AuditableGuidDto
+    public record PermissionDto : AuditableGuidDto
     {
         public string Module { get; set; } = default!;
         public string Action { get; set; } = default!;

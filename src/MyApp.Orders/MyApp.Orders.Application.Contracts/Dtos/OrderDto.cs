@@ -2,7 +2,7 @@ using MyApp.Shared.Domain.DTOs;
 
 namespace MyApp.Orders.Application.Contracts.Dtos
 {
-    public class OrderDto : AuditableGuidDto
+    public record OrderDto : AuditableGuidDto
     {
         public string OrderNumber { get; set; } = string.Empty;
         public Guid CustomerId { get; set; }

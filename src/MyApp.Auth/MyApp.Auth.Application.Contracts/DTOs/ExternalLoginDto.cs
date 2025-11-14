@@ -2,7 +2,7 @@ using MyApp.Shared.Domain.DTOs;
 
 namespace MyApp.Auth.Application.Contracts.DTOs;
 
-public class ExternalLoginDto
+public record ExternalLoginDto
 {
     public string Provider { get; set; } = string.Empty;
     public string ExternalId { get; set; } = string.Empty;
@@ -11,26 +11,26 @@ public class ExternalLoginDto
     public string? LastName { get; set; }
 }
 
-public class RefreshTokenDto
+public record RefreshTokenDto
 {
     public string AccessToken { get; set; } = string.Empty;
     public string RefreshToken { get; set; } = string.Empty;
 }
 
-public class CreateRoleDto
+public record CreateRoleDto
 {
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
 }
 
-public class RoleDto : AuditableGuidDto
+public record RoleDto : AuditableGuidDto
 {
     public Guid Id { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
 }
 
-public class UpdateUserDto
+public record UpdateUserDto
 {
     public string? Email { get; set; }
     public string? FirstName { get; set; }

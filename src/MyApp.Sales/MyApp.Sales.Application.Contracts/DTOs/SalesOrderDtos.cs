@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Sales.Application.Contracts.DTOs
 {
-    public class SalesOrderDto : AuditableGuidDto
+    public record SalesOrderDto : AuditableGuidDto
     {
         public string OrderNumber { get; set; } = string.Empty;
         public Guid CustomerId { get; set; }
@@ -14,7 +14,7 @@ namespace MyApp.Sales.Application.Contracts.DTOs
         public List<SalesOrderLineDto> Lines { get; set; } = new();
     }
 
-    public class SalesOrderLineDto
+    public record SalesOrderLineDto
     {
         public Guid Id { get; set; }
         public Guid SalesOrderId { get; set; }
@@ -24,7 +24,7 @@ namespace MyApp.Sales.Application.Contracts.DTOs
         public decimal LineTotal { get; set; }
     }
 
-    public class CustomerDto
+    public record CustomerDto
     {
         public Guid Id { get; set; }
         [Required(ErrorMessage = "Name is required")]
@@ -44,7 +44,7 @@ namespace MyApp.Sales.Application.Contracts.DTOs
         public string Address { get; set; } = string.Empty;
     }
 
-    public class CreateUpdateSalesOrderDto
+    public record CreateUpdateSalesOrderDto
     {
         [Required(ErrorMessage = "OrderNumber is required")]
         [StringLength(64)]
@@ -65,7 +65,7 @@ namespace MyApp.Sales.Application.Contracts.DTOs
         public List<CreateUpdateSalesOrderLineDto> Lines { get; set; } = new();
     }
 
-    public class CreateUpdateSalesOrderLineDto
+    public record CreateUpdateSalesOrderLineDto
     {
         [Required]
         public Guid ProductId { get; set; }

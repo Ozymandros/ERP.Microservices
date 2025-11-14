@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Auth.Application.Contracts.DTOs;
 
-public class TokenResponseDto
+public record TokenResponseDto
 {
     public string AccessToken { get; set; } = string.Empty;
     public string RefreshToken { get; set; } = string.Empty;
@@ -14,7 +14,7 @@ public class TokenResponseDto
     public UserDto? User { get; set; }
 }
 
-public class CreateUserDto : AuditableGuidDto
+public record CreateUserDto : AuditableGuidDto
 {
     [Required]
     [EmailAddress]
@@ -33,7 +33,7 @@ public class CreateUserDto : AuditableGuidDto
     public string Password { get; set; } = string.Empty;
 }
 
-public class UserDto : AuditableGuidDto
+public record UserDto : AuditableGuidDto
 {
     public Guid Id { get; set; }
     public string? Email { get; set; }
