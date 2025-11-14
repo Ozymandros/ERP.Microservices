@@ -5,140 +5,72 @@ namespace MyApp.Sales.Application.Contracts.DTOs
 {
     public record SalesOrderDto : AuditableGuidDto
     {
-        public string OrderNumber { get; set; } = string.Empty;
-        public Guid CustomerId { get; set; }
-        public DateTime OrderDate { get; set; }
-        public int Status { get; set; }
-        public decimal TotalAmount { get; set; }
-        public CustomerDto? Customer { get; set; }
-        public List<SalesOrderLineDto> Lines { get; set; } = new();
+        public string OrderNumber { get; init; } = string.Empty;
+        public Guid CustomerId { get; init; }
+        public DateTime OrderDate { get; init; }
+        public int Status { get; init; }
+        public decimal TotalAmount { get; init; }
+        public CustomerDto? Customer { get; init; }
+        public List<SalesOrderLineDto> Lines { get; init; } = new();
     }
 
-    public record SalesOrderLineDto
-    {
-        public SalesOrderLineDto() { }
+    public record SalesOrderLineDto(
+        Guid Id,
+        Guid SalesOrderId,
+        Guid ProductId,
+        int Quantity,
+        decimal UnitPrice,
+        decimal LineTotal
+    );
+
+    public record CustomerDto(
+        Guid Id,
         
-        public SalesOrderLineDto(
-            Guid id,
-            Guid salesOrderId,
-            Guid productId,
-            int quantity,
-            decimal unitPrice,
-            decimal lineTotal)
-        {
-            Id = id;
-            SalesOrderId = salesOrderId;
-            ProductId = productId;
-            Quantity = quantity;
-            UnitPrice = unitPrice;
-            LineTotal = lineTotal;
-        }
-        
-        public Guid Id { get; set; }
-        public Guid SalesOrderId { get; set; }
-        public Guid ProductId { get; set; }
-        public int Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
-        public decimal LineTotal { get; set; }
-    }
+        [property: Required(ErrorMessage = "Name is required")]
+        [property: StringLength(255, MinimumLength = 1)]
+        string Name,
 
-    public record CustomerDto
-    {
-        public CustomerDto() { }
-        
-        public CustomerDto(
-            Guid id,
-            string name,
-            string email,
-            string phoneNumber,
-            string address)
-        {
-            Id = id;
-            Name = name;
-            Email = email;
-            PhoneNumber = phoneNumber;
-            Address = address;
-        }
-        
-        public Guid Id { get; set; }
-        
-        [Required(ErrorMessage = "Name is required")]
-        [StringLength(255, MinimumLength = 1)]
-        public string Name { get; set; } = string.Empty;
+        [property: Required(ErrorMessage = "Email is required")]
+        [property: EmailAddress]
+        [property: StringLength(255)]
+        string Email,
 
-        [Required(ErrorMessage = "Email is required")]
-        [EmailAddress]
-        [StringLength(255)]
-        public string Email { get; set; } = string.Empty;
+        [property: Phone]
+        [property: StringLength(20)]
+        string PhoneNumber,
 
-        [Phone]
-        [StringLength(20)]
-        public string PhoneNumber { get; set; } = string.Empty;
+        [property: StringLength(500)]
+        string Address
+    );
 
-        [StringLength(500)]
-        public string Address { get; set; } = string.Empty;
-    }
+    public record CreateUpdateSalesOrderDto(
+        [property: Required(ErrorMessage = "OrderNumber is required")]
+        [property: StringLength(64)]
+        string OrderNumber,
 
-    public record CreateUpdateSalesOrderDto
-    {
-        public CreateUpdateSalesOrderDto() { }
-        
-        public CreateUpdateSalesOrderDto(
-            string orderNumber,
-            Guid customerId,
-            DateTime orderDate,
-            int status,
-            decimal totalAmount,
-            List<CreateUpdateSalesOrderLineDto> lines)
-        {
-            OrderNumber = orderNumber;
-            CustomerId = customerId;
-            OrderDate = orderDate;
-            Status = status;
-            TotalAmount = totalAmount;
-            Lines = lines;
-        }
-        
-        [Required(ErrorMessage = "OrderNumber is required")]
-        [StringLength(64)]
-        public string OrderNumber { get; set; } = string.Empty;
+        [property: Required(ErrorMessage = "CustomerId is required")]
+        Guid CustomerId,
 
-        [Required(ErrorMessage = "CustomerId is required")]
-        public Guid CustomerId { get; set; }
+        [property: Required(ErrorMessage = "OrderDate is required")]
+        DateTime OrderDate,
 
-        [Required(ErrorMessage = "OrderDate is required")]
-        public DateTime OrderDate { get; set; }
+        [property: Range(0, int.MaxValue, ErrorMessage = "Status must be valid")]
+        int Status,
 
-        [Range(0, int.MaxValue, ErrorMessage = "Status must be valid")]
-        public int Status { get; set; }
+        [property: Range(0, double.MaxValue, ErrorMessage = "TotalAmount must be greater than or equal to 0")]
+        decimal TotalAmount,
 
-        [Range(0, double.MaxValue, ErrorMessage = "TotalAmount must be greater than or equal to 0")]
-        public decimal TotalAmount { get; set; }
+        List<CreateUpdateSalesOrderLineDto> Lines
+    );
 
-        public List<CreateUpdateSalesOrderLineDto> Lines { get; set; } = new();
-    }
+    public record CreateUpdateSalesOrderLineDto(
+        [property: Required]
+        Guid ProductId,
 
-    public record CreateUpdateSalesOrderLineDto
-    {
-        public CreateUpdateSalesOrderLineDto() { }
-        
-        public CreateUpdateSalesOrderLineDto(
-            Guid productId,
-            int quantity,
-            decimal unitPrice)
-        {
-            ProductId = productId;
-            Quantity = quantity;
-            UnitPrice = unitPrice;
-        }
-        
-        [Required]
-        public Guid ProductId { get; set; }
+        [property: Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
+        int Quantity,
 
-        [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
-        public int Quantity { get; set; }
-
-        [Range(0, double.MaxValue, ErrorMessage = "UnitPrice must be greater than or equal to 0")]
-        public decimal UnitPrice { get; set; }
-    }
+        [property: Range(0, double.MaxValue, ErrorMessage = "UnitPrice must be greater than or equal to 0")]
+        decimal UnitPrice
+    );
 }

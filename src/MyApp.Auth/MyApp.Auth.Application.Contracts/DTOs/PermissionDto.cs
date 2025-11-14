@@ -4,8 +4,8 @@ namespace MyApp.Auth.Application.Contracts.DTOs
 {
     public record PermissionDto : AuditableGuidDto
     {
-        public string Module { get; set; } = string.Empty;
-        public string Action { get; set; } = string.Empty;
-        public string? Description { get; set; }
+        public string Module { get; init; } = string.Empty;
+        public string Action { get; init; } = string.Empty;
+        public string? Description { get; init; }
     }
 }

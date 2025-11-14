@@ -5,27 +5,16 @@ namespace MyApp.Inventory.Application.Contracts.DTOs;
 
 public record WarehouseDto : AuditableGuidDto
 {
-    public string Name { get; set; } = string.Empty;
-    public string Location { get; set; } = string.Empty;
+    public string Name { get; init; } = string.Empty;
+    public string Location { get; init; } = string.Empty;
 }
 
-public record CreateUpdateWarehouseDto
-{
-    public CreateUpdateWarehouseDto() { }
-    
-    public CreateUpdateWarehouseDto(
-        string name,
-        string location)
-    {
-        Name = name;
-        Location = location;
-    }
-    
-    [Required(ErrorMessage = "Name is required")]
-    [StringLength(255, MinimumLength = 1)]
-    public string Name { get; set; } = string.Empty;
+public record CreateUpdateWarehouseDto(
+    [property: Required(ErrorMessage = "Name is required")]
+    [property: StringLength(255, MinimumLength = 1)]
+    string Name,
 
-    [Required(ErrorMessage = "Location is required")]
-    [StringLength(500, MinimumLength = 1)]
-    public string Location { get; set; } = string.Empty;
-}
+    [property: Required(ErrorMessage = "Location is required")]
+    [property: StringLength(500, MinimumLength = 1)]
+    string Location
+);

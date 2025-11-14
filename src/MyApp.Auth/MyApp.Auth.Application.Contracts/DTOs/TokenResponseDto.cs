@@ -5,61 +5,44 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Auth.Application.Contracts.DTOs;
 
-public record TokenResponseDto
-{
-    public TokenResponseDto() { }
-    
-    public TokenResponseDto(
-        string accessToken,
-        string refreshToken,
-        int expiresIn,
-        string tokenType = "Bearer",
-        UserDto? user = null)
-    {
-        AccessToken = accessToken;
-        RefreshToken = refreshToken;
-        ExpiresIn = expiresIn;
-        TokenType = tokenType;
-        User = user;
-    }
-    
-    public string AccessToken { get; set; } = string.Empty;
-    public string RefreshToken { get; set; } = string.Empty;
-    public int ExpiresIn { get; set; }
-    public string TokenType { get; set; } = "Bearer";
-    public UserDto? User { get; set; }
-}
+public record TokenResponseDto(
+    string AccessToken,
+    string RefreshToken,
+    int ExpiresIn,
+    string TokenType = "Bearer",
+    UserDto? User = null
+);
 
 public record CreateUserDto : AuditableGuidDto
 {
     [Required]
     [EmailAddress]
-    public string? Email { get; set; }
+    public string? Email { get; init; }
 
     [Required]
     [MinLength(8)]
-    public string? Username { get; set; }
+    public string? Username { get; init; }
 
-    public string? FirstName { get; set; }
-    public string? LastName { get; set; }
+    public string? FirstName { get; init; }
+    public string? LastName { get; init; }
 
     [Required]
     [MinLength(8)]
     [PasswordPropertyText]
-    public string Password { get; set; } = string.Empty;
+    public string Password { get; init; } = string.Empty;
 }
 
 public record UserDto : AuditableGuidDto
 {
-    public Guid Id { get; set; }
-    public string? Email { get; set; }
-    public string? Username { get; set; }
-    public string? FirstName { get; set; }
-    public string? LastName { get; set; }
-    public bool EmailConfirmed { get; set; }
-    public bool IsExternalLogin { get; set; }
-    public string? ExternalProvider { get; set; }
-    public List<RoleDto?> Roles { get; set; } = new();
-    public List<PermissionDto?> Permissions { get; set; } = new();
-    public bool IsAdmin { get; set; }
+    public Guid Id { get; init; }
+    public string? Email { get; init; }
+    public string? Username { get; init; }
+    public string? FirstName { get; init; }
+    public string? LastName { get; init; }
+    public bool EmailConfirmed { get; init; }
+    public bool IsExternalLogin { get; init; }
+    public string? ExternalProvider { get; init; }
+    public List<RoleDto?> Roles { get; init; } = new();
+    public List<PermissionDto?> Permissions { get; init; } = new();
+    public bool IsAdmin { get; init; }
 }

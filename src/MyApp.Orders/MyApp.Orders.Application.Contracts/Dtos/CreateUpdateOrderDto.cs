@@ -4,32 +4,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Orders.Application.Contracts.Dtos
 {
-    public record CreateUpdateOrderDto
-    {
-        public CreateUpdateOrderDto() { }
+    public record CreateUpdateOrderDto(
+        [property: Required]
+        string OrderNumber,
         
-        public CreateUpdateOrderDto(
-            string orderNumber,
-            Guid customerId,
-            DateTime orderDate,
-            List<OrderLineDto> lines)
-        {
-            OrderNumber = orderNumber;
-            CustomerId = customerId;
-            OrderDate = orderDate;
-            Lines = lines;
-        }
+        [property: Required]
+        Guid CustomerId,
         
-        [Required]
-        public string OrderNumber { get; set; } = string.Empty;
-
-        [Required]
-        public Guid CustomerId { get; set; }
-
-        [Required]
-        public DateTime OrderDate { get; set; }
-
-        [Required]
-        public List<OrderLineDto> Lines { get; set; } = new();
-    }
+        [property: Required]
+        DateTime OrderDate,
+        
+        [property: Required]
+        List<OrderLineDto> Lines
+    );
 }

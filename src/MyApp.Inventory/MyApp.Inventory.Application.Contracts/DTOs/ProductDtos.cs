@@ -5,52 +5,33 @@ namespace MyApp.Inventory.Application.Contracts.DTOs;
 
 public record ProductDto : AuditableGuidDto
 {
-    public Guid Id { get; set; }
-    public string SKU { get; set; } = string.Empty;
-    public string Name { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public decimal UnitPrice { get; set; }
-    public int QuantityInStock { get; set; }
-    public int ReorderLevel { get; set; }
+    public Guid Id { get; init; }
+    public string SKU { get; init; } = string.Empty;
+    public string Name { get; init; } = string.Empty;
+    public string Description { get; init; } = string.Empty;
+    public decimal UnitPrice { get; init; }
+    public int QuantityInStock { get; init; }
+    public int ReorderLevel { get; init; }
 }
 
-public record CreateUpdateProductDto
-{
-    public CreateUpdateProductDto() { }
-    
-    public CreateUpdateProductDto(
-        string sku,
-        string name,
-        string description,
-        decimal unitPrice,
-        int quantityInStock,
-        int reorderLevel)
-    {
-        SKU = sku;
-        Name = name;
-        Description = description;
-        UnitPrice = unitPrice;
-        QuantityInStock = quantityInStock;
-        ReorderLevel = reorderLevel;
-    }
-    
-    [Required(ErrorMessage = "SKU is required")]
-    [StringLength(64, MinimumLength = 1)]
-    public string SKU { get; set; } = string.Empty;
+public record CreateUpdateProductDto(
+    [property: Required(ErrorMessage = "SKU is required")]
+    [property: StringLength(64, MinimumLength = 1)]
+    string SKU,
 
-    [Required(ErrorMessage = "Name is required")]
-    [StringLength(255, MinimumLength = 1)]
-    public string Name { get; set; } = string.Empty;
+    [property: Required(ErrorMessage = "Name is required")]
+    [property: StringLength(255, MinimumLength = 1)]
+    string Name,
 
-    [StringLength(1000)]
-    public string Description { get; set; } = string.Empty;
+    [property: StringLength(1000)]
+    string Description,
 
-    [Range(0, double.MaxValue, ErrorMessage = "UnitPrice must be greater than or equal to 0")]
-    public decimal UnitPrice { get; set; }
+    [property: Range(0, double.MaxValue, ErrorMessage = "UnitPrice must be greater than or equal to 0")]
+    decimal UnitPrice,
 
-    [Range(0, int.MaxValue, ErrorMessage = "QuantityInStock must be greater than or equal to 0")]
-    public int QuantityInStock { get; set; }
+    [property: Range(0, int.MaxValue, ErrorMessage = "QuantityInStock must be greater than or equal to 0")]
+    int QuantityInStock,
 
-    [Range(0, int.MaxValue, ErrorMessage = "ReorderLevel must be greater than or equal to 0")]
-    public int ReorderLevel { get; set; }
-}
+    [property: Range(0, int.MaxValue, ErrorMessage = "ReorderLevel must be greater than or equal to 0")]
+    int ReorderLevel
+);

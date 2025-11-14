@@ -7,49 +7,32 @@ namespace MyApp.Purchasing.Application.Contracts.DTOs;
 
 public record SupplierDto : AuditableGuidDto
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public string ContactName { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string PhoneNumber { get; set; } = string.Empty;
-    public string Address { get; set; } = string.Empty;
+    public Guid Id { get; init; }
+    public string Name { get; init; } = string.Empty;
+    public string ContactName { get; init; } = string.Empty;
+    public string Email { get; init; } = string.Empty;
+    public string PhoneNumber { get; init; } = string.Empty;
+    public string Address { get; init; } = string.Empty;
 }
 
-public record CreateUpdateSupplierDto
-{
-    public CreateUpdateSupplierDto() { }
-    
-    public CreateUpdateSupplierDto(
-        string name,
-        string contactName,
-        string email,
-        string phoneNumber,
-        string address)
-    {
-        Name = name;
-        ContactName = contactName;
-        Email = email;
-        PhoneNumber = phoneNumber;
-        Address = address;
-    }
-    
-    [Required(ErrorMessage = "Name is required")]
-    [StringLength(255, MinimumLength = 1)]
-    public string Name { get; set; } = string.Empty;
+public record CreateUpdateSupplierDto(
+    [property: Required(ErrorMessage = "Name is required")]
+    [property: StringLength(255, MinimumLength = 1)]
+    string Name,
 
-    [Required(ErrorMessage = "ContactName is required")]
-    [StringLength(255, MinimumLength = 1)]
-    public string ContactName { get; set; } = string.Empty;
+    [property: Required(ErrorMessage = "ContactName is required")]
+    [property: StringLength(255, MinimumLength = 1)]
+    string ContactName,
 
-    [Required(ErrorMessage = "Email is required")]
-    [EmailAddress(ErrorMessage = "Email must be a valid email address")]
-    [StringLength(255)]
-    public string Email { get; set; } = string.Empty;
+    [property: Required(ErrorMessage = "Email is required")]
+    [property: EmailAddress(ErrorMessage = "Email must be a valid email address")]
+    [property: StringLength(255)]
+    string Email,
 
-    [Phone(ErrorMessage = "PhoneNumber must be a valid phone number")]
-    [StringLength(20)]
-    public string PhoneNumber { get; set; } = string.Empty;
+    [property: Phone(ErrorMessage = "PhoneNumber must be a valid phone number")]
+    [property: StringLength(20)]
+    string PhoneNumber,
 
-    [StringLength(500)]
-    public string Address { get; set; } = string.Empty;
-}
+    [property: StringLength(500)]
+    string Address
+);
