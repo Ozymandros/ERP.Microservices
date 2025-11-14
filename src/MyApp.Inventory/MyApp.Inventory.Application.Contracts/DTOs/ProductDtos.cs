@@ -6,7 +6,6 @@ namespace MyApp.Inventory.Application.Contracts.DTOs;
 public record ProductDto : AuditableGuidDto
 {
     public Guid Id { get; set; }
-
     public string SKU { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
@@ -17,6 +16,24 @@ public record ProductDto : AuditableGuidDto
 
 public record CreateUpdateProductDto
 {
+    public CreateUpdateProductDto() { }
+    
+    public CreateUpdateProductDto(
+        string sku,
+        string name,
+        string description,
+        decimal unitPrice,
+        int quantityInStock,
+        int reorderLevel)
+    {
+        SKU = sku;
+        Name = name;
+        Description = description;
+        UnitPrice = unitPrice;
+        QuantityInStock = quantityInStock;
+        ReorderLevel = reorderLevel;
+    }
+    
     [Required(ErrorMessage = "SKU is required")]
     [StringLength(64, MinimumLength = 1)]
     public string SKU { get; set; } = string.Empty;

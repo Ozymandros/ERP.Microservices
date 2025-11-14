@@ -4,6 +4,24 @@ namespace MyApp.Auth.Application.Contracts.DTOs;
 
 public record RegisterDto
 {
+    public RegisterDto() { }
+    
+    public RegisterDto(
+        string email,
+        string username,
+        string password,
+        string passwordConfirm,
+        string? firstName = null,
+        string? lastName = null)
+    {
+        Email = email;
+        Username = username;
+        Password = password;
+        PasswordConfirm = passwordConfirm;
+        FirstName = firstName;
+        LastName = lastName;
+    }
+    
     [Required(ErrorMessage = "Email is required")]
     [EmailAddress(ErrorMessage = "Invalid email address")]
     public string Email { get; set; } = string.Empty;

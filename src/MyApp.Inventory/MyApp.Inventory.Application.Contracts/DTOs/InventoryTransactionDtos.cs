@@ -5,8 +5,29 @@ namespace MyApp.Inventory.Application.Contracts.DTOs;
 
 public record InventoryTransactionDto
 {
+    public InventoryTransactionDto() { }
+    
+    public InventoryTransactionDto(
+        Guid id,
+        Guid productId,
+        Guid warehouseId,
+        int quantityChange,
+        TransactionType transactionType,
+        DateTime transactionDate,
+        ProductDto? product = null,
+        WarehouseDto? warehouse = null)
+    {
+        Id = id;
+        ProductId = productId;
+        WarehouseId = warehouseId;
+        QuantityChange = quantityChange;
+        TransactionType = transactionType;
+        TransactionDate = transactionDate;
+        Product = product;
+        Warehouse = warehouse;
+    }
+    
     public Guid Id { get; set; }
-
     public Guid ProductId { get; set; }
     public Guid WarehouseId { get; set; }
     public int QuantityChange { get; set; }
@@ -18,6 +39,22 @@ public record InventoryTransactionDto
 
 public record CreateUpdateInventoryTransactionDto
 {
+    public CreateUpdateInventoryTransactionDto() { }
+    
+    public CreateUpdateInventoryTransactionDto(
+        Guid productId,
+        Guid warehouseId,
+        int quantityChange,
+        TransactionType transactionType,
+        DateTime transactionDate)
+    {
+        ProductId = productId;
+        WarehouseId = warehouseId;
+        QuantityChange = quantityChange;
+        TransactionType = transactionType;
+        TransactionDate = transactionDate;
+    }
+    
     [Required(ErrorMessage = "ProductId is required")]
     public Guid ProductId { get; set; }
 

@@ -17,6 +17,22 @@ public record SupplierDto : AuditableGuidDto
 
 public record CreateUpdateSupplierDto
 {
+    public CreateUpdateSupplierDto() { }
+    
+    public CreateUpdateSupplierDto(
+        string name,
+        string contactName,
+        string email,
+        string phoneNumber,
+        string address)
+    {
+        Name = name;
+        ContactName = contactName;
+        Email = email;
+        PhoneNumber = phoneNumber;
+        Address = address;
+    }
+    
     [Required(ErrorMessage = "Name is required")]
     [StringLength(255, MinimumLength = 1)]
     public string Name { get; set; } = string.Empty;

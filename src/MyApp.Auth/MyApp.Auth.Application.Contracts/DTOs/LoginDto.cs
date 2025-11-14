@@ -4,6 +4,14 @@ namespace MyApp.Auth.Application.Contracts.DTOs;
 
 public record LoginDto
 {
+    public LoginDto() { }
+    
+    public LoginDto(string email, string password)
+    {
+        Email = email;
+        Password = password;
+    }
+    
     [Required(ErrorMessage = "Email is required")]
     [EmailAddress(ErrorMessage = "Invalid email address")]
     public string Email { get; set; } = string.Empty;

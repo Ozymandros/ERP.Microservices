@@ -7,6 +7,22 @@ namespace MyApp.Auth.Application.Contracts.DTOs;
 
 public record TokenResponseDto
 {
+    public TokenResponseDto() { }
+    
+    public TokenResponseDto(
+        string accessToken,
+        string refreshToken,
+        int expiresIn,
+        string tokenType = "Bearer",
+        UserDto? user = null)
+    {
+        AccessToken = accessToken;
+        RefreshToken = refreshToken;
+        ExpiresIn = expiresIn;
+        TokenType = tokenType;
+        User = user;
+    }
+    
     public string AccessToken { get; set; } = string.Empty;
     public string RefreshToken { get; set; } = string.Empty;
     public int ExpiresIn { get; set; }

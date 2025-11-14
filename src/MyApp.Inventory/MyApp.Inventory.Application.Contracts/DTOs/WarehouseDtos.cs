@@ -11,6 +11,16 @@ public record WarehouseDto : AuditableGuidDto
 
 public record CreateUpdateWarehouseDto
 {
+    public CreateUpdateWarehouseDto() { }
+    
+    public CreateUpdateWarehouseDto(
+        string name,
+        string location)
+    {
+        Name = name;
+        Location = location;
+    }
+    
     [Required(ErrorMessage = "Name is required")]
     [StringLength(255, MinimumLength = 1)]
     public string Name { get; set; } = string.Empty;

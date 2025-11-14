@@ -16,6 +16,24 @@ namespace MyApp.Sales.Application.Contracts.DTOs
 
     public record SalesOrderLineDto
     {
+        public SalesOrderLineDto() { }
+        
+        public SalesOrderLineDto(
+            Guid id,
+            Guid salesOrderId,
+            Guid productId,
+            int quantity,
+            decimal unitPrice,
+            decimal lineTotal)
+        {
+            Id = id;
+            SalesOrderId = salesOrderId;
+            ProductId = productId;
+            Quantity = quantity;
+            UnitPrice = unitPrice;
+            LineTotal = lineTotal;
+        }
+        
         public Guid Id { get; set; }
         public Guid SalesOrderId { get; set; }
         public Guid ProductId { get; set; }
@@ -26,7 +44,24 @@ namespace MyApp.Sales.Application.Contracts.DTOs
 
     public record CustomerDto
     {
+        public CustomerDto() { }
+        
+        public CustomerDto(
+            Guid id,
+            string name,
+            string email,
+            string phoneNumber,
+            string address)
+        {
+            Id = id;
+            Name = name;
+            Email = email;
+            PhoneNumber = phoneNumber;
+            Address = address;
+        }
+        
         public Guid Id { get; set; }
+        
         [Required(ErrorMessage = "Name is required")]
         [StringLength(255, MinimumLength = 1)]
         public string Name { get; set; } = string.Empty;
@@ -46,6 +81,24 @@ namespace MyApp.Sales.Application.Contracts.DTOs
 
     public record CreateUpdateSalesOrderDto
     {
+        public CreateUpdateSalesOrderDto() { }
+        
+        public CreateUpdateSalesOrderDto(
+            string orderNumber,
+            Guid customerId,
+            DateTime orderDate,
+            int status,
+            decimal totalAmount,
+            List<CreateUpdateSalesOrderLineDto> lines)
+        {
+            OrderNumber = orderNumber;
+            CustomerId = customerId;
+            OrderDate = orderDate;
+            Status = status;
+            TotalAmount = totalAmount;
+            Lines = lines;
+        }
+        
         [Required(ErrorMessage = "OrderNumber is required")]
         [StringLength(64)]
         public string OrderNumber { get; set; } = string.Empty;
@@ -67,6 +120,18 @@ namespace MyApp.Sales.Application.Contracts.DTOs
 
     public record CreateUpdateSalesOrderLineDto
     {
+        public CreateUpdateSalesOrderLineDto() { }
+        
+        public CreateUpdateSalesOrderLineDto(
+            Guid productId,
+            int quantity,
+            decimal unitPrice)
+        {
+            ProductId = productId;
+            Quantity = quantity;
+            UnitPrice = unitPrice;
+        }
+        
         [Required]
         public Guid ProductId { get; set; }
 
