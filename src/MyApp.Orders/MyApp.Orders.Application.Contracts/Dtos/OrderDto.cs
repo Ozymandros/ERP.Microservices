@@ -2,13 +2,13 @@ using MyApp.Shared.Domain.DTOs;
 
 namespace MyApp.Orders.Application.Contracts.Dtos
 {
-    public class OrderDto : AuditableGuidDto
+    public record OrderDto : AuditableGuidDto
     {
-        public string OrderNumber { get; set; } = string.Empty;
-        public Guid CustomerId { get; set; }
-        public DateTime OrderDate { get; set; }
-        public string Status { get; set; } = string.Empty;
-        public decimal TotalAmount { get; set; }
-        public List<OrderLineDto> Lines { get; set; } = new();
+        public string OrderNumber { get; init; } = string.Empty;
+        public Guid CustomerId { get; init; }
+        public DateTime OrderDate { get; init; }
+        public string Status { get; init; } = string.Empty;
+        public decimal TotalAmount { get; init; }
+        public List<OrderLineDto> Lines { get; init; } = new();
     }
 }

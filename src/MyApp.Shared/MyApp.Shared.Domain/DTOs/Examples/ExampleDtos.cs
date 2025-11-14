@@ -1,14 +1,14 @@
 namespace MyApp.Shared.Domain.DTOs.Examples
 {
     // Example: Simple DTO with Guid ID
-    public class UserDto : BaseGuidDto
+    public record UserDto : BaseGuidDto
     {
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
     }
 
     // Example: DTO with audit trail and Guid ID
-    public class OrderDto : AuditableGuidDto
+    public record OrderDto : AuditableGuidDto
     {
         public string OrderNumber { get; set; } = string.Empty;
         public decimal Total { get; set; }
@@ -16,14 +16,14 @@ namespace MyApp.Shared.Domain.DTOs.Examples
     }
 
     // Example: DTO with integer ID
-    public class CategoryDto : BaseIntDto
+    public record CategoryDto : BaseIntDto
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
     }
 
     // Example: DTO with audit trail and integer ID
-    public class ProductDto : AuditableIntDto
+    public record ProductDto : AuditableIntDto
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
