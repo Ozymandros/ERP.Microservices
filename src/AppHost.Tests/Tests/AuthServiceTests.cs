@@ -30,7 +30,7 @@ public class AuthIntegrationTests
             Password: "Password123!"
         );
 
-        var response = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
+        var response = await client.PostAsJsonAsync("/api/auth/login", loginDto);
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
@@ -56,7 +56,7 @@ public class AuthIntegrationTests
             Password: "Admin123!"
         );
 
-        var response = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
+        var response = await client.PostAsJsonAsync("/api/auth/login", loginDto);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
@@ -82,7 +82,7 @@ public class AuthIntegrationTests
             Password: "wrongpassword"
         );
 
-        var response = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
+        var response = await client.PostAsJsonAsync("/api/auth/login", loginDto);
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
@@ -108,7 +108,7 @@ public class AuthIntegrationTests
             Password: ""
         );
 
-        var response = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
+        var response = await client.PostAsJsonAsync("/api/auth/login", loginDto);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -138,7 +138,7 @@ public class AuthIntegrationTests
             Username: "johndoe"
             );
 
-        var response = await client.PostAsJsonAsync("/auth/api/auth/register", registerDto);
+        var response = await client.PostAsJsonAsync("/api/auth/register", registerDto);
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
@@ -168,7 +168,7 @@ public class AuthIntegrationTests
             Username: "existinguser"
         );
 
-        var response = await client.PostAsJsonAsync("/auth/api/auth/register", registerDto);
+        var response = await client.PostAsJsonAsync("/api/auth/register", registerDto);
 
         Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
     }
@@ -198,7 +198,7 @@ public class AuthIntegrationTests
             PasswordConfirm: "456"
         );
 
-        var response = await client.PostAsJsonAsync("/auth/api/auth/register", registerDto);
+        var response = await client.PostAsJsonAsync("/api/auth/register", registerDto);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -224,7 +224,7 @@ public class AuthIntegrationTests
             AccessToken: "valid-access-token"
         );
 
-        var response = await client.PostAsJsonAsync("/auth/api/auth/refresh", refreshTokenDto);
+        var response = await client.PostAsJsonAsync("/api/auth/refresh", refreshTokenDto);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
@@ -246,7 +246,7 @@ public class AuthIntegrationTests
 
         var refreshTokenDto = new RefreshTokenDto("invalid-access-token", "invalid-refresh-token");
 
-        var response = await client.PostAsJsonAsync("/auth/api/auth/refresh", refreshTokenDto);
+        var response = await client.PostAsJsonAsync("/api/auth/refresh", refreshTokenDto);
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
@@ -272,7 +272,7 @@ public class AuthIntegrationTests
             AccessToken: ""
         );
 
-        var response = await client.PostAsJsonAsync("/auth/api/auth/refresh", refreshTokenDto);
+        var response = await client.PostAsJsonAsync("/api/auth/refresh", refreshTokenDto);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -295,7 +295,7 @@ public class AuthIntegrationTests
 
         var provider = "Google";
 
-        var response = await client.GetAsync($"/auth/api/auth/external-login/{provider}");
+        var response = await client.GetAsync($"/api/auth/external-login/{provider}");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
@@ -317,7 +317,7 @@ public class AuthIntegrationTests
 
         var provider = "invalid-provider";
 
-        var response = await client.GetAsync($"/auth/api/auth/external-login/{provider}");
+        var response = await client.GetAsync($"/api/auth/external-login/{provider}");
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -337,7 +337,7 @@ public class AuthIntegrationTests
             .WaitAsync(TimeSpan.FromSeconds(30));
         var client = app.CreateHttpClient("gateway");
 
-        var response = await client.GetAsync("/auth/api/auth/external-callback");
+        var response = await client.GetAsync("/api/auth/external-callback");
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -358,7 +358,7 @@ public class AuthIntegrationTests
     //        .WaitAsync(TimeSpan.FromSeconds(30));
     //    var client = app.CreateHttpClient("gateway");
 
-    //    var response = await client.PostAsync("/auth/api/auth/logout", null);
+    //    var response = await client.PostAsync("/api/auth/logout", null);
 
     //    Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     //}
@@ -394,7 +394,7 @@ public class AuthIntegrationTests
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "valid-jwt-token");
 
         //Act
-        var response = await client.PostAsync("/auth/api/auth/logout", null);
+        var response = await client.PostAsync("/api/auth/logout", null);
 
         //Assert
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
