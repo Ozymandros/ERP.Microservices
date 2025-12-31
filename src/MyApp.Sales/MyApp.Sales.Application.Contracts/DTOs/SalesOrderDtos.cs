@@ -3,45 +3,62 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Sales.Application.Contracts.DTOs
 {
-    public record SalesOrderDto : AuditableGuidDto
+    public record SalesOrderDto(
+        Guid Id,
+        DateTime CreatedAt = default,
+        string CreatedBy = "",
+        DateTime? UpdatedAt = null,
+        string? UpdatedBy = null,
+        string OrderNumber = "",
+        Guid CustomerId = default,
+        DateTime OrderDate = default,
+        int Status = 0,
+        decimal TotalAmount = 0,
+        CustomerDto? Customer = null,
+        List<SalesOrderLineDto>? Lines = null
+    ) : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy)
     {
-        public string OrderNumber { get; init; } = string.Empty;
-        public Guid CustomerId { get; init; }
-        public DateTime OrderDate { get; init; }
-        public int Status { get; init; }
-        public decimal TotalAmount { get; init; }
-        public CustomerDto? Customer { get; init; }
-        public List<SalesOrderLineDto> Lines { get; init; } = new();
+        public List<SalesOrderLineDto> Lines { get; set; } = Lines ?? new();
     }
 
     public record SalesOrderLineDto(
         Guid Id,
-        Guid SalesOrderId,
-        Guid ProductId,
-        int Quantity,
-        decimal UnitPrice,
-        decimal LineTotal
-    );
+        DateTime CreatedAt = default,
+        string CreatedBy = "",
+        DateTime? UpdatedAt = null,
+        string? UpdatedBy = null,
+        Guid SalesOrderId = default,
+        Guid ProductId = default,
+        [property: Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
+        int Quantity = 1,
+        [property: Range(0, double.MaxValue, ErrorMessage = "UnitPrice must be greater than or equal to 0")]
+        decimal UnitPrice = 0,
+        decimal LineTotal = 0
+    ) : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
 
     public record CustomerDto(
         Guid Id,
-        
+        DateTime CreatedAt = default,
+        string CreatedBy = "",
+        DateTime? UpdatedAt = null,
+        string? UpdatedBy = null,
+
         [property: Required(ErrorMessage = "Name is required")]
         [property: StringLength(255, MinimumLength = 1)]
-        string Name,
+        string Name = "",
 
         [property: Required(ErrorMessage = "Email is required")]
         [property: EmailAddress]
         [property: StringLength(255)]
-        string Email,
+        string Email = "",
 
         [property: Phone]
         [property: StringLength(20)]
-        string PhoneNumber,
+        string PhoneNumber = "",
 
         [property: StringLength(500)]
-        string Address
-    );
+        string Address = ""
+    ) : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
 
     public record CreateUpdateSalesOrderDto(
         [property: Required(ErrorMessage = "OrderNumber is required")]
@@ -55,13 +72,16 @@ namespace MyApp.Sales.Application.Contracts.DTOs
         DateTime OrderDate,
 
         [property: Range(0, int.MaxValue, ErrorMessage = "Status must be valid")]
-        int Status,
+        int Status = 0,
 
         [property: Range(0, double.MaxValue, ErrorMessage = "TotalAmount must be greater than or equal to 0")]
-        decimal TotalAmount,
+        decimal TotalAmount = 0,
 
-        List<CreateUpdateSalesOrderLineDto> Lines
-    );
+        List<CreateUpdateSalesOrderLineDto>? Lines = null
+    )
+    {
+        public List<CreateUpdateSalesOrderLineDto> Lines { get; set; } = Lines ?? new();
+    }
 
     public record CreateUpdateSalesOrderLineDto(
         [property: Required]

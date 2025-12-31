@@ -3,16 +3,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
-public record ProductDto : AuditableGuidDto
-{
-    public Guid Id { get; init; }
-    public string SKU { get; init; } = string.Empty;
-    public string Name { get; init; } = string.Empty;
-    public string Description { get; init; } = string.Empty;
-    public decimal UnitPrice { get; init; }
-    public int QuantityInStock { get; init; }
-    public int ReorderLevel { get; init; }
-}
+public record ProductDto(
+    Guid Id,
+    DateTime CreatedAt = default,
+    string CreatedBy = "",
+    DateTime? UpdatedAt = null,
+    string? UpdatedBy = null,
+    string SKU = "",
+    string Name = "",
+    string Description = "",
+    decimal UnitPrice = 0,
+    int QuantityInStock = 0,
+    int ReorderLevel = 0
+) : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
 
 public record CreateUpdateProductDto(
     [property: Required(ErrorMessage = "SKU is required")]
@@ -24,14 +27,14 @@ public record CreateUpdateProductDto(
     string Name,
 
     [property: StringLength(1000)]
-    string Description,
+    string Description = "",
 
     [property: Range(0, double.MaxValue, ErrorMessage = "UnitPrice must be greater than or equal to 0")]
-    decimal UnitPrice,
+    decimal UnitPrice = 0,
 
     [property: Range(0, int.MaxValue, ErrorMessage = "QuantityInStock must be greater than or equal to 0")]
-    int QuantityInStock,
+    int QuantityInStock = 0,
 
     [property: Range(0, int.MaxValue, ErrorMessage = "ReorderLevel must be greater than or equal to 0")]
-    int ReorderLevel
+    int ReorderLevel = 0
 );

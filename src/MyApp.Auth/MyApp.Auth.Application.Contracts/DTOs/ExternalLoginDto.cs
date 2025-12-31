@@ -20,12 +20,15 @@ public record CreateRoleDto(
     string? Description = null
 );
 
-public record RoleDto : AuditableGuidDto
-{
-    public Guid Id { get; init; }
-    public string? Name { get; init; }
-    public string? Description { get; init; }
-}
+public record RoleDto(
+    Guid Id,
+    DateTime CreatedAt = default,
+    string CreatedBy = "",
+    DateTime? UpdatedAt = null,
+    string? UpdatedBy = null,
+    string? Name = null,
+    string? Description = null
+) : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
 
 public record UpdateUserDto(
     string? Email = null,

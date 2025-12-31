@@ -83,11 +83,11 @@ public class AuthController : ControllerBase
     }
 
     [HttpOptions("refresh")]
-    [AllowAnonymous] 
+    [AllowAnonymous]
     public IActionResult HandleRefreshOptions()
     {
         // Retornem un 204 No Content. 
-        // El middleware CORS ara tindrà l'oportunitat d'afegir les capçaleres abans de finalitzar la resposta.
+        // El middleware CORS ara tindrï¿½ l'oportunitat d'afegir les capï¿½aleres abans de finalitzar la resposta.
         return NoContent();
     }
 
@@ -103,8 +103,8 @@ public class AuthController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        if(refreshTokenDto is null || string.IsNullOrWhiteSpace(refreshTokenDto.RefreshToken) || string.IsNullOrWhiteSpace(refreshTokenDto.AccessToken))
-            return BadRequest(new { message = "Invalid token data" });  
+        if (refreshTokenDto is null || string.IsNullOrWhiteSpace(refreshTokenDto.RefreshToken) || string.IsNullOrWhiteSpace(refreshTokenDto.AccessToken))
+            return BadRequest(new { message = "Invalid token data" });
 
         try
         {
@@ -170,14 +170,7 @@ public class AuthController : ControllerBase
             if (string.IsNullOrEmpty(externalId) || string.IsNullOrEmpty(email))
                 return BadRequest(new { message = "Missing required external login information" });
 
-            var externalLoginDto = new ExternalLoginDto
-            {
-                Provider = authProvider,
-                ExternalId = externalId,
-                Email = email,
-                FirstName = givenName,
-                LastName = surname
-            };
+            var externalLoginDto = new ExternalLoginDto(authProvider, externalId, email, givenName, surname);
 
             var tokenResponse = await _authService.ExternalLoginAsync(externalLoginDto);
             if (tokenResponse == null)

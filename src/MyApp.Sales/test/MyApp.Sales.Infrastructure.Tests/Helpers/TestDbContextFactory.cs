@@ -29,17 +29,15 @@ public static class TestDbContextFactory
         context.SaveChanges();
 
         // Seed customers
-        var customer1 = new Customer
+        var customer1 = new Customer(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             Name = "Test Customer 1",
             Email = "customer1@test.com",
             PhoneNumber = "123-456-7890"
         };
 
-        var customer2 = new Customer
+        var customer2 = new Customer(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             Name = "Test Customer 2",
             Email = "customer2@test.com",
             PhoneNumber = "098-765-4321"

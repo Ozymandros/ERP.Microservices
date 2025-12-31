@@ -117,9 +117,8 @@ public class PermissionService : IPermissionService
                 return null;
             }
 
-            var entity = new Permission
+            var entity = new Permission(Guid.NewGuid())
             {
-                Id = Guid.NewGuid(),
                 Module = createPermissionDto.Module,
                 Action = createPermissionDto.Action,
                 Description = createPermissionDto.Description
@@ -190,15 +189,7 @@ public class PermissionService : IPermissionService
         {
             var result = await _permissionRepository.QueryAsync(spec);
             
-            var dtos = result.Items.Select(p => new PermissionDto
-            {
-                Id = p.Id,
-                Module = p.Module,
-                Action = p.Action,
-                Description = p.Description,
-                CreatedAt = p.CreatedAt,
-                UpdatedAt = p.UpdatedAt
-            }).ToList();
+            var dtos = result.Items.Select(p => new PermissionDto(p.Id, p.CreatedAt, "", p.UpdatedAt, null, p.Module, p.Action, p.Description)).ToList();
             
             return new PaginatedResult<PermissionDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
         }

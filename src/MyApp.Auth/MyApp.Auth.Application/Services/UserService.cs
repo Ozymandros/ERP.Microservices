@@ -284,19 +284,23 @@ public class UserService : IUserService
         {
             var result = await _userRepository.QueryAsync(spec);
             
-            var dtos = result.Items.Select(u => new UserDto
-            {
-                Id = u.Id,
-                Email = u.Email,
-                Username = u.UserName,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                EmailConfirmed = u.EmailConfirmed,
-                IsExternalLogin = u.IsExternalLogin,
-                ExternalProvider = u.ExternalProvider,
-                CreatedAt = u.CreatedAt,
-                UpdatedAt = u.UpdatedAt
-            }).ToList();
+            var dtos = result.Items.Select(u => new UserDto(
+                u.Id,
+                u.CreatedAt,
+                "",
+                u.UpdatedAt,
+                null,
+                u.Email,
+                u.UserName,
+                u.FirstName,
+                u.LastName,
+                u.EmailConfirmed,
+                u.IsExternalLogin,
+                u.ExternalProvider,
+                null,
+                null,
+                false
+            )).ToList();
             
             return new PaginatedResult<UserDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
         }

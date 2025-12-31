@@ -5,15 +5,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Purchasing.Application.Contracts.DTOs;
 
-public record SupplierDto : AuditableGuidDto
-{
-    public Guid Id { get; init; }
-    public string Name { get; init; } = string.Empty;
-    public string ContactName { get; init; } = string.Empty;
-    public string Email { get; init; } = string.Empty;
-    public string PhoneNumber { get; init; } = string.Empty;
-    public string Address { get; init; } = string.Empty;
-}
+public record SupplierDto(
+    Guid Id,
+    DateTime CreatedAt = default,
+    string CreatedBy = "",
+    DateTime? UpdatedAt = null,
+    string? UpdatedBy = null,
+    string Name = "",
+    string ContactName = "",
+    string Email = "",
+    string PhoneNumber = "",
+    string Address = ""
+) : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
 
 public record CreateUpdateSupplierDto(
     [property: Required(ErrorMessage = "Name is required")]
@@ -31,8 +34,8 @@ public record CreateUpdateSupplierDto(
 
     [property: Phone(ErrorMessage = "PhoneNumber must be a valid phone number")]
     [property: StringLength(20)]
-    string PhoneNumber,
+    string PhoneNumber = "",
 
     [property: StringLength(500)]
-    string Address
+    string Address = ""
 );

@@ -21,9 +21,8 @@ public class CustomerRepositoryTests
 
     private Customer CreateTestCustomer(string name = "Test Customer", string email = "test@example.com")
     {
-        var customer = new Customer
+        var customer = new Customer(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             Name = name,
             Email = email,
             PhoneNumber = "555-1234",
@@ -70,9 +69,8 @@ public class CustomerRepositoryTests
     {
         // Arrange
         var customer = CreateTestCustomer("Jane Doe", "jane@example.com");
-        var order = new SalesOrder
+        var order = new SalesOrder(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             CustomerId = customer.Id,
             OrderDate = DateTime.UtcNow,
             TotalAmount = 100.00m
@@ -132,9 +130,8 @@ public class CustomerRepositoryTests
     public async Task AddAsync_WithValidCustomer_CreatesCustomer()
     {
         // Arrange
-        var customer = new Customer
+        var customer = new Customer(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             Name = "New Customer",
             Email = "new@example.com",
             PhoneNumber = "555-9999",
