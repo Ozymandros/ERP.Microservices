@@ -129,8 +129,9 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    // app.MapOpenApi(); // Commented out - requires Microsoft.AspNetCore.OpenApi package
 }
+
 
 app.UseHttpsRedirection();
 app.UseRouting();

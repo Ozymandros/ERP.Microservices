@@ -77,8 +77,8 @@ app.MapGet("/weatherforecast", () =>
         .ToArray();
     return forecast;
 })
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+.WithName("GetWeatherForecast");
+// .WithOpenApi(); // Commented out - requires Microsoft.AspNetCore.OpenApi package
 
 // Map health check endpoint
 app.MapHealthChecks("/health", new HealthCheckOptions
