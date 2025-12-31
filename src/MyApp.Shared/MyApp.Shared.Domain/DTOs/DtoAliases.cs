@@ -1,12 +1,15 @@
 namespace MyApp.Shared.Domain.DTOs
 {
     // Base DTO aliases for common ID types
-    public abstract class BaseGuidDto : BaseDto<Guid> { }
-    public abstract class BaseIntDto : BaseDto<int> { }
-    public abstract class BaseLongDto : BaseDto<long> { }
+    public abstract record BaseGuidDto(Guid Id) : BaseDto<Guid>(Id);
+    public abstract record BaseIntDto(int Id) : BaseDto<int>(Id);
+    public abstract record BaseLongDto(long Id) : BaseDto<long>(Id);
 
     // Auditable DTO aliases for common ID types
-    public abstract class AuditableGuidDto : AuditableDto<Guid> { }
-    public abstract class AuditableIntDto : AuditableDto<int> { }
-    public abstract class AuditableLongDto : AuditableDto<long> { }
+    public abstract record AuditableGuidDto(Guid Id, DateTime CreatedAt = default, string CreatedBy = "", DateTime? UpdatedAt = null, string? UpdatedBy = null) 
+        : AuditableDto<Guid>(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
+    public abstract record AuditableIntDto(int Id, DateTime CreatedAt = default, string CreatedBy = "", DateTime? UpdatedAt = null, string? UpdatedBy = null) 
+        : AuditableDto<int>(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
+    public abstract record AuditableLongDto(long Id, DateTime CreatedAt = default, string CreatedBy = "", DateTime? UpdatedAt = null, string? UpdatedBy = null) 
+        : AuditableDto<long>(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
 }

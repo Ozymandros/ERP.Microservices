@@ -5,7 +5,7 @@ using MyApp.Purchasing.Domain.Entities;
 
 namespace MyApp.Purchasing.Application.Contracts.DTOs;
 
-public class PurchaseOrderDto
+public record PurchaseOrderDto
 {
     public Guid Id { get; set; }
     public string OrderNumber { get; set; } = string.Empty;
@@ -18,7 +18,7 @@ public class PurchaseOrderDto
     public List<PurchaseOrderLineDto> Lines { get; set; } = new();
 }
 
-public class PurchaseOrderLineDto
+public record PurchaseOrderLineDto
 {
     public Guid Id { get; set; }
     public Guid PurchaseOrderId { get; set; }
@@ -28,7 +28,7 @@ public class PurchaseOrderLineDto
     public decimal LineTotal { get; set; }
 }
 
-public class CreateUpdatePurchaseOrderDto
+public record CreateUpdatePurchaseOrderDto
 {
     [Required(ErrorMessage = "OrderNumber is required")]
     [StringLength(64, MinimumLength = 1)]
@@ -43,15 +43,15 @@ public class CreateUpdatePurchaseOrderDto
     public DateTime? ExpectedDeliveryDate { get; set; }
 
     [Range(0, int.MaxValue, ErrorMessage = "Status must be a valid value")]
-    public int Status { get; set; } = 0; // Draft
+    public int Status { get; set; }
 
     [Range(0, double.MaxValue, ErrorMessage = "TotalAmount must be greater than or equal to 0")]
-    public decimal TotalAmount { get; set; } = 0;
+    public decimal TotalAmount { get; set; }
 
     public List<CreateUpdatePurchaseOrderLineDto> Lines { get; set; } = new();
 }
 
-public class CreateUpdatePurchaseOrderLineDto
+public record CreateUpdatePurchaseOrderLineDto
 {
     [Required]
     public Guid ProductId { get; set; }

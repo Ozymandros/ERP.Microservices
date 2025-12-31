@@ -440,12 +440,7 @@ public class PermissionServiceTests : BaseServiceTest
     {
         // Arrange
         var permissionId = Guid.NewGuid();
-        var updateDto = new UpdatePermissionDto
-        {
-            Module = "UpdatedModule",
-            Action = "UpdatedAction",
-            Description = "Updated description"
-        };
+        var updateDto = new UpdatePermissionDto("UpdatedModule", "UpdatedAction", "Updated description");
 
         var existingPermission = new PermissionBuilder().WithId(permissionId).Build();
 
@@ -473,11 +468,7 @@ public class PermissionServiceTests : BaseServiceTest
     {
         // Arrange
         var permissionId = Guid.NewGuid();
-        var updateDto = new UpdatePermissionDto
-        {
-            Module = "UpdatedModule",
-            Action = "UpdatedAction"
-        };
+        var updateDto = new UpdatePermissionDto("UpdatedModule", "UpdatedAction");
 
         _mockPermissionRepository
             .Setup(x => x.GetByIdAsync(permissionId))
@@ -497,11 +488,7 @@ public class PermissionServiceTests : BaseServiceTest
     {
         // Arrange
         var permissionId = Guid.NewGuid();
-        var updateDto = new UpdatePermissionDto
-        {
-            Module = "UpdatedModule",
-            Action = "UpdatedAction"
-        };
+        var updateDto = new UpdatePermissionDto("UpdatedModule", "UpdatedAction");
 
         var exception = new Exception("Database error");
 

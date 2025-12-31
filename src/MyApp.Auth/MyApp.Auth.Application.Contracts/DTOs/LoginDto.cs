@@ -2,13 +2,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Auth.Application.Contracts.DTOs;
 
-public class LoginDto
-{
-    [Required(ErrorMessage = "Email is required")]
-    [EmailAddress(ErrorMessage = "Invalid email address")]
-    public string Email { get; set; } = string.Empty;
+public record LoginDto(
+    [property: Required(ErrorMessage = "Email is required")]
+    [property: EmailAddress(ErrorMessage = "Invalid email address")]
+    string Email,
 
-    [Required(ErrorMessage = "Password is required")]
-    [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 100 characters")]
-    public string Password { get; set; } = string.Empty;
-}
+    [property: Required(ErrorMessage = "Password is required")]
+    [property: StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 100 characters")]
+    string Password
+);

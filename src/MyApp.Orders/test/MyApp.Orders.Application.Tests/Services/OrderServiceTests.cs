@@ -40,22 +40,22 @@ public class OrderServiceTests
             OrderDate = DateTime.UtcNow,
             Lines = new List<OrderLineDto>
             {
-                new OrderLineDto { ProductId = Guid.NewGuid(), Quantity = 5, UnitPrice = 10.00m }
+                new OrderLineDto(Guid.NewGuid(), default, "", null, null, Guid.NewGuid(), 5, 10.00m, 50.00m)
             }
         };
 
-        var mappedOrder = new Order
+        var mappedOrder = new Order(Guid.NewGuid())
         {
             OrderNumber = "ORD-001",
             Lines = new List<OrderLine>
             {
-                new OrderLine { ProductId = Guid.NewGuid(), Quantity = 5, UnitPrice = 10.00m }
+                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 5, UnitPrice = 10.00m }
             }
         };
 
         _mockMapper.Setup(m => m.Map<Order>(createDto)).Returns(mappedOrder);
         _mockMapper.Setup(m => m.Map<OrderDto>(It.IsAny<Order>()))
-            .Returns(new OrderDto { OrderNumber = "ORD-001" });
+            .Returns(new OrderDto(Guid.NewGuid(), default, "", null, null, "ORD-001", Guid.NewGuid(), DateTime.UtcNow, "Draft", 50.00m, new List<OrderLineDto>()));
 
         // Act
         var result = await _orderService.CreateAsync(createDto);
@@ -83,24 +83,24 @@ public class OrderServiceTests
             OrderDate = DateTime.UtcNow,
             Lines = new List<OrderLineDto>
             {
-                new OrderLineDto { ProductId = Guid.NewGuid(), Quantity = 2, UnitPrice = 15.50m },
-                new OrderLineDto { ProductId = Guid.NewGuid(), Quantity = 3, UnitPrice = 20.00m }
+                new OrderLineDto(Guid.NewGuid(), default, "", null, null, Guid.NewGuid(), 2, 15.50m, 31.00m),
+                new OrderLineDto(Guid.NewGuid(), default, "", null, null, Guid.NewGuid(), 3, 20.00m, 60.00m)
             }
         };
 
-        var mappedOrder = new Order
+        var mappedOrder = new Order(Guid.NewGuid())
         {
             OrderNumber = "ORD-002",
             Lines = new List<OrderLine>
             {
-                new OrderLine { ProductId = Guid.NewGuid(), Quantity = 2, UnitPrice = 15.50m },
-                new OrderLine { ProductId = Guid.NewGuid(), Quantity = 3, UnitPrice = 20.00m }
+                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 2, UnitPrice = 15.50m },
+                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 3, UnitPrice = 20.00m }
             }
         };
 
         _mockMapper.Setup(m => m.Map<Order>(createDto)).Returns(mappedOrder);
         _mockMapper.Setup(m => m.Map<OrderDto>(It.IsAny<Order>()))
-            .Returns(new OrderDto());
+            .Returns(new OrderDto(Guid.NewGuid(), default, "", null, null, "ORD-002", Guid.NewGuid(), DateTime.UtcNow, "Draft", 91.00m, new List<OrderLineDto>()));
 
         // Act
         await _orderService.CreateAsync(createDto);
@@ -122,21 +122,21 @@ public class OrderServiceTests
             OrderDate = DateTime.UtcNow,
             Lines = new List<OrderLineDto>
             {
-                new OrderLineDto { ProductId = Guid.NewGuid(), Quantity = 1, UnitPrice = 100.00m }
+                new OrderLineDto(Guid.NewGuid(), default, "", null, null, Guid.NewGuid(), 1, 100.00m, 100.00m)
             }
         };
 
-        var mappedOrder = new Order
+        var mappedOrder = new Order(Guid.NewGuid())
         {
             Lines = new List<OrderLine>
             {
-                new OrderLine { ProductId = Guid.NewGuid(), Quantity = 1, UnitPrice = 100.00m }
+                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 1, UnitPrice = 100.00m }
             }
         };
 
         _mockMapper.Setup(m => m.Map<Order>(createDto)).Returns(mappedOrder);
         _mockMapper.Setup(m => m.Map<OrderDto>(It.IsAny<Order>()))
-            .Returns(new OrderDto());
+            .Returns(new OrderDto(Guid.NewGuid(), default, "", null, null, "ORD-003", Guid.NewGuid(), DateTime.UtcNow, "Draft", 100.00m, null));
 
         // Act
         await _orderService.CreateAsync(createDto);
@@ -158,23 +158,23 @@ public class OrderServiceTests
             OrderDate = DateTime.UtcNow,
             Lines = new List<OrderLineDto>
             {
-                new OrderLineDto { ProductId = Guid.NewGuid(), Quantity = 1, UnitPrice = 10.00m },
-                new OrderLineDto { ProductId = Guid.NewGuid(), Quantity = 2, UnitPrice = 20.00m }
+                new OrderLineDto(Guid.NewGuid(), default, "", null, null, Guid.NewGuid(), 1, 10.00m, 10.00m),
+                new OrderLineDto(Guid.NewGuid(), default, "", null, null, Guid.NewGuid(), 2, 20.00m, 40.00m)
             }
         };
 
-        var mappedOrder = new Order
+        var mappedOrder = new Order(Guid.NewGuid())
         {
             Lines = new List<OrderLine>
             {
-                new OrderLine { ProductId = Guid.NewGuid(), Quantity = 1, UnitPrice = 10.00m },
-                new OrderLine { ProductId = Guid.NewGuid(), Quantity = 2, UnitPrice = 20.00m }
+                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 1, UnitPrice = 10.00m },
+                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 2, UnitPrice = 20.00m }
             }
         };
 
         _mockMapper.Setup(m => m.Map<Order>(createDto)).Returns(mappedOrder);
         _mockMapper.Setup(m => m.Map<OrderDto>(It.IsAny<Order>()))
-            .Returns(new OrderDto());
+            .Returns(new OrderDto(Guid.NewGuid(), default, "", null, null, "ORD-004", Guid.NewGuid(), DateTime.UtcNow, "Draft", 50.00m, null));
 
         // Act
         await _orderService.CreateAsync(createDto);
@@ -195,9 +195,8 @@ public class OrderServiceTests
     {
         // Arrange
         var orderId = Guid.NewGuid();
-        var order = new Order
+        var order = new Order(orderId)
         {
-            Id = orderId,
             OrderNumber = "ORD-005",
             CustomerId = Guid.NewGuid(),
             OrderDate = DateTime.UtcNow,
@@ -205,12 +204,7 @@ public class OrderServiceTests
             TotalAmount = 250.00m
         };
 
-        var expectedDto = new OrderDto
-        {
-            OrderNumber = "ORD-005",
-            Status = "Confirmed",
-            TotalAmount = 250.00m
-        };
+        var expectedDto = new OrderDto(Guid.NewGuid(), default, "", null, null, "ORD-005", Guid.NewGuid(), DateTime.UtcNow, "Confirmed", 250.00m, null);
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
         _mockMapper.Setup(m => m.Map<OrderDto>(order)).Returns(expectedDto);
@@ -238,13 +232,13 @@ public class OrderServiceTests
         // Arrange
         var orders = new List<Order>
         {
-            new Order { Id = Guid.NewGuid(), OrderNumber = "ORD-006", TotalAmount = 100.00m },
-            new Order { Id = Guid.NewGuid(), OrderNumber = "ORD-007", TotalAmount = 200.00m }
+            new Order(Guid.NewGuid()) { OrderNumber = "ORD-006", TotalAmount = 100.00m },
+            new Order(Guid.NewGuid()) { OrderNumber = "ORD-007", TotalAmount = 200.00m }
         };
 
         _mockOrderRepository.Setup(r => r.ListAsync()).ReturnsAsync(orders);
         _mockMapper.Setup(m => m.Map<OrderDto>(It.IsAny<Order>()))
-            .Returns((Order o) => new OrderDto { OrderNumber = o.OrderNumber, TotalAmount = o.TotalAmount });
+            .Returns((Order o) => new OrderDto(o.Id, default, "", null, null, o.OrderNumber, o.CustomerId, o.OrderDate, "Draft", o.TotalAmount, null));
 
         // Act
         var result = await _orderService.ListAsync();
@@ -283,9 +277,8 @@ public class OrderServiceTests
     {
         // Arrange
         var orderId = Guid.NewGuid();
-        var existingOrder = new Order
+        var existingOrder = new Order(orderId)
         {
-            Id = orderId,
             OrderNumber = "ORD-008-OLD",
             CustomerId = Guid.NewGuid(),
             OrderDate = DateTime.UtcNow.AddDays(-1),
@@ -302,7 +295,7 @@ public class OrderServiceTests
             OrderDate = DateTime.UtcNow,
             Lines = new List<OrderLineDto>
             {
-                new OrderLineDto { ProductId = Guid.NewGuid(), Quantity = 3, UnitPrice = 25.00m }
+                new OrderLineDto(Guid.NewGuid(), default, "", null, null, Guid.NewGuid(), 3, 25.00m, 75.00m)
             }
         };
 
@@ -349,9 +342,8 @@ public class OrderServiceTests
     {
         // Arrange
         var orderId = Guid.NewGuid();
-        var existingOrder = new Order
+        var existingOrder = new Order(orderId)
         {
-            Id = orderId,
             OrderNumber = "ORD-010",
             CustomerId = Guid.NewGuid(),
             OrderDate = DateTime.UtcNow,
@@ -359,7 +351,7 @@ public class OrderServiceTests
             TotalAmount = 100.00m,
             Lines = new List<OrderLine>
             {
-                new OrderLine { Id = Guid.NewGuid(), ProductId = Guid.NewGuid(), Quantity = 2, UnitPrice = 50.00m }
+                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 2, UnitPrice = 50.00m }
             }
         };
 
@@ -370,8 +362,8 @@ public class OrderServiceTests
             OrderDate = existingOrder.OrderDate,
             Lines = new List<OrderLineDto>
             {
-                new OrderLineDto { ProductId = Guid.NewGuid(), Quantity = 1, UnitPrice = 30.00m },
-                new OrderLineDto { ProductId = Guid.NewGuid(), Quantity = 2, UnitPrice = 20.00m }
+                new OrderLineDto(Guid.NewGuid(), default, "", null, null, Guid.NewGuid(), 1, 30.00m, 30.00m),
+                new OrderLineDto(Guid.NewGuid(), default, "", null, null, Guid.NewGuid(), 2, 20.00m, 40.00m)
             }
         };
 

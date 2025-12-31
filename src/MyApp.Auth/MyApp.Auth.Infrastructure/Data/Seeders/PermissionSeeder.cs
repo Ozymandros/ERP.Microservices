@@ -66,9 +66,8 @@ public static class PermissionSeeder
             var action = PermissionConstants.GetAction(permissionString);
             if (action != null)
             {
-                permissions.Add(new Permission
+                permissions.Add(new Permission(Guid.NewGuid())
                 {
-                    Id = Guid.NewGuid(),
                     Module = module,
                     Action = action,
                     Description = $"{module}.{action} - {GetActionDescription(action)}"

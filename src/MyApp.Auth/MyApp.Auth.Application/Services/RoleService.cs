@@ -187,13 +187,7 @@ public class RoleService : IRoleService
         {
             var result = await _roleRepository.QueryAsync(spec);
             
-            var dtos = result.Items.Select(r => new RoleDto
-            {
-                Id = r.Id,
-                Name = r.Name,
-                CreatedAt = r.CreatedAt,
-                UpdatedAt = r.UpdatedAt
-            }).ToList();
+            var dtos = result.Items.Select(r => new RoleDto(r.Id, r.CreatedAt, "", r.UpdatedAt, null, r.Name, null)).ToList();
             
             return new PaginatedResult<RoleDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
         }

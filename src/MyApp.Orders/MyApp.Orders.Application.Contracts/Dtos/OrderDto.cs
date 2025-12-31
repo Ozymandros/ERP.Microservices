@@ -2,13 +2,20 @@ using MyApp.Shared.Domain.DTOs;
 
 namespace MyApp.Orders.Application.Contracts.Dtos
 {
-    public class OrderDto : AuditableGuidDto
+    public record OrderDto(
+        Guid Id,
+        DateTime CreatedAt = default,
+        string CreatedBy = "",
+        DateTime? UpdatedAt = null,
+        string? UpdatedBy = null,
+        string OrderNumber = "",
+        Guid CustomerId = default,
+        DateTime OrderDate = default,
+        string Status = "",
+        decimal TotalAmount = 0,
+        List<OrderLineDto>? Lines = null
+    ) : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy)
     {
-        public string OrderNumber { get; set; } = string.Empty;
-        public Guid CustomerId { get; set; }
-        public DateTime OrderDate { get; set; }
-        public string Status { get; set; } = string.Empty;
-        public decimal TotalAmount { get; set; }
-        public List<OrderLineDto> Lines { get; set; } = new();
+        public List<OrderLineDto> Lines { get; set; } = Lines ?? new();
     }
 }

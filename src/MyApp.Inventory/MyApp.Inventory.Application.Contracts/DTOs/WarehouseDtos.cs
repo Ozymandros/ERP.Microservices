@@ -3,19 +3,22 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
-public class WarehouseDto : AuditableGuidDto
-{
-    public string Name { get; set; } = string.Empty;
-    public string Location { get; set; } = string.Empty;
-}
+public record WarehouseDto(
+    Guid Id,
+    DateTime CreatedAt = default,
+    string CreatedBy = "",
+    DateTime? UpdatedAt = null,
+    string? UpdatedBy = null,
+    string Name = "",
+    string Location = ""
+) : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
 
-public class CreateUpdateWarehouseDto
-{
-    [Required(ErrorMessage = "Name is required")]
-    [StringLength(255, MinimumLength = 1)]
-    public string Name { get; set; } = string.Empty;
+public record CreateUpdateWarehouseDto(
+    [property: Required(ErrorMessage = "Name is required")]
+    [property: StringLength(255, MinimumLength = 1)]
+    string Name,
 
-    [Required(ErrorMessage = "Location is required")]
-    [StringLength(500, MinimumLength = 1)]
-    public string Location { get; set; } = string.Empty;
-}
+    [property: Required(ErrorMessage = "Location is required")]
+    [property: StringLength(500, MinimumLength = 1)]
+    string Location = ""
+);

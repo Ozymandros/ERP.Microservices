@@ -179,24 +179,23 @@ public class AuthService : IAuthService
         await _refreshTokenRepository.CreateAsync(refreshTokenEntity);
 
         // ⭐️ Pas 3: Retornar DTO amb rols inclosos
-        return new TokenResponseDto
-        {
-            AccessToken = accessToken,
-            RefreshToken = refreshToken,
-            ExpiresIn = 15 * 60, // 15 minutes in seconds
-            User = new UserDto
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Username = user.UserName,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                EmailConfirmed = user.EmailConfirmed,
-                IsExternalLogin = user.IsExternalLogin,
-                ExternalProvider = user.ExternalProvider,
-                //TODO: Roles = roles.ToList() // Afegir els rols a l'objecte de sortida
-                                       // Si cal, també podríem afegir els Claims al DTO.
-            }
-        };
+        var userDto = new UserDto(
+            user.Id,
+            user.CreatedAt,
+            "",
+            user.UpdatedAt,
+            null,
+            user.Email ?? "",
+            user.UserName ?? "",
+            user.FirstName,
+            user.LastName,
+            user.EmailConfirmed,
+            user.IsExternalLogin,
+            user.ExternalProvider,
+            null,
+            null,
+            false);
+
+        return new TokenResponseDto(accessToken, refreshToken, 15 * 60, "Bearer", userDto);
     }
 }

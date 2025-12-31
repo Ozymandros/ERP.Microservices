@@ -22,9 +22,8 @@ public class OrderRepositoryTests
 
     private Order CreateTestOrder(string orderNumber = "ORD-001")
     {
-        var order = new Order
+        var order = new Order(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             OrderNumber = orderNumber,
             CustomerId = Guid.NewGuid(),
             OrderDate = DateTime.UtcNow,
@@ -71,9 +70,8 @@ public class OrderRepositoryTests
     {
         // Arrange
         var order = CreateTestOrder("ORD-002");
-        var orderLine = new OrderLine
+        var orderLine = new OrderLine(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             OrderId = order.Id,
             ProductId = Guid.NewGuid(),
             Quantity = 5,
@@ -134,9 +132,8 @@ public class OrderRepositoryTests
     public async Task AddAsync_WithValidOrder_CreatesOrder()
     {
         // Arrange
-        var order = new Order
+        var order = new Order(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             OrderNumber = "ORD-NEW",
             CustomerId = Guid.NewGuid(),
             OrderDate = DateTime.UtcNow,
