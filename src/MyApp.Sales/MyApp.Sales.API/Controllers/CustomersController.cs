@@ -63,7 +63,7 @@ namespace MyApp.Sales.API.Controllers
         {
             try
             {
-                string cacheKey = $"Customer-{id}";
+                string cacheKey = "Customer-" + id;
                 var customer = await _cacheService.GetStateAsync<CustomerDto>(cacheKey);
 
                 if (customer != null)
@@ -80,7 +80,7 @@ namespace MyApp.Sales.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving customer {CustomerId}", id);
+                _logger.LogError(ex, "Error retrieving customer {@Customer}", new { CustomerId = id });
                 var customer = await _customerService.GetCustomerByIdAsync(id);
                 return customer == null ? NotFound(new { message = $"Customer with ID {id} not found." }) : Ok(customer);
             }
@@ -104,7 +104,7 @@ namespace MyApp.Sales.API.Controllers
                 query.Validate();
                 var spec = new CustomerQuerySpec(query);
                 var result = await _customerService.QueryCustomersAsync(spec);
-                _logger.LogInformation("Searched customers with query: Page {Page}, PageSize {PageSize}, SortBy {SortBy}", query.Page, query.PageSize, query.SortBy);
+                _logger.LogInformation("Searched customers with query: {@Query}", query);
                 return Ok(result);
             }
             catch (ArgumentException ex)
@@ -160,14 +160,14 @@ namespace MyApp.Sales.API.Controllers
             try
             {
                 var customer = await _customerService.UpdateCustomerAsync(id, dto);
-                string cacheKey = $"Customer-{id}";
+                string cacheKey = "Customer-" + id;
                 await _cacheService.RemoveStateAsync(cacheKey);
                 await _cacheService.RemoveStateAsync("all_customers");
                 return Ok(customer);
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogWarning("Error updating customer {CustomerId}: {Message}", id, ex.Message);
+                _logger.LogWarning(ex, "Error updating customer {@Customer}: {@Error}", new { CustomerId = id }, new { Message = ex.Message });
                 return NotFound(new { message = ex.Message });
             }
         }
@@ -184,14 +184,14 @@ namespace MyApp.Sales.API.Controllers
             try
             {
                 await _customerService.DeleteCustomerAsync(id);
-                string cacheKey = $"Customer-{id}";
+                string cacheKey = "Customer-" + id;
                 await _cacheService.RemoveStateAsync(cacheKey);
                 await _cacheService.RemoveStateAsync("all_customers");
                 return NoContent();
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogWarning("Error deleting customer {CustomerId}: {Message}", id, ex.Message);
+                _logger.LogWarning(ex, "Error deleting customer {@Customer}: {@Error}", new { CustomerId = id }, new { Message = ex.Message });
                 return NotFound(new { message = ex.Message });
             }
         }

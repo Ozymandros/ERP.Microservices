@@ -128,7 +128,7 @@ public class RolesController : ControllerBase
     {
         try
         {
-            string cacheKey = $"Role-{id}";
+            string cacheKey = "Role-" + id;
             var role = await _cacheService.GetStateAsync<RoleDto>(cacheKey); // 1. Intentar obtenir de la cache
 
             if (role is not null)
@@ -140,7 +140,7 @@ public class RolesController : ControllerBase
             role = await _roleService.GetRoleByIdAsync(id);
             if (role is null)
             {
-                _logger.LogWarning("Role not found: {RoleId}", id);
+                _logger.LogWarning("Role with ID {@Role} not found", new { RoleId = id });
                 return NotFound(new { message = "Role not found" });
             }
 
@@ -150,7 +150,7 @@ public class RolesController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving role: {RoleId}", id);
+            _logger.LogError(ex, "Error retrieving role: {@Role}", new { RoleId = id });
             return NotFound(new { message = "Role not found" });
         }
     }
@@ -170,7 +170,7 @@ public class RolesController : ControllerBase
             var role = await _roleService.GetRoleByNameAsync(name);
             if (role == null)
             {
-                _logger.LogWarning("Role not found by name: {RoleName}", name);
+                _logger.LogWarning("Role with name {@Role} not found", new { RoleName = name });
                 return NotFound(new { message = "Role not found" });
             }
 
@@ -178,7 +178,7 @@ public class RolesController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving role by name: {RoleName}", name);
+            _logger.LogError(ex, "Error retrieving role by name: {@Role}", new { RoleName = name });
             return StatusCode(500, new { message = "An error occurred retrieving the role" });
         }
     }
@@ -202,18 +202,18 @@ public class RolesController : ControllerBase
             var result = await _roleService.CreateRoleAsync(createRoleDto);
             if (result == null)
             {
-                _logger.LogWarning("Failed to create role: {RoleName}", createRoleDto.Name);
+                _logger.LogWarning("Failed to create role: {@Role}", new { RoleName = createRoleDto.Name });
                 return Conflict(new { message = "Role already exists" });
             }
 
             await _cacheService.RemoveStateAsync("all_roles");
 
-            _logger.LogInformation("Role created: {RoleName}", createRoleDto.Name);
+            _logger.LogInformation("Role created: {@Role}", new { RoleName = createRoleDto.Name });
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating role: {RoleName}", createRoleDto.Name);
+            _logger.LogError(ex, "Error creating role: {@Role}", new { RoleName = createRoleDto.Name });
             return StatusCode(500, new { message = "An error occurred creating the role" });
         }
     }
@@ -237,19 +237,19 @@ public class RolesController : ControllerBase
             var result = await _roleService.UpdateRoleAsync(id, updateRoleDto);
             if (!result)
             {
-                _logger.LogWarning("Failed to update role: {RoleId}", id);
+                _logger.LogWarning("Failed to update role: {@Role}", new { RoleId = id });
                 return NotFound(new { message = "Role not found" });
             }
 
-            string cacheKey = $"Role-{id}";
+            string cacheKey = "Role-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
 
-            _logger.LogInformation("Role updated: {RoleId}", id);
+            _logger.LogInformation("Role updated: {@Role}", new { RoleId = id });
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating role: {RoleId}", id);
+            _logger.LogError(ex, "Error updating role: {@Role}", new { RoleId = id });
             return StatusCode(500, new { message = "An error occurred updating the role" });
         }
     }
@@ -269,20 +269,20 @@ public class RolesController : ControllerBase
             var result = await _roleService.DeleteRoleAsync(id);
             if (!result)
             {
-                _logger.LogWarning("Failed to delete role: {RoleId}", id);
+                _logger.LogWarning("Failed to delete role: {@Role}", new { RoleId = id });
                 return NotFound(new { message = "Role not found" });
             }
 
-            string cacheKey = $"Role-{id}";
+            string cacheKey = "Role-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
             await _cacheService.RemoveStateAsync("all_roles");
 
-            _logger.LogInformation("Role deleted: {RoleId}", id);
+            _logger.LogInformation("Role deleted: {@Role}", new { RoleId = id });
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error deleting role: {RoleId}", id);
+            _logger.LogError(ex, "Error deleting role: {@Role}", new { RoleId = id });
             return StatusCode(500, new { message = "An error occurred deleting the role" });
         }
     }
@@ -303,7 +303,7 @@ public class RolesController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving users in role: {RoleName}", name);
+            _logger.LogError(ex, "Error retrieving users in role: {@Role}", new { RoleName = name });
             return StatusCode(500, new { message = "An error occurred retrieving users" });
         }
     }
@@ -330,20 +330,20 @@ public class RolesController : ControllerBase
             var result = await _roleService.AddPermissionToRole(createDto);
             if (result is false)
             {
-                _logger.LogWarning($"Failed to create role-permission: {role.Name}-{permission.Module}.{permission.Action}", role.Name);
+                _logger.LogWarning("Failed to create role permission: {@Permission}", new { RoleName = role.Name, Module = permission.Module, Action = permission.Action });
                 return Conflict(new { message = "Role already exists" });
             }
 
             await _cacheService.RemoveStateAsync("all_roles");
             await _cacheService.RemoveStateAsync("all_permissions");
 
-            _logger.LogInformation($"RolePermission created: {role.Name} ({permission.Module}.{permission.Action})");
+            _logger.LogInformation("Role permission created: {@Permission}", new { RoleName = role.Name, Module = permission.Module, Action = permission.Action });
             return NoContent();
 
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating permissions in role: {RoleName}", roleId);
+            _logger.LogError(ex, "Error updating permissions in role: {@Role}", new { RoleId = roleId });
             return StatusCode(500, new { message = "An error occurred retrieving users" });
         }
     }
@@ -371,20 +371,20 @@ public class RolesController : ControllerBase
             if (!success)
             {
                 // This case should be rare but catches a DB/service failure
-                _logger.LogError("Failed to remove RolePermission for Role: {RoleId}, Permission: {PermissionId}", roleId, permissionId);
+                _logger.LogError("Failed to remove role permission: {@Permission}", new { RoleId = roleId, PermissionId = permissionId });
                 return StatusCode(500, new { message = "Failed to unassign permission due to an internal error." });
             }
 
             // 3. Invalidate Cache and Return Success (204 No Content)
             await _cacheService.RemoveStateAsync("all_roles"); // Cache invalidation
 
-            _logger.LogInformation("Permission {PermissionId} removed from Role {RoleId}.", permissionId, roleId);
+            _logger.LogInformation("Permission removed from role: {@Permission}", new { PermissionId = permissionId, RoleId = roleId });
 
             return NoContent(); // 204 No Content is the standard for successful DELETE
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error removing permission from role: {RoleId}", roleId);
+            _logger.LogError(ex, "Error removing permission from role: {@Role}", new { RoleId = roleId });
             return StatusCode(500, new { message = "An error occurred while unassigning the permission." });
         }
     }
@@ -415,7 +415,7 @@ public class RolesController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving permissions for role: {RoleId}", roleId);
+            _logger.LogError(ex, "Error retrieving permissions for role: {@Role}", new { RoleId = roleId });
             return StatusCode(500, new { message = "An error occurred retrieving role permissions." });
         }
     }

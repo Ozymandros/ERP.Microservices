@@ -49,13 +49,13 @@ public class UserService : IUserService
     {
         if(_httpContextAccessor.HttpContext == null)
         {
-            _logger.LogWarning("HTTP context is null");
+            _logger.LogWarning("HttpContext is null");
             return null;
         }
         var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
         if (user is null)
         {
-            _logger.LogWarning("Current user not found in HTTP context");
+            _logger.LogWarning("Current user not found in HttpContext");
             return null;
         }
 
@@ -112,7 +112,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
         {
-            _logger.LogWarning("User not found: {UserId}", userId);
+            _logger.LogWarning("User not found: {@User}", new { UserId = userId });
             return false;
         }
 
@@ -121,7 +121,7 @@ public class UserService : IUserService
             var existingUser = await _userManager.FindByEmailAsync(updateUserDto.Email);
             if (existingUser != null)
             {
-                _logger.LogWarning("Email already in use: {Email}", updateUserDto.Email);
+                _logger.LogWarning("Email already in use: {@Email}", new { Email = updateUserDto.Email });
                 return false;
             }
             user.Email = updateUserDto.Email;
@@ -154,7 +154,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
         {
-            _logger.LogWarning("User not found: {UserId}", userId);
+            _logger.LogWarning("User not found: {@User}", new { UserId = userId });
             return false;
         }
 
@@ -173,7 +173,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
         {
-            _logger.LogWarning("User not found: {UserId}", userId);
+            _logger.LogWarning("User not found: {@User}", new { UserId = userId });
             return false;
         }
 
@@ -192,7 +192,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
         {
-            _logger.LogWarning("User not found: {UserId}", userId);
+            _logger.LogWarning("User not found: {@User}", new { UserId = userId });
             return false;
         }
 
@@ -218,7 +218,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
         {
-            _logger.LogWarning("User not found: {UserId}", userId);
+            _logger.LogWarning("User not found: {@User}", new { UserId = userId });
             return false;
         }
 
@@ -237,7 +237,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
         {
-            _logger.LogWarning("User not found: {UserId}", userId);
+            _logger.LogWarning("User not found: {@User}", new { UserId = userId });
             return Enumerable.Empty<RoleDto>();
         }
 

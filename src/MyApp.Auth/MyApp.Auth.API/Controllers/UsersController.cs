@@ -172,7 +172,7 @@ public partial class UsersController : ControllerBase
     {
         try
         {
-            string cacheKey = $"User-{id}";
+            string cacheKey = "User-" + id;
             var user = await _cacheService.GetStateAsync<UserDto>(cacheKey); // 1. Intentar obtenir de la cache
 
             if (user is not null)
@@ -193,7 +193,7 @@ public partial class UsersController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving user: {UserId}", id);
+            _logger.LogError(ex, "Error retrieving user: {@User}", new { UserId = id });
             return StatusCode(500, new { message = "An error occurred retrieving the user" });
         }
     }
@@ -213,7 +213,7 @@ public partial class UsersController : ControllerBase
             var user = await _userService.GetUserByEmailAsync(email);
             if (user == null)
             {
-                _logger.LogWarning("User not found by email: {Email}", email);
+                _logger.LogWarning("User with email {@User} not found", new { Email = email });
                 return NotFound(new { message = "User not found" });
             }
 
@@ -221,7 +221,7 @@ public partial class UsersController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving user by email: {Email}", email);
+            _logger.LogError(ex, "Error retrieving user by email: {@User}", new { Email = email });
             return StatusCode(500, new { message = "An error occurred retrieving the user" });
         }
     }
@@ -245,19 +245,19 @@ public partial class UsersController : ControllerBase
             var result = await _userService.UpdateUserAsync(id, updateUserDto);
             if (!result)
             {
-                _logger.LogWarning("Failed to update user: {UserId}", id);
+                _logger.LogWarning("Failed to update user: {@User}", new { UserId = id });
                 return NotFound(new { message = "User not found" });
             }
 
-            string cacheKey = $"User-{id}";
+            string cacheKey = "User-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
 
-            _logger.LogInformation("User updated: {UserId}", id);
+            _logger.LogInformation("User updated: {@User}", new { UserId = id });
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating user: {UserId}", id);
+            _logger.LogError(ex, "Error updating user: {@User}", new { UserId = id });
             return StatusCode(500, new { message = "An error occurred updating the user" });
         }
     }
@@ -277,20 +277,20 @@ public partial class UsersController : ControllerBase
             var result = await _userService.DeleteUserAsync(id);
             if (!result)
             {
-                _logger.LogWarning("Failed to delete user: {UserId}", id);
+                _logger.LogWarning("Failed to delete user: {@User}", new { UserId = id });
                 return NotFound(new { message = "User not found" });
             }
 
-            string cacheKey = $"User-{id}";
+            string cacheKey = "User-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
             await _cacheService.RemoveStateAsync("all_users");
 
-            _logger.LogInformation("User deleted: {UserId}", id);
+            _logger.LogInformation("User deleted: {@User}", new { UserId = id });
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error deleting user: {UserId}", id);
+            _logger.LogError(ex, "Error deleting user: {@User}", new { UserId = id });
             return StatusCode(500, new { message = "An error occurred deleting the user" });
         }
     }
@@ -311,18 +311,18 @@ public partial class UsersController : ControllerBase
             var result = await _userService.AssignRoleAsync(id, roleName);
             if (!result)
             {
-                _logger.LogWarning("Failed to assign role to user: {UserId}, Role: {RoleName}", id, roleName);
+                _logger.LogWarning("Failed to assign role {@Role} to user {@User}", new { RoleName = roleName }, new { UserId = id });
                 return NotFound(new { message = "User or role not found" });
             }
-            string cacheKey = $"User-{id}";
+            string cacheKey = "User-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
 
-            _logger.LogInformation("Role assigned to user: {UserId}, Role: {RoleName}", id, roleName);
+            _logger.LogInformation("Role {@Role} assigned to user {@User}", new { RoleName = roleName }, new { UserId = id });
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error assigning role to user: {UserId}", id);
+            _logger.LogError(ex, "Error assigning role to user: {@User}", new { UserId = id });
             return StatusCode(500, new { message = "An error occurred assigning the role" });
         }
     }
@@ -343,18 +343,18 @@ public partial class UsersController : ControllerBase
             var result = await _userService.RemoveRoleAsync(id, roleName);
             if (!result)
             {
-                _logger.LogWarning("Failed to remove role from user: {UserId}, Role: {RoleName}", id, roleName);
+                _logger.LogWarning("Failed to remove role {@Role} from user {@User}", new { RoleName = roleName }, new { UserId = id });
                 return NotFound(new { message = "User or role not found" });
             }
-            string cacheKey = $"User-{id}";
+            string cacheKey = "User-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
 
-            _logger.LogInformation("Role removed from user: {UserId}, Role: {RoleName}", id, roleName);
+            _logger.LogInformation("Role {@Role} removed from user {@User}", new { RoleName = roleName }, new { UserId = id });
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error removing role from user: {UserId}", id);
+            _logger.LogError(ex, "Error removing role from user: {@User}", new { UserId = id });
             return StatusCode(500, new { message = "An error occurred removing the role" });
         }
     }
@@ -371,7 +371,7 @@ public partial class UsersController : ControllerBase
     {
         try
         {
-            string cacheKey = $"Roles-{id}";
+            string cacheKey = "Roles-" + id;
             var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>(cacheKey); // 1. Intentar obtenir de la cache
 
             if (roles is not null)
@@ -387,7 +387,7 @@ public partial class UsersController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving user roles: {UserId}", id);
+            _logger.LogError(ex, "Error retrieving roles for user: {@User}", new { UserId = id });
             return StatusCode(500, new { message = "An error occurred retrieving roles" });
         }
     }

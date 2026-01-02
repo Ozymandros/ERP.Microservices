@@ -37,16 +37,16 @@ public class AuthController : ControllerBase
             var result = await _authService.LoginAsync(loginDto);
             if (result == null)
             {
-                _logger.LogWarning("Login failed for email: {Email}", loginDto.Email);
+                _logger.LogWarning("Login failed for user: {@User}", new { Email = loginDto.Email });
                 return Unauthorized(new { message = "Invalid email or password" });
             }
 
-            _logger.LogInformation("User logged in: {Email}", loginDto.Email);
+            _logger.LogInformation("User logged in: {@User}", new { Email = loginDto.Email });
             return Ok(result);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Login error for email: {Email}", loginDto.Email);
+            _logger.LogError(ex, "Login error for user: {@User}", new { Email = loginDto.Email });
             return StatusCode(500, new { message = "An error occurred during login" });
         }
     }
@@ -68,16 +68,16 @@ public class AuthController : ControllerBase
             var result = await _authService.RegisterAsync(registerDto);
             if (result == null)
             {
-                _logger.LogWarning("Registration failed for email: {Email}", registerDto.Email);
+                _logger.LogWarning("Registration failed for user: {@User}", new { Email = registerDto.Email });
                 return Conflict(new { message = "Email already exists" });
             }
 
-            _logger.LogInformation("User registered: {Email}", registerDto.Email);
+            _logger.LogInformation("User registered: {@User}", new { Email = registerDto.Email });
             return CreatedAtAction(nameof(Register), result);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Registration error for email: {Email}", registerDto.Email);
+            _logger.LogError(ex, "Registration error for user: {@User}", new { Email = registerDto.Email });
             return StatusCode(500, new { message = "An error occurred during registration" });
         }
     }
@@ -175,11 +175,11 @@ public class AuthController : ControllerBase
             var tokenResponse = await _authService.ExternalLoginAsync(externalLoginDto);
             if (tokenResponse == null)
             {
-                _logger.LogWarning("External login failed for provider: {Provider}", authProvider);
+                _logger.LogWarning("External login failed for provider: {@Provider}", new { Provider = authProvider });
                 return Unauthorized(new { message = "External login failed" });
             }
 
-            _logger.LogInformation("User logged in via external provider: {Provider}", authProvider);
+            _logger.LogInformation("User logged in via external provider: {@Provider}", new { Provider = authProvider });
             return Ok(tokenResponse);
         }
         catch (Exception ex)
@@ -205,7 +205,7 @@ public class AuthController : ControllerBase
                 return Unauthorized();
 
             await _authService.LogoutAsync(userId);
-            _logger.LogInformation("User logged out: {UserId}", userId);
+            _logger.LogInformation("User logged out: {@User}", new { UserId = userId });
             return NoContent();
         }
         catch (Exception ex)

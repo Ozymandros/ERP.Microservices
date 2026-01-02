@@ -65,29 +65,29 @@ namespace MyApp.Sales.API.Controllers
         {
             try
             {
-                string cacheKey = $"SalesOrder-{id}";
+                string cacheKey = "SalesOrder-" + id;
                 var order = await _cacheService.GetStateAsync<SalesOrderDto>(cacheKey);
 
                 if (order != null)
                 {
-                    _logger.LogInformation("Retrieved sales order {OrderId} from cache", id);
+                    _logger.LogInformation("Retrieved sales order {@Order} from cache", new { OrderId = id });
                     return Ok(order);
                 }
 
                 order = await _salesOrderService.GetSalesOrderByIdAsync(id);
                 if (order == null)
                 {
-                    _logger.LogWarning("Sales order {OrderId} not found", id);
+                    _logger.LogWarning("Sales order {@Order} not found", new { OrderId = id });
                     return NotFound(new { message = $"Order with ID {id} not found." });
                 }
 
                 await _cacheService.SaveStateAsync(cacheKey, order);
-                _logger.LogInformation("Retrieved sales order {OrderId} from database and cached", id);
+                _logger.LogInformation("Retrieved sales order {@Order} from database and cached", new { OrderId = id });
                 return Ok(order);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving sales order {OrderId}", id);
+                _logger.LogError(ex, "Error retrieving sales order {@Order}", new { OrderId = id });
                 var order = await _salesOrderService.GetSalesOrderByIdAsync(id);
                 return order == null ? NotFound(new { message = $"Order with ID {id} not found." }) : Ok(order);
             }
@@ -111,7 +111,6 @@ namespace MyApp.Sales.API.Controllers
                 query.Validate();
                 var spec = new SalesOrderQuerySpec(query);
                 var result = await _salesOrderService.QuerySalesOrdersAsync(spec);
-                // Using Serilog destructuring (@ operator) - sensitive fields in query will be automatically masked
                 _logger.LogInformation("Searched sales orders with query: {@Query}", query);
                 return Ok(result);
             }
@@ -143,12 +142,12 @@ namespace MyApp.Sales.API.Controllers
             {
                 var order = await _salesOrderService.CreateSalesOrderAsync(dto);
                 await _cacheService.RemoveStateAsync("all_sales_orders");
-                _logger.LogInformation("Sales order created and cache invalidated");
+                _logger.LogInformation("Sales order {@Order} created and cache invalidated", new { OrderId = order.Id });
                 return CreatedAtAction(nameof(GetById), new { id = order.Id }, order);
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogWarning("Error creating sales order: {Message}", ex.Message);
+                _logger.LogWarning(ex, "Error creating sales order: {@Error}", new { Message = ex.Message });
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -169,15 +168,15 @@ namespace MyApp.Sales.API.Controllers
             try
             {
                 var order = await _salesOrderService.UpdateSalesOrderAsync(id, dto);
-                string cacheKey = $"SalesOrder-{id}";
+                string cacheKey = "SalesOrder-" + id;
                 await _cacheService.RemoveStateAsync(cacheKey);
                 await _cacheService.RemoveStateAsync("all_sales_orders");
-                _logger.LogInformation("Sales order {OrderId} updated and cache invalidated", id);
+                _logger.LogInformation("Sales order {@Order} updated and cache invalidated", new { OrderId = id });
                 return Ok(order);
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogWarning("Error updating sales order {OrderId}: {Message}", id, ex.Message);
+                _logger.LogWarning(ex, "Error updating sales order {@Order}: {@Error}", new { OrderId = id }, new { Message = ex.Message });
                 return NotFound(new { message = ex.Message });
             }
         }
@@ -194,15 +193,15 @@ namespace MyApp.Sales.API.Controllers
             try
             {
                 await _salesOrderService.DeleteSalesOrderAsync(id);
-                string cacheKey = $"SalesOrder-{id}";
+                string cacheKey = "SalesOrder-" + id;
                 await _cacheService.RemoveStateAsync(cacheKey);
                 await _cacheService.RemoveStateAsync("all_sales_orders");
-                _logger.LogInformation("Sales order {OrderId} deleted and cache invalidated", id);
+                _logger.LogInformation("Sales order {@Order} deleted and cache invalidated", new { OrderId = id });
                 return NoContent();
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogWarning("Error deleting sales order {OrderId}: {Message}", id, ex.Message);
+                _logger.LogWarning(ex, "Error deleting sales order {@Order}: {@Error}", new { OrderId = id }, new { Message = ex.Message });
                 return NotFound(new { message = ex.Message });
             }
         }

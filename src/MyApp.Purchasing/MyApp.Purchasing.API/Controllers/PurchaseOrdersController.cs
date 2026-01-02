@@ -67,29 +67,29 @@ public class PurchaseOrdersController : ControllerBase
     {
         try
         {
-            string cacheKey = $"PurchaseOrder-{id}";
+            string cacheKey = "PurchaseOrder-" + id;
             var order = await _cacheService.GetStateAsync<PurchaseOrderDto>(cacheKey);
 
             if (order != null)
             {
-                _logger.LogInformation("Retrieved purchase order {OrderId} from cache", id);
+                _logger.LogInformation("Retrieved purchase order {@Order} from cache", new { OrderId = id });
                 return Ok(order);
             }
 
             order = await _purchaseOrderService.GetPurchaseOrderByIdAsync(id);
             if (order == null)
             {
-                _logger.LogWarning("Purchase order with ID {OrderId} not found", id);
+                _logger.LogWarning("Purchase order with ID {@Order} not found", new { OrderId = id });
                 return NotFound();
             }
 
             await _cacheService.SaveStateAsync(cacheKey, order);
-            _logger.LogInformation("Retrieved purchase order {OrderId} from database and cached", id);
+            _logger.LogInformation("Retrieved purchase order {@Order} from database and cached", new { OrderId = id });
             return Ok(order);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving purchase order {OrderId}", id);
+            _logger.LogError(ex, "Error retrieving purchase order {@Order}", new { OrderId = id });
             var order = await _purchaseOrderService.GetPurchaseOrderByIdAsync(id);
             return order == null ? NotFound() : Ok(order);
         }
@@ -113,7 +113,7 @@ public class PurchaseOrdersController : ControllerBase
             query.Validate();
             var spec = new PurchaseOrderQuerySpec(query);
             var result = await _purchaseOrderService.QueryPurchaseOrdersAsync(spec);
-            _logger.LogInformation("Searched purchase orders with query: Page {Page}, PageSize {PageSize}, SortBy {SortBy}", query.Page, query.PageSize, query.SortBy);
+            _logger.LogInformation("Searched purchase orders with query: {@Query}", query);
             return Ok(result);
         }
         catch (ArgumentException ex)
@@ -136,7 +136,7 @@ public class PurchaseOrdersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<PurchaseOrderDto>>> GetPurchaseOrdersBySupplier(Guid supplierId)
     {
-        _logger.LogInformation("Retrieving purchase orders for supplier: {SupplierId}", supplierId);
+        _logger.LogInformation("Retrieving purchase orders for supplier: {@Supplier}", new { SupplierId = supplierId });
         var orders = await _purchaseOrderService.GetPurchaseOrdersBySupplierAsync(supplierId);
         return Ok(orders);
     }
@@ -152,11 +152,11 @@ public class PurchaseOrdersController : ControllerBase
     {
         if (!Enum.TryParse<PurchaseOrderStatus>(status, true, out var orderStatus))
         {
-            _logger.LogWarning("Invalid order status: {Status}", status);
+            _logger.LogWarning("Invalid order status: {@Status}", new { Status = status });
             return BadRequest($"Invalid status. Valid values are: {string.Join(", ", Enum.GetNames(typeof(PurchaseOrderStatus)))}");
         }
 
-        _logger.LogInformation("Retrieving purchase orders with status: {Status}", status);
+        _logger.LogInformation("Retrieving purchase orders with status: {@Status}", new { Status = status });
         var orders = await _purchaseOrderService.GetPurchaseOrdersByStatusAsync(orderStatus);
         return Ok(orders);
     }
@@ -178,15 +178,15 @@ public class PurchaseOrdersController : ControllerBase
 
         try
         {
-            _logger.LogInformation("Creating new purchase order: {OrderNumber}", dto.OrderNumber);
+            _logger.LogInformation("Creating new purchase order: {@Order}", new { OrderNumber = dto.OrderNumber });
             var order = await _purchaseOrderService.CreatePurchaseOrderAsync(dto);
             await _cacheService.RemoveStateAsync("all_purchase_orders");
-            _logger.LogInformation("Purchase order created and cache invalidated");
+            _logger.LogInformation("Purchase order {@Order} created and cache invalidated", new { OrderId = order.Id });
             return CreatedAtAction(nameof(GetPurchaseOrderById), new { id = order.Id }, order);
         }
         catch (KeyNotFoundException ex)
         {
-            _logger.LogWarning("Not found: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Purchase order not found: {@Error}", new { Message = ex.Message });
             return NotFound(ex.Message);
         }
     }
@@ -208,17 +208,17 @@ public class PurchaseOrdersController : ControllerBase
 
         try
         {
-            _logger.LogInformation("Updating purchase order with ID: {OrderId}", id);
+            _logger.LogInformation("Updating purchase order with ID: {@Order}", new { OrderId = id });
             var order = await _purchaseOrderService.UpdatePurchaseOrderAsync(id, dto);
-            string cacheKey = $"PurchaseOrder-{id}";
+            string cacheKey = "PurchaseOrder-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
             await _cacheService.RemoveStateAsync("all_purchase_orders");
-            _logger.LogInformation("Purchase order {OrderId} updated and cache invalidated", id);
+            _logger.LogInformation("Purchase order {@Order} updated and cache invalidated", new { OrderId = id });
             return Ok(order);
         }
         catch (KeyNotFoundException ex)
         {
-            _logger.LogWarning("Purchase order not found: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Purchase order not found: {@Error}", new { Message = ex.Message });
             return NotFound(ex.Message);
         }
     }
@@ -235,19 +235,19 @@ public class PurchaseOrdersController : ControllerBase
     {
         if (!Enum.TryParse<PurchaseOrderStatus>(status, true, out var orderStatus))
         {
-            _logger.LogWarning("Invalid order status: {Status}", status);
+            _logger.LogWarning("Invalid order status: {@Status}", new { Status = status });
             return BadRequest($"Invalid status. Valid values are: {string.Join(", ", Enum.GetNames(typeof(PurchaseOrderStatus)))}");
         }
 
         try
         {
-            _logger.LogInformation("Updating purchase order status with ID: {OrderId} to {Status}", id, status);
+            _logger.LogInformation("Updating purchase order status with ID: {@Order} to {@Status}", new { OrderId = id }, new { Status = status });
             var order = await _purchaseOrderService.UpdatePurchaseOrderStatusAsync(id, orderStatus);
             return Ok(order);
         }
         catch (KeyNotFoundException ex)
         {
-            _logger.LogWarning("Purchase order not found: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Purchase order not found: {@Error}", new { Message = ex.Message });
             return NotFound(ex.Message);
         }
     }
@@ -263,17 +263,17 @@ public class PurchaseOrdersController : ControllerBase
     {
         try
         {
-            _logger.LogInformation("Deleting purchase order with ID: {OrderId}", id);
+            _logger.LogInformation("Deleting purchase order with ID: {@Order}", new { OrderId = id });
             await _purchaseOrderService.DeletePurchaseOrderAsync(id);
-            string cacheKey = $"PurchaseOrder-{id}";
+            string cacheKey = "PurchaseOrder-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
             await _cacheService.RemoveStateAsync("all_purchase_orders");
-            _logger.LogInformation("Purchase order {OrderId} deleted and cache invalidated", id);
+            _logger.LogInformation("Purchase order {@Order} deleted and cache invalidated", new { OrderId = id });
             return NoContent();
         }
         catch (KeyNotFoundException ex)
         {
-            _logger.LogWarning("Purchase order not found: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Purchase order not found: {@Error}", new { Message = ex.Message });
             return NotFound(ex.Message);
         }
     }

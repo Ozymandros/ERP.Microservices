@@ -126,30 +126,30 @@ public class PermissionsController : ControllerBase
     {
         try
         {
-            string cacheKey = $"Permission-{id}";
+            string cacheKey = "Permission-" + id;
             var permission = await _cacheService.GetStateAsync<PermissionDto>(cacheKey);
 
             if (permission is not null)
             {
-                _logger.LogInformation("Retrieved permission {PermissionId} from cache", id);
+                _logger.LogInformation("Retrieved permission {@Permission} from cache", new { PermissionId = id });
                 return Ok(permission);
             }
 
             permission = await _permissionService.GetPermissionByIdAsync(id);
             if (permission is null)
             {
-                _logger.LogWarning("Permission not found: {PermissionId}", id);
+                _logger.LogWarning("Permission with ID {@Permission} not found", new { PermissionId = id });
                 return NotFound(new { message = "Permission not found" });
             }
 
             await _cacheService.SaveStateAsync(cacheKey, permission);
-            _logger.LogInformation("Retrieved permission {PermissionId} from database and cached", id);
+            _logger.LogInformation("Retrieved permission {@Permission} from database and cached", new { PermissionId = id });
 
             return Ok(permission);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving permission: {PermissionId}", id);
+            _logger.LogError(ex, "Error retrieving permission: {@Permission}", new { PermissionId = id });
             return StatusCode(500, new { message = "An error occurred retrieving the permission" });
         }
     }
@@ -166,30 +166,30 @@ public class PermissionsController : ControllerBase
     {
         try
         {
-            string cacheKey = $"Permission-{module}-{action}";
+            string cacheKey = "Permission-" + module + "-" + action;
             var permission = await _cacheService.GetStateAsync<PermissionDto>(cacheKey);
 
             if (permission is not null)
             {
-                _logger.LogInformation("Retrieved permission {Module}:{Action} from cache", module, action);
+                _logger.LogInformation("Retrieved permission by module/action {@Permission} from cache", new { Module = module, Action = action });
                 return Ok(permission);
             }
 
             permission = await _permissionService.GetPermissionByModuleActionAsync(module, action);
             if (permission is null)
             {
-                _logger.LogWarning("Permission not found: {Module}:{Action}", module, action);
+                _logger.LogWarning("Permission with module/action {@Permission} not found", new { Module = module, Action = action });
                 return NotFound(new { message = "Permission not found" });
             }
 
             await _cacheService.SaveStateAsync(cacheKey, permission);
-            _logger.LogInformation("Retrieved permission {Module}:{Action} from database and cached", module, action);
+            _logger.LogInformation("Retrieved permission by module/action {@Permission} from database and cached", new { Module = module, Action = action });
 
             return Ok(permission);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving permission: {Module}:{Action}", module, action);
+            _logger.LogError(ex, "Error retrieving permission by module/action: {@Permission}", new { Module = module, Action = action });
             return StatusCode(500, new { message = "An error occurred retrieving the permission" });
         }
     }
@@ -211,7 +211,7 @@ public class PermissionsController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error checking permission for user: {Username}, module: {Module}, action: {Action}", username, module, action);
+            _logger.LogError(ex, "Error checking permission: {@Permission}", new { Username = username, Module = module, Action = action });
             return StatusCode(500, new { message = "An error occurred checking the permission" });
         }
     }
@@ -235,18 +235,18 @@ public class PermissionsController : ControllerBase
             var result = await _permissionService.CreatePermissionAsync(createPermissionDto);
             if (result == null)
             {
-                _logger.LogWarning("Failed to create permission: {Module}:{Action}", createPermissionDto.Module, createPermissionDto.Action);
+                _logger.LogWarning("Failed to create permission: {@Permission}", new { Module = createPermissionDto.Module, Action = createPermissionDto.Action });
                 return Conflict(new { message = "Permission already exists" });
             }
 
             await _cacheService.RemoveStateAsync("all_permissions");
-            _logger.LogInformation("Permission created: {Module}:{Action}", createPermissionDto.Module, createPermissionDto.Action);
+            _logger.LogInformation("Permission created: {@Permission}", new { Module = createPermissionDto.Module, Action = createPermissionDto.Action });
 
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating permission: {Module}:{Action}", createPermissionDto.Module, createPermissionDto.Action);
+            _logger.LogError(ex, "Error creating permission: {@Permission}", new { Module = createPermissionDto.Module, Action = createPermissionDto.Action });
             return StatusCode(500, new { message = "An error occurred creating the permission" });
         }
     }
@@ -270,20 +270,20 @@ public class PermissionsController : ControllerBase
             var result = await _permissionService.UpdatePermissionAsync(id, updatePermissionDto);
             if (!result)
             {
-                _logger.LogWarning("Failed to update permission: {PermissionId}", id);
+                _logger.LogWarning("Failed to update permission: {@Permission}", new { PermissionId = id });
                 return NotFound(new { message = "Permission not found" });
             }
 
-            string cacheKey = $"Permission-{id}";
+            string cacheKey = "Permission-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
             await _cacheService.RemoveStateAsync("all_permissions");
 
-            _logger.LogInformation("Permission updated: {PermissionId}", id);
+            _logger.LogInformation("Permission updated: {@Permission}", new { PermissionId = id });
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating permission: {PermissionId}", id);
+            _logger.LogError(ex, "Error updating permission: {@Permission}", new { PermissionId = id });
             return StatusCode(500, new { message = "An error occurred updating the permission" });
         }
     }
@@ -303,20 +303,20 @@ public class PermissionsController : ControllerBase
             var result = await _permissionService.DeletePermissionAsync(id);
             if (!result)
             {
-                _logger.LogWarning("Failed to delete permission: {PermissionId}", id);
+                _logger.LogWarning("Failed to delete permission: {@Permission}", new { PermissionId = id });
                 return NotFound(new { message = "Permission not found" });
             }
 
-            string cacheKey = $"Permission-{id}";
+            string cacheKey = "Permission-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
             await _cacheService.RemoveStateAsync("all_permissions");
 
-            _logger.LogInformation("Permission deleted: {PermissionId}", id);
+            _logger.LogInformation("Permission deleted: {@Permission}", new { PermissionId = id });
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error deleting permission: {PermissionId}", id);
+            _logger.LogError(ex, "Error deleting permission: {@Permission}", new { PermissionId = id });
             return StatusCode(500, new { message = "An error occurred deleting the permission" });
         }
     }

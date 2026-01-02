@@ -44,7 +44,7 @@ public class WarehousesController : ControllerBase
     {
         try
         {
-            _logger.LogInformation("Retrieving paginated warehouses: Page {PageNumber}, Size {PageSize}", pageNumber, pageSize);
+            _logger.LogInformation("Retrieving paginated warehouses: {@Pagination}", new { PageNumber = pageNumber, PageSize = pageSize });
             var result = await _warehouseService.GetAllWarehousesPaginatedAsync(pageNumber, pageSize);
             return Ok(result);
         }
@@ -73,7 +73,7 @@ public class WarehousesController : ControllerBase
             query.Validate();
             var spec = new WarehouseQuerySpec(query);
             var result = await _warehouseService.QueryWarehousesAsync(spec);
-            _logger.LogInformation("Searched warehouses with query: Page {Page}, PageSize {PageSize}, SortBy {SortBy}", query.Page, query.PageSize, query.SortBy);
+            _logger.LogInformation("Searched warehouses with query: {@Query}", query);
             return Ok(result);
         }
         catch (ArgumentException ex)
@@ -97,11 +97,11 @@ public class WarehousesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<WarehouseDto>> GetWarehouseById(Guid id)
     {
-        _logger.LogInformation("Retrieving warehouse with ID: {WarehouseId}", id);
+        _logger.LogInformation("Retrieving warehouse with ID: {@Warehouse}", new { WarehouseId = id });
         var warehouse = await _warehouseService.GetWarehouseByIdAsync(id);
         if (warehouse == null)
         {
-            _logger.LogWarning("Warehouse with ID {WarehouseId} not found", id);
+            _logger.LogWarning("Warehouse with ID {@Warehouse} not found", new { WarehouseId = id });
             return NotFound();
         }
         return Ok(warehouse);
@@ -124,13 +124,13 @@ public class WarehousesController : ControllerBase
 
         try
         {
-            _logger.LogInformation("Creating new warehouse: {Name}", dto.Name);
+            _logger.LogInformation("Creating new warehouse: {@Warehouse}", new { Name = dto.Name });
             var warehouse = await _warehouseService.CreateWarehouseAsync(dto);
             return CreatedAtAction(nameof(GetWarehouseById), new { id = warehouse.Id }, warehouse);
         }
         catch (InvalidOperationException ex)
         {
-            _logger.LogWarning("Conflict creating warehouse: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Conflict creating warehouse: {@Error}", new { Message = ex.Message });
             return Conflict(ex.Message);
         }
     }
@@ -153,18 +153,18 @@ public class WarehousesController : ControllerBase
 
         try
         {
-            _logger.LogInformation("Updating warehouse with ID: {WarehouseId}", id);
+            _logger.LogInformation("Updating warehouse with ID: {@Warehouse}", new { WarehouseId = id });
             var warehouse = await _warehouseService.UpdateWarehouseAsync(id, dto);
             return Ok(warehouse);
         }
         catch (KeyNotFoundException ex)
         {
-            _logger.LogWarning("Warehouse not found: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Warehouse not found: {@Error}", new { Message = ex.Message });
             return NotFound(ex.Message);
         }
         catch (InvalidOperationException ex)
         {
-            _logger.LogWarning("Conflict updating warehouse: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Conflict updating warehouse: {@Error}", new { Message = ex.Message });
             return Conflict(ex.Message);
         }
     }
@@ -180,13 +180,13 @@ public class WarehousesController : ControllerBase
     {
         try
         {
-            _logger.LogInformation("Deleting warehouse with ID: {WarehouseId}", id);
+            _logger.LogInformation("Deleting warehouse with ID: {@Warehouse}", new { WarehouseId = id });
             await _warehouseService.DeleteWarehouseAsync(id);
             return NoContent();
         }
         catch (KeyNotFoundException ex)
         {
-            _logger.LogWarning("Warehouse not found: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Warehouse not found: {@Error}", new { Message = ex.Message });
             return NotFound(ex.Message);
         }
     }

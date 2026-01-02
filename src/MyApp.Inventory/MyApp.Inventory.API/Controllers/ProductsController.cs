@@ -65,7 +65,7 @@ public class ProductsController : ControllerBase
         try
         {
             var result = await _productService.GetAllProductsPaginatedAsync(pageNumber, pageSize);
-            _logger.LogInformation("Retrieved paginated products: Page {PageNumber}, Size {PageSize}", pageNumber, pageSize);
+            _logger.LogInformation("Retrieved paginated products: {@Pagination}", new { PageNumber = pageNumber, PageSize = pageSize });
             return Ok(result);
         }
         catch (Exception ex)
@@ -93,7 +93,7 @@ public class ProductsController : ControllerBase
             query.Validate();
             var spec = new ProductQuerySpec(query);
             var result = await _productService.QueryProductsAsync(spec);
-            _logger.LogInformation("Searched products with query: Page {Page}, PageSize {PageSize}, SortBy {SortBy}", query.Page, query.PageSize, query.SortBy);
+            _logger.LogInformation("Searched products with query: {@Query}", query);
             return Ok(result);
         }
         catch (ArgumentException ex)
@@ -119,29 +119,29 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            string cacheKey = $"Product-{id}";
+            string cacheKey = "Product-" + id;
             var product = await _cacheService.GetStateAsync<ProductDto>(cacheKey);
 
             if (product != null)
             {
-                _logger.LogInformation("Retrieved product {ProductId} from cache", id);
+                _logger.LogInformation("Retrieved product {@Product} from cache", new { ProductId = id });
                 return Ok(product);
             }
 
             product = await _productService.GetProductByIdAsync(id);
             if (product == null)
             {
-                _logger.LogWarning("Product with ID {ProductId} not found", id);
+                _logger.LogWarning("Product with ID {@Product} not found", new { ProductId = id });
                 return NotFound();
             }
 
             await _cacheService.SaveStateAsync(cacheKey, product);
-            _logger.LogInformation("Retrieved product {ProductId} from database and cached", id);
+            _logger.LogInformation("Retrieved product {@Product} from database and cached", new { ProductId = id });
             return Ok(product);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving product {ProductId}", id);
+            _logger.LogError(ex, "Error retrieving product {@Product}", new { ProductId = id });
             var product = await _productService.GetProductByIdAsync(id);
             return product == null ? NotFound() : Ok(product);
         }
@@ -158,29 +158,29 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            string cacheKey = $"Product-SKU-{sku}";
+            string cacheKey = "Product-SKU-" + sku;
             var product = await _cacheService.GetStateAsync<ProductDto>(cacheKey);
 
             if (product != null)
             {
-                _logger.LogInformation("Retrieved product with SKU {SKU} from cache", sku);
+                _logger.LogInformation("Retrieved product with SKU {@Product} from cache", new { SKU = sku });
                 return Ok(product);
             }
 
             product = await _productService.GetProductBySkuAsync(sku);
             if (product == null)
             {
-                _logger.LogWarning("Product with SKU {SKU} not found", sku);
+                _logger.LogWarning("Product with SKU {@Product} not found", new { SKU = sku });
                 return NotFound();
             }
 
             await _cacheService.SaveStateAsync(cacheKey, product);
-            _logger.LogInformation("Retrieved product with SKU {SKU} from database and cached", sku);
+            _logger.LogInformation("Retrieved product with SKU {@Product} from database and cached", new { SKU = sku });
             return Ok(product);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving product with SKU {SKU}", sku);
+            _logger.LogError(ex, "Error retrieving product with SKU {@Product}", new { SKU = sku });
             var product = await _productService.GetProductBySkuAsync(sku);
             return product == null ? NotFound() : Ok(product);
         }
@@ -233,16 +233,16 @@ public class ProductsController : ControllerBase
 
         try
         {
-            _logger.LogInformation("Creating new product with SKU: {SKU}", dto.SKU);
+            _logger.LogInformation("Creating new product with SKU: {@Product}", new { SKU = dto.SKU });
             var product = await _productService.CreateProductAsync(dto);
             await _cacheService.RemoveStateAsync("all_products");
             await _cacheService.RemoveStateAsync("low_stock_products");
-            _logger.LogInformation("Product created and cache invalidated");
+            _logger.LogInformation("Product {@Product} created and cache invalidated", new { ProductId = product.Id });
             return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
         }
         catch (InvalidOperationException ex)
         {
-            _logger.LogWarning("Conflict creating product: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Conflict creating product: {@Error}", new { Message = ex.Message });
             return Conflict(ex.Message);
         }
     }
@@ -265,23 +265,23 @@ public class ProductsController : ControllerBase
 
         try
         {
-            _logger.LogInformation("Updating product with ID: {ProductId}", id);
+            _logger.LogInformation("Updating product with ID: {@Product}", new { ProductId = id });
             var product = await _productService.UpdateProductAsync(id, dto);
-            string cacheKey = $"Product-{id}";
+            string cacheKey = "Product-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
             await _cacheService.RemoveStateAsync("all_products");
             await _cacheService.RemoveStateAsync("low_stock_products");
-            _logger.LogInformation("Product {ProductId} updated and cache invalidated", id);
+            _logger.LogInformation("Product {@Product} updated and cache invalidated", new { ProductId = id });
             return Ok(product);
         }
         catch (KeyNotFoundException ex)
         {
-            _logger.LogWarning("Product not found: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Product not found: {@Error}", new { Message = ex.Message });
             return NotFound(ex.Message);
         }
         catch (InvalidOperationException ex)
         {
-            _logger.LogWarning("Conflict updating product: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Conflict updating product: {@Error}", new { Message = ex.Message });
             return Conflict(ex.Message);
         }
     }
@@ -297,18 +297,18 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            _logger.LogInformation("Deleting product with ID: {ProductId}", id);
+            _logger.LogInformation("Deleting product with ID: {@Product}", new { ProductId = id });
             await _productService.DeleteProductAsync(id);
-            string cacheKey = $"Product-{id}";
+            string cacheKey = "Product-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
             await _cacheService.RemoveStateAsync("all_products");
             await _cacheService.RemoveStateAsync("low_stock_products");
-            _logger.LogInformation("Product {ProductId} deleted and cache invalidated", id);
+            _logger.LogInformation("Product {@Product} deleted and cache invalidated", new { ProductId = id });
             return NoContent();
         }
         catch (KeyNotFoundException ex)
         {
-            _logger.LogWarning("Product not found: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Product not found: {@Error}", new { Message = ex.Message });
             return NotFound(ex.Message);
         }
     }
