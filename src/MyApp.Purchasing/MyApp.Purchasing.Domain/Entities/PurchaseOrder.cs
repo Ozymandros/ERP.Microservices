@@ -10,7 +10,7 @@ public enum PurchaseOrderStatus
     Cancelled
 }
 
-public class PurchaseOrder : AuditableEntity<Guid>
+public class PurchaseOrder(Guid id) : AuditableEntity<Guid>(id)
 {
     public string OrderNumber { get; set; } = string.Empty;
     public Guid SupplierId { get; set; }
@@ -18,7 +18,7 @@ public class PurchaseOrder : AuditableEntity<Guid>
     public DateTime? ExpectedDeliveryDate { get; set; }
     public PurchaseOrderStatus Status { get; set; }
     public decimal TotalAmount { get; set; }
-    
+
     // Navigation
     public Supplier? Supplier { get; set; }
     public ICollection<PurchaseOrderLine> Lines { get; set; } = [];

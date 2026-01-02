@@ -29,8 +29,8 @@ public class SupplierServiceTests
     {
         // Arrange
         var supplierId = Guid.NewGuid();
-        var supplier = new Supplier { Id = supplierId, Name = "Test Supplier", Email = "test@supplier.com" };
-        var expectedDto = new SupplierDto { Name = "Test Supplier", Email = "test@supplier.com" };
+        var supplier = new Supplier(supplierId) { Name = "Test Supplier", Email = "test@supplier.com" };
+        var expectedDto = new SupplierDto(supplierId, default, "", null, null, "Test Supplier", "Test Supplier", "test@supplier.com", "", "");
 
         _mockSupplierRepository.Setup(r => r.GetByIdAsync(supplierId)).ReturnsAsync(supplier);
         _mockMapper.Setup(m => m.Map<SupplierDto>(supplier)).Returns(expectedDto);
@@ -63,8 +63,8 @@ public class SupplierServiceTests
     {
         // Arrange
         var email = "supplier@example.com";
-        var supplier = new Supplier { Email = email, Name = "Test Supplier" };
-        var expectedDto = new SupplierDto { Email = email };
+        var supplier = new Supplier(Guid.NewGuid()) { Email = email, Name = "Test Supplier" };
+        var expectedDto = new SupplierDto(Guid.NewGuid(), default, "", null, null, "Test Supplier", "Test Supplier", email, "", "");
 
         _mockSupplierRepository.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync(supplier);
         _mockMapper.Setup(m => m.Map<SupplierDto>(supplier)).Returns(expectedDto);
@@ -98,13 +98,13 @@ public class SupplierServiceTests
         var name = "Test";
         var suppliers = new List<Supplier>
         {
-            new Supplier { Name = "Test Supplier 1" },
-            new Supplier { Name = "Test Supplier 2" }
+            new Supplier(Guid.NewGuid()) { Name = "Test Supplier 1" },
+            new Supplier(Guid.NewGuid()) { Name = "Test Supplier 2" }
         };
         var dtos = new List<SupplierDto>
         {
-            new SupplierDto { Name = "Test Supplier 1" },
-            new SupplierDto { Name = "Test Supplier 2" }
+            new SupplierDto(Guid.NewGuid(), default, "", null, null, "Test Supplier 1", "Test Supplier 1", "", "", ""),
+            new SupplierDto(Guid.NewGuid(), default, "", null, null, "Test Supplier 2", "Test Supplier 2", "", "", "")
         };
 
         _mockSupplierRepository.Setup(r => r.GetByNameAsync(name)).ReturnsAsync(suppliers);
@@ -123,13 +123,13 @@ public class SupplierServiceTests
         // Arrange
         var suppliers = new List<Supplier>
         {
-            new Supplier { Name = "Supplier 1" },
-            new Supplier { Name = "Supplier 2" }
+            new Supplier(Guid.NewGuid()) { Name = "Supplier 1" },
+            new Supplier(Guid.NewGuid()) { Name = "Supplier 2" }
         };
         var dtos = new List<SupplierDto>
         {
-            new SupplierDto { Name = "Supplier 1" },
-            new SupplierDto { Name = "Supplier 2" }
+            new SupplierDto(Guid.NewGuid(), default, "", null, null, "Supplier 1", "Supplier 1", "", "", ""),
+            new SupplierDto(Guid.NewGuid(), default, "", null, null, "Supplier 2", "Supplier 2", "", "", "")
         };
 
         _mockSupplierRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(suppliers);
@@ -147,10 +147,10 @@ public class SupplierServiceTests
     public async Task CreateSupplierAsync_WithUniqueEmail_CreatesSupplier()
     {
         // Arrange
-        var dto = new CreateUpdateSupplierDto { Name = "New Supplier", Email = "new@supplier.com" };
-        var supplier = new Supplier { Name = "New Supplier", Email = "new@supplier.com" };
-        var createdSupplier = new Supplier { Id = Guid.NewGuid(), Name = "New Supplier", Email = "new@supplier.com" };
-        var expectedDto = new SupplierDto { Name = "New Supplier" };
+        var dto = new CreateUpdateSupplierDto("New Supplier", "Test Contact", "new@supplier.com");
+        var supplier = new Supplier(Guid.NewGuid()) { Name = "New Supplier", Email = "new@supplier.com" };
+        var createdSupplier = new Supplier(Guid.NewGuid()) { Name = "New Supplier", Email = "new@supplier.com" };
+        var expectedDto = new SupplierDto(createdSupplier.Id, default, "", null, null, "New Supplier", "Test Contact", "new@supplier.com", "", "");
 
         _mockSupplierRepository.Setup(r => r.GetByEmailAsync(dto.Email)).ReturnsAsync((Supplier?)null);
         _mockMapper.Setup(m => m.Map<Supplier>(dto)).Returns(supplier);
@@ -169,8 +169,8 @@ public class SupplierServiceTests
     public async Task CreateSupplierAsync_WithDuplicateEmail_ThrowsInvalidOperationException()
     {
         // Arrange
-        var dto = new CreateUpdateSupplierDto { Email = "duplicate@supplier.com" };
-        var existingSupplier = new Supplier { Email = "duplicate@supplier.com" };
+        var dto = new CreateUpdateSupplierDto("Test Name", "Test Contact", "duplicate@supplier.com");
+        var existingSupplier = new Supplier(Guid.NewGuid()) { Email = "duplicate@supplier.com" };
 
         _mockSupplierRepository.Setup(r => r.GetByEmailAsync(dto.Email)).ReturnsAsync(existingSupplier);
 
@@ -187,10 +187,10 @@ public class SupplierServiceTests
     {
         // Arrange
         var supplierId = Guid.NewGuid();
-        var existingSupplier = new Supplier { Id = supplierId, Email = "old@email.com" };
-        var updateDto = new CreateUpdateSupplierDto { Email = "old@email.com", Name = "Updated Name" };
-        var updatedSupplier = new Supplier { Id = supplierId, Email = "old@email.com", Name = "Updated Name" };
-        var expectedDto = new SupplierDto { Name = "Updated Name" };
+        var existingSupplier = new Supplier(supplierId) { Email = "old@email.com" };
+        var updateDto = new CreateUpdateSupplierDto("Updated Name", "Test Contact", "old@email.com");
+        var updatedSupplier = new Supplier(supplierId) { Email = "old@email.com", Name = "Updated Name" };
+        var expectedDto = new SupplierDto(supplierId, default, "", null, null, "Updated Name", "Test Contact", "old@email.com", "", "");
 
         _mockSupplierRepository.Setup(r => r.GetByIdAsync(supplierId)).ReturnsAsync(existingSupplier);
         _mockMapper.Setup(m => m.Map(updateDto, existingSupplier));
@@ -210,7 +210,7 @@ public class SupplierServiceTests
     {
         // Arrange
         var supplierId = Guid.NewGuid();
-        var updateDto = new CreateUpdateSupplierDto();
+        var updateDto = new CreateUpdateSupplierDto("Test Name", "Test Contact", "test@email.com");
 
         _mockSupplierRepository.Setup(r => r.GetByIdAsync(supplierId)).ReturnsAsync((Supplier?)null);
 
@@ -227,9 +227,9 @@ public class SupplierServiceTests
     {
         // Arrange
         var supplierId = Guid.NewGuid();
-        var existingSupplier = new Supplier { Id = supplierId, Email = "old@email.com" };
-        var updateDto = new CreateUpdateSupplierDto { Email = "new@email.com" };
-        var conflictingSupplier = new Supplier { Id = Guid.NewGuid(), Email = "new@email.com" };
+        var existingSupplier = new Supplier(supplierId) { Email = "old@email.com" };
+        var updateDto = new CreateUpdateSupplierDto("Test Name", "Test Contact", "new@email.com");
+        var conflictingSupplier = new Supplier(Guid.NewGuid()) { Email = "new@email.com" };
 
         _mockSupplierRepository.Setup(r => r.GetByIdAsync(supplierId)).ReturnsAsync(existingSupplier);
         _mockSupplierRepository.Setup(r => r.GetByEmailAsync(updateDto.Email)).ReturnsAsync(conflictingSupplier);
@@ -247,7 +247,7 @@ public class SupplierServiceTests
     {
         // Arrange
         var supplierId = Guid.NewGuid();
-        var supplier = new Supplier { Id = supplierId };
+        var supplier = new Supplier(supplierId);
 
         _mockSupplierRepository.Setup(r => r.GetByIdAsync(supplierId)).ReturnsAsync(supplier);
 

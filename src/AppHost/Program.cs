@@ -22,8 +22,7 @@ builder.Services.AddHealthChecks();
 // 1. Definim el host de Redis. Li donem un nom sense conflictes.
 // No importa el nom aquí, ja que el Component el definirà.
 var redis = builder.AddRedis("cache")
-    //.WaitFor(store)
-    //.WithDaprSidecar()
+    .WithArgs("redis-server", "--save", "", "--appendonly", "no", "--protected-mode", "no")
     .WithRedisCommander()
     .WithRedisInsight()
     .WithDataVolume("redis-cache");

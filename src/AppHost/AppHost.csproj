@@ -11,20 +11,20 @@
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
-  <Sdk Name="Aspire.AppHost.Sdk" Version="9.0.0" />
+  <Sdk Name="Aspire.AppHost.Sdk" Version="13.0.0" />
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.Azure.Sql" Version="9.5.2" />
-    <PackageReference Include="Aspire.Hosting.Yarp" Version="9.5.1-preview.1.25502.11" />
-    <PackageReference Include="CommunityToolkit.Aspire.Hosting.Dapr" Version="9.8.0" />
-    <PackageReference Include="Dapr.AspNetCore" Version="1.16.0" />
-    <PackageReference Include="Dapr.Client" Version="1.16.0" />
-    <PackageReference Include="Aspire.Hosting.Redis" Version="9.5.2" />
-    <PackageReference Include="Aspire.Hosting.SqlServer" Version="9.5.2" />
-    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.5.2" />
-    <PackageReference Include="Aspire.Hosting.Azure.ApplicationInsights" Version="9.5.2" />
-    <PackageReference Include="Aspire.Hosting.Azure.OperationalInsights" Version="9.5.2" />
-    <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="9.5.2" />
+    <PackageReference Include="Aspire.Hosting.Yarp" Version="13.0.0" />
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.Dapr" Version="9.9.0" />
+    <PackageReference Include="Dapr.AspNetCore" Version="1.16.1" />
+    <PackageReference Include="Dapr.Client" Version="1.16.1" />
+    <PackageReference Include="Aspire.Hosting.Azure.ApplicationInsights" Version="13.0.0" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" Version="13.0.0" />
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="13.0.0" />
+    <PackageReference Include="Aspire.Hosting.Azure.OperationalInsights" Version="13.0.0" />
+    <PackageReference Include="Aspire.Hosting.Azure.Sql" Version="13.0.0" />
     <PackageReference Include="Aspire.Hosting.NodeJs" Version="9.5.2" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="13.0.0" />
+    <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="13.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyApp.Auth\MyApp.Auth.API\MyApp.Auth.API.csproj" />

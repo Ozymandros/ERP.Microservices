@@ -5,11 +5,15 @@ using MyApp.Inventory.Infrastructure.Data;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
+using MyApp.Shared.Infrastructure.Logging;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog with sensitive data masking and OpenTelemetry integration
+builder.AddCustomLogging();
 
 // Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
 builder.Services.AddDaprClient();
@@ -72,8 +76,7 @@ var inventoryDbConnectionString = builder.Configuration.GetConnectionString("inv
 builder.Services.AddCustomHealthChecks(inventoryDbConnectionString ?? throw new InvalidOperationException("Connection string 'inventorydb' not found."));
 
 // Infrastructure & Application DI
-builder.Services.AddDbContext<InventoryDbContext>(options =>
-    options.UseSqlServer(inventoryDbConnectionString));
+builder.Services.AddDbContext<InventoryDbContext>(options => options.UseSqlServer(inventoryDbConnectionString, options => options.EnableRetryOnFailure()));
 
 builder.Services.AddHttpContextAccessor();
 

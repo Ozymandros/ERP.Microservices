@@ -1,33 +1,33 @@
 namespace MyApp.Shared.Domain.DTOs.Examples
 {
     // Example: Simple DTO with Guid ID
-    public class UserDto : BaseGuidDto
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-    }
+    public record UserDto(Guid Id, string Name, string Email) : BaseGuidDto(Id);
 
     // Example: DTO with audit trail and Guid ID
-    public class OrderDto : AuditableGuidDto
-    {
-        public string OrderNumber { get; set; } = string.Empty;
-        public decimal Total { get; set; }
-        public string Status { get; set; } = string.Empty;
-    }
+    public record OrderDto(
+        Guid Id, 
+        DateTime CreatedAt = default, 
+        string CreatedBy = "", 
+        DateTime? UpdatedAt = null, 
+        string? UpdatedBy = null,
+        string OrderNumber = "", 
+        decimal Total = 0, 
+        string Status = "") 
+        : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
 
     // Example: DTO with integer ID
-    public class CategoryDto : BaseIntDto
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-    }
+    public record CategoryDto(int Id, string Name, string Description) : BaseIntDto(Id);
 
     // Example: DTO with audit trail and integer ID
-    public class ProductDto : AuditableIntDto
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public decimal Price { get; set; }
-        public int CategoryId { get; set; }
-    }
+    public record ProductDto(
+        int Id, 
+        DateTime CreatedAt = default, 
+        string CreatedBy = "", 
+        DateTime? UpdatedAt = null, 
+        string? UpdatedBy = null,
+        string Name = "", 
+        string Description = "", 
+        decimal Price = 0, 
+        int CategoryId = 0) 
+        : AuditableIntDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
 }

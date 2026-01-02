@@ -30,7 +30,7 @@ public class RoleServiceTests : BaseServiceTest
         _mockUserManager = CreateMockUserManager();
         _mockUserRepository = new Mock<IUserRepository>();
         _mockLogger = CreateMockLogger<RoleService>();
-        
+
         _roleService = new RoleService(
             _mockRoleManager.Object,
             _mockUserManager.Object,
@@ -148,11 +148,7 @@ public class RoleServiceTests : BaseServiceTest
     public async Task CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole()
     {
         // Arrange
-        var createDto = new CreateRoleDto
-        {
-            Name = "NewRole",
-            Description = "New role description"
-        };
+        var createDto = new CreateRoleDto("NewRole", "New role description");
 
         var createdRole = new RoleBuilder()
             .WithName(createDto.Name)
@@ -178,8 +174,8 @@ public class RoleServiceTests : BaseServiceTest
         // Assert
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(roleDto);
-        _mockRoleManager.Verify(x => x.CreateAsync(It.Is<ApplicationRole>(r => 
-            r.Name == createDto.Name && 
+        _mockRoleManager.Verify(x => x.CreateAsync(It.Is<ApplicationRole>(r =>
+            r.Name == createDto.Name &&
             r.Description == createDto.Description)), Times.Once);
     }
 
@@ -187,11 +183,7 @@ public class RoleServiceTests : BaseServiceTest
     public async Task CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning()
     {
         // Arrange
-        var createDto = new CreateRoleDto
-        {
-            Name = "ExistingRole",
-            Description = "Description"
-        };
+        var createDto = new CreateRoleDto("ExistingRole", "Description");
 
         var identityErrors = new List<IdentityError>
         {
@@ -219,11 +211,7 @@ public class RoleServiceTests : BaseServiceTest
     {
         // Arrange
         var roleId = Guid.NewGuid();
-        var updateDto = new CreateRoleDto
-        {
-            Name = "UpdatedRole",
-            Description = "Updated description"
-        };
+        var updateDto = new CreateRoleDto("UpdatedRole", "Updated description");
 
         var existingRole = new RoleBuilder().WithId(roleId).Build();
 
@@ -250,11 +238,7 @@ public class RoleServiceTests : BaseServiceTest
     {
         // Arrange
         var roleId = Guid.NewGuid();
-        var updateDto = new CreateRoleDto
-        {
-            Name = "UpdatedRole",
-            Description = "Updated description"
-        };
+        var updateDto = new CreateRoleDto("UpdatedRole", "Updated description");
 
         _mockRoleRepository
             .Setup(x => x.GetByIdAsync(roleId))
@@ -354,7 +338,7 @@ public class RoleServiceTests : BaseServiceTest
     }
 
     #endregion
-    
+
     #region HasPermissionAsync
 
     [Fact]
@@ -387,77 +371,77 @@ public class RoleServiceTests : BaseServiceTest
 
     #endregion
 
-#region GetPermissionsForRoleAsync
+    #region GetPermissionsForRoleAsync
 
-[Fact]
-public async Task GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions()
-{
-    // Arrange
-    var roleId = Guid.NewGuid();
-    var permissions = new List<Permission>
+    [Fact]
+    public async Task GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions()
+    {
+        // Arrange
+        var roleId = Guid.NewGuid();
+        var permissions = new List<Permission>
     {
         new PermissionBuilder().WithModule("Orders").WithAction("Create").Build(),
         new PermissionBuilder().WithModule("Orders").WithAction("Read").Build()
     };
 
-    var permissionDtos = new List<PermissionDto>
+        var permissionDtos = new List<PermissionDto>
     {
         new PermissionDtoBuilder().WithModule("Orders").WithAction("Create").Build(),
         new PermissionDtoBuilder().WithModule("Orders").WithAction("Read").Build()
     };
 
-    _mockRoleRepository
-        .Setup(x => x.GetPermissionsForRoleAsync(roleId))
-        .ReturnsAsync(permissions);
+        _mockRoleRepository
+            .Setup(x => x.GetPermissionsForRoleAsync(roleId))
+            .ReturnsAsync(permissions);
 
-    MockMapper
-        .Setup(x => x.Map<IEnumerable<PermissionDto>>(permissions))
-        .Returns(permissionDtos);
+        MockMapper
+            .Setup(x => x.Map<IEnumerable<PermissionDto>>(permissions))
+            .Returns(permissionDtos);
 
-    // Act
-    var result = await _roleService.GetPermissionsForRoleAsync(roleId);
+        // Act
+        var result = await _roleService.GetPermissionsForRoleAsync(roleId);
 
-    // Assert
-    result.Should().NotBeNull();
-    result.Should().HaveCount(2);
-    result.Should().BeEquivalentTo(permissionDtos);
-}
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().HaveCount(2);
+        result.Should().BeEquivalentTo(permissionDtos);
+    }
 
-[Fact]
-public async Task GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
-{
-    // Arrange
-    var roleId = Guid.NewGuid();
-    var exception = new Exception("Database error");
+    [Fact]
+    public async Task GetPermissionsForRoleAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+    {
+        // Arrange
+        var roleId = Guid.NewGuid();
+        var exception = new Exception("Database error");
 
-    _mockRoleRepository
-        .Setup(x => x.GetPermissionsForRoleAsync(roleId))
-        .ThrowsAsync(exception);
+        _mockRoleRepository
+            .Setup(x => x.GetPermissionsForRoleAsync(roleId))
+            .ThrowsAsync(exception);
 
-    // Act
-    var result = await _roleService.GetPermissionsForRoleAsync(roleId);
+        // Act
+        var result = await _roleService.GetPermissionsForRoleAsync(roleId);
 
-    // Assert
-    result.Should().NotBeNull();
-    result.Should().BeEmpty();
-    VerifyLoggerCalled(_mockLogger, LogLevel.Error, Times.Once());
-}
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeEmpty();
+        VerifyLoggerCalled(_mockLogger, LogLevel.Error, Times.Once());
+    }
 
-#endregion
+    #endregion
 
-#region Helper Methods
+    #region Helper Methods
 
-private static Mock<RoleManager<ApplicationRole>> CreateMockRoleManager()
-{
-    var store = new Mock<IRoleStore<ApplicationRole>>();
-    return new Mock<RoleManager<ApplicationRole>>(store.Object, null!, null!, null!, null!);
-}
+    private static Mock<RoleManager<ApplicationRole>> CreateMockRoleManager()
+    {
+        var store = new Mock<IRoleStore<ApplicationRole>>();
+        return new Mock<RoleManager<ApplicationRole>>(store.Object, null!, null!, null!, null!);
+    }
 
-private static Mock<UserManager<ApplicationUser>> CreateMockUserManager()
-{
-    var store = new Mock<IUserStore<ApplicationUser>>();
-    return new Mock<UserManager<ApplicationUser>>(store.Object, null!, null!, null!, null!, null!, null!, null!, null!);
-}
+    private static Mock<UserManager<ApplicationUser>> CreateMockUserManager()
+    {
+        var store = new Mock<IUserStore<ApplicationUser>>();
+        return new Mock<UserManager<ApplicationUser>>(store.Object, null!, null!, null!, null!, null!, null!, null!, null!);
+    }
 
-#endregion
+    #endregion
 }

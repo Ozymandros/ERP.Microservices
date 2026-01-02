@@ -1,24 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Sales.Infrastructure.Data.Repositories
 {
-    public class SalesOrderRepository : ISalesOrderRepository
+    public class SalesOrderRepository : Repository<SalesOrder, Guid>, ISalesOrderRepository
     {
         private readonly SalesDbContext _context;
 
-        public SalesOrderRepository(SalesDbContext context)
+        public SalesOrderRepository(SalesDbContext context) : base(context)
         {
             _context = context;
         }
 
-        public async Task<SalesOrder?> GetByIdAsync(Guid id)
+        public override async Task<SalesOrder?> GetByIdAsync(Guid id)
         {
             return await _context.SalesOrders
                 .Include(o => o.Lines)
@@ -34,15 +31,12 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<SalesOrder>> GetAllAsync()
+        public override async Task<IEnumerable<SalesOrder>> GetAllAsync()
         {
-            return await _context.SalesOrders
-                .Include(o => o.Lines)
-                .Include(o => o.Customer)
-                .ToListAsync();
+            return await ListAsync();
         }
 
-        public async Task<PaginatedResult<SalesOrder>> GetAllPaginatedAsync(int pageNumber, int pageSize)
+        public override async Task<PaginatedResult<SalesOrder>> GetAllPaginatedAsync(int pageNumber, int pageSize)
         {
             var paginationParams = new PaginationParams(pageNumber, pageSize);
             var query = _context.SalesOrders
@@ -56,26 +50,6 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
                 .ToListAsync();
 
             return new PaginatedResult<SalesOrder>(items, paginationParams.PageNumber, paginationParams.PageSize, totalCount);
-        }
-
-        public async Task<SalesOrder> AddAsync(SalesOrder entity)
-        {
-            await _context.SalesOrders.AddAsync(entity);
-            await _context.SaveChangesAsync();
-            return entity;
-        }
-
-        public async Task<SalesOrder> UpdateAsync(SalesOrder entity)
-        {
-            _context.SalesOrders.Update(entity);
-            await _context.SaveChangesAsync();
-            return entity;
-        }
-
-        public async Task DeleteAsync(SalesOrder entity)
-        {
-            _context.SalesOrders.Remove(entity);
-            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Guid id)

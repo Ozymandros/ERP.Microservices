@@ -29,10 +29,25 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 EXPOSE 8080
 
+# --- THE LINES FROM YOUR IMAGE (Preserving everything) ---
+ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080
+RUN apt-get update && apt-get install -y --no-install-recommends curl
+
 # Create non-root user
 RUN groupadd -r appuser && useradd -r -g appuser appuser
+
+# --- CRITICAL ORDER CHANGE ---
+
+# 1. Copy the files FIRST while still root
+# If we change to 'appuser' before this, the files will be owned by root 
+# and the non-root user won't have permissions to run them.
+COPY --from=publish /app/publish .
+
+# 2. Change ownership AFTER the files are already in the folder
+# This ensures that 'appuser' owns the actual DLLs.
 RUN chown -R appuser:appuser /app
+
+# 3. NOW switch to the non-root user
 USER appuser
 
-COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ErpApiGateway.dll"]

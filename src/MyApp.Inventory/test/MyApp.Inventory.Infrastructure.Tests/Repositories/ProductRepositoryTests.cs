@@ -21,9 +21,8 @@ public class ProductRepositoryTests
 
     private Product CreateTestProduct(string sku = "TEST-001", string name = "Test Product", int quantityInStock = 100, int reorderLevel = 10)
     {
-        var product = new Product
+        var product = new Product(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             SKU = sku,
             Name = name,
             Description = "Test Description",
@@ -140,9 +139,8 @@ public class ProductRepositoryTests
     public async Task AddAsync_WithValidProduct_CreatesProduct()
     {
         // Arrange
-        var product = new Product
+        var product = new Product(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             SKU = "NEW-SKU",
             Name = "New Product",
             Description = "New Description",

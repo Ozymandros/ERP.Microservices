@@ -1,11 +1,12 @@
 ﻿using MyApp.Shared.Domain.DTOs;
 
-namespace MyApp.Auth.Application.Contracts.DTOs
-{
-    public class PermissionDto : AuditableGuidDto
-    {
-        public string Module { get; set; } = default!;
-        public string Action { get; set; } = default!;
-        public string? Description { get; set; }
-    }
-}
+    public record PermissionDto(
+        Guid Id,
+        DateTime CreatedAt = default,
+        string CreatedBy = "",
+        DateTime? UpdatedAt = null,
+        string? UpdatedBy = null,
+        string Module = "",
+        string Action = "",
+        string? Description = null
+    ) : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);

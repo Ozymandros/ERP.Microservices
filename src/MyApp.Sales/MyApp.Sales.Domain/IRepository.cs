@@ -1,19 +1,16 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Repositories;
 
-namespace MyApp.Sales.Domain
+namespace MyApp.Sales.Domain;
+
+/// <summary>
+/// Sales-specific repository abstraction that extends the shared repository contract
+/// with convenience members used across the Sales service.
+/// </summary>
+public interface IRepository<TEntity, TKey> : MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>
+    where TEntity : class
 {
-    public interface IRepository<TEntity, TKey> where TEntity : class
-    {
-        Task<TEntity?> GetByIdAsync(TKey id);
-        Task<IEnumerable<TEntity>> ListAsync();
-        Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<PaginatedResult<TEntity>> GetAllPaginatedAsync(int pageNumber, int pageSize);
-        Task<TEntity> AddAsync(TEntity entity);
-        Task<TEntity> UpdateAsync(TEntity entity);
-        Task DeleteAsync(TEntity entity);
-        Task DeleteAsync(TKey id);
-    }
+    Task<IEnumerable<TEntity>> ListAsync();
+    Task DeleteAsync(TKey id);
 }

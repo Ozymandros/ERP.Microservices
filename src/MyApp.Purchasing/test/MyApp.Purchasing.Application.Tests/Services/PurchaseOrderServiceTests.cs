@@ -35,7 +35,7 @@ public class PurchaseOrderServiceTests
     {
         // Arrange
         var orderId = Guid.NewGuid();
-        var order = new PurchaseOrder { Id = orderId, OrderNumber = "PO-001" };
+        var order = new PurchaseOrder(orderId) { OrderNumber = "PO-001" };
         var expectedDto = new PurchaseOrderDto { OrderNumber = "PO-001" };
 
         _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(orderId)).ReturnsAsync(order);
@@ -69,8 +69,8 @@ public class PurchaseOrderServiceTests
         // Arrange
         var orders = new List<PurchaseOrder>
         {
-            new PurchaseOrder { OrderNumber = "PO-001" },
-            new PurchaseOrder { OrderNumber = "PO-002" }
+            new PurchaseOrder(Guid.NewGuid()) { OrderNumber = "PO-001" },
+            new PurchaseOrder(Guid.NewGuid()) { OrderNumber = "PO-002" }
         };
         var dtos = new List<PurchaseOrderDto>
         {
@@ -95,7 +95,7 @@ public class PurchaseOrderServiceTests
         var supplierId = Guid.NewGuid();
         var orders = new List<PurchaseOrder>
         {
-            new PurchaseOrder { SupplierId = supplierId }
+            new PurchaseOrder(Guid.NewGuid()) { SupplierId = supplierId }
         };
         var dtos = new List<PurchaseOrderDto>
         {
@@ -119,7 +119,7 @@ public class PurchaseOrderServiceTests
         var status = PurchaseOrderStatus.Draft;
         var orders = new List<PurchaseOrder>
         {
-            new PurchaseOrder { Status = status }
+            new PurchaseOrder(Guid.NewGuid()) { Status = status }
         };
         var dtos = new List<PurchaseOrderDto>
         {
@@ -141,13 +141,13 @@ public class PurchaseOrderServiceTests
     {
         // Arrange
         var supplierId = Guid.NewGuid();
-        var supplier = new Supplier { Id = supplierId };
+        var supplier = new Supplier(supplierId);
         var dto = new CreateUpdatePurchaseOrderDto
         {
             SupplierId = supplierId,
             Status = 0
         };
-        var order = new PurchaseOrder
+        var order = new PurchaseOrder(Guid.NewGuid())
         {
             SupplierId = supplierId,
             Lines = new List<PurchaseOrderLine>
@@ -155,7 +155,7 @@ public class PurchaseOrderServiceTests
                 new PurchaseOrderLine { Quantity = 10, UnitPrice = 5.00m }
             }
         };
-        var createdOrder = new PurchaseOrder { Id = Guid.NewGuid() };
+        var createdOrder = new PurchaseOrder(Guid.NewGuid());
         var expectedDto = new PurchaseOrderDto();
 
         _mockSupplierRepository.Setup(r => r.GetByIdAsync(supplierId)).ReturnsAsync(supplier);
@@ -195,9 +195,8 @@ public class PurchaseOrderServiceTests
         // Arrange
         var orderId = Guid.NewGuid();
         var supplierId = Guid.NewGuid();
-        var order = new PurchaseOrder
+        var order = new PurchaseOrder(orderId)
         {
-            Id = orderId,
             SupplierId = supplierId,
             Lines = new List<PurchaseOrderLine>
             {
@@ -209,7 +208,7 @@ public class PurchaseOrderServiceTests
             SupplierId = supplierId,
             Status = 1
         };
-        var updatedOrder = new PurchaseOrder();
+        var updatedOrder = new PurchaseOrder(Guid.NewGuid());
         var expectedDto = new PurchaseOrderDto();
 
         _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(orderId)).ReturnsAsync(order);
@@ -250,10 +249,9 @@ public class PurchaseOrderServiceTests
         var orderId = Guid.NewGuid();
         var oldSupplierId = Guid.NewGuid();
         var newSupplierId = Guid.NewGuid();
-        var newSupplier = new Supplier { Id = newSupplierId };
-        var order = new PurchaseOrder
+        var newSupplier = new Supplier(newSupplierId);
+        var order = new PurchaseOrder(orderId)
         {
-            Id = orderId,
             SupplierId = oldSupplierId,
             Lines = new List<PurchaseOrderLine>()
         };
@@ -281,9 +279,9 @@ public class PurchaseOrderServiceTests
     {
         // Arrange
         var orderId = Guid.NewGuid();
-        var order = new PurchaseOrder { Id = orderId, Status = PurchaseOrderStatus.Draft };
+        var order = new PurchaseOrder(orderId) { Status = PurchaseOrderStatus.Draft };
         var newStatus = PurchaseOrderStatus.Approved;
-        var updatedOrder = new PurchaseOrder { Status = newStatus };
+        var updatedOrder = new PurchaseOrder(Guid.NewGuid()) { Status = newStatus };
         var expectedDto = new PurchaseOrderDto();
 
         _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(orderId)).ReturnsAsync(order);
@@ -320,7 +318,7 @@ public class PurchaseOrderServiceTests
     {
         // Arrange
         var orderId = Guid.NewGuid();
-        var order = new PurchaseOrder { Id = orderId };
+        var order = new PurchaseOrder(orderId);
 
         _mockPurchaseOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
 

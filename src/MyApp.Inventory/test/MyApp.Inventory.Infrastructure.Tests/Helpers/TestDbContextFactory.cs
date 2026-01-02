@@ -29,16 +29,14 @@ public static class TestDbContextFactory
         context.SaveChanges();
 
         // Seed warehouses
-        var warehouse1 = new Warehouse
+        var warehouse1 = new Warehouse(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             Name = "Test Warehouse 1",
             Location = "Location 1"
         };
 
-        var warehouse2 = new Warehouse
+        var warehouse2 = new Warehouse(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             Name = "Test Warehouse 2",
             Location = "Location 2"
         };

@@ -59,12 +59,12 @@ namespace MyApp.Orders.API
         {
             try
             {
-                string cacheKey = $"Order-{id}";
+                string cacheKey = "Order-" + id;
                 var order = await _cacheService.GetStateAsync<OrderDto>(cacheKey);
 
                 if (order is not null)
                 {
-                    _logger.LogInformation("Retrieved order {OrderId} from cache", id);
+                    _logger.LogInformation("Retrieved order {@Order} from cache", new { OrderId = id });
                     return order;
                 }
 
@@ -72,13 +72,13 @@ namespace MyApp.Orders.API
                 if (order != null)
                 {
                     await _cacheService.SaveStateAsync(cacheKey, order);
-                    _logger.LogInformation("Retrieved order {OrderId} from database and cached", id);
+                    _logger.LogInformation("Retrieved order {@Order} from database and cached", new { OrderId = id });
                 }
                 return order;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving order {OrderId}", id);
+                _logger.LogError(ex, "Error retrieving order {@Order}", new { OrderId = id });
                 return await _orderService.GetByIdAsync(id);
             }
         }
@@ -93,7 +93,7 @@ namespace MyApp.Orders.API
             {
                 var result = await _orderService.CreateAsync(value);
                 await _cacheService.RemoveStateAsync("all_orders");
-                _logger.LogInformation("Order created and cache invalidated");
+                _logger.LogInformation("Order {@Order} created and cache invalidated", new { OrderId = result.Id });
                 return result;
             }
             catch (Exception ex)
@@ -112,14 +112,14 @@ namespace MyApp.Orders.API
             try
             {
                 await _orderService.UpdateAsync(id, value);
-                string cacheKey = $"Order-{id}";
+                string cacheKey = "Order-" + id;
                 await _cacheService.RemoveStateAsync(cacheKey);
                 await _cacheService.RemoveStateAsync("all_orders");
-                _logger.LogInformation("Order {OrderId} updated and cache invalidated", id);
+                _logger.LogInformation("Order {@Order} updated and cache invalidated", new { OrderId = id });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating order {OrderId}", id);
+                _logger.LogError(ex, "Error updating order {@Order}", new { OrderId = id });
                 throw;
             }
         }
@@ -133,14 +133,14 @@ namespace MyApp.Orders.API
             try
             {
                 await _orderService.DeleteAsync(id);
-                string cacheKey = $"Order-{id}";
+                string cacheKey = "Order-" + id;
                 await _cacheService.RemoveStateAsync(cacheKey);
                 await _cacheService.RemoveStateAsync("all_orders");
-                _logger.LogInformation("Order {OrderId} deleted and cache invalidated", id);
+                _logger.LogInformation("Order {@Order} deleted and cache invalidated", new { OrderId = id });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting order {OrderId}", id);
+                _logger.LogError(ex, "Error deleting order {@Order}", new { OrderId = id });
                 throw;
             }
         }

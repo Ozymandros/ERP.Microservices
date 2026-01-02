@@ -33,10 +33,18 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 EXPOSE 8080
 
+# Install curl for health checks
+USER root
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 # Create non-root user
 RUN groupadd -r appuser && useradd -r -g appuser appuser
+
+# Copy files and set ownership
+COPY --from=publish /app/publish .
 RUN chown -R appuser:appuser /app
+
+# Switch to non-root user
 USER appuser
 
-COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MyApp.Billing.API.dll"]
