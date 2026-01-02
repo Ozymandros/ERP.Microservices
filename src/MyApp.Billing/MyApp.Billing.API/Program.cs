@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.OpenApi;
 using MyApp.Shared.Infrastructure.Extensions;
 using MyApp.Shared.Infrastructure.Logging;
 using OpenTelemetry.Metrics;
@@ -8,7 +9,7 @@ using OpenTelemetry.Trace;
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure Serilog with sensitive data masking and OpenTelemetry integration
-builder.AddCustomLogging();
+//TODO: builder.AddCustomLogging();
 
 // Aquesta l�nia registra el DaprClient (Singleton) al contenidor d'Injecci� de Depend�ncies (DI)
 builder.Services.AddDaprClient();
@@ -71,7 +72,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

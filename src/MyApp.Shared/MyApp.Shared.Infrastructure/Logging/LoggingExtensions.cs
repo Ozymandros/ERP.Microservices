@@ -16,9 +16,11 @@ public static class LoggingExtensions
                 .Enrich.FromLogContext()
                 // Automasking PII - uses default property masking for common sensitive fields
                 // Property masking is configured via appsettings.json or uses default behavior
-                .Enrich.WithSensitiveDataMasking(
-                    MaskingMode.Globally,
-                    Array.Empty<IMaskingOperator>())
+                .Enrich.WithSensitiveDataMasking(options =>
+                {
+                    options.Mode = MaskingMode.Globally;
+                    options.MaskingOperators = new List<IMaskingOperator>();
+                })
                 // Aspire Dashboard Integration via OpenTelemetry
                 .WriteTo.OpenTelemetry(options =>
                 {
