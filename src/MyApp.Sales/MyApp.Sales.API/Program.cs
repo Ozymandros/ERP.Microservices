@@ -3,11 +3,15 @@ using MyApp.Sales.Infrastructure.Data;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
+using MyApp.Shared.Infrastructure.Logging;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog with sensitive data masking and OpenTelemetry integration
+builder.AddCustomLogging();
 
 // Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
 builder.Services.AddDaprClient();
@@ -42,7 +46,7 @@ builder.Services.AddCustomHealthChecks(salesDbConnectionString ?? throw new Inva
 
 // Infrastructure & Application DI
 builder.Services.AddDbContext<SalesDbContext>(options =>
-    options.UseSqlServer(salesDbConnectionString));
+    options.UseSqlServer(salesDbConnectionString, options => options.EnableRetryOnFailure()));
 
 builder.Services.AddHttpContextAccessor();
 

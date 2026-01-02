@@ -1,6 +1,5 @@
-﻿
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Application.Services;
 using MyApp.Purchasing.Domain.Repositories;
@@ -9,11 +8,15 @@ using MyApp.Purchasing.Infrastructure.Data.Repositories;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
+using MyApp.Shared.Infrastructure.Logging;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog with sensitive data masking and OpenTelemetry integration
+builder.AddCustomLogging();
 
 // Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
 builder.Services.AddDaprClient();
@@ -41,10 +44,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
 // Database configuration
-var connectionString = builder.Configuration.GetConnectionString("PurchasingDb") 
+var connectionString = builder.Configuration.GetConnectionString("PurchasingDb")
     ?? "Server=localhost;Database=PurchasingDb;Trusted_Connection=True;";
 builder.Services.AddDbContext<PurchasingDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString, options => options.EnableRetryOnFailure()));
 
 builder.Services.AddHttpContextAccessor();
 
@@ -63,7 +66,8 @@ builder.AddRedisDistributedCache("cache");
 builder.Services.AddScoped<ICacheService, DistributedCacheWrapper>();
 
 // Add health checks
-builder.Services.AddCustomHealthChecks(connectionString);
+builder.Services.AddHealthChecks()
+    .AddCheck("self", () => HealthCheckResult.Healthy(), tags: new[] { "api" });
 
 // AutoMapper registration
 builder.Services.AddAutoMapper(
@@ -115,18 +119,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Map health check endpoint
-app.MapHealthChecks("/health", new HealthCheckOptions
-{
-    ResponseWriter = async (context, report) =>
-    {
-        context.Response.ContentType = "application/json";
-        var result = System.Text.Json.JsonSerializer.Serialize(new
-        {
-            status = report.Status.ToString(),
-            components = report.Entries.Select(e => new { key = e.Key, value = e.Value.Status.ToString() })
-        });
-        await context.Response.WriteAsync(result);
-    }
-});
+app.UseCustomHealthChecks();
 
 app.Run();

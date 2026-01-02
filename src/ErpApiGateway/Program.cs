@@ -40,7 +40,7 @@ builder.Configuration
 builder.Services.AddOcelot(builder.Configuration);
 
 // Add Authentication - JWT Bearer
-var jwtSecretKey = builder.Configuration["JwtSecretKey"] 
+var jwtSecretKey = builder.Configuration["Jwt:SecretKey"] 
     ?? throw new InvalidOperationException("JwtSecretKey configuration is required");
 var key = Encoding.ASCII.GetBytes(jwtSecretKey);
 
@@ -48,19 +48,20 @@ builder.Services
     .AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-        options.Authority = builder.Configuration["JwtIssuer"] ?? "http://localhost:5001";
-        options.Audience = builder.Configuration["JwtAudience"] ?? "erp-api";
+        options.Authority = builder.Configuration["Jwt:Issuer"] ?? "http://localhost:5001";
+        options.Audience = builder.Configuration["Jwt:Audience"] ?? "erp-api";
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ValidateIssuer = !environment.Equals("Development", StringComparison.OrdinalIgnoreCase),
-            ValidIssuer = builder.Configuration["JwtIssuer"],
+            ValidIssuer = options.Authority,
             ValidateAudience = !environment.Equals("Development", StringComparison.OrdinalIgnoreCase),
-            ValidAudience = builder.Configuration["JwtAudience"],
+            ValidAudience = options.Audience,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.FromSeconds(10)
         };
+        options.RequireHttpsMetadata = builder.Configuration.GetValue<bool>("Jwt:RequireHttpsMetadata"); // Per a entorns de desenvolupament/Docker
         options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
         {
             OnAuthenticationFailed = context =>

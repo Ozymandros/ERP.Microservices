@@ -111,7 +111,8 @@ namespace MyApp.Sales.API.Controllers
                 query.Validate();
                 var spec = new SalesOrderQuerySpec(query);
                 var result = await _salesOrderService.QuerySalesOrdersAsync(spec);
-                _logger.LogInformation("Searched sales orders with query: Page {Page}, PageSize {PageSize}, SortBy {SortBy}", query.Page, query.PageSize, query.SortBy);
+                // Using Serilog destructuring (@ operator) - sensitive fields in query will be automatically masked
+                _logger.LogInformation("Searched sales orders with query: {@Query}", query);
                 return Ok(result);
             }
             catch (ArgumentException ex)

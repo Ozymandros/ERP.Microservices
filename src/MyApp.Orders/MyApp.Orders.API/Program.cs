@@ -4,11 +4,15 @@ using MyApp.Orders.Infrastructure.Data;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
+using MyApp.Shared.Infrastructure.Logging;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog with sensitive data masking and OpenTelemetry integration
+builder.AddCustomLogging();
 
 // Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
 builder.Services.AddDaprClient();
@@ -39,7 +43,7 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 var ordersDbConnectionString = builder.Configuration.GetConnectionString("ordersdb")
     ?? throw new InvalidOperationException("Connection string 'ordersdb' not found.");
 builder.Services.AddDbContext<OrdersDbContext>(options =>
-    options.UseSqlServer(ordersDbConnectionString));
+    options.UseSqlServer(ordersDbConnectionString, options => options.EnableRetryOnFailure()));
 
 builder.Services.AddHttpContextAccessor();
 
@@ -104,19 +108,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Map health check endpoint
-app.MapHealthChecks("/health", new HealthCheckOptions
-{
-    ResponseWriter = async (context, report) =>
-    {
-        context.Response.ContentType = "application/json";
-        var result = System.Text.Json.JsonSerializer.Serialize(new
-        {
-            status = report.Status.ToString(),
-            components = report.Entries.Select(e => new { key = e.Key, value = e.Value.Status.ToString() })
-        });
-        await context.Response.WriteAsync(result);
-    }
-});
+app.UseCustomHealthChecks();
 
 app.Run();
 

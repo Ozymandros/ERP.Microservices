@@ -5,8 +5,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5001
+          "Host": "auth-service",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/auth/{everything}",
@@ -34,8 +34,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5002
+          "Host": "inventory-service",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/inventory/{everything}",
@@ -59,8 +59,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5003
+          "Host": "orders-service",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/orders/{everything}",
@@ -84,8 +84,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5004
+          "Host": "sales-service",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/sales/{everything}",
@@ -104,38 +104,39 @@
         "Timeout": 5000
       }
     },
+// TODO:
+    //{
+    //  "DownstreamPathTemplate": "/api/{everything}",
+    //  "DownstreamScheme": "http",
+    //  "DownstreamHostAndPorts": [
+    //    {
+    //      "Host": "billing-service",
+    //      "Port": 8080
+    //    }
+    //  ],
+    //  "UpstreamPathTemplate": "/billing/{everything}",
+    //  "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+    //  "AuthenticationOptions": {
+    //    "AuthenticationProviderKey": "Bearer"
+    //  },
+    //  "RateLimitOptions": {
+    //    "EnableRateLimiting": true,
+    //    "Period": "1m",
+    //    "Limit": 100
+    //  },
+    //  "QoSOptions": {
+    //    "ExceptionsAllowedBeforeBreaking": 3,
+    //    "DurationOfBreak": 5000,
+    //    "Timeout": 5000
+    //  }
+    //},
     {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5005
-        }
-      ],
-      "UpstreamPathTemplate": "/billing/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      },
-      "RateLimitOptions": {
-        "EnableRateLimiting": true,
-        "Period": "1m",
-        "Limit": 100
-      },
-      "QoSOptions": {
-        "ExceptionsAllowedBeforeBreaking": 3,
-        "DurationOfBreak": 5000,
-        "Timeout": 5000
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5006
+          "Host": "purchasing-service",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/purchasing/{everything}",
@@ -159,8 +160,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5001
+          "Host": "purchasing-service",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/health",
@@ -174,8 +175,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5001
+          "Host": "auth-service",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/health/live",
@@ -189,8 +190,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5001
+          "Host": "auth-service",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/health/ready",

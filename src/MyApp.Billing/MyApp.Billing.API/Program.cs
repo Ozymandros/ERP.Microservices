@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MyApp.Shared.Infrastructure.Extensions;
+using MyApp.Shared.Infrastructure.Logging;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog with sensitive data masking and OpenTelemetry integration
+builder.AddCustomLogging();
 
 // Aquesta l�nia registra el DaprClient (Singleton) al contenidor d'Injecci� de Depend�ncies (DI)
 builder.Services.AddDaprClient();
@@ -29,10 +33,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Get connection string
-var billingDbConnectionString = builder.Configuration.GetConnectionString("billingdb");
+//TODO: var billingDbConnectionString = builder.Configuration.GetConnectionString("billingdb");
 
 // Health Checks
-builder.Services.AddCustomHealthChecks(billingDbConnectionString ?? throw new InvalidOperationException("Connection string 'billingdb' not found."));
+//TODO: builder.Services.AddCustomHealthChecks(billingDbConnectionString ?? throw new InvalidOperationException("Connection string 'billingdb' not found."));
 
 var origins = builder.Configuration["FRONTEND_ORIGIN"]?.Split(';') ?? ["http://localhost:3000"];
 
@@ -81,19 +85,7 @@ app.MapGet("/weatherforecast", () =>
 .WithOpenApi();
 
 // Map health check endpoint
-app.MapHealthChecks("/health", new HealthCheckOptions
-{
-    ResponseWriter = async (context, report) =>
-    {
-        context.Response.ContentType = "application/json";
-        var result = System.Text.Json.JsonSerializer.Serialize(new
-        {
-            status = report.Status.ToString(),
-            components = report.Entries.Select(e => new { key = e.Key, value = e.Value.Status.ToString() })
-        });
-        await context.Response.WriteAsync(result);
-    }
-});
+//TODO: app.UseCustomHealthChecks();
 
 app.Run();
 
