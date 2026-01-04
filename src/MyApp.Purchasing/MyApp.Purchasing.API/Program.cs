@@ -9,6 +9,7 @@ using MyApp.Purchasing.Infrastructure.Data.Repositories;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
+using MyApp.Shared.Infrastructure.OpenApi;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -35,7 +36,10 @@ builder.Services.AddOpenTelemetry()
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<JwtSecuritySchemeDocumentTransformer>();
+});
 
 // JWT Authentication
 builder.Services.AddJwtAuthentication(builder.Configuration);
@@ -100,8 +104,11 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "Purchasing API v1");
+    });
 }
 
 app.UseHttpsRedirection();

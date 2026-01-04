@@ -1,18 +1,19 @@
 using Microsoft.IdentityModel.Tokens;
-using System.Net;
-using System.Text;
+using MyApp.Shared.Infrastructure.OpenApi;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Polly;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Scalar.AspNetCore;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var serviceName = builder.Environment.ApplicationName ?? typeof(Program).Assembly.GetName().Name ?? "ErpApiGateway";
 
-// Configure OpenTelemetry pipeline.
+// Configure OpenTelemetry pipeline.nfdnhfd
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService(serviceName))
     .WithTracing(tracing => tracing
@@ -23,6 +24,11 @@ builder.Services.AddOpenTelemetry()
         .AddAspNetCoreInstrumentation()
         .AddRuntimeInstrumentation()
         .AddOtlpExporter());
+
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<JwtSecuritySchemeDocumentTransformer>();
+});
 
 // ========================================
 // Configuration
@@ -145,7 +151,31 @@ app.UseHealthChecks("/health/ready");
 
 if (app.Environment.IsDevelopment())
 {
-    // app.MapOpenApi(); // Commented out - requires Microsoft.AspNetCore.OpenApi package
+    app.MapOpenApi();
+
+    app.UseSwaggerUI(options =>
+    {
+        var configuration = app.Services.GetRequiredService<IConfiguration>();
+
+        // Obtenim la secció Routes directament com a fills
+        var routes = configuration.GetSection("Routes").GetChildren();
+
+        if (routes is not null)
+            foreach (var route in routes)
+            {
+                // Llegim el valor de la propietat UpstreamPathTemplate de cada ruta
+                var upstreamPath = route.GetValue<string>("UpstreamPathTemplate");
+
+                if (!string.IsNullOrEmpty(upstreamPath) && upstreamPath.Contains("openapi/v1.json"))
+                {
+                    // Extraiem el nom del servei (el primer segment després de la barra)
+                    var parts = upstreamPath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+                    var serviceName = parts.Length > 0 ? parts[0].ToUpper() : "UNKNOWN";
+
+                    options.SwaggerEndpoint(upstreamPath, $"{serviceName} API");
+                }
+            }
+    });
 }
 else
 {
@@ -163,6 +193,11 @@ app.UseAuthorization();
 await app.UseOcelot();
 
 app.Run();
+
+record OcelotRoute
+{
+    public string UpstreamPathTemplate { get; set; } = string.Empty;
+}
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
