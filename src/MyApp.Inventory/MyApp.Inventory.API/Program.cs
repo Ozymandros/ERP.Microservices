@@ -1,6 +1,6 @@
-﻿
+﻿using Microsoft.AspNetCore.OpenApi;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+using MyApp.Shared.Infrastructure.OpenApi;
 using MyApp.Inventory.Infrastructure.Data;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Infrastructure.Caching;
@@ -31,36 +31,9 @@ builder.Services.AddOpenTelemetry()
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddOpenApi(options =>
 {
-    // ... La vostra configuració Info
-
-    // PAS 1: Definició de l'Esquema de Seguretat (Bearer / JWT)
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Si us plau, introduïu 'Bearer' [espai] i el token JWT.",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http, // Tipus: Http per a Bearer
-        BearerFormat = "JWT",
-        Scheme = "Bearer" // El nom de l'esquema d'autorització
-    });
-
-    // PAS 2: Aplicació del Requisit (Fa aparèixer el botó Authorize 🔒)
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer" // Ha de coincidir amb el nom de AddSecurityDefinition
-                }
-            },
-            Array.Empty<string>() // Aplica l'esquema a tots els endpoints
-        }
-    });
+    options.AddDocumentTransformer<JwtSecuritySchemeDocumentTransformer>();
 });
 // JWT Authentication
 builder.Services.AddJwtAuthentication(builder.Configuration);
@@ -123,8 +96,11 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "Inventory API v1");
+    });
 }
 
 app.UseHttpsRedirection();

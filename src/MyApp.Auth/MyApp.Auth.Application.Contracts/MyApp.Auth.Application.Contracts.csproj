@@ -7,6 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\MyApp.Auth.Domain\MyApp.Auth.Domain.csproj" />
   </ItemGroup>
 </Project>

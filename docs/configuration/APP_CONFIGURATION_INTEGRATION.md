@@ -356,6 +356,7 @@ azd deploy
 ```
 
 This creates:
+
 - ✅ Azure App Configuration instance
 - ✅ Key Vault with all secrets
 - ✅ 7 Container Apps with connection strings injected
@@ -608,6 +609,7 @@ az containerapp logs show -n auth-service -g rg-myapp-prod --follow
 ```
 
 Expected in logs:
+
 ```
 [Information] AppConfiguration provider added successfully
 [Information] Connected to Azure Key Vault: https://kv-xxxxx.vault.azure.net/
@@ -618,14 +620,14 @@ Expected in logs:
 
 ## 🎯 Benefits Summary
 
-| Aspect | Before | After |
-|--------|--------|-------|
-| **Configuration Location** | Scattered across services | Centralized in App Configuration |
-| **Updating Settings** | Redeploy all services | Update in real-time (or with refresh) |
-| **Secret Management** | Potentially in code | Secure in Key Vault via references |
-| **Environment-Specific** | Manual file management | Labels per environment |
-| **Audit Trail** | Limited | Full history in App Configuration |
-| **Number of Configs** | 7 service-specific sets | 1 centralized source for all |
+| Aspect                     | Before                    | After                                 |
+| -------------------------- | ------------------------- | ------------------------------------- |
+| **Configuration Location** | Scattered across services | Centralized in App Configuration      |
+| **Updating Settings**      | Redeploy all services     | Update in real-time (or with refresh) |
+| **Secret Management**      | Potentially in code       | Secure in Key Vault via references    |
+| **Environment-Specific**   | Manual file management    | Labels per environment                |
+| **Audit Trail**            | Limited                   | Full history in App Configuration     |
+| **Number of Configs**      | 7 service-specific sets   | 1 centralized source for all          |
 
 ---
 

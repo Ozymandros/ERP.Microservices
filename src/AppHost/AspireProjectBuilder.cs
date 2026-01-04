@@ -84,15 +84,15 @@ public class AspireProjectBuilder
             .WithEnvironment("FRONTEND_ORIGIN", origin)
             .PublishAsDockerFile();
 
-            var database = _sqlServer?.AddDatabase(dbName); ;
-            if (database is not null)
-            {
-                project = project.WaitFor(database);
-                project = project.WithReference(database);
-            }
-            // Local: exposem ports �nics per al dashboard
-            project = project.WithHttpEndpoint(httpPort)
-            .WithHttpHealthCheck(path: "/health", statusCode: 200);
+        var database = _sqlServer?.AddDatabase(dbName); ;
+        if (database is not null)
+        {
+            project = project.WaitFor(database);
+            project = project.WithReference(database);
+        }
+        // Local: exposem ports �nics per al dashboard
+        project = project.WithHttpEndpoint(httpPort)
+        .WithHttpHealthCheck(path: "/health", statusCode: 200);
 
         // Application Insights
         if (applicationInsights is not null)

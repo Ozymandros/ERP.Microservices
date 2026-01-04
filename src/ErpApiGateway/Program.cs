@@ -1,7 +1,9 @@
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
 using System.Text;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Provider.Polly;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -37,10 +39,10 @@ builder.Configuration
 // ========================================
 
 // Add Ocelot
-builder.Services.AddOcelot(builder.Configuration);
+builder.Services.AddOcelot(builder.Configuration).AddPolly();
 
 // Add Authentication - JWT Bearer
-var jwtSecretKey = builder.Configuration["JwtSecretKey"] 
+var jwtSecretKey = builder.Configuration["Jwt:SecretKey"]
     ?? throw new InvalidOperationException("JwtSecretKey configuration is required");
 var key = Encoding.ASCII.GetBytes(jwtSecretKey);
 
@@ -48,19 +50,28 @@ builder.Services
     .AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-        options.Authority = builder.Configuration["JwtIssuer"] ?? "http://localhost:5001";
-        options.Audience = builder.Configuration["JwtAudience"] ?? "erp-api";
+        options.Authority = builder.Configuration["Jwt:Issuer"] ?? "http://localhost:5001";
+        options.Audience = builder.Configuration["Jwt:Audience"] ?? "erp-api";
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ValidateIssuer = !environment.Equals("Development", StringComparison.OrdinalIgnoreCase),
-            ValidIssuer = builder.Configuration["JwtIssuer"],
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidateAudience = !environment.Equals("Development", StringComparison.OrdinalIgnoreCase),
-            ValidAudience = builder.Configuration["JwtAudience"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
             ValidateLifetime = true,
             ClockSkew = TimeSpan.FromSeconds(10)
         };
+        // Si es Desarrollo, permitimos HTTP. Si no (Prod/Staging), HTTPS es obligatorio.
+        if (builder.Environment.IsDevelopment())
+        {
+            options.RequireHttpsMetadata = false;
+        }
+        else
+        {
+            options.RequireHttpsMetadata = true;
+        }
         options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
         {
             OnAuthenticationFailed = context =>
@@ -69,10 +80,10 @@ builder.Services
                 logger.LogWarning("Authentication failed: {Message}", context.Exception?.Message);
                 context.Response.StatusCode = 401;
                 context.Response.ContentType = "application/json";
-                return context.Response.WriteAsJsonAsync(new 
-                { 
+                return context.Response.WriteAsJsonAsync(new
+                {
                     error = "Authentication failed",
-                    message = context.Exception?.Message ?? "Invalid token" 
+                    message = context.Exception?.Message ?? "Invalid token"
                 });
             }
         };
@@ -102,10 +113,10 @@ builder.Services.AddCors(options =>
 
 // Add Health Checks
 builder.Services.AddHealthChecks()
-    .AddCheck("Gateway", () => 
+    .AddCheck("Gateway", () =>
     {
         return new Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult(
-            Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy, 
+            Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy,
             "Gateway is operational");
     });
 
@@ -127,20 +138,22 @@ var app = builder.Build();
 // Middleware
 // ========================================
 
+// Health check endpoints (no auth required)
+app.UseHealthChecks("/health");
+app.UseHealthChecks("/health/live");
+app.UseHealthChecks("/health/ready");
+
 if (app.Environment.IsDevelopment())
 {
     // app.MapOpenApi(); // Commented out - requires Microsoft.AspNetCore.OpenApi package
 }
+else
+{
+    app.UseHttpsRedirection();
+}
 
-
-app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("AllowFrontend");
-
-// Health check endpoints (no auth required)
-app.MapHealthChecks("/health");
-app.MapHealthChecks("/health/live");
-app.MapHealthChecks("/health/ready");
 
 // Authentication and Authorization middleware
 app.UseAuthentication();

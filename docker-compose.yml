@@ -1,4 +1,4 @@
-version: "3.9"
+x-redis-password: &redis-password ${REDIS_PASSWORD:-Redis@Secure123!}
 
 x-api-env: &api-env
   ASPNETCORE_ENVIRONMENT: Development
@@ -7,7 +7,7 @@ x-api-env: &api-env
   Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
   Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
   Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
-  ConnectionStrings__cache: redis://:${REDIS_PASSWORD:-Redis@Secure123!}@redis:6379
+  ConnectionStrings__cache: redis:6379,password=${REDIS_PASSWORD:-Redis@Secure123!},defaultDatabase=0,abortConnect=false,connectRetry=5,connectTimeout=5000,syncTimeout=5000
   DAPR_HTTP_PORT: "3500"
   DAPR_GRPC_PORT: "50001"
 
@@ -38,7 +38,7 @@ services:
   redis:
     image: redis:7-alpine
     container_name: redis
-    command: ["redis-server", "--save", "", "--appendonly", "no", "--requirepass", "${REDIS_PASSWORD:-Redis@Secure123!}"]
+    command: ["redis-server", "--save", "", "--appendonly", "no", "--requirepass", *redis-password]
     ports:
       - "6379:6379"
     volumes:
@@ -46,7 +46,7 @@ services:
     networks:
       - erp
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-Redis@Secure123!}", "ping"]
+      test: ["CMD", "redis-cli", "-a", *redis-password, "ping"]
       interval: 10s
       timeout: 3s
       retries: 3
@@ -56,7 +56,7 @@ services:
     image: rediscommander/redis-commander:latest
     container_name: redis-commander
     environment:
-      REDIS_HOSTS: local:redis:6379
+      REDIS_HOSTS: local:redis:6379:0:${REDIS_PASSWORD:-Redis@Secure123!}
     ports:
       - "8081:8081"
     depends_on:
@@ -113,8 +113,8 @@ services:
       Ocelot__Routes__2__DownstreamHostAndPorts__0__Port: 8080
       Ocelot__Routes__3__DownstreamHostAndPorts__0__Host: sales-service
       Ocelot__Routes__3__DownstreamHostAndPorts__0__Port: 8080
-      Ocelot__Routes__4__DownstreamHostAndPorts__0__Host: billing-service
-      Ocelot__Routes__4__DownstreamHostAndPorts__0__Port: 8080
+      # Ocelot__Routes__4__DownstreamHostAndPorts__0__Host: billing-service
+      # Ocelot__Routes__4__DownstreamHostAndPorts__0__Port: 8080
       Ocelot__Routes__5__DownstreamHostAndPorts__0__Host: purchasing-service
       Ocelot__Routes__5__DownstreamHostAndPorts__0__Port: 8080
     ports:
@@ -122,8 +122,8 @@ services:
     depends_on:
       auth-service:
         condition: service_healthy
-      billing-service:
-        condition: service_healthy
+      # billing-service:
+      #   condition: service_healthy
       inventory-service:
         condition: service_healthy
       orders-service:
@@ -133,7 +133,7 @@ services:
       sales-service:
         condition: service_healthy
     volumes:
-      - ./ErpApiGateway/ocelot.json:/app/ocelot.json:ro
+      - ./src/ErpApiGateway/ocelot.json:/app/ocelot.json:ro
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
@@ -193,54 +193,54 @@ services:
     network_mode: "service:auth-service"
     restart: unless-stopped
 
-  billing-service:
-    build:
-      context: ./src
-      dockerfile: MyApp.Billing/MyApp.Billing.API/Dockerfile
-    container_name: billing-service
-    environment:
-      <<: *api-env
-      ConnectionStrings__BillingDb: Server=sqlserver,1433;Database=BillingDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
-    depends_on:
-      sqlserver:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      dapr-placement:
-        condition: service_started
-    ports:
-      - "5004:8080"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
-      interval: 10s
-      timeout: 3s
-      retries: 3
-      start_period: 30s
-    networks:
-      - erp
-    restart: unless-stopped
+  # billing-service:
+  #   build:
+  #     context: ./src
+  #     dockerfile: MyApp.Billing/MyApp.Billing.API/Dockerfile
+  #   container_name: billing-service
+  #   environment:
+  #     <<: *api-env
+  #     ConnectionStrings__BillingDb: Server=sqlserver,1433;Database=BillingDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+  #   depends_on:
+  #     sqlserver:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
+  #     dapr-placement:
+  #       condition: service_started
+  #   ports:
+  #     - "5004:8080"
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+  #     interval: 10s
+  #     timeout: 3s
+  #     retries: 3
+  #     start_period: 30s
+  #   networks:
+  #     - erp
+  #   restart: unless-stopped
 
-  billing-service-dapr:
-    image: daprio/dapr:1.13.0
-    container_name: billing-service-dapr
-    depends_on:
-      - billing-service
-      - dapr-placement
-      - dapr-sentry
-    command:
-      [
-        "./daprd",
-        "-app-id", "billing-service",
-        "-app-port", "8080",
-        "-components-path", "/components",
-        "-placement-host-address", "dapr-placement:50005",
-        "-sentry-address", "dapr-sentry:50001",
-        "-log-level", "info"
-      ]
-    volumes:
-      - ./deploy/dapr/components:/components:ro
-    network_mode: "service:billing-service"
-    restart: unless-stopped
+  # billing-service-dapr:
+  #   image: daprio/dapr:1.13.0
+  #   container_name: billing-service-dapr
+  #   depends_on:
+  #     - billing-service
+  #     - dapr-placement
+  #     - dapr-sentry
+  #   command:
+  #     [
+  #       "./daprd",
+  #       "-app-id", "billing-service",
+  #       "-app-port", "8080",
+  #       "-components-path", "/components",
+  #       "-placement-host-address", "dapr-placement:50005",
+  #       "-sentry-address", "dapr-sentry:50001",
+  #       "-log-level", "info"
+  #     ]
+  #   volumes:
+  #     - ./deploy/dapr/components:/components:ro
+  #   network_mode: "service:billing-service"
+  #   restart: unless-stopped
 
   inventory-service:
     build:

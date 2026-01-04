@@ -7,5 +7,7 @@
 **/.settings
 **/.toolstarget
 **/*.md
-**/bin/
-**/obj/
+**/.bin/
+**/.obj/
+**/.git/
+**/node_modules/
