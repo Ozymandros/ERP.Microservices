@@ -13,7 +13,18 @@ This document describes the upgrade of the ERP Microservices solution from .NET 
 1. **Target Framework**: All 48 projects upgraded from `net9.0` to `net10.0`
 2. **SDK Version**: `global.json` updated from 9.0.100 to 10.0.101
 3. **Package Versions**: Updated to .NET 10 compatible versions
-4. **Documentation**: Updated README.md to reflect .NET 10
+4. **Documentation**: Updated all documentation files to reflect .NET 10
+   - README.md
+   - docs/introduction.md
+   - docs/docfx.json
+   - docs/DOCFX_GUIDE.md
+   - docs/deployment/PRE_DEPLOYMENT_CHECKLIST.md
+   - docs/deployment/DEPLOYMENT.md
+   - docs/deployment/GITHUB_ACTIONS_ARCHITECTURE.md
+   - docs/configuration/OCELOT_VERIFICATION_REPORT.md
+   - docs/guides/QUICKSTART.md
+   - docs/CONVENTIONS.md
+   - src/MyApp.Inventory/ARCHITECTURE.md
 
 ### Package Version Updates
 
@@ -38,19 +49,30 @@ This document describes the upgrade of the ERP Microservices solution from .NET 
 
 ### Code Changes
 
-#### Minimal Non-Breaking Changes
+#### OpenAPI Configuration Updates
 1. **ErpApiGateway/Program.cs**: Commented out `app.MapOpenApi()` call
-   - Reason: Requires Microsoft.AspNetCore.OpenApi 10.x which has breaking changes with OpenApi v2
-   - Impact: None - this is a development-only feature
+   - Reason: OpenAPI endpoint not needed for gateway (uses Ocelot routing)
+   - Impact: None - gateway routes to services that have their own OpenAPI endpoints
 
 2. **MyApp.Billing.API/Program.cs**: Commented out `.WithOpenApi()` call
-   - Reason: Same as above
+   - Reason: Using Swashbuckle for Swagger documentation instead
    - Impact: None - Swagger documentation still works via Swashbuckle
 
-### Removed Packages
-- **Microsoft.AspNetCore.OpenApi**: Removed to avoid breaking changes
-  - This package introduced OpenApi v2 which changes the namespace structure
-  - Swagger functionality is maintained through Swashbuckle.AspNetCore
+3. **MyApp.Auth.API/Program.cs**: Uses `Microsoft.AspNetCore.OpenApi` 10.0.1
+   - Uses `AddOpenApi()` with JWT security scheme transformer
+   - `app.MapOpenApi()` is active for OpenAPI endpoint
+   - Swagger UI configured to use `/openapi/v1.json`
+
+4. **MyApp.Inventory.API/Program.cs**: Uses `Microsoft.AspNetCore.OpenApi` 10.0.1
+   - Uses `AddOpenApi()` with JWT security scheme transformer
+   - `app.MapOpenApi()` is active for OpenAPI endpoint
+   - Swagger UI configured to use `/openapi/v1.json`
+
+### OpenAPI Package Status
+- **Microsoft.AspNetCore.OpenApi 10.0.1**: Used in Auth and Inventory services
+  - These services use the modern OpenAPI v2 implementation
+  - Includes JWT security scheme transformer for authentication documentation
+  - Other services use Swashbuckle for Swagger documentation
 
 ## Validation Results
 
@@ -143,8 +165,8 @@ Or manually:
 1. Update `global.json` to version "9.0.100"
 2. Update all .csproj `<TargetFramework>` from `net10.0` to `net9.0`
 3. Revert package versions in all .csproj files
-4. Restore removed packages (Microsoft.AspNetCore.OpenApi)
-5. Uncomment MapOpenApi() and WithOpenApi() calls
+4. Review OpenAPI package usage (some services use Microsoft.AspNetCore.OpenApi 10.0.1)
+5. Uncomment MapOpenApi() calls where applicable (ErpApiGateway, Billing)
 6. Run `dotnet restore && dotnet build && dotnet test`
 
 ## Support

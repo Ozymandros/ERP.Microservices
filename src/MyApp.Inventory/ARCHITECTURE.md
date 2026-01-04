@@ -249,9 +249,9 @@ builder.Services.AddAutoMapper(typeof(InventoryMappingProfile));
 
 ## Technical Stack
 
-- .NET 8.0
-- Entity Framework Core 8.0.0
-- AutoMapper 12.0.1
+- .NET 10.0
+- Entity Framework Core 10.0.1
+- AutoMapper 16.0.0
 - SQL Server
 - ASP.NET Core Web API
 - Swagger/OpenAPI for documentation

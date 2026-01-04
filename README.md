@@ -66,7 +66,7 @@ Browse the complete documentation site at **[https://ozymandros.github.io/ERP.Mi
 
 ## 🛠️ Technology Stack
 
-- **.NET 9**: Latest .NET framework
+- **.NET 10**: Latest .NET framework
 - **Aspire**: Cloud-native orchestration for local development
 - **Dapr**: Distributed application runtime
 - **Azure Container Apps**: Managed container hosting
@@ -112,7 +112,7 @@ MyApp.[Service]/
 
 ### Prerequisites
 
-- .NET 9.0 SDK
+- .NET 10.0 SDK
 - Docker Desktop
 - Visual Studio 2022 / VS Code / Rider
 - Azure Developer CLI (for deployment)

@@ -11,7 +11,7 @@ The documentation is automatically published to GitHub Pages at:
 
 ### Prerequisites
 
-- .NET 9 SDK
+- .NET 10 SDK
 - DocFX (installed via `dotnet tool`)
 
 ### Install DocFX

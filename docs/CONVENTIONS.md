@@ -272,7 +272,7 @@ Tool: [Docker](https://www.docker.com/)
 
 ### Compatibility
 ```markdown
-- ✅ .NET 9.0+
+- ✅ .NET 10.0+
 - ✅ Docker Desktop 4.0+
 - ✅ Azure Container Apps
 - ❌ .NET 8.0 (not supported)
