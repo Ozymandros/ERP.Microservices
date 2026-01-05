@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Application.Services;

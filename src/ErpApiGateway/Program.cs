@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var serviceName = builder.Environment.ApplicationName ?? typeof(Program).Assembly.GetName().Name ?? "ErpApiGateway";
 
-// Configure OpenTelemetry pipeline.nfdnhfd
+// Configure OpenTelemetry pipeline.
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService(serviceName))
     .WithTracing(tracing => tracing

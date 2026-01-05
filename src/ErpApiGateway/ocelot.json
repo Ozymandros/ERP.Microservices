@@ -1,6 +1,6 @@
 ﻿{
   "Routes": [
-    /* --- 1. AUTH SERVICE --- */ {
+    {
       "DownstreamPathTemplate": "/api/auth/login",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -13,7 +13,6 @@
       "UpstreamHttpMethod": ["Post"],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
-      // NO AuthenticationOptions here because this is the login endpoint
     },
     {
       "DownstreamPathTemplate": "/openapi/v1.json",
@@ -59,8 +58,6 @@
         "X-Request-ID": "{RequestId}"
       }
     },
-
-    /* --- 2. INVENTORY SERVICE --- */
     {
       "DownstreamPathTemplate": "/openapi/v1.json",
       "DownstreamScheme": "http",
@@ -101,8 +98,6 @@
       },
       "Priority": 1
     },
-
-    /* --- 3. ORDERS SERVICE --- */
     {
       "DownstreamPathTemplate": "/openapi/v1.json",
       "DownstreamScheme": "http",
@@ -117,32 +112,6 @@
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
-// TODO:
-    //{
-    //  "DownstreamPathTemplate": "/api/{everything}",
-    //  "DownstreamScheme": "http",
-    //  "DownstreamHostAndPorts": [
-    //    {
-    //      "Host": "billing-service",
-    //      "Port": 8080
-    //    }
-    //  ],
-    //  "UpstreamPathTemplate": "/billing/{everything}",
-    //  "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-    //  "AuthenticationOptions": {
-    //    "AuthenticationProviderKey": "Bearer"
-    //  },
-    //  "RateLimitOptions": {
-    //    "EnableRateLimiting": true,
-    //    "Period": "1m",
-    //    "Limit": 100
-    //  },
-    //  "QoSOptions": {
-    //    "ExceptionsAllowedBeforeBreaking": 3,
-    //    "DurationOfBreak": 5000,
-    //    "Timeout": 5000
-    //  }
-    //},
     {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
@@ -169,8 +138,6 @@
       },
       "Priority": 1
     },
-
-    /* --- 4. SALES SERVICE --- */
     {
       "DownstreamPathTemplate": "/openapi/v1.json",
       "DownstreamScheme": "http",
@@ -211,8 +178,6 @@
       },
       "Priority": 1
     },
-
-    /* --- 5. PURCHASING SERVICE --- */
     {
       "DownstreamPathTemplate": "/openapi/v1.json",
       "DownstreamScheme": "http",
