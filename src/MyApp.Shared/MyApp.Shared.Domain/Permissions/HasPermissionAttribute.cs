@@ -34,7 +34,7 @@ public class HasPermissionAttribute : AuthorizeAttribute, IAsyncAuthorizationFil
         //var hasPermission = await permissionChecker.HasPermissionAsync(Guid.Parse(userId), _module, _action);
         bool hasPermission = await permissionChecker.HasPermissionAsync(_module, _action);
 
-        // 4. Si no té permisos, denega l'accés
+        // 4. If no permissions, deny access
         if (!hasPermission)
         {
             context.Result = new ForbidResult();

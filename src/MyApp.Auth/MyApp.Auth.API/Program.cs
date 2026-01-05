@@ -40,7 +40,7 @@ builder.Services.AddOpenTelemetry()
             .AddOtlpExporter();
     });
 
-// Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
+// This line registers the DaprClient (Singleton) in the Dependency Injection (DI) container
 builder.Services.AddDaprClient();
 
 // Add services to the container
@@ -206,12 +206,12 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    // NOMÉS en producció forcem HTTPS
+    // ONLY in production we force HTTPS
     app.UseHttpsRedirection();
 }
 
 app.UseHttpsRedirection();
-app.UseRouting(); 
+app.UseRouting();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();

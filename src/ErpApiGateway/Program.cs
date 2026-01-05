@@ -8,6 +8,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Scalar.AspNetCore;
 using System.Text;
+using System.Text.RegularExpressions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -157,18 +158,18 @@ if (app.Environment.IsDevelopment())
     {
         var configuration = app.Services.GetRequiredService<IConfiguration>();
 
-        // Obtenim la secció Routes directament com a fills
+        // Get the Routes section directly as children
         var routes = configuration.GetSection("Routes").GetChildren();
 
         if (routes is not null)
             foreach (var route in routes)
             {
-                // Llegim el valor de la propietat UpstreamPathTemplate de cada ruta
+                // Read the UpstreamPathTemplate property value of each route
                 var upstreamPath = route.GetValue<string>("UpstreamPathTemplate");
 
                 if (!string.IsNullOrEmpty(upstreamPath) && upstreamPath.Contains("openapi/v1.json"))
                 {
-                    // Extraiem el nom del servei (el primer segment després de la barra)
+                    // Extract the service name (the first segment after the slash)
                     var parts = upstreamPath.Split('/', StringSplitOptions.RemoveEmptyEntries);
                     var serviceName = parts.Length > 0 ? parts[0].ToUpper() : "UNKNOWN";
 
@@ -188,6 +189,67 @@ app.UseCors("AllowFrontend");
 // Authentication and Authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Surgical middleware to rewrite OpenAPI JSON URLs
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path.Value?.Contains("openapi/v1.json") == true)
+    {
+        var originalBody = context.Response.Body;
+        using var newBody = new MemoryStream();
+        context.Response.Body = newBody;
+
+        await next();
+
+        if (context.Response.StatusCode == 200)
+        {
+            newBody.Position = 0;
+            var content = await new StreamReader(newBody).ReadToEndAsync();
+
+            // 1. Detect the Gateway URL (ex: http://localhost:5000)
+            var gatewayUrl = $"{context.Request.Scheme}://{context.Request.Host}";
+
+            // 2. Extract the service prefix from the request URL itself
+            // If the request is /auth/openapi/v1.json, the prefix is /auth
+            var pathParts = context.Request.Path.Value.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            var servicePrefix = pathParts.Length > 0 ? $"/{pathParts[0]}" : "";
+            var gatewayBaseUrl = $"{gatewayUrl}{servicePrefix}";
+
+            // 3. Replace all occurrences of microservice internal URLs with Gateway URL
+            // This handles:
+            // - "servers" block URLs (e.g., "http://auth-service:8080" -> "http://localhost:5000/auth")
+            // - Any other absolute URLs that might appear in the OpenAPI spec
+            var modifiedContent = content;
+
+            // Replace common microservice URL patterns
+            modifiedContent = Regex.Replace(
+                modifiedContent,
+                @"http://[a-zA-Z0-9\-]+-service(:\d+)?",
+                gatewayBaseUrl,
+                RegexOptions.IgnoreCase);
+
+            // Also replace the "url" field specifically (fallback for other formats)
+            modifiedContent = Regex.Replace(
+                modifiedContent,
+                "\"url\"\\s*:\\s*\"[^\"]*\"",
+                $"\"url\": \"{gatewayBaseUrl}\"");
+
+            var buffer = Encoding.UTF8.GetBytes(modifiedContent);
+            context.Response.Body = originalBody;
+            context.Response.ContentLength = buffer.Length;
+            await context.Response.Body.WriteAsync(buffer);
+        }
+        else
+        {
+            newBody.Position = 0;
+            await newBody.CopyToAsync(originalBody);
+        }
+    }
+    else
+    {
+        await next();
+    }
+});
 
 // Ocelot middleware - must be last
 await app.UseOcelot();

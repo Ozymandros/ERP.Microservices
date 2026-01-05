@@ -17,10 +17,10 @@ var applicationInsights = isDeployment ? builder
 
 builder.Services.AddHealthChecks();
 //var store = builder.AddDaprStateStore("cache", new());
-// Afegeix el contenidor de Redis
+// Add the Redis container
 
-// 1. Definim el host de Redis. Li donem un nom sense conflictes.
-// No importa el nom aquí, ja que el Component el definirà.
+// 1. Define the Redis host. Give it a name without conflicts.
+// The name doesn't matter here, as the Component will define it.
 var redis = builder.AddRedis("cache")
     //.WaitFor(store)
     //.WithDaprSidecar()
@@ -31,7 +31,7 @@ var redis = builder.AddRedis("cache")
 // Create builder with automatic port management
 AspireProjectBuilder projectBuilder;
 
-// Afegir SQL Server com a contenidor
+// Add SQL Server as a container
 var password = builder.AddParameter("password", secret: true);
 if (isDeployment)
 {
@@ -41,8 +41,8 @@ if (isDeployment)
 else
 {
     var sqlServer = builder.AddSqlServer("myapp-sqlserver", password, 1455)
-        .WithLifetime(ContainerLifetime.Persistent) // reinicia periòdicament per a entorns de desenvolupament
-        .WithDataVolume("sqlserver-data"); // volum amb nom → es manté entre arrencades
+        .WithLifetime(ContainerLifetime.Persistent) // restarts periodically for development environments
+        .WithDataVolume("sqlserver-data"); // named volume → persists between restarts
     projectBuilder = builder.CreateProjectBuilder(sqlServer);
 }
 

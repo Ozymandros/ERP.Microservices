@@ -1,6 +1,20 @@
 ﻿{
   "Routes": [
-    /* --- 1. AUTH SERVICE --- */
+    /* --- 1. AUTH SERVICE --- */ {
+      "DownstreamPathTemplate": "/api/auth/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/api/auth/login",
+      "UpstreamHttpMethod": [ "Post" ],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+      // NO AuthenticationOptions here because this is the login endpoint
+    },
     {
       "DownstreamPathTemplate": "/openapi/v1.json",
       "DownstreamScheme": "http",
@@ -11,7 +25,7 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/openapi/v1.json",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -35,7 +49,7 @@
       ],
       "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
       "RateLimitOptions": {
-        "EnableRateLimiting": true,
+        "EnableRateLimiting": false,
         "Period": "1m",
         "Limit": 100
       },
@@ -57,7 +71,7 @@
         }
       ],
       "UpstreamPathTemplate": "/inventory/openapi/v1.json",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -81,7 +95,7 @@
       ],
       "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
       "RateLimitOptions": {
-        "EnableRateLimiting": true,
+        "EnableRateLimiting": false,
         "Period": "1m",
         "Limit": 100
       },
@@ -99,7 +113,7 @@
         }
       ],
       "UpstreamPathTemplate": "/orders/openapi/v1.json",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -123,7 +137,7 @@
       ],
       "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
       "RateLimitOptions": {
-        "EnableRateLimiting": true,
+        "EnableRateLimiting": false,
         "Period": "1m",
         "Limit": 100
       },
@@ -141,7 +155,7 @@
         }
       ],
       "UpstreamPathTemplate": "/sales/openapi/v1.json",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -165,7 +179,7 @@
       ],
       "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
       "RateLimitOptions": {
-        "EnableRateLimiting": true,
+        "EnableRateLimiting": false,
         "Period": "1m",
         "Limit": 100
       },
@@ -183,7 +197,7 @@
         }
       ],
       "UpstreamPathTemplate": "/purchasing/openapi/v1.json",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -207,7 +221,7 @@
       ],
       "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
       "RateLimitOptions": {
-        "EnableRateLimiting": true,
+        "EnableRateLimiting": false,
         "Period": "1m",
         "Limit": 100
       },

@@ -6,7 +6,7 @@ using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Aquesta l�nia registra el DaprClient (Singleton) al contenidor d'Injecci� de Depend�ncies (DI)
+// This line registers the DaprClient (Singleton) in the Dependency Injection (DI) container
 builder.Services.AddDaprClient();
 
 var serviceName = builder.Environment.ApplicationName ?? typeof(Program).Assembly.GetName().Name ?? "MyApp.Billing.API";

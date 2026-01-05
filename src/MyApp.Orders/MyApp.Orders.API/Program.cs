@@ -11,7 +11,7 @@ using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
+// This line registers the DaprClient (Singleton) in the Dependency Injection (DI) container
 builder.Services.AddDaprClient();
 
 var serviceName = builder.Environment.ApplicationName ?? typeof(Program).Assembly.GetName().Name ?? "MyApp.Orders.API";
@@ -79,14 +79,14 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Afegeix un bloc per a l'aplicaci� autom�tica de les migracions
+// Add a block for automatic migration application
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<OrdersDbContext>();
-    // ATENCI�: Esborra la base de dades i torna-la a crear si est� buida (�til per a desenvolupament amb contenidors)
+    // WARNING: Deletes the database and recreates it if empty (useful for development with containers)
     // dbContext.Database.EnsureDeleted(); 
 
-    // Aquest �s el m�tode clau: aplica les migracions pendents.
+    // This is the key method: applies pending migrations.
     dbContext.Database.Migrate();
 }
 
