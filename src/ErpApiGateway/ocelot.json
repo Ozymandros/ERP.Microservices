@@ -10,7 +10,7 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/api/auth/login",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": ["Post"],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
       // NO AuthenticationOptions here because this is the login endpoint
@@ -25,7 +25,7 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/openapi/v1.json",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": ["GET"],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -38,7 +38,7 @@
           "Port": 8080
         }
       ],
-      "UpstreamPathTemplate": "/auth/{everything}",
+      "UpstreamPathTemplate": "/auth/api/{everything}",
       "UpstreamHttpMethod": [
         "GET",
         "POST",
@@ -71,12 +71,12 @@
         }
       ],
       "UpstreamPathTemplate": "/inventory/openapi/v1.json",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": ["GET"],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
     {
-      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamPathTemplate": "/api/inventory/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -84,7 +84,7 @@
           "Port": 8080
         }
       ],
-      "UpstreamPathTemplate": "/inventory/{everything}",
+      "UpstreamPathTemplate": "/inventory/api/inventory/{everything}",
       "UpstreamHttpMethod": [
         "GET",
         "POST",
@@ -113,7 +113,7 @@
         }
       ],
       "UpstreamPathTemplate": "/orders/openapi/v1.json",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": ["GET"],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -126,7 +126,7 @@
           "Port": 8080
         }
       ],
-      "UpstreamPathTemplate": "/orders/{everything}",
+      "UpstreamPathTemplate": "/orders/api/{everything}",
       "UpstreamHttpMethod": [
         "GET",
         "POST",
@@ -155,12 +155,12 @@
         }
       ],
       "UpstreamPathTemplate": "/sales/openapi/v1.json",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": ["GET"],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
     {
-      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamPathTemplate": "/api/sales/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -168,7 +168,7 @@
           "Port": 8080
         }
       ],
-      "UpstreamPathTemplate": "/sales/{everything}",
+      "UpstreamPathTemplate": "/sales/api/sales/{everything}",
       "UpstreamHttpMethod": [
         "GET",
         "POST",
@@ -197,12 +197,12 @@
         }
       ],
       "UpstreamPathTemplate": "/purchasing/openapi/v1.json",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": ["GET"],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
     {
-      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamPathTemplate": "/api/purchasing/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -210,7 +210,7 @@
           "Port": 8080
         }
       ],
-      "UpstreamPathTemplate": "/purchasing/{everything}",
+      "UpstreamPathTemplate": "/purchasing/api/purchasing/{everything}",
       "UpstreamHttpMethod": [
         "GET",
         "POST",
