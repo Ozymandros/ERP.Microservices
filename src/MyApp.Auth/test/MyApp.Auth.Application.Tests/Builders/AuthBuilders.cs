@@ -67,23 +67,7 @@ public class UserBuilder
 
 public class LoginDtoBuilder
 {
-    private LoginDto _dto = new()
-    {
-        Email = "test@example.com",
-        Password = "TestPassword123!"
-    };
-
-    public LoginDtoBuilder WithEmail(string email)
-    {
-        _dto.Email = email;
-        return this;
-    }
-
-    public LoginDtoBuilder WithPassword(string password)
-    {
-        _dto.Password = password;
-        return this;
-    }
+    private LoginDto _dto = new("test@example.com", "TestPassword123!");
 
     public LoginDto Build() => _dto;
 
@@ -92,46 +76,14 @@ public class LoginDtoBuilder
 
 public class RegisterDtoBuilder
 {
-    private RegisterDto _dto = new()
-    {
-        Email = "newuser@example.com",
-        Password = "NewPassword123!",
-        PasswordConfirm = "NewPassword123!",
-        FirstName = "New",
-        LastName = "ApplicationUser"
-    };
-
-    public RegisterDtoBuilder WithEmail(string email)
-    {
-        _dto.Email = email;
-        return this;
-    }
-
-    public RegisterDtoBuilder WithPassword(string password)
-    {
-        _dto.Password = password;
-        _dto.PasswordConfirm = password; // Auto-match confirm password
-        return this;
-    }
-
-    public RegisterDtoBuilder WithPasswords(string password, string confirmPassword)
-    {
-        _dto.Password = password;
-        _dto.PasswordConfirm = confirmPassword;
-        return this;
-    }
-
-    public RegisterDtoBuilder WithFirstName(string firstName)
-    {
-        _dto.FirstName = firstName;
-        return this;
-    }
-
-    public RegisterDtoBuilder WithLastName(string lastName)
-    {
-        _dto.LastName = lastName;
-        return this;
-    }
+    private RegisterDto _dto = new(
+        Email: "newuser@example.com",
+        Username: "newuser@example.com",
+        Password: "NewPassword123!",
+        PasswordConfirm: "NewPassword123!",
+        FirstName: "New",
+        LastName: "ApplicationUser"
+    );
 
     public RegisterDto Build() => _dto;
 
@@ -140,37 +92,12 @@ public class RegisterDtoBuilder
 
 public class TokenResponseDtoBuilder
 {
-    private TokenResponseDto _dto = new()
-    {
-        AccessToken = "sample_access_token",
-        RefreshToken = "sample_refresh_token",
-        ExpiresIn = 3600,
-        TokenType = "Bearer"
-    };
-
-    public TokenResponseDtoBuilder WithAccessToken(string accessToken)
-    {
-        _dto.AccessToken = accessToken;
-        return this;
-    }
-
-    public TokenResponseDtoBuilder WithRefreshToken(string refreshToken)
-    {
-        _dto.RefreshToken = refreshToken;
-        return this;
-    }
-
-    public TokenResponseDtoBuilder WithExpiresIn(int expiresIn)
-    {
-        _dto.ExpiresIn = expiresIn;
-        return this;
-    }
-
-    public TokenResponseDtoBuilder WithTokenType(string tokenType)
-    {
-        _dto.TokenType = tokenType;
-        return this;
-    }
+    private TokenResponseDto _dto = new(
+        AccessToken: "sample_access_token",
+        RefreshToken: "sample_refresh_token",
+        ExpiresIn: 3600,
+        TokenType: "Bearer"
+    );
 
     public TokenResponseDto Build() => _dto;
 
@@ -179,44 +106,13 @@ public class TokenResponseDtoBuilder
 
 public class ExternalLoginDtoBuilder
 {
-    private ExternalLoginDto _dto = new()
-    {
-        Provider = "Google",
-        ExternalId = "google_user_123",
-        Email = "external@example.com",
-        FirstName = "External",
-        LastName = "User"
-    };
-
-    public ExternalLoginDtoBuilder WithProvider(string provider)
-    {
-        _dto.Provider = provider;
-        return this;
-    }
-
-    public ExternalLoginDtoBuilder WithExternalId(string externalId)
-    {
-        _dto.ExternalId = externalId;
-        return this;
-    }
-
-    public ExternalLoginDtoBuilder WithEmail(string email)
-    {
-        _dto.Email = email;
-        return this;
-    }
-
-    public ExternalLoginDtoBuilder WithFirstName(string firstName)
-    {
-        _dto.FirstName = firstName;
-        return this;
-    }
-
-    public ExternalLoginDtoBuilder WithLastName(string lastName)
-    {
-        _dto.LastName = lastName;
-        return this;
-    }
+    private ExternalLoginDto _dto = new(
+        Provider: "Google",
+        ExternalId: "google_user_123",
+        Email: "external@example.com",
+        FirstName: "External",
+        LastName: "User"
+    );
 
     public ExternalLoginDto Build() => _dto;
 

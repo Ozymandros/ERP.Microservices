@@ -46,7 +46,7 @@ builder.Services.AddCustomHealthChecks(salesDbConnectionString ?? throw new Inva
 
 // Infrastructure & Application DI
 builder.Services.AddDbContext<SalesDbContext>(options =>
-    options.UseSqlServer(salesDbConnectionString));
+    options.UseSqlServer(salesDbConnectionString, options => options.EnableRetryOnFailure()));
 
 builder.Services.AddHttpContextAccessor();
 

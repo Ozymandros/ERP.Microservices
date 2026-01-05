@@ -29,8 +29,8 @@ public class WarehouseServiceTests
     {
         // Arrange
         var warehouseId = Guid.NewGuid();
-        var warehouse = new Warehouse { Id = warehouseId, Name = "Main Warehouse" };
-        var expectedDto = new WarehouseDto { Name = "Main Warehouse" };
+        var warehouse = new Warehouse(warehouseId) { Name = "Main Warehouse" };
+        var expectedDto = new WarehouseDto(Guid.NewGuid(), default, "", null, null, "Main Warehouse", "");
 
         _mockWarehouseRepository.Setup(r => r.GetByIdAsync(warehouseId)).ReturnsAsync(warehouse);
         _mockMapper.Setup(m => m.Map<WarehouseDto>(warehouse)).Returns(expectedDto);
@@ -64,14 +64,14 @@ public class WarehouseServiceTests
         // Arrange
         var warehouses = new List<Warehouse>
         {
-            new Warehouse { Name = "Warehouse 1" },
-            new Warehouse { Name = "Warehouse 2" }
+            new Warehouse(Guid.NewGuid()) { Name = "Warehouse 1" },
+            new Warehouse(Guid.NewGuid()) { Name = "Warehouse 2" }
         };
 
         var warehouseDtos = new List<WarehouseDto>
         {
-            new WarehouseDto { Name = "Warehouse 1" },
-            new WarehouseDto { Name = "Warehouse 2" }
+            new WarehouseDto(Guid.NewGuid(), default, "", null, null, "Warehouse 1", ""),
+            new WarehouseDto(Guid.NewGuid(), default, "", null, null, "Warehouse 2", "")
         };
 
         _mockWarehouseRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(warehouses);
@@ -89,10 +89,10 @@ public class WarehouseServiceTests
     public async Task CreateWarehouseAsync_WithUniqueName_CreatesWarehouse()
     {
         // Arrange
-        var dto = new CreateUpdateWarehouseDto { Name = "New Warehouse" };
-        var warehouse = new Warehouse { Name = "New Warehouse" };
-        var createdWarehouse = new Warehouse { Id = Guid.NewGuid(), Name = "New Warehouse" };
-        var expectedDto = new WarehouseDto { Name = "New Warehouse" };
+        var dto = new CreateUpdateWarehouseDto("New Warehouse", "");
+        var warehouse = new Warehouse(Guid.NewGuid()) { Name = "New Warehouse" };
+        var createdWarehouse = new Warehouse(Guid.NewGuid()) { Name = "New Warehouse" };
+        var expectedDto = new WarehouseDto(Guid.NewGuid(), default, "", null, null, "New Warehouse", "");
 
         _mockWarehouseRepository.Setup(r => r.GetByNameAsync(dto.Name)).ReturnsAsync((Warehouse?)null);
         _mockMapper.Setup(m => m.Map<Warehouse>(dto)).Returns(warehouse);
@@ -112,8 +112,8 @@ public class WarehouseServiceTests
     public async Task CreateWarehouseAsync_WithDuplicateName_ThrowsInvalidOperationException()
     {
         // Arrange
-        var dto = new CreateUpdateWarehouseDto { Name = "Existing Warehouse" };
-        var existingWarehouse = new Warehouse { Name = "Existing Warehouse" };
+        var dto = new CreateUpdateWarehouseDto("Existing Warehouse", "");
+        var existingWarehouse = new Warehouse(Guid.NewGuid()) { Name = "Existing Warehouse" };
 
         _mockWarehouseRepository.Setup(r => r.GetByNameAsync(dto.Name)).ReturnsAsync(existingWarehouse);
 
@@ -130,10 +130,10 @@ public class WarehouseServiceTests
     {
         // Arrange
         var warehouseId = Guid.NewGuid();
-        var existingWarehouse = new Warehouse { Id = warehouseId, Name = "Old Name" };
-        var updateDto = new CreateUpdateWarehouseDto { Name = "Old Name" };
-        var updatedWarehouse = new Warehouse { Id = warehouseId, Name = "Old Name" };
-        var expectedDto = new WarehouseDto { Name = "Old Name" };
+        var existingWarehouse = new Warehouse(warehouseId) { Name = "Old Name" };
+        var updateDto = new CreateUpdateWarehouseDto("Old Name", "");
+        var updatedWarehouse = new Warehouse(warehouseId) { Name = "Old Name" };
+        var expectedDto = new WarehouseDto(Guid.NewGuid(), default, "", null, null, "Old Name", "");
 
         _mockWarehouseRepository.Setup(r => r.GetByIdAsync(warehouseId)).ReturnsAsync(existingWarehouse);
         _mockMapper.Setup(m => m.Map(updateDto, existingWarehouse));
@@ -153,7 +153,7 @@ public class WarehouseServiceTests
     {
         // Arrange
         var warehouseId = Guid.NewGuid();
-        var updateDto = new CreateUpdateWarehouseDto { Name = "Warehouse" };
+        var updateDto = new CreateUpdateWarehouseDto("Warehouse", "");
 
         _mockWarehouseRepository.Setup(r => r.GetByIdAsync(warehouseId)).ReturnsAsync((Warehouse?)null);
 
@@ -170,9 +170,9 @@ public class WarehouseServiceTests
     {
         // Arrange
         var warehouseId = Guid.NewGuid();
-        var existingWarehouse = new Warehouse { Id = warehouseId, Name = "Old Name" };
-        var updateDto = new CreateUpdateWarehouseDto { Name = "New Name" };
-        var conflictingWarehouse = new Warehouse { Id = Guid.NewGuid(), Name = "New Name" };
+        var existingWarehouse = new Warehouse(warehouseId) { Name = "Old Name" };
+        var updateDto = new CreateUpdateWarehouseDto("New Name", "");
+        var conflictingWarehouse = new Warehouse(Guid.NewGuid()) { Name = "New Name" };
 
         _mockWarehouseRepository.Setup(r => r.GetByIdAsync(warehouseId)).ReturnsAsync(existingWarehouse);
         _mockWarehouseRepository.Setup(r => r.GetByNameAsync(updateDto.Name)).ReturnsAsync(conflictingWarehouse);
@@ -190,7 +190,7 @@ public class WarehouseServiceTests
     {
         // Arrange
         var warehouseId = Guid.NewGuid();
-        var warehouse = new Warehouse { Id = warehouseId, Name = "Warehouse" };
+        var warehouse = new Warehouse(warehouseId) { Name = "Warehouse" };
 
         _mockWarehouseRepository.Setup(r => r.GetByIdAsync(warehouseId)).ReturnsAsync(warehouse);
 

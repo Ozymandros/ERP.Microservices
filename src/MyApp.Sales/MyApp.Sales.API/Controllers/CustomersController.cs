@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
+using MyApp.Sales.Domain.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Sales.API.Controllers
 {
@@ -61,7 +63,7 @@ namespace MyApp.Sales.API.Controllers
         {
             try
             {
-                string cacheKey = $"Customer-{id}";
+                string cacheKey = "Customer-" + id;
                 var customer = await _cacheService.GetStateAsync<CustomerDto>(cacheKey);
 
                 if (customer != null)
@@ -78,9 +80,42 @@ namespace MyApp.Sales.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving customer {CustomerId}", id);
+                _logger.LogError(ex, "Error retrieving customer {@Customer}", new { CustomerId = id });
                 var customer = await _customerService.GetCustomerByIdAsync(id);
                 return customer == null ? NotFound(new { message = $"Customer with ID {id} not found." }) : Ok(customer);
+            }
+        }
+
+        /// <summary>
+        /// Search customers with advanced filtering, sorting, and pagination - Requires Sales.Read permission
+        /// </summary>
+        /// <remarks>
+        /// Supported filters: name, email, country, city, isActive
+        /// Supported sort fields: id, name, email, city, country, createdAt
+        /// </remarks>
+        [HttpGet("search")]
+        [HasPermission("Sales", "Read")]
+        [ProducesResponseType(typeof(PaginatedResult<CustomerDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Search([FromQuery] QuerySpec query)
+        {
+            try
+            {
+                query.Validate();
+                var spec = new CustomerQuerySpec(query);
+                var result = await _customerService.QueryCustomersAsync(spec);
+                _logger.LogInformation("Searched customers with query: {@Query}", query);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Invalid query specification");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching customers");
+                return StatusCode(500, new { message = "An error occurred searching customers" });
             }
         }
 
@@ -125,14 +160,14 @@ namespace MyApp.Sales.API.Controllers
             try
             {
                 var customer = await _customerService.UpdateCustomerAsync(id, dto);
-                string cacheKey = $"Customer-{id}";
+                string cacheKey = "Customer-" + id;
                 await _cacheService.RemoveStateAsync(cacheKey);
                 await _cacheService.RemoveStateAsync("all_customers");
                 return Ok(customer);
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogWarning("Error updating customer {CustomerId}: {Message}", id, ex.Message);
+                _logger.LogWarning(ex, "Error updating customer {@Customer}: {@Error}", new { CustomerId = id }, new { Message = ex.Message });
                 return NotFound(new { message = ex.Message });
             }
         }
@@ -149,14 +184,14 @@ namespace MyApp.Sales.API.Controllers
             try
             {
                 await _customerService.DeleteCustomerAsync(id);
-                string cacheKey = $"Customer-{id}";
+                string cacheKey = "Customer-" + id;
                 await _cacheService.RemoveStateAsync(cacheKey);
                 await _cacheService.RemoveStateAsync("all_customers");
                 return NoContent();
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogWarning("Error deleting customer {CustomerId}: {Message}", id, ex.Message);
+                _logger.LogWarning(ex, "Error deleting customer {@Customer}: {@Error}", new { CustomerId = id }, new { Message = ex.Message });
                 return NotFound(new { message = ex.Message });
             }
         }

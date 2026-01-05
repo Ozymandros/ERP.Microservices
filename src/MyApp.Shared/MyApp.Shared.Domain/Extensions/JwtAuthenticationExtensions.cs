@@ -31,6 +31,7 @@ public static class JwtAuthenticationExtensions
         var secretKey = jwtSettings["SecretKey"];
         var issuer = jwtSettings["Issuer"];
         var audience = jwtSettings["Audience"];
+        var https = jwtSettings.GetValue<bool>("RequireHttpsMetadata");
 
         if (string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
         {
@@ -55,6 +56,8 @@ public static class JwtAuthenticationExtensions
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
+
+                options.RequireHttpsMetadata = https;
 
                 // Optional: Log authentication events for debugging
                 options.Events = new JwtBearerEvents

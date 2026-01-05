@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.OpenApi;
 using Microsoft.IdentityModel.Tokens;
 using MyApp.Shared.Infrastructure.OpenApi;
 using Ocelot.DependencyInjection;
@@ -49,7 +50,7 @@ builder.Configuration
 builder.Services.AddOcelot(builder.Configuration).AddPolly();
 
 // Add Authentication - JWT Bearer
-var jwtSecretKey = builder.Configuration["Jwt:SecretKey"]
+var jwtSecretKey = builder.Configuration["Jwt:SecretKey"] 
     ?? throw new InvalidOperationException("JwtSecretKey configuration is required");
 var key = Encoding.ASCII.GetBytes(jwtSecretKey);
 
@@ -64,21 +65,13 @@ builder.Services
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ValidateIssuer = !environment.Equals("Development", StringComparison.OrdinalIgnoreCase),
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidIssuer = options.Authority,
             ValidateAudience = !environment.Equals("Development", StringComparison.OrdinalIgnoreCase),
-            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidAudience = options.Audience,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.FromSeconds(10)
         };
-        // Si es Desarrollo, permitimos HTTP. Si no (Prod/Staging), HTTPS es obligatorio.
-        if (builder.Environment.IsDevelopment())
-        {
-            options.RequireHttpsMetadata = false;
-        }
-        else
-        {
-            options.RequireHttpsMetadata = true;
-        }
+        options.RequireHttpsMetadata = builder.Configuration.GetValue<bool>("Jwt:RequireHttpsMetadata"); // Per a entorns de desenvolupament/Docker
         options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
         {
             OnAuthenticationFailed = context =>

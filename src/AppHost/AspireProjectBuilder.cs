@@ -82,6 +82,9 @@ public class AspireProjectBuilder
             .WithEnvironment("Jwt__Issuer", _builder.Configuration["Jwt:Issuer"])
             .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"])
             .WithEnvironment("FRONTEND_ORIGIN", origin)
+            // OpenTelemetry configuration for Serilog
+            // .WithEnvironment("OTEL_SERVICE_NAME", serviceName)
+            // .WithEnvironment("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317")
             .PublishAsDockerFile();
 
         var database = _sqlServer?.AddDatabase(dbName); ;

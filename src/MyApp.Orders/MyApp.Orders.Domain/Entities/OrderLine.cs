@@ -2,7 +2,7 @@ using MyApp.Shared.Domain.Entities;
 
 namespace MyApp.Orders.Domain.Entities
 {
-    public class OrderLine : AuditableEntity<Guid>
+    public class OrderLine(Guid id) : AuditableEntity<Guid>(id)
     {
         public Guid OrderId { get; set; }
         public Guid ProductId { get; set; }

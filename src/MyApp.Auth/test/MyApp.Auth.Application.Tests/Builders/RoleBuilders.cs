@@ -103,82 +103,77 @@ public class RoleBuilder
 
 public class RoleDtoBuilder
 {
-    private RoleDto _dto = new()
-    {
-        Id = Guid.NewGuid(),
-        Name = "TestRole",
-        Description = "Test role description"
-    };
+    private Guid _id = Guid.NewGuid();
+    private DateTime _createdAt = DateTime.UtcNow;
+    private string _createdBy = "TestUser";
+    private DateTime? _updatedAt = null;
+    private string? _updatedBy = null;
+    private string? _name = "TestRole";
+    private string? _description = "Test role description";
 
     public RoleDtoBuilder WithId(Guid id)
     {
-        _dto.Id = id;
+        _id = id;
         return this;
     }
 
     public RoleDtoBuilder WithName(string name)
     {
-        _dto.Name = name;
+        _name = name;
         return this;
     }
 
     public RoleDtoBuilder WithDescription(string description)
     {
-        _dto.Description = description;
+        _description = description;
         return this;
     }
 
-    public RoleDto Build() => _dto;
+    public RoleDto Build() => new(_id, _createdAt, _createdBy, _updatedAt, _updatedBy, _name, _description);
 
     public static implicit operator RoleDto(RoleDtoBuilder builder) => builder.Build();
 }
 
 public class CreateRoleDtoBuilder
 {
-    private CreateRoleDto _dto = new()
-    {
-        Name = "NewRole",
-        Description = "New role description"
-    };
+    private string _name = "NewRole";
+    private string? _description = "New role description";
 
     public CreateRoleDtoBuilder WithName(string name)
     {
-        _dto.Name = name;
+        _name = name;
         return this;
     }
 
     public CreateRoleDtoBuilder WithDescription(string description)
     {
-        _dto.Description = description;
+        _description = description;
         return this;
     }
 
-    public CreateRoleDto Build() => _dto;
+    public CreateRoleDto Build() => new(_name, _description);
 
     public static implicit operator CreateRoleDto(CreateRoleDtoBuilder builder) => builder.Build();
 }
 
 public class UpdateRoleDtoBuilder
 {
-    private CreateRoleDto _dto = new()
-    {
-        Name = "UpdatedRole",
-        Description = "Updated role description"
-    };
+    private string _name = "UpdatedRole";
+    private string? _description = "Updated role description";
 
     public UpdateRoleDtoBuilder WithName(string name)
     {
-        _dto.Name = name;
+        _name = name;
         return this;
     }
 
     public UpdateRoleDtoBuilder WithDescription(string description)
     {
-        _dto.Description = description;
+        _description = description;
         return this;
     }
 
-    public CreateRoleDto Build() => _dto;
+    public CreateRoleDto Build() => new(_name, _description);
 
     public static implicit operator CreateRoleDto(UpdateRoleDtoBuilder builder) => builder.Build();
 }

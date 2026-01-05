@@ -6,7 +6,9 @@ using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Domain.Entities;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Auth.Application.Services;
 
@@ -47,13 +49,13 @@ public class UserService : IUserService
     {
         if(_httpContextAccessor.HttpContext == null)
         {
-            _logger.LogWarning("HTTP context is null");
+            _logger.LogWarning("HttpContext is null");
             return null;
         }
         var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
         if (user is null)
         {
-            _logger.LogWarning("Current user not found in HTTP context");
+            _logger.LogWarning("Current user not found in HttpContext");
             return null;
         }
 
@@ -110,7 +112,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
         {
-            _logger.LogWarning("User not found: {UserId}", userId);
+            _logger.LogWarning("User not found: {@User}", new { UserId = userId });
             return false;
         }
 
@@ -119,7 +121,7 @@ public class UserService : IUserService
             var existingUser = await _userManager.FindByEmailAsync(updateUserDto.Email);
             if (existingUser != null)
             {
-                _logger.LogWarning("Email already in use: {Email}", updateUserDto.Email);
+                _logger.LogWarning("Email already in use: {@Email}", new { Email = updateUserDto.Email });
                 return false;
             }
             user.Email = updateUserDto.Email;
@@ -152,7 +154,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
         {
-            _logger.LogWarning("User not found: {UserId}", userId);
+            _logger.LogWarning("User not found: {@User}", new { UserId = userId });
             return false;
         }
 
@@ -171,7 +173,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
         {
-            _logger.LogWarning("User not found: {UserId}", userId);
+            _logger.LogWarning("User not found: {@User}", new { UserId = userId });
             return false;
         }
 
@@ -190,7 +192,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
         {
-            _logger.LogWarning("User not found: {UserId}", userId);
+            _logger.LogWarning("User not found: {@User}", new { UserId = userId });
             return false;
         }
 
@@ -216,7 +218,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
         {
-            _logger.LogWarning("User not found: {UserId}", userId);
+            _logger.LogWarning("User not found: {@User}", new { UserId = userId });
             return false;
         }
 
@@ -235,7 +237,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
         {
-            _logger.LogWarning("User not found: {UserId}", userId);
+            _logger.LogWarning("User not found: {@User}", new { UserId = userId });
             return Enumerable.Empty<RoleDto>();
         }
 
@@ -271,5 +273,41 @@ public class UserService : IUserService
         }
 
         return _mapper.Map<UserDto>(userEntity);
+    }
+
+    /// <summary>
+    /// Query users with filtering, sorting, and pagination
+    /// </summary>
+    public async Task<PaginatedResult<UserDto>> QueryUsersAsync(ISpecification<ApplicationUser> spec)
+    {
+        try
+        {
+            var result = await _userRepository.QueryAsync(spec);
+            
+            var dtos = result.Items.Select(u => new UserDto(
+                u.Id,
+                u.CreatedAt,
+                "",
+                u.UpdatedAt,
+                null,
+                u.Email,
+                u.UserName,
+                u.FirstName,
+                u.LastName,
+                u.EmailConfirmed,
+                u.IsExternalLogin,
+                u.ExternalProvider,
+                null,
+                null,
+                false
+            )).ToList();
+            
+            return new PaginatedResult<UserDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error querying users");
+            throw;
+        }
     }
 }

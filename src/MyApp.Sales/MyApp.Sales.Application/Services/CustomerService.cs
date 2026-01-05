@@ -7,6 +7,7 @@ using MyApp.Sales.Application.Contracts.Services;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Sales.Application.Services
 {
@@ -64,6 +65,16 @@ namespace MyApp.Sales.Application.Services
         public async Task DeleteCustomerAsync(Guid id)
         {
             await _customerRepository.DeleteAsync(id);
+        }
+
+        /// <summary>
+        /// Query customers with filtering, sorting, and pagination
+        /// </summary>
+        public async Task<PaginatedResult<CustomerDto>> QueryCustomersAsync(ISpecification<Customer> spec)
+        {
+            var result = await _customerRepository.QueryAsync(spec);
+            var dtos = result.Items.Select(c => _mapper.Map<CustomerDto>(c)).ToList();
+            return new PaginatedResult<CustomerDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
         }
     }
 }

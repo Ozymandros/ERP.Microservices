@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
+using MyApp.Auth.Domain.Specifications;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 
@@ -11,7 +12,7 @@ namespace MyApp.Auth.API.Controllers;
 [Route("api/[controller]")]
 [Authorize]
 [Produces("application/json")]
-public class UsersController : ControllerBase
+public partial class UsersController : ControllerBase
 {
     private readonly ICacheService _cacheService;
     private readonly IUserService _userService;
@@ -69,6 +70,39 @@ public class UsersController : ControllerBase
         {
             _logger.LogError(ex, "Error retrieving paginated users");
             return StatusCode(500, new { message = "An error occurred retrieving users" });
+        }
+    }
+
+    /// <summary>
+    /// Search users with advanced filtering, sorting, and pagination
+    /// </summary>
+    /// <remarks>
+    /// Supported filters: isActive, email, userName, isExternalLogin
+    /// Supported sort fields: createdAt, email, userName, firstName, lastName
+    /// </remarks>
+    [HttpGet("search")]
+    [HasPermission("Users", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<PaginatedResult<UserDto>>> Search([FromQuery] QuerySpec query)
+    {
+        try
+        {
+            query.Validate();
+            var spec = new ApplicationUserQuerySpec(query);
+            var result = await _userService.QueryUsersAsync(spec);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Invalid query specification");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching users");
+            return StatusCode(500, new { message = "An error occurred searching users" });
         }
     }
 
@@ -138,7 +172,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            string cacheKey = $"User-{id}";
+            string cacheKey = "User-" + id;
             var user = await _cacheService.GetStateAsync<UserDto>(cacheKey); // 1. Intentar obtenir de la cache
 
             if (user is not null)
@@ -159,7 +193,7 @@ public class UsersController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving user: {UserId}", id);
+            _logger.LogError(ex, "Error retrieving user: {@User}", new { UserId = id });
             return StatusCode(500, new { message = "An error occurred retrieving the user" });
         }
     }
@@ -179,7 +213,7 @@ public class UsersController : ControllerBase
             var user = await _userService.GetUserByEmailAsync(email);
             if (user == null)
             {
-                _logger.LogWarning("User not found by email: {Email}", email);
+                _logger.LogWarning("User with email {@User} not found", new { Email = email });
                 return NotFound(new { message = "User not found" });
             }
 
@@ -187,7 +221,7 @@ public class UsersController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving user by email: {Email}", email);
+            _logger.LogError(ex, "Error retrieving user by email: {@User}", new { Email = email });
             return StatusCode(500, new { message = "An error occurred retrieving the user" });
         }
     }
@@ -211,19 +245,19 @@ public class UsersController : ControllerBase
             var result = await _userService.UpdateUserAsync(id, updateUserDto);
             if (!result)
             {
-                _logger.LogWarning("Failed to update user: {UserId}", id);
+                _logger.LogWarning("Failed to update user: {@User}", new { UserId = id });
                 return NotFound(new { message = "User not found" });
             }
 
-            string cacheKey = $"User-{id}";
+            string cacheKey = "User-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
 
-            _logger.LogInformation("User updated: {UserId}", id);
+            _logger.LogInformation("User updated: {@User}", new { UserId = id });
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating user: {UserId}", id);
+            _logger.LogError(ex, "Error updating user: {@User}", new { UserId = id });
             return StatusCode(500, new { message = "An error occurred updating the user" });
         }
     }
@@ -243,20 +277,20 @@ public class UsersController : ControllerBase
             var result = await _userService.DeleteUserAsync(id);
             if (!result)
             {
-                _logger.LogWarning("Failed to delete user: {UserId}", id);
+                _logger.LogWarning("Failed to delete user: {@User}", new { UserId = id });
                 return NotFound(new { message = "User not found" });
             }
 
-            string cacheKey = $"User-{id}";
+            string cacheKey = "User-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
             await _cacheService.RemoveStateAsync("all_users");
 
-            _logger.LogInformation("User deleted: {UserId}", id);
+            _logger.LogInformation("User deleted: {@User}", new { UserId = id });
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error deleting user: {UserId}", id);
+            _logger.LogError(ex, "Error deleting user: {@User}", new { UserId = id });
             return StatusCode(500, new { message = "An error occurred deleting the user" });
         }
     }
@@ -277,18 +311,18 @@ public class UsersController : ControllerBase
             var result = await _userService.AssignRoleAsync(id, roleName);
             if (!result)
             {
-                _logger.LogWarning("Failed to assign role to user: {UserId}, Role: {RoleName}", id, roleName);
+                _logger.LogWarning("Failed to assign role {@Role} to user {@User}", new { RoleName = roleName }, new { UserId = id });
                 return NotFound(new { message = "User or role not found" });
             }
-            string cacheKey = $"User-{id}";
+            string cacheKey = "User-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
 
-            _logger.LogInformation("Role assigned to user: {UserId}, Role: {RoleName}", id, roleName);
+            _logger.LogInformation("Role {@Role} assigned to user {@User}", new { RoleName = roleName }, new { UserId = id });
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error assigning role to user: {UserId}", id);
+            _logger.LogError(ex, "Error assigning role to user: {@User}", new { UserId = id });
             return StatusCode(500, new { message = "An error occurred assigning the role" });
         }
     }
@@ -309,18 +343,18 @@ public class UsersController : ControllerBase
             var result = await _userService.RemoveRoleAsync(id, roleName);
             if (!result)
             {
-                _logger.LogWarning("Failed to remove role from user: {UserId}, Role: {RoleName}", id, roleName);
+                _logger.LogWarning("Failed to remove role {@Role} from user {@User}", new { RoleName = roleName }, new { UserId = id });
                 return NotFound(new { message = "User or role not found" });
             }
-            string cacheKey = $"User-{id}";
+            string cacheKey = "User-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
 
-            _logger.LogInformation("Role removed from user: {UserId}, Role: {RoleName}", id, roleName);
+            _logger.LogInformation("Role {@Role} removed from user {@User}", new { RoleName = roleName }, new { UserId = id });
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error removing role from user: {UserId}", id);
+            _logger.LogError(ex, "Error removing role from user: {@User}", new { UserId = id });
             return StatusCode(500, new { message = "An error occurred removing the role" });
         }
     }
@@ -337,7 +371,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            string cacheKey = $"Roles-{id}";
+            string cacheKey = "Roles-" + id;
             var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>(cacheKey); // 1. Intentar obtenir de la cache
 
             if (roles is not null)
@@ -353,7 +387,7 @@ public class UsersController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving user roles: {UserId}", id);
+            _logger.LogError(ex, "Error retrieving roles for user: {@User}", new { UserId = id });
             return StatusCode(500, new { message = "An error occurred retrieving roles" });
         }
     }

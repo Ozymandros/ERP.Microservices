@@ -43,7 +43,7 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 var ordersDbConnectionString = builder.Configuration.GetConnectionString("ordersdb")
     ?? throw new InvalidOperationException("Connection string 'ordersdb' not found.");
 builder.Services.AddDbContext<OrdersDbContext>(options =>
-    options.UseSqlServer(ordersDbConnectionString));
+    options.UseSqlServer(ordersDbConnectionString, options => options.EnableRetryOnFailure()));
 
 builder.Services.AddHttpContextAccessor();
 
@@ -111,19 +111,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Map health check endpoint
-app.MapHealthChecks("/health", new HealthCheckOptions
-{
-    ResponseWriter = async (context, report) =>
-    {
-        context.Response.ContentType = "application/json";
-        var result = System.Text.Json.JsonSerializer.Serialize(new
-        {
-            status = report.Status.ToString(),
-            components = report.Entries.Select(e => new { key = e.Key, value = e.Value.Status.ToString() })
-        });
-        await context.Response.WriteAsync(result);
-    }
-});
+app.UseCustomHealthChecks();
 
 app.Run();
 

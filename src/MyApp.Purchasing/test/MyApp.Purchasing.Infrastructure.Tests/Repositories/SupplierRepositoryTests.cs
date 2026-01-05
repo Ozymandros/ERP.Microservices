@@ -21,9 +21,8 @@ public class SupplierRepositoryTests
 
     private Supplier CreateTestSupplier(string name = "Test Supplier", string email = "test@supplier.com")
     {
-        var supplier = new Supplier
+        var supplier = new Supplier(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             Name = name,
             ContactName = "Contact Person",
             Email = email,
@@ -138,9 +137,8 @@ public class SupplierRepositoryTests
     public async Task AddAsync_WithValidSupplier_CreatesSupplier()
     {
         // Arrange
-        var supplier = new Supplier
+        var supplier = new Supplier(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             Name = "New Supplier",
             ContactName = "John Doe",
             Email = "new@supplier.com",

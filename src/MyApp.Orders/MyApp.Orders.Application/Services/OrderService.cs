@@ -68,9 +68,8 @@ namespace MyApp.Orders.Application.Services
             existing.Lines.Clear();
             foreach (var l in dto.Lines)
             {
-                var line = new OrderLine
+                var line = new OrderLine(Guid.NewGuid())
                 {
-                    Id = Guid.NewGuid(),
                     OrderId = existing.Id,
                     ProductId = l.ProductId,
                     Quantity = l.Quantity,

@@ -49,11 +49,7 @@ public class AuthServiceTests : BaseServiceTest
     public async Task LoginAsync_WithValidCredentials_ShouldReturnTokenResponse()
     {
         // Arrange
-        var loginDto = new LoginDto
-        {
-            Email = "test@example.com",
-            Password = "ValidPassword123!"
-        };
+        var loginDto = new LoginDto("test@example.com", "ValidPassword123!");
 
         var user = new ApplicationUser
         {
@@ -63,12 +59,7 @@ public class AuthServiceTests : BaseServiceTest
             EmailConfirmed = true
         };
 
-        var tokenResponse = new TokenResponseDto
-        {
-            AccessToken = "access_token",
-            RefreshToken = "refresh_token",
-            ExpiresIn = 3600
-        };
+        var tokenResponse = new TokenResponseDto("access_token", "refresh_token", 3600, "Bearer", null);
 
         _mockUserManager
             .Setup(x => x.FindByEmailAsync(loginDto.Email))
@@ -96,11 +87,7 @@ public class AuthServiceTests : BaseServiceTest
     public async Task LoginAsync_WithInvalidEmail_ShouldReturnNull()
     {
         // Arrange
-        var loginDto = new LoginDto
-        {
-            Email = "nonexistent@example.com",
-            Password = "ValidPassword123!"
-        };
+        var loginDto = new LoginDto("nonexistent@example.com", "ValidPassword123!");
 
         _mockUserManager
             .Setup(x => x.FindByEmailAsync(loginDto.Email))
@@ -119,10 +106,10 @@ public class AuthServiceTests : BaseServiceTest
     {
         // Arrange
         var loginDto = new LoginDto
-        {
-            Email = "test@example.com",
-            Password = "InvalidPassword"
-        };
+        (
+            Email: "test@example.com",
+            Password: "InvalidPassword"
+        );
 
         var user = new ApplicationUser
         {
@@ -153,10 +140,10 @@ public class AuthServiceTests : BaseServiceTest
     {
         // Arrange
         var loginDto = new LoginDto
-        {
-            Email = "test@example.com",
-            Password = "ValidPassword123!"
-        };
+        (
+            Email: "test@example.com",
+            Password: "ValidPassword123!"
+        );
 
         var user = new ApplicationUser
         {
@@ -189,14 +176,7 @@ public class AuthServiceTests : BaseServiceTest
     public async Task RegisterAsync_WithValidData_ShouldReturnTokenResponse()
     {
         // Arrange
-        var registerDto = new RegisterDto
-        {
-            Email = "newuser@example.com",
-            Password = "ValidPassword123!",
-            PasswordConfirm = "ValidPassword123!",
-            FirstName = "John",
-            LastName = "Doe"
-        };
+        var registerDto = new RegisterDto("newuser@example.com", "newuser", "ValidPassword123!", "ValidPassword123!", "John", "Doe");
 
         var user = new ApplicationUser
         {
@@ -207,12 +187,7 @@ public class AuthServiceTests : BaseServiceTest
             LastName = registerDto.LastName
         };
 
-        var tokenResponse = new TokenResponseDto
-        {
-            AccessToken = "access_token",
-            RefreshToken = "refresh_token",
-            ExpiresIn = 3600
-        };
+        var tokenResponse = new TokenResponseDto("access_token", "refresh_token", 3600, "Bearer", null);
 
         _mockUserManager
             .Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), registerDto.Password))
@@ -228,9 +203,9 @@ public class AuthServiceTests : BaseServiceTest
         // Assert
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(tokenResponse);
-        _mockUserManager.Verify(x => x.CreateAsync(It.Is<ApplicationUser>(u => 
-            u.Email == registerDto.Email && 
-            u.FirstName == registerDto.FirstName && 
+        _mockUserManager.Verify(x => x.CreateAsync(It.Is<ApplicationUser>(u =>
+            u.Email == registerDto.Email &&
+            u.FirstName == registerDto.FirstName &&
             u.LastName == registerDto.LastName), registerDto.Password), Times.Once);
     }
 
@@ -238,12 +213,7 @@ public class AuthServiceTests : BaseServiceTest
     public async Task RegisterAsync_WithExistingEmail_ShouldReturnNull()
     {
         // Arrange
-        var registerDto = new RegisterDto
-        {
-            Email = "existing@example.com",
-            Password = "ValidPassword123!",
-            PasswordConfirm = "ValidPassword123!"
-        };
+        var registerDto = new RegisterDto("existing@example.com", "username", "ValidPassword123!", "ValidPassword123!");
 
         var identityErrors = new List<IdentityError>
         {
@@ -272,12 +242,8 @@ public class AuthServiceTests : BaseServiceTest
         // Arrange
         var refreshToken = "valid token";
         var userId = Guid.NewGuid();
-        
-        var storedRefreshToken = new RefreshTokenDto
-        {
-            AccessToken = refreshToken,
-            RefreshToken = refreshToken,
-        };
+
+        var storedRefreshToken = new RefreshTokenDto(refreshToken, refreshToken);
 
         var user = new ApplicationUser
         {
@@ -286,12 +252,7 @@ public class AuthServiceTests : BaseServiceTest
             UserName = "test@example.com"
         };
 
-        var tokenResponse = new TokenResponseDto
-        {
-            AccessToken = "new_access_token",
-            RefreshToken = "new_refresh_token",
-            ExpiresIn = 3600
-        };
+        var tokenResponse = new TokenResponseDto("new_access_token", "new_refresh_token", 3600);
 
         //_mockRefreshTokenRepository
         //    .Setup(x => x.GetByTokenAsync(refreshToken))
@@ -319,12 +280,7 @@ public class AuthServiceTests : BaseServiceTest
     {
         // Arrange
         var refreshToken = "invalid_refresh_token";
-
-        var storedRefreshToken = new RefreshTokenDto
-        {
-            AccessToken = refreshToken,
-            RefreshToken = refreshToken,
-        };
+        var storedRefreshToken = new RefreshTokenDto(refreshToken, refreshToken);
 
         _mockRefreshTokenRepository
             .Setup(x => x.GetByTokenAsync(refreshToken))
@@ -343,12 +299,8 @@ public class AuthServiceTests : BaseServiceTest
     {
         // Arrange
         var refreshToken = "expired_refresh_token";
-        
-        var storedRefreshToken = new RefreshTokenDto
-        {
-            AccessToken = refreshToken,
-            RefreshToken = refreshToken,
-        };
+
+        var storedRefreshToken = new RefreshTokenDto(refreshToken, refreshToken);
 
         //_mockRefreshTokenRepository
         //    .Setup(x => x.GetByTokenAsync(refreshToken).Result)
@@ -409,14 +361,7 @@ public class AuthServiceTests : BaseServiceTest
     public async Task ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse()
     {
         // Arrange
-        var externalLoginDto = new ExternalLoginDto
-        {
-            Provider = "Google",
-            ExternalId = "google_user_id",
-            Email = "external@example.com",
-            FirstName = "External ApplicationUser",
-            LastName = "User"
-        };
+        var externalLoginDto = new ExternalLoginDto("Google", "google_user_id", "external@example.com", "External ApplicationUser", "User");
 
         var user = new ApplicationUser
         {
@@ -425,12 +370,7 @@ public class AuthServiceTests : BaseServiceTest
             UserName = externalLoginDto.Email
         };
 
-        var tokenResponse = new TokenResponseDto
-        {
-            AccessToken = "access_token",
-            RefreshToken = "refresh_token",
-            ExpiresIn = 3600
-        };
+        var tokenResponse = new TokenResponseDto("access_token", "refresh_token", 3600);
 
         //_mockUserManager
         //    .Setup(x => x.FindByLoginAsync(externalLoginDto.Provider, externalLoginDto.ProviderKey))
@@ -452,20 +392,9 @@ public class AuthServiceTests : BaseServiceTest
     public async Task ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse()
     {
         // Arrange
-        var externalLoginDto = new ExternalLoginDto
-        {
-            Provider = "Google",
-            ExternalId = "google_user_id",
-            Email = "newexternal@example.com",
-            FirstName = "New External ApplicationUser"
-        };
+        var externalLoginDto = new ExternalLoginDto("Google", "google_user_id", "newexternal@example.com", "New External ApplicationUser");
 
-        var tokenResponse = new TokenResponseDto
-        {
-            AccessToken = "access_token",
-            RefreshToken = "refresh_token",
-            ExpiresIn = 3600
-        };
+        var tokenResponse = new TokenResponseDto("access_token", "refresh_token", 3600);
 
         //_mockUserManager
         //    .Setup(x => x.FindByLoginAsync(externalLoginDto.Provider, externalLoginDto.ProviderKey))

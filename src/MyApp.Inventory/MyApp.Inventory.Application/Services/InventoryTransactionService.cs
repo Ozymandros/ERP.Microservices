@@ -4,6 +4,7 @@ using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Inventory.Application.Services;
 
@@ -142,5 +143,15 @@ public class InventoryTransactionService : IInventoryTransactionService
         }
 
         await _transactionRepository.DeleteAsync(transaction);
+    }
+
+    /// <summary>
+    /// Query transactions with filtering, sorting, and pagination
+    /// </summary>
+    public async Task<PaginatedResult<InventoryTransactionDto>> QueryTransactionsAsync(ISpecification<InventoryTransaction> spec)
+    {
+        var result = await _transactionRepository.QueryAsync(spec);
+        var dtos = result.Items.Select(t => _mapper.Map<InventoryTransactionDto>(t)).ToList();
+        return new PaginatedResult<InventoryTransactionDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }
 }

@@ -2,27 +2,26 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Auth.Application.Contracts.DTOs;
 
-public class RegisterDto
-{
-    [Required(ErrorMessage = "Email is required")]
-    [EmailAddress(ErrorMessage = "Invalid email address")]
-    public string Email { get; set; } = string.Empty;
+public record RegisterDto(
+    [property: Required(ErrorMessage = "Email is required")]
+    [property: EmailAddress(ErrorMessage = "Invalid email address")]
+    string Email,
 
-    [Required(ErrorMessage = "Username is required")]
-    [StringLength(100, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 100 characters")]
-    public string Username { get; set; } = string.Empty;
+    [property: Required(ErrorMessage = "Username is required")]
+    [property: StringLength(100, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 100 characters")]
+    string Username,
 
-    [Required(ErrorMessage = "Password is required")]
-    [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 100 characters")]
-    public string Password { get; set; } = string.Empty;
+    [property: Required(ErrorMessage = "Password is required")]
+    [property: StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 100 characters")]
+    string Password,
 
-    [Required(ErrorMessage = "Password confirmation is required")]
-    [Compare("Password", ErrorMessage = "Passwords do not match")]
-    public string PasswordConfirm { get; set; } = string.Empty;
+    [property: Required(ErrorMessage = "Password confirmation is required")]
+    [property: Compare("Password", ErrorMessage = "Passwords do not match")]
+    string PasswordConfirm,
 
-    [StringLength(100)]
-    public string? FirstName { get; set; }
+    [property: StringLength(100)]
+    string? FirstName = null,
 
-    [StringLength(100)]
-    public string? LastName { get; set; }
-}
+    [property: StringLength(100)]
+    string? LastName = null
+);

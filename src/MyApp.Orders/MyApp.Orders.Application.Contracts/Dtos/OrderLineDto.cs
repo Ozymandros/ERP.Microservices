@@ -4,14 +4,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Orders.Application.Contracts.Dtos
 {
-    public class OrderLineDto : AuditableGuidDto
-    {
-        public Guid Id { get; set; }
-        public Guid ProductId { get; set; }
-        [Range(1, int.MaxValue)]
-        public int Quantity { get; set; }
-        [Range(0.0, double.MaxValue)]
-        public decimal UnitPrice { get; set; }
-        public decimal LineTotal { get; set; }
-    }
+    public record OrderLineDto(
+        Guid Id,
+        DateTime CreatedAt = default,
+        string CreatedBy = "",
+        DateTime? UpdatedAt = null,
+        string? UpdatedBy = null,
+        Guid ProductId = default,
+        [property: Range(1, int.MaxValue)]
+        int Quantity = 1,
+        [property: Range(0.0, double.MaxValue)]
+        decimal UnitPrice = 0,
+        decimal LineTotal = 0
+    ) : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
 }

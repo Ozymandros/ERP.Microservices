@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
+using MyApp.Purchasing.Domain.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Purchasing.API.Controllers;
 
@@ -61,7 +63,7 @@ public class SuppliersController : ControllerBase
     {
         try
         {
-            string cacheKey = $"Supplier-{id}";
+            string cacheKey = "Supplier-" + id;
             var supplier = await _cacheService.GetStateAsync<SupplierDto>(cacheKey);
 
             if (supplier != null)
@@ -72,7 +74,7 @@ public class SuppliersController : ControllerBase
             supplier = await _supplierService.GetSupplierByIdAsync(id);
             if (supplier == null)
             {
-                _logger.LogWarning("Supplier with ID {SupplierId} not found", id);
+                _logger.LogWarning("Supplier with ID {@Supplier} not found", new { SupplierId = id });
                 return NotFound();
             }
 
@@ -81,7 +83,7 @@ public class SuppliersController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving supplier {SupplierId}", id);
+            _logger.LogError(ex, "Error retrieving supplier {@Supplier}", new { SupplierId = id });
             var supplier = await _supplierService.GetSupplierByIdAsync(id);
             return supplier == null ? NotFound() : Ok(supplier);
         }
@@ -96,11 +98,11 @@ public class SuppliersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<SupplierDto>> GetSupplierByEmail(string email)
     {
-        _logger.LogInformation("Retrieving supplier with email: {Email}", email);
+        _logger.LogInformation("Retrieving supplier with email: {@Email}", new { Email = email });
         var supplier = await _supplierService.GetSupplierByEmailAsync(email);
         if (supplier == null)
         {
-            _logger.LogWarning("Supplier with email {Email} not found", email);
+            _logger.LogWarning("Supplier with email {@Email} not found", new { Email = email });
             return NotFound();
         }
         return Ok(supplier);
@@ -114,9 +116,42 @@ public class SuppliersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<SupplierDto>>> SearchSuppliersByName(string name)
     {
-        _logger.LogInformation("Searching suppliers with name: {Name}", name);
+        _logger.LogInformation("Searching suppliers with name: {@Name}", new { Name = name });
         var suppliers = await _supplierService.GetSuppliersByNameAsync(name);
         return Ok(suppliers);
+    }
+
+    /// <summary>
+    /// Search suppliers with advanced filtering, sorting, and pagination - Requires Purchasing.Read permission
+    /// </summary>
+    /// <remarks>
+    /// Supported filters: name, email, country, city, isActive
+    /// Supported sort fields: id, name, email, city, country, createdAt
+    /// </remarks>
+    [HttpGet("advanced-search")]
+    [HasPermission("Purchasing", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<SupplierDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PaginatedResult<SupplierDto>>> AdvancedSearch([FromQuery] QuerySpec query)
+    {
+        try
+        {
+            query.Validate();
+            var spec = new SupplierQuerySpec(query);
+            var result = await _supplierService.QuerySuppliersAsync(spec);
+            _logger.LogInformation("Searched suppliers with query: {@Query}", query);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Invalid query specification");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching suppliers");
+            return StatusCode(500, new { message = "An error occurred searching suppliers" });
+        }
     }
 
     /// <summary>
@@ -136,14 +171,14 @@ public class SuppliersController : ControllerBase
 
         try
         {
-            _logger.LogInformation("Creating new supplier: {Name}", dto.Name);
+            _logger.LogInformation("Creating new supplier: {@Supplier}", new { Name = dto.Name });
             var supplier = await _supplierService.CreateSupplierAsync(dto);
             await _cacheService.RemoveStateAsync("all_suppliers");
             return CreatedAtAction(nameof(GetSupplierById), new { id = supplier.Id }, supplier);
         }
         catch (InvalidOperationException ex)
         {
-            _logger.LogWarning("Conflict creating supplier: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Conflict creating supplier: {@Error}", new { Message = ex.Message });
             return Conflict(ex.Message);
         }
     }
@@ -166,21 +201,21 @@ public class SuppliersController : ControllerBase
 
         try
         {
-            _logger.LogInformation("Updating supplier with ID: {SupplierId}", id);
+            _logger.LogInformation("Updating supplier with ID: {@Supplier}", new { SupplierId = id });
             var supplier = await _supplierService.UpdateSupplierAsync(id, dto);
-            string cacheKey = $"Supplier-{id}";
+            string cacheKey = "Supplier-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
             await _cacheService.RemoveStateAsync("all_suppliers");
             return Ok(supplier);
         }
         catch (KeyNotFoundException ex)
         {
-            _logger.LogWarning("Supplier not found: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Supplier not found: {@Error}", new { Message = ex.Message });
             return NotFound(ex.Message);
         }
         catch (InvalidOperationException ex)
         {
-            _logger.LogWarning("Conflict updating supplier: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Conflict updating supplier: {@Error}", new { Message = ex.Message });
             return Conflict(ex.Message);
         }
     }
@@ -196,16 +231,16 @@ public class SuppliersController : ControllerBase
     {
         try
         {
-            _logger.LogInformation("Deleting supplier with ID: {SupplierId}", id);
+            _logger.LogInformation("Deleting supplier with ID: {@Supplier}", new { SupplierId = id });
             await _supplierService.DeleteSupplierAsync(id);
-            string cacheKey = $"Supplier-{id}";
+            string cacheKey = "Supplier-" + id;
             await _cacheService.RemoveStateAsync(cacheKey);
             await _cacheService.RemoveStateAsync("all_suppliers");
             return NoContent();
         }
         catch (KeyNotFoundException ex)
         {
-            _logger.LogWarning("Supplier not found: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Supplier not found: {@Error}", new { Message = ex.Message });
             return NotFound(ex.Message);
         }
     }

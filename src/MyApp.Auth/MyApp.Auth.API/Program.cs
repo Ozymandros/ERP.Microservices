@@ -19,12 +19,16 @@ using MyApp.Auth.Infrastructure.Services;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
+using MyApp.Shared.Infrastructure.Logging;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Resources;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog with sensitive data masking and OpenTelemetry integration
+builder.AddCustomLogging();
 
 builder.Services.AddOpenTelemetry()
     .WithTracing(tracing =>
@@ -59,7 +63,7 @@ var connectionString = builder.Configuration.GetConnectionString("AuthDb")
 builder.Services.AddCustomHealthChecks(connectionString ?? throw new InvalidOperationException("Connection string 'authdb' not found."));
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString, options => options.EnableRetryOnFailure()));
 
 // Configure Identity
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
@@ -218,18 +222,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Map health check endpoint
-app.MapHealthChecks("/health", new HealthCheckOptions
-{
-    ResponseWriter = async (context, report) =>
-    {
-        context.Response.ContentType = "application/json";
-        var result = System.Text.Json.JsonSerializer.Serialize(new
-        {
-            status = report.Status.ToString(),
-            components = report.Entries.Select(e => new { key = e.Key, value = e.Value.Status.ToString() })
-        });
-        await context.Response.WriteAsync(result);
-    }
-});
+app.UseCustomHealthChecks();
 
 app.Run();

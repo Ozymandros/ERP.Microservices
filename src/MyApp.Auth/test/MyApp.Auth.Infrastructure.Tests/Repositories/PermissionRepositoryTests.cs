@@ -21,9 +21,8 @@ public class PermissionRepositoryTests
 
     private Permission CreateTestPermission(string module, string action)
     {
-        var permission = new Permission
+        var permission = new Permission(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             Module = module,
             Action = action,
             Description = $"{module}.{action}"
@@ -161,9 +160,9 @@ public class PermissionRepositoryTests
         var salesRead = CreateTestPermission("Sales", "Read");
 
         _context.RolePermissions.AddRange(
-            new RolePermission {Id = Guid.NewGuid(), Role = role, Permission = inventoryRead },
-            new RolePermission {Id = Guid.NewGuid(), Role = role, Permission = inventoryCreate },
-            new RolePermission {Id = Guid.NewGuid(), Role = role, Permission = salesRead }
+            new RolePermission { Id = Guid.NewGuid(), Role = role, Permission = inventoryRead },
+            new RolePermission { Id = Guid.NewGuid(), Role = role, Permission = inventoryCreate },
+            new RolePermission { Id = Guid.NewGuid(), Role = role, Permission = salesRead }
         );
         _context.SaveChanges();
 
@@ -278,8 +277,8 @@ public class PermissionRepositoryTests
 
         _context.UserPermissions.AddRange(
             new UserPermission { Id = Guid.NewGuid(), User = user, Permission = inventoryRead },
-            new UserPermission {Id = Guid.NewGuid(), User = user, Permission = inventoryDelete },
-            new UserPermission {Id = Guid.NewGuid(), User = user, Permission = salesUpdate }
+            new UserPermission { Id = Guid.NewGuid(), User = user, Permission = inventoryDelete },
+            new UserPermission { Id = Guid.NewGuid(), User = user, Permission = salesUpdate }
         );
         _context.SaveChanges();
 
@@ -355,9 +354,8 @@ public class PermissionRepositoryTests
     public async Task AddAsync_WithNewPermission_CreatesPermission()
     {
         // Arrange
-        var permission = new Permission
+        var permission = new Permission(Guid.NewGuid())
         {
-            Id = Guid.NewGuid(),
             Module = "NewModule",
             Action = "NewAction",
             Description = "New permission"

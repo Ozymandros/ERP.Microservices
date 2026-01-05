@@ -32,8 +32,8 @@ public class InventoryTransactionServiceTests
     {
         // Arrange
         var transactionId = Guid.NewGuid();
-        var transaction = new InventoryTransaction { Id = transactionId };
-        var expectedDto = new InventoryTransactionDto { Id = transactionId };
+        var transaction = new InventoryTransaction(transactionId);
+        var expectedDto = new InventoryTransactionDto(transactionId, default, default, 0, default, default, null, null);
 
         _mockTransactionRepository.Setup(r => r.GetByIdAsync(transactionId)).ReturnsAsync(transaction);
         _mockMapper.Setup(m => m.Map<InventoryTransactionDto>(transaction)).Returns(expectedDto);
@@ -67,11 +67,11 @@ public class InventoryTransactionServiceTests
         var productId = Guid.NewGuid();
         var transactions = new List<InventoryTransaction>
         {
-            new InventoryTransaction { ProductId = productId }
+            new InventoryTransaction(Guid.NewGuid()) { ProductId = productId }
         };
         var dtos = new List<InventoryTransactionDto>
         {
-            new InventoryTransactionDto { ProductId = productId }
+            new InventoryTransactionDto(default, productId, default, 0, default, default, null, null)
         };
 
         _mockTransactionRepository.Setup(r => r.GetByProductIdAsync(productId)).ReturnsAsync(transactions);
@@ -92,11 +92,11 @@ public class InventoryTransactionServiceTests
         var warehouseId = Guid.NewGuid();
         var transactions = new List<InventoryTransaction>
         {
-            new InventoryTransaction { WarehouseId = warehouseId }
+            new InventoryTransaction(Guid.NewGuid()) { WarehouseId = warehouseId }
         };
         var dtos = new List<InventoryTransactionDto>
         {
-            new InventoryTransactionDto { WarehouseId = warehouseId }
+            new InventoryTransactionDto(default, default, warehouseId, 0, default, default, null, null)
         };
 
         _mockTransactionRepository.Setup(r => r.GetByWarehouseIdAsync(warehouseId)).ReturnsAsync(transactions);
@@ -117,11 +117,11 @@ public class InventoryTransactionServiceTests
         var transactionType = TransactionType.Inbound;
         var transactions = new List<InventoryTransaction>
         {
-            new InventoryTransaction { TransactionType = transactionType }
+            new InventoryTransaction(Guid.NewGuid()) { TransactionType = transactionType }
         };
         var dtos = new List<InventoryTransactionDto>
         {
-            new InventoryTransactionDto()
+            new InventoryTransactionDto(default, default, default, 0, default, default, null, null)
         };
 
         _mockTransactionRepository.Setup(r => r.GetByTransactionTypeAsync(transactionType)).ReturnsAsync(transactions);
@@ -141,13 +141,13 @@ public class InventoryTransactionServiceTests
         // Arrange
         var transactions = new List<InventoryTransaction>
         {
-            new InventoryTransaction(),
-            new InventoryTransaction()
+            new InventoryTransaction(Guid.NewGuid()),
+            new InventoryTransaction(Guid.NewGuid())
         };
         var dtos = new List<InventoryTransactionDto>
         {
-            new InventoryTransactionDto(),
-            new InventoryTransactionDto()
+            new InventoryTransactionDto(default, default, default, 0, default, default, null, null),
+            new InventoryTransactionDto(default, default, default, 0, default, default, null, null)
         };
 
         _mockTransactionRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(transactions);
@@ -166,15 +166,11 @@ public class InventoryTransactionServiceTests
     {
         // Arrange
         var productId = Guid.NewGuid();
-        var product = new Product { Id = productId, QuantityInStock = 100 };
-        var dto = new CreateUpdateInventoryTransactionDto
-        {
-            ProductId = productId,
-            QuantityChange = 50
-        };
-        var transaction = new InventoryTransaction { ProductId = productId, QuantityChange = 50 };
-        var createdTransaction = new InventoryTransaction { Id = Guid.NewGuid(), ProductId = productId, QuantityChange = 50 };
-        var expectedDto = new InventoryTransactionDto();
+        var product = new Product(productId) { QuantityInStock = 100 };
+        var dto = new CreateUpdateInventoryTransactionDto(productId, Guid.NewGuid(), 50, TransactionType.Inbound, default);
+        var transaction = new InventoryTransaction(Guid.NewGuid()) { ProductId = productId, QuantityChange = 50 };
+        var createdTransaction = new InventoryTransaction(Guid.NewGuid()) { ProductId = productId, QuantityChange = 50 };
+        var expectedDto = new InventoryTransactionDto(default, default, default, 0, default, default, null, null);
 
         _mockProductRepository.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync(product);
         _mockMapper.Setup(m => m.Map<InventoryTransaction>(dto)).Returns(transaction);
@@ -197,7 +193,7 @@ public class InventoryTransactionServiceTests
     {
         // Arrange
         var productId = Guid.NewGuid();
-        var dto = new CreateUpdateInventoryTransactionDto { ProductId = productId };
+        var dto = new CreateUpdateInventoryTransactionDto(productId, Guid.NewGuid(), 0, TransactionType.Inbound, default);
 
         _mockProductRepository.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync((Product?)null);
 
@@ -214,13 +210,9 @@ public class InventoryTransactionServiceTests
     {
         // Arrange
         var productId = Guid.NewGuid();
-        var product = new Product { Id = productId, Name = "Test Product", QuantityInStock = 10 };
-        var dto = new CreateUpdateInventoryTransactionDto
-        {
-            ProductId = productId,
-            QuantityChange = -20  // Trying to remove 20 when only 10 available
-        };
-        var transaction = new InventoryTransaction { QuantityChange = -20 };
+        var product = new Product(productId) { Name = "Test Product", QuantityInStock = 10 };
+        var dto = new CreateUpdateInventoryTransactionDto(productId, Guid.NewGuid(), -20, TransactionType.Outbound, default);
+        var transaction = new InventoryTransaction(Guid.NewGuid()) { QuantityChange = -20 };
 
         _mockProductRepository.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync(product);
         _mockMapper.Setup(m => m.Map<InventoryTransaction>(dto)).Returns(transaction);
@@ -240,20 +232,15 @@ public class InventoryTransactionServiceTests
         // Arrange
         var transactionId = Guid.NewGuid();
         var productId = Guid.NewGuid();
-        var product = new Product { Id = productId, QuantityInStock = 100 };
-        var existingTransaction = new InventoryTransaction
+        var product = new Product(productId) { QuantityInStock = 100 };
+        var existingTransaction = new InventoryTransaction(transactionId)
         {
-            Id = transactionId,
             ProductId = productId,
             QuantityChange = 10
         };
-        var updateDto = new CreateUpdateInventoryTransactionDto
-        {
-            ProductId = productId,
-            QuantityChange = 20
-        };
-        var updatedTransaction = new InventoryTransaction { QuantityChange = 20 };
-        var expectedDto = new InventoryTransactionDto();
+        var updateDto = new CreateUpdateInventoryTransactionDto(productId, Guid.NewGuid(), 20, TransactionType.Inbound, default);
+        var updatedTransaction = new InventoryTransaction(Guid.NewGuid()) { QuantityChange = 20 };
+        var expectedDto = new InventoryTransactionDto(default, default, default, 0, default, default, null, null);
 
         _mockTransactionRepository.Setup(r => r.GetByIdAsync(transactionId)).ReturnsAsync(existingTransaction);
         _mockProductRepository.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync(product);
@@ -276,7 +263,7 @@ public class InventoryTransactionServiceTests
     {
         // Arrange
         var transactionId = Guid.NewGuid();
-        var updateDto = new CreateUpdateInventoryTransactionDto();
+        var updateDto = new CreateUpdateInventoryTransactionDto(Guid.NewGuid(), Guid.NewGuid(), 0, TransactionType.Inbound, default);
 
         _mockTransactionRepository.Setup(r => r.GetByIdAsync(transactionId)).ReturnsAsync((InventoryTransaction?)null);
 
@@ -294,18 +281,13 @@ public class InventoryTransactionServiceTests
         // Arrange
         var transactionId = Guid.NewGuid();
         var productId = Guid.NewGuid();
-        var product = new Product { Id = productId, Name = "Test Product", QuantityInStock = 100 };
-        var existingTransaction = new InventoryTransaction
+        var product = new Product(productId) { Name = "Test Product", QuantityInStock = 100 };
+        var existingTransaction = new InventoryTransaction(transactionId)
         {
-            Id = transactionId,
             ProductId = productId,
             QuantityChange = 10
         };
-        var updateDto = new CreateUpdateInventoryTransactionDto
-        {
-            ProductId = productId,
-            QuantityChange = -200  // Would result in negative stock
-        };
+        var updateDto = new CreateUpdateInventoryTransactionDto(productId, Guid.NewGuid(), -200, TransactionType.Outbound, default);
 
         _mockTransactionRepository.Setup(r => r.GetByIdAsync(transactionId)).ReturnsAsync(existingTransaction);
         _mockProductRepository.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync(product);
@@ -324,10 +306,9 @@ public class InventoryTransactionServiceTests
         // Arrange
         var transactionId = Guid.NewGuid();
         var productId = Guid.NewGuid();
-        var product = new Product { Id = productId, QuantityInStock = 150 };
-        var transaction = new InventoryTransaction
+        var product = new Product(productId) { QuantityInStock = 150 };
+        var transaction = new InventoryTransaction(transactionId)
         {
-            Id = transactionId,
             ProductId = productId,
             QuantityChange = 50
         };
@@ -365,9 +346,8 @@ public class InventoryTransactionServiceTests
         // Arrange
         var transactionId = Guid.NewGuid();
         var productId = Guid.NewGuid();
-        var transaction = new InventoryTransaction
+        var transaction = new InventoryTransaction(transactionId)
         {
-            Id = transactionId,
             ProductId = productId,
             QuantityChange = 50
         };

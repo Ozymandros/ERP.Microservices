@@ -3,6 +3,8 @@ using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
+using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Purchasing.Application.Services;
 
@@ -125,5 +127,15 @@ public class PurchaseOrderService : IPurchaseOrderService
         }
 
         await _purchaseOrderRepository.DeleteAsync(order);
+    }
+
+    /// <summary>
+    /// Query purchase orders with filtering, sorting, and pagination
+    /// </summary>
+    public async Task<PaginatedResult<PurchaseOrderDto>> QueryPurchaseOrdersAsync(ISpecification<PurchaseOrder> spec)
+    {
+        var result = await _purchaseOrderRepository.QueryAsync(spec);
+        var dtos = result.Items.Select(po => _mapper.Map<PurchaseOrderDto>(po)).ToList();
+        return new PaginatedResult<PurchaseOrderDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }
 }

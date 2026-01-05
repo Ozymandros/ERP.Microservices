@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
+using MyApp.Inventory.Domain.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Pagination;
 
@@ -43,7 +44,7 @@ public class WarehousesController : ControllerBase
     {
         try
         {
-            _logger.LogInformation("Retrieving paginated warehouses: Page {PageNumber}, Size {PageSize}", pageNumber, pageSize);
+            _logger.LogInformation("Retrieving paginated warehouses: {@Pagination}", new { PageNumber = pageNumber, PageSize = pageSize });
             var result = await _warehouseService.GetAllWarehousesPaginatedAsync(pageNumber, pageSize);
             return Ok(result);
         }
@@ -51,6 +52,39 @@ public class WarehousesController : ControllerBase
         {
             _logger.LogError(ex, "Error retrieving paginated warehouses");
             return StatusCode(500, new { message = "An error occurred retrieving warehouses" });
+        }
+    }
+
+    /// <summary>
+    /// Search warehouses with advanced filtering, sorting, and pagination - Requires Inventory.Read permission
+    /// </summary>
+    /// <remarks>
+    /// Supported filters: name, location, city, country, isActive
+    /// Supported sort fields: id, name, location, city, country, createdAt
+    /// </remarks>
+    [HttpGet("search")]
+    [HasPermission("Inventory", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<WarehouseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PaginatedResult<WarehouseDto>>> Search([FromQuery] QuerySpec query)
+    {
+        try
+        {
+            query.Validate();
+            var spec = new WarehouseQuerySpec(query);
+            var result = await _warehouseService.QueryWarehousesAsync(spec);
+            _logger.LogInformation("Searched warehouses with query: {@Query}", query);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Invalid query specification");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching warehouses");
+            return StatusCode(500, new { message = "An error occurred searching warehouses" });
         }
     }
 
@@ -63,11 +97,11 @@ public class WarehousesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<WarehouseDto>> GetWarehouseById(Guid id)
     {
-        _logger.LogInformation("Retrieving warehouse with ID: {WarehouseId}", id);
+        _logger.LogInformation("Retrieving warehouse with ID: {@Warehouse}", new { WarehouseId = id });
         var warehouse = await _warehouseService.GetWarehouseByIdAsync(id);
         if (warehouse == null)
         {
-            _logger.LogWarning("Warehouse with ID {WarehouseId} not found", id);
+            _logger.LogWarning("Warehouse with ID {@Warehouse} not found", new { WarehouseId = id });
             return NotFound();
         }
         return Ok(warehouse);
@@ -90,13 +124,13 @@ public class WarehousesController : ControllerBase
 
         try
         {
-            _logger.LogInformation("Creating new warehouse: {Name}", dto.Name);
+            _logger.LogInformation("Creating new warehouse: {@Warehouse}", new { Name = dto.Name });
             var warehouse = await _warehouseService.CreateWarehouseAsync(dto);
             return CreatedAtAction(nameof(GetWarehouseById), new { id = warehouse.Id }, warehouse);
         }
         catch (InvalidOperationException ex)
         {
-            _logger.LogWarning("Conflict creating warehouse: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Conflict creating warehouse: {@Error}", new { Message = ex.Message });
             return Conflict(ex.Message);
         }
     }
@@ -119,18 +153,18 @@ public class WarehousesController : ControllerBase
 
         try
         {
-            _logger.LogInformation("Updating warehouse with ID: {WarehouseId}", id);
+            _logger.LogInformation("Updating warehouse with ID: {@Warehouse}", new { WarehouseId = id });
             var warehouse = await _warehouseService.UpdateWarehouseAsync(id, dto);
             return Ok(warehouse);
         }
         catch (KeyNotFoundException ex)
         {
-            _logger.LogWarning("Warehouse not found: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Warehouse not found: {@Error}", new { Message = ex.Message });
             return NotFound(ex.Message);
         }
         catch (InvalidOperationException ex)
         {
-            _logger.LogWarning("Conflict updating warehouse: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Conflict updating warehouse: {@Error}", new { Message = ex.Message });
             return Conflict(ex.Message);
         }
     }
@@ -146,13 +180,13 @@ public class WarehousesController : ControllerBase
     {
         try
         {
-            _logger.LogInformation("Deleting warehouse with ID: {WarehouseId}", id);
+            _logger.LogInformation("Deleting warehouse with ID: {@Warehouse}", new { WarehouseId = id });
             await _warehouseService.DeleteWarehouseAsync(id);
             return NoContent();
         }
         catch (KeyNotFoundException ex)
         {
-            _logger.LogWarning("Warehouse not found: {Message}", ex.Message);
+            _logger.LogWarning(ex, "Warehouse not found: {@Error}", new { Message = ex.Message });
             return NotFound(ex.Message);
         }
     }

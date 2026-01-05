@@ -6,7 +6,9 @@ using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Domain.Entities;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Auth.Application.Services;
 
@@ -174,5 +176,25 @@ public class RoleService : IRoleService
     {
         IEnumerable<Permission> permissions = await _roleRepository.GetPermissionsForRoleAsync(roleId);
         return _mapper.Map<IEnumerable<PermissionDto>>(permissions);
+    }
+
+    /// <summary>
+    /// Query roles with filtering, sorting, and pagination
+    /// </summary>
+    public async Task<PaginatedResult<RoleDto>> QueryRolesAsync(ISpecification<ApplicationRole> spec)
+    {
+        try
+        {
+            var result = await _roleRepository.QueryAsync(spec);
+            
+            var dtos = result.Items.Select(r => new RoleDto(r.Id, r.CreatedAt, "", r.UpdatedAt, null, r.Name, null)).ToList();
+            
+            return new PaginatedResult<RoleDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error querying roles");
+            throw;
+        }
     }
 }

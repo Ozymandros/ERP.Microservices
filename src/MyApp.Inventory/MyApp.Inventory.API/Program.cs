@@ -5,6 +5,7 @@ using MyApp.Inventory.Infrastructure.Data;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
+using MyApp.Shared.Infrastructure.Logging;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -45,8 +46,7 @@ var inventoryDbConnectionString = builder.Configuration.GetConnectionString("inv
 builder.Services.AddCustomHealthChecks(inventoryDbConnectionString ?? throw new InvalidOperationException("Connection string 'inventorydb' not found."));
 
 // Infrastructure & Application DI
-builder.Services.AddDbContext<InventoryDbContext>(options =>
-    options.UseSqlServer(inventoryDbConnectionString));
+builder.Services.AddDbContext<InventoryDbContext>(options => options.UseSqlServer(inventoryDbConnectionString, options => options.EnableRetryOnFailure()));
 
 builder.Services.AddHttpContextAccessor();
 

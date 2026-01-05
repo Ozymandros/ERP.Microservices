@@ -8,32 +8,31 @@ x-api-env: &api-env
   Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
   Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
   ConnectionStrings__cache: redis:6379,password=${REDIS_PASSWORD:-Redis@Secure123!},defaultDatabase=0,abortConnect=false,connectRetry=5,connectTimeout=5000,syncTimeout=5000
+  Jwt__RequireHttpsMetadata: "false"
+  ConnectionStrings__cache: "redis:6379,password=${REDIS_PASSWORD:-Redis@Secure123!},abortConnect=false"
   DAPR_HTTP_PORT: "3500"
   DAPR_GRPC_PORT: "50001"
 
 services:
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqlserver
-    environment:
-      ACCEPT_EULA: "Y"
-      MSSQL_PID: Developer
-      MSSQL_SA_PASSWORD: ${SQL_PASSWORD:-P@ssw0rd12345!}
-    ports:
-      - "1455:1433"
-    volumes:
-      - sqlserver-data:/var/opt/mssql
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P ${SQL_PASSWORD:-P@ssw0rd12345!} -C -Q 'SELECT 1' || exit 1"
-      interval: 30s
-      timeout: 10s
-      retries: 10
-      start_period: 30s
-    networks:
-      - erp
-    restart: unless-stopped
+      image: mcr.microsoft.com/mssql/server:2022-latest
+      container_name: sqlserver
+      environment:
+        ACCEPT_EULA: "Y"
+        MSSQL_PID: Developer
+        MSSQL_SA_PASSWORD: ${SQL_PASSWORD:-P@ssw0rd12345!}
+      ports:
+        - "1455:1433"
+      volumes:
+        - sqlserver-data:/var/opt/mssql
+      healthcheck:
+        # AQUESTA ÉS LA COMANDA CORRECTA:
+        test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${SQL_PASSWORD:-P@ssw0rd12345!}' -C -Q 'SELECT 1' || exit 1"]
+        interval: 10s
+        timeout: 5s
+        retries: 10
+      networks:
+        - erp
 
   redis:
     image: redis:7-alpine
@@ -48,8 +47,9 @@ services:
     healthcheck:
       test: ["CMD", "redis-cli", "-a", *redis-password, "ping"]
       interval: 10s
-      timeout: 3s
-      retries: 3
+      timeout: 5s
+      retries: 10           # ✅ More retries (was 3)
+      start_period: 120s    # ✅ 2 minutes startup time (was 30s)
     restart: unless-stopped
 
   redis-commander:
@@ -86,17 +86,17 @@ services:
       - erp
     restart: unless-stopped
 
-  dapr-sentry:
-    image: daprio/dapr:1.13.0
-    container_name: dapr-sentry
-    command: ["./sentry", "-port", "50001", "-log-level", "info"]
-    ports:
-      - "50001:50001"
-    networks:
-      - erp
-    depends_on:
-      - dapr-placement
-    restart: unless-stopped
+  # dapr-sentry:
+  #   image: daprio/dapr:1.13.0
+  #   container_name: dapr-sentry
+  #   command: ["./sentry", "-port", "50001", "-log-level", "info"]
+  #   ports:
+  #     - "50001:50001"
+  #   networks:
+  #     - erp
+  #   depends_on:
+  #     - dapr-placement
+  #   restart: unless-stopped
 
   erpapigateway:
     build:
@@ -121,25 +121,25 @@ services:
       - "5000:8080"
     depends_on:
       auth-service:
-        condition: service_healthy
+        condition: service_started
       # billing-service:
-      #   condition: service_healthy
+      #   condition: service_started
       inventory-service:
-        condition: service_healthy
+        condition: service_started
       orders-service:
-        condition: service_healthy
+        condition: service_started
       purchasing-service:
-        condition: service_healthy
+        condition: service_started
       sales-service:
-        condition: service_healthy
+        condition: service_started
     volumes:
       - ./src/ErpApiGateway/ocelot.json:/app/ocelot.json:ro
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
-      timeout: 3s
-      retries: 3
-      start_period: 30s
+      timeout: 5s
+      retries: 10           # ✅ More retries (was 3)
+      start_period: 120s    # ✅ 2 minutes startup time (was 30s)
     networks:
       - erp
     restart: unless-stopped
@@ -151,7 +151,7 @@ services:
     container_name: auth-service
     environment:
       <<: *api-env
-      ConnectionStrings__AuthDb: Server=sqlserver,1433;Database=AuthDb;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+      ConnectionStrings__AuthDb: Server=sqlserver,1433;Database=AuthDb;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
       sqlserver:
         condition: service_healthy
@@ -164,9 +164,9 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
-      timeout: 3s
-      retries: 3
-      start_period: 30s
+      timeout: 5s
+      retries: 10           # ✅ More retries (was 3)
+      start_period: 120s    # ✅ 2 minutes startup time (was 30s)
     networks:
       - erp
     restart: unless-stopped
@@ -177,7 +177,7 @@ services:
     depends_on:
       - auth-service
       - dapr-placement
-      - dapr-sentry
+      # - dapr-sentry
     command:
       [
         "./daprd",
@@ -185,7 +185,7 @@ services:
         "-app-port", "8080",
         "-components-path", "/components",
         "-placement-host-address", "dapr-placement:50005",
-        "-sentry-address", "dapr-sentry:50001",
+        # "-sentry-address", "dapr-sentry:50001",
         "-log-level", "info"
       ]
     volumes:
@@ -193,6 +193,7 @@ services:
     network_mode: "service:auth-service"
     restart: unless-stopped
 
+# TODO: 
   # billing-service:
   #   build:
   #     context: ./src
@@ -201,6 +202,7 @@ services:
   #   environment:
   #     <<: *api-env
   #     ConnectionStrings__BillingDb: Server=sqlserver,1433;Database=BillingDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+  #     #TODO: ConnectionStrings__BillingDb: Server=sqlserver,1433;Database=BillingDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
   #   depends_on:
   #     sqlserver:
   #       condition: service_healthy
@@ -213,9 +215,9 @@ services:
   #   healthcheck:
   #     test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
   #     interval: 10s
-  #     timeout: 3s
-  #     retries: 3
-  #     start_period: 30s
+  #     timeout: 5s
+  #     retries: 10           # ✅ More retries (was 3)
+  #     start_period: 120s    # ✅ 2 minutes startup time (was 30s)
   #   networks:
   #     - erp
   #   restart: unless-stopped
@@ -226,7 +228,7 @@ services:
   #   depends_on:
   #     - billing-service
   #     - dapr-placement
-  #     - dapr-sentry
+  #     # - dapr-sentry
   #   command:
   #     [
   #       "./daprd",
@@ -234,7 +236,7 @@ services:
   #       "-app-port", "8080",
   #       "-components-path", "/components",
   #       "-placement-host-address", "dapr-placement:50005",
-  #       "-sentry-address", "dapr-sentry:50001",
+  #       # "-sentry-address", "dapr-sentry:50001",
   #       "-log-level", "info"
   #     ]
   #   volumes:
@@ -249,7 +251,7 @@ services:
     container_name: inventory-service
     environment:
       <<: *api-env
-      ConnectionStrings__InventoryDb: Server=sqlserver,1433;Database=InventoryDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+      ConnectionStrings__InventoryDb: Server=sqlserver,1433;Database=InventoryDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
       sqlserver:
         condition: service_healthy
@@ -262,9 +264,9 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
-      timeout: 3s
-      retries: 3
-      start_period: 30s
+      timeout: 5s
+      retries: 10           # ✅ More retries (was 3)
+      start_period: 120s    # ✅ 2 minutes startup time (was 30s)
     networks:
       - erp
     restart: unless-stopped
@@ -275,7 +277,7 @@ services:
     depends_on:
       - inventory-service
       - dapr-placement
-      - dapr-sentry
+      # - dapr-sentry
     command:
       [
         "./daprd",
@@ -283,7 +285,7 @@ services:
         "-app-port", "8080",
         "-components-path", "/components",
         "-placement-host-address", "dapr-placement:50005",
-        "-sentry-address", "dapr-sentry:50001",
+        # "-sentry-address", "dapr-sentry:50001",
         "-log-level", "info"
       ]
     volumes:
@@ -298,7 +300,7 @@ services:
     container_name: orders-service
     environment:
       <<: *api-env
-      ConnectionStrings__OrdersDb: Server=sqlserver,1433;Database=OrdersDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+      ConnectionStrings__OrdersDb: Server=sqlserver,1433;Database=OrdersDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
       sqlserver:
         condition: service_healthy
@@ -311,9 +313,9 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
-      timeout: 3s
-      retries: 3
-      start_period: 30s
+      timeout: 5s
+      retries: 10           # ✅ More retries (was 3)
+      start_period: 120s    # ✅ 2 minutes startup time (was 30s)
     networks:
       - erp
     restart: unless-stopped
@@ -324,7 +326,7 @@ services:
     depends_on:
       - orders-service
       - dapr-placement
-      - dapr-sentry
+      # - dapr-sentry
     command:
       [
         "./daprd",
@@ -332,7 +334,7 @@ services:
         "-app-port", "8080",
         "-components-path", "/components",
         "-placement-host-address", "dapr-placement:50005",
-        "-sentry-address", "dapr-sentry:50001",
+        # "-sentry-address", "dapr-sentry:50001",
         "-log-level", "info"
       ]
     volumes:
@@ -347,7 +349,7 @@ services:
     container_name: purchasing-service
     environment:
       <<: *api-env
-      ConnectionStrings__PurchasingDb: Server=sqlserver,1433;Database=PurchasingDb;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+      ConnectionStrings__PurchasingDb: Server=sqlserver,1433;Database=PurchasingDb;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
       sqlserver:
         condition: service_healthy
@@ -360,9 +362,9 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
-      timeout: 3s
-      retries: 3
-      start_period: 30s
+      timeout: 5s
+      retries: 10           # ✅ More retries (was 3)
+      start_period: 120s    # ✅ 2 minutes startup time (was 30s)
     networks:
       - erp
     restart: unless-stopped
@@ -373,7 +375,7 @@ services:
     depends_on:
       - purchasing-service
       - dapr-placement
-      - dapr-sentry
+      # - dapr-sentry
     command:
       [
         "./daprd",
@@ -381,7 +383,7 @@ services:
         "-app-port", "8080",
         "-components-path", "/components",
         "-placement-host-address", "dapr-placement:50005",
-        "-sentry-address", "dapr-sentry:50001",
+        # "-sentry-address", "dapr-sentry:50001",
         "-log-level", "info"
       ]
     volumes:
@@ -396,7 +398,7 @@ services:
     container_name: sales-service
     environment:
       <<: *api-env
-      ConnectionStrings__SalesDb: Server=sqlserver,1433;Database=SalesDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
+      ConnectionStrings__SalesDb: Server=sqlserver,1433;Database=SalesDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
       sqlserver:
         condition: service_healthy
@@ -409,9 +411,9 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
-      timeout: 3s
-      retries: 3
-      start_period: 30s
+      timeout: 5s
+      retries: 10           # ✅ More retries (was 3)
+      start_period: 120s    # ✅ 2 minutes startup time (was 30s)
     networks:
       - erp
     restart: unless-stopped
@@ -422,7 +424,7 @@ services:
     depends_on:
       - sales-service
       - dapr-placement
-      - dapr-sentry
+      # - dapr-sentry
     command:
       [
         "./daprd",
@@ -430,7 +432,7 @@ services:
         "-app-port", "8080",
         "-components-path", "/components",
         "-placement-host-address", "dapr-placement:50005",
-        "-sentry-address", "dapr-sentry:50001",
+        # "-sentry-address", "dapr-sentry:50001",
         "-log-level", "info"
       ]
     volumes:
