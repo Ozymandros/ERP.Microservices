@@ -48,6 +48,9 @@ RUN apt-get update && \
 # and the non-root user won't have permissions to run them.
 COPY --from=publish /app/publish .
 
+# Note: DocFX _site directory is mounted via volume in docker-compose.yml
+# No need to COPY it here since the build context is ./src and _site is at the root
+
 # 2. Change ownership AFTER the files are already in the folder
 # This ensures that 'appuser' owns the actual DLLs.
 RUN chown -R appuser:appuser /app

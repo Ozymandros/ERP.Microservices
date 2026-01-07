@@ -167,25 +167,55 @@ app.UseHealthChecks("/health");
 app.UseHealthChecks("/health/live");
 app.UseHealthChecks("/health/ready");
 
-// Configure DocFX static files: Serve documentation at /docs
-// The _site directory contains the generated DocFX documentation
-var docfxPath = Path.Combine(builder.Environment.ContentRootPath, "..", "_site");
-if (Directory.Exists(docfxPath))
-{
-    app.UseStaticFiles(new StaticFileOptions
-    {
-        FileProvider = new PhysicalFileProvider(docfxPath),
-        RequestPath = "/docs"
-    });
-
-    // Redirect /docs and /docs/ to /docs/index.html
-    app.MapGet("/docs", () => Results.Redirect("/docs/index.html")).ShortCircuit();
-    app.MapGet("/docs/", () => Results.Redirect("/docs/index.html")).ShortCircuit();
-}
-
 // According to Microsoft's official guidelines for .NET 10:
 // The Gateway does NOT generate its own OpenAPI document (it has no controllers).
 // Therefore, we do NOT call MapOpenApi() here.
+
+// Configure routing first (required for MapGet with ShortCircuit)
+app.UseRouting();
+
+// Configure DocFX static files: Serve documentation at /docs
+// The _site directory contains the generated DocFX documentation
+// IMPORTANT: These routes must be registered BEFORE Ocelot to prevent it from intercepting
+// In Docker, _site is mounted at /_site (see docker-compose.yml) or copied to /app/_site (see Dockerfile)
+// In local development, it's at ../_site relative to ContentRootPath
+var sitePath = Directory.Exists("/_site")
+    ? "/_site"  // Docker: mounted volume (preferred)
+    : Directory.Exists(Path.Combine(AppContext.BaseDirectory, "_site"))
+        ? Path.Combine(AppContext.BaseDirectory, "_site")  // Docker: copied to /app/_site (fallback)
+        : Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, "..", "_site")); // Local: relative path
+
+if (Directory.Exists(sitePath))
+{
+    // Middleware to handle /docs and /docs/ before UseStaticFiles processes them
+    // This prevents ambiguity and ensures proper redirect to /docs/index.html
+    app.Use(async (context, next) =>
+    {
+        var path = context.Request.Path.Value;
+        if (path == "/docs" || path == "/docs/")
+        {
+            context.Response.Redirect("/docs/index.html", permanent: false);
+            return; // Don't call next() - we've handled the request
+        }
+        await next();
+    });
+
+    // Use StaticFiles middleware: handles entire directory hierarchy automatically
+    // This is more efficient and simpler than MapGet with subpath
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(sitePath),
+        RequestPath = "/docs" // The prefix users see in the browser
+    });
+}
+else
+{
+    // Log warning if _site directory doesn't exist
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    logger.LogWarning("DocFX _site directory not found. Tried paths: /_site, {AppBasePath}/_site, {RelativePath}",
+        AppContext.BaseDirectory,
+        Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, "..", "_site")));
+}
 
 if (app.Environment.IsDevelopment())
 {
@@ -219,22 +249,36 @@ if (app.Environment.IsDevelopment())
     // Scalar will show a dropdown to select between different services
     if (endpoints.Count > 0)
     {
+        // Get the gateway base URL from configuration or use default
+        // In Docker, the gateway is exposed on port 5000 (mapped from 8080)
+        // In local development, use the configured URL or default to localhost:5000
+        var baseUrl = builder.Configuration["Gateway:BaseUrl"]
+            ?? "http://localhost:5000";
+
         app.MapScalarApiReference("/scalar", options =>
         {
             options.WithTitle("ERP Centralized Gateway API")
                    .WithTheme(ScalarTheme.Moon)
                    .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
 
-            // Add ALL endpoints dynamically
-            // Each endpoint can be selected via a dropdown within Scalar
+            // Generate servers and documents dynamically from the same endpoints list
+            // Each endpoint is both a document and a server (they are synonyms)
+            var servers = new List<Scalar.AspNetCore.ScalarServer>();
             for (int i = 0; i < endpoints.Count; i++)
             {
                 var (serviceDisplayName, upstreamPath) = endpoints[i];
-                var serviceId = upstreamPath.Split('/')[1]; // e.g., "auth" from "/auth/openapi/v1.json"
-                bool isDefault = i == 0; // The first service is the default
+                var servicePrefix = upstreamPath.Split('/')[1]; // e.g., "auth" from "/auth/openapi/v1.json"
 
-                options.AddDocument(serviceId, serviceDisplayName, upstreamPath, isDefault: isDefault);
+                // Create server: gateway base URL + service prefix
+                var serverUrl = $"{baseUrl}/{servicePrefix}";
+                servers.Add(new(serverUrl, serviceDisplayName));
+
+                // Add document: same endpoint info
+                bool isDefault = i == 0; // The first service is the default
+                options.AddDocument(servicePrefix, serviceDisplayName, upstreamPath, isDefault: isDefault);
             }
+
+            options.Servers = servers;
         }).ShortCircuit(); // CRITICAL: Prevents Ocelot from processing the /scalar route
     }
 }
@@ -243,7 +287,6 @@ else
     app.UseHttpsRedirection();
 }
 
-app.UseRouting();
 app.UseCors("AllowFrontend");
 
 // Authentication and Authorization middleware

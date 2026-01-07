@@ -133,6 +133,7 @@ services:
         condition: service_started
     volumes:
       - ./src/ErpApiGateway/ocelot.json:/app/ocelot.json:ro
+      - ./_site:/_site:ro  # Mount DocFX documentation directory
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s

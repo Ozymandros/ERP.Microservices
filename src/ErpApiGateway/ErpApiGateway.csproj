@@ -35,4 +35,11 @@
     <ProjectReference Include="..\MyApp.Shared\MyApp.Shared.Infrastructure\MyApp.Shared.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+  <Content Include="..\_site\**">
+    <Link>_site\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+  </Content>
+</ItemGroup>
+
 </Project>
