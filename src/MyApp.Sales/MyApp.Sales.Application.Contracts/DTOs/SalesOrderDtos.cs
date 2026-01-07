@@ -18,13 +18,13 @@ namespace MyApp.Sales.Application.Contracts.DTOs
     {
         public Guid SalesOrderId { get; init; } = default;
         public Guid ProductId { get; init; } = default;
-        
+
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
         public int Quantity { get; init; } = 1;
-        
+
         [Range(0, double.MaxValue, ErrorMessage = "UnitPrice must be greater than or equal to 0")]
         public decimal UnitPrice { get; init; } = 0;
-        
+
         public decimal LineTotal { get; init; } = 0;
     }
 
@@ -48,20 +48,20 @@ namespace MyApp.Sales.Application.Contracts.DTOs
     }
 
     public record CreateUpdateSalesOrderDto(
-        [property: Required(ErrorMessage = "OrderNumber is required")]
-        [property: StringLength(64)]
+        [Required(ErrorMessage = "OrderNumber is required")]
+        [StringLength(64)]
         string OrderNumber,
 
-        [property: Required(ErrorMessage = "CustomerId is required")]
+        [Required(ErrorMessage = "CustomerId is required")]
         Guid CustomerId,
 
-        [property: Required(ErrorMessage = "OrderDate is required")]
+        [Required(ErrorMessage = "OrderDate is required")]
         DateTime OrderDate,
 
-        [property: Range(0, int.MaxValue, ErrorMessage = "Status must be valid")]
+        [Range(0, int.MaxValue, ErrorMessage = "Status must be valid")]
         int Status = 0,
 
-        [property: Range(0, double.MaxValue, ErrorMessage = "TotalAmount must be greater than or equal to 0")]
+        [Range(0, double.MaxValue, ErrorMessage = "TotalAmount must be greater than or equal to 0")]
         decimal TotalAmount = 0,
 
         List<CreateUpdateSalesOrderLineDto>? Lines = null
@@ -71,13 +71,13 @@ namespace MyApp.Sales.Application.Contracts.DTOs
     }
 
     public record CreateUpdateSalesOrderLineDto(
-        [property: Required]
+        [Required]
         Guid ProductId,
 
-        [property: Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
+        [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
         int Quantity,
 
-        [property: Range(0, double.MaxValue, ErrorMessage = "UnitPrice must be greater than or equal to 0")]
+        [Range(0, double.MaxValue, ErrorMessage = "UnitPrice must be greater than or equal to 0")]
         decimal UnitPrice
     );
 }

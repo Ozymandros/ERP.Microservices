@@ -10,11 +10,11 @@ public record WarehouseDto(Guid Id) : AuditableGuidDto(Id)
 }
 
 public record CreateUpdateWarehouseDto(
-    [property: Required(ErrorMessage = "Name is required")]
-    [property: StringLength(255, MinimumLength = 1)]
+    [Required(ErrorMessage = "Name is required")]
+    [StringLength(255, MinimumLength = 1)]
     string Name,
 
-    [property: Required(ErrorMessage = "Location is required")]
-    [property: StringLength(500, MinimumLength = 1)]
+    [Required(ErrorMessage = "Location is required")]
+    [StringLength(500, MinimumLength = 1)]
     string Location = ""
 );

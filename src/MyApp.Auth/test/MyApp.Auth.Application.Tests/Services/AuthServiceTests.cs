@@ -49,7 +49,7 @@ public class AuthServiceTests : BaseServiceTest
     public async Task LoginAsync_WithValidCredentials_ShouldReturnTokenResponse()
     {
         // Arrange
-        var loginDto = new LoginDto("test@example.com", "ValidPassword123!");
+        var loginDto = new LoginDto { Email = "test@example.com", Password = "ValidPassword123!" };
 
         var user = new ApplicationUser
         {
@@ -87,7 +87,7 @@ public class AuthServiceTests : BaseServiceTest
     public async Task LoginAsync_WithInvalidEmail_ShouldReturnNull()
     {
         // Arrange
-        var loginDto = new LoginDto("nonexistent@example.com", "ValidPassword123!");
+        var loginDto = new LoginDto { Email = "nonexistent@example.com", Password = "ValidPassword123!" };
 
         _mockUserManager
             .Setup(x => x.FindByEmailAsync(loginDto.Email))

@@ -15,17 +15,17 @@ public record InventoryTransactionDto(
 );
 
 public record CreateUpdateInventoryTransactionDto(
-    [property: Required(ErrorMessage = "ProductId is required")]
+    [Required(ErrorMessage = "ProductId is required")]
     Guid ProductId,
 
-    [property: Required(ErrorMessage = "WarehouseId is required")]
+    [Required(ErrorMessage = "WarehouseId is required")]
     Guid WarehouseId,
 
-    [property: Required(ErrorMessage = "QuantityChange is required")]
-    [property: Range(-1000000, 1000000, ErrorMessage = "QuantityChange must be between -1000000 and 1000000")]
+    [Required(ErrorMessage = "QuantityChange is required")]
+    [Range(-1000000, 1000000, ErrorMessage = "QuantityChange must be between -1000000 and 1000000")]
     int QuantityChange,
 
-    [property: Required(ErrorMessage = "TransactionType is required")]
+    [Required(ErrorMessage = "TransactionType is required")]
     TransactionType TransactionType,
 
     DateTime TransactionDate
