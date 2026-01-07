@@ -7,15 +7,15 @@ namespace MyApp.Orders.Application.Contracts.Dtos
     public record CreateUpdateOrderDto
     {
         [Required]
-        public string OrderNumber { get; set; } = string.Empty;
-        
+        public string OrderNumber { get; init; } = string.Empty;
+
         [Required]
-        public Guid CustomerId { get; set; }
-        
+        public Guid CustomerId { get; init; }
+
         [Required]
-        public DateTime OrderDate { get; set; }
-        
+        public DateTime OrderDate { get; init; } = DateTime.UtcNow;
+
         [Required]
-        public List<OrderLineDto> Lines { get; set; } = new();
+        public List<OrderLineDto> Lines { get; init; } = new();
     }
 }

@@ -3,62 +3,49 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Sales.Application.Contracts.DTOs
 {
-    public record SalesOrderDto(
-        Guid Id,
-        DateTime CreatedAt = default,
-        string CreatedBy = "",
-        DateTime? UpdatedAt = null,
-        string? UpdatedBy = null,
-        string OrderNumber = "",
-        Guid CustomerId = default,
-        DateTime OrderDate = default,
-        int Status = 0,
-        decimal TotalAmount = 0,
-        CustomerDto? Customer = null,
-        List<SalesOrderLineDto>? Lines = null
-    ) : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy)
+    public record SalesOrderDto(Guid Id) : AuditableGuidDto(Id)
     {
-        public List<SalesOrderLineDto> Lines { get; set; } = Lines ?? new();
+        public DateTime OrderDate { get; init; } = default;
+        public string OrderNumber { get; init; } = string.Empty;
+        public Guid CustomerId { get; init; } = default;
+        public int Status { get; init; } = 0;
+        public decimal TotalAmount { get; init; } = 0;
+        public CustomerDto? Customer { get; init; }
+        public List<SalesOrderLineDto> Lines { get; init; } = new();
     }
 
-    public record SalesOrderLineDto(
-        Guid Id,
-        DateTime CreatedAt = default,
-        string CreatedBy = "",
-        DateTime? UpdatedAt = null,
-        string? UpdatedBy = null,
-        Guid SalesOrderId = default,
-        Guid ProductId = default,
-        [property: Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
-        int Quantity = 1,
-        [property: Range(0, double.MaxValue, ErrorMessage = "UnitPrice must be greater than or equal to 0")]
-        decimal UnitPrice = 0,
-        decimal LineTotal = 0
-    ) : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
+    public record SalesOrderLineDto(Guid Id) : AuditableGuidDto(Id)
+    {
+        public Guid SalesOrderId { get; init; } = default;
+        public Guid ProductId { get; init; } = default;
+        
+        [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
+        public int Quantity { get; init; } = 1;
+        
+        [Range(0, double.MaxValue, ErrorMessage = "UnitPrice must be greater than or equal to 0")]
+        public decimal UnitPrice { get; init; } = 0;
+        
+        public decimal LineTotal { get; init; } = 0;
+    }
 
-    public record CustomerDto(
-        Guid Id,
-        DateTime CreatedAt = default,
-        string CreatedBy = "",
-        DateTime? UpdatedAt = null,
-        string? UpdatedBy = null,
+    public record CustomerDto(Guid Id) : AuditableGuidDto(Id)
+    {
+        [Required(ErrorMessage = "Name is required")]
+        [StringLength(255, MinimumLength = 1)]
+        public string Name { get; init; } = string.Empty;
 
-        [property: Required(ErrorMessage = "Name is required")]
-        [property: StringLength(255, MinimumLength = 1)]
-        string Name = "",
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress]
+        [StringLength(255)]
+        public string Email { get; init; } = string.Empty;
 
-        [property: Required(ErrorMessage = "Email is required")]
-        [property: EmailAddress]
-        [property: StringLength(255)]
-        string Email = "",
+        [Phone]
+        [StringLength(20)]
+        public string PhoneNumber { get; init; } = string.Empty;
 
-        [property: Phone]
-        [property: StringLength(20)]
-        string PhoneNumber = "",
-
-        [property: StringLength(500)]
-        string Address = ""
-    ) : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
+        [StringLength(500)]
+        public string Address { get; init; } = string.Empty;
+    }
 
     public record CreateUpdateSalesOrderDto(
         [property: Required(ErrorMessage = "OrderNumber is required")]
@@ -80,7 +67,7 @@ namespace MyApp.Sales.Application.Contracts.DTOs
         List<CreateUpdateSalesOrderLineDto>? Lines = null
     )
     {
-        public List<CreateUpdateSalesOrderLineDto> Lines { get; set; } = Lines ?? new();
+        public List<CreateUpdateSalesOrderLineDto> Lines { get; init; } = Lines ?? new();
     }
 
     public record CreateUpdateSalesOrderLineDto(

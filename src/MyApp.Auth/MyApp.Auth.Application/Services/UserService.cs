@@ -59,27 +59,42 @@ public class UserService : IUserService
             return null;
         }
 
-        var userDto = _mapper.Map<UserDto>(user);
+        var baseUserDto = _mapper.Map<UserDto>(user);
 
         var roles = await GetUserRolesAsync(user.Id);
-        userDto.Roles = _mapper.Map<List<RoleDto?>>(roles);
+        var mappedRoles = _mapper.Map<List<RoleDto?>>(roles);
 
-        if(roles.Any(r => r.Name != null && r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase)))
+        List<PermissionDto?> permissions;
+        bool isAdmin = roles.Any(r => r.Name != null && r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
+        
+        if (isAdmin)
         {
-            userDto.IsAdmin = true;
-
-            var permissons = await _permissionRepository.GetAllAsync();
-            userDto.Permissions = _mapper.Map<List<PermissionDto?>>(permissons);
+            var allPermissions = await _permissionRepository.GetAllAsync();
+            permissions = _mapper.Map<List<PermissionDto?>>(allPermissions);
         }
         else
         {
-            userDto.IsAdmin = false;
-
-            var permissons = await _permissionRepository.GetAllPermissionsByUserId(user.Id);
-            userDto.Permissions = _mapper.Map<List<PermissionDto?>>(permissons);
+            var userPermissions = await _permissionRepository.GetAllPermissionsByUserId(user.Id);
+            permissions = _mapper.Map<List<PermissionDto?>>(userPermissions);
         }
 
-        return userDto;
+        return new UserDto(baseUserDto.Id)
+        {
+            CreatedAt = baseUserDto.CreatedAt,
+            CreatedBy = baseUserDto.CreatedBy,
+            UpdatedAt = baseUserDto.UpdatedAt,
+            UpdatedBy = baseUserDto.UpdatedBy,
+            Email = baseUserDto.Email,
+            Username = baseUserDto.Username,
+            FirstName = baseUserDto.FirstName,
+            LastName = baseUserDto.LastName,
+            EmailConfirmed = baseUserDto.EmailConfirmed,
+            IsExternalLogin = baseUserDto.IsExternalLogin,
+            ExternalProvider = baseUserDto.ExternalProvider,
+            Roles = mappedRoles,
+            Permissions = permissions,
+            IsAdmin = isAdmin
+        };
     }
 
     public async Task<UserDto?> GetUserByIdAsync(Guid userId)
@@ -284,23 +299,23 @@ public class UserService : IUserService
         {
             var result = await _userRepository.QueryAsync(spec);
             
-            var dtos = result.Items.Select(u => new UserDto(
-                u.Id,
-                u.CreatedAt,
-                "",
-                u.UpdatedAt,
-                null,
-                u.Email,
-                u.UserName,
-                u.FirstName,
-                u.LastName,
-                u.EmailConfirmed,
-                u.IsExternalLogin,
-                u.ExternalProvider,
-                null,
-                null,
-                false
-            )).ToList();
+            var dtos = result.Items.Select(u => new UserDto(u.Id)
+            {
+                CreatedAt = u.CreatedAt,
+                CreatedBy = "",
+                UpdatedAt = u.UpdatedAt,
+                UpdatedBy = null,
+                Email = u.Email,
+                Username = u.UserName,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                EmailConfirmed = u.EmailConfirmed,
+                IsExternalLogin = u.IsExternalLogin,
+                ExternalProvider = u.ExternalProvider,
+                Roles = new List<RoleDto?>(),
+                Permissions = new List<PermissionDto?>(),
+                IsAdmin = false
+            }).ToList();
             
             return new PaginatedResult<UserDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
         }

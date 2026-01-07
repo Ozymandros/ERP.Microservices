@@ -54,7 +54,7 @@ public static class JwtAuthenticationExtensions
                     ValidateAudience = true,
                     ValidAudience = audience,
                     ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
+                    ClockSkew = TimeSpan.FromSeconds(30) // Permet 30 segons de marge per sincronització Docker/contenidors
                 };
 
                 options.RequireHttpsMetadata = https;

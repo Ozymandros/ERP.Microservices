@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OpenApi;
 using MyApp.Shared.Infrastructure.OpenApi;
+using Scalar.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MyApp.Auth.Application.Contracts;
@@ -47,12 +48,45 @@ builder.Services.AddOpenTelemetry()
 // This line registers the DaprClient (Singleton) in the Dependency Injection (DI) container
 builder.Services.AddDaprClient();
 
+// Configure JSON options FIRST - before AddOpenApi() so JsonSchemaExporter uses them
+// builder.Services.ConfigureHttpJsonOptions(options =>
+// {
+//     options.SerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+//     options.SerializerOptions.Converters.Add(new MyApp.Shared.Infrastructure.Json.DateTimeConverter());
+//     options.SerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
+// });
+
+// Configure JSON options for Controllers as well
+// builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+// {
+//     options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+//     options.JsonSerializerOptions.Converters.Add(new MyApp.Shared.Infrastructure.Json.DateTimeConverter());
+//     options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
+// });
+
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer<JwtSecuritySchemeDocumentTransformer>();
+    options.AddDocumentTransformer<MyApp.Shared.Infrastructure.OpenApi.DateTimeSchemaDocumentTransformer>();
+
+    // Forçem el tipus a nivell d'esquema per evitar que el serialitzador intern pete
+    options.AddSchemaTransformer((schema, context, cancellationToken) =>
+    {
+        if (context.JsonTypeInfo.Type == typeof(DateTime) || context.JsonTypeInfo.Type == typeof(DateTime?))
+        {
+            schema.Type = Microsoft.OpenApi.JsonSchemaType.String;
+            schema.Format = "date-time";
+            schema.Default = null; // Evita que el motor intenti serialitzar un default(DateTime)
+            schema.Example = null;
+        }
+        return Task.CompletedTask;
+    });
+
+    // També afegim el transformer compartit com a fallback
+    options.AddSchemaTransformer<MyApp.Shared.Infrastructure.OpenApi.DateTimeSchemaTransformer>();
 });
 
 // Database configuration
@@ -99,7 +133,7 @@ builder.Services
             ValidateAudience = true,
             ValidAudience = audience,
             ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero
+            ClockSkew = TimeSpan.FromSeconds(30) // Permet 30 segons de marge per sincronització Docker/contenidors
         };
         // Si es Desarrollo, permitimos HTTP. Si no (Prod/Staging), HTTPS es obligatorio.
         if (builder.Environment.IsDevelopment())
@@ -200,13 +234,13 @@ using (var scope = app.Services.CreateScope())
     await PermissionSeeder.SeedPermissionsAsync(dbContext);
 }
 
+// Map OpenAPI endpoint (available for Gateway access)
+app.MapOpenApi();
+
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/openapi/v1.json", "Auth API v1");
-    });
+    // Use Scalar instead of SwaggerUI - lighter and more stable
+    app.MapScalarApiReference();
 }
 else
 {

@@ -5,9 +5,9 @@ namespace MyApp.Shared.Domain.DTOs
     public abstract record BaseDto<T>(T Id) : IDto<T>
     where T : IComparable, IComparable<T>, IEquatable<T>, IFormattable, IParsable<T>
     {
-        // Tornem a declarar la propietat per canviar l'init per un set.
-        // AixÚ satisf‡ la interfÌcie IDto<T>.Id.set
+        // Tornem a declarar la propietat per canviar l'init per un init.
+        // Aix√≤ satisf√† la interf√≠cie IDto<T>.Id.init
         [Key]
-        public T Id { get; set; } = Id;
+        public T Id { get; init; } = Id;
     }
 }

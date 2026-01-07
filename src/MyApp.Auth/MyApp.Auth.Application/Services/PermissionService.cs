@@ -189,7 +189,16 @@ public class PermissionService : IPermissionService
         {
             var result = await _permissionRepository.QueryAsync(spec);
             
-            var dtos = result.Items.Select(p => new PermissionDto(p.Id, p.CreatedAt, "", p.UpdatedAt, null, p.Module, p.Action, p.Description)).ToList();
+            var dtos = result.Items.Select(p => new PermissionDto(p.Id)
+            {
+                CreatedAt = p.CreatedAt,
+                CreatedBy = "",
+                UpdatedAt = p.UpdatedAt,
+                UpdatedBy = null,
+                Module = p.Module,
+                Action = p.Action,
+                Description = p.Description
+            }).ToList();
             
             return new PaginatedResult<PermissionDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
         }

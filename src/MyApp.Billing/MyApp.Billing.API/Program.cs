@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.OpenApi;
 using MyApp.Shared.Infrastructure.Extensions;
 using MyApp.Shared.Infrastructure.Logging;
+using MyApp.Shared.Infrastructure.OpenApi;
+using Scalar.AspNetCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -25,10 +27,45 @@ builder.Services.AddOpenTelemetry()
         .AddRuntimeInstrumentation()
         .AddOtlpExporter());
 
+// Configure JSON options FIRST - before AddOpenApi() so JsonSchemaExporter uses them
+// builder.Services.ConfigureHttpJsonOptions(options =>
+// {
+//     options.SerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+//     options.SerializerOptions.Converters.Add(new MyApp.Shared.Infrastructure.Json.DateTimeConverter());
+//     options.SerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
+// });
+
+// Configure JSON options for Controllers as well
+// builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+// {
+//     options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+//     options.JsonSerializerOptions.Converters.Add(new MyApp.Shared.Infrastructure.Json.DateTimeConverter());
+//     options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
+// });
+
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<MyApp.Shared.Infrastructure.OpenApi.DateTimeSchemaDocumentTransformer>();
+
+    // Forçem el tipus a nivell d'esquema per evitar que el serialitzador intern pete
+    options.AddSchemaTransformer((schema, context, cancellationToken) =>
+    {
+        if (context.JsonTypeInfo.Type == typeof(DateTime) || context.JsonTypeInfo.Type == typeof(DateTime?))
+        {
+            schema.Type = Microsoft.OpenApi.JsonSchemaType.String;
+            schema.Format = "date-time";
+            schema.Default = null; // Evita que el motor intenti serialitzar un default(DateTime)
+            schema.Example = null;
+        }
+        return Task.CompletedTask;
+    });
+
+    // També afegim el transformer compartit com a fallback
+    options.AddSchemaTransformer<MyApp.Shared.Infrastructure.OpenApi.DateTimeSchemaTransformer>();
+});
 
 // Get connection string
 //TODO: var billingDbConnectionString = builder.Configuration.GetConnectionString("billingdb");
@@ -52,10 +89,13 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+// Map OpenAPI endpoint (available for Gateway access)
+app.MapOpenApi();
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // Use Scalar instead of SwaggerUI - lighter and more stable
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();

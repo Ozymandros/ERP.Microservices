@@ -5,18 +5,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Purchasing.Application.Contracts.DTOs;
 
-public record SupplierDto(
-    Guid Id,
-    DateTime CreatedAt = default,
-    string CreatedBy = "",
-    DateTime? UpdatedAt = null,
-    string? UpdatedBy = null,
-    string Name = "",
-    string ContactName = "",
-    string Email = "",
-    string PhoneNumber = "",
-    string Address = ""
-) : AuditableGuidDto(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy);
+public record SupplierDto(Guid Id) : AuditableGuidDto(Id)
+{
+    public string Name { get; init; } = string.Empty;
+    public string ContactName { get; init; } = string.Empty;
+    public string Email { get; init; } = string.Empty;
+    public string PhoneNumber { get; init; } = string.Empty;
+    public string Address { get; init; } = string.Empty;
+}
 
 public record CreateUpdateSupplierDto(
     [property: Required(ErrorMessage = "Name is required")]

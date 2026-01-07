@@ -32,18 +32,23 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 EXPOSE 8080
 
-# Install curl for health checks
+# Pre-install dependencies in a separate layer for better caching
+# This layer will be cached and reused unless the base image changes
 USER root
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl ca-certificates && \
+    rm -rf /var/lib/apt/lists/* && \
+    groupadd -r appuser && \
+    useradd -r -g appuser appuser
 
-# Create non-root user
-RUN groupadd -r appuser && useradd -r -g appuser appuser
-
-# Copy files and set ownership
+# Copy files and set ownership (this changes more frequently)
+# IMPORTANT: Copy files while still root, then change ownership
+# If we switch to 'appuser' before copying, the files will be owned by root
+# and the non-root user won't have permissions to run them
 COPY --from=publish /app/publish .
 RUN chown -R appuser:appuser /app
 
-# Switch to non-root user
+# Switch to non-root user for security (principle of least privilege)
 USER appuser
 
 ENTRYPOINT ["dotnet", "MyApp.Purchasing.API.dll"]

@@ -40,7 +40,7 @@ public class SalesOrderServiceTests
             TotalAmount = 250.00m
         };
 
-        var expectedDto = new SalesOrderDto(Guid.NewGuid(), default, "", null, null, "SO-001", Guid.NewGuid(), DateTime.UtcNow, 0, 250.00m, null, null);
+        var expectedDto = new SalesOrderDto(Guid.NewGuid(), default, DateTime.UtcNow, "", null, null, "SO-001", Guid.NewGuid(), 0, 250.00m, null, null);
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
         _mockMapper.Setup(m => m.Map<SalesOrderDto>(order)).Returns(expectedDto);
@@ -89,8 +89,8 @@ public class SalesOrderServiceTests
 
         var orderDtos = new List<SalesOrderDto>
         {
-            new SalesOrderDto(Guid.NewGuid(), default, "", null, null, "SO-001", Guid.NewGuid(), DateTime.UtcNow, 0, 100.00m , null, null),
-            new SalesOrderDto(Guid.NewGuid(), default, "", null, null, "SO-002", Guid.NewGuid(), DateTime.UtcNow, 0, 200.00m , null, null)
+            new SalesOrderDto(Guid.NewGuid(), default, DateTime.UtcNow, "", null, null, "SO-001", Guid.NewGuid(), 0, 100.00m , null, null),
+            new SalesOrderDto(Guid.NewGuid(), default, DateTime.UtcNow, "", null, null, "SO-002", Guid.NewGuid(), 0, 200.00m , null, null)
         };
 
         _mockOrderRepository.Setup(r => r.ListAsync()).ReturnsAsync(orders);
@@ -131,7 +131,7 @@ public class SalesOrderServiceTests
             Lines = new List<SalesOrderLine>()
         };
 
-        var expectedDto = new SalesOrderDto(Guid.NewGuid(), default, "", null, null, "SO-003", customerId, DateTime.UtcNow, 0, 50.00m, null, null);
+        var expectedDto = new SalesOrderDto(Guid.NewGuid(), default, DateTime.UtcNow, "", null, null, "SO-003", customerId, 0, 50.00m, null, null);
 
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
         _mockMapper.Setup(m => m.Map<SalesOrder>(createDto)).Returns(mappedOrder);
@@ -202,7 +202,7 @@ public class SalesOrderServiceTests
                 Quantity = dto.Quantity,
                 UnitPrice = dto.UnitPrice
             });
-        _mockMapper.Setup(m => m.Map<SalesOrderDto>(It.IsAny<SalesOrder>())).Returns(new SalesOrderDto(Guid.NewGuid(), default, "", null, null, "SO-001", customerId, DateTime.UtcNow, 0, 91.00m, null, null));
+        _mockMapper.Setup(m => m.Map<SalesOrderDto>(It.IsAny<SalesOrder>())).Returns(new SalesOrderDto(Guid.NewGuid(), default, DateTime.UtcNow, "", null, null, "SO-001", customerId, 0, 91.00m, null, null));
 
         // Act
         await _salesOrderService.CreateSalesOrderAsync(createDto);
@@ -226,7 +226,7 @@ public class SalesOrderServiceTests
 
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
         _mockMapper.Setup(m => m.Map<SalesOrder>(createDto)).Returns(mappedOrder);
-        _mockMapper.Setup(m => m.Map<SalesOrderDto>(It.IsAny<SalesOrder>())).Returns(new SalesOrderDto(Guid.NewGuid(), default, "", null, null, "SO-002", customerId, DateTime.UtcNow, 0, 0, null, null));
+        _mockMapper.Setup(m => m.Map<SalesOrderDto>(It.IsAny<SalesOrder>())).Returns(new SalesOrderDto(Guid.NewGuid(), default, DateTime.UtcNow, "", null, null, "SO-002", customerId, 0, 0, null, null));
 
         // Act
         await _salesOrderService.CreateSalesOrderAsync(createDto);
@@ -261,7 +261,7 @@ public class SalesOrderServiceTests
             new CreateUpdateSalesOrderLineDto(Guid.NewGuid(), 3, 25.00m)
         });
 
-        var expectedDto = new SalesOrderDto(Guid.NewGuid(), default, "", null, null, "SO-NEW", existingCustomerId, DateTime.UtcNow, 1, 75.00m, null, null);
+        var expectedDto = new SalesOrderDto(Guid.NewGuid(), default, DateTime.UtcNow, "", null, null, "SO-NEW", existingCustomerId, 1, 75.00m, null, null);
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(existingOrder);
         _mockMapper.Setup(m => m.Map<SalesOrderLine>(It.IsAny<CreateUpdateSalesOrderLineDto>()))
@@ -324,7 +324,7 @@ public class SalesOrderServiceTests
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(existingOrder);
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(newCustomerId)).ReturnsAsync(newCustomer);
-        _mockMapper.Setup(m => m.Map<SalesOrderDto>(It.IsAny<SalesOrder>())).Returns(new SalesOrderDto(Guid.NewGuid(), default, "", null, null, "", default, default, 0, 0, null, null));
+        _mockMapper.Setup(m => m.Map<SalesOrderDto>(It.IsAny<SalesOrder>())).Returns(new SalesOrderDto(Guid.NewGuid(), default, default, "", null, null, "", default, 0, 0, null, null));
 
         // Act
         await _salesOrderService.UpdateSalesOrderAsync(orderId, updateDto);

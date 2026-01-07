@@ -29,6 +29,20 @@
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
     {
+      "DownstreamPathTemplate": "/scalar/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/scalar/{everything}",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -68,6 +82,20 @@
         }
       ],
       "UpstreamPathTemplate": "/inventory/openapi/v1.json",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/scalar/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "inventory-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/inventory/scalar/{everything}",
       "UpstreamHttpMethod": ["GET"],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
@@ -113,6 +141,20 @@
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
     {
+      "DownstreamPathTemplate": "/scalar/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "orders-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/orders/scalar/{everything}",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -153,6 +195,20 @@
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
     {
+      "DownstreamPathTemplate": "/scalar/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "sales-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/sales/scalar/{everything}",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
       "DownstreamPathTemplate": "/api/sales/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -188,6 +244,20 @@
         }
       ],
       "UpstreamPathTemplate": "/purchasing/openapi/v1.json",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/scalar/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "purchasing-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/purchasing/scalar/{everything}",
       "UpstreamHttpMethod": ["GET"],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
