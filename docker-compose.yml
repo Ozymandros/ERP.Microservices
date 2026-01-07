@@ -97,6 +97,19 @@ services:
   #     - dapr-placement
   #   restart: unless-stopped
 
+  # Build shared base image for microservices
+  # IMPORTANT: This must be built BEFORE services that use myapp-microservices-base:10.0
+  # Build command: docker-compose build microservices-base
+  # Or build all: docker-compose build (this service will build first)
+   # microservices-base:
+     # build:
+       # context: .
+       # dockerfile: docker/microservices-base.Dockerfile
+     # image: myapp-microservices-base:10.0
+    # This service only builds the image; container exits immediately
+     # command: ["/bin/sh", "-c", "echo 'Base image built' && sleep 1 && exit 0"]
+     # restart: "no"  # Don't restart this build-only service
+
   erpapigateway:
     build:
       context: ./src

@@ -1,5 +1,4 @@
-﻿
-<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+﻿<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
@@ -13,5 +12,9 @@
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
+    <None Include="docker\microservices-base.Dockerfile" />
+    <None Include="docker\README.md" />
+    <None Include="docs\development\MICROSERVICE_CONFIGURATION_REFACTORING.md" />
+    <None Include="docs\development\MICROSERVICE_REFACTORING_SUMMARY.md" />
   </ItemGroup>
 </Project>
