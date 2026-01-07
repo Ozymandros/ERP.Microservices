@@ -14,19 +14,23 @@ COPY ["MyApp.Sales/MyApp.Sales.Application/MyApp.Sales.Application.csproj", "MyA
 COPY ["MyApp.Sales/MyApp.Sales.Infrastructure/MyApp.Sales.Infrastructure.csproj", "MyApp.Sales/MyApp.Sales.Infrastructure/"]
 COPY ["MyApp.Sales/MyApp.Sales.API/MyApp.Sales.API.csproj", "MyApp.Sales/MyApp.Sales.API/"]
 
-# Restore dependencies
-RUN dotnet restore "MyApp.Sales/MyApp.Sales.API/MyApp.Sales.API.csproj"
+# Restore dependencies with BuildKit cache mount (MUCH FASTER)
+RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+    dotnet restore "MyApp.Sales/MyApp.Sales.API/MyApp.Sales.API.csproj"
 
-# Copy all source files
-COPY . .
+# Copy only needed source files (not everything from context)
+COPY ["MyApp.Shared/", "MyApp.Shared/"]
+COPY ["MyApp.Sales/", "MyApp.Sales/"]
 
-# Build the project
+# Build the project with cache mount
 WORKDIR "/src/MyApp.Sales/MyApp.Sales.API"
-RUN dotnet build "MyApp.Sales.API.csproj" -c Release -o /app/build
+RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+    dotnet build "MyApp.Sales.API.csproj" -c Release -o /app/build --no-restore
 
 # Publish stage
 FROM build AS publish
-RUN dotnet publish "MyApp.Sales.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+    dotnet publish "MyApp.Sales.API.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
 
 # Runtime stage - Use shared base image
 FROM myapp-microservices-base:10.0 AS final
