@@ -1,3 +1,8 @@
+# BuildKit optimization: Enable faster builds with cache mounts
+x-buildkit: &buildkit
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
 x-redis-password: &redis-password ${REDIS_PASSWORD:-Redis@Secure123!}
 
 x-api-env: &api-env
@@ -25,7 +30,7 @@ services:
       volumes:
         - sqlserver-data:/var/opt/mssql
       healthcheck:
-        # AQUESTA ÉS LA COMANDA CORRECTA:
+        # THIS IS THE CORRECT COMMAND:
         test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${SQL_PASSWORD:-P@ssw0rd12345!}' -C -Q 'SELECT 1' || exit 1"]
         interval: 10s
         timeout: 5s
@@ -97,10 +102,25 @@ services:
   #     - dapr-placement
   #   restart: unless-stopped
 
+  # Build shared base image for microservices
+  # IMPORTANT: This must be built BEFORE services that use myapp-microservices-base:10.0
+  # Build command: docker-compose build microservices-base
+  # Or build all: docker-compose build (this service will build first)
+   # microservices-base:
+     # build:
+       # context: .
+       # dockerfile: docker/microservices-base.Dockerfile
+     # image: myapp-microservices-base:10.0
+    # This service only builds the image; container exits immediately
+     # command: ["/bin/sh", "-c", "echo 'Base image built' && sleep 1 && exit 0"]
+     # restart: "no"  # Don't restart this build-only service
+
   erpapigateway:
     build:
       context: ./src
       dockerfile: ErpApiGateway/Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     container_name: gateway
     environment:
       <<: *api-env
@@ -148,6 +168,8 @@ services:
     build:
       context: ./src
       dockerfile: MyApp.Auth/MyApp.Auth.API/Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     container_name: auth-service
     environment:
       <<: *api-env
@@ -248,6 +270,8 @@ services:
     build:
       context: ./src
       dockerfile: MyApp.Inventory/MyApp.Inventory.API/Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     container_name: inventory-service
     environment:
       <<: *api-env
@@ -297,6 +321,8 @@ services:
     build:
       context: ./src
       dockerfile: MyApp.Orders/MyApp.Orders.API/Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     container_name: orders-service
     environment:
       <<: *api-env
@@ -346,6 +372,8 @@ services:
     build:
       context: ./src
       dockerfile: MyApp.Purchasing/MyApp.Purchasing.API/Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     container_name: purchasing-service
     environment:
       <<: *api-env
@@ -395,6 +423,8 @@ services:
     build:
       context: ./src
       dockerfile: MyApp.Sales/MyApp.Sales.API/Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     container_name: sales-service
     environment:
       <<: *api-env

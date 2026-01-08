@@ -1,10 +1,10 @@
-# --- BINARIS I COMPILACI� (Culpables dels 1500s i errors de tipus) ---
+# --- BINARIES AND COMPILATION (Culprits of 1500s and type errors) ---
 **/bin/
 **/obj/
 **/publish/
 **/out/
 
-# --- IDE I CONFIGURACIONS LOCALS ---
+# --- IDE AND LOCAL CONFIGURATIONS ---
 .vs/
 .vscode/
 .idea/
@@ -12,13 +12,13 @@
 *.suo
 **/.toolstarget
 
-# --- FRONTEND I DEPEND�NCIES PESADES ---
+# --- FRONTEND AND HEAVY DEPENDENCIES ---
 **/node_modules/
 **/dist/
 **/build/
 **/.next/
 
-# --- CONTROL DE VERSIONS I DOCKER ---
+# --- VERSION CONTROL AND DOCKER ---
 **/.git
 **/.gitignore
 **/.dockerignore
@@ -27,10 +27,10 @@
 **/.settings
 **/.classpath
 
-# --- DOCUMENTS I LOGS ---
+# --- DOCUMENTS AND LOGS ---
 **/*.md
 **/logs/
 *.log
 
-# --- EXCEPCIONS (Assegura't que NO estan a la llista de dalt) ---
-# No posis aqu� ni el docker-compose.yml ni el docker-compose.override.yml
+# --- EXCEPTIONS (Make sure these are NOT in the list above) ---
+# Do not put docker-compose.yml or docker-compose.override.yml here

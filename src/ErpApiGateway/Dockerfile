@@ -13,8 +13,8 @@ COPY ["MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.cspr
 RUN dotnet restore "ErpApiGateway/ErpApiGateway.csproj"
 
 # Copy source files for Gateway
-COPY ["ErpApiGateway/", "ErpApiGateway/"]
-COPY ["MyApp.Shared/", "MyApp.Shared/"]
+COPY ErpApiGateway/ ErpApiGateway/
+COPY MyApp.Shared/ MyApp.Shared/
 
 # Build the project
 WORKDIR "/src/ErpApiGateway"

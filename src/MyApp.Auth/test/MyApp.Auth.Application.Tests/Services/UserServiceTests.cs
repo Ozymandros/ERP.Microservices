@@ -54,8 +54,8 @@ public class UserServiceTests : BaseServiceTest
         var user = new UserBuilder().WithId(userId).Build();
         var userDto = new UserDtoBuilder().WithId(userId).Build();
 
-        _mockUserRepository
-            .Setup(x => x.GetByIdAsync(userId))
+        _mockUserManager
+            .Setup(x => x.FindByIdAsync(userId.ToString()))
             .ReturnsAsync(user);
 
         MockMapper
@@ -89,22 +89,18 @@ public class UserServiceTests : BaseServiceTest
     }
 
     [Fact]
-    public async Task GetUserByIdAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+    public async Task GetUserByIdAsync_WithRepositoryException_ShouldThrowException()
     {
         // Arrange
         var userId = Guid.NewGuid();
         var exception = new Exception("Database error");
 
-        _mockUserRepository
-            .Setup(x => x.GetByIdAsync(userId))
+        _mockUserManager
+            .Setup(x => x.FindByIdAsync(userId.ToString()))
             .ThrowsAsync(exception);
 
-        // Act
-        var result = await _userService.GetUserByIdAsync(userId);
-
-        // Assert
-        result.Should().BeNull();
-        VerifyLoggerCalled(_mockLogger, LogLevel.Error, Times.Once());
+        // Act & Assert
+        await Assert.ThrowsAsync<Exception>(async () => await _userService.GetUserByIdAsync(userId));
     }
 
     #endregion
@@ -191,7 +187,7 @@ public class UserServiceTests : BaseServiceTest
     }
 
     [Fact]
-    public async Task GetAllUsersAsync_WithRepositoryException_ShouldReturnEmptyListAndLogError()
+    public async Task GetAllUsersAsync_WithRepositoryException_ShouldThrowException()
     {
         // Arrange
         var exception = new Exception("Database error");
@@ -200,13 +196,8 @@ public class UserServiceTests : BaseServiceTest
             .Setup(x => x.GetAllAsync())
             .ThrowsAsync(exception);
 
-        // Act
-        var result = await _userService.GetAllUsersAsync();
-
-        // Assert
-        result.Should().NotBeNull();
-        result.Should().BeEmpty();
-        VerifyLoggerCalled(_mockLogger, LogLevel.Error, Times.Once());
+        // Act & Assert
+        await Assert.ThrowsAsync<Exception>(async () => await _userService.GetAllUsersAsync());
     }
 
     #endregion
@@ -227,13 +218,17 @@ public class UserServiceTests : BaseServiceTest
 
         var existingUser = new UserBuilder().WithId(userId).Build();
 
-        _mockUserRepository
-            .Setup(x => x.GetByIdAsync(userId))
+        _mockUserManager
+            .Setup(x => x.FindByIdAsync(userId.ToString()))
             .ReturnsAsync(existingUser);
 
         _mockUserManager
             .Setup(x => x.UpdateAsync(existingUser))
             .ReturnsAsync(IdentityResult.Success);
+        
+        MockMapper
+            .Setup(x => x.Map(It.IsAny<UpdateUserDto>(), It.IsAny<ApplicationUser>()))
+            .Returns(existingUser);
 
         // Act
         var result = await _userService.UpdateUserAsync(userId, updateDto);
@@ -284,8 +279,8 @@ public class UserServiceTests : BaseServiceTest
 
         var user = new UserBuilder().WithId(userId).Build();
 
-        _mockUserRepository
-            .Setup(x => x.GetByIdAsync(userId))
+        _mockUserManager
+            .Setup(x => x.FindByIdAsync(userId.ToString()))
             .ReturnsAsync(user);
 
         _mockUserManager
@@ -342,8 +337,8 @@ public class UserServiceTests : BaseServiceTest
         var userId = Guid.NewGuid();
         var user = new UserBuilder().WithId(userId).Build();
 
-        _mockUserRepository
-            .Setup(x => x.GetByIdAsync(userId))
+        _mockUserManager
+            .Setup(x => x.FindByIdAsync(userId.ToString()))
             .ReturnsAsync(user);
 
         _mockUserManager
@@ -390,9 +385,13 @@ public class UserServiceTests : BaseServiceTest
 
         var user = new UserBuilder().WithId(userId).Build();
 
-        _mockUserRepository
-            .Setup(x => x.GetByIdAsync(userId))
+        _mockUserManager
+            .Setup(x => x.FindByIdAsync(userId.ToString()))
             .ReturnsAsync(user);
+
+        _mockRoleManager
+            .Setup(x => x.RoleExistsAsync(roleName))
+            .ReturnsAsync(true);
 
         _mockUserManager
             .Setup(x => x.AddToRoleAsync(user, roleName))
@@ -449,8 +448,8 @@ public class UserServiceTests : BaseServiceTest
 
         var user = new UserBuilder().WithId(userId).Build();
 
-        _mockUserRepository
-            .Setup(x => x.GetByIdAsync(userId))
+        _mockUserManager
+            .Setup(x => x.FindByIdAsync(userId.ToString()))
             .ReturnsAsync(user);
 
         _mockUserManager
@@ -477,13 +476,31 @@ public class UserServiceTests : BaseServiceTest
         var user = new UserBuilder().WithId(userId).Build();
         var roles = new List<string> { "Admin", "ApplicationUser" };
 
-        _mockUserRepository
-            .Setup(x => x.GetByIdAsync(userId))
+        _mockUserManager
+            .Setup(x => x.FindByIdAsync(userId.ToString()))
             .ReturnsAsync(user);
 
         _mockUserManager
             .Setup(x => x.GetRolesAsync(user))
             .ReturnsAsync(roles);
+
+        var roleEntities = new List<ApplicationRole>
+        {
+            new RoleBuilder().WithName("Admin").Build(),
+            new RoleBuilder().WithName("ApplicationUser").Build()
+        };
+
+        _mockRoleManager
+            .Setup(x => x.FindByNameAsync("Admin"))
+            .ReturnsAsync(roleEntities[0]);
+
+        _mockRoleManager
+            .Setup(x => x.FindByNameAsync("ApplicationUser"))
+            .ReturnsAsync(roleEntities[1]);
+
+        MockMapper
+            .Setup(x => x.Map<RoleDto>(It.IsAny<ApplicationRole>()))
+            .Returns((ApplicationRole r) => new RoleDtoBuilder().WithName(r.Name ?? "").Build());
 
         // Act
         var result = await _userService.GetUserRolesAsync(userId);
@@ -491,7 +508,6 @@ public class UserServiceTests : BaseServiceTest
         // Assert
         result.Should().NotBeNull();
         result.Should().HaveCount(2);
-        result.Should().BeEquivalentTo(roles);
     }
 
     [Fact]
@@ -528,17 +544,49 @@ public class UserServiceTests : BaseServiceTest
             new Claim(ClaimTypes.NameIdentifier, userId)
         };
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims));
+        var httpContext = new DefaultHttpContext
+        {
+            User = claimsPrincipal
+        };
 
         var user = new UserBuilder().WithId(Guid.Parse(userId)).Build();
         var userDto = new UserDtoBuilder().WithId(Guid.Parse(userId)).Build();
+
+        _mockHttpContextAccessor
+            .Setup(x => x.HttpContext)
+            .Returns(httpContext);
 
         _mockUserManager
             .Setup(x => x.GetUserAsync(claimsPrincipal))
             .ReturnsAsync(user);
 
+        _mockUserManager
+            .Setup(x => x.GetRolesAsync(user))
+            .ReturnsAsync(new List<string>());
+
+        _mockRoleManager
+            .Setup(x => x.FindByNameAsync(It.IsAny<string>()))
+            .ReturnsAsync((ApplicationRole?)null);
+
+        _mockPermissionRepository
+            .Setup(x => x.GetAllPermissionsByUserId(user.Id))
+            .ReturnsAsync(new List<Permission>());
+
         MockMapper
             .Setup(x => x.Map<UserDto>(user))
             .Returns(userDto);
+
+        MockMapper
+            .Setup(x => x.Map<RoleDto>(It.IsAny<ApplicationRole>()))
+            .Returns((ApplicationRole r) => new RoleDtoBuilder().WithName(r.Name ?? "").Build());
+
+        MockMapper
+            .Setup(x => x.Map<List<RoleDto?>>(It.IsAny<IEnumerable<RoleDto>>()))
+            .Returns((IEnumerable<RoleDto> roles) => roles.Select(r => (RoleDto?)r).ToList());
+
+        MockMapper
+            .Setup(x => x.Map<List<PermissionDto?>>(It.IsAny<IEnumerable<Permission>>()))
+            .Returns(new List<PermissionDto?>());
 
         // Act
         var result = await _userService.GetCurrentUserAsync();

@@ -298,7 +298,10 @@ public class JwtTokenProviderTests
     public void GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull()
     {
         // Arrange
-        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("differentSecretKeyForWrongAlgorithmTest"));
+        // Use a key that's at least 64 bytes (512 bits) for HS512
+        var keyBytes = new byte[64];
+        System.Security.Cryptography.RandomNumberGenerator.Fill(keyBytes);
+        var secretKey = new SymmetricSecurityKey(keyBytes);
         var credentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha512);
         var claims = new List<Claim> { new Claim(ClaimTypes.Name, "test") };
         var token = new JwtSecurityToken(

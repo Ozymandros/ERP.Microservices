@@ -37,7 +37,11 @@ public class CustomerServiceTests
             Email = "test@example.com"
         };
 
-        var expectedDto = new CustomerDto(customerId, default, "", null, null, "Test Customer", "test@example.com", "", "");
+        var expectedDto = new CustomerDto(customerId)
+        {
+            Name = "Test Customer",
+            Email = "test@example.com"
+        };
 
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
         _mockMapper.Setup(m => m.Map<CustomerDto>(customer)).Returns(expectedDto);
@@ -86,8 +90,16 @@ public class CustomerServiceTests
 
         var customerDtos = new List<CustomerDto>
         {
-            new CustomerDto(Guid.NewGuid(), default, "", null, null, "Customer 1", "c1@example.com", "", ""),
-            new CustomerDto(Guid.NewGuid(), default, "", null, null, "Customer 2", "c2@example.com", "", "")
+            new CustomerDto(Guid.NewGuid())
+            {
+                Name = "Customer 1",
+                Email = "c1@example.com"
+            },
+            new CustomerDto(Guid.NewGuid())
+            {
+                Name = "Customer 2",
+                Email = "c2@example.com"
+            }
         };
 
         _mockCustomerRepository.Setup(r => r.ListAsync()).ReturnsAsync(customers);
@@ -132,7 +144,11 @@ public class CustomerServiceTests
     public async Task CreateCustomerAsync_WithValidDto_CreatesCustomer()
     {
         // Arrange
-        var dto = new CustomerDto(Guid.NewGuid(), default, "", null, null, "New Customer", "new@example.com", "", "");
+        var dto = new CustomerDto(Guid.NewGuid())
+        {
+            Name = "New Customer",
+            Email = "new@example.com"
+        };
 
         var customer = new Customer(Guid.NewGuid())
         {
@@ -140,7 +156,11 @@ public class CustomerServiceTests
             Email = "new@example.com"
         };
 
-        var expectedDto = new CustomerDto(Guid.NewGuid(), default, "", null, null, "New Customer", "new@example.com", "", "");
+        var expectedDto = new CustomerDto(Guid.NewGuid())
+        {
+            Name = "New Customer",
+            Email = "new@example.com"
+        };
 
         _mockMapper.Setup(m => m.Map<Customer>(dto)).Returns(customer);
         _mockMapper.Setup(m => m.Map<CustomerDto>(It.IsAny<Customer>())).Returns(expectedDto);
@@ -162,11 +182,19 @@ public class CustomerServiceTests
     public async Task CreateCustomerAsync_AssignsNewGuid()
     {
         // Arrange
-        var dto = new CustomerDto(Guid.NewGuid(), default, "", null, null, "Test", "test@example.com", "", "");
+        var dto = new CustomerDto(Guid.NewGuid())
+        {
+            Name = "Test",
+            Email = "test@example.com"
+        };
         var customer = new Customer(Guid.NewGuid()) { Name = "Test", Email = "test@example.com" };
 
         _mockMapper.Setup(m => m.Map<Customer>(dto)).Returns(customer);
-        _mockMapper.Setup(m => m.Map<CustomerDto>(It.IsAny<Customer>())).Returns(new CustomerDto(Guid.NewGuid(), default, "", null, null, "Test Name", "test@email.com", "", ""));
+        _mockMapper.Setup(m => m.Map<CustomerDto>(It.IsAny<Customer>())).Returns(new CustomerDto(Guid.NewGuid())
+        {
+            Name = "Test Name",
+            Email = "test@email.com"
+        });
 
         // Act
         await _customerService.CreateCustomerAsync(dto);
@@ -192,9 +220,17 @@ public class CustomerServiceTests
             Email = "old@example.com"
         };
 
-        var updateDto = new CustomerDto(Guid.NewGuid(), default, "", null, null, "New Name", "new@example.com", "", "");
+        var updateDto = new CustomerDto(Guid.NewGuid())
+        {
+            Name = "New Name",
+            Email = "new@example.com"
+        };
 
-        var expectedDto = new CustomerDto(customerId, default, "", null, null, "New Name", "new@example.com", "", "");
+        var expectedDto = new CustomerDto(customerId)
+        {
+            Name = "New Name",
+            Email = "new@example.com"
+        };
 
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(existingCustomer);
         _mockMapper.Setup(m => m.Map(updateDto, existingCustomer)).Callback(() =>
@@ -221,7 +257,11 @@ public class CustomerServiceTests
     {
         // Arrange
         var customerId = Guid.NewGuid();
-        var updateDto = new CustomerDto(Guid.NewGuid(), default, "", null, null, "Test", "test@example.com", "", "");
+        var updateDto = new CustomerDto(Guid.NewGuid())
+        {
+            Name = "Test",
+            Email = "test@example.com"
+        };
 
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync((Customer?)null);
 

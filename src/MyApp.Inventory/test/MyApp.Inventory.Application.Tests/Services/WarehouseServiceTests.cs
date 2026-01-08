@@ -30,7 +30,11 @@ public class WarehouseServiceTests
         // Arrange
         var warehouseId = Guid.NewGuid();
         var warehouse = new Warehouse(warehouseId) { Name = "Main Warehouse" };
-        var expectedDto = new WarehouseDto(Guid.NewGuid(), default, "", null, null, "Main Warehouse", "");
+        var expectedDto = new WarehouseDto(Guid.NewGuid())
+        {
+            Name = "Main Warehouse",
+            Location = ""
+        };
 
         _mockWarehouseRepository.Setup(r => r.GetByIdAsync(warehouseId)).ReturnsAsync(warehouse);
         _mockMapper.Setup(m => m.Map<WarehouseDto>(warehouse)).Returns(expectedDto);
@@ -70,8 +74,16 @@ public class WarehouseServiceTests
 
         var warehouseDtos = new List<WarehouseDto>
         {
-            new WarehouseDto(Guid.NewGuid(), default, "", null, null, "Warehouse 1", ""),
-            new WarehouseDto(Guid.NewGuid(), default, "", null, null, "Warehouse 2", "")
+            new WarehouseDto(Guid.NewGuid())
+            {
+                Name = "Warehouse 1",
+                Location = ""
+            },
+            new WarehouseDto(Guid.NewGuid())
+            {
+                Name = "Warehouse 2",
+                Location = ""
+            }
         };
 
         _mockWarehouseRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(warehouses);
@@ -92,7 +104,11 @@ public class WarehouseServiceTests
         var dto = new CreateUpdateWarehouseDto("New Warehouse", "");
         var warehouse = new Warehouse(Guid.NewGuid()) { Name = "New Warehouse" };
         var createdWarehouse = new Warehouse(Guid.NewGuid()) { Name = "New Warehouse" };
-        var expectedDto = new WarehouseDto(Guid.NewGuid(), default, "", null, null, "New Warehouse", "");
+        var expectedDto = new WarehouseDto(Guid.NewGuid())
+        {
+            Name = "New Warehouse",
+            Location = ""
+        };
 
         _mockWarehouseRepository.Setup(r => r.GetByNameAsync(dto.Name)).ReturnsAsync((Warehouse?)null);
         _mockMapper.Setup(m => m.Map<Warehouse>(dto)).Returns(warehouse);
@@ -133,7 +149,11 @@ public class WarehouseServiceTests
         var existingWarehouse = new Warehouse(warehouseId) { Name = "Old Name" };
         var updateDto = new CreateUpdateWarehouseDto("Old Name", "");
         var updatedWarehouse = new Warehouse(warehouseId) { Name = "Old Name" };
-        var expectedDto = new WarehouseDto(Guid.NewGuid(), default, "", null, null, "Old Name", "");
+        var expectedDto = new WarehouseDto(Guid.NewGuid())
+        {
+            Name = "Old Name",
+            Location = ""
+        };
 
         _mockWarehouseRepository.Setup(r => r.GetByIdAsync(warehouseId)).ReturnsAsync(existingWarehouse);
         _mockMapper.Setup(m => m.Map(updateDto, existingWarehouse));

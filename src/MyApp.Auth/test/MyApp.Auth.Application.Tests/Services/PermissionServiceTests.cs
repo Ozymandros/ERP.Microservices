@@ -113,10 +113,15 @@ public class PermissionServiceTests : BaseServiceTest
         var username = "testuser";
         var module = "Orders";
         var action = "Create";
+        var user = new UserBuilder().WithUserName(username).Build();
         var permissions = new List<Permission>
         {
             new PermissionBuilder().WithModule(module).WithAction(action).Build()
         };
+
+        _mockUserManager
+            .Setup(x => x.FindByNameAsync(username))
+            .ReturnsAsync(user);
 
         _mockPermissionRepository
             .Setup(x => x.GetByUserName(username, module, action))
@@ -169,17 +174,26 @@ public class PermissionServiceTests : BaseServiceTest
         var username = "testuser";
         var module = "Orders";
         var action = "Create";
+        var user = new UserBuilder().WithUserName(username).Build();
         var rolePermissions = new List<Permission>
         {
             new PermissionBuilder().WithModule(module).WithAction(action).Build()
         };
+
+        _mockUserManager
+            .Setup(x => x.FindByNameAsync(username))
+            .ReturnsAsync(user);
+
+        _mockUserManager
+            .Setup(x => x.GetRolesAsync(user))
+            .ReturnsAsync(new List<string> { "User" });
 
         _mockPermissionRepository
             .Setup(x => x.GetByUserName(username, module, action))
             .ReturnsAsync(new List<Permission>());
 
         _mockPermissionRepository
-            .Setup(x => x.GetByRoleName(username, module, action))
+            .Setup(x => x.GetByRoleName("User", module, action))
             .ReturnsAsync(rolePermissions);
 
         // Act
@@ -188,7 +202,7 @@ public class PermissionServiceTests : BaseServiceTest
         // Assert
         result.Should().BeTrue();
         _mockPermissionRepository.Verify(x => x.GetByUserName(username, module, action), Times.Once);
-        _mockPermissionRepository.Verify(x => x.GetByRoleName(username, module, action), Times.Once);
+        _mockPermissionRepository.Verify(x => x.GetByRoleName("User", module, action), Times.Once);
     }
 
     #endregion
@@ -323,7 +337,7 @@ public class PermissionServiceTests : BaseServiceTest
     }
 
     [Fact]
-    public async Task GetPermissionByModuleActionAsync_WithRepositoryException_ShouldReturnNullAndLogError()
+    public async Task GetPermissionByModuleActionAsync_WithRepositoryException_ShouldThrowException()
     {
         // Arrange
         var module = "Orders";
@@ -334,12 +348,8 @@ public class PermissionServiceTests : BaseServiceTest
             .Setup(x => x.GetByUserName("", module, action))
             .ThrowsAsync(exception);
 
-        // Act
-        var result = await _permissionService.GetPermissionByModuleActionAsync(module, action);
-
-        // Assert
-        result.Should().BeNull();
-        VerifyLoggerCalled(_mockLogger, LogLevel.Error, Times.Once());
+        // Act & Assert
+        await Assert.ThrowsAsync<Exception>(async () => await _permissionService.GetPermissionByModuleActionAsync(module, action));
     }
 
     #endregion

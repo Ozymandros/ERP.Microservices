@@ -67,7 +67,7 @@ public class UserBuilder
 
 public class LoginDtoBuilder
 {
-    private LoginDto _dto = new() { Email = "test@example.com", Password = "TestPassword123!" };
+    private LoginDto _dto = new("test@example.com", "TestPassword123!");
 
     public LoginDto Build() => _dto;
 
