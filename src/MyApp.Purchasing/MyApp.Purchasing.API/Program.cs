@@ -58,20 +58,20 @@ builder.Services.AddOpenApi(options =>
     options.AddDocumentTransformer<JwtSecuritySchemeDocumentTransformer>();
     options.AddDocumentTransformer<MyApp.Shared.Infrastructure.OpenApi.DateTimeSchemaDocumentTransformer>();
 
-    // Forçem el tipus a nivell d'esquema per evitar que el serialitzador intern pete
+    // Force the type at schema level to prevent the internal serializer from breaking
     options.AddSchemaTransformer((schema, context, cancellationToken) =>
     {
         if (context.JsonTypeInfo.Type == typeof(DateTime) || context.JsonTypeInfo.Type == typeof(DateTime?))
         {
             schema.Type = Microsoft.OpenApi.JsonSchemaType.String;
             schema.Format = "date-time";
-            schema.Default = null; // Evita que el motor intenti serialitzar un default(DateTime)
+            schema.Default = null; // Prevents the engine from trying to serialize a default(DateTime)
             schema.Example = null;
         }
         return Task.CompletedTask;
     });
 
-    // També afegim el transformer compartit com a fallback
+    // Also add the shared transformer as a fallback
     options.AddSchemaTransformer<MyApp.Shared.Infrastructure.OpenApi.DateTimeSchemaTransformer>();
 });
 

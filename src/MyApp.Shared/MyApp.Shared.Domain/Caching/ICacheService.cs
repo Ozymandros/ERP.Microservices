@@ -2,12 +2,12 @@
 
 public interface ICacheService
 {
-    // Obté l'estat tipat
+    // Gets the typed state
     Task<T?> GetStateAsync<T>(string key) where T : class;
 
-    // Desa l'estat tipat amb opcions de caducitat
+    // Saves the typed state with expiration options
     Task SaveStateAsync<T>(string key, T value, TimeSpan? expiration = null) where T : class;
 
-    // Elimina l'estat
+    // Removes the state
     Task RemoveStateAsync(string key);
 }

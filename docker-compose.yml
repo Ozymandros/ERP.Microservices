@@ -30,7 +30,7 @@ services:
       volumes:
         - sqlserver-data:/var/opt/mssql
       healthcheck:
-        # AQUESTA ÉS LA COMANDA CORRECTA:
+        # THIS IS THE CORRECT COMMAND:
         test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${SQL_PASSWORD:-P@ssw0rd12345!}' -C -Q 'SELECT 1' || exit 1"]
         interval: 10s
         timeout: 5s

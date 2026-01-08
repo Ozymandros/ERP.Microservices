@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
 var isDeployment =
-    args.Contains("--publisher") || // quan azd genera manifests
+    args.Contains("--publisher") || // when azd generates manifests
     Environment.GetEnvironmentVariable("IS_DEPLOYMENT") == "true";
 
 var builder = DistributedApplication.CreateBuilder(args).AddDapr();

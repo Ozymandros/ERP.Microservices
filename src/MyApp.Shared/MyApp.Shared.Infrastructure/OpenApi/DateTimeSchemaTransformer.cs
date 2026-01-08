@@ -20,7 +20,7 @@ public sealed class DateTimeSchemaTransformer : IOpenApiSchemaTransformer
         {
             schema.Type = JsonSchemaType.String;
             schema.Format = "date-time";
-            schema.Default = null; // Evita que el motor intenti serialitzar un default(DateTime)
+            schema.Default = null; // Prevents the engine from trying to serialize a default(DateTime)
             schema.Example = null;
             return Task.CompletedTask;
         }
