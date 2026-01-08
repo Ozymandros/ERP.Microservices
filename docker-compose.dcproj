@@ -16,5 +16,8 @@
     <None Include="docker\README.md" />
     <None Include="docs\development\MICROSERVICE_CONFIGURATION_REFACTORING.md" />
     <None Include="docs\development\MICROSERVICE_REFACTORING_SUMMARY.md" />
+    <None Include="docs\development\TEST_COMPILATION_FIXES.md" />
+    <None Include="docs\development\TEST_FIX_STRATEGY.md" />
+    <None Include="scripts\fix-dto-tests.ps1" />
   </ItemGroup>
 </Project>

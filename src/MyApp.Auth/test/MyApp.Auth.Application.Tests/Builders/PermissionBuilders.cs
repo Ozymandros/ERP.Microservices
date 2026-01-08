@@ -76,7 +76,16 @@ public class PermissionDtoBuilder
         return this;
     }
 
-    public PermissionDto Build() => new(_id, _createdAt, _createdBy, _updatedAt, _updatedBy, _module, _action, _description);
+    public PermissionDto Build() => new(_id)
+    {
+        CreatedAt = _createdAt,
+        CreatedBy = _createdBy,
+        UpdatedAt = _updatedAt,
+        UpdatedBy = _updatedBy,
+        Module = _module,
+        Action = _action,
+        Description = _description
+    };
 
     public static implicit operator PermissionDto(PermissionDtoBuilder builder) => builder.Build();
 }

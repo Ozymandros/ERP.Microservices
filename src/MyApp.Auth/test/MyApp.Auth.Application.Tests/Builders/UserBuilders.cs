@@ -57,7 +57,23 @@ public class UserDtoBuilder
         return this;
     }
 
-    public UserDto Build() => new(_id, _createdAt, _createdBy, _updatedAt, _updatedBy, _email, _username, _firstName, _lastName, _emailConfirmed, _isExternalLogin, _externalProvider, _roles, _permissions, _isAdmin);
+    public UserDto Build() => new(_id)
+    {
+        CreatedAt = _createdAt,
+        CreatedBy = _createdBy,
+        UpdatedAt = _updatedAt,
+        UpdatedBy = _updatedBy,
+        Email = _email,
+        Username = _username,
+        FirstName = _firstName,
+        LastName = _lastName,
+        EmailConfirmed = _emailConfirmed,
+        IsExternalLogin = _isExternalLogin,
+        ExternalProvider = _externalProvider,
+        Roles = _roles ?? new List<RoleDto?>(),
+        Permissions = _permissions ?? new List<PermissionDto?>(),
+        IsAdmin = _isAdmin
+    };
 
     public static implicit operator UserDto(UserDtoBuilder builder) => builder.Build();
 }
