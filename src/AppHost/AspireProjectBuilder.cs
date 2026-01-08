@@ -87,15 +87,15 @@ public class AspireProjectBuilder
             // .WithEnvironment("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317")
             .PublishAsDockerFile();
 
-            var database = _sqlServer?.AddDatabase(dbName); ;
-            if (database is not null)
-            {
-                project = project.WaitFor(database);
-                project = project.WithReference(database);
-            }
-            // Local: exposem ports �nics per al dashboard
-            project = project.WithHttpEndpoint(httpPort)
-            .WithHttpHealthCheck(path: "/health", statusCode: 200);
+        var database = _sqlServer?.AddDatabase(dbName); ;
+        if (database is not null)
+        {
+            project = project.WaitFor(database);
+            project = project.WithReference(database);
+        }
+        // Local: expose unique ports for the dashboard
+        project = project.WithHttpEndpoint(httpPort)
+        .WithHttpHealthCheck(path: "/health", statusCode: 200);
 
         // Application Insights
         if (applicationInsights is not null)

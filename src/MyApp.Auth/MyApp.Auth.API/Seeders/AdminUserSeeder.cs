@@ -17,7 +17,7 @@ public static class AdminUserSeeder
                 EmailConfirmed = true
             };
 
-            await userManager.CreateAsync(user, "Admin123!"); // 🔐 Canvia la contrasenya en producció
+            await userManager.CreateAsync(user, "Admin123!"); // 🔐 Change the password in production
             await userManager.AddToRoleAsync(user, "Admin");
         }
     }

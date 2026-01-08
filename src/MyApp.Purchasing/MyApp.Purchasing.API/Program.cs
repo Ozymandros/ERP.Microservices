@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
 using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Application.Services;
 using MyApp.Purchasing.Domain.Repositories;
@@ -8,17 +9,15 @@ using MyApp.Purchasing.Infrastructure.Data.Repositories;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
-using MyApp.Shared.Infrastructure.Logging;
+using MyApp.Shared.Infrastructure.OpenApi;
+using Scalar.AspNetCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure Serilog with sensitive data masking and OpenTelemetry integration
-builder.AddCustomLogging();
-
-// Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
+// This line registers the DaprClient (Singleton) in the Dependency Injection (DI) container
 builder.Services.AddDaprClient();
 
 var serviceName = builder.Environment.ApplicationName ?? typeof(Program).Assembly.GetName().Name ?? "MyApp.Purchasing.API";
@@ -36,9 +35,45 @@ builder.Services.AddOpenTelemetry()
         .AddOtlpExporter());
 
 // Add services to the container
+// Configure JSON options FIRST - before AddOpenApi() so JsonSchemaExporter uses them
+// builder.Services.ConfigureHttpJsonOptions(options =>
+// {
+//     options.SerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+//     options.SerializerOptions.Converters.Add(new MyApp.Shared.Infrastructure.Json.DateTimeConverter());
+//     options.SerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
+// });
+
+// Configure JSON options for Controllers as well
+// builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+// {
+//     options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+//     options.JsonSerializerOptions.Converters.Add(new MyApp.Shared.Infrastructure.Json.DateTimeConverter());
+//     options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
+// });
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<JwtSecuritySchemeDocumentTransformer>();
+    options.AddDocumentTransformer<MyApp.Shared.Infrastructure.OpenApi.DateTimeSchemaDocumentTransformer>();
+
+    // Force the type at schema level to prevent the internal serializer from breaking
+    options.AddSchemaTransformer((schema, context, cancellationToken) =>
+    {
+        if (context.JsonTypeInfo.Type == typeof(DateTime) || context.JsonTypeInfo.Type == typeof(DateTime?))
+        {
+            schema.Type = Microsoft.OpenApi.JsonSchemaType.String;
+            schema.Format = "date-time";
+            schema.Default = null; // Prevents the engine from trying to serialize a default(DateTime)
+            schema.Example = null;
+        }
+        return Task.CompletedTask;
+    });
+
+    // Also add the shared transformer as a fallback
+    options.AddSchemaTransformer<MyApp.Shared.Infrastructure.OpenApi.DateTimeSchemaTransformer>();
+});
 
 // JWT Authentication
 builder.Services.AddJwtAuthentication(builder.Configuration);
@@ -90,22 +125,25 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Afegeix un bloc per a l'aplicaci� autom�tica de les migracions
+// Add a block for automatic migration application
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<PurchasingDbContext>();
-    // ATENCI�: Esborra la base de dades i torna-la a crear si est� buida (�til per a desenvolupament amb contenidors)
+    // WARNING: Deletes the database and recreates it if empty (useful for development with containers)
     // dbContext.Database.EnsureDeleted(); 
 
-    // Aquest �s el m�tode clau: aplica les migracions pendents.
+    // This is the key method: applies pending migrations.
     dbContext.Database.Migrate();
 }
 
 // Configure the HTTP request pipeline
+// Map OpenAPI endpoint (available for Gateway access)
+app.MapOpenApi();
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // Use Scalar instead of SwaggerUI - lighter and more stable
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();

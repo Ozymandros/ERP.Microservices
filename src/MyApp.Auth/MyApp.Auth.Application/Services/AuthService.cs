@@ -158,12 +158,12 @@ public class AuthService : IAuthService
 
     private async Task<TokenResponseDto> GenerateTokenResponseAsync(ApplicationUser user)
     {
-        // ⭐️ Pas 1: Recuperar Rols i Claims de l'usuari
+        // ⭐️ Step 1: Retrieve user Roles and Claims
         var roles = await _userManager.GetRolesAsync(user);
-        var claims = await _userManager.GetClaimsAsync(user); // Crida per obtenir els claims
+        var claims = await _userManager.GetClaimsAsync(user); // Call to get the claims
 
-        // ⭐️ Pas 2: Generar Access Token
-        // Assumim que el teu provider accepta la llista de rols i claims per incloure'ls al JWT.
+        // ⭐️ Step 2: Generate Access Token
+        // Assume that your provider accepts the list of roles and claims to include them in the JWT.
         var accessToken = await _jwtTokenProvider.GenerateAccessTokenAsync(user, roles, claims);
 
         // Generar Refresh Token
@@ -178,23 +178,24 @@ public class AuthService : IAuthService
 
         await _refreshTokenRepository.CreateAsync(refreshTokenEntity);
 
-        // ⭐️ Pas 3: Retornar DTO amb rols inclosos
-        var userDto = new UserDto(
-            user.Id,
-            user.CreatedAt,
-            "",
-            user.UpdatedAt,
-            null,
-            user.Email ?? "",
-            user.UserName ?? "",
-            user.FirstName,
-            user.LastName,
-            user.EmailConfirmed,
-            user.IsExternalLogin,
-            user.ExternalProvider,
-            null,
-            null,
-            false);
+        // ⭐️ Step 3: Return DTO with roles included
+        var userDto = new UserDto(user.Id)
+        {
+            CreatedAt = user.CreatedAt,
+            CreatedBy = "",
+            UpdatedAt = user.UpdatedAt,
+            UpdatedBy = null,
+            Email = user.Email,
+            Username = user.UserName,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            EmailConfirmed = user.EmailConfirmed,
+            IsExternalLogin = user.IsExternalLogin,
+            ExternalProvider = user.ExternalProvider,
+            Roles = new List<RoleDto?>(),
+            Permissions = new List<PermissionDto?>(),
+            IsAdmin = false
+        };
 
         return new TokenResponseDto(accessToken, refreshToken, 15 * 60, "Bearer", userDto);
     }

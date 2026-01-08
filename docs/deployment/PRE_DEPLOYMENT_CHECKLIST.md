@@ -5,7 +5,7 @@ Before deploying to Azure Container Apps, ensure the following:
 ## ✅ Prerequisites Installed
 
 - [ ] Azure Developer CLI (`azd`) - [Install](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd)
-- [ ] .NET 9.0 SDK - [Install](https://dotnet.microsoft.com/download/dotnet/9.0)
+- [ ] .NET 10.0 SDK - [Install](https://dotnet.microsoft.com/download/dotnet/10.0)
 - [ ] Docker Desktop (for local testing) - [Install](https://www.docker.com/products/docker-desktop)
 - [ ] Azure CLI (`az`) - [Install](https://learn.microsoft.com/cli/azure/install-azure-cli)
 

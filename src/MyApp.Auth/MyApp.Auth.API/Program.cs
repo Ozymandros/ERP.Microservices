@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.OpenApi;
+using MyApp.Shared.Infrastructure.OpenApi;
+using Scalar.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MyApp.Auth.Application.Contracts;
@@ -42,42 +45,48 @@ builder.Services.AddOpenTelemetry()
             .AddOtlpExporter();
     });
 
-// Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
+// This line registers the DaprClient (Singleton) in the Dependency Injection (DI) container
 builder.Services.AddDaprClient();
+
+// Configure JSON options FIRST - before AddOpenApi() so JsonSchemaExporter uses them
+// builder.Services.ConfigureHttpJsonOptions(options =>
+// {
+//     options.SerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+//     options.SerializerOptions.Converters.Add(new MyApp.Shared.Infrastructure.Json.DateTimeConverter());
+//     options.SerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
+// });
+
+// Configure JSON options for Controllers as well
+// builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+// {
+//     options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+//     options.JsonSerializerOptions.Converters.Add(new MyApp.Shared.Infrastructure.Json.DateTimeConverter());
+//     options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
+// });
 
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddOpenApi(options =>
 {
-    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Auth API", Version = "v1" });
+    options.AddDocumentTransformer<JwtSecuritySchemeDocumentTransformer>();
+    options.AddDocumentTransformer<MyApp.Shared.Infrastructure.OpenApi.DateTimeSchemaDocumentTransformer>();
 
-    // Add JWT Bearer token configuration to Swagger
-    var securityScheme = new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    // Force the type at schema level to prevent the internal serializer from breaking
+    options.AddSchemaTransformer((schema, context, cancellationToken) =>
     {
-        Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme."
-    };
-
-    c.AddSecurityDefinition("Bearer", securityScheme);
-    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-    {
+        if (context.JsonTypeInfo.Type == typeof(DateTime) || context.JsonTypeInfo.Type == typeof(DateTime?))
         {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-            {
-                Reference = new Microsoft.OpenApi.Models.OpenApiReference
-                {
-                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
+            schema.Type = Microsoft.OpenApi.JsonSchemaType.String;
+            schema.Format = "date-time";
+            schema.Default = null; // Prevents the engine from trying to serialize a default(DateTime)
+            schema.Example = null;
         }
+        return Task.CompletedTask;
     });
+
+    // Also add the shared transformer as a fallback
+    options.AddSchemaTransformer<MyApp.Shared.Infrastructure.OpenApi.DateTimeSchemaTransformer>();
 });
 
 // Database configuration
@@ -124,8 +133,17 @@ builder.Services
             ValidateAudience = true,
             ValidAudience = audience,
             ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero
+            ClockSkew = TimeSpan.FromSeconds(30) // Allows 30 seconds margin for Docker/container synchronization
         };
+        // Si es Desarrollo, permitimos HTTP. Si no (Prod/Staging), HTTPS es obligatorio.
+        if (builder.Environment.IsDevelopment())
+        {
+            options.RequireHttpsMetadata = false;
+        }
+        else
+        {
+            options.RequireHttpsMetadata = true;
+        }
     })
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddGoogle(options =>
@@ -216,15 +234,21 @@ using (var scope = app.Services.CreateScope())
     await PermissionSeeder.SeedPermissionsAsync(dbContext);
 }
 
-// Configure the HTTP request pipeline
+// Map OpenAPI endpoint (available for Gateway access)
+app.MapOpenApi();
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // Use Scalar instead of SwaggerUI - lighter and more stable
+    app.MapScalarApiReference();
+}
+else
+{
+    // ONLY in production we force HTTPS
+    app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
-app.UseRouting(); 
+app.UseRouting();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();

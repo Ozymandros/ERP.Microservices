@@ -342,7 +342,7 @@ public class AuthIntegrationTests
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
-    //TODO: Fata un Token valid de JWT
+    //TODO: Need a valid JWT Token
     //[Fact]
     //public async Task Logout_WithoutAuthorization_ReturnsUnauthorized()
     //{

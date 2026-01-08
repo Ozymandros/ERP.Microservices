@@ -1,12 +1,19 @@
-﻿x-api-env: &api-env
+# BuildKit optimization: Enable faster builds with cache mounts
+x-buildkit: &buildkit
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
+x-redis-password: &redis-password ${REDIS_PASSWORD:-Redis@Secure123!}
+
+x-api-env: &api-env
   ASPNETCORE_ENVIRONMENT: Development
   ASPNETCORE_URLS: http://+:8080
   FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
   Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
   Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
   Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
+  ConnectionStrings__cache: redis:6379,password=${REDIS_PASSWORD:-Redis@Secure123!},defaultDatabase=0,abortConnect=false,connectRetry=5,connectTimeout=5000,syncTimeout=5000
   Jwt__RequireHttpsMetadata: "false"
-  ConnectionStrings__cache: "redis:6379,password=${REDIS_PASSWORD:-Redis@Secure123!},abortConnect=false"
   DAPR_HTTP_PORT: "3500"
   DAPR_GRPC_PORT: "50001"
 
@@ -23,7 +30,7 @@ services:
       volumes:
         - sqlserver-data:/var/opt/mssql
       healthcheck:
-        # AQUESTA ÉS LA COMANDA CORRECTA:
+        # THIS IS THE CORRECT COMMAND:
         test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${SQL_PASSWORD:-P@ssw0rd12345!}' -C -Q 'SELECT 1' || exit 1"]
         interval: 10s
         timeout: 5s
@@ -34,7 +41,7 @@ services:
   redis:
     image: redis:7-alpine
     container_name: redis
-    command: ["redis-server", "--save", "", "--appendonly", "no", "--requirepass", "${REDIS_PASSWORD:-Redis@Secure123!}"]
+    command: ["redis-server", "--save", "", "--appendonly", "no", "--requirepass", *redis-password]
     ports:
       - "6379:6379"
     volumes:
@@ -42,7 +49,7 @@ services:
     networks:
       - erp
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-Redis@Secure123!}", "ping"]
+      test: ["CMD", "redis-cli", "-a", *redis-password, "ping"]
       interval: 10s
       timeout: 5s
       retries: 10           # ✅ More retries (was 3)
@@ -95,10 +102,25 @@ services:
   #     - dapr-placement
   #   restart: unless-stopped
 
+  # Build shared base image for microservices
+  # IMPORTANT: This must be built BEFORE services that use myapp-microservices-base:10.0
+  # Build command: docker-compose build microservices-base
+  # Or build all: docker-compose build (this service will build first)
+   # microservices-base:
+     # build:
+       # context: .
+       # dockerfile: docker/microservices-base.Dockerfile
+     # image: myapp-microservices-base:10.0
+    # This service only builds the image; container exits immediately
+     # command: ["/bin/sh", "-c", "echo 'Base image built' && sleep 1 && exit 0"]
+     # restart: "no"  # Don't restart this build-only service
+
   erpapigateway:
     build:
       context: ./src
       dockerfile: ErpApiGateway/Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     container_name: gateway
     environment:
       <<: *api-env
@@ -130,7 +152,8 @@ services:
       sales-service:
         condition: service_started
     volumes:
-      - ./ErpApiGateway/ocelot.json:/tmp/ocelot.json:ro
+      - ./src/ErpApiGateway/ocelot.json:/app/ocelot.json:ro
+      - ./_site:/_site:ro  # Mount DocFX documentation directory
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
@@ -145,6 +168,8 @@ services:
     build:
       context: ./src
       dockerfile: MyApp.Auth/MyApp.Auth.API/Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     container_name: auth-service
     environment:
       <<: *api-env
@@ -198,6 +223,7 @@ services:
   #   container_name: billing-service
   #   environment:
   #     <<: *api-env
+  #     ConnectionStrings__BillingDb: Server=sqlserver,1433;Database=BillingDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
   #     #TODO: ConnectionStrings__BillingDb: Server=sqlserver,1433;Database=BillingDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
   #   depends_on:
   #     sqlserver:
@@ -244,6 +270,8 @@ services:
     build:
       context: ./src
       dockerfile: MyApp.Inventory/MyApp.Inventory.API/Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     container_name: inventory-service
     environment:
       <<: *api-env
@@ -293,6 +321,8 @@ services:
     build:
       context: ./src
       dockerfile: MyApp.Orders/MyApp.Orders.API/Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     container_name: orders-service
     environment:
       <<: *api-env
@@ -342,6 +372,8 @@ services:
     build:
       context: ./src
       dockerfile: MyApp.Purchasing/MyApp.Purchasing.API/Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     container_name: purchasing-service
     environment:
       <<: *api-env
@@ -391,6 +423,8 @@ services:
     build:
       context: ./src
       dockerfile: MyApp.Sales/MyApp.Sales.API/Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     container_name: sales-service
     environment:
       <<: *api-env

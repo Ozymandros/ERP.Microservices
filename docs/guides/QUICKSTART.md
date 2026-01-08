@@ -9,8 +9,8 @@ Install these tools:
 # Azure Developer CLI
 curl -fsSL https://aka.ms/install-azd.sh | bash
 
-# .NET SDK 9.0
-# Download from: https://dotnet.microsoft.com/download/dotnet/9.0
+# .NET SDK 10.0
+# Download from: https://dotnet.microsoft.com/download/dotnet/10.0
 
 # Docker Desktop
 # Download from: https://www.docker.com/products/docker-desktop

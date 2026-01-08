@@ -1,11 +1,12 @@
 # Build stage
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-
 
 # Copy shared projects
 COPY ["MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
 COPY ["MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.csproj", "MyApp.Shared/MyApp.Shared.Infrastructure/"]
+COPY ["MyApp.Shared/MyApp.Shared.CQRS/MyApp.Shared.CQRS.csproj", "MyApp.Shared/MyApp.Shared.CQRS/"]
+COPY ["MyApp.Shared/MyApp.Shared.SignalR/MyApp.Shared.SignalR.csproj", "MyApp.Shared/MyApp.Shared.SignalR/"]
 
 # Copy Billing service projects
 COPY ["MyApp.Billing/MyApp.Billing.Domain/MyApp.Billing.Domain.csproj", "MyApp.Billing/MyApp.Billing.Domain/"]
@@ -14,37 +15,26 @@ COPY ["MyApp.Billing/MyApp.Billing.Application/MyApp.Billing.Application.csproj"
 COPY ["MyApp.Billing/MyApp.Billing.Infrastructure/MyApp.Billing.Infrastructure.csproj", "MyApp.Billing/MyApp.Billing.Infrastructure/"]
 COPY ["MyApp.Billing/MyApp.Billing.API/MyApp.Billing.API.csproj", "MyApp.Billing/MyApp.Billing.API/"]
 
-# Restore dependencies
-RUN dotnet restore "MyApp.Billing/MyApp.Billing.API/MyApp.Billing.API.csproj"
+# Restore dependencies with BuildKit cache mount (MUCH FASTER)
+RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
+    dotnet restore "MyApp.Billing/MyApp.Billing.API/MyApp.Billing.API.csproj"
 
-# Copy all source files
-COPY . .
+# Copy only needed source files (not everything from context)
+COPY ["MyApp.Shared/", "MyApp.Shared/"]
+COPY ["MyApp.Billing/", "MyApp.Billing/"]
 
-# Build the project
+# Build the project with cache mount
 WORKDIR "/src/MyApp.Billing/MyApp.Billing.API"
-RUN dotnet build "MyApp.Billing.API.csproj" -c Release -o /app/build
+RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
+    dotnet build "MyApp.Billing.API.csproj" -c Release -o /app/build --no-restore
 
 # Publish stage
 FROM build AS publish
-RUN dotnet publish "MyApp.Billing.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
+    dotnet publish "MyApp.Billing.API.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
 
-# Runtime stage
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
+# Runtime stage - Use shared base image
+FROM myapp-microservices-base:10.0 AS final
 WORKDIR /app
-EXPOSE 8080
-
-# Install curl for health checks
-USER root
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
-
-# Create non-root user
-RUN groupadd -r appuser && useradd -r -g appuser appuser
-
-# Copy files and set ownership
 COPY --from=publish /app/publish .
-RUN chown -R appuser:appuser /app
-
-# Switch to non-root user
-USER appuser
-
 ENTRYPOINT ["dotnet", "MyApp.Billing.API.dll"]

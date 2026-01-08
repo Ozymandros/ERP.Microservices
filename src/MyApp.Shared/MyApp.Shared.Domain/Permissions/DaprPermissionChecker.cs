@@ -13,7 +13,7 @@ public class DaprPermissionChecker : IPermissionChecker
         _httpContextAccessor = httpContextAccessor;
     }
 
-    // Opció 2 (millor): El token es passa com a paràmetre (més flexible)
+    // Option 2 (better): The token is passed as a parameter (more flexible)
     public async Task<bool> HasPermissionAsync(Guid userId, string module, string action)
     {
         var query = new Dictionary<string, string>
@@ -23,16 +23,16 @@ public class DaprPermissionChecker : IPermissionChecker
             ["action"] = action
         };
 
-        // 1. Crea la petició manualment
+        // 1. Create the request manually
         var request = _daprClient.CreateInvokeMethodRequest(HttpMethod.Get, "auth-service", "api/permissions/check", query);
 
-        // 2. Afegeix el header d'autenticació
+        // 2. Add the authentication header
         if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
         {
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authHeader.ToString().Replace("Bearer ", ""));
         }
 
-        // 3. Fes la crida
+        // 3. Make the call
         try
         {
             var result = await _daprClient.InvokeMethodAsync<bool>(request);
@@ -57,16 +57,16 @@ public class DaprPermissionChecker : IPermissionChecker
             ["action"] = action
         };
 
-        // 1. Crea la petició
+        // 1. Create the request
         using var request = _daprClient.CreateInvokeMethodRequest(HttpMethod.Get, "auth-service", "api/permissions/check", query);
 
-        // 2. Afegeix el header d'autenticació
+        // 2. Add the authentication header
         if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
         {
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authHeader.ToString().Replace("Bearer ", ""));
         }
 
-        // 3. Fes la crida
+        // 3. Make the call
         try
         {
             var result = await _daprClient.InvokeMethodAsync<bool>(request);

@@ -36,7 +36,7 @@
 //        // Assert
 //        var serviceProvider = _services.BuildServiceProvider();
 //        var authOptions = serviceProvider.GetRequiredService<Microsoft.AspNetCore.Authentication.AuthenticationOptions>();
-        
+
 //        Assert.NotNull(authOptions);
 //        Assert.Equal(JwtBearerDefaults.AuthenticationScheme, authOptions.DefaultAuthenticateScheme);
 //        Assert.Equal(JwtBearerDefaults.AuthenticationScheme, authOptions.DefaultChallengeScheme);
@@ -75,8 +75,8 @@
 //        Assert.True(validationParams.ValidateIssuer);
 //        Assert.True(validationParams.ValidateAudience);
 //        Assert.True(validationParams.ValidateLifetime);
-//        Assert.Equal(_configuration["Jwt:Issuer"], validationParams.ValidIssuer);
-//        Assert.Equal(_configuration["Jwt:Audience"], validationParams.ValidAudience);
+//        Assert.Equal(_Configuration["Jwt:Issuer"], validationParams.ValidIssuer);
+//        Assert.Equal(_Configuration["Jwt:Audience"], validationParams.ValidAudience);
 //    }
 
 //    [Fact]
@@ -91,7 +91,7 @@
 //            .Get(JwtBearerDefaults.AuthenticationScheme);
 //        var validationParams = options.TokenValidationParameters;
 
-//        var expectedKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+//        var expectedKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_Configuration["Jwt:Key"]));
 //        var actualKey = validationParams.IssuerSigningKey as SymmetricSecurityKey;
 
 //        Assert.NotNull(actualKey);

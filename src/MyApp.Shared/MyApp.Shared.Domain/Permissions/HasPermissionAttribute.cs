@@ -17,7 +17,7 @@ public class HasPermissionAttribute : AuthorizeAttribute, IAsyncAuthorizationFil
 
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
-        // 1. Verifica que l'usuari està autenticat
+        // 1. Verify that the user is authenticated
         var user = context.HttpContext.User;
         if (user.Identity?.IsAuthenticated is not true)
         {
@@ -25,16 +25,16 @@ public class HasPermissionAttribute : AuthorizeAttribute, IAsyncAuthorizationFil
             return;
         }
 
-        // 2. Obté el username i els roles
+        // 2. Get the username and roles
         var username = user.FindFirst(ClaimTypes.Name)?.Value;
         var roles = user.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList();
 
-        // 3. Invoca el servei de permisos (Dapr, API, etc.)
+        // 3. Invoke the permissions service (Dapr, API, etc.)
         var permissionChecker = context.HttpContext.RequestServices.GetRequiredService<IPermissionChecker>();
         //var hasPermission = await permissionChecker.HasPermissionAsync(Guid.Parse(userId), _module, _action);
         bool hasPermission = await permissionChecker.HasPermissionAsync(_module, _action);
 
-        // 4. Si no té permisos, denega l'accés
+        // 4. If no permissions, deny access
         if (!hasPermission)
         {
             context.Result = new ForbidResult();

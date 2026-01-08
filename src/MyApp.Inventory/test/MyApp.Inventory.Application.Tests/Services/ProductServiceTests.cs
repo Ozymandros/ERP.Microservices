@@ -32,7 +32,11 @@ public class ProductServiceTests
         // Arrange
         var productId = Guid.NewGuid();
         var product = new Product(Guid.NewGuid()) { SKU = "PRD-001", Name = "Test Product" };
-        var expectedDto = new ProductDto(Guid.NewGuid(), default, "", null, null, "PRD-001", "Test Product");
+        var expectedDto = new ProductDto(Guid.NewGuid())
+        {
+            SKU = "PRD-001",
+            Name = "Test Product"
+        };
 
         _mockProductRepository.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync(product);
         _mockMapper.Setup(m => m.Map<ProductDto>(product)).Returns(expectedDto);
@@ -71,7 +75,11 @@ public class ProductServiceTests
         // Arrange
         var sku = "PRD-001";
         var product = new Product(Guid.NewGuid()) { SKU = sku, Name = "Test Product" };
-        var expectedDto = new ProductDto(Guid.NewGuid(), default, "", null, null, sku, "Test Product");
+        var expectedDto = new ProductDto(Guid.NewGuid())
+        {
+            SKU = sku,
+            Name = "Test Product"
+        };
 
         _mockProductRepository.Setup(r => r.GetBySkuAsync(sku)).ReturnsAsync(product);
         _mockMapper.Setup(m => m.Map<ProductDto>(product)).Returns(expectedDto);
@@ -116,8 +124,16 @@ public class ProductServiceTests
 
         var productDtos = new List<ProductDto>
         {
-            new ProductDto(Guid.NewGuid(), default, "", null, null, "PRD-001", "Product 1"),
-            new ProductDto(Guid.NewGuid(), default, "", null, null, "PRD-002", "Product 2")
+            new ProductDto(Guid.NewGuid())
+            {
+                SKU = "PRD-001",
+                Name = "Product 1"
+            },
+            new ProductDto(Guid.NewGuid())
+            {
+                SKU = "PRD-002",
+                Name = "Product 2"
+            }
         };
 
         _mockProductRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(products);
@@ -148,7 +164,11 @@ public class ProductServiceTests
 
         var productDtos = new List<ProductDto>
         {
-            new ProductDto(Guid.NewGuid(), default, "", null, null, "PRD-LOW", "Low Stock Product")
+            new ProductDto(Guid.NewGuid())
+            {
+                SKU = "PRD-LOW",
+                Name = "Low Stock Product"
+            }
         };
 
         _mockProductRepository.Setup(r => r.GetLowStockProductsAsync()).ReturnsAsync(products);
@@ -173,7 +193,11 @@ public class ProductServiceTests
         var dto = new CreateUpdateProductDto("PRD-NEW", "New Product");
         var product = new Product(Guid.NewGuid()) { SKU = "PRD-NEW", Name = "New Product" };
         var createdProduct = new Product(Guid.NewGuid()) { SKU = "PRD-NEW", Name = "New Product" };
-        var expectedDto = new ProductDto(Guid.NewGuid(), default, "", null, null, "PRD-NEW", "New Product");
+        var expectedDto = new ProductDto(Guid.NewGuid())
+        {
+            SKU = "PRD-NEW",
+            Name = "New Product"
+        };
 
         _mockProductRepository.Setup(r => r.GetBySkuAsync(dto.SKU)).ReturnsAsync((Product?)null);
         _mockMapper.Setup(m => m.Map<Product>(dto)).Returns(product);
@@ -219,7 +243,11 @@ public class ProductServiceTests
         var existingProduct = new Product(productId) { SKU = "PRD-OLD", Name = "Old Name" };
         var updateDto = new CreateUpdateProductDto("PRD-OLD", "New Name");
         var updatedProduct = new Product(productId) { SKU = "PRD-OLD", Name = "New Name" };
-        var expectedDto = new ProductDto(Guid.NewGuid(), default, "", null, null, "PRD-OLD", "New Name");
+        var expectedDto = new ProductDto(Guid.NewGuid())
+        {
+            SKU = "PRD-OLD",
+            Name = "New Name"
+        };
 
         _mockProductRepository.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync(existingProduct);
         _mockMapper.Setup(m => m.Map(updateDto, existingProduct));

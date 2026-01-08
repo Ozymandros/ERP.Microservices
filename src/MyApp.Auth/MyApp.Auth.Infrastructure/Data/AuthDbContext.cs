@@ -50,8 +50,8 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
             b.Property(u => u.Email).HasMaxLength(256);
             b.Property(u => u.NormalizedEmail).HasMaxLength(256);
 
-            // === Mapeig dels camps d'Auditoria (IAuditableEntity) ===
-            // Aquests camps no s'afegeixen autom�ticament per convenci� a IdentityUser
+            // === Mapping of Audit fields (IAuditableEntity) ===
+            // These fields are not automatically added by convention to IdentityUser
             b.Property(u => u.CreatedAt).HasColumnType("datetime2").IsRequired();
             b.Property(u => u.CreatedBy).HasMaxLength(256).IsRequired();
             b.Property(u => u.UpdatedAt).HasColumnType("datetime2").IsRequired(false); // Nullable
@@ -91,8 +91,8 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
             b.Property(r => r.Name).HasMaxLength(256);
             b.Property(r => r.NormalizedName).HasMaxLength(256);
 
-            // === Mapeig dels camps d'Auditoria (IAuditableEntity) ===
-            // Aquests camps no s'afegeixen autom�ticament per convenci� a IdentityRole
+            // === Mapping of Audit fields (IAuditableEntity) ===
+            // These fields are not automatically added by convention to IdentityUser
             b.Property(r => r.CreatedAt).HasColumnType("datetime2").IsRequired();
             b.Property(r => r.CreatedBy).HasMaxLength(256).IsRequired();
             b.Property(r => r.UpdatedAt).HasColumnType("datetime2").IsRequired(false); // Nullable

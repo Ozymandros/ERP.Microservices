@@ -129,7 +129,15 @@ public class RoleDtoBuilder
         return this;
     }
 
-    public RoleDto Build() => new(_id, _createdAt, _createdBy, _updatedAt, _updatedBy, _name, _description);
+    public RoleDto Build() => new(_id)
+    {
+        CreatedAt = _createdAt,
+        CreatedBy = _createdBy,
+        UpdatedAt = _updatedAt,
+        UpdatedBy = _updatedBy,
+        Name = _name,
+        Description = _description
+    };
 
     public static implicit operator RoleDto(RoleDtoBuilder builder) => builder.Build();
 }

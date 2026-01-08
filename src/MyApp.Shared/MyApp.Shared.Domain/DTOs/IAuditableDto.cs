@@ -8,9 +8,9 @@ namespace MyApp.Shared.Domain.DTOs
 
     public interface IAuditableDto
     {
-        DateTime CreatedAt { get; set; }
-        string CreatedBy { get; set; }
-        DateTime? UpdatedAt { get; set; }
-        string? UpdatedBy { get; set; }
+        DateTime CreatedAt { get; init; }
+        string CreatedBy { get; init; }
+        DateTime? UpdatedAt { get; init; }
+        string? UpdatedBy { get; init; }
     }
 }

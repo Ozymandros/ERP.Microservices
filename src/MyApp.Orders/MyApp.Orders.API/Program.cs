@@ -1,114 +1,54 @@
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.EntityFrameworkCore;
 using MyApp.Orders.Infrastructure.Data;
-using MyApp.Shared.Domain.Caching;
-using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
-using MyApp.Shared.Infrastructure.Logging;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure Serilog with sensitive data masking and OpenTelemetry integration
-builder.AddCustomLogging();
-
-// Aquesta línia registra el DaprClient (Singleton) al contenidor d'Injecció de Dependències (DI)
-builder.Services.AddDaprClient();
-
-var serviceName = builder.Environment.ApplicationName ?? typeof(Program).Assembly.GetName().Name ?? "MyApp.Orders.API";
-
-// Configure OpenTelemetry pipeline.
-builder.Services.AddOpenTelemetry()
-    .ConfigureResource(resource => resource.AddService(serviceName))
-    .WithTracing(tracing => tracing
-        .AddAspNetCoreInstrumentation()
-        .AddHttpClientInstrumentation()
-        .AddOtlpExporter())
-    .WithMetrics(metrics => metrics
-        .AddAspNetCoreInstrumentation()
-        .AddRuntimeInstrumentation()
-        .AddOtlpExporter());
-
-// Add services to the container.
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// JWT Authentication
-builder.Services.AddJwtAuthentication(builder.Configuration);
-
-// Infrastructure & Application DI
-var ordersDbConnectionString = builder.Configuration.GetConnectionString("ordersdb")
-    ?? throw new InvalidOperationException("Connection string 'ordersdb' not found.");
-builder.Services.AddDbContext<OrdersDbContext>(options =>
-    options.UseSqlServer(ordersDbConnectionString, options => options.EnableRetryOnFailure()));
-
-builder.Services.AddHttpContextAccessor();
-
-builder.Services.AddScoped<MyApp.Orders.Domain.IOrderRepository, MyApp.Orders.Infrastructure.Repositories.OrderRepository>();
-builder.Services.AddScoped<MyApp.Orders.Domain.IOrderLineRepository, MyApp.Orders.Infrastructure.Repositories.OrderLineRepository>();
-
-builder.Services.AddAutoMapper(
-    cfg => { /* optional configuration */ },
-    typeof(MyApp.Orders.Application.Mapping.OrderProfile).Assembly
-);
-builder.Services.AddScoped<MyApp.Orders.Application.Contracts.IOrderService, MyApp.Orders.Application.Services.OrderService>();
-
-builder.Services.AddScoped<IPermissionChecker, DaprPermissionChecker>();
-
-builder.AddRedisDistributedCache("cache");
-builder.Services.AddScoped<ICacheService, DistributedCacheWrapper>();
-
-// Add health checks
-builder.Services.AddCustomHealthChecks(ordersDbConnectionString);
-
-var origins = builder.Configuration["FRONTEND_ORIGIN"]?.Split(';') ?? ["http://localhost:3000"];
-
-builder.Services.AddCors(options =>
+// ============================================================================
+// Common Microservice Configuration
+// ============================================================================
+builder.AddCommonMicroserviceServices(new MicroserviceConfigurationOptions
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    ServiceName = "MyApp.Orders.API",
+    ConnectionStringKey = "ordersdb",
+    DbContextType = typeof(OrdersDbContext),
+    EnableAuthentication = true,
+    EnableHealthChecks = true,
+    EnableDapr = true,
+    EnableOpenTelemetry = true,
+    EnableRedisCache = true,
+    ConfigureServiceDependencies = services =>
     {
-        policy.WithOrigins(origins)
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
-    });
+        // Register Orders-specific repositories
+        services.AddScoped<MyApp.Orders.Domain.IOrderRepository, 
+            MyApp.Orders.Infrastructure.Repositories.OrderRepository>();
+        services.AddScoped<MyApp.Orders.Domain.IOrderLineRepository, 
+            MyApp.Orders.Infrastructure.Repositories.OrderLineRepository>();
+
+        // Register Orders-specific services
+        services.AddScoped<MyApp.Orders.Application.Contracts.IOrderService, 
+            MyApp.Orders.Application.Services.OrderService>();
+    }
 });
+
+// Redis Cache (Aspire-managed)
+builder.AddRedisDistributedCache("cache");
+
+// AutoMapper (service-specific profiles)
+builder.Services.AddAutoMapper(
+    cfg => { },
+    typeof(MyApp.Orders.Application.Mapping.OrderProfile).Assembly);
 
 var app = builder.Build();
 
-// Afegeix un bloc per a l'aplicaci� autom�tica de les migracions
-using (var scope = app.Services.CreateScope())
+// ============================================================================
+// Common Microservice Pipeline
+// ============================================================================
+app.UseCommonMicroservicePipeline(new MicroserviceConfigurationOptions
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<OrdersDbContext>();
-    // ATENCI�: Esborra la base de dades i torna-la a crear si est� buida (�til per a desenvolupament amb contenidors)
-    // dbContext.Database.EnsureDeleted(); 
-
-    // Aquest �s el m�tode clau: aplica les migracions pendents.
-    dbContext.Database.Migrate();
-}
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-app.UseRouting();
-app.UseCors("AllowFrontend");
-
-// Add authentication and authorization middleware
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-
-// Map health check endpoint
-app.UseCustomHealthChecks();
+    DbContextType = typeof(OrdersDbContext),
+    EnableAuthentication = true,
+    EnableHealthChecks = true
+});
 
 app.Run();
 

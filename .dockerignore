@@ -1,20 +1,36 @@
-**/.classpath
-**/.dockerignore
-**/.env
-**/.git
-**/.gitignore
-**/.project
-**/.settings
-**/.toolstarget
-**/*.md
+# --- BINARIES AND COMPILATION (Culprits of 1500s and type errors) ---
 **/bin/
 **/obj/
+**/publish/
+**/out/
+
+# --- IDE AND LOCAL CONFIGURATIONS ---
 .vs/
 .vscode/
+.idea/
 *.user
 *.suo
-node_modules/
-dist/
-build/
-_site/
-.next/
+**/.toolstarget
+
+# --- FRONTEND AND HEAVY DEPENDENCIES ---
+**/node_modules/
+**/dist/
+**/build/
+**/.next/
+
+# --- VERSION CONTROL AND DOCKER ---
+**/.git
+**/.gitignore
+**/.dockerignore
+**/.env
+**/.project
+**/.settings
+**/.classpath
+
+# --- DOCUMENTS AND LOGS ---
+**/*.md
+**/logs/
+*.log
+
+# --- EXCEPTIONS (Make sure these are NOT in the list above) ---
+# Do not put docker-compose.yml or docker-compose.override.yml here

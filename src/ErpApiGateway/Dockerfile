@@ -1,5 +1,5 @@
 # Build stage
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 # Copy only the Gateway project file for restore
@@ -13,8 +13,8 @@ COPY ["MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.cspr
 RUN dotnet restore "ErpApiGateway/ErpApiGateway.csproj"
 
 # Copy source files for Gateway
-COPY ["ErpApiGateway/", "ErpApiGateway/"]
-COPY ["MyApp.Shared/", "MyApp.Shared/"]
+COPY ErpApiGateway/ ErpApiGateway/
+COPY MyApp.Shared/ MyApp.Shared/
 
 # Build the project
 WORKDIR "/src/ErpApiGateway"
@@ -25,29 +25,37 @@ FROM build AS publish
 RUN dotnet publish "ErpApiGateway.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Runtime stage
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 EXPOSE 8080
 
 # --- THE LINES FROM YOUR IMAGE (Preserving everything) ---
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080
-RUN apt-get update && apt-get install -y --no-install-recommends curl
 
-# Create non-root user
-RUN groupadd -r appuser && useradd -r -g appuser appuser
+# Pre-install dependencies in a separate layer for better caching
+# This layer will be cached and reused unless the base image changes
+USER root
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl ca-certificates && \
+    rm -rf /var/lib/apt/lists/* && \
+    groupadd -r appuser && \
+    useradd -r -g appuser appuser
 
 # --- CRITICAL ORDER CHANGE ---
-
+# 
 # 1. Copy the files FIRST while still root
 # If we change to 'appuser' before this, the files will be owned by root 
 # and the non-root user won't have permissions to run them.
 COPY --from=publish /app/publish .
 
+# Note: DocFX _site directory is mounted via volume in docker-compose.yml
+# No need to COPY it here since the build context is ./src and _site is at the root
+
 # 2. Change ownership AFTER the files are already in the folder
 # This ensures that 'appuser' owns the actual DLLs.
 RUN chown -R appuser:appuser /app
 
-# 3. NOW switch to the non-root user
+# 3. NOW switch to the non-root user for security (principle of least privilege)
 USER appuser
 
 ENTRYPOINT ["dotnet", "ErpApiGateway.dll"]

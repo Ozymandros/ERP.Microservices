@@ -24,11 +24,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # 👇 Instal·lem .NET 9 explícitament al runner
-    - name: Setup .NET 9
+    # 👇 Instal·lem .NET 10 explícitament al runner
+    - name: Setup .NET 10
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '9.0.x'
+        dotnet-version: '10.0.x'
 
     # 👇 Inicialitzem CodeQL abans de compilar
     - name: Initialize CodeQL
