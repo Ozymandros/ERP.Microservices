@@ -92,11 +92,13 @@ public static class MicroserviceExtensions
             var connectionString = builder.Configuration.GetConnectionString(options.ConnectionStringKey)
                 ?? throw new InvalidOperationException($"Connection string '{options.ConnectionStringKey}' not found.");
 
+            // Use reflection to call AddDbContext<TContext> with proper parameters
             var addDbContextMethod = typeof(EntityFrameworkServiceCollectionExtensions)
                 .GetMethods()
                 .First(m => m.Name == nameof(EntityFrameworkServiceCollectionExtensions.AddDbContext)
+                    && m.IsGenericMethodDefinition
                     && m.GetGenericArguments().Length == 1
-                    && m.GetParameters().Length == 3);
+                    && m.GetParameters().Length == 4); // Now looking for 4 parameters
 
             var genericMethod = addDbContextMethod.MakeGenericMethod(options.DbContextType);
             genericMethod.Invoke(null, new object[]

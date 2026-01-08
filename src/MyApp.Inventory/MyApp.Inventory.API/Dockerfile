@@ -2,10 +2,14 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
+# Copy nuget.config to ensure clean package resolution
+COPY nuget.config ./
 
 # Copy shared projects
 COPY ["MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
 COPY ["MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.csproj", "MyApp.Shared/MyApp.Shared.Infrastructure/"]
+COPY ["MyApp.Shared/MyApp.Shared.CQRS/MyApp.Shared.CQRS.csproj", "MyApp.Shared/MyApp.Shared.CQRS/"]
+COPY ["MyApp.Shared/MyApp.Shared.SignalR/MyApp.Shared.SignalR.csproj", "MyApp.Shared/MyApp.Shared.SignalR/"]
 
 # Copy Inventory service projects
 COPY ["MyApp.Inventory/MyApp.Inventory.Domain/MyApp.Inventory.Domain.csproj", "MyApp.Inventory/MyApp.Inventory.Domain/"]
@@ -15,21 +19,22 @@ COPY ["MyApp.Inventory/MyApp.Inventory.Infrastructure/MyApp.Inventory.Infrastruc
 COPY ["MyApp.Inventory/MyApp.Inventory.API/MyApp.Inventory.API.csproj", "MyApp.Inventory/MyApp.Inventory.API/"]
 
 # Restore dependencies with BuildKit cache mount (MUCH FASTER)
-RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+# Using shared cache across all services for better performance
+RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
     dotnet restore "MyApp.Inventory/MyApp.Inventory.API/MyApp.Inventory.API.csproj"
 
 # Copy only needed source files (not everything from context)
-COPY ["MyApp.Shared/", "MyApp.Shared/"]
-COPY ["MyApp.Inventory/", "MyApp.Inventory/"]
+COPY MyApp.Shared/ MyApp.Shared/
+COPY MyApp.Inventory/ MyApp.Inventory/
 
 # Build the project with cache mount
 WORKDIR "/src/MyApp.Inventory/MyApp.Inventory.API"
-RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
     dotnet build "MyApp.Inventory.API.csproj" -c Release -o /app/build --no-restore
 
 # Publish stage
 FROM build AS publish
-RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
     dotnet publish "MyApp.Inventory.API.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
 
 # Runtime stage - Use shared base image

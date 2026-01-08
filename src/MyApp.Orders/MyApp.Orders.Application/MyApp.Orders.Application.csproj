@@ -13,7 +13,7 @@
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="16.0.0" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
   </ItemGroup>
