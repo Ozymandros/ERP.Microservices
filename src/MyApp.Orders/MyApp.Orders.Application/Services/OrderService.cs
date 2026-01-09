@@ -195,16 +195,16 @@ namespace MyApp.Orders.Application.Services
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Failed to reserve stock for OrderLine {OrderLineId}, Product {ProductId}", 
+                    _logger.LogError(ex, "Failed to reserve stock for OrderLine {OrderLineId}, Product {ProductId}",
                         line.Id, line.ProductId);
-                    
+
                     // Roll back: cancel order and release any reservations made so far
                     await CancelOrderAsync(new CancelOrderDto
                     {
                         OrderId = order.Id,
                         Reason = $"Stock reservation failed: {ex.Message}"
                     });
-                    
+
                     throw new OrderFulfillmentException(order.Id, $"Failed to reserve stock: {ex.Message}");
                 }
             }
@@ -262,7 +262,7 @@ namespace MyApp.Orders.Application.Services
             {
                 if (reservation.Status != ReservationStatus.Reserved)
                 {
-                    throw new OrderFulfillmentException(dto.OrderId, 
+                    throw new OrderFulfillmentException(dto.OrderId,
                         $"Reservation {reservation.Id} is not in Reserved status: {reservation.Status}");
                 }
 
@@ -339,7 +339,7 @@ namespace MyApp.Orders.Application.Services
                         reservation.Status = ReservationStatus.Cancelled;
                         await _reservedStockRepository.UpdateAsync(reservation);
 
-                        _logger.LogInformation("Released reservation {ReservationId} for Order {OrderId}", 
+                        _logger.LogInformation("Released reservation {ReservationId} for Order {OrderId}",
                             reservation.Id, dto.OrderId);
                     }
                     catch (Exception ex)

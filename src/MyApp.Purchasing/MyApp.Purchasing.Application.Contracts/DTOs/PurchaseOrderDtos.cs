@@ -62,3 +62,51 @@ public record CreateUpdatePurchaseOrderLineDto
     [Range(0, double.MaxValue, ErrorMessage = "UnitPrice must be greater than or equal to 0")]
     public decimal UnitPrice { get; init; }
 }
+
+/// <summary>
+/// DTO for approving a purchase order
+/// </summary>
+public record ApprovePurchaseOrderDto
+{
+    [Required]
+    public Guid PurchaseOrderId { get; init; }
+
+    [MaxLength(500)]
+    public string? Notes { get; init; }
+}
+
+/// <summary>
+/// DTO for receiving a purchase order
+/// </summary>
+public record ReceivePurchaseOrderDto
+{
+    [Required]
+    public Guid PurchaseOrderId { get; init; }
+
+    [Required]
+    public Guid WarehouseId { get; init; }
+
+    [Required]
+    public DateTime ReceivedDate { get; init; } = DateTime.UtcNow;
+
+    [MaxLength(500)]
+    public string? Notes { get; init; }
+
+    public List<ReceivePurchaseOrderLineDto> Lines { get; init; } = new();
+}
+
+/// <summary>
+/// DTO for receiving a purchase order line
+/// </summary>
+public record ReceivePurchaseOrderLineDto
+{
+    [Required]
+    public Guid PurchaseOrderLineId { get; init; }
+
+    [Required]
+    [Range(1, int.MaxValue, ErrorMessage = "Received quantity must be at least 1")]
+    public int ReceivedQuantity { get; init; }
+
+    [MaxLength(500)]
+    public string? Notes { get; init; }
+}
