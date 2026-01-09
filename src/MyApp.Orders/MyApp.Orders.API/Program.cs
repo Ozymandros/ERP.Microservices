@@ -23,10 +23,15 @@ builder.AddCommonMicroserviceServices(new MicroserviceConfigurationOptions
             MyApp.Orders.Infrastructure.Repositories.OrderRepository>();
         services.AddScoped<MyApp.Orders.Domain.IOrderLineRepository, 
             MyApp.Orders.Infrastructure.Repositories.OrderLineRepository>();
+        services.AddScoped<MyApp.Orders.Domain.Repositories.IReservedStockRepository, 
+            MyApp.Orders.Infrastructure.Repositories.ReservedStockRepository>();
 
         // Register Orders-specific services
         services.AddScoped<MyApp.Orders.Application.Contracts.IOrderService, 
             MyApp.Orders.Application.Services.OrderService>();
+        
+        // Register background services
+        services.AddHostedService<MyApp.Orders.API.BackgroundServices.ReservationExpiryService>();
     }
 });
 
@@ -49,6 +54,9 @@ app.UseCommonMicroservicePipeline(new MicroserviceConfigurationOptions
     EnableAuthentication = true,
     EnableHealthChecks = true
 });
+
+// Dapr pub/sub subscriptions
+app.MapSubscribeHandler();
 
 app.Run();
 

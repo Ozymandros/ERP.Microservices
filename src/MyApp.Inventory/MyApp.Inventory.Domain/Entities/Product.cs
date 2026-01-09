@@ -8,9 +8,10 @@ public class Product(Guid id) : AuditableEntity<Guid>(id)
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public decimal UnitPrice { get; set; }
-    public int QuantityInStock { get; set; }
+    public int QuantityInStock { get; set; }  // Keep for backward compatibility, will be computed from WarehouseStocks
     public int ReorderLevel { get; set; }
 
     // Navigation
     public ICollection<InventoryTransaction> InventoryTransactions { get; set; } = [];
+    public ICollection<WarehouseStock> WarehouseStocks { get; set; } = [];
 }

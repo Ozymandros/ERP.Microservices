@@ -29,12 +29,14 @@ public class SupplierServiceTests
     {
         // Arrange
         var supplierId = Guid.NewGuid();
-        var supplier = new Supplier(supplierId) { Name = "Test Supplier", Email = "test@supplier.com" };
+        var supplier = new Supplier(supplierId) { Name = "Test Supplier", ContactName = "Test Supplier", Email = "test@supplier.com" };
         var expectedDto = new SupplierDto(supplierId)
         {
             Name = "Test Supplier",
             ContactName = "Test Supplier",
-            Email = "test@supplier.com"
+            Email = "test@supplier.com",
+            PhoneNumber = "",
+            Address = ""
         };
 
         _mockSupplierRepository.Setup(r => r.GetByIdAsync(supplierId)).ReturnsAsync(supplier);
@@ -67,13 +69,15 @@ public class SupplierServiceTests
     public async Task GetSupplierByEmailAsync_WithExistingEmail_ReturnsSupplierDto()
     {
         // Arrange
-        var email = "supplier@example.com";
-        var supplier = new Supplier(Guid.NewGuid()) { Email = email, Name = "Test Supplier" };
+        var email = "test@supplier.com";
+        var supplier = new Supplier(Guid.NewGuid()) { Name = "Test Supplier", ContactName = "Test Supplier", Email = email };
         var expectedDto = new SupplierDto(Guid.NewGuid())
         {
             Name = "Test Supplier",
             ContactName = "Test Supplier",
-            Email = email
+            Email = email,
+            PhoneNumber = "",
+            Address = ""
         };
 
         _mockSupplierRepository.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync(supplier);
@@ -85,6 +89,7 @@ public class SupplierServiceTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(email, result.Email);
+        _mockSupplierRepository.Verify(r => r.GetByEmailAsync(email), Times.Once);
     }
 
     [Fact]
@@ -174,13 +179,15 @@ public class SupplierServiceTests
     {
         // Arrange
         var dto = new CreateUpdateSupplierDto("New Supplier", "Test Contact", "new@supplier.com");
-        var supplier = new Supplier(Guid.NewGuid()) { Name = "New Supplier", Email = "new@supplier.com" };
-        var createdSupplier = new Supplier(Guid.NewGuid()) { Name = "New Supplier", Email = "new@supplier.com" };
+        var supplier = new Supplier(Guid.NewGuid()) { Name = "New Supplier", ContactName = "Test Contact", Email = "new@supplier.com" };
+        var createdSupplier = new Supplier(Guid.NewGuid()) { Name = "New Supplier", ContactName = "Test Contact", Email = "new@supplier.com" };
         var expectedDto = new SupplierDto(createdSupplier.Id)
         {
             Name = "New Supplier",
             ContactName = "Test Contact",
-            Email = "new@supplier.com"
+            Email = "new@supplier.com",
+            PhoneNumber = "",
+            Address = ""
         };
 
         _mockSupplierRepository.Setup(r => r.GetByEmailAsync(dto.Email)).ReturnsAsync((Supplier?)null);
@@ -193,6 +200,7 @@ public class SupplierServiceTests
 
         // Assert
         Assert.NotNull(result);
+        Assert.Equal("New Supplier", result.Name);
         _mockSupplierRepository.Verify(r => r.AddAsync(supplier), Times.Once);
     }
 
@@ -218,14 +226,16 @@ public class SupplierServiceTests
     {
         // Arrange
         var supplierId = Guid.NewGuid();
-        var existingSupplier = new Supplier(supplierId) { Email = "old@email.com" };
+        var existingSupplier = new Supplier(supplierId) { Name = "Old Name", ContactName = "Test Contact", Email = "old@email.com" };
         var updateDto = new CreateUpdateSupplierDto("Updated Name", "Test Contact", "old@email.com");
-        var updatedSupplier = new Supplier(supplierId) { Email = "old@email.com", Name = "Updated Name" };
+        var updatedSupplier = new Supplier(supplierId) { Name = "Updated Name", ContactName = "Test Contact", Email = "old@email.com" };
         var expectedDto = new SupplierDto(supplierId)
         {
             Name = "Updated Name",
             ContactName = "Test Contact",
-            Email = "old@email.com"
+            Email = "old@email.com",
+            PhoneNumber = "",
+            Address = ""
         };
 
         _mockSupplierRepository.Setup(r => r.GetByIdAsync(supplierId)).ReturnsAsync(existingSupplier);
@@ -238,6 +248,7 @@ public class SupplierServiceTests
 
         // Assert
         Assert.NotNull(result);
+        Assert.Equal("Updated Name", result.Name);
         _mockSupplierRepository.Verify(r => r.UpdateAsync(existingSupplier), Times.Once);
     }
 

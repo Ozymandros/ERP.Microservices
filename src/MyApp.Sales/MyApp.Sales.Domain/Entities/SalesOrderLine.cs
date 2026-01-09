@@ -9,5 +9,9 @@ namespace MyApp.Sales.Domain.Entities
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal LineTotal { get; set; }
+        
+        // Denormalized product info for display
+        public string? ProductSKU { get; set; }
+        public string? ProductName { get; set; }
     }
 }

@@ -1,9 +1,12 @@
 using AutoMapper;
+using Dapr.Client;
+using Microsoft.Extensions.Logging;
 using Moq;
 using MyApp.Orders.Application.Contracts.Dtos;
 using MyApp.Orders.Application.Services;
 using MyApp.Orders.Domain;
 using MyApp.Orders.Domain.Entities;
+using MyApp.Orders.Domain.Repositories;
 using Xunit;
 
 namespace MyApp.Orders.Application.Tests.Services;
@@ -12,19 +15,28 @@ public class OrderServiceTests
 {
     private readonly Mock<IOrderRepository> _mockOrderRepository;
     private readonly Mock<IOrderLineRepository> _mockOrderLineRepository;
+    private readonly Mock<IReservedStockRepository> _mockReservedStockRepository;
     private readonly Mock<IMapper> _mockMapper;
+    private readonly Mock<ILogger<OrderService>> _mockLogger;
+    private readonly Mock<DaprClient> _mockDaprClient;
     private readonly OrderService _orderService;
 
     public OrderServiceTests()
     {
         _mockOrderRepository = new Mock<IOrderRepository>();
         _mockOrderLineRepository = new Mock<IOrderLineRepository>();
+        _mockReservedStockRepository = new Mock<IReservedStockRepository>();
         _mockMapper = new Mock<IMapper>();
+        _mockLogger = new Mock<ILogger<OrderService>>();
+        _mockDaprClient = new Mock<DaprClient>();
 
         _orderService = new OrderService(
             _mockOrderRepository.Object,
             _mockOrderLineRepository.Object,
-            _mockMapper.Object);
+            _mockReservedStockRepository.Object,
+            _mockMapper.Object,
+            _mockLogger.Object,
+            _mockDaprClient.Object);
     }
 
     #region CreateAsync Tests
@@ -75,13 +87,13 @@ public class OrderServiceTests
         var result = await _orderService.CreateAsync(createDto);
 
         // Assert
-        _mockOrderRepository.Verify(r => r.AddAsync(It.Is<Order>(o => 
-            o.Status == OrderStatus.Draft && 
+        _mockOrderRepository.Verify(r => r.AddAsync(It.Is<Order>(o =>
+            o.Status == OrderStatus.Draft &&
             o.TotalAmount == 50.00m &&
             o.Id != Guid.Empty &&
             o.Lines.All(l => l.OrderId == o.Id && l.Id != Guid.Empty)
         )), Times.Once);
-        
+
         _mockMapper.Verify(m => m.Map<Order>(createDto), Times.Once);
         _mockMapper.Verify(m => m.Map<OrderDto>(It.IsAny<Order>()), Times.Once);
     }
@@ -140,7 +152,7 @@ public class OrderServiceTests
         await _orderService.CreateAsync(createDto);
 
         // Assert
-        _mockOrderRepository.Verify(r => r.AddAsync(It.Is<Order>(o => 
+        _mockOrderRepository.Verify(r => r.AddAsync(It.Is<Order>(o =>
             o.TotalAmount == 91.00m  // (2 * 15.50) + (3 * 20.00)
         )), Times.Once);
     }
@@ -189,7 +201,7 @@ public class OrderServiceTests
         await _orderService.CreateAsync(createDto);
 
         // Assert
-        _mockOrderRepository.Verify(r => r.AddAsync(It.Is<Order>(o => 
+        _mockOrderRepository.Verify(r => r.AddAsync(It.Is<Order>(o =>
             o.Status == OrderStatus.Draft
         )), Times.Once);
     }
@@ -246,7 +258,7 @@ public class OrderServiceTests
         await _orderService.CreateAsync(createDto);
 
         // Assert
-        _mockOrderRepository.Verify(r => r.AddAsync(It.Is<Order>(o => 
+        _mockOrderRepository.Verify(r => r.AddAsync(It.Is<Order>(o =>
             o.Id != Guid.Empty &&
             o.Lines.All(l => l.Id != Guid.Empty && l.OrderId == o.Id)
         )), Times.Once);

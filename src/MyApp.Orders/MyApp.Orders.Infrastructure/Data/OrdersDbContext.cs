@@ -13,11 +13,13 @@ public class OrdersDbContext : AuditableDbContext
 
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderLine> OrderLines => Set<OrderLine>();
+    public DbSet<ReservedStock> ReservedStocks => Set<ReservedStock>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new Configurations.OrderConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.OrderLineConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.ReservedStockConfiguration());
         base.OnModelCreating(modelBuilder);
     }
 }
