@@ -1,4 +1,6 @@
 using AutoMapper;
+using Dapr.Client;
+using Microsoft.Extensions.Logging;
 using Moq;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Services;
@@ -13,6 +15,8 @@ public class SalesOrderServiceTests
     private readonly Mock<ISalesOrderRepository> _mockOrderRepository;
     private readonly Mock<ICustomerRepository> _mockCustomerRepository;
     private readonly Mock<IMapper> _mockMapper;
+    private readonly Mock<ILogger<SalesOrderService>> _mockLogger;
+    private readonly Mock<DaprClient> _mockDaprClient;
     private readonly SalesOrderService _salesOrderService;
 
     public SalesOrderServiceTests()
@@ -20,11 +24,15 @@ public class SalesOrderServiceTests
         _mockOrderRepository = new Mock<ISalesOrderRepository>();
         _mockCustomerRepository = new Mock<ICustomerRepository>();
         _mockMapper = new Mock<IMapper>();
+        _mockLogger = new Mock<ILogger<SalesOrderService>>();
+        _mockDaprClient = new Mock<DaprClient>();
 
         _salesOrderService = new SalesOrderService(
             _mockOrderRepository.Object,
             _mockCustomerRepository.Object,
-            _mockMapper.Object);
+            _mockMapper.Object,
+            _mockLogger.Object,
+            _mockDaprClient.Object);
     }
 
     #region GetSalesOrderByIdAsync Tests

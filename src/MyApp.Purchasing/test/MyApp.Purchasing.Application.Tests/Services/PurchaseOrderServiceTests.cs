@@ -1,4 +1,6 @@
 using AutoMapper;
+using Dapr.Client;
+using Microsoft.Extensions.Logging;
 using Moq;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Services;
@@ -14,6 +16,8 @@ public class PurchaseOrderServiceTests
     private readonly Mock<IPurchaseOrderLineRepository> _mockLineRepository;
     private readonly Mock<ISupplierRepository> _mockSupplierRepository;
     private readonly Mock<IMapper> _mockMapper;
+    private readonly Mock<ILogger<PurchaseOrderService>> _mockLogger;
+    private readonly Mock<DaprClient> _mockDaprClient;
     private readonly PurchaseOrderService _purchaseOrderService;
 
     public PurchaseOrderServiceTests()
@@ -22,12 +26,16 @@ public class PurchaseOrderServiceTests
         _mockLineRepository = new Mock<IPurchaseOrderLineRepository>();
         _mockSupplierRepository = new Mock<ISupplierRepository>();
         _mockMapper = new Mock<IMapper>();
+        _mockLogger = new Mock<ILogger<PurchaseOrderService>>();
+        _mockDaprClient = new Mock<DaprClient>();
 
         _purchaseOrderService = new PurchaseOrderService(
             _mockPurchaseOrderRepository.Object,
             _mockLineRepository.Object,
             _mockSupplierRepository.Object,
-            _mockMapper.Object);
+            _mockMapper.Object,
+            _mockLogger.Object,
+            _mockDaprClient.Object);
     }
 
     [Fact]
