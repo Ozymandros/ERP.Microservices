@@ -1,4 +1,6 @@
+using Dapr.Client;
 using MyApp.Inventory.Application.Contracts.Services;
+using MyApp.Shared.Domain.Events;
 
 namespace MyApp.Inventory.API.BackgroundServices;
 
@@ -56,8 +58,7 @@ public class LowStockAlertService : BackgroundService
     {
         using var scope = _serviceProvider.CreateScope();
         var warehouseStockService = scope.ServiceProvider.GetRequiredService<IWarehouseStockService>();
-        // TODO: Add DaprClient when Phase 3 is implemented
-        // var daprClient = scope.ServiceProvider.GetRequiredService<DaprClient>();
+        var daprClient = scope.ServiceProvider.GetRequiredService<DaprClient>();
 
         _logger.LogInformation("Checking for low stock items");
 
@@ -73,12 +74,29 @@ public class LowStockAlertService : BackgroundService
                     "Low stock alert: ProductId={ProductId}, WarehouseId={WarehouseId}, Available={Available}",
                     stock.ProductId, stock.WarehouseId, stock.AvailableQuantity);
 
-                // TODO: Publish LowStockAlertEvent via Dapr when Phase 3 is implemented
-                // await daprClient.PublishEventAsync(
-                //     "pubsub",
-                //     "low-stock-alert",
-                //     new LowStockAlertEvent(stock.ProductId, stock.WarehouseId, stock.AvailableQuantity, reorderLevel),
-                //     cancellationToken);
+                // Publish LowStockAlertEvent via Dapr
+                // Note: ReorderLevel would need to be fetched from Product if needed for alerting logic
+                var lowStockEvent = new LowStockAlertEvent(
+                    stock.ProductId,
+                    stock.WarehouseId,
+                    stock.AvailableQuantity,
+                    10 // Default reorder level - could be fetched from Product repository if needed
+                );
+                
+                try
+                {
+                    await daprClient.PublishEventAsync(
+                        "pubsub",
+                        "inventory.stock.low-stock-alert",
+                        lowStockEvent,
+                        cancellationToken);
+                    
+                    _logger.LogInformation("Published LowStockAlertEvent for ProductId={ProductId}", stock.ProductId);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to publish LowStockAlertEvent for ProductId={ProductId}", stock.ProductId);
+                }
             }
         }
         else

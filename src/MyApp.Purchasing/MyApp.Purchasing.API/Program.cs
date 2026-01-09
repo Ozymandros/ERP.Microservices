@@ -159,4 +159,7 @@ app.MapControllers();
 // Map health check endpoint
 app.UseCustomHealthChecks();
 
+// Dapr pub/sub subscriptions
+app.MapSubscribeHandler();
+
 app.Run();

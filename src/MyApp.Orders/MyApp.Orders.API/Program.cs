@@ -55,6 +55,9 @@ app.UseCommonMicroservicePipeline(new MicroserviceConfigurationOptions
     EnableHealthChecks = true
 });
 
+// Dapr pub/sub subscriptions
+app.MapSubscribeHandler();
+
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)

@@ -1,10 +1,12 @@
 using AutoMapper;
+using Dapr.Client;
 using Microsoft.Extensions.Logging;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Shared.Domain.BusinessRules;
+using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Exceptions;
 
 namespace MyApp.Inventory.Application.Services;
@@ -16,19 +18,23 @@ public class WarehouseStockService : IWarehouseStockService
     private readonly IInventoryTransactionRepository _transactionRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<WarehouseStockService> _logger;
+    private readonly DaprClient _daprClient;
+    private const string PubSubName = "pubsub";
 
     public WarehouseStockService(
         IWarehouseStockRepository warehouseStockRepository,
         IProductRepository productRepository,
         IInventoryTransactionRepository transactionRepository,
         IMapper mapper,
-        ILogger<WarehouseStockService> logger)
+        ILogger<WarehouseStockService> logger,
+        DaprClient daprClient)
     {
         _warehouseStockRepository = warehouseStockRepository;
         _productRepository = productRepository;
         _transactionRepository = transactionRepository;
         _mapper = mapper;
         _logger = logger;
+        _daprClient = daprClient;
     }
 
     public async Task<WarehouseStockDto?> GetByProductAndWarehouseAsync(Guid productId, Guid warehouseId)
@@ -100,10 +106,28 @@ public class WarehouseStockService : IWarehouseStockService
         _logger.LogInformation("Stock reserved successfully: ProductId={ProductId}, Quantity={Quantity}, ExpiresAt={ExpiresAt}",
             dto.ProductId, dto.Quantity, expiresAt);
 
-        // TODO: Publish StockReservedEvent via Dapr
+        // Publish StockReservedEvent via Dapr
+        var reservationId = Guid.NewGuid();
+        var stockReservedEvent = new StockReservedEvent(
+            reservationId,
+            dto.ProductId,
+            dto.WarehouseId,
+            dto.OrderId,
+            dto.Quantity
+        );
+        
+        try
+        {
+            await _daprClient.PublishEventAsync(PubSubName, "inventory.stock.reserved", stockReservedEvent);
+            _logger.LogInformation("Published StockReservedEvent for reservation {ReservationId}", reservationId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to publish StockReservedEvent for reservation {ReservationId}", reservationId);
+        }
 
         // Return reservation details (simplified for now)
-        return new ReservationDto(Guid.NewGuid())
+        return new ReservationDto(reservationId)
         {
             ProductId = dto.ProductId,
             WarehouseId = dto.WarehouseId,
@@ -119,11 +143,27 @@ public class WarehouseStockService : IWarehouseStockService
     {
         _logger.LogInformation("Releasing reservation: ReservationId={ReservationId}", reservationId);
 
-        // TODO: This would query Orders.ReservedStock
-        // For now, log the operation
+        // TODO: This would query Orders.ReservedStock to get details
+        // For now, publish event with available information
         _logger.LogInformation("Reservation released: ReservationId={ReservationId}", reservationId);
 
-        // TODO: Publish StockReleasedEvent via Dapr
+        // Publish StockReleasedEvent via Dapr
+        var stockReleasedEvent = new StockReleasedEvent(
+            reservationId,
+            Guid.Empty, // ProductId - would come from reservation query
+            Guid.Empty, // WarehouseId - would come from reservation query
+            0  // Quantity - would come from reservation query
+        );
+        
+        try
+        {
+            await _daprClient.PublishEventAsync(PubSubName, "inventory.stock.released", stockReleasedEvent);
+            _logger.LogInformation("Published StockReleasedEvent for reservation {ReservationId}", reservationId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to publish StockReleasedEvent for reservation {ReservationId}", reservationId);
+        }
     }
 
     public async Task TransferStockAsync(StockTransferDto dto)
@@ -188,7 +228,24 @@ public class WarehouseStockService : IWarehouseStockService
         _logger.LogInformation("Stock transferred successfully: ProductId={ProductId}, Quantity={Quantity}",
             dto.ProductId, dto.Quantity);
 
-        // TODO: Publish StockTransferredEvent via Dapr
+        // Publish StockTransferredEvent via Dapr
+        var stockTransferredEvent = new StockTransferredEvent(
+            dto.ProductId,
+            dto.FromWarehouseId,
+            dto.ToWarehouseId,
+            dto.Quantity,
+            dto.Reason
+        );
+        
+        try
+        {
+            await _daprClient.PublishEventAsync(PubSubName, "inventory.stock.transferred", stockTransferredEvent);
+            _logger.LogInformation("Published StockTransferredEvent for product {ProductId}", dto.ProductId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to publish StockTransferredEvent for product {ProductId}", dto.ProductId);
+        }
     }
 
     public async Task AdjustStockAsync(StockAdjustmentDto dto)
@@ -229,7 +286,24 @@ public class WarehouseStockService : IWarehouseStockService
         _logger.LogInformation("Stock adjusted successfully: ProductId={ProductId}, NewQuantity={NewQuantity}",
             dto.ProductId, warehouseStock.AvailableQuantity);
 
-        // TODO: Publish StockAdjustedEvent via Dapr
+        // Publish StockAdjustedEvent via Dapr
+        var stockAdjustedEvent = new StockAdjustedEvent(
+            dto.ProductId,
+            dto.WarehouseId,
+            dto.QuantityChange,
+            dto.Reason,
+            dto.Reference
+        );
+        
+        try
+        {
+            await _daprClient.PublishEventAsync(PubSubName, "inventory.stock.adjusted", stockAdjustedEvent);
+            _logger.LogInformation("Published StockAdjustedEvent for product {ProductId}", dto.ProductId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to publish StockAdjustedEvent for product {ProductId}", dto.ProductId);
+        }
     }
 
     public async Task<List<WarehouseStockDto>> GetLowStockAsync()
