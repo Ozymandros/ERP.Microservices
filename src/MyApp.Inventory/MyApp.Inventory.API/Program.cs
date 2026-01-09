@@ -25,6 +25,8 @@ builder.AddCommonMicroserviceServices(new MicroserviceConfigurationOptions
             MyApp.Inventory.Infrastructure.Data.Repositories.ProductRepository>();
         services.AddScoped<MyApp.Inventory.Domain.Repositories.IWarehouseRepository, 
             MyApp.Inventory.Infrastructure.Data.Repositories.WarehouseRepository>();
+        services.AddScoped<MyApp.Inventory.Domain.Repositories.IWarehouseStockRepository, 
+            MyApp.Inventory.Infrastructure.Repositories.WarehouseStockRepository>();
 
         // Register Inventory-specific services
         services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService, 
@@ -33,6 +35,11 @@ builder.AddCommonMicroserviceServices(new MicroserviceConfigurationOptions
             MyApp.Inventory.Application.Services.ProductService>();
         services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IWarehouseService, 
             MyApp.Inventory.Application.Services.WarehouseService>();
+        services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IWarehouseStockService, 
+            MyApp.Inventory.Application.Services.WarehouseStockService>();
+        
+        // Register background services
+        services.AddHostedService<MyApp.Inventory.API.BackgroundServices.LowStockAlertService>();
     }
 });
 

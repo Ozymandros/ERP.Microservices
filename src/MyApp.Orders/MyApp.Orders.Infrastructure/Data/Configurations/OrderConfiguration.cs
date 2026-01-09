@@ -15,6 +15,10 @@ namespace MyApp.Orders.Infrastructure.Data.Configurations
             builder.Property(x => x.OrderDate).IsRequired();
             builder.Property(x => x.Status).IsRequired();
             builder.Property(x => x.TotalAmount).HasColumnType("decimal(18,2)");
+            
+            // Fulfillment fields
+            builder.Property(x => x.ShippingAddress).HasMaxLength(500);
+            builder.Property(x => x.TrackingNumber).HasMaxLength(100);
 
             builder.HasMany(x => x.Lines)
                 .WithOne()

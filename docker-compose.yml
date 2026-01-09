@@ -3,8 +3,6 @@ x-buildkit: &buildkit
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
 
-x-redis-password: &redis-password ${REDIS_PASSWORD:-Redis@Secure123!}
-
 x-api-env: &api-env
   ASPNETCORE_ENVIRONMENT: Development
   ASPNETCORE_URLS: http://+:8080
@@ -41,7 +39,7 @@ services:
   redis:
     image: redis:7-alpine
     container_name: redis
-    command: ["redis-server", "--save", "", "--appendonly", "no", "--requirepass", *redis-password]
+    command: ["redis-server", "--save", "", "--appendonly", "no", "--requirepass", "${REDIS_PASSWORD:-Redis@Secure123!}"]
     ports:
       - "6379:6379"
     volumes:
@@ -49,7 +47,7 @@ services:
     networks:
       - erp
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", *redis-password, "ping"]
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-Redis@Secure123!}", "ping"]
       interval: 10s
       timeout: 5s
       retries: 10           # ✅ More retries (was 3)

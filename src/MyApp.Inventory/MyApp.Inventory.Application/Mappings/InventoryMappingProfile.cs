@@ -22,5 +22,8 @@ public class InventoryMappingProfile : Profile
             .ForMember(dest => dest.Warehouse, opt => opt.MapFrom(src => src.Warehouse));
 
         CreateMap<CreateUpdateInventoryTransactionDto, InventoryTransaction>();
+        
+        // WarehouseStock mappings
+        CreateMap<WarehouseStock, WarehouseStockDto>();
     }
 }
