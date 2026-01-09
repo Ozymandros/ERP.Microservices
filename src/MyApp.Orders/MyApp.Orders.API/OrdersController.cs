@@ -144,5 +144,75 @@ namespace MyApp.Orders.API
                 throw;
             }
         }
+
+        // POST api/<OrdersController>/with-reservation
+        /// <summary>Create order with automatic stock reservation - Requires Orders.Create permission</summary>
+        [HttpPost("with-reservation")]
+        [HasPermission("Orders", "Create")]
+        public async Task<ActionResult<OrderDto>> CreateWithReservation([FromBody] CreateOrderWithReservationDto dto)
+        {
+            try
+            {
+                var result = await _orderService.CreateOrderWithReservationAsync(dto);
+                await _cacheService.RemoveStateAsync("all_orders");
+                _logger.LogInformation(
+                    "Order {@Order} created with stock reservation and cache invalidated",
+                    new { OrderId = result.Id });
+                return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating order with reservation");
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+        // POST api/<OrdersController>/fulfill
+        /// <summary>Fulfill order - Requires Orders.Update permission</summary>
+        [HttpPost("fulfill")]
+        [HasPermission("Orders", "Update")]
+        public async Task<ActionResult<OrderDto>> FulfillOrder([FromBody] FulfillOrderDto dto)
+        {
+            try
+            {
+                var result = await _orderService.FulfillOrderAsync(dto);
+                string cacheKey = "Order-" + dto.OrderId;
+                await _cacheService.RemoveStateAsync(cacheKey);
+                await _cacheService.RemoveStateAsync("all_orders");
+                _logger.LogInformation(
+                    "Order {@Order} fulfilled and cache invalidated",
+                    new { OrderId = dto.OrderId });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fulfilling order {@Order}", new { OrderId = dto.OrderId });
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+        // POST api/<OrdersController>/cancel
+        /// <summary>Cancel order - Requires Orders.Update permission</summary>
+        [HttpPost("cancel")]
+        [HasPermission("Orders", "Update")]
+        public async Task<IActionResult> CancelOrder([FromBody] CancelOrderDto dto)
+        {
+            try
+            {
+                await _orderService.CancelOrderAsync(dto);
+                string cacheKey = "Order-" + dto.OrderId;
+                await _cacheService.RemoveStateAsync(cacheKey);
+                await _cacheService.RemoveStateAsync("all_orders");
+                _logger.LogInformation(
+                    "Order {@Order} cancelled and cache invalidated",
+                    new { OrderId = dto.OrderId });
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error cancelling order {@Order}", new { OrderId = dto.OrderId });
+                return BadRequest(new { error = ex.Message });
+            }
+        }
     }
 }

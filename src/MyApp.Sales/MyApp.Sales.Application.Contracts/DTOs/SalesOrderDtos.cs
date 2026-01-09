@@ -80,4 +80,63 @@ namespace MyApp.Sales.Application.Contracts.DTOs
         [Range(0, double.MaxValue, ErrorMessage = "UnitPrice must be greater than or equal to 0")]
         decimal UnitPrice
     );
+
+    /// <summary>
+    /// DTO for creating a quote with stock availability validation
+    /// </summary>
+    public record CreateQuoteDto(
+        [Required]
+        [StringLength(64)]
+        string OrderNumber,
+
+        [Required]
+        Guid CustomerId,
+
+        DateTime OrderDate,
+
+        [Range(1, int.MaxValue, ErrorMessage = "Quote validity days must be at least 1")]
+        int ValidityDays = 30,
+
+        List<CreateUpdateSalesOrderLineDto>? Lines = null
+    )
+    {
+        public List<CreateUpdateSalesOrderLineDto> Lines { get; init; } = Lines ?? new();
+    }
+
+    /// <summary>
+    /// DTO for confirming a quote and converting it to an order
+    /// </summary>
+    public record ConfirmQuoteDto
+    {
+        [Required]
+        public Guid QuoteId { get; init; }
+
+        [Required]
+        public Guid WarehouseId { get; init; }
+
+        [MaxLength(500)]
+        public string? ShippingAddress { get; init; }
+    }
+
+    /// <summary>
+    /// DTO for stock availability check response
+    /// </summary>
+    public record StockAvailabilityCheckDto
+    {
+        public Guid ProductId { get; init; }
+        public int RequestedQuantity { get; init; }
+        public int AvailableQuantity { get; init; }
+        public bool IsAvailable { get; init; }
+        public List<WarehouseAvailabilityDto> WarehouseStock { get; init; } = new();
+    }
+
+    /// <summary>
+    /// DTO for warehouse availability info
+    /// </summary>
+    public record WarehouseAvailabilityDto
+    {
+        public Guid WarehouseId { get; init; }
+        public string WarehouseName { get; init; } = string.Empty;
+        public int AvailableQuantity { get; init; }
+    }
 }
