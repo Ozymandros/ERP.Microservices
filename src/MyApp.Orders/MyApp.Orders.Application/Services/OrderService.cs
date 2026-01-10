@@ -1,5 +1,4 @@
 using AutoMapper;
-using Dapr.Client;
 using Microsoft.Extensions.Logging;
 using MyApp.Orders.Application.Contracts;
 using MyApp.Orders.Application.Contracts.Dtos;
@@ -9,6 +8,7 @@ using MyApp.Orders.Domain.Repositories;
 using MyApp.Shared.Domain.BusinessRules;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Exceptions;
+using MyApp.Shared.Domain.Messaging;
 
 namespace MyApp.Orders.Application.Services
 {
@@ -19,8 +19,8 @@ namespace MyApp.Orders.Application.Services
         private readonly IReservedStockRepository _reservedStockRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<OrderService> _logger;
-        private readonly DaprClient _daprClient;
-        private const string PubSubName = "pubsub";
+        private readonly IEventPublisher _eventPublisher;
+        private readonly IServiceInvoker _serviceInvoker;
 
         public OrderService(
             IOrderRepository orders,
@@ -28,14 +28,16 @@ namespace MyApp.Orders.Application.Services
             IReservedStockRepository reservedStockRepository,
             IMapper mapper,
             ILogger<OrderService> logger,
-            DaprClient daprClient)
+            IEventPublisher eventPublisher,
+            IServiceInvoker serviceInvoker)
         {
             _orders = orders;
             _lines = lines;
             _reservedStockRepository = reservedStockRepository;
             _mapper = mapper;
             _logger = logger;
-            _daprClient = daprClient;
+            _eventPublisher = eventPublisher;
+            _serviceInvoker = serviceInvoker;
         }
 
         public async Task<OrderDto> CreateAsync(CreateUpdateOrderDto dto)
@@ -168,10 +170,10 @@ namespace MyApp.Orders.Application.Services
                         expiresAt = (DateTime?)null // Use default 24-hour expiry
                     };
 
-                    var reservation = await _daprClient.InvokeMethodAsync<object, dynamic>(
-                        HttpMethod.Post,
+                    var reservation = await _serviceInvoker.InvokeAsync<object, dynamic>(
                         "inventory",
                         "api/stockoperations/reserve",
+                        HttpMethod.Post,
                         reserveRequest);
 
                     // Create ReservedStock record
@@ -223,7 +225,7 @@ namespace MyApp.Orders.Application.Services
 
             try
             {
-                await _daprClient.PublishEventAsync(PubSubName, "orders.order.created", orderCreatedEvent);
+                await _eventPublisher.PublishAsync("orders.order.created", orderCreatedEvent);
                 _logger.LogInformation("Published OrderCreatedEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)
@@ -295,7 +297,7 @@ namespace MyApp.Orders.Application.Services
 
             try
             {
-                await _daprClient.PublishEventAsync(PubSubName, "orders.order.fulfilled", orderFulfilledEvent);
+                await _eventPublisher.PublishAsync("orders.order.fulfilled", orderFulfilledEvent);
                 _logger.LogInformation("Published OrderFulfilledEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)
@@ -331,10 +333,10 @@ namespace MyApp.Orders.Application.Services
                     // Call Inventory service to release reservation
                     try
                     {
-                        await _daprClient.InvokeMethodAsync(
-                            HttpMethod.Delete,
+                        await _serviceInvoker.InvokeAsync(
                             "inventory",
-                            $"api/stockoperations/reservations/{reservation.Id}");
+                            $"api/stockoperations/reservations/{reservation.Id}",
+                            HttpMethod.Delete);
 
                         reservation.Status = ReservationStatus.Cancelled;
                         await _reservedStockRepository.UpdateAsync(reservation);
@@ -361,7 +363,7 @@ namespace MyApp.Orders.Application.Services
 
             try
             {
-                await _daprClient.PublishEventAsync(PubSubName, "orders.order.cancelled", orderCancelledEvent);
+                await _eventPublisher.PublishAsync("orders.order.cancelled", orderCancelledEvent);
                 _logger.LogInformation("Published OrderCancelledEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)

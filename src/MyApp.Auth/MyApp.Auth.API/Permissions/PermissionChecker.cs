@@ -2,16 +2,24 @@
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Domain.Permissions;
 
-public class PermissionChecker
+namespace MyApp.Auth.API.Permissions;
+
+public class PermissionChecker : IPermissionChecker
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IPermissionRepository _permissionRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public PermissionChecker(UserManager<ApplicationUser> userManager, IPermissionRepository permissionRepository)
+    public PermissionChecker(
+        UserManager<ApplicationUser> userManager,
+        IPermissionRepository permissionRepository,
+        IHttpContextAccessor httpContextAccessor)
     {
         _userManager = userManager;
         _permissionRepository = permissionRepository;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<bool> HasPermissionAsync(Guid userId, string module, string action)
@@ -38,15 +46,26 @@ public class PermissionChecker
         return false;
     }
 
-    public async Task<bool> HasPermissionAsync(string userName, string module, string action)
+    public async Task<bool> HasPermissionAsync(string module, string action)
     {
-        if (string.IsNullOrWhiteSpace(userName))
+        if (string.IsNullOrEmpty(module))
+            throw new ArgumentException($"'{nameof(module)}' cannot be null or empty.", nameof(module));
+        if (string.IsNullOrEmpty(action))
+            throw new ArgumentException($"'{nameof(action)}' cannot be null or empty.", nameof(action));
+
+        // Get current user from HttpContext
+        if (_httpContextAccessor.HttpContext?.User?.Identity?.Name == null)
         {
             return false;
         }
 
+        var userName = _httpContextAccessor.HttpContext.User.Identity.Name;
+        if (string.IsNullOrWhiteSpace(userName))
+        {
+            return false;
+        }
         var user = await _userManager.FindByNameAsync(userName);
-        if (user == null || string.IsNullOrWhiteSpace(userName))
+        if (user == null)
         {
             return false;
         }

@@ -29,6 +29,8 @@ builder.AddCommonMicroserviceServices(new MicroserviceConfigurationOptions
         // Register Sales-specific services
         services.AddScoped<MyApp.Sales.Application.Contracts.Services.ISalesOrderService, 
             MyApp.Sales.Application.Services.SalesOrderService>();
+        services.AddScoped<MyApp.Sales.Application.Contracts.Services.ICustomerService, 
+            MyApp.Sales.Application.Services.CustomerService>();
     }
 });
 

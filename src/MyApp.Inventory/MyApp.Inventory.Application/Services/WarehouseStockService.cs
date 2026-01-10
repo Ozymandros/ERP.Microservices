@@ -1,5 +1,4 @@
 using AutoMapper;
-using Dapr.Client;
 using Microsoft.Extensions.Logging;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
@@ -8,6 +7,7 @@ using MyApp.Inventory.Domain.Repositories;
 using MyApp.Shared.Domain.BusinessRules;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Exceptions;
+using MyApp.Shared.Domain.Messaging;
 
 namespace MyApp.Inventory.Application.Services;
 
@@ -18,8 +18,7 @@ public class WarehouseStockService : IWarehouseStockService
     private readonly IInventoryTransactionRepository _transactionRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<WarehouseStockService> _logger;
-    private readonly DaprClient _daprClient;
-    private const string PubSubName = "pubsub";
+    private readonly IEventPublisher _eventPublisher;
 
     public WarehouseStockService(
         IWarehouseStockRepository warehouseStockRepository,
@@ -27,14 +26,14 @@ public class WarehouseStockService : IWarehouseStockService
         IInventoryTransactionRepository transactionRepository,
         IMapper mapper,
         ILogger<WarehouseStockService> logger,
-        DaprClient daprClient)
+        IEventPublisher eventPublisher)
     {
         _warehouseStockRepository = warehouseStockRepository;
         _productRepository = productRepository;
         _transactionRepository = transactionRepository;
         _mapper = mapper;
         _logger = logger;
-        _daprClient = daprClient;
+        _eventPublisher = eventPublisher;
     }
 
     public async Task<WarehouseStockDto?> GetByProductAndWarehouseAsync(Guid productId, Guid warehouseId)
@@ -118,7 +117,7 @@ public class WarehouseStockService : IWarehouseStockService
         
         try
         {
-            await _daprClient.PublishEventAsync(PubSubName, "inventory.stock.reserved", stockReservedEvent);
+            await _eventPublisher.PublishAsync("inventory.stock.reserved", stockReservedEvent);
             _logger.LogInformation("Published StockReservedEvent for reservation {ReservationId}", reservationId);
         }
         catch (Exception ex)
@@ -157,7 +156,7 @@ public class WarehouseStockService : IWarehouseStockService
         
         try
         {
-            await _daprClient.PublishEventAsync(PubSubName, "inventory.stock.released", stockReleasedEvent);
+            await _eventPublisher.PublishAsync("inventory.stock.released", stockReleasedEvent);
             _logger.LogInformation("Published StockReleasedEvent for reservation {ReservationId}", reservationId);
         }
         catch (Exception ex)
@@ -239,7 +238,7 @@ public class WarehouseStockService : IWarehouseStockService
         
         try
         {
-            await _daprClient.PublishEventAsync(PubSubName, "inventory.stock.transferred", stockTransferredEvent);
+            await _eventPublisher.PublishAsync("inventory.stock.transferred", stockTransferredEvent);
             _logger.LogInformation("Published StockTransferredEvent for product {ProductId}", dto.ProductId);
         }
         catch (Exception ex)
@@ -297,7 +296,7 @@ public class WarehouseStockService : IWarehouseStockService
         
         try
         {
-            await _daprClient.PublishEventAsync(PubSubName, "inventory.stock.adjusted", stockAdjustedEvent);
+            await _eventPublisher.PublishAsync("inventory.stock.adjusted", stockAdjustedEvent);
             _logger.LogInformation("Published StockAdjustedEvent for product {ProductId}", dto.ProductId);
         }
         catch (Exception ex)

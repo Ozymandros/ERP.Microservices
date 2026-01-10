@@ -1,9 +1,9 @@
 using Dapr;
-using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Shared.Domain.Events;
+using MyApp.Shared.Domain.Messaging;
 
 namespace MyApp.Inventory.API.EventHandlers;
 
@@ -17,18 +17,18 @@ public class PurchasingEventHandlers : ControllerBase
     private readonly IWarehouseStockRepository _warehouseStockRepository;
     private readonly IInventoryTransactionRepository _transactionRepository;
     private readonly ILogger<PurchasingEventHandlers> _logger;
-    private readonly DaprClient _daprClient;
+    private readonly IEventPublisher _eventPublisher;
 
     public PurchasingEventHandlers(
         IWarehouseStockRepository warehouseStockRepository,
         IInventoryTransactionRepository transactionRepository,
         ILogger<PurchasingEventHandlers> logger,
-        DaprClient daprClient)
+        IEventPublisher eventPublisher)
     {
         _warehouseStockRepository = warehouseStockRepository;
         _transactionRepository = transactionRepository;
         _logger = logger;
-        _daprClient = daprClient;
+        _eventPublisher = eventPublisher;
     }
 
     /// <summary>
@@ -138,7 +138,7 @@ public class PurchasingEventHandlers : ControllerBase
                 "Inbound"
             );
             
-            await _daprClient.PublishEventAsync("pubsub", "inventory.stock.updated", stockUpdatedEvent);
+            await _eventPublisher.PublishAsync("inventory.stock.updated", stockUpdatedEvent);
 
             _logger.LogInformation(
                 "Processed PurchaseOrderLineReceivedEvent for Product {ProductId}, New Available: {Available}",

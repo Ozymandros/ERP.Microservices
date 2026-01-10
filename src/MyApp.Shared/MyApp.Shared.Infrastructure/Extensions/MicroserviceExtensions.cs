@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.OpenApi;
 using OpenTelemetry.Metrics;
@@ -33,10 +34,10 @@ public static class MicroserviceExtensions
             ?? System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name 
             ?? "UnknownService";
 
-        // 1. DAPR Client
+        // 1. DAPR Client and Messaging Services
         if (options.EnableDapr)
         {
-            builder.Services.AddDaprClient();
+            builder.Services.AddMicroserviceMessaging();
         }
 
         // 2. OpenTelemetry
@@ -130,7 +131,7 @@ public static class MicroserviceExtensions
         // 8. Permission Checker
         if (options.EnableDapr)
         {
-            builder.Services.AddScoped<IPermissionChecker, DaprPermissionChecker>();
+            builder.Services.AddScoped<IPermissionChecker, PermissionChecker>();
         }
 
         // 9. Redis Distributed Cache (caller must configure - Aspire handles this in Program.cs)

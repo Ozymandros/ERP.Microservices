@@ -1,6 +1,6 @@
-using Dapr.Client;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Shared.Domain.Events;
+using MyApp.Shared.Domain.Messaging;
 
 namespace MyApp.Inventory.API.BackgroundServices;
 
@@ -58,7 +58,7 @@ public class LowStockAlertService : BackgroundService
     {
         using var scope = _serviceProvider.CreateScope();
         var warehouseStockService = scope.ServiceProvider.GetRequiredService<IWarehouseStockService>();
-        var daprClient = scope.ServiceProvider.GetRequiredService<DaprClient>();
+        var eventPublisher = scope.ServiceProvider.GetRequiredService<IEventPublisher>();
 
         _logger.LogInformation("Checking for low stock items");
 
@@ -85,8 +85,7 @@ public class LowStockAlertService : BackgroundService
                 
                 try
                 {
-                    await daprClient.PublishEventAsync(
-                        "pubsub",
+                    await eventPublisher.PublishAsync(
                         "inventory.stock.low-stock-alert",
                         lowStockEvent,
                         cancellationToken);

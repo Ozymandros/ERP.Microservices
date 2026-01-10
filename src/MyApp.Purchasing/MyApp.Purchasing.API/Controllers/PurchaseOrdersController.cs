@@ -4,8 +4,11 @@ using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Specifications;
+using MyApp.Shared.Domain.Permissions;
 using MyApp.Purchasing.Domain.Specifications;
 
 namespace MyApp.Purchasing.API.Controllers;
