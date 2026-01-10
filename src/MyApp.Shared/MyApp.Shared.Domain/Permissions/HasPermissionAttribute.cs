@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 
+namespace MyApp.Shared.Domain.Permissions;
+
 public class HasPermissionAttribute : AuthorizeAttribute, IAsyncAuthorizationFilter
 {
     private readonly string _module;

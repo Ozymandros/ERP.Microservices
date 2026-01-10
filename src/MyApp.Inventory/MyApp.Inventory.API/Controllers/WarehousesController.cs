@@ -4,6 +4,7 @@ using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Permissions;
 
 namespace MyApp.Inventory.API.Controllers;
 

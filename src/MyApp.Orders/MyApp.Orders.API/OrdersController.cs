@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Orders.Application.Contracts;
 using MyApp.Orders.Application.Contracts.Dtos;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Permissions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

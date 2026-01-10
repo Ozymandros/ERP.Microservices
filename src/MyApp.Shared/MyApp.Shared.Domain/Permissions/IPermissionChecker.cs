@@ -1,4 +1,4 @@
-﻿
+﻿namespace MyApp.Shared.Domain.Permissions;
 
 public interface IPermissionChecker
 {

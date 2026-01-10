@@ -18,6 +18,7 @@ using MyApp.Auth.Infrastructure.Data.Repositories;
 using MyApp.Auth.Infrastructure.Data.Seeders;
 using MyApp.Auth.Infrastructure.Services;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
 using MyApp.Shared.Infrastructure.Logging;
@@ -45,8 +46,8 @@ builder.Services.AddOpenTelemetry()
             .AddOtlpExporter();
     });
 
-// This line registers the DaprClient (Singleton) in the Dependency Injection (DI) container
-builder.Services.AddDaprClient();
+// Register messaging services (DaprClient, IEventPublisher, IServiceInvoker)
+builder.Services.AddMicroserviceMessaging();
 
 // Configure JSON options FIRST - before AddOpenApi() so JsonSchemaExporter uses them
 // builder.Services.ConfigureHttpJsonOptions(options =>
@@ -191,7 +192,7 @@ builder.Services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
 
 builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
-builder.Services.AddScoped<IPermissionChecker, DaprPermissionChecker>();
+builder.Services.AddScoped<IPermissionChecker, MyApp.Auth.API.Permissions.PermissionChecker>();
 
 builder.AddRedisDistributedCache("cache");
 builder.Services.AddScoped<ICacheService, DistributedCacheWrapper>();

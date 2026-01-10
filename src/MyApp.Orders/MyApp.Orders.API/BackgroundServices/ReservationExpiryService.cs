@@ -1,7 +1,7 @@
-using Dapr.Client;
 using MyApp.Orders.Domain.Entities;
 using MyApp.Orders.Domain.Repositories;
 using MyApp.Shared.Domain.Events;
+using MyApp.Shared.Domain.Messaging;
 
 namespace MyApp.Orders.API.BackgroundServices;
 
@@ -59,7 +59,8 @@ public class ReservationExpiryService : BackgroundService
     {
         using var scope = _serviceProvider.CreateScope();
         var reservedStockRepository = scope.ServiceProvider.GetRequiredService<IReservedStockRepository>();
-        var daprClient = scope.ServiceProvider.GetRequiredService<DaprClient>();
+        var serviceInvoker = scope.ServiceProvider.GetRequiredService<IServiceInvoker>();
+        var eventPublisher = scope.ServiceProvider.GetRequiredService<IEventPublisher>();
 
         _logger.LogInformation("Checking for expired reservations");
 
@@ -84,12 +85,12 @@ public class ReservationExpiryService : BackgroundService
                     // Call Inventory service to release the reserved stock via Dapr service invocation
                     try
                     {
-                        await daprClient.InvokeMethodAsync(
-                            HttpMethod.Delete,
+                        await serviceInvoker.InvokeAsync(
                             "inventory",
                             $"api/stockoperations/reservations/{reservation.Id}",
+                            HttpMethod.Delete,
                             cancellationToken);
-                        
+
                         _logger.LogInformation("Called Inventory service to release reservation {ReservationId}", reservation.Id);
                     }
                     catch (Exception ex)
@@ -104,15 +105,14 @@ public class ReservationExpiryService : BackgroundService
                         reservation.WarehouseId,
                         reservation.Quantity
                     );
-                    
+
                     try
                     {
-                        await daprClient.PublishEventAsync(
-                            "pubsub",
+                        await eventPublisher.PublishAsync(
                             "inventory.stock.released",
                             stockReleasedEvent,
                             cancellationToken);
-                        
+
                         _logger.LogInformation("Published StockReleasedEvent for reservation {ReservationId}", reservation.Id);
                     }
                     catch (Exception ex)

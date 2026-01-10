@@ -1,5 +1,4 @@
 using AutoMapper;
-using Dapr.Client;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MyApp.Orders.Application.Contracts.Dtos;
@@ -7,6 +6,7 @@ using MyApp.Orders.Application.Services;
 using MyApp.Orders.Domain;
 using MyApp.Orders.Domain.Entities;
 using MyApp.Orders.Domain.Repositories;
+using MyApp.Shared.Domain.Messaging;
 using Xunit;
 
 namespace MyApp.Orders.Application.Tests.Services;
@@ -18,7 +18,8 @@ public class OrderServiceTests
     private readonly Mock<IReservedStockRepository> _mockReservedStockRepository;
     private readonly Mock<IMapper> _mockMapper;
     private readonly Mock<ILogger<OrderService>> _mockLogger;
-    private readonly Mock<DaprClient> _mockDaprClient;
+    private readonly Mock<IEventPublisher> _mockEventPublisher;
+    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly OrderService _orderService;
 
     public OrderServiceTests()
@@ -28,7 +29,8 @@ public class OrderServiceTests
         _mockReservedStockRepository = new Mock<IReservedStockRepository>();
         _mockMapper = new Mock<IMapper>();
         _mockLogger = new Mock<ILogger<OrderService>>();
-        _mockDaprClient = new Mock<DaprClient>();
+        _mockEventPublisher = new Mock<IEventPublisher>();
+        _mockServiceInvoker = new Mock<IServiceInvoker>();
 
         _orderService = new OrderService(
             _mockOrderRepository.Object,
@@ -36,7 +38,8 @@ public class OrderServiceTests
             _mockReservedStockRepository.Object,
             _mockMapper.Object,
             _mockLogger.Object,
-            _mockDaprClient.Object);
+            _mockEventPublisher.Object,
+            _mockServiceInvoker.Object);
     }
 
     #region CreateAsync Tests

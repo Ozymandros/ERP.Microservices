@@ -1,19 +1,23 @@
-﻿using Dapr.Client;
 using Microsoft.AspNetCore.Http;
+using MyApp.Shared.Domain.Messaging;
 using System.Net.Http.Headers;
 
-public class DaprPermissionChecker : IPermissionChecker
+namespace MyApp.Shared.Domain.Permissions;
+
+/// <summary>
+/// Service for checking user permissions across microservices
+/// </summary>
+public class PermissionChecker : IPermissionChecker
 {
-    private readonly DaprClient _daprClient;
+    private readonly IServiceInvoker _serviceInvoker;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public DaprPermissionChecker(DaprClient daprClient, IHttpContextAccessor httpContextAccessor)
+    public PermissionChecker(IServiceInvoker serviceInvoker, IHttpContextAccessor httpContextAccessor)
     {
-        _daprClient = daprClient;
-        _httpContextAccessor = httpContextAccessor;
+        _serviceInvoker = serviceInvoker ?? throw new ArgumentNullException(nameof(serviceInvoker));
+        _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
     }
 
-    // Option 2 (better): The token is passed as a parameter (more flexible)
     public async Task<bool> HasPermissionAsync(Guid userId, string module, string action)
     {
         var query = new Dictionary<string, string>
@@ -24,7 +28,12 @@ public class DaprPermissionChecker : IPermissionChecker
         };
 
         // 1. Create the request manually
-        var request = _daprClient.CreateInvokeMethodRequest(HttpMethod.Get, "auth-service", "api/permissions/check", query);
+        var request = _serviceInvoker.CreateRequest(
+            "auth-service",
+            "api/permissions/check",
+            HttpMethod.Get,
+            null,
+            query);
 
         // 2. Add the authentication header
         if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
@@ -32,13 +41,13 @@ public class DaprPermissionChecker : IPermissionChecker
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authHeader.ToString().Replace("Bearer ", ""));
         }
 
-        // 3. Make the call
+        // 3. Make the call via Dapr
         try
         {
-            var result = await _daprClient.InvokeMethodAsync<bool>(request);
+            var result = await _serviceInvoker.InvokeAsync<bool>(request);
             return result;
         }
-        catch (InvocationException)
+        catch (Exception)
         {
             return false;
         }
@@ -58,7 +67,12 @@ public class DaprPermissionChecker : IPermissionChecker
         };
 
         // 1. Create the request
-        using var request = _daprClient.CreateInvokeMethodRequest(HttpMethod.Get, "auth-service", "api/permissions/check", query);
+        using var request = _serviceInvoker.CreateRequest(
+            "auth-service",
+            "api/permissions/check",
+            HttpMethod.Get,
+            null,
+            query);
 
         // 2. Add the authentication header
         if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
@@ -66,13 +80,13 @@ public class DaprPermissionChecker : IPermissionChecker
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authHeader.ToString().Replace("Bearer ", ""));
         }
 
-        // 3. Make the call
+        // 3. Make the call via Dapr
         try
         {
-            var result = await _daprClient.InvokeMethodAsync<bool>(request);
+            var result = await _serviceInvoker.InvokeAsync<bool>(request);
             return result;
         }
-        catch (InvocationException)
+        catch (Exception)
         {
             return false;
         }

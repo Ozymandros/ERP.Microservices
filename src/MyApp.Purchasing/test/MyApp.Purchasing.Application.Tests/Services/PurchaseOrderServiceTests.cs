@@ -1,11 +1,11 @@
 using AutoMapper;
-using Dapr.Client;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Services;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
+using MyApp.Shared.Domain.Messaging;
 using Xunit;
 
 namespace MyApp.Purchasing.Application.Tests.Services;
@@ -17,7 +17,8 @@ public class PurchaseOrderServiceTests
     private readonly Mock<ISupplierRepository> _mockSupplierRepository;
     private readonly Mock<IMapper> _mockMapper;
     private readonly Mock<ILogger<PurchaseOrderService>> _mockLogger;
-    private readonly Mock<DaprClient> _mockDaprClient;
+    private readonly Mock<IEventPublisher> _mockEventPublisher;
+    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly PurchaseOrderService _purchaseOrderService;
 
     public PurchaseOrderServiceTests()
@@ -27,7 +28,8 @@ public class PurchaseOrderServiceTests
         _mockSupplierRepository = new Mock<ISupplierRepository>();
         _mockMapper = new Mock<IMapper>();
         _mockLogger = new Mock<ILogger<PurchaseOrderService>>();
-        _mockDaprClient = new Mock<DaprClient>();
+        _mockEventPublisher = new Mock<IEventPublisher>();
+        _mockServiceInvoker = new Mock<IServiceInvoker>();
 
         _purchaseOrderService = new PurchaseOrderService(
             _mockPurchaseOrderRepository.Object,
@@ -35,7 +37,8 @@ public class PurchaseOrderServiceTests
             _mockSupplierRepository.Object,
             _mockMapper.Object,
             _mockLogger.Object,
-            _mockDaprClient.Object);
+            _mockEventPublisher.Object,
+            _mockServiceInvoker.Object);
     }
 
     [Fact]

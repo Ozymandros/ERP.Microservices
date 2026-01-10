@@ -7,6 +7,7 @@ using MyApp.Purchasing.Domain.Repositories;
 using MyApp.Purchasing.Infrastructure.Data;
 using MyApp.Purchasing.Infrastructure.Data.Repositories;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.Extensions;
 using MyApp.Shared.Infrastructure.OpenApi;
@@ -17,8 +18,8 @@ using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// This line registers the DaprClient (Singleton) in the Dependency Injection (DI) container
-builder.Services.AddDaprClient();
+// Register messaging services (DaprClient, IEventPublisher, IServiceInvoker)
+builder.Services.AddMicroserviceMessaging();
 
 var serviceName = builder.Environment.ApplicationName ?? typeof(Program).Assembly.GetName().Name ?? "MyApp.Purchasing.API";
 
@@ -95,7 +96,7 @@ builder.Services.AddScoped<IPurchaseOrderLineRepository, PurchaseOrderLineReposi
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
 
-builder.Services.AddScoped<IPermissionChecker, DaprPermissionChecker>();
+builder.Services.AddScoped<IPermissionChecker, PermissionChecker>();
 
 builder.AddRedisDistributedCache("cache");
 builder.Services.AddScoped<ICacheService, DistributedCacheWrapper>();

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Dapr.Client;
 using Microsoft.Extensions.Logging;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
 using MyApp.Shared.Domain.Events;
+using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -21,21 +21,23 @@ namespace MyApp.Sales.Application.Services
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<SalesOrderService> _logger;
-        private readonly DaprClient _daprClient;
-        private const string PubSubName = "pubsub";
+        private readonly IEventPublisher _eventPublisher;
+        private readonly IServiceInvoker _serviceInvoker;
 
         public SalesOrderService(
             ISalesOrderRepository orderRepository,
             ICustomerRepository customerRepository,
             IMapper mapper,
             ILogger<SalesOrderService> logger,
-            DaprClient daprClient)
+            IEventPublisher eventPublisher,
+            IServiceInvoker serviceInvoker)
         {
             _orderRepository = orderRepository;
             _customerRepository = customerRepository;
             _mapper = mapper;
             _logger = logger;
-            _daprClient = daprClient;
+            _eventPublisher = eventPublisher;
+            _serviceInvoker = serviceInvoker;
         }
 
         public async Task<SalesOrderDto?> GetSalesOrderByIdAsync(Guid id)
@@ -204,7 +206,7 @@ namespace MyApp.Sales.Application.Services
 
             try
             {
-                await _daprClient.PublishEventAsync(PubSubName, "sales.order.created", salesOrderCreatedEvent);
+                await _eventPublisher.PublishAsync("sales.order.created", salesOrderCreatedEvent);
                 _logger.LogInformation("Published SalesOrderCreatedEvent for Quote {QuoteId}", quote.Id);
             }
             catch (Exception ex)
@@ -275,10 +277,10 @@ namespace MyApp.Sales.Application.Services
                     }).ToList()
                 };
 
-                var fulfillmentOrder = await _daprClient.InvokeMethodAsync<object, dynamic>(
-                    HttpMethod.Post,
+                var fulfillmentOrder = await _serviceInvoker.InvokeAsync<object, dynamic>(
                     "orders",
                     "api/orders/with-reservation",
+                    HttpMethod.Post,
                     createOrderRequest);
 
                 // Update quote
@@ -295,7 +297,7 @@ namespace MyApp.Sales.Application.Services
 
                 try
                 {
-                    await _daprClient.PublishEventAsync(PubSubName, "sales.order.confirmed", salesOrderConfirmedEvent);
+                    await _eventPublisher.PublishAsync("sales.order.confirmed", salesOrderConfirmedEvent);
                     _logger.LogInformation(
                         "Published SalesOrderConfirmedEvent for Quote {QuoteId}, Order {OrderId}",
                         quote.Id, quote.ConvertedToOrderId);
@@ -329,10 +331,10 @@ namespace MyApp.Sales.Application.Services
                 try
                 {
                     // Call Inventory service to check availability
-                    var availability = await _daprClient.InvokeMethodAsync<dynamic>(
-                        HttpMethod.Get,
+                    var availability = await _serviceInvoker.InvokeAsync<dynamic>(
                         "inventory",
-                        $"api/warehousestocks/availability/{line.ProductId}");
+                        $"api/warehousestocks/availability/{line.ProductId}",
+                        HttpMethod.Get);
 
                     var totalAvailable = (int)availability.totalAvailable;
                     var warehouseStocks = ((IEnumerable<dynamic>)availability.warehouseStocks)

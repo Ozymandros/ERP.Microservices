@@ -1,11 +1,11 @@
 using AutoMapper;
-using Dapr.Client;
 using Microsoft.Extensions.Logging;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
 using MyApp.Shared.Domain.Events;
+using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -18,8 +18,8 @@ public class PurchaseOrderService : IPurchaseOrderService
     private readonly ISupplierRepository _supplierRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<PurchaseOrderService> _logger;
-    private readonly DaprClient _daprClient;
-    private const string PubSubName = "pubsub";
+    private readonly IEventPublisher _eventPublisher;
+    private readonly IServiceInvoker _serviceInvoker;
 
     public PurchaseOrderService(
         IPurchaseOrderRepository purchaseOrderRepository,
@@ -27,14 +27,16 @@ public class PurchaseOrderService : IPurchaseOrderService
         ISupplierRepository supplierRepository,
         IMapper mapper,
         ILogger<PurchaseOrderService> logger,
-        DaprClient daprClient)
+        IEventPublisher eventPublisher,
+        IServiceInvoker serviceInvoker)
     {
         _purchaseOrderRepository = purchaseOrderRepository;
         _lineRepository = lineRepository;
         _supplierRepository = supplierRepository;
         _mapper = mapper;
         _logger = logger;
-        _daprClient = daprClient;
+        _eventPublisher = eventPublisher;
+        _serviceInvoker = serviceInvoker;
     }
 
     public async Task<PurchaseOrderDto?> GetPurchaseOrderByIdAsync(Guid id)
@@ -177,7 +179,7 @@ public class PurchaseOrderService : IPurchaseOrderService
 
         try
         {
-            await _daprClient.PublishEventAsync(PubSubName, "purchasing.order.approved", purchaseOrderApprovedEvent);
+            await _eventPublisher.PublishAsync("purchasing.order.approved", purchaseOrderApprovedEvent);
             _logger.LogInformation("Published PurchaseOrderApprovedEvent for PO {PurchaseOrderId}", order.Id);
         }
         catch (Exception ex)
@@ -234,10 +236,10 @@ public class PurchaseOrderService : IPurchaseOrderService
                     reference = order.OrderNumber
                 };
 
-                await _daprClient.InvokeMethodAsync(
-                    HttpMethod.Post,
+                await _serviceInvoker.InvokeAsync<object, object>(
                     "inventory",
                     "api/stockoperations/adjust",
+                    HttpMethod.Post,
                     addStockRequest);
 
                 _logger.LogInformation(
@@ -253,7 +255,7 @@ public class PurchaseOrderService : IPurchaseOrderService
                     dto.WarehouseId
                 );
 
-                await _daprClient.PublishEventAsync(PubSubName, "purchasing.line.received", lineReceivedEvent);
+                await _eventPublisher.PublishAsync("purchasing.line.received", lineReceivedEvent);
             }
             catch (Exception ex)
             {
@@ -287,7 +289,7 @@ public class PurchaseOrderService : IPurchaseOrderService
 
             try
             {
-                await _daprClient.PublishEventAsync(PubSubName, "purchasing.order.received", purchaseOrderReceivedEvent);
+                await _eventPublisher.PublishAsync("purchasing.order.received", purchaseOrderReceivedEvent);
                 _logger.LogInformation("Published PurchaseOrderReceivedEvent for PO {PurchaseOrderId}", order.Id);
             }
             catch (Exception ex)
