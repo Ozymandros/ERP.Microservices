@@ -8,25 +8,19 @@ public class InventoryMappingProfile : Profile
 {
     public InventoryMappingProfile()
     {
-        // #region agent log
-        try { System.IO.File.AppendAllText(@"c:\Projects\ERP_ASPIRE_APP\erp-backend\.cursor\debug.log", $"{{\"sessionId\":\"debug-session\",\"runId\":\"post-fix\",\"hypothesisId\":\"C\",\"location\":\"InventoryMappingProfile.cs:11\",\"message\":\"Mapping profile constructor called\",\"data\":{{}},\"timestamp\":{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}}}\n"); } catch { }
-        // #endregion
-
         // Product mappings
         CreateMap<Product, ProductDto>();
         CreateMap<ProductDto, Product>()
             .ConstructUsing(src => new Product(src.Id));
         
         // CreateUpdateProductDto -> Product mapping with explicit construction
-        // #region agent log
-        try { System.IO.File.AppendAllText(@"c:\Projects\ERP_ASPIRE_APP\erp-backend\.cursor\debug.log", $"{{\"sessionId\":\"debug-session\",\"runId\":\"post-fix\",\"hypothesisId\":\"C\",\"location\":\"InventoryMappingProfile.cs:17\",\"message\":\"Creating CreateUpdateProductDto to Product mapping\",\"data\":{{}},\"timestamp\":{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}}}\n"); } catch { }
-        // #endregion
-        
         CreateMap<CreateUpdateProductDto, Product>()
             .ConstructUsing(src => new Product(Guid.NewGuid()));
 
         // Warehouse mappings
-        CreateMap<Warehouse, WarehouseDto>().ReverseMap();
+        CreateMap<Warehouse, WarehouseDto>();
+        CreateMap<WarehouseDto, Warehouse>()
+            .ConstructUsing(src => new Warehouse(src.Id));
         CreateMap<CreateUpdateWarehouseDto, Warehouse>()
             .ConstructUsing(src => new Warehouse(Guid.NewGuid()));
 
