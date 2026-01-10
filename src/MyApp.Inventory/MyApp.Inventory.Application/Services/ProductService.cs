@@ -52,6 +52,10 @@ public class ProductService : IProductService
 
     public async Task<ProductDto> CreateProductAsync(CreateUpdateProductDto dto)
     {
+        // #region agent log
+        try { System.IO.File.AppendAllText(@"c:\Projects\ERP_ASPIRE_APP\erp-backend\.cursor\debug.log", $"{{\"sessionId\":\"debug-session\",\"runId\":\"post-fix\",\"hypothesisId\":\"A\",\"location\":\"ProductService.cs:53\",\"message\":\"CreateProductAsync entry\",\"data\":{{\"dtoSKU\":\"{dto.SKU}\",\"dtoName\":\"{dto.Name}\",\"dtoHasId\":false}},\"timestamp\":{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}}}\n"); } catch { }
+        // #endregion
+
         // Check if product with same SKU already exists
         var existingProduct = await _productRepository.GetBySkuAsync(dto.SKU);
         if (existingProduct != null)
@@ -59,8 +63,40 @@ public class ProductService : IProductService
             throw new InvalidOperationException($"Product with SKU '{dto.SKU}' already exists.");
         }
 
-        var product = _mapper.Map<Product>(dto);
+        // #region agent log
+        try { System.IO.File.AppendAllText(@"c:\Projects\ERP_ASPIRE_APP\erp-backend\.cursor\debug.log", $"{{\"sessionId\":\"debug-session\",\"runId\":\"post-fix\",\"hypothesisId\":\"B\",\"location\":\"ProductService.cs:62\",\"message\":\"Before AutoMapper.Map\",\"data\":{{\"dtoType\":\"{dto.GetType().FullName}\",\"targetType\":\"Product\",\"mapperType\":\"{_mapper.GetType().FullName}\"}},\"timestamp\":{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}}}\n"); } catch { }
+        // #endregion
+
+        Product? product = null;
+        try
+        {
+            // #region agent log
+            try { System.IO.File.AppendAllText(@"c:\Projects\ERP_ASPIRE_APP\erp-backend\.cursor\debug.log", $"{{\"sessionId\":\"debug-session\",\"runId\":\"post-fix\",\"hypothesisId\":\"B\",\"location\":\"ProductService.cs:70\",\"message\":\"Attempting AutoMapper.Map\",\"data\":{{}},\"timestamp\":{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}}}\n"); } catch { }
+            // #endregion
+
+            product = _mapper.Map<Product>(dto);
+
+            // #region agent log
+            try { System.IO.File.AppendAllText(@"c:\Projects\ERP_ASPIRE_APP\erp-backend\.cursor\debug.log", $"{{\"sessionId\":\"debug-session\",\"runId\":\"post-fix\",\"hypothesisId\":\"B\",\"location\":\"ProductService.cs:75\",\"message\":\"AutoMapper.Map succeeded\",\"data\":{{\"productCreated\":{product != null},\"productId\":\"{product?.Id}\",\"productSKU\":\"{product?.SKU}\"}},\"timestamp\":{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}}}\n"); } catch { }
+            // #endregion
+        }
+        catch (Exception ex)
+        {
+            // #region agent log
+            try { System.IO.File.AppendAllText(@"c:\Projects\ERP_ASPIRE_APP\erp-backend\.cursor\debug.log", $"{{\"sessionId\":\"debug-session\",\"runId\":\"post-fix\",\"hypothesisId\":\"B\",\"location\":\"ProductService.cs:79\",\"message\":\"AutoMapper.Map failed\",\"data\":{{\"exceptionType\":\"{ex.GetType().FullName}\",\"exceptionMessage\":\"{ex.Message.Replace("\"", "\\\"")}\",\"stackTrace\":\"{ex.StackTrace?.Replace("\"", "\\\"").Replace("\r", "\\r").Replace("\n", "\\n").Substring(0, Math.Min(500, ex.StackTrace?.Length ?? 0))}\"}},\"timestamp\":{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}}}\n"); } catch { }
+            // #endregion
+            throw;
+        }
+
+        // #region agent log
+        try { System.IO.File.AppendAllText(@"c:\Projects\ERP_ASPIRE_APP\erp-backend\.cursor\debug.log", $"{{\"sessionId\":\"debug-session\",\"runId\":\"post-fix\",\"hypothesisId\":\"A\",\"location\":\"ProductService.cs:64\",\"message\":\"After AutoMapper.Map\",\"data\":{{\"productCreated\":{product != null},\"productId\":\"{product?.Id}\",\"productSKU\":\"{product?.SKU}\"}},\"timestamp\":{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}}}\n"); } catch { }
+        // #endregion
+
         var createdProduct = await _productRepository.AddAsync(product);
+
+        // #region agent log
+        try { System.IO.File.AppendAllText(@"c:\Projects\ERP_ASPIRE_APP\erp-backend\.cursor\debug.log", $"{{\"sessionId\":\"debug-session\",\"runId\":\"post-fix\",\"hypothesisId\":\"A\",\"location\":\"ProductService.cs:66\",\"message\":\"Product created successfully\",\"data\":{{\"createdProductId\":\"{createdProduct?.Id}\"}},\"timestamp\":{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}}}\n"); } catch { }
+        // #endregion
 
         return _mapper.Map<ProductDto>(createdProduct);
     }
