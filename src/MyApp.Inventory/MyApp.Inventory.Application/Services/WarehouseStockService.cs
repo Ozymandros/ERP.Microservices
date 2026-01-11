@@ -63,7 +63,7 @@ public class WarehouseStockService : IWarehouseStockService
         }
 
         var stocks = await _warehouseStockRepository.GetByProductIdAsync(productId);
-        
+
         return new StockAvailabilityDto
         {
             ProductId = productId,
@@ -101,7 +101,7 @@ public class WarehouseStockService : IWarehouseStockService
 
         // Create reservation record (Note: This would be in Orders service, returning a DTO for now)
         var expiresAt = dto.ExpiresAt ?? ReservationInvariants.CalculateReservationExpiry();
-        
+
         _logger.LogInformation("Stock reserved successfully: ProductId={ProductId}, Quantity={Quantity}, ExpiresAt={ExpiresAt}",
             dto.ProductId, dto.Quantity, expiresAt);
 
@@ -114,7 +114,7 @@ public class WarehouseStockService : IWarehouseStockService
             dto.OrderId,
             dto.Quantity
         );
-        
+
         try
         {
             await _eventPublisher.PublishAsync("inventory.stock.reserved", stockReservedEvent);
@@ -153,7 +153,7 @@ public class WarehouseStockService : IWarehouseStockService
             Guid.Empty, // WarehouseId - would come from reservation query
             0  // Quantity - would come from reservation query
         );
-        
+
         try
         {
             await _eventPublisher.PublishAsync("inventory.stock.released", stockReleasedEvent);
@@ -235,7 +235,7 @@ public class WarehouseStockService : IWarehouseStockService
             dto.Quantity,
             dto.Reason
         );
-        
+
         try
         {
             await _eventPublisher.PublishAsync("inventory.stock.transferred", stockTransferredEvent);
@@ -249,8 +249,7 @@ public class WarehouseStockService : IWarehouseStockService
 
     public async Task AdjustStockAsync(StockAdjustmentDto dto)
     {
-        _logger.LogInformation("Adjusting stock: ProductId={ProductId}, WarehouseId={WarehouseId}, Change={Change}, Reason={Reason}",
-            dto.ProductId, dto.WarehouseId, dto.QuantityChange, dto.Reason);
+        _logger.LogInformation("Adjusting stock: {@StockAdjustment}", new { dto.ProductId, dto.WarehouseId, dto.QuantityChange, dto.Reason });
 
         var warehouseStock = await _warehouseStockRepository.GetByProductAndWarehouseAsync(dto.ProductId, dto.WarehouseId);
         if (warehouseStock == null)
@@ -293,7 +292,7 @@ public class WarehouseStockService : IWarehouseStockService
             dto.Reason,
             dto.Reference
         );
-        
+
         try
         {
             await _eventPublisher.PublishAsync("inventory.stock.adjusted", stockAdjustedEvent);
