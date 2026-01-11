@@ -252,7 +252,6 @@ public class WarehouseStockService : IWarehouseStockService
         ArgumentNullException.ThrowIfNull(dto);
 
         _logger.LogInformation("Adjusting stock: {@StockAdjustment}", new { dto.ProductId, dto.WarehouseId, dto.QuantityChange, dto.Reason });
-
         var warehouseStock = await _warehouseStockRepository.GetByProductAndWarehouseAsync(dto.ProductId, dto.WarehouseId);
         if (warehouseStock == null)
         {
