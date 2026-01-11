@@ -249,8 +249,11 @@ public class WarehouseStockService : IWarehouseStockService
 
     public async Task AdjustStockAsync(StockAdjustmentDto dto)
     {
-        _logger.LogInformation("Adjusting stock: {@StockAdjustment}", new { dto.ProductId, dto.WarehouseId, dto.QuantityChange, dto.Reason });
+        var sanitizedReason = dto.Reason?
+            .Replace("\r", string.Empty)
+            .Replace("\n", string.Empty);
 
+        _logger.LogInformation("Adjusting stock: {@StockAdjustment}", new { dto.ProductId, dto.WarehouseId, dto.QuantityChange, dto.Reason });
         var warehouseStock = await _warehouseStockRepository.GetByProductAndWarehouseAsync(dto.ProductId, dto.WarehouseId);
         if (warehouseStock == null)
         {
