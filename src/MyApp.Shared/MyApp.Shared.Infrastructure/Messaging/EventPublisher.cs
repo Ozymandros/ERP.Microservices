@@ -37,10 +37,8 @@ public class EventPublisher : IEventPublisher
             if (_options.EnableLogging)
             {
                 _logger.LogDebug(
-                    "Publishing event to topic '{Topic}' on pubsub '{PubSubName}': {EventType}",
-                    topic,
-                    _options.PubSubName,
-                    typeof(TEvent).Name);
+                    "Publishing event: {@Event}",
+                    new { Topic = topic, PubSubName = _options.PubSubName, EventType = typeof(TEvent).Name });
             }
 
             cancellationToken.ThrowIfCancellationRequested();
@@ -54,19 +52,16 @@ public class EventPublisher : IEventPublisher
             if (_options.EnableLogging)
             {
                 _logger.LogTrace(
-                    "Successfully published event to topic '{Topic}': {EventType}",
-                    topic,
-                    typeof(TEvent).Name);
+                    "Successfully published event: {@Event}",
+                    new { Topic = topic, EventType = typeof(TEvent).Name });
             }
         }
         catch (Exception ex)
         {
             _logger.LogError(
                 ex,
-                "Failed to publish event to topic '{Topic}' on pubsub '{PubSubName}': {EventType}",
-                topic,
-                _options.PubSubName,
-                typeof(TEvent).Name);
+                "Failed to publish event: {@Event}",
+                new { Topic = topic, PubSubName = _options.PubSubName, EventType = typeof(TEvent).Name });
             throw;
         }
     }

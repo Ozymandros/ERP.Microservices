@@ -179,11 +179,30 @@ app.UseRouting();
 // IMPORTANT: These routes must be registered BEFORE Ocelot to prevent it from intercepting
 // In Docker, _site is mounted at /_site (see docker-compose.yml) or copied to /app/_site (see Dockerfile)
 // In local development, it's at ../_site relative to ContentRootPath
-var sitePath = Directory.Exists("/_site")
-    ? "/_site"  // Docker: mounted volume (preferred)
-    : Directory.Exists(Path.Combine(AppContext.BaseDirectory, "_site"))
-        ? Path.Combine(AppContext.BaseDirectory, "_site")  // Docker: copied to /app/_site (fallback)
-        : Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, "..", "_site")); // Local: relative path
+// Security: Path.GetFullPath resolves ".." safely and prevents directory traversal attacks
+string sitePath;
+if (Directory.Exists("/_site"))
+{
+    sitePath = "/_site";  // Docker: mounted volume (preferred)
+}
+else if (Directory.Exists(Path.Combine(AppContext.BaseDirectory, "_site")))
+{
+    sitePath = Path.Combine(AppContext.BaseDirectory, "_site");  // Docker: copied to /app/_site (fallback)
+}
+else
+{
+    // Local: relative path - Path.GetFullPath resolves ".." safely
+    var relativePath = Path.Combine(builder.Environment.ContentRootPath, "..", "_site");
+    sitePath = Path.GetFullPath(relativePath);
+    
+    // Security: Validate that resolved path is within expected directory structure
+    var contentRootFullPath = Path.GetFullPath(builder.Environment.ContentRootPath);
+    if (!sitePath.StartsWith(contentRootFullPath, StringComparison.OrdinalIgnoreCase) && 
+        !sitePath.StartsWith(Path.GetDirectoryName(contentRootFullPath) ?? "", StringComparison.OrdinalIgnoreCase))
+    {
+        throw new InvalidOperationException($"Resolved site path '{sitePath}' is outside expected directory structure.");
+    }
+}
 
 if (Directory.Exists(sitePath))
 {

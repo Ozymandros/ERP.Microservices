@@ -54,10 +54,8 @@ public class ServiceInvoker : IServiceInvoker
             if (_enableLogging)
             {
                 _logger.LogInformation(
-                    "Invoking service '{ServiceName}' method '{MethodPath}' with {HttpMethod}",
-                    serviceName,
-                    methodPath,
-                    httpMethod.Method);
+                    "Invoking service: {@Request}",
+                    new { ServiceName = serviceName, MethodPath = methodPath, HttpMethod = httpMethod.Method });
             }
 
             cancellationToken.ThrowIfCancellationRequested();
@@ -72,9 +70,8 @@ public class ServiceInvoker : IServiceInvoker
             if (_enableLogging)
             {
                 _logger.LogTrace(
-                    "Successfully invoked service '{ServiceName}' method '{MethodPath}'",
-                    serviceName,
-                    methodPath);
+                    "Successfully invoked service: {@Request}",
+                    new { ServiceName = serviceName, MethodPath = methodPath });
             }
 
             return response;
@@ -83,10 +80,8 @@ public class ServiceInvoker : IServiceInvoker
         {
             _logger.LogError(
                 ex,
-                "Failed to invoke service '{ServiceName}' method '{MethodPath}' with {HttpMethod}",
-                serviceName,
-                methodPath,
-                httpMethod.Method);
+                "Failed to invoke service: {@Request}",
+                new { ServiceName = serviceName, MethodPath = methodPath, HttpMethod = httpMethod.Method });
             throw;
         }
     }
@@ -111,10 +106,8 @@ public class ServiceInvoker : IServiceInvoker
             if (_enableLogging)
             {
                 _logger.LogInformation(
-                    "Invoking service '{ServiceName}' method '{MethodPath}' with {HttpMethod}",
-                    serviceName,
-                    methodPath,
-                    httpMethod.Method);
+                    "Invoking service: {@Request}",
+                    new { ServiceName = serviceName, MethodPath = methodPath, HttpMethod = httpMethod.Method });
             }
 
             cancellationToken.ThrowIfCancellationRequested();
@@ -128,9 +121,8 @@ public class ServiceInvoker : IServiceInvoker
             if (_enableLogging)
             {
                 _logger.LogTrace(
-                    "Successfully invoked service '{ServiceName}' method '{MethodPath}'",
-                    serviceName,
-                    methodPath);
+                    "Successfully invoked service: {@Request}",
+                    new { ServiceName = serviceName, MethodPath = methodPath });
             }
 
             return response;
@@ -139,10 +131,8 @@ public class ServiceInvoker : IServiceInvoker
         {
             _logger.LogError(
                 ex,
-                "Failed to invoke service '{ServiceName}' method '{MethodPath}' with {HttpMethod}",
-                serviceName,
-                methodPath,
-                httpMethod.Method);
+                "Failed to invoke service: {@Request}",
+                new { ServiceName = serviceName, MethodPath = methodPath, HttpMethod = httpMethod.Method });
             throw;
         }
     }
@@ -167,10 +157,8 @@ public class ServiceInvoker : IServiceInvoker
             if (_enableLogging)
             {
                 _logger.LogInformation(
-                    "Invoking service '{ServiceName}' method '{MethodPath}' with {HttpMethod}",
-                    serviceName,
-                    methodPath,
-                    httpMethod.Method);
+                    "Invoking service: {@Request}",
+                    new { ServiceName = serviceName, MethodPath = methodPath, HttpMethod = httpMethod.Method });
             }
 
             cancellationToken.ThrowIfCancellationRequested();
@@ -184,19 +172,16 @@ public class ServiceInvoker : IServiceInvoker
             if (_enableLogging)
             {
                 _logger.LogTrace(
-                    "Successfully invoked service '{ServiceName}' method '{MethodPath}'",
-                    serviceName,
-                    methodPath);
+                    "Successfully invoked service: {@Request}",
+                    new { ServiceName = serviceName, MethodPath = methodPath });
             }
         }
         catch (Exception ex)
         {
             _logger.LogError(
                 ex,
-                "Failed to invoke service '{ServiceName}' method '{MethodPath}' with {HttpMethod}",
-                serviceName,
-                methodPath,
-                httpMethod.Method);
+                "Failed to invoke service: {@Request}",
+                new { ServiceName = serviceName, MethodPath = methodPath, HttpMethod = httpMethod.Method });
             throw;
         }
     }
@@ -268,9 +253,8 @@ public class ServiceInvoker : IServiceInvoker
             if (_enableLogging)
             {
                 _logger.LogInformation(
-                    "Invoking service with custom request: {Method} {RequestUri}",
-                    request.Method,
-                    request.RequestUri);
+                    "Invoking service with custom request: {@Request}",
+                    new { Method = request.Method?.ToString(), RequestUri = request.RequestUri?.ToString() });
             }
 
             cancellationToken.ThrowIfCancellationRequested();
@@ -288,9 +272,8 @@ public class ServiceInvoker : IServiceInvoker
         {
             _logger.LogError(
                 ex,
-                "Failed to invoke service with custom request: {Method} {RequestUri}",
-                request.Method,
-                request.RequestUri);
+                "Failed to invoke service with custom request: {@Request}",
+                new { Method = request.Method?.ToString(), RequestUri = request.RequestUri?.ToString() });
             throw;
         }
     }
