@@ -36,12 +36,14 @@ public class EventPublisher : IEventPublisher
         {
             if (_options.EnableLogging)
             {
-                _logger.LogInformation(
+                _logger.LogDebug(
                     "Publishing event to topic '{Topic}' on pubsub '{PubSubName}': {EventType}",
                     topic,
                     _options.PubSubName,
                     typeof(TEvent).Name);
             }
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             await _daprClient.PublishEventAsync(
                 _options.PubSubName,
@@ -51,7 +53,7 @@ public class EventPublisher : IEventPublisher
 
             if (_options.EnableLogging)
             {
-                _logger.LogDebug(
+                _logger.LogTrace(
                     "Successfully published event to topic '{Topic}': {EventType}",
                     topic,
                     typeof(TEvent).Name);

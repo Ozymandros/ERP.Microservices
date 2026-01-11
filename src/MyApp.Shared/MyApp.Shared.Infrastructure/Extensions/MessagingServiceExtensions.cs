@@ -1,4 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Dapr.AspNetCore;
+using Dapr.Client;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Infrastructure.Messaging;
 
@@ -19,38 +24,71 @@ public static class MessagingServiceExtensions
         this IServiceCollection services,
         Action<MessagingOptions>? configure = null)
     {
-        // Register DaprClient (required for implementations)
-        services.AddDaprClient();
+        // Ensure Options services are registered (Configure<T> does this automatically, but explicit for clarity)
+        services.AddOptions();
 
-        // Configure options
+        // Configure JsonSerializerOptions for DaprClient and register in DI
+        var jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            WriteIndented = false
+        };
+
+        // Register DaprClient with consistent JSON serialization options
+        // Use DaprClientBuilder to configure JsonSerializerOptions
+        // Note: AddDaprClient from Dapr.AspNetCore accepts Action<DaprClientBuilder>?
+        services.AddDaprClient(builder => builder.UseJsonSerializationOptions(jsonOptions));
+
+        // Register the same JsonSerializerOptions in DI for use in ServiceInvoker.CreateRequest
+        services.Configure<JsonSerializerOptions>(options =>
+        {
+            options.PropertyNamingPolicy = jsonOptions.PropertyNamingPolicy;
+            options.DefaultIgnoreCondition = jsonOptions.DefaultIgnoreCondition;
+            options.WriteIndented = jsonOptions.WriteIndented;
+        });
+
+        // Store MessagingOptions configuration
+        // Create and configure MessagingOptions during registration to avoid DI resolution issues
+        // from root provider in singleton factory
+        var messagingOptions = new MessagingOptions();
         if (configure != null)
         {
-            services.Configure<EventPublisherOptions>(options =>
-            {
-                var messagingOptions = new MessagingOptions();
-                configure(messagingOptions);
-                options.PubSubName = messagingOptions.EventPublisher.PubSubName;
-                options.EnableLogging = messagingOptions.EventPublisher.EnableLogging;
-            });
+            configure(messagingOptions);
         }
-        else
+
+        // Store MessagingOptions in DI for potential use by other services
+        // This automatically registers IOptions<MessagingOptions>, IOptionsSnapshot<MessagingOptions>, and IOptionsMonitor<MessagingOptions>
+        services.Configure<MessagingOptions>(options =>
         {
-            services.Configure<EventPublisherOptions>(options => { }); // Use defaults
-        }
+            // Apply the same configuration to the options stored in DI
+            if (configure != null)
+            {
+                configure(options);
+            }
+        });
+
+        // Configure EventPublisherOptions with values from MessagingOptions
+        services.Configure<EventPublisherOptions>(options =>
+        {
+            options.PubSubName = messagingOptions.EventPublisher.PubSubName;
+            options.EnableLogging = messagingOptions.EventPublisher.EnableLogging;
+        });
 
         // Register messaging services
         services.AddSingleton<IEventPublisher, EventPublisher>();
-        
-        // Register ServiceInvoker with logging configuration
+
+        // Register ServiceInvoker - use captured options value to avoid DI resolution from root provider
+        // This approach avoids the "Cannot resolve scoped service from root provider" error entirely
+        // by capturing the options value during registration instead of resolving from DI at runtime
+        var enableServiceInvocationLogging = messagingOptions.EnableServiceInvocationLogging;
         services.AddSingleton<IServiceInvoker>(sp =>
         {
             var daprClient = sp.GetRequiredService<Dapr.Client.DaprClient>();
             var logger = sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<ServiceInvoker>>();
-            
-            var messagingOptions = new MessagingOptions();
-            configure?.Invoke(messagingOptions);
-            
-            return new ServiceInvoker(daprClient, logger, messagingOptions.EnableServiceInvocationLogging);
+            var jsonOptions = sp.GetRequiredService<IOptions<System.Text.Json.JsonSerializerOptions>>();
+
+            return new ServiceInvoker(daprClient, logger, jsonOptions, enableServiceInvocationLogging);
         });
 
         return services;
@@ -66,7 +104,24 @@ public static class MessagingServiceExtensions
         this IServiceCollection services,
         Action<EventPublisherOptions>? configure = null)
     {
-        services.AddDaprClient();
+        // Configure JsonSerializerOptions for DaprClient
+        var jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            WriteIndented = false
+        };
+
+        // Register DaprClient with consistent JSON serialization options
+        services.AddDaprClient(builder => builder.UseJsonSerializationOptions(jsonOptions));
+
+        // Register JsonSerializerOptions in DI for ServiceInvoker
+        services.Configure<JsonSerializerOptions>(options =>
+        {
+            options.PropertyNamingPolicy = jsonOptions.PropertyNamingPolicy;
+            options.DefaultIgnoreCondition = jsonOptions.DefaultIgnoreCondition;
+            options.WriteIndented = jsonOptions.WriteIndented;
+        });
 
         if (configure != null)
         {
@@ -92,13 +147,31 @@ public static class MessagingServiceExtensions
         this IServiceCollection services,
         bool enableLogging = true)
     {
-        services.AddDaprClient();
+        // Configure JsonSerializerOptions for DaprClient
+        var jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            WriteIndented = false
+        };
+
+        // Register DaprClient with consistent JSON serialization options
+        services.AddDaprClient(builder => builder.UseJsonSerializationOptions(jsonOptions));
+
+        // Register JsonSerializerOptions in DI for ServiceInvoker
+        services.Configure<JsonSerializerOptions>(options =>
+        {
+            options.PropertyNamingPolicy = jsonOptions.PropertyNamingPolicy;
+            options.DefaultIgnoreCondition = jsonOptions.DefaultIgnoreCondition;
+            options.WriteIndented = jsonOptions.WriteIndented;
+        });
 
         services.AddSingleton<IServiceInvoker>(sp =>
         {
             var daprClient = sp.GetRequiredService<Dapr.Client.DaprClient>();
             var logger = sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<ServiceInvoker>>();
-            return new ServiceInvoker(daprClient, logger, enableLogging);
+            var jsonOptions = sp.GetRequiredService<IOptions<System.Text.Json.JsonSerializerOptions>>();
+            return new ServiceInvoker(daprClient, logger, jsonOptions, enableLogging);
         });
 
         return services;

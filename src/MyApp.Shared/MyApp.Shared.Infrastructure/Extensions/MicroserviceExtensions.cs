@@ -207,12 +207,14 @@ public static class MicroserviceExtensions
         MicroserviceConfigurationOptions? options = null)
     {
         // Try to reuse options from AddServiceDefaults via DI if not provided
+        // NOTE: Use IOptionsMonitor<T> instead of IOptionsSnapshot<T> because IOptionsSnapshot is scoped
+        // and cannot be resolved from the root provider (app.Services) during startup
         if (options == null)
         {
             try
             {
-                var configSnapshot = app.Services.GetRequiredService<IOptionsSnapshot<MicroserviceConfigurationOptions>>();
-                options = configSnapshot.Value;
+                var configMonitor = app.Services.GetService<IOptionsMonitor<MicroserviceConfigurationOptions>>();
+                options = configMonitor?.CurrentValue ?? new MicroserviceConfigurationOptions();
             }
             catch (InvalidOperationException)
             {
