@@ -169,7 +169,9 @@ public class WarehouseStockService : IWarehouseStockService
     {
         ArgumentNullException.ThrowIfNull(dto);
 
-        _logger.LogInformation("Transferring stock: {@Transfer}", new { dto.ProductId, From = dto.FromWarehouseId, To = dto.ToWarehouseId, dto.Quantity });
+        _logger.LogInformation(
+            "Transferring stock: {@Transfer}",
+            new { dto.ProductId, From = dto.FromWarehouseId, To = dto.ToWarehouseId, dto.Quantity, dto.Reason });
 
         // Get source warehouse stock
         var sourceStock = await _warehouseStockRepository.GetByProductAndWarehouseAsync(dto.ProductId, dto.FromWarehouseId);
@@ -227,13 +229,13 @@ public class WarehouseStockService : IWarehouseStockService
 
         _logger.LogInformation("Stock transferred successfully: {@Transfer}", new { dto.ProductId, dto.Quantity });
 
-        // Publish StockTransferredEvent via Dapr
+        // Publish StockTransferredEvent via Dapr with sanitized reason
         var stockTransferredEvent = new StockTransferredEvent(
             dto.ProductId,
             dto.FromWarehouseId,
             dto.ToWarehouseId,
             dto.Quantity,
-            dto.Reason
+            dto.Reason ?? string.Empty
         );
 
         try
@@ -251,7 +253,9 @@ public class WarehouseStockService : IWarehouseStockService
     {
         ArgumentNullException.ThrowIfNull(dto);
 
-        _logger.LogInformation("Adjusting stock: {@StockAdjustment}", new { dto.ProductId, dto.WarehouseId, dto.QuantityChange, dto.Reason });
+        _logger.LogInformation(
+            "Adjusting stock: {@StockAdjustment}",
+            new { dto.ProductId, dto.WarehouseId, dto.QuantityChange, dto.Reason, dto.Reference });
         var warehouseStock = await _warehouseStockRepository.GetByProductAndWarehouseAsync(dto.ProductId, dto.WarehouseId);
         if (warehouseStock == null)
         {
@@ -289,7 +293,7 @@ public class WarehouseStockService : IWarehouseStockService
             dto.ProductId,
             dto.WarehouseId,
             dto.QuantityChange,
-            dto.Reason,
+            dto.Reason ?? string.Empty,
             dto.Reference
         );
 

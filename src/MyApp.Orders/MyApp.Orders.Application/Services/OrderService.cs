@@ -311,7 +311,9 @@ namespace MyApp.Orders.Application.Services
 
         public async Task CancelOrderAsync(CancelOrderDto dto)
         {
-            _logger.LogInformation("Cancelling order: OrderId={OrderId}, Reason={Reason}", dto.OrderId, dto.Reason);
+            _logger.LogInformation(
+                "Cancelling order: {@CancelOrderData}",
+                new { dto.OrderId, dto.Reason });
 
             var order = await _orders.GetByIdAsync(dto.OrderId);
             if (order == null)
@@ -358,7 +360,7 @@ namespace MyApp.Orders.Application.Services
             // Publish OrderCancelledEvent
             var orderCancelledEvent = new OrderCancelledEvent(
                 order.Id,
-                dto.Reason
+                dto.Reason ?? string.Empty
             );
 
             try

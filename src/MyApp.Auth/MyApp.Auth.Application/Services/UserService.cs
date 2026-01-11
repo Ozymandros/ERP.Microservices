@@ -131,12 +131,16 @@ public class UserService : IUserService
             return false;
         }
 
+        _logger.LogInformation("Updating user: {@UserUpdate}", new { UserId = userId, updateUserDto });
+
         if (!string.IsNullOrEmpty(updateUserDto.Email) && updateUserDto.Email != user.Email)
         {
             var existingUser = await _userManager.FindByEmailAsync(updateUserDto.Email);
             if (existingUser != null)
             {
-                _logger.LogWarning("Email already in use: {@Email}", new { Email = updateUserDto.Email });
+                _logger.LogWarning(
+                    "Email already in use: {@EmailData}",
+                    new { Email = updateUserDto.Email });
                 return false;
             }
             user.Email = updateUserDto.Email;

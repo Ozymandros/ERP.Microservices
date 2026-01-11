@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using MyApp.Shared.Domain.DTOs;
 
 namespace MyApp.Inventory.Application.Contracts.DTOs;
@@ -28,6 +29,8 @@ public record StockTransferDto
     public Guid FromWarehouseId { get; init; }
     public Guid ToWarehouseId { get; init; }
     public int Quantity { get; init; }
+
+    [MaxLength(500, ErrorMessage = "Reason cannot exceed 500 characters")]
     public string Reason { get; init; } = string.Empty;
 }
 
@@ -36,7 +39,11 @@ public record StockAdjustmentDto
     public Guid ProductId { get; init; }
     public Guid WarehouseId { get; init; }
     public int QuantityChange { get; init; }
+
+    [MaxLength(500, ErrorMessage = "Reason cannot exceed 500 characters")]
     public string Reason { get; init; } = string.Empty;
+
+    [MaxLength(100, ErrorMessage = "Reference cannot exceed 100 characters")]
     public string? Reference { get; init; }
 }
 

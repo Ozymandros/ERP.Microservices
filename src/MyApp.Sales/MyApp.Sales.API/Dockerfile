@@ -26,15 +26,15 @@ RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
 COPY MyApp.Shared/ MyApp.Shared/
 COPY MyApp.Sales/ MyApp.Sales/
 
-# Build the project with cache mount
+# Build the project
 WORKDIR "/src/MyApp.Sales/MyApp.Sales.API"
 RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
-    dotnet build "MyApp.Sales.API.csproj" -c Release -o /app/build --no-restore
+    dotnet build "MyApp.Sales.API.csproj" -c Release -o /app/build
 
 # Publish stage
 FROM build AS publish
 RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
-    dotnet publish "MyApp.Sales.API.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
+    dotnet publish "MyApp.Sales.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Runtime stage - Use shared base image
 FROM myapp-microservices-base:10.0 AS final
