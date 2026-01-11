@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Infrastructure.Caching;
@@ -20,19 +21,27 @@ namespace MyApp.Shared.Infrastructure.Extensions;
 public static class MicroserviceExtensions
 {
     /// <summary>
-    /// Adds all common microservice services to the service collection
+    /// Adds default microservice services to the service collection.
+    /// Configures: Dapr, OpenTelemetry, Controllers, OpenAPI, Authentication, Database, Health Checks, CORS, AutoMapper.
+    /// 
+    /// Note: Redis cache must be configured separately before calling this method:
+    ///   builder.AddRedisDistributedCache("cache");  // Aspire extension - must be called first
+    ///   builder.AddServiceDefaults(...);
+    /// This is because AddRedisDistributedCache requires the Aspire Redis resource reference,
+    /// which is only available in the AppHost project context.
     /// </summary>
-    public static WebApplicationBuilder AddCommonMicroserviceServices(
+    public static WebApplicationBuilder AddServiceDefaults(
         this WebApplicationBuilder builder,
         MicroserviceConfigurationOptions? options = null)
     {
         options ??= new MicroserviceConfigurationOptions();
 
-        // Set service name for telemetry
-        var serviceName = options.ServiceName 
-            ?? builder.Environment.ApplicationName 
-            ?? System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name 
+        // Auto-detect service name if not provided
+        var serviceName = options.ServiceName
+            ?? builder.Environment.ApplicationName
+            ?? System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name
             ?? "UnknownService";
+        options.ServiceName = serviceName;
 
         // 1. DAPR Client and Messaging Services
         if (options.EnableDapr)
@@ -134,19 +143,22 @@ public static class MicroserviceExtensions
             builder.Services.AddScoped<IPermissionChecker, PermissionChecker>();
         }
 
-        // 9. Redis Distributed Cache (caller must configure - Aspire handles this in Program.cs)
+        // 9. Redis Distributed Cache
+        // IMPORTANT: AddRedisDistributedCache("cache") must be called BEFORE AddServiceDefaults
+        // because it's an Aspire extension method that requires the Redis resource reference.
+        // We only register the ICacheService wrapper here; the actual Redis connection is configured by Aspire.
         if (options.EnableRedisCache)
         {
-            // Note: Redis configuration expected to be handled by Aspire's AddRedisDistributedCache
-            // This is typically called in the service's Program.cs before calling this method
             builder.Services.AddScoped<ICacheService, DistributedCacheWrapper>();
         }
 
-        // 10. AutoMapper (if assembly provided)
-        // Note: AutoMapper setup is expected to be handled by the service
-        // This typically involves calling services.AddAutoMapper() with the profile assembly
+        // 10. AutoMapper (if enabled and assembly provided)
+        if (options.EnableAutoMapper && options.AutoMapperAssembly != null)
+        {
+            builder.Services.AddAutoMapper(cfg => { }, options.AutoMapperAssembly);
+        }
 
-        // 11. CORS
+        // 11. CORS (always configured with defaults)
         var origins = builder.Configuration["FRONTEND_ORIGIN"]?.Split(';') ?? new[] { "http://localhost:3000" };
         builder.Services.AddCors(corsOptions =>
         {
@@ -162,17 +174,54 @@ public static class MicroserviceExtensions
         // 12. Service-specific dependencies
         options.ConfigureServiceDependencies?.Invoke(builder.Services);
 
+        // Store options in DI for UseServiceDefaults to reuse (avoids passing options twice)
+        builder.Services.Configure<MicroserviceConfigurationOptions>(opt =>
+        {
+            opt.ServiceName = options.ServiceName;
+            opt.ConnectionStringKey = options.ConnectionStringKey;
+            opt.DbContextType = options.DbContextType;
+            opt.EnableAuthentication = options.EnableAuthentication;
+            opt.EnableHealthChecks = options.EnableHealthChecks;
+            opt.EnableOpenTelemetry = options.EnableOpenTelemetry;
+            opt.EnableDapr = options.EnableDapr;
+            opt.EnableRedisCache = options.EnableRedisCache;
+            opt.EnableAutoMapper = options.EnableAutoMapper;
+            opt.AutoMapperAssembly = options.AutoMapperAssembly;
+            opt.RedisConnectionName = options.RedisConnectionName;
+            opt.ConfigureServiceDependencies = options.ConfigureServiceDependencies;
+        });
+
         return builder;
     }
 
     /// <summary>
-    /// Applies common microservice middleware pipeline
+    /// Applies default microservice middleware pipeline.
+    /// Configures: Database migrations, OpenAPI, Scalar docs (dev), HTTPS redirect, Routing, CORS,
+    /// Authentication, Authorization, Controllers, Health checks, Dapr pub/sub subscriptions.
+    /// 
+    /// If options are not provided, automatically reuses options from AddServiceDefaults via DI.
+    /// This means you can call: app.UseServiceDefaults(); without passing options again.
     /// </summary>
-    public static WebApplication UseCommonMicroservicePipeline(
+    public static WebApplication UseServiceDefaults(
         this WebApplication app,
         MicroserviceConfigurationOptions? options = null)
     {
-        options ??= new MicroserviceConfigurationOptions();
+        // Try to reuse options from AddServiceDefaults via DI if not provided
+        // NOTE: Use IOptionsMonitor<T> instead of IOptionsSnapshot<T> because IOptionsSnapshot is scoped
+        // and cannot be resolved from the root provider (app.Services) during startup
+        if (options == null)
+        {
+            try
+            {
+                var configMonitor = app.Services.GetService<IOptionsMonitor<MicroserviceConfigurationOptions>>();
+                options = configMonitor?.CurrentValue ?? new MicroserviceConfigurationOptions();
+            }
+            catch (InvalidOperationException)
+            {
+                // Options not registered in DI, use defaults
+                options = new MicroserviceConfigurationOptions();
+            }
+        }
 
         // Apply database migrations if DbContext is configured
         if (options.DbContextType != null)
@@ -219,6 +268,13 @@ public static class MicroserviceExtensions
         if (options.EnableHealthChecks)
         {
             app.UseCustomHealthChecks();
+        }
+
+        // Dapr pub/sub subscriptions (automatically configured if Dapr is enabled)
+        // This replaces the need to manually call app.MapSubscribeHandler() in Program.cs
+        if (options.EnableDapr)
+        {
+            app.MapSubscribeHandler();
         }
 
         return app;

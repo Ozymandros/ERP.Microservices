@@ -4,7 +4,6 @@ using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
-using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 

@@ -14,10 +14,11 @@ namespace MyApp.Orders.Application.Mapping
             CreateMap<OrderLine, OrderLineDto>();
 
             CreateMap<CreateUpdateOrderDto, Order>()
-                .ForMember(d => d.Id, o => o.Ignore())
+                .ConstructUsing(src => new Order(Guid.NewGuid()))
                 .ForMember(d => d.Lines, o => o.MapFrom(s => s.Lines));
 
-            CreateMap<OrderLineDto, OrderLine>();
+            CreateMap<OrderLineDto, OrderLine>()
+                .ConstructUsing(src => new OrderLine(src.Id));
         }
     }
 }

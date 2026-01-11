@@ -4,66 +4,55 @@ using MyApp.Shared.Infrastructure.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // ============================================================================
-// Common Microservice Configuration
+// Service Defaults Configuration
 // ============================================================================
-builder.AddCommonMicroserviceServices(new MicroserviceConfigurationOptions
+// Most options have sensible defaults: EnableAuthentication, EnableHealthChecks, EnableDapr,
+// EnableOpenTelemetry, EnableRedisCache, and EnableAutoMapper all default to true.
+// 
+// IMPORTANT: Redis cache must be configured BEFORE AddServiceDefaults because it's an Aspire
+// extension method that requires the Redis resource reference from the AppHost project.
+builder.AddRedisDistributedCache("cache");
+
+builder.AddServiceDefaults(new MicroserviceConfigurationOptions
 {
-    ServiceName = "MyApp.Inventory.API",
+    ServiceName = "MyApp.Inventory.API", // Optional: defaults to assembly name
     ConnectionStringKey = "inventorydb",
     DbContextType = typeof(InventoryDbContext),
-    EnableAuthentication = true,
-    EnableHealthChecks = true,
-    EnableDapr = true,
-    EnableOpenTelemetry = true,
-    EnableRedisCache = true,
+    AutoMapperAssembly = typeof(MyApp.Inventory.Application.Mappings.InventoryMappingProfile).Assembly,
     ConfigureServiceDependencies = services =>
     {
         // Register Inventory-specific repositories
-        services.AddScoped<MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository, 
+        services.AddScoped<MyApp.Inventory.Domain.Repositories.IInventoryTransactionRepository,
             MyApp.Inventory.Infrastructure.Data.Repositories.InventoryTransactionRepository>();
-        services.AddScoped<MyApp.Inventory.Domain.Repositories.IProductRepository, 
+        services.AddScoped<MyApp.Inventory.Domain.Repositories.IProductRepository,
             MyApp.Inventory.Infrastructure.Data.Repositories.ProductRepository>();
-        services.AddScoped<MyApp.Inventory.Domain.Repositories.IWarehouseRepository, 
+        services.AddScoped<MyApp.Inventory.Domain.Repositories.IWarehouseRepository,
             MyApp.Inventory.Infrastructure.Data.Repositories.WarehouseRepository>();
-        services.AddScoped<MyApp.Inventory.Domain.Repositories.IWarehouseStockRepository, 
+        services.AddScoped<MyApp.Inventory.Domain.Repositories.IWarehouseStockRepository,
             MyApp.Inventory.Infrastructure.Repositories.WarehouseStockRepository>();
 
         // Register Inventory-specific services
-        services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService, 
+        services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService,
             MyApp.Inventory.Application.Services.InventoryTransactionService>();
-        services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IProductService, 
+        services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IProductService,
             MyApp.Inventory.Application.Services.ProductService>();
-        services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IWarehouseService, 
+        services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IWarehouseService,
             MyApp.Inventory.Application.Services.WarehouseService>();
-        services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IWarehouseStockService, 
+        services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IWarehouseStockService,
             MyApp.Inventory.Application.Services.WarehouseStockService>();
-        
+
         // Register background services
         services.AddHostedService<MyApp.Inventory.API.BackgroundServices.LowStockAlertService>();
     }
 });
 
-// Redis Cache (Aspire-managed)
-builder.AddRedisDistributedCache("cache");
-
-// AutoMapper (service-specific profiles)
-builder.Services.AddAutoMapper(
-    cfg => { },
-    typeof(MyApp.Inventory.Application.Mappings.InventoryMappingProfile).Assembly);
-
 var app = builder.Build();
 
 // ============================================================================
-// Common Microservice Pipeline
+// Service Defaults Pipeline
 // ============================================================================
-app.UseCommonMicroservicePipeline(new MicroserviceConfigurationOptions
-{
-    DbContextType = typeof(InventoryDbContext),
-    EnableAuthentication = true,
-    EnableHealthChecks = true
-});
-
-// Dapr pub/sub subscriptions
-app.MapSubscribeHandler();
+// Options are automatically reused from AddServiceDefaults via DI.
+// MapSubscribeHandler() is automatically called if EnableDapr is true.
+app.UseServiceDefaults();
 
 app.Run();

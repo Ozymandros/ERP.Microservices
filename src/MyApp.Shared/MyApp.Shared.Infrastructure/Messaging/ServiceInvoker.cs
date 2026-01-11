@@ -1,5 +1,7 @@
 using Dapr.Client;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
 using MyApp.Shared.Domain.Messaging;
 
 namespace MyApp.Shared.Infrastructure.Messaging;
@@ -12,15 +14,23 @@ public class ServiceInvoker : IServiceInvoker
     private readonly DaprClient _daprClient;
     private readonly ILogger<ServiceInvoker> _logger;
     private readonly bool _enableLogging;
+    private readonly JsonSerializerOptions _jsonOptions;
 
     public ServiceInvoker(
         DaprClient daprClient,
         ILogger<ServiceInvoker> logger,
+        IOptions<JsonSerializerOptions> jsonOptions,
         bool enableLogging = true)
     {
         _daprClient = daprClient ?? throw new ArgumentNullException(nameof(daprClient));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _enableLogging = enableLogging;
+        _jsonOptions = jsonOptions?.Value ?? new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+            WriteIndented = false
+        };
     }
 
     public async Task<TResponse> InvokeAsync<TRequest, TResponse>(
@@ -50,6 +60,8 @@ public class ServiceInvoker : IServiceInvoker
                     httpMethod.Method);
             }
 
+            cancellationToken.ThrowIfCancellationRequested();
+
             var response = await _daprClient.InvokeMethodAsync<TRequest, TResponse>(
                 httpMethod,
                 serviceName,
@@ -59,7 +71,7 @@ public class ServiceInvoker : IServiceInvoker
 
             if (_enableLogging)
             {
-                _logger.LogDebug(
+                _logger.LogTrace(
                     "Successfully invoked service '{ServiceName}' method '{MethodPath}'",
                     serviceName,
                     methodPath);
@@ -105,6 +117,8 @@ public class ServiceInvoker : IServiceInvoker
                     httpMethod.Method);
             }
 
+            cancellationToken.ThrowIfCancellationRequested();
+
             var response = await _daprClient.InvokeMethodAsync<TResponse>(
                 httpMethod,
                 serviceName,
@@ -113,7 +127,7 @@ public class ServiceInvoker : IServiceInvoker
 
             if (_enableLogging)
             {
-                _logger.LogDebug(
+                _logger.LogTrace(
                     "Successfully invoked service '{ServiceName}' method '{MethodPath}'",
                     serviceName,
                     methodPath);
@@ -159,6 +173,8 @@ public class ServiceInvoker : IServiceInvoker
                     httpMethod.Method);
             }
 
+            cancellationToken.ThrowIfCancellationRequested();
+
             await _daprClient.InvokeMethodAsync(
                 httpMethod,
                 serviceName,
@@ -167,7 +183,7 @@ public class ServiceInvoker : IServiceInvoker
 
             if (_enableLogging)
             {
-                _logger.LogDebug(
+                _logger.LogTrace(
                     "Successfully invoked service '{ServiceName}' method '{MethodPath}'",
                     serviceName,
                     methodPath);
@@ -203,8 +219,16 @@ public class ServiceInvoker : IServiceInvoker
 
         HttpRequestMessage request;
         
-        if (queryParams != null)
+        if (queryParams != null && queryParams.Count > 0)
         {
+            // Validate query params before passing to DaprClient
+            foreach (var kvp in queryParams)
+            {
+                if (string.IsNullOrWhiteSpace(kvp.Key))
+                    throw new ArgumentException("Query parameter keys cannot be null or empty.", nameof(queryParams));
+                if (kvp.Value == null)
+                    throw new ArgumentException($"Query parameter value for key '{kvp.Key}' cannot be null.", nameof(queryParams));
+            }
             request = _daprClient.CreateInvokeMethodRequest(httpMethod, serviceName, methodPath, queryParams);
         }
         else
@@ -212,10 +236,11 @@ public class ServiceInvoker : IServiceInvoker
             request = _daprClient.CreateInvokeMethodRequest(httpMethod, serviceName, methodPath);
         }
 
-        // If requestBody is provided, serialize it to JSON and set as content
+        // If requestBody is provided, serialize it to JSON using the same options as DaprClient
+        // This ensures consistency between manual serialization and DaprClient's serialization
         if (requestBody != null)
         {
-            var json = System.Text.Json.JsonSerializer.Serialize(requestBody);
+            var json = JsonSerializer.Serialize(requestBody, _jsonOptions);
             request.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
         }
 
@@ -248,11 +273,13 @@ public class ServiceInvoker : IServiceInvoker
                     request.RequestUri);
             }
 
+            cancellationToken.ThrowIfCancellationRequested();
+
             var response = await _daprClient.InvokeMethodAsync<TResponse>(request, cancellationToken);
 
             if (_enableLogging)
             {
-                _logger.LogDebug("Successfully invoked service with custom request");
+                _logger.LogTrace("Successfully invoked service with custom request");
             }
 
             return response;
