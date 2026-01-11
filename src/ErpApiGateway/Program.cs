@@ -194,10 +194,10 @@ else
     // Local: relative path - Path.GetFullPath resolves ".." safely
     var relativePath = Path.Combine(builder.Environment.ContentRootPath, "..", "_site");
     sitePath = Path.GetFullPath(relativePath);
-    
+
     // Security: Validate that resolved path is within expected directory structure
     var contentRootFullPath = Path.GetFullPath(builder.Environment.ContentRootPath);
-    if (!sitePath.StartsWith(contentRootFullPath, StringComparison.OrdinalIgnoreCase) && 
+    if (!sitePath.StartsWith(contentRootFullPath, StringComparison.OrdinalIgnoreCase) &&
         !sitePath.StartsWith(Path.GetDirectoryName(contentRootFullPath) ?? "", StringComparison.OrdinalIgnoreCase))
     {
         throw new InvalidOperationException($"Resolved site path '{sitePath}' is outside expected directory structure.");

@@ -17,24 +17,24 @@ x-api-env: &api-env
 
 services:
   sqlserver:
-      image: mcr.microsoft.com/mssql/server:2022-latest
-      container_name: sqlserver
-      environment:
-        ACCEPT_EULA: "Y"
-        MSSQL_PID: Developer
-        MSSQL_SA_PASSWORD: ${SQL_PASSWORD:-P@ssw0rd12345!}
-      ports:
-        - "1455:1433"
-      volumes:
-        - sqlserver-data:/var/opt/mssql
-      healthcheck:
-        # THIS IS THE CORRECT COMMAND:
-        test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${SQL_PASSWORD:-P@ssw0rd12345!}' -C -Q 'SELECT 1' || exit 1"]
-        interval: 10s
-        timeout: 5s
-        retries: 10
-      networks:
-        - erp
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: ${SQL_PASSWORD:-P@ssw0rd12345!}
+    ports:
+      - "1455:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      # THIS IS THE CORRECT COMMAND:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${SQL_PASSWORD:-P@ssw0rd12345!}' -C -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - erp
 
   redis:
     image: redis:7-alpine
@@ -104,14 +104,14 @@ services:
   # IMPORTANT: This must be built BEFORE services that use myapp-microservices-base:10.0
   # Build command: docker-compose build microservices-base
   # Or build all: docker-compose build (this service will build first)
-   # microservices-base:
-     # build:
-       # context: .
-       # dockerfile: docker/microservices-base.Dockerfile
-     # image: myapp-microservices-base:10.0
+  microservices-base:
+    build:
+      context: .
+      dockerfile: docker/microservices-base.Dockerfile
+    image: myapp-microservices-base:10.0
     # This service only builds the image; container exits immediately
-     # command: ["/bin/sh", "-c", "echo 'Base image built' && sleep 1 && exit 0"]
-     # restart: "no"  # Don't restart this build-only service
+    command: ["/bin/sh", "-c", "echo 'Base image built' && sleep 1 && exit 0"]
+    restart: "no"  # Don't restart this build-only service
 
   erpapigateway:
     build:

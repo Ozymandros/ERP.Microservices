@@ -113,11 +113,16 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-var secretKey = jwtSettings["SecretKey"] ?? throw new ArgumentNullException("Jwt:SecretKey");
+var secretKey = jwtSettings["SecretKey"];
+if (string.IsNullOrWhiteSpace(secretKey))
+{
+    throw new InvalidOperationException("Jwt:SecretKey must be provided via configuration or environment variable. It cannot be empty.");
+}
 var issuer = jwtSettings["Issuer"] ?? throw new ArgumentNullException("Jwt:Issuer");
 var audience = jwtSettings["Audience"] ?? throw new ArgumentNullException("Jwt:Audience");
 
-builder.Services
+// Configure authentication with JWT and Cookie schemes
+var authBuilder = builder.Services
     .AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -146,36 +151,61 @@ builder.Services
             options.RequireHttpsMetadata = true;
         }
     })
-    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddGoogle(options =>
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
+
+// Configure OAuth providers conditionally - only if ClientId is provided (not null or empty)
+var googleClientId = builder.Configuration["Authentication:Google:ClientId"];
+var googleClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+if (!string.IsNullOrWhiteSpace(googleClientId) && !string.IsNullOrWhiteSpace(googleClientSecret))
+{
+    authBuilder.AddGoogle(options =>
     {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? throw new ArgumentNullException("Authentication:Google:ClientId");
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? throw new ArgumentNullException("Authentication:Google:ClientSecret");
+        options.ClientId = googleClientId;
+        options.ClientSecret = googleClientSecret;
         options.Scope.Add("profile");
-    })
-    .AddMicrosoftAccount(options =>
+    });
+}
+
+var microsoftClientId = builder.Configuration["Authentication:Microsoft:ClientId"];
+var microsoftClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"];
+if (!string.IsNullOrWhiteSpace(microsoftClientId) && !string.IsNullOrWhiteSpace(microsoftClientSecret))
+{
+    authBuilder.AddMicrosoftAccount(options =>
     {
-        options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"] ?? throw new ArgumentNullException("Authentication:Microsoft:ClientId");
-        options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"] ?? throw new ArgumentNullException("Authentication:Microsoft:ClientSecret");
-    })
-    .AddOAuth("Apple", options =>
+        options.ClientId = microsoftClientId;
+        options.ClientSecret = microsoftClientSecret;
+    });
+}
+
+var appleClientId = builder.Configuration["Authentication:Apple:ClientId"];
+var appleClientSecret = builder.Configuration["Authentication:Apple:ClientSecret"];
+if (!string.IsNullOrWhiteSpace(appleClientId) && !string.IsNullOrWhiteSpace(appleClientSecret))
+{
+    authBuilder.AddOAuth("Apple", options =>
     {
-        options.ClientId = builder.Configuration["Authentication:Apple:ClientId"] ?? throw new ArgumentNullException("Authentication:Apple:ClientId");
-        options.ClientSecret = builder.Configuration["Authentication:Apple:ClientSecret"] ?? throw new ArgumentNullException("Authentication:Apple:ClientSecret");
+        options.ClientId = appleClientId;
+        options.ClientSecret = appleClientSecret;
         options.CallbackPath = new PathString("/signin-apple");
         options.AuthorizationEndpoint = "https://appleid.apple.com/auth/authorize";
         options.TokenEndpoint = "https://appleid.apple.com/auth/token";
         options.UserInformationEndpoint = "https://appleid.apple.com/auth/validate";
-    })
-    .AddOAuth("GitHub", options =>
+    });
+}
+
+var githubClientId = builder.Configuration["Authentication:GitHub:ClientId"];
+var githubClientSecret = builder.Configuration["Authentication:GitHub:ClientSecret"];
+if (!string.IsNullOrWhiteSpace(githubClientId) && !string.IsNullOrWhiteSpace(githubClientSecret))
+{
+    authBuilder.AddOAuth("GitHub", options =>
     {
-        options.ClientId = builder.Configuration["Authentication:GitHub:ClientId"] ?? throw new ArgumentNullException("Authentication:GitHub:ClientId");
-        options.ClientSecret = builder.Configuration["Authentication:GitHub:ClientSecret"] ?? throw new ArgumentNullException("Authentication:GitHub:ClientSecret");
+        options.ClientId = githubClientId;
+        options.ClientSecret = githubClientSecret;
         options.CallbackPath = new PathString("/signin-github");
         options.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
         options.TokenEndpoint = "https://github.com/login/oauth/access_token";
         options.UserInformationEndpoint = "https://api.github.com/user";
     });
+}
 
 builder.Services.AddHttpContextAccessor();
 
