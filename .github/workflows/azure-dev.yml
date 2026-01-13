@@ -29,6 +29,11 @@ jobs:
           dotnet-version: |
             8.x
             9.x
+        
+      - name: Install Dapr CLI
+        run: |
+          wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
+          dapr init --slim
 
       - name: Cache NuGet packages
         uses: actions/cache@v4
@@ -40,7 +45,7 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore ERP.Microservices.sln
-
+          
       - name: Build
         run: dotnet build ERP.Microservices.sln --configuration Release --no-restore
 
