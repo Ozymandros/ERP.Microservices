@@ -164,17 +164,24 @@ jobs:
       - name: Setup Azure Developer CLI
         uses: Azure/setup-azd@v1.0.0
 
-      - name: Azure login (Federated)
-        uses: azure/login@v1
+      - name: Azure Login Diagnostic
+        uses: azure/login@v2 # Try upgrading to v2 for better OIDC logs
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: true
 
-      - name: Set up dotnet
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "10.0.x"
+      - name: Check What Azure Sees
+        run: |
+          echo "Current Context:"
+          az account show
+          echo "Available Subscriptions for this Identity:"
+          az account list --output table
+            - name: Set up dotnet
+              uses: actions/setup-dotnet@v4
+              with:
+                dotnet-version: "10.0.x"
 
       - name: Deploy with azd
         env:
