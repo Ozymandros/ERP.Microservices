@@ -49,7 +49,7 @@ param jwtSecretKey string
 
 // Key Vault
 
-resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
   name: name
   location: location
   properties: {
@@ -60,6 +60,9 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
     accessPolicies: []
     enabledForTemplateDeployment: true
+    enableSoftDelete: true
+    softDeleteRetentionInDays: 7
+    createMode: 'recover'  // Automatically recover if soft-deleted
   }
   tags: tags
 }
