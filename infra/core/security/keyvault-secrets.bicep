@@ -47,6 +47,11 @@ param salesDbName string
 @secure()
 param jwtSecretKey string
 
+@description('User-Assigned Managed Identity Principal ID for Key Vault access')
+param userAssignedIdentityPrincipalId string
+
+import { azureRoleIdKeyVaultSecretsUser } from '../../config/constants.bicep'
+
 // Key Vault
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
@@ -65,6 +70,17 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
     createMode: 'recover'  // Automatically recover if soft-deleted
   }
   tags: tags
+}
+
+// Grant User-Assigned Identity access to Key Vault secrets
+resource keyVaultSecretsUserRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(keyVault.id, userAssignedIdentityPrincipalId, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdKeyVaultSecretsUser))
+  scope: keyVault
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdKeyVaultSecretsUser)
+    principalId: userAssignedIdentityPrincipalId
+    principalType: 'ServicePrincipal'
+  }
 }
 
 // Redis secret

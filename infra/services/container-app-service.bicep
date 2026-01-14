@@ -91,71 +91,90 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-pr
 
 // Build secrets array from Key Vault references
 // Use User-Assigned Identity instead of system-assigned
-var keyVaultSecretsList = [for secret in keyVaultSecrets: {
-  name: secret.name
-  keyVaultUrl: '${keyVaultUri}secrets/${secret.secretName}'
-  identity: userAssignedIdentityId
-}]
+var keyVaultSecretsList = [
+  for secret in keyVaultSecrets: {
+    name: secret.name
+    keyVaultUrl: '${keyVaultUri}secrets/${secret.secretName}'
+    identity: userAssignedIdentityId
+  }
+]
 
 // Build environment variables
-var environmentVariables = concat([
-  {
-    name: 'ASPNETCORE_ENVIRONMENT'
-    value: aspnetcoreEnvironment
-  }
-  {
-    name: 'ASPNETCORE_URLS'
-    value: 'http://+:${targetPort}'
-  }
-  {
-    name: 'Jwt__Issuer'
-    value: jwtIssuer
-  }
-  {
-    name: 'Jwt__Audience'
-    value: jwtAudience
-  }
-  {
-    name: 'FRONTEND_ORIGIN'
-    value: frontendOrigin
-  }
-], !empty(appConfigConnectionString) ? [
-  {
-    name: 'AppConfiguration__ConnectionString'
-    secretRef: 'app-config-connection'
-  }
-] : [], !empty(jwtSecretKey) ? [
-  {
-    name: 'Jwt__SecretKey'
-    secretRef: 'jwt-secret'
-  }
-] : [], !empty(applicationInsightsConnectionString) ? [
-  {
-    name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-    secretRef: 'applicationinsights-connection'
-  }
-] : [])
+var environmentVariables = concat(
+  [
+    {
+      name: 'ASPNETCORE_ENVIRONMENT'
+      value: aspnetcoreEnvironment
+    }
+    {
+      name: 'ASPNETCORE_URLS'
+      value: 'http://+:${targetPort}'
+    }
+    {
+      name: 'Jwt__Issuer'
+      value: jwtIssuer
+    }
+    {
+      name: 'Jwt__Audience'
+      value: jwtAudience
+    }
+    {
+      name: 'FRONTEND_ORIGIN'
+      value: frontendOrigin
+    }
+  ],
+  !empty(appConfigConnectionString)
+    ? [
+        {
+          name: 'AppConfiguration__ConnectionString'
+          secretRef: 'app-config-connection'
+        }
+      ]
+    : [],
+  !empty(jwtSecretKey)
+    ? [
+        {
+          name: 'Jwt__SecretKey'
+          secretRef: 'jwt-secret'
+        }
+      ]
+    : [],
+  !empty(applicationInsightsConnectionString)
+    ? [
+        {
+          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+          secretRef: 'applicationinsights-connection'
+        }
+      ]
+    : []
+)
 
 // Build secrets array from parameters and Key Vault references
 var secrets = concat(
-  !empty(appConfigConnectionString) ? [
-    {
-      name: 'app-config-connection'
-      value: appConfigConnectionString
-    }
-  ] : [],
-  !empty(jwtSecretKey) ? [
-    {
-      name: 'jwt-secret'
-      value: jwtSecretKey
-    }
-  ] : [],
-  !empty(applicationInsightsConnectionString) ? [
-    {
-      name: 'applicationinsights-connection'
-      value: applicationInsightsConnectionString
-    }
-  ] : [],
+  !empty(appConfigConnectionString)
+    ? [
+        {
+          name: 'app-config-connection'
+          value: appConfigConnectionString
+        }
+      ]
+    : [],
+  !empty(jwtSecretKey)
+    ? [
+        {
+          name: 'jwt-secret'
+          value: jwtSecretKey
+        }
+      ]
+    : [],
+  !empty(applicationInsightsConnectionString)
+    ? [
+        {
+          name: 'applicationinsights-connection'
+          value: applicationInsightsConnectionString
+        }
+      ]
+    : [],
   !empty(keyVaultUri) ? keyVaultSecretsList : []
 )
 
@@ -163,12 +182,19 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: name
   location: location
   tags: union(
-    union(tags, !empty(logAnalyticsWorkspaceId) ? {
-      'log-analytics-workspace-id': logAnalyticsWorkspaceId
-    } : {}),
-    !empty(managedIdentityPrincipalId) ? {
-      'managed-identity-principal-id': managedIdentityPrincipalId
-    } : {}
+    union(
+      tags,
+      !empty(logAnalyticsWorkspaceId)
+        ? {
+            'log-analytics-workspace-id': logAnalyticsWorkspaceId
+          }
+        : {}
+    ),
+    !empty(managedIdentityPrincipalId)
+      ? {
+          'managed-identity-principal-id': managedIdentityPrincipalId
+        }
+      : {}
   )
   identity: {
     type: 'UserAssigned'
@@ -179,36 +205,40 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   properties: {
     managedEnvironmentId: containerAppsEnvironment.id
     configuration: {
-      ingress: externalIngress ? {
-        external: true
-        targetPort: targetPort
-        transport: 'auto'
-        allowInsecure: false
-        traffic: [
-          {
-            weight: 100
-            latestRevision: true
+      ingress: externalIngress
+        ? {
+            external: true
+            targetPort: targetPort
+            transport: 'auto'
+            allowInsecure: false
+            traffic: [
+              {
+                weight: 100
+                latestRevision: true
+              }
+            ]
           }
-        ]
-      } : {
-        external: false
-        targetPort: targetPort
-        transport: 'auto'
-        allowInsecure: false
-      }
+        : {
+            external: false
+            targetPort: targetPort
+            transport: 'auto'
+            allowInsecure: false
+          }
       registries: [
         {
           server: containerRegistry.properties.loginServer
           identity: userAssignedIdentityId
         }
       ]
-      dapr: daprEnabled ? {
-        enabled: true
-        appId: daprAppId
-        appPort: daprAppPort
-        appProtocol: 'http'
-        enableApiLogging: true
-      } : null
+      dapr: daprEnabled
+        ? {
+            enabled: true
+            appId: daprAppId
+            appPort: daprAppPort
+            appProtocol: 'http'
+            enableApiLogging: true
+          }
+        : null
       secrets: secrets
     }
     template: {

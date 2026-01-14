@@ -122,6 +122,7 @@ module keyVault 'core/security/keyvault-secrets.bicep' = {
     name: keyVaultName
     location: location
     tags: tags
+    userAssignedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     jwtSecretKey: jwtSecretKey
     redisHostName: redis.outputs.hostName
     redisPrimaryKey: redis.outputs.primaryKey
