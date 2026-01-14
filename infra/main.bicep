@@ -13,14 +13,14 @@ param location string = 'westeurope' // 👈 Valor per defecte segur
 
 // Secrets generats amb valor per defecte per evitar el xoc amb el parser
 @secure()
-param cache_password string = base64(newGuid()) 
+param cache_password string = base64(newGuid())
 
 @secure()
-param password string = base64(newGuid())      
+param password string = base64(newGuid())
 
 @description('JWT secret key for token signing (HS256 requires 32 bytes/256 bits)')
 @secure()
-param jwtSecretKey string = base64('${newGuid()}${newGuid()}') 
+param jwtSecretKey string = base64('${newGuid()}${newGuid()}')
 
 @description('JWT token issuer (e.g., MyApp.Auth)')
 param jwtIssuer string = 'MyApp.Auth'
@@ -33,6 +33,9 @@ param frontendOrigin string = 'http://localhost:3000;http://localhost:5000'
 
 @description('Environment name (Development, Staging, Production)')
 param aspnetcoreEnvironment string = 'Production'
+
+@description('Docker image tag for all services (e.g., latest, commit hash, version)')
+param imageTag string = 'latest'
 
 var envSlug = toLower(replace(environmentName, ' ', '-'))
 var namePrefix = 'myapp-${envSlug}'
@@ -187,6 +190,7 @@ module authServiceModule 'services/auth-service.bicep' = {
     jwtAudience: jwtAudience
     frontendOrigin: frontendOrigin
     aspnetcoreEnvironment: aspnetcoreEnvironment
+    imageTag: imageTag
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
     namePrefix: namePrefix
@@ -209,6 +213,7 @@ module billingServiceModule 'services/billing-service.bicep' = {
     jwtAudience: jwtAudience
     frontendOrigin: frontendOrigin
     aspnetcoreEnvironment: aspnetcoreEnvironment
+    imageTag: imageTag
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
     namePrefix: namePrefix
@@ -231,6 +236,7 @@ module inventoryServiceModule 'services/inventory-service.bicep' = {
     jwtAudience: jwtAudience
     frontendOrigin: frontendOrigin
     aspnetcoreEnvironment: aspnetcoreEnvironment
+    imageTag: imageTag
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
     namePrefix: namePrefix
@@ -253,6 +259,7 @@ module ordersServiceModule 'services/orders-service.bicep' = {
     jwtAudience: jwtAudience
     frontendOrigin: frontendOrigin
     aspnetcoreEnvironment: aspnetcoreEnvironment
+    imageTag: imageTag
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
     namePrefix: namePrefix
@@ -275,6 +282,7 @@ module purchasingServiceModule 'services/purchasing-service.bicep' = {
     jwtAudience: jwtAudience
     frontendOrigin: frontendOrigin
     aspnetcoreEnvironment: aspnetcoreEnvironment
+    imageTag: imageTag
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
     namePrefix: namePrefix
@@ -297,6 +305,7 @@ module salesServiceModule 'services/sales-service.bicep' = {
     jwtAudience: jwtAudience
     frontendOrigin: frontendOrigin
     aspnetcoreEnvironment: aspnetcoreEnvironment
+    imageTag: imageTag
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
     namePrefix: namePrefix
@@ -319,6 +328,7 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
     jwtAudience: jwtAudience
     frontendOrigin: frontendOrigin
     aspnetcoreEnvironment: aspnetcoreEnvironment
+    imageTag: imageTag
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
     namePrefix: namePrefix

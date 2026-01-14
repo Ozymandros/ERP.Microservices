@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY_NAME: 'myappdevcontainerregistry'
-  AZURE_ENV_NAME: 'dev'
-  AZURE_LOCATION: 'westeurope'
+  REGISTRY_NAME: "myappdevcontainerregistry"
+  AZURE_ENV_NAME: "dev"
+  AZURE_LOCATION: "westeurope"
 
 jobs:
   build-and-push-images:
@@ -17,54 +17,137 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Azure login (Federated)
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id:  ${{ secrets.AZURE_TENANT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      
-      - name: Build and push images to ACR
+
+      - name: Login to ACR
+        run: az acr login --name ${{ env.REGISTRY_NAME }}
+
+      # Build and push shared base image FIRST (required by Inventory, Billing, Orders, Purchasing, Sales)
+      - name: Build and push shared base image
         run: |
-          az acr login --name ${{ env.REGISTRY_NAME }}
-          
-          # Define services to build
+          IMAGE_TAG=${GITHUB_SHA::7}
+          echo "Building shared base image with tag: $IMAGE_TAG"
+
+          az acr build \
+            --registry ${{ env.REGISTRY_NAME }} \
+            --image "myapp-microservices-base:$IMAGE_TAG" \
+            --image "myapp-microservices-base:10.0" \
+            --image "myapp-microservices-base:latest" \
+            --file docker/microservices-base.Dockerfile \
+            .
+
+          # Verify base image was built and pushed successfully
+          echo "Verifying base image exists in registry..."
+          az acr repository show --name ${{ env.REGISTRY_NAME }} --repository myapp-microservices-base || {
+            echo "ERROR: Base image repository not found in registry after build!"
+            exit 1
+          }
+
+          echo "Checking base image tags..."
+          az acr repository show-tags --name ${{ env.REGISTRY_NAME }} --repository myapp-microservices-base --output table
+
+          # Verify specific tags exist
+          echo "Verifying required tags exist..."
+          TAGS=$(az acr repository show-tags --name ${{ env.REGISTRY_NAME }} --repository myapp-microservices-base --output tsv)
+          if [[ ! "$TAGS" =~ "$IMAGE_TAG" ]]; then
+            echo "WARNING: Tag $IMAGE_TAG not found, but continuing..."
+          fi
+          if [[ ! "$TAGS" =~ "10.0" ]]; then
+            echo "ERROR: Tag 10.0 not found - this is required!"
+            exit 1
+          fi
+          if [[ ! "$TAGS" =~ "latest" ]]; then
+            echo "ERROR: Tag latest not found - this is required!"
+            exit 1
+          fi
+
+          echo "✓ Base image verified in registry with all required tags"
+
+      # Build and push all service images
+      - name: Build and push service images to ACR
+        run: |
+          # Define services to build (path relative to src/, image name)
           declare -a SERVICES=(
-              "src/MyApp.Auth/MyApp.Auth.API:auth-service"
-              "src/MyApp.Billing/MyApp.Billing.API:billing-service"
-              "src/MyApp.Inventory/MyApp.Inventory.API:inventory-service"
-              "src/MyApp.Orders/MyApp.Orders.API:orders-service"
-              "src/MyApp.Purchasing/MyApp.Purchasing.API:purchasing-service"
-              "src/MyApp.Sales/MyApp.Sales.API:sales-service"
-              "src/ErpApiGateway:erp-api-gateway"
+              "MyApp.Auth/MyApp.Auth.API:auth-service"
+              "MyApp.Billing/MyApp.Billing.API:billing-service"
+              "MyApp.Inventory/MyApp.Inventory.API:inventory-service"
+              "MyApp.Orders/MyApp.Orders.API:orders-service"
+              "MyApp.Purchasing/MyApp.Purchasing.API:purchasing-service"
+              "MyApp.Sales/MyApp.Sales.API:sales-service"
+              "ErpApiGateway:erp-api-gateway"
           )
-          
+
           # Get Git commit hash for image tag
           IMAGE_TAG=${GITHUB_SHA::7}
-          
-          echo "Building images with tag: $IMAGE_TAG"
-          
+
+          echo "Building service images with tag: $IMAGE_TAG"
+
+          # Registry prefix for base image (services that use shared base image)
+          REGISTRY_PREFIX="${{ env.REGISTRY_NAME }}.azurecr.io/"
+
           for SERVICE in "${SERVICES[@]}"; do
               IFS=':' read -r SERVICE_PATH IMAGE_NAME <<< "$SERVICE"
-              echo "Building: $IMAGE_NAME from $SERVICE_PATH"
+              echo "Building: $IMAGE_NAME from src/$SERVICE_PATH"
               
-              az acr build \
-                  --registry ${{ env.REGISTRY_NAME }} \
-                  --image "$IMAGE_NAME:$IMAGE_TAG" \
-                  --image "$IMAGE_NAME:latest" \
-                  --file "$SERVICE_PATH/Dockerfile" \
-                  "$SERVICE_PATH"
+              # Check if this service uses the shared base image (all except auth-service and erp-api-gateway)
+              if [[ "$IMAGE_NAME" != "auth-service" && "$IMAGE_NAME" != "erp-api-gateway" ]]; then
+                  # Pass registry prefix as build arg for base image resolution
+                  az acr build \
+                      --registry ${{ env.REGISTRY_NAME }} \
+                      --image "$IMAGE_NAME:$IMAGE_TAG" \
+                      --image "$IMAGE_NAME:latest" \
+                      --file "$SERVICE_PATH/Dockerfile" \
+                      --build-arg BASE_IMAGE_REGISTRY="$REGISTRY_PREFIX" \
+                      src/
+              else
+                  # Auth and Gateway don't use shared base image
+                  az acr build \
+                      --registry ${{ env.REGISTRY_NAME }} \
+                      --image "$IMAGE_NAME:$IMAGE_TAG" \
+                      --image "$IMAGE_NAME:latest" \
+                      --file "$SERVICE_PATH/Dockerfile" \
+                      src/
+              fi
           done
-      
+
       - name: Verify images in ACR
         run: |
-          echo "Images in ACR:"
+          echo "=== All Images in ACR ==="
           az acr repository list --name ${{ env.REGISTRY_NAME }} --output table
+
+          echo ""
+          echo "=== Base Image Tags ==="
+          az acr repository show-tags --name ${{ env.REGISTRY_NAME }} --repository myapp-microservices-base --output table || echo "Base image not found"
+
+          echo ""
+          echo "=== Service Image Tags ==="
+          for IMAGE in auth-service billing-service inventory-service orders-service purchasing-service sales-service erp-api-gateway; do
+              echo "Tags for $IMAGE:"
+              az acr repository show-tags --name ${{ env.REGISTRY_NAME }} --repository $IMAGE --output table --top 3 || echo "  Image $IMAGE not found"
+              echo ""
+          done
+
+          echo "=== Build Summary ==="
+          IMAGE_TAG=${GITHUB_SHA::7}
+          echo "Built images with tag: $IMAGE_TAG"
+          echo "- myapp-microservices-base:$IMAGE_TAG"
+          echo "- auth-service:$IMAGE_TAG"
+          echo "- billing-service:$IMAGE_TAG"
+          echo "- inventory-service:$IMAGE_TAG"
+          echo "- orders-service:$IMAGE_TAG"
+          echo "- purchasing-service:$IMAGE_TAG"
+          echo "- sales-service:$IMAGE_TAG"
+          echo "- erp-api-gateway:$IMAGE_TAG"
 
   deploy-to-azure:
     name: Deploy Infrastructure & Services
@@ -73,32 +156,35 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Azure Developer CLI
-        uses: Azure/setup-azd@v0
-      
+        uses: Azure/setup-azd@v1.0.0
+
       - name: Azure login (Federated)
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      
+
       - name: Set up dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.x'
-      
+          dotnet-version: "10.0.x"
+
       - name: Deploy with azd
         env:
           AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
           AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         run: |
+          # Use short commit hash to match image tags (first 7 characters)
+          export IMAGE_TAG=${GITHUB_SHA::7}
+          echo "Deploying with image tag: $IMAGE_TAG"
           azd deploy --no-prompt
 
   verify-deployment:
@@ -108,7 +194,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    
+
     steps:
       - name: Azure login (Federated)
         uses: azure/login@v1
@@ -116,14 +202,14 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      
+
       - name: Check Container Apps status
         run: |
           RG_NAME="rg-myapp-${{ env.AZURE_ENV_NAME }}-core"
-          
+
           echo "Checking Container Apps health..."
           az containerapp list --resource-group "$RG_NAME" --output table
-          
+
           echo ""
           echo "Checking revision status..."
           for APP in auth-service billing-service inventory-service orders-service purchasing-service sales-service api-gateway; do
@@ -133,7 +219,7 @@ jobs:
                   --resource-group "$RG_NAME" \
                   --query "properties.latestRevisionFqdn" -o tsv || echo "Not found"
           done
-      
+
       - name: Run smoke tests
         run: |
           echo "✓ Deployment verified successfully"

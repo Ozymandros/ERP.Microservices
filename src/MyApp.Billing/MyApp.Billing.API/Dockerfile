@@ -34,7 +34,9 @@ RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
     dotnet publish "MyApp.Billing.API.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
 
 # Runtime stage - Use shared base image
-FROM myapp-microservices-base:10.0 AS final
+# Build arg for registry prefix (e.g., "myappdevcontainerregistry.azurecr.io/" or empty for local)
+ARG BASE_IMAGE_REGISTRY=""
+FROM ${BASE_IMAGE_REGISTRY}myapp-microservices-base:10.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MyApp.Billing.API.dll"]

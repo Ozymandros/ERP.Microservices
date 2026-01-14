@@ -4,7 +4,7 @@ name: src
 services:  
   app:
     language: dotnet
-    project: ./AppHost/AppHost.csproj
+    project: ./src/AppHost/AppHost.csproj
     host: containerapp
 infra:
   provider: bicep
@@ -24,6 +24,8 @@ infra:
       value: ${AZURE_FRONTEND_ORIGIN=http://localhost:3000} # Sets a default
     aspnetcoreEnvironment:
       value: ${ASPNETCORE_ENVIRONMENT=Production} # Sets a default
+    imageTag:
+      value: ${IMAGE_TAG=latest} # Docker image tag (commit hash in CI/CD, latest for local dev)
 
     # --- SECRETS WITH RANDOM GENERATION ---
     cache_password:
