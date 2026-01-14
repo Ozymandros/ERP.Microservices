@@ -102,21 +102,23 @@ jobs:
               # Check if this service uses the shared base image (all except auth-service and erp-api-gateway)
               if [[ "$IMAGE_NAME" != "auth-service" && "$IMAGE_NAME" != "erp-api-gateway" ]]; then
                   # Pass registry prefix as build arg for base image resolution
+                  # Use root context (.) and add src/ prefix to Dockerfile path
                   az acr build \
                       --registry ${{ env.REGISTRY_NAME }} \
                       --image "$IMAGE_NAME:$IMAGE_TAG" \
                       --image "$IMAGE_NAME:latest" \
-                      --file "$SERVICE_PATH/Dockerfile" \
+                      --file "src/$SERVICE_PATH/Dockerfile" \
                       --build-arg BASE_IMAGE_REGISTRY="$REGISTRY_PREFIX" \
-                      src/
+                      .
               else
                   # Auth and Gateway don't use shared base image
+                  # Use root context (.) and add src/ prefix to Dockerfile path
                   az acr build \
                       --registry ${{ env.REGISTRY_NAME }} \
                       --image "$IMAGE_NAME:$IMAGE_TAG" \
                       --image "$IMAGE_NAME:latest" \
-                      --file "$SERVICE_PATH/Dockerfile" \
-                      src/
+                      --file "src/$SERVICE_PATH/Dockerfile" \
+                      .
               fi
           done
 
