@@ -19,7 +19,7 @@ var azureRoleIdKeyVaultSecretsUser = '4633458b-17de-408a-b874-0445c86b69e6'  ❌
 
 **After:**
 ```bicep
-var azureRoleIdKeyVaultSecretsUser = '4633458b-17de-408a-b874-0445c86d0e62'  ✅ CORRECT
+var azureRoleIdKeyVaultSecretsUser = '4633458b-17de-408a-b874-0445c86b69e6'  ✅ CORRECT
 ```
 
 **Change Details:**
@@ -70,7 +70,7 @@ module [serviceName]Module 'services/[service].bicep' = {
 ### 1. Constants Definition ✅
 ```bicep
 Location: infra/config/constants.bicep:82
-ID: 4633458b-17de-408a-b874-0445c86d0e62
+ID: 4633458b-17de-408a-b874-0445c86b69e6
 ```
 
 ### 2. Import in Key Vault Module ✅
@@ -145,7 +145,7 @@ Each service now has explicit dependsOn: [keyVault, myapp_sqlserver_roles]
 
 ### Key Vault RBAC Configuration
 ```
-✅ Correct Role Definition ID: 4633458b-17de-408a-b874-0445c86d0e62
+✅ Correct Role Definition ID: 4633458b-17de-408a-b874-0445c86b69e6
 ✅ Principal Type: ServicePrincipal (Managed Identity)
 ✅ Scope: Key Vault (not subscription)
 ✅ Principal ID correctly passed from resources.bicep
@@ -167,7 +167,7 @@ Each service now has explicit dependsOn: [keyVault, myapp_sqlserver_roles]
 | Property | Value |
 |----------|-------|
 | **Role Name** | Key Vault Secrets User |
-| **Role ID** | `4633458b-17de-408a-b874-0445c86d0e62` |
+| **Role ID** | `4633458b-17de-408a-b874-0445c86b69e6` |
 | **Scope** | Key Vault |
 | **Permissions** | Read secrets from Key Vault |
 | **Principal Type** | ServicePrincipal |

@@ -29,7 +29,7 @@ El sistema té **DOS nivells** de RBAC:
 **Fitxer:** `infra/core/security/keyvault-secrets.bicep`  
 **Recurs:** `keyVaultSecretsUserRoleAssignment`  
 **Assigna:** La User-Assigned Identity compartida → Key Vault Secrets User role  
-**GUID:** `4633458b-17de-408a-b874-0445c86d0e62`
+**GUID:** `4633458b-17de-408a-b874-0445c86b69e6`
 
 ```bicep
 resource keyVaultSecretsUserRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
@@ -233,7 +233,7 @@ Service Container App
     ↓
         Key Vault Role Assignment (keyVaultSecretsUserRoleAssignment)
         Scope: Key Vault
-        Role: 4633458b-17de-408a-b874-0445c86d0e62 (Key Vault Secrets User)
+        Role: 4633458b-17de-408a-b874-0445c86b69e6 (Key Vault Secrets User)
     ↓
         Fetch Secrets: redis-connection, sql-connection-*, jwt-secret-key
     ↓
