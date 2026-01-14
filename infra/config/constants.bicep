@@ -79,7 +79,7 @@ var azureRoleIdAcrPull = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
 var azureRoleIdAppConfigurationDataReader = '516239f1-63e1-4108-9233-9e7f68e97ce3'
 
 @export()
-var azureRoleIdKeyVaultSecretsUser = '4633458b-17de-408a-b874-0445c86d0e6e'
+var azureRoleIdKeyVaultSecretsUser = '4633458b-17de-408a-b874-0445c86d0e62'
 
 @export()
 var azureRoleIdSqlDbContributor = '9b7fa17d-e63e-47b0-bb0a-15c516ac86ec'
