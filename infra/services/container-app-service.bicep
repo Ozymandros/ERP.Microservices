@@ -62,9 +62,6 @@ param aspnetcoreEnvironment string = 'Production'
 @description('Key Vault URI for secret references')
 param keyVaultUri string = ''
 
-@description('Key Vault Role Assignment ID - creates data dependency ensuring RBAC is fully propagated before deployment')
-param keyVaultRoleAssignmentId string = ''
-
 @description('App Configuration connection string')
 @secure()
 param appConfigConnectionString string = ''
@@ -188,23 +185,16 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   location: location
   tags: union(
     union(
-      union(
-        tags,
-        !empty(logAnalyticsWorkspaceId)
-          ? {
-              'log-analytics-workspace-id': logAnalyticsWorkspaceId
-            }
-          : {}
-      ),
-      !empty(managedIdentityPrincipalId)
+      tags,
+      !empty(logAnalyticsWorkspaceId)
         ? {
-            'managed-identity-principal-id': managedIdentityPrincipalId
+            'log-analytics-workspace-id': logAnalyticsWorkspaceId
           }
         : {}
     ),
-    !empty(keyVaultRoleAssignmentId)
+    !empty(managedIdentityPrincipalId)
       ? {
-          'rbac-ready': ''
+          'managed-identity-principal-id': managedIdentityPrincipalId
         }
       : {}
   )

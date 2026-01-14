@@ -159,14 +159,32 @@ resource kvSqlSecretSales 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   }
 }
 
-// ✅ CRITICAL: Output the role assignment ID to ensure RBAC is fully propagated before dependents proceed
-// This creates a DATA dependency (stronger than dependsOn) that forces Azure to complete the RBAC assignment
-// before any service module that references this output can begin deployment
-output roleAssignmentId string = keyVaultSecretsUserRoleAssignment.id
+// Deployment script to wait for RBAC propagation to Azure AD
+// This prevents Container Apps from starting before permissions are fully available
+resource rbacPropagationWait 'Microsoft.Resources/deploymentScripts@2023-08-01' = {
+  name: 'rbac-propagation-wait'
+  location: location
+  kind: 'AzurePowerShell'
+  properties: {
+    azPowerShellVersion: '11.0'
+    retentionInterval: 'PT1H'
+    timeout: 'PT5M'
+    cleanupPreference: 'OnSuccess'
+    scriptContent: '''
+      Write-Host "Waiting 60 seconds for RBAC propagation to Azure AD..."
+      Start-Sleep -Seconds 60
+      Write-Host "RBAC propagation wait complete."
+    '''
+  }
+  dependsOn: [
+    keyVaultSecretsUserRoleAssignment
+  ]
+}
 
 output keyVaultId string = keyVault.id
 output keyVaultUri string = keyVault.properties.vaultUri
 output keyVaultName string = keyVault.name
+output rbacReady string = rbacPropagationWait.id
 
 // Return secret NAMES (not values) so callers can reference secret names safely
 output redisSecretName string = kvRedisSecret.name

@@ -185,7 +185,6 @@ module authServiceModule 'services/auth-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-    keyVaultRoleAssignmentId: keyVault.outputs.roleAssignmentId
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
@@ -210,7 +209,6 @@ module billingServiceModule 'services/billing-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-    keyVaultRoleAssignmentId: keyVault.outputs.roleAssignmentId
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
@@ -235,7 +233,6 @@ module inventoryServiceModule 'services/inventory-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-    keyVaultRoleAssignmentId: keyVault.outputs.roleAssignmentId
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
@@ -260,7 +257,6 @@ module ordersServiceModule 'services/orders-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-    keyVaultRoleAssignmentId: keyVault.outputs.roleAssignmentId
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
@@ -285,7 +281,6 @@ module purchasingServiceModule 'services/purchasing-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-    keyVaultRoleAssignmentId: keyVault.outputs.roleAssignmentId
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
@@ -310,7 +305,6 @@ module salesServiceModule 'services/sales-service.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-    keyVaultRoleAssignmentId: keyVault.outputs.roleAssignmentId
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
@@ -335,7 +329,6 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
-    keyVaultRoleAssignmentId: keyVault.outputs.roleAssignmentId
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey

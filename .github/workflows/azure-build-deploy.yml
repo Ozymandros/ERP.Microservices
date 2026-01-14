@@ -13,6 +13,7 @@ jobs:
   provision-infrastructure:
     name: Provision Infrastructure
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read
       id-token: write
@@ -108,6 +109,7 @@ jobs:
     name: Build Docker Images
     needs: provision-infrastructure
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     permissions:
       contents: read
       id-token: write
@@ -263,6 +265,7 @@ jobs:
     name: Deploy Application
     needs: build-and-push-images
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
       id-token: write
@@ -314,13 +317,14 @@ jobs:
     name: Verify Deployment
     needs: deploy-to-azure
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
       id-token: write
 
     steps:
       - name: Azure login (Federated)
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
