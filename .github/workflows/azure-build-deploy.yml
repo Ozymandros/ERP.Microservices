@@ -117,6 +117,10 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Install Dapr CLI
+        run: |
+          wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
+
       - name: Use Registry Name from Provision Job
         run: |
           REGISTRY_NAME="${{ needs.provision-infrastructure.outputs.registry_name }}"
