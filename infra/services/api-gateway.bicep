@@ -13,6 +13,9 @@ param containerRegistryEndpoint string
 @description('Key Vault URI')
 param keyVaultUri string
 
+@description('Key Vault Role Assignment ID - ensures RBAC is fully propagated before this service starts')
+param keyVaultRoleAssignmentId string
+
 @description('App Configuration connection string')
 @secure()
 param appConfigConnectionString string = ''
@@ -76,6 +79,7 @@ module apiGateway 'container-app-service.bicep' = {
     frontendOrigin: frontendOrigin
     aspnetcoreEnvironment: aspnetcoreEnvironment
     keyVaultUri: keyVaultUri
+    keyVaultRoleAssignmentId: keyVaultRoleAssignmentId
     appConfigConnectionString: appConfigConnectionString
     keyVaultSecrets: [
       {

@@ -62,6 +62,9 @@ param aspnetcoreEnvironment string = 'Production'
 @description('Key Vault URI for secret references')
 param keyVaultUri string = ''
 
+@description('Key Vault Role Assignment ID - creates data dependency ensuring RBAC is fully propagated before deployment')
+param keyVaultRoleAssignmentId string = ''
+
 @description('App Configuration connection string')
 @secure()
 param appConfigConnectionString string = ''
@@ -88,6 +91,8 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01'
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' existing = {
   name: replace(containerRegistryEndpoint, '.azurecr.io', '')
 }
+
+
 
 // Build secrets array from Key Vault references
 // Use User-Assigned Identity instead of system-assigned
@@ -183,16 +188,23 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   location: location
   tags: union(
     union(
-      tags,
-      !empty(logAnalyticsWorkspaceId)
+      union(
+        tags,
+        !empty(logAnalyticsWorkspaceId)
+          ? {
+              'log-analytics-workspace-id': logAnalyticsWorkspaceId
+            }
+          : {}
+      ),
+      !empty(managedIdentityPrincipalId)
         ? {
-            'log-analytics-workspace-id': logAnalyticsWorkspaceId
+            'managed-identity-principal-id': managedIdentityPrincipalId
           }
         : {}
     ),
-    !empty(managedIdentityPrincipalId)
+    !empty(keyVaultRoleAssignmentId)
       ? {
-          'managed-identity-principal-id': managedIdentityPrincipalId
+          'rbac-ready': ''
         }
       : {}
   )

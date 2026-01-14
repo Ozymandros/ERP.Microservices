@@ -159,6 +159,11 @@ resource kvSqlSecretSales 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   }
 }
 
+// ✅ CRITICAL: Output the role assignment ID to ensure RBAC is fully propagated before dependents proceed
+// This creates a DATA dependency (stronger than dependsOn) that forces Azure to complete the RBAC assignment
+// before any service module that references this output can begin deployment
+output roleAssignmentId string = keyVaultSecretsUserRoleAssignment.id
+
 output keyVaultId string = keyVault.id
 output keyVaultUri string = keyVault.properties.vaultUri
 output keyVaultName string = keyVault.name
