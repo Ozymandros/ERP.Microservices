@@ -6,13 +6,82 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY_NAME: "myappdevcontainerregistry"
   AZURE_ENV_NAME: "dev"
   AZURE_LOCATION: "westeurope"
 
 jobs:
+  provision-infrastructure:
+    name: Provision Infrastructure
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Azure Developer CLI
+        uses: Azure/setup-azd@v1.0.0
+
+      - name: Azure login (Federated)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Provision Infrastructure
+        env:
+          AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
+          AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        run: |
+          echo "Provisioning infrastructure..."
+          azd provision --no-prompt
+
+      - name: Get Registry Name from azd outputs
+        id: registry
+        env:
+          AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
+        run: |
+          echo "Getting registry name from azd outputs..."
+
+          # Capture JSON output and check if azd show succeeded
+          AZD_OUTPUT=$(azd show --output json --environment $AZURE_ENV_NAME 2>&1)
+          AZD_EXIT_CODE=$?
+
+          if [ $AZD_EXIT_CODE -ne 0 ]; then
+            echo "ERROR: azd show failed with exit code $AZD_EXIT_CODE"
+            echo "Output: $AZD_OUTPUT"
+            echo ""
+            echo "This indicates the infrastructure provision failed or the environment does not exist."
+            exit 1
+          fi
+
+          # Extract registry name from JSON output
+          REGISTRY_NAME=$(echo "$AZD_OUTPUT" | jq -r '.outputs.AZURE_CONTAINER_REGISTRY_NAME.value // empty')
+
+          if [ -z "$REGISTRY_NAME" ] || [ "$REGISTRY_NAME" == "null" ]; then
+            echo "ERROR: Registry name not found in azd outputs!"
+            echo "This indicates the infrastructure provision did not create the registry correctly."
+            echo ""
+            echo "Debugging information:"
+            echo "Environment: $AZURE_ENV_NAME"
+            echo "Available outputs:"
+            echo "$AZD_OUTPUT" | jq '.outputs // {}'
+            exit 1
+          fi
+
+          echo "✓ Registry name obtained: $REGISTRY_NAME"
+          echo "registry_name=$REGISTRY_NAME" >> $GITHUB_OUTPUT
+
+    outputs:
+      registry_name: ${{ steps.registry.outputs.registry_name }}
+
   build-and-push-images:
     name: Build Docker Images
+    needs: provision-infrastructure
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -23,23 +92,34 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Azure login (Federated)
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Use Registry Name from Provision Job
+        run: |
+          REGISTRY_NAME="${{ needs.provision-infrastructure.outputs.registry_name }}"
+          if [ -z "$REGISTRY_NAME" ]; then
+            echo "ERROR: Registry name not available from provision job!"
+            exit 1
+          fi
+          echo "✓ Using registry: $REGISTRY_NAME"
+          echo "REGISTRY_NAME=$REGISTRY_NAME" >> $GITHUB_ENV
+
       - name: Login to ACR
-        run: az acr login --name ${{ env.REGISTRY_NAME }}
+        run: az acr login --name ${{ needs.provision-infrastructure.outputs.registry_name }}
 
       # Build and push shared base image FIRST (required by Inventory, Billing, Orders, Purchasing, Sales)
       - name: Build and push shared base image
         run: |
           IMAGE_TAG=${GITHUB_SHA::7}
+          REGISTRY_NAME="${{ needs.provision-infrastructure.outputs.registry_name }}"
           echo "Building shared base image with tag: $IMAGE_TAG"
 
           az acr build \
-            --registry ${{ env.REGISTRY_NAME }} \
+            --registry $REGISTRY_NAME \
             --image "myapp-microservices-base:$IMAGE_TAG" \
             --image "myapp-microservices-base:10.0" \
             --image "myapp-microservices-base:latest" \
@@ -48,17 +128,17 @@ jobs:
 
           # Verify base image was built and pushed successfully
           echo "Verifying base image exists in registry..."
-          az acr repository show --name ${{ env.REGISTRY_NAME }} --repository myapp-microservices-base || {
+          az acr repository show --name $REGISTRY_NAME --repository myapp-microservices-base || {
             echo "ERROR: Base image repository not found in registry after build!"
             exit 1
           }
 
           echo "Checking base image tags..."
-          az acr repository show-tags --name ${{ env.REGISTRY_NAME }} --repository myapp-microservices-base --output table
+          az acr repository show-tags --name $REGISTRY_NAME --repository myapp-microservices-base --output table
 
           # Verify specific tags exist
           echo "Verifying required tags exist..."
-          TAGS=$(az acr repository show-tags --name ${{ env.REGISTRY_NAME }} --repository myapp-microservices-base --output tsv)
+          TAGS=$(az acr repository show-tags --name $REGISTRY_NAME --repository myapp-microservices-base --output tsv)
           if [[ ! "$TAGS" =~ "$IMAGE_TAG" ]]; then
             echo "WARNING: Tag $IMAGE_TAG not found, but continuing..."
           fi
@@ -89,11 +169,12 @@ jobs:
 
           # Get Git commit hash for image tag
           IMAGE_TAG=${GITHUB_SHA::7}
+          REGISTRY_NAME="${{ needs.provision-infrastructure.outputs.registry_name }}"
 
           echo "Building service images with tag: $IMAGE_TAG"
 
           # Registry prefix for base image (services that use shared base image)
-          REGISTRY_PREFIX="${{ env.REGISTRY_NAME }}.azurecr.io/"
+          REGISTRY_PREFIX="${REGISTRY_NAME}.azurecr.io/"
 
           for SERVICE in "${SERVICES[@]}"; do
               IFS=':' read -r SERVICE_PATH IMAGE_NAME <<< "$SERVICE"
@@ -104,7 +185,7 @@ jobs:
                   # Pass registry prefix as build arg for base image resolution
                   # Use root context (.) and add src/ prefix to Dockerfile path
                   az acr build \
-                      --registry ${{ env.REGISTRY_NAME }} \
+                      --registry $REGISTRY_NAME \
                       --image "$IMAGE_NAME:$IMAGE_TAG" \
                       --image "$IMAGE_NAME:latest" \
                       --file "src/$SERVICE_PATH/Dockerfile" \
@@ -114,7 +195,7 @@ jobs:
                   # Auth and Gateway don't use shared base image
                   # Use root context (.) and add src/ prefix to Dockerfile path
                   az acr build \
-                      --registry ${{ env.REGISTRY_NAME }} \
+                      --registry $REGISTRY_NAME \
                       --image "$IMAGE_NAME:$IMAGE_TAG" \
                       --image "$IMAGE_NAME:latest" \
                       --file "src/$SERVICE_PATH/Dockerfile" \
@@ -124,18 +205,20 @@ jobs:
 
       - name: Verify images in ACR
         run: |
+          REGISTRY_NAME="${{ needs.provision-infrastructure.outputs.registry_name }}"
+
           echo "=== All Images in ACR ==="
-          az acr repository list --name ${{ env.REGISTRY_NAME }} --output table
+          az acr repository list --name $REGISTRY_NAME --output table
 
           echo ""
           echo "=== Base Image Tags ==="
-          az acr repository show-tags --name ${{ env.REGISTRY_NAME }} --repository myapp-microservices-base --output table || echo "Base image not found"
+          az acr repository show-tags --name $REGISTRY_NAME --repository myapp-microservices-base --output table || echo "Base image not found"
 
           echo ""
           echo "=== Service Image Tags ==="
           for IMAGE in auth-service billing-service inventory-service orders-service purchasing-service sales-service erp-api-gateway; do
               echo "Tags for $IMAGE:"
-              az acr repository show-tags --name ${{ env.REGISTRY_NAME }} --repository $IMAGE --output table --top 3 || echo "  Image $IMAGE not found"
+              az acr repository show-tags --name $REGISTRY_NAME --repository $IMAGE --output table --top 3 || echo "  Image $IMAGE not found"
               echo ""
           done
 
@@ -152,7 +235,7 @@ jobs:
           echo "- erp-api-gateway:$IMAGE_TAG"
 
   deploy-to-azure:
-    name: Deploy Infrastructure & Services
+    name: Deploy Application
     needs: build-and-push-images
     runs-on: ubuntu-latest
     permissions:
@@ -166,26 +249,19 @@ jobs:
       - name: Setup Azure Developer CLI
         uses: Azure/setup-azd@v1.0.0
 
-      - name: Azure Login Diagnostic
-        uses: azure/login@v2 # Try upgrading to v2 for better OIDC logs
+      - name: Azure login (Federated)
+        uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          enable-AzPSSession: true
 
-      - name: Check What Azure Sees
-        run: |
-          echo "Current Context:"
-          az account show
-          echo "Available Subscriptions for this Identity:"
-          az account list --output table
-            - name: Set up dotnet
-              uses: actions/setup-dotnet@v4
-              with:
-                dotnet-version: "10.0.x"
+      - name: Set up dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
 
-      - name: Deploy with azd
+      - name: Deploy Application
         env:
           AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
           AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
