@@ -72,6 +72,9 @@ param keyVaultSecrets array = []
 @description('Log Analytics Workspace ID for diagnostics and monitoring')
 param logAnalyticsWorkspaceId string
 
+@description('Application Insights connection string for telemetry')
+param applicationInsightsConnectionString string = ''
+
 @description('Managed Identity Principal ID for RBAC role assignments')
 param managedIdentityPrincipalId string
 
@@ -125,6 +128,11 @@ var environmentVariables = concat([
     name: 'Jwt__SecretKey'
     secretRef: 'jwt-secret'
   }
+] : [], !empty(applicationInsightsConnectionString) ? [
+  {
+    name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+    secretRef: 'applicationinsights-connection'
+  }
 ] : [])
 
 // Build secrets array from parameters and Key Vault references
@@ -139,6 +147,12 @@ var secrets = concat(
     {
       name: 'jwt-secret'
       value: jwtSecretKey
+    }
+  ] : [],
+  !empty(applicationInsightsConnectionString) ? [
+    {
+      name: 'applicationinsights-connection'
+      value: applicationInsightsConnectionString
     }
   ] : [],
   !empty(keyVaultUri) ? keyVaultSecretsList : []

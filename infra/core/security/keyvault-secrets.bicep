@@ -96,7 +96,7 @@ resource kvSqlSecretAuth 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   parent: keyVault
   name: 'sql-connection-authdb'
   properties: {
-    value: 'Server=${sqlFqdn};Database=${authDbName};User Id=sqladmin;Password=${sqlAdminPassword};'
+    value: 'Server=${sqlFqdn};Database=${authDbName};User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
   }
 }
 

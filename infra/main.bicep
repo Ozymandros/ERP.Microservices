@@ -185,6 +185,7 @@ module authServiceModule 'services/auth-service.bicep' = {
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -208,6 +209,7 @@ module billingServiceModule 'services/billing-service.bicep' = {
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -231,6 +233,7 @@ module inventoryServiceModule 'services/inventory-service.bicep' = {
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -254,6 +257,7 @@ module ordersServiceModule 'services/orders-service.bicep' = {
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -277,6 +281,7 @@ module purchasingServiceModule 'services/purchasing-service.bicep' = {
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -300,6 +305,7 @@ module salesServiceModule 'services/sales-service.bicep' = {
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
@@ -323,6 +329,7 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
     keyVaultUri: keyVault.outputs.keyVaultUri
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
