@@ -29,7 +29,7 @@ jobs:
           dotnet-version: |
             8.x
             9.x
-        
+
       - name: Install Dapr CLI
         run: |
           wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
@@ -45,19 +45,19 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore ERP.Microservices.sln
-          
+
       - name: Build
         run: dotnet build ERP.Microservices.sln --configuration Release --no-restore
 
       - name: Test
         run: dotnet test ERP.Microservices.sln --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
-        
+
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-results
-          path: '**/test-results.trx'
+          path: "**/test-results.trx"
 
   build-push:
     name: Build ${{ matrix.service.name }}
@@ -142,7 +142,7 @@ jobs:
         run: az bicep build --file ./infra/main.bicep
 
       - name: Setup Azure Developer CLI
-        uses: Azure/setup-azd@v1.0.0
+        uses: Azure/setup-azd@v2
 
       - name: Preview Infrastructure Changes
         id: preview
@@ -190,4 +190,3 @@ jobs:
           echo "- purchasing-service:${{ github.ref_name }}-${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- sales-service:${{ github.ref_name }}-${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- erp-api-gateway:${{ github.ref_name }}-${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-        
