@@ -16,7 +16,7 @@ RoleDefinitionDoesNotExist: The specified role definition with ID '4633458b17de4
 ### Root Cause
 The GUID for the "Key Vault Secrets User" role was malformed:
 - **Incorrect GUID:** `4633458b17de408ab8740445c86d0e6e` (malformed - missing hyphens, wrong ending)
-- **Official Azure GUID:** `4633458b-17de-408a-b874-0445c86d0e62` (correct - with proper hyphens)
+- **Official Azure GUID:** `4633458b-17de-408a-b874-0445c86b69e6` (correct - with proper hyphens)
 
 ---
 
@@ -35,7 +35,7 @@ var azureRoleIdKeyVaultSecretsUser = '4633458b-17de-408a-b874-0445c86d0e6e'
 #### After
 ```bicep
 @export()
-var azureRoleIdKeyVaultSecretsUser = '4633458b-17de-408a-b874-0445c86d0e62'
+var azureRoleIdKeyVaultSecretsUser = '4633458b-17de-408a-b874-0445c86b69e6'
 ```
 
 **Change Summary:**
@@ -50,7 +50,7 @@ var azureRoleIdKeyVaultSecretsUser = '4633458b-17de-408a-b874-0445c86d0e62'
 
 1. **Constants Definition**
    ```bicep
-   var azureRoleIdKeyVaultSecretsUser = '4633458b-17de-408a-b874-0445c86d0e62'
+   var azureRoleIdKeyVaultSecretsUser = '4633458b-17de-408a-b874-0445c86b69e6'
    ```
    Location: `infra/config/constants.bicep:82`
 
@@ -81,7 +81,7 @@ var azureRoleIdKeyVaultSecretsUser = '4633458b-17de-408a-b874-0445c86d0e62'
 | Property | Value |
 |----------|-------|
 | **Role Name** | Key Vault Secrets User |
-| **Role ID** | `4633458b-17de-408a-b874-0445c86d0e62` |
+| **Role ID** | `4633458b-17de-408a-b874-0445c86b69e6` |
 | **Scope** | Key Vault Resource |
 | **Permission** | Read secrets from Key Vault |
 | **Principal Type** | ServicePrincipal (Managed Identity) |
