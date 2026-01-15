@@ -1,24 +1,24 @@
 import { workloadProfileType } from '../../config/constants.bicep'
 
-@description('Name of the Container Apps Environment')
+@description('Name of the Container Apps Environment - must be unique within the subscription')
 param name string
 
-@description('Location for the Container Apps Environment')
+@description('Azure region where the Container Apps Environment will be deployed (defaults to resource group location)')
 param location string = resourceGroup().location
 
-@description('Tags to apply to the Container Apps Environment')
+@description('Resource tags for organization, cost tracking, and resource management')
 param tags object = {}
 
-@description('Enable Dapr on the Container Apps Environment')
+@description('Enable Dapr runtime on the Container Apps Environment - if true, Dapr sidecars can be injected into apps')
 param daprEnabled bool = true
 
-@description('Log Analytics Workspace ID for diagnostics')
+@description('Log Analytics Workspace resource ID - all container logs and diagnostics are sent here')
 param logAnalyticsWorkspaceId string
 
-@description('Redis host name')
+@description('Redis cache hostname (FQDN) - used by Dapr components for state store and pub/sub (optional if Dapr disabled)')
 param redisHostName string = ''
 
-@description('Redis primary key')
+@description('Redis cache primary access key - used for authentication by Dapr components (optional if Dapr disabled)')
 @secure()
 param redisPrimaryKey string = ''
 

@@ -6,22 +6,30 @@
 
 import { azureRoleIdAppConfigurationDataReader, azureRoleIdKeyVaultSecretsUser } from 'config/constants.bicep'
 
-@description('App Configuration store name')
+@description('Azure App Configuration store name - centralized configuration store for all microservices')
 param appConfigName string
 
-@description('Key Vault name')
+@description('Azure Key Vault name - stores secrets and certificates referenced by App Configuration')
 param keyVaultName string
 
-@description('Service Principal ID (all 7 microservices + gateway share same user-assigned identity)')
+@description('Service Principal ID (Principal ID of User-Assigned Managed Identity) - all 7 microservices + gateway share this identity for RBAC')
 param servicePrincipalId string
 
-@description('App Configuration service principal ID (for Key Vault access)')
+@description('App Configuration service principal ID (System-Assigned Identity) - used for App Config to access Key Vault secrets')
 param appConfigPrincipalId string
 
 // Built-in role definitions referenced by their well-known IDs
-// Using subscriptionResourceId to construct the full resource ID
-var appConfigurationDataReaderRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdAppConfigurationDataReader)
-var keyVaultSecretsUserRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdKeyVaultSecretsUser)
+// Using subscriptionResourceId to construct the full resource ID for role assignments
+@description('Full resource ID for App Configuration Data Reader role - allows reading configuration data')
+var appConfigurationDataReaderRoleId = subscriptionResourceId(
+  'Microsoft.Authorization/roleDefinitions',
+  azureRoleIdAppConfigurationDataReader
+)
+@description('Full resource ID for Key Vault Secrets User role - allows reading secret values from Key Vault')
+var keyVaultSecretsUserRoleId = subscriptionResourceId(
+  'Microsoft.Authorization/roleDefinitions',
+  azureRoleIdKeyVaultSecretsUser
+)
 
 // ============================================================================
 // Service → App Configuration Role Assignment

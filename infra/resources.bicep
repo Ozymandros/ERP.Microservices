@@ -1,42 +1,43 @@
 import { containerRegistrySku, logAnalyticsSkuName, applicationInsightsKind, workloadProfileType, workloadProfileName, aspireDashboardComponentName, aspireDashboardComponentType, storageFileServiceName, storageKind, storageSkuName, storageFileShareQuota, tagAspireResourceName, azureRoleIdAcrPull } from 'config/constants.bicep'
 
-@description('The location used for all deployed resources')
+@description('Azure region where all resources will be deployed (defaults to resource group location)')
 param location string = resourceGroup().location
 
-@description('Tags that will be applied to all resources')
+@description('Resource tags applied to all resources for organization, cost tracking, and resource management')
 param tags object = {}
 
-@description('Base name prefix to apply to all resources (e.g., myapp-dev)')
+@description('Base name prefix for all resources (e.g., myapp-dev) - ensures consistent naming across infrastructure')
 param namePrefix string
 
-@description('Container registry name')
+@description('Azure Container Registry name - stores Docker images for all microservices')
 param containerRegistryName string
 
-@description('Log Analytics workspace name')
+@description('Log Analytics workspace name - centralizes logs, metrics, and diagnostics from all services')
 param logAnalyticsWorkspaceName string
 
-@description('Application Insights resource name')
+@description('Application Insights resource name - provides application performance monitoring (APM) and telemetry')
 param applicationInsightsName string
 
-@description('Storage account name for shared volumes')
+@description('Azure Storage account name - provides Azure Files shares for persistent volumes in Container Apps')
 param storageAccountName string
 
-@description('Azure Files share name for cache persistence')
+@description('Azure Files share name - persistent storage volume mounted to containers for cache/data persistence')
 param storageShareName string
 
-@description('Managed environment storage name for cache volumes')
+@description('Container Apps Environment storage volume name - reference name for the volume mount in containers')
 param containerEnvironmentStorageName string
 
-@description('Container Apps Environment name')
+@description('Container Apps Environment name - hosts all containerized microservices in a managed environment')
 param containerAppsEnvironmentName string
 
-@description('Redis host name for DAPR components')
+@description('Redis cache hostname (FQDN) - used by Dapr components for state store and pub/sub messaging (optional)')
 param redisHostName string = ''
 
-@description('Redis primary key for DAPR components')
+@description('Redis cache primary access key - used for authentication by Dapr components (optional, required if Dapr enabled)')
 @secure()
 param redisPrimaryKey string = ''
 
+@description('User-Assigned Managed Identity name - shared identity used by all services for Azure service authentication')
 var managedIdentityName = take('${namePrefix}-user-assigned-identity', 128)
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {

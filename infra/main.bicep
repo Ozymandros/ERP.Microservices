@@ -13,46 +13,66 @@ param location string = 'westeurope' // 👈 Valor per defecte segur
 
 // Secrets generats amb valor per defecte per evitar el xoc amb el parser
 @secure()
+@description('Redis cache password for authentication (auto-generated if not provided)')
 param cache_password string = base64(newGuid())
 
 @secure()
+@description('SQL Server administrator password (auto-generated if not provided)')
 param password string = base64(newGuid())
 
-@description('JWT secret key for token signing (HS256 requires 32 bytes/256 bits)')
+@description('JWT secret key for token signing (HS256 requires 32 bytes/256 bits) - Base64-encoded secret key used for JWT token signing and validation across all microservices')
 @secure()
 param jwtSecretKey string = base64('${newGuid()}${newGuid()}')
 
-@description('JWT token issuer (e.g., MyApp.Auth)')
+@description('JWT token issuer (e.g., MyApp.Auth) - identifies who issued the token')
 param jwtIssuer string = 'MyApp.Auth'
 
-@description('JWT token audience (e.g., MyApp.All)')
+@description('JWT token audience (e.g., MyApp.All) - identifies intended recipients of the token')
 param jwtAudience string = 'MyApp.All'
 
-@description('Frontend origin for CORS (semicolon-separated for multiple origins)')
+@description('Frontend origin for CORS (semicolon-separated for multiple origins) - allowed origins for cross-origin requests')
 param frontendOrigin string = 'http://localhost:3000;http://localhost:5000'
 
-@description('Environment name (Development, Staging, Production)')
+@description('Environment name (Development, Staging, Production) - sets ASP.NET Core environment variable')
 param aspnetcoreEnvironment string = 'Production'
 
-@description('Docker image tag for all services (e.g., latest, commit hash, version)')
+@description('Docker image tag for all services (e.g., latest, commit hash, version) - used to version container images')
 param imageTag string = 'latest'
 
+// Derived naming variables - used to generate consistent resource names across the infrastructure
+@description('Environment name slug (lowercase, hyphenated) - used in resource naming')
 var envSlug = toLower(replace(environmentName, ' ', '-'))
+@description('Base name prefix for all resources (e.g., myapp-dev) - ensures consistent naming')
 var namePrefix = 'myapp-${envSlug}'
+@description('Flat prefix without hyphens (e.g., myappdev) - used for resources with strict naming rules')
 var flatPrefix = toLower(replace(namePrefix, '-', ''))
 
+// Resource naming variables - Azure resource names have specific length and character restrictions
+@description('Resource group name following Azure naming convention (rg-{prefix}-core)')
 var resourceGroupName = 'rg-${namePrefix}-core'
+@description('Container Registry name (max 50 chars, alphanumeric only) - stores Docker images')
 var containerRegistryName = take('${flatPrefix}containerregistry', 50)
+@description('Log Analytics workspace name (max 63 chars) - centralizes logs from all services')
 var logAnalyticsWorkspaceName = take('${namePrefix}-log-analytics-workspace', 63)
+@description('Application Insights name (max 260 chars) - provides application performance monitoring')
 var applicationInsightsName = take('${namePrefix}-application-insights', 260)
+@description('Storage account name (max 24 chars, lowercase alphanumeric) - stores Azure Files shares')
 var storageAccountName = take('${flatPrefix}storageaccount', 24)
+@description('Azure Files share name (max 63 chars) - persistent storage for cache volumes')
 var storageShareName = toLower(take('${namePrefix}-cache-fileshare', 63))
+@description('Container Apps Environment storage name (max 32 chars) - volume mount for containers')
 var containerEnvironmentStorageName = take('${flatPrefix}cachevolume', 32)
+@description('Container Apps Environment name (max 63 chars) - hosts all containerized microservices')
 var containerAppsEnvironmentName = take('${namePrefix}-container-apps-environment', 63)
+@description('Redis cache name (max 63 chars) - provides distributed caching and pub/sub')
 var redisCacheName = take('${namePrefix}-redis-cache', 63)
+@description('SQL Server name (max 63 chars) - hosts all microservice databases')
 var sqlServerName = take('${namePrefix}-sql-server', 63)
+@description('SQL admin managed identity name (max 128 chars) - used for passwordless authentication')
 var sqlAdminIdentityName = take('${namePrefix}-sql-admin-identity', 128)
+@description('Key Vault name (max 24 chars, alphanumeric only) - stores secrets and certificates')
 var keyVaultName = take('${flatPrefix}keyvault', 24)
+@description('App Configuration name (max 50 chars) - centralized configuration store for all services')
 var appConfigurationName = take('${namePrefix}-app-configuration', 50)
 var sqlDatabaseNames = {
   auth: toLower('${namePrefix}-auth-db')

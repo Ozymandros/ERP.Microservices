@@ -1,76 +1,74 @@
-import { workloadProfileName } from '../config/constants.bicep'
-
-@description('Name of the Container App')
+@description('Name of the Container App - must be unique within the Container Apps Environment')
 param name string
 
-@description('Location for the Container App')
+@description('Azure region where the Container App will be deployed (defaults to resource group location)')
 param location string = resourceGroup().location
 
-@description('Tags to apply to the Container App')
+@description('Resource tags for organization, cost tracking, and resource management')
 param tags object = {}
 
-@description('Container Apps Environment ID')
+@description('Full resource ID of the Container Apps Environment where this app will run')
 param containerAppsEnvironmentId string
 
-@description('Container Registry endpoint')
+@description('Azure Container Registry endpoint URL (e.g., myregistry.azurecr.io) - where container images are stored')
 param containerRegistryEndpoint string
 
-@description('Container image name')
+@description('Container image name with optional tag (e.g., auth-service:latest or auth-service:abc1234)')
 param imageName string
 
-@description('Target port for the container')
+@description('TCP port number that the container application listens on (default: 8080)')
 param targetPort int = 8080
 
-@description('Enable external ingress')
+@description('Enable external ingress - if true, app is accessible from internet; if false, only internal access')
 param externalIngress bool = false
 
-@description('Enable Dapr sidecar')
+@description('Enable Dapr sidecar - if true, Dapr runtime is injected for service-to-service communication')
 param daprEnabled bool = false
 
-@description('Dapr app ID')
+@description('Dapr application ID - unique identifier for this service in the Dapr service mesh (defaults to app name)')
 param daprAppId string = name
 
-@description('Dapr app port')
+@description('Port number that Dapr sidecar uses to communicate with the application (defaults to targetPort)')
 param daprAppPort int = targetPort
 
-@description('Minimum number of replicas')
+@description('Minimum number of container replicas - ensures high availability (default: 1)')
 param minReplicas int = 1
 
-@description('Maximum number of replicas')
+@description('Maximum number of container replicas - limits scaling to control costs (default: 10)')
 param maxReplicas int = 10
 
-@description('CPU cores')
+@description('CPU allocation per replica in cores (e.g., 0.5 = 500m, 1.0 = 1 core) - affects performance')
 param cpu string = '0.5'
 
-@description('Memory in Gi')
+@description('Memory allocation per replica in GiB (e.g., 1.0Gi = 1024 MiB) - affects performance')
 param memory string = '1.0Gi'
 
-@description('JWT secret key')
+@description('JWT secret key for token signing and validation - stored as secret, read from App Configuration/Key Vault')
 @secure()
 param jwtSecretKey string = ''
 
-@description('JWT issuer')
+@description('JWT token issuer claim - identifies who issued the token (e.g., MyApp.Auth service)')
 param jwtIssuer string = 'MyApp.Auth'
 
-@description('JWT audience')
+@description('JWT token audience claim - identifies intended recipients (e.g., MyApp.All for all services)')
 param jwtAudience string = 'MyApp.All'
 
-@description('Frontend origin for CORS')
+@description('Frontend origin URL for CORS policy - allowed origin for cross-origin requests')
 param frontendOrigin string = 'http://localhost:3000'
 
-@description('ASP.NET Core environment')
+@description('ASP.NET Core environment name - sets ASPNETCORE_ENVIRONMENT variable (Development, Staging, Production)')
 param aspnetcoreEnvironment string = 'Production'
 
-@description('App Configuration endpoint')
+@description('Azure App Configuration endpoint URL - services read configuration from here (centralized config)')
 param appConfigEndpoint string = ''
 
-@description('Log Analytics Workspace ID for diagnostics and monitoring')
+@description('Log Analytics Workspace resource ID - all container logs are sent here for centralized monitoring')
 param logAnalyticsWorkspaceId string
 
-@description('User-Assigned Managed Identity ID')
+@description('User-Assigned Managed Identity resource ID - used for authentication to Azure services (ACR, Key Vault, etc.)')
 param userAssignedIdentityId string
 
-@description('Managed Identity Principal ID for RBAC role assignments')
+@description('Managed Identity Principal ID - used for RBAC role assignments (Key Vault, App Config, SQL, Redis)')
 param managedIdentityPrincipalId string
 
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' existing = {
@@ -161,7 +159,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   }
   properties: {
     managedEnvironmentId: containerAppsEnvironment.id
-    workloadProfileName: workloadProfileName
+    workloadProfileName: 'consumption'
     configuration: {
       ingress: externalIngress
         ? {
