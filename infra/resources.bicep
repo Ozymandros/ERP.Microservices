@@ -148,7 +148,7 @@ module containerAppsEnvironment 'core/host/container-apps-environment.bicep' = {
 }
 
 // Reference the Container Apps Environment created by the module
-resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-02-02-preview' existing = {
+resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' existing = {
   name: containerAppsEnvironmentName
 }
 

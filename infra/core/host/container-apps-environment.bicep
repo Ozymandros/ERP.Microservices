@@ -20,12 +20,11 @@ param redisHostName string = ''
 @secure()
 param redisPrimaryKey string = ''
 
-resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' = {
+resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' = {
   name: name
   location: location
   tags: tags
   properties: {
-    daprAIConnectionString: daprEnabled ? '' : null
     appLogsConfiguration: !empty(logAnalyticsWorkspaceId) ? {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
@@ -41,7 +40,7 @@ output name string = containerAppsEnvironment.name
 output domain string = containerAppsEnvironment.properties.defaultDomain
 
 // Dapr Component for Redis State Store
-resource daprStateStore 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = if (daprEnabled && !empty(redisHostName) && !empty(redisPrimaryKey)) {
+resource daprStateStore 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = if (daprEnabled && !empty(redisHostName) && !empty(redisPrimaryKey)) {
   name: 'statestore'
   parent: containerAppsEnvironment
   properties: {
@@ -85,7 +84,7 @@ resource daprStateStore 'Microsoft.App/managedEnvironments/daprComponents@2023-0
 }
 
 // Dapr Component for Redis Pub/Sub
-resource daprPubSub 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = if (daprEnabled && !empty(redisHostName) && !empty(redisPrimaryKey)) {
+resource daprPubSub 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = if (daprEnabled && !empty(redisHostName) && !empty(redisPrimaryKey)) {
   name: 'pubsub'
   parent: containerAppsEnvironment
   properties: {
