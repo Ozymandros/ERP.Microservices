@@ -226,6 +226,22 @@ resource sqlSalesDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues
 }
 
 // ============================================================================
+// Application Insights Connection String - Key Vault Reference
+// ============================================================================
+// Centralized telemetry connection string for all services
+// Services access via App Configuration, which resolves Key Vault reference
+// Key matches ASP.NET Core: APPLICATIONINSIGHTS_CONNECTION_STRING
+
+resource applicationInsightsConnectionStringRef 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  parent: appConfig
+  name: 'ApplicationInsights:ConnectionString'
+  properties: {
+    value: '{"uri":"${keyVaultUri}/secrets/applicationinsights-connection-string"}'
+    contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
+  }
+}
+
+// ============================================================================
 // Outputs
 // ============================================================================
 // Connection string for services to connect to App Configuration

@@ -11,7 +11,7 @@ param tags object = {}
 param daprEnabled bool = true
 
 @description('Log Analytics Workspace ID for diagnostics')
-param logAnalyticsWorkspaceId string = ''
+param logAnalyticsWorkspaceId string
 
 @description('Redis host name')
 param redisHostName string = ''
@@ -25,13 +25,13 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2024-03-01'
   location: location
   tags: tags
   properties: {
-    appLogsConfiguration: !empty(logAnalyticsWorkspaceId) ? {
+    appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
         customerId: reference(logAnalyticsWorkspaceId, '2021-06-01').customerId
         sharedKey: listKeys(logAnalyticsWorkspaceId, '2021-06-01').primarySharedKey
       }
-    } : null
+    }
   }
 }
 

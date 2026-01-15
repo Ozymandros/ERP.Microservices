@@ -16,8 +16,6 @@ param appConfigEndpoint string = ''
 @description('Log Analytics Workspace ID')
 param logAnalyticsWorkspaceId string
 
-@description('Application Insights connection string for telemetry')
-param applicationInsightsConnectionString string = ''
 
 @description('JWT secret key')
 @secure()
@@ -73,7 +71,6 @@ module apiGateway 'container-app-service.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     appConfigEndpoint: appConfigEndpoint
     logAnalyticsWorkspaceId: logAnalyticsWorkspaceId
-    applicationInsightsConnectionString: applicationInsightsConnectionString
     managedIdentityPrincipalId: managedIdentityPrincipalId
     userAssignedIdentityId: userAssignedIdentityId
   }

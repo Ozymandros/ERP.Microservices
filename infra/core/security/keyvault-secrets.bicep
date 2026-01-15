@@ -47,6 +47,10 @@ param salesDbName string
 @secure()
 param jwtSecretKey string
 
+@description('Application Insights connection string')
+@secure()
+param applicationInsightsConnectionString string = ''
+
 @description('User-Assigned Managed Identity Principal ID for Key Vault access')
 param userAssignedIdentityPrincipalId string
 
@@ -107,6 +111,15 @@ resource kvJwtSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   name: 'jwt-secret-key'
   properties: {
     value: jwtSecretKey
+  }
+}
+
+// Application Insights connection string
+resource kvApplicationInsightsConnectionString 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (!empty(applicationInsightsConnectionString)) {
+  parent: keyVault
+  name: 'applicationinsights-connection-string'
+  properties: {
+    value: applicationInsightsConnectionString
   }
 }
 

@@ -51,9 +51,12 @@ jobs:
 
       - name: Install and Initialize Dapr CLI
         run: |
-          curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash
-          dapr init --slim
-          dapr --version
+          wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
+          mkdir -p ~/.dapr/bin
+          cp /usr/local/bin/dapr ~/.dapr/bin/dapr
+          chmod +x ~/.dapr/bin/dapr
+          ~/.dapr/bin/dapr init --slim
+          ~/.dapr/bin/dapr --version
 
       - name: Provision Infrastructure
         env:

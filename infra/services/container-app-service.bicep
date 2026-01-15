@@ -65,9 +65,6 @@ param appConfigEndpoint string = ''
 @description('Log Analytics Workspace ID for diagnostics and monitoring')
 param logAnalyticsWorkspaceId string
 
-@description('Application Insights connection string for telemetry')
-param applicationInsightsConnectionString string = ''
-
 @description('Managed Identity Principal ID for RBAC role assignments')
 param managedIdentityPrincipalId string
 
@@ -123,36 +120,20 @@ var environmentVariables = concat(
           secretRef: 'jwt-secret'
         }
       ]
-    : [],
-  !empty(applicationInsightsConnectionString)
-    ? [
-        {
-          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-          secretRef: 'applicationinsights-connection'
-        }
-      ]
     : []
 )
 
 // Build secrets array from parameters and Key Vault references
-var secrets = concat(
-  !empty(jwtSecretKey)
-    ? [
-        {
-          name: 'jwt-secret'
-          value: jwtSecretKey
-        }
-      ]
-    : [],
-  !empty(applicationInsightsConnectionString)
-    ? [
-        {
-          name: 'applicationinsights-connection'
-          value: applicationInsightsConnectionString
-        }
-      ]
-    : []
-)
+// Note: Application Insights Connection String is now centralized in App Configuration
+// Services read it via App Configuration Provider, which resolves Key Vault reference
+var secrets = !empty(jwtSecretKey)
+  ? [
+      {
+        name: 'jwt-secret'
+        value: jwtSecretKey
+      }
+    ]
+  : []
 
 resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   name: name
