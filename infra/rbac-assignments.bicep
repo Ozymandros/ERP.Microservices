@@ -19,15 +19,9 @@ param servicePrincipalId string
 param appConfigPrincipalId string
 
 // Built-in role definitions referenced by their well-known IDs
-resource appConfigurationDataReaderRole 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
-  scope: subscription()
-  name: azureRoleIdAppConfigurationDataReader
-}
-
-resource keyVaultSecretsUserRole 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
-  scope: subscription()
-  name: azureRoleIdKeyVaultSecretsUser
-}
+// Using subscriptionResourceId to construct the full resource ID
+var appConfigurationDataReaderRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdAppConfigurationDataReader)
+var keyVaultSecretsUserRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdKeyVaultSecretsUser)
 
 // ============================================================================
 // Service → App Configuration Role Assignment
@@ -37,7 +31,7 @@ resource keyVaultSecretsUserRole 'Microsoft.Authorization/roleDefinitions@2022-0
 resource servicesAppConfigRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(appConfigName, servicePrincipalId, 'appconfig-reader')
   properties: {
-    roleDefinitionId: appConfigurationDataReaderRole.id
+    roleDefinitionId: appConfigurationDataReaderRoleId
     principalId: servicePrincipalId
     principalType: 'ServicePrincipal'
   }
@@ -51,7 +45,7 @@ resource servicesAppConfigRoleAssignment 'Microsoft.Authorization/roleAssignment
 resource servicesKeyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(keyVaultName, servicePrincipalId, 'keyvault-secrets-user-service')
   properties: {
-    roleDefinitionId: keyVaultSecretsUserRole.id
+    roleDefinitionId: keyVaultSecretsUserRoleId
     principalId: servicePrincipalId
     principalType: 'ServicePrincipal'
   }
@@ -64,7 +58,7 @@ resource servicesKeyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments
 resource appConfigKeyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(keyVaultName, appConfigPrincipalId, 'keyvault-secrets-user-appconfig')
   properties: {
-    roleDefinitionId: keyVaultSecretsUserRole.id
+    roleDefinitionId: keyVaultSecretsUserRoleId
     principalId: appConfigPrincipalId
     principalType: 'ServicePrincipal'
   }

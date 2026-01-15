@@ -1,3 +1,5 @@
+import { workloadProfileType } from '../../config/constants.bicep'
+
 @description('Name of the Container Apps Environment')
 param name string
 
@@ -27,8 +29,8 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2024-03-01'
   properties: {
     workloadProfiles: [
       {
-        name: 'Consumption'
-        workloadProfileType: 'Consumption'
+        name: toLower(workloadProfileType)
+        workloadProfileType: workloadProfileType
       }
     ]
     appLogsConfiguration: {
