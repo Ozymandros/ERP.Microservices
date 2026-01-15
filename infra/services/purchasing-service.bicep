@@ -10,12 +10,8 @@ param containerAppsEnvironmentId string
 @description('Container Registry endpoint')
 param containerRegistryEndpoint string
 
-@description('Key Vault URI')
-param keyVaultUri string
-
-@description('App Configuration connection string')
-@secure()
-param appConfigConnectionString string = ''
+@description('App Configuration endpoint')
+param appConfigEndpoint string = ''
 
 @description('Log Analytics Workspace ID')
 param logAnalyticsWorkspaceId string
@@ -77,22 +73,7 @@ module purchasingService 'container-app-service.bicep' = {
     jwtAudience: jwtAudience
     frontendOrigin: frontendOrigin
     aspnetcoreEnvironment: aspnetcoreEnvironment
-    keyVaultUri: keyVaultUri
-    appConfigConnectionString: appConfigConnectionString
-    keyVaultSecrets: [
-      {
-        name: 'jwt-secret-key'
-        secretName: 'jwt-secret-key'
-      }
-      {
-        name: 'db-connection'
-        secretName: 'sql-connection-purchasingdb'
-      }
-      {
-        name: 'cache-connection'
-        secretName: 'redis-connection'
-      }
-    ]
+    appConfigEndpoint: appConfigEndpoint
     logAnalyticsWorkspaceId: logAnalyticsWorkspaceId
     applicationInsightsConnectionString: applicationInsightsConnectionString
     managedIdentityPrincipalId: managedIdentityPrincipalId

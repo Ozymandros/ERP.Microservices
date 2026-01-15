@@ -30,6 +30,13 @@ param containerEnvironmentStorageName string
 @description('Container Apps Environment name')
 param containerAppsEnvironmentName string
 
+@description('Redis host name for DAPR components')
+param redisHostName string = ''
+
+@description('Redis primary key for DAPR components')
+@secure()
+param redisPrimaryKey string = ''
+
 var managedIdentityName = take('${namePrefix}-user-assigned-identity', 128)
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
@@ -127,31 +134,22 @@ module storageAccountKeys 'shared/get-storageaccount-key.bicep' = {
   }
 }
 
-resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-02-02-preview' = {
+module containerAppsEnvironment 'core/host/container-apps-environment.bicep' = {
+  name: 'container-apps-environment'
+  params: {
+    name: containerAppsEnvironmentName
+    location: location
+    tags: tags
+    daprEnabled: true
+    logAnalyticsWorkspaceId: logAnalyticsWorkspace.id
+    redisHostName: redisHostName
+    redisPrimaryKey: redisPrimaryKey
+  }
+}
+
+// Reference the Container Apps Environment created by the module
+resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-02-02-preview' existing = {
   name: containerAppsEnvironmentName
-  location: location
-  properties: {
-    workloadProfiles: [{
-      workloadProfileType: workloadProfileType
-      name: workloadProfileName
-    }]
-    appLogsConfiguration: {
-      destination: 'log-analytics'
-      logAnalyticsConfiguration: {
-        customerId: logAnalyticsWorkspace.properties.customerId
-        sharedKey: logAnalyticsKeys.outputs.primarySharedKey
-      }
-    }
-  }
-  tags: tags
-
-  resource aspireDashboard 'dotNetComponents' = {
-    name: aspireDashboardComponentName
-    properties: {
-      componentType: aspireDashboardComponentType
-    }
-  }
-
 }
 
 resource cacheRedisCacheStore 'Microsoft.App/managedEnvironments/storages@2023-05-01' = {
@@ -175,7 +173,7 @@ output AZURE_LOG_ANALYTICS_WORKSPACE_ID string = logAnalyticsWorkspace.id
 output AZURE_CONTAINER_REGISTRY_ENDPOINT string = containerRegistry.properties.loginServer
 output AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID string = managedIdentity.id
 output AZURE_CONTAINER_REGISTRY_NAME string = containerRegistry.name
-output AZURE_CONTAINER_APPS_ENVIRONMENT_NAME string = containerAppEnvironment.name
+output AZURE_CONTAINER_APPS_ENVIRONMENT_NAME string = containerAppsEnvironment.outputs.name
 output AZURE_CONTAINER_APPS_ENVIRONMENT_ID string = containerAppEnvironment.id
 output AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN string = containerAppEnvironment.properties.defaultDomain
 output SERVICE_CACHE_VOLUME_REDISCACHE_NAME string = cacheRedisCacheStore.name

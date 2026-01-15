@@ -88,40 +88,12 @@ resource frontendOriginSetting 'Microsoft.AppConfiguration/configurationStores/k
 }
 
 // ============================================================================
-// ASP.NET Core Environment Setting
-// ============================================================================
-// Controls logging, error pages, and feature behavior across all services
-
-resource environmentSetting 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
-  parent: appConfig
-  name: 'ASPNETCORE_ENVIRONMENT'
-  properties: {
-    value: aspnetcoreEnvironment
-    contentType: 'application/json'
-  }
-}
-
-// ============================================================================
-// Redis Cache Configuration
-// ============================================================================
-// Connection string for distributed cache used by all services
-// Stored as Key Vault reference for security
-
-resource redisCacheSetting 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
-  parent: appConfig
-  name: 'Redis:Connection'
-  properties: {
-    value: '{"uri":"${keyVaultUri}/secrets/redis-connection"}'
-    contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
-  }
-}
-
-// ============================================================================
 // JWT Secret Key - Key Vault Reference
 // ============================================================================
 // Sensitive secret stored in Key Vault
 // App Configuration holds only a reference to it
-// Services will resolve the reference at runtime
+// Services will resolve the reference at runtime via MI + DefaultAzureCredential
+// Key matches docker-compose: Jwt__SecretKey
 
 resource jwtSecretKeyRef 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
   parent: appConfig
@@ -133,30 +105,75 @@ resource jwtSecretKeyRef 'Microsoft.AppConfiguration/configurationStores/keyValu
 }
 
 // ============================================================================
-// Redis Cache Password - Key Vault Reference
+// Redis Cache Configuration - Direct Connection String via Key Vault
 // ============================================================================
-// Redis authentication password stored securely in Key Vault
-// App Configuration holds only a reference to it
-// Services will resolve the reference at runtime for cache authentication
+// Connection string for distributed cache (StackExchange.Redis)
+// Stored as Key Vault reference; services access via App Config
+// Key matches docker-compose: ConnectionStrings__cache
 
-resource redisCachePasswordRef 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+resource redisCacheSetting 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
   parent: appConfig
-  name: 'Redis:Password'
+  name: 'ConnectionStrings:cache'
   properties: {
-    value: '{"uri":"${keyVaultUri}/secrets/redis-cache-password"}'
+    value: '{"uri":"${keyVaultUri}/secrets/redis-connection"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
   }
 }
+
+// ============================================================================
+// DAPR Configuration - Component Names
+// ============================================================================
+// Services use these to configure DAPR sidecars and state/pubsub access
+// Matches DAPR component names defined in container-apps-environment.bicep
+
+resource daprStateStoreSetting 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  parent: appConfig
+  name: 'Dapr:StateStore'
+  properties: {
+    value: 'statestore'
+    contentType: 'application/json'
+  }
+}
+
+resource daprPubSubSetting 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  parent: appConfig
+  name: 'Dapr:PubSub'
+  properties: {
+    value: 'pubsub'
+    contentType: 'application/json'
+  }
+}
+
+// ============================================================================
+// Distributed Cache Configuration
+// ============================================================================
+// Services use this key to locate Redis for IDistributedCache
+// Matches docker-compose env var name format
+// Note: In Aspire, this is auto-resolved; in Azure, app code reads from App Config
+
+// NOTE: redis-connection is already defined above in ConnectionStrings:cache
+// This ConnectionStrings:Redis is redundant; kept for alternate cache implementations
+resource cacheConnectionSetting 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  parent: appConfig
+  name: 'ConnectionStrings:Redis'
+  properties: {
+    value: '{"uri":"${keyVaultUri}/secrets/redis-connection"}'
+    contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
+  }
+}
+
+// ============================================================================
 
 // ============================================================================
 // Database Connection Strings - Key Vault References
 // ============================================================================
 // Each service has a specific database connection string
 // Stored in Key Vault for security
+// Keys match docker-compose: ConnectionStrings__AuthDb, etc.
 
 resource sqlAuthDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
   parent: appConfig
-  name: 'Sql:ConnectionStrings:AuthDb'
+  name: 'ConnectionStrings:AuthDb'
   properties: {
     value: '{"uri":"${keyVaultUri}/secrets/sql-connection-authdb"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
@@ -165,7 +182,7 @@ resource sqlAuthDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues@
 
 resource sqlBillingDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
   parent: appConfig
-  name: 'Sql:ConnectionStrings:BillingDb'
+  name: 'ConnectionStrings:BillingDb'
   properties: {
     value: '{"uri":"${keyVaultUri}/secrets/sql-connection-billingdb"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
@@ -174,7 +191,7 @@ resource sqlBillingDbRef 'Microsoft.AppConfiguration/configurationStores/keyValu
 
 resource sqlInventoryDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
   parent: appConfig
-  name: 'Sql:ConnectionStrings:InventoryDb'
+  name: 'ConnectionStrings:InventoryDb'
   properties: {
     value: '{"uri":"${keyVaultUri}/secrets/sql-connection-inventorydb"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
@@ -183,7 +200,7 @@ resource sqlInventoryDbRef 'Microsoft.AppConfiguration/configurationStores/keyVa
 
 resource sqlOrdersDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
   parent: appConfig
-  name: 'Sql:ConnectionStrings:OrdersDb'
+  name: 'ConnectionStrings:OrdersDb'
   properties: {
     value: '{"uri":"${keyVaultUri}/secrets/sql-connection-ordersdb"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
@@ -192,7 +209,7 @@ resource sqlOrdersDbRef 'Microsoft.AppConfiguration/configurationStores/keyValue
 
 resource sqlPurchasingDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
   parent: appConfig
-  name: 'Sql:ConnectionStrings:PurchasingDb'
+  name: 'ConnectionStrings:PurchasingDb'
   properties: {
     value: '{"uri":"${keyVaultUri}/secrets/sql-connection-purchasingdb"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
@@ -201,7 +218,7 @@ resource sqlPurchasingDbRef 'Microsoft.AppConfiguration/configurationStores/keyV
 
 resource sqlSalesDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
   parent: appConfig
-  name: 'Sql:ConnectionStrings:SalesDb'
+  name: 'ConnectionStrings:SalesDb'
   properties: {
     value: '{"uri":"${keyVaultUri}/secrets/sql-connection-salesdb"}'
     contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'

@@ -59,15 +59,8 @@ param frontendOrigin string = 'http://localhost:3000'
 @description('ASP.NET Core environment')
 param aspnetcoreEnvironment string = 'Production'
 
-@description('Key Vault URI for secret references')
-param keyVaultUri string = ''
-
-@description('App Configuration connection string')
-@secure()
-param appConfigConnectionString string = ''
-
-@description('Array of Key Vault secrets to reference')
-param keyVaultSecrets array = []
+@description('App Configuration endpoint')
+param appConfigEndpoint string = ''
 
 @description('Log Analytics Workspace ID for diagnostics and monitoring')
 param logAnalyticsWorkspaceId string
@@ -90,16 +83,6 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-pr
 }
 
 
-
-// Build secrets array from Key Vault references
-// Use User-Assigned Identity instead of system-assigned
-var keyVaultSecretsList = [
-  for secret in keyVaultSecrets: {
-    name: secret.name
-    keyVaultUrl: '${keyVaultUri}secrets/${secret.secretName}'
-    identity: userAssignedIdentityId
-  }
-]
 
 // Build environment variables
 var environmentVariables = concat(
@@ -125,11 +108,11 @@ var environmentVariables = concat(
       value: frontendOrigin
     }
   ],
-  !empty(appConfigConnectionString)
+  !empty(appConfigEndpoint)
     ? [
         {
-          name: 'AppConfiguration__ConnectionString'
-          secretRef: 'app-config-connection'
+          name: 'AppConfiguration__Endpoint'
+          value: appConfigEndpoint
         }
       ]
     : [],
@@ -153,14 +136,6 @@ var environmentVariables = concat(
 
 // Build secrets array from parameters and Key Vault references
 var secrets = concat(
-  !empty(appConfigConnectionString)
-    ? [
-        {
-          name: 'app-config-connection'
-          value: appConfigConnectionString
-        }
-      ]
-    : [],
   !empty(jwtSecretKey)
     ? [
         {
@@ -176,8 +151,7 @@ var secrets = concat(
           value: applicationInsightsConnectionString
         }
       ]
-    : [],
-  !empty(keyVaultUri) ? keyVaultSecretsList : []
+    : []
 )
 
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {

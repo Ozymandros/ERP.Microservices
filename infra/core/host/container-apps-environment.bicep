@@ -36,6 +36,10 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01'
   }
 }
 
+output id string = containerAppsEnvironment.id
+output name string = containerAppsEnvironment.name
+output domain string = containerAppsEnvironment.properties.defaultDomain
+
 // Dapr Component for Redis State Store
 resource daprStateStore 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = if (daprEnabled && !empty(redisHostName) && !empty(redisPrimaryKey)) {
   name: 'statestore'
@@ -80,6 +84,42 @@ resource daprStateStore 'Microsoft.App/managedEnvironments/daprComponents@2023-0
   }
 }
 
-output id string = containerAppsEnvironment.id
-output name string = containerAppsEnvironment.name
-output domain string = containerAppsEnvironment.properties.defaultDomain
+// Dapr Component for Redis Pub/Sub
+resource daprPubSub 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = if (daprEnabled && !empty(redisHostName) && !empty(redisPrimaryKey)) {
+  name: 'pubsub'
+  parent: containerAppsEnvironment
+  properties: {
+    componentType: 'pubsub.redis'
+    version: 'v1'
+    ignoreErrors: false
+    initTimeout: '60s'
+    secrets: [
+      {
+        name: 'redis-password'
+        value: redisPrimaryKey
+      }
+    ]
+    metadata: [
+      {
+        name: 'redisHost'
+        value: '${redisHostName}:6380'
+      }
+      {
+        name: 'redisPassword'
+        secretRef: 'redis-password'
+      }
+      {
+        name: 'enableTLS'
+        value: 'true'
+      }
+    ]
+    scopes: [
+      'auth-service'
+      'billing-service'
+      'inventory-service'
+      'orders-service'
+      'purchasing-service'
+      'sales-service'
+    ]
+  }
+}

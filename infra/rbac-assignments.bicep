@@ -1,20 +1,21 @@
 // ============================================================================
 // RBAC Role Assignments Module (Resource Group Scope)
 // This module handles all role assignments within the resource group
-// NO manual parameters, using direct references from calling context
+// Single service principal (shared by all 7 services via user-assigned identity)
 // ============================================================================
 
 import { azureRoleIdAppConfigurationDataReader, azureRoleIdKeyVaultSecretsUser } from 'config/constants.bicep'
 
+@description('App Configuration store name')
 param appConfigName string
+
+@description('Key Vault name')
 param keyVaultName string
-param authServicePrincipalId string
-param billingServicePrincipalId string
-param inventoryServicePrincipalId string
-param ordersServicePrincipalId string
-param purchasingServicePrincipalId string
-param salesServicePrincipalId string
-param apiGatewayPrincipalId string
+
+@description('Service Principal ID (all 7 microservices + gateway share same user-assigned identity)')
+param servicePrincipalId string
+
+@description('App Configuration service principal ID (for Key Vault access)')
 param appConfigPrincipalId string
 
 // Built-in role definitions referenced by their well-known IDs
@@ -29,68 +30,29 @@ resource keyVaultSecretsUserRole 'Microsoft.Authorization/roleDefinitions@2022-0
 }
 
 // ============================================================================
-// Service → App Configuration Role Assignments
+// Service → App Configuration Role Assignment
+// (Single assignment for shared identity used by all 7 services)
 // ============================================================================
 
-resource authServiceAppConfigRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(appConfigName, authServicePrincipalId, 'appconfig-reader')
+resource servicesAppConfigRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(appConfigName, servicePrincipalId, 'appconfig-reader')
   properties: {
     roleDefinitionId: appConfigurationDataReaderRole.id
-    principalId: authServicePrincipalId
+    principalId: servicePrincipalId
     principalType: 'ServicePrincipal'
   }
 }
 
-resource billingServiceAppConfigRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(appConfigName, billingServicePrincipalId, 'appconfig-reader')
-  properties: {
-    roleDefinitionId: appConfigurationDataReaderRole.id
-    principalId: billingServicePrincipalId
-    principalType: 'ServicePrincipal'
-  }
-}
+// ============================================================================
+// Service → Key Vault Role Assignment
+// (Allows services to resolve secrets referenced by App Configuration)
+// ============================================================================
 
-resource inventoryServiceAppConfigRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(appConfigName, inventoryServicePrincipalId, 'appconfig-reader')
+resource servicesKeyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(keyVaultName, servicePrincipalId, 'keyvault-secrets-user-service')
   properties: {
-    roleDefinitionId: appConfigurationDataReaderRole.id
-    principalId: inventoryServicePrincipalId
-    principalType: 'ServicePrincipal'
-  }
-}
-
-resource ordersServiceAppConfigRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(appConfigName, ordersServicePrincipalId, 'appconfig-reader')
-  properties: {
-    roleDefinitionId: appConfigurationDataReaderRole.id
-    principalId: ordersServicePrincipalId
-    principalType: 'ServicePrincipal'
-  }
-}
-
-resource purchasingServiceAppConfigRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(appConfigName, purchasingServicePrincipalId, 'appconfig-reader')
-  properties: {
-    roleDefinitionId: appConfigurationDataReaderRole.id
-    principalId: purchasingServicePrincipalId
-    principalType: 'ServicePrincipal'
-  }
-}
-
-resource salesServiceAppConfigRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(appConfigName, salesServicePrincipalId, 'appconfig-reader')
-  properties: {
-    roleDefinitionId: appConfigurationDataReaderRole.id
-    principalId: salesServicePrincipalId
-    principalType: 'ServicePrincipal'
-  }
-}
-
-resource apiGatewayAppConfigRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(appConfigName, apiGatewayPrincipalId, 'appconfig-reader')
-  properties: {
-    roleDefinitionId: appConfigurationDataReaderRole.id
-    principalId: apiGatewayPrincipalId
+    roleDefinitionId: keyVaultSecretsUserRole.id
+    principalId: servicePrincipalId
     principalType: 'ServicePrincipal'
   }
 }
@@ -100,7 +62,7 @@ resource apiGatewayAppConfigRoleAssignment 'Microsoft.Authorization/roleAssignme
 // ============================================================================
 
 resource appConfigKeyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(keyVaultName, appConfigPrincipalId, 'keyvault-secrets-user')
+  name: guid(keyVaultName, appConfigPrincipalId, 'keyvault-secrets-user-appconfig')
   properties: {
     roleDefinitionId: keyVaultSecretsUserRole.id
     principalId: appConfigPrincipalId

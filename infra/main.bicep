@@ -99,6 +99,8 @@ module resources 'resources.bicep' = {
     storageShareName: storageShareName
     containerEnvironmentStorageName: containerEnvironmentStorageName
     containerAppsEnvironmentName: containerAppsEnvironmentName
+    redisHostName: redis.outputs.hostName
+    redisPrimaryKey: redis.outputs.primaryKey
   }
 }
 
@@ -184,7 +186,6 @@ module authServiceModule 'services/auth-service.bicep' = {
     tags: tags
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
-    keyVaultUri: keyVault.outputs.keyVaultUri
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
@@ -194,7 +195,7 @@ module authServiceModule 'services/auth-service.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     imageTag: imageTag
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
-    appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+    appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
     namePrefix: namePrefix
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
@@ -208,7 +209,6 @@ module billingServiceModule 'services/billing-service.bicep' = {
     tags: tags
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
-    keyVaultUri: keyVault.outputs.keyVaultUri
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
@@ -218,7 +218,7 @@ module billingServiceModule 'services/billing-service.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     imageTag: imageTag
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
-    appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+    appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
     namePrefix: namePrefix
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
@@ -232,7 +232,6 @@ module inventoryServiceModule 'services/inventory-service.bicep' = {
     tags: tags
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
-    keyVaultUri: keyVault.outputs.keyVaultUri
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
@@ -242,7 +241,7 @@ module inventoryServiceModule 'services/inventory-service.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     imageTag: imageTag
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
-    appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+    appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
     namePrefix: namePrefix
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
@@ -256,7 +255,6 @@ module ordersServiceModule 'services/orders-service.bicep' = {
     tags: tags
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
-    keyVaultUri: keyVault.outputs.keyVaultUri
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
@@ -266,7 +264,7 @@ module ordersServiceModule 'services/orders-service.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     imageTag: imageTag
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
-    appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+    appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
     namePrefix: namePrefix
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
@@ -280,7 +278,6 @@ module purchasingServiceModule 'services/purchasing-service.bicep' = {
     tags: tags
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
-    keyVaultUri: keyVault.outputs.keyVaultUri
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
@@ -290,7 +287,7 @@ module purchasingServiceModule 'services/purchasing-service.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     imageTag: imageTag
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
-    appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+    appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
     namePrefix: namePrefix
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
@@ -304,7 +301,6 @@ module salesServiceModule 'services/sales-service.bicep' = {
     tags: tags
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
-    keyVaultUri: keyVault.outputs.keyVaultUri
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
@@ -314,7 +310,7 @@ module salesServiceModule 'services/sales-service.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     imageTag: imageTag
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
-    appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+    appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
     namePrefix: namePrefix
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
@@ -328,7 +324,6 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
     tags: tags
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
     containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
-    keyVaultUri: keyVault.outputs.keyVaultUri
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
     jwtSecretKey: jwtSecretKey
@@ -338,7 +333,7 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
     aspnetcoreEnvironment: aspnetcoreEnvironment
     imageTag: imageTag
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
-    appConfigConnectionString: appConfiguration.outputs.appConfigConnectionString
+    appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
     namePrefix: namePrefix
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
@@ -370,13 +365,7 @@ module rbacAssignments 'rbac-assignments.bicep' = {
   params: {
     appConfigName: appConfigurationName
     keyVaultName: keyVaultName
-    authServicePrincipalId: authServiceModule.outputs.managedIdentityPrincipalId
-    billingServicePrincipalId: billingServiceModule.outputs.managedIdentityPrincipalId
-    inventoryServicePrincipalId: inventoryServiceModule.outputs.managedIdentityPrincipalId
-    ordersServicePrincipalId: ordersServiceModule.outputs.managedIdentityPrincipalId
-    purchasingServicePrincipalId: purchasingServiceModule.outputs.managedIdentityPrincipalId
-    salesServicePrincipalId: salesServiceModule.outputs.managedIdentityPrincipalId
-    apiGatewayPrincipalId: apiGatewayModule.outputs.managedIdentityPrincipalId
+    servicePrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigPrincipalId: appConfiguration.outputs.appConfigPrincipalId
   }
 }
