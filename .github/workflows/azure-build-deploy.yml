@@ -31,6 +31,17 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          
+      - name: Force create azd environment context
+        run: |
+          # Això crea la configuració mínima perquè azd no digui "no existeix"
+          azd env new ${{ env.AZURE_ENV_NAME }} --location ${{ env.AZURE_LOCATION }} --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        continue-on-error: true
+
+      - name: Refresh environment from Azure
+        run: |
+          # Això porta els valors reals des d'Azure al runner de GitHub
+          azd env refresh --environment ${{ env.AZURE_ENV_NAME }}
 
       - name: Configure azd to use Azure CLI credentials
         run: |
