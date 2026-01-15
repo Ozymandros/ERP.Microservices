@@ -161,6 +161,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   }
   properties: {
     managedEnvironmentId: containerAppsEnvironment.id
+    workloadProfileName: 'Consumption'
     configuration: {
       ingress: externalIngress
         ? {
