@@ -73,8 +73,25 @@ if (-not $SkipDeploy) {
     $env:AZURE_ENV_NAME = $Environment
     $env:AZURE_LOCATION = $CurrentConfig.location
     
-    Write-Host "Running: azd up" -ForegroundColor Yellow
-    azd up --no-prompt
+    Write-Host "Step 2.1: Previewing infrastructure changes..." -ForegroundColor Yellow
+    azd provision --preview 2>&1 | Out-Host
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "⚠ Preview completed with warnings (continuing with deployment)" -ForegroundColor Yellow
+    } else {
+        Write-Host "✓ Preview completed successfully" -ForegroundColor Green
+    }
+    Write-Host ""
+    
+    Write-Host "Step 2.2: Provisioning infrastructure..." -ForegroundColor Yellow
+    azd provision --no-prompt
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "❌ Provisioning failed" -ForegroundColor Red
+        exit 1
+    }
+    Write-Host ""
+    
+    Write-Host "Step 2.3: Deploying application..." -ForegroundColor Yellow
+    azd deploy --no-prompt
     
     if ($LASTEXITCODE -ne 0) {
         Write-Host "❌ Deployment failed" -ForegroundColor Red

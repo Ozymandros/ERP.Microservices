@@ -138,7 +138,26 @@ if ($totalIssues -eq 0) {
     Write-Host ""
     Write-Host "✅ ¡INFRAESTRUCTURA COMPLETA Y LISTA PARA DEPLOY!" -ForegroundColor Green
     Write-Host ""
-    Write-Host "Próximo paso: azd validate && azd deploy"
+    
+    # Check if azd is available and run preview
+    Write-Host "7️⃣ Ejecutando preview de provisionamiento..." -ForegroundColor Cyan
+    $azdCheck = azd version 2>$null
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Ejecutando: azd provision --preview" -ForegroundColor Yellow
+        azd provision --preview 2>&1 | Out-Host
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "✅ Preview completado exitosamente" -ForegroundColor Green
+        } else {
+            Write-Host "⚠️ Preview completado con advertencias (esto es normal)" -ForegroundColor Yellow
+        }
+    } else {
+        Write-Host "⚠️ azd CLI no disponible, saltando preview" -ForegroundColor Yellow
+    }
+    
+    Write-Host ""
+    Write-Host "Próximos pasos:" -ForegroundColor Cyan
+    Write-Host "  1. Revisar preview: azd provision --preview"
+    Write-Host "  2. Desplegar: azd provision && azd deploy"
     exit 0
 } else {
     Write-Host ""

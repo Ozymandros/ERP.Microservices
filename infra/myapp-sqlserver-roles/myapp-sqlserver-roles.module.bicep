@@ -5,10 +5,10 @@ param principalName string
 @description('Principal ID of the managed identity requiring SQL access')
 param principalId string
 
-@description('Role Definition ID - SQL DB Contributor role ID')
+@description('Role Definition GUID - SQL DB Contributor role GUID (36 characters)')
 @minLength(36)
 @maxLength(36)
-param roleDefinitionId string
+param roleGuid string
 
 resource myapp_sqlserver 'Microsoft.Sql/servers@2023-08-01' existing = {
   name: myapp_sqlserver_outputs_name
@@ -22,6 +22,6 @@ resource sqlDataContributorAssignment 'Microsoft.Authorization/roleAssignments@2
   properties: {
     principalId: principalId
     principalType: 'ServicePrincipal'
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleGuid)
   }
 }

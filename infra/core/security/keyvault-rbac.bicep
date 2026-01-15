@@ -18,10 +18,10 @@ param keyVaultId string
 @description('Principal ID to grant access (microservice managed identity)')
 param principalId string
 
-@description('Role Definition ID - Key Vault Secrets User role ID')
+@description('Role Definition GUID - Key Vault Secrets User role GUID (36 characters)')
 @minLength(36)
 @maxLength(36)
-param roleDefinitionId string
+param roleGuid string
 
 // Key Vault Secrets User role (built-in Azure role)
 // Allows: Read secrets
@@ -38,12 +38,12 @@ param roleDefinitionId string
 // ============================================================================
 
 resource keyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(keyVaultId, principalId, roleDefinitionId)
+  name: guid(keyVaultId, principalId, roleGuid)
   scope: resourceGroup()
   properties: {
     principalId: principalId
     principalType: 'ServicePrincipal'
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleGuid)
   }
 }
 
@@ -55,7 +55,7 @@ resource keyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04
 output roleAssignmentId string = keyVaultRoleAssignment.id
 
 @description('Role definition ID granted')
-output grantedRoleDefinitionId string = roleDefinitionId
+output grantedRoleDefinitionId string = roleGuid
 
 @description('Principal ID that received access')
 output grantedPrincipalId string = principalId
