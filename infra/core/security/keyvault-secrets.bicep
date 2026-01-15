@@ -1,3 +1,7 @@
+// ============================================================================
+// Basic Parameters
+// ============================================================================
+
 @description('Name of the Key Vault')
 param name string
 
@@ -6,6 +10,10 @@ param location string = resourceGroup().location
 
 @description('Tags to apply')
 param tags object = {}
+
+// ============================================================================
+// Redis Configuration Parameters
+// ============================================================================
 
 @description('Redis host name')
 param redisHostName string
@@ -18,12 +26,20 @@ param redisPrimaryKey string
 @secure()
 param redisCachePassword string = ''
 
+// ============================================================================
+// SQL Server Configuration Parameters
+// ============================================================================
+
 @description('SQL Server FQDN')
 param sqlFqdn string
 
 @description('SQL admin password')
 @secure()
 param sqlAdminPassword string
+
+// ============================================================================
+// Database Name Parameters
+// ============================================================================
 
 @description('Database name for the Auth service')
 param authDbName string
@@ -43,6 +59,10 @@ param purchasingDbName string
 @description('Database name for the Sales service')
 param salesDbName string
 
+// ============================================================================
+// Application Secrets Parameters
+// ============================================================================
+
 @description('JWT secret value')
 @secure()
 param jwtSecretKey string
@@ -51,12 +71,22 @@ param jwtSecretKey string
 @secure()
 param applicationInsightsConnectionString string = ''
 
+// ============================================================================
+// Identity Parameters
+// ============================================================================
+
 @description('User-Assigned Managed Identity Principal ID for Key Vault access')
 param userAssignedIdentityPrincipalId string
 
+// ============================================================================
+// Imports
+// ============================================================================
+
 import { azureRoleIdKeyVaultSecretsUser } from '../../config/constants.bicep'
 
-// Key Vault
+// ============================================================================
+// Key Vault Resource
+// ============================================================================
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
   name: name

@@ -1,3 +1,7 @@
+// ============================================================================
+// Basic Container App Parameters
+// ============================================================================
+
 @description('Name of the Container App - must be unique within the Container Apps Environment')
 param name string
 
@@ -6,6 +10,10 @@ param location string = resourceGroup().location
 
 @description('Resource tags for organization, cost tracking, and resource management')
 param tags object = {}
+
+// ============================================================================
+// Infrastructure References
+// ============================================================================
 
 @description('Full resource ID of the Container Apps Environment where this app will run')
 param containerAppsEnvironmentId string
@@ -16,20 +24,15 @@ param containerRegistryEndpoint string
 @description('Container image name with optional tag (e.g., auth-service:latest or auth-service:abc1234)')
 param imageName string
 
+// ============================================================================
+// Container Configuration
+// ============================================================================
+
 @description('TCP port number that the container application listens on (default: 8080)')
 param targetPort int = 8080
 
 @description('Enable external ingress - if true, app is accessible from internet; if false, only internal access')
 param externalIngress bool = false
-
-@description('Enable Dapr sidecar - if true, Dapr runtime is injected for service-to-service communication')
-param daprEnabled bool = false
-
-@description('Dapr application ID - unique identifier for this service in the Dapr service mesh (defaults to app name)')
-param daprAppId string = name
-
-@description('Port number that Dapr sidecar uses to communicate with the application (defaults to targetPort)')
-param daprAppPort int = targetPort
 
 @description('Minimum number of container replicas - ensures high availability (default: 1)')
 param minReplicas int = 1
@@ -42,6 +45,23 @@ param cpu string = '0.5'
 
 @description('Memory allocation per replica in GiB (e.g., 1.0Gi = 1024 MiB) - affects performance')
 param memory string = '1.0Gi'
+
+// ============================================================================
+// Dapr Configuration
+// ============================================================================
+
+@description('Enable Dapr sidecar - if true, Dapr runtime is injected for service-to-service communication')
+param daprEnabled bool = false
+
+@description('Dapr application ID - unique identifier for this service in the Dapr service mesh (defaults to app name)')
+param daprAppId string = name
+
+@description('Port number that Dapr sidecar uses to communicate with the application (defaults to targetPort)')
+param daprAppPort int = targetPort
+
+// ============================================================================
+// Application Configuration
+// ============================================================================
 
 @description('JWT secret key for token signing and validation - stored as secret, read from App Configuration/Key Vault')
 @secure()
@@ -62,6 +82,10 @@ param aspnetcoreEnvironment string = 'Production'
 @description('Azure App Configuration endpoint URL - services read configuration from here (centralized config)')
 param appConfigEndpoint string = ''
 
+// ============================================================================
+// Monitoring and Identity
+// ============================================================================
+
 @description('Log Analytics Workspace resource ID - all container logs are sent here for centralized monitoring')
 param logAnalyticsWorkspaceId string
 
@@ -79,7 +103,10 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-pr
   name: replace(containerRegistryEndpoint, '.azurecr.io', '')
 }
 
-// Build environment variables
+// ============================================================================
+// Environment Variables Configuration
+// ============================================================================
+
 var environmentVariables = concat(
   [
     {
@@ -121,9 +148,12 @@ var environmentVariables = concat(
     : []
 )
 
-// Build secrets array from parameters and Key Vault references
+// ============================================================================
+// Secrets Configuration
+// ============================================================================
 // Note: Application Insights Connection String is now centralized in App Configuration
 // Services read it via App Configuration Provider, which resolves Key Vault reference
+
 var secrets = !empty(jwtSecretKey)
   ? [
       {
@@ -132,6 +162,10 @@ var secrets = !empty(jwtSecretKey)
       }
     ]
   : []
+
+// ============================================================================
+// Container App Resource
+// ============================================================================
 
 resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   name: name

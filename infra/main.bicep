@@ -2,6 +2,10 @@ targetScope = 'subscription'
 
 import { azureRoleIdSqlDbContributor } from 'config/constants.bicep'
 
+// ============================================================================
+// Deployment Parameters - Basic Configuration
+// ============================================================================
+
 @minLength(1)
 @maxLength(64)
 @description('Name of the environment that can be used as part of naming resource convention, the name of the resource group for your application will use this name, prefixed with rg-')
@@ -10,6 +14,10 @@ param environmentName string = 'dev' // 👈 Valor per defecte segur
 @minLength(1)
 @description('The location used for all deployed resources')
 param location string = 'westeurope' // 👈 Valor per defecte segur
+
+// ============================================================================
+// Security Parameters - Secrets and Authentication
+// ============================================================================
 
 // Secrets generats amb valor per defecte per evitar el xoc amb el parser
 @secure()
@@ -30,6 +38,10 @@ param jwtIssuer string = 'MyApp.Auth'
 @description('JWT token audience (e.g., MyApp.All) - identifies intended recipients of the token')
 param jwtAudience string = 'MyApp.All'
 
+// ============================================================================
+// Application Configuration Parameters
+// ============================================================================
+
 @description('Frontend origin for CORS (semicolon-separated for multiple origins) - allowed origins for cross-origin requests')
 param frontendOrigin string = 'http://localhost:3000;http://localhost:5000'
 
@@ -39,41 +51,69 @@ param aspnetcoreEnvironment string = 'Production'
 @description('Docker image tag for all services (e.g., latest, commit hash, version) - used to version container images')
 param imageTag string = 'latest'
 
-// Derived naming variables - used to generate consistent resource names across the infrastructure
+// ============================================================================
+// Derived Naming Variables
+// ============================================================================
+// Used to generate consistent resource names across the infrastructure
+
 @description('Environment name slug (lowercase, hyphenated) - used in resource naming')
 var envSlug = toLower(replace(environmentName, ' ', '-'))
+
 @description('Base name prefix for all resources (e.g., myapp-dev) - ensures consistent naming')
 var namePrefix = 'myapp-${envSlug}'
+
 @description('Flat prefix without hyphens (e.g., myappdev) - used for resources with strict naming rules')
 var flatPrefix = toLower(replace(namePrefix, '-', ''))
 
-// Resource naming variables - Azure resource names have specific length and character restrictions
+// ============================================================================
+// Resource Naming Variables
+// ============================================================================
+// Azure resource names have specific length and character restrictions
+
 @description('Resource group name following Azure naming convention (rg-{prefix}-core)')
 var resourceGroupName = 'rg-${namePrefix}-core'
+
 @description('Container Registry name (max 50 chars, alphanumeric only) - stores Docker images')
 var containerRegistryName = take('${flatPrefix}containerregistry', 50)
+
 @description('Log Analytics workspace name (max 63 chars) - centralizes logs from all services')
 var logAnalyticsWorkspaceName = take('${namePrefix}-log-analytics-workspace', 63)
+
 @description('Application Insights name (max 260 chars) - provides application performance monitoring')
 var applicationInsightsName = take('${namePrefix}-application-insights', 260)
+
 @description('Storage account name (max 24 chars, lowercase alphanumeric) - stores Azure Files shares')
 var storageAccountName = take('${flatPrefix}storageaccount', 24)
+
 @description('Azure Files share name (max 63 chars) - persistent storage for cache volumes')
 var storageShareName = toLower(take('${namePrefix}-cache-fileshare', 63))
+
 @description('Container Apps Environment storage name (max 32 chars) - volume mount for containers')
 var containerEnvironmentStorageName = take('${flatPrefix}cachevolume', 32)
+
 @description('Container Apps Environment name (max 63 chars) - hosts all containerized microservices')
 var containerAppsEnvironmentName = take('${namePrefix}-container-apps-environment', 63)
+
 @description('Redis cache name (max 63 chars) - provides distributed caching and pub/sub')
 var redisCacheName = take('${namePrefix}-redis-cache', 63)
+
 @description('SQL Server name (max 63 chars) - hosts all microservice databases')
 var sqlServerName = take('${namePrefix}-sql-server', 63)
+
 @description('SQL admin managed identity name (max 128 chars) - used for passwordless authentication')
 var sqlAdminIdentityName = take('${namePrefix}-sql-admin-identity', 128)
+
 @description('Key Vault name (max 24 chars, alphanumeric only) - stores secrets and certificates')
 var keyVaultName = take('${flatPrefix}keyvault', 24)
+
 @description('App Configuration name (max 50 chars) - centralized configuration store for all services')
 var appConfigurationName = take('${namePrefix}-app-configuration', 50)
+
+// ============================================================================
+// Database Configuration
+// ============================================================================
+
+@description('SQL database names for each microservice (lowercase, hyphenated)')
 var sqlDatabaseNames = {
   auth: toLower('${namePrefix}-auth-db')
   billing: toLower('${namePrefix}-billing-db')
@@ -83,6 +123,7 @@ var sqlDatabaseNames = {
   sales: toLower('${namePrefix}-sales-db')
 }
 
+@description('Array of all database names - used for batch database creation')
 var sqlDatabaseList = [
   sqlDatabaseNames.auth
   sqlDatabaseNames.billing
@@ -92,6 +133,11 @@ var sqlDatabaseList = [
   sqlDatabaseNames.sales
 ]
 
+// ============================================================================
+// Common Tags
+// ============================================================================
+
+@description('Common tags applied to all resources for organization and cost tracking')
 var tags = {
   'azd-env-name': environmentName
 }
@@ -105,6 +151,11 @@ resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   location: location
   tags: tags
 }
+
+// ============================================================================
+// Core Infrastructure Resources
+// ============================================================================
+
 module resources 'resources.bicep' = {
   scope: rg
   name: 'resources'
@@ -177,6 +228,10 @@ module appConfiguration 'core/configuration/app-configuration.bicep' = {
   }
 }
 
+// ============================================================================
+// Database Resources
+// ============================================================================
+
 module myapp_sqlserver 'myapp-sqlserver/myapp-sqlserver.module.bicep' = {
   name: 'myapp-sqlserver'
   scope: rg
@@ -198,7 +253,10 @@ module myapp_sqlserver_roles 'myapp-sqlserver-roles/myapp-sqlserver-roles.module
   }
 }
 
-// Service modules
+// ============================================================================
+// Microservices Deployment
+// ============================================================================
+
 module authServiceModule 'services/auth-service.bicep' = {
   name: 'auth-service-deployment'
   scope: rg

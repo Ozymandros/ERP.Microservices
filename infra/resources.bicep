@@ -40,6 +40,10 @@ param redisPrimaryKey string = ''
 @description('User-Assigned Managed Identity name - shared identity used by all services for Azure service authentication')
 var managedIdentityName = take('${namePrefix}-user-assigned-identity', 128)
 
+// ============================================================================
+// Core Resources
+// ============================================================================
+
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: managedIdentityName
   location: location
@@ -58,6 +62,10 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-07-01' =
   tags: tags
 }
 
+// ============================================================================
+// RBAC Role Assignments
+// ============================================================================
+
 // Grant the User-Assigned Identity the AcrPull role on the Container Registry
 resource acrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(containerRegistry.id, managedIdentity.id, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdAcrPull))
@@ -68,6 +76,10 @@ resource acrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-
     roleDefinitionId:  subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdAcrPull)
   }
 }
+
+// ============================================================================
+// Monitoring Resources
+// ============================================================================
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: logAnalyticsWorkspaceName
@@ -95,6 +107,10 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
   })
 }
 
+// ============================================================================
+// Storage Resources
+// ============================================================================
+
 resource storageVolume 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   name: storageAccountName
   location: location
@@ -121,6 +137,10 @@ resource cacheRedisCacheFileShare 'Microsoft.Storage/storageAccounts/fileService
   }
 }
 
+// ============================================================================
+// Helper Modules for Keys and Secrets
+// ============================================================================
+
 module logAnalyticsKeys 'shared/get-loganalytics-key.bicep' = {
   name: 'logAnalyticsWorkspaceKeys'
   params: {
@@ -134,6 +154,10 @@ module storageAccountKeys 'shared/get-storageaccount-key.bicep' = {
     storageAccountName: storageVolume.name
   }
 }
+
+// ============================================================================
+// Container Apps Environment
+// ============================================================================
 
 module containerAppsEnvironment 'core/host/container-apps-environment.bicep' = {
   name: 'container-apps-environment'
@@ -165,6 +189,10 @@ resource cacheRedisCacheStore 'Microsoft.App/managedEnvironments/storages@2023-0
     }
   }
 }
+
+// ============================================================================
+// Outputs
+// ============================================================================
 
 output MANAGED_IDENTITY_CLIENT_ID string = managedIdentity.properties.clientId
 output MANAGED_IDENTITY_NAME string = managedIdentity.name

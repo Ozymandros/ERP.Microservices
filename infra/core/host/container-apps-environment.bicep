@@ -1,5 +1,9 @@
 import { workloadProfileType } from '../../config/constants.bicep'
 
+// ============================================================================
+// Basic Parameters
+// ============================================================================
+
 @description('Name of the Container Apps Environment - must be unique within the subscription')
 param name string
 
@@ -9,11 +13,23 @@ param location string = resourceGroup().location
 @description('Resource tags for organization, cost tracking, and resource management')
 param tags object = {}
 
+// ============================================================================
+// Dapr Configuration
+// ============================================================================
+
 @description('Enable Dapr runtime on the Container Apps Environment - if true, Dapr sidecars can be injected into apps')
 param daprEnabled bool = true
 
+// ============================================================================
+// Monitoring Configuration
+// ============================================================================
+
 @description('Log Analytics Workspace resource ID - all container logs and diagnostics are sent here')
 param logAnalyticsWorkspaceId string
+
+// ============================================================================
+// Redis Configuration (for Dapr Components)
+// ============================================================================
 
 @description('Redis cache hostname (FQDN) - used by Dapr components for state store and pub/sub (optional if Dapr disabled)')
 param redisHostName string = ''
@@ -21,6 +37,10 @@ param redisHostName string = ''
 @description('Redis cache primary access key - used for authentication by Dapr components (optional if Dapr disabled)')
 @secure()
 param redisPrimaryKey string = ''
+
+// ============================================================================
+// Container Apps Environment Resource
+// ============================================================================
 
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' = {
   name: name
@@ -43,9 +63,17 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2024-03-01'
   }
 }
 
+// ============================================================================
+// Outputs
+// ============================================================================
+
 output id string = containerAppsEnvironment.id
 output name string = containerAppsEnvironment.name
 output domain string = containerAppsEnvironment.properties.defaultDomain
+
+// ============================================================================
+// Dapr Components
+// ============================================================================
 
 // Dapr Component for Redis State Store
 resource daprStateStore 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = if (daprEnabled && !empty(redisHostName) && !empty(redisPrimaryKey)) {

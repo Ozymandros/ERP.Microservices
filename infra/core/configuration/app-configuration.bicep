@@ -1,14 +1,22 @@
+// ============================================================================
+// Basic Parameters
+// ============================================================================
+
 @description('Location for App Configuration resource')
 param location string = resourceGroup().location
-
-@description('Environment name (dev, staging, prod)')
-param environmentName string = 'Production'
 
 @description('Resource tags')
 param tags object
 
 @description('App Configuration resource name')
 param appConfigName string
+
+// ============================================================================
+// Configuration Parameters
+// ============================================================================
+
+@description('Environment name (dev, staging, prod)')
+param environmentName string = 'Production'
 
 @description('Key Vault name for secret references')
 param keyVaultName string
@@ -24,6 +32,10 @@ param frontendOrigin string
 
 @description('ASP.NET Core environment')
 param aspnetcoreEnvironment string
+
+// ============================================================================
+// Derived Variables
+// ============================================================================
 
 var keyVaultUri = 'https://${keyVaultName}.${environment().suffixes.keyvaultDns}'
 
