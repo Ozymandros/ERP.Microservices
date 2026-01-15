@@ -33,11 +33,20 @@ jobs:
       - name: Install Dapr CLI
         run: |
           wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
+          # Register /usr/local/bin to PATH for ALL subsequent steps
+          # This ensures azd provision can find dapr when Aspire needs it
+          echo "/usr/local/bin" >> $GITHUB_PATH
+          # Also ensure ~/.dapr/bin exists and is in PATH for Aspire.Hosting.Testing
           mkdir -p ~/.dapr/bin
           cp /usr/local/bin/dapr ~/.dapr/bin/dapr
           chmod +x ~/.dapr/bin/dapr
-          ~/.dapr/bin/dapr init --slim
-          ~/.dapr/bin/dapr --version
+          echo "$HOME/.dapr/bin" >> $GITHUB_PATH
+
+      - name: Initialize Dapr
+        run: |
+          dapr init --slim
+          dapr --version
+          echo "✓ Dapr CLI is now available in PATH for subsequent steps"
 
       - name: Cache NuGet packages
         uses: actions/cache@v4
