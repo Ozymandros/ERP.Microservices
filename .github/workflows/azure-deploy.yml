@@ -140,7 +140,7 @@ jobs:
       - name: Setup Azure Developer CLI
         uses: Azure/setup-azd@v2
 
-      - name: Preview Infrastructure Changes
+      - name: Setup azd authentication and show environment summary
         id: preview
         run: |
           azd auth login \
@@ -149,6 +149,12 @@ jobs:
             --tenant-id "${{ vars.AZURE_TENANT_ID }}"
           azd preview --environment ${{ env.AZURE_ENVIRONMENT }} || echo "Preview not available"
         continue-on-error: true
+
+      - name: Preview Infrastructure Provisioning (Required)
+        run: |
+          echo "Previewing infrastructure changes..."
+          azd provision --preview --environment ${{ env.AZURE_ENVIRONMENT }}
+          echo "Preview successful. Proceeding with provisioning..."
 
       - name: Provision Infrastructure
         id: provision

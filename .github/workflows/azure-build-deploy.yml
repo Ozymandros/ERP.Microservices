@@ -58,6 +58,18 @@ jobs:
           ~/.dapr/bin/dapr init --slim
           ~/.dapr/bin/dapr --version
 
+      - name: Preview Infrastructure Provisioning (Required)
+        env:
+          AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
+          AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        run: |
+          echo "Previewing infrastructure changes..."
+          azd provision --preview
+          echo "Preview successful. Proceeding with provisioning..."
+
       - name: Provision Infrastructure
         env:
           AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
