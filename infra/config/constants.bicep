@@ -94,7 +94,7 @@ var azureRoleIdAcrPull = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
 
 @export()
 @description('Azure built-in role ID: App Configuration Data Reader - Allows reading App Configuration data')
-var azureRoleIdAppConfigurationDataReader = '516239f1-63e1-4108-9233-9e7f68e97ce3'
+var azureRoleIdAppConfigurationDataReader = '516239f1-63e1-4d78-a4de-a74fb236a071'
 
 @export()
 @description('Azure built-in role ID: Key Vault Secrets User - Allows reading secret values from Key Vault')
