@@ -113,18 +113,6 @@ jobs:
           echo "Provisioning infrastructure..."
           azd provision --no-prompt
 
-      - name: Get Registry Name
-        id: registry
-        env:
-          AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
-        run: |
-          azd env refresh --environment $AZURE_ENV_NAME
-          REGISTRY_NAME=$(azd env get-value AZURE_CONTAINER_REGISTRY_NAME --environment $AZURE_ENV_NAME)
-          echo "registry_name=$REGISTRY_NAME" >> $GITHUB_OUTPUT
-
-    outputs:
-      registry_name: ${{ steps.registry.outputs.registry_name }}
-
   build-and-push-images:
     name: Build Docker Images
     needs: provision-infrastructure
@@ -145,24 +133,29 @@ jobs:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Use Registry Name from Provision Job
+      - name: Get Registry Name
+        env:
+          AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
         run: |
-          REGISTRY_NAME="${{ needs.provision-infrastructure.outputs.registry_name }}"
+          azd env refresh --environment $AZURE_ENV_NAME
+
+          # Get registry name - try azd env first, fallback to Azure directly
+          REGISTRY_NAME=$(azd env get-value AZURE_CONTAINER_REGISTRY_NAME --environment $AZURE_ENV_NAME 2>/dev/null)
+
           if [ -z "$REGISTRY_NAME" ]; then
-            echo "ERROR: Registry name not available from provision job!"
-            exit 1
+            RESOURCE_GROUP="rg-myapp-${AZURE_ENV_NAME}-core"
+            REGISTRY_NAME=$(az acr list --resource-group "$RESOURCE_GROUP" --query "[0].name" -o tsv)
           fi
-          echo "✓ Using registry: $REGISTRY_NAME"
+
           echo "REGISTRY_NAME=$REGISTRY_NAME" >> $GITHUB_ENV
 
       - name: Login to ACR
-        run: az acr login --name ${{ needs.provision-infrastructure.outputs.registry_name }}
+        run: az acr login --name $REGISTRY_NAME
 
       # Build and push shared base image FIRST (required by Inventory, Billing, Orders, Purchasing, Sales)
       - name: Build and push shared base image
         run: |
           IMAGE_TAG=${GITHUB_SHA::7}
-          REGISTRY_NAME="${{ needs.provision-infrastructure.outputs.registry_name }}"
           echo "Building shared base image with tag: $IMAGE_TAG"
 
           az acr build \
@@ -193,7 +186,6 @@ jobs:
 
           # Get Git commit hash for image tag
           IMAGE_TAG=${GITHUB_SHA::7}
-          REGISTRY_NAME="${{ needs.provision-infrastructure.outputs.registry_name }}"
 
           # Get registry endpoint from azd environment (already available after provision)
           BASE_IMAGE_REGISTRY="${AZURE_CONTAINER_REGISTRY_ENDPOINT:-}"
@@ -233,14 +225,12 @@ jobs:
 
       - name: Verify images in ACR
         run: |
-          REGISTRY_NAME="${{ needs.provision-infrastructure.outputs.registry_name }}"
-
           echo "=== All Images in ACR ==="
           az acr repository list --name $REGISTRY_NAME --output table
 
           echo ""
           echo "=== Base Image Tags ==="
-          az acr repository show-tags --name $REGISTRY_NAME --repository myapp-microservices-base --output table || echo "Base image not found"
+          az acr repository show-tags --name "$REGISTRY_NAME" --repository myapp-microservices-base --output table || echo "Base image not found"
 
           echo ""
           echo "=== Service Image Tags ==="
