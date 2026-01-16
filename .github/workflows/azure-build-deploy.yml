@@ -36,34 +36,6 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Force create azd environment context
-        run: |
-          # Això crea la configuració mínima perquè azd no digui "no existeix"
-          azd env new ${{ env.AZURE_ENV_NAME }} --location ${{ env.AZURE_LOCATION }} --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        continue-on-error: true
-
-      - name: Refresh environment from Azure
-        run: |
-          # Això porta els valors reals des d'Azure al runner de GitHub
-          azd env refresh --environment ${{ env.AZURE_ENV_NAME }}
-
-      - name: Configure azd to use Azure CLI credentials
-        run: |
-          echo "Configuring azd to use Azure CLI credentials..."
-          # azd will use Azure CLI credentials when AZURE_CLIENT_ID is set
-          export AZURE_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}
-          export AZURE_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}
-          export AZURE_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-          # Verify Azure CLI is authenticated
-          az account show || {
-            echo "ERROR: Azure CLI is not authenticated"
-            exit 1
-          }
-
-          # Configure azd to use Azure CLI credentials
-          azd config set auth.useAzCliAuth true
-
       - name: Setup Dapr CLI
         uses: dapr/setup-dapr@v1
         with:
@@ -92,6 +64,34 @@ jobs:
           # Verify initialization
           echo "✓ Dapr CLI installed and initialized successfully"
           echo "✓ DaprCliPath set to: $DAPR_PATH"
+
+      - name: Force create azd environment context
+        run: |
+          # Això crea la configuració mínima perquè azd no digui "no existeix"
+          azd env new ${{ env.AZURE_ENV_NAME }} --location ${{ env.AZURE_LOCATION }} --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        continue-on-error: true
+
+      - name: Refresh environment from Azure
+        run: |
+          # Això porta els valors reals des d'Azure al runner de GitHub
+          azd env refresh --environment ${{ env.AZURE_ENV_NAME }}
+
+      - name: Configure azd to use Azure CLI credentials
+        run: |
+          echo "Configuring azd to use Azure CLI credentials..."
+          # azd will use Azure CLI credentials when AZURE_CLIENT_ID is set
+          export AZURE_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}
+          export AZURE_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}
+          export AZURE_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+          # Verify Azure CLI is authenticated
+          az account show || {
+            echo "ERROR: Azure CLI is not authenticated"
+            exit 1
+          }
+
+          # Configure azd to use Azure CLI credentials
+          azd config set auth.useAzCliAuth true
 
       - name: Preview Infrastructure Provisioning (Required)
         env:
