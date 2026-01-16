@@ -38,7 +38,7 @@ jobs:
 
       - name: Bridge az to azd
         run: azd config set auth.useAzCliAuth true
-              
+
       - name: Setup Dapr CLI
         uses: dapr/setup-dapr@v1
         with:
@@ -119,36 +119,24 @@ jobs:
           echo "Provisioning infrastructure..."
           azd provision --no-prompt
 
-      - name: Get Registry Name from azd outputs
+      - name: Get Registry Name
         id: registry
         env:
           AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
         run: |
-          echo "Getting registry name from azd outputs..."
+          # Refresh environment to ensure variables are loaded
+          azd env refresh --environment $AZURE_ENV_NAME
 
-          # Capture JSON output and check if azd show succeeded
-          AZD_OUTPUT=$(azd show --output json --environment $AZURE_ENV_NAME 2>&1)
-          AZD_EXIT_CODE=$?
+          # Try to read directly from environment first
+          REGISTRY_NAME="${AZURE_CONTAINER_REGISTRY_NAME:-}"
 
-          if [ $AZD_EXIT_CODE -ne 0 ]; then
-            echo "ERROR: azd show failed with exit code $AZD_EXIT_CODE"
-            echo "Output: $AZD_OUTPUT"
-            echo ""
-            echo "This indicates the infrastructure provision failed or the environment does not exist."
-            exit 1
+          # If not found, get it from azd
+          if [ -z "$REGISTRY_NAME" ]; then
+            REGISTRY_NAME=$(azd env get-value AZURE_CONTAINER_REGISTRY_NAME --environment $AZURE_ENV_NAME)
           fi
 
-          # Extract registry name from JSON output
-          REGISTRY_NAME=$(echo "$AZD_OUTPUT" | jq -r '.outputs.AZURE_CONTAINER_REGISTRY_NAME.value // empty')
-
-          if [ -z "$REGISTRY_NAME" ] || [ "$REGISTRY_NAME" == "null" ]; then
-            echo "ERROR: Registry name not found in azd outputs!"
-            echo "This indicates the infrastructure provision did not create the registry correctly."
-            echo ""
-            echo "Debugging information:"
-            echo "Environment: $AZURE_ENV_NAME"
-            echo "Available outputs:"
-            echo "$AZD_OUTPUT" | jq '.outputs // {}'
+          if [ -z "$REGISTRY_NAME" ]; then
+            echo "ERROR: AZURE_CONTAINER_REGISTRY_NAME not found"
             exit 1
           fi
 
