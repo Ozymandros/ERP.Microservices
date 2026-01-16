@@ -36,6 +36,9 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Bridge az to azd
+        run: azd config set auth.useAzCliAuth true
+              
       - name: Setup Dapr CLI
         uses: dapr/setup-dapr@v1
         with:
