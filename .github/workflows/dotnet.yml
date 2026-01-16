@@ -38,7 +38,37 @@ jobs:
       - name: Build
         run: dotnet build ERP.Microservices.sln --configuration Release --no-restore
 
+      - name: Setup Dapr CLI
+        uses: dapr/setup-dapr@v1
+        with:
+          version: "1.12.0"
+
+      - name: Validate Dapr CLI
+        run: |
+          echo "Validating Dapr CLI installation..."
+          dapr --version || {
+            echo "ERROR: Dapr CLI not found after installation"
+            exit 1
+          }
+          
+          # Find where dapr is installed
+          DAPR_PATH=$(which dapr)
+          echo "Dapr CLI found at: $DAPR_PATH"
+          
+          # Set DaprCliPath for Aspire tests
+          echo "DaprCliPath=$DAPR_PATH" >> $GITHUB_ENV
+          echo "DAPR_HOME=$HOME/.dapr" >> $GITHUB_ENV
+          
+          # Initialize Dapr in slim mode (required for Aspire)
+          echo "Initializing Dapr runtime..."
+          dapr init --slim
+          
+          echo "✓ Dapr CLI installed and initialized successfully"
+
       - name: Test
+        env:
+          DaprCliPath: ${{ env.DaprCliPath }}
+          DAPR_HOME: ${{ env.DAPR_HOME }}
         run: dotnet test ERP.Microservices.sln --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
         continue-on-error: true
 
