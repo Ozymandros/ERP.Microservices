@@ -18,9 +18,8 @@ COPY ["src/MyApp.Sales/MyApp.Sales.Application/MyApp.Sales.Application.csproj", 
 COPY ["src/MyApp.Sales/MyApp.Sales.Infrastructure/MyApp.Sales.Infrastructure.csproj", "MyApp.Sales/MyApp.Sales.Infrastructure/"]
 COPY ["src/MyApp.Sales/MyApp.Sales.API/MyApp.Sales.API.csproj", "MyApp.Sales/MyApp.Sales.API/"]
 
-# Restore dependencies with BuildKit cache mount (MUCH FASTER)
-RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
-    dotnet restore "MyApp.Sales/MyApp.Sales.API/MyApp.Sales.API.csproj"
+# Restore dependencies
+RUN dotnet restore "MyApp.Sales/MyApp.Sales.API/MyApp.Sales.API.csproj"
 
 # Copy only needed source files (not everything from context)
 COPY src/MyApp.Shared/ MyApp.Shared/
@@ -28,13 +27,11 @@ COPY src/MyApp.Sales/ MyApp.Sales/
 
 # Build the project
 WORKDIR "/src/MyApp.Sales/MyApp.Sales.API"
-RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
-    dotnet build "MyApp.Sales.API.csproj" -c Release -o /app/build
+RUN dotnet build "MyApp.Sales.API.csproj" -c Release -o /app/build
 
 # Publish stage
 FROM build AS publish
-RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
-    dotnet publish "MyApp.Sales.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "MyApp.Sales.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Runtime stage - Use shared base image
 # Build arg for registry prefix (e.g., "myappdevcontainerregistry.azurecr.io/" or empty for local)

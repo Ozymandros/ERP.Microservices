@@ -116,7 +116,7 @@ services:
   erpapigateway:
     build:
       context: ./src
-      dockerfile: ErpApiGateway/Dockerfile
+      dockerfile: ErpApiGateway/Dockerfile.local
       args:
         BUILDKIT_INLINE_CACHE: 1
     container_name: gateway
@@ -165,7 +165,7 @@ services:
   auth-service:
     build:
       context: ./src
-      dockerfile: MyApp.Auth/MyApp.Auth.API/Dockerfile
+      dockerfile: MyApp.Auth/MyApp.Auth.API/Dockerfile.local
       args:
         BUILDKIT_INLINE_CACHE: 1
     container_name: auth-service
@@ -267,7 +267,7 @@ services:
   inventory-service:
     build:
       context: ./src
-      dockerfile: MyApp.Inventory/MyApp.Inventory.API/Dockerfile
+      dockerfile: MyApp.Inventory/MyApp.Inventory.API/Dockerfile.local
       args:
         BUILDKIT_INLINE_CACHE: 1
     container_name: inventory-service
@@ -318,7 +318,7 @@ services:
   orders-service:
     build:
       context: ./src
-      dockerfile: MyApp.Orders/MyApp.Orders.API/Dockerfile
+      dockerfile: MyApp.Orders/MyApp.Orders.API/Dockerfile.local
       args:
         BUILDKIT_INLINE_CACHE: 1
     container_name: orders-service
@@ -369,7 +369,7 @@ services:
   purchasing-service:
     build:
       context: ./src
-      dockerfile: MyApp.Purchasing/MyApp.Purchasing.API/Dockerfile
+      dockerfile: MyApp.Purchasing/MyApp.Purchasing.API/Dockerfile.local
       args:
         BUILDKIT_INLINE_CACHE: 1
     container_name: purchasing-service
@@ -420,7 +420,7 @@ services:
   sales-service:
     build:
       context: ./src
-      dockerfile: MyApp.Sales/MyApp.Sales.API/Dockerfile
+      dockerfile: MyApp.Sales/MyApp.Sales.API/Dockerfile.local
       args:
         BUILDKIT_INLINE_CACHE: 1
     container_name: sales-service
