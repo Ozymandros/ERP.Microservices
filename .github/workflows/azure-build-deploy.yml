@@ -118,23 +118,8 @@ jobs:
         env:
           AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
         run: |
-          # Refresh environment to ensure variables are loaded
           azd env refresh --environment $AZURE_ENV_NAME
-
-          # Try to read directly from environment first
-          REGISTRY_NAME="${AZURE_CONTAINER_REGISTRY_NAME:-}"
-
-          # If not found, get it from azd
-          if [ -z "$REGISTRY_NAME" ]; then
-            REGISTRY_NAME=$(azd env get-value AZURE_CONTAINER_REGISTRY_NAME --environment $AZURE_ENV_NAME)
-          fi
-
-          if [ -z "$REGISTRY_NAME" ]; then
-            echo "ERROR: AZURE_CONTAINER_REGISTRY_NAME not found"
-            exit 1
-          fi
-
-          echo "✓ Registry name obtained: $REGISTRY_NAME"
+          REGISTRY_NAME=$(azd env get-value AZURE_CONTAINER_REGISTRY_NAME --environment $AZURE_ENV_NAME)
           echo "registry_name=$REGISTRY_NAME" >> $GITHUB_OUTPUT
 
     outputs:
