@@ -17,10 +17,6 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    env:
-      # Dapr configuration - Aspire reads DaprCliPath from environment
-      DaprCliPath: /usr/local/bin/dapr
-      DAPR_HOME: /home/runner/.dapr
 
     steps:
       - name: Checkout code
@@ -32,63 +28,9 @@ jobs:
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Setup Dapr CLI
-        uses: dapr/setup-dapr@v1
-        with:
-          version: "1.12.0"
-
-      - name: Validate and Configure Dapr CLI for Aspire
-        run: |
-          echo "Validating Dapr CLI installation..."
-          dapr --version || {
-            echo "ERROR: Dapr CLI not found after installation"
-            exit 1
-          }
-
-          # Find where dapr is installed
-          DAPR_PATH=$(which dapr)
-          echo "Dapr CLI found at: $DAPR_PATH"
-
-          # Update DaprCliPath environment variable for Aspire
-          # Aspire reads DaprCliPath from environment
-          echo "DaprCliPath=$DAPR_PATH" >> $GITHUB_ENV
-
-          # Initialize Dapr in slim mode (required for Aspire)
-          echo "Initializing Dapr runtime..."
-          dapr init --slim
-
-          # Verify initialization
-          echo "✓ Dapr CLI installed and initialized successfully"
-          echo "✓ DaprCliPath set to: $DAPR_PATH"
-
-      - name: Force create azd environment context
-        run: |
-          # This creates the minimal configuration so azd doesn't say "does not exist"
-          azd env new ${{ env.AZURE_ENV_NAME }} --location ${{ env.AZURE_LOCATION }} --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        continue-on-error: true
-
-      - name: Refresh environment from Azure
-        run: |
-          # This brings the real values from Azure to the GitHub runner
-          azd env refresh --environment ${{ env.AZURE_ENV_NAME }}
-
-      - name: Configure azd to use Azure CLI credentials
-        run: |
-          echo "Configuring azd to use Azure CLI credentials..."
-          # azd will use Azure CLI credentials when AZURE_CLIENT_ID is set
-          export AZURE_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}
-          export AZURE_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}
-          export AZURE_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-          # Verify Azure CLI is authenticated
-          az account show || {
-            echo "ERROR: Azure CLI is not authenticated"
-            exit 1
-          }
-
-          # Configure azd to use Azure CLI credentials
-          azd config set auth.useAzCliAuth true
+          azure-env-name: ${{ env.AZURE_ENV_NAME }}
+          azure-location: ${{ env.AZURE_LOCATION }}
+          setup-dapr: "true"
 
       - name: Preview Infrastructure Provisioning (Required)
         env:
@@ -133,17 +75,7 @@ jobs:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           azure-env-name: ${{ env.AZURE_ENV_NAME }}
-
-      - name: Force create azd environment context
-        run: |
-          # This creates the minimal configuration so azd doesn't say "does not exist"
-          azd env new ${{ env.AZURE_ENV_NAME }} --location ${{ env.AZURE_LOCATION }} --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        continue-on-error: true
-
-      - name: Refresh environment from Azure
-        run: |
-          # This brings the real values from Azure to the GitHub runner
-          azd env refresh --environment ${{ env.AZURE_ENV_NAME }}
+          azure-location: ${{ env.AZURE_LOCATION }}
 
       - name: Login to ACR
         run: az acr login --name $REGISTRY_NAME
@@ -272,34 +204,9 @@ jobs:
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Setup Dapr CLI
-        uses: dapr/setup-dapr@v1
-        with:
-          version: "1.12.0"
-
-      - name: Validate and Configure Dapr CLI for Aspire
-        run: |
-          echo "Validating Dapr CLI installation..."
-          dapr --version || {
-            echo "ERROR: Dapr CLI not found after installation"
-            exit 1
-          }
-
-          # Find where dapr is installed
-          DAPR_PATH=$(which dapr)
-          echo "Dapr CLI found at: $DAPR_PATH"
-
-          # Update DaprCliPath environment variable for Aspire
-          echo "DaprCliPath=$DAPR_PATH" >> $GITHUB_ENV
-
-          # Initialize Dapr in slim mode (required for Aspire)
-          echo "Initializing Dapr runtime..."
-          dapr init --slim
-
-          # Verify initialization
-          echo "✓ Dapr CLI installed and initialized successfully"
-          echo "✓ DaprCliPath set to: $DAPR_PATH"
+          azure-env-name: ${{ env.AZURE_ENV_NAME }}
+          azure-location: ${{ env.AZURE_LOCATION }}
+          setup-dapr: "true"
 
       - name: Set up dotnet
         uses: actions/setup-dotnet@v4
