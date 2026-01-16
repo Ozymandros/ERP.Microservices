@@ -69,6 +69,30 @@ jobs:
         with:
           version: "1.12.0"
 
+      - name: Validate and Configure Dapr CLI for Aspire
+        run: |
+          echo "Validating Dapr CLI installation..."
+          dapr --version || {
+            echo "ERROR: Dapr CLI not found after installation"
+            exit 1
+          }
+
+          # Find where dapr is installed
+          DAPR_PATH=$(which dapr)
+          echo "Dapr CLI found at: $DAPR_PATH"
+
+          # Update DaprCliPath environment variable for Aspire
+          # Aspire reads DaprCliPath from environment
+          echo "DaprCliPath=$DAPR_PATH" >> $GITHUB_ENV
+
+          # Initialize Dapr in slim mode (required for Aspire)
+          echo "Initializing Dapr runtime..."
+          dapr init --slim
+
+          # Verify initialization
+          echo "✓ Dapr CLI installed and initialized successfully"
+          echo "✓ DaprCliPath set to: $DAPR_PATH"
+
       - name: Preview Infrastructure Provisioning (Required)
         env:
           AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
@@ -295,6 +319,11 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    env:
+      # Dapr configuration - Aspire reads DaprCliPath from environment
+      # Will be updated after Dapr installation to point to actual location
+      DaprCliPath: /usr/local/bin/dapr
+      DAPR_HOME: /home/runner/.dapr
 
     steps:
       - name: Checkout code
@@ -320,6 +349,34 @@ jobs:
           }
           # Configure azd to use Azure CLI credentials
           azd config set auth.useAzCliAuth true
+
+      - name: Setup Dapr CLI
+        uses: dapr/setup-dapr@v1
+        with:
+          version: "1.12.0"
+
+      - name: Validate and Configure Dapr CLI for Aspire
+        run: |
+          echo "Validating Dapr CLI installation..."
+          dapr --version || {
+            echo "ERROR: Dapr CLI not found after installation"
+            exit 1
+          }
+
+          # Find where dapr is installed
+          DAPR_PATH=$(which dapr)
+          echo "Dapr CLI found at: $DAPR_PATH"
+
+          # Update DaprCliPath environment variable for Aspire
+          echo "DaprCliPath=$DAPR_PATH" >> $GITHUB_ENV
+
+          # Initialize Dapr in slim mode (required for Aspire)
+          echo "Initializing Dapr runtime..."
+          dapr init --slim
+
+          # Verify initialization
+          echo "✓ Dapr CLI installed and initialized successfully"
+          echo "✓ DaprCliPath set to: $DAPR_PATH"
 
       - name: Set up dotnet
         uses: actions/setup-dotnet@v4
