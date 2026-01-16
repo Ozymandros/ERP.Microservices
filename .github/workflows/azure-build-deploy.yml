@@ -23,21 +23,13 @@ jobs:
       DAPR_HOME: /home/runner/.dapr
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Azure Developer CLI
-        uses: Azure/setup-azd@v2
-
-      - name: Azure login (Federated)
-        uses: azure/login@v2
+      - name: Setup Azure and Azure Developer CLI
+        uses: ./.github/actions/setup-azure-azd
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Bridge az to azd
-        run: azd config set auth.useAzCliAuth true
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          checkout-code: "true"
 
       - name: Setup Dapr CLI
         uses: dapr/setup-dapr@v1
@@ -156,21 +148,13 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Azure Developer CLI
-        uses: Azure/setup-azd@v2
-
-      - name: Azure login (Federated)
-        uses: azure/login@v2
+      - name: Setup Azure and Azure Developer CLI
+        uses: ./.github/actions/setup-azure-azd
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Bridge az to azd
-        run: azd config set auth.useAzCliAuth true
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          checkout-code: "true"
 
       - name: Use Registry Name from Provision Job
         run: |
@@ -210,22 +194,30 @@ jobs:
           echo "Checking base image tags..."
           az acr repository show-tags --name $REGISTRY_NAME --repository myapp-microservices-base --output table
 
-          # Verify specific tags exist
+          # Verify specific tags exist - use more robust checking with query
           echo "Verifying required tags exist..."
-          TAGS=$(az acr repository show-tags --name $REGISTRY_NAME --repository myapp-microservices-base --output tsv)
-          if [[ ! "$TAGS" =~ "$IMAGE_TAG" ]]; then
-            echo "WARNING: Tag $IMAGE_TAG not found, but continuing..."
-          fi
-          if [[ ! "$TAGS" =~ "10.0" ]]; then
-            echo "ERROR: Tag 10.0 not found - this is required!"
-            exit 1
-          fi
-          if [[ ! "$TAGS" =~ "latest" ]]; then
-            echo "ERROR: Tag latest not found - this is required!"
+
+          # Check for tag "10.0"
+          if ! az acr repository show-tags \
+            --name $REGISTRY_NAME \
+            --repository myapp-microservices-base \
+            --query "[?name=='10.0'].name" \
+            --output tsv | grep -q "10.0"; then
+            echo "ERROR: Tag '10.0' not found - this is required!"
             exit 1
           fi
 
-          echo "✓ Base image verified in registry with all required tags"
+          # Check for tag "latest"
+          if ! az acr repository show-tags \
+            --name $REGISTRY_NAME \
+            --repository myapp-microservices-base \
+            --query "[?name=='latest'].name" \
+            --output tsv | grep -q "latest"; then
+            echo "ERROR: Tag 'latest' not found - this is required!"
+            exit 1
+          fi
+
+          echo "✓ Base image verified in registry with all required tags (10.0, latest)"
 
       # Build and push all service images
       - name: Build and push service images to ACR
@@ -327,29 +319,13 @@ jobs:
       DAPR_HOME: /home/runner/.dapr
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Azure Developer CLI
-        uses: Azure/setup-azd@v2
-
-      - name: Azure login (Federated)
-        uses: azure/login@v2
+      - name: Setup Azure and Azure Developer CLI
+        uses: ./.github/actions/setup-azure-azd
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Configure azd to use Azure CLI credentials
-        run: |
-          echo "Configuring azd to use Azure CLI credentials..."
-          # Verify Azure CLI is authenticated
-          az account show || {
-            echo "ERROR: Azure CLI is not authenticated"
-            exit 1
-          }
-          # Configure azd to use Azure CLI credentials
-          azd config set auth.useAzCliAuth true
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          checkout-code: "true"
 
       - name: Setup Dapr CLI
         uses: dapr/setup-dapr@v1

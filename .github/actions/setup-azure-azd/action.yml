@@ -1,0 +1,38 @@
+name: "Setup Azure and Azure Developer CLI"
+description: "Sets up Azure CLI authentication and Azure Developer CLI (azd) with federated credentials"
+
+inputs:
+  azure-client-id:
+    description: "Azure Client ID for federated authentication"
+    required: true
+  azure-tenant-id:
+    description: "Azure Tenant ID"
+    required: true
+  azure-subscription-id:
+    description: "Azure Subscription ID"
+    required: true
+  checkout-code:
+    description: "Whether to checkout the code (default: true)"
+    required: false
+    default: "true"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      if: inputs.checkout-code == 'true'
+      uses: actions/checkout@v4
+
+    - name: Setup Azure Developer CLI
+      uses: Azure/setup-azd@v2
+
+    - name: Azure login (Federated)
+      uses: azure/login@v2
+      with:
+        client-id: ${{ inputs.azure-client-id }}
+        tenant-id: ${{ inputs.azure-tenant-id }}
+        subscription-id: ${{ inputs.azure-subscription-id }}
+
+    - name: Bridge az to azd
+      run: azd config set auth.useAzCliAuth true
+      shell: bash
