@@ -23,13 +23,15 @@ jobs:
       DAPR_HOME: /home/runner/.dapr
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup Azure and Azure Developer CLI
         uses: ./.github/actions/setup-azure-azd
         with:
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          checkout-code: "true"
 
       - name: Setup Dapr CLI
         uses: dapr/setup-dapr@v1
@@ -148,13 +150,15 @@ jobs:
       id-token: write
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup Azure and Azure Developer CLI
         uses: ./.github/actions/setup-azure-azd
         with:
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          checkout-code: "true"
 
       - name: Use Registry Name from Provision Job
         run: |
@@ -319,13 +323,15 @@ jobs:
       DAPR_HOME: /home/runner/.dapr
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup Azure and Azure Developer CLI
         uses: ./.github/actions/setup-azure-azd
         with:
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          checkout-code: "true"
 
       - name: Setup Dapr CLI
         uses: dapr/setup-dapr@v1

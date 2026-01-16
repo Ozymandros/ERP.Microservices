@@ -11,18 +11,9 @@ inputs:
   azure-subscription-id:
     description: "Azure Subscription ID"
     required: true
-  checkout-code:
-    description: "Whether to checkout the code (default: true)"
-    required: false
-    default: "true"
-
 runs:
   using: "composite"
   steps:
-    - name: Checkout code
-      if: inputs.checkout-code == 'true'
-      uses: actions/checkout@v4
-
     - name: Setup Azure Developer CLI
       uses: Azure/setup-azd@v2
 
