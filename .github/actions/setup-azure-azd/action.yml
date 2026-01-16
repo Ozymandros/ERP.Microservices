@@ -11,6 +11,10 @@ inputs:
   azure-subscription-id:
     description: "Azure Subscription ID"
     required: true
+  azure-env-name:
+    description: "Azure Environment Name (optional, used to get registry name)"
+    required: false
+    default: ""
 runs:
   using: "composite"
   steps:
@@ -26,4 +30,22 @@ runs:
 
     - name: Bridge az to azd
       run: azd config set auth.useAzCliAuth true
+      shell: bash
+
+    - name: Get Registry Name (if environment name provided)
+      if: inputs.azure-env-name != ''
+      run: |
+        azd env refresh --environment ${{ inputs.azure-env-name }}
+
+        # Get registry name - try azd env first, fallback to Azure directly
+        REGISTRY_NAME=$(azd env get-value AZURE_CONTAINER_REGISTRY_NAME --environment ${{ inputs.azure-env-name }} 2>/dev/null || echo "")
+
+        if [ -z "$REGISTRY_NAME" ]; then
+          RESOURCE_GROUP="rg-myapp-${{ inputs.azure-env-name }}-core"
+          REGISTRY_NAME=$(az acr list --resource-group "$RESOURCE_GROUP" --query "[0].name" -o tsv)
+        fi
+
+        if [ -n "$REGISTRY_NAME" ]; then
+          echo "REGISTRY_NAME=$REGISTRY_NAME" >> $GITHUB_ENV
+        fi
       shell: bash

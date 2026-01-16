@@ -132,22 +132,18 @@ jobs:
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          azure-env-name: ${{ env.AZURE_ENV_NAME }}
 
-      - name: Get Registry Name
-        env:
-          AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
+      - name: Force create azd environment context
         run: |
-          azd env refresh --environment $AZURE_ENV_NAME
+          # This creates the minimal configuration so azd doesn't say "does not exist"
+          azd env new ${{ env.AZURE_ENV_NAME }} --location ${{ env.AZURE_LOCATION }} --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        continue-on-error: true
 
-          # Get registry name - try azd env first, fallback to Azure directly
-          REGISTRY_NAME=$(azd env get-value AZURE_CONTAINER_REGISTRY_NAME --environment $AZURE_ENV_NAME 2>/dev/null)
-
-          if [ -z "$REGISTRY_NAME" ]; then
-            RESOURCE_GROUP="rg-myapp-${AZURE_ENV_NAME}-core"
-            REGISTRY_NAME=$(az acr list --resource-group "$RESOURCE_GROUP" --query "[0].name" -o tsv)
-          fi
-
-          echo "REGISTRY_NAME=$REGISTRY_NAME" >> $GITHUB_ENV
+      - name: Refresh environment from Azure
+        run: |
+          # This brings the real values from Azure to the GitHub runner
+          azd env refresh --environment ${{ env.AZURE_ENV_NAME }}
 
       - name: Login to ACR
         run: az acr login --name $REGISTRY_NAME
