@@ -239,10 +239,15 @@ jobs:
           IMAGE_TAG=${GITHUB_SHA::7}
           REGISTRY_NAME="${{ needs.provision-infrastructure.outputs.registry_name }}"
 
-          echo "Building service images with tag: $IMAGE_TAG"
+          # Get registry endpoint from azd environment (already available after provision)
+          BASE_IMAGE_REGISTRY="${AZURE_CONTAINER_REGISTRY_ENDPOINT:-}"
+          if [ -z "$BASE_IMAGE_REGISTRY" ]; then
+            BASE_IMAGE_REGISTRY=$(azd env get-value AZURE_CONTAINER_REGISTRY_ENDPOINT --environment $AZURE_ENV_NAME)
+          fi
+          # Add trailing slash for Dockerfile FROM statement
+          BASE_IMAGE_REGISTRY="${BASE_IMAGE_REGISTRY}/"
 
-          # Registry prefix for base image (services that use shared base image)
-          REGISTRY_PREFIX="${REGISTRY_NAME}.azurecr.io/"
+          echo "Building service images with tag: $IMAGE_TAG"
 
           for SERVICE in "${SERVICES[@]}"; do
               IFS=':' read -r SERVICE_PATH IMAGE_NAME <<< "$SERVICE"
@@ -250,14 +255,13 @@ jobs:
               
               # Check if this service uses the shared base image (all except auth-service and erp-api-gateway)
               if [[ "$IMAGE_NAME" != "auth-service" && "$IMAGE_NAME" != "erp-api-gateway" ]]; then
-                  # Pass registry prefix as build arg for base image resolution
-                  # Use root context (.) and add src/ prefix to Dockerfile path
+                  # Pass registry endpoint as build arg for base image resolution
                   az acr build \
                       --registry $REGISTRY_NAME \
                       --image "$IMAGE_NAME:$IMAGE_TAG" \
                       --image "$IMAGE_NAME:latest" \
                       --file "src/$SERVICE_PATH/Dockerfile" \
-                      --build-arg BASE_IMAGE_REGISTRY="$REGISTRY_PREFIX" \
+                      --build-arg BASE_IMAGE_REGISTRY="$BASE_IMAGE_REGISTRY" \
                       .
               else
                   # Auth and Gateway don't use shared base image
