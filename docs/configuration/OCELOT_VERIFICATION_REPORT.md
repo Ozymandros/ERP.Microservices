@@ -52,7 +52,7 @@
   - ✅ Microsoft.AspNetCore.Authentication.JwtBearer 9.0.10 added
   - ✅ Microsoft.IdentityModel.Tokens 8.2.1 added
   - ✅ System.IdentityModel.Tokens.Jwt 8.2.1 added
-  - ✅ All dependencies compatible with .NET 10.0
+  - ✅ All dependencies compatible with .NET 9.0
   - **Status:** ✅ DEPENDENCIES INSTALLED
 
 ### Configuration Templates

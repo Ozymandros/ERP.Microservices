@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.OpenApi;
-using Microsoft.OpenApi;
+using Microsoft.OpenApi.Models;
 
 namespace MyApp.Shared.Infrastructure.OpenApi;
 
@@ -13,7 +13,7 @@ public sealed class DateTimeSchemaDocumentTransformer : IOpenApiDocumentTransfor
     {
         // Ensure Components exists
         document.Components ??= new OpenApiComponents();
-        document.Components.Schemas ??= new Dictionary<string, IOpenApiSchema>();
+        document.Components.Schemas ??= new Dictionary<string, OpenApiSchema>();
 
         // Fix all DateTime schemas in the document
         if (document.Components.Schemas != null)
@@ -79,7 +79,7 @@ public sealed class DateTimeSchemaDocumentTransformer : IOpenApiDocumentTransfor
         return Task.CompletedTask;
     }
 
-    private void FixDateTimeSchemas(IDictionary<string, IOpenApiSchema> schemas)
+    private void FixDateTimeSchemas(IDictionary<string, OpenApiSchema> schemas)
     {
         foreach (var kvp in schemas.ToList())
         {
@@ -90,12 +90,12 @@ public sealed class DateTimeSchemaDocumentTransformer : IOpenApiDocumentTransfor
         }
     }
 
-    private void FixSchemaRecursive(OpenApiSchema schema, IDictionary<string, IOpenApiSchema> allSchemas)
+    private void FixSchemaRecursive(OpenApiSchema schema, IDictionary<string, OpenApiSchema> allSchemas)
     {
         if (schema == null) return;
 
         // Fix DateTime schema
-        if (schema.Type == JsonSchemaType.String && schema.Format == "date-time")
+        if (schema.Type == "string" && schema.Format == "date-time")
         {
             // Remove any default value that might be DateTime.MinValue
             // This prevents JsonException when OpenAPI schema generation tries to serialize default(DateTime)

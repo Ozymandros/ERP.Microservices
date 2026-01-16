@@ -78,7 +78,7 @@ builder.Services.AddOpenApi(options =>
     {
         if (context.JsonTypeInfo.Type == typeof(DateTime) || context.JsonTypeInfo.Type == typeof(DateTime?))
         {
-            schema.Type = Microsoft.OpenApi.JsonSchemaType.String;
+            schema.Type = "string";
             schema.Format = "date-time";
             schema.Default = null; // Prevents the engine from trying to serialize a default(DateTime)
             schema.Example = null;

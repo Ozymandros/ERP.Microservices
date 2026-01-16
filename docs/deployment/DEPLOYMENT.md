@@ -26,7 +26,7 @@ The application consists of:
 ## Prerequisites
 
 1. **Azure Developer CLI (azd)**: [Install azd](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd)
-2. **.NET 10.0 SDK**: [Install .NET](https://dotnet.microsoft.com/download)
+2. **.NET 9.0 SDK**: [Install .NET](https://dotnet.microsoft.com/download)
 3. **Docker**: [Install Docker](https://docs.docker.com/get-docker/)
 4. **Azure Subscription**: Active Azure subscription with permissions to create resources
 

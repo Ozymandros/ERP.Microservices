@@ -9,7 +9,7 @@ This document outlines the comprehensive plan to fix CodeQL security and code qu
 ### CodeQL Workflow Status
 - **Location**: `.github/workflows/codeql.yml`
 - **Status**: ✅ Configured for C# analysis
-- **Target**: .NET 10.0.x
+- **Target**: .NET 9.0.x
 - **Build**: `ERP.Microservices.sln` in Release configuration
 
 ### Identified Issues
@@ -329,7 +329,7 @@ var products = await _context.Products.FromSqlRaw(sql).ToListAsync();
 **File**: `.github/workflows/codeql.yml`
 
 **Current Configuration**: ✅ Looks good, but verify:
-- [ ] .NET version matches project (10.0.x)
+- [ ] .NET version matches project (9.0.x)
 - [ ] Solution file path is correct
 - [ ] Build configuration is Release
 - [ ] Permissions are correct

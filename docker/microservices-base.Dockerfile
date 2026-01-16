@@ -2,7 +2,7 @@
 # This image includes common dependencies and runtime configuration
 # Used by: Billing, Inventory, Orders, Purchasing, Sales services
 
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 EXPOSE 8080
 
@@ -12,7 +12,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         curl \
         ca-certificates \
-        libicu74 \
+        libicu72 \
     && rm -rf /var/lib/apt/lists/*
 
 # Create non-root user for security
