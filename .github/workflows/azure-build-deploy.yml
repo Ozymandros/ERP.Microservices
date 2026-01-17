@@ -8,6 +8,7 @@ on:
 env:
   AZURE_ENV_NAME: "dev"
   AZURE_LOCATION: "westeurope"
+  APP_PREFIX: "myapp"  # Base prefix for resource naming (matches namePrefix in Bicep)
 
 jobs:
   provision-infrastructure:
@@ -85,13 +86,14 @@ jobs:
       - name: Build and push shared base image
         run: |
           IMAGE_TAG=${GITHUB_SHA::7}
+          APP_PREFIX="${APP_PREFIX:-myapp}"
           echo "Building shared base image with tag: $IMAGE_TAG"
 
           az acr build \
             --registry $REGISTRY_NAME \
-            --image "myapp-microservices-base:$IMAGE_TAG" \
-            --image "myapp-microservices-base:10.0" \
-            --image "myapp-microservices-base:latest" \
+            --image "${APP_PREFIX}-microservices-base:$IMAGE_TAG" \
+            --image "${APP_PREFIX}-microservices-base:10.0" \
+            --image "${APP_PREFIX}-microservices-base:latest" \
             --file docker/microservices-base.Dockerfile \
             .
 
@@ -102,7 +104,11 @@ jobs:
       # Build and push all service images
       - name: Build and push service images to ACR
         run: |
-          # Define services to build (path relative to src/, image name)
+          # Use naming: {APP_PREFIX}-{service-name}-{environment}
+          AZURE_ENV_NAME="${AZURE_ENV_NAME:-dev}"
+          APP_PREFIX="${APP_PREFIX:-myapp}"
+          
+          # Define services to build (path relative to src/, service name from azure.yaml)
           declare -a SERVICES=(
               "MyApp.Auth/MyApp.Auth.API:auth-service"
               "MyApp.Billing/MyApp.Billing.API:billing-service"
@@ -110,7 +116,7 @@ jobs:
               "MyApp.Orders/MyApp.Orders.API:orders-service"
               "MyApp.Purchasing/MyApp.Purchasing.API:purchasing-service"
               "MyApp.Sales/MyApp.Sales.API:sales-service"
-              "ErpApiGateway:erp-api-gateway"
+              "ErpApiGateway:api-gateway"
           )
 
           # Get Git commit hash for image tag
@@ -124,29 +130,30 @@ jobs:
           # Add trailing slash for Dockerfile FROM statement
           BASE_IMAGE_REGISTRY="${BASE_IMAGE_REGISTRY}/"
 
-          echo "Building service images with tag: $IMAGE_TAG"
+          echo "Building service images with tag: $IMAGE_TAG using naming: ${APP_PREFIX}-{service-name}-${AZURE_ENV_NAME}"
 
           for SERVICE in "${SERVICES[@]}"; do
-              IFS=':' read -r SERVICE_PATH IMAGE_NAME <<< "$SERVICE"
-              echo "Building: $IMAGE_NAME from src/$SERVICE_PATH"
+              IFS=':' read -r SERVICE_PATH SERVICE_NAME <<< "$SERVICE"
+              # Use naming: {APP_PREFIX}-{service-name}-{environment}
+              REPO_NAME="${APP_PREFIX}-${SERVICE_NAME}-${AZURE_ENV_NAME}"
+              echo "Building: $REPO_NAME from src/$SERVICE_PATH"
               
-              # Check if this service uses the shared base image (all except auth-service and erp-api-gateway)
-              if [[ "$IMAGE_NAME" != "auth-service" && "$IMAGE_NAME" != "erp-api-gateway" ]]; then
+              # Check if this service uses the shared base image (all except auth-service and api-gateway)
+              if [[ "$SERVICE_NAME" != "auth-service" && "$SERVICE_NAME" != "api-gateway" ]]; then
                   # Pass registry endpoint as build arg for base image resolution
                   az acr build \
                       --registry $REGISTRY_NAME \
-                      --image "$IMAGE_NAME:$IMAGE_TAG" \
-                      --image "$IMAGE_NAME:latest" \
+                      --image "${REPO_NAME}:${IMAGE_TAG}" \
+                      --image "${REPO_NAME}:latest" \
                       --file "src/$SERVICE_PATH/Dockerfile" \
                       --build-arg BASE_IMAGE_REGISTRY="$BASE_IMAGE_REGISTRY" \
                       .
               else
                   # Auth and Gateway don't use shared base image
-                  # Use root context (.) and add src/ prefix to Dockerfile path
                   az acr build \
                       --registry $REGISTRY_NAME \
-                      --image "$IMAGE_NAME:$IMAGE_TAG" \
-                      --image "$IMAGE_NAME:latest" \
+                      --image "${REPO_NAME}:${IMAGE_TAG}" \
+                      --image "${REPO_NAME}:latest" \
                       --file "src/$SERVICE_PATH/Dockerfile" \
                       .
               fi
@@ -154,32 +161,33 @@ jobs:
 
       - name: Verify images in ACR
         run: |
+          AZURE_ENV_NAME="${AZURE_ENV_NAME:-dev}"
           echo "=== All Images in ACR ==="
           az acr repository list --name $REGISTRY_NAME --output table
 
           echo ""
+          APP_PREFIX="${APP_PREFIX:-myapp}"
           echo "=== Base Image Tags ==="
-          az acr repository show-tags --name "$REGISTRY_NAME" --repository myapp-microservices-base --output table || echo "Base image not found"
+          az acr repository show-tags --name "$REGISTRY_NAME" --repository "${APP_PREFIX}-microservices-base" --output table || echo "Base image not found"
 
           echo ""
-          echo "=== Service Image Tags ==="
-          for IMAGE in auth-service billing-service inventory-service orders-service purchasing-service sales-service erp-api-gateway; do
-              echo "Tags for $IMAGE:"
-              az acr repository show-tags --name $REGISTRY_NAME --repository $IMAGE --output table --top 3 || echo "  Image $IMAGE not found"
+          APP_PREFIX="${APP_PREFIX:-myapp}"
+          echo "=== Service Image Tags (using naming: ${APP_PREFIX}-{service-name}-${AZURE_ENV_NAME}) ==="
+          for SERVICE in auth-service billing-service inventory-service orders-service purchasing-service sales-service api-gateway; do
+              REPO_NAME="${APP_PREFIX}-${SERVICE}-${AZURE_ENV_NAME}"
+              echo "Tags for $REPO_NAME:"
+              az acr repository show-tags --name $REGISTRY_NAME --repository "$REPO_NAME" --output table --top 3 || echo "  Image $REPO_NAME not found"
               echo ""
           done
 
           echo "=== Build Summary ==="
           IMAGE_TAG=${GITHUB_SHA::7}
+          APP_PREFIX="${APP_PREFIX:-myapp}"
           echo "Built images with tag: $IMAGE_TAG"
-          echo "- myapp-microservices-base:$IMAGE_TAG"
-          echo "- auth-service:$IMAGE_TAG"
-          echo "- billing-service:$IMAGE_TAG"
-          echo "- inventory-service:$IMAGE_TAG"
-          echo "- orders-service:$IMAGE_TAG"
-          echo "- purchasing-service:$IMAGE_TAG"
-          echo "- sales-service:$IMAGE_TAG"
-          echo "- erp-api-gateway:$IMAGE_TAG"
+          echo "- ${APP_PREFIX}-microservices-base:$IMAGE_TAG"
+          for SERVICE in auth-service billing-service inventory-service orders-service purchasing-service sales-service api-gateway; do
+              echo "- ${APP_PREFIX}-${SERVICE}-${AZURE_ENV_NAME}:$IMAGE_TAG"
+          done
 
   deploy-to-azure:
     name: Deploy Application
@@ -250,8 +258,12 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Check Container Apps status
+        env:
+          APP_PREFIX: ${{ env.APP_PREFIX }}
         run: |
-          RG_NAME="rg-myapp-${{ env.AZURE_ENV_NAME }}-core"
+          APP_PREFIX="${APP_PREFIX:-myapp}"
+          AZURE_ENV_NAME="${{ env.AZURE_ENV_NAME }}"
+          RG_NAME="rg-${APP_PREFIX}-${AZURE_ENV_NAME}-core"
 
           echo "Checking Container Apps health..."
           az containerapp list --resource-group "$RG_NAME" --output table
@@ -260,8 +272,8 @@ jobs:
           echo "Checking revision status..."
           for APP in auth-service billing-service inventory-service orders-service purchasing-service sales-service api-gateway; do
               echo ""
-              echo "App: myapp-${{ env.AZURE_ENV_NAME }}-$APP"
-              az containerapp show --name "myapp-${{ env.AZURE_ENV_NAME }}-$APP" \
+              echo "App: ${APP_PREFIX}-${AZURE_ENV_NAME}-$APP"
+              az containerapp show --name "${APP_PREFIX}-${AZURE_ENV_NAME}-$APP" \
                   --resource-group "$RG_NAME" \
                   --query "properties.latestRevisionFqdn" -o tsv || echo "Not found"
           done

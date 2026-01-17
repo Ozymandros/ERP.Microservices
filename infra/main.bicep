@@ -275,6 +275,7 @@ module authServiceModule 'services/auth-service.bicep' = {
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
     namePrefix: namePrefix
+    envSlug: envSlug
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
 }
@@ -297,6 +298,7 @@ module billingServiceModule 'services/billing-service.bicep' = {
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
     namePrefix: namePrefix
+    envSlug: envSlug
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
 }
@@ -319,6 +321,7 @@ module inventoryServiceModule 'services/inventory-service.bicep' = {
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
     namePrefix: namePrefix
+    envSlug: envSlug
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
 }
@@ -341,6 +344,7 @@ module ordersServiceModule 'services/orders-service.bicep' = {
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
     namePrefix: namePrefix
+    envSlug: envSlug
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
 }
@@ -363,6 +367,7 @@ module purchasingServiceModule 'services/purchasing-service.bicep' = {
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
     namePrefix: namePrefix
+    envSlug: envSlug
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
 }
@@ -385,6 +390,7 @@ module salesServiceModule 'services/sales-service.bicep' = {
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
     namePrefix: namePrefix
+    envSlug: envSlug
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
 }
@@ -407,6 +413,7 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
     managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
     appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
     namePrefix: namePrefix
+    envSlug: envSlug
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
   }
 }

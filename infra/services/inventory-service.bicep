@@ -45,8 +45,12 @@ param userAssignedIdentityId string
 @description('Base resource name prefix for this deployment (e.g., myapp-dev)')
 param namePrefix string
 
+@description('Environment slug (e.g., dev, prod)')
+param envSlug string = 'dev'
+
+var basePrefix = replace(namePrefix, '-${envSlug}', '')
 var serviceName = '${namePrefix}-inventory-service'
-var imageName = 'inventory-service'
+var imageName = '${basePrefix}-inventory-service-${envSlug}'
 
 module inventoryService 'container-app-service.bicep' = {
   name: serviceName
