@@ -412,6 +412,26 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
 }
 
 // ============================================================================
+// Aspire Dashboard Deployment
+// ============================================================================
+// Deploys the official Microsoft Aspire Dashboard for observability
+// Dashboard automatically discovers all services in the Container Apps Environment
+// Access: Internal only (recommended for security) or External (if needed)
+
+module aspireDashboardModule 'services/aspire-dashboard.bicep' = {
+  name: 'aspire-dashboard-deployment'
+  scope: rg
+  params: {
+    location: location
+    tags: tags
+    containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
+    aspnetcoreEnvironment: aspnetcoreEnvironment
+    namePrefix: namePrefix
+    externalIngress: false  // Set to true if you need external access (not recommended)
+  }
+}
+
+// ============================================================================
 // PHASE 3B: Centralized RBAC - Services Access via App Configuration
 // ============================================================================
 // ARCHITECTURE: Centralized secret access through App Configuration
@@ -471,3 +491,5 @@ output PURCHASING_SERVICE_FQDN string = purchasingServiceModule.outputs.fqdn
 output SALES_SERVICE_FQDN string = salesServiceModule.outputs.fqdn
 output API_GATEWAY_FQDN string = apiGatewayModule.outputs.fqdn
 output API_GATEWAY_URI string = apiGatewayModule.outputs.uri
+output ASPIRE_DASHBOARD_FQDN string = aspireDashboardModule.outputs.fqdn
+output ASPIRE_DASHBOARD_URI string = aspireDashboardModule.outputs.uri

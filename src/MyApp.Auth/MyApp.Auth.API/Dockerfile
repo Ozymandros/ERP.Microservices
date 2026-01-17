@@ -1,7 +1,13 @@
+# Build arg for registry prefix (must be defined before any FROM that uses it)
+# e.g., "myappdevcontainerregistry.azurecr.io/" for ACR builds, empty for local builds
+ARG BASE_IMAGE_REGISTRY=
+
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
+# Copy nuget.config to ensure clean package resolution (with src/ prefix since build context is root)
+COPY src/nuget.config ./
 
 # Copy shared projects (with src/ prefix since build context is root)
 COPY ["src/MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
@@ -17,39 +23,21 @@ COPY ["src/MyApp.Auth/MyApp.Auth.API/MyApp.Auth.API.csproj", "MyApp.Auth/MyApp.A
 # Restore dependencies
 RUN dotnet restore "MyApp.Auth/MyApp.Auth.API/MyApp.Auth.API.csproj"
 
-# Copy all source files (with src/ prefix since build context is root)
-COPY src/ .
+# Copy only needed source files (not everything from context)
+COPY ["src/MyApp.Shared/", "MyApp.Shared/"]
+COPY ["src/MyApp.Auth/", "MyApp.Auth/"]
 
 # Build the project
 WORKDIR "/src/MyApp.Auth/MyApp.Auth.API"
-RUN dotnet build "MyApp.Auth.API.csproj" -c Release -o /app/build
+RUN dotnet build "MyApp.Auth.API.csproj" -c Release -o /app/build --no-restore
 
 # Publish stage
 FROM build AS publish
-RUN dotnet publish "MyApp.Auth.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "MyApp.Auth.API.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
 
-# Runtime stage
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
+# Runtime stage - Use shared base image
+# BASE_IMAGE_REGISTRY is defined at the top of the file
+FROM ${BASE_IMAGE_REGISTRY}myapp-microservices-base:10.0 AS final
 WORKDIR /app
-EXPOSE 8080
-
-# Pre-install dependencies in a separate layer for better caching
-# This layer will be cached and reused unless the base image changes
-USER root
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl ca-certificates && \
-    rm -rf /var/lib/apt/lists/* && \
-    groupadd -r appuser && \
-    useradd -r -g appuser appuser
-
-# Copy files and set ownership (this changes more frequently)
-# IMPORTANT: Copy files while still root, then change ownership
-# If we switch to 'appuser' before copying, the files will be owned by root
-# and the non-root user won't have permissions to run them
 COPY --from=publish /app/publish .
-RUN chown -R appuser:appuser /app
-
-# Switch to non-root user for security (principle of least privilege)
-USER appuser
-
 ENTRYPOINT ["dotnet", "MyApp.Auth.API.dll"]

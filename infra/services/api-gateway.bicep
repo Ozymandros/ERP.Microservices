@@ -73,6 +73,7 @@ module apiGateway 'container-app-service.bicep' = {
     logAnalyticsWorkspaceId: logAnalyticsWorkspaceId
     managedIdentityPrincipalId: managedIdentityPrincipalId
     userAssignedIdentityId: userAssignedIdentityId
+    azdServiceName: 'api-gateway'  // Must match service name in azure.yaml
   }
 }
 

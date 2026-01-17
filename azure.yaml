@@ -2,13 +2,64 @@
 
 name: src
 services:
-  app:
+  # Note: AppHost is not deployed as a container - it's only for local development
+  # The actual services are defined below
+  
+  auth-service:
+    project: ./src/MyApp.Auth/MyApp.Auth.API
     language: dotnet
-    project: ./src/AppHost/AppHost.csproj
     host: containerapp
     docker:
-      path: ./src/AppHost/Dockerfile # Dockerfile path
-      context: . # Context path
+      path: ./src/MyApp.Auth/MyApp.Auth.API/Dockerfile
+      context: .  # Root of repository - includes all src/ projects
+
+  billing-service:
+    project: ./src/MyApp.Billing/MyApp.Billing.API
+    language: dotnet
+    host: containerapp
+    docker:
+      path: ./src/MyApp.Billing/MyApp.Billing.API/Dockerfile
+      context: .  # Root of repository
+
+  inventory-service:
+    project: ./src/MyApp.Inventory/MyApp.Inventory.API
+    language: dotnet
+    host: containerapp
+    docker:
+      path: ./src/MyApp.Inventory/MyApp.Inventory.API/Dockerfile
+      context: .  # Root of repository
+
+  orders-service:
+    project: ./src/MyApp.Orders/MyApp.Orders.API
+    language: dotnet
+    host: containerapp
+    docker:
+      path: ./src/MyApp.Orders/MyApp.Orders.API/Dockerfile
+      context: .  # Root of repository
+
+  purchasing-service:
+    project: ./src/MyApp.Purchasing/MyApp.Purchasing.API
+    language: dotnet
+    host: containerapp
+    docker:
+      path: ./src/MyApp.Purchasing/MyApp.Purchasing.API/Dockerfile
+      context: .  # Root of repository
+
+  sales-service:
+    project: ./src/MyApp.Sales/MyApp.Sales.API
+    language: dotnet
+    host: containerapp
+    docker:
+      path: ./src/MyApp.Sales/MyApp.Sales.API/Dockerfile
+      context: .  # Root of repository
+
+  api-gateway:
+    project: ./src/ErpApiGateway
+    language: dotnet
+    host: containerapp
+    docker:
+      path: ./src/ErpApiGateway/Dockerfile
+      context: .  # Root of repository
 infra:
   provider: bicep
   path: infra

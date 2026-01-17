@@ -95,6 +95,9 @@ param userAssignedIdentityId string
 @description('Managed Identity Principal ID - used for RBAC role assignments (Key Vault, App Config, SQL, Redis)')
 param managedIdentityPrincipalId string
 
+@description('azd service name - used by azd deploy to map services from azure.yaml to infrastructure resources')
+param azdServiceName string = ''
+
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' existing = {
   name: split(containerAppsEnvironmentId, '/')[8]
 }
@@ -172,16 +175,23 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   location: location
   tags: union(
     union(
-      tags,
-      !empty(logAnalyticsWorkspaceId)
+      union(
+        tags,
+        !empty(logAnalyticsWorkspaceId)
+          ? {
+              'log-analytics-workspace-id': logAnalyticsWorkspaceId
+            }
+          : {}
+      ),
+      !empty(managedIdentityPrincipalId)
         ? {
-            'log-analytics-workspace-id': logAnalyticsWorkspaceId
+            'managed-identity-principal-id': managedIdentityPrincipalId
           }
         : {}
     ),
-    !empty(managedIdentityPrincipalId)
+    !empty(azdServiceName)
       ? {
-          'managed-identity-principal-id': managedIdentityPrincipalId
+          'azd-service-name': azdServiceName
         }
       : {}
   )

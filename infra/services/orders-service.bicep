@@ -75,6 +75,7 @@ module ordersService 'container-app-service.bicep' = {
     logAnalyticsWorkspaceId: logAnalyticsWorkspaceId
     managedIdentityPrincipalId: managedIdentityPrincipalId
     userAssignedIdentityId: userAssignedIdentityId
+    azdServiceName: 'orders-service'  // Must match service name in azure.yaml
   }
 }
 

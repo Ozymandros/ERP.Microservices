@@ -75,6 +75,7 @@ module inventoryService 'container-app-service.bicep' = {
     logAnalyticsWorkspaceId: logAnalyticsWorkspaceId
     managedIdentityPrincipalId: managedIdentityPrincipalId
     userAssignedIdentityId: userAssignedIdentityId
+    azdServiceName: 'inventory-service'  // Must match service name in azure.yaml
   }
 }
 
