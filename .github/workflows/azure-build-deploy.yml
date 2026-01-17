@@ -76,6 +76,7 @@ jobs:
           azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           azure-env-name: ${{ env.AZURE_ENV_NAME }}
           azure-location: ${{ env.AZURE_LOCATION }}
+          setup-dapr: "true"
 
       - name: Login to ACR
         run: az acr login --name $REGISTRY_NAME

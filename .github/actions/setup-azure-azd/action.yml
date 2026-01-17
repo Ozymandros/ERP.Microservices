@@ -90,7 +90,8 @@ runs:
         echo "DaprCliPath=$DAPR_PATH" >> $GITHUB_ENV
         echo "DAPR_HOME=$HOME/.dapr" >> $GITHUB_ENV
 
-        # Initialize Dapr in slim mode (required for Aspire)
+        # Initialize Dapr in slim mode (appropriate for CI/CD - only installs CLI binaries,
+        # no Docker containers needed since Azure Container Apps manages the Dapr runtime)
         echo "Initializing Dapr runtime..."
         dapr init --slim
 
