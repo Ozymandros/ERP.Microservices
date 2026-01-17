@@ -188,11 +188,6 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    env:
-      # Dapr configuration - Aspire reads DaprCliPath from environment
-      # Will be updated after Dapr installation to point to actual location
-      DaprCliPath: /usr/local/bin/dapr
-      DAPR_HOME: /home/runner/.dapr
 
     steps:
       - name: Checkout code
@@ -220,10 +215,20 @@ jobs:
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          # Dapr environment variables - set by the setup action
+          DaprCliPath: ${{ env.DaprCliPath }}
+          DAPR_HOME: ${{ env.DAPR_HOME }}
         run: |
           # Use short commit hash to match image tags (first 7 characters)
           export IMAGE_TAG=${GITHUB_SHA::7}
           echo "Deploying with image tag: $IMAGE_TAG"
+          
+          # Quick verification that Dapr is accessible (action already did full setup)
+          dapr --version || {
+            echo "ERROR: Dapr CLI not accessible in deployment step"
+            exit 1
+          }
+          
           azd deploy --no-prompt
 
   verify-deployment:

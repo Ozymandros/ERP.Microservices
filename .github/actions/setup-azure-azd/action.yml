@@ -62,7 +62,28 @@ runs:
 
         # Find where dapr is installed
         DAPR_PATH=$(which dapr)
+        if [ -z "$DAPR_PATH" ]; then
+          # Fallback to common installation locations
+          if [ -f "$HOME/.dapr/bin/dapr" ]; then
+            DAPR_PATH="$HOME/.dapr/bin/dapr"
+          elif [ -f "/usr/local/bin/dapr" ]; then
+            DAPR_PATH="/usr/local/bin/dapr"
+          else
+            echo "ERROR: Dapr CLI not found in any expected location"
+            exit 1
+          fi
+        fi
+        
         echo "Dapr CLI found at: $DAPR_PATH"
+        
+        # Get the directory containing dapr
+        DAPR_DIR=$(dirname "$DAPR_PATH")
+        
+        # Add to PATH for current and future steps
+        echo "$DAPR_DIR" >> $GITHUB_PATH
+
+        # Ensure executable permissions
+        chmod +x "$DAPR_PATH" || true
 
         # Update DaprCliPath environment variable for Aspire
         # Aspire reads DaprCliPath from environment
@@ -76,6 +97,7 @@ runs:
         # Verify initialization
         echo "✓ Dapr CLI installed and initialized successfully"
         echo "✓ DaprCliPath set to: $DAPR_PATH"
+        echo "✓ Dapr directory added to PATH: $DAPR_DIR"
       shell: bash
 
     - name: Initialize azd environment (if environment name provided)
