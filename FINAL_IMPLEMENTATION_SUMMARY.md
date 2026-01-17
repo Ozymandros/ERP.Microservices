@@ -347,7 +347,7 @@ The ERP system is now **production-ready** for MVP deployment:
 ✅ Redis instance (for Dapr pub/sub and caching)  
 ✅ Dapr runtime (v1.12+)  
 ✅ Docker + Docker Compose OR Kubernetes  
-✅ .NET 9 Runtime  
+✅ .NET 10 Runtime  
 
 ### **What Works Out of the Box:**
 ✅ User authentication and authorization  

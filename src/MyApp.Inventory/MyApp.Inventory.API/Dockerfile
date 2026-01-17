@@ -3,7 +3,7 @@
 ARG BASE_IMAGE_REGISTRY=
 
 # Build stage
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 # Copy nuget.config to ensure clean package resolution (with src/ prefix since build context is root)
@@ -39,7 +39,7 @@ RUN dotnet publish "MyApp.Inventory.API.csproj" -c Release -o /app/publish /p:Us
 
 # Runtime stage - Use shared base image
 # BASE_IMAGE_REGISTRY is defined at the top of the file
-FROM ${BASE_IMAGE_REGISTRY}myapp-microservices-base:9.0 AS final
+FROM ${BASE_IMAGE_REGISTRY}myapp-microservices-base:10.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MyApp.Inventory.API.dll"]

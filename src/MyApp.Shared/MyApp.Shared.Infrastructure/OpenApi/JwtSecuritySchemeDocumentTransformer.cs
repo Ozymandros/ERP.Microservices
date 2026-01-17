@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.OpenApi;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace MyApp.Shared.Infrastructure.OpenApi;
 
@@ -12,7 +12,7 @@ public sealed class JwtSecuritySchemeDocumentTransformer : IOpenApiDocumentTrans
     {
         // Ensure the Components dictionary exists
         document.Components ??= new OpenApiComponents();
-        document.Components.SecuritySchemes ??= new Dictionary<string, OpenApiSecurityScheme>();
+        document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
 
         // Add the JWT Bearer security scheme
         document.Components.SecuritySchemes.Add("Bearer", new OpenApiSecurityScheme
@@ -32,7 +32,7 @@ public sealed class JwtSecuritySchemeDocumentTransformer : IOpenApiDocumentTrans
                 operation.Security ??= new List<OpenApiSecurityRequirement>();
                 operation.Security.Add(new OpenApiSecurityRequirement
                 {
-                    [new OpenApiSecurityScheme { Reference = new OpenApiReference { Id = "Bearer", Type = ReferenceType.SecurityScheme } }] = new List<string>()
+                    [new OpenApiSecuritySchemeReference("Bearer", document)] = new List<string>()
                 });
             }
         }

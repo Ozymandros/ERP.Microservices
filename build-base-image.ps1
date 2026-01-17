@@ -20,11 +20,11 @@ Write-Host ""
 
 # 1. Check if base image exists
 Write-Host "→ Checking base image..." -ForegroundColor Yellow
-$baseImage = docker images myapp-microservices-base:9.0 --format "{{.Repository}}:{{.Tag}}" | Select-String "myapp-microservices-base:9.0"
+$baseImage = docker images myapp-microservices-base:10.0 --format "{{.Repository}}:{{.Tag}}" | Select-String "myapp-microservices-base:10.0"
 
 if (-not $baseImage) {
     Write-Host "  Base image not found. Building..." -ForegroundColor Yellow
-    docker build -f docker/microservices-base.Dockerfile -t myapp-microservices-base:9.0 .
+    docker build -f docker/microservices-base.Dockerfile -t myapp-microservices-base:10.0 .
     
     if ($LASTEXITCODE -ne 0) {
         Write-Host ""
@@ -34,7 +34,7 @@ if (-not $baseImage) {
     Write-Host "  ✓ Base image built successfully!" -ForegroundColor Green
 } else {
     Write-Host "  ✓ Base image already exists (skipping build)" -ForegroundColor Green
-    Write-Host "    To rebuild: docker rmi myapp-microservices-base:9.0" -ForegroundColor Gray
+    Write-Host "    To rebuild: docker rmi myapp-microservices-base:10.0" -ForegroundColor Gray
 }
 
 Write-Host ""

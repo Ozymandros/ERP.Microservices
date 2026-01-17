@@ -6,6 +6,9 @@ var isDeployment =
 
 var builder = DistributedApplication.CreateBuilder(args).AddDapr();
 
+var stateStore = builder.AddDaprStateStore("statestore");
+var pubSub = builder.AddDaprPubSub("pubsub");
+
 var analyticsWorkspace = isDeployment ? builder
     .AddAzureLogAnalyticsWorkspace("MyApp-LogAnalyticsWorkspace") : null;
 var applicationInsights = isDeployment ? builder
@@ -13,8 +16,9 @@ var applicationInsights = isDeployment ? builder
     .WithLogAnalyticsWorkspace(analyticsWorkspace!) : null;
 
 builder.Services.AddHealthChecks();
+//var store = builder.AddDaprStateStore("cache", new());
+// Add the Redis container
 
-// Add the Redis container FIRST
 // 1. Define the Redis host. Give it a name without conflicts.
 // The name doesn't matter here, as the Component will define it.
 var redis = builder.AddRedis("cache")
@@ -22,13 +26,6 @@ var redis = builder.AddRedis("cache")
     .WithRedisCommander()
     .WithRedisInsight()
     .WithDataVolume("redis-cache");
-
-// Add Dapr components AFTER Redis, so they can reference it
-// These will use the component YAML files in src/AppHost/components/
-var stateStore = builder.AddDaprStateStore("statestore")
-    .WaitFor(redis);
-var pubSub = builder.AddDaprPubSub("pubsub")
-    .WaitFor(redis);
 
 // Create builder with automatic port management
 AspireProjectBuilder projectBuilder;

@@ -70,7 +70,7 @@ Creates Pull Request to develop
 │  ────────────────────────────   │
 │  Actions:                       │
 │  1. Checkout code               │
-│  2. Setup .NET 9.x             │
+│  2. Setup .NET 10.x             │
 │  3. Cache NuGet packages        │
 │  4. Restore dependencies        │
 │  5. Build solution              │
@@ -87,7 +87,7 @@ Merge to develop
 │  ────────────────────────────────────────── │
 │  PHASE 1: TEST (runs in parallel)            │
 │  ├─ Checkout                                 │
-│  ├─ Setup .NET 9.x                          │
+│  ├─ Setup .NET 10.x                          │
 │  ├─ Cache NuGet packages                     │
 │  ├─ Restore & Build solution                 │
 │  └─ Run unit tests (continue on error)       │

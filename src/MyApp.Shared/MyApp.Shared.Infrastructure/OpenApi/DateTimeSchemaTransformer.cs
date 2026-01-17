@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.OpenApi;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using System.Text.Json.Serialization;
 
 namespace MyApp.Shared.Infrastructure.OpenApi;
@@ -18,7 +18,7 @@ public sealed class DateTimeSchemaTransformer : IOpenApiSchemaTransformer
         // This intercepts the schema generation BEFORE the serializer attempts to serialize default(DateTime)
         if (context.JsonTypeInfo.Type == typeof(DateTime) || context.JsonTypeInfo.Type == typeof(DateTime?))
         {
-            schema.Type = "string";
+            schema.Type = JsonSchemaType.String;
             schema.Format = "date-time";
             schema.Default = null; // Prevents the engine from trying to serialize a default(DateTime)
             schema.Example = null;
@@ -26,7 +26,7 @@ public sealed class DateTimeSchemaTransformer : IOpenApiSchemaTransformer
         }
 
         // Fix DateTime schema by format detection (fallback)
-        if (schema.Type == "string" && schema.Format == "date-time")
+        if (schema.Type == JsonSchemaType.String && schema.Format == "date-time")
         {
             schema.Default = null;
             schema.Example = null;

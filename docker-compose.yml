@@ -101,14 +101,14 @@ services:
   #   restart: unless-stopped
 
   # Build shared base image for microservices
-  # IMPORTANT: This must be built BEFORE services that use myapp-microservices-base:9.0
+  # IMPORTANT: This must be built BEFORE services that use myapp-microservices-base:10.0
   # Build command: docker-compose build microservices-base
   # Or build all: docker-compose build (this service will build first)
   microservices-base:
     build:
       context: .
       dockerfile: docker/microservices-base.Dockerfile
-    image: myapp-microservices-base:9.0
+    image: myapp-microservices-base:10.0
     # This service only builds the image; container exits immediately
     command: ["/bin/sh", "-c", "echo 'Base image built' && sleep 1 && exit 0"]
     restart: "no"  # Don't restart this build-only service
@@ -275,8 +275,6 @@ services:
       <<: *api-env
       ConnectionStrings__InventoryDb: Server=sqlserver,1433;Database=InventoryDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
-      microservices-base:
-        condition: service_completed_successfully
       sqlserver:
         condition: service_healthy
       redis:
@@ -328,8 +326,6 @@ services:
       <<: *api-env
       ConnectionStrings__OrdersDb: Server=sqlserver,1433;Database=OrdersDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
-      microservices-base:
-        condition: service_completed_successfully
       sqlserver:
         condition: service_healthy
       redis:
@@ -381,8 +377,6 @@ services:
       <<: *api-env
       ConnectionStrings__PurchasingDb: Server=sqlserver,1433;Database=PurchasingDb;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
-      microservices-base:
-        condition: service_completed_successfully
       sqlserver:
         condition: service_healthy
       redis:
@@ -434,8 +428,6 @@ services:
       <<: *api-env
       ConnectionStrings__SalesDb: Server=sqlserver,1433;Database=SalesDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
-      microservices-base:
-        condition: service_completed_successfully
       sqlserver:
         condition: service_healthy
       redis:

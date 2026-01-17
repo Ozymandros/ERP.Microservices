@@ -79,7 +79,7 @@ public static class MicroserviceExtensions
             {
                 if (context.JsonTypeInfo.Type == typeof(DateTime) || context.JsonTypeInfo.Type == typeof(DateTime?))
                 {
-                    schema.Type = "string";
+                    schema.Type = Microsoft.OpenApi.JsonSchemaType.String;
                     schema.Format = "date-time";
                     schema.Default = null;
                     schema.Example = null;

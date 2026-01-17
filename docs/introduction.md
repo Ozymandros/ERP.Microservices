@@ -1,6 +1,6 @@
 # ERP Microservices Documentation
 
-Welcome to the **ERP Microservices** documentation! This is a cloud-native ERP system built with .NET 9, featuring 6 independent microservices orchestrated through Azure Container Apps with DAPR.
+Welcome to the **ERP Microservices** documentation! This is a cloud-native ERP system built with .NET 10, featuring 6 independent microservices orchestrated through Azure Container Apps with DAPR.
 
 ## Quick Navigation
 
@@ -45,7 +45,7 @@ Welcome to the **ERP Microservices** documentation! This is a cloud-native ERP s
 - **API Gateway** - Ocelot-based reverse proxy
 
 ## Technology Stack
-- **.NET 9** - Backend framework
+- **.NET 10** - Backend framework
 - **Entity Framework Core** - Database access
 - **DAPR** - Microservices communication and state management
 - **Azure Container Apps** - Cloud hosting

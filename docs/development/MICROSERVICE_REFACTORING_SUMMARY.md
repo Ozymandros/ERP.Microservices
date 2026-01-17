@@ -15,7 +15,7 @@ All 5 microservices (excluding Auth and Gateway) have been successfully refactor
 **Changes:**
 - Applied `AddCommonMicroserviceServices()` for service configuration
 - Applied `UseCommonMicroservicePipeline()` for middleware pipeline
-- Updated Dockerfile to use `myapp-microservices-base:9.0`
+- Updated Dockerfile to use `myapp-microservices-base:10.0`
 - Disabled database/cache features (TODO for when billing domain is implemented)
 
 ### 2. Inventory Service
@@ -71,7 +71,7 @@ All 5 microservices (excluding Auth and Gateway) have been successfully refactor
 **Created:** `docker/microservices-base.Dockerfile`
 
 **Includes:**
-- .NET 9 ASP.NET Core runtime
+- .NET 10 ASP.NET Core runtime
 - curl (for health checks)
 - ca-certificates (for HTTPS)
 - libicu74 (internationalization)
@@ -81,7 +81,7 @@ All 5 microservices (excluding Auth and Gateway) have been successfully refactor
 
 **Build Command:**
 ```bash
-docker build -f docker/microservices-base.Dockerfile -t myapp-microservices-base:9.0 .
+docker build -f docker/microservices-base.Dockerfile -t myapp-microservices-base:10.0 .
 ```
 
 **Used By:**
@@ -176,7 +176,7 @@ Each service maintains:
 
 ### 1. Build Shared Base Image First
 ```bash
-docker build -f docker/microservices-base.Dockerfile -t myapp-microservices-base:9.0 .
+docker build -f docker/microservices-base.Dockerfile -t myapp-microservices-base:10.0 .
 ```
 
 ### 2. Build Individual Services
@@ -248,10 +248,10 @@ Update your pipeline to:
 Example:
 ```yaml
 - name: Build Base Image
-  run: docker build -f docker/microservices-base.Dockerfile -t $REGISTRY/myapp-base:9.0 .
+  run: docker build -f docker/microservices-base.Dockerfile -t $REGISTRY/myapp-base:10.0 .
   
 - name: Push Base Image
-  run: docker push $REGISTRY/myapp-base:9.0
+  run: docker push $REGISTRY/myapp-base:10.0
 
 - name: Build Services
   run: |

@@ -12,7 +12,7 @@ This directory contains shared Docker base images used across multiple microserv
 
 ### microservices-base.Dockerfile
 
-**Purpose:** Common runtime base for all .NET 9 microservices (except Auth and Gateway)
+**Purpose:** Common runtime base for all .NET 10 microservices (except Auth and Gateway)
 
 **Used By:**
 - Billing Service
@@ -22,17 +22,17 @@ This directory contains shared Docker base images used across multiple microserv
 - Sales Service
 
 **Includes:**
-- .NET 9 ASP.NET Core runtime
+- .NET 10 ASP.NET Core runtime
 - curl (for health checks)
 - ca-certificates (for HTTPS)
-- libicu72 (internationalization support)
+- libicu74 (internationalization support)
 - Non-root user (appuser)
 - Health check configuration
 - Port 8080 exposed
 
 **Build Command:**
 ```bash
-docker build -f docker/microservices-base.Dockerfile -t myapp-microservices-base:9.0 .
+docker build -f docker/microservices-base.Dockerfile -t myapp-microservices-base:10.0 .
 ```
 
 ## Service-Specific Dockerfiles
@@ -41,11 +41,11 @@ Each service's Dockerfile now follows this pattern:
 
 ```dockerfile
 # Build stage (unchanged)
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 # ... build steps ...
 
 # Runtime stage (uses shared base)
-FROM myapp-microservices-base:9.0 AS final
+FROM myapp-microservices-base:10.0 AS final
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MyApp.[Service].API.dll"]
 ```
@@ -76,7 +76,7 @@ In your CI/CD pipeline:
 
 ```yaml
 - name: Build shared base
-  run: docker build -f docker/microservices-base.Dockerfile -t myapp-microservices-base:9.0 .
+  run: docker build -f docker/microservices-base.Dockerfile -t myapp-microservices-base:10.0 .
 
 - name: Build services
   run: |
@@ -88,7 +88,7 @@ In your CI/CD pipeline:
 ## Versioning
 
 Tag base images with .NET version:
-- `myapp-microservices-base:9.0` - .NET 9
+- `myapp-microservices-base:10.0` - .NET 10
 - `myapp-microservices-base:11.0` - .NET 11 (future)
 
 ## Customization

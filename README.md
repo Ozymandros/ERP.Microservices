@@ -1,6 +1,6 @@
 # ERP Microservices
 
-A cloud-native ERP system built with .NET 9, Aspire, Dapr, and deployed to Azure Container Apps.
+A cloud-native ERP system built with .NET 10, Aspire, Dapr, and deployed to Azure Container Apps.
 
 ## 🚀 Features
 
@@ -37,7 +37,7 @@ A cloud-native ERP system built with .NET 9, Aspire, Dapr, and deployed to Azure
 ### Local Development
 
 ```bash
-# Prerequisites: .NET 9 SDK, Docker
+# Prerequisites: .NET 10 SDK, Docker
 cd AppHost
 dotnet run
 ```
@@ -66,7 +66,7 @@ Browse the complete documentation site at **[https://ozymandros.github.io/ERP.Mi
 
 ## 🛠️ Technology Stack
 
-- **.NET 9**: .NET framework
+- **.NET 10**: Latest .NET framework
 - **Aspire**: Cloud-native orchestration for local development
 - **Dapr**: Distributed application runtime
 - **Azure Container Apps**: Managed container hosting
@@ -112,7 +112,7 @@ MyApp.[Service]/
 
 ### Prerequisites
 
-- .NET 9.0 SDK
+- .NET 10.0 SDK
 - Docker Desktop
 - Visual Studio 2022 / VS Code / Rider
 - Azure Developer CLI (for deployment)
