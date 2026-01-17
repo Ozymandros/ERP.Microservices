@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults(new MicroserviceConfigurationOptions
 {
     ServiceName = "MyApp.Billing.API",
-    EnableHealthChecks = false, // TODO: Enable when database is configured
+    EnableHealthChecks = true, // TODO: Enable when database is configured
     EnableRedisCache = false, // TODO: Enable when needed
     EnableAutoMapper = false, // No domain logic yet
     DbContextType = null, // TODO: Add when billing database is implemented
