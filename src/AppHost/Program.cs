@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CommunityToolkit.Aspire.Hosting.Dapr;
+using Microsoft.Extensions.DependencyInjection;
 
 var isDeployment =
     args.Contains("--publisher") || // when azd generates manifests
@@ -47,6 +48,11 @@ else
 
 var origin = builder.Configuration["Parameters:FrontendOrigin"];
 
+// Get JWT configuration from appsettings.json or use defaults
+var jwtSecretKey = builder.Configuration["Jwt:SecretKey"] ?? "una_clau_molt_llarga_i_super_ultra_secreta_01234566789";
+var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "MyApp.Auth";
+var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "MyApp.All";
+
 // Add projects - ports auto-increment
 var authService = projectBuilder.AddWebProject<Projects.MyApp_Auth_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: BillingDB, billing-service, ports 5000, 3500, 45000, 9090
@@ -66,60 +72,67 @@ var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_A
 var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: OrderDB, order-service, ports 5005, 3505, 45005, 9095
 
+// Local Development: Reverse Proxy (YARP)
+// Alternative: YARP (without /Scalar service)
+/*var gateway = builder.AddYarp("gateway")
+    .WaitFor(authService)
+    .WaitFor(billingService)
+    .WaitFor(inventoryService)
+    .WaitFor(ordersService)
+    .WaitFor(purchasingService)
+    .WaitFor(salesService)
+                     .WithHostPort(5000)
+                     .WithExternalHttpEndpoints()
+                     .WithConfiguration(yarp =>
+                     {
+                         // Configure routes programmatically
+                         yarp.AddRoute("/api/auth/{**catch-all}", authService);
+                         yarp.AddRoute("/api/permissions/{**catch-all}", authService);
+                         yarp.AddRoute("/api/users/{**catch-all}", authService);
+                         yarp.AddRoute("/api/roles/{**catch-all}", authService);
+                         yarp.AddRoute("/api/billing/{**catch-all}", billingService);
+                         yarp.AddRoute("/api/inventory/{**catch-all}", inventoryService);
+                         yarp.AddRoute("/api/orders/{**catch-all}", ordersService);
+                         yarp.AddRoute("/api/purchasing/{**catch-all}", purchasingService);
+                         yarp.AddRoute("/api/sales/{**catch-all}", salesService);
+                         //yarp.AddRoute("/notification/{**catch-all}", notificationService)
+                         //    .WithTransformPathRemovePrefix("/notification");
+                     });*/
+
+// Alternative: ErpApiGateway with Ocelot (production)
+// Note: WithExternalHttpEndpoints() will expose the HTTP endpoint from launchSettings.json (port 5000)
+var gateway = builder.AddProject<Projects.ErpApiGateway>("gateway")
+    .WaitFor(authService)
+    .WaitFor(billingService)
+    .WaitFor(inventoryService)
+    .WaitFor(ordersService)
+    .WaitFor(purchasingService)
+    .WaitFor(salesService)
+    .WithExternalHttpEndpoints() // Exposes HTTP endpoint from launchSettings.json (port 5000)
+    .WithEnvironment("Jwt__SecretKey", jwtSecretKey)
+    .WithEnvironment("Jwt__Issuer", jwtIssuer)
+    .WithEnvironment("Jwt__Audience", jwtAudience)
+    .WithEnvironment("OCELOT_ENVIRONMENT", "Development")
+    .WithDaprSidecar(new DaprSidecarOptions
+    {
+        AppId = "gateway",
+        AppPort = 5000 // Must match launchSettings.json port
+    });
+
 if (isDeployment)
 {
-    // Azure Deployment: ErpApiGateway with Ocelot
-    var apiGateway = builder.AddProject<Projects.ErpApiGateway>("api-gateway")
-        .WaitFor(authService)
-        .WaitFor(billingService)
-        .WaitFor(inventoryService)
-        .WaitFor(ordersService)
-        .WaitFor(purchasingService)
-        .WaitFor(salesService)
-        .WaitFor(pubSub)
-        .WaitFor(stateStore)
-        .WithExternalHttpEndpoints()
-        .WithEnvironment("OCELOT_ENVIRONMENT", "Production")
-        .PublishAsDockerFile()
-            .WithEnvironment("Jwt__SecretKey", builder.Configuration["Jwt:SecretKey"])
-            .WithEnvironment("Jwt__Issuer", builder.Configuration["Jwt:Issuer"])
-            .WithEnvironment("Jwt__Audience", builder.Configuration["Jwt:Audience"])
-            .WithEnvironment("FRONTEND_ORIGIN", origin);
-
-    if (applicationInsights is not null)
-    {
-        apiGateway = apiGateway
-            .WaitFor(applicationInsights)
-            .WithReference(applicationInsights);
-    }
+    gateway.WithEnvironment("OCELOT_ENVIRONMENT", "Production");
 }
 else
 {
-    // Local Development: Reverse Proxy (YARP)
-    var gateway = builder.AddYarp("gateway")
-        .WaitFor(authService)
-        .WaitFor(billingService)
-        .WaitFor(inventoryService)
-        .WaitFor(ordersService)
-        .WaitFor(purchasingService)
-        .WaitFor(salesService)
-                         .WithHostPort(5000)
-                         .WithExternalHttpEndpoints()
-                         .WithConfiguration(yarp =>
-                         {
-                             // Configure routes programmatically
-                             yarp.AddRoute("/api/auth/{**catch-all}", authService);
-                             yarp.AddRoute("/api/permissions/{**catch-all}", authService);
-                             yarp.AddRoute("/api/users/{**catch-all}", authService);
-                             yarp.AddRoute("/api/roles/{**catch-all}", authService);
-                             yarp.AddRoute("/api/billing/{**catch-all}", billingService);
-                             yarp.AddRoute("/api/inventory/{**catch-all}", inventoryService);
-                             yarp.AddRoute("/api/orders/{**catch-all}", ordersService);
-                             yarp.AddRoute("/api/purchasing/{**catch-all}", purchasingService);
-                             yarp.AddRoute("/api/sales/{**catch-all}", salesService);
-                             //yarp.AddRoute("/notification/{**catch-all}", notificationService)
-                             //    .WithTransformPathRemovePrefix("/notification");
-                         });
+    gateway.WithEnvironment("OCELOT_ENVIRONMENT", "Development");
+}
+
+if (applicationInsights is not null)
+{
+    gateway
+        .WaitFor(applicationInsights)
+        .WithReference(applicationInsights);
 }
 
 try
