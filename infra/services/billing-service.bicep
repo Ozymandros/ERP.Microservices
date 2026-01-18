@@ -80,7 +80,7 @@ module billingService 'container-app-service.bicep' = {
     daprAppPort: 8080
     minReplicas: finopsMinReplicas  // OPTIMITZACIÓ FINOPS: Escala a zero - no paga quan no s'usa
     maxReplicas: finopsMaxReplicas  // Mínim possible
-    cpu: json(finopsCpuCores)  // Mínim absolut (250m cores)
+    cpu: finopsCpuCores  // Mínim absolut (250m cores)
     memory: finopsMemory  // Mínim absolut (512 MiB)
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer

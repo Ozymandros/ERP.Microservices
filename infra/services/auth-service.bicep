@@ -80,7 +80,7 @@ module authService 'container-app-service.bicep' = {
     daprAppPort: 8080
     minReplicas: finopsMinReplicas  // FINOPS OPTIMIZATION: Scales to zero - no cost when not in use
     maxReplicas: finopsMaxReplicas  // Minimum possible
-    cpu: json(finopsCpuCores)  // Absolute minimum (250m cores)
+    cpu: finopsCpuCores  // Absolute minimum (250m cores)
     memory: finopsMemory  // Absolute minimum (512 MiB)
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
