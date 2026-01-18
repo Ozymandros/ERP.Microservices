@@ -84,7 +84,7 @@ var finopsMaxReplicas = 1
 
 @export()
 @description('FinOps: Minimum CPU allocation per container replica (0.25 cores = 250m)')
-var finopsCpuCores = '0.25'
+var finopsCpuCores = 1
 
 @export()
 @description('FinOps: Minimum memory allocation per container replica (0.5Gi = 512 MiB)')
