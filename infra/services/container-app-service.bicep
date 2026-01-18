@@ -1,3 +1,11 @@
+@allowed([
+  'acr'
+  'ghcr'
+])
+@description('Type of container registry to use (acr or ghcr)')
+param registryType string = 'ghcr'
+import { workloadProfileName } from '../config/constants.bicep'
+
 // ============================================================================
 // Basic Container App Parameters
 // ============================================================================
@@ -18,8 +26,19 @@ param tags object = {}
 @description('Full resource ID of the Container Apps Environment where this app will run')
 param containerAppsEnvironmentId string
 
-@description('Azure Container Registry endpoint URL (e.g., myregistry.azurecr.io) - where container images are stored')
+
+@description('Container Registry endpoint URL (e.g., ghcr.io or myregistry.azurecr.io) - where container images are stored')
 param containerRegistryEndpoint string
+
+@description('Container Registry username (for GHCR, use GitHub username)')
+param ghcrUsername string = ''
+
+@description('Container Registry Personal Access Token (for GHCR, use GitHub PAT or GITHUB_TOKEN)')
+@secure()
+param ghcrPat string = ''
+
+@description('User-Assigned Managed Identity resource ID for ACR (for acr only)')
+param acrIdentityId string = ''
 
 @description('Container image name with optional tag (e.g., auth-service:latest or auth-service:abc1234)')
 param imageName string
@@ -102,9 +121,7 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2024-03-01'
   name: split(containerAppsEnvironmentId, '/')[8]
 }
 
-resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' existing = {
-  name: replace(containerRegistryEndpoint, '.azurecr.io', '')
-}
+
 
 // ============================================================================
 // Environment Variables Configuration
@@ -157,14 +174,24 @@ var environmentVariables = concat(
 // Note: Application Insights Connection String is now centralized in App Configuration
 // Services read it via App Configuration Provider, which resolves Key Vault reference
 
-var secrets = !empty(jwtSecretKey)
-  ? [
-      {
-        name: 'jwt-secret'
-        value: jwtSecretKey
-      }
-    ]
-  : []
+var secrets = union(
+  !empty(jwtSecretKey)
+    ? [
+        {
+          name: 'jwt-secret'
+          value: jwtSecretKey
+        }
+      ]
+    : [],
+  registryType == 'ghcr' && !empty(ghcrPat)
+    ? [
+        {
+          name: 'ghcr-pat'
+          value: ghcrPat
+        }
+      ]
+    : []
+)
 
 // ============================================================================
 // Container App Resource
@@ -203,7 +230,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   }
   properties: {
     managedEnvironmentId: containerAppsEnvironment.id
-    workloadProfileName: 'consumption'
+    workloadProfileName: workloadProfileName
     configuration: {
       ingress: externalIngress
         ? {
@@ -224,12 +251,20 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
             transport: 'auto'
             allowInsecure: false
           }
-      registries: [
-        {
-          server: containerRegistry.properties.loginServer
-          identity: userAssignedIdentityId
-        }
-      ]
+      registries: registryType == 'ghcr' && !empty(ghcrUsername) && !empty(ghcrPat)
+        ? [
+            {
+              server: containerRegistryEndpoint
+              username: ghcrUsername
+              passwordSecretRef: 'ghcr-pat'
+            }
+          ]
+        : [
+            {
+              server: containerRegistryEndpoint
+              identity: acrIdentityId
+            }
+          ]
       dapr: daprEnabled
         ? {
             enabled: true
@@ -245,7 +280,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
       containers: [
         {
           name: name
-          image: '${containerRegistry.properties.loginServer}/${imageName}'
+          image: '${containerRegistryEndpoint}/${imageName}'
           resources: {
             cpu: json(cpu)
             memory: memory

@@ -1,3 +1,5 @@
+import { finopsMinReplicas, finopsMaxReplicas, finopsCpuCores, finopsMemory } from '../config/constants.bicep'
+
 @description('Location for resources')
 param location string = resourceGroup().location
 
@@ -7,8 +9,22 @@ param tags object = {}
 @description('Container Apps Environment ID')
 param containerAppsEnvironmentId string
 
+
 @description('Container Registry endpoint')
 param containerRegistryEndpoint string
+
+@description('Container Registry username (for GHCR)')
+param ghcrUsername string = ''
+
+@description('Container Registry Personal Access Token (for GHCR)')
+@secure()
+param ghcrPat string = ''
+
+@description('Type of container registry to use (acr or ghcr)')
+param registryType string = 'ghcr'
+
+@description('User-Assigned Managed Identity resource ID for ACR (for acr only)')
+param acrIdentityId string = ''
 
 @description('App Configuration endpoint')
 param appConfigEndpoint string = ''
@@ -59,16 +75,20 @@ module billingService 'container-app-service.bicep' = {
     tags: tags
     containerAppsEnvironmentId: containerAppsEnvironmentId
     containerRegistryEndpoint: containerRegistryEndpoint
+    ghcrUsername: ghcrUsername
+    ghcrPat: ghcrPat
+    registryType: registryType
+    acrIdentityId: acrIdentityId
     imageName: '${imageName}:${imageTag}'
     targetPort: 8080
     externalIngress: false
     daprEnabled: true
     daprAppId: serviceName
     daprAppPort: 8080
-    minReplicas: 2
-    maxReplicas: 5
-    cpu: '0.5'
-    memory: '1.0Gi'
+    minReplicas: finopsMinReplicas  // OPTIMITZACIÓ FINOPS: Escala a zero - no paga quan no s'usa
+    maxReplicas: finopsMaxReplicas  // Mínim possible
+    cpu: json(finopsCpuCores)  // Mínim absolut (250m cores)
+    memory: finopsMemory  // Mínim absolut (512 MiB)
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience

@@ -7,11 +7,13 @@ param location string = resourceGroup().location
 @description('Tags to apply to the Log Analytics Workspace')
 param tags object = {}
 
+import { logAnalyticsSkuName, finopsLogAnalyticsRetentionDays } from '../../config/constants.bicep'
+
 @description('Log Analytics Workspace SKU')
-param sku string = 'PerGB2018'
+param sku string = logAnalyticsSkuName
 
 @description('Data retention in days')
-param retentionInDays int = 30
+param retentionInDays int = finopsLogAnalyticsRetentionDays  // OPTIMITZACIÓ FINOPS: Mínim possible per dev no utilitzat
 
 var effectiveRetention = sku == 'Free' ? 7 : retentionInDays
 

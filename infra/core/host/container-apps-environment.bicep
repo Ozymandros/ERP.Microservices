@@ -1,4 +1,4 @@
-import { workloadProfileType } from '../../config/constants.bicep'
+import { workloadProfileType, workloadProfileName, finopsZoneRedundant } from '../../config/constants.bicep'
 
 // ============================================================================
 // Basic Parameters
@@ -47,9 +47,10 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2024-03-01'
   location: location
   tags: tags
   properties: {
+    zoneRedundant: finopsZoneRedundant  // OPTIMITZACIÓ FINOPS: Desactiva redundància de zona (reduïx costos)
     workloadProfiles: [
       {
-        name: toLower(workloadProfileType)
+        name: workloadProfileName  // OPTIMITZACIÓ FINOPS: Només Consumption, mai Dedicated
         workloadProfileType: workloadProfileType
       }
     ]

@@ -73,6 +73,23 @@ var defaultCpuCores = '0.5'
 @description('Default memory allocation per container replica (1.0Gi = 1024 MiB)')
 var defaultMemory = '1.0Gi'
 
+// FinOps Configuration - Cost Optimization for Non-Production Environments
+@export()
+@description('FinOps: Minimum replicas for scale-to-zero (0 = no cost when idle)')
+var finopsMinReplicas = 0
+
+@export()
+@description('FinOps: Maximum replicas for cost control (1 = minimal scaling)')
+var finopsMaxReplicas = 1
+
+@export()
+@description('FinOps: Minimum CPU allocation per container replica (0.25 cores = 250m)')
+var finopsCpuCores = '0.25'
+
+@export()
+@description('FinOps: Minimum memory allocation per container replica (0.5Gi = 512 MiB)')
+var finopsMemory = '0.5Gi'
+
 // ============================================================================
 // NOTE: Azure Role Definition IDs are NO LONGER hardcoded here.
 // They are now passed as deployment parameters for better flexibility and
@@ -168,10 +185,39 @@ var databaseSkuName = 'Basic'
 @description('SQL database service tier (Basic = entry-level, no SLA)')
 var databaseSkuTier = 'Basic'
 
+// SQL Serverless Configuration (FinOps)
+@export()
+@description('FinOps: SQL Serverless SKU name (GP_S_Gen5 = General Purpose Serverless Gen5)')
+var sqlServerlessSkuName = 'GP_S_Gen5'
+
+@export()
+@description('FinOps: SQL Serverless service tier (GeneralPurpose = serverless compute)')
+var sqlServerlessSkuTier = 'GeneralPurpose'
+
+@export()
+@description('FinOps: SQL Serverless minimum capacity in vCores (0.5 = minimum allowed)')
+var sqlServerlessMinCapacity = '0.5'
+
+@export()
+@description('FinOps: SQL Serverless auto-pause delay in minutes (60 = minimum allowed)')
+var sqlServerlessAutoPauseDelayMinutes = 60
+
+@export()
+@description('FinOps: SQL Serverless free tier enabled (true = 100k seconds/month free)')
+var sqlServerlessUseFreeLimit = true
+
+@export()
+@description('FinOps: SQL Serverless free limit exhaustion behavior (AutoPause = pause when limit reached)')
+var sqlServerlessFreeLimitExhaustionBehavior = 'AutoPause'
+
 // Log Analytics Configuration
 @export()
 @description('Log Analytics workspace pricing model (PerGB2018 = pay per GB ingested)')
 var logAnalyticsSkuName = 'PerGB2018'
+
+@export()
+@description('FinOps: Log Analytics retention in days (3 = minimum for cost optimization)')
+var finopsLogAnalyticsRetentionDays = 3
 
 // Container Apps Environment Configuration
 @export()
@@ -240,6 +286,34 @@ var storageFileServiceName = 'default'
 @export()
 @description('Azure Files share tier (Hot = frequently accessed files, lower latency)')
 var storageDefaultFileSku = 'Hot'
+
+@export()
+@description('FinOps: Storage account access tier (Hot = frequently accessed, lower latency)')
+var finopsStorageAccessTier = 'Hot'
+
+@export()
+@description('FinOps: Container Apps Environment zone redundancy (false = cost optimization)')
+var finopsZoneRedundant = false
+
+@export()
+@description('FinOps: Azure Files share quota in GB (1 = minimum allowed, maximum cost optimization)')
+var finopsStorageFileShareQuota = 1
+
+@export()
+@description('FinOps: Application Insights sampling percentage (20 = 20%, reduces telemetry costs by 80%)')
+var finopsApplicationInsightsSamplingPercentage = 20
+
+@export()
+@description('FinOps: App Configuration SKU (Free = no cost, suitable for dev/test)')
+var finopsAppConfigSku = 'free'
+
+@export()
+@description('FinOps: API Gateway minimum replicas for dev/test (0 = scale-to-zero, no cost when idle)')
+var finopsApiGatewayMinReplicas = 0
+
+@export()
+@description('FinOps: API Gateway CPU allocation for dev/test (0.25 cores = minimal resources)')
+var finopsApiGatewayCpuCores = '0.25'
 
 // Tags
 @export()

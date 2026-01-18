@@ -1,3 +1,5 @@
+import { finopsMinReplicas, finopsMaxReplicas, finopsCpuCores, finopsMemory } from '../config/constants.bicep'
+
 @description('Location for resources')
 param location string = resourceGroup().location
 
@@ -7,8 +9,16 @@ param tags object = {}
 @description('Container Apps Environment ID')
 param containerAppsEnvironmentId string
 
+
 @description('Container Registry endpoint')
 param containerRegistryEndpoint string
+
+@description('Container Registry username (for GHCR)')
+param ghcrUsername string = ''
+
+@description('Container Registry Personal Access Token (for GHCR)')
+@secure()
+param ghcrPat string = ''
 
 @description('App Configuration endpoint')
 param appConfigEndpoint string = ''
@@ -60,14 +70,16 @@ module apiGateway 'container-app-service.bicep' = {
     tags: tags
     containerAppsEnvironmentId: containerAppsEnvironmentId
     containerRegistryEndpoint: containerRegistryEndpoint
+    ghcrUsername: ghcrUsername
+    ghcrPat: ghcrPat
     imageName: '${imageName}:${imageTag}'
     targetPort: 8080
     externalIngress: true
     daprEnabled: false
-    minReplicas: 2
-    maxReplicas: 10
-    cpu: '1.0'
-    memory: '2.0Gi'
+    minReplicas: finopsMinReplicas  // OPTIMITZACIÓ FINOPS: Escala a zero - no paga quan no s'usa
+    maxReplicas: finopsMaxReplicas  // Mínim possible
+    cpu: json(finopsCpuCores)  // Mínim funcional
+    memory: finopsMemory  // Mínim funcional
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience

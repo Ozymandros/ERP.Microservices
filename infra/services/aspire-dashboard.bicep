@@ -1,3 +1,5 @@
+import { finopsMinReplicas, finopsMaxReplicas, finopsCpuCores, finopsMemory, workloadProfileName } from '../config/constants.bicep'
+
 @description('Location for resources')
 param location string = resourceGroup().location
 
@@ -45,7 +47,7 @@ resource aspireDashboard 'Microsoft.App/containerApps@2024-03-01' = {
   }
   properties: {
     managedEnvironmentId: containerAppsEnvironment.id
-    workloadProfileName: 'consumption'
+    workloadProfileName: workloadProfileName
     configuration: {
       ingress: externalIngress
         ? {
@@ -79,8 +81,8 @@ resource aspireDashboard 'Microsoft.App/containerApps@2024-03-01' = {
           name: 'aspire-dashboard'
           image: dashboardImage
           resources: {
-            cpu: json('0.5')
-            memory: '1.0Gi'
+            cpu: json(finopsCpuCores)  // OPTIMITZACIÓ FINOPS: Mínim absolut
+            memory: finopsMemory  // OPTIMITZACIÓ FINOPS: Mínim absolut
           }
           env: [
             {
@@ -123,8 +125,8 @@ resource aspireDashboard 'Microsoft.App/containerApps@2024-03-01' = {
         }
       ]
       scale: {
-        minReplicas: 1
-        maxReplicas: 2  // Dashboard doesn't need high scaling
+        minReplicas: finopsMinReplicas  // OPTIMITZACIÓ FINOPS: Escala a zero - no paga quan no s'usa
+        maxReplicas: finopsMaxReplicas  // OPTIMITZACIÓ FINOPS: Mínim possible
         rules: [
           {
             name: 'http-rule'

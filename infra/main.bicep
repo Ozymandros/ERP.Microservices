@@ -38,6 +38,7 @@ param jwtIssuer string = 'MyApp.Auth'
 @description('JWT token audience (e.g., MyApp.All) - identifies intended recipients of the token')
 param jwtAudience string = 'MyApp.All'
 
+
 // ============================================================================
 // Application Configuration Parameters
 // ============================================================================
@@ -50,6 +51,13 @@ param aspnetcoreEnvironment string = 'Production'
 
 @description('Docker image tag for all services (e.g., latest, commit hash, version) - used to version container images')
 param imageTag string = 'latest'
+
+@description('Container Registry username (for GHCR)')
+param ghcrUsername string = ''
+
+@description('Container Registry Personal Access Token (for GHCR)')
+@secure()
+param ghcrPat string = ''
 
 // ============================================================================
 // Derived Naming Variables
@@ -81,15 +89,6 @@ var logAnalyticsWorkspaceName = take('${namePrefix}-log-analytics-workspace', 63
 
 @description('Application Insights name (max 260 chars) - provides application performance monitoring')
 var applicationInsightsName = take('${namePrefix}-application-insights', 260)
-
-@description('Storage account name (max 24 chars, lowercase alphanumeric) - stores Azure Files shares')
-var storageAccountName = take('${flatPrefix}storageaccount', 24)
-
-@description('Azure Files share name (max 63 chars) - persistent storage for cache volumes')
-var storageShareName = toLower(take('${namePrefix}-cache-fileshare', 63))
-
-@description('Container Apps Environment storage name (max 32 chars) - volume mount for containers')
-var containerEnvironmentStorageName = take('${flatPrefix}cachevolume', 32)
 
 @description('Container Apps Environment name (max 63 chars) - hosts all containerized microservices')
 var containerAppsEnvironmentName = take('${namePrefix}-container-apps-environment', 63)
@@ -166,9 +165,6 @@ module resources 'resources.bicep' = {
     containerRegistryName: containerRegistryName
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
     applicationInsightsName: applicationInsightsName
-    storageAccountName: storageAccountName
-    storageShareName: storageShareName
-    containerEnvironmentStorageName: containerEnvironmentStorageName
     containerAppsEnvironmentName: containerAppsEnvironmentName
     redisHostName: redis.outputs.hostName
     redisPrimaryKey: redis.outputs.primaryKey
@@ -277,6 +273,8 @@ module authServiceModule 'services/auth-service.bicep' = {
     namePrefix: namePrefix
     envSlug: envSlug
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
+    ghcrUsername: ghcrUsername
+    ghcrPat: ghcrPat
   }
 }
 
@@ -300,6 +298,8 @@ module billingServiceModule 'services/billing-service.bicep' = {
     namePrefix: namePrefix
     envSlug: envSlug
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
+    ghcrUsername: ghcrUsername
+    ghcrPat: ghcrPat
   }
 }
 
@@ -323,6 +323,8 @@ module inventoryServiceModule 'services/inventory-service.bicep' = {
     namePrefix: namePrefix
     envSlug: envSlug
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
+    ghcrUsername: ghcrUsername
+    ghcrPat: ghcrPat
   }
 }
 
@@ -346,6 +348,8 @@ module ordersServiceModule 'services/orders-service.bicep' = {
     namePrefix: namePrefix
     envSlug: envSlug
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
+    ghcrUsername: ghcrUsername
+    ghcrPat: ghcrPat
   }
 }
 
@@ -369,6 +373,8 @@ module purchasingServiceModule 'services/purchasing-service.bicep' = {
     namePrefix: namePrefix
     envSlug: envSlug
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
+    ghcrUsername: ghcrUsername
+    ghcrPat: ghcrPat
   }
 }
 
@@ -392,6 +398,8 @@ module salesServiceModule 'services/sales-service.bicep' = {
     namePrefix: namePrefix
     envSlug: envSlug
     userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
+    ghcrUsername: ghcrUsername
+    ghcrPat: ghcrPat
   }
 }
 
@@ -478,8 +486,6 @@ output AZURE_CONTAINER_REGISTRY_NAME string = resources.outputs.AZURE_CONTAINER_
 output AZURE_CONTAINER_APPS_ENVIRONMENT_NAME string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME
 output AZURE_CONTAINER_APPS_ENVIRONMENT_ID string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
 output AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN
-output SERVICE_CACHE_VOLUME_REDISCACHE_NAME string = resources.outputs.SERVICE_CACHE_VOLUME_REDISCACHE_NAME
-output AZURE_VOLUMES_STORAGE_ACCOUNT string = resources.outputs.AZURE_VOLUMES_STORAGE_ACCOUNT
 output MYAPP_APPLICATIONINSIGHTS_APPINSIGHTSCONNECTIONSTRING string = resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
 output MYAPP_SQLSERVER_SQLSERVERFQDN string = myapp_sqlserver.outputs.sqlServerFqdn
 output AZURE_REDIS_CACHE_NAME string = redis.outputs.name
