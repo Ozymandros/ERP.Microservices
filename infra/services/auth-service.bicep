@@ -85,10 +85,10 @@ module authService 'container-app-service.bicep' = {
     daprEnabled: true
     daprAppId: serviceName
     daprAppPort: 8080
-    minReplicas: finopsMinReplicas  // OPTIMITZACIÓ FINOPS: Escala a zero - no paga quan no s'usa
-    maxReplicas: finopsMaxReplicas  // Mínim possible
-    cpu: json(finopsCpuCores)  // Mínim absolut (250m cores)
-    memory: finopsMemory  // Mínim absolut (512 MiB)
+    minReplicas: finopsMinReplicas  // FINOPS OPTIMIZATION: Scales to zero - no cost when not in use
+    maxReplicas: finopsMaxReplicas  // Minimum possible
+    cpu: json(finopsCpuCores)  // Absolute minimum (250m cores)
+    memory: finopsMemory  // Absolute minimum (512 MiB)
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
