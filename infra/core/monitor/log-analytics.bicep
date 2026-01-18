@@ -7,15 +7,16 @@ param location string = resourceGroup().location
 @description('Tags to apply to the Log Analytics Workspace')
 param tags object = {}
 
-import { logAnalyticsSkuName, finopsLogAnalyticsRetentionDays } from '../../config/constants.bicep'
+// ...existing code...
 
 @description('Log Analytics Workspace SKU')
-param sku string = logAnalyticsSkuName
+param sku string
 
 @description('Data retention in days')
-param retentionInDays int = finopsLogAnalyticsRetentionDays  // OPTIMITZACIÓ FINOPS: Mínim possible per dev no utilitzat
+param retentionInDays int
 
-var effectiveRetention = sku == 'Free' ? 7 : retentionInDays
+// For Free SKU, Azure only allows 30 days retention. For other SKUs, use minimum allowed or configured value.
+var effectiveRetention = sku == 'Free' ? 30 : retentionInDays
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: name

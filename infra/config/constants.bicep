@@ -212,8 +212,8 @@ var sqlServerlessFreeLimitExhaustionBehavior = 'AutoPause'
 var logAnalyticsSkuName = 'PerGB2018'
 
 @export()
-@description('FinOps: Log Analytics retention in days (3 = minimum for cost optimization)')
-var finopsLogAnalyticsRetentionDays = 3
+@description('FinOps: Log Analytics retention in days (30 = Free SKU minimum allowed by Azure)')
+var finopsLogAnalyticsRetentionDays = 30
 
 // Container Apps Environment Configuration
 @export()
