@@ -32,11 +32,11 @@ var redis = builder.AddRedis("cache")
 AspireProjectBuilder projectBuilder;
 
 // Add SQL Server as a container
-var password = builder.AddParameter("password", secret: true);
+var password = builder.AddParameter("password", secret: true, value: "Your_strong_(!)Password123");
 if (isDeployment)
 {
     var sqlServer = builder.AddAzureSqlServer("myapp-sqlserver");
-    projectBuilder = builder.CreateProjectBuilder();
+    projectBuilder = builder.CreateProjectBuilder(null, sqlServer);
 }
 else
 {
