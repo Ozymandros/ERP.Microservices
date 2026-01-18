@@ -54,7 +54,7 @@ param minReplicas int = 1
 param maxReplicas int = 10
 
 @description('CPU allocation per replica in cores (e.g., 0.5 = 500m, 1.0 = 1 core) - affects performance')
-param cpu string = '0.5'
+param cpu int = 1
 
 @description('Memory allocation per replica in GiB (e.g., 1.0Gi = 1024 MiB) - affects performance')
 param memory string = '1.0Gi'

@@ -113,7 +113,7 @@ cpu: '0.25'      // Reduir de 0.5 a 0.25
 memory: '0.5Gi'  // Reduir de 1.0Gi a 0.5Gi
 
 // API Gateway (mantenir més recursos)
-cpu: '0.5'       // Reduir de 1.0 a 0.5
+cpu: 1       // Reduir de 1.0 a 0.5
 memory: '1.0Gi'  // Reduir de 2.0Gi a 1.0Gi
 ```
 
@@ -158,7 +158,7 @@ memory: '0.5Gi'
 // API Gateway
 minReplicas: 0
 maxReplicas: 3
-cpu: '0.5'
+cpu: 1
 memory: '1.0Gi'
 ```
 
@@ -204,7 +204,7 @@ Per aplicar aquestes optimitzacions:
    
    var isDev = environmentType == 'dev'
    var minReplicas = isDev ? 0 : 2
-   var cpu = isDev ? '0.25' : '0.5'
+   var cpu = isDev ? '0.25' : 1
    var memory = isDev ? '0.5Gi' : '1.0Gi'
    ```
 

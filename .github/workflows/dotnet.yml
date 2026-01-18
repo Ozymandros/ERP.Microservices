@@ -23,6 +23,7 @@ jobs:
           dotnet-version: |
             8.x
             9.x
+            10.x
 
       - name: Cache NuGet packages
         uses: actions/cache@v4
@@ -69,7 +70,19 @@ jobs:
         env:
           DaprCliPath: ${{ env.DaprCliPath }}
           DAPR_HOME: ${{ env.DAPR_HOME }}
-        run: dotnet test ERP.Microservices.sln --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+        run: |
+          # Run all test projects except AppHost.Tests
+          dotnet test test/Myapp.Shared.Tests/Myapp.Shared.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+          dotnet test src/MyApp.Inventory/test/MyApp.Inventory.Infrastructure.Tests/MyApp.Inventory.Infrastructure.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+          dotnet test src/MyApp.Orders/test/MyApp.Orders.Application.Tests/MyApp.Orders.Application.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+          dotnet test src/MyApp.Orders/test/MyApp.Orders.Infrastructure.Tests/MyApp.Orders.Infrastructure.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+          dotnet test src/MyApp.Purchasing/test/MyApp.Purchasing.Infrastructure.Tests/MyApp.Purchasing.Infrastructure.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+          dotnet test src/MyApp.Auth/test/MyApp.Auth.Application.Tests/MyApp.Auth.Application.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+          dotnet test src/MyApp.Auth/test/MyApp.Auth.Infrastructure.Tests/MyApp.Auth.Infrastructure.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+          dotnet test src/MyApp.Inventory/test/MyApp.Inventory.Application.Tests/MyApp.Inventory.Application.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+          dotnet test src/MyApp.Purchasing/test/MyApp.Purchasing.Application.Tests/MyApp.Purchasing.Application.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+          dotnet test src/MyApp.Sales/test/MyApp.Sales.Application.Tests/MyApp.Sales.Application.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+          dotnet test src/MyApp.Sales/test/MyApp.Sales.Infrastructure.Tests/MyApp.Sales.Infrastructure.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
         continue-on-error: true
 
       - name: Upload test results

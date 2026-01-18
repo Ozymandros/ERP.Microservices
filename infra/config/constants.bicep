@@ -67,7 +67,7 @@ var defaultMaxReplicas = 5
 
 @export()
 @description('Default CPU allocation per container replica (0.5 cores = 500m)')
-var defaultCpuCores = '0.5'
+var defaultCpuCores = 1
 
 @export()
 @description('Default memory allocation per container replica (1.0Gi = 1024 MiB)')
@@ -192,7 +192,7 @@ var sqlServerlessSkuTier = 'GeneralPurpose'
 
 @export()
 @description('FinOps: SQL Serverless minimum capacity in vCores (0.5 = minimum allowed)')
-var sqlServerlessMinCapacity = '0.5'
+var sqlServerlessMinCapacity = 1
 
 @export()
 @description('FinOps: SQL Serverless auto-pause delay in minutes (60 = minimum allowed)')
