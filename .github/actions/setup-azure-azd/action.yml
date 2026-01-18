@@ -127,11 +127,19 @@ runs:
         REGISTRY_NAME=$(azd env get-value AZURE_CONTAINER_REGISTRY_NAME --environment ${{ inputs.azure-env-name }} 2>/dev/null || echo "")
 
         if [ -z "$REGISTRY_NAME" ]; then
+          # Try to get from Azure ACR
           RESOURCE_GROUP="rg-myapp-${{ inputs.azure-env-name }}-core"
-          REGISTRY_NAME=$(az acr list --resource-group "$RESOURCE_GROUP" --query "[0].name" -o tsv)
+          REGISTRY_NAME=$(az acr list --resource-group "$RESOURCE_GROUP" --query "[0].name" -o tsv 2>/dev/null || echo "")
+        fi
+
+        if [ -z "$REGISTRY_NAME" ]; then
+          # If still empty, might be using GHCR - set a placeholder
+          echo "⚠️  No ACR found - might be using GHCR instead"
+          REGISTRY_NAME="ghcr"
         fi
 
         if [ -n "$REGISTRY_NAME" ]; then
           echo "REGISTRY_NAME=$REGISTRY_NAME" >> $GITHUB_ENV
+          echo "✓ Registry name set to: $REGISTRY_NAME"
         fi
       shell: bash

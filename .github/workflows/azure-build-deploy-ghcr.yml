@@ -196,14 +196,18 @@ jobs:
         with:
           dotnet-version: "10.0.x"
 
-      - name: Set GHCR credentials in azd environment
+      - name: Set GHCR credentials in azd environment (BEFORE provision)
         env:
           AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
         run: |
           # Set GHCR registry endpoint and credentials for Container Apps
+          # These must be set BEFORE azd provision/deploy so Bicep can use them
           azd env set AZURE_CONTAINER_REGISTRY_ENDPOINT "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" --environment $AZURE_ENV_NAME
+          azd env set AZURE_CONTAINER_REGISTRY_NAME "ghcr" --environment $AZURE_ENV_NAME
           azd env set GHCR_USERNAME "${{ github.actor }}" --environment $AZURE_ENV_NAME
           azd env set GHCR_PAT "${{ secrets.GITHUB_TOKEN }}" --environment $AZURE_ENV_NAME
+          
+          echo "✓ GHCR credentials configured for azd environment"
 
       - name: Deploy Application
         env:

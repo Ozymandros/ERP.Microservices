@@ -1,4 +1,4 @@
-import { containerRegistrySku, logAnalyticsSkuName, applicationInsightsKind, workloadProfileType, workloadProfileName, aspireDashboardComponentName, aspireDashboardComponentType, tagAspireResourceName, azureRoleIdAcrPull, finopsLogAnalyticsRetentionDays, finopsApplicationInsightsSamplingPercentage } from 'config/constants.bicep'
+import { logAnalyticsSkuName, applicationInsightsKind, workloadProfileType, workloadProfileName, aspireDashboardComponentName, aspireDashboardComponentType, tagAspireResourceName, finopsLogAnalyticsRetentionDays, finopsApplicationInsightsSamplingPercentage } from 'config/constants.bicep'
 
 @description('Azure region where all resources will be deployed (defaults to resource group location)')
 param location string = resourceGroup().location
@@ -8,9 +8,6 @@ param tags object = {}
 
 @description('Base name prefix for all resources (e.g., myapp-dev) - ensures consistent naming across infrastructure')
 param namePrefix string
-
-@description('Azure Container Registry name - stores Docker images for all microservices')
-param containerRegistryName string
 
 @description('Log Analytics workspace name - centralizes logs, metrics, and diagnostics from all services')
 param logAnalyticsWorkspaceName string
@@ -41,32 +38,12 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-
   tags: tags
 }
 
-resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-07-01' = {
-  name: containerRegistryName
-  location: location
-  sku: {
-    name: containerRegistrySku
-  }
-  properties: {
-    adminUserEnabled: false
-  }
-  tags: tags
-}
-
 // ============================================================================
-// RBAC Role Assignments
+// Container Registry - REMOVED FOR FINOPS (Using GHCR instead)
 // ============================================================================
-
-// Grant the User-Assigned Identity the AcrPull role on the Container Registry
-resource acrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(containerRegistry.id, managedIdentity.id, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdAcrPull))
-  scope: containerRegistry
-  properties: {
-    principalId: managedIdentity.properties.principalId
-    principalType: 'ServicePrincipal'
-    roleDefinitionId:  subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdAcrPull)
-  }
-}
+// FINOPS OPTIMIZATION: ACR removed as GHCR (GitHub Container Registry) is used
+// instead, saving ~€4.64/month (Basic tier). GHCR provides free image hosting
+// for public repositories and includes authentication via GitHub PAT.
 
 // ============================================================================
 // Monitoring Resources
@@ -152,9 +129,6 @@ output MANAGED_IDENTITY_NAME string = managedIdentity.name
 output MANAGED_IDENTITY_PRINCIPAL_ID string = managedIdentity.properties.principalId
 output AZURE_LOG_ANALYTICS_WORKSPACE_NAME string = logAnalyticsWorkspace.name
 output AZURE_LOG_ANALYTICS_WORKSPACE_ID string = logAnalyticsWorkspace.id
-output AZURE_CONTAINER_REGISTRY_ENDPOINT string = containerRegistry.properties.loginServer
-output AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID string = managedIdentity.id
-output AZURE_CONTAINER_REGISTRY_NAME string = containerRegistry.name
 output AZURE_CONTAINER_APPS_ENVIRONMENT_NAME string = containerAppsEnvironment.outputs.name
 output AZURE_CONTAINER_APPS_ENVIRONMENT_ID string = containerAppsEnvironment.outputs.id
 output AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN string = containerAppsEnvironment.outputs.domain

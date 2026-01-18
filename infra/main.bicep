@@ -59,6 +59,9 @@ param ghcrUsername string = ''
 @secure()
 param ghcrPat string = ''
 
+@description('GHCR Registry endpoint - defaults to ghcr.io with GitHub username if provided')
+var ghcrRegistryEndpoint = !empty(ghcrUsername) ? 'ghcr.io/${toLower(ghcrUsername)}' : 'ghcr.io'
+
 // ============================================================================
 // Derived Naming Variables
 // ============================================================================
@@ -80,9 +83,6 @@ var flatPrefix = toLower(replace(namePrefix, '-', ''))
 
 @description('Resource group name following Azure naming convention (rg-{prefix}-core)')
 var resourceGroupName = 'rg-${namePrefix}-core'
-
-@description('Container Registry name (max 50 chars, alphanumeric only) - stores Docker images')
-var containerRegistryName = take('${flatPrefix}containerregistry', 50)
 
 @description('Log Analytics workspace name (max 63 chars) - centralizes logs from all services')
 var logAnalyticsWorkspaceName = take('${namePrefix}-log-analytics-workspace', 63)
@@ -162,7 +162,6 @@ module resources 'resources.bicep' = {
     location: location
     tags: tags
     namePrefix: namePrefix
-    containerRegistryName: containerRegistryName
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
     applicationInsightsName: applicationInsightsName
     containerAppsEnvironmentName: containerAppsEnvironmentName
@@ -260,7 +259,7 @@ module authServiceModule 'services/auth-service.bicep' = {
     location: location
     tags: tags
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
-    containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+    containerRegistryEndpoint: ghcrRegistryEndpoint
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
@@ -285,7 +284,7 @@ module billingServiceModule 'services/billing-service.bicep' = {
     location: location
     tags: tags
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
-    containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+    containerRegistryEndpoint: ghcrRegistryEndpoint
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
@@ -310,7 +309,7 @@ module inventoryServiceModule 'services/inventory-service.bicep' = {
     location: location
     tags: tags
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
-    containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+    containerRegistryEndpoint: ghcrRegistryEndpoint
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
@@ -335,7 +334,7 @@ module ordersServiceModule 'services/orders-service.bicep' = {
     location: location
     tags: tags
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
-    containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+    containerRegistryEndpoint: ghcrRegistryEndpoint
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
@@ -360,7 +359,7 @@ module purchasingServiceModule 'services/purchasing-service.bicep' = {
     location: location
     tags: tags
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
-    containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+    containerRegistryEndpoint: ghcrRegistryEndpoint
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
@@ -385,7 +384,7 @@ module salesServiceModule 'services/sales-service.bicep' = {
     location: location
     tags: tags
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
-    containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+    containerRegistryEndpoint: ghcrRegistryEndpoint
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
@@ -410,7 +409,7 @@ module apiGatewayModule 'services/api-gateway.bicep' = {
     location: location
     tags: tags
     containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
-    containerRegistryEndpoint: resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
+    containerRegistryEndpoint: ghcrRegistryEndpoint
     logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
@@ -480,9 +479,6 @@ module rbacAssignments 'rbac-assignments.bicep' = {
 output MANAGED_IDENTITY_CLIENT_ID string = resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_CLIENT_ID
 output MANAGED_IDENTITY_NAME string = resources.outputs.MANAGED_IDENTITY_NAME
 output AZURE_LOG_ANALYTICS_WORKSPACE_NAME string = resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_NAME
-output AZURE_CONTAINER_REGISTRY_ENDPOINT string = resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
-output AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID string = resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
-output AZURE_CONTAINER_REGISTRY_NAME string = resources.outputs.AZURE_CONTAINER_REGISTRY_NAME
 output AZURE_CONTAINER_APPS_ENVIRONMENT_NAME string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME
 output AZURE_CONTAINER_APPS_ENVIRONMENT_ID string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
 output AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN

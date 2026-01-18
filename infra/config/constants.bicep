@@ -106,10 +106,6 @@ var finopsMemory = '0.5Gi'
 // and are used in Bicep `existing` resources to reference built-in role definitions.
 
 @export()
-@description('Azure built-in role ID: AcrPull - Allows pulling images from Azure Container Registry')
-var azureRoleIdAcrPull = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
-
-@export()
 @description('Azure built-in role ID: App Configuration Data Reader - Allows reading App Configuration data')
 var azureRoleIdAppConfigurationDataReader = '516239f1-63e1-4d78-a4de-a74fb236a071'
 
@@ -238,10 +234,11 @@ var applicationInsightsKind = 'web'
 @description('SQL Server version (12.0 = SQL Server 2014, compatible with most features)')
 var sqlServerVersion = '12.0'
 
-// Container Registry Configuration
-@export()
-@description('Azure Container Registry SKU (Basic = lowest cost, suitable for dev/test)')
-var containerRegistrySku = 'Basic'
+// ============================================================================
+// Container Registry - REMOVED FOR FINOPS (Using GHCR instead)
+// ============================================================================
+// FINOPS OPTIMIZATION: ACR constants removed as GHCR (GitHub Container Registry)
+// is used instead, saving ~€4.64/month. GHCR provides free image hosting.
 
 // API Gateway Configuration (scaled higher than microservices)
 @export()
