@@ -169,9 +169,9 @@ var storageFileShareQuota = 1024
 @description('SQL Server database collation (case-insensitive, accent-sensitive, Latin1)')
 var databaseCollation = 'SQL_Latin1_General_CP1_CI_AS'
 
-@export()
-@description('Maximum database size in bytes (2147483648 = 2 GB, Basic tier limit)')
-var databaseMaxSizeBytes = 2147483648
+// @export()
+// @description('Maximum database size in bytes (2147483648 = 2 GB, Basic tier limit)')
+// var databaseMaxSizeBytes = 2147483648
 
 @export()
 @description('SQL database SKU name (Basic = lowest cost tier, suitable for dev/test)')
