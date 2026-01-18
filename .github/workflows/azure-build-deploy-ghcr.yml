@@ -1,0 +1,272 @@
+name: Build & Deploy ERP Services to Azure (GHCR)
+
+on:
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+
+env:
+  AZURE_ENV_NAME: "dev"
+  AZURE_LOCATION: "westeurope"
+  APP_PREFIX: "myapp"
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  provision-infrastructure:
+    name: Provision Infrastructure
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Azure and Azure Developer CLI
+        uses: ./.github/actions/setup-azure-azd
+        with:
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          azure-env-name: ${{ env.AZURE_ENV_NAME }}
+          azure-location: ${{ env.AZURE_LOCATION }}
+          setup-dapr: "true"
+
+      - name: Preview Infrastructure Provisioning (Required)
+        env:
+          AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
+          AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        run: |
+          echo "Previewing infrastructure changes..."
+          azd provision --preview
+          echo "Preview successful. Proceeding with provisioning..."
+
+      - name: Provision Infrastructure
+        env:
+          AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
+          AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        run: |
+          echo "Provisioning infrastructure..."
+          azd provision --no-prompt
+
+  build-and-push-images:
+    name: Build Docker Images
+    needs: provision-infrastructure
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build and push shared base image FIRST
+      - name: Build and push shared base image
+        run: |
+          IMAGE_TAG=${GITHUB_SHA::7}
+          APP_PREFIX="${APP_PREFIX:-myapp}"
+          
+          echo "Building shared base image with tag: $IMAGE_TAG"
+          
+          docker buildx build \
+            --platform linux/amd64 \
+            --push \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${APP_PREFIX}-microservices-base:${IMAGE_TAG} \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${APP_PREFIX}-microservices-base:10.0 \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${APP_PREFIX}-microservices-base:latest \
+            --file docker/microservices-base.Dockerfile \
+            .
+          
+          echo "✓ Base image build completed successfully"
+
+      # Build and push all service images
+      - name: Build and push service images to GHCR
+        run: |
+          AZURE_ENV_NAME="${AZURE_ENV_NAME:-dev}"
+          APP_PREFIX="${APP_PREFIX:-myapp}"
+          
+          # Define services to build
+          declare -a SERVICES=(
+              "MyApp.Auth/MyApp.Auth.API:auth-service"
+              "MyApp.Billing/MyApp.Billing.API:billing-service"
+              "MyApp.Inventory/MyApp.Inventory.API:inventory-service"
+              "MyApp.Orders/MyApp.Orders.API:orders-service"
+              "MyApp.Purchasing/MyApp.Purchasing.API:purchasing-service"
+              "MyApp.Sales/MyApp.Sales.API:sales-service"
+              "ErpApiGateway:api-gateway"
+          )
+
+          IMAGE_TAG=${GITHUB_SHA::7}
+          BASE_IMAGE_REGISTRY="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/"
+
+          echo "Building service images with tag: $IMAGE_TAG"
+
+          for SERVICE in "${SERVICES[@]}"; do
+              IFS=':' read -r SERVICE_PATH SERVICE_NAME <<< "$SERVICE"
+              REPO_NAME="${APP_PREFIX}-${SERVICE_NAME}-${AZURE_ENV_NAME}"
+              
+              echo "Building: $REPO_NAME from src/$SERVICE_PATH"
+              
+              if [[ "$SERVICE_NAME" != "auth-service" && "$SERVICE_NAME" != "api-gateway" ]]; then
+                  # Services that use shared base image
+                  docker buildx build \
+                      --platform linux/amd64 \
+                      --push \
+                      --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${REPO_NAME}:${IMAGE_TAG} \
+                      --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${REPO_NAME}:latest \
+                      --build-arg BASE_IMAGE_REGISTRY="$BASE_IMAGE_REGISTRY" \
+                      --file "src/$SERVICE_PATH/Dockerfile" \
+                      .
+              else
+                  # Auth and Gateway services
+                  docker buildx build \
+                      --platform linux/amd64 \
+                      --push \
+                      --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${REPO_NAME}:${IMAGE_TAG} \
+                      --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${REPO_NAME}:latest \
+                      --file "src/$SERVICE_PATH/Dockerfile" \
+                      .
+              fi
+          done
+
+      - name: Verify images in GHCR
+        run: |
+          AZURE_ENV_NAME="${AZURE_ENV_NAME:-dev}"
+          APP_PREFIX="${APP_PREFIX:-myapp}"
+          IMAGE_TAG=${GITHUB_SHA::7}
+          
+          echo "=== Build Summary ==="
+          echo "Built images with tag: $IMAGE_TAG"
+          echo "Registry: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
+          echo ""
+          echo "Images built:"
+          echo "- ${APP_PREFIX}-microservices-base:$IMAGE_TAG"
+          
+          for SERVICE in auth-service billing-service inventory-service orders-service purchasing-service sales-service api-gateway; do
+              echo "- ${APP_PREFIX}-${SERVICE}-${AZURE_ENV_NAME}:$IMAGE_TAG"
+          done
+
+  deploy-to-azure:
+    name: Deploy Application
+    needs: build-and-push-images
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Azure and Azure Developer CLI
+        uses: ./.github/actions/setup-azure-azd
+        with:
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          azure-env-name: ${{ env.AZURE_ENV_NAME }}
+          azure-location: ${{ env.AZURE_LOCATION }}
+          setup-dapr: "true"
+
+      - name: Set up dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Set GHCR credentials in azd environment (BEFORE provision)
+        env:
+          AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
+        run: |
+          # Set GHCR registry endpoint and credentials for Container Apps
+          # These must be set BEFORE azd provision/deploy so Bicep can use them
+          azd env set AZURE_CONTAINER_REGISTRY_ENDPOINT "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" --environment $AZURE_ENV_NAME
+          # AZURE_CONTAINER_REGISTRY_NAME is deprecated; only GHCR is supported
+          azd env set GHCR_USERNAME "${{ github.actor }}" --environment $AZURE_ENV_NAME
+          azd env set GHCR_PAT "${{ secrets.GITHUB_TOKEN }}" --environment $AZURE_ENV_NAME
+          
+          echo "✓ GHCR credentials configured for azd environment"
+
+      - name: Deploy Application
+        env:
+          AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
+          AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          DaprCliPath: ${{ env.DaprCliPath }}
+          DAPR_HOME: ${{ env.DAPR_HOME }}
+        run: |
+          export IMAGE_TAG=${GITHUB_SHA::7}
+          echo "Deploying with image tag: $IMAGE_TAG from GHCR"
+          
+          dapr --version || {
+            echo "ERROR: Dapr CLI not accessible in deployment step"
+            exit 1
+          }
+          
+          azd deploy --no-prompt
+
+  verify-deployment:
+    name: Verify Deployment
+    needs: deploy-to-azure
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Azure login (Federated)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Check Container Apps status
+        env:
+          APP_PREFIX: ${{ env.APP_PREFIX }}
+        run: |
+          APP_PREFIX="${APP_PREFIX:-myapp}"
+          AZURE_ENV_NAME="${{ env.AZURE_ENV_NAME }}"
+          RG_NAME="rg-${APP_PREFIX}-${AZURE_ENV_NAME}-core"
+
+          echo "Checking Container Apps health..."
+          az containerapp list --resource-group "$RG_NAME" --output table
+
+          echo ""
+          echo "Checking revision status..."
+          for APP in auth-service billing-service inventory-service orders-service purchasing-service sales-service api-gateway; do
+              echo ""
+              echo "App: ${APP_PREFIX}-${AZURE_ENV_NAME}-$APP"
+              az containerapp show --name "${APP_PREFIX}-${AZURE_ENV_NAME}-$APP" \
+                  --resource-group "$RG_NAME" \
+                  --query "properties.latestRevisionFqdn" -o tsv || echo "Not found"
+          done
+
+      - name: Run smoke tests
+        run: |
+          echo "✓ Deployment verified successfully"

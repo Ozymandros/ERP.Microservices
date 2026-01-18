@@ -31,21 +31,7 @@ param daprAppId string = name
 @description('Dapr app port')
 param daprAppPort int = targetPort
 
-@description('JWT secret key')
-@secure()
-param jwtSecretKey string = ''
-
-@description('JWT token issuer')
-param jwtIssuer string = 'MyApp.Auth'
-
-@description('JWT token audience')
-param jwtAudience string = 'MyApp.All'
-
-@description('Frontend origin for CORS')
-param frontendOrigin string = 'http://localhost:3000'
-
-@description('ASP.NET Core environment')
-param aspnetcoreEnvironment string = 'Production'
+// Removed unused parameters for clean build
 
 @description('Environment variables')
 param env array = []
@@ -60,7 +46,7 @@ param minReplicas int = 1
 param maxReplicas int = 10
 
 @description('CPU cores (in cores)')
-param cpu string = '0.5'
+param cpu int = 1
 
 @description('Memory (in Gi)')
 param memory string = '1.0Gi'
@@ -73,7 +59,7 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-pr
   name: containerRegistryName
 }
 
-resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
+resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   name: name
   location: location
   tags: tags
@@ -110,7 +96,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
           name: name
           image: '${containerRegistry.properties.loginServer}/${imageName}'
           resources: {
-            cpu: json(cpu)
+            cpu: cpu
             memory: memory
           }
           env: env

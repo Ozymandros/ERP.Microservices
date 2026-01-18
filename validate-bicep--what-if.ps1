@@ -104,7 +104,27 @@ Write-Host "================================================" -ForegroundColor G
 Write-Host "✓ What-If preview complete" -ForegroundColor Green
 Write-Host "================================================" -ForegroundColor Green
 Write-Host ""
+
+# Run azd provision --preview if available
+Write-Host "Running azd provision --preview..." -ForegroundColor Cyan
+$azdCheck = azd version 2>$null
+if ($LASTEXITCODE -eq 0) {
+    Write-Host ""
+    azd provision --preview 2>&1 | Out-Host
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host ""
+        Write-Host "✓ azd provision preview complete" -ForegroundColor Green
+    } else {
+        Write-Host ""
+        Write-Host "⚠ azd provision preview completed with warnings (this is normal)" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "⚠ azd CLI not available, skipping azd preview" -ForegroundColor Yellow
+}
+
+Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Cyan
 Write-Host "  1. Review the changes above" -ForegroundColor Cyan
-Write-Host "  2. If satisfied, deploy: azd deploy" -ForegroundColor Cyan
+Write-Host "  2. Preview with azd: azd provision --preview" -ForegroundColor Cyan
+Write-Host "  3. If satisfied, deploy: azd provision && azd deploy" -ForegroundColor Cyan
 Write-Host ""

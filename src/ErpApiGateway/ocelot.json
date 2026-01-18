@@ -55,7 +55,7 @@
       "UpstreamHttpMethod": [
         "GET",
         "POST",
-        "PUT",
+        "PUT",  
         "DELETE",
         "PATCH",
         "OPTIONS"

@@ -18,6 +18,11 @@ public class PurchaseOrder(Guid id) : AuditableEntity<Guid>(id)
     public DateTime? ExpectedDeliveryDate { get; set; }
     public PurchaseOrderStatus Status { get; set; }
     public decimal TotalAmount { get; set; }
+    
+    // Receiving tracking
+    public Guid? ReceivingWarehouseId { get; set; }
+    public DateTime? ReceivedDate { get; set; }
+    public bool IsReceived { get; set; }
 
     // Navigation
     public Supplier? Supplier { get; set; }

@@ -19,10 +19,10 @@ param appConfigId string
 @description('Principal ID to grant access (microservice managed identity)')
 param principalId string
 
-@description('Role Definition ID - App Configuration Data Reader role ID')
+@description('Role Definition GUID - App Configuration Data Reader role GUID (36 characters)')
 @minLength(36)
 @maxLength(36)
-param roleDefinitionId string
+param roleGuid string
 
 // App Configuration Data Reader role (built-in Azure role)
 // Allows: Read configuration keys and values (including Key Vault references)
@@ -41,12 +41,12 @@ param roleDefinitionId string
 // ============================================================================
 
 resource appConfigRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(appConfigId, principalId, roleDefinitionId)
+  name: guid(appConfigId, principalId, roleGuid)
   scope: resourceGroup()
   properties: {
     principalId: principalId
     principalType: 'ServicePrincipal'
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleGuid)
   }
 }
 
@@ -58,7 +58,7 @@ resource appConfigRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-0
 output roleAssignmentId string = appConfigRoleAssignment.id
 
 @description('Role definition ID granted')
-output grantedRoleDefinitionId string = roleDefinitionId
+output grantedRoleDefinitionId string = roleGuid
 
 @description('Principal ID that received access')
 output grantedPrincipalId string = principalId

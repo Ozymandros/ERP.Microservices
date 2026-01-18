@@ -27,9 +27,23 @@ public class AuthMappingProfile : Profile
             .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
             .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName));
 
-        // Permission mappings
+        // Permission mappings (Permission has primary constructor and required properties)
+        // Note: PermissionService creates Permission manually, but mapping must compile
         CreateMap<Permission, PermissionDto>();
-        CreateMap<CreatePermissionDto, Permission>();
-        CreateMap<UpdatePermissionDto, Permission>();
+        // CreatePermissionDto -> Permission: must set required properties during construction
+        CreateMap<CreatePermissionDto, Permission>()
+            .ConstructUsing(src => CreatePermission(src.Module, src.Action, src.Description));
+        // UpdatePermissionDto: Not mapped via AutoMapper (PermissionService updates manually)
+    }
+
+    private static Permission CreatePermission(string module, string action, string? description)
+    {
+        var permission = new Permission(Guid.NewGuid())
+        {
+            Module = module,
+            Action = action,
+            Description = description
+        };
+        return permission;
     }
 }

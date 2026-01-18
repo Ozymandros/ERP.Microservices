@@ -7,13 +7,16 @@ param location string = resourceGroup().location
 @description('Tags to apply to the Log Analytics Workspace')
 param tags object = {}
 
+// ...existing code...
+
 @description('Log Analytics Workspace SKU')
-param sku string = 'PerGB2018'
+param sku string
 
 @description('Data retention in days')
-param retentionInDays int = 30
+param retentionInDays int
 
-var effectiveRetention = sku == 'Free' ? 7 : retentionInDays
+// For Free SKU, Azure only allows 30 days retention. For other SKUs, use minimum allowed or configured value.
+var effectiveRetention = sku == 'Free' ? 30 : retentionInDays
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: name

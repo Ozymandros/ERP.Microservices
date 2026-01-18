@@ -10,6 +10,7 @@ namespace MyApp.Purchasing.Application.Contracts.Services;
 
 public interface IPurchaseOrderService
 {
+    // Basic CRUD operations
     Task<PurchaseOrderDto?> GetPurchaseOrderByIdAsync(Guid id);
     Task<IEnumerable<PurchaseOrderDto>> GetAllPurchaseOrdersAsync();
     Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersBySupplierAsync(Guid supplierId);
@@ -19,4 +20,15 @@ public interface IPurchaseOrderService
     Task<PurchaseOrderDto> UpdatePurchaseOrderAsync(Guid id, CreateUpdatePurchaseOrderDto dto);
     Task<PurchaseOrderDto> UpdatePurchaseOrderStatusAsync(Guid id, PurchaseOrderStatus status);
     Task DeletePurchaseOrderAsync(Guid id);
+    
+    // Purchasing workflows
+    /// <summary>
+    /// Approves a purchase order for processing
+    /// </summary>
+    Task<PurchaseOrderDto> ApprovePurchaseOrderAsync(ApprovePurchaseOrderDto dto);
+    
+    /// <summary>
+    /// Receives a purchase order and updates inventory
+    /// </summary>
+    Task<PurchaseOrderDto> ReceivePurchaseOrderAsync(ReceivePurchaseOrderDto dto);
 }

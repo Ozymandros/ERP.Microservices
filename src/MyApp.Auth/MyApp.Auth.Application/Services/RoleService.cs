@@ -67,7 +67,7 @@ public class RoleService : IRoleService
         var roleExists = await _roleManager.RoleExistsAsync(createRoleDto.Name);
         if (roleExists)
         {
-            _logger.LogWarning("Role already exists: {RoleName}", createRoleDto.Name);
+            _logger.LogWarning("Role already exists: {@RoleData}", new { createRoleDto });
             return null;
         }
 
@@ -81,7 +81,7 @@ public class RoleService : IRoleService
         var result = await _roleManager.CreateAsync(role);
         if (!result.Succeeded)
         {
-            _logger.LogWarning("Failed to create role: {RoleName}", createRoleDto.Name);
+            _logger.LogWarning("Failed to create role: {@RoleData}", new { createRoleDto });
             return null;
         }
 
@@ -96,6 +96,8 @@ public class RoleService : IRoleService
             _logger.LogWarning("Role not found: {RoleId}", roleId);
             return false;
         }
+
+        _logger.LogInformation("Updating role: {@RoleUpdate}", new { RoleId = roleId, updateRoleDto });
 
         role.Name = updateRoleDto.Name;
         role.Description = updateRoleDto.Description;

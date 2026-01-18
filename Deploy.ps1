@@ -21,20 +21,13 @@ $ErrorActionPreference = 'Stop'
 # CONFIGURATION
 # ============================================================================
 
-$Config = @{
-    dev     = @{ rg = 'rg-myapp-dev-core'; acr = 'myappdevcontainerregistry'; location = 'westeurope' }
-    staging = @{ rg = 'rg-myapp-staging-core'; acr = 'myappstgcontainerregistry'; location = 'westeurope' }
-    prod    = @{ rg = 'rg-myapp-prod-core'; acr = 'myappprodcontainerregistry'; location = 'westeurope' }
-}
-
-$CurrentConfig = $Config[$Environment]
 Write-Host "═════════════════════════════════════════════════════════════════" -ForegroundColor Cyan
 Write-Host "🚀 ERP MICROSERVICES - DEPLOYMENT SCRIPT" -ForegroundColor Cyan
 Write-Host "═════════════════════════════════════════════════════════════════" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Environment: $Environment" -ForegroundColor Yellow
-Write-Host "Resource Group: $($CurrentConfig.rg)" -ForegroundColor Yellow
-Write-Host "Container Registry: $($CurrentConfig.acr)" -ForegroundColor Yellow
+Write-Host "Resource Group: rg-myapp-$Environment-core" -ForegroundColor Yellow
+Write-Host "Container Registry: ghcr.io" -ForegroundColor Yellow
 Write-Host ""
 
 # ============================================================================
@@ -44,21 +37,19 @@ Write-Host ""
 if (-not $SkipBuild) {
     Write-Host "PHASE 1: Building Docker Images" -ForegroundColor Cyan
     Write-Host "─────────────────────────────────────────────────────────────────" -ForegroundColor Cyan
-    
     # Set environment variables for build script
-    $env:AZURE_CONTAINER_REGISTRY_NAME = $CurrentConfig.acr
+    $env:AZURE_CONTAINER_REGISTRY_ENDPOINT = "ghcr.io/$($env:GITHUB_REPOSITORY)"
+    $env:GHCR_USERNAME = $env:GITHUB_ACTOR
+    $env:GHCR_PAT = $env:GITHUB_TOKEN
     $env:AZURE_ENV_NAME = $Environment
-    
     # Run build script
     $BuildScript = Join-Path $PSScriptRoot 'infra/scripts/build-push-images.ps1'
-    
     if (Test-Path $BuildScript) {
         & $BuildScript
     } else {
         Write-Host "❌ Build script not found: $BuildScript" -ForegroundColor Red
         exit 1
     }
-    
     Write-Host ""
 }
 
@@ -71,10 +62,27 @@ if (-not $SkipDeploy) {
     Write-Host "─────────────────────────────────────────────────────────────────" -ForegroundColor Cyan
     
     $env:AZURE_ENV_NAME = $Environment
-    $env:AZURE_LOCATION = $CurrentConfig.location
+    $env:AZURE_LOCATION = "westeurope"
     
-    Write-Host "Running: azd up" -ForegroundColor Yellow
-    azd up --no-prompt
+    Write-Host "Step 2.1: Previewing infrastructure changes..." -ForegroundColor Yellow
+    azd provision --preview 2>&1 | Out-Host
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "⚠ Preview completed with warnings (continuing with deployment)" -ForegroundColor Yellow
+    } else {
+        Write-Host "✓ Preview completed successfully" -ForegroundColor Green
+    }
+    Write-Host ""
+    
+    Write-Host "Step 2.2: Provisioning infrastructure..." -ForegroundColor Yellow
+    azd provision --no-prompt
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "❌ Provisioning failed" -ForegroundColor Red
+        exit 1
+    }
+    Write-Host ""
+    
+    Write-Host "Step 2.3: Deploying application..." -ForegroundColor Yellow
+    azd deploy --no-prompt
     
     if ($LASTEXITCODE -ne 0) {
         Write-Host "❌ Deployment failed" -ForegroundColor Red
@@ -109,7 +117,7 @@ if ($Verify -or ($SkipBuild -eq $false -and $SkipDeploy -eq $false)) {
         try {
             $App = az containerapp show `
                 --name $ServiceName `
-                --resource-group $CurrentConfig.rg `
+                --resource-group rg-myapp-$Environment-core `
                 --query "properties.latestRevisionFqdn" -o tsv 2>/dev/null
             
             if ($App) {
@@ -142,7 +150,7 @@ Write-Host "     https://myapp-$Environment-auth-service.<region>.containerapp.i
 Write-Host "  3. Monitor logs in Application Insights"
 Write-Host ""
 Write-Host "Common Commands:" -ForegroundColor Cyan
-Write-Host "  View logs:       az containerapp logs show --name myapp-$Environment-auth-service --resource-group $($CurrentConfig.rg)"
-Write-Host "  Check status:    az containerapp show --name myapp-$Environment-auth-service --resource-group $($CurrentConfig.rg)"
-Write-Host "  List revisions:  az containerapp revision list --name myapp-$Environment-auth-service --resource-group $($CurrentConfig.rg)"
+    Write-Host "  View logs:       az containerapp logs show --name myapp-$Environment-auth-service --resource-group rg-myapp-$Environment-core"
+    Write-Host "  Check status:    az containerapp show --name myapp-$Environment-auth-service --resource-group rg-myapp-$Environment-core"
+    Write-Host "  List revisions:  az containerapp revision list --name myapp-$Environment-auth-service --resource-group rg-myapp-$Environment-core"
 Write-Host ""

@@ -10,7 +10,9 @@
 
 param(
     [string]$ResourceGroupName = $env:AZURE_RESOURCE_GROUP,
-    [string]$RegistryName = $env:AZURE_CONTAINER_REGISTRY_NAME,
+    [string]$RegistryEndpoint = $env:AZURE_CONTAINER_REGISTRY_ENDPOINT,
+    [string]$GHCRUsername = $env:GHCR_USERNAME,
+    [string]$GHCRPat = $env:GHCR_PAT,
     [string]$EnvironmentName = $env:AZURE_ENV_NAME,
     [string]$SourceDirectory = (Get-Item -Path "$PSScriptRoot/../../" -Force).FullName
 )
@@ -23,48 +25,58 @@ $ErrorActionPreference = 'Stop'
 $VerbosePreference = 'Continue'
 
 # Service configuration: (ServicePath, Dockerfile, ImageName)
-$Services = @(
-    @{ Path = 'MyApp.Auth/MyApp.Auth.API'; Dockerfile = 'Dockerfile'; ImageName = 'auth-service' }
-    @{ Path = 'MyApp.Billing/MyApp.Billing.API'; Dockerfile = 'Dockerfile'; ImageName = 'billing-service' }
-    @{ Path = 'MyApp.Inventory/MyApp.Inventory.API'; Dockerfile = 'Dockerfile'; ImageName = 'inventory-service' }
-    @{ Path = 'MyApp.Orders/MyApp.Orders.API'; Dockerfile = 'Dockerfile'; ImageName = 'orders-service' }
-    @{ Path = 'MyApp.Purchasing/MyApp.Purchasing.API'; Dockerfile = 'Dockerfile'; ImageName = 'purchasing-service' }
-    @{ Path = 'MyApp.Sales/MyApp.Sales.API'; Dockerfile = 'Dockerfile'; ImageName = 'sales-service' }
-    @{ Path = 'ErpApiGateway'; Dockerfile = 'Dockerfile'; ImageName = 'erp-api-gateway' }
-)
+Write-Header "🔍 VALIDATING ENVIRONMENT"
 
-# Image tag (use commit hash for unique tags in production)
-$ImageTag = if ($env:BUILD_SOURCEVERSION) { $env:BUILD_SOURCEVERSION.Substring(0, 7) } else { 'latest' }
+if (-not $ResourceGroupName) {
+    Write-Error "ResourceGroupName is required. Set AZURE_RESOURCE_GROUP environment variable."
+    exit 1
+}
+
+if (-not $RegistryEndpoint) {
+    Write-Error "RegistryEndpoint is required. Set AZURE_CONTAINER_REGISTRY_ENDPOINT environment variable."
+    exit 1
+}
+
+if (-not $GHCRUsername) {
+    Write-Error "GHCRUsername is required. Set GHCR_USERNAME environment variable."
+    exit 1
+}
+
+if (-not $GHCRPat) {
+    Write-Error "GHCR_PAT is required. Set GHCR_PAT environment variable."
+    exit 1
+}
+
+if (-not (Test-Path $SourceDirectory)) {
+    Write-Error "Source directory not found: $SourceDirectory"
+    exit 1
+}
+
+Write-Step "ResourceGroup: $ResourceGroupName"
+Write-Step "Registry Endpoint: $RegistryEndpoint"
+Write-Step "GHCR Username: $GHCRUsername"
+Write-Step "Environment: $EnvironmentName"
+Write-Step "Source Directory: $SourceDirectory"
+Write-Step "Image Tag: $ImageTag"
+Write-Success "Environment validation passed"
 
 # ============================================================================
-# HELPER FUNCTIONS
+# LOGIN TO GHCR
 # ============================================================================
 
-function Write-Header {
-    param([string]$Message)
-    Write-Host ""
-    Write-Host "═══════════════════════════════════════════════════════════════" -ForegroundColor Cyan
-    Write-Host $Message -ForegroundColor Cyan
-    Write-Host "═══════════════════════════════════════════════════════════════" -ForegroundColor Cyan
-}
+Write-Header "🔐 AUTHENTICATING TO GITHUB CONTAINER REGISTRY (GHCR)"
 
-function Write-Step {
-    param([string]$Message)
-    Write-Host "→ $Message" -ForegroundColor Yellow
+Write-Step "Logging in to GHCR..."
+docker logout $RegistryEndpoint 2>&1 | Out-Null
+$loginResult = docker login $RegistryEndpoint -u $GHCRUsername --password-stdin <<< $GHCRPat
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Failed to login to GHCR: $loginResult"
+    exit 1
 }
+Write-Success "Successfully authenticated to GHCR"
 
-function Write-Success {
-    param([string]$Message)
-    Write-Host "✓ $Message" -ForegroundColor Green
-}
-
-function Write-Error {
-    param([string]$Message)
-    Write-Host "✗ $Message" -ForegroundColor Red
-}
-
-# ============================================================================
-# VALIDATION
+$RegistryUri = $RegistryEndpoint
+Write-Step "Registry URI: $RegistryUri"
 # ============================================================================
 
 Write-Header "🔍 VALIDATING ENVIRONMENT"
@@ -137,14 +149,8 @@ foreach ($Service in $Services) {
         continue
     }
     
-    # Build using ACR (faster, parallel builds, cached layers)
-    Write-Host "  Submitting build to ACR..." -ForegroundColor Gray
-    $BuildOutput = az acr build `
-        --registry $RegistryName `
-        --image "$ImageName`:$ImageTag" `
-        --file "$Dockerfile" `
-        $ServiceFullPath 2>&1
-    
+    # Build and push to GHCR
+    $BuildOutput = docker build -t $FullImageName -f "$ServiceFullPath/$Dockerfile" $ServiceFullPath 2>&1
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Failed to build $ImageName"
         Write-Host $BuildOutput -ForegroundColor Red
@@ -152,7 +158,14 @@ foreach ($Service in $Services) {
         $FailedServices += $ImageName
         continue
     }
-    
+    $PushOutput = docker push $FullImageName 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "Failed to push $ImageName"
+        Write-Host $PushOutput -ForegroundColor Red
+        $FailureCount++
+        $FailedServices += $ImageName
+        continue
+    }
     Write-Success "Successfully built and pushed $ImageName`:$ImageTag"
     $SuccessCount++
 }

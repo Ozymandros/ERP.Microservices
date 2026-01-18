@@ -5,6 +5,7 @@ using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Domain.Specifications;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Permissions;
 
 namespace MyApp.Auth.API.Controllers;
 

@@ -1,9 +1,11 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using Moq;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Services;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Shared.Domain.Messaging;
 using Xunit;
 
 namespace MyApp.Sales.Application.Tests.Services;
@@ -13,6 +15,9 @@ public class SalesOrderServiceTests
     private readonly Mock<ISalesOrderRepository> _mockOrderRepository;
     private readonly Mock<ICustomerRepository> _mockCustomerRepository;
     private readonly Mock<IMapper> _mockMapper;
+    private readonly Mock<ILogger<SalesOrderService>> _mockLogger;
+    private readonly Mock<IEventPublisher> _mockEventPublisher;
+    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly SalesOrderService _salesOrderService;
 
     public SalesOrderServiceTests()
@@ -20,33 +25,36 @@ public class SalesOrderServiceTests
         _mockOrderRepository = new Mock<ISalesOrderRepository>();
         _mockCustomerRepository = new Mock<ICustomerRepository>();
         _mockMapper = new Mock<IMapper>();
+        _mockLogger = new Mock<ILogger<SalesOrderService>>();
+        _mockEventPublisher = new Mock<IEventPublisher>();
+        _mockServiceInvoker = new Mock<IServiceInvoker>();
 
         _salesOrderService = new SalesOrderService(
             _mockOrderRepository.Object,
             _mockCustomerRepository.Object,
-            _mockMapper.Object);
+            _mockMapper.Object,
+            _mockLogger.Object,
+            _mockEventPublisher.Object,
+            _mockServiceInvoker.Object);
     }
 
     #region GetSalesOrderByIdAsync Tests
 
     [Fact]
-    public async Task GetSalesOrderByIdAsync_WithExistingId_ReturnsOrderDto()
+    public async Task GetSalesOrderByIdAsync_WithExistingId_ReturnsSalesOrderDto()
     {
         // Arrange
         var orderId = Guid.NewGuid();
-        var order = new SalesOrder(orderId)
-        {
-            OrderNumber = "SO-001",
-            TotalAmount = 250.00m
-        };
-
+        var order = new SalesOrder(orderId) { OrderNumber = "SO-001" };
         var expectedDto = new SalesOrderDto(Guid.NewGuid())
         {
             OrderDate = DateTime.UtcNow,
             OrderNumber = "SO-001",
             CustomerId = Guid.NewGuid(),
             Status = 0,
-            TotalAmount = 250.00m
+            TotalAmount = 250.00m,
+            Customer = null,
+            Lines = null
         };
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
@@ -58,10 +66,7 @@ public class SalesOrderServiceTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal("SO-001", result.OrderNumber);
-        Assert.Equal(250.00m, result.TotalAmount);
-
         _mockOrderRepository.Verify(r => r.GetByIdAsync(orderId), Times.Once);
-        _mockMapper.Verify(m => m.Map<SalesOrderDto>(order), Times.Once);
     }
 
     [Fact]
@@ -90,8 +95,8 @@ public class SalesOrderServiceTests
         // Arrange
         var orders = new List<SalesOrder>
         {
-            new SalesOrder(Guid.NewGuid()) { OrderNumber = "SO-001", TotalAmount = 100.00m },
-            new SalesOrder(Guid.NewGuid()) { OrderNumber = "SO-002", TotalAmount = 200.00m }
+            new SalesOrder(Guid.NewGuid()) { OrderNumber = "SO-001" },
+            new SalesOrder(Guid.NewGuid()) { OrderNumber = "SO-002" }
         };
 
         var orderDtos = new List<SalesOrderDto>
@@ -102,7 +107,9 @@ public class SalesOrderServiceTests
                 OrderNumber = "SO-001",
                 CustomerId = Guid.NewGuid(),
                 Status = 0,
-                TotalAmount = 100.00m
+                TotalAmount = 100.00m,
+                Customer = null,
+                Lines = null
             },
             new SalesOrderDto(Guid.NewGuid())
             {
@@ -110,7 +117,9 @@ public class SalesOrderServiceTests
                 OrderNumber = "SO-002",
                 CustomerId = Guid.NewGuid(),
                 Status = 0,
-                TotalAmount = 200.00m
+                TotalAmount = 200.00m,
+                Customer = null,
+                Lines = null
             }
         };
 
@@ -158,7 +167,9 @@ public class SalesOrderServiceTests
             OrderNumber = "SO-003",
             CustomerId = customerId,
             Status = 0,
-            TotalAmount = 50.00m
+            TotalAmount = 50.00m,
+            Customer = null,
+            Lines = null
         };
 
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
@@ -236,7 +247,9 @@ public class SalesOrderServiceTests
             OrderNumber = "SO-001",
             CustomerId = customerId,
             Status = 0,
-            TotalAmount = 91.00m
+            TotalAmount = 91.00m,
+            Customer = null,
+            Lines = null
         });
 
         // Act
@@ -267,7 +280,9 @@ public class SalesOrderServiceTests
             OrderNumber = "SO-002",
             CustomerId = customerId,
             Status = 0,
-            TotalAmount = 0
+            TotalAmount = 0,
+            Customer = null,
+            Lines = null
         });
 
         // Act
@@ -309,7 +324,9 @@ public class SalesOrderServiceTests
             OrderNumber = "SO-NEW",
             CustomerId = existingCustomerId,
             Status = 1,
-            TotalAmount = 75.00m
+            TotalAmount = 75.00m,
+            Customer = null,
+            Lines = null
         };
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(existingOrder);

@@ -1,3 +1,7 @@
+// ============================================================================
+// Basic Parameters
+// ============================================================================
+
 @description('Name of the Key Vault')
 param name string
 
@@ -6,6 +10,10 @@ param location string = resourceGroup().location
 
 @description('Tags to apply')
 param tags object = {}
+
+// ============================================================================
+// Redis Configuration Parameters
+// ============================================================================
 
 @description('Redis host name')
 param redisHostName string
@@ -18,12 +26,20 @@ param redisPrimaryKey string
 @secure()
 param redisCachePassword string = ''
 
+// ============================================================================
+// SQL Server Configuration Parameters
+// ============================================================================
+
 @description('SQL Server FQDN')
 param sqlFqdn string
 
 @description('SQL admin password')
 @secure()
 param sqlAdminPassword string
+
+// ============================================================================
+// Database Name Parameters
+// ============================================================================
 
 @description('Database name for the Auth service')
 param authDbName string
@@ -43,13 +59,36 @@ param purchasingDbName string
 @description('Database name for the Sales service')
 param salesDbName string
 
+// ============================================================================
+// Application Secrets Parameters
+// ============================================================================
+
 @description('JWT secret value')
 @secure()
 param jwtSecretKey string
 
-// Key Vault
+@description('Application Insights connection string')
+@secure()
+param applicationInsightsConnectionString string = ''
 
-resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
+// ============================================================================
+// Identity Parameters
+// ============================================================================
+
+@description('User-Assigned Managed Identity Principal ID for Key Vault access')
+param userAssignedIdentityPrincipalId string
+
+// ============================================================================
+// Imports
+// ============================================================================
+
+import { azureRoleIdKeyVaultSecretsUser } from '../../config/constants.bicep'
+
+// ============================================================================
+// Key Vault Resource
+// ============================================================================
+
+resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
   name: name
   location: location
   properties: {
@@ -60,8 +99,22 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
     accessPolicies: []
     enabledForTemplateDeployment: true
+    enableSoftDelete: true
+    softDeleteRetentionInDays: 7
+    createMode: 'recover'  // Automatically recover if soft-deleted
   }
   tags: tags
+}
+
+// Grant User-Assigned Identity access to Key Vault secrets
+resource keyVaultSecretsUserRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(keyVault.id, userAssignedIdentityPrincipalId, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdKeyVaultSecretsUser))
+  scope: keyVault
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', azureRoleIdKeyVaultSecretsUser)
+    principalId: userAssignedIdentityPrincipalId
+    principalType: 'ServicePrincipal'
+  }
 }
 
 // Redis secret
@@ -91,12 +144,21 @@ resource kvJwtSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   }
 }
 
+// Application Insights connection string
+resource kvApplicationInsightsConnectionString 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = if (!empty(applicationInsightsConnectionString)) {
+  parent: keyVault
+  name: 'applicationinsights-connection-string'
+  properties: {
+    value: applicationInsightsConnectionString
+  }
+}
+
 // SQL DB secrets
 resource kvSqlSecretAuth 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   parent: keyVault
   name: 'sql-connection-authdb'
   properties: {
-    value: 'Server=${sqlFqdn};Database=${authDbName};User Id=sqladmin;Password=${sqlAdminPassword};'
+    value: 'Server=${sqlFqdn};Database=${authDbName};User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
   }
 }
 
@@ -140,9 +202,32 @@ resource kvSqlSecretSales 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   }
 }
 
+// Deployment script to wait for RBAC propagation to Azure AD
+// This prevents Container Apps from starting before permissions are fully available
+resource rbacPropagationWait 'Microsoft.Resources/deploymentScripts@2023-08-01' = {
+  name: 'rbac-propagation-wait'
+  location: location
+  kind: 'AzurePowerShell'
+  properties: {
+    azPowerShellVersion: '11.0'
+    retentionInterval: 'PT1H'
+    timeout: 'PT5M'
+    cleanupPreference: 'OnSuccess'
+    scriptContent: '''
+      Write-Host "Waiting 60 seconds for RBAC propagation to Azure AD..."
+      Start-Sleep -Seconds 60
+      Write-Host "RBAC propagation wait complete."
+    '''
+  }
+  dependsOn: [
+    keyVaultSecretsUserRoleAssignment
+  ]
+}
+
 output keyVaultId string = keyVault.id
 output keyVaultUri string = keyVault.properties.vaultUri
 output keyVaultName string = keyVault.name
+output rbacReady string = rbacPropagationWait.id
 
 // Return secret NAMES (not values) so callers can reference secret names safely
 output redisSecretName string = kvRedisSecret.name

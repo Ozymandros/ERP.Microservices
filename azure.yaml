@@ -1,11 +1,65 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
 
 name: src
-services:  
-  app:
+services:
+  # Note: AppHost is not deployed as a container - it's only for local development
+  # The actual services are defined below
+  
+  auth-service:
+    project: ./src/MyApp.Auth/MyApp.Auth.API
     language: dotnet
-    project: ./AppHost/AppHost.csproj
     host: containerapp
+    docker:
+      path: ./src/MyApp.Auth/MyApp.Auth.API/Dockerfile
+      context: .  # Root of repository - includes all src/ projects
+
+  billing-service:
+    project: ./src/MyApp.Billing/MyApp.Billing.API
+    language: dotnet
+    host: containerapp
+    docker:
+      path: ./src/MyApp.Billing/MyApp.Billing.API/Dockerfile
+      context: .  # Root of repository
+
+  inventory-service:
+    project: ./src/MyApp.Inventory/MyApp.Inventory.API
+    language: dotnet
+    host: containerapp
+    docker:
+      path: ./src/MyApp.Inventory/MyApp.Inventory.API/Dockerfile
+      context: .  # Root of repository
+
+  orders-service:
+    project: ./src/MyApp.Orders/MyApp.Orders.API
+    language: dotnet
+    host: containerapp
+    docker:
+      path: ./src/MyApp.Orders/MyApp.Orders.API/Dockerfile
+      context: .  # Root of repository
+
+  purchasing-service:
+    project: ./src/MyApp.Purchasing/MyApp.Purchasing.API
+    language: dotnet
+    host: containerapp
+    docker:
+      path: ./src/MyApp.Purchasing/MyApp.Purchasing.API/Dockerfile
+      context: .  # Root of repository
+
+  sales-service:
+    project: ./src/MyApp.Sales/MyApp.Sales.API
+    language: dotnet
+    host: containerapp
+    docker:
+      path: ./src/MyApp.Sales/MyApp.Sales.API/Dockerfile
+      context: .  # Root of repository
+
+  api-gateway:
+    project: ./src/ErpApiGateway
+    language: dotnet
+    host: containerapp
+    docker:
+      path: ./src/ErpApiGateway/Dockerfile
+      context: .  # Root of repository
 infra:
   provider: bicep
   path: infra
@@ -13,7 +67,7 @@ infra:
   parameters:
     # --- NON-SECRETS ---
     environmentName:
-      value: ${AZURE_ENV_NAME=Production} # Sets a default if not present
+      value: ${AZURE_ENV_NAME=dev} # Sets a default if not present (must match workflow AZURE_ENV_NAME)
     location:
       value: ${AZURE_LOCATION=westeurope} # Sets a default if not present
     jwtIssuer:
@@ -24,6 +78,8 @@ infra:
       value: ${AZURE_FRONTEND_ORIGIN=http://localhost:3000} # Sets a default
     aspnetcoreEnvironment:
       value: ${ASPNETCORE_ENVIRONMENT=Production} # Sets a default
+    imageTag:
+      value: ${IMAGE_TAG=latest} # Docker image tag (commit hash in CI/CD, latest for local dev)
 
     # --- SECRETS WITH RANDOM GENERATION ---
     cache_password:

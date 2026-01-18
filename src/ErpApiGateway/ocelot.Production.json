@@ -1,6 +1,48 @@
 {
   "Routes": [
     {
+      "DownstreamPathTemplate": "/api/auth/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/api/auth/login",
+      "UpstreamHttpMethod": ["Post"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/openapi/v1.json",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/openapi/v1.json",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/scalar/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/scalar/{everything}",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -9,35 +51,29 @@
           "Port": 8080
         }
       ],
-      "UpstreamPathTemplate": "/auth/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      },
+      "UpstreamPathTemplate": "/auth/api/{everything}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",  
+        "DELETE",
+        "PATCH",
+        "OPTIONS"
+      ],
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
       "RateLimitOptions": {
-        "EnableRateLimiting": true,
+        "EnableRateLimiting": false,
         "Period": "1m",
-        "Limit": 1000
+        "Limit": 100
       },
-      "QoSOptions": {
-        "ExceptionsAllowedBeforeBreaking": 5,
-        "DurationOfBreak": 30000,
-        "Timeout": 10000
-      },
+      "Priority": 1,
       "AddHeadersToRequest": {
         "X-Forwarded-For": "{RemoteIpAddress}",
-        "X-Request-ID": "{RequestId}",
-        "X-Forwarded-Proto": "https",
-        "X-Forwarded-Host": "{OriginalHost}"
-      },
-      "AddClaimsToRequest": {
-        "sub": "Claims[sub] > value",
-        "email": "Claims[email] > value",
-        "roles": "Claims[role] > value"
+        "X-Request-ID": "{RequestId}"
       }
     },
     {
-      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamPathTemplate": "/openapi/v1.json",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -45,27 +81,78 @@
           "Port": 8080
         }
       ],
-      "UpstreamPathTemplate": "/inventory/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      },
+      "UpstreamPathTemplate": "/inventory/openapi/v1.json",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/scalar/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "inventory-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/inventory/scalar/{everything}",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/api/inventory/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "inventory-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/inventory/api/inventory/{everything}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+        "OPTIONS"
+      ],
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
       "RateLimitOptions": {
-        "EnableRateLimiting": true,
+        "EnableRateLimiting": false,
         "Period": "1m",
-        "Limit": 1000
+        "Limit": 100
       },
-      "QoSOptions": {
-        "ExceptionsAllowedBeforeBreaking": 5,
-        "DurationOfBreak": 30000,
-        "Timeout": 10000
-      },
-      "AddHeadersToRequest": {
-        "X-Forwarded-For": "{RemoteIpAddress}",
-        "X-Request-ID": "{RequestId}",
-        "X-Forwarded-Proto": "https",
-        "X-Forwarded-Host": "{OriginalHost}"
-      }
+      "Priority": 1
+    },
+    {
+      "DownstreamPathTemplate": "/openapi/v1.json",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "orders-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/orders/openapi/v1.json",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/scalar/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "orders-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/orders/scalar/{everything}",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -76,30 +163,25 @@
           "Port": 8080
         }
       ],
-      "UpstreamPathTemplate": "/orders/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      },
+      "UpstreamPathTemplate": "/orders/api/{everything}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+        "OPTIONS"
+      ],
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
       "RateLimitOptions": {
-        "EnableRateLimiting": true,
+        "EnableRateLimiting": false,
         "Period": "1m",
-        "Limit": 1000
+        "Limit": 100
       },
-      "QoSOptions": {
-        "ExceptionsAllowedBeforeBreaking": 5,
-        "DurationOfBreak": 30000,
-        "Timeout": 10000
-      },
-      "AddHeadersToRequest": {
-        "X-Forwarded-For": "{RemoteIpAddress}",
-        "X-Request-ID": "{RequestId}",
-        "X-Forwarded-Proto": "https",
-        "X-Forwarded-Host": "{OriginalHost}"
-      }
+      "Priority": 1
     },
     {
-      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamPathTemplate": "/openapi/v1.json",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -107,61 +189,53 @@
           "Port": 8080
         }
       ],
-      "UpstreamPathTemplate": "/sales/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      },
-      "RateLimitOptions": {
-        "EnableRateLimiting": true,
-        "Period": "1m",
-        "Limit": 1000
-      },
-      "QoSOptions": {
-        "ExceptionsAllowedBeforeBreaking": 5,
-        "DurationOfBreak": 30000,
-        "Timeout": 10000
-      },
-      "AddHeadersToRequest": {
-        "X-Forwarded-For": "{RemoteIpAddress}",
-        "X-Request-ID": "{RequestId}",
-        "X-Forwarded-Proto": "https",
-        "X-Forwarded-Host": "{OriginalHost}"
-      }
+      "UpstreamPathTemplate": "/sales/openapi/v1.json",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
     },
     {
-      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamPathTemplate": "/scalar/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "billing-service",
+          "Host": "sales-service",
           "Port": 8080
         }
       ],
-      "UpstreamPathTemplate": "/billing/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      },
-      "RateLimitOptions": {
-        "EnableRateLimiting": true,
-        "Period": "1m",
-        "Limit": 1000
-      },
-      "QoSOptions": {
-        "ExceptionsAllowedBeforeBreaking": 5,
-        "DurationOfBreak": 30000,
-        "Timeout": 10000
-      },
-      "AddHeadersToRequest": {
-        "X-Forwarded-For": "{RemoteIpAddress}",
-        "X-Request-ID": "{RequestId}",
-        "X-Forwarded-Proto": "https",
-        "X-Forwarded-Host": "{OriginalHost}"
-      }
+      "UpstreamPathTemplate": "/sales/scalar/{everything}",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
     },
     {
-      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamPathTemplate": "/api/sales/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "sales-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/sales/api/sales/{everything}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+        "OPTIONS"
+      ],
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
+      "RateLimitOptions": {
+        "EnableRateLimiting": false,
+        "Period": "1m",
+        "Limit": 100
+      },
+      "Priority": 1
+    },
+    {
+      "DownstreamPathTemplate": "/openapi/v1.json",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -169,97 +243,62 @@
           "Port": 8080
         }
       ],
-      "UpstreamPathTemplate": "/purchasing/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      },
+      "UpstreamPathTemplate": "/purchasing/openapi/v1.json",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/scalar/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "purchasing-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/purchasing/scalar/{everything}",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/api/purchasing/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "purchasing-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/purchasing/api/purchasing/{everything}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+        "OPTIONS"
+      ],
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
       "RateLimitOptions": {
-        "EnableRateLimiting": true,
+        "EnableRateLimiting": false,
         "Period": "1m",
-        "Limit": 1000
+        "Limit": 100
       },
-      "QoSOptions": {
-        "ExceptionsAllowedBeforeBreaking": 5,
-        "DurationOfBreak": 30000,
-        "Timeout": 10000
-      },
-      "AddHeadersToRequest": {
-        "X-Forwarded-For": "{RemoteIpAddress}",
-        "X-Request-ID": "{RequestId}",
-        "X-Forwarded-Proto": "https",
-        "X-Forwarded-Host": "{OriginalHost}"
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/health",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "auth-service",
-          "Port": 8080
-        }
-      ],
-      "UpstreamPathTemplate": "/health",
-      "UpstreamHttpMethod": [ "GET" ],
-      "RateLimitOptions": {
-        "EnableRateLimiting": false
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/health/live",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "auth-service",
-          "Port": 8080
-        }
-      ],
-      "UpstreamPathTemplate": "/health/live",
-      "UpstreamHttpMethod": [ "GET" ],
-      "RateLimitOptions": {
-        "EnableRateLimiting": false
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/health/ready",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "auth-service",
-          "Port": 8080
-        }
-      ],
-      "UpstreamPathTemplate": "/health/ready",
-      "UpstreamHttpMethod": [ "GET" ],
-      "RateLimitOptions": {
-        "EnableRateLimiting": false
-      }
+      "Priority": 1
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://erp-api.azurewebsites.net",
+    "BaseUrl": "http://localhost:5000",
     "RequestIdKey": "X-Request-ID",
     "RateLimitOptions": {
       "ClientIdHeader": "X-Client-Id",
-      "QuotaExceededMessage": "Rate limit exceeded. Please try again later.",
+      "QuotaExceededMessage": "Rate limit exceeded",
       "RateLimitCounterPrefix": "ocelot_ratelimit",
       "DisableRateLimitHeaders": false,
       "HttpStatusCode": 429
     },
-    "QoSOptions": {
-      "ExceptionsAllowedBeforeBreaking": 5,
-      "DurationOfBreak": 30000,
-      "Timeout": 10000
-    },
-    "AuthenticationOptions": {
-      "AuthenticationProviderKey": "Bearer"
-    },
-    "HttpHandlerOptions": {
-      "AllowAutoRedirect": false,
-      "UseTracing": true,
-      "UseProxy": false
-    },
-    "LogLevel": "Warning"
+    "LogLevel": "Information"
   }
 }

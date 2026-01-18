@@ -1,0 +1,128 @@
+name: "Setup Azure and Azure Developer CLI"
+description: "Sets up Azure CLI authentication and Azure Developer CLI (azd) with federated credentials. Optionally initializes and refreshes azd environment."
+
+inputs:
+  azure-client-id:
+    description: "Azure Client ID for federated authentication"
+    required: true
+  azure-tenant-id:
+    description: "Azure Tenant ID"
+    required: true
+  azure-subscription-id:
+    description: "Azure Subscription ID"
+    required: true
+  azure-env-name:
+    description: "Azure Environment Name (optional, if provided will initialize/refresh env and get registry name)"
+    required: false
+    default: ""
+  azure-location:
+    description: "Azure Location (optional, required if azure-env-name is provided)"
+    required: false
+    default: ""
+  setup-dapr:
+    description: "Enable Dapr CLI setup and initialization (optional, default: 'false')"
+    required: false
+    default: "false"
+  dapr-version:
+    description: "Dapr CLI version to install (optional, default: '1.12.0')"
+    required: false
+    default: "1.12.0"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Azure Developer CLI
+      uses: Azure/setup-azd@v2
+
+    - name: Azure login (Federated)
+      uses: azure/login@v2
+      with:
+        client-id: ${{ inputs.azure-client-id }}
+        tenant-id: ${{ inputs.azure-tenant-id }}
+        subscription-id: ${{ inputs.azure-subscription-id }}
+
+    - name: Bridge az to azd
+      run: azd config set auth.useAzCliAuth true
+      shell: bash
+
+    - name: Setup Dapr CLI (if enabled - must be before azd env refresh)
+      if: inputs.setup-dapr == 'true'
+      uses: dapr/setup-dapr@v1
+      with:
+        version: ${{ inputs.dapr-version }}
+
+    - name: Validate and Configure Dapr CLI for Aspire (if enabled)
+      if: inputs.setup-dapr == 'true'
+      run: |
+        echo "Validating Dapr CLI installation..."
+        dapr --version || {
+          echo "ERROR: Dapr CLI not found after installation"
+          exit 1
+        }
+
+        # Find where dapr is installed
+        DAPR_PATH=$(which dapr)
+        if [ -z "$DAPR_PATH" ]; then
+          # Fallback to common installation locations
+          if [ -f "$HOME/.dapr/bin/dapr" ]; then
+            DAPR_PATH="$HOME/.dapr/bin/dapr"
+          elif [ -f "/usr/local/bin/dapr" ]; then
+            DAPR_PATH="/usr/local/bin/dapr"
+          else
+            echo "ERROR: Dapr CLI not found in any expected location"
+            exit 1
+          fi
+        fi
+        
+        echo "Dapr CLI found at: $DAPR_PATH"
+        
+        # Get the directory containing dapr
+        DAPR_DIR=$(dirname "$DAPR_PATH")
+        
+        # Add to PATH for current and future steps
+        echo "$DAPR_DIR" >> $GITHUB_PATH
+
+        # Ensure executable permissions
+        chmod +x "$DAPR_PATH" || true
+
+        # Update DaprCliPath environment variable for Aspire
+        # Aspire reads DaprCliPath from environment
+        echo "DaprCliPath=$DAPR_PATH" >> $GITHUB_ENV
+        echo "DAPR_HOME=$HOME/.dapr" >> $GITHUB_ENV
+
+        # Initialize Dapr in slim mode (appropriate for CI/CD - only installs CLI binaries,
+        # no Docker containers needed since Azure Container Apps manages the Dapr runtime)
+        echo "Initializing Dapr runtime..."
+        dapr init --slim
+
+        # Verify initialization
+        echo "✓ Dapr CLI installed and initialized successfully"
+        echo "✓ DaprCliPath set to: $DAPR_PATH"
+        echo "✓ Dapr directory added to PATH: $DAPR_DIR"
+      shell: bash
+
+    - name: Initialize azd environment (if environment name provided)
+      if: inputs.azure-env-name != ''
+      run: |
+        # This creates the minimal configuration so azd doesn't say "does not exist"
+        # Using || true because environment might already exist
+        azd env new ${{ inputs.azure-env-name }} --location ${{ inputs.azure-location }} --subscription ${{ inputs.azure-subscription-id }} || true
+      shell: bash
+
+    - name: Refresh environment from Azure (if environment name provided)
+      if: inputs.azure-env-name != ''
+      env:
+        DaprCliPath: ${{ env.DaprCliPath }}
+        DAPR_HOME: ${{ env.DAPR_HOME }}
+      run: |
+        # This brings the real values from Azure to the GitHub runner
+        # Dapr CLI must be installed before this step if AppHost uses Dapr
+        azd env refresh --environment ${{ inputs.azure-env-name }}
+      shell: bash
+
+    - name: Set GHCR Registry Name
+      if: inputs.azure-env-name != ''
+      run: |
+        echo "REGISTRY_NAME=ghcr" >> $GITHUB_ENV
+        echo "✓ Registry name set to: ghcr"
+      shell: bash

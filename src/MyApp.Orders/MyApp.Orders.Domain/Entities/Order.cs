@@ -10,6 +10,12 @@ namespace MyApp.Orders.Domain.Entities
         public OrderStatus Status { get; set; }
         public decimal TotalAmount { get; set; }
 
+        // Fulfillment fields
+        public Guid? WarehouseId { get; set; }
+        public DateTime? FulfilledDate { get; set; }
+        public string? ShippingAddress { get; set; }
+        public string? TrackingNumber { get; set; }
+
         public List<OrderLine> Lines { get; set; } = new();
     }
 }

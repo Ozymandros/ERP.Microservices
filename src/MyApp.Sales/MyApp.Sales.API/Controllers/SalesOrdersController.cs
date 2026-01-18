@@ -4,7 +4,9 @@ using MyApp.Sales.Application.Contracts.Services;
 using MyApp.Sales.Domain.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Permissions;
 
 namespace MyApp.Sales.API.Controllers
 {
@@ -203,6 +205,91 @@ namespace MyApp.Sales.API.Controllers
             {
                 _logger.LogWarning(ex, "Error deleting sales order {@Order}: {@Error}", new { OrderId = id }, new { Message = ex.Message });
                 return NotFound(new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Create a quote with stock availability validation - Requires Sales.Create permission
+        /// </summary>
+        [HttpPost("quotes")]
+        [HasPermission("Sales", "Create")]
+        [ProducesResponseType(typeof(SalesOrderDto), 201)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> CreateQuote([FromBody] CreateQuoteDto dto)
+        {
+            try
+            {
+                var result = await _salesOrderService.CreateQuoteAsync(dto);
+                await _cacheService.RemoveStateAsync("all_sales_orders");
+                _logger.LogInformation(
+                    "Quote {@Quote} created and cache invalidated",
+                    new { QuoteId = result.Id });
+                return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating quote");
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Confirm a quote and convert to fulfillment order - Requires Sales.Update permission
+        /// </summary>
+        [HttpPost("quotes/{id}/confirm")]
+        [HasPermission("Sales", "Update")]
+        [ProducesResponseType(typeof(SalesOrderDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> ConfirmQuote(Guid id, [FromBody] ConfirmQuoteDto dto)
+        {
+            try
+            {
+                // Ensure the ID matches
+                if (id != dto.QuoteId)
+                {
+                    return BadRequest(new { error = "Quote ID mismatch" });
+                }
+
+                var result = await _salesOrderService.ConfirmQuoteAsync(dto);
+                string cacheKey = "SalesOrder-" + id;
+                await _cacheService.RemoveStateAsync(cacheKey);
+                await _cacheService.RemoveStateAsync("all_sales_orders");
+                _logger.LogInformation(
+                    "Quote {@Quote} confirmed and cache invalidated",
+                    new { QuoteId = id, OrderId = result.ConvertedToOrderId });
+                return Ok(result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Error confirming quote {@Quote}: {@Error}", new { QuoteId = id }, new { Message = ex.Message });
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error confirming quote {@Quote}", new { QuoteId = id });
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Check stock availability for quote items - Requires Sales.Read permission
+        /// </summary>
+        [HttpPost("quotes/check-availability")]
+        [HasPermission("Sales", "Read")]
+        [ProducesResponseType(typeof(List<StockAvailabilityCheckDto>), 200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> CheckStockAvailability([FromBody] List<CreateUpdateSalesOrderLineDto> lines)
+        {
+            try
+            {
+                var result = await _salesOrderService.CheckStockAvailabilityAsync(lines);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error checking stock availability");
+                return BadRequest(new { error = ex.Message });
             }
         }
     }

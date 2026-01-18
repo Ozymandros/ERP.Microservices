@@ -18,6 +18,7 @@
     <None Include="docs\development\MICROSERVICE_REFACTORING_SUMMARY.md" />
     <None Include="docs\development\TEST_COMPILATION_FIXES.md" />
     <None Include="docs\development\TEST_FIX_STRATEGY.md" />
+    <None Include="docs\OPTIMIZATIONS_APPLIED.md" />
     <None Include="scripts\fix-dto-tests.ps1" />
   </ItemGroup>
 </Project>

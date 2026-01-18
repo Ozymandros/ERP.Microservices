@@ -3,19 +3,16 @@ using MyApp.Shared.Infrastructure.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // ============================================================================
-// Common Microservice Configuration
+// Service Defaults Configuration
 // ============================================================================
-builder.AddCommonMicroserviceServices(new MicroserviceConfigurationOptions
+builder.AddServiceDefaults(new MicroserviceConfigurationOptions
 {
     ServiceName = "MyApp.Billing.API",
-    EnableAuthentication = true,
-    EnableHealthChecks = false, // TODO: Enable when database is configured
-    EnableDapr = true,
-    EnableOpenTelemetry = true,
+    EnableHealthChecks = true, // TODO: Enable when database is configured
     EnableRedisCache = false, // TODO: Enable when needed
     EnableAutoMapper = false, // No domain logic yet
     DbContextType = null, // TODO: Add when billing database is implemented
-    ConnectionStringKey = null,
+    // ConnectionStringKey will be null (no database yet)
     ConfigureServiceDependencies = services =>
     {
         // TODO: Add billing-specific repositories and services here
@@ -27,14 +24,10 @@ builder.AddCommonMicroserviceServices(new MicroserviceConfigurationOptions
 var app = builder.Build();
 
 // ============================================================================
-// Common Microservice Pipeline
+// Service Defaults Pipeline
 // ============================================================================
-app.UseCommonMicroservicePipeline(new MicroserviceConfigurationOptions
-{
-    EnableAuthentication = true,
-    EnableHealthChecks = false,
-    DbContextType = null
-});
+// Options are automatically reused from AddServiceDefaults via DI.
+app.UseServiceDefaults();
 
 // ============================================================================
 // Temporary: Weather forecast endpoint (TODO: Remove when billing endpoints added)

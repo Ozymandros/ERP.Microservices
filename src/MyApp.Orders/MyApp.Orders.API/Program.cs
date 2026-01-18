@@ -4,51 +4,45 @@ using MyApp.Shared.Infrastructure.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // ============================================================================
-// Common Microservice Configuration
+// Service Defaults Configuration
 // ============================================================================
-builder.AddCommonMicroserviceServices(new MicroserviceConfigurationOptions
+// IMPORTANT: Redis cache must be configured BEFORE AddServiceDefaults because it's an Aspire
+// extension method that requires the Redis resource reference from the AppHost project.
+builder.AddRedisDistributedCache("cache");
+
+builder.AddServiceDefaults(new MicroserviceConfigurationOptions
 {
     ServiceName = "MyApp.Orders.API",
     ConnectionStringKey = "ordersdb",
     DbContextType = typeof(OrdersDbContext),
-    EnableAuthentication = true,
-    EnableHealthChecks = true,
-    EnableDapr = true,
-    EnableOpenTelemetry = true,
-    EnableRedisCache = true,
+    AutoMapperAssembly = typeof(MyApp.Orders.Application.Mapping.OrderProfile).Assembly,
     ConfigureServiceDependencies = services =>
     {
         // Register Orders-specific repositories
-        services.AddScoped<MyApp.Orders.Domain.IOrderRepository, 
+        services.AddScoped<MyApp.Orders.Domain.IOrderRepository,
             MyApp.Orders.Infrastructure.Repositories.OrderRepository>();
-        services.AddScoped<MyApp.Orders.Domain.IOrderLineRepository, 
+        services.AddScoped<MyApp.Orders.Domain.IOrderLineRepository,
             MyApp.Orders.Infrastructure.Repositories.OrderLineRepository>();
+        services.AddScoped<MyApp.Orders.Domain.Repositories.IReservedStockRepository,
+            MyApp.Orders.Infrastructure.Repositories.ReservedStockRepository>();
 
         // Register Orders-specific services
-        services.AddScoped<MyApp.Orders.Application.Contracts.IOrderService, 
+        services.AddScoped<MyApp.Orders.Application.Contracts.IOrderService,
             MyApp.Orders.Application.Services.OrderService>();
+
+        // Register background services
+        services.AddHostedService<MyApp.Orders.API.BackgroundServices.ReservationExpiryService>();
     }
 });
-
-// Redis Cache (Aspire-managed)
-builder.AddRedisDistributedCache("cache");
-
-// AutoMapper (service-specific profiles)
-builder.Services.AddAutoMapper(
-    cfg => { },
-    typeof(MyApp.Orders.Application.Mapping.OrderProfile).Assembly);
 
 var app = builder.Build();
 
 // ============================================================================
-// Common Microservice Pipeline
+// Service Defaults Pipeline
 // ============================================================================
-app.UseCommonMicroservicePipeline(new MicroserviceConfigurationOptions
-{
-    DbContextType = typeof(OrdersDbContext),
-    EnableAuthentication = true,
-    EnableHealthChecks = true
-});
+// Options are automatically reused from AddServiceDefaults via DI.
+// MapSubscribeHandler() is automatically called if EnableDapr is true.
+app.UseServiceDefaults();
 
 app.Run();
 

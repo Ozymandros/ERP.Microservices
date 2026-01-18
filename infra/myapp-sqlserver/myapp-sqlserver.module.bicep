@@ -1,4 +1,14 @@
-import { sqlFirewallRuleName, sqlTlsVersion, databaseCollation, databaseMaxSizeBytes, databaseSkuName, databaseSkuTier } from '../config/constants.bicep'
+import {
+  sqlFirewallRuleName
+  sqlTlsVersion
+  databaseCollation
+  sqlServerlessSkuName
+  sqlServerlessSkuTier
+  sqlServerlessMinCapacity
+  sqlServerlessAutoPauseDelayMinutes
+  sqlServerlessUseFreeLimit
+  sqlServerlessFreeLimitExhaustionBehavior
+} from '../config/constants.bicep'
 
 @description('The location for the resource(s) to be deployed.')
 param location string = resourceGroup().location
@@ -47,23 +57,31 @@ resource sqlFirewallRule_AllowAllAzureIps 'Microsoft.Sql/servers/firewallRules@2
 }
 
 // CREATE ALL REQUESTED DATABASES
-resource sqlDatabases 'Microsoft.Sql/servers/databases@2023-08-01' = [for dbName in databaseNames: {
-  name: dbName
-  parent: myapp_sqlserver
-  location: location
-  properties: {
-    collation: databaseCollation
-    maxSizeBytes: databaseMaxSizeBytes
-    catalogCollation: databaseCollation
+// OPTIMITZACIÓ FINOPS: Serverless amb Free Tier per cost mínim
+resource sqlDatabases 'Microsoft.Sql/servers/databases@2023-08-01' = [
+  for dbName in databaseNames: {
+    name: dbName
+    parent: myapp_sqlserver
+    location: location
+    properties: {
+      collation: databaseCollation
+      // maxSizeBytes removed for Free Limit/Serverless compliance
+      catalogCollation: databaseCollation
+      useFreeLimit: sqlServerlessUseFreeLimit // CRÍTIC: Activa Free Tier (100k segons gratis)
+      freeLimitExhaustionBehavior: sqlServerlessFreeLimitExhaustionBehavior // Pausa automàtica quan s'esgota el límit gratuït
+      // minCapacity removed for Free Limit compliance
+      autoPauseDelay: sqlServerlessAutoPauseDelayMinutes // Pausa després de 60 minuts d'inactivitat (mínim permès)
+    }
+    sku: {
+      name: sqlServerlessSkuName // Serverless General Purpose Gen5
+      tier: sqlServerlessSkuTier
+      capacity: 1 // Capacitat base
+    }
+    tags: {
+      'aspire-resource-name': dbName
+    }
   }
-  sku: {
-    name: databaseSkuName
-    tier: databaseSkuTier
-  }
-  tags: {
-    'aspire-resource-name': dbName
-  }
-}]
+]
 
 output sqlServerFqdn string = myapp_sqlserver.properties.fullyQualifiedDomainName
 

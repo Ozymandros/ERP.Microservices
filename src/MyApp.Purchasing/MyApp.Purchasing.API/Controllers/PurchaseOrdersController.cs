@@ -4,8 +4,11 @@ using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Specifications;
+using MyApp.Shared.Domain.Permissions;
 using MyApp.Purchasing.Domain.Specifications;
 
 namespace MyApp.Purchasing.API.Controllers;
@@ -275,6 +278,82 @@ public class PurchaseOrdersController : ControllerBase
         {
             _logger.LogWarning(ex, "Purchase order not found: {@Error}", new { Message = ex.Message });
             return NotFound(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Approve a purchase order - Requires Purchasing.Update permission
+    /// </summary>
+    [HttpPost("{id}/approve")]
+    [HasPermission("Purchasing", "Update")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<PurchaseOrderDto>> ApprovePurchaseOrder(Guid id, [FromBody] ApprovePurchaseOrderDto dto)
+    {
+        if (id != dto.PurchaseOrderId)
+        {
+            return BadRequest(new { error = "Purchase order ID mismatch" });
+        }
+
+        try
+        {
+            _logger.LogInformation("Approving purchase order: {@Order}", new { OrderId = id });
+            var order = await _purchaseOrderService.ApprovePurchaseOrderAsync(dto);
+            string cacheKey = "PurchaseOrder-" + id;
+            await _cacheService.RemoveStateAsync(cacheKey);
+            await _cacheService.RemoveStateAsync("all_purchase_orders");
+            _logger.LogInformation("Purchase order {@Order} approved and cache invalidated", new { OrderId = id });
+            return Ok(order);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            _logger.LogWarning(ex, "Purchase order not found: {@Error}", new { Message = ex.Message });
+            return NotFound(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogWarning(ex, "Invalid operation: {@Error}", new { Message = ex.Message });
+            return BadRequest(new { error = ex.Message });
+        }
+    }
+
+    /// <summary>
+    /// Receive a purchase order - Requires Purchasing.Update permission
+    /// </summary>
+    [HttpPost("{id}/receive")]
+    [HasPermission("Purchasing", "Update")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<PurchaseOrderDto>> ReceivePurchaseOrder(Guid id, [FromBody] ReceivePurchaseOrderDto dto)
+    {
+        if (id != dto.PurchaseOrderId)
+        {
+            return BadRequest(new { error = "Purchase order ID mismatch" });
+        }
+
+        try
+        {
+            _logger.LogInformation(
+                "Receiving purchase order: {@Order}, Warehouse={WarehouseId}",
+                new { OrderId = id }, dto.WarehouseId);
+            var order = await _purchaseOrderService.ReceivePurchaseOrderAsync(dto);
+            string cacheKey = "PurchaseOrder-" + id;
+            await _cacheService.RemoveStateAsync(cacheKey);
+            await _cacheService.RemoveStateAsync("all_purchase_orders");
+            _logger.LogInformation("Purchase order {@Order} received and cache invalidated", new { OrderId = id });
+            return Ok(order);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            _logger.LogWarning(ex, "Purchase order not found: {@Error}", new { Message = ex.Message });
+            return NotFound(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogWarning(ex, "Invalid operation: {@Error}", new { Message = ex.Message });
+            return BadRequest(new { error = ex.Message });
         }
     }
 }

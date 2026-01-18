@@ -1,3 +1,5 @@
+import { finopsMinReplicas, finopsMaxReplicas, finopsCpuCores, finopsMemory } from '../config/constants.bicep'
+
 @description('Location for resources')
 param location string = resourceGroup().location
 
@@ -7,18 +9,23 @@ param tags object = {}
 @description('Container Apps Environment ID')
 param containerAppsEnvironmentId string
 
+
 @description('Container Registry endpoint')
 param containerRegistryEndpoint string
 
-@description('Key Vault URI')
-param keyVaultUri string
+@description('Container Registry username (for GHCR)')
+param ghcrUsername string = ''
 
-@description('App Configuration connection string')
+@description('Container Registry Personal Access Token (for GHCR)')
 @secure()
-param appConfigConnectionString string = ''
+param ghcrPat string = ''
+
+@description('App Configuration endpoint')
+param appConfigEndpoint string = ''
 
 @description('Log Analytics Workspace ID')
 param logAnalyticsWorkspaceId string
+
 
 @description('JWT secret key')
 @secure()
@@ -48,8 +55,12 @@ param userAssignedIdentityId string
 @description('Base resource name prefix for this deployment (e.g., myapp-dev)')
 param namePrefix string
 
+@description('Environment slug (e.g., dev, prod)')
+param envSlug string = 'dev'
+
+var basePrefix = replace(namePrefix, '-${envSlug}', '')
 var serviceName = '${namePrefix}-api-gateway'
-var imageName = 'erp-api-gateway'
+var imageName = '${basePrefix}-api-gateway-${envSlug}'
 
 module apiGateway 'container-app-service.bicep' = {
   name: serviceName
@@ -59,30 +70,26 @@ module apiGateway 'container-app-service.bicep' = {
     tags: tags
     containerAppsEnvironmentId: containerAppsEnvironmentId
     containerRegistryEndpoint: containerRegistryEndpoint
+    ghcrUsername: ghcrUsername
+    ghcrPat: ghcrPat
     imageName: '${imageName}:${imageTag}'
     targetPort: 8080
     externalIngress: true
     daprEnabled: false
-    minReplicas: 2
-    maxReplicas: 10
-    cpu: '1.0'
-    memory: '2.0Gi'
+    minReplicas: finopsMinReplicas  // OPTIMITZACIÓ FINOPS: Escala a zero - no paga quan no s'usa
+    maxReplicas: finopsMaxReplicas  // Mínim possible
+    cpu: json(finopsCpuCores)  // Mínim funcional
+    memory: finopsMemory  // Mínim funcional
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
     frontendOrigin: frontendOrigin
     aspnetcoreEnvironment: aspnetcoreEnvironment
-    keyVaultUri: keyVaultUri
-    appConfigConnectionString: appConfigConnectionString
-    keyVaultSecrets: [
-      {
-        name: 'jwt-secret-key'
-        secretName: 'jwt-secret-key'
-      }
-    ]
+    appConfigEndpoint: appConfigEndpoint
     logAnalyticsWorkspaceId: logAnalyticsWorkspaceId
     managedIdentityPrincipalId: managedIdentityPrincipalId
     userAssignedIdentityId: userAssignedIdentityId
+    azdServiceName: 'api-gateway'  // Must match service name in azure.yaml
   }
 }
 

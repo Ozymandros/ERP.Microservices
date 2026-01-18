@@ -1,3 +1,5 @@
+import { finopsMinReplicas, finopsMaxReplicas, finopsCpuCores, finopsMemory } from '../config/constants.bicep'
+
 @description('Location for resources')
 param location string = resourceGroup().location
 
@@ -7,15 +9,20 @@ param tags object = {}
 @description('Container Apps Environment ID')
 param containerAppsEnvironmentId string
 
+
 @description('Container Registry endpoint')
 param containerRegistryEndpoint string
 
-@description('Key Vault URI')
-param keyVaultUri string
+@description('Container Registry username (for GHCR)')
+param ghcrUsername string = ''
 
-@description('App Configuration connection string')
+@description('Container Registry Personal Access Token (for GHCR)')
 @secure()
-param appConfigConnectionString string = ''
+param ghcrPat string = ''
+
+
+@description('App Configuration endpoint')
+param appConfigEndpoint string = ''
 
 @description('Log Analytics Workspace ID')
 param logAnalyticsWorkspaceId string
@@ -48,8 +55,12 @@ param userAssignedIdentityId string
 @description('Base resource name prefix for this deployment (e.g., myapp-dev)')
 param namePrefix string
 
+@description('Environment slug (e.g., dev, prod)')
+param envSlug string = 'dev'
+
+var basePrefix = replace(namePrefix, '-${envSlug}', '')
 var serviceName = '${namePrefix}-auth-service'
-var imageName = 'auth-service'
+var imageName = '${basePrefix}-auth-service-${envSlug}'
 
 module authService 'container-app-service.bicep' = {
   name: serviceName
@@ -59,40 +70,28 @@ module authService 'container-app-service.bicep' = {
     tags: tags
     containerAppsEnvironmentId: containerAppsEnvironmentId
     containerRegistryEndpoint: containerRegistryEndpoint
+    ghcrUsername: ghcrUsername
+    ghcrPat: ghcrPat
     imageName: '${imageName}:${imageTag}'
     targetPort: 8080
     externalIngress: false
     daprEnabled: true
     daprAppId: serviceName
     daprAppPort: 8080
-    minReplicas: 2
-    maxReplicas: 5
-    cpu: '0.5'
-    memory: '1.0Gi'
+    minReplicas: finopsMinReplicas  // FINOPS OPTIMIZATION: Scales to zero - no cost when not in use
+    maxReplicas: finopsMaxReplicas  // Minimum possible
+    cpu: json(finopsCpuCores)  // Absolute minimum (250m cores)
+    memory: finopsMemory  // Absolute minimum (512 MiB)
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
     frontendOrigin: frontendOrigin
     aspnetcoreEnvironment: aspnetcoreEnvironment
-    keyVaultUri: keyVaultUri
-    appConfigConnectionString: appConfigConnectionString
-    keyVaultSecrets: [
-      {
-        name: 'jwt-secret-key'
-        secretName: 'jwt-secret-key'
-      }
-      {
-        name: 'db-connection'
-        secretName: 'sql-connection-authdb'
-      }
-      {
-        name: 'cache-connection'
-        secretName: 'redis-connection'
-      }
-    ]
+    appConfigEndpoint: appConfigEndpoint
     logAnalyticsWorkspaceId: logAnalyticsWorkspaceId
     managedIdentityPrincipalId: managedIdentityPrincipalId
     userAssignedIdentityId: userAssignedIdentityId
+    azdServiceName: 'auth-service'  // Must match service name in azure.yaml
   }
 }
 

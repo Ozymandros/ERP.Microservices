@@ -1,159 +1,220 @@
-@description('Name of the Container App')
+// Registry type is now always GHCR; ACR logic removed
+import { workloadProfileName } from '../config/constants.bicep'
+
+// ============================================================================
+// Basic Container App Parameters
+// ============================================================================
+
+@description('Name of the Container App - must be unique within the Container Apps Environment')
 param name string
 
-@description('Location for the Container App')
+@description('Azure region where the Container App will be deployed (defaults to resource group location)')
 param location string = resourceGroup().location
 
-@description('Tags to apply to the Container App')
+@description('Resource tags for organization, cost tracking, and resource management')
 param tags object = {}
 
-@description('Container Apps Environment ID')
+// ============================================================================
+// Infrastructure References
+// ============================================================================
+
+@description('Full resource ID of the Container Apps Environment where this app will run')
 param containerAppsEnvironmentId string
 
-@description('Container Registry endpoint')
+
+@description('Container Registry endpoint URL (e.g., ghcr.io or myregistry.azurecr.io) - where container images are stored')
 param containerRegistryEndpoint string
 
-@description('Container image name')
+@description('Container Registry username (for GHCR, use GitHub username)')
+param ghcrUsername string = ''
+
+@description('Container Registry Personal Access Token (for GHCR, use GitHub PAT or GITHUB_TOKEN)')
+@secure()
+param ghcrPat string = ''
+
+// ACR identity parameter removed; only GHCR supported
+
+@description('Container image name with optional tag (e.g., auth-service:latest or auth-service:abc1234)')
 param imageName string
 
-@description('Target port for the container')
+// ============================================================================
+// Container Configuration
+// ============================================================================
+
+@description('TCP port number that the container application listens on (default: 8080)')
 param targetPort int = 8080
 
-@description('Enable external ingress')
+@description('Enable external ingress - if true, app is accessible from internet; if false, only internal access')
 param externalIngress bool = false
 
-@description('Enable Dapr sidecar')
-param daprEnabled bool = false
-
-@description('Dapr app ID')
-param daprAppId string = name
-
-@description('Dapr app port')
-param daprAppPort int = targetPort
-
-@description('Minimum number of replicas')
+@description('Minimum number of container replicas - ensures high availability (default: 1)')
 param minReplicas int = 1
 
-@description('Maximum number of replicas')
+@description('Maximum number of container replicas - limits scaling to control costs (default: 10)')
 param maxReplicas int = 10
 
-@description('CPU cores')
-param cpu string = '0.5'
+@description('CPU allocation per replica in cores (e.g., 0.5 = 500m, 1.0 = 1 core) - affects performance')
+param cpu int = 1
 
-@description('Memory in Gi')
+@description('Memory allocation per replica in GiB (e.g., 1.0Gi = 1024 MiB) - affects performance')
 param memory string = '1.0Gi'
 
-@description('JWT secret key')
+// ============================================================================
+// Dapr Configuration
+// ============================================================================
+
+@description('Enable Dapr sidecar - if true, Dapr runtime is injected for service-to-service communication')
+param daprEnabled bool = false
+
+@description('Dapr application ID - unique identifier for this service in the Dapr service mesh (defaults to app name)')
+param daprAppId string = name
+
+@description('Port number that Dapr sidecar uses to communicate with the application (defaults to targetPort)')
+param daprAppPort int = targetPort
+
+// ============================================================================
+// Application Configuration
+// ============================================================================
+
+@description('JWT secret key for token signing and validation - stored as secret, read from App Configuration/Key Vault')
 @secure()
 param jwtSecretKey string = ''
 
-@description('JWT issuer')
+@description('JWT token issuer claim - identifies who issued the token (e.g., MyApp.Auth service)')
 param jwtIssuer string = 'MyApp.Auth'
 
-@description('JWT audience')
+@description('JWT token audience claim - identifies intended recipients (e.g., MyApp.All for all services)')
 param jwtAudience string = 'MyApp.All'
 
-@description('Frontend origin for CORS')
+@description('Frontend origin URL for CORS policy - allowed origin for cross-origin requests')
 param frontendOrigin string = 'http://localhost:3000'
 
-@description('ASP.NET Core environment')
+@description('ASP.NET Core environment name - sets ASPNETCORE_ENVIRONMENT variable (Development, Staging, Production)')
 param aspnetcoreEnvironment string = 'Production'
 
-@description('Key Vault URI for secret references')
-param keyVaultUri string = ''
+@description('Azure App Configuration endpoint URL - services read configuration from here (centralized config)')
+param appConfigEndpoint string = ''
 
-@description('App Configuration connection string')
-@secure()
-param appConfigConnectionString string = ''
+// ============================================================================
+// Monitoring and Identity
+// ============================================================================
 
-@description('Array of Key Vault secrets to reference')
-param keyVaultSecrets array = []
-
-@description('Log Analytics Workspace ID for diagnostics and monitoring')
+@description('Log Analytics Workspace resource ID - all container logs are sent here for centralized monitoring')
 param logAnalyticsWorkspaceId string
 
-@description('Managed Identity Principal ID for RBAC role assignments')
-param managedIdentityPrincipalId string
-
-@description('User-Assigned Managed Identity ID')
+@description('User-Assigned Managed Identity resource ID - used for authentication to Azure services (ACR, Key Vault, etc.)')
 param userAssignedIdentityId string
 
-resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
+@description('Managed Identity Principal ID - used for RBAC role assignments (Key Vault, App Config, SQL, Redis)')
+param managedIdentityPrincipalId string
+
+@description('azd service name - used by azd deploy to map services from azure.yaml to infrastructure resources')
+param azdServiceName string = ''
+
+resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' existing = {
   name: split(containerAppsEnvironmentId, '/')[8]
 }
 
-resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' existing = {
-  name: replace(containerRegistryEndpoint, '.azurecr.io', '')
-}
 
-// Build secrets array from Key Vault references
-var keyVaultSecretsList = [for secret in keyVaultSecrets: {
-  name: secret.name
-  keyVaultUrl: '${keyVaultUri}secrets/${secret.secretName}'
-  identity: 'system-assigned'
-}]
 
-// Build environment variables
-var environmentVariables = concat([
-  {
-    name: 'ASPNETCORE_ENVIRONMENT'
-    value: aspnetcoreEnvironment
-  }
-  {
-    name: 'ASPNETCORE_URLS'
-    value: 'http://+:${targetPort}'
-  }
-  {
-    name: 'Jwt__Issuer'
-    value: jwtIssuer
-  }
-  {
-    name: 'Jwt__Audience'
-    value: jwtAudience
-  }
-  {
-    name: 'FRONTEND_ORIGIN'
-    value: frontendOrigin
-  }
-], !empty(appConfigConnectionString) ? [
-  {
-    name: 'AppConfiguration__ConnectionString'
-    secretRef: 'app-config-connection'
-  }
-] : [], !empty(jwtSecretKey) ? [
-  {
-    name: 'Jwt__SecretKey'
-    secretRef: 'jwt-secret'
-  }
-] : [])
+// ============================================================================
+// Environment Variables Configuration
+// ============================================================================
 
-// Build secrets array from parameters and Key Vault references
-var secrets = concat(
-  !empty(appConfigConnectionString) ? [
+var environmentVariables = concat(
+  [
     {
-      name: 'app-config-connection'
-      value: appConfigConnectionString
+      name: 'ASPNETCORE_ENVIRONMENT'
+      value: aspnetcoreEnvironment
     }
-  ] : [],
-  !empty(jwtSecretKey) ? [
     {
-      name: 'jwt-secret'
-      value: jwtSecretKey
+      name: 'ASPNETCORE_URLS'
+      value: 'http://+:${targetPort}'
     }
-  ] : [],
-  !empty(keyVaultUri) ? keyVaultSecretsList : []
+    {
+      name: 'Jwt__Issuer'
+      value: jwtIssuer
+    }
+    {
+      name: 'Jwt__Audience'
+      value: jwtAudience
+    }
+    {
+      name: 'FRONTEND_ORIGIN'
+      value: frontendOrigin
+    }
+  ],
+  !empty(appConfigEndpoint)
+    ? [
+        {
+          name: 'AppConfiguration__Endpoint'
+          value: appConfigEndpoint
+        }
+      ]
+    : [],
+  !empty(jwtSecretKey)
+    ? [
+        {
+          name: 'Jwt__SecretKey'
+          secretRef: 'jwt-secret'
+        }
+      ]
+    : []
 )
 
-resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
+// ============================================================================
+// Secrets Configuration
+// ============================================================================
+// Note: Application Insights Connection String is now centralized in App Configuration
+// Services read it via App Configuration Provider, which resolves Key Vault reference
+
+var secrets = union(
+  !empty(jwtSecretKey)
+    ? [
+        {
+          name: 'jwt-secret'
+          value: jwtSecretKey
+        }
+      ]
+    : [],
+  !empty(ghcrPat)
+    ? [
+        {
+          name: 'ghcr-pat'
+          value: ghcrPat
+        }
+      ]
+    : []
+)
+
+// ============================================================================
+// Container App Resource
+// ============================================================================
+
+resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   name: name
   location: location
   tags: union(
-    union(tags, !empty(logAnalyticsWorkspaceId) ? {
-      'log-analytics-workspace-id': logAnalyticsWorkspaceId
-    } : {}),
-    !empty(managedIdentityPrincipalId) ? {
-      'managed-identity-principal-id': managedIdentityPrincipalId
-    } : {}
+    union(
+      union(
+        tags,
+        !empty(logAnalyticsWorkspaceId)
+          ? {
+              'log-analytics-workspace-id': logAnalyticsWorkspaceId
+            }
+          : {}
+      ),
+      !empty(managedIdentityPrincipalId)
+        ? {
+            'managed-identity-principal-id': managedIdentityPrincipalId
+          }
+        : {}
+    ),
+    !empty(azdServiceName)
+      ? {
+          'azd-service-name': azdServiceName
+        }
+      : {}
   )
   identity: {
     type: 'UserAssigned'
@@ -163,46 +224,54 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   }
   properties: {
     managedEnvironmentId: containerAppsEnvironment.id
+    workloadProfileName: workloadProfileName
     configuration: {
-      ingress: externalIngress ? {
-        external: true
-        targetPort: targetPort
-        transport: 'auto'
-        allowInsecure: false
-        traffic: [
-          {
-            weight: 100
-            latestRevision: true
+      ingress: externalIngress
+        ? {
+            external: true
+            targetPort: targetPort
+            transport: 'auto'
+            allowInsecure: false
+            traffic: [
+              {
+                weight: 100
+                latestRevision: true
+              }
+            ]
           }
-        ]
-      } : {
-        external: false
-        targetPort: targetPort
-        transport: 'auto'
-        allowInsecure: false
-      }
-      registries: [
-        {
-          server: containerRegistry.properties.loginServer
-          identity: userAssignedIdentityId
-        }
-      ]
-      dapr: daprEnabled ? {
-        enabled: true
-        appId: daprAppId
-        appPort: daprAppPort
-        appProtocol: 'http'
-        enableApiLogging: true
-      } : null
+        : {
+            external: false
+            targetPort: targetPort
+            transport: 'auto'
+            allowInsecure: false
+          }
+      registries: !empty(ghcrUsername) && !empty(ghcrPat)
+        ? [
+            {
+              server: containerRegistryEndpoint
+              username: ghcrUsername
+              passwordSecretRef: 'ghcr-pat'
+            }
+          ]
+        : []
+      dapr: daprEnabled
+        ? {
+            enabled: true
+            appId: daprAppId
+            appPort: daprAppPort
+            appProtocol: 'http'
+            enableApiLogging: true
+          }
+        : null
       secrets: secrets
     }
     template: {
       containers: [
         {
           name: name
-          image: '${containerRegistry.properties.loginServer}/${imageName}'
+          image: '${containerRegistryEndpoint}/${imageName}'
           resources: {
-            cpu: json(cpu)
+            cpu: cpu
             memory: memory
           }
           env: environmentVariables
@@ -252,22 +321,11 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   }
 }
 
-// Assign ACR Pull role to the container app
-/*
-resource acrPullRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(containerApp.id, containerRegistry.id, 'acrpull')
-  scope: containerRegistry
-  properties: {
-    principalId: containerApp.identity.principalId
-    principalType: 'ServicePrincipal'
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
-  }
-}
-*/
+// ACR Pull role assignment removed; only GHCR supported
 
 output id string = containerApp.id
 output name string = containerApp.name
 output uri string = externalIngress ? 'https://${containerApp.properties.configuration.ingress.fqdn}' : ''
-@description('Managed Identity Principal ID for RBAC role assignments (Key Vault, App Config, SQL, Redis)')
-output managedIdentityPrincipalId string = containerApp.identity.principalId
 output fqdn string = containerApp.properties.configuration.ingress.fqdn
+@description('Managed Identity Principal ID for RBAC role assignments (Key Vault, App Config, SQL, Redis)')
+output managedIdentityPrincipalId string = managedIdentityPrincipalId

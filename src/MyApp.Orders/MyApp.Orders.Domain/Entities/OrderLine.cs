@@ -9,5 +9,10 @@ namespace MyApp.Orders.Domain.Entities
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal LineTotal { get; set; }
+        
+        // Stock reservation fields
+        public Guid? ReservedStockId { get; set; }
+        public int ReservedQuantity { get; set; }
+        public bool IsFulfilled { get; set; }
     }
 }

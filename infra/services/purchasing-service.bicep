@@ -1,3 +1,5 @@
+import { finopsMinReplicas, finopsMaxReplicas, finopsCpuCores, finopsMemory } from '../config/constants.bicep'
+
 @description('Location for resources')
 param location string = resourceGroup().location
 
@@ -7,18 +9,24 @@ param tags object = {}
 @description('Container Apps Environment ID')
 param containerAppsEnvironmentId string
 
+
 @description('Container Registry endpoint')
 param containerRegistryEndpoint string
 
-@description('Key Vault URI')
-param keyVaultUri string
+@description('Container Registry username (for GHCR)')
+param ghcrUsername string = ''
 
-@description('App Configuration connection string')
+@description('Container Registry Personal Access Token (for GHCR)')
 @secure()
-param appConfigConnectionString string = ''
+param ghcrPat string = ''
+
+
+@description('App Configuration endpoint')
+param appConfigEndpoint string = ''
 
 @description('Log Analytics Workspace ID')
 param logAnalyticsWorkspaceId string
+
 
 @description('JWT secret key')
 @secure()
@@ -48,8 +56,12 @@ param userAssignedIdentityId string
 @description('Base resource name prefix for this deployment (e.g., myapp-dev)')
 param namePrefix string
 
+@description('Environment slug (e.g., dev, prod)')
+param envSlug string = 'dev'
+
+var basePrefix = replace(namePrefix, '-${envSlug}', '')
 var serviceName = '${namePrefix}-purchasing-service'
-var imageName = 'purchasing-service'
+var imageName = '${basePrefix}-purchasing-service-${envSlug}'
 
 module purchasingService 'container-app-service.bicep' = {
   name: serviceName
@@ -59,40 +71,28 @@ module purchasingService 'container-app-service.bicep' = {
     tags: tags
     containerAppsEnvironmentId: containerAppsEnvironmentId
     containerRegistryEndpoint: containerRegistryEndpoint
+    ghcrUsername: ghcrUsername
+    ghcrPat: ghcrPat
     imageName: '${imageName}:${imageTag}'
     targetPort: 8080
     externalIngress: false
     daprEnabled: true
     daprAppId: serviceName
     daprAppPort: 8080
-    minReplicas: 2
-    maxReplicas: 5
-    cpu: '0.5'
-    memory: '1.0Gi'
+    minReplicas: finopsMinReplicas  // OPTIMITZACIÓ FINOPS: Escala a zero - no paga quan no s'usa
+    maxReplicas: finopsMaxReplicas  // Mínim possible
+    cpu: json(finopsCpuCores)  // Mínim absolut (250m cores)
+    memory: finopsMemory  // Mínim absolut (512 MiB)
     jwtSecretKey: jwtSecretKey
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
     frontendOrigin: frontendOrigin
     aspnetcoreEnvironment: aspnetcoreEnvironment
-    keyVaultUri: keyVaultUri
-    appConfigConnectionString: appConfigConnectionString
-    keyVaultSecrets: [
-      {
-        name: 'jwt-secret-key'
-        secretName: 'jwt-secret-key'
-      }
-      {
-        name: 'db-connection'
-        secretName: 'sql-connection-purchasingdb'
-      }
-      {
-        name: 'cache-connection'
-        secretName: 'redis-connection'
-      }
-    ]
+    appConfigEndpoint: appConfigEndpoint
     logAnalyticsWorkspaceId: logAnalyticsWorkspaceId
     managedIdentityPrincipalId: managedIdentityPrincipalId
     userAssignedIdentityId: userAssignedIdentityId
+    azdServiceName: 'purchasing-service'  // Must match service name in azure.yaml
   }
 }
 

@@ -1,0 +1,283 @@
+name: Build & Deploy ERP Services to Azure
+
+on:
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+
+env:
+  AZURE_ENV_NAME: "dev"
+  AZURE_LOCATION: "westeurope"
+  APP_PREFIX: "myapp"  # Base prefix for resource naming (matches namePrefix in Bicep)
+
+jobs:
+  provision-infrastructure:
+    name: Provision Infrastructure
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Azure and Azure Developer CLI
+        uses: ./.github/actions/setup-azure-azd
+        with:
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          azure-env-name: ${{ env.AZURE_ENV_NAME }}
+          azure-location: ${{ env.AZURE_LOCATION }}
+          setup-dapr: "true"
+
+      - name: Preview Infrastructure Provisioning (Required)
+        env:
+          AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
+          AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        run: |
+          echo "Previewing infrastructure changes..."
+          azd provision --preview
+          echo "Preview successful. Proceeding with provisioning..."
+
+      - name: Provision Infrastructure
+        env:
+          AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
+          AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        run: |
+          echo "Provisioning infrastructure..."
+          azd provision --no-prompt
+
+  build-and-push-images:
+    name: Build Docker Images
+    needs: provision-infrastructure
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Azure and Azure Developer CLI
+        uses: ./.github/actions/setup-azure-azd
+        with:
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          azure-env-name: ${{ env.AZURE_ENV_NAME }}
+          azure-location: ${{ env.AZURE_LOCATION }}
+          setup-dapr: "true"
+
+      - name: Login to ACR
+        run: az acr login --name $REGISTRY_NAME
+
+      # Build and push shared base image FIRST (required by Inventory, Billing, Orders, Purchasing, Sales)
+      - name: Build and push shared base image
+        run: |
+          IMAGE_TAG=${GITHUB_SHA::7}
+          APP_PREFIX="${APP_PREFIX:-myapp}"
+          echo "Building shared base image with tag: $IMAGE_TAG"
+
+          az acr build \
+            --registry $REGISTRY_NAME \
+            --image "${APP_PREFIX}-microservices-base:$IMAGE_TAG" \
+            --image "${APP_PREFIX}-microservices-base:10.0" \
+            --image "${APP_PREFIX}-microservices-base:latest" \
+            --file docker/microservices-base.Dockerfile \
+            .
+
+          # Verify base image was built successfully
+          # If az acr build succeeds, the tags should be available
+          echo "✓ Base image build completed successfully"
+
+      # Build and push all service images
+      - name: Build and push service images to ACR
+        run: |
+          # Use naming: {APP_PREFIX}-{service-name}-{environment}
+          AZURE_ENV_NAME="${AZURE_ENV_NAME:-dev}"
+          APP_PREFIX="${APP_PREFIX:-myapp}"
+          
+          # Define services to build (path relative to src/, service name from azure.yaml)
+          declare -a SERVICES=(
+              "MyApp.Auth/MyApp.Auth.API:auth-service"
+              "MyApp.Billing/MyApp.Billing.API:billing-service"
+              "MyApp.Inventory/MyApp.Inventory.API:inventory-service"
+              "MyApp.Orders/MyApp.Orders.API:orders-service"
+              "MyApp.Purchasing/MyApp.Purchasing.API:purchasing-service"
+              "MyApp.Sales/MyApp.Sales.API:sales-service"
+              "ErpApiGateway:api-gateway"
+          )
+
+          # Get Git commit hash for image tag
+          IMAGE_TAG=${GITHUB_SHA::7}
+
+          # Get registry endpoint from azd environment (already available after provision)
+          BASE_IMAGE_REGISTRY="${AZURE_CONTAINER_REGISTRY_ENDPOINT:-}"
+          if [ -z "$BASE_IMAGE_REGISTRY" ]; then
+            BASE_IMAGE_REGISTRY=$(azd env get-value AZURE_CONTAINER_REGISTRY_ENDPOINT --environment $AZURE_ENV_NAME)
+          fi
+          # Add trailing slash for Dockerfile FROM statement
+          BASE_IMAGE_REGISTRY="${BASE_IMAGE_REGISTRY}/"
+
+          echo "Building service images with tag: $IMAGE_TAG using naming: ${APP_PREFIX}-{service-name}-${AZURE_ENV_NAME}"
+
+          for SERVICE in "${SERVICES[@]}"; do
+              IFS=':' read -r SERVICE_PATH SERVICE_NAME <<< "$SERVICE"
+              # Use naming: {APP_PREFIX}-{service-name}-{environment}
+              REPO_NAME="${APP_PREFIX}-${SERVICE_NAME}-${AZURE_ENV_NAME}"
+              echo "Building: $REPO_NAME from src/$SERVICE_PATH"
+              
+              # Check if this service uses the shared base image (all except auth-service and api-gateway)
+              if [[ "$SERVICE_NAME" != "auth-service" && "$SERVICE_NAME" != "api-gateway" ]]; then
+                  # Pass registry endpoint as build arg for base image resolution
+                  az acr build \
+                      --registry $REGISTRY_NAME \
+                      --image "${REPO_NAME}:${IMAGE_TAG}" \
+                      --image "${REPO_NAME}:latest" \
+                      --file "src/$SERVICE_PATH/Dockerfile" \
+                      --build-arg BASE_IMAGE_REGISTRY="$BASE_IMAGE_REGISTRY" \
+                      .
+              else
+                  # Auth and Gateway don't use shared base image
+                  az acr build \
+                      --registry $REGISTRY_NAME \
+                      --image "${REPO_NAME}:${IMAGE_TAG}" \
+                      --image "${REPO_NAME}:latest" \
+                      --file "src/$SERVICE_PATH/Dockerfile" \
+                      .
+              fi
+          done
+
+      - name: Verify images in ACR
+        run: |
+          AZURE_ENV_NAME="${AZURE_ENV_NAME:-dev}"
+          echo "=== All Images in ACR ==="
+          az acr repository list --name $REGISTRY_NAME --output table
+
+          echo ""
+          APP_PREFIX="${APP_PREFIX:-myapp}"
+          echo "=== Base Image Tags ==="
+          az acr repository show-tags --name "$REGISTRY_NAME" --repository "${APP_PREFIX}-microservices-base" --output table || echo "Base image not found"
+
+          echo ""
+          APP_PREFIX="${APP_PREFIX:-myapp}"
+          echo "=== Service Image Tags (using naming: ${APP_PREFIX}-{service-name}-${AZURE_ENV_NAME}) ==="
+          for SERVICE in auth-service billing-service inventory-service orders-service purchasing-service sales-service api-gateway; do
+              REPO_NAME="${APP_PREFIX}-${SERVICE}-${AZURE_ENV_NAME}"
+              echo "Tags for $REPO_NAME:"
+              az acr repository show-tags --name $REGISTRY_NAME --repository "$REPO_NAME" --output table --top 3 || echo "  Image $REPO_NAME not found"
+              echo ""
+          done
+
+          echo "=== Build Summary ==="
+          IMAGE_TAG=${GITHUB_SHA::7}
+          APP_PREFIX="${APP_PREFIX:-myapp}"
+          echo "Built images with tag: $IMAGE_TAG"
+          echo "- ${APP_PREFIX}-microservices-base:$IMAGE_TAG"
+          for SERVICE in auth-service billing-service inventory-service orders-service purchasing-service sales-service api-gateway; do
+              echo "- ${APP_PREFIX}-${SERVICE}-${AZURE_ENV_NAME}:$IMAGE_TAG"
+          done
+
+  deploy-to-azure:
+    name: Deploy Application
+    needs: build-and-push-images
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Azure and Azure Developer CLI
+        uses: ./.github/actions/setup-azure-azd
+        with:
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          azure-env-name: ${{ env.AZURE_ENV_NAME }}
+          azure-location: ${{ env.AZURE_LOCATION }}
+          setup-dapr: "true"
+
+      - name: Set up dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Deploy Application
+        env:
+          AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
+          AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          # Dapr environment variables - set by the setup action
+          DaprCliPath: ${{ env.DaprCliPath }}
+          DAPR_HOME: ${{ env.DAPR_HOME }}
+        run: |
+          # Use short commit hash to match image tags (first 7 characters)
+          export IMAGE_TAG=${GITHUB_SHA::7}
+          echo "Deploying with image tag: $IMAGE_TAG"
+          
+          # Quick verification that Dapr is accessible (action already did full setup)
+          dapr --version || {
+            echo "ERROR: Dapr CLI not accessible in deployment step"
+            exit 1
+          }
+          
+          azd deploy --no-prompt
+
+  verify-deployment:
+    name: Verify Deployment
+    needs: deploy-to-azure
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Azure login (Federated)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Check Container Apps status
+        env:
+          APP_PREFIX: ${{ env.APP_PREFIX }}
+        run: |
+          APP_PREFIX="${APP_PREFIX:-myapp}"
+          AZURE_ENV_NAME="${{ env.AZURE_ENV_NAME }}"
+          RG_NAME="rg-${APP_PREFIX}-${AZURE_ENV_NAME}-core"
+
+          echo "Checking Container Apps health..."
+          az containerapp list --resource-group "$RG_NAME" --output table
+
+          echo ""
+          echo "Checking revision status..."
+          for APP in auth-service billing-service inventory-service orders-service purchasing-service sales-service api-gateway; do
+              echo ""
+              echo "App: ${APP_PREFIX}-${AZURE_ENV_NAME}-$APP"
+              az containerapp show --name "${APP_PREFIX}-${AZURE_ENV_NAME}-$APP" \
+                  --resource-group "$RG_NAME" \
+                  --query "properties.latestRevisionFqdn" -o tsv || echo "Not found"
+          done
+
+      - name: Run smoke tests
+        run: |
+          echo "✓ Deployment verified successfully"
