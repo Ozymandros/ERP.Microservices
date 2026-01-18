@@ -20,11 +20,6 @@ param ghcrUsername string = ''
 @secure()
 param ghcrPat string = ''
 
-@description('Type of container registry to use (acr or ghcr)')
-param registryType string = 'ghcr'
-
-@description('User-Assigned Managed Identity resource ID for ACR (for acr only)')
-param acrIdentityId string = ''
 
 @description('App Configuration endpoint')
 param appConfigEndpoint string = ''
@@ -77,8 +72,6 @@ module authService 'container-app-service.bicep' = {
     containerRegistryEndpoint: containerRegistryEndpoint
     ghcrUsername: ghcrUsername
     ghcrPat: ghcrPat
-    registryType: registryType
-    acrIdentityId: acrIdentityId
     imageName: '${imageName}:${imageTag}'
     targetPort: 8080
     externalIngress: false

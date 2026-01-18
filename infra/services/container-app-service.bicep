@@ -1,9 +1,4 @@
-@allowed([
-  'acr'
-  'ghcr'
-])
-@description('Type of container registry to use (acr or ghcr)')
-param registryType string = 'ghcr'
+// Registry type is now always GHCR; ACR logic removed
 import { workloadProfileName } from '../config/constants.bicep'
 
 // ============================================================================
@@ -37,8 +32,7 @@ param ghcrUsername string = ''
 @secure()
 param ghcrPat string = ''
 
-@description('User-Assigned Managed Identity resource ID for ACR (for acr only)')
-param acrIdentityId string = ''
+// ACR identity parameter removed; only GHCR supported
 
 @description('Container image name with optional tag (e.g., auth-service:latest or auth-service:abc1234)')
 param imageName string
@@ -183,7 +177,7 @@ var secrets = union(
         }
       ]
     : [],
-  registryType == 'ghcr' && !empty(ghcrPat)
+  !empty(ghcrPat)
     ? [
         {
           name: 'ghcr-pat'
@@ -251,7 +245,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
             transport: 'auto'
             allowInsecure: false
           }
-      registries: registryType == 'ghcr' && !empty(ghcrUsername) && !empty(ghcrPat)
+      registries: !empty(ghcrUsername) && !empty(ghcrPat)
         ? [
             {
               server: containerRegistryEndpoint
@@ -259,12 +253,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
               passwordSecretRef: 'ghcr-pat'
             }
           ]
-        : [
-            {
-              server: containerRegistryEndpoint
-              identity: acrIdentityId
-            }
-          ]
+        : []
       dapr: daprEnabled
         ? {
             enabled: true
@@ -332,18 +321,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   }
 }
 
-// Assign ACR Pull role to the container app
-/*
-resource acrPullRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(containerApp.id, containerRegistry.id, 'acrpull')
-  scope: containerRegistry
-  properties: {
-    principalId: containerApp.identity.principalId
-    principalType: 'ServicePrincipal'
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
-  }
-}
-*/
+// ACR Pull role assignment removed; only GHCR supported
 
 output id string = containerApp.id
 output name string = containerApp.name
