@@ -219,7 +219,7 @@ module appConfiguration 'core/configuration/app-configuration.bicep' = {
     jwtIssuer: jwtIssuer
     jwtAudience: jwtAudience
     frontendOrigin: frontendOrigin
-    aspnetcoreEnvironment: aspnetcoreEnvironment
+    // aspnetcoreEnvironment removed (parameter no longer exists)
   }
 }
 

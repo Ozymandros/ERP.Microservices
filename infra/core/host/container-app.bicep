@@ -31,21 +31,7 @@ param daprAppId string = name
 @description('Dapr app port')
 param daprAppPort int = targetPort
 
-@description('JWT secret key')
-@secure()
-param jwtSecretKey string = ''
-
-@description('JWT token issuer')
-param jwtIssuer string = 'MyApp.Auth'
-
-@description('JWT token audience')
-param jwtAudience string = 'MyApp.All'
-
-@description('Frontend origin for CORS')
-param frontendOrigin string = 'http://localhost:3000'
-
-@description('ASP.NET Core environment')
-param aspnetcoreEnvironment string = 'Production'
+// Removed unused parameters for clean build
 
 @description('Environment variables')
 param env array = []

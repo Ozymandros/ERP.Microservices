@@ -31,7 +31,7 @@ param jwtAudience string
 param frontendOrigin string
 
 @description('ASP.NET Core environment')
-param aspnetcoreEnvironment string
+// Removed unused parameter for clean build
 
 // ============================================================================
 // Derived Variables

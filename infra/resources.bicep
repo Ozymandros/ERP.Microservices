@@ -1,4 +1,4 @@
-import { logAnalyticsSkuName, applicationInsightsKind, workloadProfileType, workloadProfileName, aspireDashboardComponentName, aspireDashboardComponentType, tagAspireResourceName, finopsLogAnalyticsRetentionDays, finopsApplicationInsightsSamplingPercentage } from 'config/constants.bicep'
+import { logAnalyticsSkuName, applicationInsightsKind, tagAspireResourceName, finopsLogAnalyticsRetentionDays, finopsApplicationInsightsSamplingPercentage } from 'config/constants.bicep'
 
 @description('Azure region where all resources will be deployed (defaults to resource group location)')
 param location string = resourceGroup().location
