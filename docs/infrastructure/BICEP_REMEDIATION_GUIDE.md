@@ -405,7 +405,7 @@ template: {
       name: name
       image: '${containerRegistry.properties.loginServer}/${imageName}'
       resources: {
-        cpu: json(cpu)
+        cpu: any(cpu)
         memory: memory
       }
       env: concat(env, [

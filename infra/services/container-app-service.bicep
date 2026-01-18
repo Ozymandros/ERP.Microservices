@@ -271,7 +271,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
           name: name
           image: '${containerRegistryEndpoint}/${imageName}'
           resources: {
-            cpu: json(cpu)
+            cpu: any(cpu)
             memory: memory
           }
           env: environmentVariables
