@@ -192,7 +192,7 @@ var sqlServerlessSkuTier = 'GeneralPurpose'
 
 @export()
 @description('FinOps: SQL Serverless minimum capacity in vCores (0.5 = minimum allowed)')
-var sqlServerlessMinCapacity = 1
+var sqlServerlessMinCapacity = '1'
 
 @export()
 @description('FinOps: SQL Serverless auto-pause delay in minutes (60 = minimum allowed)')

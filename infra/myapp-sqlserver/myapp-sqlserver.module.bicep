@@ -69,7 +69,7 @@ resource sqlDatabases 'Microsoft.Sql/servers/databases@2023-08-01' = [
       catalogCollation: databaseCollation
       useFreeLimit: sqlServerlessUseFreeLimit // CRÍTIC: Activa Free Tier (100k segons gratis)
       freeLimitExhaustionBehavior: sqlServerlessFreeLimitExhaustionBehavior // Pausa automàtica quan s'esgota el límit gratuït
-      minCapacity: json(sqlServerlessMinCapacity) // Mínim serverless (0.5 vCores)
+      minCapacity: int(sqlServerlessMinCapacity) // Mínim serverless (0.5 vCores)
       autoPauseDelay: sqlServerlessAutoPauseDelayMinutes // Pausa després de 60 minuts d'inactivitat (mínim permès)
     }
     sku: {
