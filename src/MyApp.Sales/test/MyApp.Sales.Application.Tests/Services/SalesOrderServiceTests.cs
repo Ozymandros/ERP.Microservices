@@ -1,3 +1,4 @@
+using System.Dynamic;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -6,6 +7,7 @@ using MyApp.Sales.Application.Services;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Events;
 using Xunit;
 
 namespace MyApp.Sales.Application.Tests.Services;
@@ -443,6 +445,126 @@ public class SalesOrderServiceTests
 
         // Assert
         _mockOrderRepository.Verify(r => r.DeleteAsync(orderId), Times.Once);
+    }
+
+    #endregion
+
+    #region ConfirmQuoteAsync Tests
+
+    [Fact]
+    public async Task ConfirmQuoteAsync_WithValidQuote_CreatesFulfillmentOrderAndUpdatesStatus()
+    {
+        // Arrange
+        var quoteId = Guid.NewGuid();
+        var customerId = Guid.NewGuid();
+        var warehouseId = Guid.NewGuid();
+        var quote = new SalesOrder(quoteId)
+        {
+            OrderNumber = "Q-123",
+            IsQuote = true,
+            Status = SalesOrderStatus.Draft,
+            CustomerId = customerId,
+            QuoteExpiryDate = DateTime.UtcNow.AddDays(7),
+            Lines = new List<SalesOrderLine>
+            {
+                new SalesOrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 2, UnitPrice = 100 }
+            }
+        };
+
+        var dto = new ConfirmQuoteDto { QuoteId = quoteId, WarehouseId = warehouseId, ShippingAddress = "123 Street" };
+
+        _mockOrderRepository.Setup(r => r.GetByIdAsync(quoteId)).ReturnsAsync(quote);
+        
+        // Mock stock check
+        dynamic stockResponse = new ExpandoObject();
+        stockResponse.totalAvailable = 10;
+        stockResponse.warehouseStocks = new List<dynamic>();
+
+        _mockServiceInvoker.Setup(s => s.InvokeAsync<dynamic>(
+            "inventory",
+            It.Is<string>(path => path.StartsWith("api/warehousestocks/availability/")),
+            HttpMethod.Get,
+            default))
+            .ReturnsAsync((object)stockResponse);
+
+        dynamic fulfillmentOrderResponse = new ExpandoObject();
+        fulfillmentOrderResponse.id = Guid.NewGuid();
+
+        _mockServiceInvoker.Setup(s => s.InvokeAsync<object, dynamic>(
+            "orders",
+            "api/orders/with-reservation",
+            HttpMethod.Post,
+            It.IsAny<object>(),
+            default))
+            .ReturnsAsync((object)fulfillmentOrderResponse);
+
+        _mockMapper.Setup(m => m.Map<SalesOrderDto>(quote)).Returns(new SalesOrderDto(quoteId));
+
+        // Act
+        var result = await _salesOrderService.ConfirmQuoteAsync(dto);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(SalesOrderStatus.Confirmed, quote.Status);
+        Assert.NotNull(quote.ConvertedToOrderId);
+        
+        _mockOrderRepository.Verify(r => r.UpdateAsync(quote), Times.Once);
+        _mockEventPublisher.Verify(e => e.PublishAsync("sales.order.confirmed", It.IsAny<SalesOrderConfirmedEvent>(), default), Times.Once);
+    }
+
+    [Fact]
+    public async Task ConfirmQuoteAsync_WithExpiredQuote_ThrowsInvalidOperationException()
+    {
+        // Arrange
+        var quoteId = Guid.NewGuid();
+        var quote = new SalesOrder(quoteId)
+        {
+            IsQuote = true,
+            Status = SalesOrderStatus.Draft,
+            QuoteExpiryDate = DateTime.UtcNow.AddDays(-1)
+        };
+        var dto = new ConfirmQuoteDto { QuoteId = quoteId, WarehouseId = Guid.NewGuid(), ShippingAddress = null };
+
+        _mockOrderRepository.Setup(r => r.GetByIdAsync(quoteId)).ReturnsAsync(quote);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _salesOrderService.ConfirmQuoteAsync(dto));
+    }
+
+    [Fact]
+    public async Task ConfirmQuoteAsync_WithInsufficientStock_ThrowsInvalidOperationException()
+    {
+        // Arrange
+        var quoteId = Guid.NewGuid();
+        var quote = new SalesOrder(quoteId)
+        {
+            IsQuote = true,
+            Status = SalesOrderStatus.Draft,
+            QuoteExpiryDate = DateTime.UtcNow.AddDays(7),
+            Lines = new List<SalesOrderLine>
+            {
+                new SalesOrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 100 }
+            }
+        };
+        var dto = new ConfirmQuoteDto { QuoteId = quoteId, WarehouseId = Guid.NewGuid(), ShippingAddress = null };
+
+        _mockOrderRepository.Setup(r => r.GetByIdAsync(quoteId)).ReturnsAsync(quote);
+        
+        // Mock stock check - return 0 available
+        dynamic stockResponse = new ExpandoObject();
+        stockResponse.totalAvailable = 0;
+        stockResponse.warehouseStocks = new List<dynamic>();
+
+        _mockServiceInvoker.Setup(s => s.InvokeAsync<dynamic>(
+            "inventory",
+            It.IsAny<string>(),
+            HttpMethod.Get,
+            default))
+            .ReturnsAsync((object)stockResponse);
+
+        // Act & Assert
+        var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => _salesOrderService.ConfirmQuoteAsync(dto));
+        Assert.Contains("Insufficient stock", ex.Message);
     }
 
     #endregion

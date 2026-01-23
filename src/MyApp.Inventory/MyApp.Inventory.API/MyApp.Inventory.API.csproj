@@ -22,7 +22,7 @@
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.14.0" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.11.10" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
-  </ItemGroup>
+    </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyApp.Inventory.Domain\MyApp.Inventory.Domain.csproj" />
     <ProjectReference Include="..\MyApp.Inventory.Application\MyApp.Inventory.Application.csproj" />

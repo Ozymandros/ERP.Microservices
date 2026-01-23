@@ -19,6 +19,8 @@ namespace MyApp.Orders.Application.Contracts.Dtos
         public Guid? SourceId { get; init; }
         public Guid? TargetId { get; init; }
         public Guid? ExternalOrderId { get; init; }
+        
+        public Guid? WarehouseId { get; init; }
 
         [Required]
         public List<OrderLineDto> Lines { get; init; } = new();

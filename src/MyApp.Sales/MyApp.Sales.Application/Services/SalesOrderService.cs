@@ -265,15 +265,17 @@ namespace MyApp.Sales.Application.Services
                 var createOrderRequest = new
                 {
                     orderNumber = $"{quote.OrderNumber}-ORD",
-                    customerId = quote.CustomerId,
+                    type = 2, // Outbound = 2
+                    sourceId = dto.WarehouseId,  // Shipping from warehouse
+                    targetId = quote.CustomerId, // Shipping to customer (using customerId as TargetId)
+                    externalOrderId = quote.Id,  // Link to SalesOrder
                     warehouseId = dto.WarehouseId,
                     orderDate = DateTime.UtcNow,
-                    shippingAddress = dto.ShippingAddress,
+                    destinationAddress = dto.ShippingAddress,
                     lines = quote.Lines.Select(l => new
                     {
                         productId = l.ProductId,
-                        quantity = l.Quantity,
-                        unitPrice = l.UnitPrice
+                        quantity = l.Quantity
                     }).ToList()
                 };
 

@@ -1,3 +1,5 @@
+using System;
+using System.Dynamic;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -6,6 +8,7 @@ using MyApp.Purchasing.Application.Services;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Events;
 using Xunit;
 
 namespace MyApp.Purchasing.Application.Tests.Services;
@@ -354,4 +357,87 @@ public class PurchaseOrderServiceTests
         Assert.Contains("not found", exception.Message);
         _mockPurchaseOrderRepository.Verify(r => r.DeleteAsync(It.IsAny<PurchaseOrder>()), Times.Never);
     }
+
+    #region ReceivePurchaseOrderAsync Tests
+
+    [Fact]
+    public async Task ReceivePurchaseOrderAsync_WithValidPO_CreatesAndFulfillsInboundOrder()
+    {
+        // Arrange
+        var poId = Guid.NewGuid();
+        var warehouseId = Guid.NewGuid();
+        var supplierId = Guid.NewGuid();
+        var poLineId = Guid.NewGuid();
+        var productId = Guid.NewGuid();
+
+        var po = new PurchaseOrder(poId)
+        {
+            OrderNumber = "PO-123",
+            SupplierId = supplierId,
+            Status = PurchaseOrderStatus.Approved,
+            Lines = new List<PurchaseOrderLine>
+            {
+                new PurchaseOrderLine { Id = poLineId, ProductId = productId, Quantity = 10, ReceivedQuantity = 0 }
+            }
+        };
+
+        var dto = new ReceivePurchaseOrderDto
+        {
+            PurchaseOrderId = poId,
+            WarehouseId = warehouseId,
+            ReceivedDate = DateTime.UtcNow,
+            Lines = new List<ReceivePurchaseOrderLineDto>
+            {
+                new ReceivePurchaseOrderLineDto { PurchaseOrderLineId = poLineId, ReceivedQuantity = 5 }
+            }
+        };
+
+        _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(po);
+        
+        dynamic fulfillmentOrderResponse = new ExpandoObject();
+        fulfillmentOrderResponse.id = Guid.NewGuid().ToString();
+
+        _mockServiceInvoker.Setup(s => s.InvokeAsync<object, dynamic>(
+            "orders",
+            "api/orders",
+            HttpMethod.Post,
+            It.IsAny<object>(),
+            default))
+            .ReturnsAsync((object)fulfillmentOrderResponse);
+
+        // Mock Order fulfillment
+        _mockServiceInvoker.Setup(s => s.InvokeAsync<object, object>(
+            "orders",
+            "api/orders/fulfill",
+            HttpMethod.Post,
+            It.IsAny<object>(),
+            default))
+            .ReturnsAsync(new { });
+
+        _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(po)).Returns(new PurchaseOrderDto());
+
+        // Act
+        var result = await _purchaseOrderService.ReceivePurchaseOrderAsync(dto);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(5, po.Lines.First().ReceivedQuantity);
+        
+        _mockServiceInvoker.Verify(s => s.InvokeAsync<object, dynamic>("orders", "api/orders", HttpMethod.Post, It.IsAny<object>(), default), Times.Once);
+        _mockServiceInvoker.Verify(s => s.InvokeAsync<object, object>("orders", "api/orders/fulfill", HttpMethod.Post, It.IsAny<object>(), default), Times.Once);
+        _mockEventPublisher.Verify(e => e.PublishAsync("purchasing.line.received", It.IsAny<PurchaseOrderLineReceivedEvent>(), default), Times.Once);
+    }
+
+    [Fact]
+    public async Task ReceivePurchaseOrderAsync_WithNonExistentPO_ThrowsKeyNotFoundException()
+    {
+        // Arrange
+        var dto = new ReceivePurchaseOrderDto { PurchaseOrderId = Guid.NewGuid() };
+        _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(It.IsAny<Guid>())).ReturnsAsync((PurchaseOrder?)null);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<KeyNotFoundException>(() => _purchaseOrderService.ReceivePurchaseOrderAsync(dto));
+    }
+
+    #endregion
 }

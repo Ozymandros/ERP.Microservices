@@ -9,14 +9,18 @@ public record OrderCreatedEvent(
     Guid OrderId,
     string OrderNumber,
     string OrderType,
+    Guid? WarehouseId,
     List<OrderLineEvent> Lines
 );
 
 public record OrderFulfilledEvent(
     Guid OrderId,
+    string OrderNumber,
+    string OrderType,
     Guid WarehouseId,
     DateTime FulfilledDate,
-    string? TrackingNumber
+    string? TrackingNumber,
+    List<OrderLineEvent> Lines
 );
 
 public record OrderCancelledEvent(

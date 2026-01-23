@@ -220,6 +220,7 @@ namespace MyApp.Orders.Application.Services
                 order.Id,
                 order.OrderNumber,
                 order.Type.ToString(),
+                order.WarehouseId,
                 order.Lines.Select(l => new OrderLineEvent(l.ProductId, l.Quantity)).ToList()
             );
 
@@ -247,29 +248,32 @@ namespace MyApp.Orders.Application.Services
                 throw new InvalidOperationException($"Order {dto.OrderId} not found");
             }
 
-            if (order.Status != OrderStatus.Approved)
+            if (order.Status != OrderStatus.Approved && order.Status != OrderStatus.Draft)
             {
                 throw new OrderFulfillmentException(dto.OrderId, $"Order cannot be fulfilled. Current status: {order.Status}");
             }
 
-            // Get reservations
-            var reservations = await _reservedStockRepository.GetByOrderIdAsync(dto.OrderId);
-            if (reservations.Count == 0)
+            // Handle reservations for Outbound orders
+            if (order.Type == OrderType.Outbound)
             {
-                throw new OrderFulfillmentException(dto.OrderId, "No stock reservations found for this order");
-            }
-
-            // Mark all reservations as fulfilled
-            foreach (var reservation in reservations)
-            {
-                if (reservation.Status != ReservationStatus.Reserved)
+                var reservations = await _reservedStockRepository.GetByOrderIdAsync(dto.OrderId);
+                if (reservations.Count == 0)
                 {
-                    throw new OrderFulfillmentException(dto.OrderId,
-                        $"Reservation {reservation.Id} is not in Reserved status: {reservation.Status}");
+                    throw new OrderFulfillmentException(dto.OrderId, "No stock reservations found for this outbound order");
                 }
 
-                reservation.Status = ReservationStatus.Fulfilled;
-                await _reservedStockRepository.UpdateAsync(reservation);
+                // Mark all reservations as fulfilled
+                foreach (var reservation in reservations)
+                {
+                    if (reservation.Status != ReservationStatus.Reserved)
+                    {
+                        throw new OrderFulfillmentException(dto.OrderId,
+                            $"Reservation {reservation.Id} is not in Reserved status: {reservation.Status}");
+                    }
+
+                    reservation.Status = ReservationStatus.Fulfilled;
+                    await _reservedStockRepository.UpdateAsync(reservation);
+                }
             }
 
             // Update order
@@ -290,9 +294,12 @@ namespace MyApp.Orders.Application.Services
             // Publish OrderFulfilledEvent
             var orderFulfilledEvent = new OrderFulfilledEvent(
                 order.Id,
+                order.OrderNumber,
+                order.Type.ToString(),
                 dto.WarehouseId,
                 order.FulfilledDate.Value,
-                dto.TrackingNumber
+                dto.TrackingNumber,
+                order.Lines.Select(l => new OrderLineEvent(l.ProductId, l.Quantity)).ToList()
             );
 
             try
