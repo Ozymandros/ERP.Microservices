@@ -2,14 +2,13 @@ namespace MyApp.Shared.Domain.Events;
 
 public record OrderLineEvent(
     Guid ProductId,
-    int Quantity,
-    decimal UnitPrice
+    int Quantity
 );
 
 public record OrderCreatedEvent(
     Guid OrderId,
-    Guid CustomerId,
     string OrderNumber,
+    string OrderType,
     List<OrderLineEvent> Lines
 );
 

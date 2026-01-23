@@ -70,12 +70,75 @@ MyApp.[Service]/
 ```
 src/MyApp.Shared/
 ├── MyApp.Shared.Domain/         # Domain primitives, interfaces
-├── MyApp.Shared.Infrastructure/ # Logging, caching, messaging
+├── MyApp.Shared.Infrastructure/ # Logging, caching, messaging, export (Excel/PDF)
 ├── MyApp.Shared.CQRS/          # CQRS base classes
 └── MyApp.Shared.SignalR/       # Real-time communication
 ```
 
 **Rule:** Shared code MUST be genuinely cross-cutting. Service-specific logic stays in that service.
+
+---
+
+## ⚠️ CRITICAL: Bounded Context Separation
+
+### Domain-Driven Design Boundaries
+
+**NEVER mix operational and commercial concerns.** This is a critical architectural principle.
+
+| Microservice | Domain Type | Purpose | Key Entity | CustomerId? | SupplierId? | Pricing? |
+|--------------|-------------|---------|------------|-------------|-------------|----------|
+| **MyApp.Orders** | **OPERATIONAL** | Logistics movements | `Order` (Type/Source/Target) | ❌ NO | ❌ NO | ❌ NO |
+| **MyApp.Sales** | **COMMERCIAL** | Customer sales | `SalesOrder` | ✅ YES | ❌ NO | ✅ YES |
+| **MyApp.Purchasing** | **SUPPLY CHAIN** | Supplier procurement | `PurchaseOrder` | ❌ NO | ✅ YES | ✅ YES |
+| **MyApp.Inventory** | **CORE** | Stock management | `Product`, `WarehouseStock` | ❌ NO | ❌ NO | ✅ YES (UnitPrice) |
+| **MyApp.Auth** | **INFRASTRUCTURE** | AuthN/AuthZ | `User`, `Role` | N/A | N/A | ❌ NO |
+| **MyApp.Billing** | **COMMERCIAL** | Invoicing | `Invoice` | ✅ YES | ✅ YES | ✅ YES |
+
+### Orders Domain (OPERATIONAL) - MUST READ
+
+The `Orders` microservice is **purely operational/logistic** and tracks the *physical movement* of goods, NOT commercial transactions.
+
+**✅ DO include in Orders domain**:
+- `OrderType` enum: `Transfer`, `Inbound`, `Outbound`, `Return`
+- `SourceId` / `TargetId`: Logistics points (warehouses, etc.)
+- `ExternalOrderId`: Reference to `SalesOrder` or `PurchaseOrder`
+- `WarehouseId`: Fulfillment location
+- `PickedQuantity`, `ReservedQuantity`: Operational tracking
+- `OrderStatus`: `Draft`, `Approved`, `InTransit`, `Received`, `Completed`, `Cancelled`
+
+**❌ NEVER include in Orders domain**:
+- <span style="color:red">**`CustomerId` or `SupplierId`**</span> (these are commercial relationships → use Sales/Purchasing)
+- <span style="color:red">**`TotalAmount`, `UnitPrice`, `LineTotal`**</span> (pricing is commercial → use Sales/Purchasing)
+- Sales-specific fields like `QuoteExpiryDate`, `Discount`, etc.
+
+**Example: Correct Orders Entity**:
+```csharp
+// ✅ CORRECT - Operational Order
+public class Order(Guid id) : AuditableEntity<Guid>(id)
+{
+    public string OrderNumber { get; set; } = string.Empty;
+    public OrderType Type { get; set; }  // Transfer/Inbound/Outbound/Return
+    public Guid? SourceId { get; set; }  // Origin warehouse
+    public Guid? TargetId { get; set; }  // Destination warehouse
+    public Guid? ExternalOrderId { get; set; }  // Link to SalesOrder/PurchaseOrder
+    public OrderStatus Status { get; set; }
+    public List<OrderLine> Lines { get; set; } = new();
+}
+
+// ❌ WRONG - This belongs in Sales domain
+public class Order(Guid id) : AuditableEntity<Guid>(id)
+{
+    public Guid CustomerId { get; set; }  // ❌ Commercial field
+    public decimal TotalAmount { get; set; }  // ❌ Pricing field
+    // ... rest of entity
+}
+```
+
+**Rationale**: Following DDD bounded context principles, each domain has its own language and responsibilities:
+- **Orders** = "Where is this shipment? Is it picked/packed/shipped?"
+- **Sales** = "Who bought this? How much did they pay?"
+- **Purchasing** = "Who are we buying from? What's the cost?"
+
 
 ---
 

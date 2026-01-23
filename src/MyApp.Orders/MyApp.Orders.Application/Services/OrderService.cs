@@ -46,7 +46,6 @@ namespace MyApp.Orders.Application.Services
             entity.Id = Guid.NewGuid();
             entity.OrderDate = dto.OrderDate;
             entity.Status = OrderStatus.Draft;
-            entity.TotalAmount = entity.Lines.Sum(l => l.LineTotal = l.Quantity * l.UnitPrice);
 
             foreach (var line in entity.Lines)
             {
@@ -82,8 +81,11 @@ namespace MyApp.Orders.Application.Services
             if (existing == null) return;
 
             existing.OrderNumber = dto.OrderNumber;
-            existing.CustomerId = dto.CustomerId;
             existing.OrderDate = dto.OrderDate;
+            existing.Type = dto.Type;
+            existing.SourceId = dto.SourceId;
+            existing.TargetId = dto.TargetId;
+            existing.ExternalOrderId = dto.ExternalOrderId;
 
             // Simple handling: replace lines
             existing.Lines.Clear();
@@ -93,14 +95,10 @@ namespace MyApp.Orders.Application.Services
                 {
                     OrderId = existing.Id,
                     ProductId = l.ProductId,
-                    Quantity = l.Quantity,
-                    UnitPrice = l.UnitPrice,
-                    LineTotal = l.Quantity * l.UnitPrice
+                    Quantity = l.Quantity
                 };
                 existing.Lines.Add(line);
             }
-
-            existing.TotalAmount = existing.Lines.Sum(x => x.LineTotal);
 
             await _orders.UpdateAsync(existing);
         }
@@ -108,8 +106,8 @@ namespace MyApp.Orders.Application.Services
         public async Task<OrderDto> CreateOrderWithReservationAsync(CreateOrderWithReservationDto dto)
         {
             _logger.LogInformation(
-                "Creating order with reservation: OrderNumber={OrderNumber}, CustomerId={CustomerId}, WarehouseId={WarehouseId}",
-                dto.OrderNumber, dto.CustomerId, dto.WarehouseId);
+                "Creating operational order with reservation: OrderNumber={OrderNumber}, Type={Type}, WarehouseId={WarehouseId}",
+                dto.OrderNumber, dto.Type, dto.WarehouseId);
 
             // Validate order lines
             if (dto.Lines.Count == 0)
@@ -121,11 +119,14 @@ namespace MyApp.Orders.Application.Services
             var order = new Order(Guid.NewGuid())
             {
                 OrderNumber = dto.OrderNumber,
-                CustomerId = dto.CustomerId,
+                Type = dto.Type,
+                SourceId = dto.SourceId,
+                TargetId = dto.TargetId,
+                ExternalOrderId = dto.ExternalOrderId,
                 OrderDate = dto.OrderDate,
                 Status = OrderStatus.Draft,
                 WarehouseId = dto.WarehouseId,
-                ShippingAddress = dto.ShippingAddress
+                DestinationAddress = dto.DestinationAddress
             };
 
             // Create order lines
@@ -135,17 +136,16 @@ namespace MyApp.Orders.Application.Services
                 {
                     OrderId = order.Id,
                     ProductId = lineDto.ProductId,
-                    Quantity = lineDto.Quantity,
-                    UnitPrice = lineDto.UnitPrice,
-                    LineTotal = lineDto.Quantity * lineDto.UnitPrice
+                    Quantity = lineDto.Quantity
                 };
                 order.Lines.Add(line);
             }
 
-            order.TotalAmount = order.Lines.Sum(l => l.LineTotal);
-
             // Validate order using business rules
-            OrderInvariants.ValidateOrder(order.Lines.Count, order.TotalAmount, order.Lines.Sum(l => l.LineTotal));
+            if (order.Lines.Count == 0)
+            {
+                throw new InvalidOperationException("Order must have at least one line");
+            }
 
             // Save order
             await _orders.AddAsync(order);
@@ -211,16 +211,16 @@ namespace MyApp.Orders.Application.Services
                 }
             }
 
-            // Update order status to Confirmed (reservations confirmed)
-            order.Status = OrderStatus.Confirmed;
+            // Update order status to Approved (reservations confirmed)
+            order.Status = OrderStatus.Approved;
             await _orders.UpdateAsync(order);
 
             // Publish OrderCreatedEvent
             var orderCreatedEvent = new OrderCreatedEvent(
                 order.Id,
-                order.CustomerId,
                 order.OrderNumber,
-                order.Lines.Select(l => new OrderLineEvent(l.ProductId, l.Quantity, l.UnitPrice)).ToList()
+                order.Type.ToString(),
+                order.Lines.Select(l => new OrderLineEvent(l.ProductId, l.Quantity)).ToList()
             );
 
             try
@@ -247,7 +247,7 @@ namespace MyApp.Orders.Application.Services
                 throw new InvalidOperationException($"Order {dto.OrderId} not found");
             }
 
-            if (order.Status != OrderStatus.Confirmed)
+            if (order.Status != OrderStatus.Approved)
             {
                 throw new OrderFulfillmentException(dto.OrderId, $"Order cannot be fulfilled. Current status: {order.Status}");
             }
@@ -273,10 +273,10 @@ namespace MyApp.Orders.Application.Services
             }
 
             // Update order
-            order.Status = OrderStatus.Shipped;
+            order.Status = OrderStatus.Completed;
             order.FulfilledDate = DateTime.UtcNow;
             order.WarehouseId = dto.WarehouseId;
-            order.ShippingAddress = dto.ShippingAddress;
+            order.DestinationAddress = dto.ShippingAddress;
             order.TrackingNumber = dto.TrackingNumber;
 
             // Mark all lines as fulfilled
@@ -321,9 +321,9 @@ namespace MyApp.Orders.Application.Services
                 throw new InvalidOperationException($"Order {dto.OrderId} not found");
             }
 
-            if (order.Status == OrderStatus.Shipped)
+            if (order.Status == OrderStatus.Completed)
             {
-                throw new InvalidOperationException($"Cannot cancel shipped order {dto.OrderId}");
+                throw new InvalidOperationException($"Cannot cancel completed order {dto.OrderId}");
             }
 
             // Get and release all reservations

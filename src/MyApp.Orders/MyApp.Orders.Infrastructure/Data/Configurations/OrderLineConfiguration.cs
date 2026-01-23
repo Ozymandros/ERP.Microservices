@@ -12,8 +12,8 @@ namespace MyApp.Orders.Infrastructure.Data.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.ProductId).IsRequired();
             builder.Property(x => x.Quantity).IsRequired();
-            builder.Property(x => x.UnitPrice).HasColumnType("decimal(18,2)");
-            builder.Property(x => x.LineTotal).HasColumnType("decimal(18,2)");
+            builder.Property(x => x.PickedQuantity).IsRequired();
+            builder.Property(x => x.IsFulfilled).IsRequired();
         }
     }
 }
