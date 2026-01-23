@@ -10,6 +10,8 @@ using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 using System;
 
+
+using MyApp.Shared.Infrastructure.Export;
 namespace MyApp.Auth.API.Controllers;
 
 [ApiController]
@@ -32,6 +34,29 @@ public class RolesController : ControllerBase
         _logger = logger;
         _cacheService = cacheService;
         _permissionService = permissionService;
+    }
+
+    /// <summary>
+    /// Export all roles as XLSX
+    /// </summary>
+    [HttpGet("export-xlsx")]
+    [HasPermission("Roles", "Read")]
+    [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToXlsx()
+    {
+        try
+        {
+            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>("all_roles")
+                ?? await _roleService.GetAllRolesAsync();
+            var bytes = roles.ExportToXlsx();
+            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Roles.xlsx");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting roles to XLSX");
+            return StatusCode(500, new { message = "An error occurred exporting roles" });
+        }
     }
 
     /// <summary>

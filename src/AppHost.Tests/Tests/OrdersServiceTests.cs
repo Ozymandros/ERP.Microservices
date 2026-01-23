@@ -50,7 +50,7 @@ public class OrdersServiceTests
         }
 
         // Act
-        var response = await client.GetAsync("/orders/api/orders");
+        var response = await client.GetAsync("/orders/api/orders/orders");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -89,7 +89,7 @@ public class OrdersServiceTests
         };
 
         // Act
-        var response = await client.PostAsJsonAsync("/orders/api/orders", order);
+        var response = await client.PostAsJsonAsync("/orders/api/orders/orders", order);
         var createdOrder = await response.Content.ReadFromJsonAsync<OrderResponse>();
 
         // Assert
@@ -130,7 +130,7 @@ public class OrdersServiceTests
             }
         };
 
-        var createResponse = await client.PostAsJsonAsync("/orders/api/orders", newOrder);
+        var createResponse = await client.PostAsJsonAsync("/orders/api/orders/orders", newOrder);
         var createdOrder = await createResponse.Content.ReadFromJsonAsync<OrderResponse>();
 
         var updateData = new
@@ -139,13 +139,13 @@ public class OrdersServiceTests
         };
 
         // Act
-        var response = await client.PatchAsJsonAsync($"/orders/api/orders/{createdOrder?.Id}/status", updateData);
+        var response = await client.PatchAsJsonAsync($"/orders/api/orders/orders/{createdOrder?.Id}/status", updateData);
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         // Verify the update
-        var getResponse = await client.GetAsync($"/orders/api/orders/{createdOrder?.Id}");
+        var getResponse = await client.GetAsync($"/orders/api/orders/orders/{createdOrder?.Id}");
         var updatedOrder = await getResponse.Content.ReadFromJsonAsync<OrderResponse>();
         Assert.Equal("Processing", updatedOrder?.Status);
     }
@@ -183,7 +183,7 @@ public class OrdersServiceTests
             }
         };
 
-        var createResponse = await client.PostAsJsonAsync("/orders/api/orders", newOrder);
+        var createResponse = await client.PostAsJsonAsync("/orders/api/orders/orders", newOrder);
         var createdOrder = await createResponse.Content.ReadFromJsonAsync<OrderResponse>();
 
         // Act

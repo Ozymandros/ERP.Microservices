@@ -8,6 +8,8 @@ using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 using System.Security.Claims;
 
+
+using MyApp.Shared.Infrastructure.Export;
 namespace MyApp.Auth.API.Controllers;
 
 [ApiController]
@@ -28,6 +30,29 @@ public class PermissionsController : ControllerBase
         _permissionService = permissionService;
         _cacheService = cacheService;
         _logger = logger;
+    }
+
+    /// <summary>
+    /// Export all permissions as XLSX
+    /// </summary>
+    [HttpGet("export-xlsx")]
+    [HasPermission("Permissions", "Read")]
+    [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToXlsx()
+    {
+        try
+        {
+            var permissions = await _cacheService.GetStateAsync<IEnumerable<PermissionDto>>("all_permissions")
+                ?? await _permissionService.GetAllPermissionsAsync();
+            var bytes = permissions.ExportToXlsx();
+            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Permissions.xlsx");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting permissions to XLSX");
+            return StatusCode(500, new { message = "An error occurred exporting permissions" });
+        }
     }
 
     /// <summary>

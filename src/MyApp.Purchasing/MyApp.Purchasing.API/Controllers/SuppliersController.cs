@@ -8,6 +8,8 @@ using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 
+
+using MyApp.Shared.Infrastructure.Export;
 namespace MyApp.Purchasing.API.Controllers;
 
 [ApiController]
@@ -24,6 +26,29 @@ public class SuppliersController : ControllerBase
         _supplierService = supplierService;
         _cacheService = cacheService;
         _logger = logger;
+    }
+
+    /// <summary>
+    /// Export all suppliers as XLSX
+    /// </summary>
+    [HttpGet("export-xlsx")]
+    [HasPermission("Purchasing", "Read")]
+    [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToXlsx()
+    {
+        try
+        {
+            var suppliers = await _cacheService.GetStateAsync<IEnumerable<SupplierDto>>("all_suppliers")
+                ?? await _supplierService.GetAllSuppliersAsync();
+            var bytes = suppliers.ExportToXlsx();
+            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Suppliers.xlsx");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting suppliers to XLSX");
+            return StatusCode(500, new { message = "An error occurred exporting suppliers" });
+        }
     }
 
     /// <summary>

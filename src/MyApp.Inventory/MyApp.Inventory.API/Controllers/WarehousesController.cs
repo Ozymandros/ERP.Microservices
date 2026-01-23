@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 
+
+using MyApp.Shared.Infrastructure.Export;
 namespace MyApp.Inventory.API.Controllers;
 
 [ApiController]
@@ -15,6 +17,29 @@ public class WarehousesController : ControllerBase
 {
     private readonly IWarehouseService _warehouseService;
     private readonly ILogger<WarehousesController> _logger;
+
+
+    /// <summary>
+    /// Export all warehouses as XLSX
+    /// </summary>
+    [HttpGet("export-xlsx")]
+    [HasPermission("Inventory", "Read")]
+    [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToXlsx()
+    {
+        try
+        {
+            var warehouses = await _warehouseService.GetAllWarehousesAsync();
+            var bytes = warehouses.ExportToXlsx();
+            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Warehouses.xlsx");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting warehouses to XLSX");
+            return StatusCode(500, new { message = "An error occurred exporting warehouses" });
+        }
+    }
 
     public WarehousesController(IWarehouseService warehouseService, ILogger<WarehousesController> logger)
     {

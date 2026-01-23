@@ -1,17 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
 using MyApp.Sales.Domain.Specifications;
-using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Pagination;
-using MyApp.Shared.Domain.Permissions;
+using MyApp.Shared.Infrastructure.Export;
 
 namespace MyApp.Sales.API.Controllers
 {
     [ApiController]
-    [Authorize()]
+    [Authorize]
     [Route("api/sales/orders")]
     public class SalesOrdersController : ControllerBase
     {
@@ -25,84 +25,7 @@ namespace MyApp.Sales.API.Controllers
             _cacheService = cacheService;
             _logger = logger;
         }
-
-        /// <summary>
-        /// Get all sales orders - Requires Sales.Read permission
-        /// </summary>
-        [HttpGet]
-        [HasPermission("Sales", "Read")]
-        [ProducesResponseType(typeof(IEnumerable<SalesOrderDto>), 200)]
-        public async Task<IActionResult> GetAll()
-        {
-            try
-            {
-                var orders = await _cacheService.GetStateAsync<IEnumerable<SalesOrderDto>>("all_sales_orders");
-                if (orders != null)
-                {
-                    _logger.LogInformation("Retrieved all sales orders from cache");
-                    return Ok(orders);
-                }
-
-                orders = await _salesOrderService.ListSalesOrdersAsync();
-                await _cacheService.SaveStateAsync("all_sales_orders", orders);
-                _logger.LogInformation("Retrieved all sales orders from database and cached");
-                return Ok(orders);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving all sales orders");
-                var orders = await _salesOrderService.ListSalesOrdersAsync();
-                return Ok(orders);
-            }
-        }
-
-        /// <summary>
-        /// Get a specific sales order by ID - Requires Sales.Read permission
-        /// </summary>
-        [HttpGet("{id}")]
-        [HasPermission("Sales", "Read")]
-        [ProducesResponseType(typeof(SalesOrderDto), 200)]
-        [ProducesResponseType(404)]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            try
-            {
-                string cacheKey = "SalesOrder-" + id;
-                var order = await _cacheService.GetStateAsync<SalesOrderDto>(cacheKey);
-
-                if (order != null)
-                {
-                    _logger.LogInformation("Retrieved sales order {@Order} from cache", new { OrderId = id });
-                    return Ok(order);
-                }
-
-                order = await _salesOrderService.GetSalesOrderByIdAsync(id);
-                if (order == null)
-                {
-                    _logger.LogWarning("Sales order {@Order} not found", new { OrderId = id });
-                    return NotFound(new { message = $"Order with ID {id} not found." });
-                }
-
-                await _cacheService.SaveStateAsync(cacheKey, order);
-                _logger.LogInformation("Retrieved sales order {@Order} from database and cached", new { OrderId = id });
-                return Ok(order);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving sales order {@Order}", new { OrderId = id });
-                var order = await _salesOrderService.GetSalesOrderByIdAsync(id);
-                return order == null ? NotFound(new { message = $"Order with ID {id} not found." }) : Ok(order);
-            }
-        }
-
-        /// <summary>
-        /// Search sales orders with advanced filtering, sorting, and pagination - Requires Sales.Read permission
-        /// </summary>
-        /// <remarks>
-        /// Supported filters: orderNumber, customerId, status, minTotal, maxTotal
-        /// Supported sort fields: id, orderNumber, status, totalAmount, createdAt, orderDate
-        /// </remarks>
-        [HttpGet("search")]
+        
         [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(PaginatedResult<SalesOrderDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -145,7 +68,7 @@ namespace MyApp.Sales.API.Controllers
                 var order = await _salesOrderService.CreateSalesOrderAsync(dto);
                 await _cacheService.RemoveStateAsync("all_sales_orders");
                 _logger.LogInformation("Sales order {@Order} created and cache invalidated", new { OrderId = order.Id });
-                return CreatedAtAction(nameof(GetById), new { id = order.Id }, order);
+                return CreatedAtAction("Get", new { id = order.Id }, order);
             }
             catch (InvalidOperationException ex)
             {
@@ -224,7 +147,7 @@ namespace MyApp.Sales.API.Controllers
                 _logger.LogInformation(
                     "Quote {@Quote} created and cache invalidated",
                     new { QuoteId = result.Id });
-                return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+                return CreatedAtAction("Get", new { id = result.Id }, result);
             }
             catch (Exception ex)
             {

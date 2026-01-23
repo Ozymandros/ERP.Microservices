@@ -1,0 +1,674 @@
+# ERP Microservices - Cursor/Antigravity AI Assistant Rules
+
+## 🎯 Project Context
+
+You are assisting with a .NET 10 ERP microservices application. This system uses Clean Architecture, DAPR service mesh, .NET Aspire orchestration, and Azure Container Apps for production deployment.
+
+### Core Technology Stack
+
+- **.NET Version**: .NET 10 with C# 13
+- **Architecture**: Microservices with Clean Architecture (4 layers per service)
+- **API Gateway**: Ocelot/YARP routing at `/[service]/api/...`
+- **Service Mesh**: DAPR for inter-service communication, pub/sub, state management
+- **Databases**: 6 SQL Server databases (one per service) + Redis cache
+- **ORM**: Entity Framework Core
+- **Orchestration**: .NET Aspire (local), Azure Container Apps (production)
+- **Authentication**: JWT Bearer tokens
+- **Testing**: xUnit, Moq, Aspire testing framework
+
+### System Architecture Overview
+
+```text
+Client → API Gateway (Ocelot) → Microservice → DAPR Sidecar → Database/Redis/Other Services
+```
+
+### Microservices
+
+1. **Auth Service** - Authentication, authorization, user management
+2. **Billing Service** - Invoicing, payments, billing
+3. **Inventory Service** - Products, warehouses, stock management
+4. **Orders Service** - Sales orders, order processing
+5. **Purchasing Service** - Purchase orders, vendor management
+6. **Sales Service** - Sales operations, customer management
+
+---
+
+## 📁 Project Structure Rules
+
+### Clean Architecture Layers (Per Service)
+
+Every microservice follows this strict 4-layer structure:
+
+```text
+MyApp.[Service]/
+├── MyApp.[Service].API/              # Presentation Layer
+│   ├── Controllers/                  # HTTP endpoints, routing
+│   ├── Program.cs                    # DI, middleware, configuration
+│   └── appsettings.*.json            # Environment configurations
+│
+├── MyApp.[Service].Application/      # Application Layer
+│   ├── Services/                     # Business logic orchestration
+│   ├── Contracts/                    # Service interfaces, DTOs
+│   └── Mappings/                     # AutoMapper profiles
+│
+├── MyApp.[Service].Domain/           # Domain Layer (Pure)
+│   ├── Entities/                     # Domain models (no dependencies)
+│   └── Repositories/                 # Repository interfaces
+│
+└── MyApp.[Service].Infrastructure/   # Infrastructure Layer
+    ├── Data/
+    │   ├── [Service]DbContext.cs     # EF Core DbContext
+    │   ├── Repositories/             # Repository implementations
+    │   └── Seeders/                  # Data seeding
+    └── Services/                     # External API clients, infra services
+```
+
+**CRITICAL RULE**: Dependencies MUST flow inward:
+
+- Domain has ZERO external dependencies
+- Application depends ONLY on Domain
+- Infrastructure implements interfaces from Application/Domain
+- API depends on Application
+
+### Shared Projects Location
+
+```text
+src/MyApp.Shared/
+├── MyApp.Shared.Domain/              # Domain primitives, base interfaces
+├── MyApp.Shared.Infrastructure/      # Logging, caching, messaging utilities
+├── MyApp.Shared.CQRS/                # CQRS base classes, patterns
+└── MyApp.Shared.SignalR/             # Real-time communication shared code
+```
+
+**Rule**: Only genuinely cross-cutting concerns belong in Shared projects. Service-specific logic stays in that service.
+
+---
+
+## 🔧 Code Generation Rules
+
+### When Adding New API Endpoints
+
+**ALWAYS follow this exact sequence:**
+
+1. **Create DTO** in `[Service].Application.Contracts/DTOs/`
+   - Use `record` types with `init` properties
+   - Add data annotations for validation
+   - Name: `[Entity]Dto`, `Create[Entity]Dto`, `Update[Entity]Dto`
+
+2. **Define Repository Interface** in `[Service].Domain/Repositories/I[Entity]Repository.cs`
+   - Methods: `GetByIdAsync`, `GetAllAsync`, `AddAsync`, `UpdateAsync`, `DeleteAsync`
+   - Always include `CancellationToken cancellationToken = default` parameter
+
+3. **Implement Repository** in `[Service].Infrastructure/Data/Repositories/[Entity]Repository.cs`
+   - Inherit from generic `Repository<T>` if available
+   - Use `AsNoTracking()` for read-only queries
+   - Always use async/await
+
+4. **Create Service Interface** in `[Service].Application/Contracts/I[Entity]Service.cs`
+
+5. **Implement Service** in `[Service].Application/Services/[Entity]Service.cs`
+   - Inject: `IRepository`, `IMapper`, `ICacheService`, `ILogger<T>`
+   - Implement cache-aside pattern for reads
+   - Invalidate cache on writes
+   - Add structured logging
+
+6. **Create Controller** in `[Service].API/Controllers/[Entity]Controller.cs`
+   - Use `[ApiController]`, `[Route("api/[controller]")]`, `[Produces("application/json")]`
+   - Add XML documentation comments
+   - Use `[ProducesResponseType]` attributes
+   - Return appropriate HTTP status codes
+   - Include `CancellationToken` in parameters
+
+7. **Register in DI** (`Program.cs`)
+   - `builder.Services.AddScoped<I[Entity]Repository, [Entity]Repository>()`
+   - `builder.Services.AddScoped<I[Entity]Service, [Entity]Service>()`
+
+8. **Update Gateway Route** (if new controller) in `src/ErpApiGateway/ocelot.json`
+
+### Controller Pattern
+
+```csharp
+[ApiController]
+[Route("api/[controller]")]
+[Produces("application/json")]
+public class [Entity]Controller : ControllerBase
+{
+    private readonly I[Entity]Service _service;
+    private readonly ILogger<[Entity]Controller> _logger;
+
+    public [Entity]Controller(I[Entity]Service service, ILogger<[Entity]Controller> logger)
+    {
+        _service = service;
+        _logger = logger;
+    }
+
+    /// <summary>
+    /// Get [entity] by ID
+    /// </summary>
+    [HttpGet("{id:int}")]
+    [ProducesResponseType(typeof([Entity]Dto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<[Entity]Dto>> GetById(int id, CancellationToken cancellationToken)
+    {
+        var result = await _service.GetByIdAsync(id, cancellationToken);
+        if (result == null)
+            return NotFound(new { message = $"[Entity] {id} not found" });
+        
+        return Ok(result);
+    }
+}
+```
+
+### DTO Pattern
+
+```csharp
+// Read DTO
+public record [Entity]Dto
+{
+    public int Id { get; init; }
+    public string Name { get; init; } = string.Empty;
+    public DateTime CreatedAt { get; init; }
+}
+
+// Create DTO
+public record Create[Entity]Dto
+{
+    [Required(ErrorMessage = "Name is required")]
+    [StringLength(100, MinimumLength = 2)]
+    public string Name { get; init; } = string.Empty;
+
+    [EmailAddress(ErrorMessage = "Invalid email format")]
+    public string? Email { get; init; }
+}
+
+// Update DTO
+public record Update[Entity]Dto
+{
+    [StringLength(100, MinimumLength = 2)]
+    public string? Name { get; init; }
+}
+```
+
+### Service Pattern with Caching
+
+```csharp
+public class [Entity]Service : I[Entity]Service
+{
+    private readonly I[Entity]Repository _repository;
+    private readonly IMapper _mapper;
+    private readonly ICacheService _cache;
+    private readonly ILogger<[Entity]Service> _logger;
+
+    public [Entity]Service(
+        I[Entity]Repository repository, 
+        IMapper mapper, 
+        ICacheService cache,
+        ILogger<[Entity]Service> logger)
+    {
+        _repository = repository;
+        _mapper = mapper;
+        _cache = cache;
+        _logger = logger;
+    }
+
+    public async Task<[Entity]Dto?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var cacheKey = $"[entity]:{id}";
+        
+        // Try cache first
+        var cached = await _cache.GetAsync<[Entity]Dto>(cacheKey);
+        if (cached != null) return cached;
+
+        var entity = await _repository.GetByIdAsync(id, cancellationToken);
+        if (entity == null)
+        {
+            _logger.LogWarning("[Entity] {Id} not found", id);
+            return null;
+        }
+
+        var dto = _mapper.Map<[Entity]Dto>(entity);
+        await _cache.SetAsync(cacheKey, dto, TimeSpan.FromMinutes(5));
+        return dto;
+    }
+
+    public async Task UpdateAsync(int id, Update[Entity]Dto dto, CancellationToken cancellationToken = default)
+    {
+        // Update in database
+        await _repository.UpdateAsync(id, dto, cancellationToken);
+        
+        // Invalidate cache
+        await _cache.RemoveAsync($"[entity]:{id}");
+    }
+}
+```
+
+---
+
+## 🔗 Service Communication Rules
+
+### DAPR HTTP Service Invocation
+
+**ALWAYS use DAPR for service-to-service calls:**
+
+```csharp
+public class OrderService : IOrderService
+{
+    private readonly DaprClient _daprClient;
+
+    public async Task<ProductDto?> GetProductFromInventory(int productId)
+    {
+        var httpClient = _daprClient.CreateInvokeHttpClient("inventory-service");
+        var response = await httpClient.GetAsync($"/api/inventory/products/{productId}");
+        
+        if (!response.IsSuccessStatusCode) return null;
+        
+        return await response.Content.ReadFromJsonAsync<ProductDto>();
+    }
+}
+```
+
+**Service App-IDs:**
+
+- `auth-service`
+- `billing-service`
+- `inventory-service`
+- `orders-service`
+- `purchasing-service`
+- `sales-service`
+
+### DAPR Pub/Sub Events
+
+**Publishing events:**
+
+```csharp
+await _daprClient.PublishEventAsync(
+    "pubsub",                    // Component name
+    "order-created",             // Topic name (kebab-case)
+    new OrderCreatedEvent 
+    { 
+        OrderId = order.Id,
+        CustomerId = order.CustomerId
+    }
+);
+```
+
+**Subscribing to events (in Program.cs):**
+
+```csharp
+app.MapPost("/order-created", async (
+    OrderCreatedEvent @event,
+    ILogger<Program> logger,
+    INotificationService notificationService) =>
+{
+    logger.LogInformation("Received order-created event: {OrderId}", @event.OrderId);
+    await notificationService.SendOrderConfirmationAsync(@event.OrderId);
+    return Results.Ok();
+});
+```
+
+---
+
+## 🔒 Security & Best Practices
+
+### CRITICAL SECURITY RULES
+
+1. **NEVER hardcode secrets**
+   - ❌ `var apiKey = "sk_live_123456789";`
+   - ✅ `var apiKey = builder.Configuration["ExternalApi:ApiKey"] ?? throw new InvalidOperationException("API key required");`
+
+2. **NEVER expose domain entities from APIs**
+   - ❌ `public async Task<ActionResult<Product>> GetProduct(int id)`
+   - ✅ `public async Task<ActionResult<ProductDto>> GetProduct(int id)`
+
+3. **NEVER access another service's database directly**
+   - ❌ Injecting `InventoryDbContext` into `OrderService`
+   - ✅ Use DAPR HTTP calls to the Inventory Service API
+
+4. **NEVER use `.Result` or `.Wait()` on async methods**
+   - ❌ `var products = _service.GetAllAsync().Result;`
+   - ✅ `var products = await _service.GetAllAsync();`
+
+5. **NEVER log sensitive data**
+   - ❌ `_logger.LogInformation($"Login with password {dto.Password}");`
+   - ✅ `_logger.LogInformation("Login attempt for user {Email}", dto.Email);`
+
+### Input Validation
+
+**ALWAYS validate DTOs with Data Annotations:**
+
+```csharp
+public record Create[Entity]Dto
+{
+    [Required(ErrorMessage = "Name is required")]
+    [StringLength(100, MinimumLength = 2)]
+    public string Name { get; init; } = string.Empty;
+
+    [EmailAddress(ErrorMessage = "Invalid email format")]
+    public string Email { get; init; } = string.Empty;
+
+    [Range(0, 150, ErrorMessage = "Age must be between 0 and 150")]
+    public int? Age { get; init; }
+}
+```
+
+### SQL Injection Prevention
+
+**EF Core uses parameterized queries by default - use it correctly:**
+
+- ✅ `await _context.Users.Where(u => u.Email == email).ToListAsync();`
+- ✅ `await _context.Users.FromSqlRaw("SELECT * FROM Users WHERE Email = {0}", email).ToListAsync();`
+- ❌ `await _context.Users.FromSqlRaw($"SELECT * FROM Users WHERE Email = '{email}'").ToListAsync();`
+
+### Structured Logging Pattern
+
+```csharp
+_logger.LogInformation("Processing {Action} for {EntityType} {EntityId}", "Update", "Product", productId);
+_logger.LogWarning("{EntityType} {EntityId} not found", "Product", productId);
+_logger.LogError(ex, "Failed to process {Action} for {EntityType} {EntityId}", "Update", "Product", productId);
+```
+
+---
+
+## 🗄️ Database & EF Core Rules
+
+### DbContext Pattern
+
+```csharp
+public class [Service]DbContext : DbContext
+{
+    public [Service]DbContext(DbContextOptions<[Service]DbContext> options) : base(options) { }
+
+    public DbSet<[Entity]> [Entities] => Set<[Entity]>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        
+        // Apply all configurations from assembly
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof([Service]DbContext).Assembly);
+    }
+}
+```
+
+### Entity Configuration Pattern
+
+```csharp
+public class [Entity]Configuration : IEntityTypeConfiguration<[Entity]>
+{
+    public void Configure(EntityTypeBuilder<[Entity]> builder)
+    {
+        builder.ToTable("[Entities]");
+        
+        builder.HasKey(e => e.Id);
+        
+        builder.Property(e => e.Name)
+            .IsRequired()
+            .HasMaxLength(200);
+        
+        builder.Property(e => e.Price)
+            .HasPrecision(18, 2);
+        
+        builder.HasIndex(e => e.Sku).IsUnique();
+        
+        // Relationships
+        builder.HasMany(e => e.Items)
+            .WithOne(i => i.Entity)
+            .HasForeignKey(i => i.EntityId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+}
+```
+
+### Migration Workflow
+
+**ALWAYS run migrations from the Infrastructure project directory:**
+
+```powershell
+cd src/MyApp.[Service]/MyApp.[Service].Infrastructure
+dotnet ef migrations add [MigrationName]
+dotnet ef database update
+```
+
+---
+
+## 🧪 Testing Rules
+
+### Integration Tests with Aspire
+
+```csharp
+public class [Service]Tests : IAsyncLifetime
+{
+    private DistributedApplication? _app;
+    private HttpClient? _client;
+
+    public async Task InitializeAsync()
+    {
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        _app = await appHost.BuildAsync();
+        await _app.StartAsync();
+        
+        // Always test through the gateway
+        _client = _app.CreateHttpClient("gateway");
+    }
+
+    [Fact]
+    public async Task [Method]_[Scenario]_[ExpectedResult]()
+    {
+        // Arrange
+        var dto = new { /* test data */ };
+        
+        // Act
+        var response = await _client!.PostAsJsonAsync("/[service]/api/[endpoint]", dto);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+    }
+
+    public async Task DisposeAsync()
+    {
+        if (_app != null) await _app.DisposeAsync();
+        _client?.Dispose();
+    }
+}
+```
+
+### Unit Tests with Moq
+
+```csharp
+public class [Service]Tests
+{
+    private readonly Mock<I[Repository]> _repositoryMock;
+    private readonly Mock<IMapper> _mapperMock;
+    private readonly Mock<ICacheService> _cacheMock;
+    private readonly Mock<ILogger<[Service]>> _loggerMock;
+    private readonly [Service] _sut; // System Under Test
+
+    public [Service]Tests()
+    {
+        _repositoryMock = new Mock<I[Repository]>();
+        _mapperMock = new Mock<IMapper>();
+        _cacheMock = new Mock<ICacheService>();
+        _loggerMock = new Mock<ILogger<[Service]>>();
+        
+        _sut = new [Service](
+            _repositoryMock.Object,
+            _mapperMock.Object,
+            _cacheMock.Object,
+            _loggerMock.Object);
+    }
+
+    [Fact]
+    public async Task [Method]_[Scenario]_[ExpectedResult]()
+    {
+        // Arrange
+        _repositoryMock.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(new Entity());
+
+        // Act
+        var result = await _sut.GetByIdAsync(1);
+
+        // Assert
+        Assert.NotNull(result);
+        _repositoryMock.Verify(r => r.GetByIdAsync(1), Times.Once);
+    }
+}
+```
+
+---
+
+## 🚀 Common Workflows
+
+### Running the Application Locally
+
+```powershell
+# Run all services with Aspire dashboard
+cd src/AppHost
+dotnet run
+
+# Access at: http://localhost:15000 (Aspire Dashboard)
+```
+
+### Building and Testing
+
+```powershell
+dotnet build                                    # Build solution
+dotnet test                                     # Run all tests
+dotnet build -c Release                         # Production build
+```
+
+### Deployment to Azure
+
+```powershell
+azd up                                          # Deploy everything
+azd monitor                                     # View logs
+azd down                                        # Delete all resources
+```
+
+---
+
+## 📝 File Naming Conventions
+
+### Controllers
+
+- Format: `[Entity]Controller.cs` (PascalCase, singular)
+- Location: `[Service].API/Controllers/`
+- Examples: `ProductsController.cs`, `CustomersController.cs`
+
+### Services
+
+- Interface: `I[Entity]Service.cs`
+- Implementation: `[Entity]Service.cs`
+- Location: `[Service].Application/Services/` (implementations)
+- Location: `[Service].Application/Contracts/` (interfaces)
+
+### Repositories
+
+- Interface: `I[Entity]Repository.cs` in `[Service].Domain/Repositories/`
+- Implementation: `[Entity]Repository.cs` in `[Service].Infrastructure/Data/Repositories/`
+
+### DTOs
+
+- Format: `[Entity]Dto.cs`, `Create[Entity]Dto.cs`, `Update[Entity]Dto.cs`
+- Location: `[Service].Application.Contracts/DTOs/`
+
+### Domain Entities
+
+- Format: `[Entity].cs` (PascalCase, singular)
+- Location: `[Service].Domain/Entities/`
+
+---
+
+## 🎯 Decision Trees for Common Questions
+
+### "Should I create a new microservice?"
+
+```text
+Is the feature a distinct business domain?
+├─ NO → Add to existing service
+└─ YES
+    └─ Does it need its own database?
+        ├─ NO → Add to existing service
+        └─ YES
+            └─ Will it scale independently?
+                ├─ NO → Add to existing service
+                └─ YES → Create new microservice
+```
+
+### "Where should this code go?"
+
+- **HTTP endpoint** → `[Service].API/Controllers/`
+- **Business logic** → `[Service].Application/Services/`
+- **Data access** → `[Service].Infrastructure/Data/Repositories/`
+- **Domain model** → `[Service].Domain/Entities/`
+- **DTO** → `[Service].Application.Contracts/DTOs/`
+- **Cross-cutting concern** → `MyApp.Shared.*/`
+- **Configuration** → `appsettings.*.json` or Azure Key Vault
+
+### "How should services communicate?"
+
+- **Need immediate response?** → DAPR HTTP service invocation
+- **Fire-and-forget notification?** → DAPR Pub/Sub
+- **Need to query data from another service?** → DAPR HTTP (with caching)
+- **Background processing?** → DAPR Pub/Sub + worker service
+
+---
+
+## 🔍 Quick Reference Locations
+
+| Need to Find | Look Here |
+|--------------|-----------|
+| API endpoint | `[Service].API/Controllers/[Entity]Controller.cs` |
+| Business logic | `[Service].Application/Services/[Entity]Service.cs` |
+| Data access | `[Service].Infrastructure/Data/Repositories/[Entity]Repository.cs` |
+| Domain model | `[Service].Domain/Entities/[Entity].cs` |
+| Database schema | `[Service].Infrastructure/Data/[Service]DbContext.cs` |
+| Gateway routes | `src/ErpApiGateway/ocelot.json` |
+| Configuration | `appsettings.json`, `appsettings.Development.json` |
+| Infrastructure (Bicep) | `infra/main.bicep`, `infra/core/` |
+| Tests | `src/AppHost.Tests/Tests/` |
+| Shared utilities | `src/MyApp.Shared.*/` |
+
+---
+
+## ✅ Pre-Code-Generation Checklist
+
+Before generating code, ensure you:
+
+1. Know which service the feature belongs to
+2. Understand the data flow: API → Service → Repository → Database
+3. Have identified all required DTOs
+4. Know if caching is needed
+5. Understand authentication/authorization requirements
+6. Know if service-to-service communication is needed
+7. Have planned database migrations if schema changes
+
+---
+
+## ⚠️ Common Anti-Patterns to AVOID
+
+1. ❌ Cross-service database access
+2. ❌ Returning domain entities from controllers
+3. ❌ Hardcoding secrets in code
+4. ❌ Blocking async calls with `.Result` or `.Wait()`
+5. ❌ Logging sensitive data (passwords, tokens, PII)
+6. ❌ Using string concatenation for SQL queries
+7. ❌ Circular dependencies between layers
+8. ❌ Putting business logic in controllers
+9. ❌ Sharing DbContext across service boundaries
+10. ❌ Not using DTOs for API contracts
+
+---
+
+## 📚 Additional Context
+
+- The project uses JWT Bearer authentication configured in each service's `Program.cs`
+- All services expose a `/health` endpoint for health checks
+- Redis is used for distributed caching via `ICacheService`
+- AutoMapper is used for entity-to-DTO mapping
+- Swagger/OpenAPI docs are auto-generated for each service
+- All async methods should accept `CancellationToken cancellationToken = default`
+
+---
+
+**Last Updated**: 2026-01-23
+**Version**: 1.0
+**Based On**: ERP Microservices Copilot Instructions v2.0

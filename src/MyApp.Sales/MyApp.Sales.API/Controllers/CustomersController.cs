@@ -8,11 +8,14 @@ using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 
+using MyApp.Shared.Infrastructure.Export;
+
 namespace MyApp.Sales.API.Controllers
 {
     [ApiController]
     [Authorize]
     [Route("api/sales/customers")]
+
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _customerService;

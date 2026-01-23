@@ -123,10 +123,6 @@ if (isDeployment)
 {
     gateway.WithEnvironment("OCELOT_ENVIRONMENT", "Production");
 }
-else
-{
-    gateway.WithEnvironment("OCELOT_ENVIRONMENT", "Development");
-}
 
 if (applicationInsights is not null)
 {
