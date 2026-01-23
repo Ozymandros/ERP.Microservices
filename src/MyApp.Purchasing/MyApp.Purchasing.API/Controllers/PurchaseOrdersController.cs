@@ -55,6 +55,29 @@ public class PurchaseOrdersController : ControllerBase
     }
 
     /// <summary>
+    /// Export all purchase orders as PDF
+    /// </summary>
+    [HttpGet("export-pdf")]
+    [HasPermission("Purchasing", "Read")]
+    [Produces("application/pdf")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToPdf()
+    {
+        try
+        {
+            var orders = await _cacheService.GetStateAsync<IEnumerable<PurchaseOrderDto>>("all_purchase_orders")
+                ?? await _purchaseOrderService.GetAllPurchaseOrdersAsync();
+            var bytes = orders.ExportToPdf();
+            return File(bytes, "application/pdf", "PurchaseOrders.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting purchase orders to PDF");
+            return StatusCode(500, new { message = "An error occurred exporting purchase orders" });
+        }
+    }
+
+    /// <summary>
     /// Get all purchase orders - Requires Purchasing.Read permission
     /// </summary>
     [HttpGet]

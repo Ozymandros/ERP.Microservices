@@ -60,6 +60,29 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
+    /// Export all roles as PDF
+    /// </summary>
+    [HttpGet("export-pdf")]
+    [HasPermission("Roles", "Read")]
+    [Produces("application/pdf")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToPdf()
+    {
+        try
+        {
+            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>("all_roles")
+                ?? await _roleService.GetAllRolesAsync();
+            var bytes = roles.ExportToPdf();
+            return File(bytes, "application/pdf", "Roles.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting roles to PDF");
+            return StatusCode(500, new { message = "An error occurred exporting roles" });
+        }
+    }
+
+    /// <summary>
     /// Get all roles
     /// </summary>
     [HttpGet]

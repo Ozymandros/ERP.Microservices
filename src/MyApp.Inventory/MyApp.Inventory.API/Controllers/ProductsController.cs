@@ -51,6 +51,29 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
+    /// Export all products as PDF
+    /// </summary>
+    [HttpGet("export-pdf")]
+    [HasPermission("Inventory", "Read")]
+    [Produces("application/pdf")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToPdf()
+    {
+        try
+        {
+            var products = await _cacheService.GetStateAsync<IEnumerable<ProductDto>>("all_products")
+                ?? await _productService.GetAllProductsAsync();
+            var bytes = products.ExportToPdf();
+            return File(bytes, "application/pdf", "Products.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting products to PDF");
+            return StatusCode(500, new { message = "An error occurred exporting products" });
+        }
+    }
+
+    /// <summary>
     /// Get all products - Requires Inventory.Read permission
     /// </summary>
     [HttpGet]

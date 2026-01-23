@@ -52,6 +52,29 @@ public class SuppliersController : ControllerBase
     }
 
     /// <summary>
+    /// Export all suppliers as PDF
+    /// </summary>
+    [HttpGet("export-pdf")]
+    [HasPermission("Purchasing", "Read")]
+    [Produces("application/pdf")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToPdf()
+    {
+        try
+        {
+            var suppliers = await _cacheService.GetStateAsync<IEnumerable<SupplierDto>>("all_suppliers")
+                ?? await _supplierService.GetAllSuppliersAsync();
+            var bytes = suppliers.ExportToPdf();
+            return File(bytes, "application/pdf", "Suppliers.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting suppliers to PDF");
+            return StatusCode(500, new { message = "An error occurred exporting suppliers" });
+        }
+    }
+
+    /// <summary>
     /// Get all suppliers - Requires Purchasing.Read permission
     /// </summary>
     [HttpGet]

@@ -56,6 +56,29 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
+    /// Export all permissions as PDF
+    /// </summary>
+    [HttpGet("export-pdf")]
+    [HasPermission("Permissions", "Read")]
+    [Produces("application/pdf")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToPdf()
+    {
+        try
+        {
+            var permissions = await _cacheService.GetStateAsync<IEnumerable<PermissionDto>>("all_permissions")
+                ?? await _permissionService.GetAllPermissionsAsync();
+            var bytes = permissions.ExportToPdf();
+            return File(bytes, "application/pdf", "Permissions.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting permissions to PDF");
+            return StatusCode(500, new { message = "An error occurred exporting permissions" });
+        }
+    }
+
+    /// <summary>
     /// Get all permissions
     /// </summary>
     [HttpGet]
