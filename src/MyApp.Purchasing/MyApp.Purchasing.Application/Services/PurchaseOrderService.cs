@@ -8,6 +8,7 @@ using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 using System.Net.Http;
@@ -182,7 +183,7 @@ public class PurchaseOrderService : IPurchaseOrderService
 
         try
         {
-            await _eventPublisher.PublishAsync("purchasing.order.approved", purchaseOrderApprovedEvent);
+            await _eventPublisher.PublishAsync(MessagingConstants.Topics.PurchasingOrderApproved, purchaseOrderApprovedEvent);
             _logger.LogInformation("Published PurchaseOrderApprovedEvent for PO {PurchaseOrderId}", order.Id);
         }
         catch (Exception ex)
@@ -247,8 +248,8 @@ public class PurchaseOrderService : IPurchaseOrderService
                 };
 
                 var fulfillmentOrder = await _serviceInvoker.InvokeAsync<object, dynamic>(
-                    "orders",
-                    "api/orders",
+                    ServiceNames.Orders,
+                    ApiEndpoints.Orders.Base,
                     HttpMethod.Post,
                     createOrderRequest);
 
@@ -269,8 +270,8 @@ public class PurchaseOrderService : IPurchaseOrderService
                 // In a real system, we might have an ApproveAsync call here or handle it in Create
                 
                 await _serviceInvoker.InvokeAsync<object, object>(
-                    "orders",
-                    "api/orders/fulfill",
+                    ServiceNames.Orders,
+                    ApiEndpoints.Orders.Fulfill,
                     HttpMethod.Post,
                     fulfillRequest);
 
@@ -285,7 +286,7 @@ public class PurchaseOrderService : IPurchaseOrderService
                     dto.WarehouseId
                 );
 
-                await _eventPublisher.PublishAsync("purchasing.line.received", lineReceivedEvent);
+                await _eventPublisher.PublishAsync(MessagingConstants.Topics.PurchasingLineReceived, lineReceivedEvent);
             }
             catch (Exception ex)
             {

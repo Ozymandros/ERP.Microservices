@@ -4,6 +4,7 @@ using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Constants;
 
 namespace MyApp.Inventory.API.EventHandlers;
 
@@ -35,7 +36,7 @@ public class OrderEventHandlers : ControllerBase
     /// <summary>
     /// Handles OrderCreatedEvent - For Inbound orders, update OnOrderQuantity
     /// </summary>
-    [Topic("pubsub", "orders.order.created")]
+    [Topic(MessagingConstants.PubSubName, MessagingConstants.Topics.OrderCreated)]
     [HttpPost("order-created")]
     public async Task<IActionResult> OnOrderCreatedAsync(OrderCreatedEvent @event)
     {
@@ -88,7 +89,7 @@ public class OrderEventHandlers : ControllerBase
     /// <summary>
     /// Handles OrderFulfilledEvent - The source of truth for physical stock movements
     /// </summary>
-    [Topic("pubsub", "orders.order.fulfilled")]
+    [Topic(MessagingConstants.PubSubName, MessagingConstants.Topics.OrderFulfilled)]
     [HttpPost("order-fulfilled")]
     public async Task<IActionResult> OnOrderFulfilledAsync(OrderFulfilledEvent @event)
     {
@@ -163,7 +164,7 @@ public class OrderEventHandlers : ControllerBase
                     @event.OrderType
                 );
                 
-                await _eventPublisher.PublishAsync("inventory.stock.updated", stockUpdatedEvent);
+                await _eventPublisher.PublishAsync(MessagingConstants.Topics.InventoryStockUpdated, stockUpdatedEvent);
             }
 
             _logger.LogInformation("Successfully processed OrderFulfilledEvent for Order {OrderId}", @event.OrderId);

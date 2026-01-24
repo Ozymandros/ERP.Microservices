@@ -12,6 +12,7 @@ using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
+using MyApp.Shared.Domain.Constants;
 
 namespace MyApp.Sales.Application.Services
 {
@@ -206,7 +207,7 @@ namespace MyApp.Sales.Application.Services
 
             try
             {
-                await _eventPublisher.PublishAsync("sales.order.created", salesOrderCreatedEvent);
+                await _eventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderCreated, salesOrderCreatedEvent);
                 _logger.LogInformation("Published SalesOrderCreatedEvent for Quote {QuoteId}", quote.Id);
             }
             catch (Exception ex)
@@ -280,8 +281,8 @@ namespace MyApp.Sales.Application.Services
                 };
 
                 var fulfillmentOrder = await _serviceInvoker.InvokeAsync<object, dynamic>(
-                    "orders",
-                    "api/orders/with-reservation",
+                    ServiceNames.Orders,
+                    ApiEndpoints.Orders.WithReservation,
                     HttpMethod.Post,
                     createOrderRequest);
 
@@ -299,7 +300,7 @@ namespace MyApp.Sales.Application.Services
 
                 try
                 {
-                    await _eventPublisher.PublishAsync("sales.order.confirmed", salesOrderConfirmedEvent);
+                    await _eventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderConfirmed, salesOrderConfirmedEvent);
                     _logger.LogInformation(
                         "Published SalesOrderConfirmedEvent for Quote {QuoteId}, Order {OrderId}",
                         quote.Id, quote.ConvertedToOrderId);
@@ -334,8 +335,8 @@ namespace MyApp.Sales.Application.Services
                 {
                     // Call Inventory service to check availability
                     var availability = await _serviceInvoker.InvokeAsync<dynamic>(
-                        "inventory",
-                        $"api/warehousestocks/availability/{line.ProductId}",
+                        ServiceNames.Inventory,
+                        $"{ApiEndpoints.Inventory.Availability}/{line.ProductId}",
                         HttpMethod.Get);
 
                     var totalAvailable = (int)availability.totalAvailable;
