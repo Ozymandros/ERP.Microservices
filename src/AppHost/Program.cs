@@ -56,22 +56,22 @@ var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "MyApp.All";
 
 // Add projects - ports auto-increment
 var authService = projectBuilder.AddWebProject<Projects.MyApp_Auth_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: BillingDB, billing-service, ports 5000, 3500, 45000, 9090
-
-var billingService = projectBuilder.AddWebProject<Projects.MyApp_Billing_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: BillingDB, billing-service, ports 5001, 3501, 45001, 9091
 
+var billingService = projectBuilder.AddWebProject<Projects.MyApp_Billing_API>(redis, origin, isDeployment, applicationInsights);
+// Creates: BillingDB, billing-service, ports 5002, 3502, 45002, 9092
+
 var inventoryService = projectBuilder.AddWebProject<Projects.MyApp_Inventory_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: InventoryDB, inventory-service, ports 5002, 3502, 45002, 9092
+// Creates: InventoryDB, inventory-service, ports 5003, 3503, 45003, 9093
 
 var ordersService = projectBuilder.AddWebProject<Projects.MyApp_Orders_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: OrderDB, order-service, ports 5003, 3503, 45003, 9093
-
-var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: OrderDB, order-service, ports 5004, 3504, 45004, 9094
 
+var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_API>(redis, origin, isDeployment, applicationInsights);
+// Creates: PurchasingDB, purchasing-service, ports 5005, 3505, 45005, 9095
+
 var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: OrderDB, order-service, ports 5005, 3505, 45005, 9095
+// Creates: SalesDB, sales-service, ports 5006, 3506, 45006, 9096
 
 // Local Development: Reverse Proxy (YARP)
 // Alternative: YARP (without /Scalar service)
