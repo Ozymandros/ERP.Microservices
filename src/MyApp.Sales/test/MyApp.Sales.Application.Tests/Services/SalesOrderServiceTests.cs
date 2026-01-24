@@ -8,6 +8,7 @@ using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Events;
+using MyApp.Shared.Domain.Constants;
 using Xunit;
 
 namespace MyApp.Sales.Application.Tests.Services;
@@ -481,8 +482,8 @@ public class SalesOrderServiceTests
         stockResponse.warehouseStocks = new List<dynamic>();
 
         _mockServiceInvoker.Setup(s => s.InvokeAsync<dynamic>(
-            "inventory",
-            It.Is<string>(path => path.StartsWith("api/warehousestocks/availability/")),
+            ServiceNames.Inventory,
+            It.Is<string>(path => path.StartsWith(ApiEndpoints.Inventory.Availability + "/")),
             HttpMethod.Get,
             default))
             .ReturnsAsync((object)stockResponse);
@@ -491,8 +492,8 @@ public class SalesOrderServiceTests
         fulfillmentOrderResponse.id = Guid.NewGuid();
 
         _mockServiceInvoker.Setup(s => s.InvokeAsync<object, dynamic>(
-            "orders",
-            "api/orders/with-reservation",
+            ServiceNames.Orders,
+            ApiEndpoints.Orders.WithReservation,
             HttpMethod.Post,
             It.IsAny<object>(),
             default))
@@ -509,7 +510,7 @@ public class SalesOrderServiceTests
         Assert.NotNull(quote.ConvertedToOrderId);
         
         _mockOrderRepository.Verify(r => r.UpdateAsync(quote), Times.Once);
-        _mockEventPublisher.Verify(e => e.PublishAsync("sales.order.confirmed", It.IsAny<SalesOrderConfirmedEvent>(), default), Times.Once);
+        _mockEventPublisher.Verify(e => e.PublishAsync(MessagingConstants.Topics.SalesOrderConfirmed, It.IsAny<SalesOrderConfirmedEvent>(), default), Times.Once);
     }
 
     [Fact]
@@ -556,7 +557,7 @@ public class SalesOrderServiceTests
         stockResponse.warehouseStocks = new List<dynamic>();
 
         _mockServiceInvoker.Setup(s => s.InvokeAsync<dynamic>(
-            "inventory",
+            ServiceNames.Inventory,
             It.IsAny<string>(),
             HttpMethod.Get,
             default))

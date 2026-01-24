@@ -8,6 +8,7 @@ using MyApp.Orders.Domain.Repositories;
 using MyApp.Shared.Domain.BusinessRules;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Exceptions;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 
 namespace MyApp.Orders.Application.Services
@@ -171,8 +172,8 @@ namespace MyApp.Orders.Application.Services
                     };
 
                     var reservation = await _serviceInvoker.InvokeAsync<object, dynamic>(
-                        "inventory",
-                        "api/stockoperations/reserve",
+                        ServiceNames.Inventory,
+                        ApiEndpoints.Inventory.ReserveStock,
                         HttpMethod.Post,
                         reserveRequest);
 
@@ -226,7 +227,7 @@ namespace MyApp.Orders.Application.Services
 
             try
             {
-                await _eventPublisher.PublishAsync("orders.order.created", orderCreatedEvent);
+                await _eventPublisher.PublishAsync(MessagingConstants.Topics.OrderCreated, orderCreatedEvent);
                 _logger.LogInformation("Published OrderCreatedEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)
@@ -304,7 +305,7 @@ namespace MyApp.Orders.Application.Services
 
             try
             {
-                await _eventPublisher.PublishAsync("orders.order.fulfilled", orderFulfilledEvent);
+                await _eventPublisher.PublishAsync(MessagingConstants.Topics.OrderFulfilled, orderFulfilledEvent);
                 _logger.LogInformation("Published OrderFulfilledEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)
@@ -343,8 +344,8 @@ namespace MyApp.Orders.Application.Services
                     try
                     {
                         await _serviceInvoker.InvokeAsync(
-                            "inventory",
-                            $"api/stockoperations/reservations/{reservation.Id}",
+                            ServiceNames.Inventory,
+                            $"{ApiEndpoints.Inventory.Reservations}/{reservation.Id}",
                             HttpMethod.Delete);
 
                         reservation.Status = ReservationStatus.Cancelled;
@@ -372,7 +373,7 @@ namespace MyApp.Orders.Application.Services
 
             try
             {
-                await _eventPublisher.PublishAsync("orders.order.cancelled", orderCancelledEvent);
+                await _eventPublisher.PublishAsync(MessagingConstants.Topics.OrderCancelled, orderCancelledEvent);
                 _logger.LogInformation("Published OrderCancelledEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Aspire.Hosting.Dapr;
 using Microsoft.Extensions.DependencyInjection;
+using MyApp.Shared.Domain.Constants;
 
 var isDeployment =
     args.Contains("--publisher") || // when azd generates manifests
@@ -8,7 +9,7 @@ var isDeployment =
 var builder = DistributedApplication.CreateBuilder(args).AddDapr();
 
 var stateStore = builder.AddDaprStateStore("statestore");
-var pubSub = builder.AddDaprPubSub("pubsub");
+var pubSub = builder.AddDaprPubSub(MessagingConstants.PubSubName);
 
 var analyticsWorkspace = isDeployment ? builder
     .AddAzureLogAnalyticsWorkspace("MyApp-LogAnalyticsWorkspace") : null;

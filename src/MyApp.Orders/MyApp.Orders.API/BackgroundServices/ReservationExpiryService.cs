@@ -2,6 +2,7 @@ using MyApp.Orders.Domain.Entities;
 using MyApp.Orders.Domain.Repositories;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Constants;
 
 namespace MyApp.Orders.API.BackgroundServices;
 
@@ -86,8 +87,8 @@ public class ReservationExpiryService : BackgroundService
                     try
                     {
                         await serviceInvoker.InvokeAsync(
-                            "inventory",
-                            $"api/stockoperations/reservations/{reservation.Id}",
+                            ServiceNames.Inventory,
+                            $"{ApiEndpoints.Inventory.Reservations}/{reservation.Id}",
                             HttpMethod.Delete,
                             cancellationToken);
 
@@ -109,7 +110,7 @@ public class ReservationExpiryService : BackgroundService
                     try
                     {
                         await eventPublisher.PublishAsync(
-                            "inventory.stock.released",
+                            MessagingConstants.Topics.InventoryStockReleased,
                             stockReleasedEvent,
                             cancellationToken);
 

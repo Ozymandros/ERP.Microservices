@@ -44,7 +44,7 @@ public class OrderEventHandlers : ControllerBase
             "Received OrderCreatedEvent: OrderId={OrderId}, Type={Type}",
             @event.OrderId, @event.OrderType);
 
-        if (@event.OrderType != "Inbound" || !@event.WarehouseId.HasValue)
+        if (@event.OrderType != OrderTypes.Inbound || !@event.WarehouseId.HasValue)
         {
             return Ok(); // Outbound/Transfer logic might be different or handled elsewhere
         }
@@ -120,14 +120,14 @@ public class OrderEventHandlers : ControllerBase
                 int quantityChange = 0;
                 TransactionType transType;
 
-                if (@event.OrderType == "Inbound")
+                if (@event.OrderType == OrderTypes.Inbound)
                 {
                     quantityChange = line.Quantity;
                     transType = TransactionType.Inbound;
                     warehouseStock.AvailableQuantity += quantityChange;
                     warehouseStock.OnOrderQuantity = Math.Max(0, warehouseStock.OnOrderQuantity - quantityChange);
                 }
-                else if (@event.OrderType == "Outbound")
+                else if (@event.OrderType == OrderTypes.Outbound)
                 {
                     quantityChange = -line.Quantity;
                     transType = TransactionType.Outbound;

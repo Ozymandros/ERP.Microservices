@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Xunit;
 using Aspire.Hosting;
+using MyApp.Shared.Domain.Constants;
 
 namespace MyApp.Tests.Integration;
 
@@ -39,7 +40,7 @@ public class OrdersServiceTests
         // Arrange
         await using var app = await CreateAndStartAppAsync();
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
-        await notifier.WaitForResourceAsync("orders-service", KnownResourceStates.Running)
+        await notifier.WaitForResourceAsync(ServiceNames.Orders, KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
         
         var client = app.CreateHttpClient("gateway");

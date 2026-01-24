@@ -2,10 +2,10 @@ namespace MyApp.Shared.Domain.Constants;
 
 public static class ServiceNames
 {
-    public const string Orders = "orders";
-    public const string Inventory = "inventory";
-    public const string Sales = "sales";
-    public const string Purchasing = "purchasing";
+    public const string Orders = "orders-service";
+    public const string Inventory = "inventory-service";
+    public const string Sales = "sales-service";
+    public const string Purchasing = "purchasing-service";
 }
 
 public static class ApiEndpoints
@@ -21,6 +21,8 @@ public static class ApiEndpoints
     {
         public const string Base = "api/warehousestocks";
         public const string Availability = "api/warehousestocks/availability";
+        public const string ReserveStock = "api/stockoperations/reserve";
+        public const string Reservations = "api/stockoperations/reservations";
     }
 }
 
@@ -37,7 +39,16 @@ public static class MessagingConstants
         
         public const string OrderCreated = "orders.order.created";
         public const string OrderFulfilled = "orders.order.fulfilled";
+        public const string OrderCancelled = "orders.order.cancelled";
         
         public const string InventoryStockUpdated = "inventory.stock.updated";
+        public const string InventoryStockReleased = "inventory.stock.released";
     }
+}
+
+public static class OrderTypes
+{
+    public const string Inbound = "Inbound";
+    public const string Outbound = "Outbound";
+    public const string Transfer = "Transfer";
 }
