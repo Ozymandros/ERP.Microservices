@@ -10,6 +10,7 @@ using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Exceptions;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Inventory.Application.Contracts.DTOs;
 
 namespace MyApp.Orders.Application.Services
 {
@@ -161,31 +162,31 @@ namespace MyApp.Orders.Application.Services
                         line.ProductId, line.Quantity, dto.WarehouseId);
 
                     // Call Inventory service to reserve stock
-                    var reserveRequest = new
+                    var reserveRequest = new ReserveStockDto
                     {
-                        productId = line.ProductId,
-                        warehouseId = dto.WarehouseId,
-                        quantity = line.Quantity,
-                        orderId = order.Id,
-                        orderLineId = line.Id,
-                        expiresAt = (DateTime?)null // Use default 24-hour expiry
+                        ProductId = line.ProductId,
+                        WarehouseId = dto.WarehouseId,
+                        Quantity = line.Quantity,
+                        OrderId = order.Id,
+                        OrderLineId = line.Id,
+                        ExpiresAt = null // Use default
                     };
 
-                    var reservation = await _serviceInvoker.InvokeAsync<object, dynamic>(
+                    var reservation = await _serviceInvoker.InvokeAsync<ReserveStockDto, ReservationDto>(
                         ServiceNames.Inventory,
                         ApiEndpoints.Inventory.ReserveStock,
                         HttpMethod.Post,
                         reserveRequest);
 
                     // Create ReservedStock record
-                    var reservedStock = new ReservedStock(Guid.Parse(reservation.id.ToString()))
+                    var reservedStock = new ReservedStock(reservation.Id)
                     {
                         ProductId = line.ProductId,
                         WarehouseId = dto.WarehouseId,
                         OrderId = order.Id,
                         OrderLineId = line.Id,
                         Quantity = line.Quantity,
-                        ReservedUntil = DateTime.Parse(reservation.reservedUntil.ToString()),
+                        ReservedUntil = reservation.ReservedUntil,
                         Status = ReservationStatus.Reserved
                     };
 

@@ -31,16 +31,3 @@ public record CreateOrderWithReservationDto
     [MinLength(1, ErrorMessage = "Order must have at least one line")]
     public List<CreateOrderLineDto> Lines { get; init; } = new();
 }
-
-/// <summary>
-/// DTO for creating an operational order line
-/// </summary>
-public record CreateOrderLineDto
-{
-    [Required]
-    public Guid ProductId { get; init; }
-
-    [Required]
-    [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
-    public int Quantity { get; init; }
-}

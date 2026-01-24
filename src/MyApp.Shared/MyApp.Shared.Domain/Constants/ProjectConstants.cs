@@ -6,6 +6,9 @@ public static class ServiceNames
     public const string Inventory = "inventory-service";
     public const string Sales = "sales-service";
     public const string Purchasing = "purchasing-service";
+    public const string Auth = "auth-service";
+    public const string Billing = "billing-service";
+    public const string Notification = "notification-service";
 }
 
 public static class ApiEndpoints
@@ -13,16 +16,15 @@ public static class ApiEndpoints
     public static class Orders
     {
         public const string Base = "api/orders";
-        public const string Fulfill = "api/orders/fulfill";
         public const string WithReservation = "api/orders/with-reservation";
     }
 
     public static class Inventory
     {
-        public const string Base = "api/warehousestocks";
-        public const string Availability = "api/warehousestocks/availability";
-        public const string ReserveStock = "api/stockoperations/reserve";
-        public const string Reservations = "api/stockoperations/reservations";
+        public const string Base = "api/inventory/warehouse-stocks";
+        public const string Availability = "api/inventory/warehouse-stocks/availability";
+        public const string ReserveStock = "api/inventory/stock-operations/reserve";
+        public const string Reservations = "api/inventory/stock-operations/reservations";
     }
 }
 

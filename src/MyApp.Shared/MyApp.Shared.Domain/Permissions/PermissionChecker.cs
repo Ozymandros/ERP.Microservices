@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Constants;
 using System.Net.Http.Headers;
 
 namespace MyApp.Shared.Domain.Permissions;
@@ -29,7 +30,7 @@ public class PermissionChecker : IPermissionChecker
 
         // 1. Create the request manually
         var request = _serviceInvoker.CreateRequest(
-            "auth-service",
+            ServiceNames.Auth,
             "api/permissions/check",
             HttpMethod.Get,
             null,
@@ -68,7 +69,7 @@ public class PermissionChecker : IPermissionChecker
 
         // 1. Create the request
         using var request = _serviceInvoker.CreateRequest(
-            "auth-service",
+            ServiceNames.Auth,
             "api/permissions/check",
             HttpMethod.Get,
             null,

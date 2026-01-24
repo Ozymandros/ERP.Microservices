@@ -12,6 +12,8 @@ using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 using System.Net.Http;
+using MyApp.Orders.Application.Contracts.Dtos;
+using MyApp.Orders.Domain;
 
 namespace MyApp.Purchasing.Application.Services;
 
@@ -231,23 +233,26 @@ public class PurchaseOrderService : IPurchaseOrderService
             // Call Orders service to create an Inbound Order (Operational)
             try
             {
-                var createOrderRequest = new
+                var createOrderRequest = new CreateUpdateOrderDto
                 {
-                    orderNumber = $"{order.OrderNumber}-REC",
-                    type = 1, // Inbound = 1
-                    sourceId = order.SupplierId,  // Origin supplier
-                    targetId = dto.WarehouseId,   // Destination warehouse
-                    externalOrderId = order.Id,   // Link to PurchaseOrder
-                    warehouseId = dto.WarehouseId,
-                    orderDate = dto.ReceivedDate,
-                    lines = new[] { new 
+                    OrderNumber = $"{order.OrderNumber}-REC",
+                    Type = OrderType.Inbound,
+                    SourceId = order.SupplierId,  // Origin supplier
+                    TargetId = dto.WarehouseId,   // Destination warehouse
+                    ExternalOrderId = order.Id,   // Link to PurchaseOrder
+                    WarehouseId = dto.WarehouseId,
+                    OrderDate = dto.ReceivedDate,
+                    Lines = new List<CreateOrderLineDto> 
                     { 
-                        productId = orderLine.ProductId, 
-                        quantity = receivedLine.ReceivedQuantity 
-                    } }.ToList()
+                        new CreateOrderLineDto 
+                        { 
+                            ProductId = orderLine.ProductId, 
+                            Quantity = receivedLine.ReceivedQuantity 
+                        } 
+                    }
                 };
 
-                var fulfillmentOrder = await _serviceInvoker.InvokeAsync<object, dynamic>(
+                var fulfillmentOrder = await _serviceInvoker.InvokeAsync<CreateUpdateOrderDto, OrderDto>(
                     ServiceNames.Orders,
                     ApiEndpoints.Orders.Base,
                     HttpMethod.Post,
@@ -255,27 +260,24 @@ public class PurchaseOrderService : IPurchaseOrderService
 
                 _logger.LogInformation(
                     "Created Inbound Order {OrderId} for Product {ProductId} to Warehouse {WarehouseId}",
-                    (object)fulfillmentOrder.id, orderLine.ProductId, dto.WarehouseId);
+                    fulfillmentOrder.Id, orderLine.ProductId, dto.WarehouseId);
 
                 // Immediately fulfill the order to trigger inventory adjustment
-                var fulfillRequest = new
+                var fulfillRequest = new FulfillOrderDto
                 {
-                    orderId = Guid.Parse(fulfillmentOrder.id.ToString()),
-                    warehouseId = dto.WarehouseId,
-                    shippingAddress = (string?)null,
-                    trackingNumber = $"REC-{order.OrderNumber}"
+                    OrderId = fulfillmentOrder.Id,
+                    WarehouseId = dto.WarehouseId,
+                    ShippingAddress = null,
+                    TrackingNumber = $"REC-{order.OrderNumber}"
                 };
 
-                // Move status to Approved first if necessary (assuming CreateAsync sets it to Draft)
-                // In a real system, we might have an ApproveAsync call here or handle it in Create
-                
-                await _serviceInvoker.InvokeAsync<object, object>(
+                await _serviceInvoker.InvokeAsync<FulfillOrderDto, OrderDto>(
                     ServiceNames.Orders,
-                    ApiEndpoints.Orders.Fulfill,
+                    $"{ApiEndpoints.Orders.Base}/{fulfillmentOrder.Id}/fulfill",
                     HttpMethod.Post,
                     fulfillRequest);
 
-                _logger.LogInformation("Fulfilled Inbound Order {OrderId}", (object)fulfillmentOrder.id);
+                _logger.LogInformation("Fulfilled Inbound Order {OrderId}", fulfillmentOrder.Id);
 
                 // Publish PurchaseOrderLineReceivedEvent
                 var lineReceivedEvent = new PurchaseOrderLineReceivedEvent(

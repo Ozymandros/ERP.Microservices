@@ -33,6 +33,7 @@ public class InventoryMappingProfile : Profile
             .ConstructUsing(src => new InventoryTransaction(Guid.NewGuid()));
         
         // WarehouseStock mappings
-        CreateMap<WarehouseStock, WarehouseStockDto>();
+        CreateMap<WarehouseStock, WarehouseStockDto>()
+            .ForMember(dest => dest.WarehouseName, opt => opt.MapFrom(src => src.Warehouse != null ? src.Warehouse.Name : null));
     }
 }

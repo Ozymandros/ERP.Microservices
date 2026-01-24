@@ -23,6 +23,6 @@ namespace MyApp.Orders.Application.Contracts.Dtos
         public Guid? WarehouseId { get; init; }
 
         [Required]
-        public List<OrderLineDto> Lines { get; init; } = new();
+        public List<CreateOrderLineDto> Lines { get; init; } = new();
     }
 }

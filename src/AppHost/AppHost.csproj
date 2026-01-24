@@ -34,6 +34,6 @@
     <ProjectReference Include="..\MyApp.Orders\MyApp.Orders.API\MyApp.Orders.API.csproj" />
     <ProjectReference Include="..\MyApp.Purchasing\MyApp.Purchasing.API\MyApp.Purchasing.API.csproj" />
     <ProjectReference Include="..\ErpApiGateway\ErpApiGateway.csproj" />
-    <ProjectReference Include="..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" IsAspireProjectResource="false" />
   </ItemGroup>
 </Project>

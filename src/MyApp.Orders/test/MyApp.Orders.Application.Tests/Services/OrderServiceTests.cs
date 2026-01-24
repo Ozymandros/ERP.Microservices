@@ -7,6 +7,8 @@ using MyApp.Orders.Domain;
 using MyApp.Orders.Domain.Entities;
 using MyApp.Orders.Domain.Repositories;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Inventory.Application.Contracts.DTOs;
 using Xunit;
 
 namespace MyApp.Orders.Application.Tests.Services;
@@ -55,9 +57,9 @@ public class OrderServiceTests
             SourceId = Guid.NewGuid(),
             TargetId = Guid.NewGuid(),
             OrderDate = DateTime.UtcNow,
-            Lines = new List<OrderLineDto>
+            Lines = new List<CreateOrderLineDto>
             {
-                new OrderLineDto(Guid.NewGuid())
+                new CreateOrderLineDto
                 {
                     ProductId = Guid.NewGuid(),
                     Quantity = 5
@@ -111,9 +113,9 @@ public class OrderServiceTests
             Type = OrderType.Inbound,
             TargetId = Guid.NewGuid(),
             OrderDate = DateTime.UtcNow,
-            Lines = new List<OrderLineDto>
+            Lines = new List<CreateOrderLineDto>
             {
-                new OrderLineDto(Guid.NewGuid())
+                new CreateOrderLineDto
                 {
                     ProductId = Guid.NewGuid(),
                     Quantity = 1
@@ -146,6 +148,79 @@ public class OrderServiceTests
         _mockOrderRepository.Verify(r => r.AddAsync(It.Is<Order>(o =>
             o.Status == OrderStatus.Draft
         )), Times.Once);
+    }
+
+    #endregion
+
+    #region CreateOrderWithReservationAsync Tests
+
+    [Fact]
+    public async Task CreateOrderWithReservationAsync_WithValidDto_ReservesStockAndCreatesOrder()
+    {
+        // Arrange
+        var warehouseId = Guid.NewGuid();
+        var productId = Guid.NewGuid();
+        var dto = new CreateOrderWithReservationDto
+        {
+            OrderNumber = "ORD-RES-001",
+            Type = OrderType.Outbound,
+            WarehouseId = warehouseId,
+            OrderDate = DateTime.UtcNow,
+            Lines = new List<CreateOrderLineDto>
+            {
+                new CreateOrderLineDto { ProductId = productId, Quantity = 5 }
+            }
+        };
+
+        var order = new Order(Guid.NewGuid())
+        {
+            OrderNumber = dto.OrderNumber,
+            Type = dto.Type,
+            WarehouseId = dto.WarehouseId,
+            Lines = new List<OrderLine>()
+        };
+
+        var line = new OrderLine(Guid.NewGuid())
+        {
+            OrderId = order.Id,
+            ProductId = productId,
+            Quantity = 5
+        };
+
+        var reservationId = Guid.NewGuid();
+        var reservationResponse = new ReservationDto(reservationId)
+        {
+            ProductId = productId,
+            WarehouseId = warehouseId,
+            Quantity = 5,
+            ReservedUntil = DateTime.UtcNow.AddDays(1),
+            Status = "Reserved"
+        };
+        
+        _mockServiceInvoker.Setup(s => s.InvokeAsync<ReserveStockDto, ReservationDto>(
+            ServiceNames.Inventory,
+            ApiEndpoints.Inventory.ReserveStock,
+            HttpMethod.Post,
+            It.IsAny<ReserveStockDto>(),
+            It.IsAny<CancellationToken>()))
+            .ReturnsAsync(reservationResponse);
+
+        _mockMapper.Setup(m => m.Map<OrderDto>(It.IsAny<Order>())).Returns(new OrderDto(Guid.NewGuid()));
+
+        // Act
+        var result = await _orderService.CreateOrderWithReservationAsync(dto);
+
+        // Assert
+        Assert.NotNull(result);
+        _mockServiceInvoker.Verify(s => s.InvokeAsync<ReserveStockDto, ReservationDto>(
+            ServiceNames.Inventory,
+            ApiEndpoints.Inventory.ReserveStock,
+            HttpMethod.Post,
+            It.IsAny<ReserveStockDto>(),
+            It.IsAny<CancellationToken>()), Times.Once);
+
+        _mockReservedStockRepository.Verify(r => r.AddAsync(It.IsAny<ReservedStock>()), Times.Once);
+        _mockOrderRepository.Verify(r => r.AddAsync(It.IsAny<Order>()), Times.Once);
     }
 
     #endregion

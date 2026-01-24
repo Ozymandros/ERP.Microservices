@@ -109,7 +109,8 @@ var gateway = builder.AddProject<Projects.ErpApiGateway>("gateway")
     .WaitFor(ordersService)
     .WaitFor(purchasingService)
     .WaitFor(salesService)
-    .WithExternalHttpEndpoints() // Exposes HTTP endpoint from launchSettings.json (port 5000)
+    .WithHttpEndpoint(port: 5000, name: "gateway-http")   // Explicitly listen on 5000 for Dapr
+    .WithHttpsEndpoint(port: 7231, name: "gateway-https") // Explicitly listen on 7231 for Browser/Scalar
     .WithEnvironment("Jwt__SecretKey", jwtSecretKey)
     .WithEnvironment("Jwt__Issuer", jwtIssuer)
     .WithEnvironment("Jwt__Audience", jwtAudience)

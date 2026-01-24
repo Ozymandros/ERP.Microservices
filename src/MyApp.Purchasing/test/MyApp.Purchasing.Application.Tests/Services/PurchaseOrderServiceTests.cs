@@ -10,6 +10,8 @@ using MyApp.Purchasing.Domain.Repositories;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Constants;
+using MyApp.Orders.Application.Contracts.Dtos;
+using MyApp.Orders.Domain;
 using Xunit;
 
 namespace MyApp.Purchasing.Application.Tests.Services;
@@ -395,25 +397,24 @@ public class PurchaseOrderServiceTests
 
         _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(po);
         
-        dynamic fulfillmentOrderResponse = new ExpandoObject();
-        fulfillmentOrderResponse.id = Guid.NewGuid().ToString();
+        var fulfillmentOrderResponse = new OrderDto(Guid.NewGuid());
 
-        _mockServiceInvoker.Setup(s => s.InvokeAsync<object, dynamic>(
+        _mockServiceInvoker.Setup(s => s.InvokeAsync<CreateUpdateOrderDto, OrderDto>(
             ServiceNames.Orders,
             ApiEndpoints.Orders.Base,
             HttpMethod.Post,
-            It.IsAny<object>(),
+            It.IsAny<CreateUpdateOrderDto>(),
             default))
-            .ReturnsAsync((object)fulfillmentOrderResponse);
+            .ReturnsAsync(fulfillmentOrderResponse);
 
         // Mock Order fulfillment
-        _mockServiceInvoker.Setup(s => s.InvokeAsync<object, object>(
+        _mockServiceInvoker.Setup(s => s.InvokeAsync<FulfillOrderDto, OrderDto>(
             ServiceNames.Orders,
-            ApiEndpoints.Orders.Fulfill,
+            It.Is<string>(path => path.EndsWith("/fulfill")),
             HttpMethod.Post,
-            It.IsAny<object>(),
+            It.IsAny<FulfillOrderDto>(),
             default))
-            .ReturnsAsync(new { });
+            .ReturnsAsync(new OrderDto(Guid.NewGuid()));
 
         _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(po)).Returns(new PurchaseOrderDto());
 
@@ -424,8 +425,8 @@ public class PurchaseOrderServiceTests
         Assert.NotNull(result);
         Assert.Equal(5, po.Lines.First().ReceivedQuantity);
         
-        _mockServiceInvoker.Verify(s => s.InvokeAsync<object, dynamic>(ServiceNames.Orders, ApiEndpoints.Orders.Base, HttpMethod.Post, It.IsAny<object>(), default), Times.Once);
-        _mockServiceInvoker.Verify(s => s.InvokeAsync<object, object>(ServiceNames.Orders, ApiEndpoints.Orders.Fulfill, HttpMethod.Post, It.IsAny<object>(), default), Times.Once);
+        _mockServiceInvoker.Verify(s => s.InvokeAsync<CreateUpdateOrderDto, OrderDto>(ServiceNames.Orders, ApiEndpoints.Orders.Base, HttpMethod.Post, It.IsAny<CreateUpdateOrderDto>(), default), Times.Once);
+        _mockServiceInvoker.Verify(s => s.InvokeAsync<FulfillOrderDto, OrderDto>(ServiceNames.Orders, It.Is<string>(path => path.EndsWith("/fulfill")), HttpMethod.Post, It.IsAny<FulfillOrderDto>(), default), Times.Once);
         _mockEventPublisher.Verify(e => e.PublishAsync(MessagingConstants.Topics.PurchasingLineReceived, It.IsAny<PurchaseOrderLineReceivedEvent>(), default), Times.Once);
     }
 

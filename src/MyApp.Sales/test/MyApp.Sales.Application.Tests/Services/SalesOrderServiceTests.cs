@@ -9,6 +9,9 @@ using MyApp.Sales.Domain.Entities;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Constants;
+using MyApp.Inventory.Application.Contracts.DTOs;
+using MyApp.Orders.Application.Contracts.Dtos;
+using MyApp.Orders.Domain;
 using Xunit;
 
 namespace MyApp.Sales.Application.Tests.Services;
@@ -477,27 +480,28 @@ public class SalesOrderServiceTests
         _mockOrderRepository.Setup(r => r.GetByIdAsync(quoteId)).ReturnsAsync(quote);
         
         // Mock stock check
-        dynamic stockResponse = new ExpandoObject();
-        stockResponse.totalAvailable = 10;
-        stockResponse.warehouseStocks = new List<dynamic>();
+        var stockResponse = new StockAvailabilityDto
+        {
+            TotalAvailable = 10,
+            WarehouseStocks = new List<WarehouseStockDto>()
+        };
 
-        _mockServiceInvoker.Setup(s => s.InvokeAsync<dynamic>(
+        _mockServiceInvoker.Setup(s => s.InvokeAsync<StockAvailabilityDto>(
             ServiceNames.Inventory,
             It.Is<string>(path => path.StartsWith(ApiEndpoints.Inventory.Availability + "/")),
             HttpMethod.Get,
             default))
-            .ReturnsAsync((object)stockResponse);
+            .ReturnsAsync(stockResponse);
 
-        dynamic fulfillmentOrderResponse = new ExpandoObject();
-        fulfillmentOrderResponse.id = Guid.NewGuid();
+        var fulfillmentOrderResponse = new OrderDto(Guid.NewGuid());
 
-        _mockServiceInvoker.Setup(s => s.InvokeAsync<object, dynamic>(
+        _mockServiceInvoker.Setup(s => s.InvokeAsync<CreateOrderWithReservationDto, OrderDto>(
             ServiceNames.Orders,
             ApiEndpoints.Orders.WithReservation,
             HttpMethod.Post,
-            It.IsAny<object>(),
+            It.IsAny<CreateOrderWithReservationDto>(),
             default))
-            .ReturnsAsync((object)fulfillmentOrderResponse);
+            .ReturnsAsync(fulfillmentOrderResponse);
 
         _mockMapper.Setup(m => m.Map<SalesOrderDto>(quote)).Returns(new SalesOrderDto(quoteId));
 
@@ -552,16 +556,18 @@ public class SalesOrderServiceTests
         _mockOrderRepository.Setup(r => r.GetByIdAsync(quoteId)).ReturnsAsync(quote);
         
         // Mock stock check - return 0 available
-        dynamic stockResponse = new ExpandoObject();
-        stockResponse.totalAvailable = 0;
-        stockResponse.warehouseStocks = new List<dynamic>();
+        var stockResponse = new StockAvailabilityDto
+        {
+            TotalAvailable = 0,
+            WarehouseStocks = new List<WarehouseStockDto>()
+        };
 
-        _mockServiceInvoker.Setup(s => s.InvokeAsync<dynamic>(
+        _mockServiceInvoker.Setup(s => s.InvokeAsync<StockAvailabilityDto>(
             ServiceNames.Inventory,
             It.IsAny<string>(),
             HttpMethod.Get,
             default))
-            .ReturnsAsync((object)stockResponse);
+            .ReturnsAsync(stockResponse);
 
         // Act & Assert
         var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => _salesOrderService.ConfirmQuoteAsync(dto));

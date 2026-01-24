@@ -20,6 +20,9 @@ namespace MyApp.Orders.Application.Mapping
 
             CreateMap<OrderLineDto, OrderLine>()
                 .ConstructUsing(src => new OrderLine(src.Id));
+
+            CreateMap<CreateOrderLineDto, OrderLine>()
+                .ConstructUsing(src => new OrderLine(Guid.NewGuid()));
         }
     }
 }
