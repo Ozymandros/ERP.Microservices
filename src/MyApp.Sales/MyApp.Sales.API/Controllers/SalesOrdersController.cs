@@ -25,6 +25,52 @@ namespace MyApp.Sales.API.Controllers
             _cacheService = cacheService;
             _logger = logger;
         }
+
+        /// <summary>
+        /// Export all sales orders as XLSX
+        /// </summary>
+        [HttpGet("export-xlsx")]
+        [HasPermission("Sales", "Read")]
+        [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ExportToXlsx()
+        {
+            try
+            {
+                var orders = await _cacheService.GetStateAsync<IEnumerable<SalesOrderDto>>("all_sales_orders")
+                            ?? await _salesOrderService.ListSalesOrdersAsync();
+                var bytes = orders.ExportToXlsx();
+                return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SalesOrders.xlsx");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting sales orders to XLSX");
+                return StatusCode(500, new { message = "An error occurred exporting sales orders" });
+            }
+        }
+
+        /// <summary>
+        /// Export all sales orders as PDF
+        /// </summary>
+        [HttpGet("export-pdf")]
+        [HasPermission("Sales", "Read")]
+        [Produces("application/pdf")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ExportToPdf()
+        {
+            try
+            {
+                var orders = await _cacheService.GetStateAsync<IEnumerable<SalesOrderDto>>("all_sales_orders")
+                    ?? await _salesOrderService.ListSalesOrdersAsync();
+                var bytes = orders.ExportToPdf();
+                return File(bytes, "application/pdf", "SalesOrders.pdf");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting sales orders to PDF");
+                return StatusCode(500, new { message = "An error occurred exporting sales orders" });
+            }
+        }
         
         [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(PaginatedResult<SalesOrderDto>), StatusCodes.Status200OK)]

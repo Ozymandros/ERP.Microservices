@@ -21,6 +21,62 @@ namespace MyApp.Inventory.API.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Export all warehouse stocks as XLSX
+        /// </summary>
+        [HttpGet("export-xlsx")]
+        [HasPermission("Inventory", "Read")]
+        [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ExportToXlsx()
+        {
+            try
+            {
+                var stocks = await _warehouseStockService.GetAllWarehouseStocksAsync();
+                var bytes = stocks.ExportToXlsx();
+                return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "WarehouseStocks.xlsx");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting warehouse stocks to XLSX");
+                return StatusCode(500, new { message = "An error occurred exporting stocks" });
+            }
+        }
+
+        /// <summary>
+        /// Export all warehouse stocks as PDF
+        /// </summary>
+        [HttpGet("export-pdf")]
+        [HasPermission("Inventory", "Read")]
+        [Produces("application/pdf")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ExportToPdf()
+        {
+            try
+            {
+                var stocks = await _warehouseStockService.GetAllWarehouseStocksAsync();
+                var bytes = stocks.ExportToPdf();
+                return File(bytes, "application/pdf", "WarehouseStocks.pdf");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting warehouse stocks to PDF");
+                return StatusCode(500, new { message = "An error occurred exporting stocks" });
+            }
+        }
+
+        /// <summary>
+        /// Get all warehouse stocks
+        /// </summary>
+        [HttpGet]
+        [HasPermission("Inventory", "Read")]
+        [ProducesResponseType(typeof(IEnumerable<WarehouseStockDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll()
+        {
+            var stocks = await _warehouseStockService.GetAllWarehouseStocksAsync();
+            return Ok(stocks);
+        }
+
         [HttpGet("by-product-warehouse/{productId}/{warehouseId}")]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(typeof(WarehouseStockDto), StatusCodes.Status200OK)]

@@ -24,6 +24,50 @@ namespace MyApp.Inventory.API.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Export all inventory transactions as XLSX
+        /// </summary>
+        [HttpGet("export-xlsx")]
+        [HasPermission("Inventory", "Read")]
+        [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ExportToXlsx()
+        {
+            try
+            {
+                var transactions = await _transactionService.GetAllTransactionsAsync();
+                var bytes = transactions.ExportToXlsx();
+                return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "InventoryTransactions.xlsx");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting inventory transactions to XLSX");
+                return StatusCode(500, new { message = "An error occurred exporting transactions" });
+            }
+        }
+
+        /// <summary>
+        /// Export all inventory transactions as PDF
+        /// </summary>
+        [HttpGet("export-pdf")]
+        [HasPermission("Inventory", "Read")]
+        [Produces("application/pdf")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ExportToPdf()
+        {
+            try
+            {
+                var transactions = await _transactionService.GetAllTransactionsAsync();
+                var bytes = transactions.ExportToPdf();
+                return File(bytes, "application/pdf", "InventoryTransactions.pdf");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting inventory transactions to PDF");
+                return StatusCode(500, new { message = "An error occurred exporting transactions" });
+            }
+        }
+
         [HttpGet]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(StatusCodes.Status200OK)]

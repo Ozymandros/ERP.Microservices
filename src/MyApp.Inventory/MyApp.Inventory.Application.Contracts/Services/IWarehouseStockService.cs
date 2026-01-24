@@ -16,4 +16,5 @@ public interface IWarehouseStockService
     Task AdjustStockAsync(StockAdjustmentDto dto);
     
     Task<List<WarehouseStockDto>> GetLowStockAsync();
+    Task<List<WarehouseStockDto>> GetAllWarehouseStocksAsync();
 }

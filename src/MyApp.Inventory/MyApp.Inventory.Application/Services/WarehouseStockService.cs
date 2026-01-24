@@ -313,4 +313,10 @@ public class WarehouseStockService : IWarehouseStockService
         var lowStocks = await _warehouseStockRepository.GetLowStockAsync();
         return _mapper.Map<List<WarehouseStockDto>>(lowStocks);
     }
+
+    public async Task<List<WarehouseStockDto>> GetAllWarehouseStocksAsync()
+    {
+        var stocks = await _warehouseStockRepository.GetAllAsync();
+        return _mapper.Map<List<WarehouseStockDto>>(stocks);
+    }
 }
