@@ -1,0 +1,16 @@
+﻿apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appConfig # Aquest nom el farem servir a l'AppHost
+spec:
+  nameResolution:
+    component: "sqlite" # Això fa que Dapr guardi els noms en una petita DB local en comptes de cridar per la xarxa
+  tracing:
+    samplingRate: "1"
+    zipkin:
+      endpointAddress: "http://localhost:9411/api/v2/spans"
+  features:
+    - name: actors.enabled
+      enabled: false
+    - name: scheduler.enabled
+      enabled: false

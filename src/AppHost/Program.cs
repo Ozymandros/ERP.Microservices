@@ -6,7 +6,7 @@ var isDeployment =
     args.Contains("--publisher") || // when azd generates manifests
     Environment.GetEnvironmentVariable("IS_DEPLOYMENT") == "true";
 
-var builder = DistributedApplication.CreateBuilder(args).AddDapr();
+var builder = DistributedApplication.CreateBuilder(args);//AddDapr();
 
 var stateStore = builder.AddDaprStateStore("statestore");
 var pubSub = builder.AddDaprPubSub(MessagingConstants.PubSubName);
@@ -114,12 +114,7 @@ var gateway = builder.AddProject<Projects.ErpApiGateway>("gateway")
     .WithEnvironment("Jwt__SecretKey", jwtSecretKey)
     .WithEnvironment("Jwt__Issuer", jwtIssuer)
     .WithEnvironment("Jwt__Audience", jwtAudience)
-    .WithEnvironment("OCELOT_ENVIRONMENT", "Development")
-    .WithDaprSidecar(new DaprSidecarOptions
-    {
-        AppId = "gateway",
-        AppPort = 5000 // Must match launchSettings.json port
-    });
+    .WithEnvironment("OCELOT_ENVIRONMENT", "Development");
 
 if (isDeployment)
 {

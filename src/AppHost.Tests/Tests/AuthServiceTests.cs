@@ -261,6 +261,11 @@ public class AuthIntegrationTests
         var loginResponse = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
         var tokens = await loginResponse.Content.ReadFromJsonAsync<TokenResponseDto>();
 
+        if (tokens is null) 
+            {
+            throw new InvalidOperationException("Failed to retrieve tokens from login response.");
+        }
+
         var refreshTokenDto = new RefreshTokenDto
         (
             RefreshToken: tokens.RefreshToken,
@@ -442,7 +447,7 @@ public class AuthIntegrationTests
         var tokens = await loginResponse.Content.ReadFromJsonAsync<TokenResponseDto>();
 
         client.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokens.AccessToken);
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokens?.AccessToken);
 
         //Act
         var response = await client.PostAsync("/auth/api/auth/logout", null);
