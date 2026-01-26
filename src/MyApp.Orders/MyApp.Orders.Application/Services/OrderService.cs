@@ -11,6 +11,8 @@ using MyApp.Shared.Domain.Exceptions;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Inventory.Application.Contracts.DTOs;
+using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Orders.Application.Services
 {
@@ -383,6 +385,17 @@ namespace MyApp.Orders.Application.Services
             }
 
             _logger.LogInformation("Order cancelled successfully: OrderId={OrderId}", order.Id);
+        }
+
+        public async Task<PaginatedResult<OrderDto>> QueryOrdersAsync(ISpecification<Order> spec)
+        {
+            var result = await _orders.QueryAsync(spec);
+            return new PaginatedResult<OrderDto>(
+                result.Items.Select(o => _mapper.Map<OrderDto>(o)),
+                result.PageNumber,
+                result.PageSize,
+                result.TotalCount
+            );
         }
     }
 }

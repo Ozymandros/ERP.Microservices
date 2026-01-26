@@ -27,7 +27,7 @@ public abstract class BaseSpecification<T> : ISpecification<T> where T : class
     /// <summary>
     /// Query parameters (filters, sorting, pagination)
     /// </summary>
-    protected readonly QuerySpec Query;
+    public QuerySpec Query { get; protected set; }
 
     protected BaseSpecification(QuerySpec query)
     {

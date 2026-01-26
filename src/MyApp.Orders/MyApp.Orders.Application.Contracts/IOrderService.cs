@@ -2,6 +2,10 @@ using MyApp.Orders.Application.Contracts.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyApp.Orders.Domain.Specifications;
+using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
+using MyApp.Orders.Domain.Entities;
 
 namespace MyApp.Orders.Application.Contracts
 {
@@ -29,5 +33,8 @@ namespace MyApp.Orders.Application.Contracts
         /// Cancels an order and releases all stock reservations
         /// </summary>
         Task CancelOrderAsync(CancelOrderDto dto);
+
+        // Queries with specifications
+        Task<PaginatedResult<OrderDto>> QueryOrdersAsync(ISpecification<Order> spec);
     }
 }
