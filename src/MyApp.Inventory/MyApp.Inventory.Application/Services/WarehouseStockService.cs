@@ -82,11 +82,15 @@ public class WarehouseStockService : IWarehouseStockService
 
         _logger.LogInformation("Reserving stock: {@Reservation}", new { dto.ProductId, dto.WarehouseId, dto.Quantity, dto.OrderId });
 
-        // Get or create warehouse stock
+
+        // Get product and warehouse for better error messages
+        var product = await _productRepository.GetByIdAsync(dto.ProductId);
         var warehouseStock = await _warehouseStockRepository.GetByProductAndWarehouseAsync(dto.ProductId, dto.WarehouseId);
+        string productInfo = product != null ? $"{product.Name} ({product.SKU})" : dto.ProductId.ToString();
+        string warehouseName = warehouseStock?.Warehouse?.Name ?? dto.WarehouseId.ToString();
         if (warehouseStock == null)
         {
-            throw new InvalidOperationException($"No stock record found for product {dto.ProductId} in warehouse {dto.WarehouseId}");
+            throw new InvalidOperationException($"No stock record found for product {productInfo} in warehouse {warehouseName}");
         }
 
         // Validate reservation
@@ -173,12 +177,17 @@ public class WarehouseStockService : IWarehouseStockService
             "Transferring stock: {@Transfer}",
             new { dto.ProductId, From = dto.FromWarehouseId, To = dto.ToWarehouseId, dto.Quantity, dto.Reason });
 
-        // Get source warehouse stock
+
+        // Get product and warehouses for better error messages
+        var product = await _productRepository.GetByIdAsync(dto.ProductId);
         var sourceStock = await _warehouseStockRepository.GetByProductAndWarehouseAsync(dto.ProductId, dto.FromWarehouseId);
+        var fromWarehouseName = sourceStock?.Warehouse?.Name ?? dto.FromWarehouseId.ToString();
+        var toWarehouseName = dto.ToWarehouseId.ToString();
+        string productInfo = product != null ? $"{product.Name} ({product.SKU})" : dto.ProductId.ToString();
         if (sourceStock == null || sourceStock.AvailableQuantity < dto.Quantity)
         {
             throw new StockTransferException(dto.ProductId, dto.FromWarehouseId, dto.ToWarehouseId,
-                $"Insufficient stock in source warehouse. Available: {sourceStock?.AvailableQuantity ?? 0}, Requested: {dto.Quantity}");
+                $"Insufficient stock in source warehouse '{fromWarehouseName}' for product {productInfo}. Available: {sourceStock?.AvailableQuantity ?? 0}, Requested: {dto.Quantity}");
         }
 
         // Get or create destination warehouse stock
@@ -256,10 +265,14 @@ public class WarehouseStockService : IWarehouseStockService
         _logger.LogInformation(
             "Adjusting stock: {@StockAdjustment}",
             new { dto.ProductId, dto.WarehouseId, dto.QuantityChange, dto.Reason, dto.Reference });
+
+        var product = await _productRepository.GetByIdAsync(dto.ProductId);
         var warehouseStock = await _warehouseStockRepository.GetByProductAndWarehouseAsync(dto.ProductId, dto.WarehouseId);
+        string productInfo = product != null ? $"{product.Name} ({product.SKU})" : dto.ProductId.ToString();
+        string warehouseName = warehouseStock?.Warehouse?.Name ?? dto.WarehouseId.ToString();
         if (warehouseStock == null)
         {
-            throw new InvalidOperationException($"No stock record found for product {dto.ProductId} in warehouse {dto.WarehouseId}");
+            throw new InvalidOperationException($"No stock record found for product {productInfo} in warehouse {warehouseName}");
         }
 
         // Apply adjustment
