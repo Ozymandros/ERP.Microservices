@@ -69,15 +69,15 @@ public class AspireProjectBuilder
             //.WithHttpEndpoint(80)
             //.WithHttpsEndpoint()
             //.WithExternalHttpEndpoints()
-            //.WithDaprSidecarOptions(options => options.AddArgument("--enable-scheduler", "false"))
             .WithDaprSidecar(new DaprSidecarOptions
             {
-                AppId = daprAppId,
-                AppPort = httpPort,
+                //AppId = daprAppId,
+                //AppPort = httpPort,
                 //DaprHttpPort = daprHttpPort,
                 //DaprGrpcPort = daprGrpcPort,
                 //MetricsPort = metricsPort
-            }).WithArgs("--enable-scheduler=false")
+                //Config = "./dapr/config.yaml" // La ruta ha de ser correcta des de l'executable de l'AppHost
+            })
             .WithEnvironment("Jwt__SecretKey", _builder.Configuration["Jwt:SecretKey"])
             .WithEnvironment("Jwt__Issuer", _builder.Configuration["Jwt:Issuer"])
             .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"])

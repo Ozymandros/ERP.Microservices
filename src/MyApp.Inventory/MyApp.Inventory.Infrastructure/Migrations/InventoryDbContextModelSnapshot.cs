@@ -41,18 +41,12 @@ namespace MyApp.Inventory.Infrastructure.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("PurchaseOrderId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("QuantityChange")
                         .HasColumnType("int");
 
                     b.Property<string>("ReferenceNumber")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<Guid?>("SalesOrderId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("TransactionDate")
                         .ValueGeneratedOnAdd()
@@ -76,10 +70,6 @@ namespace MyApp.Inventory.Infrastructure.Migrations
                     b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("PurchaseOrderId");
-
-                    b.HasIndex("SalesOrderId");
 
                     b.HasIndex("TransactionDate");
 

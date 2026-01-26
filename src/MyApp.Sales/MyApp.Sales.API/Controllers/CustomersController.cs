@@ -8,11 +8,14 @@ using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 
+using MyApp.Shared.Infrastructure.Export;
+
 namespace MyApp.Sales.API.Controllers
 {
     [ApiController]
     [Authorize]
     [Route("api/sales/customers")]
+
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _customerService;
@@ -24,6 +27,52 @@ namespace MyApp.Sales.API.Controllers
             _customerService = customerService;
             _cacheService = cacheService;
             _logger = logger;
+        }
+
+        /// <summary>
+        /// Export all customers as XLSX
+        /// </summary>
+        [HttpGet("export-xlsx")]
+        [HasPermission("Sales", "Read")]
+        [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ExportToXlsx()
+        {
+            try
+            {
+                var customers = await _cacheService.GetStateAsync<IEnumerable<CustomerDto>>("all_customers")
+                            ?? await _customerService.ListCustomersAsync();
+                var bytes = customers.ExportToXlsx();
+                return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Customers.xlsx");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting customers to XLSX");
+                return StatusCode(500, new { message = "An error occurred exporting customers" });
+            }
+        }
+
+        /// <summary>
+        /// Export all customers as PDF
+        /// </summary>
+        [HttpGet("export-pdf")]
+        [HasPermission("Sales", "Read")]
+        [Produces("application/pdf")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ExportToPdf()
+        {
+            try
+            {
+                var customers = await _cacheService.GetStateAsync<IEnumerable<CustomerDto>>("all_customers")
+                    ?? await _customerService.ListCustomersAsync();
+                var bytes = customers.ExportToPdf();
+                return File(bytes, "application/pdf", "Customers.pdf");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting customers to PDF");
+                return StatusCode(500, new { message = "An error occurred exporting customers" });
+            }
         }
 
         /// <summary>

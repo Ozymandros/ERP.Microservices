@@ -1,17 +1,17 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
 using MyApp.Sales.Domain.Specifications;
-using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
-using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
+using MyApp.Shared.Infrastructure.Export;
 
 namespace MyApp.Sales.API.Controllers
 {
     [ApiController]
-    [Authorize()]
+    [Authorize]
     [Route("api/sales/orders")]
     public class SalesOrdersController : ControllerBase
     {
@@ -27,87 +27,94 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Get all sales orders - Requires Sales.Read permission
+        /// Export all sales orders as XLSX
+        /// </summary>
+        [HttpGet("export-xlsx")]
+        [HasPermission("Sales", "Read")]
+        [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ExportToXlsx()
+        {
+            try
+            {
+                var orders = await _cacheService.GetStateAsync<IEnumerable<SalesOrderDto>>("all_sales_orders")
+                            ?? await _salesOrderService.ListSalesOrdersAsync();
+                var bytes = orders.ExportToXlsx();
+                return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SalesOrders.xlsx");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting sales orders to XLSX");
+                return StatusCode(500, new { message = "An error occurred exporting sales orders" });
+            }
+        }
+
+        /// <summary>
+        /// Export all sales orders as PDF
+        /// </summary>
+        [HttpGet("export-pdf")]
+        [HasPermission("Sales", "Read")]
+        [Produces("application/pdf")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ExportToPdf()
+        {
+            try
+            {
+                var orders = await _cacheService.GetStateAsync<IEnumerable<SalesOrderDto>>("all_sales_orders")
+                    ?? await _salesOrderService.ListSalesOrdersAsync();
+                var bytes = orders.ExportToPdf();
+                return File(bytes, "application/pdf", "SalesOrders.pdf");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting sales orders to PDF");
+                return StatusCode(500, new { message = "An error occurred exporting sales orders" });
+            }
+        }
+
+        /// <summary>
+        /// Get all sales orders (paginated, filterable)
         /// </summary>
         [HttpGet]
         [HasPermission("Sales", "Read")]
-        [ProducesResponseType(typeof(IEnumerable<SalesOrderDto>), 200)]
-        public async Task<IActionResult> GetAll()
+        [ProducesResponseType(typeof(PaginatedResult<SalesOrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAll([FromQuery] QuerySpec query)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             try
             {
-                var orders = await _cacheService.GetStateAsync<IEnumerable<SalesOrderDto>>("all_sales_orders");
-                if (orders != null)
-                {
-                    _logger.LogInformation("Retrieved all sales orders from cache");
-                    return Ok(orders);
-                }
-
-                orders = await _salesOrderService.ListSalesOrdersAsync();
-                await _cacheService.SaveStateAsync("all_sales_orders", orders);
-                _logger.LogInformation("Retrieved all sales orders from database and cached");
-                return Ok(orders);
+                query.Validate();
+                var spec = new SalesOrderQuerySpec(query);
+                var result = await _salesOrderService.QuerySalesOrdersAsync(spec);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Invalid query specification");
+                return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving all sales orders");
-                var orders = await _salesOrderService.ListSalesOrdersAsync();
-                return Ok(orders);
+                _logger.LogError(ex, "Error retrieving sales orders");
+                return StatusCode(500, new { message = "An error occurred retrieving sales orders" });
             }
         }
 
         /// <summary>
-        /// Get a specific sales order by ID - Requires Sales.Read permission
+        /// Search sales orders (advanced query)
         /// </summary>
-        [HttpGet("{id}")]
-        [HasPermission("Sales", "Read")]
-        [ProducesResponseType(typeof(SalesOrderDto), 200)]
-        [ProducesResponseType(404)]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            try
-            {
-                string cacheKey = "SalesOrder-" + id;
-                var order = await _cacheService.GetStateAsync<SalesOrderDto>(cacheKey);
-
-                if (order != null)
-                {
-                    _logger.LogInformation("Retrieved sales order {@Order} from cache", new { OrderId = id });
-                    return Ok(order);
-                }
-
-                order = await _salesOrderService.GetSalesOrderByIdAsync(id);
-                if (order == null)
-                {
-                    _logger.LogWarning("Sales order {@Order} not found", new { OrderId = id });
-                    return NotFound(new { message = $"Order with ID {id} not found." });
-                }
-
-                await _cacheService.SaveStateAsync(cacheKey, order);
-                _logger.LogInformation("Retrieved sales order {@Order} from database and cached", new { OrderId = id });
-                return Ok(order);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving sales order {@Order}", new { OrderId = id });
-                var order = await _salesOrderService.GetSalesOrderByIdAsync(id);
-                return order == null ? NotFound(new { message = $"Order with ID {id} not found." }) : Ok(order);
-            }
-        }
-
-        /// <summary>
-        /// Search sales orders with advanced filtering, sorting, and pagination - Requires Sales.Read permission
-        /// </summary>
-        /// <remarks>
-        /// Supported filters: orderNumber, customerId, status, minTotal, maxTotal
-        /// Supported sort fields: id, orderNumber, status, totalAmount, createdAt, orderDate
-        /// </remarks>
         [HttpGet("search")]
         [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(PaginatedResult<SalesOrderDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Search([FromQuery] QuerySpec query)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             try
             {
                 query.Validate();
@@ -151,6 +158,40 @@ namespace MyApp.Sales.API.Controllers
             {
                 _logger.LogWarning(ex, "Error creating sales order: {@Error}", new { Message = ex.Message });
                 return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Get a specific customer by ID - Requires Sales.Read permission
+        /// </summary>
+        [HttpGet("{id}")]
+        [HasPermission("Sales", "Read")]
+        [ProducesResponseType(typeof(SalesOrderDto), 200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            try
+            {
+                string cacheKey = "SalesOrder-" + id;
+                var salesOrder = await _cacheService.GetStateAsync<SalesOrderDto>(cacheKey);
+
+                if (salesOrder != null)
+                {
+                    return Ok(salesOrder);
+                }
+
+                salesOrder = await _salesOrderService.GetSalesOrderByIdAsync(id);
+                if (salesOrder == null)
+                    return NotFound(new { message = $"SalesOrder with ID {id} not found." });
+
+                await _cacheService.SaveStateAsync(cacheKey, salesOrder);
+                return Ok(salesOrder);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving salesOrder {@SalesOrder}", new { SalesOrderId = id });
+                var salesOrder = await _salesOrderService.GetSalesOrderByIdAsync(id);
+                return salesOrder == null ? NotFound(new { message = $"SalesOrder with ID {id} not found." }) : Ok(salesOrder);
             }
         }
 
@@ -224,7 +265,7 @@ namespace MyApp.Sales.API.Controllers
                 _logger.LogInformation(
                     "Quote {@Quote} created and cache invalidated",
                     new { QuoteId = result.Id });
-                return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+                return CreatedAtAction("Get", new { id = result.Id }, result);
             }
             catch (Exception ex)
             {

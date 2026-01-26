@@ -1,4 +1,6 @@
+using System;
 using AutoMapper;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
@@ -6,8 +8,12 @@ using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
+using System.Net.Http;
+using MyApp.Orders.Application.Contracts.Dtos;
+using MyApp.Orders.Domain;
 
 namespace MyApp.Purchasing.Application.Services;
 
@@ -179,7 +185,7 @@ public class PurchaseOrderService : IPurchaseOrderService
 
         try
         {
-            await _eventPublisher.PublishAsync("purchasing.order.approved", purchaseOrderApprovedEvent);
+            await _eventPublisher.PublishAsync(MessagingConstants.Topics.PurchasingOrderApproved, purchaseOrderApprovedEvent);
             _logger.LogInformation("Published PurchaseOrderApprovedEvent for PO {PurchaseOrderId}", order.Id);
         }
         catch (Exception ex)
@@ -224,27 +230,54 @@ public class PurchaseOrderService : IPurchaseOrderService
             orderLine.ReceivedQuantity += receivedLine.ReceivedQuantity;
             orderLine.IsFullyReceived = orderLine.ReceivedQuantity >= orderLine.Quantity;
 
-            // Call Inventory service to add stock via Dapr
+            // Call Orders service to create an Inbound Order (Operational)
             try
             {
-                var addStockRequest = new
+                var createOrderRequest = new CreateUpdateOrderDto
                 {
-                    productId = orderLine.ProductId,
-                    warehouseId = dto.WarehouseId,
-                    quantityChange = receivedLine.ReceivedQuantity,
-                    reason = $"PO Receipt: {order.OrderNumber}",
-                    reference = order.OrderNumber
+                    OrderNumber = $"{order.OrderNumber}-REC",
+                    Type = OrderType.Inbound,
+                    SourceId = order.SupplierId,  // Origin supplier
+                    TargetId = dto.WarehouseId,   // Destination warehouse
+                    ExternalOrderId = order.Id,   // Link to PurchaseOrder
+                    WarehouseId = dto.WarehouseId,
+                    OrderDate = dto.ReceivedDate,
+                    Lines = new List<CreateOrderLineDto> 
+                    { 
+                        new CreateOrderLineDto 
+                        { 
+                            ProductId = orderLine.ProductId, 
+                            Quantity = receivedLine.ReceivedQuantity 
+                        } 
+                    }
                 };
 
-                await _serviceInvoker.InvokeAsync<object, object>(
-                    "inventory",
-                    "api/stockoperations/adjust",
+                var fulfillmentOrder = await _serviceInvoker.InvokeAsync<CreateUpdateOrderDto, OrderDto>(
+                    ServiceNames.Orders,
+                    ApiEndpoints.Orders.Base,
                     HttpMethod.Post,
-                    addStockRequest);
+                    createOrderRequest);
 
                 _logger.LogInformation(
-                    "Added {Quantity} units of Product {ProductId} to Warehouse {WarehouseId}",
-                    receivedLine.ReceivedQuantity, orderLine.ProductId, dto.WarehouseId);
+                    "Created Inbound Order {OrderId} for Product {ProductId} to Warehouse {WarehouseId}",
+                    fulfillmentOrder.Id, orderLine.ProductId, dto.WarehouseId);
+
+                // Immediately fulfill the order to trigger inventory adjustment
+                var fulfillRequest = new FulfillOrderDto
+                {
+                    OrderId = fulfillmentOrder.Id,
+                    WarehouseId = dto.WarehouseId,
+                    ShippingAddress = null,
+                    TrackingNumber = $"REC-{order.OrderNumber}"
+                };
+
+                await _serviceInvoker.InvokeAsync<FulfillOrderDto, OrderDto>(
+                    ServiceNames.Orders,
+                    $"{ApiEndpoints.Orders.Base}/{fulfillmentOrder.Id}/fulfill",
+                    HttpMethod.Post,
+                    fulfillRequest);
+
+                _logger.LogInformation("Fulfilled Inbound Order {OrderId}", fulfillmentOrder.Id);
 
                 // Publish PurchaseOrderLineReceivedEvent
                 var lineReceivedEvent = new PurchaseOrderLineReceivedEvent(
@@ -255,13 +288,13 @@ public class PurchaseOrderService : IPurchaseOrderService
                     dto.WarehouseId
                 );
 
-                await _eventPublisher.PublishAsync("purchasing.line.received", lineReceivedEvent);
+                await _eventPublisher.PublishAsync(MessagingConstants.Topics.PurchasingLineReceived, lineReceivedEvent);
             }
             catch (Exception ex)
             {
                 _logger.LogError(
                     ex,
-                    "Failed to add stock for Product {ProductId} from PO {PurchaseOrderId}",
+                    "Failed to create Inbound Order for Product {ProductId} from PO {PurchaseOrderId}",
                     orderLine.ProductId, order.Id);
                 throw;
             }

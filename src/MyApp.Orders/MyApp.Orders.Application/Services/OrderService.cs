@@ -8,7 +8,11 @@ using MyApp.Orders.Domain.Repositories;
 using MyApp.Shared.Domain.BusinessRules;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Exceptions;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Inventory.Application.Contracts.DTOs;
+using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Orders.Application.Services
 {
@@ -46,7 +50,6 @@ namespace MyApp.Orders.Application.Services
             entity.Id = Guid.NewGuid();
             entity.OrderDate = dto.OrderDate;
             entity.Status = OrderStatus.Draft;
-            entity.TotalAmount = entity.Lines.Sum(l => l.LineTotal = l.Quantity * l.UnitPrice);
 
             foreach (var line in entity.Lines)
             {
@@ -82,8 +85,11 @@ namespace MyApp.Orders.Application.Services
             if (existing == null) return;
 
             existing.OrderNumber = dto.OrderNumber;
-            existing.CustomerId = dto.CustomerId;
             existing.OrderDate = dto.OrderDate;
+            existing.Type = dto.Type;
+            existing.SourceId = dto.SourceId;
+            existing.TargetId = dto.TargetId;
+            existing.ExternalOrderId = dto.ExternalOrderId;
 
             // Simple handling: replace lines
             existing.Lines.Clear();
@@ -93,14 +99,10 @@ namespace MyApp.Orders.Application.Services
                 {
                     OrderId = existing.Id,
                     ProductId = l.ProductId,
-                    Quantity = l.Quantity,
-                    UnitPrice = l.UnitPrice,
-                    LineTotal = l.Quantity * l.UnitPrice
+                    Quantity = l.Quantity
                 };
                 existing.Lines.Add(line);
             }
-
-            existing.TotalAmount = existing.Lines.Sum(x => x.LineTotal);
 
             await _orders.UpdateAsync(existing);
         }
@@ -108,8 +110,8 @@ namespace MyApp.Orders.Application.Services
         public async Task<OrderDto> CreateOrderWithReservationAsync(CreateOrderWithReservationDto dto)
         {
             _logger.LogInformation(
-                "Creating order with reservation: OrderNumber={OrderNumber}, CustomerId={CustomerId}, WarehouseId={WarehouseId}",
-                dto.OrderNumber, dto.CustomerId, dto.WarehouseId);
+                "Creating operational order with reservation: OrderNumber={OrderNumber}, Type={Type}, WarehouseId={WarehouseId}",
+                dto.OrderNumber, dto.Type, dto.WarehouseId);
 
             // Validate order lines
             if (dto.Lines.Count == 0)
@@ -121,11 +123,14 @@ namespace MyApp.Orders.Application.Services
             var order = new Order(Guid.NewGuid())
             {
                 OrderNumber = dto.OrderNumber,
-                CustomerId = dto.CustomerId,
+                Type = dto.Type,
+                SourceId = dto.SourceId,
+                TargetId = dto.TargetId,
+                ExternalOrderId = dto.ExternalOrderId,
                 OrderDate = dto.OrderDate,
                 Status = OrderStatus.Draft,
                 WarehouseId = dto.WarehouseId,
-                ShippingAddress = dto.ShippingAddress
+                DestinationAddress = dto.DestinationAddress
             };
 
             // Create order lines
@@ -135,17 +140,16 @@ namespace MyApp.Orders.Application.Services
                 {
                     OrderId = order.Id,
                     ProductId = lineDto.ProductId,
-                    Quantity = lineDto.Quantity,
-                    UnitPrice = lineDto.UnitPrice,
-                    LineTotal = lineDto.Quantity * lineDto.UnitPrice
+                    Quantity = lineDto.Quantity
                 };
                 order.Lines.Add(line);
             }
 
-            order.TotalAmount = order.Lines.Sum(l => l.LineTotal);
-
             // Validate order using business rules
-            OrderInvariants.ValidateOrder(order.Lines.Count, order.TotalAmount, order.Lines.Sum(l => l.LineTotal));
+            if (order.Lines.Count == 0)
+            {
+                throw new InvalidOperationException("Order must have at least one line");
+            }
 
             // Save order
             await _orders.AddAsync(order);
@@ -160,31 +164,31 @@ namespace MyApp.Orders.Application.Services
                         line.ProductId, line.Quantity, dto.WarehouseId);
 
                     // Call Inventory service to reserve stock
-                    var reserveRequest = new
+                    var reserveRequest = new ReserveStockDto
                     {
-                        productId = line.ProductId,
-                        warehouseId = dto.WarehouseId,
-                        quantity = line.Quantity,
-                        orderId = order.Id,
-                        orderLineId = line.Id,
-                        expiresAt = (DateTime?)null // Use default 24-hour expiry
+                        ProductId = line.ProductId,
+                        WarehouseId = dto.WarehouseId,
+                        Quantity = line.Quantity,
+                        OrderId = order.Id,
+                        OrderLineId = line.Id,
+                        ExpiresAt = null // Use default
                     };
 
-                    var reservation = await _serviceInvoker.InvokeAsync<object, dynamic>(
-                        "inventory",
-                        "api/stockoperations/reserve",
+                    var reservation = await _serviceInvoker.InvokeAsync<ReserveStockDto, ReservationDto>(
+                        ServiceNames.Inventory,
+                        ApiEndpoints.Inventory.ReserveStock,
                         HttpMethod.Post,
                         reserveRequest);
 
                     // Create ReservedStock record
-                    var reservedStock = new ReservedStock(Guid.Parse(reservation.id.ToString()))
+                    var reservedStock = new ReservedStock(reservation.Id)
                     {
                         ProductId = line.ProductId,
                         WarehouseId = dto.WarehouseId,
                         OrderId = order.Id,
                         OrderLineId = line.Id,
                         Quantity = line.Quantity,
-                        ReservedUntil = DateTime.Parse(reservation.reservedUntil.ToString()),
+                        ReservedUntil = reservation.ReservedUntil,
                         Status = ReservationStatus.Reserved
                     };
 
@@ -211,21 +215,22 @@ namespace MyApp.Orders.Application.Services
                 }
             }
 
-            // Update order status to Confirmed (reservations confirmed)
-            order.Status = OrderStatus.Confirmed;
+            // Update order status to Approved (reservations confirmed)
+            order.Status = OrderStatus.Approved;
             await _orders.UpdateAsync(order);
 
             // Publish OrderCreatedEvent
             var orderCreatedEvent = new OrderCreatedEvent(
                 order.Id,
-                order.CustomerId,
                 order.OrderNumber,
-                order.Lines.Select(l => new OrderLineEvent(l.ProductId, l.Quantity, l.UnitPrice)).ToList()
+                order.Type.ToString(),
+                order.WarehouseId,
+                order.Lines.Select(l => new OrderLineEvent(l.ProductId, l.Quantity)).ToList()
             );
 
             try
             {
-                await _eventPublisher.PublishAsync("orders.order.created", orderCreatedEvent);
+                await _eventPublisher.PublishAsync(MessagingConstants.Topics.OrderCreated, orderCreatedEvent);
                 _logger.LogInformation("Published OrderCreatedEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)
@@ -247,36 +252,39 @@ namespace MyApp.Orders.Application.Services
                 throw new InvalidOperationException($"Order {dto.OrderId} not found");
             }
 
-            if (order.Status != OrderStatus.Confirmed)
+            if (order.Status != OrderStatus.Approved && order.Status != OrderStatus.Draft)
             {
                 throw new OrderFulfillmentException(dto.OrderId, $"Order cannot be fulfilled. Current status: {order.Status}");
             }
 
-            // Get reservations
-            var reservations = await _reservedStockRepository.GetByOrderIdAsync(dto.OrderId);
-            if (reservations.Count == 0)
+            // Handle reservations for Outbound orders
+            if (order.Type == OrderType.Outbound)
             {
-                throw new OrderFulfillmentException(dto.OrderId, "No stock reservations found for this order");
-            }
-
-            // Mark all reservations as fulfilled
-            foreach (var reservation in reservations)
-            {
-                if (reservation.Status != ReservationStatus.Reserved)
+                var reservations = await _reservedStockRepository.GetByOrderIdAsync(dto.OrderId);
+                if (reservations.Count == 0)
                 {
-                    throw new OrderFulfillmentException(dto.OrderId,
-                        $"Reservation {reservation.Id} is not in Reserved status: {reservation.Status}");
+                    throw new OrderFulfillmentException(dto.OrderId, "No stock reservations found for this outbound order");
                 }
 
-                reservation.Status = ReservationStatus.Fulfilled;
-                await _reservedStockRepository.UpdateAsync(reservation);
+                // Mark all reservations as fulfilled
+                foreach (var reservation in reservations)
+                {
+                    if (reservation.Status != ReservationStatus.Reserved)
+                    {
+                        throw new OrderFulfillmentException(dto.OrderId,
+                            $"Reservation {reservation.Id} is not in Reserved status: {reservation.Status}");
+                    }
+
+                    reservation.Status = ReservationStatus.Fulfilled;
+                    await _reservedStockRepository.UpdateAsync(reservation);
+                }
             }
 
             // Update order
-            order.Status = OrderStatus.Shipped;
+            order.Status = OrderStatus.Completed;
             order.FulfilledDate = DateTime.UtcNow;
             order.WarehouseId = dto.WarehouseId;
-            order.ShippingAddress = dto.ShippingAddress;
+            order.DestinationAddress = dto.ShippingAddress;
             order.TrackingNumber = dto.TrackingNumber;
 
             // Mark all lines as fulfilled
@@ -290,14 +298,17 @@ namespace MyApp.Orders.Application.Services
             // Publish OrderFulfilledEvent
             var orderFulfilledEvent = new OrderFulfilledEvent(
                 order.Id,
+                order.OrderNumber,
+                order.Type.ToString(),
                 dto.WarehouseId,
                 order.FulfilledDate.Value,
-                dto.TrackingNumber
+                dto.TrackingNumber,
+                order.Lines.Select(l => new OrderLineEvent(l.ProductId, l.Quantity)).ToList()
             );
 
             try
             {
-                await _eventPublisher.PublishAsync("orders.order.fulfilled", orderFulfilledEvent);
+                await _eventPublisher.PublishAsync(MessagingConstants.Topics.OrderFulfilled, orderFulfilledEvent);
                 _logger.LogInformation("Published OrderFulfilledEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)
@@ -321,9 +332,9 @@ namespace MyApp.Orders.Application.Services
                 throw new InvalidOperationException($"Order {dto.OrderId} not found");
             }
 
-            if (order.Status == OrderStatus.Shipped)
+            if (order.Status == OrderStatus.Completed)
             {
-                throw new InvalidOperationException($"Cannot cancel shipped order {dto.OrderId}");
+                throw new InvalidOperationException($"Cannot cancel completed order {dto.OrderId}");
             }
 
             // Get and release all reservations
@@ -336,8 +347,8 @@ namespace MyApp.Orders.Application.Services
                     try
                     {
                         await _serviceInvoker.InvokeAsync(
-                            "inventory",
-                            $"api/stockoperations/reservations/{reservation.Id}",
+                            ServiceNames.Inventory,
+                            $"{ApiEndpoints.Inventory.Reservations}/{reservation.Id}",
                             HttpMethod.Delete);
 
                         reservation.Status = ReservationStatus.Cancelled;
@@ -365,7 +376,7 @@ namespace MyApp.Orders.Application.Services
 
             try
             {
-                await _eventPublisher.PublishAsync("orders.order.cancelled", orderCancelledEvent);
+                await _eventPublisher.PublishAsync(MessagingConstants.Topics.OrderCancelled, orderCancelledEvent);
                 _logger.LogInformation("Published OrderCancelledEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)
@@ -374,6 +385,17 @@ namespace MyApp.Orders.Application.Services
             }
 
             _logger.LogInformation("Order cancelled successfully: OrderId={OrderId}", order.Id);
+        }
+
+        public async Task<PaginatedResult<OrderDto>> QueryOrdersAsync(ISpecification<Order> spec)
+        {
+            var result = await _orders.QueryAsync(spec);
+            return new PaginatedResult<OrderDto>(
+                result.Items.Select(o => _mapper.Map<OrderDto>(o)),
+                result.PageNumber,
+                result.PageSize,
+                result.TotalCount
+            );
         }
     }
 }

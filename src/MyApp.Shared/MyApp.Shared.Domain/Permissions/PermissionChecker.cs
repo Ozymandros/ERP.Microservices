@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Constants;
 using System.Net.Http.Headers;
 
 namespace MyApp.Shared.Domain.Permissions;
@@ -20,7 +21,7 @@ public class PermissionChecker : IPermissionChecker
 
     public async Task<bool> HasPermissionAsync(Guid userId, string module, string action)
     {
-        var query = new Dictionary<string, string>
+        var query = new Dictionary<string, string?>
         {
             ["userId"] = userId.ToString(),
             ["module"] = module,
@@ -29,8 +30,8 @@ public class PermissionChecker : IPermissionChecker
 
         // 1. Create the request manually
         var request = _serviceInvoker.CreateRequest(
-            "auth-service",
-            "api/permissions/check",
+            ServiceNames.Auth,
+            "api/Permissions/check",
             HttpMethod.Get,
             null,
             query);
@@ -60,7 +61,7 @@ public class PermissionChecker : IPermissionChecker
         if (string.IsNullOrEmpty(action))
             throw new ArgumentException($"'{nameof(action)}' cannot be null or empty.", nameof(action));
 
-        var query = new Dictionary<string, string>
+        var query = new Dictionary<string, string?>
         {
             ["module"] = module,
             ["action"] = action
@@ -68,8 +69,8 @@ public class PermissionChecker : IPermissionChecker
 
         // 1. Create the request
         using var request = _serviceInvoker.CreateRequest(
-            "auth-service",
-            "api/permissions/check",
+            ServiceNames.Auth,
+            "api/Permissions/check",
             HttpMethod.Get,
             null,
             query);

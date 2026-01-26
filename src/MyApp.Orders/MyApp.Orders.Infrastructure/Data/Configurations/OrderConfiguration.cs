@@ -11,13 +11,19 @@ namespace MyApp.Orders.Infrastructure.Data.Configurations
             builder.ToTable("Orders");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.OrderNumber).IsRequired().HasMaxLength(64);
-            builder.Property(x => x.CustomerId).IsRequired();
             builder.Property(x => x.OrderDate).IsRequired();
             builder.Property(x => x.Status).IsRequired();
-            builder.Property(x => x.TotalAmount).HasColumnType("decimal(18,2)");
+            builder.Property(x => x.Type).IsRequired();
+            
+            // Operational fields
+            builder.Property(x => x.SourceId);
+            builder.Property(x => x.TargetId);
+            builder.Property(x => x.ExternalOrderId);
             
             // Fulfillment fields
-            builder.Property(x => x.ShippingAddress).HasMaxLength(500);
+            builder.Property(x => x.WarehouseId);
+            builder.Property(x => x.FulfilledDate);
+            builder.Property(x => x.DestinationAddress).HasMaxLength(500);
             builder.Property(x => x.TrackingNumber).HasMaxLength(100);
 
             builder.HasMany(x => x.Lines)

@@ -10,7 +10,7 @@ namespace MyApp.Tests.Integration;
 public class AuthIntegrationTests
 {
     [Fact]
-    public async Task Login_WithVInvalidCredentials_ReturnsUnauthorized()
+    public async Task Login_WithInvalidCredentials_ReturnsUnauthorized()
     {
         var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
@@ -30,7 +30,7 @@ public class AuthIntegrationTests
             Password: "Password123!"
         );
 
-        var response = await client.PostAsJsonAsync("/api/auth/login", loginDto);
+        var response = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
@@ -50,19 +50,34 @@ public class AuthIntegrationTests
             .WaitAsync(TimeSpan.FromSeconds(30));
         var client = app.CreateHttpClient("gateway");
 
+        var randomId = Guid.NewGuid();
+        var email = $"test{randomId}@example.com";
+        var password = "Password123!";
+
+        var registerDto = new RegisterDto
+        (
+            Email: email,
+            Password: password,
+            FirstName: "Test",
+            LastName: "User",
+            PasswordConfirm: password,
+            Username: $"testuser{randomId}"
+        );
+        await client.PostAsJsonAsync("/auth/api/auth/register", registerDto);
+
         var loginDto = new LoginDto
         (
-            Email: "admin@myapp.local",
-            Password: "Admin123!"
+            Email: email,
+            Password: password
         );
 
-        var response = await client.PostAsJsonAsync("/api/auth/login", loginDto);
+        var response = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact]
-    public async Task Login_WithInvalidCredentials_ReturnsUnauthorized()
+    public async Task Login_WithInvalidCredentials_ReturnsUnauthorized_SecondCase()
     {
         var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
@@ -82,7 +97,7 @@ public class AuthIntegrationTests
             Password: "wrongpassword"
         );
 
-        var response = await client.PostAsJsonAsync("/api/auth/login", loginDto);
+        var response = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
@@ -108,7 +123,7 @@ public class AuthIntegrationTests
             Password: ""
         );
 
-        var response = await client.PostAsJsonAsync("/api/auth/login", loginDto);
+        var response = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -138,7 +153,7 @@ public class AuthIntegrationTests
             Username: "johndoe"
             );
 
-        var response = await client.PostAsJsonAsync("/api/auth/register", registerDto);
+        var response = await client.PostAsJsonAsync("/auth/api/auth/register", registerDto);
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
@@ -158,17 +173,26 @@ public class AuthIntegrationTests
             .WaitAsync(TimeSpan.FromSeconds(30));
         var client = app.CreateHttpClient("gateway");
 
+        var randomId = Guid.NewGuid();
+        var email = $"existing{randomId}@example.com";
+        var password = "Password123!";
+        var username = $"existinguser{randomId}";
+
         var registerDto = new RegisterDto
         (
-            Email: "existing@example.com",
-            Password: "Password123!",
+            Email: email,
+            Password: password,
             FirstName: "Jane",
             LastName: "Doe",
-            PasswordConfirm: "Password123!",
-            Username: "existinguser"
+            PasswordConfirm: password,
+            Username: username
         );
 
-        var response = await client.PostAsJsonAsync("/api/auth/register", registerDto);
+        // Initial registration
+        await client.PostAsJsonAsync("/auth/api/auth/register", registerDto);
+
+        // Try to register again
+        var response = await client.PostAsJsonAsync("/auth/api/auth/register", registerDto);
 
         Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
     }
@@ -198,7 +222,7 @@ public class AuthIntegrationTests
             PasswordConfirm: "456"
         );
 
-        var response = await client.PostAsJsonAsync("/api/auth/register", registerDto);
+        var response = await client.PostAsJsonAsync("/auth/api/auth/register", registerDto);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -218,13 +242,37 @@ public class AuthIntegrationTests
             .WaitAsync(TimeSpan.FromSeconds(30));
         var client = app.CreateHttpClient("gateway");
 
+        // Register and Login to get tokens
+        var randomId = Guid.NewGuid();
+        var email = $"refresh{randomId}@example.com";
+        var password = "Password123!";
+
+        var registerDto = new RegisterDto(
+             Email: email,
+             Password: password,
+             FirstName: "Test",
+             LastName: "User",
+             PasswordConfirm: password,
+             Username: $"refreshuser{randomId}"
+        );
+        await client.PostAsJsonAsync("/auth/api/auth/register", registerDto);
+
+        var loginDto = new LoginDto(email, password);
+        var loginResponse = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
+        var tokens = await loginResponse.Content.ReadFromJsonAsync<TokenResponseDto>();
+
+        if (tokens is null) 
+            {
+            throw new InvalidOperationException("Failed to retrieve tokens from login response.");
+        }
+
         var refreshTokenDto = new RefreshTokenDto
         (
-            RefreshToken: "valid-refresh-token",
-            AccessToken: "valid-access-token"
+            RefreshToken: tokens.RefreshToken,
+            AccessToken: tokens.AccessToken
         );
 
-        var response = await client.PostAsJsonAsync("/api/auth/refresh", refreshTokenDto);
+        var response = await client.PostAsJsonAsync("/auth/api/auth/refresh", refreshTokenDto);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
@@ -246,7 +294,7 @@ public class AuthIntegrationTests
 
         var refreshTokenDto = new RefreshTokenDto("invalid-access-token", "invalid-refresh-token");
 
-        var response = await client.PostAsJsonAsync("/api/auth/refresh", refreshTokenDto);
+        var response = await client.PostAsJsonAsync("/auth/api/auth/refresh", refreshTokenDto);
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
@@ -272,7 +320,7 @@ public class AuthIntegrationTests
             AccessToken: ""
         );
 
-        var response = await client.PostAsJsonAsync("/api/auth/refresh", refreshTokenDto);
+        var response = await client.PostAsJsonAsync("/auth/api/auth/refresh", refreshTokenDto);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -295,7 +343,7 @@ public class AuthIntegrationTests
 
         var provider = "Google";
 
-        var response = await client.GetAsync($"/api/auth/external-login/{provider}");
+        var response = await client.GetAsync($"/auth/api/auth/external-login/{provider}");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
@@ -317,7 +365,7 @@ public class AuthIntegrationTests
 
         var provider = "invalid-provider";
 
-        var response = await client.GetAsync($"/api/auth/external-login/{provider}");
+        var response = await client.GetAsync($"/auth/api/auth/external-login/{provider}");
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -337,7 +385,7 @@ public class AuthIntegrationTests
             .WaitAsync(TimeSpan.FromSeconds(30));
         var client = app.CreateHttpClient("gateway");
 
-        var response = await client.GetAsync("/api/auth/external-callback");
+        var response = await client.GetAsync("/auth/api/auth/external-callback");
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -358,7 +406,7 @@ public class AuthIntegrationTests
     //        .WaitAsync(TimeSpan.FromSeconds(30));
     //    var client = app.CreateHttpClient("gateway");
 
-    //    var response = await client.PostAsync("/api/auth/logout", null);
+    //    var response = await client.PostAsync("/auth/api/auth/logout", null);
 
     //    Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     //}
@@ -379,22 +427,30 @@ public class AuthIntegrationTests
         var client = app.CreateHttpClient("gateway");
 
         // Arrange
-        var user = new ApplicationUser
-        {
-            Id = Guid.NewGuid(),
-            Email = "test@example.com",
-            UserName = "testuser",
-            FirstName = "Test",
-            LastName = "User"
-        };
+        // Register and Login
+        var randomId = Guid.NewGuid();
+        var email = $"logout{randomId}@example.com";
+        var password = "Password123!";
 
-        IConfiguration configuration = app.Services.GetRequiredService<IConfiguration>();
-        var token = await new JwtTokenProvider(configuration).GenerateAccessTokenAsync(user);
+        var registerDto = new RegisterDto(
+             Email: email,
+             Password: password,
+             FirstName: "Test",
+             LastName: "User",
+             PasswordConfirm: password,
+             Username: $"logoutuser{randomId}"
+        );
+        await client.PostAsJsonAsync("/auth/api/auth/register", registerDto);
+
+        var loginDto = new LoginDto(email, password);
+        var loginResponse = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
+        var tokens = await loginResponse.Content.ReadFromJsonAsync<TokenResponseDto>();
+
         client.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "valid-jwt-token");
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokens?.AccessToken);
 
         //Act
-        var response = await client.PostAsync("/api/auth/logout", null);
+        var response = await client.PostAsync("/auth/api/auth/logout", null);
 
         //Assert
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);

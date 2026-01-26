@@ -25,10 +25,11 @@ public class OrderRepositoryTests
         var order = new Order(Guid.NewGuid())
         {
             OrderNumber = orderNumber,
-            CustomerId = Guid.NewGuid(),
+            Type = OrderType.Transfer,
+            SourceId = Guid.NewGuid(),
+            TargetId = Guid.NewGuid(),
             OrderDate = DateTime.UtcNow,
-            Status = OrderStatus.Draft,
-            TotalAmount = 100.00m
+            Status = OrderStatus.Draft
         };
         _context.Orders.Add(order);
         _context.SaveChanges();
@@ -74,8 +75,7 @@ public class OrderRepositoryTests
         {
             OrderId = order.Id,
             ProductId = Guid.NewGuid(),
-            Quantity = 5,
-            UnitPrice = 20.00m
+            Quantity = 5
         };
         _context.OrderLines.Add(orderLine);
         _context.SaveChanges();
@@ -135,10 +135,10 @@ public class OrderRepositoryTests
         var order = new Order(Guid.NewGuid())
         {
             OrderNumber = "ORD-NEW",
-            CustomerId = Guid.NewGuid(),
+            Type = OrderType.Inbound,
+            TargetId = Guid.NewGuid(),
             OrderDate = DateTime.UtcNow,
-            Status = OrderStatus.Draft,
-            TotalAmount = 150.00m
+            Status = OrderStatus.Draft
         };
 
         // Act
@@ -148,7 +148,7 @@ public class OrderRepositoryTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal("ORD-NEW", result.OrderNumber);
-        Assert.Equal(150.00m, result.TotalAmount);
+        Assert.Equal(OrderType.Inbound, result.Type);
     }
 
     #endregion
@@ -160,8 +160,8 @@ public class OrderRepositoryTests
     {
         // Arrange
         var order = CreateTestOrder("ORD-UPDATE");
-        order.Status = OrderStatus.Confirmed;
-        order.TotalAmount = 200.00m;
+        order.Status = OrderStatus.Approved;
+        order.Type = OrderType.Outbound;
 
         // Act
         await _repository.UpdateAsync(order);
@@ -169,8 +169,8 @@ public class OrderRepositoryTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(OrderStatus.Confirmed, result.Status);
-        Assert.Equal(200.00m, result.TotalAmount);
+        Assert.Equal(OrderStatus.Approved, result.Status);
+        Assert.Equal(OrderType.Outbound, result.Type);
     }
 
     #endregion

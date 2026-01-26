@@ -45,7 +45,6 @@ public class InventoryTransactionConfiguration : IEntityTypeConfiguration<Invent
         builder.HasIndex(x => x.WarehouseId);
         builder.HasIndex(x => x.TransactionDate);
         builder.HasIndex(x => x.OrderId);
-        builder.HasIndex(x => x.SalesOrderId);
-        builder.HasIndex(x => x.PurchaseOrderId);
+        builder.HasIndex(x => x.OrderId);
     }
 }

@@ -7,6 +7,8 @@ using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 
+
+using MyApp.Shared.Infrastructure.Export;
 namespace MyApp.Inventory.API.Controllers;
 
 [ApiController]
@@ -23,6 +25,52 @@ public class ProductsController : ControllerBase
         _productService = productService;
         _logger = logger;
         _cacheService = cacheService;
+    }
+
+    /// <summary>
+    /// Export all products as XLSX
+    /// </summary>
+    [HttpGet("export-xlsx")]
+    [HasPermission("Inventory", "Read")]
+    [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToXlsx()
+    {
+        try
+        {
+            var products = await _cacheService.GetStateAsync<IEnumerable<ProductDto>>("all_products")
+                ?? await _productService.GetAllProductsAsync();
+            var bytes = products.ExportToXlsx();
+            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Products.xlsx");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting products to XLSX");
+            return StatusCode(500, new { message = "An error occurred exporting products" });
+        }
+    }
+
+    /// <summary>
+    /// Export all products as PDF
+    /// </summary>
+    [HttpGet("export-pdf")]
+    [HasPermission("Inventory", "Read")]
+    [Produces("application/pdf")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToPdf()
+    {
+        try
+        {
+            var products = await _cacheService.GetStateAsync<IEnumerable<ProductDto>>("all_products")
+                ?? await _productService.GetAllProductsAsync();
+            var bytes = products.ExportToPdf();
+            return File(bytes, "application/pdf", "Products.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting products to PDF");
+            return StatusCode(500, new { message = "An error occurred exporting products" });
+        }
     }
 
     /// <summary>

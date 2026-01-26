@@ -4,8 +4,9 @@ using MyApp.Orders.Application.Contracts;
 using MyApp.Orders.Application.Contracts.Dtos;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Permissions;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using MyApp.Shared.Domain.Pagination;
+using MyApp.Orders.Domain.Specifications;
+using MyApp.Shared.Infrastructure.Export;
 
 namespace MyApp.Orders.API
 {
@@ -14,7 +15,7 @@ namespace MyApp.Orders.API
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        readonly IOrderService _orderService;
+        private readonly IOrderService _orderService;
         private readonly ICacheService _cacheService;
         private readonly ILogger<OrdersController> _logger;
 
@@ -25,77 +26,117 @@ namespace MyApp.Orders.API
             _logger = logger;
         }
 
-        // GET: api/<OrdersController>
-        /// <summary>Get all orders - Requires Orders.Read permission</summary>
-        [HttpGet]
+        /// <summary>
+        /// Export all operational orders as XLSX
+        /// </summary>
+        [HttpGet("export-xlsx")]
         [HasPermission("Orders", "Read")]
-        public async Task<IEnumerable<OrderDto>> Get()
+        [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ExportToXlsx()
         {
             try
             {
-                var orders = await _cacheService.GetStateAsync<IEnumerable<OrderDto>>("all_orders");
-                if (orders != null)
-                {
-                    _logger.LogInformation("Retrieved all orders from cache");
-                    return orders;
-                }
+                var orders = await _cacheService.GetStateAsync<IEnumerable<OrderDto>>("all_orders")
+                    ?? await _orderService.ListAsync();
+                var bytes = orders.ExportToXlsx();
+                return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Orders.xlsx");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting orders to XLSX");
+                return StatusCode(500, new { message = "An error occurred exporting orders" });
+            }
+        }
 
-                orders = await _orderService.ListAsync();
-                await _cacheService.SaveStateAsync("all_orders", orders);
-                _logger.LogInformation("Retrieved all orders from database and cached");
-                return orders;
+        /// <summary>
+        /// Export all operational orders as PDF
+        /// </summary>
+        [HttpGet("export-pdf")]
+        [HasPermission("Orders", "Read")]
+        [Produces("application/pdf")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ExportToPdf()
+        {
+            try
+            {
+                var orders = await _cacheService.GetStateAsync<IEnumerable<OrderDto>>("all_orders")
+                    ?? await _orderService.ListAsync();
+                var bytes = orders.ExportToPdf();
+                return File(bytes, "application/pdf", "Orders.pdf");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting orders to PDF");
+                return StatusCode(500, new { message = "An error occurred exporting orders" });
+            }
+        }
+
+        /// <summary>
+        /// Get all operational orders
+        /// </summary>
+        [HttpGet]
+        [HasPermission("Orders", "Read")]
+        [ProducesResponseType(typeof(IEnumerable<OrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var orders = await _orderService.ListAsync();
+                return Ok(orders);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving all orders");
-                return await _orderService.ListAsync();
+                var orders = await _orderService.ListAsync();
+                return Ok(orders);
             }
         }
 
-        // GET api/<OrdersController>/5
-        /// <summary>Get order by ID - Requires Orders.Read permission</summary>
+        /// <summary>
+        /// Get operational order by ID
+        /// </summary>
         [HttpGet("{id}")]
         [HasPermission("Orders", "Read")]
-        public async Task<OrderDto?> Get(Guid id)
+        [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetById(Guid id)
         {
             try
             {
-                string cacheKey = "Order-" + id;
-                var order = await _cacheService.GetStateAsync<OrderDto>(cacheKey);
-
-                if (order is not null)
-                {
-                    _logger.LogInformation("Retrieved order {@Order} from cache", new { OrderId = id });
-                    return order;
-                }
-
-                order = await _orderService.GetByIdAsync(id);
-                if (order != null)
-                {
-                    await _cacheService.SaveStateAsync(cacheKey, order);
-                    _logger.LogInformation("Retrieved order {@Order} from database and cached", new { OrderId = id });
-                }
-                return order;
+                var order = await _orderService.GetByIdAsync(id);
+                if (order == null)
+                    return NotFound(new { message = $"Order with ID {id} not found." });
+                return Ok(order);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving order {@Order}", new { OrderId = id });
-                return await _orderService.GetByIdAsync(id);
+                var order = await _orderService.GetByIdAsync(id);
+                return order == null ? NotFound(new { message = $"Order with ID {id} not found." }) : Ok(order);
             }
         }
 
-        // POST api/<OrdersController>
-        /// <summary>Create new order - Requires Orders.Create permission</summary>
+        /// <summary>
+        /// Create a new operational order (Transfer, Inbound, Outbound, Return)
+        /// </summary>
         [HttpPost]
         [HasPermission("Orders", "Create")]
-        public async Task<OrderDto> Post([FromBody] CreateUpdateOrderDto value)
+        [ProducesResponseType(typeof(OrderDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Create([FromBody] CreateUpdateOrderDto dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
-                var result = await _orderService.CreateAsync(value);
+                var created = await _orderService.CreateAsync(dto);
                 await _cacheService.RemoveStateAsync("all_orders");
-                _logger.LogInformation("Order {@Order} created and cache invalidated", new { OrderId = result.Id });
-                return result;
+                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
             }
             catch (Exception ex)
             {
@@ -104,115 +145,185 @@ namespace MyApp.Orders.API
             }
         }
 
-        // PUT api/<OrdersController>/5
-        /// <summary>Update order - Requires Orders.Update permission</summary>
-        [HttpPut("{id}")]
-        [HasPermission("Orders", "Update")]
-        public async Task Put(Guid id, [FromBody] CreateUpdateOrderDto value)
-        {
-            try
-            {
-                await _orderService.UpdateAsync(id, value);
-                string cacheKey = "Order-" + id;
-                await _cacheService.RemoveStateAsync(cacheKey);
-                await _cacheService.RemoveStateAsync("all_orders");
-                _logger.LogInformation("Order {@Order} updated and cache invalidated", new { OrderId = id });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error updating order {@Order}", new { OrderId = id });
-                throw;
-            }
-        }
-
-        // DELETE api/<OrdersController>/5
-        /// <summary>Delete order - Requires Orders.Delete permission</summary>
-        [HttpDelete("{id}")]
-        [HasPermission("Orders", "Delete")]
-        public async Task Delete(Guid id)
-        {
-            try
-            {
-                await _orderService.DeleteAsync(id);
-                string cacheKey = "Order-" + id;
-                await _cacheService.RemoveStateAsync(cacheKey);
-                await _cacheService.RemoveStateAsync("all_orders");
-                _logger.LogInformation("Order {@Order} deleted and cache invalidated", new { OrderId = id });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error deleting order {@Order}", new { OrderId = id });
-                throw;
-            }
-        }
-
-        // POST api/<OrdersController>/with-reservation
-        /// <summary>Create order with automatic stock reservation - Requires Orders.Create permission</summary>
+        /// <summary>
+        /// Create operational order with automatic stock reservation
+        /// </summary>
         [HttpPost("with-reservation")]
         [HasPermission("Orders", "Create")]
-        public async Task<ActionResult<OrderDto>> CreateWithReservation([FromBody] CreateOrderWithReservationDto dto)
+        [ProducesResponseType(typeof(OrderDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateWithReservation([FromBody] CreateOrderWithReservationDto dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
-                var result = await _orderService.CreateOrderWithReservationAsync(dto);
+                var created = await _orderService.CreateOrderWithReservationAsync(dto);
                 await _cacheService.RemoveStateAsync("all_orders");
-                _logger.LogInformation(
-                    "Order {@Order} created with stock reservation and cache invalidated",
-                    new { OrderId = result.Id });
-                return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
+                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating order with reservation");
-                return BadRequest(new { error = ex.Message });
+                throw;
             }
         }
 
-        // POST api/<OrdersController>/fulfill
-        /// <summary>Fulfill order - Requires Orders.Update permission</summary>
-        [HttpPost("fulfill")]
+        /// <summary>
+        /// Update operational order
+        /// </summary>
+        [HttpPut("{id}")]
         [HasPermission("Orders", "Update")]
-        public async Task<ActionResult<OrderDto>> FulfillOrder([FromBody] FulfillOrderDto dto)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Update(Guid id, [FromBody] CreateUpdateOrderDto dto)
         {
-            try
-            {
-                var result = await _orderService.FulfillOrderAsync(dto);
-                string cacheKey = "Order-" + dto.OrderId;
-                await _cacheService.RemoveStateAsync(cacheKey);
-                await _cacheService.RemoveStateAsync("all_orders");
-                _logger.LogInformation(
-                    "Order {@Order} fulfilled and cache invalidated",
-                    new { OrderId = dto.OrderId });
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error fulfilling order {@Order}", new { OrderId = dto.OrderId });
-                return BadRequest(new { error = ex.Message });
-            }
-        }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        // POST api/<OrdersController>/cancel
-        /// <summary>Cancel order - Requires Orders.Update permission</summary>
-        [HttpPost("cancel")]
-        [HasPermission("Orders", "Update")]
-        public async Task<IActionResult> CancelOrder([FromBody] CancelOrderDto dto)
-        {
             try
             {
-                await _orderService.CancelOrderAsync(dto);
-                string cacheKey = "Order-" + dto.OrderId;
-                await _cacheService.RemoveStateAsync(cacheKey);
+                await _orderService.UpdateAsync(id, dto);
                 await _cacheService.RemoveStateAsync("all_orders");
-                _logger.LogInformation(
-                    "Order {@Order} cancelled and cache invalidated",
-                    new { OrderId = dto.OrderId });
                 return NoContent();
             }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Error updating order {@Order}: {@Error}", new { OrderId = id }, new { Message = ex.Message });
+                return NotFound(new { message = ex.Message });
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error cancelling order {@Order}", new { OrderId = dto.OrderId });
-                return BadRequest(new { error = ex.Message });
+                _logger.LogError(ex, "Error updating order");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Fulfill operational order (mark as completed)
+        /// </summary>
+        [HttpPost("{id}/fulfill")]
+        [HasPermission("Orders", "Update")]
+        [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Fulfill(Guid id, [FromBody] FulfillOrderDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                dto = dto with { OrderId = id };
+                var fulfilled = await _orderService.FulfillOrderAsync(dto);
+                return Ok(fulfilled);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Error fulfilling order {@Order}: {@Error}", new { OrderId = id }, new { Message = ex.Message });
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fulfilling order");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Cancel operational order
+        /// </summary>
+        [HttpPost("{id}/cancel")]
+        [HasPermission("Orders", "Update")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Cancel(Guid id, [FromBody] CancelOrderDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                dto = dto with { OrderId = id };
+                await _orderService.CancelOrderAsync(dto);
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Error cancelling order {@Order}: {@Error}", new { OrderId = id }, new { Message = ex.Message });
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error cancelling order");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Delete operational order
+        /// </summary>
+        [HttpDelete("{id}")]
+        [HasPermission("Orders", "Delete")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                await _orderService.DeleteAsync(id);
+                await _cacheService.RemoveStateAsync("all_orders");
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Error deleting order {@Order}: {@Error}", new { OrderId = id }, new { Message = ex.Message });
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting order");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Search operational orders with filter, sort, and pagination
+        /// </summary>
+        [HttpGet("search")]
+        [HasPermission("Orders", "Read")]
+        [ProducesResponseType(typeof(PaginatedResult<OrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Search([FromQuery] QuerySpec query)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            try
+            {
+                query.Validate();
+                var spec = new OrderQuerySpec(query);
+                var result = await _orderService.QueryOrdersAsync(spec);
+                _logger.LogInformation("Searched orders with query: {@Query}", query);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Invalid query specification");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching orders");
+                return StatusCode(500, new { message = "An error occurred searching orders" });
             }
         }
     }

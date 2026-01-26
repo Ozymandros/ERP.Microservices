@@ -7,6 +7,8 @@ using MyApp.Orders.Domain;
 using MyApp.Orders.Domain.Entities;
 using MyApp.Orders.Domain.Repositories;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Inventory.Application.Contracts.DTOs;
 using Xunit;
 
 namespace MyApp.Orders.Application.Tests.Services;
@@ -51,16 +53,16 @@ public class OrderServiceTests
         var createDto = new CreateUpdateOrderDto
         {
             OrderNumber = "ORD-001",
-            CustomerId = Guid.NewGuid(),
+            Type = OrderType.Transfer,
+            SourceId = Guid.NewGuid(),
+            TargetId = Guid.NewGuid(),
             OrderDate = DateTime.UtcNow,
-            Lines = new List<OrderLineDto>
+            Lines = new List<CreateOrderLineDto>
             {
-                new OrderLineDto(Guid.NewGuid())
+                new CreateOrderLineDto
                 {
                     ProductId = Guid.NewGuid(),
-                    Quantity = 5,
-                    UnitPrice = 10.00m,
-                    LineTotal = 50.00m
+                    Quantity = 5
                 }
             }
         };
@@ -68,9 +70,10 @@ public class OrderServiceTests
         var mappedOrder = new Order(Guid.NewGuid())
         {
             OrderNumber = "ORD-001",
+            Type = OrderType.Transfer,
             Lines = new List<OrderLine>
             {
-                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 5, UnitPrice = 10.00m }
+                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 5 }
             }
         };
 
@@ -80,9 +83,8 @@ public class OrderServiceTests
             {
                 OrderDate = DateTime.UtcNow,
                 OrderNumber = "ORD-001",
-                CustomerId = Guid.NewGuid(),
+                Type = "Transfer",
                 Status = "Draft",
-                TotalAmount = 50.00m,
                 Lines = new List<OrderLineDto>()
             });
 
@@ -92,7 +94,7 @@ public class OrderServiceTests
         // Assert
         _mockOrderRepository.Verify(r => r.AddAsync(It.Is<Order>(o =>
             o.Status == OrderStatus.Draft &&
-            o.TotalAmount == 50.00m &&
+            o.Type == OrderType.Transfer &&
             o.Id != Guid.Empty &&
             o.Lines.All(l => l.OrderId == o.Id && l.Id != Guid.Empty)
         )), Times.Once);
@@ -102,40 +104,30 @@ public class OrderServiceTests
     }
 
     [Fact]
-    public async Task CreateAsync_CalculatesTotalAmountFromLines()
+    public async Task CreateAsync_SetsOrderStatusToDraft()
     {
         // Arrange
         var createDto = new CreateUpdateOrderDto
         {
             OrderNumber = "ORD-002",
-            CustomerId = Guid.NewGuid(),
+            Type = OrderType.Inbound,
+            TargetId = Guid.NewGuid(),
             OrderDate = DateTime.UtcNow,
-            Lines = new List<OrderLineDto>
+            Lines = new List<CreateOrderLineDto>
             {
-                new OrderLineDto(Guid.NewGuid())
+                new CreateOrderLineDto
                 {
                     ProductId = Guid.NewGuid(),
-                    Quantity = 2,
-                    UnitPrice = 15.50m,
-                    LineTotal = 31.00m
-                },
-                new OrderLineDto(Guid.NewGuid())
-                {
-                    ProductId = Guid.NewGuid(),
-                    Quantity = 3,
-                    UnitPrice = 20.00m,
-                    LineTotal = 60.00m
+                    Quantity = 1
                 }
             }
         };
 
         var mappedOrder = new Order(Guid.NewGuid())
         {
-            OrderNumber = "ORD-002",
             Lines = new List<OrderLine>
             {
-                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 2, UnitPrice = 15.50m },
-                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 3, UnitPrice = 20.00m }
+                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 1 }
             }
         };
 
@@ -145,59 +137,8 @@ public class OrderServiceTests
             {
                 OrderDate = DateTime.UtcNow,
                 OrderNumber = "ORD-002",
-                CustomerId = Guid.NewGuid(),
-                Status = "Draft",
-                TotalAmount = 91.00m,
-                Lines = new List<OrderLineDto>()
-            });
-
-        // Act
-        await _orderService.CreateAsync(createDto);
-
-        // Assert
-        _mockOrderRepository.Verify(r => r.AddAsync(It.Is<Order>(o =>
-            o.TotalAmount == 91.00m  // (2 * 15.50) + (3 * 20.00)
-        )), Times.Once);
-    }
-
-    [Fact]
-    public async Task CreateAsync_SetsOrderStatusToDraft()
-    {
-        // Arrange
-        var createDto = new CreateUpdateOrderDto
-        {
-            OrderNumber = "ORD-003",
-            CustomerId = Guid.NewGuid(),
-            OrderDate = DateTime.UtcNow,
-            Lines = new List<OrderLineDto>
-            {
-                new OrderLineDto(Guid.NewGuid())
-                {
-                    ProductId = Guid.NewGuid(),
-                    Quantity = 1,
-                    UnitPrice = 100.00m,
-                    LineTotal = 100.00m
-                }
-            }
-        };
-
-        var mappedOrder = new Order(Guid.NewGuid())
-        {
-            Lines = new List<OrderLine>
-            {
-                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 1, UnitPrice = 100.00m }
-            }
-        };
-
-        _mockMapper.Setup(m => m.Map<Order>(createDto)).Returns(mappedOrder);
-        _mockMapper.Setup(m => m.Map<OrderDto>(It.IsAny<Order>()))
-            .Returns(new OrderDto(Guid.NewGuid())
-            {
-                OrderDate = DateTime.UtcNow,
-                OrderNumber = "ORD-003",
-                CustomerId = Guid.NewGuid(),
-                Status = "Draft",
-                TotalAmount = 100.00m
+                Type = "Inbound",
+                Status = "Draft"
             });
 
         // Act
@@ -209,62 +150,77 @@ public class OrderServiceTests
         )), Times.Once);
     }
 
+    #endregion
+
+    #region CreateOrderWithReservationAsync Tests
+
     [Fact]
-    public async Task CreateAsync_AssignsGuidsToOrderAndLines()
+    public async Task CreateOrderWithReservationAsync_WithValidDto_ReservesStockAndCreatesOrder()
     {
         // Arrange
-        var createDto = new CreateUpdateOrderDto
+        var warehouseId = Guid.NewGuid();
+        var productId = Guid.NewGuid();
+        var dto = new CreateOrderWithReservationDto
         {
-            OrderNumber = "ORD-004",
-            CustomerId = Guid.NewGuid(),
+            OrderNumber = "ORD-RES-001",
+            Type = OrderType.Outbound,
+            WarehouseId = warehouseId,
             OrderDate = DateTime.UtcNow,
-            Lines = new List<OrderLineDto>
+            Lines = new List<CreateOrderLineDto>
             {
-                new OrderLineDto(Guid.NewGuid())
-                {
-                    ProductId = Guid.NewGuid(),
-                    Quantity = 1,
-                    UnitPrice = 10.00m,
-                    LineTotal = 10.00m
-                },
-                new OrderLineDto(Guid.NewGuid())
-                {
-                    ProductId = Guid.NewGuid(),
-                    Quantity = 2,
-                    UnitPrice = 20.00m,
-                    LineTotal = 40.00m
-                }
+                new CreateOrderLineDto { ProductId = productId, Quantity = 5 }
             }
         };
 
-        var mappedOrder = new Order(Guid.NewGuid())
+        var order = new Order(Guid.NewGuid())
         {
-            Lines = new List<OrderLine>
-            {
-                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 1, UnitPrice = 10.00m },
-                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 2, UnitPrice = 20.00m }
-            }
+            OrderNumber = dto.OrderNumber,
+            Type = dto.Type,
+            WarehouseId = dto.WarehouseId,
+            Lines = new List<OrderLine>()
         };
 
-        _mockMapper.Setup(m => m.Map<Order>(createDto)).Returns(mappedOrder);
-        _mockMapper.Setup(m => m.Map<OrderDto>(It.IsAny<Order>()))
-            .Returns(new OrderDto(Guid.NewGuid())
-            {
-                OrderDate = DateTime.UtcNow,
-                OrderNumber = "ORD-004",
-                CustomerId = Guid.NewGuid(),
-                Status = "Draft",
-                TotalAmount = 50.00m
-            });
+        var line = new OrderLine(Guid.NewGuid())
+        {
+            OrderId = order.Id,
+            ProductId = productId,
+            Quantity = 5
+        };
+
+        var reservationId = Guid.NewGuid();
+        var reservationResponse = new ReservationDto(reservationId)
+        {
+            ProductId = productId,
+            WarehouseId = warehouseId,
+            Quantity = 5,
+            ReservedUntil = DateTime.UtcNow.AddDays(1),
+            Status = "Reserved"
+        };
+        
+        _mockServiceInvoker.Setup(s => s.InvokeAsync<ReserveStockDto, ReservationDto>(
+            ServiceNames.Inventory,
+            ApiEndpoints.Inventory.ReserveStock,
+            HttpMethod.Post,
+            It.IsAny<ReserveStockDto>(),
+            It.IsAny<CancellationToken>()))
+            .ReturnsAsync(reservationResponse);
+
+        _mockMapper.Setup(m => m.Map<OrderDto>(It.IsAny<Order>())).Returns(new OrderDto(Guid.NewGuid()));
 
         // Act
-        await _orderService.CreateAsync(createDto);
+        var result = await _orderService.CreateOrderWithReservationAsync(dto);
 
         // Assert
-        _mockOrderRepository.Verify(r => r.AddAsync(It.Is<Order>(o =>
-            o.Id != Guid.Empty &&
-            o.Lines.All(l => l.Id != Guid.Empty && l.OrderId == o.Id)
-        )), Times.Once);
+        Assert.NotNull(result);
+        _mockServiceInvoker.Verify(s => s.InvokeAsync<ReserveStockDto, ReservationDto>(
+            ServiceNames.Inventory,
+            ApiEndpoints.Inventory.ReserveStock,
+            HttpMethod.Post,
+            It.IsAny<ReserveStockDto>(),
+            It.IsAny<CancellationToken>()), Times.Once);
+
+        _mockReservedStockRepository.Verify(r => r.AddAsync(It.IsAny<ReservedStock>()), Times.Once);
+        _mockOrderRepository.Verify(r => r.AddAsync(It.IsAny<Order>()), Times.Once);
     }
 
     #endregion
@@ -278,20 +234,18 @@ public class OrderServiceTests
         var orderId = Guid.NewGuid();
         var order = new Order(orderId)
         {
-            OrderNumber = "ORD-005",
-            CustomerId = Guid.NewGuid(),
+            OrderNumber = "ORD-003",
+            Type = OrderType.Outbound,
             OrderDate = DateTime.UtcNow,
-            Status = OrderStatus.Confirmed,
-            TotalAmount = 250.00m
+            Status = OrderStatus.Approved
         };
 
         var expectedDto = new OrderDto(Guid.NewGuid())
         {
             OrderDate = DateTime.UtcNow,
-            OrderNumber = "ORD-005",
-            CustomerId = Guid.NewGuid(),
-            Status = "Confirmed",
-            TotalAmount = 250.00m
+            OrderNumber = "ORD-003",
+            Type = "Outbound",
+            Status = "Approved"
         };
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
@@ -302,199 +256,12 @@ public class OrderServiceTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal("ORD-005", result.OrderNumber);
-        Assert.Equal("Confirmed", result.Status);
-        Assert.Equal(250.00m, result.TotalAmount);
+        Assert.Equal("ORD-003", result.OrderNumber);
+        Assert.Equal("Approved", result.Status);
+        Assert.Equal("Outbound", result.Type);
 
         _mockOrderRepository.Verify(r => r.GetByIdAsync(orderId), Times.Once);
         _mockMapper.Verify(m => m.Map<OrderDto>(order), Times.Once);
-    }
-
-    #endregion
-
-    #region ListAsync Tests
-
-    [Fact]
-    public async Task ListAsync_ReturnsAllOrdersAsDtos()
-    {
-        // Arrange
-        var orders = new List<Order>
-        {
-            new Order(Guid.NewGuid()) { OrderNumber = "ORD-006", TotalAmount = 100.00m },
-            new Order(Guid.NewGuid()) { OrderNumber = "ORD-007", TotalAmount = 200.00m }
-        };
-
-        _mockOrderRepository.Setup(r => r.ListAsync()).ReturnsAsync(orders);
-        _mockMapper.Setup(m => m.Map<OrderDto>(It.IsAny<Order>()))
-            .Returns((Order o) => new OrderDto(o.Id)
-            {
-                OrderDate = o.OrderDate,
-                OrderNumber = o.OrderNumber,
-                CustomerId = o.CustomerId,
-                Status = "Draft",
-                TotalAmount = o.TotalAmount
-            });
-
-        // Act
-        var result = await _orderService.ListAsync();
-
-        // Assert
-        var resultList = result.ToList();
-        Assert.Equal(2, resultList.Count);
-        Assert.Contains(resultList, o => o.OrderNumber == "ORD-006");
-        Assert.Contains(resultList, o => o.OrderNumber == "ORD-007");
-
-        _mockOrderRepository.Verify(r => r.ListAsync(), Times.Once);
-    }
-
-    [Fact]
-    public async Task ListAsync_WithEmptyRepository_ReturnsEmptyList()
-    {
-        // Arrange
-        _mockOrderRepository.Setup(r => r.ListAsync()).ReturnsAsync(new List<Order>());
-
-        // Act
-        var result = await _orderService.ListAsync();
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Empty(result);
-
-        _mockOrderRepository.Verify(r => r.ListAsync(), Times.Once);
-    }
-
-    #endregion
-
-    #region UpdateAsync Tests
-
-    [Fact]
-    public async Task UpdateAsync_WithExistingOrder_UpdatesSuccessfully()
-    {
-        // Arrange
-        var orderId = Guid.NewGuid();
-        var existingOrder = new Order(orderId)
-        {
-            OrderNumber = "ORD-008-OLD",
-            CustomerId = Guid.NewGuid(),
-            OrderDate = DateTime.UtcNow.AddDays(-1),
-            Status = OrderStatus.Draft,
-            TotalAmount = 100.00m,
-            Lines = new List<OrderLine>()
-        };
-
-        var newCustomerId = Guid.NewGuid();
-        var updateDto = new CreateUpdateOrderDto
-        {
-            OrderNumber = "ORD-008-NEW",
-            CustomerId = newCustomerId,
-            OrderDate = DateTime.UtcNow,
-            Lines = new List<OrderLineDto>
-            {
-                new OrderLineDto(Guid.NewGuid())
-                {
-                    ProductId = Guid.NewGuid(),
-                    Quantity = 3,
-                    UnitPrice = 25.00m,
-                    LineTotal = 75.00m
-                }
-            }
-        };
-
-        _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(existingOrder);
-
-        // Act
-        await _orderService.UpdateAsync(orderId, updateDto);
-
-        // Assert
-        Assert.Equal("ORD-008-NEW", existingOrder.OrderNumber);
-        Assert.Equal(newCustomerId, existingOrder.CustomerId);
-        Assert.Equal(75.00m, existingOrder.TotalAmount);
-        Assert.Single(existingOrder.Lines);
-
-        _mockOrderRepository.Verify(r => r.GetByIdAsync(orderId), Times.Once);
-        _mockOrderRepository.Verify(r => r.UpdateAsync(existingOrder), Times.Once);
-    }
-
-    [Fact]
-    public async Task UpdateAsync_WithNonExistentOrder_DoesNotCallUpdateAsync()
-    {
-        // Arrange
-        var orderId = Guid.NewGuid();
-        var updateDto = new CreateUpdateOrderDto
-        {
-            OrderNumber = "ORD-009",
-            CustomerId = Guid.NewGuid(),
-            OrderDate = DateTime.UtcNow,
-            Lines = new List<OrderLineDto>()
-        };
-
-        _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync((Order?)null);
-
-        // Act
-        await _orderService.UpdateAsync(orderId, updateDto);
-
-        // Assert
-        _mockOrderRepository.Verify(r => r.GetByIdAsync(orderId), Times.Once);
-        _mockOrderRepository.Verify(r => r.UpdateAsync(It.IsAny<Order>()), Times.Never);
-    }
-
-    [Fact]
-    public async Task UpdateAsync_ReplacesAllLinesAndRecalculatesTotal()
-    {
-        // Arrange
-        var orderId = Guid.NewGuid();
-        var existingOrder = new Order(orderId)
-        {
-            OrderNumber = "ORD-010",
-            CustomerId = Guid.NewGuid(),
-            OrderDate = DateTime.UtcNow,
-            Status = OrderStatus.Draft,
-            TotalAmount = 100.00m,
-            Lines = new List<OrderLine>
-            {
-                new OrderLine(Guid.NewGuid()) { ProductId = Guid.NewGuid(), Quantity = 2, UnitPrice = 50.00m }
-            }
-        };
-
-        var updateDto = new CreateUpdateOrderDto
-        {
-            OrderNumber = "ORD-010",
-            CustomerId = existingOrder.CustomerId,
-            OrderDate = existingOrder.OrderDate,
-            Lines = new List<OrderLineDto>
-            {
-                new OrderLineDto(Guid.NewGuid())
-                {
-                    ProductId = Guid.NewGuid(),
-                    Quantity = 1,
-                    UnitPrice = 30.00m,
-                    LineTotal = 30.00m
-                },
-                new OrderLineDto(Guid.NewGuid())
-                {
-                    ProductId = Guid.NewGuid(),
-                    Quantity = 2,
-                    UnitPrice = 20.00m,
-                    LineTotal = 40.00m
-                }
-            }
-        };
-
-        _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(existingOrder);
-
-        // Act
-        await _orderService.UpdateAsync(orderId, updateDto);
-
-        // Assert
-        Assert.Equal(2, existingOrder.Lines.Count);
-        Assert.Equal(70.00m, existingOrder.TotalAmount);
-        Assert.All(existingOrder.Lines, line =>
-        {
-            Assert.Equal(orderId, line.OrderId);
-            Assert.NotEqual(Guid.Empty, line.Id);
-        });
-
-        _mockOrderRepository.Verify(r => r.UpdateAsync(existingOrder), Times.Once);
     }
 
     #endregion

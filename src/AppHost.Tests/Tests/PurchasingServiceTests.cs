@@ -50,7 +50,7 @@ public class PurchasingServiceTests
         }
 
         // Act
-        var response = await client.GetAsync("/purchasing/api/orders");
+        var response = await client.GetAsync("/purchasing/api/purchasing/orders");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -90,7 +90,7 @@ public class PurchasingServiceTests
         };
 
         // Act
-        var response = await client.PostAsJsonAsync("/purchasing/api/orders", order);
+        var response = await client.PostAsJsonAsync("/purchasing/api/purchasing/orders", order);
         var createdOrder = await response.Content.ReadFromJsonAsync<PurchaseOrderResponse>();
 
         // Assert
@@ -115,7 +115,7 @@ public class PurchasingServiceTests
         }
 
         // Act
-        var response = await client.GetAsync("/purchasing/api/suppliers");
+        var response = await client.GetAsync("/purchasing/api/purchasing/suppliers");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -154,7 +154,7 @@ public class PurchasingServiceTests
         };
 
         // Act
-        var response = await client.PostAsJsonAsync("/purchasing/api/suppliers", supplier);
+        var response = await client.PostAsJsonAsync("/purchasing/api/purchasing/suppliers", supplier);
         var createdSupplier = await response.Content.ReadFromJsonAsync<SupplierResponse>();
 
         // Assert
@@ -197,7 +197,7 @@ public class PurchasingServiceTests
             }
         };
 
-        var createResponse = await client.PostAsJsonAsync("/purchasing/api/orders", newOrder);
+        var createResponse = await client.PostAsJsonAsync("/purchasing/api/purchasing/orders", newOrder);
         var createdOrder = await createResponse.Content.ReadFromJsonAsync<PurchaseOrderResponse>();
 
         var updateData = new
@@ -206,13 +206,13 @@ public class PurchasingServiceTests
         };
 
         // Act
-        var response = await client.PatchAsJsonAsync($"/purchasing/api/orders/{createdOrder?.Id}/status", updateData);
+        var response = await client.PatchAsJsonAsync($"/purchasing/api/purchasing/orders/{createdOrder?.Id}/status", updateData);
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         // Verify the update
-        var getResponse = await client.GetAsync($"/purchasing/api/orders/{createdOrder?.Id}");
+        var getResponse = await client.GetAsync($"/purchasing/api/purchasing/orders/{createdOrder?.Id}");
         var updatedOrder = await getResponse.Content.ReadFromJsonAsync<PurchaseOrderResponse>();
         Assert.Equal("Approved", updatedOrder?.Status);
     }

@@ -66,7 +66,7 @@ public interface IServiceInvoker
         string methodPath,
         HttpMethod httpMethod,
         object? requestBody = null,
-        Dictionary<string, string>? queryParams = null);
+        Dictionary<string, string?>? queryParams = null);
 
     /// <summary>
     /// Invokes a remote service method using a pre-configured HttpRequestMessage (useful for custom headers, etc.)

@@ -2,22 +2,25 @@ namespace MyApp.Shared.Domain.Events;
 
 public record OrderLineEvent(
     Guid ProductId,
-    int Quantity,
-    decimal UnitPrice
+    int Quantity
 );
 
 public record OrderCreatedEvent(
     Guid OrderId,
-    Guid CustomerId,
     string OrderNumber,
+    string OrderType,
+    Guid? WarehouseId,
     List<OrderLineEvent> Lines
 );
 
 public record OrderFulfilledEvent(
     Guid OrderId,
+    string OrderNumber,
+    string OrderType,
     Guid WarehouseId,
     DateTime FulfilledDate,
-    string? TrackingNumber
+    string? TrackingNumber,
+    List<OrderLineEvent> Lines
 );
 
 public record OrderCancelledEvent(

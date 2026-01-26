@@ -11,6 +11,8 @@ using MyApp.Shared.Domain.Specifications;
 using MyApp.Shared.Domain.Permissions;
 using MyApp.Purchasing.Domain.Specifications;
 
+
+using MyApp.Shared.Infrastructure.Export;
 namespace MyApp.Purchasing.API.Controllers;
 
 [ApiController]
@@ -27,6 +29,52 @@ public class PurchaseOrdersController : ControllerBase
         _purchaseOrderService = purchaseOrderService;
         _cacheService = cacheService;
         _logger = logger;
+    }
+
+    /// <summary>
+    /// Export all purchase orders as XLSX
+    /// </summary>
+    [HttpGet("export-xlsx")]
+    [HasPermission("Purchasing", "Read")]
+    [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToXlsx()
+    {
+        try
+        {
+            var orders = await _cacheService.GetStateAsync<IEnumerable<PurchaseOrderDto>>("all_purchase_orders")
+                ?? await _purchaseOrderService.GetAllPurchaseOrdersAsync();
+            var bytes = orders.ExportToXlsx();
+            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "PurchaseOrders.xlsx");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting purchase orders to XLSX");
+            return StatusCode(500, new { message = "An error occurred exporting purchase orders" });
+        }
+    }
+
+    /// <summary>
+    /// Export all purchase orders as PDF
+    /// </summary>
+    [HttpGet("export-pdf")]
+    [HasPermission("Purchasing", "Read")]
+    [Produces("application/pdf")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToPdf()
+    {
+        try
+        {
+            var orders = await _cacheService.GetStateAsync<IEnumerable<PurchaseOrderDto>>("all_purchase_orders")
+                ?? await _purchaseOrderService.GetAllPurchaseOrdersAsync();
+            var bytes = orders.ExportToPdf();
+            return File(bytes, "application/pdf", "PurchaseOrders.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting purchase orders to PDF");
+            return StatusCode(500, new { message = "An error occurred exporting purchase orders" });
+        }
     }
 
     /// <summary>

@@ -35,7 +35,11 @@ namespace MyApp.Orders.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<string>("DestinationAddress")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid?>("ExternalOrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("FulfilledDate")
@@ -49,19 +53,21 @@ namespace MyApp.Orders.Infrastructure.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<string>("ShippingAddress")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                    b.Property<Guid?>("SourceId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<Guid?>("TargetId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TrackingNumber")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -93,11 +99,11 @@ namespace MyApp.Orders.Infrastructure.Migrations
                     b.Property<bool>("IsFulfilled")
                         .HasColumnType("bit");
 
-                    b.Property<decimal>("LineTotal")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("PickedQuantity")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -110,9 +116,6 @@ namespace MyApp.Orders.Infrastructure.Migrations
 
                     b.Property<Guid?>("ReservedStockId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");

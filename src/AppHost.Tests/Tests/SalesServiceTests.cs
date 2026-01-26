@@ -81,9 +81,31 @@ public class SalesServiceTests : IAsyncLifetime
             Password = "Admin123!"
         };
 
-        var response = await client.PostAsJsonAsync("/auth/api/auth/login", credentials);
-        var content = await response.Content.ReadFromJsonAsync<TokenResponse>();
-        return content?.AccessToken;
+        // Retry login mechanism for Admin user (Seeding might take time)
+        for (int i = 0; i < 20; i++)
+        {
+            try
+            {
+                var response = await client.PostAsJsonAsync("/auth/api/auth/login", credentials);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadFromJsonAsync<TokenResponse>();
+                    return content?.AccessToken;
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Admin login failed (Attempt {i+1}): {response.StatusCode} - {error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Login attempt {i+1} threw exception: {ex.Message}");
+            }
+            await Task.Delay(2000); // Wait for seeder
+        }
+
+        throw new Exception("Failed to login as Admin after multiple attempts. Seeder might not have run.");
     }
 
     [Fact]
@@ -103,7 +125,7 @@ public class SalesServiceTests : IAsyncLifetime
         }
 
         // Act
-        var response = await client.GetAsync("/sales/api/orders");
+        var response = await client.GetAsync("/sales/api/sales/orders");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -112,42 +134,109 @@ public class SalesServiceTests : IAsyncLifetime
     [Fact]
     public async Task CreateSalesOrder_WithValidData_ReturnsCreatedStatusCode()
     {
+        Console.WriteLine("Step 1: Starting AppHost...");
         // Arrange
         await using var app = await CreateAndStartAppAsync();
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
+        
+        Console.WriteLine("Step 2: Waiting for services...");
         await notifier.WaitForResourceAsync("sales-service", KnownResourceStates.Running)
-            .WaitAsync(TimeSpan.FromSeconds(30));
+            .WaitAsync(TimeSpan.FromSeconds(60));
+        await notifier.WaitForResourceAsync("inventory-service", KnownResourceStates.Running) // Ensure inventory is ready
+            .WaitAsync(TimeSpan.FromSeconds(60));
+        Console.WriteLine("Services are ready.");
 
         var client = app.CreateHttpClient("gateway");
+        
+        Console.WriteLine("Step 3: Getting Auth Token...");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
         {
+            Console.WriteLine("Auth Token received.");
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
+        else
+        {
+            Console.WriteLine("Failed to get Auth Token.");
+            throw new Exception("Auth verification failed");
+        }
 
+        // 1. Create a Customer
+        Console.WriteLine("Step 4: Creating Customer...");
+        var customerDto = new
+        {
+            Name = "Order Test Customer",
+            Email = $"ordertest{Guid.NewGuid()}@example.com",
+            Phone = "+15555555555",
+            Address = new
+            {
+                Street = "123 Order St",
+                City = "Order City",
+                State = "OS",
+                Country = "Order Country",
+                PostalCode = "54321"
+            }
+        };
+        var custResponse = await client.PostAsJsonAsync("/sales/api/sales/customers", customerDto);
+        Console.WriteLine($"Create Customer Response: {custResponse.StatusCode}");
+        if (!custResponse.IsSuccessStatusCode)
+        {
+             var err = await custResponse.Content.ReadAsStringAsync();
+             Console.WriteLine($"Customer creation error: {err}");
+        }
+        Assert.Equal(HttpStatusCode.Created, custResponse.StatusCode);
+        var createdCustomer = await custResponse.Content.ReadFromJsonAsync<CustomerResponse>();
+        Assert.NotNull(createdCustomer);
+
+        // 2. Create a Product (via Inventory Service)
+        Console.WriteLine("Step 5: Creating Product...");
+        var productDto = new
+        {
+            SKU = $"SKU-{Guid.NewGuid()}",
+            Name = "Test Product",
+            Description = "A product for testing orders",
+            UnitPrice = 50.0m,
+            QuantityInStock = 100,
+            ReorderLevel = 10
+        };
+        var prodResponse = await client.PostAsJsonAsync("/inventory/api/inventory/products", productDto);
+        Console.WriteLine($"Create Product Response: {prodResponse.StatusCode}");
+        if (!prodResponse.IsSuccessStatusCode)
+        {
+             var err = await prodResponse.Content.ReadAsStringAsync();
+             Console.WriteLine($"Product creation error: {err}");
+        }
+        Assert.Equal(HttpStatusCode.Created, prodResponse.StatusCode);
+        var createdProduct = await prodResponse.Content.ReadFromJsonAsync<ProductResponse>();
+        Assert.NotNull(createdProduct);
+
+        // 3. Create Sales Order
+        Console.WriteLine("Step 6: Creating Order...");
         var order = new
         {
-            CustomerId = Guid.NewGuid(),
+            CustomerId = createdCustomer.Id,
             OrderDate = DateTime.UtcNow,
             Status = "Draft",
             Lines = new[]
             {
                 new
                 {
-                    ProductId = Guid.NewGuid(),
-                    Quantity = 1,
-                    UnitPrice = 99.99m
+                    ProductId = createdProduct.Id,
+                    Quantity = 2,
+                    UnitPrice = 50.0m
                 }
             }
         };
 
         // Act
-        var response = await client.PostAsJsonAsync("/sales/api/orders", order);
-        var createdOrder = await response.Content.ReadFromJsonAsync<SalesOrderResponse>();
-
+        var response = await client.PostAsJsonAsync("/sales/api/sales/orders", order);
+        Console.WriteLine($"Create Order Response: {response.StatusCode}");
+        
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        var createdOrder = await response.Content.ReadFromJsonAsync<SalesOrderResponse>();
         Assert.NotNull(createdOrder?.Id);
+        Console.WriteLine("Test Finished Successfully.");
     }
 
     [Fact]
@@ -167,7 +256,7 @@ public class SalesServiceTests : IAsyncLifetime
         }
 
         // Act
-        var response = await client.GetAsync("/sales/api/customers");
+        var response = await client.GetAsync("/sales/api/sales/customers");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -252,5 +341,13 @@ public class SalesServiceTests : IAsyncLifetime
         public string? State { get; set; }
         public string? Country { get; set; }
         public string? PostalCode { get; set; }
+    }
+
+    private class ProductResponse
+    {
+        public Guid Id { get; set; }
+        public string? SKU { get; set; }
+        public string? Name { get; set; }
+        public decimal UnitPrice { get; set; }
     }
 }

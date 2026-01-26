@@ -7,6 +7,8 @@ using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 
+using MyApp.Shared.Infrastructure.Export;
+
 namespace MyApp.Auth.API.Controllers;
 
 [ApiController]
@@ -50,6 +52,52 @@ public partial class UsersController : ControllerBase
         {
             _logger.LogError(ex, "Error retrieving all users");
             return StatusCode(500, new { message = "An error occurred retrieving users" });
+        }
+    }
+
+    /// <summary>
+    /// Export all users as XLSX
+    /// </summary>
+    [HttpGet("export-xlsx")]
+    [HasPermission("Users", "Read")]
+    [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToXlsx()
+    {
+        try
+        {
+            var users = await _cacheService.GetStateAsync<IEnumerable<UserDto>>("all_users")
+                        ?? await _userService.GetAllUsersAsync();
+            var bytes = users.ExportToXlsx();
+            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Users.xlsx");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting users to XLSX");
+            return StatusCode(500, new { message = "An error occurred exporting users" });
+        }
+    }
+
+    /// <summary>
+    /// Export all users as PDF
+    /// </summary>
+    [HttpGet("export-pdf")]
+    [HasPermission("Users", "Read")]
+    [Produces("application/pdf")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToPdf()
+    {
+        try
+        {
+            var users = await _cacheService.GetStateAsync<IEnumerable<UserDto>>("all_users")
+                ?? await _userService.GetAllUsersAsync();
+            var bytes = users.ExportToPdf();
+            return File(bytes, "application/pdf", "Users.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting users to PDF");
+            return StatusCode(500, new { message = "An error occurred exporting users" });
         }
     }
 
