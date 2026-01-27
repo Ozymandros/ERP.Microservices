@@ -223,9 +223,15 @@ public class UserServiceTests : BaseServiceTest
             .ReturnsAsync(existingUser);
 
         _mockUserManager
+            .Setup(x => x.SetEmailAsync(existingUser, updateDto.Email))
+            .ReturnsAsync(IdentityResult.Success);
+        _mockUserManager
+            .Setup(x => x.SetUserNameAsync(existingUser, updateDto.Email))
+            .ReturnsAsync(IdentityResult.Success);
+        _mockUserManager
             .Setup(x => x.UpdateAsync(existingUser))
             .ReturnsAsync(IdentityResult.Success);
-        
+
         MockMapper
             .Setup(x => x.Map(It.IsAny<UpdateUserDto>(), It.IsAny<ApplicationUser>()))
             .Returns(existingUser);
@@ -237,7 +243,8 @@ public class UserServiceTests : BaseServiceTest
         result.Should().BeTrue();
         existingUser.FirstName.Should().Be(updateDto.FirstName);
         existingUser.LastName.Should().Be(updateDto.LastName);
-        existingUser.Email.Should().Be(updateDto.Email);
+        _mockUserManager.Verify(x => x.SetEmailAsync(existingUser, updateDto.Email), Times.Once);
+        _mockUserManager.Verify(x => x.SetUserNameAsync(existingUser, updateDto.Email), Times.Once);
         _mockUserManager.Verify(x => x.UpdateAsync(existingUser), Times.Once);
     }
 
@@ -252,8 +259,8 @@ public class UserServiceTests : BaseServiceTest
             LastName = "UpdatedLast"
         };
 
-        _mockUserRepository
-            .Setup(x => x.GetByIdAsync(userId))
+        _mockUserManager
+            .Setup(x => x.FindByIdAsync(userId.ToString()))
             .ReturnsAsync((ApplicationUser?)null);
 
         // Act

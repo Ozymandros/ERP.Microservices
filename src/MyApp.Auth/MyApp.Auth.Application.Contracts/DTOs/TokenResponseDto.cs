@@ -44,4 +44,5 @@ public record UserDto(Guid Id) : AuditableGuidDto(Id)
     public List<RoleDto?> Roles { get; init; } = new();
     public List<PermissionDto?> Permissions { get; init; } = new();
     public bool IsAdmin { get; init; } = false;
+    public bool IsActive { get; init; } = false;
 }

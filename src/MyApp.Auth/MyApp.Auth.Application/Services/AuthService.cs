@@ -194,7 +194,8 @@ public class AuthService : IAuthService
             ExternalProvider = user.ExternalProvider,
             Roles = new List<RoleDto?>(),
             Permissions = new List<PermissionDto?>(),
-            IsAdmin = false
+            IsAdmin = false,
+            IsActive = user.IsActive
         };
 
         return new TokenResponseDto(accessToken, refreshToken, 15 * 60, "Bearer", userDto);

@@ -40,14 +40,14 @@ public class UserService : IUserService
         _permissionRepository = permissionRepository;
     }
 
-    
+
     /// <summary>
     /// Get current user
     /// </summary>
     /// <returns></returns>
     public async Task<UserDto?> GetCurrentUserAsync()
     {
-        if(_httpContextAccessor.HttpContext == null)
+        if (_httpContextAccessor.HttpContext == null)
         {
             _logger.LogWarning("HttpContext is null");
             return null;
@@ -66,7 +66,7 @@ public class UserService : IUserService
 
         List<PermissionDto?> permissions;
         bool isAdmin = roles.Any(r => r.Name != null && r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
-        
+
         if (isAdmin)
         {
             var allPermissions = await _permissionRepository.GetAllAsync();
@@ -93,7 +93,8 @@ public class UserService : IUserService
             ExternalProvider = baseUserDto.ExternalProvider,
             Roles = mappedRoles,
             Permissions = permissions,
-            IsAdmin = isAdmin
+            IsAdmin = isAdmin,
+            IsActive = user.LockoutEnd == null || user.LockoutEnd <= DateTimeOffset.UtcNow
         };
     }
 
@@ -133,36 +134,79 @@ public class UserService : IUserService
 
         _logger.LogInformation("Updating user: {@UserUpdate}", new { UserId = userId, updateUserDto });
 
-        if (!string.IsNullOrEmpty(updateUserDto.Email) && updateUserDto.Email != user.Email)
+        // Validate email uniqueness if requested
+        if (!string.IsNullOrWhiteSpace(updateUserDto.Email) && updateUserDto.Email != user.Email)
         {
             var existingUser = await _userManager.FindByEmailAsync(updateUserDto.Email);
-            if (existingUser != null)
+            if (existingUser != null && existingUser.Id != user.Id)
             {
-                _logger.LogWarning(
-                    "Email already in use: {@EmailData}",
-                    new { Email = updateUserDto.Email });
+                _logger.LogWarning("Email already in use: {Email}", updateUserDto.Email);
                 return false;
             }
-            user.Email = updateUserDto.Email;
-            user.UserName = updateUserDto.Email;
         }
 
-        if (!string.IsNullOrEmpty(updateUserDto.FirstName))
-            user.FirstName = updateUserDto.FirstName;
-
-        if (!string.IsNullOrEmpty(updateUserDto.LastName))
-            user.LastName = updateUserDto.LastName;
-
-        if (!string.IsNullOrEmpty(updateUserDto.PhoneNumber))
-            user.PhoneNumber = updateUserDto.PhoneNumber;
-
-        user.UpdatedAt = DateTime.UtcNow;
-
-        var result = await _userManager.UpdateAsync(user);
-        if (!result.Succeeded)
+        // Apply identity-managed changes first (these persist directly via UserManager)
+        var identityChanged = false;
+        if (!string.IsNullOrWhiteSpace(updateUserDto.Email) && updateUserDto.Email != user.Email)
         {
-            _logger.LogWarning("Failed to update user: {UserId}", userId);
-            return false;
+            var emailResult = await _userManager.SetEmailAsync(user, updateUserDto.Email);
+            if (!emailResult.Succeeded)
+            {
+                _logger.LogWarning("Failed to set email for user: {UserId}", userId);
+                return false;
+            }
+
+            var userNameResult = await _userManager.SetUserNameAsync(user, updateUserDto.Email);
+            if (!userNameResult.Succeeded)
+            {
+                _logger.LogWarning("Failed to set username for user: {UserId}", userId);
+                return false;
+            }
+
+            identityChanged = true;
+        }
+
+        if (!string.IsNullOrWhiteSpace(updateUserDto.PhoneNumber) && updateUserDto.PhoneNumber != user.PhoneNumber)
+        {
+            var phoneResult = await _userManager.SetPhoneNumberAsync(user, updateUserDto.PhoneNumber);
+            if (!phoneResult.Succeeded)
+            {
+                _logger.LogWarning("Failed to set phone number for user: {UserId}", userId);
+                return false;
+            }
+
+            identityChanged = true;
+        }
+
+        // If identity changes occurred, reload the user so subsequent profile updates operate on fresh state
+        if (identityChanged)
+        {
+            user = await _userManager.FindByIdAsync(userId.ToString()) ?? user;
+        }
+
+        // Apply profile changes and persist once if necessary
+        var profileChanged = false;
+        if (!string.IsNullOrWhiteSpace(updateUserDto.FirstName) && updateUserDto.FirstName != user.FirstName)
+        {
+            user.FirstName = updateUserDto.FirstName;
+            profileChanged = true;
+        }
+
+        if (!string.IsNullOrWhiteSpace(updateUserDto.LastName) && updateUserDto.LastName != user.LastName)
+        {
+            user.LastName = updateUserDto.LastName;
+            profileChanged = true;
+        }
+
+        if (profileChanged)
+        {
+            user.UpdatedAt = DateTime.UtcNow;
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                _logger.LogWarning("Failed to update user profile fields: {UserId}", userId);
+                return false;
+            }
         }
 
         return true;
@@ -302,7 +346,7 @@ public class UserService : IUserService
         try
         {
             var result = await _userRepository.QueryAsync(spec);
-            
+
             var dtos = result.Items.Select(u => new UserDto(u.Id)
             {
                 CreatedAt = u.CreatedAt,
@@ -318,9 +362,10 @@ public class UserService : IUserService
                 ExternalProvider = u.ExternalProvider,
                 Roles = new List<RoleDto?>(),
                 Permissions = new List<PermissionDto?>(),
-                IsAdmin = false
+                IsAdmin = false,
+                IsActive = u.LockoutEnd == null || u.LockoutEnd <= DateTimeOffset.UtcNow
             }).ToList();
-            
+
             return new PaginatedResult<UserDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
         }
         catch (Exception ex)

@@ -72,7 +72,8 @@ public class UserDtoBuilder
         ExternalProvider = _externalProvider,
         Roles = _roles ?? new List<RoleDto?>(),
         Permissions = _permissions ?? new List<PermissionDto?>(),
-        IsAdmin = _isAdmin
+        IsAdmin = _isAdmin,
+        IsActive = true
     };
 
     public static implicit operator UserDto(UserDtoBuilder builder) => builder.Build();
