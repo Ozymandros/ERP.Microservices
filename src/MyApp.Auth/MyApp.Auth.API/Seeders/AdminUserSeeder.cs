@@ -14,7 +14,8 @@ public static class AdminUserSeeder
             {
                 UserName = adminEmail,
                 Email = adminEmail,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                IsActive = true
             };
 
             await userManager.CreateAsync(user, "Admin123!");
