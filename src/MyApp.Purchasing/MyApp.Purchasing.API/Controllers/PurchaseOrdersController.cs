@@ -229,7 +229,7 @@ public class PurchaseOrdersController : ControllerBase
 
         try
         {
-            _logger.LogInformation("Creating new purchase order: {@Order}", new { OrderNumber = dto.OrderNumber });
+            _logger.LogInformation("Creating new purchase order: {@Order}", new { SupplierId = dto.SupplierId });
             var order = await _purchaseOrderService.CreatePurchaseOrderAsync(dto);
             await _cacheService.RemoveStateAsync("all_purchase_orders");
             _logger.LogInformation("Purchase order {@Order} created and cache invalidated", new { OrderId = order.Id });

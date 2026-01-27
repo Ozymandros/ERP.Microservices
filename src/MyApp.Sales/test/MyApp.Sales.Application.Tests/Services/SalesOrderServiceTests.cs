@@ -155,7 +155,7 @@ public class SalesOrderServiceTests
         var customerId = Guid.NewGuid();
         var customer = new Customer(customerId) { Name = "Test Customer" };
 
-        var createDto = new CreateUpdateSalesOrderDto("SO-003", customerId, DateTime.UtcNow, 0, 0, new List<CreateUpdateSalesOrderLineDto>
+        var createDto = new CreateUpdateSalesOrderDto(customerId, DateTime.UtcNow, null, 0, 0, new List<CreateUpdateSalesOrderLineDto>
         {
             new CreateUpdateSalesOrderLineDto(Guid.NewGuid(), 5, 10.00m)
         });
@@ -210,12 +210,12 @@ public class SalesOrderServiceTests
     {
         // Arrange
         var customerId = Guid.NewGuid();
-        var createDto = new CreateUpdateSalesOrderDto("SO-TEST", customerId, DateTime.UtcNow, 0, 0, new List<CreateUpdateSalesOrderLineDto>());
+        var createDto = new CreateUpdateSalesOrderDto(customerId, DateTime.UtcNow, null, 0, 0, new List<CreateUpdateSalesOrderLineDto>());
 
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync((Customer?)null);
 
         // Act & Assert
-        var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+        var exception = await Assert.ThrowsAsync<KeyNotFoundException>(() =>
             _salesOrderService.CreateSalesOrderAsync(createDto));
 
         Assert.Contains("not found", exception.Message);
@@ -230,7 +230,7 @@ public class SalesOrderServiceTests
         var customerId = Guid.NewGuid();
         var customer = new Customer(customerId);
 
-        var createDto = new CreateUpdateSalesOrderDto("SO-001", customerId, DateTime.UtcNow, 0, 0, new List<CreateUpdateSalesOrderLineDto>
+        var createDto = new CreateUpdateSalesOrderDto(customerId, DateTime.UtcNow, null, 0, 0, new List<CreateUpdateSalesOrderLineDto>
         {
             new CreateUpdateSalesOrderLineDto(Guid.NewGuid(), 2, 15.50m),
             new CreateUpdateSalesOrderLineDto(Guid.NewGuid(), 3, 20.00m)
@@ -274,7 +274,7 @@ public class SalesOrderServiceTests
         var customerId = Guid.NewGuid();
         var customer = new Customer(customerId);
 
-        var createDto = new CreateUpdateSalesOrderDto("SO-002", customerId, default, 0, 0, new List<CreateUpdateSalesOrderLineDto>());
+        var createDto = new CreateUpdateSalesOrderDto(customerId, default, null, 0, 0, new List<CreateUpdateSalesOrderLineDto>());
 
         var mappedOrder = new SalesOrder(Guid.NewGuid()) { Lines = new List<SalesOrderLine>() };
 
@@ -301,6 +301,40 @@ public class SalesOrderServiceTests
         )), Times.Once);
     }
 
+    [Fact]
+    public async Task CreateSalesOrderAsync_GeneratesOrderNumberServerSide()
+    {
+        // Arrange
+        var customerId = Guid.NewGuid();
+        var customer = new Customer(customerId) { Name = "Test Customer" };
+        var createDto = new CreateUpdateSalesOrderDto(customerId, DateTime.UtcNow, null, 0, 0, new List<CreateUpdateSalesOrderLineDto>());
+        var mappedOrder = new SalesOrder(Guid.NewGuid()) { CustomerId = customerId, Lines = new List<SalesOrderLine>() };
+        var expectedDto = new SalesOrderDto(Guid.NewGuid())
+        {
+            OrderDate = DateTime.UtcNow,
+            OrderNumber = "SO-TEST-12345",
+            CustomerId = customerId,
+            Status = 0,
+            TotalAmount = 0,
+            Customer = null,
+            Lines = null
+        };
+
+        _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
+        _mockMapper.Setup(m => m.Map<SalesOrder>(createDto)).Returns(mappedOrder);
+        _mockMapper.Setup(m => m.Map<SalesOrderDto>(It.IsAny<SalesOrder>())).Returns(expectedDto);
+        _mockOrderRepository.Setup(r => r.AddAsync(It.IsAny<SalesOrder>())).ReturnsAsync(mappedOrder);
+
+        // Act
+        var result = await _salesOrderService.CreateSalesOrderAsync(createDto);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.False(string.IsNullOrWhiteSpace(result.OrderNumber));
+        Assert.StartsWith("SO-", result.OrderNumber);
+        _mockOrderRepository.Verify(r => r.AddAsync(It.Is<SalesOrder>(o => !string.IsNullOrWhiteSpace(o.OrderNumber))), Times.Once);
+    }
+
     #endregion
 
     #region UpdateSalesOrderAsync Tests
@@ -319,7 +353,7 @@ public class SalesOrderServiceTests
             Lines = new List<SalesOrderLine>()
         };
 
-        var updateDto = new CreateUpdateSalesOrderDto("SO-NEW", existingCustomerId, DateTime.UtcNow, 1, 0, new List<CreateUpdateSalesOrderLineDto>
+        var updateDto = new CreateUpdateSalesOrderDto(existingCustomerId, DateTime.UtcNow, null, 1, 0, new List<CreateUpdateSalesOrderLineDto>
         {
             new CreateUpdateSalesOrderLineDto(Guid.NewGuid(), 3, 25.00m)
         });
@@ -343,14 +377,14 @@ public class SalesOrderServiceTests
                 Quantity = dto.Quantity,
                 UnitPrice = dto.UnitPrice
             });
-        _mockMapper.Setup(m => m.Map<SalesOrderDto>(existingOrder)).Returns(expectedDto);
+        _mockMapper.Setup(m => m.Map<SalesOrderDto>(It.IsAny<SalesOrder>())).Returns(expectedDto);
 
         // Act
         var result = await _salesOrderService.UpdateSalesOrderAsync(orderId, updateDto);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal("SO-NEW", existingOrder.OrderNumber);
+        Assert.Equal("SO-NEW", result.OrderNumber);
         Assert.Equal(SalesOrderStatus.Confirmed, existingOrder.Status);
         Assert.Equal(75.00m, existingOrder.TotalAmount);
         Assert.Single(existingOrder.Lines);
@@ -364,7 +398,7 @@ public class SalesOrderServiceTests
     {
         // Arrange
         var orderId = Guid.NewGuid();
-        var updateDto = new CreateUpdateSalesOrderDto("SO-TEST", Guid.NewGuid(), DateTime.UtcNow, 0, 0, new List<CreateUpdateSalesOrderLineDto>());
+        var updateDto = new CreateUpdateSalesOrderDto(Guid.NewGuid(), DateTime.UtcNow, null, 0, 0, new List<CreateUpdateSalesOrderLineDto>());
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync((SalesOrder?)null);
 
@@ -392,7 +426,7 @@ public class SalesOrderServiceTests
             Lines = new List<SalesOrderLine>()
         };
 
-        var updateDto = new CreateUpdateSalesOrderDto(existingOrder.OrderNumber, newCustomerId, existingOrder.OrderDate, 0, 0, new List<CreateUpdateSalesOrderLineDto>());
+        var updateDto = new CreateUpdateSalesOrderDto(newCustomerId, existingOrder.OrderDate, null, 0, 0, new List<CreateUpdateSalesOrderLineDto>());
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(existingOrder);
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(newCustomerId)).ReturnsAsync(newCustomer);
@@ -420,7 +454,7 @@ public class SalesOrderServiceTests
             Lines = new List<SalesOrderLine>()
         };
 
-        var updateDto = new CreateUpdateSalesOrderDto(existingOrder.OrderNumber, newCustomerId, existingOrder.OrderDate, 0, 0, new List<CreateUpdateSalesOrderLineDto>());
+        var updateDto = new CreateUpdateSalesOrderDto(newCustomerId, existingOrder.OrderDate, null, 0, 0, new List<CreateUpdateSalesOrderLineDto>());
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(existingOrder);
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(newCustomerId)).ReturnsAsync((Customer?)null);

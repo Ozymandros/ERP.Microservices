@@ -53,17 +53,15 @@ namespace MyApp.Sales.Application.Contracts.DTOs
     }
 
     public record CreateUpdateSalesOrderDto(
-        [Required(ErrorMessage = "OrderNumber is required")]
-        [StringLength(64)]
-        string OrderNumber,
-
         [Required(ErrorMessage = "CustomerId is required")]
         Guid CustomerId,
 
         [Required(ErrorMessage = "OrderDate is required")]
         DateTime OrderDate,
 
-        [Range(0, int.MaxValue, ErrorMessage = "Status must be valid")]
+        DateTime? ExpectedDeliveryDate = null,
+
+        [Range(0, int.MaxValue, ErrorMessage = "Status must be a valid value")]
         int Status = 0,
 
         [Range(0, double.MaxValue, ErrorMessage = "TotalAmount must be greater than or equal to 0")]

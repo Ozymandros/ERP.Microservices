@@ -79,6 +79,8 @@ public class PurchaseOrderService : IPurchaseOrderService
         }
 
         var order = _mapper.Map<PurchaseOrder>(dto);
+        order.Id = Guid.NewGuid();
+        order.OrderNumber = await GenerateOrderNumberAsync();
         order.Status = (PurchaseOrderStatus)dto.Status;
 
         // Calculate total amount from lines
@@ -89,6 +91,15 @@ public class PurchaseOrderService : IPurchaseOrderService
 
         var createdOrder = await _purchaseOrderRepository.AddAsync(order);
         return _mapper.Map<PurchaseOrderDto>(createdOrder);
+    }
+
+    private async Task<string> GenerateOrderNumberAsync()
+    {
+        // Example: Use a timestamp and a random suffix for uniqueness (replace with a DB sequence or other logic as needed)
+        var now = DateTime.UtcNow;
+        var random = Guid.NewGuid().ToString()[..8];
+        var count = (await _purchaseOrderRepository.GetAllAsync()).Count() + 1; // Not perfect for concurrency, but placeholder
+        return $"PO-{now:yyyyMMddHHmmss}-{count}-{random}";
     }
 
     public async Task<PurchaseOrderDto> UpdatePurchaseOrderAsync(Guid id, CreateUpdatePurchaseOrderDto dto)
