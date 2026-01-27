@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Pagination;
-using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Specifications;
-using MyApp.Shared.Domain.Permissions;
 using MyApp.Purchasing.Domain.Specifications;
 
 
