@@ -65,26 +65,26 @@ public class AspireProjectBuilder
         var project = _builder.AddProject<T>(serviceResourceName);
 
         // Configure project
+        // Note: Aspire uses its own integrated Dapr runtime version (currently 1.15.x)
+        // The Dapr CLI installation in DevContainer does not affect the sidecar version
+        // Scheduler and Placement connection errors are harmless warnings (not used)
         project = project
-            //.WithHttpEndpoint(80)
-            //.WithHttpsEndpoint()
-            //.WithExternalHttpEndpoints()
             .WithDaprSidecar(new DaprSidecarOptions
             {
-                //AppId = daprAppId,
-                //AppPort = httpPort,
-                //DaprHttpPort = daprHttpPort,
-                //DaprGrpcPort = daprGrpcPort,
-                //MetricsPort = metricsPort
-                //Config = "./dapr/config.yaml" // La ruta ha de ser correcta des de l'executable de l'AppHost
+                AppId = daprAppId,
+                AppPort = httpPort,
+                // Note: Placement and Scheduler connection errors are harmless warnings.
+                // - Placement (port 6050): Only needed for Dapr Actors (we don't use actors)
+                // - Scheduler (port 6060): Only needed for scheduled jobs/workflows (we don't use)
+                // PubSub and State Store work perfectly without these services.
             })
             .WithEnvironment("Jwt__SecretKey", _builder.Configuration["Jwt:SecretKey"])
             .WithEnvironment("Jwt__Issuer", _builder.Configuration["Jwt:Issuer"])
             .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"])
             .WithEnvironment("FRONTEND_ORIGIN", origin)
             // OpenTelemetry configuration for Serilog
-            // .WithEnvironment("OTEL_SERVICE_NAME", serviceName)
-            // .WithEnvironment("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317")
+            .WithEnvironment("OTEL_SERVICE_NAME", serviceName)
+            .WithEnvironment("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317")
             .PublishAsDockerFile();
 
         var database = _sqlServer?.AddDatabase(dbName); ;

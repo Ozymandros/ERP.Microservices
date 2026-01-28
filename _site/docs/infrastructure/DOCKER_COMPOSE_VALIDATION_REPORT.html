@@ -98,7 +98,7 @@
 <strong>Fix:</strong> Added <code>dapr-sentry</code> service for certificate generation<br>
 <strong>Impact:</strong> ✅ mTLS communication between sidecars now secured</p>
 <pre><code class="lang-yaml">dapr-sentry:
-  image: daprio/dapr:1.13.0
+  image: daprio/dapr:1.15.6
   command: [&quot;./sentry&quot;, &quot;-port&quot;, &quot;50001&quot;]
   depends_on:
     - dapr-placement

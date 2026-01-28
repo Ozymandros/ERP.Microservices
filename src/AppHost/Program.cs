@@ -6,8 +6,12 @@ var isDeployment =
     args.Contains("--publisher") || // when azd generates manifests
     Environment.GetEnvironmentVariable("IS_DEPLOYMENT") == "true";
 
-var builder = DistributedApplication.CreateBuilder(args);//AddDapr();
+var builder = DistributedApplication.CreateBuilder(args).AddDapr();
 
+// Dapr components: PubSub and State Store
+// Note: Placement service is NOT needed - only required for Dapr Actors (we don't use actors)
+// Note: Scheduler service is NOT needed - only required for scheduled jobs/workflows (we don't use)
+// The connection errors for Placement (6050) and Scheduler (6060) are harmless warnings.
 var stateStore = builder.AddDaprStateStore("statestore");
 var pubSub = builder.AddDaprPubSub(MessagingConstants.PubSubName);
 
@@ -50,7 +54,7 @@ else
 var origin = builder.Configuration["Parameters:FrontendOrigin"];
 
 // Get JWT configuration from appsettings.json or use defaults
-var jwtSecretKey = builder.Configuration["Jwt:SecretKey"] ?? "una_clau_molt_llarga_i_super_ultra_secreta_01234566789";
+var jwtSecretKey = builder.Configuration["Jwt:SecretKey"] ?? "a_very_long_and_super_ultra_secret_key_01234566789";
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "MyApp.Auth";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "MyApp.All";
 

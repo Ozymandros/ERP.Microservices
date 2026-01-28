@@ -53,6 +53,13 @@ This category covers everything a developer needs to get productive. From local 
 - Common issues
 - Performance profiling
 
+### [DEVCONTAINER_SETUP.md](DEVCONTAINER_SETUP.md)
+**DevContainer configuration for local and cloud development**
+- Local development setup (host Docker)
+- GitHub Codespaces setup (Docker-in-Docker)
+- VS Code configuration
+- Troubleshooting guide
+
 ---
 
 ## 🎯 Developer Journey
@@ -279,12 +286,13 @@ development/
 ├── CODING_STANDARDS.md
 ├── TESTING.md
 ├── GIT_WORKFLOW.md
-└── DEBUGGING.md
+├── DEBUGGING.md
+└── DEVCONTAINER_SETUP.md
 ```
 
 ---
 
-**Last Updated:** October 27, 2025  
+**Last Updated:** January 28, 2026  
 **Category Status:** ✅ Complete  
-**Documents:** 5 files  
+**Documents:** 6 files  
 **Target Coverage:** > 80%

@@ -17,7 +17,7 @@
 
 ```yaml
 dapr-sentry:
-  image: daprio/dapr:1.13.0
+  image: daprio/dapr:1.15.6
   command: ["./sentry", "-port", "50001"]
   depends_on:
     - dapr-placement
