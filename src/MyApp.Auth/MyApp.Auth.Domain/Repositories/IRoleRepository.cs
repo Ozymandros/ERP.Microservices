@@ -9,4 +9,6 @@ public interface IRoleRepository : IRepository<ApplicationRole, Guid>
     Task<bool> NameExistsAsync(string name);
     Task<IEnumerable<ApplicationRole>> GetRolesByUserIdAsync(Guid userId);
     Task<IEnumerable<Permission>> GetPermissionsForRoleAsync(Guid roleId);
+    Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId);
+    Task<bool> RemovePermissionFromRoleAsync(Guid roleId, Guid permissionId);
 }

@@ -44,4 +44,34 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
 
         return permissions;
     }
+
+    public async Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId)
+    {
+        return await _context.RolePermissions
+            .AnyAsync(rp => rp.RoleId == roleId && rp.PermissionId == permissionId);
+    }
+
+    public async Task<bool> RemovePermissionFromRoleAsync(Guid roleId, Guid permissionId)
+    {
+        var rolePermission = await _context.RolePermissions
+            .FirstOrDefaultAsync(rp => rp.RoleId == roleId && rp.PermissionId == permissionId);
+
+        if (rolePermission == null)
+        {
+            return false;
+        }
+
+        _context.RolePermissions.Remove(rolePermission);
+        await _context.SaveChangesAsync();
+
+        // Update role's UpdatedAt timestamp
+        var role = await _context.Roles.FindAsync(roleId);
+        if (role != null)
+        {
+            role.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+        }
+
+        return true;
+    }
 }

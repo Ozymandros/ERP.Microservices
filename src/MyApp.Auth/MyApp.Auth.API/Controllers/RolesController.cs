@@ -397,8 +397,18 @@ public class RolesController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Remove a permission from a role
+    /// </summary>
+    /// <param name="roleId">The ID of the role</param>
+    /// <param name="permissionId">The ID of the permission to remove</param>
+    /// <returns>204 No Content if successful, 404 if role/permission not found, 500 on error</returns>
     [HttpDelete("{roleId}/permissions/{permissionId}")]
     [HasPermission("Roles", "Delete")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> RemovePermissionFromRole(Guid roleId, Guid permissionId)
     {
         try

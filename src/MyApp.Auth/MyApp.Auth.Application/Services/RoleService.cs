@@ -147,6 +147,14 @@ public class RoleService : IRoleService
             return false;
         }
 
+        // Check if permission is already assigned to avoid duplicates
+        var alreadyExists = await _roleRepository.HasPermissionAsync(createDto.RoleId, createDto.PermissionId);
+        if (alreadyExists)
+        {
+            _logger.LogWarning("Permission already assigned to role: {RoleId}, {PermissionId}", createDto.RoleId, createDto.PermissionId);
+            return false;
+        }
+
         role.UpdatedAt = DateTime.UtcNow;
         role.RolePermissions.Add(new RolePermission
         {
@@ -161,17 +169,40 @@ public class RoleService : IRoleService
             return false;
         }
 
+        _logger.LogInformation("Permission added to role: {RoleId}, {PermissionId}", createDto.RoleId, createDto.PermissionId);
         return true;
     }
 
-    public Task<bool> RemovePermissionFromRoleAsync(DeleteRolePermissionDto deleteDto)
+    public async Task<bool> RemovePermissionFromRoleAsync(DeleteRolePermissionDto deleteDto)
     {
-        throw new NotImplementedException();
+        var role = await _roleManager.FindByIdAsync(deleteDto.RoleId.ToString());
+        if (role == null)
+        {
+            _logger.LogWarning("Role not found: {RoleId}", deleteDto.RoleId);
+            return false;
+        }
+
+        var permissionExists = await _roleRepository.HasPermissionAsync(deleteDto.RoleId, deleteDto.PermissionId);
+        if (!permissionExists)
+        {
+            _logger.LogWarning("Permission not assigned to role: {RoleId}, {PermissionId}", deleteDto.RoleId, deleteDto.PermissionId);
+            return false;
+        }
+
+        var result = await _roleRepository.RemovePermissionFromRoleAsync(deleteDto.RoleId, deleteDto.PermissionId);
+        if (!result)
+        {
+            _logger.LogWarning("Failed to remove permission from role: {RoleId}, {PermissionId}", deleteDto.RoleId, deleteDto.PermissionId);
+            return false;
+        }
+
+        _logger.LogInformation("Permission removed from role: {RoleId}, {PermissionId}", deleteDto.RoleId, deleteDto.PermissionId);
+        return true;
     }
 
-    public Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId)
+    public async Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId)
     {
-        throw new NotImplementedException();
+        return await _roleRepository.HasPermissionAsync(roleId, permissionId);
     }
 
     public async Task<IEnumerable<PermissionDto>> GetPermissionsForRoleAsync(Guid roleId)
