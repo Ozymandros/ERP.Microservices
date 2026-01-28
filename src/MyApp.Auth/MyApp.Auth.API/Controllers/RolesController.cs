@@ -178,14 +178,14 @@ public class RolesController : ControllerBase
         try
         {
             string cacheKey = "Role-" + id;
-            var role = await _cacheService.GetStateAsync<RoleDto>(cacheKey); // 1. Intentar obtenir de la cache
+            var role = await _cacheService.GetStateAsync<RoleDto>(cacheKey); // 1. Try to get from cache
 
             if (role is not null)
             {
-                return Ok(role); // Retorna des de la cache
+                return Ok(role); // Return from cache
             }
 
-            // 2. La dada NO �s a la cache, obtenir de la DB
+            // 2. Data NOT in cache, get from DB
             role = await _roleService.GetRoleByIdAsync(id);
             if (role is null)
             {
