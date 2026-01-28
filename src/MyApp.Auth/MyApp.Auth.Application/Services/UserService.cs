@@ -17,6 +17,7 @@ public class UserService : IUserService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly IUserRepository _userRepository;
+    private readonly IRoleRepository _roleRepository;
     private readonly IPermissionRepository _permissionRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<UserService> _logger;
@@ -26,6 +27,7 @@ public class UserService : IUserService
         UserManager<ApplicationUser> userManager,
         RoleManager<ApplicationRole> roleManager,
         IUserRepository userRepository,
+        IRoleRepository roleRepository,
         IMapper mapper,
         ILogger<UserService> logger,
         IHttpContextAccessor httpContextAccessor,
@@ -34,6 +36,7 @@ public class UserService : IUserService
         _userManager = userManager;
         _roleManager = roleManager;
         _userRepository = userRepository;
+        _roleRepository = roleRepository;
         _mapper = mapper;
         _logger = logger;
         _httpContextAccessor = httpContextAccessor;
@@ -101,7 +104,74 @@ public class UserService : IUserService
     public async Task<UserDto?> GetUserByIdAsync(Guid userId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
-        return user == null ? null : _mapper.Map<UserDto>(user);
+        if (user == null)
+        {
+            return null;
+        }
+
+        var baseUserDto = _mapper.Map<UserDto>(user);
+
+        // Get user roles
+        var userRoles = await _roleRepository.GetRolesByUserIdAsync(user.Id);
+        bool isAdmin = userRoles.Any(r => r.Name != null && r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
+
+        // Get permissions based on admin status
+        List<Permission> permissions;
+        if (isAdmin)
+        {
+            // Admin users have all permissions
+            var allPermissions = await _permissionRepository.GetAllAsync();
+            permissions = allPermissions.ToList();
+        }
+        else
+        {
+            // Get permissions from user's roles
+            permissions = new List<Permission>();
+            foreach (var role in userRoles)
+            {
+                var rolePermissions = await _roleRepository.GetPermissionsForRoleAsync(role.Id);
+                permissions.AddRange(rolePermissions);
+            }
+
+            // Also get direct user permissions
+            var userPermissions = await _permissionRepository.GetAllPermissionsByUserId(user.Id);
+            permissions.AddRange(userPermissions);
+        }
+
+        var roleDtos = userRoles.Select(r => new RoleDto(r.Id)
+        {
+            Name = r.Name,
+            Description = r.Description
+        }).ToList();
+
+        var permissionDtos = permissions
+            .DistinctBy(p => p.Id)
+            .Select(p => new PermissionDto(p.Id)
+            {
+                Module = p.Module,
+                Action = p.Action,
+                Description = p.Description
+            })
+            .ToList();
+
+        return new UserDto(baseUserDto.Id)
+        {
+            CreatedAt = baseUserDto.CreatedAt,
+            CreatedBy = baseUserDto.CreatedBy,
+            UpdatedAt = baseUserDto.UpdatedAt,
+            UpdatedBy = baseUserDto.UpdatedBy,
+            Email = baseUserDto.Email,
+            Username = baseUserDto.Username,
+            FirstName = baseUserDto.FirstName,
+            LastName = baseUserDto.LastName,
+            EmailConfirmed = baseUserDto.EmailConfirmed,
+            IsExternalLogin = baseUserDto.IsExternalLogin,
+            ExternalProvider = baseUserDto.ExternalProvider,
+            Roles = roleDtos,
+            Permissions = permissionDtos,
+            IsAdmin = isAdmin,
+            IsActive = user.LockoutEnd == null || user.LockoutEnd <= DateTimeOffset.UtcNow
+        };
     }
 
     public async Task<UserDto?> GetUserByEmailAsync(string email)

@@ -383,8 +383,24 @@ public class RolesController : ControllerBase
                 return Conflict(new { message = "Role already exists" });
             }
 
+            // Invalidate role cache
+            string roleCacheKey = "Role-" + roleId;
+            await _cacheService.RemoveStateAsync(roleCacheKey);
             await _cacheService.RemoveStateAsync("all_roles");
             await _cacheService.RemoveStateAsync("all_permissions");
+
+            // Invalidate cache for all users that have this role
+            if (!string.IsNullOrEmpty(role.Name))
+            {
+                var usersInRole = await _roleService.GetUsersInRoleAsync(role.Name);
+                foreach (var user in usersInRole)
+                {
+                    string userCacheKey = "User-" + user.Id;
+                    await _cacheService.RemoveStateAsync(userCacheKey);
+                }
+                string userRolesCacheKey = "Role-" + roleId;
+                await _cacheService.RemoveStateAsync(userRolesCacheKey);
+            }
 
             _logger.LogInformation("Role permission created: {@Permission}", new { RoleName = role.Name, Module = permission.Module, Action = permission.Action });
             return NoContent();
@@ -423,7 +439,14 @@ public class RolesController : ControllerBase
                 return NoContent();
             }
 
-            // 2. Remove the Association
+            // 2. Get role name before removing (needed for cache invalidation)
+            var role = await _roleService.GetRoleByIdAsync(roleId);
+            if (role is null)
+            {
+                return NotFound(new { message = "Role not found" });
+            }
+
+            // 3. Remove the Association
             var deleteDto = new DeleteRolePermissionDto(roleId, permissionId);
             var success = await _roleService.RemovePermissionFromRoleAsync(deleteDto);
 
@@ -434,8 +457,23 @@ public class RolesController : ControllerBase
                 return StatusCode(500, new { message = "Failed to unassign permission due to an internal error." });
             }
 
-            // 3. Invalidate Cache and Return Success (204 No Content)
-            await _cacheService.RemoveStateAsync("all_roles"); // Cache invalidation
+            // 4. Invalidate Cache and Return Success (204 No Content)
+            string roleCacheKey = "Role-" + roleId;
+            await _cacheService.RemoveStateAsync(roleCacheKey);
+            await _cacheService.RemoveStateAsync("all_roles");
+
+            // Invalidate cache for all users that have this role
+            if (!string.IsNullOrEmpty(role.Name))
+            {
+                var usersInRole = await _roleService.GetUsersInRoleAsync(role.Name);
+                foreach (var user in usersInRole)
+                {
+                    string userCacheKey = "User-" + user.Id;
+                    string userRolesCacheKey = "Roles-" + user.Id;
+                    await _cacheService.RemoveStateAsync(userCacheKey);
+                    await _cacheService.RemoveStateAsync(userRolesCacheKey);
+                }
+            }
 
             _logger.LogInformation("Permission removed from role: {@Permission}", new { PermissionId = permissionId, RoleId = roleId });
 

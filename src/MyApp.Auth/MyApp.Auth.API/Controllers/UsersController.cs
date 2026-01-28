@@ -363,8 +363,10 @@ public partial class UsersController : ControllerBase
                 _logger.LogWarning("Failed to assign role {@Role} to user {@User}", new { RoleName = roleName }, new { UserId = id });
                 return NotFound(new { message = "User or role not found" });
             }
-            string cacheKey = "User-" + id;
-            await _cacheService.RemoveStateAsync(cacheKey);
+
+            // Invalidate user cache
+            string userCacheKey = "User-" + id;
+            await _cacheService.RemoveStateAsync(userCacheKey);
 
             _logger.LogInformation("Role {@Role} assigned to user {@User}", new { RoleName = roleName }, new { UserId = id });
             return NoContent();
@@ -395,8 +397,10 @@ public partial class UsersController : ControllerBase
                 _logger.LogWarning("Failed to remove role {@Role} from user {@User}", new { RoleName = roleName }, new { UserId = id });
                 return NotFound(new { message = "User or role not found" });
             }
-            string cacheKey = "User-" + id;
-            await _cacheService.RemoveStateAsync(cacheKey);
+
+            // Invalidate user cache
+            string userCacheKey = "User-" + id;
+            await _cacheService.RemoveStateAsync(userCacheKey);
 
             _logger.LogInformation("Role {@Role} removed from user {@User}", new { RoleName = roleName }, new { UserId = id });
             return NoContent();
