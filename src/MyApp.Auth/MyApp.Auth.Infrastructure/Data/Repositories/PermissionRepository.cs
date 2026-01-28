@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
 using MyApp.Shared.Infrastructure.Repositories;

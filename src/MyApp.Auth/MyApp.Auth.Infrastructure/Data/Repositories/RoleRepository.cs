@@ -28,10 +28,21 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
 
     public async Task<IEnumerable<ApplicationRole>> GetRolesByUserIdAsync(Guid userId)
     {
+        // Query directly from UserRoles join table to get only roles assigned to this user
+        var roleIds = await _context.UserRoles
+            .Where(ur => ur.UserId == userId)
+            .Select(ur => ur.RoleId)
+            .Distinct()
+            .ToListAsync();
+
+        if (!roleIds.Any())
+        {
+            return Enumerable.Empty<ApplicationRole>();
+        }
+
         return await _context.Roles
-            .Include(r => r.UserRoles)
+            .Where(r => roleIds.Contains(r.Id))
             .Include(r => r.RoleClaims)
-            .Where(r => r.UserRoles.Any(ur => ur.UserId == userId))
             .ToListAsync();
     }
 
