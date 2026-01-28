@@ -72,7 +72,7 @@ namespace MyApp.Auth.Infrastructure.Data.Repositories
                 .Select(up => up.Permission)
                 .ToListAsync();
 
-            var rolePermissions = await (from ur in _context.Set<Microsoft.AspNetCore.Identity.IdentityUserRole<Guid>>()
+            var rolePermissions = await (from ur in _context.Set<ApplicationUserRole>()
                                          join rp in _context.Set<RolePermission>() on ur.RoleId equals rp.RoleId
                                          where ur.UserId == userId
                                          select rp.Permission)

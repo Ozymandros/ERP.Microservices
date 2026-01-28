@@ -17,7 +17,7 @@ public class RoleQuerySpec : BaseSpecification<ApplicationRole>
     {
         // Apply role-specific filters
         if (Query.Filters?.TryGetValue(nameof(ApplicationRole.Name), out var nameFilter) == true)
-            query = query.Where(r => r.Name.ToLower().Contains(nameFilter.ToString()!.ToLower()));
+            query = query.Where(r => r.Name != null && r.Name.ToLower().Contains(nameFilter.ToString()!.ToLower()));
 
         if (Query.Filters?.TryGetValue(nameof(ApplicationRole.Description), out var descFilter) == true)
             query = query.Where(r => r.Description != null && r.Description.ToLower().Contains(descFilter.ToString()!.ToLower()));
@@ -27,7 +27,7 @@ public class RoleQuerySpec : BaseSpecification<ApplicationRole>
         {
             var term = Query.SearchTerm.ToLower();
             query = query.Where(r =>
-                r.Name.ToLower().Contains(term) ||
+                (r.Name != null && r.Name.ToLower().Contains(term)) ||
                 (r.Description != null && r.Description.ToLower().Contains(term))
             );
         }

@@ -59,16 +59,8 @@ public class SalesOrderServiceTests
             CustomerId = Guid.NewGuid(),
             Status = 0,
             TotalAmount = 250.00m,
-            Lines = new List<SalesOrderLineDto>
-            {
-                new SalesOrderLineDto(Guid.NewGuid())
-                {
-                    ProductId = Guid.NewGuid(),
-                    Quantity = 5,
-                    UnitPrice = 50.00m,
-                    TotalAmount = 250.00m
-                }
-            }
+            Customer = null,
+            Lines = new List<SalesOrderLineDto>()
         };
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
@@ -122,16 +114,8 @@ public class SalesOrderServiceTests
                 CustomerId = Guid.NewGuid(),
                 Status = 0,
                 TotalAmount = 100.00m,
-                Lines = new List<SalesOrderLineDto>
-                {
-                    new SalesOrderLineDto(Guid.NewGuid())
-                    {
-                        ProductId = Guid.NewGuid(),
-                        Quantity = 5,
-                        UnitPrice = 50.00m,
-                        TotalAmount = 250.00m
-                    }
-                }
+                Customer = null!,
+                Lines = new List<SalesOrderLineDto>()
             },
             new SalesOrderDto(Guid.NewGuid())
             {
@@ -140,16 +124,8 @@ public class SalesOrderServiceTests
                 CustomerId = Guid.NewGuid(),
                 Status = 0,
                 TotalAmount = 200.00m,
-                Lines = new List<SalesOrderLineDto>
-                {
-                    new SalesOrderLineDto(Guid.NewGuid())
-                    {
-                        ProductId = Guid.NewGuid(),
-                        Quantity = 5,
-                        UnitPrice = 50.00m,
-                        TotalAmount = 250.00m
-                    }
-                }
+                Customer = null!,
+                Lines = new List<SalesOrderLineDto>()
             }
         };
 
@@ -198,16 +174,8 @@ public class SalesOrderServiceTests
             CustomerId = customerId,
             Status = 0,
             TotalAmount = 50.00m,
-            Lines = new List<SalesOrderLineDto>
-            {
-                new SalesOrderLineDto(Guid.NewGuid())
-                {
-                    ProductId = Guid.NewGuid(),
-                    Quantity = 5,
-                    UnitPrice = 10.00m,
-                    TotalAmount = 50.00m
-                }
-            }
+            Customer = null!,
+            Lines = new List<SalesOrderLineDto>()
         };
 
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
@@ -286,23 +254,8 @@ public class SalesOrderServiceTests
             CustomerId = customerId,
             Status = 0,
             TotalAmount = 91.00m,
-            Lines = new List<SalesOrderLineDto>
-            {
-                new SalesOrderLineDto(Guid.NewGuid())
-                {
-                    ProductId = Guid.NewGuid(),
-                    Quantity = 2,
-                    UnitPrice = 15.50m,
-                    TotalAmount = 31.00m
-                },
-                new SalesOrderLineDto(Guid.NewGuid())
-                {
-                    ProductId = Guid.NewGuid(),
-                    Quantity = 3,
-                    UnitPrice = 20.00m,
-                    TotalAmount = 60.00m
-                }
-            }
+            Customer = null!,
+            Lines = new List<SalesOrderLineDto>()
         });
 
         // Act
@@ -334,6 +287,7 @@ public class SalesOrderServiceTests
             CustomerId = customerId,
             Status = 0,
             TotalAmount = 0,
+            Customer = null,
             Lines = new List<SalesOrderLineDto>()
         });
 
@@ -362,7 +316,8 @@ public class SalesOrderServiceTests
             CustomerId = customerId,
             Status = 0,
             TotalAmount = 0,
-            Lines = new List<SalesOrderLineDto>()   
+            Customer = null,
+            Lines = new List<SalesOrderLineDto>()
         };
 
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
@@ -410,16 +365,8 @@ public class SalesOrderServiceTests
             CustomerId = existingCustomerId,
             Status = 1,
             TotalAmount = 75.00m,
-            Lines = new List<SalesOrderLineDto>
-            {
-                new SalesOrderLineDto(Guid.NewGuid())
-                {
-                    ProductId = Guid.NewGuid(),
-                    Quantity = 3,
-                    UnitPrice = 25.00m,
-                    TotalAmount = 75.00m
-                }
-            }
+            Customer = null,
+            Lines = new List<SalesOrderLineDto>()
         };
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(existingOrder);
