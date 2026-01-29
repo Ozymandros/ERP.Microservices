@@ -18,6 +18,7 @@ namespace MyApp.Auth.Application.Tests.Services;
 public class UserServiceTests : BaseServiceTest
 {
     private readonly Mock<IUserRepository> _mockUserRepository;
+    private readonly Mock<IRoleRepository> _mockRoleRepository;
     private readonly Mock<UserManager<ApplicationUser>> _mockUserManager;
     private readonly Mock<RoleManager<ApplicationRole>> _mockRoleManager;
     private readonly Mock<IHttpContextAccessor> _mockHttpContextAccessor;
@@ -28,6 +29,7 @@ public class UserServiceTests : BaseServiceTest
     public UserServiceTests()
     {
         _mockUserRepository = new Mock<IUserRepository>();
+        _mockRoleRepository = new Mock<IRoleRepository>();
         _mockUserManager = CreateMockUserManager();
         _mockRoleManager = CreateMockRoleManager();
         _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
@@ -38,6 +40,7 @@ public class UserServiceTests : BaseServiceTest
             _mockUserManager.Object,
             _mockRoleManager.Object,
             _mockUserRepository.Object,
+            _mockRoleRepository.Object,
             Mapper,
             _mockLogger.Object,
             _mockHttpContextAccessor.Object,

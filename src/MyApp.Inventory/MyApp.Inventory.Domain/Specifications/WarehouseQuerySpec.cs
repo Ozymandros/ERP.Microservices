@@ -13,7 +13,7 @@ public class WarehouseQuerySpec : BaseSpecification<Warehouse>
     {
     }
 
-    public override IQueryable<Warehouse> Apply(IQueryable<Warehouse> query)
+    public override IQueryable<Warehouse> ApplyFilters(IQueryable<Warehouse> query)
     {
         // Apply warehouse-specific filters
         if (Query.Filters?.TryGetValue(nameof(Warehouse.Name), out var nameFilter) == true)
@@ -32,6 +32,6 @@ public class WarehouseQuerySpec : BaseSpecification<Warehouse>
             );
         }
 
-        return ApplyPaginationAndSorting(query);
+        return query;
     }
 }

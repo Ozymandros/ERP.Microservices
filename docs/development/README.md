@@ -63,6 +63,7 @@ This category covers everything a developer needs to get productive. From local 
 ### [ROLE_PERMISSION_MANAGEMENT_ANALYSIS.md](ROLE_PERMISSION_MANAGEMENT_ANALYSIS.md)
 **Role-Permission management system analysis**
 - Current implementation status
+- ✅ Bulk permission operations (Add/Remove) - **IMPLEMENTED**
 - Missing features and gaps
 - Priority recommendations
 - Implementation roadmap
@@ -70,6 +71,7 @@ This category covers everything a developer needs to get productive. From local 
 ### [FRONTEND_ROLE_MANAGEMENT_PROMPT.md](FRONTEND_ROLE_MANAGEMENT_PROMPT.md)
 **Frontend role management implementation specification**
 - Complete API endpoint documentation
+- ✅ Bulk permission endpoints documented (`/bulk` endpoints)
 - Data models and TypeScript interfaces
 - UI/UX requirements and component structure
 - Code examples and implementation guidelines

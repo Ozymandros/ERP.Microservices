@@ -30,6 +30,7 @@ public class QuerySpec
     /// <summary>
     /// Filters as key-value pairs (e.g., {"status": "active", "category": "books"}).
     /// Implementation depends on the specification for the entity.
+    /// Uses case-insensitive key comparison to match property names regardless of query parameter casing.
     /// </summary>
     public Dictionary<string, string>? Filters { get; set; }
 

@@ -1,7 +1,8 @@
 # Role-Permission Management Analysis
 
 **Current State Assessment & Proposed Enhancements**  
-Last Updated: January 28, 2026
+Last Updated: January 28, 2026  
+**Recent Updates**: Bulk permission operations implemented (Add/Remove)
 
 ---
 
@@ -20,7 +21,9 @@ Last Updated: January 28, 2026
 - ✅ `DELETE /api/roles/{id}` - Delete role
 - ✅ `GET /api/roles/{name}/users` - Get users in role
 - ✅ `POST /api/roles/{roleId}/permissions` - Add single permission to role
+- ✅ `POST /api/roles/{roleId}/permissions/bulk` - Add multiple permissions to role (bulk)
 - ✅ `DELETE /api/roles/{roleId}/permissions/{permissionId}` - Remove permission from role
+- ✅ `DELETE /api/roles/{roleId}/permissions/bulk` - Remove multiple permissions from role (bulk)
 - ✅ `GET /api/roles/{roleId}/permissions` - Get all permissions for role
 - ✅ `GET /api/roles/export-xlsx` - Export roles to Excel
 - ✅ `GET /api/roles/export-pdf` - Export roles to PDF
@@ -49,18 +52,29 @@ Last Updated: January 28, 2026
 
 ### 🔴 **Critical Missing Features**
 
-#### 1. **Bulk Permission Assignment**
-**Problem**: Currently, assigning multiple permissions to a role requires multiple API calls (one per permission).
+#### 1. **Bulk Permission Assignment** ✅ IMPLEMENTED
+**Status**: ✅ **COMPLETED** - Available via `POST /api/roles/{roleId}/permissions/bulk`
 
-**Missing Endpoint**:
+**Endpoint**:
 ```
 POST /api/roles/{roleId}/permissions/bulk
-Body: { "permissionIds": ["guid1", "guid2", "guid3"] }
+Body: ["guid1", "guid2", "guid3"] // Array of permission GUIDs
 ```
 
-**Use Case**: When creating a new role, you need to assign 20+ permissions. Currently requires 20+ API calls.
+**Use Case**: When creating a new role, you can now assign 20+ permissions in a single API call.
 
-#### 2. **Replace All Permissions**
+#### 2. **Bulk Permission Removal** ✅ IMPLEMENTED
+**Status**: ✅ **COMPLETED** - Available via `DELETE /api/roles/{roleId}/permissions/bulk`
+
+**Endpoint**:
+```
+DELETE /api/roles/{roleId}/permissions/bulk
+Body: ["guid1", "guid2", "guid3"] // Array of permission GUIDs
+```
+
+**Use Case**: Removing multiple permissions from a role in a single operation.
+
+#### 3. **Replace All Permissions**
 **Problem**: No way to replace all permissions of a role in a single operation.
 
 **Missing Endpoint**:
@@ -71,7 +85,7 @@ Body: { "permissionIds": ["guid1", "guid2", "guid3"] }
 
 **Use Case**: Updating a role's permissions - currently requires deleting all and re-adding, or multiple add/remove calls.
 
-#### 3. **Bulk Role Assignment to Users**
+#### 4. **Bulk Role Assignment to Users**
 **Problem**: Assigning multiple roles to a user requires multiple API calls.
 
 **Missing Endpoint**:
@@ -82,7 +96,7 @@ Body: { "roleNames": ["Role1", "Role2", "Role3"] }
 
 **Use Case**: Onboarding a new user who needs multiple roles.
 
-#### 4. **User Direct Permissions Management**
+#### 5. **User Direct Permissions Management**
 **Problem**: Code mentions "direct user permissions" in `AuthService`, but no endpoints exist to manage them.
 
 **Missing Endpoints**:
@@ -200,19 +214,20 @@ GET /api/roles/permissions-matrix
 - ✅ Proper error handling and logging
 
 ### **Areas for Improvement**
-- ❌ Missing bulk operations (performance issue)
+- ✅ Bulk operations implemented (AddPermissionsToRole, RemovePermissionsFromRoleAsync)
 - ❌ No direct user-permission management endpoints
-- ❌ Limited batch operations
+- ❌ Limited batch operations for user-role assignment
 - ❌ No role cloning/copying functionality
 
 ---
 
 ## 🔧 **Suggested Implementation Order**
 
-### **Phase 1: Critical Bulk Operations** (Week 1)
-1. Bulk permission assignment to roles
-2. Replace all permissions for a role
-3. Bulk role assignment to users
+### **Phase 1: Critical Bulk Operations** (Week 1) ✅ PARTIALLY COMPLETE
+1. ✅ Bulk permission assignment to roles - **COMPLETED** (`POST /api/roles/{roleId}/permissions/bulk`)
+2. ✅ Bulk permission removal from roles - **COMPLETED** (`DELETE /api/roles/{roleId}/permissions/bulk`)
+3. ⚠️ Replace all permissions for a role - **WORKAROUND AVAILABLE** (use bulk remove + bulk add)
+4. ❌ Bulk role assignment to users - **PENDING**
 
 ### **Phase 2: Direct User Permissions** (Week 2)
 1. Add/remove direct permissions to users

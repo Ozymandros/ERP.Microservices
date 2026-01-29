@@ -3,6 +3,7 @@ using MyApp.Auth.Domain.Entities;
 using MyApp.Shared.Domain.Entities;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
+using MyApp.Auth.Application.Contracts;
 
 namespace MyApp.Auth.Application.Contracts.Services;
 
@@ -20,6 +21,9 @@ public interface IRoleService
     Task<bool> AddPermissionToRole(CreateRolePermissionDto createDto);
     Task<bool> RemovePermissionFromRoleAsync(DeleteRolePermissionDto deleteDto);
     Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId);
-
     Task<IEnumerable<PermissionDto>> GetPermissionsForRoleAsync(Guid roleId);
+
+    // Bulk overloads
+    Task<bool> AddPermissionsToRole(CreateRolePermissionsDto createDto);
+    Task<bool> RemovePermissionsFromRoleAsync(DeleteRolePermissionsDto deleteDto);
 }

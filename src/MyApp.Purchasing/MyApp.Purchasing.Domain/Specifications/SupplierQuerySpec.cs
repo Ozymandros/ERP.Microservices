@@ -13,7 +13,7 @@ public class SupplierQuerySpec : BaseSpecification<Supplier>
     {
     }
 
-    public override IQueryable<Supplier> Apply(IQueryable<Supplier> query)
+    public override IQueryable<Supplier> ApplyFilters(IQueryable<Supplier> query)
     {
         // Apply supplier-specific filters
         if (Query.Filters?.TryGetValue(nameof(Supplier.Name), out var nameFilter) == true)
@@ -44,6 +44,6 @@ public class SupplierQuerySpec : BaseSpecification<Supplier>
             );
         }
 
-        return ApplyPaginationAndSorting(query);
+        return query;
     }
 }

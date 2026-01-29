@@ -10,6 +10,7 @@ using MyApp.Shared.Domain.Permissions;
 
 
 using MyApp.Shared.Infrastructure.Export;
+using MyApp.Shared.Infrastructure.Extensions;
 namespace MyApp.Purchasing.API.Controllers;
 
 [ApiController]
@@ -75,15 +76,28 @@ public class SuppliersController : ControllerBase
     }
 
     /// <summary>
-    /// Get all suppliers - Requires Purchasing.Read permission
+    /// Get all suppliers (optionally paginated and filtered)
     /// </summary>
     [HttpGet]
     [HasPermission("Purchasing", "Read")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<SupplierDto>>> GetAllSuppliers()
+    [ProducesResponseType(typeof(IEnumerable<SupplierDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResult<SupplierDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult> GetAllSuppliers([FromQuery] QuerySpec query)
     {
         try
         {
+            // If query parameters are provided, perform a search/paginated query
+            if (Request.Query.Any())
+            {
+                query.BindFiltersFromQuery(Request.Query);
+                query.Validate();
+                var spec = new SupplierQuerySpec(query);
+                var result = await _supplierService.QuerySuppliersAsync(spec);
+                return Ok(result);
+            }
+
             var suppliers = await _cacheService.GetStateAsync<IEnumerable<SupplierDto>>("all_suppliers");
             if (suppliers != null)
             {
@@ -97,8 +111,7 @@ public class SuppliersController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving all suppliers");
-            var suppliers = await _supplierService.GetAllSuppliersAsync();
-            return Ok(suppliers);
+            return StatusCode(500, new { message = "An error occurred retrieving suppliers" });
         }
     }
 
@@ -186,6 +199,7 @@ public class SuppliersController : ControllerBase
     {
         try
         {
+            query.BindFiltersFromQuery(Request.Query);
             query.Validate();
             var spec = new SupplierQuerySpec(query);
             var result = await _supplierService.QuerySuppliersAsync(spec);

@@ -7,6 +7,7 @@ using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Infrastructure.Export;
+using MyApp.Shared.Infrastructure.Extensions;
 
 namespace MyApp.Sales.API.Controllers
 {
@@ -78,6 +79,8 @@ namespace MyApp.Sales.API.Controllers
         [HttpGet]
         [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(PaginatedResult<SalesOrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAll([FromQuery] QuerySpec query)
@@ -86,6 +89,7 @@ namespace MyApp.Sales.API.Controllers
                 return BadRequest(ModelState);
             try
             {
+                query.BindFiltersFromQuery(Request.Query);
                 query.Validate();
                 var spec = new SalesOrderQuerySpec(query);
                 var result = await _salesOrderService.QuerySalesOrdersAsync(spec);
@@ -117,6 +121,7 @@ namespace MyApp.Sales.API.Controllers
                 return BadRequest(ModelState);
             try
             {
+                query.BindFiltersFromQuery(Request.Query);
                 query.Validate();
                 var spec = new SalesOrderQuerySpec(query);
                 var result = await _salesOrderService.QuerySalesOrdersAsync(spec);

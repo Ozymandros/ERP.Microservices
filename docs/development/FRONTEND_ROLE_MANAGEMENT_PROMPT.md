@@ -1,7 +1,8 @@
 # Frontend Role Management Implementation Prompt
 
 **Complete specification for implementing Role-Permission management UI**  
-Last Updated: January 28, 2026
+Last Updated: January 28, 2026  
+**Recent Updates**: Bulk permission operations (Add/Remove) now available
 
 ---
 
@@ -283,7 +284,7 @@ Response: 200 OK
 Body: UserDto[]
 ```
 
-#### **10. Add Permission to Role**
+#### **10. Add Permission to Role** (Single)
 ```
 POST /auth/api/roles/{roleId}/permissions?permissionId={permissionId}
 Authorization: Bearer <token>
@@ -301,9 +302,33 @@ Response: 409 Conflict
 Body: { message: "Role already exists" } // Permission already assigned
 ```
 
+#### **10b. Add Permissions to Role** (Bulk) ⭐ NEW
+```
+POST /auth/api/roles/{roleId}/permissions/bulk
+Authorization: Bearer <token>
+Permission Required: Roles.Update
+Content-Type: application/json
+
+Body: ["guid1", "guid2", "guid3"] // Array of permission GUIDs
+
+Response: 204 No Content
+
+Response: 400 Bad Request
+Body: { message: "No permission IDs provided." }
+
+Response: 404 Not Found
+Body: { message: "Role not found" }
+
+Response: 500 Internal Server Error
+Body: { message: "Failed to add permissions to role." }
+
+Response: 409 Conflict
+Body: { message: "Role already exists" } // Permission already assigned
+```
+
 **Note**: The backend currently expects `permissionId` as a query parameter, but the endpoint signature suggests it should be in the URL path. Check the actual implementation.
 
-#### **11. Remove Permission from Role**
+#### **11. Remove Permission from Role** (Single)
 ```
 DELETE /auth/api/roles/{roleId}/permissions/{permissionId}
 Authorization: Bearer <token>
@@ -311,8 +336,32 @@ Permission Required: Roles.Delete
 
 Response: 204 No Content
 
+Response: 404 Not Found
+Body: { message: "Role not found" } or { message: "Permission not found" }
+
 Response: 500 Internal Server Error
 Body: { message: "Failed to unassign permission due to an internal error." }
+```
+
+#### **11b. Remove Permissions from Role** (Bulk) ⭐ NEW
+```
+DELETE /auth/api/roles/{roleId}/permissions/bulk
+Authorization: Bearer <token>
+Permission Required: Roles.Delete
+Content-Type: application/json
+
+Body: ["guid1", "guid2", "guid3"] // Array of permission GUIDs
+
+Response: 204 No Content
+
+Response: 400 Bad Request
+Body: { message: "No permission IDs provided." }
+
+Response: 404 Not Found
+Body: { message: "Role not found" }
+
+Response: 500 Internal Server Error
+Body: { message: "Failed to remove permissions from role." }
 ```
 
 #### **12. Get Role Permissions**
@@ -714,8 +763,12 @@ function hasPermission(module: string, action: string): boolean {
 6. User toggles permissions
 7. On save:
    - Compare current vs new permissions
-   - Call `POST /auth/api/roles/{roleId}/permissions` for additions
-   - Call `DELETE /auth/api/roles/{roleId}/permissions/{permissionId}` for removals
+   - **Recommended**: Use bulk operations for better performance:
+     - Call `POST /auth/api/roles/{roleId}/permissions/bulk` with array of permission IDs to add
+     - Call `DELETE /auth/api/roles/{roleId}/permissions/bulk` with array of permission IDs to remove
+   - **Alternative**: Use single operations (slower for many changes):
+     - Call `POST /auth/api/roles/{roleId}/permissions` for each addition
+     - Call `DELETE /auth/api/roles/{roleId}/permissions/{permissionId}` for each removal
 8. Show success message
 
 ### **Flow 3: Search and Filter Roles**
@@ -731,7 +784,10 @@ function hasPermission(module: string, action: string): boolean {
 
 ## 🚨 **Important Notes**
 
-1. **Permission Assignment**: Currently, permissions must be assigned one-by-one. Consider implementing bulk assignment on the frontend by making multiple API calls sequentially or in parallel.
+1. **Permission Assignment**: 
+   - ✅ **Bulk operations available**: Use `POST /auth/api/roles/{roleId}/permissions/bulk` to add multiple permissions at once
+   - ✅ **Bulk removal available**: Use `DELETE /auth/api/roles/{roleId}/permissions/bulk` to remove multiple permissions at once
+   - Single operations still available: `POST /auth/api/roles/{roleId}/permissions` and `DELETE /auth/api/roles/{roleId}/permissions/{permissionId}`
 
 2. **Error Messages**: The backend returns `{ message: "..." }` for errors. Display these messages to users clearly.
 

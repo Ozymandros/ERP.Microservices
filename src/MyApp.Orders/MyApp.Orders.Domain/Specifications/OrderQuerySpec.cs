@@ -13,7 +13,7 @@ public class OrderQuerySpec : BaseSpecification<Order>
 {
     public OrderQuerySpec(QuerySpec query) : base(query) { }
 
-    public override IQueryable<Order> Apply(IQueryable<Order> query)
+    public override IQueryable<Order> ApplyFilters(IQueryable<Order> query)
     {
         // Filter by OrderNumber
         if (Query.Filters?.TryGetValue(nameof(Order.OrderNumber), out var orderNumberFilter) == true)
@@ -51,6 +51,6 @@ public class OrderQuerySpec : BaseSpecification<Order>
             query = query.Where(o => o.OrderNumber.ToLower().Contains(term));
         }
 
-        return ApplyPaginationAndSorting(query);
+        return query;
     }
 }

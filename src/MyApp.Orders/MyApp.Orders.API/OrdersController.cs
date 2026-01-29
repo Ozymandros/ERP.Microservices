@@ -7,7 +7,7 @@ using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Orders.Domain.Specifications;
 using MyApp.Shared.Infrastructure.Export;
-
+using MyApp.Shared.Infrastructure.Extensions;
 namespace MyApp.Orders.API
 {
     [Route("api/[controller]")]
@@ -73,24 +73,35 @@ namespace MyApp.Orders.API
         }
 
         /// <summary>
-        /// Get all operational orders
+        /// Get all operational orders (optionally paginated and filtered)
         /// </summary>
         [HttpGet]
         [HasPermission("Orders", "Read")]
         [ProducesResponseType(typeof(IEnumerable<OrderDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAll()
+        [ProducesResponseType(typeof(PaginatedResult<OrderDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> GetAll([FromQuery] QuerySpec query)
         {
             try
             {
+                // If query parameters are provided, perform a search/paginated query
+                if (Request.Query.Any())
+                {
+                    query.BindFiltersFromQuery(Request.Query);
+                    query.Validate();
+                    var spec = new OrderQuerySpec(query);
+                    var result = await _orderService.QueryOrdersAsync(spec);
+                    return Ok(result);
+                }
+
                 var orders = await _orderService.ListAsync();
                 return Ok(orders);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving all orders");
-                var orders = await _orderService.ListAsync();
-                return Ok(orders);
+                _logger.LogError(ex, "Error retrieving orders");
+                return StatusCode(500, new { message = "An error occurred retrieving orders" });
             }
         }
 
@@ -309,6 +320,7 @@ namespace MyApp.Orders.API
                 return BadRequest(ModelState);
             try
             {
+                query.BindFiltersFromQuery(Request.Query);
                 query.Validate();
                 var spec = new OrderQuerySpec(query);
                 var result = await _orderService.QueryOrdersAsync(spec);
