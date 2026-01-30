@@ -41,37 +41,36 @@ public class ApplicationUserQuerySpec : BaseSpecification<ApplicationUser>
     }
 
     /// <summary>
-    /// Apply user-specific filters, then apply sorting and pagination.
+    /// Apply user-specific filters.
     /// </summary>
-    public override IQueryable<ApplicationUser> Apply(IQueryable<ApplicationUser> query)
+    public override IQueryable<ApplicationUser> ApplyFilters(IQueryable<ApplicationUser> query)
     {
-        // Apply filters based on the Filters dictionary
-        if (Query.Filters != null)
+        // Apply filters based on the Filters dictionary (case-insensitive key matching)
+        var filters = Query.Filters ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        
+        if (filters.TryGetValue(nameof(ApplicationUser.IsActive), out var isActiveStr))
         {
-            if (Query.Filters.TryGetValue(nameof(ApplicationUser.IsActive), out var isActiveStr))
+            if (bool.TryParse(isActiveStr, out var isActive))
             {
-                if (bool.TryParse(isActiveStr, out var isActive))
-                {
-                    query = query.Where(u => u.IsActive == isActive);
-                }
+                query = query.Where(u => u.IsActive == isActive);
             }
+        }
 
-            if (Query.Filters.TryGetValue(nameof(ApplicationUser.Email), out var email) && !string.IsNullOrEmpty(email))
-            {
-                query = query.Where(u => u.Email != null && u.Email.Contains(email));
-            }
+        if (filters.TryGetValue(nameof(ApplicationUser.Email), out var email) && !string.IsNullOrEmpty(email))
+        {
+            query = query.Where(u => u.Email != null && u.Email.Contains(email));
+        }
 
-            if (Query.Filters.TryGetValue(nameof(ApplicationUser.UserName), out var userName) && !string.IsNullOrEmpty(userName))
-            {
-                query = query.Where(u => u.UserName != null && u.UserName.Contains(userName));
-            }
+        if (filters.TryGetValue(nameof(ApplicationUser.UserName), out var userName) && !string.IsNullOrEmpty(userName))
+        {
+            query = query.Where(u => u.UserName != null && u.UserName.Contains(userName));
+        }
 
-            if (Query.Filters.TryGetValue(nameof(ApplicationUser.IsExternalLogin), out var isExtStr))
+        if (filters.TryGetValue(nameof(ApplicationUser.IsExternalLogin), out var isExtStr))
+        {
+            if (bool.TryParse(isExtStr, out var isExternal))
             {
-                if (bool.TryParse(isExtStr, out var isExternal))
-                {
-                    query = query.Where(u => u.IsExternalLogin == isExternal);
-                }
+                query = query.Where(u => u.IsExternalLogin == isExternal);
             }
         }
 
@@ -87,7 +86,6 @@ public class ApplicationUserQuerySpec : BaseSpecification<ApplicationUser>
             );
         }
 
-        // Apply pagination and sorting
-        return ApplyPaginationAndSorting(query);
+        return query;
     }
 }

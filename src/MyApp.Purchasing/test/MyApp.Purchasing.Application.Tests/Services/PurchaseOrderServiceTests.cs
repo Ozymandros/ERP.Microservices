@@ -442,4 +442,30 @@ public class PurchaseOrderServiceTests
     }
 
     #endregion
+
+    [Fact]
+    public async Task CreatePurchaseOrderAsync_GeneratesOrderNumberServerSide()
+    {
+        // Arrange
+        var supplierId = Guid.NewGuid();
+        var supplier = new Supplier(supplierId);
+        var dto = new CreateUpdatePurchaseOrderDto { SupplierId = supplierId, Status = 0 };
+        var order = new PurchaseOrder(Guid.NewGuid()) { SupplierId = supplierId, Lines = new List<PurchaseOrderLine>() };
+        var createdOrder = new PurchaseOrder(Guid.NewGuid()) { OrderNumber = "PO-TEST-12345" };
+        var expectedDto = new PurchaseOrderDto { OrderNumber = "PO-TEST-12345" };
+
+        _mockSupplierRepository.Setup(r => r.GetByIdAsync(supplierId)).ReturnsAsync(supplier);
+        _mockMapper.Setup(m => m.Map<PurchaseOrder>(dto)).Returns(order);
+        _mockPurchaseOrderRepository.Setup(r => r.AddAsync(order)).ReturnsAsync(createdOrder);
+        _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(createdOrder)).Returns(expectedDto);
+
+        // Act
+        var result = await _purchaseOrderService.CreatePurchaseOrderAsync(dto);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.False(string.IsNullOrWhiteSpace(result.OrderNumber));
+        Assert.StartsWith("PO-", result.OrderNumber);
+        _mockPurchaseOrderRepository.Verify(r => r.AddAsync(It.Is<PurchaseOrder>(o => !string.IsNullOrWhiteSpace(o.OrderNumber))), Times.Once);
+    }
 }

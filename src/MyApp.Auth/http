@@ -1,27 +1,27 @@
 ### Test: CheckPermission_WithValidCredentials_ReturnsPermissionStatus
 
-# 1. Variables d'Entorn
-# Assegura't d'establir la teva URL i el teu token d'autenticació
-@baseUrl = https://localhost:7001  # Ajusta aquesta URL a la teva configuració
+# 1. Environment Variables
+# Make sure to set your URL and authentication token
+@baseUrl = https://localhost:7001  # Adjust this URL to your configuration
 @apiPath = /api/permissions
-@authToken = <EL_TEU_TOKEN_D'ACCÉS_AQUÍ> # Cal un token JWT vàlid
+@authToken = <YOUR_ACCESS_TOKEN_HERE> # A valid JWT token is required
 
-# 2. Variables de Prova
-# Els valors per als paràmetres 'module' i 'action'
+# 2. Test Variables
+# Values for the 'module' and 'action' parameters
 @testModule = sales
 @testAction = create_customer
 
-# 3. Sol·licitud GET
-# L'endpoint és "check", i els paràmetres es passen com a query string (?module=...&action=...)
+# 3. GET Request
+# The endpoint is "check", and parameters are passed as query string (?module=...&action=...)
 GET {{baseUrl}}{{apiPath}}/check?module={{testModule}}&action={{testAction}}
 Authorization: Bearer {{authToken}}
 Accept: application/json
 
-### Espera:
-# - Codi de resposta: 200 OK (Si el token és vàlid)
-# - Cos de la resposta: true o false (boolean)
+### Expected:
+# - Response code: 200 OK (If the token is valid)
+# - Response body: true or false (boolean)
 
-# Exemple de prova sense permís o amb un mòdul/acció que no existeix
+# Example test without permission or with a module/action that doesn't exist
 #
 ### Test: CheckPermission_NoAccess_ReturnsFalse
 
@@ -32,16 +32,16 @@ GET {{baseUrl}}{{apiPath}}/check?module={{testModule2}}&action={{testAction2}}
 Authorization: Bearer {{authToken}}
 Accept: application/json
 
-### Espera:
-# - Codi de resposta: 200 OK
-# - Cos de la resposta: false
+### Expected:
+# - Response code: 200 OK
+# - Response body: false
 
-# Exemple de prova sense token d'autenticació (hauria de retornar 401 Unauthorized)
+# Example test without authentication token (should return 401 Unauthorized)
 #
 ### Test: CheckPermission_NoAuth_Returns401
 
 GET {{baseUrl}}{{apiPath}}/check?module=test&action=test
 Accept: application/json
 
-### Espera:
-# - Codi de resposta: 401 Unauthorized
+### Expected:
+# - Response code: 401 Unauthorized

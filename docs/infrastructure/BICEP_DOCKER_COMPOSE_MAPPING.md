@@ -113,7 +113,7 @@ redis:
 **docker-compose Configuration:**
 ```yaml
 dapr-placement:
-  image: daprio/dapr:1.13.0
+  image: daprio/dapr:1.15.6
   container_name: dapr-placement
   command: ["./placement", "-port", "50005", "-log-level", "info"]
   ports:
@@ -332,7 +332,7 @@ erpapigateway:
 ### docker-compose.yml
 ```yaml
 auth-service-dapr:
-  image: daprio/dapr:1.13.0
+  image: daprio/dapr:1.15.6
   command:
     - "./daprd"
     - "-app-id", "auth-service"

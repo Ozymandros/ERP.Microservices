@@ -6,13 +6,12 @@ using Microsoft.AspNetCore.Authorization;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Pagination;
-using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Specifications;
-using MyApp.Shared.Domain.Permissions;
 using MyApp.Purchasing.Domain.Specifications;
 
 
 using MyApp.Shared.Infrastructure.Export;
+using MyApp.Shared.Infrastructure.Extensions;
 namespace MyApp.Purchasing.API.Controllers;
 
 [ApiController]
@@ -78,15 +77,28 @@ public class PurchaseOrdersController : ControllerBase
     }
 
     /// <summary>
-    /// Get all purchase orders - Requires Purchasing.Read permission
+    /// Get all purchase orders (optionally paginated and filtered)
     /// </summary>
     [HttpGet]
     [HasPermission("Purchasing", "Read")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<PurchaseOrderDto>>> GetAllPurchaseOrders()
+    [ProducesResponseType(typeof(IEnumerable<PurchaseOrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResult<PurchaseOrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult> GetAllPurchaseOrders([FromQuery] QuerySpec query)
     {
         try
         {
+            // If query parameters are provided, perform a search/paginated query
+            if (Request.Query.Any())
+            {
+                query.BindFiltersFromQuery(Request.Query);
+                query.Validate();
+                var spec = new PurchaseOrderQuerySpec(query);
+                var result = await _purchaseOrderService.QueryPurchaseOrdersAsync(spec);
+                return Ok(result);
+            }
+
             var orders = await _cacheService.GetStateAsync<IEnumerable<PurchaseOrderDto>>("all_purchase_orders");
             if (orders != null)
             {
@@ -102,8 +114,7 @@ public class PurchaseOrdersController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving all purchase orders");
-            var orders = await _purchaseOrderService.GetAllPurchaseOrdersAsync();
-            return Ok(orders);
+            return StatusCode(500, new { message = "An error occurred retrieving purchase orders" });
         }
     }
 
@@ -161,6 +172,7 @@ public class PurchaseOrdersController : ControllerBase
     {
         try
         {
+            query.BindFiltersFromQuery(Request.Query);
             query.Validate();
             var spec = new PurchaseOrderQuerySpec(query);
             var result = await _purchaseOrderService.QueryPurchaseOrdersAsync(spec);
@@ -229,7 +241,7 @@ public class PurchaseOrdersController : ControllerBase
 
         try
         {
-            _logger.LogInformation("Creating new purchase order: {@Order}", new { OrderNumber = dto.OrderNumber });
+            _logger.LogInformation("Creating new purchase order: {@Order}", new { SupplierId = dto.SupplierId });
             var order = await _purchaseOrderService.CreatePurchaseOrderAsync(dto);
             await _cacheService.RemoveStateAsync("all_purchase_orders");
             _logger.LogInformation("Purchase order {@Order} created and cache invalidated", new { OrderId = order.Id });

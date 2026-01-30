@@ -68,10 +68,13 @@ namespace MyApp.Sales.Application.Services
             // Validate customer exists
             var customer = await _customerRepository.GetByIdAsync(dto.CustomerId);
             if (customer == null)
-                throw new InvalidOperationException($"Customer with ID {dto.CustomerId} not found.");
+            {
+                throw new KeyNotFoundException($"Customer with ID '{dto.CustomerId}' not found.");
+            }
 
             var order = _mapper.Map<SalesOrder>(dto);
             order.Id = Guid.NewGuid();
+            order.OrderNumber = await GenerateOrderNumberAsync();
             order.OrderDate = dto.OrderDate == default ? DateTime.UtcNow : dto.OrderDate;
 
             // Calculate total from lines if provided
@@ -90,8 +93,17 @@ namespace MyApp.Sales.Application.Services
                 order.TotalAmount = lines.Sum(l => l.LineTotal);
             }
 
-            await _orderRepository.AddAsync(order);
-            return _mapper.Map<SalesOrderDto>(order);
+            var createdOrder = await _orderRepository.AddAsync(order);
+            return _mapper.Map<SalesOrderDto>(createdOrder);
+        }
+
+        private async Task<string> GenerateOrderNumberAsync()
+        {
+            // Example: Use a timestamp and a random suffix for uniqueness (replace with a DB sequence or other logic as needed)
+            var now = DateTime.UtcNow;
+            var random = Guid.NewGuid().ToString()[..8];
+            var count = (await _orderRepository.GetAllAsync()).Count() + 1; // Not perfect for concurrency, but placeholder
+            return $"SO-{now:yyyyMMddHHmmss}-{count}-{random}";
         }
 
         public async Task<SalesOrderDto> UpdateSalesOrderAsync(Guid id, CreateUpdateSalesOrderDto dto)
@@ -109,7 +121,8 @@ namespace MyApp.Sales.Application.Services
             }
 
             // Update basic properties
-            order.OrderNumber = dto.OrderNumber;
+            // Remove assignment from DTO, generate server-side
+            // order.OrderNumber = dto.OrderNumber;
             order.CustomerId = dto.CustomerId;
             order.Status = (SalesOrderStatus)dto.Status;
 

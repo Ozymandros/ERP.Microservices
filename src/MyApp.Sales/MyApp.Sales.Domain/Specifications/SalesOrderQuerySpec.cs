@@ -16,7 +16,7 @@ public class SalesOrderQuerySpec : BaseSpecification<SalesOrder>
     {
     }
 
-    public override IQueryable<SalesOrder> Apply(IQueryable<SalesOrder> query)
+    public override IQueryable<SalesOrder> ApplyFilters(IQueryable<SalesOrder> query)
     {
         // Apply sales order-specific filters
         if (Query.Filters?.TryGetValue(nameof(SalesOrder.OrderNumber), out var orderNumberFilter) == true)
@@ -53,6 +53,6 @@ public class SalesOrderQuerySpec : BaseSpecification<SalesOrder>
             query = query.Where(so => so.OrderNumber.ToLower().Contains(term));
         }
 
-        return ApplyPaginationAndSorting(query);
+        return query;
     }
 }

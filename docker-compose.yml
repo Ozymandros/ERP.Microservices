@@ -79,7 +79,7 @@ services:
     restart: unless-stopped
 
   dapr-placement:
-    image: daprio/dapr:1.13.0
+    image: daprio/dapr:1.15.6
     container_name: dapr-placement
     command: ["./placement", "-port", "50005", "-log-level", "info"]
     ports:
@@ -89,7 +89,7 @@ services:
     restart: unless-stopped
 
   # dapr-sentry:
-  #   image: daprio/dapr:1.13.0
+  #   image: daprio/dapr:1.15.6
   #   container_name: dapr-sentry
   #   command: ["./sentry", "-port", "50001", "-log-level", "info"]
   #   ports:
@@ -192,7 +192,7 @@ services:
     restart: unless-stopped
 
   auth-service-dapr:
-    image: daprio/dapr:1.13.0
+    image: daprio/dapr:1.15.6
     container_name: auth-service-dapr
     depends_on:
       - auth-service
@@ -243,7 +243,7 @@ services:
   #   restart: unless-stopped
 
   # billing-service-dapr:
-  #   image: daprio/dapr:1.13.0
+  #   image: daprio/dapr:1.15.6
   #   container_name: billing-service-dapr
   #   depends_on:
   #     - billing-service
@@ -294,7 +294,7 @@ services:
     restart: unless-stopped
 
   inventory-service-dapr:
-    image: daprio/dapr:1.13.0
+    image: daprio/dapr:1.15.6
     container_name: inventory-service-dapr
     depends_on:
       - inventory-service
@@ -345,7 +345,7 @@ services:
     restart: unless-stopped
 
   orders-service-dapr:
-    image: daprio/dapr:1.13.0
+    image: daprio/dapr:1.15.6
     container_name: orders-service-dapr
     depends_on:
       - orders-service
@@ -396,7 +396,7 @@ services:
     restart: unless-stopped
 
   purchasing-service-dapr:
-    image: daprio/dapr:1.13.0
+    image: daprio/dapr:1.15.6
     container_name: purchasing-service-dapr
     depends_on:
       - purchasing-service
@@ -447,7 +447,7 @@ services:
     restart: unless-stopped
 
   sales-service-dapr:
-    image: daprio/dapr:1.13.0
+    image: daprio/dapr:1.15.6
     container_name: sales-service-dapr
     depends_on:
       - sales-service

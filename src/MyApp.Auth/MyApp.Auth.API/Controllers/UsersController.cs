@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
+using MyApp.Shared.Infrastructure.Extensions;
 using MyApp.Auth.Domain.Specifications;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
@@ -29,16 +30,28 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Get all users
+    /// Get all users (optionally paginated and filtered)
     /// </summary>
     [HttpGet]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult> GetAll([FromQuery] QuerySpec query)
     {
         try
         {
+            // If query parameters are provided, perform a search/paginated query
+            if (Request.Query.Any())
+            {
+                query.BindFiltersFromQuery(Request.Query);
+                query.Validate();
+                var spec = new ApplicationUserQuerySpec(query);
+                var result = await _userService.QueryUsersAsync(spec);
+                return Ok(result);
+            }
+
             var users = await _cacheService.GetStateAsync<IEnumerable<UserDto>>("all_users");
             if (users != null)
             {
@@ -50,7 +63,7 @@ public partial class UsersController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving all users");
+            _logger.LogError(ex, "Error retrieving users");
             return StatusCode(500, new { message = "An error occurred retrieving users" });
         }
     }
@@ -138,6 +151,9 @@ public partial class UsersController : ControllerBase
     {
         try
         {
+            // Bind filters from query parameters
+            query.BindFiltersFromQuery(Request.Query);
+            
             query.Validate();
             var spec = new ApplicationUserQuerySpec(query);
             var result = await _userService.QueryUsersAsync(spec);
@@ -363,8 +379,10 @@ public partial class UsersController : ControllerBase
                 _logger.LogWarning("Failed to assign role {@Role} to user {@User}", new { RoleName = roleName }, new { UserId = id });
                 return NotFound(new { message = "User or role not found" });
             }
-            string cacheKey = "User-" + id;
-            await _cacheService.RemoveStateAsync(cacheKey);
+
+            // Invalidate user cache
+            string userCacheKey = "User-" + id;
+            await _cacheService.RemoveStateAsync(userCacheKey);
 
             _logger.LogInformation("Role {@Role} assigned to user {@User}", new { RoleName = roleName }, new { UserId = id });
             return NoContent();
@@ -395,8 +413,10 @@ public partial class UsersController : ControllerBase
                 _logger.LogWarning("Failed to remove role {@Role} from user {@User}", new { RoleName = roleName }, new { UserId = id });
                 return NotFound(new { message = "User or role not found" });
             }
-            string cacheKey = "User-" + id;
-            await _cacheService.RemoveStateAsync(cacheKey);
+
+            // Invalidate user cache
+            string userCacheKey = "User-" + id;
+            await _cacheService.RemoveStateAsync(userCacheKey);
 
             _logger.LogInformation("Role {@Role} removed from user {@User}", new { RoleName = roleName }, new { UserId = id });
             return NoContent();

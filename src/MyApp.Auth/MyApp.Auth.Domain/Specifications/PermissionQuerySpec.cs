@@ -13,17 +13,19 @@ public class PermissionQuerySpec : BaseSpecification<Permission>
     {
     }
 
-    public override IQueryable<Permission> Apply(IQueryable<Permission> query)
+    public override IQueryable<Permission> ApplyFilters(IQueryable<Permission> query)
     {
-        // Apply permission-specific filters
-        if (Query.Filters?.TryGetValue(nameof(Permission.Module), out var moduleFilter) == true)
-            query = query.Where(p => p.Module.ToLower().Contains(moduleFilter.ToString()!.ToLower()));
+        // Apply permission-specific filters (case-insensitive key matching)
+        var filters = Query.Filters ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        
+        if (filters.TryGetValue(nameof(Permission.Module), out var moduleFilter))
+            query = query.Where(p => p.Module.ToLower().Contains(moduleFilter.ToLower()));
 
-        if (Query.Filters?.TryGetValue(nameof(Permission.Action), out var actionFilter) == true)
-            query = query.Where(p => p.Action.ToLower().Contains(actionFilter.ToString()!.ToLower()));
+        if (filters.TryGetValue(nameof(Permission.Action), out var actionFilter))
+            query = query.Where(p => p.Action.ToLower().Contains(actionFilter.ToLower()));
 
-        if (Query.Filters?.TryGetValue(nameof(Permission.Description), out var descFilter) == true)
-            query = query.Where(p => p.Description != null && p.Description.ToLower().Contains(descFilter.ToString()!.ToLower()));
+        if (filters.TryGetValue(nameof(Permission.Description), out var descFilter))
+            query = query.Where(p => p.Description != null && p.Description.ToLower().Contains(descFilter.ToLower()));
 
         // Apply search (searches in module, action, and description)
         if (!string.IsNullOrEmpty(Query.SearchTerm))
@@ -36,6 +38,6 @@ public class PermissionQuerySpec : BaseSpecification<Permission>
             );
         }
 
-        return ApplyPaginationAndSorting(query);
+        return query;
     }
 }

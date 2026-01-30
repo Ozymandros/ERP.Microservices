@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
@@ -15,6 +15,8 @@ public class AuthService : IAuthService
     private readonly IJwtTokenProvider _jwtTokenProvider;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IRoleRepository _roleRepository;
+    private readonly IPermissionRepository _permissionRepository;
     private readonly ILogger<AuthService> _logger;
 
     public AuthService(
@@ -22,12 +24,16 @@ public class AuthService : IAuthService
         IJwtTokenProvider jwtTokenProvider,
         IRefreshTokenRepository refreshTokenRepository,
         IUserRepository userRepository,
+        IRoleRepository roleRepository,
+        IPermissionRepository permissionRepository,
         ILogger<AuthService> logger)
     {
         _userManager = userManager;
         _jwtTokenProvider = jwtTokenProvider;
         _refreshTokenRepository = refreshTokenRepository;
         _userRepository = userRepository;
+        _roleRepository = roleRepository;
+        _permissionRepository = permissionRepository;
         _logger = logger;
     }
 
@@ -178,7 +184,67 @@ public class AuthService : IAuthService
 
         await _refreshTokenRepository.CreateAsync(refreshTokenEntity);
 
-        // ⭐️ Step 3: Return DTO with roles included
+        // ⭐️ Step 3: Populate UserDto with Roles and Permissions
+        var userRoles = await _roleRepository.GetRolesByUserIdAsync(user.Id);
+        var roleNames = userRoles.Select(r => r.Name).ToList();
+        bool isAdmin = userRoles.Any(r => r.Name != null && r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
+        
+        _logger.LogInformation("User {UserId} ({Email}) has roles: {Roles}, IsAdmin: {IsAdmin}", 
+            user.Id, user.Email, string.Join(", ", roleNames), isAdmin);
+        
+        List<Permission> permissions;
+        if (isAdmin)
+        {
+            // Admin users have all permissions
+            var allPermissions = await _permissionRepository.GetAllAsync();
+            permissions = allPermissions.ToList();
+            _logger.LogInformation("Admin user {UserId} ({Email}) - returning all {Count} permissions", 
+                user.Id, user.Email, permissions.Count);
+        }
+        else
+        {
+            // Get permissions from user's roles
+            permissions = new List<Permission>();
+            foreach (var role in userRoles)
+            {
+                var rolePermissions = await _roleRepository.GetPermissionsForRoleAsync(role.Id);
+                permissions.AddRange(rolePermissions);
+                _logger.LogInformation("Role {RoleName} ({RoleId}) has {Count} permissions", 
+                    role.Name, role.Id, rolePermissions.Count());
+            }
+            
+            // Also get direct user permissions (only from UserPermission table, not from roles)
+            // GetAllPermissionsByUserId includes role permissions, so we filter them out
+            var allUserPermissions = await _permissionRepository.GetAllPermissionsByUserId(user.Id);
+            var rolePermissionIds = permissions.Select(p => p.Id).ToHashSet();
+            var directUserPermissions = allUserPermissions.Where(p => !rolePermissionIds.Contains(p.Id));
+            permissions.AddRange(directUserPermissions);
+            
+            var distinctPermissions = permissions.DistinctBy(p => p.Id).ToList();
+            _logger.LogInformation("User {UserId} ({Email}) - {DirectCount} direct permissions, {RoleCount} role permissions, {TotalCount} total distinct permissions", 
+                user.Id, user.Email, directUserPermissions.Count(), 
+                permissions.Count - directUserPermissions.Count(), 
+                distinctPermissions.Count);
+            
+            permissions = distinctPermissions;
+        }
+
+        var roleDtos = userRoles.Select(r => new RoleDto(r.Id) 
+        { 
+            Name = r.Name, 
+            Description = r.Description 
+        }).ToList();
+
+        var permissionDtos = permissions
+            .DistinctBy(p => p.Id)
+            .Select(p => new PermissionDto(p.Id) 
+            { 
+                Module = p.Module, 
+                Action = p.Action, 
+                Description = p.Description 
+            })
+            .ToList();
+
         var userDto = new UserDto(user.Id)
         {
             CreatedAt = user.CreatedAt,
@@ -192,9 +258,10 @@ public class AuthService : IAuthService
             EmailConfirmed = user.EmailConfirmed,
             IsExternalLogin = user.IsExternalLogin,
             ExternalProvider = user.ExternalProvider,
-            Roles = new List<RoleDto?>(),
-            Permissions = new List<PermissionDto?>(),
-            IsAdmin = false
+            Roles = roleDtos!,
+            Permissions = permissionDtos!,
+            IsAdmin = isAdmin,
+            IsActive = user.IsActive
         };
 
         return new TokenResponseDto(accessToken, refreshToken, 15 * 60, "Bearer", userDto);

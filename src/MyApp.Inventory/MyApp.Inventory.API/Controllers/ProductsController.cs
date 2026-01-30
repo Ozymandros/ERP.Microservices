@@ -9,6 +9,7 @@ using MyApp.Shared.Domain.Permissions;
 
 
 using MyApp.Shared.Infrastructure.Export;
+using MyApp.Shared.Infrastructure.Extensions;
 namespace MyApp.Inventory.API.Controllers;
 
 [ApiController]
@@ -74,15 +75,28 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Get all products - Requires Inventory.Read permission
+    /// Get all products (optionally paginated and filtered)
     /// </summary>
     [HttpGet]
     [HasPermission("Inventory", "Read")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+    [ProducesResponseType(typeof(IEnumerable<ProductDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResult<ProductDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult> GetAllProducts([FromQuery] QuerySpec query)
     {
         try
         {
+            // If query parameters are provided, perform a search/paginated query
+            if (Request.Query.Any())
+            {
+                query.BindFiltersFromQuery(Request.Query);
+                query.Validate();
+                var spec = new ProductQuerySpec(query);
+                var result = await _productService.QueryProductsAsync(spec);
+                return Ok(result);
+            }
+
             var products = await _cacheService.GetStateAsync<IEnumerable<ProductDto>>("all_products");
             if (products != null)
             {
@@ -98,8 +112,7 @@ public class ProductsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving all products");
-            var products = await _productService.GetAllProductsAsync();
-            return Ok(products);
+            return StatusCode(500, new { message = "An error occurred retrieving products" });
         }
     }
 
@@ -139,6 +152,7 @@ public class ProductsController : ControllerBase
     {
         try
         {
+            query.BindFiltersFromQuery(Request.Query);
             query.Validate();
             var spec = new ProductQuerySpec(query);
             var result = await _productService.QueryProductsAsync(spec);

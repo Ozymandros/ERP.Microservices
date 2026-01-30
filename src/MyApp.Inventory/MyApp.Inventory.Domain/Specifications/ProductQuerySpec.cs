@@ -16,7 +16,7 @@ public class ProductQuerySpec : BaseSpecification<Product>
     {
     }
 
-    public override IQueryable<Product> Apply(IQueryable<Product> query)
+    public override IQueryable<Product> ApplyFilters(IQueryable<Product> query)
     {
         // Apply product-specific filters
         if (Query.Filters?.TryGetValue(nameof(Product.SKU), out var skuFilter) == true)
@@ -48,6 +48,6 @@ public class ProductQuerySpec : BaseSpecification<Product>
             );
         }
 
-        return ApplyPaginationAndSorting(query);
+        return query;
     }
 }

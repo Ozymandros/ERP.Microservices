@@ -7,7 +7,7 @@ using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 
 using MyApp.Shared.Infrastructure.Export;
-
+using MyApp.Shared.Infrastructure.Extensions;
 namespace MyApp.Inventory.API.Controllers;
 
 [ApiController]
@@ -70,16 +70,37 @@ public class WarehousesController : ControllerBase
     }
 
     /// <summary>
-    /// Get all warehouses - Requires Inventory.Read permission
+    /// Get all warehouses (optionally paginated and filtered)
     /// </summary>
     [HttpGet]
     [HasPermission("Inventory", "Read")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<WarehouseDto>>> GetAllWarehouses()
+    [ProducesResponseType(typeof(IEnumerable<WarehouseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResult<WarehouseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult> GetAllWarehouses([FromQuery] QuerySpec query)
     {
-        _logger.LogInformation("Retrieving all warehouses");
-        var warehouses = await _warehouseService.GetAllWarehousesAsync();
-        return Ok(warehouses);
+        try
+        {
+            // If query parameters are provided, perform a search/paginated query
+            if (Request.Query.Any())
+            {
+                query.BindFiltersFromQuery(Request.Query);
+                query.Validate();
+                var spec = new WarehouseQuerySpec(query);
+                var result = await _warehouseService.QueryWarehousesAsync(spec);
+                return Ok(result);
+            }
+
+            _logger.LogInformation("Retrieving all warehouses");
+            var warehouses = await _warehouseService.GetAllWarehousesAsync();
+            return Ok(warehouses);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving warehouses");
+            return StatusCode(500, new { message = "An error occurred retrieving warehouses" });
+        }
     }
 
     /// <summary>
@@ -118,6 +139,7 @@ public class WarehousesController : ControllerBase
     {
         try
         {
+            query.BindFiltersFromQuery(Request.Query);
             query.Validate();
             var spec = new WarehouseQuerySpec(query);
             var result = await _warehouseService.QueryWarehousesAsync(spec);
