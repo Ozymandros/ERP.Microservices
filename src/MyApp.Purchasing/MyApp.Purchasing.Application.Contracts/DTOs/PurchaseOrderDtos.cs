@@ -30,10 +30,6 @@ public record PurchaseOrderLineDto
 
 public record CreateUpdatePurchaseOrderDto
 {
-    [Required(ErrorMessage = "OrderNumber is required")]
-    [StringLength(64, MinimumLength = 1)]
-    public string OrderNumber { get; init; } = string.Empty;
-
     [Required(ErrorMessage = "SupplierId is required")]
     public Guid SupplierId { get; init; }
 

@@ -53,6 +53,30 @@ This category covers everything a developer needs to get productive. From local 
 - Common issues
 - Performance profiling
 
+### [DEVCONTAINER_SETUP.md](DEVCONTAINER_SETUP.md)
+**DevContainer configuration for local and cloud development**
+- Local development setup (host Docker)
+- GitHub Codespaces setup (Docker-in-Docker)
+- VS Code configuration
+- Troubleshooting guide
+
+### [ROLE_PERMISSION_MANAGEMENT_ANALYSIS.md](ROLE_PERMISSION_MANAGEMENT_ANALYSIS.md)
+**Role-Permission management system analysis**
+- Current implementation status
+- ✅ Bulk permission operations (Add/Remove) - **IMPLEMENTED**
+- Missing features and gaps
+- Priority recommendations
+- Implementation roadmap
+
+### [FRONTEND_ROLE_MANAGEMENT_PROMPT.md](FRONTEND_ROLE_MANAGEMENT_PROMPT.md)
+**Frontend role management implementation specification**
+- Complete API endpoint documentation
+- ✅ Bulk permission endpoints documented (`/bulk` endpoints)
+- Data models and TypeScript interfaces
+- UI/UX requirements and component structure
+- Code examples and implementation guidelines
+- User flows and acceptance criteria
+
 ---
 
 ## 🎯 Developer Journey
@@ -279,12 +303,15 @@ development/
 ├── CODING_STANDARDS.md
 ├── TESTING.md
 ├── GIT_WORKFLOW.md
-└── DEBUGGING.md
+├── DEBUGGING.md
+├── DEVCONTAINER_SETUP.md
+├── ROLE_PERMISSION_MANAGEMENT_ANALYSIS.md
+└── FRONTEND_ROLE_MANAGEMENT_PROMPT.md
 ```
 
 ---
 
-**Last Updated:** October 27, 2025  
+**Last Updated:** January 28, 2026  
 **Category Status:** ✅ Complete  
-**Documents:** 5 files  
+**Documents:** 8 files  
 **Target Coverage:** > 80%

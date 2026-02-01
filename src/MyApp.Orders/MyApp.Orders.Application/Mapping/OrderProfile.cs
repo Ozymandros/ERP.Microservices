@@ -9,7 +9,8 @@ namespace MyApp.Orders.Application.Mapping
         public OrderProfile()
         {
             CreateMap<Order, OrderDto>()
-                .ForMember(d => d.Status, o => o.MapFrom(s => s.Status.ToString()));
+                .ForMember(d => d.Status, o => o.MapFrom(s => s.Status.ToString()))
+                .ForMember(d => d.Type, o => o.MapFrom(s => s.Type.ToString()));
 
             CreateMap<OrderLine, OrderLineDto>();
 
@@ -19,6 +20,9 @@ namespace MyApp.Orders.Application.Mapping
 
             CreateMap<OrderLineDto, OrderLine>()
                 .ConstructUsing(src => new OrderLine(src.Id));
+
+            CreateMap<CreateOrderLineDto, OrderLine>()
+                .ConstructUsing(src => new OrderLine(Guid.NewGuid()));
         }
     }
 }

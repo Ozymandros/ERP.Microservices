@@ -18,6 +18,7 @@ namespace MyApp.Auth.Application.Tests.Services;
 public class UserServiceTests : BaseServiceTest
 {
     private readonly Mock<IUserRepository> _mockUserRepository;
+    private readonly Mock<IRoleRepository> _mockRoleRepository;
     private readonly Mock<UserManager<ApplicationUser>> _mockUserManager;
     private readonly Mock<RoleManager<ApplicationRole>> _mockRoleManager;
     private readonly Mock<IHttpContextAccessor> _mockHttpContextAccessor;
@@ -28,6 +29,7 @@ public class UserServiceTests : BaseServiceTest
     public UserServiceTests()
     {
         _mockUserRepository = new Mock<IUserRepository>();
+        _mockRoleRepository = new Mock<IRoleRepository>();
         _mockUserManager = CreateMockUserManager();
         _mockRoleManager = CreateMockRoleManager();
         _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
@@ -38,6 +40,7 @@ public class UserServiceTests : BaseServiceTest
             _mockUserManager.Object,
             _mockRoleManager.Object,
             _mockUserRepository.Object,
+            _mockRoleRepository.Object,
             Mapper,
             _mockLogger.Object,
             _mockHttpContextAccessor.Object,
@@ -223,9 +226,15 @@ public class UserServiceTests : BaseServiceTest
             .ReturnsAsync(existingUser);
 
         _mockUserManager
+            .Setup(x => x.SetEmailAsync(existingUser, updateDto.Email))
+            .ReturnsAsync(IdentityResult.Success);
+        _mockUserManager
+            .Setup(x => x.SetUserNameAsync(existingUser, updateDto.Email))
+            .ReturnsAsync(IdentityResult.Success);
+        _mockUserManager
             .Setup(x => x.UpdateAsync(existingUser))
             .ReturnsAsync(IdentityResult.Success);
-        
+
         MockMapper
             .Setup(x => x.Map(It.IsAny<UpdateUserDto>(), It.IsAny<ApplicationUser>()))
             .Returns(existingUser);
@@ -237,7 +246,8 @@ public class UserServiceTests : BaseServiceTest
         result.Should().BeTrue();
         existingUser.FirstName.Should().Be(updateDto.FirstName);
         existingUser.LastName.Should().Be(updateDto.LastName);
-        existingUser.Email.Should().Be(updateDto.Email);
+        _mockUserManager.Verify(x => x.SetEmailAsync(existingUser, updateDto.Email), Times.Once);
+        _mockUserManager.Verify(x => x.SetUserNameAsync(existingUser, updateDto.Email), Times.Once);
         _mockUserManager.Verify(x => x.UpdateAsync(existingUser), Times.Once);
     }
 
@@ -252,8 +262,8 @@ public class UserServiceTests : BaseServiceTest
             LastName = "UpdatedLast"
         };
 
-        _mockUserRepository
-            .Setup(x => x.GetByIdAsync(userId))
+        _mockUserManager
+            .Setup(x => x.FindByIdAsync(userId.ToString()))
             .ReturnsAsync((ApplicationUser?)null);
 
         // Act

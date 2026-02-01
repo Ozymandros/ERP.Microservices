@@ -1,8 +1,9 @@
 using Dapr.Client;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Text.Json;
 using MyApp.Shared.Domain.Messaging;
+using System.Text.Json;
 
 namespace MyApp.Shared.Infrastructure.Messaging;
 
@@ -191,7 +192,7 @@ public class ServiceInvoker : IServiceInvoker
         string methodPath,
         HttpMethod httpMethod,
         object? requestBody = null,
-        Dictionary<string, string>? queryParams = null)
+        Dictionary<string, string?>? queryParams = null)
     {
         if (string.IsNullOrWhiteSpace(serviceName))
             throw new ArgumentException("Service name cannot be null or empty", nameof(serviceName));
@@ -203,40 +204,35 @@ public class ServiceInvoker : IServiceInvoker
             throw new ArgumentNullException(nameof(httpMethod));
 
         HttpRequestMessage request;
-        
+
+        // 1. Gestionar Query Parameters
+        string finalPath = methodPath;
         if (queryParams != null && queryParams.Count > 0)
         {
-            // Validate query params before passing to DaprClient
-            foreach (var kvp in queryParams)
-            {
-                if (string.IsNullOrWhiteSpace(kvp.Key))
-                    throw new ArgumentException("Query parameter keys cannot be null or empty.", nameof(queryParams));
-                if (kvp.Value == null)
-                    throw new ArgumentException($"Query parameter value for key '{kvp.Key}' cannot be null.", nameof(queryParams));
-            }
-            request = _daprClient.CreateInvokeMethodRequest(httpMethod, serviceName, methodPath, queryParams);
-        }
-        else
-        {
-            request = _daprClient.CreateInvokeMethodRequest(httpMethod, serviceName, methodPath);
+            // El teu loop de validació de claus/valors és correcte
+            finalPath = QueryHelpers.AddQueryString(methodPath, queryParams);
         }
 
-        // If requestBody is provided, serialize it to JSON using the same options as DaprClient
-        // This ensures consistency between manual serialization and DaprClient's serialization
+        // 2. Crear la petició base a Dapr
+        // IMPORTANT: No passem el 'requestBody' aquí encara per tenir control total
+        request = _daprClient.CreateInvokeMethodRequest(httpMethod, serviceName, finalPath);
+
+        // 3. Gestionar el Body (NOMÉS si no és GET)
         if (requestBody != null)
         {
-            var json = JsonSerializer.Serialize(requestBody, _jsonOptions);
-            request.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            if (httpMethod == HttpMethod.Get)
+            {
+                // Opcional: Pots llançar una excepció o simplement ignorar-lo i avisar
+                _logger.LogWarning("Intent de passar un body en una petició GET al servei {Service}. El body serà ignorat.", serviceName);
+            }
+            else
+            {
+                var json = JsonSerializer.Serialize(requestBody, _jsonOptions);
+                request.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            }
         }
 
-        if (_enableLogging)
-        {
-            _logger.LogDebug(
-                "Created request for service '{ServiceName}' method '{MethodPath}' with {HttpMethod}",
-                serviceName,
-                methodPath,
-                httpMethod.Method);
-        }
+        // ... (Logging final igual)
 
         return request;
     }

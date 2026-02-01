@@ -23,6 +23,8 @@ public class AuthServiceTests : BaseServiceTest
     private readonly AuthService _authService;
     private readonly Mock<IMapper> _mockMapper;
     private readonly Mock<IUserRepository> _mockUserRepository;
+    private readonly Mock<IRoleRepository> _mockRoleRepository;
+    private readonly Mock<IPermissionRepository> _mockPermissionRepository;
     private readonly Mock<SignInManager<ApplicationUser>> _mockSignInManager;
 
     public AuthServiceTests()
@@ -33,6 +35,8 @@ public class AuthServiceTests : BaseServiceTest
         _mockLogger = CreateMockLogger<AuthService>();
         _mockMapper = new Mock<IMapper>();
         _mockUserRepository = new Mock<IUserRepository>();
+        _mockRoleRepository = new Mock<IRoleRepository>();
+        _mockPermissionRepository = new Mock<IPermissionRepository>();
         _mockSignInManager = CreateMockSignInManager(_mockUserManager.Object);
 
         _authService = new AuthService(
@@ -40,6 +44,8 @@ public class AuthServiceTests : BaseServiceTest
             _mockJwtTokenProvider.Object,
             _mockRefreshTokenRepository.Object,
             _mockUserRepository.Object,
+            _mockRoleRepository.Object,
+            _mockPermissionRepository.Object,
             _mockLogger.Object);
     }
 

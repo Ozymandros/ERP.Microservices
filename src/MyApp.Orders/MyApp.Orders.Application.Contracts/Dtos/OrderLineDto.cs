@@ -9,10 +9,8 @@ namespace MyApp.Orders.Application.Contracts.Dtos
 
         [Range(1, int.MaxValue)]
         public int Quantity { get; init; } = 1;
-
-        [Range(0.0, double.MaxValue)]
-        public decimal UnitPrice { get; init; } = 0;
-
-        public decimal LineTotal { get; init; } = 0;
+        
+        public int PickedQuantity { get; init; } = 0;
+        public bool IsFulfilled { get; init; } = false;
     }
 }

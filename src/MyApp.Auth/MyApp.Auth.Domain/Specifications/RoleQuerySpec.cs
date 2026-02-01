@@ -13,25 +13,27 @@ public class RoleQuerySpec : BaseSpecification<ApplicationRole>
     {
     }
 
-    public override IQueryable<ApplicationRole> Apply(IQueryable<ApplicationRole> query)
+    public override IQueryable<ApplicationRole> ApplyFilters(IQueryable<ApplicationRole> query)
     {
-        // Apply role-specific filters
-        if (Query.Filters?.TryGetValue(nameof(ApplicationRole.Name), out var nameFilter) == true)
-            query = query.Where(r => r.Name.ToLower().Contains(nameFilter.ToString()!.ToLower()));
+        // Apply role-specific filters (case-insensitive key matching)
+        var filters = Query.Filters ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        
+        if (filters.TryGetValue(nameof(ApplicationRole.Name), out var nameFilter))
+            query = query.Where(r => r.Name != null && r.Name.ToLower().Contains(nameFilter.ToLower()));
 
-        if (Query.Filters?.TryGetValue(nameof(ApplicationRole.Description), out var descFilter) == true)
-            query = query.Where(r => r.Description != null && r.Description.ToLower().Contains(descFilter.ToString()!.ToLower()));
+        if (filters.TryGetValue(nameof(ApplicationRole.Description), out var descFilter))
+            query = query.Where(r => r.Description != null && r.Description.ToLower().Contains(descFilter.ToLower()));
 
         // Apply search (searches in name and description)
         if (!string.IsNullOrEmpty(Query.SearchTerm))
         {
             var term = Query.SearchTerm.ToLower();
             query = query.Where(r =>
-                r.Name.ToLower().Contains(term) ||
+                (r.Name != null && r.Name.ToLower().Contains(term)) ||
                 (r.Description != null && r.Description.ToLower().Contains(term))
             );
         }
 
-        return ApplyPaginationAndSorting(query);
+        return query;
     }
 }

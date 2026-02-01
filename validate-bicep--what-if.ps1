@@ -78,10 +78,10 @@ Write-Host "(This will show proposed changes without making any modifications)" 
 Write-Host ""
 
 az deployment sub what-if `
-  --subscription "$SubscriptionId" `
-  --location "$Location" `
-  --template-file "$TemplateFile" `
-  --parameters `@`"$ParametersFile`" 
+    --subscription "$SubscriptionId" `
+    --location "$Location" `
+    --template-file "$TemplateFile" `
+    --parameters @$ParametersFile
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host ""
@@ -95,7 +95,7 @@ if ($LASTEXITCODE -ne 0) {
     Write-Host "  3. Check subscription access:" -ForegroundColor Yellow
     Write-Host "     az account list" -ForegroundColor Gray
     Write-Host "  4. View detailed error:" -ForegroundColor Yellow
-    Write-Host "     az deployment sub what-if --subscription '$SubscriptionId' --location '$Location' --template-file '$TemplateFile' --parameters @'$ParametersFile' --debug" -ForegroundColor Gray
+    Write-Host "     az deployment sub what-if --subscription '$SubscriptionId' --location '$Location' --template-file '$TemplateFile' --parameters @$ParametersFile --debug" -ForegroundColor Gray
     exit 1
 }
 

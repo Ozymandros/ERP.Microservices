@@ -13,7 +13,7 @@ public class CustomerQuerySpec : BaseSpecification<Customer>
     {
     }
 
-    public override IQueryable<Customer> Apply(IQueryable<Customer> query)
+    public override IQueryable<Customer> ApplyFilters(IQueryable<Customer> query)
     {
         // Apply customer-specific filters
         if (Query.Filters?.TryGetValue(nameof(Customer.Name), out var nameFilter) == true)
@@ -40,6 +40,6 @@ public class CustomerQuerySpec : BaseSpecification<Customer>
             );
         }
 
-        return ApplyPaginationAndSorting(query);
+        return query;
     }
 }

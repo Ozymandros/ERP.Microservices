@@ -6,9 +6,16 @@ namespace MyApp.Orders.Application.Contracts.Dtos
     {
         public DateTime OrderDate { get; init; } = default;
         public string OrderNumber { get; init; } = string.Empty;
-        public Guid CustomerId { get; init; } = default;
         public string Status { get; init; } = string.Empty;
-        public decimal TotalAmount { get; init; } = 0;
+        public string Type { get; init; } = string.Empty;
+        
+        // Logistic Points
+        public Guid? SourceId { get; init; }
+        public Guid? TargetId { get; init; }
+        
+        // External Reference
+        public Guid? ExternalOrderId { get; init; }
+        
         public List<OrderLineDto> Lines { get; init; } = new();
     }
 }

@@ -7,10 +7,9 @@ namespace MyApp.Orders.Domain.Entities
         public Guid OrderId { get; set; }
         public Guid ProductId { get; set; }
         public int Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
-        public decimal LineTotal { get; set; }
         
-        // Stock reservation fields
+        // Operational tracking fields
+        public int PickedQuantity { get; set; }
         public Guid? ReservedStockId { get; set; }
         public int ReservedQuantity { get; set; }
         public bool IsFulfilled { get; set; }

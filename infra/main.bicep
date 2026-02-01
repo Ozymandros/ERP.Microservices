@@ -254,7 +254,7 @@ module myapp_sqlserver_roles 'myapp-sqlserver-roles/myapp-sqlserver-roles.module
 
 module authServiceModule 'services/auth-service.bicep' = {
   name: 'auth-service-deployment'
-  scope: rg
+  scope: resourceGroup(rg)
   params: {
     location: location
     tags: tags

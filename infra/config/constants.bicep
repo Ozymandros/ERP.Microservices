@@ -251,7 +251,7 @@ var apiGatewayMaxReplicas = 10
 
 @export()
 @description('CPU allocation for API Gateway (1.0 cores = higher than microservices for better performance)')
-var apiGatewayCpuCores = '1.0'
+var apiGatewayCpuCores = 1
 
 // Service Health Check Configuration
 @export()

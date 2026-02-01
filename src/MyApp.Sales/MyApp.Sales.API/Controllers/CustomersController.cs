@@ -8,11 +8,15 @@ using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 
+using MyApp.Shared.Infrastructure.Export;
+using MyApp.Shared.Infrastructure.Extensions;
+
 namespace MyApp.Sales.API.Controllers
 {
     [ApiController]
     [Authorize]
     [Route("api/sales/customers")]
+
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _customerService;
@@ -27,15 +31,74 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
-        /// Get all customers - Requires Sales.Read permission
+        /// Export all customers as XLSX
+        /// </summary>
+        [HttpGet("export-xlsx")]
+        [HasPermission("Sales", "Read")]
+        [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ExportToXlsx()
+        {
+            try
+            {
+                var customers = await _cacheService.GetStateAsync<IEnumerable<CustomerDto>>("all_customers")
+                            ?? await _customerService.ListCustomersAsync();
+                var bytes = customers.ExportToXlsx();
+                return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Customers.xlsx");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting customers to XLSX");
+                return StatusCode(500, new { message = "An error occurred exporting customers" });
+            }
+        }
+
+        /// <summary>
+        /// Export all customers as PDF
+        /// </summary>
+        [HttpGet("export-pdf")]
+        [HasPermission("Sales", "Read")]
+        [Produces("application/pdf")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ExportToPdf()
+        {
+            try
+            {
+                var customers = await _cacheService.GetStateAsync<IEnumerable<CustomerDto>>("all_customers")
+                    ?? await _customerService.ListCustomersAsync();
+                var bytes = customers.ExportToPdf();
+                return File(bytes, "application/pdf", "Customers.pdf");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting customers to PDF");
+                return StatusCode(500, new { message = "An error occurred exporting customers" });
+            }
+        }
+
+        /// <summary>
+        /// Get all customers (optionally paginated and filtered)
         /// </summary>
         [HttpGet]
         [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(IEnumerable<CustomerDto>), 200)]
-        public async Task<IActionResult> GetAll()
+        [ProducesResponseType(typeof(PaginatedResult<CustomerDto>), 200)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> GetAll([FromQuery] QuerySpec query)
         {
             try
             {
+                // If query parameters are provided, perform a search/paginated query
+                if (Request.Query.Any())
+                {
+                    query.BindFiltersFromQuery(Request.Query);
+                    query.Validate();
+                    var spec = new CustomerQuerySpec(query);
+                    var result = await _customerService.QueryCustomersAsync(spec);
+                    return Ok(result);
+                }
+
                 var customers = await _cacheService.GetStateAsync<IEnumerable<CustomerDto>>("all_customers");
                 if (customers != null)
                 {
@@ -49,8 +112,7 @@ namespace MyApp.Sales.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving all customers");
-                var customers = await _customerService.ListCustomersAsync();
-                return Ok(customers);
+                return StatusCode(500, new { message = "An error occurred retrieving customers" });
             }
         }
 
@@ -103,6 +165,7 @@ namespace MyApp.Sales.API.Controllers
         {
             try
             {
+                query.BindFiltersFromQuery(Request.Query);
                 query.Validate();
                 var spec = new CustomerQuerySpec(query);
                 var result = await _customerService.QueryCustomersAsync(spec);
