@@ -218,6 +218,30 @@ public class AuthIntegrationTests
             .WaitAsync(TimeSpan.FromSeconds(30));
         var client = app.CreateHttpClient("gateway");
 
+        // Register and Login to get tokens
+        var randomId = Guid.NewGuid();
+        var email = $"refresh{randomId}@example.com";
+        var password = "Password123!";
+
+        var registerDto = new RegisterDto(
+             Email: email,
+             Password: password,
+             FirstName: "Test",
+             LastName: "User",
+             PasswordConfirm: password,
+             Username: $"refreshuser{randomId}"
+        );
+        await client.PostAsJsonAsync("/auth/api/auth/register", registerDto);
+
+        var loginDto = new LoginDto(email, password);
+        var loginResponse = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
+        var tokens = await loginResponse.Content.ReadFromJsonAsync<TokenResponseDto>();
+
+        if (tokens is null) 
+            {
+            throw new InvalidOperationException("Failed to retrieve tokens from login response.");
+        }
+
         var refreshTokenDto = new RefreshTokenDto
         (
             RefreshToken: "valid-refresh-token",
@@ -391,7 +415,7 @@ public class AuthIntegrationTests
         IConfiguration configuration = app.Services.GetRequiredService<IConfiguration>();
         var token = await new JwtTokenProvider(configuration).GenerateAccessTokenAsync(user);
         client.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "valid-jwt-token");
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokens?.AccessToken);
 
         //Act
         var response = await client.PostAsync("/api/auth/logout", null);
