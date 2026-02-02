@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace MyApp.Auth.Infrastructure.Data;
 
-public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid, IdentityUserClaim<Guid>, ApplicationUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
 {
     public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options)
     {
@@ -19,7 +19,7 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
 
     public override DbSet<ApplicationUser> Users { get; set; }
     public override DbSet<ApplicationRole> Roles { get; set; }
-    public override DbSet<IdentityUserRole<Guid>> UserRoles { get; set; }
+    public override DbSet<ApplicationUserRole> UserRoles { get; set; }
     public DbSet<UserPermission> UserPermissions { get; set; }
     public DbSet<RolePermission> RolePermissions { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
@@ -70,7 +70,7 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
             b.HasMany(e => e.RefreshTokens).WithOne(e => e.User).HasForeignKey(ut => ut.UserId).IsRequired();
 
             // Each User can have many UserTokens
-            b.HasMany(e => e.UserRoles).WithOne().HasForeignKey(ut => ut.UserId).IsRequired();
+            b.HasMany(e => e.UserRoles).WithOne(e => e.User).HasForeignKey(ut => ut.UserId).IsRequired();
         });
 
         builder.Entity<ApplicationRole>(b =>
@@ -103,7 +103,7 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
             b.HasMany(e => e.RoleClaims).WithOne().HasForeignKey(uc => uc.RoleId).IsRequired();
 
             // Each Role can have many entries in the UserRole join table
-            b.HasMany(e => e.UserRoles).WithOne().HasForeignKey(uc => uc.RoleId).IsRequired();
+            b.HasMany(e => e.UserRoles).WithOne(e => e.Role).HasForeignKey(uc => uc.RoleId).IsRequired();
 
             // Each Role can have many entries in the RolePermission join table
             b.HasMany(e => e.RolePermissions).WithOne(e => e.Role).HasForeignKey(uc => uc.RoleId).IsRequired();
@@ -111,14 +111,11 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
 
         builder.Entity<ApplicationUserRole>(b =>
         {
-            // Primary key
-            //b.HasKey(rp => new { rp.RoleId, rp.UserId });
-            //b.HasKey(r => r.Id);
+            // Primary key - Composite key for IdentityUserRole
+            b.HasKey(rp => new { rp.UserId, rp.RoleId });
 
-            // Maps to the AspNetRoles table
+            // Maps to the AspNetUserRoles table
             b.ToTable("AspNetUserRoles");
-
-            //b.HasIndex(rp => new { rp.RoleId, rp.UserId }).IsUnique();
 
             b.HasOne(rp => rp.Role)
               .WithMany(r => r.UserRoles)
@@ -140,8 +137,12 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
               .WithMany(r => r.RolePermissions)
               .HasForeignKey(rp => rp.RoleId)
               .IsRequired();
-        });
 
+            b.HasOne(rp => rp.Permission)
+              .WithMany()
+              .HasForeignKey(rp => rp.PermissionId)
+              .IsRequired();
+        });
 
     }
 

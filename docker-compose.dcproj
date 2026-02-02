@@ -20,5 +20,7 @@
     <None Include="docs\development\TEST_FIX_STRATEGY.md" />
     <None Include="docs\OPTIMIZATIONS_APPLIED.md" />
     <None Include="scripts\fix-dto-tests.ps1" />
+    <None Include="src\MyApp.Orders\test\MyApp.Orders.API.Tests\Controllers\OrdersControllerTests.cs" />
+    <None Include="src\MyApp.Orders\test\MyApp.Orders.API.Tests\MyApp.Orders.API.Tests.csproj" />
   </ItemGroup>
 </Project>

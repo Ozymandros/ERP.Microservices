@@ -14,11 +14,24 @@ public static class AdminUserSeeder
             {
                 UserName = adminEmail,
                 Email = adminEmail,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                IsActive = true
             };
 
-            await userManager.CreateAsync(user, "Admin123!"); // 🔐 Change the password in production
+            await userManager.CreateAsync(user, "Admin123!");
             await userManager.AddToRoleAsync(user, "Admin");
+        }
+        else
+        {
+            // Ensure password is correct
+            var token = await userManager.GeneratePasswordResetTokenAsync(adminUser);
+            await userManager.ResetPasswordAsync(adminUser, token, "Admin123!");
+            
+            // Ensure role is assigned
+            if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
+            {
+                await userManager.AddToRoleAsync(adminUser, "Admin");
+            }
         }
     }
 }

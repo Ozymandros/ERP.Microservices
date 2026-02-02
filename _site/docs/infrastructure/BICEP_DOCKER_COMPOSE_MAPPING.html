@@ -292,7 +292,7 @@ x-api-env: &amp;api-env
 <h3 id="dapr-placement-service">Dapr Placement Service</h3>
 <p><strong>docker-compose Configuration:</strong></p>
 <pre><code class="lang-yaml">dapr-placement:
-  image: daprio/dapr:1.13.0
+  image: daprio/dapr:1.15.6
   container_name: dapr-placement
   command: [&quot;./placement&quot;, &quot;-port&quot;, &quot;50005&quot;, &quot;-log-level&quot;, &quot;info&quot;]
   ports:
@@ -716,7 +716,7 @@ resource kvSqlSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
 <h2 id="7-dapr-sidecar-configuration">7. Dapr Sidecar Configuration</h2>
 <h3 id="docker-composeyml-2">docker-compose.yml</h3>
 <pre><code class="lang-yaml">auth-service-dapr:
-  image: daprio/dapr:1.13.0
+  image: daprio/dapr:1.15.6
   command:
     - &quot;./daprd&quot;
     - &quot;-app-id&quot;, &quot;auth-service&quot;

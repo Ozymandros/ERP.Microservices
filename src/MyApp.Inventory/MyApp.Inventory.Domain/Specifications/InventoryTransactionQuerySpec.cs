@@ -16,7 +16,7 @@ public class InventoryTransactionQuerySpec : BaseSpecification<InventoryTransact
     {
     }
 
-    public override IQueryable<InventoryTransaction> Apply(IQueryable<InventoryTransaction> query)
+    public override IQueryable<InventoryTransaction> ApplyFilters(IQueryable<InventoryTransaction> query)
     {
         // Apply transaction-specific filters
         if (Query.Filters?.TryGetValue(nameof(InventoryTransaction.TransactionType), out var typeFilter) == true)
@@ -46,6 +46,6 @@ public class InventoryTransactionQuerySpec : BaseSpecification<InventoryTransact
                 query = query.Where(t => t.QuantityChange <= qty);
         }
 
-        return ApplyPaginationAndSorting(query);
+        return query;
     }
 }

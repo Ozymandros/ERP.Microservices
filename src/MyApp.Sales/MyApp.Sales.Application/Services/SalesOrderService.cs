@@ -12,6 +12,10 @@ using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Inventory.Application.Contracts.DTOs;
+using MyApp.Orders.Application.Contracts.Dtos;
+using MyApp.Orders.Domain;
 
 namespace MyApp.Sales.Application.Services
 {
@@ -64,10 +68,13 @@ namespace MyApp.Sales.Application.Services
             // Validate customer exists
             var customer = await _customerRepository.GetByIdAsync(dto.CustomerId);
             if (customer == null)
-                throw new InvalidOperationException($"Customer with ID {dto.CustomerId} not found.");
+            {
+                throw new KeyNotFoundException($"Customer with ID '{dto.CustomerId}' not found.");
+            }
 
             var order = _mapper.Map<SalesOrder>(dto);
             order.Id = Guid.NewGuid();
+            order.OrderNumber = await GenerateOrderNumberAsync();
             order.OrderDate = dto.OrderDate == default ? DateTime.UtcNow : dto.OrderDate;
 
             // Calculate total from lines if provided
@@ -86,8 +93,17 @@ namespace MyApp.Sales.Application.Services
                 order.TotalAmount = lines.Sum(l => l.LineTotal);
             }
 
-            await _orderRepository.AddAsync(order);
-            return _mapper.Map<SalesOrderDto>(order);
+            var createdOrder = await _orderRepository.AddAsync(order);
+            return _mapper.Map<SalesOrderDto>(createdOrder);
+        }
+
+        private async Task<string> GenerateOrderNumberAsync()
+        {
+            // Example: Use a timestamp and a random suffix for uniqueness (replace with a DB sequence or other logic as needed)
+            var now = DateTime.UtcNow;
+            var random = Guid.NewGuid().ToString()[..8];
+            var count = (await _orderRepository.GetAllAsync()).Count() + 1; // Not perfect for concurrency, but placeholder
+            return $"SO-{now:yyyyMMddHHmmss}-{count}-{random}";
         }
 
         public async Task<SalesOrderDto> UpdateSalesOrderAsync(Guid id, CreateUpdateSalesOrderDto dto)
@@ -105,7 +121,8 @@ namespace MyApp.Sales.Application.Services
             }
 
             // Update basic properties
-            order.OrderNumber = dto.OrderNumber;
+            // Remove assignment from DTO, generate server-side
+            // order.OrderNumber = dto.OrderNumber;
             order.CustomerId = dto.CustomerId;
             order.Status = (SalesOrderStatus)dto.Status;
 
@@ -206,7 +223,7 @@ namespace MyApp.Sales.Application.Services
 
             try
             {
-                await _eventPublisher.PublishAsync("sales.order.created", salesOrderCreatedEvent);
+                await _eventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderCreated, salesOrderCreatedEvent);
                 _logger.LogInformation("Published SalesOrderCreatedEvent for Quote {QuoteId}", quote.Id);
             }
             catch (Exception ex)
@@ -262,30 +279,32 @@ namespace MyApp.Sales.Application.Services
             // Create fulfillment order via Orders service
             try
             {
-                var createOrderRequest = new
+                var createOrderRequest = new CreateOrderWithReservationDto
                 {
-                    orderNumber = $"{quote.OrderNumber}-ORD",
-                    customerId = quote.CustomerId,
-                    warehouseId = dto.WarehouseId,
-                    orderDate = DateTime.UtcNow,
-                    shippingAddress = dto.ShippingAddress,
-                    lines = quote.Lines.Select(l => new
+                    OrderNumber = $"{quote.OrderNumber}-ORD",
+                    Type = OrderType.Outbound,
+                    SourceId = dto.WarehouseId,  // Shipping from warehouse
+                    TargetId = quote.CustomerId, // Shipping to customer
+                    ExternalOrderId = quote.Id,  // Link to SalesOrder
+                    WarehouseId = dto.WarehouseId,
+                    OrderDate = DateTime.UtcNow,
+                    DestinationAddress = dto.ShippingAddress,
+                    Lines = quote.Lines.Select(l => new CreateOrderLineDto
                     {
-                        productId = l.ProductId,
-                        quantity = l.Quantity,
-                        unitPrice = l.UnitPrice
+                        ProductId = l.ProductId,
+                        Quantity = l.Quantity
                     }).ToList()
                 };
 
-                var fulfillmentOrder = await _serviceInvoker.InvokeAsync<object, dynamic>(
-                    "orders",
-                    "api/orders/with-reservation",
+                var fulfillmentOrder = await _serviceInvoker.InvokeAsync<CreateOrderWithReservationDto, OrderDto>(
+                    ServiceNames.Orders,
+                    ApiEndpoints.Orders.WithReservation,
                     HttpMethod.Post,
                     createOrderRequest);
 
                 // Update quote
                 quote.Status = SalesOrderStatus.Confirmed;
-                quote.ConvertedToOrderId = Guid.Parse(fulfillmentOrder.id.ToString());
+                quote.ConvertedToOrderId = fulfillmentOrder.Id;
                 await _orderRepository.UpdateAsync(quote);
 
                 // Publish SalesOrderConfirmedEvent
@@ -297,7 +316,7 @@ namespace MyApp.Sales.Application.Services
 
                 try
                 {
-                    await _eventPublisher.PublishAsync("sales.order.confirmed", salesOrderConfirmedEvent);
+                    await _eventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderConfirmed, salesOrderConfirmedEvent);
                     _logger.LogInformation(
                         "Published SalesOrderConfirmedEvent for Quote {QuoteId}, Order {OrderId}",
                         quote.Id, quote.ConvertedToOrderId);
@@ -331,18 +350,18 @@ namespace MyApp.Sales.Application.Services
                 try
                 {
                     // Call Inventory service to check availability
-                    var availability = await _serviceInvoker.InvokeAsync<dynamic>(
-                        "inventory",
-                        $"api/warehousestocks/availability/{line.ProductId}",
+                    var availability = await _serviceInvoker.InvokeAsync<StockAvailabilityDto>(
+                        ServiceNames.Inventory,
+                        $"{ApiEndpoints.Inventory.Availability}/{line.ProductId}",
                         HttpMethod.Get);
 
-                    var totalAvailable = (int)availability.totalAvailable;
-                    var warehouseStocks = ((IEnumerable<dynamic>)availability.warehouseStocks)
+                    var totalAvailable = availability.TotalAvailable;
+                    var warehouseStocks = availability.WarehouseStocks
                         .Select(ws => new WarehouseAvailabilityDto
                         {
-                            WarehouseId = Guid.Parse(ws.warehouseId.ToString()),
-                            WarehouseName = ws.warehouse?.name?.ToString() ?? "Unknown",
-                            AvailableQuantity = (int)ws.availableQuantity
+                            WarehouseId = ws.WarehouseId,
+                            WarehouseName = ws.WarehouseName ?? "Unknown",
+                            AvailableQuantity = ws.AvailableQuantity
                         })
                         .ToList();
 

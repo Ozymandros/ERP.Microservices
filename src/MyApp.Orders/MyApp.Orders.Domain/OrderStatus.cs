@@ -3,8 +3,10 @@ namespace MyApp.Orders.Domain
     public enum OrderStatus
     {
         Draft,
-        Confirmed,
-        Shipped,
+        Approved,
+        InTransit,
+        Received,
+        Completed,
         Cancelled
     }
 }

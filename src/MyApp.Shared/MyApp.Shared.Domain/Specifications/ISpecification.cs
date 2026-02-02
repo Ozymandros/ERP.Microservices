@@ -17,6 +17,13 @@ public interface ISpecification<T> where T : class
     /// <param name="query">The base queryable</param>
     /// <returns>The modified queryable with filters, sorting, and pagination applied</returns>
     IQueryable<T> Apply(IQueryable<T> query);
+
+    /// <summary>
+    /// Apply only filters to a queryable (useful for counting total items before pagination).
+    /// </summary>
+    /// <param name="query">The base queryable</param>
+    /// <returns>The queryable with filters applied</returns>
+    IQueryable<T> ApplyFilters(IQueryable<T> query);
 }
 
 /// <summary>
@@ -27,7 +34,7 @@ public abstract class BaseSpecification<T> : ISpecification<T> where T : class
     /// <summary>
     /// Query parameters (filters, sorting, pagination)
     /// </summary>
-    protected readonly QuerySpec Query;
+    public QuerySpec Query { get; protected set; }
 
     protected BaseSpecification(QuerySpec query)
     {
@@ -36,18 +43,25 @@ public abstract class BaseSpecification<T> : ISpecification<T> where T : class
     }
 
     /// <summary>
-    /// Apply the specification to a queryable. Derived classes should override this
-    /// to add entity-specific filters before calling the base implementation.
+    /// Apply the specification to a queryable.
     /// </summary>
     public virtual IQueryable<T> Apply(IQueryable<T> query)
     {
-        // Apply pagination and sorting
+        query = ApplyFilters(query);
         return ApplyPaginationAndSorting(query);
     }
 
     /// <summary>
+    /// Apply ONLY filters to a queryable.
+    /// Derived classes MUST override this to add entity-specific filters.
+    /// </summary>
+    public virtual IQueryable<T> ApplyFilters(IQueryable<T> query)
+    {
+        return query; // Default: no filters
+    }
+
+    /// <summary>
     /// Apply sorting and pagination.
-    /// Derived classes should apply filters, then call this method.
     /// </summary>
     protected IQueryable<T> ApplyPaginationAndSorting(IQueryable<T> query)
     {
@@ -69,7 +83,7 @@ public abstract class BaseSpecification<T> : ISpecification<T> where T : class
     /// </summary>
     protected IQueryable<T> ApplySearch(IQueryable<T> query, Func<IQueryable<T>, string, IQueryable<T>> searchPredicate)
     {
-        if (string.IsNullOrEmpty(Query.SearchTerm) || string.IsNullOrEmpty(Query.SearchFields))
+        if (string.IsNullOrEmpty(Query.SearchTerm))
             return query;
 
         return searchPredicate(query, Query.SearchTerm);

@@ -28,7 +28,7 @@ public interface IPurchaseOrderService
     Task<PurchaseOrderDto> ApprovePurchaseOrderAsync(ApprovePurchaseOrderDto dto);
     
     /// <summary>
-    /// Receives a purchase order and updates inventory
+    /// Receives a purchase order and creates a corresponding operational order (Inbound)
     /// </summary>
     Task<PurchaseOrderDto> ReceivePurchaseOrderAsync(ReceivePurchaseOrderDto dto);
 }

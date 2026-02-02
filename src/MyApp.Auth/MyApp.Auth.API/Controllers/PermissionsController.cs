@@ -6,7 +6,8 @@ using MyApp.Auth.Domain.Specifications;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
-using System.Security.Claims;
+using MyApp.Shared.Infrastructure.Export;
+using MyApp.Shared.Infrastructure.Extensions;
 
 namespace MyApp.Auth.API.Controllers;
 
@@ -31,16 +32,75 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Get all permissions
+    /// Export all permissions as XLSX
+    /// </summary>
+    [HttpGet("export-xlsx")]
+    [HasPermission("Permissions", "Read")]
+    [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToXlsx()
+    {
+        try
+        {
+            var permissions = await _cacheService.GetStateAsync<IEnumerable<PermissionDto>>("all_permissions")
+                ?? await _permissionService.GetAllPermissionsAsync();
+            var bytes = permissions.ExportToXlsx();
+            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Permissions.xlsx");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting permissions to XLSX");
+            return StatusCode(500, new { message = "An error occurred exporting permissions" });
+        }
+    }
+
+    /// <summary>
+    /// Export all permissions as PDF
+    /// </summary>
+    [HttpGet("export-pdf")]
+    [HasPermission("Permissions", "Read")]
+    [Produces("application/pdf")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToPdf()
+    {
+        try
+        {
+            var permissions = await _cacheService.GetStateAsync<IEnumerable<PermissionDto>>("all_permissions")
+                ?? await _permissionService.GetAllPermissionsAsync();
+            var bytes = permissions.ExportToPdf();
+            return File(bytes, "application/pdf", "Permissions.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting permissions to PDF");
+            return StatusCode(500, new { message = "An error occurred exporting permissions" });
+        }
+    }
+
+    /// <summary>
+    /// Get all permissions (optionally paginated and filtered)
     /// </summary>
     [HttpGet]
     [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(IEnumerable<PermissionDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResult<PermissionDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<IEnumerable<PermissionDto>>> GetAll()
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult> GetAll([FromQuery] QuerySpec query)
     {
         try
         {
+            // If query parameters are provided, perform a search/paginated query
+            if (Request.Query.Count != 0)
+            {
+                query.BindFiltersFromQuery(Request.Query);
+                query.Validate();
+                var spec = new PermissionQuerySpec(query);
+                var result = await _permissionService.QueryPermissionsAsync(spec);
+                return Ok(result);
+            }
+
+            // Otherwise, return all permissions from cache if available
             var permissions = await _cacheService.GetStateAsync<IEnumerable<PermissionDto>>("all_permissions");
             if (permissions != null)
             {
@@ -56,7 +116,7 @@ public class PermissionsController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving all permissions");
+            _logger.LogError(ex, "Error retrieving permissions");
             return StatusCode(500, new { message = "An error occurred retrieving permissions" });
         }
     }
@@ -98,6 +158,9 @@ public class PermissionsController : ControllerBase
     {
         try
         {
+            // Bind filters from query parameters
+            query.BindFiltersFromQuery(Request.Query);
+            
             query.Validate();
             var spec = new PermissionQuerySpec(query);
             var result = await _permissionService.QueryPermissionsAsync(spec);

@@ -8,6 +8,9 @@ using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 
+
+using MyApp.Shared.Infrastructure.Export;
+using MyApp.Shared.Infrastructure.Extensions;
 namespace MyApp.Purchasing.API.Controllers;
 
 [ApiController]
@@ -27,15 +30,74 @@ public class SuppliersController : ControllerBase
     }
 
     /// <summary>
-    /// Get all suppliers - Requires Purchasing.Read permission
+    /// Export all suppliers as XLSX
     /// </summary>
-    [HttpGet]
+    [HttpGet("export-xlsx")]
     [HasPermission("Purchasing", "Read")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<SupplierDto>>> GetAllSuppliers()
+    [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToXlsx()
     {
         try
         {
+            var suppliers = await _cacheService.GetStateAsync<IEnumerable<SupplierDto>>("all_suppliers")
+                ?? await _supplierService.GetAllSuppliersAsync();
+            var bytes = suppliers.ExportToXlsx();
+            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Suppliers.xlsx");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting suppliers to XLSX");
+            return StatusCode(500, new { message = "An error occurred exporting suppliers" });
+        }
+    }
+
+    /// <summary>
+    /// Export all suppliers as PDF
+    /// </summary>
+    [HttpGet("export-pdf")]
+    [HasPermission("Purchasing", "Read")]
+    [Produces("application/pdf")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToPdf()
+    {
+        try
+        {
+            var suppliers = await _cacheService.GetStateAsync<IEnumerable<SupplierDto>>("all_suppliers")
+                ?? await _supplierService.GetAllSuppliersAsync();
+            var bytes = suppliers.ExportToPdf();
+            return File(bytes, "application/pdf", "Suppliers.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting suppliers to PDF");
+            return StatusCode(500, new { message = "An error occurred exporting suppliers" });
+        }
+    }
+
+    /// <summary>
+    /// Get all suppliers (optionally paginated and filtered)
+    /// </summary>
+    [HttpGet]
+    [HasPermission("Purchasing", "Read")]
+    [ProducesResponseType(typeof(IEnumerable<SupplierDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResult<SupplierDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult> GetAllSuppliers([FromQuery] QuerySpec query)
+    {
+        try
+        {
+            // If query parameters are provided, perform a search/paginated query
+            if (Request.Query.Any())
+            {
+                query.BindFiltersFromQuery(Request.Query);
+                query.Validate();
+                var spec = new SupplierQuerySpec(query);
+                var result = await _supplierService.QuerySuppliersAsync(spec);
+                return Ok(result);
+            }
+
             var suppliers = await _cacheService.GetStateAsync<IEnumerable<SupplierDto>>("all_suppliers");
             if (suppliers != null)
             {
@@ -49,8 +111,7 @@ public class SuppliersController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving all suppliers");
-            var suppliers = await _supplierService.GetAllSuppliersAsync();
-            return Ok(suppliers);
+            return StatusCode(500, new { message = "An error occurred retrieving suppliers" });
         }
     }
 
@@ -138,6 +199,7 @@ public class SuppliersController : ControllerBase
     {
         try
         {
+            query.BindFiltersFromQuery(Request.Query);
             query.Validate();
             var spec = new SupplierQuerySpec(query);
             var result = await _supplierService.QuerySuppliersAsync(spec);

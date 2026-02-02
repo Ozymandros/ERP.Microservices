@@ -7,6 +7,9 @@ using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 
+
+using MyApp.Shared.Infrastructure.Export;
+using MyApp.Shared.Infrastructure.Extensions;
 namespace MyApp.Inventory.API.Controllers;
 
 [ApiController]
@@ -26,15 +29,74 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Get all products - Requires Inventory.Read permission
+    /// Export all products as XLSX
     /// </summary>
-    [HttpGet]
+    [HttpGet("export-xlsx")]
     [HasPermission("Inventory", "Read")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+    [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToXlsx()
     {
         try
         {
+            var products = await _cacheService.GetStateAsync<IEnumerable<ProductDto>>("all_products")
+                ?? await _productService.GetAllProductsAsync();
+            var bytes = products.ExportToXlsx();
+            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Products.xlsx");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting products to XLSX");
+            return StatusCode(500, new { message = "An error occurred exporting products" });
+        }
+    }
+
+    /// <summary>
+    /// Export all products as PDF
+    /// </summary>
+    [HttpGet("export-pdf")]
+    [HasPermission("Inventory", "Read")]
+    [Produces("application/pdf")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportToPdf()
+    {
+        try
+        {
+            var products = await _cacheService.GetStateAsync<IEnumerable<ProductDto>>("all_products")
+                ?? await _productService.GetAllProductsAsync();
+            var bytes = products.ExportToPdf();
+            return File(bytes, "application/pdf", "Products.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting products to PDF");
+            return StatusCode(500, new { message = "An error occurred exporting products" });
+        }
+    }
+
+    /// <summary>
+    /// Get all products (optionally paginated and filtered)
+    /// </summary>
+    [HttpGet]
+    [HasPermission("Inventory", "Read")]
+    [ProducesResponseType(typeof(IEnumerable<ProductDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResult<ProductDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult> GetAllProducts([FromQuery] QuerySpec query)
+    {
+        try
+        {
+            // If query parameters are provided, perform a search/paginated query
+            if (Request.Query.Any())
+            {
+                query.BindFiltersFromQuery(Request.Query);
+                query.Validate();
+                var spec = new ProductQuerySpec(query);
+                var result = await _productService.QueryProductsAsync(spec);
+                return Ok(result);
+            }
+
             var products = await _cacheService.GetStateAsync<IEnumerable<ProductDto>>("all_products");
             if (products != null)
             {
@@ -50,8 +112,7 @@ public class ProductsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving all products");
-            var products = await _productService.GetAllProductsAsync();
-            return Ok(products);
+            return StatusCode(500, new { message = "An error occurred retrieving products" });
         }
     }
 
@@ -91,6 +152,7 @@ public class ProductsController : ControllerBase
     {
         try
         {
+            query.BindFiltersFromQuery(Request.Query);
             query.Validate();
             var spec = new ProductQuerySpec(query);
             var result = await _productService.QueryProductsAsync(spec);

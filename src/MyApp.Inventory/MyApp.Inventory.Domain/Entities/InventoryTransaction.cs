@@ -19,8 +19,6 @@ public class InventoryTransaction(Guid id) : AuditableEntity<Guid>(id)
     
     // Cross-service references
     public Guid? OrderId { get; set; }
-    public Guid? SalesOrderId { get; set; }
-    public Guid? PurchaseOrderId { get; set; }
     public string? ReferenceNumber { get; set; }
 
     // Navigation

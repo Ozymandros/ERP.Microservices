@@ -7,6 +7,7 @@ public record WarehouseStockDto(Guid Id) : AuditableGuidDto(Id)
 {
     public Guid ProductId { get; init; }
     public Guid WarehouseId { get; init; }
+    public string? WarehouseName { get; init; }
     public int AvailableQuantity { get; init; }
     public int ReservedQuantity { get; init; }
     public int OnOrderQuantity { get; init; }

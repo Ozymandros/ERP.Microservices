@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
+using MyApp.Orders.Domain.Entities;
 
 namespace MyApp.Orders.Domain
 {

@@ -16,7 +16,7 @@ public class PurchaseOrderQuerySpec : BaseSpecification<PurchaseOrder>
     {
     }
 
-    public override IQueryable<PurchaseOrder> Apply(IQueryable<PurchaseOrder> query)
+    public override IQueryable<PurchaseOrder> ApplyFilters(IQueryable<PurchaseOrder> query)
     {
         // Apply purchase order-specific filters
         if (Query.Filters?.TryGetValue(nameof(PurchaseOrder.OrderNumber), out var orderNumberFilter) == true)
@@ -53,6 +53,6 @@ public class PurchaseOrderQuerySpec : BaseSpecification<PurchaseOrder>
             query = query.Where(po => po.OrderNumber.ToLower().Contains(term));
         }
 
-        return ApplyPaginationAndSorting(query);
+        return query;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Aspire.Hosting.Dapr;
 using Microsoft.Extensions.DependencyInjection;
+using MyApp.Shared.Domain.Constants;
 
 var isDeployment =
     args.Contains("--publisher") || // when azd generates manifests
@@ -7,8 +8,12 @@ var isDeployment =
 
 var builder = DistributedApplication.CreateBuilder(args).AddDapr();
 
+// Dapr components: PubSub and State Store
+// Note: Placement service is NOT needed - only required for Dapr Actors (we don't use actors)
+// Note: Scheduler service is NOT needed - only required for scheduled jobs/workflows (we don't use)
+// The connection errors for Placement (6050) and Scheduler (6060) are harmless warnings.
 var stateStore = builder.AddDaprStateStore("statestore");
-var pubSub = builder.AddDaprPubSub("pubsub");
+var pubSub = builder.AddDaprPubSub(MessagingConstants.PubSubName);
 
 var analyticsWorkspace = isDeployment ? builder
     .AddAzureLogAnalyticsWorkspace("MyApp-LogAnalyticsWorkspace") : null;
@@ -49,28 +54,28 @@ else
 var origin = builder.Configuration["Parameters:FrontendOrigin"];
 
 // Get JWT configuration from appsettings.json or use defaults
-var jwtSecretKey = builder.Configuration["Jwt:SecretKey"] ?? "una_clau_molt_llarga_i_super_ultra_secreta_01234566789";
+var jwtSecretKey = builder.Configuration["Jwt:SecretKey"] ?? "a_very_long_and_super_ultra_secret_key_01234566789";
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "MyApp.Auth";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "MyApp.All";
 
 // Add projects - ports auto-increment
 var authService = projectBuilder.AddWebProject<Projects.MyApp_Auth_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: BillingDB, billing-service, ports 5000, 3500, 45000, 9090
-
-var billingService = projectBuilder.AddWebProject<Projects.MyApp_Billing_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: BillingDB, billing-service, ports 5001, 3501, 45001, 9091
 
+var billingService = projectBuilder.AddWebProject<Projects.MyApp_Billing_API>(redis, origin, isDeployment, applicationInsights);
+// Creates: BillingDB, billing-service, ports 5002, 3502, 45002, 9092
+
 var inventoryService = projectBuilder.AddWebProject<Projects.MyApp_Inventory_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: InventoryDB, inventory-service, ports 5002, 3502, 45002, 9092
+// Creates: InventoryDB, inventory-service, ports 5003, 3503, 45003, 9093
 
 var ordersService = projectBuilder.AddWebProject<Projects.MyApp_Orders_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: OrderDB, order-service, ports 5003, 3503, 45003, 9093
-
-var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: OrderDB, order-service, ports 5004, 3504, 45004, 9094
 
+var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_API>(redis, origin, isDeployment, applicationInsights);
+// Creates: PurchasingDB, purchasing-service, ports 5005, 3505, 45005, 9095
+
 var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: OrderDB, order-service, ports 5005, 3505, 45005, 9095
+// Creates: SalesDB, sales-service, ports 5006, 3506, 45006, 9096
 
 // Local Development: Reverse Proxy (YARP)
 // Alternative: YARP (without /Scalar service)
@@ -108,24 +113,16 @@ var gateway = builder.AddProject<Projects.ErpApiGateway>("gateway")
     .WaitFor(ordersService)
     .WaitFor(purchasingService)
     .WaitFor(salesService)
-    .WithExternalHttpEndpoints() // Exposes HTTP endpoint from launchSettings.json (port 5000)
+    .WithHttpEndpoint(port: 5000, name: "gateway-http")   // Explicitly listen on 5000 for Dapr
+    .WithHttpsEndpoint(port: 7231, name: "gateway-https") // Explicitly listen on 7231 for Browser/Scalar
     .WithEnvironment("Jwt__SecretKey", jwtSecretKey)
     .WithEnvironment("Jwt__Issuer", jwtIssuer)
     .WithEnvironment("Jwt__Audience", jwtAudience)
-    .WithEnvironment("OCELOT_ENVIRONMENT", "Development")
-    .WithDaprSidecar(new DaprSidecarOptions
-    {
-        AppId = "gateway",
-        AppPort = 5000 // Must match launchSettings.json port
-    });
+    .WithEnvironment("OCELOT_ENVIRONMENT", "Development");
 
 if (isDeployment)
 {
     gateway.WithEnvironment("OCELOT_ENVIRONMENT", "Production");
-}
-else
-{
-    gateway.WithEnvironment("OCELOT_ENVIRONMENT", "Development");
 }
 
 if (applicationInsights is not null)

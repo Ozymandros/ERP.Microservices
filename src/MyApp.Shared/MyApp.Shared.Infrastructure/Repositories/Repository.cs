@@ -50,23 +50,27 @@ public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
     /// <returns>A paginated result with filtered and sorted items</returns>
     public virtual async Task<PaginatedResult<TEntity>> QueryAsync(ISpecification<TEntity> spec)
     {
-        var baseQuery = _dbContext.Set<TEntity>().AsQueryable();
+        var baseQuery = _dbContext.Set<TEntity>().AsNoTracking().AsQueryable();
         
-        // Get total count before pagination (for pagination metadata)
-        var totalCount = await baseQuery.CountAsync();
+        // 1. Apply only filters to get the total count of matching items (before pagination)
+        var filteredQuery = spec.ApplyFilters(baseQuery);
+        var totalCount = await filteredQuery.CountAsync();
         
-        // Apply specification (filters, sorting, pagination)
-        var paginatedQuery = spec.Apply(baseQuery);
-        var items = await paginatedQuery.ToListAsync();
+        // 2. Apply the full specification (filters + sorting + pagination)
+        var finalQuery = spec.Apply(baseQuery);
+        var items = await finalQuery.ToListAsync();
 
-        // Extract pagination info from spec (assumes spec applies pagination)
-        // Create PaginatedResult with the paginated items
-        return new PaginatedResult<TEntity>(
-            items,
-            pageNumber: 1, // This will be overridden if we track page info in QuerySpec
-            pageSize: items.Count,
-            totalCount: totalCount
-        );
+        // 3. Extract pagination info from the spec if possible
+        int pageNumber = 1;
+        int pageSize = items.Count;
+
+        if (spec is BaseSpecification<TEntity> baseSpec)
+        {
+            pageNumber = baseSpec.Query.Page;
+            pageSize = baseSpec.Query.PageSize;
+        }
+
+        return new PaginatedResult<TEntity>(items, pageNumber, pageSize, totalCount);
     }
 
     public virtual async Task<TEntity> AddAsync(TEntity entity)
