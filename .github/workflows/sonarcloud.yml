@@ -48,7 +48,7 @@ jobs:
       - name: Setup Dapr CLI
         uses: dapr/setup-dapr@v1
         with:
-          version: "1.14.4" # Latest stable as of early 2025
+          version: "1.13.0"
 
       - name: Initialize Dapr
         run: |
