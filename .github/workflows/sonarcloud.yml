@@ -63,6 +63,9 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore ERP.Microservices.sln
 
+      - name: Remove sonar-project.properties
+        run: rm -f sonar-project.properties
+
       - name: Begin SonarCloud analysis
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -76,7 +79,7 @@ jobs:
             /d:sonar.cs.cobertura.reportsPaths="**/coverage.cobertura.xml" \
             /d:sonar.exclusions="**/bin/**,**/obj/**,**/node_modules/**,**/Migrations/**" \
             /d:sonar.sources="src/" \
-            /d:sonar.tests="test/,src/**/*.Tests/**,src/**/test/**" \
+            /d:sonar.tests="src/**/*Tests/**" \
             /d:sonar.cpd.exclusions="**/Migrations/**"
 
       - name: Build solution
