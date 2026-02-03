@@ -78,12 +78,10 @@ jobs:
             /o:"$SONAR_ORG" \
             /d:sonar.login="$SONAR_TOKEN" \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml \
-            /d:sonar.cs.cobertura.reportsPaths=coverage.cobertura.xml \
-            /d:sonar.verbose=true
+            /d:sonar.cs.cobertura.reportsPaths="**/TestResults/**/coverage.cobertura.xml"
 
       - name: Build solution
-        run: dotnet build ERP.Microservices.sln --configuration Release --no-restore
+        run: dotnet build ERP.Microservices.sln --configuration Release --no-restore /p:DeterministicSourcePaths=false /p:DebugType=portable
 
       - name: Run tests with coverage
         env:
@@ -94,17 +92,7 @@ jobs:
             --configuration Release \
             --no-build \
             --collect:"XPlat Code Coverage" \
-            --results-directory TestResults \
-            --logger "trx;LogFileName=test-results.trx"
-
-      - name: Merge coverage reports
-        run: |
-          dotnet-coverage --version
-          dotnet-coverage merge -f cobertura -o coverage.cobertura.xml "TestResults/**/*.xml"
-          echo "Listing TestResults contents:"
-          find TestResults -name "*.xml"
-          echo "Merged coverage file details:"
-          ls -lh coverage.cobertura.xml
+            --results-directory TestResults
 
       - name: End SonarCloud analysis
         env:
