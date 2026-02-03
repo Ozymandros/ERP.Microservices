@@ -78,7 +78,9 @@ jobs:
             /o:"$SONAR_ORG" \
             /d:sonar.login="$SONAR_TOKEN" \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.cs.cobertura.reportsPaths="**/coverage.cobertura.xml"
+            /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml \
+            /d:sonar.cs.cobertura.reportsPaths=coverage.cobertura.xml \
+            /d:sonar.verbose=true
 
       - name: Build solution
         run: dotnet build ERP.Microservices.sln --configuration Release --no-restore
@@ -88,10 +90,21 @@ jobs:
           DaprCliPath: ${{ env.DaprCliPath }}
           DAPR_HOME: ${{ env.DAPR_HOME }}
         run: |
-          dotnet-coverage collect \
-            "dotnet test ERP.Microservices.sln --configuration Release --no-build --logger trx" \
-            -f cobertura \
-            -o coverage.cobertura.xml
+          dotnet test ERP.Microservices.sln \
+            --configuration Release \
+            --no-build \
+            --collect:"XPlat Code Coverage" \
+            --results-directory TestResults \
+            --logger "trx;LogFileName=test-results.trx"
+
+      - name: Merge coverage reports
+        run: |
+          dotnet-coverage --version
+          dotnet-coverage merge -f cobertura -o coverage.cobertura.xml "TestResults/**/*.xml"
+          echo "Listing TestResults contents:"
+          find TestResults -name "*.xml"
+          echo "Merged coverage file details:"
+          ls -lh coverage.cobertura.xml
 
       - name: End SonarCloud analysis
         env:
