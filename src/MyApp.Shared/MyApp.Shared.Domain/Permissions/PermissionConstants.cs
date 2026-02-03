@@ -28,7 +28,6 @@ public static class PermissionConstants
     }
 
     /// <summary>Purchasing module permissions</summary>
-    /// <summary>Purchasing module permissions</summary>
     public static class Purchasing
     {
         public const string Read = "Purchasing.Read";

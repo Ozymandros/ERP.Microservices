@@ -37,40 +37,6 @@ updates:
       - dependency-name: "Microsoft.NET.Test.Sdk"
         versions: ["17.0.0"]
 
-  # npm dependencies (frontend)
-  - package-ecosystem: "npm"
-    directory: "/WebApp"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "03:30"
-    open-pull-requests-limit: 5
-    versioning-strategy: "increase"
-    groups:
-      frontend-framework:
-        patterns:
-          - "react*"
-          - "next*"
-          - "vue*"
-          - "angular*"
-      styling:
-        patterns:
-          - "tailwindcss*"
-          - "sass*"
-          - "@emotion/*"
-      build-tools:
-        patterns:
-          - "webpack*"
-          - "vite*"
-          - "@vitejs/*"
-      testing:
-        patterns:
-          - "jest*"
-          - "vitest*"
-          - "@testing-library/*"
-    allow:
-      - dependency-type: "all"
-
   # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"

@@ -45,10 +45,9 @@ jobs:
       - name: Install coverage tool
         run: dotnet tool install --global dotnet-coverage
 
-      - name: Setup Dapr CLI
-        uses: dapr/setup-dapr@v1
-        with:
-          version: "1.13.0"
+      - name: Install Dapr CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash -s 1.13.0
 
       - name: Initialize Dapr
         run: |

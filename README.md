@@ -206,7 +206,7 @@ Modular CI/CD with separate workflows for security and speed:
 
 | Workflow | Purpose | Triggers |
 |----------|---------|----------|
-| **build.yml** | Build, test, coverage, SonarCloud | push/PR to `main`, `develop` |
+| **build.yml** | Build, test, coverage | push/PR to `main`, `develop` |
 | **codeql.yml** | CodeQL security analysis | push/PR to `main`, `develop` |
 | **deploy.yml** | Provision, Docker build, GHCR push, Azure deploy | after Build & Test succeeds on `main`/`develop`, or manual |
 
