@@ -1,5 +1,13 @@
 # ERP Microservices
 
+[![Build & Test](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/build.yml/badge.svg)](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/build.yml)
+[![Deploy](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/deploy.yml/badge.svg)](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/deploy.yml)
+[![CodeQL](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/codeql.yml/badge.svg)](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/codeql.yml)
+[![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=Ozymandros_ERP.Microservices&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Ozymandros_ERP.Microservices)
+[![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=Ozymandros_ERP.Microservices&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Ozymandros_ERP.Microservices)
+[![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A cloud-native ERP system built with .NET 10, Aspire, Dapr, and deployed to Azure Container Apps.
 
 ## 🚀 Features
@@ -181,13 +189,16 @@ See [DEPLOYMENT.md](./docs/deployment/DEPLOYMENT.md) for details.
 
 ### GitHub Actions (CI/CD)
 
-Automated deployment on push to `main`:
+Modular CI/CD with separate workflows for security and speed:
 
-1. Configure Azure credentials (OIDC recommended)
-2. Set repository secrets
-3. Push to main branch
+| Workflow | Purpose | Triggers |
+|----------|---------|----------|
+| **build.yml** | Build, test, coverage, SonarCloud | push/PR to `main`, `develop` |
+| **codeql.yml** | CodeQL security analysis | push/PR to `main`, `develop` |
+| **deploy.yml** | Provision, Docker build, GHCR push, Azure deploy | after Build & Test succeeds on `main`/`develop`, or manual |
 
-Workflow: `.github/workflows/azure-deploy.yml`
+**Required secrets** (deploy): `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`.  
+**Optional** (SonarCloud): `SONAR_TOKEN`, `SONAR_PROJECT_KEY`, `SONAR_ORG`.
 
 ## 🔐 Security
 

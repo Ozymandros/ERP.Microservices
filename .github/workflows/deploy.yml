@@ -1,9 +1,15 @@
-name: Build & Deploy ERP Services to Azure (GHCR)
+name: Deploy to Azure (GHCR)
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Build & Test"]
+    types: [completed]
     branches: [main, develop]
   workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
 
 env:
   AZURE_ENV_NAME: "dev"
@@ -15,6 +21,7 @@ env:
 jobs:
   provision-infrastructure:
     name: Provision Infrastructure
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -23,7 +30,9 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
 
       - name: Setup Azure and Azure Developer CLI
         uses: ./.github/actions/setup-azure-azd
@@ -70,7 +79,9 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -82,32 +93,30 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Build and push shared base image FIRST
       - name: Build and push shared base image
+        id: build-base
         run: |
           IMAGE_TAG=${GITHUB_SHA::7}
           APP_PREFIX="${APP_PREFIX:-myapp}"
-          
           echo "Building shared base image with tag: $IMAGE_TAG"
-          
+          # Using docker buildx directly to allow for better control if needed, 
+          # otherwise docker/build-push-action could be used here too.
           docker buildx build \
             --platform linux/amd64 \
             --push \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${APP_PREFIX}-microservices-base:${IMAGE_TAG} \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${APP_PREFIX}-microservices-base:10.0 \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${APP_PREFIX}-microservices-base:latest \
+            --cache-from type=gha,scope=base-image \
+            --cache-to type=gha,mode=max,scope=base-image \
             --file docker/microservices-base.Dockerfile \
             .
-          
           echo "✓ Base image build completed successfully"
 
-      # Build and push all service images
       - name: Build and push service images to GHCR
         run: |
           AZURE_ENV_NAME="${AZURE_ENV_NAME:-dev}"
           APP_PREFIX="${APP_PREFIX:-myapp}"
-          
-          # Define services to build
           declare -a SERVICES=(
               "MyApp.Auth/MyApp.Auth.API:auth-service"
               "MyApp.Billing/MyApp.Billing.API:billing-service"
@@ -117,35 +126,37 @@ jobs:
               "MyApp.Sales/MyApp.Sales.API:sales-service"
               "ErpApiGateway:api-gateway"
           )
-
           IMAGE_TAG=${GITHUB_SHA::7}
           BASE_IMAGE_REGISTRY="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/"
-
+          
           echo "Building service images with tag: $IMAGE_TAG"
-
+          
           for SERVICE in "${SERVICES[@]}"; do
               IFS=':' read -r SERVICE_PATH SERVICE_NAME <<< "$SERVICE"
               REPO_NAME="${APP_PREFIX}-${SERVICE_NAME}-${AZURE_ENV_NAME}"
-              
               echo "Building: $REPO_NAME from src/$SERVICE_PATH"
               
+              CACHE_SCOPE="service-$SERVICE_NAME"
+              
               if [[ "$SERVICE_NAME" != "auth-service" && "$SERVICE_NAME" != "api-gateway" ]]; then
-                  # Services that use shared base image
                   docker buildx build \
                       --platform linux/amd64 \
                       --push \
                       --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${REPO_NAME}:${IMAGE_TAG} \
                       --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${REPO_NAME}:latest \
                       --build-arg BASE_IMAGE_REGISTRY="$BASE_IMAGE_REGISTRY" \
+                      --cache-from type=gha,scope=$CACHE_SCOPE \
+                      --cache-to type=gha,mode=max,scope=$CACHE_SCOPE \
                       --file "src/$SERVICE_PATH/Dockerfile" \
                       .
               else
-                  # Auth and Gateway services
                   docker buildx build \
                       --platform linux/amd64 \
                       --push \
                       --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${REPO_NAME}:${IMAGE_TAG} \
                       --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${REPO_NAME}:latest \
+                      --cache-from type=gha,scope=$CACHE_SCOPE \
+                      --cache-to type=gha,mode=max,scope=$CACHE_SCOPE \
                       --file "src/$SERVICE_PATH/Dockerfile" \
                       .
               fi
@@ -156,14 +167,11 @@ jobs:
           AZURE_ENV_NAME="${AZURE_ENV_NAME:-dev}"
           APP_PREFIX="${APP_PREFIX:-myapp}"
           IMAGE_TAG=${GITHUB_SHA::7}
-          
           echo "=== Build Summary ==="
           echo "Built images with tag: $IMAGE_TAG"
           echo "Registry: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
-          echo ""
           echo "Images built:"
           echo "- ${APP_PREFIX}-microservices-base:$IMAGE_TAG"
-          
           for SERVICE in auth-service billing-service inventory-service orders-service purchasing-service sales-service api-gateway; do
               echo "- ${APP_PREFIX}-${SERVICE}-${AZURE_ENV_NAME}:$IMAGE_TAG"
           done
@@ -179,7 +187,9 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
 
       - name: Setup Azure and Azure Developer CLI
         uses: ./.github/actions/setup-azure-azd
@@ -196,18 +206,14 @@ jobs:
         with:
           dotnet-version: "10.0.x"
 
-      - name: Set GHCR credentials in azd environment (BEFORE provision)
+      - name: Set GHCR credentials in azd environment
         env:
           AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
         run: |
-          # Set GHCR registry endpoint and credentials for Container Apps
-          # These must be set BEFORE azd provision/deploy so Bicep can use them
           azd env set AZURE_CONTAINER_REGISTRY_ENDPOINT "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" --environment $AZURE_ENV_NAME
-          # AZURE_CONTAINER_REGISTRY_NAME is deprecated; only GHCR is supported
           azd env set GHCR_USERNAME "${{ github.actor }}" --environment $AZURE_ENV_NAME
           azd env set GHCR_PAT "${{ secrets.GITHUB_TOKEN }}" --environment $AZURE_ENV_NAME
-          
-          echo "✓ GHCR credentials configured for azd environment"
+          echo "✓ GHCR credentials configured"
 
       - name: Deploy Application
         env:
@@ -221,12 +227,7 @@ jobs:
         run: |
           export IMAGE_TAG=${GITHUB_SHA::7}
           echo "Deploying with image tag: $IMAGE_TAG from GHCR"
-          
-          dapr --version || {
-            echo "ERROR: Dapr CLI not accessible in deployment step"
-            exit 1
-          }
-          
+          dapr --version || { echo "ERROR: Dapr CLI not accessible"; exit 1; }
           azd deploy --no-prompt
 
   verify-deployment:
@@ -253,14 +254,10 @@ jobs:
           APP_PREFIX="${APP_PREFIX:-myapp}"
           AZURE_ENV_NAME="${{ env.AZURE_ENV_NAME }}"
           RG_NAME="rg-${APP_PREFIX}-${AZURE_ENV_NAME}-core"
-
           echo "Checking Container Apps health..."
           az containerapp list --resource-group "$RG_NAME" --output table
-
           echo ""
-          echo "Checking revision status..."
           for APP in auth-service billing-service inventory-service orders-service purchasing-service sales-service api-gateway; do
-              echo ""
               echo "App: ${APP_PREFIX}-${AZURE_ENV_NAME}-$APP"
               az containerapp show --name "${APP_PREFIX}-${AZURE_ENV_NAME}-$APP" \
                   --resource-group "$RG_NAME" \
@@ -268,5 +265,4 @@ jobs:
           done
 
       - name: Run smoke tests
-        run: |
-          echo "✓ Deployment verified successfully"
+        run: echo "✓ Deployment verified successfully"
