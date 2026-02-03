@@ -51,7 +51,7 @@ public class WarehouseStockRepository : Repository<WarehouseStock, Guid>, IWareh
         }
         else
         {
-            query = query.Where(ws => ws.AvailableQuantity <= ws.Product.ReorderLevel);
+            query = query.Where(ws => ws.Product != null && ws.AvailableQuantity <= ws.Product.ReorderLevel);
         }
 
         return await query.ToListAsync();

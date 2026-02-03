@@ -29,11 +29,14 @@ public sealed class JwtSecuritySchemeDocumentTransformer : IOpenApiDocumentTrans
         {
             foreach (var operation in path.Operations.Values)
             {
-                operation.Security ??= new List<OpenApiSecurityRequirement>();
-                operation.Security.Add(new OpenApiSecurityRequirement
+                if (operation != null)
                 {
-                    [new OpenApiSecuritySchemeReference("Bearer", document)] = new List<string>()
-                });
+                    operation.Security ??= new List<OpenApiSecurityRequirement>();
+                    operation.Security.Add(new OpenApiSecurityRequirement
+                    {
+                        [new OpenApiSecuritySchemeReference("Bearer", document)] = new List<string>()
+                    });
+                }
             }
         }
 

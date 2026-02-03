@@ -142,7 +142,7 @@ public class UserService : IUserService
         {
             Name = r.Name,
             Description = r.Description
-        }).ToList();
+        }).Cast<RoleDto?>().ToList();
 
         var permissionDtos = permissions
             .DistinctBy(p => p.Id)
@@ -152,7 +152,7 @@ public class UserService : IUserService
                 Action = p.Action,
                 Description = p.Description
             })
-            .ToList();
+            .Cast<PermissionDto?>().ToList();
 
         return new UserDto(baseUserDto.Id)
         {

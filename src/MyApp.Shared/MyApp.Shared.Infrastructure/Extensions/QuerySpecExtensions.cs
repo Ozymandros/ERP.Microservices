@@ -11,8 +11,8 @@ public static class QuerySpecExtensions
 {
     /// <summary>
     /// Extract filters from HTTP query parameters and populate the Filters dictionary.
-    /// Supports formats like: ?filters[name]=value&filters[description]=text
-    /// or: ?name=value&description=text (direct filter parameters)
+    /// Supports formats like: ?filters[name]=value&amp;filters[description]=text
+    /// or: ?name=value&amp;description=text (direct filter parameters)
     /// Keys are normalized to match property names (case-insensitive matching).
     /// </summary>
     public static QuerySpec BindFiltersFromQuery(this QuerySpec query, IEnumerable<KeyValuePair<string, StringValues>> request)

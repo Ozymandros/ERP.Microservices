@@ -13,7 +13,7 @@ namespace MyApp.Orders.Infrastructure.Migrations
 {
     [DbContext(typeof(OrdersDbContext))]
     [Migration("20251016055340_initial-orders")]
-    partial class initialorders
+    partial class InitialOrders
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

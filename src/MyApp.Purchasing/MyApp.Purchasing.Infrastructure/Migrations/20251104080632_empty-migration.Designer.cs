@@ -13,7 +13,7 @@ namespace MyApp.Purchasing.Infrastructure.Migrations
 {
     [DbContext(typeof(PurchasingDbContext))]
     [Migration("20251104080632_empty-migration")]
-    partial class emptymigration
+    partial class EmptyMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
