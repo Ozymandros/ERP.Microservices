@@ -1,0 +1,15 @@
+name: "CodeQL Configuration"
+
+queries:
+  - uses: security-and-quality
+  - uses: security-extended
+
+paths-ignore:
+  - '**/bin/**'
+  - '**/obj/**'
+  - '**/Migrations/**'
+  - '**/test/**'
+  - '**/Tests/**'
+  - '**/*.Designer.cs'
+  - '**/*.g.cs'
+  - '**/*.g.i.cs'

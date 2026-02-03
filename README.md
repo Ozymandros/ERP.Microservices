@@ -1,14 +1,27 @@
 # ERP Microservices
 
 [![Build & Test](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/build.yml/badge.svg)](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/build.yml)
+[![Tests Passing](https://img.shields.io/badge/tests-passing-brightgreen?logo=github)](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/build.yml)
+[![Code Coverage](https://sonarcloud.io/api/project_badges/measure?project=Ozymandros_ERP.Microservices&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Ozymandros_ERP.Microservices)
 [![Deploy](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/deploy.yml/badge.svg)](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/deploy.yml)
 [![CodeQL](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/codeql.yml/badge.svg)](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/codeql.yml)
-[![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=Ozymandros_ERP.Microservices&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Ozymandros_ERP.Microservices)
-[![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=Ozymandros_ERP.Microservices&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Ozymandros_ERP.Microservices)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=Ozymandros_ERP.Microservices&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Ozymandros_ERP.Microservices)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Ozymandros_ERP.Microservices&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Ozymandros_ERP.Microservices)
 [![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A cloud-native ERP system built with .NET 10, Aspire, Dapr, and deployed to Azure Container Apps.
+
+## 🎯 Status Dashboard
+
+| Metric | Status |
+|--------|--------|
+| **Build** | ![Build Status](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/build.yml/badge.svg) |
+| **Tests** | ![Tests Passing](https://img.shields.io/badge/tests-passing-brightgreen?logo=github) |
+| **Coverage** | [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Ozymandros_ERP.Microservices&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Ozymandros_ERP.Microservices) |
+| **Code Quality** | [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=Ozymandros_ERP.Microservices&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Ozymandros_ERP.Microservices) |
+| **Security** | [![Security](https://sonarcloud.io/api/project_badges/measure?project=Ozymandros_ERP.Microservices&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Ozymandros_ERP.Microservices) |
+| **Deployment** | ![Deploy Status](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/deploy.yml/badge.svg) |
 
 ## 🚀 Features
 
