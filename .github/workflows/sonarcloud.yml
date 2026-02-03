@@ -25,6 +25,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Set up .NET 10
         uses: actions/setup-dotnet@v4
@@ -69,17 +70,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+          SONAR_ORG: ${{ secrets.SONAR_ORG }}
         run: |
           dotnet sonarscanner begin \
-            /k:"${{ secrets.SONAR_PROJECT_KEY }}" \
-            /o:"${{ secrets.SONAR_ORG }}" \
-            /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
+            /k:"$SONAR_PROJECT_KEY" \
+            /o:"$SONAR_ORG" \
+            /d:sonar.login="$SONAR_TOKEN" \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.cs.cobertura.reportsPaths="**/coverage.cobertura.xml" \
-            /d:sonar.exclusions="**/bin/**,**/obj/**,**/node_modules/**,**/Migrations/**" \
-            /d:sonar.sources="src/" \
-            /d:sonar.tests="src/**/*Tests/**" \
-            /d:sonar.cpd.exclusions="**/Migrations/**"
+            /d:sonar.cs.cobertura.reportsPaths="**/coverage.cobertura.xml"
 
       - name: Build solution
         run: dotnet build ERP.Microservices.sln --configuration Release --no-restore
@@ -92,27 +91,16 @@ jobs:
           dotnet test ERP.Microservices.sln \
             --configuration Release \
             --no-build \
-            --logger "trx;LogFileName=test-results.trx" \
-            --collect:"XPlat Code Coverage" \
-            --results-directory "TestResults" \
-            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
-
-      - name: Merge coverage reports
-        run: |
-          # Find all coverage files
-          FILES=$(find . -path "*/TestResults/*/coverage.cobertura.xml" 2>/dev/null)
-          
-          if [ -n "$FILES" ]; then
-            dotnet-coverage merge -o coverage.cobertura.xml -f cobertura $FILES
-          else
-            echo "No coverage files found to merge."
-          fi
+            /p:CollectCoverage=true \
+            /p:CoverageFormat=cobertura \
+            /p:CoverageDirectory=../coverage \
+            /p:MergeWith=../coverage/coverage.cobertura.xml
 
       - name: End SonarCloud analysis
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+        run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
 
       - name: Comment PR with SonarCloud link
         if: github.event_name == 'pull_request'

@@ -84,10 +84,10 @@ jobs:
           ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
 
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -202,17 +202,18 @@ jobs:
           setup-dapr: "true"
 
       - name: Set up dotnet
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9
         with:
           dotnet-version: "10.0.x"
 
       - name: Set GHCR credentials in azd environment
         env:
           AZURE_ENV_NAME: ${{ env.AZURE_ENV_NAME }}
+          GHCR_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
           azd env set AZURE_CONTAINER_REGISTRY_ENDPOINT "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" --environment $AZURE_ENV_NAME
           azd env set GHCR_USERNAME "${{ github.actor }}" --environment $AZURE_ENV_NAME
-          azd env set GHCR_PAT "${{ secrets.GITHUB_TOKEN }}" --environment $AZURE_ENV_NAME
+          azd env set GHCR_PAT "$GHCR_PAT" --environment $AZURE_ENV_NAME
           echo "✓ GHCR credentials configured"
 
       - name: Deploy Application
@@ -241,7 +242,7 @@ jobs:
 
     steps:
       - name: Azure login (Federated)
-        uses: azure/login@v2
+        uses: azure/login@1384c340ab2dda50fed2bee3041d1d87018aa5e8
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}

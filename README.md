@@ -207,11 +207,14 @@ Modular CI/CD with separate workflows for security and speed:
 | Workflow | Purpose | Triggers |
 |----------|---------|----------|
 | **build.yml** | Build, test, coverage | push/PR to `main`, `develop` |
+| **sonarcloud.yml** | SonarCloud code quality & coverage analysis | push/PR to `main`, `develop` |
 | **codeql.yml** | CodeQL security analysis | push/PR to `main`, `develop` |
 | **deploy.yml** | Provision, Docker build, GHCR push, Azure deploy | after Build & Test succeeds on `main`/`develop`, or manual |
 
+**Coverage**: Tests collect coverage using Coverlet (Cobertura format), merged to `coverage/coverage.cobertura.xml` and analyzed by SonarCloud.
+
 **Required secrets** (deploy): `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`.  
-**Optional** (SonarCloud): `SONAR_TOKEN`, `SONAR_PROJECT_KEY`, `SONAR_ORG`.
+**Required secrets** (SonarCloud): `SONAR_TOKEN`, `SONAR_PROJECT_KEY`, `SONAR_ORG`.
 
 ## 🔐 Security
 
