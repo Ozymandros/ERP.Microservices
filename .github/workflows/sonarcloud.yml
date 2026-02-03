@@ -73,7 +73,7 @@ jobs:
             /o:"${{ secrets.SONAR_ORG }}" \
             /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
+            /d:sonar.cs.cobertura.reportsPaths="**/coverage.cobertura.xml" \
             /d:sonar.exclusions="**/bin/**,**/obj/**,**/node_modules/**,**/Migrations/**" \
             /d:sonar.sources="src/" \
             /d:sonar.tests="test/,src/**/*.Tests/**,src/**/test/**" \
@@ -93,15 +93,15 @@ jobs:
             --logger "trx;LogFileName=test-results.trx" \
             --collect:"XPlat Code Coverage" \
             --results-directory "TestResults" \
-            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
 
       - name: Merge coverage reports
         run: |
           # Find all coverage files
-          FILES=$(find . -path "*/TestResults/*/coverage.opencover.xml" 2>/dev/null)
+          FILES=$(find . -path "*/TestResults/*/coverage.cobertura.xml" 2>/dev/null)
           
           if [ -n "$FILES" ]; then
-            dotnet-coverage merge -o coverage.opencover.xml -f opencover $FILES
+            dotnet-coverage merge -o coverage.cobertura.xml -f cobertura $FILES
           else
             echo "No coverage files found to merge."
           fi
