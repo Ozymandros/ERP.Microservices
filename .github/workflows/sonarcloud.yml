@@ -88,13 +88,10 @@ jobs:
           DaprCliPath: ${{ env.DaprCliPath }}
           DAPR_HOME: ${{ env.DAPR_HOME }}
         run: |
-          dotnet test ERP.Microservices.sln \
-            --configuration Release \
-            --no-build \
-            /p:CollectCoverage=true \
-            /p:CoverageFormat=cobertura \
-            /p:CoverageDirectory=../coverage \
-            /p:MergeWith=../coverage/coverage.cobertura.xml
+          dotnet-coverage collect \
+            "dotnet test ERP.Microservices.sln --configuration Release --no-build --logger trx" \
+            -f cobertura \
+            -o coverage.cobertura.xml
 
       - name: End SonarCloud analysis
         env:
