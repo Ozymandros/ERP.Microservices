@@ -216,7 +216,7 @@ public class PurchaseOrdersController : ControllerBase
         if (!Enum.TryParse<PurchaseOrderStatus>(status, true, out var orderStatus))
         {
             _logger.LogWarning("Invalid order status: {@Status}", new { Status = status });
-            return BadRequest($"Invalid status. Valid values are: {string.Join(", ", Enum.GetNames(typeof(PurchaseOrderStatus)))}");
+            return BadRequest($"Invalid status. Valid values are: {string.Join(", ", Enum.GetNames<PurchaseOrderStatus>())}");
         }
 
         _logger.LogInformation("Retrieving purchase orders with status: {@Status}", new { Status = status });
@@ -299,7 +299,7 @@ public class PurchaseOrdersController : ControllerBase
         if (!Enum.TryParse<PurchaseOrderStatus>(status, true, out var orderStatus))
         {
             _logger.LogWarning("Invalid order status: {@Status}", new { Status = status });
-            return BadRequest($"Invalid status. Valid values are: {string.Join(", ", Enum.GetNames(typeof(PurchaseOrderStatus)))}");
+            return BadRequest($"Invalid status. Valid values are: {string.Join(", ", Enum.GetNames<PurchaseOrderStatus>())}");
         }
 
         try

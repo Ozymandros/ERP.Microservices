@@ -188,7 +188,7 @@ public static class PermissionConstants
     {
         var permissions = new List<string>();
         
-        foreach (ModuleEnum module in Enum.GetValues(typeof(ModuleEnum)))
+        foreach (ModuleEnum module in Enum.GetValues<ModuleEnum>())
         {
             permissions.AddRange(GetModulePermissions(module));
         }

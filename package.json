@@ -1,0 +1,14 @@
+{
+  "name": "erp-microservices-backend",
+  "version": "1.0.0",
+  "description": "Backend services for ERP system",
+  "scripts": {
+    "test": "dotnet test ERP.Microservices.sln",
+    "test:coverage": "dotnet test ERP.Microservices.sln --collect:\"XPlat Code Coverage\" --results-directory ./TestResults/Coverage",
+    "build": "dotnet build ERP.Microservices.sln",
+    "watch": "dotnet watch test ERP.Microservices.sln"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

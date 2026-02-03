@@ -23,10 +23,14 @@ public class ServiceInvoker : IServiceInvoker
         IOptions<JsonSerializerOptions> jsonOptions,
         bool enableLogging = true)
     {
-        _daprClient = daprClient ?? throw new ArgumentNullException(nameof(daprClient));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        ArgumentNullException.ThrowIfNull(daprClient);
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(jsonOptions);
+        
+        _daprClient = daprClient;
+        _logger = logger;
         _enableLogging = enableLogging;
-        _jsonOptions = jsonOptions?.Value ?? new JsonSerializerOptions
+        _jsonOptions = jsonOptions.Value ?? new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
@@ -47,8 +51,7 @@ public class ServiceInvoker : IServiceInvoker
         if (string.IsNullOrWhiteSpace(methodPath))
             throw new ArgumentException("Method path cannot be null or empty", nameof(methodPath));
 
-        if (httpMethod == null)
-            throw new ArgumentNullException(nameof(httpMethod));
+        ArgumentNullException.ThrowIfNull(httpMethod);
 
         try
         {
@@ -99,8 +102,7 @@ public class ServiceInvoker : IServiceInvoker
         if (string.IsNullOrWhiteSpace(methodPath))
             throw new ArgumentException("Method path cannot be null or empty", nameof(methodPath));
 
-        if (httpMethod == null)
-            throw new ArgumentNullException(nameof(httpMethod));
+        ArgumentNullException.ThrowIfNull(httpMethod);
 
         try
         {
@@ -150,8 +152,7 @@ public class ServiceInvoker : IServiceInvoker
         if (string.IsNullOrWhiteSpace(methodPath))
             throw new ArgumentException("Method path cannot be null or empty", nameof(methodPath));
 
-        if (httpMethod == null)
-            throw new ArgumentNullException(nameof(httpMethod));
+        ArgumentNullException.ThrowIfNull(httpMethod);
 
         try
         {
@@ -200,8 +201,7 @@ public class ServiceInvoker : IServiceInvoker
         if (string.IsNullOrWhiteSpace(methodPath))
             throw new ArgumentException("Method path cannot be null or empty", nameof(methodPath));
 
-        if (httpMethod == null)
-            throw new ArgumentNullException(nameof(httpMethod));
+        ArgumentNullException.ThrowIfNull(httpMethod);
 
         HttpRequestMessage request;
 
@@ -209,21 +209,21 @@ public class ServiceInvoker : IServiceInvoker
         string finalPath = methodPath;
         if (queryParams != null && queryParams.Count > 0)
         {
-            // El teu loop de validació de claus/valors és correcte
+            // El teu loop de validaciï¿½ de claus/valors ï¿½s correcte
             finalPath = QueryHelpers.AddQueryString(methodPath, queryParams);
         }
 
-        // 2. Crear la petició base a Dapr
-        // IMPORTANT: No passem el 'requestBody' aquí encara per tenir control total
+        // 2. Crear la peticiï¿½ base a Dapr
+        // IMPORTANT: No passem el 'requestBody' aquï¿½ encara per tenir control total
         request = _daprClient.CreateInvokeMethodRequest(httpMethod, serviceName, finalPath);
 
-        // 3. Gestionar el Body (NOMÉS si no és GET)
+        // 3. Gestionar el Body (NOMï¿½S si no ï¿½s GET)
         if (requestBody != null)
         {
             if (httpMethod == HttpMethod.Get)
             {
-                // Opcional: Pots llançar una excepció o simplement ignorar-lo i avisar
-                _logger.LogWarning("Intent de passar un body en una petició GET al servei {Service}. El body serà ignorat.", serviceName);
+                // Opcional: Pots llanï¿½ar una excepciï¿½ o simplement ignorar-lo i avisar
+                _logger.LogWarning("Intent de passar un body en una peticiï¿½ GET al servei {Service}. El body serï¿½ ignorat.", serviceName);
             }
             else
             {
@@ -241,8 +241,7 @@ public class ServiceInvoker : IServiceInvoker
         HttpRequestMessage request,
         CancellationToken cancellationToken = default)
     {
-        if (request == null)
-            throw new ArgumentNullException(nameof(request));
+        ArgumentNullException.ThrowIfNull(request);
 
         try
         {

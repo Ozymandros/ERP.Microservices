@@ -167,7 +167,7 @@ namespace MyApp.Inventory.API.Controllers
             if (!Enum.TryParse<TransactionType>(type, true, out var transactionType))
             {
                 _logger.LogWarning("Invalid transaction type: {@Type}", new { Type = type });
-                return BadRequest($"Invalid transaction type. Valid types are: {string.Join(", ", Enum.GetNames(typeof(TransactionType)))}");
+                return BadRequest($"Invalid transaction type. Valid types are: {string.Join(", ", Enum.GetNames<TransactionType>())}");
             }
             _logger.LogInformation("Retrieving transactions of type: {@Type}", new { Type = type });
             var transactions = await _transactionService.GetTransactionsByTypeAsync(transactionType);

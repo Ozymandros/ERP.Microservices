@@ -195,67 +195,118 @@ public class UserService : IUserService
 
     public async Task<bool> UpdateUserAsync(Guid userId, UpdateUserDto updateUserDto)
     {
-        var user = await _userManager.FindByIdAsync(userId.ToString());
+        var user = await GetUserOrLogAsync(userId);
         if (user == null)
         {
-            _logger.LogWarning("User not found: {@User}", new { UserId = userId });
             return false;
         }
 
         _logger.LogInformation("Updating user: {@UserUpdate}", new { UserId = userId, updateUserDto });
 
-        // Validate email uniqueness if requested
-        if (!string.IsNullOrWhiteSpace(updateUserDto.Email) && updateUserDto.Email != user.Email)
+        if (await EmailInUseAsync(user, updateUserDto.Email))
         {
-            var existingUser = await _userManager.FindByEmailAsync(updateUserDto.Email);
-            if (existingUser != null && existingUser.Id != user.Id)
-            {
-                _logger.LogWarning("Email already in use: {Email}", updateUserDto.Email);
-                return false;
-            }
+            _logger.LogWarning("Email already in use: {Email}", updateUserDto.Email);
+            return false;
         }
 
-        // Apply identity-managed changes first (these persist directly via UserManager)
-        var identityChanged = false;
-        if (!string.IsNullOrWhiteSpace(updateUserDto.Email) && updateUserDto.Email != user.Email)
+        var (emailSuccess, emailChanged) = await UpdateEmailAndUsernameAsync(user, updateUserDto.Email, userId);
+        if (!emailSuccess)
         {
-            var emailResult = await _userManager.SetEmailAsync(user, updateUserDto.Email);
-            if (!emailResult.Succeeded)
-            {
-                _logger.LogWarning("Failed to set email for user: {UserId}", userId);
-                return false;
-            }
-
-            var userNameResult = await _userManager.SetUserNameAsync(user, updateUserDto.Email);
-            if (!userNameResult.Succeeded)
-            {
-                _logger.LogWarning("Failed to set username for user: {UserId}", userId);
-                return false;
-            }
-
-            identityChanged = true;
+            return false;
         }
 
-        if (!string.IsNullOrWhiteSpace(updateUserDto.PhoneNumber) && updateUserDto.PhoneNumber != user.PhoneNumber)
+        var (phoneSuccess, phoneChanged) = await UpdatePhoneNumberAsync(user, updateUserDto.PhoneNumber, userId);
+        if (!phoneSuccess)
         {
-            var phoneResult = await _userManager.SetPhoneNumberAsync(user, updateUserDto.PhoneNumber);
-            if (!phoneResult.Succeeded)
-            {
-                _logger.LogWarning("Failed to set phone number for user: {UserId}", userId);
-                return false;
-            }
-
-            identityChanged = true;
+            return false;
         }
 
-        // If identity changes occurred, reload the user so subsequent profile updates operate on fresh state
-        if (identityChanged)
+        if (emailChanged || phoneChanged)
         {
             user = await _userManager.FindByIdAsync(userId.ToString()) ?? user;
         }
 
-        // Apply profile changes and persist once if necessary
+        if (ApplyProfileChanges(user, updateUserDto) && !await SaveProfileAsync(user, userId))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private async Task<ApplicationUser?> GetUserOrLogAsync(Guid userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+        if (user == null)
+        {
+            _logger.LogWarning("User not found: {@User}", new { UserId = userId });
+        }
+
+        return user;
+    }
+
+    private async Task<bool> EmailInUseAsync(ApplicationUser user, string? email)
+    {
+        if (string.IsNullOrWhiteSpace(email) || email == user.Email)
+        {
+            return false;
+        }
+
+        var existingUser = await _userManager.FindByEmailAsync(email);
+        return existingUser != null && existingUser.Id != user.Id;
+    }
+
+    private async Task<(bool Success, bool Changed)> UpdateEmailAndUsernameAsync(
+        ApplicationUser user,
+        string? email,
+        Guid userId)
+    {
+        if (string.IsNullOrWhiteSpace(email) || email == user.Email)
+        {
+            return (true, false);
+        }
+
+        var emailResult = await _userManager.SetEmailAsync(user, email);
+        if (!emailResult.Succeeded)
+        {
+            _logger.LogWarning("Failed to set email for user: {UserId}", userId);
+            return (false, false);
+        }
+
+        var userNameResult = await _userManager.SetUserNameAsync(user, email);
+        if (!userNameResult.Succeeded)
+        {
+            _logger.LogWarning("Failed to set username for user: {UserId}", userId);
+            return (false, false);
+        }
+
+        return (true, true);
+    }
+
+    private async Task<(bool Success, bool Changed)> UpdatePhoneNumberAsync(
+        ApplicationUser user,
+        string? phoneNumber,
+        Guid userId)
+    {
+        if (string.IsNullOrWhiteSpace(phoneNumber) || phoneNumber == user.PhoneNumber)
+        {
+            return (true, false);
+        }
+
+        var phoneResult = await _userManager.SetPhoneNumberAsync(user, phoneNumber);
+        if (!phoneResult.Succeeded)
+        {
+            _logger.LogWarning("Failed to set phone number for user: {UserId}", userId);
+            return (false, false);
+        }
+
+        return (true, true);
+    }
+
+    private static bool ApplyProfileChanges(ApplicationUser user, UpdateUserDto updateUserDto)
+    {
         var profileChanged = false;
+
         if (!string.IsNullOrWhiteSpace(updateUserDto.FirstName) && updateUserDto.FirstName != user.FirstName)
         {
             user.FirstName = updateUserDto.FirstName;
@@ -268,15 +319,17 @@ public class UserService : IUserService
             profileChanged = true;
         }
 
-        if (profileChanged)
+        return profileChanged;
+    }
+
+    private async Task<bool> SaveProfileAsync(ApplicationUser user, Guid userId)
+    {
+        user.UpdatedAt = DateTime.UtcNow;
+        var updateResult = await _userManager.UpdateAsync(user);
+        if (!updateResult.Succeeded)
         {
-            user.UpdatedAt = DateTime.UtcNow;
-            var updateResult = await _userManager.UpdateAsync(user);
-            if (!updateResult.Succeeded)
-            {
-                _logger.LogWarning("Failed to update user profile fields: {UserId}", userId);
-                return false;
-            }
+            _logger.LogWarning("Failed to update user profile fields: {UserId}", userId);
+            return false;
         }
 
         return true;
@@ -391,10 +444,7 @@ public class UserService : IUserService
 
     public async Task<UserDto?> CreateUserAsync(CreateUserDto user)
     {
-        if (user is null)
-        {
-            throw new ArgumentNullException(nameof(user));
-        }
+        ArgumentNullException.ThrowIfNull(user);
 
         var userEntity = _mapper.Map<ApplicationUser>(user);
         var result = await _userManager.CreateAsync(userEntity, user.Password);

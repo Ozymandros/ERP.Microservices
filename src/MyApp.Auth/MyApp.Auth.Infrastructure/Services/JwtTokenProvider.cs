@@ -23,9 +23,11 @@ public class JwtTokenProvider : IJwtTokenProvider
 
     public JwtTokenProvider(IConfiguration configuration)
     {
-        _secretKey = configuration["Jwt:SecretKey"] ?? throw new ArgumentNullException(nameof(configuration), "Jwt:SecretKey is required");
-        _issuer = configuration["Jwt:Issuer"] ?? throw new ArgumentNullException(nameof(configuration), "Jwt:Issuer is required");
-        _audience = configuration["Jwt:Audience"] ?? throw new ArgumentNullException(nameof(configuration), "Jwt:Audience is required");
+        ArgumentNullException.ThrowIfNull(configuration);
+        
+        _secretKey = configuration["Jwt:SecretKey"] ?? throw new ArgumentNullException("Jwt:SecretKey");
+        _issuer = configuration["Jwt:Issuer"] ?? throw new ArgumentNullException("Jwt:Issuer");
+        _audience = configuration["Jwt:Audience"] ?? throw new ArgumentNullException("Jwt:Audience");
         _accessTokenExpirationMinutes = int.Parse(configuration["Jwt:AccessTokenExpirationMinutes"] ?? "15");
     }
 
