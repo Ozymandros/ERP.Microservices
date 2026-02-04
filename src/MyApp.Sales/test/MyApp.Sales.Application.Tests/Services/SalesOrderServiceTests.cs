@@ -585,7 +585,7 @@ public class SalesOrderServiceTests
         _mockServiceInvoker
             .Setup(s => s.InvokeAsync<StockAvailabilityDto>(
                 ServiceNames.Inventory,
-                It.Is<string>(path => path.Contains($"/{productId}")),
+                It.Is<string>(path => path.Contains($"/{productId}", StringComparison.OrdinalIgnoreCase)),
                 HttpMethod.Get))
             .ReturnsAsync(stockResponse);
         _mockOrderRepository.Setup(r => r.AddAsync(It.IsAny<SalesOrder>())).ReturnsAsync((SalesOrder so) => so);
@@ -931,7 +931,7 @@ public class SalesOrderServiceTests
         _mockServiceInvoker
             .Setup(s => s.InvokeAsync<StockAvailabilityDto>(
                 ServiceNames.Inventory,
-                It.Is<string>(path => path.Contains($"/{productId}")),
+                It.Is<string>(path => path.Contains($"/{productId}", StringComparison.OrdinalIgnoreCase)),
                 HttpMethod.Get))
             .ReturnsAsync(stockResponse);
 
@@ -968,7 +968,7 @@ public class SalesOrderServiceTests
         _mockServiceInvoker
             .Setup(s => s.InvokeAsync<StockAvailabilityDto>(
                 ServiceNames.Inventory,
-                It.Is<string>(path => path.Contains($"/{productId}")),
+                It.Is<string>(path => path.Contains($"/{productId}", StringComparison.OrdinalIgnoreCase)),
                 HttpMethod.Get))
             .ReturnsAsync(stockResponse);
 

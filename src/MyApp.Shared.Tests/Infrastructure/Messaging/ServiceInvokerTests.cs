@@ -319,7 +319,7 @@ public class ServiceInvokerTests
             .Setup(c => c.CreateInvokeMethodRequest(
                 httpMethod,
                 serviceName,
-                It.Is<string>(s => s.Contains("param1") && s.Contains("param2"))))
+                It.Is<string>(s => s.Contains("param1", StringComparison.OrdinalIgnoreCase) && s.Contains("param2", StringComparison.OrdinalIgnoreCase))))
             .Returns(requestMessage);
 
         // Act

@@ -191,7 +191,7 @@ public class DistributedCacheWrapperTests
         _mockDistributedCache.Verify(
             c => c.SetAsync(
                 key,
-                It.Is<byte[]>(b => Encoding.UTF8.GetString(b).Contains("Test")),
+                It.Is<byte[]>(b => Encoding.UTF8.GetString(b).Contains("Test", StringComparison.OrdinalIgnoreCase)),
                 It.Is<DistributedCacheEntryOptions>(o => o.AbsoluteExpirationRelativeToNow == expiration),
                 It.IsAny<CancellationToken>()),
             Times.Once);

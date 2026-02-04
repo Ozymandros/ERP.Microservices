@@ -16,19 +16,19 @@ public class WarehouseQuerySpec : BaseSpecification<Warehouse>
     public override IQueryable<Warehouse> ApplyFilters(IQueryable<Warehouse> query)
     {
         // Apply warehouse-specific filters
-        if (Query.Filters?.TryGetValue(nameof(Warehouse.Name), out var nameFilter) == true)
-            query = query.Where(w => w.Name.ToLower().Contains(nameFilter.ToString()!.ToLower()));
+        if (Query.Filters?.TryGetValue(nameof(Warehouse.Name), out var nameFilter) == true && !string.IsNullOrEmpty(nameFilter))
+            query = query.Where(w => w.Name.Contains(nameFilter, StringComparison.OrdinalIgnoreCase));
 
-        if (Query.Filters?.TryGetValue(nameof(Warehouse.Location), out var locFilter) == true)
-            query = query.Where(w => w.Location.ToLower().Contains(locFilter.ToString()!.ToLower()));
+        if (Query.Filters?.TryGetValue(nameof(Warehouse.Location), out var locFilter) == true && !string.IsNullOrEmpty(locFilter))
+            query = query.Where(w => w.Location.Contains(locFilter, StringComparison.OrdinalIgnoreCase));
 
         // Apply search (searches in name and location)
         if (!string.IsNullOrEmpty(Query.SearchTerm))
         {
-            var term = Query.SearchTerm.ToLower();
+            var term = Query.SearchTerm;
             query = query.Where(w =>
-                w.Name.ToLower().Contains(term) ||
-                w.Location.ToLower().Contains(term)
+                w.Name.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                w.Location.Contains(term, StringComparison.OrdinalIgnoreCase)
             );
         }
 

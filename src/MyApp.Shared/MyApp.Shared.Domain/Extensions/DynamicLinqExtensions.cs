@@ -8,6 +8,8 @@ namespace MyApp.Shared.Domain.Extensions;
 /// </summary>
 public static class DynamicLinqExtensions
 {
+    private static readonly Type[] ContainsStringParameterTypes = new[] { typeof(string) };
+
     /// <summary>
     /// Order a queryable by a property name, optionally in descending order.
     /// </summary>
@@ -120,7 +122,7 @@ public static class DynamicLinqExtensions
 
                 // Build: x.PropertyName.Contains(searchTerm)
                 var propertyAccess = Expression.Property(parameter, property);
-                var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+                var containsMethod = typeof(string).GetMethod("Contains", ContainsStringParameterTypes);
                 var searchTermConstant = Expression.Constant(searchTerm);
                 var containsCall = Expression.Call(propertyAccess, containsMethod!, searchTermConstant);
 

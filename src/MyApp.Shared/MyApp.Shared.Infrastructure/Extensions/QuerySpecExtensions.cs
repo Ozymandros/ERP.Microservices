@@ -9,6 +9,11 @@ namespace MyApp.Shared.Infrastructure.Extensions;
 /// </summary>
 public static class QuerySpecExtensions
 {
+    private static readonly HashSet<string> KnownQuerySpecProperties = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "page", "pagesize", "sortby", "sortdesc", "searchterm", "searchfields", "filters"
+    };
+
     /// <summary>
     /// Extract filters from HTTP query parameters and populate the Filters dictionary.
     /// Supports formats like: ?filters[name]=value&amp;filters[description]=text
@@ -37,17 +42,12 @@ public static class QuerySpecExtensions
         // Support both formats:
         // 1. filters[name]=value&filters[description]=text
         // 2. name=value&description=text (direct parameters, excluding known QuerySpec properties)
-        var knownProperties = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-        {
-            "page", "pagesize", "sortby", "sortdesc", "searchterm", "searchfields", "filters"
-        };
-
         foreach (var kvp in request)
         {
             var key = kvp.Key;
 
             // Skip known QuerySpec properties
-            if (knownProperties.Contains(key))
+            if (KnownQuerySpecProperties.Contains(key))
                 continue;
 
             string filterKey;
