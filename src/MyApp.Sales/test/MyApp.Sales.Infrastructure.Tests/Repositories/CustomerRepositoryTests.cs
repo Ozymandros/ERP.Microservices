@@ -1,8 +1,11 @@
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Sales.Domain.Specifications;
 using MyApp.Sales.Infrastructure.Data;
 using MyApp.Sales.Infrastructure.Data.Repositories;
 using MyApp.Sales.Tests.Helpers;
+using MyApp.Shared.Domain.Pagination;
 using Xunit;
 
 namespace MyApp.Sales.Tests.Repositories;
@@ -196,6 +199,135 @@ public class CustomerRepositoryTests
 
         // Act & Assert
         await _repository.DeleteAsync(nonExistentId); // Should not throw
+    }
+
+    #endregion
+
+    #region GetAllPaginatedAsync Tests
+
+    [Fact]
+    public async Task GetAllPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
+    {
+        // Arrange
+        CreateTestCustomer("PAGE-001", "page1@example.com");
+        CreateTestCustomer("PAGE-002", "page2@example.com");
+        CreateTestCustomer("PAGE-003", "page3@example.com");
+        var pageNumber = 1;
+        var pageSize = 2;
+
+        // Act
+        var result = await _repository.GetAllPaginatedAsync(pageNumber, pageSize);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().HaveCountLessOrEqualTo(pageSize);
+        result.PageNumber.Should().Be(pageNumber);
+        result.PageSize.Should().Be(pageSize);
+        result.TotalCount.Should().BeGreaterOrEqualTo(3);
+    }
+
+    #endregion
+
+    #region QueryAsync Tests
+
+    [Fact]
+    public async Task QueryAsync_WithSearchTerm_ShouldFilterResults()
+    {
+        // Arrange
+        CreateTestCustomer("Widget Customer", "widget@example.com");
+        CreateTestCustomer("Gadget Customer", "gadget@example.com");
+        CreateTestCustomer("Other Customer", "other@example.com");
+        var querySpec = new QuerySpec { SearchTerm = "Widget" };
+        var spec = new CustomerQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.Items.Should().Contain(c => c.Name.Contains("Widget", StringComparison.OrdinalIgnoreCase) ||
+                                           c.Email.Contains("Widget", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithNameFilter_ShouldFilterResults()
+    {
+        // Arrange
+        CreateTestCustomer("Filter Customer", "filter@example.com");
+        CreateTestCustomer("Other Customer", "other@example.com");
+        var querySpec = new QuerySpec();
+        querySpec.Filters = new Dictionary<string, string> { { "Name", "Filter" } };
+        var spec = new CustomerQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.Items.Should().OnlyContain(c => c.Name.Contains("Filter", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithEmailFilter_ShouldFilterResults()
+    {
+        // Arrange
+        CreateTestCustomer("Customer 1", "filter@example.com");
+        CreateTestCustomer("Customer 2", "other@example.com");
+        var querySpec = new QuerySpec();
+        querySpec.Filters = new Dictionary<string, string> { { "Email", "filter" } };
+        var spec = new CustomerQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.Items.Should().OnlyContain(c => c.Email.Contains("filter", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithPagination_ShouldReturnCorrectPage()
+    {
+        // Arrange
+        CreateTestCustomer("PAGE-QUERY-001", "page1@example.com");
+        CreateTestCustomer("PAGE-QUERY-002", "page2@example.com");
+        CreateTestCustomer("PAGE-QUERY-003", "page3@example.com");
+        CreateTestCustomer("PAGE-QUERY-004", "page4@example.com");
+        var querySpec = new QuerySpec { Page = 2, PageSize = 2 };
+        var spec = new CustomerQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.PageNumber.Should().Be(2);
+        result.PageSize.Should().Be(2);
+        result.Items.Should().HaveCountLessOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterOrEqualTo(4);
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithSorting_ShouldReturnSortedResults()
+    {
+        // Arrange
+        CreateTestCustomer("Zebra Customer", "zebra@example.com");
+        CreateTestCustomer("Alpha Customer", "alpha@example.com");
+        CreateTestCustomer("Beta Customer", "beta@example.com");
+        var querySpec = new QuerySpec { SortBy = "Name", SortDesc = false };
+        var spec = new CustomerQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        var names = result.Items.Select(c => c.Name).ToList();
+        var sortedNames = names.OrderBy(n => n).ToList();
+        names.Should().BeEquivalentTo(sortedNames);
     }
 
     #endregion

@@ -1,8 +1,11 @@
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Inventory.Domain.Entities;
+using MyApp.Inventory.Domain.Specifications;
 using MyApp.Inventory.Infrastructure.Data;
 using MyApp.Inventory.Infrastructure.Data.Repositories;
 using MyApp.Inventory.Tests.Helpers;
+using MyApp.Shared.Domain.Pagination;
 using Xunit;
 
 namespace MyApp.Inventory.Tests.Repositories;
@@ -19,14 +22,14 @@ public class ProductRepositoryTests
         TestDbContextFactory.SeedTestData(_context);
     }
 
-    private Product CreateTestProduct(string sku = "TEST-001", string name = "Test Product", int quantityInStock = 100, int reorderLevel = 10)
+    private Product CreateTestProduct(string sku = "TEST-001", string name = "Test Product", int quantityInStock = 100, int reorderLevel = 10, decimal unitPrice = 25.00m)
     {
         var product = new Product(Guid.NewGuid())
         {
             SKU = sku,
             Name = name,
             Description = "Test Description",
-            UnitPrice = 25.00m,
+            UnitPrice = unitPrice,
             QuantityInStock = quantityInStock,
             ReorderLevel = reorderLevel
         };
@@ -217,6 +220,199 @@ public class ProductRepositoryTests
         // Assert
         Assert.NotNull(result);
         Assert.True(result.Count() >= 3);
+    }
+
+    #endregion
+
+    #region GetAllPaginatedAsync Tests
+
+    [Fact]
+    public async Task GetAllPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
+    {
+        // Arrange
+        CreateTestProduct("PAGE-001", "Product 1");
+        CreateTestProduct("PAGE-002", "Product 2");
+        CreateTestProduct("PAGE-003", "Product 3");
+        var pageNumber = 1;
+        var pageSize = 2;
+
+        // Act
+        var result = await _repository.GetAllPaginatedAsync(pageNumber, pageSize);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().HaveCountLessOrEqualTo(pageSize);
+        result.PageNumber.Should().Be(pageNumber);
+        result.PageSize.Should().Be(pageSize);
+        result.TotalCount.Should().BeGreaterOrEqualTo(3);
+    }
+
+    [Fact]
+    public async Task GetAllPaginatedAsync_WithSecondPage_ReturnsCorrectPage()
+    {
+        // Arrange
+        CreateTestProduct("PAGE2-001", "Product 1");
+        CreateTestProduct("PAGE2-002", "Product 2");
+        CreateTestProduct("PAGE2-003", "Product 3");
+        var pageNumber = 2;
+        var pageSize = 2;
+
+        // Act
+        var result = await _repository.GetAllPaginatedAsync(pageNumber, pageSize);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.PageNumber.Should().Be(pageNumber);
+        result.Items.Should().HaveCountGreaterThan(0);
+    }
+
+    #endregion
+
+    #region QueryAsync Tests
+
+    [Fact]
+    public async Task QueryAsync_WithSearchTerm_ShouldFilterResults()
+    {
+        // Arrange
+        CreateTestProduct("SEARCH-001", "Widget Product");
+        CreateTestProduct("SEARCH-002", "Gadget Product");
+        CreateTestProduct("OTHER-001", "Other Item");
+        var querySpec = new QuerySpec { SearchTerm = "Widget" };
+        var spec = new ProductQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.Items.Should().Contain(p => p.Name.Contains("Widget", StringComparison.OrdinalIgnoreCase) || 
+                                           p.SKU.Contains("Widget", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithSkuFilter_ShouldFilterResults()
+    {
+        // Arrange
+        CreateTestProduct("FILTER-SKU-001", "Product 1");
+        CreateTestProduct("FILTER-SKU-002", "Product 2");
+        CreateTestProduct("OTHER-SKU", "Product 3");
+        var querySpec = new QuerySpec();
+        querySpec.Filters = new Dictionary<string, string> { { "SKU", "FILTER-SKU" } };
+        var spec = new ProductQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.TotalCount.Should().BeGreaterOrEqualTo(2);
+        result.Items.Should().OnlyContain(p => p.SKU.Contains("FILTER-SKU", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithNameFilter_ShouldFilterResults()
+    {
+        // Arrange
+        CreateTestProduct("TEST-001", "Widget Product");
+        CreateTestProduct("TEST-002", "Gadget Product");
+        CreateTestProduct("TEST-003", "Other Item");
+        var querySpec = new QuerySpec();
+        querySpec.Filters = new Dictionary<string, string> { { "Name", "Widget" } };
+        var spec = new ProductQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.Items.Should().OnlyContain(p => p.Name.Contains("Widget", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithPriceRangeFilter_ShouldFilterResults()
+    {
+        // Arrange
+        CreateTestProduct("PRICE-001", "Cheap Product", unitPrice: 10.00m);
+        CreateTestProduct("PRICE-002", "Mid Product", unitPrice: 50.00m);
+        CreateTestProduct("PRICE-003", "Expensive Product", unitPrice: 100.00m);
+        var querySpec = new QuerySpec();
+        querySpec.Filters = new Dictionary<string, string> 
+        { 
+            { "UnitPriceMin", "20" },
+            { "UnitPriceMax", "75" }
+        };
+        var spec = new ProductQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().OnlyContain(p => p.UnitPrice >= 20m && p.UnitPrice <= 75m);
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithPagination_ShouldReturnCorrectPage()
+    {
+        // Arrange
+        CreateTestProduct("PAGE-001", "Product 1");
+        CreateTestProduct("PAGE-002", "Product 2");
+        CreateTestProduct("PAGE-003", "Product 3");
+        CreateTestProduct("PAGE-004", "Product 4");
+        var querySpec = new QuerySpec { Page = 2, PageSize = 2 };
+        var spec = new ProductQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.PageNumber.Should().Be(2);
+        result.PageSize.Should().Be(2);
+        result.Items.Should().HaveCountLessOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterOrEqualTo(4);
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithSorting_ShouldReturnSortedResults()
+    {
+        // Arrange
+        CreateTestProduct("SORT-001", "Zebra Product");
+        CreateTestProduct("SORT-002", "Alpha Product");
+        CreateTestProduct("SORT-003", "Beta Product");
+        var querySpec = new QuerySpec { SortBy = "Name", SortDesc = false };
+        var spec = new ProductQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        var names = result.Items.Select(p => p.Name).ToList();
+        var sortedNames = names.OrderBy(n => n).ToList();
+        names.Should().BeEquivalentTo(sortedNames);
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithDescendingSort_ShouldReturnDescendingSortedResults()
+    {
+        // Arrange
+        CreateTestProduct("SORT-DESC-001", "Alpha Product");
+        CreateTestProduct("SORT-DESC-002", "Zebra Product");
+        CreateTestProduct("SORT-DESC-003", "Beta Product");
+        var querySpec = new QuerySpec { SortBy = "Name", SortDesc = true };
+        var spec = new ProductQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        var names = result.Items.Select(p => p.Name).ToList();
+        var sortedNames = names.OrderByDescending(n => n).ToList();
+        names.Should().BeEquivalentTo(sortedNames);
     }
 
     #endregion

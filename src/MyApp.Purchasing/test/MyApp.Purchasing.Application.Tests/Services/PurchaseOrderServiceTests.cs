@@ -1,6 +1,7 @@
 using System;
 using System.Dynamic;
 using AutoMapper;
+using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MyApp.Purchasing.Application.Contracts.DTOs;
@@ -12,6 +13,8 @@ using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Orders.Application.Contracts.Dtos;
 using MyApp.Orders.Domain;
+using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 using Xunit;
 
 namespace MyApp.Purchasing.Application.Tests.Services;
@@ -439,6 +442,322 @@ public class PurchaseOrderServiceTests
 
         // Act & Assert
         await Assert.ThrowsAsync<KeyNotFoundException>(() => _purchaseOrderService.ReceivePurchaseOrderAsync(dto));
+    }
+
+    #endregion
+
+    #region QueryPurchaseOrdersAsync Tests
+
+    [Fact]
+    public async Task QueryPurchaseOrdersAsync_WithValidSpecification_ReturnsPaginatedResult()
+    {
+        // Arrange
+        var spec = new Mock<ISpecification<PurchaseOrder>>();
+        var orders = new List<PurchaseOrder>
+        {
+            new PurchaseOrder(Guid.NewGuid()) { OrderNumber = "PO-001", Status = PurchaseOrderStatus.Draft },
+            new PurchaseOrder(Guid.NewGuid()) { OrderNumber = "PO-002", Status = PurchaseOrderStatus.Approved }
+        };
+        var paginatedResult = new PaginatedResult<PurchaseOrder>(orders, 1, 10, 2);
+        var orderDtos = orders.Select(o => new PurchaseOrderDto { OrderNumber = o.OrderNumber }).ToList();
+
+        _mockPurchaseOrderRepository.Setup(r => r.QueryAsync(It.IsAny<ISpecification<PurchaseOrder>>())).ReturnsAsync(paginatedResult);
+        _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(It.IsAny<PurchaseOrder>()))
+            .Returns<PurchaseOrder>(o => orderDtos.First(d => d.OrderNumber == o.OrderNumber));
+
+        // Act
+        var result = await _purchaseOrderService.QueryPurchaseOrdersAsync(spec.Object);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().HaveCount(2);
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(10);
+        result.TotalCount.Should().Be(2);
+        _mockPurchaseOrderRepository.Verify(r => r.QueryAsync(spec.Object), Times.Once);
+    }
+
+    #endregion
+
+    #region ApprovePurchaseOrderAsync Tests
+
+    [Fact]
+    public async Task ApprovePurchaseOrderAsync_WithValidDraftOrder_ApprovesOrderAndPublishesEvent()
+    {
+        // Arrange
+        var poId = Guid.NewGuid();
+        var supplierId = Guid.NewGuid();
+        var order = new PurchaseOrder(poId)
+        {
+            OrderNumber = "PO-APPROVE",
+            SupplierId = supplierId,
+            Status = PurchaseOrderStatus.Draft,
+            Lines = new List<PurchaseOrderLine>()
+        };
+        var dto = new ApprovePurchaseOrderDto
+        {
+            PurchaseOrderId = poId,
+            Notes = "Approved by manager"
+        };
+
+        _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(order);
+        _mockPurchaseOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<PurchaseOrder>())).ReturnsAsync((PurchaseOrder po) => po);
+        _mockEventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), default)).Returns(Task.CompletedTask);
+        _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(It.IsAny<PurchaseOrder>()))
+            .Returns((PurchaseOrder po) => new PurchaseOrderDto { OrderNumber = po.OrderNumber, Status = po.Status });
+
+        // Act
+        var result = await _purchaseOrderService.ApprovePurchaseOrderAsync(dto);
+
+        // Assert
+        result.Should().NotBeNull();
+        order.Status.Should().Be(PurchaseOrderStatus.Approved);
+        _mockPurchaseOrderRepository.Verify(r => r.UpdateAsync(It.Is<PurchaseOrder>(po =>
+            po.Status == PurchaseOrderStatus.Approved
+        )), Times.Once);
+        _mockEventPublisher.Verify(e => e.PublishAsync(MessagingConstants.Topics.PurchasingOrderApproved, It.IsAny<PurchaseOrderApprovedEvent>(), default), Times.Once);
+    }
+
+    [Fact]
+    public async Task ApprovePurchaseOrderAsync_WithNonExistentOrder_ThrowsKeyNotFoundException()
+    {
+        // Arrange
+        var poId = Guid.NewGuid();
+        var dto = new ApprovePurchaseOrderDto { PurchaseOrderId = poId };
+
+        _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync((PurchaseOrder?)null);
+
+        // Act
+        Func<Task> act = async () => await _purchaseOrderService.ApprovePurchaseOrderAsync(dto);
+
+        // Assert
+        await act.Should().ThrowAsync<KeyNotFoundException>()
+            .WithMessage($"*Purchase order with ID '{poId}' not found*");
+    }
+
+    [Fact]
+    public async Task ApprovePurchaseOrderAsync_WithNonDraftStatus_ThrowsInvalidOperationException()
+    {
+        // Arrange
+        var poId = Guid.NewGuid();
+        var order = new PurchaseOrder(poId)
+        {
+            Status = PurchaseOrderStatus.Approved
+        };
+        var dto = new ApprovePurchaseOrderDto { PurchaseOrderId = poId };
+
+        _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(order);
+
+        // Act
+        Func<Task> act = async () => await _purchaseOrderService.ApprovePurchaseOrderAsync(dto);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage($"*cannot be approved*");
+    }
+
+    [Fact]
+    public async Task ApprovePurchaseOrderAsync_WhenEventPublishingFails_StillApprovesOrder()
+    {
+        // Arrange
+        var poId = Guid.NewGuid();
+        var order = new PurchaseOrder(poId)
+        {
+            Status = PurchaseOrderStatus.Draft,
+            Lines = new List<PurchaseOrderLine>()
+        };
+        var dto = new ApprovePurchaseOrderDto { PurchaseOrderId = poId };
+
+        _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(order);
+        _mockPurchaseOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<PurchaseOrder>())).ReturnsAsync((PurchaseOrder po) => po);
+        _mockEventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), default))
+            .ThrowsAsync(new Exception("Event publishing failed"));
+        _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(It.IsAny<PurchaseOrder>()))
+            .Returns((PurchaseOrder po) => new PurchaseOrderDto { OrderNumber = po.OrderNumber });
+
+        // Act
+        var result = await _purchaseOrderService.ApprovePurchaseOrderAsync(dto);
+
+        // Assert
+        result.Should().NotBeNull();
+        order.Status.Should().Be(PurchaseOrderStatus.Approved);
+        _mockPurchaseOrderRepository.Verify(r => r.UpdateAsync(It.IsAny<PurchaseOrder>()), Times.Once);
+    }
+
+    #endregion
+
+    #region ReceivePurchaseOrderAsync Tests - Additional Scenarios
+
+    [Fact]
+    public async Task ReceivePurchaseOrderAsync_WithNonApprovedStatus_ThrowsInvalidOperationException()
+    {
+        // Arrange
+        var poId = Guid.NewGuid();
+        var order = new PurchaseOrder(poId)
+        {
+            Status = PurchaseOrderStatus.Draft,
+            Lines = new List<PurchaseOrderLine>()
+        };
+        var dto = new ReceivePurchaseOrderDto
+        {
+            PurchaseOrderId = poId,
+            WarehouseId = Guid.NewGuid(),
+            ReceivedDate = DateTime.UtcNow,
+            Lines = new List<ReceivePurchaseOrderLineDto>()
+        };
+
+        _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(order);
+
+        // Act
+        Func<Task> act = async () => await _purchaseOrderService.ReceivePurchaseOrderAsync(dto);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage($"*cannot be received*");
+    }
+
+    [Fact]
+    public async Task ReceivePurchaseOrderAsync_WithNonExistentLine_LogsWarningAndContinues()
+    {
+        // Arrange
+        var poId = Guid.NewGuid();
+        var warehouseId = Guid.NewGuid();
+        var order = new PurchaseOrder(poId)
+        {
+            Status = PurchaseOrderStatus.Approved,
+            Lines = new List<PurchaseOrderLine>
+            {
+                new PurchaseOrderLine { Id = Guid.NewGuid(), ProductId = Guid.NewGuid(), Quantity = 10 }
+            }
+        };
+        var dto = new ReceivePurchaseOrderDto
+        {
+            PurchaseOrderId = poId,
+            WarehouseId = warehouseId,
+            ReceivedDate = DateTime.UtcNow,
+            Lines = new List<ReceivePurchaseOrderLineDto>
+            {
+                new ReceivePurchaseOrderLineDto { PurchaseOrderLineId = Guid.NewGuid(), ReceivedQuantity = 5 }
+            }
+        };
+
+        _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(order);
+        _mockPurchaseOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<PurchaseOrder>())).ReturnsAsync((PurchaseOrder po) => po);
+        _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(It.IsAny<PurchaseOrder>()))
+            .Returns((PurchaseOrder po) => new PurchaseOrderDto { OrderNumber = po.OrderNumber });
+
+        // Act
+        var result = await _purchaseOrderService.ReceivePurchaseOrderAsync(dto);
+
+        // Assert
+        result.Should().NotBeNull();
+        _mockPurchaseOrderRepository.Verify(r => r.UpdateAsync(It.IsAny<PurchaseOrder>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task ReceivePurchaseOrderAsync_WhenAllLinesFullyReceived_UpdatesStatusToReceived()
+    {
+        // Arrange
+        var poId = Guid.NewGuid();
+        var warehouseId = Guid.NewGuid();
+        var lineId = Guid.NewGuid();
+        var productId = Guid.NewGuid();
+        var order = new PurchaseOrder(poId)
+        {
+            Status = PurchaseOrderStatus.Approved,
+            Lines = new List<PurchaseOrderLine>
+            {
+                new PurchaseOrderLine { Id = lineId, ProductId = productId, Quantity = 10, ReceivedQuantity = 0 }
+            }
+        };
+        var dto = new ReceivePurchaseOrderDto
+        {
+            PurchaseOrderId = poId,
+            WarehouseId = warehouseId,
+            ReceivedDate = DateTime.UtcNow,
+            Lines = new List<ReceivePurchaseOrderLineDto>
+            {
+                new ReceivePurchaseOrderLineDto { PurchaseOrderLineId = lineId, ReceivedQuantity = 10 }
+            }
+        };
+
+        var fulfillmentOrder = new OrderDto(Guid.NewGuid());
+        _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(order);
+        _mockServiceInvoker
+            .Setup(s => s.InvokeAsync<CreateUpdateOrderDto, OrderDto>(
+                ServiceNames.Orders,
+                ApiEndpoints.Orders.Base,
+                HttpMethod.Post,
+                It.IsAny<CreateUpdateOrderDto>(),
+                default))
+            .ReturnsAsync(fulfillmentOrder);
+        _mockServiceInvoker
+            .Setup(s => s.InvokeAsync<FulfillOrderDto, OrderDto>(
+                ServiceNames.Orders,
+                It.IsAny<string>(),
+                HttpMethod.Post,
+                It.IsAny<FulfillOrderDto>(),
+                default))
+            .ReturnsAsync(new OrderDto(Guid.NewGuid()));
+        _mockEventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), default)).Returns(Task.CompletedTask);
+        _mockPurchaseOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<PurchaseOrder>())).ReturnsAsync((PurchaseOrder po) => po);
+        _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(It.IsAny<PurchaseOrder>()))
+            .Returns((PurchaseOrder po) => new PurchaseOrderDto { OrderNumber = po.OrderNumber, Status = po.Status });
+
+        // Act
+        var result = await _purchaseOrderService.ReceivePurchaseOrderAsync(dto);
+
+        // Assert
+        result.Should().NotBeNull();
+        order.Status.Should().Be(PurchaseOrderStatus.Received);
+        order.IsReceived.Should().BeTrue();
+        order.Lines.First().IsFullyReceived.Should().BeTrue();
+        _mockEventPublisher.Verify(e => e.PublishAsync("purchasing.order.received", It.IsAny<PurchaseOrderReceivedEvent>(), default), Times.Once);
+    }
+
+    [Fact]
+    public async Task ReceivePurchaseOrderAsync_WhenOrderCreationFails_ThrowsException()
+    {
+        // Arrange
+        var poId = Guid.NewGuid();
+        var warehouseId = Guid.NewGuid();
+        var lineId = Guid.NewGuid();
+        var productId = Guid.NewGuid();
+        var order = new PurchaseOrder(poId)
+        {
+            Status = PurchaseOrderStatus.Approved,
+            Lines = new List<PurchaseOrderLine>
+            {
+                new PurchaseOrderLine { Id = lineId, ProductId = productId, Quantity = 10, ReceivedQuantity = 0 }
+            }
+        };
+        var dto = new ReceivePurchaseOrderDto
+        {
+            PurchaseOrderId = poId,
+            WarehouseId = warehouseId,
+            ReceivedDate = DateTime.UtcNow,
+            Lines = new List<ReceivePurchaseOrderLineDto>
+            {
+                new ReceivePurchaseOrderLineDto { PurchaseOrderLineId = lineId, ReceivedQuantity = 5 }
+            }
+        };
+
+        _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(order);
+        _mockServiceInvoker
+            .Setup(s => s.InvokeAsync<CreateUpdateOrderDto, OrderDto>(
+                ServiceNames.Orders,
+                ApiEndpoints.Orders.Base,
+                HttpMethod.Post,
+                It.IsAny<CreateUpdateOrderDto>(),
+                default))
+            .ThrowsAsync(new Exception("Order creation failed"));
+
+        // Act
+        Func<Task> act = async () => await _purchaseOrderService.ReceivePurchaseOrderAsync(dto);
+
+        // Assert
+        await act.Should().ThrowAsync<Exception>()
+            .WithMessage("*Order creation failed*");
     }
 
     #endregion
