@@ -60,12 +60,6 @@ jobs:
           echo "DaprCliPath=$DAPR_PATH" >> $GITHUB_ENV
           echo "DAPR_HOME=$HOME/.dapr" >> $GITHUB_ENV
 
-      - name: Restore dependencies
-        run: dotnet restore ERP.Microservices.sln
-
-      - name: Remove sonar-project.properties
-        run: rm -f sonar-project.properties
-
       - name: Begin SonarCloud analysis
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -76,12 +70,18 @@ jobs:
           dotnet sonarscanner begin \
             /k:"$SONAR_PROJECT_KEY" \
             /o:"$SONAR_ORG" \
-            /d:sonar.login="$SONAR_TOKEN" \
+            /d:sonar.token="$SONAR_TOKEN" \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.cs.cobertura.reportsPaths="**/TestResults/**/coverage.cobertura.xml"
+            /d:sonar.sources="src" \
+            /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/TestResults/*.trx" \
+            /d:sonar.cs.opencover.reportsPaths="${{ github.workspace }}/TestResults/**/*.xml" \
+            /d:sonar.verbose=true
+
+      - name: Restore dependencies
+        run: dotnet restore ERP.Microservices.sln
 
       - name: Build solution
-        run: dotnet build ERP.Microservices.sln --configuration Release --no-restore /p:DeterministicSourcePaths=false /p:DebugType=portable
+        run: dotnet build ERP.Microservices.sln --configuration Release
 
       - name: Run tests with coverage
         env:
@@ -90,15 +90,16 @@ jobs:
         run: |
           dotnet test ERP.Microservices.sln \
             --configuration Release \
-            --no-build \
             --collect:"XPlat Code Coverage" \
-            --results-directory TestResults
+            --results-directory TestResults \
+            --logger "trx;LogFileName=test-results.trx" \
+            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
       - name: End SonarCloud analysis
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+        run: dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"
 
       - name: Comment PR with SonarCloud link
         if: github.event_name == 'pull_request'
