@@ -1057,4 +1057,99 @@ public class SalesOrderServiceTests
     }
 
     #endregion
+
+    #region Edge Cases and Boundary Values
+
+    [Fact]
+    public async Task CreateSalesOrderAsync_WithMaximumTotalAmount_CreatesOrder()
+    {
+        // Arrange
+        var customerId = Guid.NewGuid();
+        var customer = new Customer(customerId) { Name = "Customer" };
+        var productId = Guid.NewGuid();
+        var dto = new CreateUpdateSalesOrderDto(
+            CustomerId: customerId,
+            OrderDate: DateTime.UtcNow,
+            ExpectedDeliveryDate: null,
+            Status: 0,
+            TotalAmount: 0,
+            Lines: new List<CreateUpdateSalesOrderLineDto>
+            {
+                new CreateUpdateSalesOrderLineDto(productId, 1, decimal.MaxValue / 2)
+            }
+        );
+
+        var order = new SalesOrder(Guid.NewGuid()) { CustomerId = customerId, OrderDate = dto.OrderDate, Lines = new List<SalesOrderLine>() };
+        var createdOrder = new SalesOrder(Guid.NewGuid()) { OrderNumber = "SO-GENERATED", CustomerId = customerId };
+        var expectedDto = new SalesOrderDto(createdOrder.Id) { OrderNumber = createdOrder.OrderNumber };
+        
+        _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
+        _mockMapper.Setup(m => m.Map<SalesOrder>(dto)).Returns(order);
+        _mockMapper.Setup(m => m.Map<SalesOrderLine>(It.IsAny<CreateUpdateSalesOrderLineDto>())).Returns((CreateUpdateSalesOrderLineDto ldto) => new SalesOrderLine(Guid.NewGuid()) { ProductId = ldto.ProductId, Quantity = ldto.Quantity, UnitPrice = ldto.UnitPrice });
+        _mockOrderRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<SalesOrder>()); // For GenerateOrderNumberAsync
+        _mockOrderRepository.Setup(r => r.AddAsync(It.IsAny<SalesOrder>())).ReturnsAsync(createdOrder);
+        _mockMapper.Setup(m => m.Map<SalesOrderDto>(createdOrder)).Returns(expectedDto);
+
+        // Act
+        var result = await _salesOrderService.CreateSalesOrderAsync(dto);
+
+        // Assert
+        result.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task CreateSalesOrderAsync_WithZeroTotalAmount_CreatesOrder()
+    {
+        // Arrange
+        var customerId = Guid.NewGuid();
+        var customer = new Customer(customerId) { Name = "Customer" };
+        var dto = new CreateUpdateSalesOrderDto(
+            CustomerId: customerId,
+            OrderDate: DateTime.UtcNow,
+            ExpectedDeliveryDate: null,
+            Status: 0,
+            TotalAmount: 0,
+            Lines: new List<CreateUpdateSalesOrderLineDto>
+            {
+                new CreateUpdateSalesOrderLineDto(Guid.NewGuid(), 0, 0m)
+            }
+        );
+
+        var order = new SalesOrder(Guid.NewGuid()) { CustomerId = customerId, OrderDate = dto.OrderDate, Lines = new List<SalesOrderLine>() };
+        var createdOrder = new SalesOrder(Guid.NewGuid()) { OrderNumber = "SO-GENERATED", CustomerId = customerId };
+        var expectedDto = new SalesOrderDto(createdOrder.Id) { OrderNumber = createdOrder.OrderNumber };
+        
+        _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
+        _mockMapper.Setup(m => m.Map<SalesOrder>(dto)).Returns(order);
+        _mockMapper.Setup(m => m.Map<SalesOrderLine>(It.IsAny<CreateUpdateSalesOrderLineDto>())).Returns((CreateUpdateSalesOrderLineDto ldto) => new SalesOrderLine(Guid.NewGuid()) { ProductId = ldto.ProductId, Quantity = ldto.Quantity, UnitPrice = ldto.UnitPrice });
+        _mockOrderRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<SalesOrder>()); // For GenerateOrderNumberAsync
+        _mockOrderRepository.Setup(r => r.AddAsync(It.IsAny<SalesOrder>())).ReturnsAsync(createdOrder);
+        _mockMapper.Setup(m => m.Map<SalesOrderDto>(createdOrder)).Returns(expectedDto);
+
+        // Act
+        var result = await _salesOrderService.CreateSalesOrderAsync(dto);
+
+        // Assert
+        result.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task ConfirmQuoteAsync_WithExpiredQuote_ThrowsException()
+    {
+        // Arrange
+        var orderId = Guid.NewGuid();
+        var order = new SalesOrder(orderId)
+        {
+            IsQuote = true,
+            QuoteExpiryDate = DateTime.UtcNow.AddDays(-1) // Expired
+        };
+        var dto = new ConfirmQuoteDto { QuoteId = orderId };
+
+        _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _salesOrderService.ConfirmQuoteAsync(dto));
+    }
+
+    #endregion
 }

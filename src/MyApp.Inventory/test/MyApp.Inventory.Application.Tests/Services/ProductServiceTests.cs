@@ -1,9 +1,12 @@
 using AutoMapper;
+using FluentAssertions;
 using Moq;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
+using MyApp.Inventory.Domain.Specifications;
+using MyApp.Shared.Domain.Pagination;
 using Xunit;
 
 namespace MyApp.Inventory.Application.Tests.Services;
@@ -335,6 +338,452 @@ public class ProductServiceTests
 
         Assert.Contains("not found", exception.Message);
         _mockProductRepository.Verify(r => r.DeleteAsync(It.IsAny<Product>()), Times.Never);
+    }
+
+    #endregion
+
+    #region GetAllProductsPaginatedAsync Tests
+
+    [Fact]
+    public async Task GetAllProductsPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
+    {
+        // Arrange
+        var products = new List<Product>
+        {
+            new Product(Guid.NewGuid()) { SKU = "PRD-001", Name = "Product 1" },
+            new Product(Guid.NewGuid()) { SKU = "PRD-002", Name = "Product 2" },
+            new Product(Guid.NewGuid()) { SKU = "PRD-003", Name = "Product 3" }
+        };
+
+        var paginatedProducts = new PaginatedResult<Product>(
+            products.Take(2),
+            1,
+            2,
+            3
+        );
+
+        var productDtos = new List<ProductDto>
+        {
+            new ProductDto(Guid.NewGuid()) { SKU = "PRD-001", Name = "Product 1" },
+            new ProductDto(Guid.NewGuid()) { SKU = "PRD-002", Name = "Product 2" }
+        };
+
+        _mockProductRepository.Setup(r => r.GetAllPaginatedAsync(1, 2)).ReturnsAsync(paginatedProducts);
+        _mockMapper.Setup(m => m.Map<IEnumerable<ProductDto>>(It.IsAny<IEnumerable<Product>>())).Returns(productDtos);
+
+        // Act
+        var result = await _productService.GetAllProductsPaginatedAsync(1, 2);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().HaveCount(2);
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(2);
+        result.TotalCount.Should().Be(3);
+        _mockProductRepository.Verify(r => r.GetAllPaginatedAsync(1, 2), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetAllProductsPaginatedAsync_WithSecondPage_ReturnsCorrectPage()
+    {
+        // Arrange
+        var products = new List<Product>
+        {
+            new Product(Guid.NewGuid()) { SKU = "PRD-003", Name = "Product 3" }
+        };
+
+        var paginatedProducts = new PaginatedResult<Product>(
+            products,
+            2,
+            2,
+            3
+        );
+
+        var productDtos = new List<ProductDto>
+        {
+            new ProductDto(Guid.NewGuid()) { SKU = "PRD-003", Name = "Product 3" }
+        };
+
+        _mockProductRepository.Setup(r => r.GetAllPaginatedAsync(2, 2)).ReturnsAsync(paginatedProducts);
+        _mockMapper.Setup(m => m.Map<IEnumerable<ProductDto>>(It.IsAny<IEnumerable<Product>>())).Returns(productDtos);
+
+        // Act
+        var result = await _productService.GetAllProductsPaginatedAsync(2, 2);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.PageNumber.Should().Be(2);
+        result.Items.Should().HaveCount(1);
+        _mockProductRepository.Verify(r => r.GetAllPaginatedAsync(2, 2), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetAllProductsPaginatedAsync_WithEmptyResult_ReturnsEmptyPaginatedResult()
+    {
+        // Arrange
+        var paginatedProducts = new PaginatedResult<Product>(
+            Enumerable.Empty<Product>(),
+            1,
+            20,
+            0
+        );
+
+        _mockProductRepository.Setup(r => r.GetAllPaginatedAsync(1, 20)).ReturnsAsync(paginatedProducts);
+        _mockMapper.Setup(m => m.Map<IEnumerable<ProductDto>>(It.IsAny<IEnumerable<Product>>())).Returns(Enumerable.Empty<ProductDto>());
+
+        // Act
+        var result = await _productService.GetAllProductsPaginatedAsync(1, 20);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().BeEmpty();
+        result.TotalCount.Should().Be(0);
+    }
+
+    #endregion
+
+    #region QueryProductsAsync Tests
+
+    [Fact]
+    public async Task QueryProductsAsync_WithSearchTerm_ReturnsFilteredResults()
+    {
+        // Arrange
+        var products = new List<Product>
+        {
+            new Product(Guid.NewGuid()) { SKU = "PRD-SEARCH-001", Name = "Search Product" }
+        };
+
+        var querySpec = new QuerySpec { SearchTerm = "SEARCH" };
+        var spec = new ProductQuerySpec(querySpec);
+        var paginatedResult = new PaginatedResult<Product>(products, 1, 20, 1);
+
+        var productDtos = new List<ProductDto>
+        {
+            new ProductDto(Guid.NewGuid()) { SKU = "PRD-SEARCH-001", Name = "Search Product" }
+        };
+
+        _mockProductRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
+        _mockMapper.Setup(m => m.Map<ProductDto>(It.IsAny<Product>())).Returns((Product p) => 
+            new ProductDto(p.Id) { SKU = p.SKU, Name = p.Name });
+
+        // Act
+        var result = await _productService.QueryProductsAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().HaveCount(1);
+        result.TotalCount.Should().Be(1);
+        _mockProductRepository.Verify(r => r.QueryAsync(spec), Times.Once);
+    }
+
+    [Fact]
+    public async Task QueryProductsAsync_WithFilters_ReturnsFilteredResults()
+    {
+        // Arrange
+        var products = new List<Product>
+        {
+            new Product(Guid.NewGuid()) { SKU = "PRD-001", Name = "Product", UnitPrice = 10.00m }
+        };
+
+        var querySpec = new QuerySpec();
+        querySpec.Filters = new Dictionary<string, string> { { "UnitPriceMin", "5" }, { "UnitPriceMax", "15" } };
+        var spec = new ProductQuerySpec(querySpec);
+        var paginatedResult = new PaginatedResult<Product>(products, 1, 20, 1);
+
+        var productDtos = new List<ProductDto>
+        {
+            new ProductDto(Guid.NewGuid()) { SKU = "PRD-001", Name = "Product", UnitPrice = 10.00m }
+        };
+
+        _mockProductRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
+        _mockMapper.Setup(m => m.Map<ProductDto>(It.IsAny<Product>())).Returns((Product p) => 
+            new ProductDto(p.Id) { SKU = p.SKU, Name = p.Name, UnitPrice = p.UnitPrice });
+
+        // Act
+        var result = await _productService.QueryProductsAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().HaveCount(1);
+        _mockProductRepository.Verify(r => r.QueryAsync(spec), Times.Once);
+    }
+
+    #endregion
+
+    #region Edge Cases and Error Scenarios
+
+    [Fact]
+    public async Task CreateProductAsync_WithEmptySku_CreatesProduct()
+    {
+        // Arrange
+        var dto = new CreateUpdateProductDto("", "Product Name");
+        var product = new Product(Guid.NewGuid()) { SKU = "", Name = "Product Name" };
+        var expectedDto = new ProductDto(Guid.NewGuid()) { SKU = "", Name = "Product Name" };
+
+        _mockProductRepository.Setup(r => r.GetBySkuAsync("")).ReturnsAsync((Product?)null);
+        _mockMapper.Setup(m => m.Map<Product>(dto)).Returns(product);
+        _mockProductRepository.Setup(r => r.AddAsync(product)).ReturnsAsync(product);
+        _mockMapper.Setup(m => m.Map<ProductDto>(product)).Returns(expectedDto);
+
+        // Act
+        var result = await _productService.CreateProductAsync(dto);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.SKU.Should().Be("");
+    }
+
+    [Fact]
+    public async Task CreateProductAsync_WithWhitespaceSku_CreatesProduct()
+    {
+        // Arrange
+        var dto = new CreateUpdateProductDto("   ", "Product Name");
+        var product = new Product(Guid.NewGuid()) { SKU = "   ", Name = "Product Name" };
+        var expectedDto = new ProductDto(Guid.NewGuid()) { SKU = "   ", Name = "Product Name" };
+
+        _mockProductRepository.Setup(r => r.GetBySkuAsync("   ")).ReturnsAsync((Product?)null);
+        _mockMapper.Setup(m => m.Map<Product>(dto)).Returns(product);
+        _mockProductRepository.Setup(r => r.AddAsync(product)).ReturnsAsync(product);
+        _mockMapper.Setup(m => m.Map<ProductDto>(product)).Returns(expectedDto);
+
+        // Act
+        var result = await _productService.CreateProductAsync(dto);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.SKU.Should().Be("   ");
+    }
+
+    [Fact]
+    public async Task CreateProductAsync_WithSpecialCharactersInSku_CreatesProduct()
+    {
+        // Arrange
+        var sku = "PRD-001-SPECIAL!@#";
+        var dto = new CreateUpdateProductDto(sku, "Product");
+        var product = new Product(Guid.NewGuid()) { SKU = sku, Name = "Product" };
+        var expectedDto = new ProductDto(Guid.NewGuid()) { SKU = sku, Name = "Product" };
+
+        _mockProductRepository.Setup(r => r.GetBySkuAsync(sku)).ReturnsAsync((Product?)null);
+        _mockMapper.Setup(m => m.Map<Product>(dto)).Returns(product);
+        _mockProductRepository.Setup(r => r.AddAsync(product)).ReturnsAsync(product);
+        _mockMapper.Setup(m => m.Map<ProductDto>(product)).Returns(expectedDto);
+
+        // Act
+        var result = await _productService.CreateProductAsync(dto);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.SKU.Should().Be(sku);
+    }
+
+    [Fact]
+    public async Task CreateProductAsync_WithVeryLongSku_CreatesProduct()
+    {
+        // Arrange
+        var longSku = new string('A', 500); // Very long SKU
+        var dto = new CreateUpdateProductDto(longSku, "Product");
+        var product = new Product(Guid.NewGuid()) { SKU = longSku, Name = "Product" };
+        var expectedDto = new ProductDto(Guid.NewGuid()) { SKU = longSku, Name = "Product" };
+
+        _mockProductRepository.Setup(r => r.GetBySkuAsync(longSku)).ReturnsAsync((Product?)null);
+        _mockMapper.Setup(m => m.Map<Product>(dto)).Returns(product);
+        _mockProductRepository.Setup(r => r.AddAsync(product)).ReturnsAsync(product);
+        _mockMapper.Setup(m => m.Map<ProductDto>(product)).Returns(expectedDto);
+
+        // Act
+        var result = await _productService.CreateProductAsync(dto);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.SKU.Should().Be(longSku);
+    }
+
+    [Fact]
+    public async Task UpdateProductAsync_WithSameSku_UpdatesSuccessfully()
+    {
+        // Arrange
+        var productId = Guid.NewGuid();
+        var sku = "PRD-001";
+        var existingProduct = new Product(productId) { SKU = sku, Name = "Old Name" };
+        var updateDto = new CreateUpdateProductDto(sku, "New Name");
+        var updatedProduct = new Product(productId) { SKU = sku, Name = "New Name" };
+        var expectedDto = new ProductDto(Guid.NewGuid()) { SKU = sku, Name = "New Name" };
+
+        _mockProductRepository.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync(existingProduct);
+        _mockMapper.Setup(m => m.Map(updateDto, existingProduct));
+        _mockProductRepository.Setup(r => r.UpdateAsync(existingProduct)).ReturnsAsync(updatedProduct);
+        _mockMapper.Setup(m => m.Map<ProductDto>(updatedProduct)).Returns(expectedDto);
+
+        // Act
+        var result = await _productService.UpdateProductAsync(productId, updateDto);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be("New Name");
+        _mockProductRepository.Verify(r => r.GetBySkuAsync(It.IsAny<string>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task UpdateProductAsync_WithEmptyName_UpdatesSuccessfully()
+    {
+        // Arrange
+        var productId = Guid.NewGuid();
+        var existingProduct = new Product(productId) { SKU = "PRD-001", Name = "Old Name" };
+        var updateDto = new CreateUpdateProductDto("PRD-001", "");
+        var updatedProduct = new Product(productId) { SKU = "PRD-001", Name = "" };
+        var expectedDto = new ProductDto(Guid.NewGuid()) { SKU = "PRD-001", Name = "" };
+
+        _mockProductRepository.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync(existingProduct);
+        _mockMapper.Setup(m => m.Map(updateDto, existingProduct));
+        _mockProductRepository.Setup(r => r.UpdateAsync(existingProduct)).ReturnsAsync(updatedProduct);
+        _mockMapper.Setup(m => m.Map<ProductDto>(updatedProduct)).Returns(expectedDto);
+
+        // Act
+        var result = await _productService.UpdateProductAsync(productId, updateDto);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be("");
+    }
+
+    [Fact]
+    public async Task GetProductBySkuAsync_WithCaseInsensitiveSku_ReturnsProduct()
+    {
+        // Arrange
+        var sku = "prd-001";
+        var product = new Product(Guid.NewGuid()) { SKU = "PRD-001", Name = "Product" };
+        var expectedDto = new ProductDto(Guid.NewGuid()) { SKU = "PRD-001", Name = "Product" };
+
+        _mockProductRepository.Setup(r => r.GetBySkuAsync(sku)).ReturnsAsync(product);
+        _mockMapper.Setup(m => m.Map<ProductDto>(product)).Returns(expectedDto);
+
+        // Act
+        var result = await _productService.GetProductBySkuAsync(sku);
+
+        // Assert
+        result.Should().NotBeNull();
+        _mockProductRepository.Verify(r => r.GetBySkuAsync(sku), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetProductBySkuAsync_WithEmptySku_ReturnsNull()
+    {
+        // Arrange
+        var sku = "";
+
+        _mockProductRepository.Setup(r => r.GetBySkuAsync(sku)).ReturnsAsync((Product?)null);
+
+        // Act
+        var result = await _productService.GetProductBySkuAsync(sku);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetAllProductsAsync_WithEmptyRepository_ReturnsEmptyList()
+    {
+        // Arrange
+        _mockProductRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(Enumerable.Empty<Product>());
+        _mockMapper.Setup(m => m.Map<IEnumerable<ProductDto>>(It.IsAny<IEnumerable<Product>>())).Returns(Enumerable.Empty<ProductDto>());
+
+        // Act
+        var result = await _productService.GetAllProductsAsync();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetLowStockProductsAsync_WithNoLowStockProducts_ReturnsEmptyList()
+    {
+        // Arrange
+        _mockProductRepository.Setup(r => r.GetLowStockProductsAsync()).ReturnsAsync(Enumerable.Empty<Product>());
+        _mockMapper.Setup(m => m.Map<IEnumerable<ProductDto>>(It.IsAny<IEnumerable<Product>>())).Returns(Enumerable.Empty<ProductDto>());
+
+        // Act
+        var result = await _productService.GetLowStockProductsAsync();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task DeleteProductAsync_WithProductHavingDependencies_DeletesProduct()
+    {
+        // Arrange
+        var productId = Guid.NewGuid();
+        var product = new Product(productId) { SKU = "PRD-001", Name = "Product" };
+
+        _mockProductRepository.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync(product);
+        _mockProductRepository.Setup(r => r.DeleteAsync(product)).Returns(Task.CompletedTask);
+
+        // Act
+        await _productService.DeleteProductAsync(productId);
+
+        // Assert
+        _mockProductRepository.Verify(r => r.DeleteAsync(product), Times.Once);
+    }
+
+    [Fact]
+    public async Task CreateProductAsync_WhenRepositoryThrowsException_PropagatesException()
+    {
+        // Arrange
+        var dto = new CreateUpdateProductDto("PRD-001", "Product");
+        var product = new Product(Guid.NewGuid()) { SKU = "PRD-001", Name = "Product" };
+
+        _mockProductRepository.Setup(r => r.GetBySkuAsync(dto.SKU)).ReturnsAsync((Product?)null);
+        _mockMapper.Setup(m => m.Map<Product>(dto)).Returns(product);
+        _mockProductRepository.Setup(r => r.AddAsync(product)).ThrowsAsync(new Exception("Database error"));
+
+        // Act & Assert
+        await Assert.ThrowsAsync<Exception>(() => _productService.CreateProductAsync(dto));
+    }
+
+    [Fact]
+    public async Task UpdateProductAsync_WhenMapperThrowsException_PropagatesException()
+    {
+        // Arrange
+        var productId = Guid.NewGuid();
+        var existingProduct = new Product(productId) { SKU = "PRD-001", Name = "Old Name" };
+        var updateDto = new CreateUpdateProductDto("PRD-001", "New Name");
+
+        _mockProductRepository.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync(existingProduct);
+        _mockMapper.Setup(m => m.Map(updateDto, existingProduct)).Throws(new Exception("Mapping error"));
+
+        // Act & Assert
+        await Assert.ThrowsAsync<Exception>(() => _productService.UpdateProductAsync(productId, updateDto));
+    }
+
+    [Fact]
+    public async Task QueryProductsAsync_WithPagination_ReturnsPaginatedResult()
+    {
+        // Arrange
+        var products = new List<Product>
+        {
+            new Product(Guid.NewGuid()) { SKU = "PRD-001", Name = "Product 1" },
+            new Product(Guid.NewGuid()) { SKU = "PRD-002", Name = "Product 2" }
+        };
+
+        var querySpec = new QuerySpec { Page = 1, PageSize = 2 };
+        var spec = new ProductQuerySpec(querySpec);
+        var paginatedResult = new PaginatedResult<Product>(products, 1, 2, 10);
+
+        _mockProductRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
+        _mockMapper.Setup(m => m.Map<ProductDto>(It.IsAny<Product>())).Returns((Product p) => 
+            new ProductDto(p.Id) { SKU = p.SKU, Name = p.Name });
+
+        // Act
+        var result = await _productService.QueryProductsAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().HaveCount(2);
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(2);
+        result.TotalCount.Should().Be(10);
     }
 
     #endregion

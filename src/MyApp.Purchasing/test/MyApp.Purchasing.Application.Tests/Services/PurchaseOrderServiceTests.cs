@@ -787,4 +787,80 @@ public class PurchaseOrderServiceTests
         Assert.StartsWith("PO-", result.OrderNumber);
         _mockPurchaseOrderRepository.Verify(r => r.AddAsync(It.Is<PurchaseOrder>(o => !string.IsNullOrWhiteSpace(o.OrderNumber))), Times.Once);
     }
+
+    #region Edge Cases and Boundary Values
+
+    [Fact]
+    public async Task CreatePurchaseOrderAsync_WithMaximumTotalAmount_CreatesOrder()
+    {
+        // Arrange
+        var supplierId = Guid.NewGuid();
+        var supplier = new Supplier(supplierId) { Name = "Supplier" };
+        var dto = new CreateUpdatePurchaseOrderDto
+        {
+            SupplierId = supplierId,
+            OrderDate = DateTime.UtcNow,
+            Lines = new List<CreateUpdatePurchaseOrderLineDto>
+            {
+                new CreateUpdatePurchaseOrderLineDto { ProductId = Guid.NewGuid(), Quantity = 1, UnitPrice = decimal.MaxValue / 2 }
+            }
+        };
+
+        var order = new PurchaseOrder(Guid.NewGuid()) { SupplierId = supplierId, OrderDate = dto.OrderDate, Lines = new List<PurchaseOrderLine>() };
+        var createdOrder = new PurchaseOrder(Guid.NewGuid()) { OrderNumber = "PO-TEST-12345", SupplierId = supplierId };
+        var expectedDto = new PurchaseOrderDto { Id = createdOrder.Id, OrderNumber = createdOrder.OrderNumber };
+        
+        _mockSupplierRepository.Setup(r => r.GetByIdAsync(supplierId)).ReturnsAsync(supplier);
+        _mockMapper.Setup(m => m.Map<PurchaseOrder>(dto)).Returns(order);
+        _mockPurchaseOrderRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<PurchaseOrder>()); // For GenerateOrderNumberAsync
+        _mockPurchaseOrderRepository.Setup(r => r.AddAsync(It.IsAny<PurchaseOrder>())).ReturnsAsync(createdOrder);
+        _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(createdOrder)).Returns(expectedDto);
+
+        // Act
+        var result = await _purchaseOrderService.CreatePurchaseOrderAsync(dto);
+
+        // Assert
+        result.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task ReceivePurchaseOrderAsync_WithOverReceipt_UpdatesReceivedQuantity()
+    {
+        // Arrange
+        var poId = Guid.NewGuid();
+        var lineId = Guid.NewGuid();
+        var po = new PurchaseOrder(poId)
+        {
+            Status = PurchaseOrderStatus.Approved,
+            Lines = new List<PurchaseOrderLine>
+            {
+                new PurchaseOrderLine { Id = lineId, Quantity = 10, ReceivedQuantity = 0 }
+            }
+        };
+        var dto = new ReceivePurchaseOrderDto
+        {
+            PurchaseOrderId = poId,
+            WarehouseId = Guid.NewGuid(),
+            ReceivedDate = DateTime.UtcNow,
+            Lines = new List<ReceivePurchaseOrderLineDto>
+            {
+                new ReceivePurchaseOrderLineDto { PurchaseOrderLineId = lineId, ReceivedQuantity = 15 } // Over-receipt
+            }
+        };
+
+        _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(po);
+        _mockPurchaseOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<PurchaseOrder>())).ReturnsAsync((PurchaseOrder p) => p);
+        _mockServiceInvoker.Setup(s => s.InvokeAsync<CreateUpdateOrderDto, OrderDto>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpMethod>(), It.IsAny<CreateUpdateOrderDto>(), default)).ReturnsAsync(new OrderDto(Guid.NewGuid()));
+        _mockServiceInvoker.Setup(s => s.InvokeAsync<FulfillOrderDto, OrderDto>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpMethod>(), It.IsAny<FulfillOrderDto>(), default)).ReturnsAsync(new OrderDto(Guid.NewGuid()));
+        _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(It.IsAny<PurchaseOrder>())).Returns((PurchaseOrder p) => new PurchaseOrderDto { Id = p.Id, OrderNumber = p.OrderNumber });
+
+        // Act
+        var result = await _purchaseOrderService.ReceivePurchaseOrderAsync(dto);
+
+        // Assert
+        result.Should().NotBeNull();
+        po.Lines.First().ReceivedQuantity.Should().Be(15);
+    }
+
+    #endregion
 }

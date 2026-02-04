@@ -1,9 +1,12 @@
 using AutoMapper;
+using FluentAssertions;
 using Moq;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Services;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Sales.Domain.Specifications;
+using MyApp.Shared.Domain.Pagination;
 using Xunit;
 
 namespace MyApp.Sales.Application.Tests.Services;
@@ -309,6 +312,226 @@ public class CustomerServiceTests
 
         // Assert
         _mockCustomerRepository.Verify(r => r.DeleteAsync(customerId), Times.Once);
+    }
+
+    #endregion
+
+    #region ListCustomersPaginatedAsync Tests
+
+    [Fact]
+    public async Task ListCustomersPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
+    {
+        // Arrange
+        var customers = new List<Customer>
+        {
+            new Customer(Guid.NewGuid()) { Name = "Customer 1", Email = "c1@example.com" },
+            new Customer(Guid.NewGuid()) { Name = "Customer 2", Email = "c2@example.com" },
+            new Customer(Guid.NewGuid()) { Name = "Customer 3", Email = "c3@example.com" }
+        };
+
+        var paginatedCustomers = new PaginatedResult<Customer>(
+            customers.Take(2),
+            1,
+            2,
+            3
+        );
+
+        var customerDtos = new List<CustomerDto>
+        {
+            new CustomerDto(Guid.NewGuid()) { Name = "Customer 1", Email = "c1@example.com", PhoneNumber = "", Address = "" },
+            new CustomerDto(Guid.NewGuid()) { Name = "Customer 2", Email = "c2@example.com", PhoneNumber = "", Address = "" }
+        };
+
+        _mockCustomerRepository.Setup(r => r.GetAllPaginatedAsync(1, 2)).ReturnsAsync(paginatedCustomers);
+        _mockMapper.Setup(m => m.Map<IEnumerable<CustomerDto>>(It.IsAny<IEnumerable<Customer>>())).Returns(customerDtos);
+
+        // Act
+        var result = await _customerService.ListCustomersPaginatedAsync(1, 2);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().HaveCount(2);
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(2);
+        result.TotalCount.Should().Be(3);
+        _mockCustomerRepository.Verify(r => r.GetAllPaginatedAsync(1, 2), Times.Once);
+    }
+
+    [Fact]
+    public async Task ListCustomersPaginatedAsync_WithEmptyResult_ReturnsEmptyPaginatedResult()
+    {
+        // Arrange
+        var paginatedCustomers = new PaginatedResult<Customer>(
+            Enumerable.Empty<Customer>(),
+            1,
+            20,
+            0
+        );
+
+        _mockCustomerRepository.Setup(r => r.GetAllPaginatedAsync(1, 20)).ReturnsAsync(paginatedCustomers);
+        _mockMapper.Setup(m => m.Map<IEnumerable<CustomerDto>>(It.IsAny<IEnumerable<Customer>>())).Returns(Enumerable.Empty<CustomerDto>());
+
+        // Act
+        var result = await _customerService.ListCustomersPaginatedAsync(1, 20);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().BeEmpty();
+        result.TotalCount.Should().Be(0);
+    }
+
+    #endregion
+
+    #region QueryCustomersAsync Tests
+
+    [Fact]
+    public async Task QueryCustomersAsync_WithSearchTerm_ReturnsFilteredResults()
+    {
+        // Arrange
+        var customers = new List<Customer>
+        {
+            new Customer(Guid.NewGuid()) { Name = "Search Customer", Email = "search@example.com" }
+        };
+
+        var querySpec = new QuerySpec { SearchTerm = "Search" };
+        var spec = new CustomerQuerySpec(querySpec);
+        var paginatedResult = new PaginatedResult<Customer>(customers, 1, 20, 1);
+
+        var customerDtos = new List<CustomerDto>
+        {
+            new CustomerDto(Guid.NewGuid()) { Name = "Search Customer", Email = "search@example.com", PhoneNumber = "", Address = "" }
+        };
+
+        _mockCustomerRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
+        _mockMapper.Setup(m => m.Map<CustomerDto>(It.IsAny<Customer>())).Returns((Customer c) => 
+            new CustomerDto(c.Id) { Name = c.Name, Email = c.Email, PhoneNumber = c.PhoneNumber ?? "", Address = c.Address ?? "" });
+
+        // Act
+        var result = await _customerService.QueryCustomersAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().HaveCount(1);
+        result.TotalCount.Should().Be(1);
+        _mockCustomerRepository.Verify(r => r.QueryAsync(spec), Times.Once);
+    }
+
+    #endregion
+
+    #region Edge Cases and Error Scenarios
+
+    [Fact]
+    public async Task CreateCustomerAsync_WithEmptyName_CreatesCustomer()
+    {
+        // Arrange
+        var dto = new CustomerDto(Guid.NewGuid())
+        {
+            Name = "",
+            Email = "test@example.com",
+            PhoneNumber = "",
+            Address = ""
+        };
+        var customer = new Customer(Guid.NewGuid()) { Name = "", Email = "test@example.com" };
+        var expectedDto = new CustomerDto(Guid.NewGuid()) { Name = "", Email = "test@example.com", PhoneNumber = "", Address = "" };
+
+        _mockMapper.Setup(m => m.Map<Customer>(dto)).Returns(customer);
+        _mockMapper.Setup(m => m.Map<CustomerDto>(It.IsAny<Customer>())).Returns(expectedDto);
+
+        // Act
+        var result = await _customerService.CreateCustomerAsync(dto);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be("");
+    }
+
+    [Fact]
+    public async Task CreateCustomerAsync_WithEmptyEmail_CreatesCustomer()
+    {
+        // Arrange
+        var dto = new CustomerDto(Guid.NewGuid())
+        {
+            Name = "Customer",
+            Email = "",
+            PhoneNumber = "",
+            Address = ""
+        };
+        var customer = new Customer(Guid.NewGuid()) { Name = "Customer", Email = "" };
+        var expectedDto = new CustomerDto(Guid.NewGuid()) { Name = "Customer", Email = "", PhoneNumber = "", Address = "" };
+
+        _mockMapper.Setup(m => m.Map<Customer>(dto)).Returns(customer);
+        _mockMapper.Setup(m => m.Map<CustomerDto>(It.IsAny<Customer>())).Returns(expectedDto);
+
+        // Act
+        var result = await _customerService.CreateCustomerAsync(dto);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Email.Should().Be("");
+    }
+
+    [Fact]
+    public async Task UpdateCustomerAsync_WithEmptyName_UpdatesSuccessfully()
+    {
+        // Arrange
+        var customerId = Guid.NewGuid();
+        var existingCustomer = new Customer(customerId) { Name = "Old Name", Email = "old@example.com" };
+        var updateDto = new CustomerDto(Guid.NewGuid()) { Name = "", Email = "old@example.com", PhoneNumber = "", Address = "" };
+        var expectedDto = new CustomerDto(customerId) { Name = "", Email = "old@example.com", PhoneNumber = "", Address = "" };
+
+        _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(existingCustomer);
+        _mockMapper.Setup(m => m.Map(updateDto, existingCustomer)).Callback(() => { existingCustomer.Name = ""; });
+        _mockMapper.Setup(m => m.Map<CustomerDto>(existingCustomer)).Returns(expectedDto);
+
+        // Act
+        var result = await _customerService.UpdateCustomerAsync(customerId, updateDto);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be("");
+    }
+
+    [Fact]
+    public async Task GetCustomerByIdAsync_WithEmptyGuid_ReturnsNull()
+    {
+        // Arrange
+        var emptyGuid = Guid.Empty;
+        _mockCustomerRepository.Setup(r => r.GetByIdAsync(emptyGuid)).ReturnsAsync((Customer?)null);
+
+        // Act
+        var result = await _customerService.GetCustomerByIdAsync(emptyGuid);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task QueryCustomersAsync_WithPagination_ReturnsPaginatedResult()
+    {
+        // Arrange
+        var customers = new List<Customer>
+        {
+            new Customer(Guid.NewGuid()) { Name = "Customer 1", Email = "c1@example.com" },
+            new Customer(Guid.NewGuid()) { Name = "Customer 2", Email = "c2@example.com" }
+        };
+
+        var querySpec = new QuerySpec { Page = 1, PageSize = 2 };
+        var spec = new CustomerQuerySpec(querySpec);
+        var paginatedResult = new PaginatedResult<Customer>(customers, 1, 2, 10);
+
+        _mockCustomerRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
+        _mockMapper.Setup(m => m.Map<CustomerDto>(It.IsAny<Customer>())).Returns((Customer c) => 
+            new CustomerDto(c.Id) { Name = c.Name, Email = c.Email, PhoneNumber = c.PhoneNumber ?? "", Address = c.Address ?? "" });
+
+        // Act
+        var result = await _customerService.QueryCustomersAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().HaveCount(2);
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(2);
+        result.TotalCount.Should().Be(10);
     }
 
     #endregion

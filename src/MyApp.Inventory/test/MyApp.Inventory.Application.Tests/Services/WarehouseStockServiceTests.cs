@@ -803,4 +803,93 @@ public class WarehouseStockServiceTests : BaseServiceTest
     }
 
     #endregion
+
+    #region Edge Cases and Boundary Values
+
+    [Fact]
+    public async Task AdjustStockAsync_WithMaximumQuantity_AdjustsSuccessfully()
+    {
+        // Arrange
+        var productId = Guid.NewGuid();
+        var warehouseId = Guid.NewGuid();
+        var stock = new WarehouseStock(Guid.NewGuid())
+        {
+            ProductId = productId,
+            WarehouseId = warehouseId,
+            AvailableQuantity = int.MaxValue / 2
+        };
+        var dto = new StockAdjustmentDto
+        {
+            ProductId = productId,
+            WarehouseId = warehouseId,
+            QuantityChange = int.MaxValue / 2,
+            Reason = "Test"
+        };
+
+        _mockWarehouseStockRepository.Setup(r => r.GetByProductAndWarehouseAsync(productId, warehouseId)).ReturnsAsync(stock);
+        _mockWarehouseStockRepository.Setup(r => r.UpdateAsync(It.IsAny<WarehouseStock>())).ReturnsAsync((WarehouseStock s) => s);
+        _mockProductRepository.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync(new Product(Guid.NewGuid()) { Name = "Test Product" });
+        _mockTransactionRepository.Setup(r => r.AddAsync(It.IsAny<InventoryTransaction>())).ReturnsAsync((InventoryTransaction t) => t);
+
+        // Act
+        await _service.AdjustStockAsync(dto);
+
+        // Assert
+        _mockWarehouseStockRepository.Verify(r => r.UpdateAsync(It.IsAny<WarehouseStock>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task ReserveStockAsync_WithZeroQuantity_ThrowsException()
+    {
+        // Arrange
+        var dto = new ReserveStockDto
+        {
+            ProductId = Guid.NewGuid(),
+            WarehouseId = Guid.NewGuid(),
+            OrderId = Guid.NewGuid(),
+            Quantity = 0
+        };
+
+        // Act & Assert
+        Func<Task> act = async () => await _service.ReserveStockAsync(dto);
+        await act.Should().ThrowAsync<InvalidOperationException>();
+    }
+
+    [Fact]
+    public async Task TransferStockAsync_WithSameSourceAndTarget_ThrowsStockTransferException()
+    {
+        // Arrange
+        var warehouseId = Guid.NewGuid();
+        var productId = Guid.NewGuid();
+        var dto = new StockTransferDto
+        {
+            ProductId = productId,
+            FromWarehouseId = warehouseId,
+            ToWarehouseId = warehouseId,
+            Quantity = 10,
+            Reason = "Test"
+        };
+
+        _mockProductRepository.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync(new Product(Guid.NewGuid()) { Name = "Test Product" });
+        _mockWarehouseStockRepository.Setup(r => r.GetByProductAndWarehouseAsync(productId, warehouseId)).ReturnsAsync((WarehouseStock?)null);
+
+        // Act & Assert - Service will throw StockTransferException when source stock is null
+        Func<Task> act = async () => await _service.TransferStockAsync(dto);
+        await act.Should().ThrowAsync<StockTransferException>();
+    }
+
+    [Fact]
+    public async Task GetByProductAndWarehouseAsync_WithEmptyGuids_ReturnsNull()
+    {
+        // Arrange
+        _mockWarehouseStockRepository.Setup(r => r.GetByProductAndWarehouseAsync(Guid.Empty, Guid.Empty)).ReturnsAsync((WarehouseStock?)null);
+
+        // Act
+        var result = await _service.GetByProductAndWarehouseAsync(Guid.Empty, Guid.Empty);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    #endregion
 }

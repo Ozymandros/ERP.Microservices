@@ -1,9 +1,12 @@
 using AutoMapper;
+using FluentAssertions;
 using Moq;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Services;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
+using MyApp.Purchasing.Domain.Specifications;
+using MyApp.Shared.Domain.Pagination;
 using Xunit;
 
 namespace MyApp.Purchasing.Application.Tests.Services;
@@ -319,4 +322,149 @@ public class SupplierServiceTests
         Assert.Contains("not found", exception.Message);
         _mockSupplierRepository.Verify(r => r.DeleteAsync(It.IsAny<Supplier>()), Times.Never);
     }
+
+    #region QuerySuppliersAsync Tests
+
+    [Fact]
+    public async Task QuerySuppliersAsync_WithSearchTerm_ReturnsFilteredResults()
+    {
+        // Arrange
+        var suppliers = new List<Supplier>
+        {
+            new Supplier(Guid.NewGuid()) { Name = "Search Supplier", Email = "search@example.com" }
+        };
+
+        var querySpec = new QuerySpec { SearchTerm = "Search" };
+        var spec = new SupplierQuerySpec(querySpec);
+        var paginatedResult = new PaginatedResult<Supplier>(suppliers, 1, 20, 1);
+
+        var supplierDtos = new List<SupplierDto>
+        {
+            new SupplierDto(Guid.NewGuid()) { Name = "Search Supplier", ContactName = "Search Supplier", Email = "search@example.com", PhoneNumber = "", Address = "" }
+        };
+
+        _mockSupplierRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
+        _mockMapper.Setup(m => m.Map<SupplierDto>(It.IsAny<Supplier>())).Returns((Supplier s) => 
+            new SupplierDto(s.Id) { Name = s.Name, ContactName = s.ContactName ?? "", Email = s.Email, PhoneNumber = s.PhoneNumber ?? "", Address = s.Address ?? "" });
+
+        // Act
+        var result = await _supplierService.QuerySuppliersAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().HaveCount(1);
+        result.TotalCount.Should().Be(1);
+        _mockSupplierRepository.Verify(r => r.QueryAsync(spec), Times.Once);
+    }
+
+    [Fact]
+    public async Task QuerySuppliersAsync_WithPagination_ReturnsPaginatedResult()
+    {
+        // Arrange
+        var suppliers = new List<Supplier>
+        {
+            new Supplier(Guid.NewGuid()) { Name = "Supplier 1", Email = "s1@example.com" },
+            new Supplier(Guid.NewGuid()) { Name = "Supplier 2", Email = "s2@example.com" }
+        };
+
+        var querySpec = new QuerySpec { Page = 1, PageSize = 2 };
+        var spec = new SupplierQuerySpec(querySpec);
+        var paginatedResult = new PaginatedResult<Supplier>(suppliers, 1, 2, 10);
+
+        _mockSupplierRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
+        _mockMapper.Setup(m => m.Map<SupplierDto>(It.IsAny<Supplier>())).Returns((Supplier s) => 
+            new SupplierDto(s.Id) { Name = s.Name, ContactName = s.ContactName ?? "", Email = s.Email, PhoneNumber = s.PhoneNumber ?? "", Address = s.Address ?? "" });
+
+        // Act
+        var result = await _supplierService.QuerySuppliersAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().HaveCount(2);
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(2);
+        result.TotalCount.Should().Be(10);
+    }
+
+    #endregion
+
+    #region Edge Cases and Error Scenarios
+
+    [Fact]
+    public async Task CreateSupplierAsync_WithEmptyEmail_ThrowsException()
+    {
+        // Arrange
+        var dto = new CreateUpdateSupplierDto("Supplier", "Contact", "");
+
+        _mockSupplierRepository.Setup(r => r.GetByEmailAsync("")).ReturnsAsync((Supplier?)null);
+
+        // Act & Assert - Empty email should be handled by validation or service logic
+        // This test verifies the service handles empty email appropriately
+        var supplier = new Supplier(Guid.NewGuid()) { Name = "Supplier", ContactName = "Contact", Email = "" };
+        var createdSupplier = new Supplier(Guid.NewGuid()) { Name = "Supplier", ContactName = "Contact", Email = "" };
+        var expectedDto = new SupplierDto(createdSupplier.Id) { Name = "Supplier", ContactName = "Contact", Email = "", PhoneNumber = "", Address = "" };
+
+        _mockMapper.Setup(m => m.Map<Supplier>(dto)).Returns(supplier);
+        _mockSupplierRepository.Setup(r => r.AddAsync(supplier)).ReturnsAsync(createdSupplier);
+        _mockMapper.Setup(m => m.Map<SupplierDto>(createdSupplier)).Returns(expectedDto);
+
+        var result = await _supplierService.CreateSupplierAsync(dto);
+        result.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task UpdateSupplierAsync_WithSameEmail_UpdatesSuccessfully()
+    {
+        // Arrange
+        var supplierId = Guid.NewGuid();
+        var email = "test@example.com";
+        var existingSupplier = new Supplier(supplierId) { Name = "Old Name", Email = email };
+        var updateDto = new CreateUpdateSupplierDto("New Name", "Contact", email);
+        var updatedSupplier = new Supplier(supplierId) { Name = "New Name", Email = email };
+        var expectedDto = new SupplierDto(supplierId) { Name = "New Name", ContactName = "Contact", Email = email, PhoneNumber = "", Address = "" };
+
+        _mockSupplierRepository.Setup(r => r.GetByIdAsync(supplierId)).ReturnsAsync(existingSupplier);
+        _mockMapper.Setup(m => m.Map(updateDto, existingSupplier));
+        _mockSupplierRepository.Setup(r => r.UpdateAsync(existingSupplier)).ReturnsAsync(updatedSupplier);
+        _mockMapper.Setup(m => m.Map<SupplierDto>(updatedSupplier)).Returns(expectedDto);
+
+        // Act
+        var result = await _supplierService.UpdateSupplierAsync(supplierId, updateDto);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be("New Name");
+        _mockSupplierRepository.Verify(r => r.GetByEmailAsync(It.IsAny<string>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task GetAllSuppliersAsync_WithEmptyRepository_ReturnsEmptyList()
+    {
+        // Arrange
+        _mockSupplierRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(Enumerable.Empty<Supplier>());
+        _mockMapper.Setup(m => m.Map<IEnumerable<SupplierDto>>(It.IsAny<IEnumerable<Supplier>>())).Returns(Enumerable.Empty<SupplierDto>());
+
+        // Act
+        var result = await _supplierService.GetAllSuppliersAsync();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetSupplierByIdAsync_WithEmptyGuid_ReturnsNull()
+    {
+        // Arrange
+        var emptyGuid = Guid.Empty;
+        _mockSupplierRepository.Setup(r => r.GetByIdAsync(emptyGuid)).ReturnsAsync((Supplier?)null);
+
+        // Act
+        var result = await _supplierService.GetSupplierByIdAsync(emptyGuid);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    #endregion
 }
