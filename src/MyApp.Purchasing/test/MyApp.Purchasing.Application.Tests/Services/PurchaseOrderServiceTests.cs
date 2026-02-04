@@ -193,6 +193,40 @@ public class PurchaseOrderServiceTests
     }
 
     [Fact]
+    public async Task CreatePurchaseOrderAsync_WithEmptyLines_DoesNotCalculateTotal()
+    {
+        // Arrange
+        var supplierId = Guid.NewGuid();
+        var supplier = new Supplier(supplierId);
+        var dto = new CreateUpdatePurchaseOrderDto
+        {
+            SupplierId = supplierId,
+            Status = 0
+        };
+        var order = new PurchaseOrder(Guid.NewGuid())
+        {
+            SupplierId = supplierId,
+            Lines = new List<PurchaseOrderLine>() // Empty lines
+        };
+        var createdOrder = new PurchaseOrder(Guid.NewGuid());
+        var expectedDto = new PurchaseOrderDto();
+
+        _mockSupplierRepository.Setup(r => r.GetByIdAsync(supplierId)).ReturnsAsync(supplier);
+        _mockMapper.Setup(m => m.Map<PurchaseOrder>(dto)).Returns(order);
+        _mockPurchaseOrderRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<PurchaseOrder>());
+        _mockPurchaseOrderRepository.Setup(r => r.AddAsync(order)).ReturnsAsync(createdOrder);
+        _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(createdOrder)).Returns(expectedDto);
+
+        // Act
+        var result = await _purchaseOrderService.CreatePurchaseOrderAsync(dto);
+
+        // Assert
+        Assert.NotNull(result);
+        // TotalAmount should remain 0 when Lines is empty
+        _mockPurchaseOrderRepository.Verify(r => r.AddAsync(order), Times.Once);
+    }
+
+    [Fact]
     public async Task CreatePurchaseOrderAsync_WithNonExistentSupplier_ThrowsKeyNotFoundException()
     {
         // Arrange
@@ -242,6 +276,39 @@ public class PurchaseOrderServiceTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(50.00m, order.TotalAmount); // 5 * 10.00
+        _mockPurchaseOrderRepository.Verify(r => r.UpdateAsync(order), Times.Once);
+    }
+
+    [Fact]
+    public async Task UpdatePurchaseOrderAsync_WithEmptyLines_DoesNotRecalculateTotal()
+    {
+        // Arrange
+        var orderId = Guid.NewGuid();
+        var supplierId = Guid.NewGuid();
+        var order = new PurchaseOrder(orderId)
+        {
+            SupplierId = supplierId,
+            Lines = new List<PurchaseOrderLine>() // Empty lines
+        };
+        var updateDto = new CreateUpdatePurchaseOrderDto
+        {
+            SupplierId = supplierId,
+            Status = 1
+        };
+        var updatedOrder = new PurchaseOrder(Guid.NewGuid());
+        var expectedDto = new PurchaseOrderDto();
+
+        _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(orderId)).ReturnsAsync(order);
+        _mockMapper.Setup(m => m.Map(updateDto, order));
+        _mockPurchaseOrderRepository.Setup(r => r.UpdateAsync(order)).ReturnsAsync(updatedOrder);
+        _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(updatedOrder)).Returns(expectedDto);
+
+        // Act
+        var result = await _purchaseOrderService.UpdatePurchaseOrderAsync(orderId, updateDto);
+
+        // Assert
+        Assert.NotNull(result);
+        // TotalAmount should remain unchanged (default 0) when Lines is empty
         _mockPurchaseOrderRepository.Verify(r => r.UpdateAsync(order), Times.Once);
     }
 

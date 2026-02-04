@@ -44,7 +44,7 @@ public class TestSpecification : BaseSpecification<TestEntity>
 
 public class BaseSpecificationTests
 {
-    private IQueryable<TestEntity> CreateTestData()
+    private static IQueryable<TestEntity> CreateTestData()
     {
         return new List<TestEntity>
         {

@@ -10,7 +10,7 @@ namespace MyApp.Orders.Application.Tests.Specifications;
 
 public class OrderQuerySpecTests
 {
-    private IQueryable<Order> CreateTestData()
+    private static IQueryable<Order> CreateTestData()
     {
         var sourceId1 = Guid.NewGuid();
         var sourceId2 = Guid.NewGuid();

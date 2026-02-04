@@ -9,7 +9,7 @@ namespace MyApp.Purchasing.Application.Tests.Specifications;
 
 public class PurchaseOrderQuerySpecTests
 {
-    private IQueryable<PurchaseOrder> CreateTestData()
+    private static IQueryable<PurchaseOrder> CreateTestData()
     {
         var supplierId1 = Guid.NewGuid();
         var supplierId2 = Guid.NewGuid();

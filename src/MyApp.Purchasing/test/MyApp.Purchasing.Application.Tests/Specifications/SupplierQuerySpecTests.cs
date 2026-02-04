@@ -9,7 +9,7 @@ namespace MyApp.Purchasing.Application.Tests.Specifications;
 
 public class SupplierQuerySpecTests
 {
-    private IQueryable<Supplier> CreateTestData()
+    private static IQueryable<Supplier> CreateTestData()
     {
         return new List<Supplier>
         {

@@ -9,7 +9,7 @@ namespace MyApp.Sales.Application.Tests.Specifications;
 
 public class SalesOrderQuerySpecTests
 {
-    private IQueryable<SalesOrder> CreateTestData()
+    private static IQueryable<SalesOrder> CreateTestData()
     {
         var customerId1 = Guid.NewGuid();
         var customerId2 = Guid.NewGuid();

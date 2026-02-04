@@ -50,6 +50,8 @@ public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
     /// <returns>A paginated result with filtered and sorted items</returns>
     public virtual async Task<PaginatedResult<TEntity>> QueryAsync(ISpecification<TEntity> spec)
     {
+        ArgumentNullException.ThrowIfNull(spec);
+        
         var baseQuery = _dbContext.Set<TEntity>().AsNoTracking().AsQueryable();
         
         // 1. Apply only filters to get the total count of matching items (before pagination)

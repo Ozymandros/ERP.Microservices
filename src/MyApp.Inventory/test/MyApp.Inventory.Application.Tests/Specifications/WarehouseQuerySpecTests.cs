@@ -9,7 +9,7 @@ namespace MyApp.Inventory.Application.Tests.Specifications;
 
 public class WarehouseQuerySpecTests
 {
-    private IQueryable<Warehouse> CreateTestData()
+    private static IQueryable<Warehouse> CreateTestData()
     {
         return new List<Warehouse>
         {

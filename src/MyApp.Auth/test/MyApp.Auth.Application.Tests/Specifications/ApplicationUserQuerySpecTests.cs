@@ -9,7 +9,7 @@ namespace MyApp.Auth.Application.Tests.Specifications;
 
 public class ApplicationUserQuerySpecTests
 {
-    private IQueryable<ApplicationUser> CreateTestData()
+    private static IQueryable<ApplicationUser> CreateTestData()
     {
         return new List<ApplicationUser>
         {

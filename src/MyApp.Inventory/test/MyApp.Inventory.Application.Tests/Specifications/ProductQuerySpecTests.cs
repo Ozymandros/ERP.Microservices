@@ -9,7 +9,7 @@ namespace MyApp.Inventory.Application.Tests.Specifications;
 
 public class ProductQuerySpecTests
 {
-    private IQueryable<Product> CreateTestData()
+    private static IQueryable<Product> CreateTestData()
     {
         return new List<Product>
         {

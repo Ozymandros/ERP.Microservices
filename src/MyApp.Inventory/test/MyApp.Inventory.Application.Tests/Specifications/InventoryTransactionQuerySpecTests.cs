@@ -9,7 +9,7 @@ namespace MyApp.Inventory.Application.Tests.Specifications;
 
 public class InventoryTransactionQuerySpecTests
 {
-    private IQueryable<InventoryTransaction> CreateTestData()
+    private static IQueryable<InventoryTransaction> CreateTestData()
     {
         var productId1 = Guid.NewGuid();
         var productId2 = Guid.NewGuid();

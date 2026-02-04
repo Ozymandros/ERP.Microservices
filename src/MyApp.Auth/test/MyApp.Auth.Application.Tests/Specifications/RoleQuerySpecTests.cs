@@ -9,7 +9,7 @@ namespace MyApp.Auth.Application.Tests.Specifications;
 
 public class RoleQuerySpecTests
 {
-    private IQueryable<ApplicationRole> CreateTestData()
+    private static IQueryable<ApplicationRole> CreateTestData()
     {
         return new List<ApplicationRole>
         {

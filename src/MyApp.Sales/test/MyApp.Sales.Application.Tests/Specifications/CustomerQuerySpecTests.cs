@@ -9,7 +9,7 @@ namespace MyApp.Sales.Application.Tests.Specifications;
 
 public class CustomerQuerySpecTests
 {
-    private IQueryable<Customer> CreateTestData()
+    private static IQueryable<Customer> CreateTestData()
     {
         return new List<Customer>
         {

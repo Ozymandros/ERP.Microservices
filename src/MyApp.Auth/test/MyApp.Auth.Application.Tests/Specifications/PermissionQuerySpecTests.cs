@@ -9,7 +9,7 @@ namespace MyApp.Auth.Application.Tests.Specifications;
 
 public class PermissionQuerySpecTests
 {
-    private IQueryable<Permission> CreateTestData()
+    private static IQueryable<Permission> CreateTestData()
     {
         return new List<Permission>
         {
