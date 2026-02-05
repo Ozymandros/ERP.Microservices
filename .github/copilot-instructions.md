@@ -1246,6 +1246,23 @@ dotnet list package --vulnerable                     # Check for vulnerabilities
 
 ---
 
+## 🛠️ Skills List
+
+- **.NET 10**: Proficient in developing applications using the latest .NET framework.
+- **C# 13**: Experienced in writing clean, efficient, and maintainable C# code.
+- **Microservices Architecture**: Knowledgeable in designing and implementing microservices.
+- **Dapr**: Familiar with using Dapr for service-to-service communication and state management.
+- **Azure Container Apps**: Skilled in deploying applications to Azure Container Apps.
+- **Docker**: Proficient in containerizing applications using Docker.
+- **Entity Framework Core**: Experienced in using EF Core for data access and management.
+- **API Development**: Knowledgeable in building RESTful APIs and using API gateways.
+- **Unit Testing**: Skilled in writing unit tests and integration tests for .NET applications.
+- **CI/CD**: Familiar with setting up CI/CD pipelines using GitHub Actions.
+- **Clean Architecture**: Knowledgeable in implementing Clean Architecture principles.
+- **Logging and Monitoring**: Experienced in implementing logging and monitoring solutions.
+
+---
+
 **Last Updated:** 2026-01-23  
 **Version:** 2.0  
 **For Support:** Check `README.md` or raise an issue in the repository.
