@@ -1,0 +1,28 @@
+---
+description: "Anti-patterns to avoid in ERP microservices"
+alwaysApply: true
+---
+
+# Common Anti-Patterns to AVOID
+
+1. ❌ Cross-service database access
+2. ❌ Returning domain entities from controllers
+3. ❌ Hardcoding secrets in code
+4. ❌ Blocking async calls with `.Result` or `.Wait()`
+5. ❌ Logging sensitive data (passwords, tokens, PII)
+6. ❌ Using string concatenation for SQL queries
+7. ❌ Circular dependencies between layers
+8. ❌ Putting business logic in controllers
+9. ❌ Sharing DbContext across service boundaries
+10. ❌ Not using DTOs for API contracts
+
+---
+
+## 📚 Additional Context
+
+- The project uses JWT Bearer authentication configured in each service's `Program.cs`
+- All services expose a `/health` endpoint for health checks
+- Redis is used for distributed caching via `ICacheService`
+- AutoMapper is used for entity-to-DTO mapping
+- Swagger/OpenAPI docs are auto-generated for each service
+- All async methods should accept `CancellationToken cancellationToken = default`

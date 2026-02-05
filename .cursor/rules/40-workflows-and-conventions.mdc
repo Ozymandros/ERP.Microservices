@@ -1,0 +1,128 @@
+---
+description: "Common workflows, naming conventions, and quick reference locations"
+alwaysApply: true
+---
+
+# Common Workflows & Conventions
+
+## 🚀 Common Workflows
+
+### Running the Application Locally
+
+```powershell
+cd src/AppHost
+dotnet run
+```
+
+### Building and Testing
+
+```powershell
+dotnet build
+dotnet test
+dotnet build -c Release
+```
+
+### Deployment to Azure
+
+```powershell
+azd up
+azd monitor
+azd down
+```
+
+---
+
+## 📝 File Naming Conventions
+
+### Controllers
+
+- Format: `[Entity]Controller.cs` (PascalCase, singular)
+- Location: `[Service].API/Controllers/`
+
+### Services
+
+- Interface: `I[Entity]Service.cs`
+- Implementation: `[Entity]Service.cs`
+- Location: `[Service].Application/Services/` (implementations)
+- Location: `[Service].Application/Contracts/` (interfaces)
+
+### Repositories
+
+- Interface: `I[Entity]Repository.cs` in `[Service].Domain/Repositories/`
+- Implementation: `[Entity]Repository.cs` in `[Service].Infrastructure/Data/Repositories/`
+
+### DTOs
+
+- Format: `[Entity]Dto.cs`, `Create[Entity]Dto.cs`, `Update[Entity]Dto.cs`
+- Location: `[Service].Application.Contracts/DTOs/`
+
+### Domain Entities
+
+- Format: `[Entity].cs` (PascalCase, singular)
+- Location: `[Service].Domain/Entities/`
+
+---
+
+## 🎯 Decision Trees for Common Questions
+
+### "Should I create a new microservice?"
+
+```text
+Is the feature a distinct business domain?
+├─ NO → Add to existing service
+└─ YES
+    └─ Does it need its own database?
+        ├─ NO → Add to existing service
+        └─ YES
+            └─ Will it scale independently?
+                ├─ NO → Add to existing service
+                └─ YES → Create new microservice
+```
+
+### "Where should this code go?"
+
+- **HTTP endpoint** → `[Service].API/Controllers/`
+- **Business logic** → `[Service].Application/Services/`
+- **Data access** → `[Service].Infrastructure/Data/Repositories/`
+- **Domain model** → `[Service].Domain/Entities/`
+- **DTO** → `[Service].Application.Contracts/DTOs/`
+- **Cross-cutting concern** → `MyApp.Shared.*/`
+- **Configuration** → `appsettings.*.json` or Azure Key Vault
+
+### "How should services communicate?"
+
+- **Need immediate response?** → DAPR HTTP service invocation
+- **Fire-and-forget notification?** → DAPR Pub/Sub
+- **Need to query data from another service?** → DAPR HTTP (with caching)
+- **Background processing?** → DAPR Pub/Sub + worker service
+
+---
+
+## 🔍 Quick Reference Locations
+
+| Need to Find | Look Here |
+|--------------|-----------|
+| API endpoint | `[Service].API/Controllers/[Entity]Controller.cs` |
+| Business logic | `[Service].Application/Services/[Entity]Service.cs` |
+| Data access | `[Service].Infrastructure/Data/Repositories/[Entity]Repository.cs` |
+| Domain model | `[Service].Domain/Entities/[Entity].cs` |
+| Database schema | `[Service].Infrastructure/Data/[Service]DbContext.cs` |
+| Gateway routes | `src/ErpApiGateway/ocelot.json` |
+| Configuration | `appsettings.json`, `appsettings.Development.json` |
+| Infrastructure (Bicep) | `infra/main.bicep`, `infra/core/` |
+| Tests | `src/AppHost.Tests/Tests/` |
+| Shared utilities | `src/MyApp.Shared.*/` |
+
+---
+
+## ✅ Pre-Code-Generation Checklist
+
+Before generating code, ensure you:
+
+1. Know which service the feature belongs to
+2. Understand the data flow: API → Service → Repository → Database
+3. Have identified all required DTOs
+4. Know if caching is needed
+5. Understand authentication/authorization requirements
+6. Know if service-to-service communication is needed
+7. Have planned database migrations if schema changes

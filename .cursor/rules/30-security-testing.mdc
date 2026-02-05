@@ -1,0 +1,191 @@
+---
+description: "Security practices, validation, EF Core, and testing patterns"
+alwaysApply: true
+---
+
+# Security, Validation, EF Core, and Testing
+
+## 🔒 Security & Best Practices
+
+### CRITICAL SECURITY RULES
+
+1. **NEVER hardcode secrets**
+   - ❌ `var apiKey = "sk_live_123456789";`
+   - ✅ `var apiKey = builder.Configuration["ExternalApi:ApiKey"] ?? throw new InvalidOperationException("API key required");`
+
+2. **NEVER expose domain entities from APIs**
+   - ❌ `public async Task<ActionResult<Product>> GetProduct(int id)`
+   - ✅ `public async Task<ActionResult<ProductDto>> GetProduct(int id)`
+
+3. **NEVER access another service's database directly**
+   - ❌ Injecting `InventoryDbContext` into `OrderService`
+   - ✅ Use DAPR HTTP calls to the Inventory Service API
+
+4. **NEVER use `.Result` or `.Wait()` on async methods**
+   - ❌ `var products = _service.GetAllAsync().Result;`
+   - ✅ `var products = await _service.GetAllAsync();`
+
+5. **NEVER log sensitive data**
+   - ❌ `_logger.LogInformation($"Login with password {dto.Password}");`
+   - ✅ `_logger.LogInformation("Login attempt for user {Email}", dto.Email);`
+
+### Input Validation
+
+**ALWAYS validate DTOs with Data Annotations:**
+
+```csharp
+public record Create[Entity]Dto
+{
+    [Required(ErrorMessage = "Name is required")]
+    [StringLength(100, MinimumLength = 2)]
+    public string Name { get; init; } = string.Empty;
+
+    [EmailAddress(ErrorMessage = "Invalid email format")]
+    public string Email { get; init; } = string.Empty;
+
+    [Range(0, 150, ErrorMessage = "Age must be between 0 and 150")]
+    public int? Age { get; init; }
+}
+```
+
+### SQL Injection Prevention
+
+**EF Core uses parameterized queries by default - use it correctly:**
+
+- ✅ `await _context.Users.Where(u => u.Email == email).ToListAsync();`
+- ✅ `await _context.Users.FromSqlRaw("SELECT * FROM Users WHERE Email = {0}", email).ToListAsync();`
+- ❌ `await _context.Users.FromSqlRaw($"SELECT * FROM Users WHERE Email = '{email}'").ToListAsync();`
+
+### Structured Logging Pattern
+
+```csharp
+_logger.LogInformation("Processing {Action} for {EntityType} {EntityId}", "Update", "Product", productId);
+_logger.LogWarning("{EntityType} {EntityId} not found", "Product", productId);
+_logger.LogError(ex, "Failed to process {Action} for {EntityType} {EntityId}", "Update", "Product", productId);
+```
+
+---
+
+## 🗄️ Database & EF Core Rules
+
+### DbContext Pattern
+
+```csharp
+public class [Service]DbContext : DbContext
+{
+    public [Service]DbContext(DbContextOptions<[Service]DbContext> options) : base(options) { }
+
+    public DbSet<[Entity]> [Entities] => Set<[Entity]>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof([Service]DbContext).Assembly);
+    }
+}
+```
+
+### Entity Configuration Pattern
+
+```csharp
+public class [Entity]Configuration : IEntityTypeConfiguration<[Entity]>
+{
+    public void Configure(EntityTypeBuilder<[Entity]> builder)
+    {
+        builder.ToTable("[Entities]");
+        builder.HasKey(e => e.Id);
+        builder.Property(e => e.Name)
+            .IsRequired()
+            .HasMaxLength(200);
+        builder.Property(e => e.Price)
+            .HasPrecision(18, 2);
+        builder.HasIndex(e => e.Sku).IsUnique();
+        builder.HasMany(e => e.Items)
+            .WithOne(i => i.Entity)
+            .HasForeignKey(i => i.EntityId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+}
+```
+
+### Migration Workflow
+
+**ALWAYS run migrations from the Infrastructure project directory:**
+
+```powershell
+cd src/MyApp.[Service]/MyApp.[Service].Infrastructure
+dotnet ef migrations add [MigrationName]
+dotnet ef database update
+```
+
+---
+
+## 🧪 Testing Rules
+
+### Integration Tests with Aspire
+
+```csharp
+public class [Service]Tests : IAsyncLifetime
+{
+    private DistributedApplication? _app;
+    private HttpClient? _client;
+
+    public async Task InitializeAsync()
+    {
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        _app = await appHost.BuildAsync();
+        await _app.StartAsync();
+        _client = _app.CreateHttpClient("gateway");
+    }
+
+    [Fact]
+    public async Task [Method]_[Scenario]_[ExpectedResult]()
+    {
+        var dto = new { /* test data */ };
+        var response = await _client!.PostAsJsonAsync("/[service]/api/[endpoint]", dto);
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+    }
+
+    public async Task DisposeAsync()
+    {
+        if (_app != null) await _app.DisposeAsync();
+        _client?.Dispose();
+    }
+}
+```
+
+### Unit Tests with Moq
+
+```csharp
+public class [Service]Tests
+{
+    private readonly Mock<I[Repository]> _repositoryMock;
+    private readonly Mock<IMapper> _mapperMock;
+    private readonly Mock<ICacheService> _cacheMock;
+    private readonly Mock<ILogger<[Service]>> _loggerMock;
+    private readonly [Service] _sut;
+
+    public [Service]Tests()
+    {
+        _repositoryMock = new Mock<I[Repository]>();
+        _mapperMock = new Mock<IMapper>();
+        _cacheMock = new Mock<ICacheService>();
+        _loggerMock = new Mock<ILogger<[Service]>>();
+        
+        _sut = new [Service](
+            _repositoryMock.Object,
+            _mapperMock.Object,
+            _cacheMock.Object,
+            _loggerMock.Object);
+    }
+
+    [Fact]
+    public async Task [Method]_[Scenario]_[ExpectedResult]()
+    {
+        _repositoryMock.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(new Entity());
+        var result = await _sut.GetByIdAsync(1);
+        Assert.NotNull(result);
+        _repositoryMock.Verify(r => r.GetByIdAsync(1), Times.Once);
+    }
+}
+```
