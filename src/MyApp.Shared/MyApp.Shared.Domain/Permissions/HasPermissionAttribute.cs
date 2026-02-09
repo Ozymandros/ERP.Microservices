@@ -6,6 +6,7 @@ using System.Security.Claims;
 
 namespace MyApp.Shared.Domain.Permissions;
 
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
 public class HasPermissionAttribute : AuthorizeAttribute, IAsyncAuthorizationFilter
 {
     private readonly string _module;
@@ -33,7 +34,6 @@ public class HasPermissionAttribute : AuthorizeAttribute, IAsyncAuthorizationFil
 
         // 3. Invoke the permissions service (Dapr, API, etc.)
         var permissionChecker = context.HttpContext.RequestServices.GetRequiredService<IPermissionChecker>();
-        //var hasPermission = await permissionChecker.HasPermissionAsync(Guid.Parse(userId), _module, _action);
         bool hasPermission = await permissionChecker.HasPermissionAsync(_module, _action);
 
         // 4. If no permissions, deny access

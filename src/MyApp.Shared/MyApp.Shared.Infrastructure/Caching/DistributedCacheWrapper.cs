@@ -1,4 +1,4 @@
-﻿// DistributedCacheWrapper.cs
+// DistributedCacheWrapper.cs
 
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
@@ -15,6 +15,7 @@ public class DistributedCacheWrapper : ICacheService
     // 🎯 Receives the IDistributedCache instance via constructor
     public DistributedCacheWrapper(IDistributedCache distributedCache)
     {
+        ArgumentNullException.ThrowIfNull(distributedCache);
         _distributedCache = distributedCache;
     }
 
@@ -49,10 +50,17 @@ public class DistributedCacheWrapper : ICacheService
         var bytes = Encoding.UTF8.GetBytes(json);
 
         var options = new DistributedCacheEntryOptions();
-        //if (expiration.HasValue)
-        //{
-            options.AbsoluteExpirationRelativeToNow = expiration ?? TimeSpan.FromHours(1);
-        //}
+        
+        // DistributedCacheEntryOptions requires positive expiration values
+        // If expiration is null or zero, use default (1 hour)
+        if (expiration.HasValue && expiration.Value > TimeSpan.Zero)
+        {
+            options.AbsoluteExpirationRelativeToNow = expiration.Value;
+        }
+        else
+        {
+            options.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
+        }
 
         // 2. Save bytes to Redis with options
         return _distributedCache.SetAsync(key, bytes, options);

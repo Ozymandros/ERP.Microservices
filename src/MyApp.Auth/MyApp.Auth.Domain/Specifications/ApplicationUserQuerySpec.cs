@@ -58,12 +58,12 @@ public class ApplicationUserQuerySpec : BaseSpecification<ApplicationUser>
 
         if (filters.TryGetValue(nameof(ApplicationUser.Email), out var email) && !string.IsNullOrEmpty(email))
         {
-            query = query.Where(u => u.Email != null && u.Email.Contains(email));
+            query = query.Where(u => u.Email != null && u.Email.Contains(email, StringComparison.OrdinalIgnoreCase));
         }
 
         if (filters.TryGetValue(nameof(ApplicationUser.UserName), out var userName) && !string.IsNullOrEmpty(userName))
         {
-            query = query.Where(u => u.UserName != null && u.UserName.Contains(userName));
+            query = query.Where(u => u.UserName != null && u.UserName.Contains(userName, StringComparison.OrdinalIgnoreCase));
         }
 
         if (filters.TryGetValue(nameof(ApplicationUser.IsExternalLogin), out var isExtStr))
@@ -77,12 +77,12 @@ public class ApplicationUserQuerySpec : BaseSpecification<ApplicationUser>
         // Apply search across multiple fields
         if (!string.IsNullOrEmpty(Query.SearchTerm))
         {
-            var searchTerm = Query.SearchTerm.ToLower();
+            var searchTerm = Query.SearchTerm;
             query = query.Where(u =>
-                (u.FirstName != null && u.FirstName.ToLower().Contains(searchTerm)) ||
-                (u.LastName != null && u.LastName.ToLower().Contains(searchTerm)) ||
-                (u.Email != null && u.Email.ToLower().Contains(searchTerm)) ||
-                (u.UserName != null && u.UserName.ToLower().Contains(searchTerm))
+                (u.FirstName != null && u.FirstName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) ||
+                (u.LastName != null && u.LastName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) ||
+                (u.Email != null && u.Email.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) ||
+                (u.UserName != null && u.UserName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
             );
         }
 

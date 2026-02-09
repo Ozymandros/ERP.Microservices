@@ -19,8 +19,8 @@ public class PurchaseOrderQuerySpec : BaseSpecification<PurchaseOrder>
     public override IQueryable<PurchaseOrder> ApplyFilters(IQueryable<PurchaseOrder> query)
     {
         // Apply purchase order-specific filters
-        if (Query.Filters?.TryGetValue(nameof(PurchaseOrder.OrderNumber), out var orderNumberFilter) == true)
-            query = query.Where(po => po.OrderNumber.ToLower().Contains(orderNumberFilter.ToString()!.ToLower()));
+        if (Query.Filters?.TryGetValue(nameof(PurchaseOrder.OrderNumber), out var orderNumberFilter) == true && !string.IsNullOrEmpty(orderNumberFilter))
+            query = query.Where(po => po.OrderNumber.Contains(orderNumberFilter, StringComparison.OrdinalIgnoreCase));
 
         if (Query.Filters?.TryGetValue(nameof(PurchaseOrder.SupplierId), out var supplierIdFilter) == true)
         {
@@ -49,8 +49,8 @@ public class PurchaseOrderQuerySpec : BaseSpecification<PurchaseOrder>
         // Apply search (searches in order number)
         if (!string.IsNullOrEmpty(Query.SearchTerm))
         {
-            var term = Query.SearchTerm.ToLower();
-            query = query.Where(po => po.OrderNumber.ToLower().Contains(term));
+            var term = Query.SearchTerm;
+            query = query.Where(po => po.OrderNumber.Contains(term, StringComparison.OrdinalIgnoreCase));
         }
 
         return query;

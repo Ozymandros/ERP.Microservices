@@ -1,0 +1,52 @@
+version: 2
+updates:
+  # NuGet dependencies
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+    open-pull-requests-limit: 10
+    versioning-strategy: "increase"
+    groups:
+      infrastructure:
+        patterns:
+          - "Microsoft.Extensions.*"
+          - "Microsoft.AspNetCore.*"
+          - "Azure.*"
+      database:
+        patterns:
+          - "Microsoft.EntityFrameworkCore*"
+          - "Microsoft.Data.SqlClient*"
+      testing:
+        patterns:
+          - "xunit*"
+          - "Moq*"
+          - "FluentAssertions*"
+      dapr:
+        patterns:
+          - "Dapr.*"
+      security:
+        patterns:
+          - "System.IdentityModel.Tokens.Jwt*"
+          - "IdentityModel*"
+    allow:
+      - dependency-type: "all"
+    ignore:
+      - dependency-name: "Microsoft.NET.Test.Sdk"
+        versions: ["17.0.0"]
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+    groups:
+      ci-cd:
+        patterns:
+          - "actions/*"
+          - "microsoft/*"
+          - "azure/*"

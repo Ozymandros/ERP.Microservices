@@ -19,11 +19,11 @@ public class ProductQuerySpec : BaseSpecification<Product>
     public override IQueryable<Product> ApplyFilters(IQueryable<Product> query)
     {
         // Apply product-specific filters
-        if (Query.Filters?.TryGetValue(nameof(Product.SKU), out var skuFilter) == true)
-            query = query.Where(p => p.SKU.ToLower().Contains(skuFilter.ToString()!.ToLower()));
+        if (Query.Filters?.TryGetValue(nameof(Product.SKU), out var skuFilter) == true && !string.IsNullOrEmpty(skuFilter))
+            query = query.Where(p => p.SKU.Contains(skuFilter, StringComparison.OrdinalIgnoreCase));
 
-        if (Query.Filters?.TryGetValue(nameof(Product.Name), out var nameFilter) == true)
-            query = query.Where(p => p.Name.ToLower().Contains(nameFilter.ToString()!.ToLower()));
+        if (Query.Filters?.TryGetValue(nameof(Product.Name), out var nameFilter) == true && !string.IsNullOrEmpty(nameFilter))
+            query = query.Where(p => p.Name.Contains(nameFilter, StringComparison.OrdinalIgnoreCase));
 
         if (Query.Filters?.TryGetValue(MinPriceFilterKey, out var minPrice) == true)
         {
@@ -40,11 +40,11 @@ public class ProductQuerySpec : BaseSpecification<Product>
         // Apply search (searches in SKU, Name, and Description)
         if (!string.IsNullOrEmpty(Query.SearchTerm))
         {
-            var term = Query.SearchTerm.ToLower();
+            var term = Query.SearchTerm;
             query = query.Where(p =>
-                p.SKU.ToLower().Contains(term) ||
-                p.Name.ToLower().Contains(term) ||
-                (p.Description != null && p.Description.ToLower().Contains(term))
+                p.SKU.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                p.Name.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                (p.Description != null && p.Description.Contains(term, StringComparison.OrdinalIgnoreCase))
             );
         }
 

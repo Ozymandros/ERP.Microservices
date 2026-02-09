@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi;
+using System.Linq;
 
 namespace MyApp.Shared.Infrastructure.OpenApi;
 
@@ -27,7 +28,7 @@ public sealed class JwtSecuritySchemeDocumentTransformer : IOpenApiDocumentTrans
         // Apply security requirement to all operations
         foreach (var path in document.Paths.Values)
         {
-            foreach (var operation in path.Operations.Values)
+            foreach (var operation in path.Operations.Values.Where(operation => operation != null))
             {
                 operation.Security ??= new List<OpenApiSecurityRequirement>();
                 operation.Security.Add(new OpenApiSecurityRequirement

@@ -5,7 +5,7 @@
 namespace MyApp.Purchasing.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class emptymigration : Migration
+    public partial class EmptyMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

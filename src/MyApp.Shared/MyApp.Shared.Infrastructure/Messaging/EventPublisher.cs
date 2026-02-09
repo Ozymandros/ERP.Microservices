@@ -19,9 +19,13 @@ public class EventPublisher : IEventPublisher
         ILogger<EventPublisher> logger,
         IOptions<EventPublisherOptions> options)
     {
-        _daprClient = daprClient ?? throw new ArgumentNullException(nameof(daprClient));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
+        ArgumentNullException.ThrowIfNull(daprClient);
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(options);
+        
+        _daprClient = daprClient;
+        _logger = logger;
+        _options = options.Value;
     }
 
     public async Task PublishAsync<TEvent>(string topic, TEvent eventData, CancellationToken cancellationToken = default)
@@ -29,8 +33,7 @@ public class EventPublisher : IEventPublisher
         if (string.IsNullOrWhiteSpace(topic))
             throw new ArgumentException("Topic cannot be null or empty", nameof(topic));
 
-        if (eventData == null)
-            throw new ArgumentNullException(nameof(eventData));
+        ArgumentNullException.ThrowIfNull(eventData);
 
         try
         {

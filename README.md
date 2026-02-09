@@ -1,6 +1,26 @@
 # ERP Microservices
 
+[![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
+[![Aspire](https://img.shields.io/badge/Aspire-Enabled-blueviolet?logo=microsoft)](https://learn.microsoft.com/dotnet/aspire/)
+[![Dapr](https://img.shields.io/badge/Dapr-Integrated-0d2192?logo=dapr)](https://dapr.io/)
+[![Azure](https://img.shields.io/badge/Azure-Container%20Apps-0078D4?logo=microsoftazure)](https://azure.microsoft.com/en-us/products/container-apps/)
+[![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?logo=docker)](https://www.docker.com/)
+[![Microservices](https://img.shields.io/badge/Architecture-Microservices-orange?logo=микросхема)](https://microservices.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A cloud-native ERP system built with .NET 10, Aspire, Dapr, and deployed to Azure Container Apps.
+
+## 🎯 Status Dashboard
+
+| Metric | Status |
+|--------|--------|
+| **Build** | [![Build Status](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/build.yml/badge.svg)](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/build.yml) |
+| **Tests** | [![Tests](https://img.shields.io/badge/tests-passing-brightgreen?logo=github)](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/build.yml) |
+| **Coverage** | [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Ozymandros_ERP.Microservices&metric=coverage)](https://sonarcloud.io/dashboard?id=Ozymandros_ERP.Microservices) |
+| **Code Quality** | [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=Ozymandros_ERP.Microservices&metric=alert_status)](https://sonarcloud.io/dashboard?id=Ozymandros_ERP.Microservices) |
+| **Security** | [![Security](https://sonarcloud.io/api/project_badges/measure?project=Ozymandros_ERP.Microservices&metric=security_rating)](https://sonarcloud.io/dashboard?id=Ozymandros_ERP.Microservices) |
+| **CodeQL** | [![CodeQL](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/codeql.yml/badge.svg)](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/codeql.yml) |
+| **Deployment** | [![Deploy](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/deploy.yml/badge.svg)](https://github.com/Ozymandros/ERP.Microservices/actions/workflows/deploy.yml) |
 
 ## 🚀 Features
 
@@ -181,13 +201,19 @@ See [DEPLOYMENT.md](./docs/deployment/DEPLOYMENT.md) for details.
 
 ### GitHub Actions (CI/CD)
 
-Automated deployment on push to `main`:
+Modular CI/CD with separate workflows for security and speed:
 
-1. Configure Azure credentials (OIDC recommended)
-2. Set repository secrets
-3. Push to main branch
+| Workflow | Purpose | Triggers |
+|----------|---------|----------|
+| **build.yml** | Build, test, coverage | push/PR to `main`, `develop` |
+| **sonarcloud.yml** | SonarCloud code quality & coverage analysis | push/PR to `main`, `develop` |
+| **codeql.yml** | CodeQL security analysis | push/PR to `main`, `develop` |
+| **deploy.yml** | Provision, Docker build, GHCR push, Azure deploy | after Build & Test succeeds on `main`/`develop`, or manual |
 
-Workflow: `.github/workflows/azure-deploy.yml`
+**Coverage**: Tests collect coverage using Coverlet (Cobertura format), merged to `coverage/coverage.cobertura.xml` and analyzed by SonarCloud.
+
+**Required secrets** (deploy): `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`.  
+**Required secrets** (SonarCloud): `SONAR_TOKEN`, `SONAR_PROJECT_KEY`, `SONAR_ORG`.
 
 ## 🔐 Security
 

@@ -381,3 +381,7 @@ docs/_site/
 docs/api/*.yml
 docs/api/.manifest
 docs/obj/
+*.coverage
+*.coveragexml
+*.txt
+src/*.txt

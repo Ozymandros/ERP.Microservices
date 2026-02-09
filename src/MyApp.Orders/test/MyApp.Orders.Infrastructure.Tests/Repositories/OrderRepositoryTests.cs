@@ -1,9 +1,12 @@
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Orders.Domain;
 using MyApp.Orders.Domain.Entities;
+using MyApp.Orders.Domain.Specifications;
 using MyApp.Orders.Infrastructure.Data;
 using MyApp.Orders.Infrastructure.Repositories;
 using MyApp.Orders.Tests.Helpers;
+using MyApp.Shared.Domain.Pagination;
 using Xunit;
 
 namespace MyApp.Orders.Tests.Repositories;
@@ -199,6 +202,175 @@ public class OrderRepositoryTests
 
         // Act & Assert
         await _repository.DeleteAsync(nonExistentId); // Should not throw
+    }
+
+    #endregion
+
+    // Note: GetAllPaginatedAsync is not implemented in OrderRepository
+    // Pagination is handled through QueryAsync with QuerySpec
+
+    #region QueryAsync Tests
+
+    [Fact]
+    public async Task QueryAsync_WithSearchTerm_ShouldFilterResults()
+    {
+        // Arrange
+        CreateTestOrder("SEARCH-ORD-001");
+        CreateTestOrder("SEARCH-ORD-002");
+        CreateTestOrder("OTHER-001");
+        var querySpec = new QuerySpec { SearchTerm = "SEARCH-ORD" };
+        var spec = new OrderQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.TotalCount.Should().BeGreaterOrEqualTo(2);
+        result.Items.Should().OnlyContain(o => o.OrderNumber.Contains("SEARCH-ORD", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithOrderNumberFilter_ShouldFilterResults()
+    {
+        // Arrange
+        CreateTestOrder("FILTER-ORD-001");
+        CreateTestOrder("FILTER-ORD-002");
+        CreateTestOrder("OTHER-ORD");
+        var querySpec = new QuerySpec();
+        querySpec.Filters = new Dictionary<string, string> { { "OrderNumber", "FILTER-ORD" } };
+        var spec = new OrderQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.TotalCount.Should().BeGreaterOrEqualTo(2);
+        result.Items.Should().OnlyContain(o => o.OrderNumber.Contains("FILTER-ORD", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithStatusFilter_ShouldFilterResults()
+    {
+        // Arrange
+        var order1 = CreateTestOrder("STATUS-001");
+        order1.Status = OrderStatus.Approved;
+        _context.SaveChanges();
+        CreateTestOrder("STATUS-002");
+        var querySpec = new QuerySpec();
+        querySpec.Filters = new Dictionary<string, string> { { "Status", OrderStatus.Approved.ToString() } };
+        var spec = new OrderQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().OnlyContain(o => o.Status == OrderStatus.Approved);
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithTypeFilter_ShouldFilterResults()
+    {
+        // Arrange
+        var order1 = CreateTestOrder("TYPE-001");
+        order1.Type = OrderType.Inbound;
+        _context.SaveChanges();
+        CreateTestOrder("TYPE-002");
+        var querySpec = new QuerySpec();
+        querySpec.Filters = new Dictionary<string, string> { { "Type", OrderType.Inbound.ToString() } };
+        var spec = new OrderQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().OnlyContain(o => o.Type == OrderType.Inbound);
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithSourceIdFilter_ShouldFilterResults()
+    {
+        // Arrange
+        var sourceId = Guid.NewGuid();
+        var order1 = CreateTestOrder("SOURCE-001");
+        order1.SourceId = sourceId;
+        _context.SaveChanges();
+        CreateTestOrder("SOURCE-002");
+        var querySpec = new QuerySpec();
+        querySpec.Filters = new Dictionary<string, string> { { "SourceId", sourceId.ToString() } };
+        var spec = new OrderQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().OnlyContain(o => o.SourceId == sourceId);
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithPagination_ShouldReturnCorrectPage()
+    {
+        // Arrange
+        CreateTestOrder("PAGE-QUERY-001");
+        CreateTestOrder("PAGE-QUERY-002");
+        CreateTestOrder("PAGE-QUERY-003");
+        CreateTestOrder("PAGE-QUERY-004");
+        var querySpec = new QuerySpec { Page = 2, PageSize = 2 };
+        var spec = new OrderQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.PageNumber.Should().Be(2);
+        result.PageSize.Should().Be(2);
+        result.Items.Should().HaveCountLessOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterOrEqualTo(4);
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithSorting_ShouldReturnSortedResults()
+    {
+        // Arrange
+        CreateTestOrder("ZEBRA-ORD");
+        CreateTestOrder("ALPHA-ORD");
+        CreateTestOrder("BETA-ORD");
+        var querySpec = new QuerySpec { SortBy = "OrderNumber", SortDesc = false };
+        var spec = new OrderQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        var orderNumbers = result.Items.Select(o => o.OrderNumber).ToList();
+        var sortedOrderNumbers = orderNumbers.OrderBy(n => n).ToList();
+        orderNumbers.Should().BeEquivalentTo(sortedOrderNumbers);
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithDescendingSort_ShouldReturnDescendingSortedResults()
+    {
+        // Arrange
+        CreateTestOrder("SORT-DESC-ALPHA");
+        CreateTestOrder("SORT-DESC-ZEBRA");
+        CreateTestOrder("SORT-DESC-BETA");
+        var querySpec = new QuerySpec { SortBy = "OrderNumber", SortDesc = true };
+        var spec = new OrderQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        var orderNumbers = result.Items.Select(o => o.OrderNumber).ToList();
+        var sortedOrderNumbers = orderNumbers.OrderByDescending(n => n).ToList();
+        orderNumbers.Should().BeEquivalentTo(sortedOrderNumbers);
     }
 
     #endregion

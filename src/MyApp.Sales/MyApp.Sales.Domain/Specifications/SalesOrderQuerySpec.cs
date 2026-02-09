@@ -19,8 +19,8 @@ public class SalesOrderQuerySpec : BaseSpecification<SalesOrder>
     public override IQueryable<SalesOrder> ApplyFilters(IQueryable<SalesOrder> query)
     {
         // Apply sales order-specific filters
-        if (Query.Filters?.TryGetValue(nameof(SalesOrder.OrderNumber), out var orderNumberFilter) == true)
-            query = query.Where(so => so.OrderNumber.ToLower().Contains(orderNumberFilter.ToString()!.ToLower()));
+        if (Query.Filters?.TryGetValue(nameof(SalesOrder.OrderNumber), out var orderNumberFilter) == true && !string.IsNullOrEmpty(orderNumberFilter))
+            query = query.Where(so => so.OrderNumber.Contains(orderNumberFilter, StringComparison.OrdinalIgnoreCase));
 
         if (Query.Filters?.TryGetValue(nameof(SalesOrder.CustomerId), out var customerIdFilter) == true)
         {
@@ -49,8 +49,8 @@ public class SalesOrderQuerySpec : BaseSpecification<SalesOrder>
         // Apply search (searches in order number)
         if (!string.IsNullOrEmpty(Query.SearchTerm))
         {
-            var term = Query.SearchTerm.ToLower();
-            query = query.Where(so => so.OrderNumber.ToLower().Contains(term));
+            var term = Query.SearchTerm;
+            query = query.Where(so => so.OrderNumber.Contains(term, StringComparison.OrdinalIgnoreCase));
         }
 
         return query;

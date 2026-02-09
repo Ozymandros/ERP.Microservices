@@ -28,7 +28,7 @@ namespace MyApp.Auth.Infrastructure.Data.Repositories
             var rolePermissions = await _context.Set<RolePermission>()
                 .AsNoTracking()
                 .Include(rp => rp.Permission)
-                .Where(rp => rp.Role.Name != null && rp.Role.Name.Contains(roleName) &&
+                .Where(rp => rp.Role.Name != null && rp.Role.Name.Contains(roleName, StringComparison.OrdinalIgnoreCase) &&
                              rp.Permission.Module == module &&
                              rp.Permission.Action == action)
                 .Select(rp => rp.Permission)

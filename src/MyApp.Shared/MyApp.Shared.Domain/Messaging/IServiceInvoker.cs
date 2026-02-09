@@ -53,6 +53,17 @@ public interface IServiceInvoker
         CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Invokes a remote service method using a pre-configured HttpRequestMessage (useful for custom headers, etc.)
+    /// </summary>
+    /// <typeparam name="TResponse">The response type</typeparam>
+    /// <param name="request">The HTTP request message (typically created by CreateRequest and then customized)</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The response from the service</returns>
+    Task<TResponse> InvokeAsync<TResponse>(
+        HttpRequestMessage request,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Creates an HTTP request for invoking a remote service method
     /// </summary>
     /// <param name="serviceName">The name of the target service</param>
@@ -67,15 +78,4 @@ public interface IServiceInvoker
         HttpMethod httpMethod,
         object? requestBody = null,
         Dictionary<string, string?>? queryParams = null);
-
-    /// <summary>
-    /// Invokes a remote service method using a pre-configured HttpRequestMessage (useful for custom headers, etc.)
-    /// </summary>
-    /// <typeparam name="TResponse">The response type</typeparam>
-    /// <param name="request">The HTTP request message (typically created by CreateRequest and then customized)</param>
-    /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The response from the service</returns>
-    Task<TResponse> InvokeAsync<TResponse>(
-        HttpRequestMessage request,
-        CancellationToken cancellationToken = default);
 }

@@ -19,8 +19,8 @@ public class InventoryTransactionQuerySpec : BaseSpecification<InventoryTransact
     public override IQueryable<InventoryTransaction> ApplyFilters(IQueryable<InventoryTransaction> query)
     {
         // Apply transaction-specific filters
-        if (Query.Filters?.TryGetValue(nameof(InventoryTransaction.TransactionType), out var typeFilter) == true)
-            query = query.Where(t => t.TransactionType.ToString().ToLower().Contains(typeFilter.ToString()!.ToLower()));
+        if (Query.Filters?.TryGetValue(nameof(InventoryTransaction.TransactionType), out var typeFilter) == true && !string.IsNullOrEmpty(typeFilter))
+            query = query.Where(t => t.TransactionType.ToString().Contains(typeFilter, StringComparison.OrdinalIgnoreCase));
 
         if (Query.Filters?.TryGetValue(nameof(InventoryTransaction.ProductId), out var productIdFilter) == true)
         {

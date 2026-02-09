@@ -20,7 +20,7 @@ public class SupplierRepository : Repository<Supplier, Guid>, ISupplierRepositor
     public async Task<IEnumerable<Supplier>> GetByNameAsync(string name)
     {
         return await _dbContext.Set<Supplier>()
-            .Where(x => x.Name.Contains(name))
+            .Where(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
             .ToListAsync();
     }
 }

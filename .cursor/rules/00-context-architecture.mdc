@@ -1,0 +1,86 @@
+---
+description: "Project context, architecture, and service boundaries for ERP microservices"
+alwaysApply: true
+---
+
+# ERP Microservices Context & Architecture
+
+## 🎯 Project Context
+
+This is a .NET 10 ERP microservices system using Clean Architecture, DAPR service mesh, .NET Aspire orchestration, and Azure Container Apps for production deployment.
+
+### Core Technology Stack
+
+- **.NET Version**: .NET 10 with C# 13
+- **Architecture**: Microservices with Clean Architecture (4 layers per service)
+- **API Gateway**: Ocelot/YARP routing at `/[service]/api/...`
+- **Service Mesh**: DAPR for inter-service communication, pub/sub, state management
+- **Databases**: 6 SQL Server databases (one per service) + Redis cache
+- **ORM**: Entity Framework Core
+- **Orchestration**: .NET Aspire (local), Azure Container Apps (production)
+- **Authentication**: JWT Bearer tokens
+- **Testing**: xUnit, Moq, Aspire testing framework
+
+### System Architecture Overview
+
+```text
+Client → API Gateway (Ocelot) → Microservice → DAPR Sidecar → Database/Redis/Other Services
+```
+
+### Microservices
+
+1. **Auth Service** - Authentication, authorization, user management
+2. **Billing Service** - Invoicing, payments, billing
+3. **Inventory Service** - Products, warehouses, stock management
+4. **Orders Service** - Operational logistics (transfers, inbound/outbound movements). Links to Sales/Purchasing via ExternalOrderId. NEVER contains CustomerId, SupplierId, or pricing.
+5. **Purchasing Service** - Purchase orders, supplier management
+6. **Sales Service** - Sales operations, SalesOrders, customers, quotes, pricing
+
+---
+
+## 📁 Project Structure Rules
+
+### Clean Architecture Layers (Per Service)
+
+```text
+MyApp.[Service]/
+├── MyApp.[Service].API/              # Presentation Layer
+│   ├── Controllers/                  # HTTP endpoints, routing
+│   ├── Program.cs                    # DI, middleware, configuration
+│   └── appsettings.*.json            # Environment configurations
+│
+├── MyApp.[Service].Application/      # Application Layer
+│   ├── Services/                     # Business logic orchestration
+│   ├── Contracts/                    # Service interfaces, DTOs
+│   └── Mappings/                     # AutoMapper profiles
+│
+├── MyApp.[Service].Domain/           # Domain Layer (Pure)
+│   ├── Entities/                     # Domain models (no dependencies)
+│   └── Repositories/                 # Repository interfaces
+│
+└── MyApp.[Service].Infrastructure/   # Infrastructure Layer
+    ├── Data/
+    │   ├── [Service]DbContext.cs     # EF Core DbContext
+    │   ├── Repositories/             # Repository implementations
+    │   └── Seeders/                  # Data seeding
+    └── Services/                     # External API clients, infra services
+```
+
+**CRITICAL RULE**: Dependencies MUST flow inward:
+
+- Domain has ZERO external dependencies
+- Application depends ONLY on Domain
+- Infrastructure implements interfaces from Application/Domain
+- API depends on Application
+
+### Shared Projects Location
+
+```text
+src/MyApp.Shared/
+├── MyApp.Shared.Domain/              # Domain primitives, base interfaces
+├── MyApp.Shared.Infrastructure/      # Logging, caching, messaging utilities
+├── MyApp.Shared.CQRS/                # CQRS base classes, patterns
+└── MyApp.Shared.SignalR/             # Real-time communication shared code
+```
+
+**Rule**: Only genuinely cross-cutting concerns belong in Shared projects. Service-specific logic stays in that service.

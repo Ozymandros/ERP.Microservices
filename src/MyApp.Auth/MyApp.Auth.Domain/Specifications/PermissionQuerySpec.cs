@@ -18,23 +18,23 @@ public class PermissionQuerySpec : BaseSpecification<Permission>
         // Apply permission-specific filters (case-insensitive key matching)
         var filters = Query.Filters ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         
-        if (filters.TryGetValue(nameof(Permission.Module), out var moduleFilter))
-            query = query.Where(p => p.Module.ToLower().Contains(moduleFilter.ToLower()));
+        if (filters.TryGetValue(nameof(Permission.Module), out var moduleFilter) && !string.IsNullOrEmpty(moduleFilter))
+            query = query.Where(p => p.Module.Contains(moduleFilter, StringComparison.OrdinalIgnoreCase));
 
-        if (filters.TryGetValue(nameof(Permission.Action), out var actionFilter))
-            query = query.Where(p => p.Action.ToLower().Contains(actionFilter.ToLower()));
+        if (filters.TryGetValue(nameof(Permission.Action), out var actionFilter) && !string.IsNullOrEmpty(actionFilter))
+            query = query.Where(p => p.Action.Contains(actionFilter, StringComparison.OrdinalIgnoreCase));
 
-        if (filters.TryGetValue(nameof(Permission.Description), out var descFilter))
-            query = query.Where(p => p.Description != null && p.Description.ToLower().Contains(descFilter.ToLower()));
+        if (filters.TryGetValue(nameof(Permission.Description), out var descFilter) && !string.IsNullOrEmpty(descFilter))
+            query = query.Where(p => p.Description != null && p.Description.Contains(descFilter, StringComparison.OrdinalIgnoreCase));
 
         // Apply search (searches in module, action, and description)
         if (!string.IsNullOrEmpty(Query.SearchTerm))
         {
-            var term = Query.SearchTerm.ToLower();
+            var term = Query.SearchTerm;
             query = query.Where(p =>
-                p.Module.ToLower().Contains(term) ||
-                p.Action.ToLower().Contains(term) ||
-                (p.Description != null && p.Description.ToLower().Contains(term))
+                p.Module.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                p.Action.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                (p.Description != null && p.Description.Contains(term, StringComparison.OrdinalIgnoreCase))
             );
         }
 

@@ -89,6 +89,18 @@ public class AuthServiceTests : BaseServiceTest
             .Setup(x => x.GetClaimsAsync(It.IsAny<ApplicationUser>()))
             .ReturnsAsync(new List<Claim>());
 
+        _mockRoleRepository
+            .Setup(x => x.GetRolesByUserIdAsync(user.Id))
+            .ReturnsAsync(new List<ApplicationRole>());
+
+        _mockPermissionRepository
+            .Setup(x => x.GetAllAsync())
+            .ReturnsAsync(new List<Permission>());
+
+        _mockRefreshTokenRepository
+            .Setup(x => x.CreateAsync(It.IsAny<RefreshToken>()))
+            .ReturnsAsync((RefreshToken rt) => rt);
+
         // Act
         var result = await _authService.LoginAsync(loginDto);
 
@@ -217,6 +229,22 @@ public class AuthServiceTests : BaseServiceTest
             .Setup(x => x.GetClaimsAsync(It.IsAny<ApplicationUser>()))
             .ReturnsAsync(new List<Claim>());
 
+        _mockUserManager
+            .Setup(x => x.FindByEmailAsync(registerDto.Email))
+            .ReturnsAsync((ApplicationUser?)null);
+
+        _mockRoleRepository
+            .Setup(x => x.GetRolesByUserIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(new List<ApplicationRole>());
+
+        _mockPermissionRepository
+            .Setup(x => x.GetAllAsync())
+            .ReturnsAsync(new List<Permission>());
+
+        _mockRefreshTokenRepository
+            .Setup(x => x.CreateAsync(It.IsAny<RefreshToken>()))
+            .ReturnsAsync((RefreshToken rt) => rt);
+
         // Act
         var result = await _authService.RegisterAsync(registerDto);
 
@@ -314,6 +342,18 @@ public class AuthServiceTests : BaseServiceTest
             .Setup(x => x.GetClaimsAsync(It.IsAny<ApplicationUser>()))
             .ReturnsAsync(new List<Claim>());
 
+        _mockRoleRepository
+            .Setup(x => x.GetRolesByUserIdAsync(userId))
+            .ReturnsAsync(new List<ApplicationRole>());
+
+        _mockPermissionRepository
+            .Setup(x => x.GetAllAsync())
+            .ReturnsAsync(new List<Permission>());
+
+        _mockRefreshTokenRepository
+            .Setup(x => x.CreateAsync(It.IsAny<RefreshToken>()))
+            .ReturnsAsync((RefreshToken rt) => rt);
+
         // Act
         var result = await _authService.RefreshTokenAsync(refreshTokenDto);
 
@@ -322,18 +362,17 @@ public class AuthServiceTests : BaseServiceTest
     }
 
     [Fact]
-    public async Task RefreshTokenAsync_WithInvalidToken_ShouldReturnNull()
+    public async Task RefreshTokenAsync_WithInvalidPrincipal_ShouldReturnNull()
     {
         // Arrange
-        var refreshToken = "invalid_refresh_token";
-        var storedRefreshToken = new RefreshTokenDto(refreshToken, refreshToken);
+        var refreshTokenDto = new RefreshTokenDto("invalid_token", "refresh_token");
 
-        _mockRefreshTokenRepository
-            .Setup(x => x.GetByTokenAsync(refreshToken))
-            .ReturnsAsync((RefreshToken?)null);
+        _mockJwtTokenProvider
+            .Setup(x => x.GetPrincipalFromExpiredToken("invalid_token"))
+            .Returns((ClaimsPrincipal?)null);
 
         // Act
-        var result = await _authService.RefreshTokenAsync(storedRefreshToken);
+        var result = await _authService.RefreshTokenAsync(refreshTokenDto);
 
         // Assert
         result.Should().BeNull();
@@ -341,19 +380,129 @@ public class AuthServiceTests : BaseServiceTest
     }
 
     [Fact]
+    public async Task RefreshTokenAsync_WithMissingUserIdClaim_ShouldReturnNull()
+    {
+        // Arrange
+        var refreshTokenDto = new RefreshTokenDto("expired_token", "refresh_token");
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity()); // No NameIdentifier claim
+
+        _mockJwtTokenProvider
+            .Setup(x => x.GetPrincipalFromExpiredToken("expired_token"))
+            .Returns(claimsPrincipal);
+
+        // Act
+        var result = await _authService.RefreshTokenAsync(refreshTokenDto);
+
+        // Assert
+        result.Should().BeNull();
+        VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.AtLeastOnce());
+    }
+
+    [Fact]
+    public async Task RefreshTokenAsync_WithInvalidUserIdClaim_ShouldReturnNull()
+    {
+        // Arrange
+        var refreshTokenDto = new RefreshTokenDto("expired_token", "refresh_token");
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, "not-a-valid-guid")
+        }));
+
+        _mockJwtTokenProvider
+            .Setup(x => x.GetPrincipalFromExpiredToken("expired_token"))
+            .Returns(claimsPrincipal);
+
+        // Act
+        var result = await _authService.RefreshTokenAsync(refreshTokenDto);
+
+        // Assert
+        result.Should().BeNull();
+        VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.AtLeastOnce());
+    }
+
+    [Fact]
+    public async Task RefreshTokenAsync_WithInvalidRefreshToken_ShouldReturnNull()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var refreshTokenDto = new RefreshTokenDto("expired_token", "invalid_refresh_token");
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString())
+        }));
+
+        _mockJwtTokenProvider
+            .Setup(x => x.GetPrincipalFromExpiredToken("expired_token"))
+            .Returns(claimsPrincipal);
+
+        _mockRefreshTokenRepository
+            .Setup(x => x.GetValidRefreshTokenAsync(userId, "invalid_refresh_token"))
+            .ReturnsAsync((RefreshToken?)null);
+
+        // Act
+        var result = await _authService.RefreshTokenAsync(refreshTokenDto);
+
+        // Assert
+        result.Should().BeNull();
+        VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.AtLeastOnce());
+    }
+
+    [Fact]
+    public async Task RefreshTokenAsync_WithUserNotFound_ShouldReturnNull()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var refreshTokenDto = new RefreshTokenDto("expired_token", "valid_refresh_token");
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString())
+        }));
+
+        var storedRefreshToken = new RefreshToken
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            Token = "valid_refresh_token",
+            ExpiresAt = DateTime.UtcNow.AddDays(7),
+            IsRevoked = false
+        };
+
+        _mockJwtTokenProvider
+            .Setup(x => x.GetPrincipalFromExpiredToken("expired_token"))
+            .Returns(claimsPrincipal);
+
+        _mockRefreshTokenRepository
+            .Setup(x => x.GetValidRefreshTokenAsync(userId, "valid_refresh_token"))
+            .ReturnsAsync(storedRefreshToken);
+
+        _mockUserManager
+            .Setup(x => x.FindByIdAsync(userId.ToString()))
+            .ReturnsAsync((ApplicationUser?)null);
+
+        // Act
+        var result = await _authService.RefreshTokenAsync(refreshTokenDto);
+
+        // Assert
+        result.Should().BeNull();
+        VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.AtLeastOnce());
+    }
+
+    [Fact]
     public async Task RefreshTokenAsync_WithExpiredToken_ShouldReturnNull()
     {
         // Arrange
-        var refreshToken = "expired_refresh_token";
+        var refreshTokenDto = new RefreshTokenDto("expired_token", "refresh_token");
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
+        }));
 
-        var storedRefreshToken = new RefreshTokenDto(refreshToken, refreshToken);
-
-        //_mockRefreshTokenRepository
-        //    .Setup(x => x.GetByTokenAsync(refreshToken).Result)
-        //    .ReturnsAsync(storedRefreshToken);
+        _mockJwtTokenProvider
+            .Setup(x => x.GetPrincipalFromExpiredToken("expired_token"))
+            .Returns((ClaimsPrincipal?)null);
 
         // Act
-        var result = await _authService.RefreshTokenAsync(storedRefreshToken);
+        var result = await _authService.RefreshTokenAsync(refreshTokenDto);
 
         // Assert
         result.Should().BeNull();
@@ -445,6 +594,18 @@ public class AuthServiceTests : BaseServiceTest
             .Setup(x => x.GetClaimsAsync(It.IsAny<ApplicationUser>()))
             .ReturnsAsync(new List<Claim>());
 
+        _mockRoleRepository
+            .Setup(x => x.GetRolesByUserIdAsync(user.Id))
+            .ReturnsAsync(new List<ApplicationRole>());
+
+        _mockPermissionRepository
+            .Setup(x => x.GetAllAsync())
+            .ReturnsAsync(new List<Permission>());
+
+        _mockRefreshTokenRepository
+            .Setup(x => x.CreateAsync(It.IsAny<RefreshToken>()))
+            .ReturnsAsync((RefreshToken rt) => rt);
+
         // Act
         var result = await _authService.ExternalLoginAsync(externalLoginDto);
 
@@ -487,6 +648,18 @@ public class AuthServiceTests : BaseServiceTest
             .Setup(x => x.GetClaimsAsync(It.IsAny<ApplicationUser>()))
             .ReturnsAsync(new List<Claim>());
 
+        _mockRoleRepository
+            .Setup(x => x.GetRolesByUserIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(new List<ApplicationRole>());
+
+        _mockPermissionRepository
+            .Setup(x => x.GetAllAsync())
+            .ReturnsAsync(new List<Permission>());
+
+        _mockRefreshTokenRepository
+            .Setup(x => x.CreateAsync(It.IsAny<RefreshToken>()))
+            .ReturnsAsync((RefreshToken rt) => rt);
+
         // Act
         var result = await _authService.ExternalLoginAsync(externalLoginDto);
 
@@ -494,6 +667,231 @@ public class AuthServiceTests : BaseServiceTest
         result.Should().NotBeNull();
         _mockUserManager.Verify(x => x.CreateAsync(It.IsAny<ApplicationUser>()), Times.Once);
         _mockUserManager.Verify(x => x.AddToRoleAsync(It.IsAny<ApplicationUser>(), "User"), Times.Once);
+    }
+
+    [Fact]
+    public async Task ExternalLoginAsync_WithFailedUserCreation_ShouldReturnNull()
+    {
+        // Arrange
+        var externalLoginDto = new ExternalLoginDto("Google", "google_user_id", "newexternal@example.com", "New External ApplicationUser");
+
+        _mockUserRepository
+            .Setup(x => x.GetByExternalIdAsync(externalLoginDto.Provider, externalLoginDto.ExternalId))
+            .ReturnsAsync((ApplicationUser?)null);
+
+        var identityErrors = new List<IdentityError>
+        {
+            new IdentityError { Code = "InvalidEmail", Description = "Invalid email format" }
+        };
+
+        _mockUserManager
+            .Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>()))
+            .ReturnsAsync(IdentityResult.Failed(identityErrors.ToArray()));
+
+        // Act
+        var result = await _authService.ExternalLoginAsync(externalLoginDto);
+
+        // Assert
+        result.Should().BeNull();
+        VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.Once());
+    }
+
+    [Fact]
+    public async Task RegisterAsync_WithFailedUserCreation_ShouldReturnNull()
+    {
+        // Arrange
+        var registerDto = new RegisterDto("newuser@example.com", "newuser", "ValidPassword123!", "ValidPassword123!", "John", "Doe");
+
+        _mockUserManager
+            .Setup(x => x.FindByEmailAsync(registerDto.Email))
+            .ReturnsAsync((ApplicationUser?)null);
+
+        var identityErrors = new List<IdentityError>
+        {
+            new IdentityError { Code = "PasswordTooShort", Description = "Password is too short" }
+        };
+
+        _mockUserManager
+            .Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), registerDto.Password))
+            .ReturnsAsync(IdentityResult.Failed(identityErrors.ToArray()));
+
+        // Act
+        var result = await _authService.RegisterAsync(registerDto);
+
+        // Assert
+        result.Should().BeNull();
+        VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.Once());
+    }
+
+    [Fact]
+    public async Task LoginAsync_WithExternalLoginUser_ShouldReturnNull()
+    {
+        // Arrange
+        var loginDto = new LoginDto("external@example.com", "Password123!");
+
+        var user = new ApplicationUser
+        {
+            Id = Guid.NewGuid(),
+            Email = loginDto.Email,
+            UserName = loginDto.Email,
+            IsExternalLogin = true // External login user
+        };
+
+        _mockUserManager
+            .Setup(x => x.FindByEmailAsync(loginDto.Email))
+            .ReturnsAsync(user);
+
+        // Act
+        var result = await _authService.LoginAsync(loginDto);
+
+        // Assert
+        result.Should().BeNull();
+        VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.Once());
+    }
+
+    #endregion
+
+    #region GenerateTokenResponseAsync Tests (via public methods)
+
+    [Fact]
+    public async Task LoginAsync_WithAdminUser_ShouldReturnAllPermissions()
+    {
+        // Arrange
+        var loginDto = new LoginDto("admin@example.com", "ValidPassword123!");
+        var userId = Guid.NewGuid();
+
+        var user = new ApplicationUser
+        {
+            Id = userId,
+            Email = loginDto.Email,
+            UserName = loginDto.Email,
+            EmailConfirmed = true
+        };
+
+        var adminRole = new ApplicationRole("Admin") { Id = Guid.NewGuid() };
+        var allPermissions = new List<Permission>
+        {
+            new Permission(Guid.NewGuid()) { Module = "Inventory", Action = "Read" },
+            new Permission(Guid.NewGuid()) { Module = "Inventory", Action = "Write" }
+        };
+
+        _mockUserManager
+            .Setup(x => x.FindByEmailAsync(loginDto.Email))
+            .ReturnsAsync(user);
+
+        _mockUserManager
+            .Setup(x => x.CheckPasswordAsync(user, loginDto.Password))
+            .ReturnsAsync(true);
+
+        _mockJwtTokenProvider
+            .Setup(x => x.GenerateAccessTokenAsync(It.IsAny<ApplicationUser>(), It.IsAny<IList<string>>(), It.IsAny<IList<Claim>>()))
+            .ReturnsAsync("access_token");
+
+        _mockJwtTokenProvider
+            .Setup(x => x.GenerateRefreshToken())
+            .Returns("refresh_token");
+
+        _mockUserManager
+            .Setup(x => x.GetRolesAsync(user))
+            .ReturnsAsync(new List<string> { "Admin" });
+
+        _mockUserManager
+            .Setup(x => x.GetClaimsAsync(user))
+            .ReturnsAsync(new List<Claim>());
+
+        _mockRoleRepository
+            .Setup(x => x.GetRolesByUserIdAsync(userId))
+            .ReturnsAsync(new List<ApplicationRole> { adminRole });
+
+        _mockPermissionRepository
+            .Setup(x => x.GetAllAsync())
+            .ReturnsAsync(allPermissions);
+
+        _mockRefreshTokenRepository
+            .Setup(x => x.CreateAsync(It.IsAny<RefreshToken>()))
+            .ReturnsAsync((RefreshToken rt) => rt);
+
+        // Act
+        var result = await _authService.LoginAsync(loginDto);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.User.Should().NotBeNull();
+        result.User.IsAdmin.Should().BeTrue();
+        result.User.Permissions.Should().HaveCount(2);
+        _mockPermissionRepository.Verify(x => x.GetAllAsync(), Times.Once);
+    }
+
+    [Fact]
+    public async Task LoginAsync_WithNonAdminUser_ShouldReturnRolePermissions()
+    {
+        // Arrange
+        var loginDto = new LoginDto("user@example.com", "ValidPassword123!");
+        var userId = Guid.NewGuid();
+
+        var user = new ApplicationUser
+        {
+            Id = userId,
+            Email = loginDto.Email,
+            UserName = loginDto.Email,
+            EmailConfirmed = true
+        };
+
+        var userRole = new ApplicationRole("User") { Id = Guid.NewGuid() };
+        var rolePermissions = new List<Permission>
+        {
+            new Permission(Guid.NewGuid()) { Module = "Inventory", Action = "Read" }
+        };
+
+        _mockUserManager
+            .Setup(x => x.FindByEmailAsync(loginDto.Email))
+            .ReturnsAsync(user);
+
+        _mockUserManager
+            .Setup(x => x.CheckPasswordAsync(user, loginDto.Password))
+            .ReturnsAsync(true);
+
+        _mockJwtTokenProvider
+            .Setup(x => x.GenerateAccessTokenAsync(It.IsAny<ApplicationUser>(), It.IsAny<IList<string>>(), It.IsAny<IList<Claim>>()))
+            .ReturnsAsync("access_token");
+
+        _mockJwtTokenProvider
+            .Setup(x => x.GenerateRefreshToken())
+            .Returns("refresh_token");
+
+        _mockUserManager
+            .Setup(x => x.GetRolesAsync(user))
+            .ReturnsAsync(new List<string> { "User" });
+
+        _mockUserManager
+            .Setup(x => x.GetClaimsAsync(user))
+            .ReturnsAsync(new List<Claim>());
+
+        _mockRoleRepository
+            .Setup(x => x.GetRolesByUserIdAsync(userId))
+            .ReturnsAsync(new List<ApplicationRole> { userRole });
+
+        _mockRoleRepository
+            .Setup(x => x.GetPermissionsForRoleAsync(userRole.Id))
+            .ReturnsAsync(rolePermissions);
+
+        _mockPermissionRepository
+            .Setup(x => x.GetAllPermissionsByUserId(userId))
+            .ReturnsAsync(new List<Permission>());
+
+        _mockRefreshTokenRepository
+            .Setup(x => x.CreateAsync(It.IsAny<RefreshToken>()))
+            .ReturnsAsync((RefreshToken rt) => rt);
+
+        // Act
+        var result = await _authService.LoginAsync(loginDto);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.User.Should().NotBeNull();
+        result.User.IsAdmin.Should().BeFalse();
+        result.User.Permissions.Should().HaveCount(1);
+        _mockRoleRepository.Verify(x => x.GetPermissionsForRoleAsync(userRole.Id), Times.Once);
     }
 
     #endregion

@@ -48,6 +48,7 @@ runs:
     - name: Setup Dapr CLI (if enabled - must be before azd env refresh)
       if: inputs.setup-dapr == 'true'
       uses: dapr/setup-dapr@v1
+
       with:
         version: ${{ inputs.dapr-version }}
 

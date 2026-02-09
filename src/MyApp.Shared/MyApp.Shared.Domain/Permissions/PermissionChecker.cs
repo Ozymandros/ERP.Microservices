@@ -15,8 +15,11 @@ public class PermissionChecker : IPermissionChecker
 
     public PermissionChecker(IServiceInvoker serviceInvoker, IHttpContextAccessor httpContextAccessor)
     {
-        _serviceInvoker = serviceInvoker ?? throw new ArgumentNullException(nameof(serviceInvoker));
-        _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+        ArgumentNullException.ThrowIfNull(serviceInvoker);
+        ArgumentNullException.ThrowIfNull(httpContextAccessor);
+        
+        _serviceInvoker = serviceInvoker;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<bool> HasPermissionAsync(Guid userId, string module, string action)

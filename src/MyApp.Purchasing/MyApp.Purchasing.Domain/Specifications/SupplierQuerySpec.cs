@@ -16,31 +16,31 @@ public class SupplierQuerySpec : BaseSpecification<Supplier>
     public override IQueryable<Supplier> ApplyFilters(IQueryable<Supplier> query)
     {
         // Apply supplier-specific filters
-        if (Query.Filters?.TryGetValue(nameof(Supplier.Name), out var nameFilter) == true)
-            query = query.Where(s => s.Name.ToLower().Contains(nameFilter.ToString()!.ToLower()));
+        if (Query.Filters?.TryGetValue(nameof(Supplier.Name), out var nameFilter) == true && !string.IsNullOrEmpty(nameFilter))
+            query = query.Where(s => s.Name.Contains(nameFilter, StringComparison.OrdinalIgnoreCase));
 
-        if (Query.Filters?.TryGetValue(nameof(Supplier.Email), out var emailFilter) == true)
-            query = query.Where(s => s.Email.ToLower().Contains(emailFilter.ToString()!.ToLower()));
+        if (Query.Filters?.TryGetValue(nameof(Supplier.Email), out var emailFilter) == true && !string.IsNullOrEmpty(emailFilter))
+            query = query.Where(s => s.Email.Contains(emailFilter, StringComparison.OrdinalIgnoreCase));
 
-        if (Query.Filters?.TryGetValue(nameof(Supplier.ContactName), out var contactNameFilter) == true)
-            query = query.Where(s => s.ContactName.ToLower().Contains(contactNameFilter.ToString()!.ToLower()));
+        if (Query.Filters?.TryGetValue(nameof(Supplier.ContactName), out var contactNameFilter) == true && !string.IsNullOrEmpty(contactNameFilter))
+            query = query.Where(s => s.ContactName.Contains(contactNameFilter, StringComparison.OrdinalIgnoreCase));
 
-        if (Query.Filters?.TryGetValue(nameof(Supplier.PhoneNumber), out var phoneFilter) == true)
-            query = query.Where(s => s.PhoneNumber.ToLower().Contains(phoneFilter.ToString()!.ToLower()));
+        if (Query.Filters?.TryGetValue(nameof(Supplier.PhoneNumber), out var phoneFilter) == true && !string.IsNullOrEmpty(phoneFilter))
+            query = query.Where(s => s.PhoneNumber.Contains(phoneFilter, StringComparison.OrdinalIgnoreCase));
 
-        if (Query.Filters?.TryGetValue(nameof(Supplier.Address), out var addressFilter) == true)
-            query = query.Where(s => s.Address.ToLower().Contains(addressFilter.ToString()!.ToLower()));
+        if (Query.Filters?.TryGetValue(nameof(Supplier.Address), out var addressFilter) == true && !string.IsNullOrEmpty(addressFilter))
+            query = query.Where(s => s.Address.Contains(addressFilter, StringComparison.OrdinalIgnoreCase));
 
         // Apply search (searches in name, email, contact name, phone, and address)
         if (!string.IsNullOrEmpty(Query.SearchTerm))
         {
-            var term = Query.SearchTerm.ToLower();
+            var term = Query.SearchTerm;
             query = query.Where(s =>
-                s.Name.ToLower().Contains(term) ||
-                s.Email.ToLower().Contains(term) ||
-                s.ContactName.ToLower().Contains(term) ||
-                s.PhoneNumber.ToLower().Contains(term) ||
-                s.Address.ToLower().Contains(term)
+                s.Name.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                s.Email.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                s.ContactName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                s.PhoneNumber.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                s.Address.Contains(term, StringComparison.OrdinalIgnoreCase)
             );
         }
 

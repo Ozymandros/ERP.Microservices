@@ -1,8 +1,11 @@
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Purchasing.Domain.Entities;
+using MyApp.Purchasing.Domain.Specifications;
 using MyApp.Purchasing.Infrastructure.Data;
 using MyApp.Purchasing.Infrastructure.Data.Repositories;
 using MyApp.Purchasing.Tests.Helpers;
+using MyApp.Shared.Domain.Pagination;
 using Xunit;
 
 namespace MyApp.Purchasing.Tests.Repositories;
@@ -214,6 +217,156 @@ public class SupplierRepositoryTests
         // Assert
         Assert.NotNull(result);
         Assert.True(result.Count() >= 3);
+    }
+
+    #endregion
+
+    #region GetAllPaginatedAsync Tests
+
+    [Fact]
+    public async Task GetAllPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
+    {
+        // Arrange
+        CreateTestSupplier("PAGE-001", "page1@supplier.com");
+        CreateTestSupplier("PAGE-002", "page2@supplier.com");
+        CreateTestSupplier("PAGE-003", "page3@supplier.com");
+        var pageNumber = 1;
+        var pageSize = 2;
+
+        // Act
+        var result = await _repository.GetAllPaginatedAsync(pageNumber, pageSize);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Items.Should().HaveCountLessOrEqualTo(pageSize);
+        result.PageNumber.Should().Be(pageNumber);
+        result.PageSize.Should().Be(pageSize);
+        result.TotalCount.Should().BeGreaterOrEqualTo(3);
+    }
+
+    #endregion
+
+    #region QueryAsync Tests
+
+    [Fact]
+    public async Task QueryAsync_WithSearchTerm_ShouldFilterResults()
+    {
+        // Arrange
+        CreateTestSupplier("Widget Supplier", "widget@supplier.com");
+        CreateTestSupplier("Gadget Supplier", "gadget@supplier.com");
+        CreateTestSupplier("Other Supplier", "other@supplier.com");
+        var querySpec = new QuerySpec { SearchTerm = "Widget" };
+        var spec = new SupplierQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.Items.Should().Contain(s => s.Name.Contains("Widget", StringComparison.OrdinalIgnoreCase) ||
+                                          s.Email.Contains("Widget", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithNameFilter_ShouldFilterResults()
+    {
+        // Arrange
+        CreateTestSupplier("Filter Supplier", "filter@supplier.com");
+        CreateTestSupplier("Other Supplier", "other@supplier.com");
+        var querySpec = new QuerySpec();
+        querySpec.Filters = new Dictionary<string, string> { { "Name", "Filter" } };
+        var spec = new SupplierQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.Items.Should().OnlyContain(s => s.Name.Contains("Filter", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithEmailFilter_ShouldFilterResults()
+    {
+        // Arrange
+        CreateTestSupplier("Supplier 1", "filter@supplier.com");
+        CreateTestSupplier("Supplier 2", "other@supplier.com");
+        var querySpec = new QuerySpec();
+        querySpec.Filters = new Dictionary<string, string> { { "Email", "filter" } };
+        var spec = new SupplierQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.Items.Should().OnlyContain(s => s.Email.Contains("filter", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithContactNameFilter_ShouldFilterResults()
+    {
+        // Arrange
+        var supplier1 = CreateTestSupplier("Supplier 1", "supplier1@example.com");
+        supplier1.ContactName = "Filter Contact";
+        _context.SaveChanges();
+        CreateTestSupplier("Supplier 2", "supplier2@example.com");
+        var querySpec = new QuerySpec();
+        querySpec.Filters = new Dictionary<string, string> { { "ContactName", "Filter" } };
+        var spec = new SupplierQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.Items.Should().OnlyContain(s => s.ContactName.Contains("Filter", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithPagination_ShouldReturnCorrectPage()
+    {
+        // Arrange
+        CreateTestSupplier("PAGE-QUERY-001", "page1@supplier.com");
+        CreateTestSupplier("PAGE-QUERY-002", "page2@supplier.com");
+        CreateTestSupplier("PAGE-QUERY-003", "page3@supplier.com");
+        CreateTestSupplier("PAGE-QUERY-004", "page4@supplier.com");
+        var querySpec = new QuerySpec { Page = 2, PageSize = 2 };
+        var spec = new SupplierQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.PageNumber.Should().Be(2);
+        result.PageSize.Should().Be(2);
+        result.Items.Should().HaveCountLessOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterOrEqualTo(4);
+    }
+
+    [Fact]
+    public async Task QueryAsync_WithSorting_ShouldReturnSortedResults()
+    {
+        // Arrange
+        CreateTestSupplier("Zebra Supplier", "zebra@supplier.com");
+        CreateTestSupplier("Alpha Supplier", "alpha@supplier.com");
+        CreateTestSupplier("Beta Supplier", "beta@supplier.com");
+        var querySpec = new QuerySpec { SortBy = "Name", SortDesc = false };
+        var spec = new SupplierQuerySpec(querySpec);
+
+        // Act
+        var result = await _repository.QueryAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        var names = result.Items.Select(s => s.Name).ToList();
+        var sortedNames = names.OrderBy(n => n).ToList();
+        names.Should().BeEquivalentTo(sortedNames);
     }
 
     #endregion

@@ -233,7 +233,7 @@ public class AuthService : IAuthService
         { 
             Name = r.Name, 
             Description = r.Description 
-        }).ToList();
+        }).Cast<RoleDto?>().ToList();
 
         var permissionDtos = permissions
             .DistinctBy(p => p.Id)
@@ -243,7 +243,7 @@ public class AuthService : IAuthService
                 Action = p.Action, 
                 Description = p.Description 
             })
-            .ToList();
+            .Cast<PermissionDto?>().ToList();
 
         var userDto = new UserDto(user.Id)
         {
