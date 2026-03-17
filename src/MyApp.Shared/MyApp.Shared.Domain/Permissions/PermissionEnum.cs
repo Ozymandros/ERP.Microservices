@@ -18,14 +18,17 @@ public enum ModuleEnum
     /// <summary>Sales module - manages sales orders and customers</summary>
     Sales = 4,
 
+    /// <summary>CRM module - manages leads, opportunities and activities</summary>
+    CRM = 5,
+
     /// <summary>Billing module - manages invoices and payments</summary>
-    Billing = 5,
+    Billing = 6,
 
     /// <summary>Notification module - manages alerts and communications</summary>
-    Notification = 6,
+    Notification = 7,
 
     /// <summary>Auth module - manages users, roles, and authentication</summary>
-    Auth = 7
+    Auth = 8
 }
 
 /// <summary>

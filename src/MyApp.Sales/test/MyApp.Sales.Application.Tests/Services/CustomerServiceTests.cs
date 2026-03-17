@@ -1,11 +1,13 @@
 using AutoMapper;
 using FluentAssertions;
 using Moq;
+using Microsoft.Extensions.Logging;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Services;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
 using MyApp.Sales.Domain.Specifications;
+using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using Xunit;
 
@@ -15,16 +17,22 @@ public class CustomerServiceTests
 {
     private readonly Mock<ICustomerRepository> _mockCustomerRepository;
     private readonly Mock<IMapper> _mockMapper;
+    private readonly Mock<ILogger<CustomerService>> _mockLogger;
+    private readonly Mock<IEventPublisher> _mockEventPublisher;
     private readonly CustomerService _customerService;
 
     public CustomerServiceTests()
     {
         _mockCustomerRepository = new Mock<ICustomerRepository>();
         _mockMapper = new Mock<IMapper>();
+        _mockLogger = new Mock<ILogger<CustomerService>>();
+        _mockEventPublisher = new Mock<IEventPublisher>();
 
         _customerService = new CustomerService(
             _mockCustomerRepository.Object,
-            _mockMapper.Object);
+            _mockMapper.Object,
+            _mockLogger.Object,
+            _mockEventPublisher.Object);
     }
 
     #region GetCustomerByIdAsync Tests

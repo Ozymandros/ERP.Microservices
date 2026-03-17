@@ -56,7 +56,7 @@ public class AspireProjectBuilder
         var daprAppId = $"{serviceNameLower}-service";
 
         // Get current ports and increment (optional)
-        var httpPort = _httpPort++;
+        var httpPort = ++_httpPort;
         //var daprHttpPort = _daprHttpPort++;
         //var daprGrpcPort = _daprGrpcPort++;
         //var metricsPort = _metricsPort++;

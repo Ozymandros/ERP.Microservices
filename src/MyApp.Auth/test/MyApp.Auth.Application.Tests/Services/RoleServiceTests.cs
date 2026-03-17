@@ -147,12 +147,12 @@ public class RoleServiceTests : BaseServiceTest
 
         var createdRole = new RoleBuilder()
             .WithName(createDto.Name)
-            .WithDescription(createDto.Description)
+            .WithDescription(createDto.Description ?? string.Empty)
             .Build();
 
         var roleDto = new RoleDtoBuilder()
             .WithName(createDto.Name)
-            .WithDescription(createDto.Description)
+            .WithDescription(createDto.Description ?? string.Empty)
             .Build();
 
         _mockRoleManager

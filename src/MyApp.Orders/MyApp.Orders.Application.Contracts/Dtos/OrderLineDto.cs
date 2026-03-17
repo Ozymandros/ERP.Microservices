@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Orders.Application.Contracts.Dtos
 {
-    public record OrderLineDto(Guid Id) : AuditableGuidDto(Id)
+    public record OrderLineDto(Guid Id) : AuditableDto<Guid>(Id)
     {
         public Guid ProductId { get; init; } = default;
 

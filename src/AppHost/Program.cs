@@ -77,6 +77,9 @@ var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_A
 var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: SalesDB, sales-service, ports 5006, 3506, 45006, 9096
 
+var crmService = projectBuilder.AddWebProject<Projects.MyApp_Crm_API>(redis, origin, isDeployment, applicationInsights);
+// Creates: CrmDB, crm-service, ports 5007, 3507, 45007, 9097
+
 // Local Development: Reverse Proxy (YARP)
 // Alternative: YARP (without /Scalar service)
 /*var gateway = builder.AddYarp("gateway")

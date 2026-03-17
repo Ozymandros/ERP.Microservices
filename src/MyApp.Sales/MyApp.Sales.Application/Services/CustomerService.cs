@@ -2,10 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Events;
+using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -15,13 +19,19 @@ namespace MyApp.Sales.Application.Services
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<CustomerService> _logger;
+        private readonly IEventPublisher _eventPublisher;
 
         public CustomerService(
             ICustomerRepository customerRepository,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<CustomerService> logger,
+            IEventPublisher eventPublisher)
         {
             _customerRepository = customerRepository;
             _mapper = mapper;
+            _logger = logger;
+            _eventPublisher = eventPublisher;
         }
 
         public async Task<CustomerDto?> GetCustomerByIdAsync(Guid id)
@@ -48,6 +58,17 @@ namespace MyApp.Sales.Application.Services
             var customer = _mapper.Map<Customer>(dto);
             customer.Id = Guid.NewGuid();
             await _customerRepository.AddAsync(customer);
+
+            try
+            {
+                var @event = new SalesCustomerCreatedEvent(customer.Id, customer.Name, customer.Email);
+                await _eventPublisher.PublishAsync(MessagingConstants.Topics.SalesCustomerCreated, @event);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to publish SalesCustomerCreatedEvent for Customer {CustomerId}", customer.Id);
+            }
+
             return _mapper.Map<CustomerDto>(customer);
         }
 
@@ -59,6 +80,17 @@ namespace MyApp.Sales.Application.Services
 
             _mapper.Map(dto, customer);
             await _customerRepository.UpdateAsync(customer);
+
+            try
+            {
+                var @event = new SalesCustomerUpdatedEvent(customer.Id, customer.Name, customer.Email);
+                await _eventPublisher.PublishAsync(MessagingConstants.Topics.SalesCustomerUpdated, @event);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to publish SalesCustomerUpdatedEvent for Customer {CustomerId}", customer.Id);
+            }
+
             return _mapper.Map<CustomerDto>(customer);
         }
 

@@ -26,6 +26,12 @@ public static class ApiEndpoints
         public const string ReserveStock = "api/inventory/stock-operations/reserve";
         public const string Reservations = "api/inventory/stock-operations/reservations";
     }
+
+    public static class Sales
+    {
+        public const string Base = "api/sales/orders";
+        public const string Quotes = "api/sales/orders/quotes";
+    }
 }
 
 public static class MessagingConstants
@@ -34,6 +40,9 @@ public static class MessagingConstants
 
     public static class Topics
     {
+        public const string SalesCustomerCreated = "sales.customer.created";
+        public const string SalesCustomerUpdated = "sales.customer.updated";
+
         public const string SalesOrderCreated = "sales.order.created";
         public const string SalesOrderConfirmed = "sales.order.confirmed";
         public const string PurchasingOrderApproved = "purchasing.order.approved";
@@ -45,6 +54,18 @@ public static class MessagingConstants
         
         public const string InventoryStockUpdated = "inventory.stock.updated";
         public const string InventoryStockReleased = "inventory.stock.released";
+
+        public const string CrmLeadCreated = "crm.lead.created";
+        public const string CrmLeadUpdated = "crm.lead.updated";
+        public const string CrmLeadQualified = "crm.lead.qualified";
+
+        public const string CrmOpportunityCreated = "crm.opportunity.created";
+        public const string CrmOpportunityStageChanged = "crm.opportunity.stage-changed";
+        public const string CrmOpportunityWon = "crm.opportunity.won";
+        public const string CrmOpportunityLost = "crm.opportunity.lost";
+
+        public const string CrmActivityCreated = "crm.activity.created";
+        public const string CrmActivityCompleted = "crm.activity.completed";
     }
 }
 
