@@ -21,6 +21,7 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
     public Guid? ConvertedSalesQuoteId { get; private set; }
     public string? ConvertedSalesQuoteNumber { get; private set; }
 
+    public List<OpportunityLine> Lines { get; private set; } = new();
     public List<Note> Notes { get; private set; } = new();
     public List<OpportunityTag> Tags { get; private set; } = new();
 
@@ -76,6 +77,53 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
         {
             Notes.Add(Note.ForOpportunity(Guid.NewGuid(), note, Id));
         }
+    }
+
+    public OpportunityLine AddLine(
+        Guid id,
+        string description,
+        decimal quantity,
+        decimal unitPrice,
+        decimal discountPercent,
+        Guid? productId = null,
+        string? sku = null)
+    {
+        EnsureNotClosed();
+        var line = new OpportunityLine(
+            id,
+            Id,
+            description,
+            quantity,
+            unitPrice,
+            discountPercent,
+            productId,
+            sku);
+        Lines.Add(line);
+        return line;
+    }
+
+    public void UpdateLine(
+        Guid lineId,
+        string description,
+        decimal quantity,
+        decimal unitPrice,
+        decimal discountPercent,
+        Guid? productId = null,
+        string? sku = null)
+    {
+        EnsureNotClosed();
+        var line = Lines.FirstOrDefault(l => l.Id == lineId)
+            ?? throw new InvalidOperationException($"Line {lineId} not found for opportunity {Id}.");
+
+        line.Update(description, quantity, unitPrice, discountPercent, productId, sku);
+    }
+
+    public void RemoveLine(Guid lineId)
+    {
+        EnsureNotClosed();
+        var line = Lines.FirstOrDefault(l => l.Id == lineId)
+            ?? throw new InvalidOperationException($"Line {lineId} not found for opportunity {Id}.");
+        Lines.Remove(line);
     }
 
     public void SetConvertedQuote(Guid quoteId, string quoteNumber)

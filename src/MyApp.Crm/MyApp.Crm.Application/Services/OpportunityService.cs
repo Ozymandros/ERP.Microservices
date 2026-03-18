@@ -129,12 +129,19 @@ public class OpportunityService : IOpportunityService
             if (!entity.ConvertedSalesQuoteId.HasValue)
             {
                 var orderNumber = GenerateQuoteNumber(entity.Id);
+
+                var lines = request.Quote.Lines;
+                if (lines is null || lines.Count == 0)
+                {
+                    lines = BuildQuoteLinesFromOpportunity(entity);
+                }
+
                 var salesRequest = new CreateQuoteDto(
                     OrderNumber: orderNumber,
                     CustomerId: entity.CustomerId,
                     OrderDate: request.Quote.OrderDate ?? DateTime.UtcNow,
                     ValidityDays: request.Quote.ValidityDays,
-                    Lines: request.Quote.Lines);
+                    Lines: lines);
 
                 var salesQuote = await _serviceInvoker.InvokeAsync<CreateQuoteDto, SalesOrderDto>(
                     ServiceNames.Sales,
@@ -162,11 +169,111 @@ public class OpportunityService : IOpportunityService
         return _mapper.Map<OpportunityDto>(entity);
     }
 
+    public async Task<OpportunityLineDto> AddLineAsync(Guid opportunityId, CreateOpportunityLineDto dto, CancellationToken cancellationToken = default)
+    {
+        var entity = await _repository.GetByIdAsync(opportunityId);
+        if (entity is null) throw new KeyNotFoundException($"Opportunity with ID {opportunityId} not found.");
+
+        var line = entity.AddLine(
+            Guid.NewGuid(),
+            dto.Description,
+            dto.Quantity,
+            dto.UnitPrice,
+            dto.DiscountPercent,
+            dto.ProductId,
+            dto.Sku);
+
+        await _repository.UpdateAsync(entity);
+        return _mapper.Map<OpportunityLineDto>(line);
+    }
+
+    public async Task<OpportunityLineDto> UpdateLineAsync(Guid opportunityId, Guid lineId, UpdateOpportunityLineDto dto, CancellationToken cancellationToken = default)
+    {
+        var entity = await _repository.GetByIdAsync(opportunityId);
+        if (entity is null) throw new KeyNotFoundException($"Opportunity with ID {opportunityId} not found.");
+
+        entity.UpdateLine(lineId, dto.Description, dto.Quantity, dto.UnitPrice, dto.DiscountPercent, dto.ProductId, dto.Sku);
+        await _repository.UpdateAsync(entity);
+
+        var updated = entity.Lines.First(l => l.Id == lineId);
+        return _mapper.Map<OpportunityLineDto>(updated);
+    }
+
+    public async Task RemoveLineAsync(Guid opportunityId, Guid lineId, CancellationToken cancellationToken = default)
+    {
+        var entity = await _repository.GetByIdAsync(opportunityId);
+        if (entity is null) throw new KeyNotFoundException($"Opportunity with ID {opportunityId} not found.");
+
+        entity.RemoveLine(lineId);
+        await _repository.UpdateAsync(entity);
+    }
+
+    public async Task<ForecastSummaryDto> GetForecastSummaryAsync(
+        string ownerUsername,
+        DateOnly? fromExpectedCloseDate,
+        DateOnly? toExpectedCloseDate,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(ownerUsername))
+            throw new ArgumentException("OwnerUsername is required.", nameof(ownerUsername));
+
+        var list = await _repository.ListForForecastAsync(ownerUsername.Trim(), fromExpectedCloseDate, toExpectedCloseDate, cancellationToken);
+
+        var byStage = list
+            .GroupBy(o => o.Stage)
+            .Select(g =>
+            {
+                var sumExpected = g.Sum(x => x.ExpectedAmount ?? 0m);
+                var weighted = g.Sum(x => (x.ExpectedAmount ?? 0m) * x.Probability);
+                return new ForecastByStageDto(g.Key.ToString(), g.Count(), sumExpected, weighted);
+            })
+            .OrderByDescending(x => x.WeightedAmount)
+            .ToList();
+
+        var totalExpected = list.Sum(x => x.ExpectedAmount ?? 0m);
+        var totalWeighted = list.Sum(x => (x.ExpectedAmount ?? 0m) * x.Probability);
+
+        return new ForecastSummaryDto(
+            OwnerUsername: ownerUsername.Trim(),
+            FromExpectedCloseDate: fromExpectedCloseDate,
+            ToExpectedCloseDate: toExpectedCloseDate,
+            TotalCount: list.Count,
+            TotalExpectedAmount: totalExpected,
+            TotalWeightedAmount: totalWeighted,
+            ByStage: byStage);
+    }
+
     private static string GenerateQuoteNumber(Guid opportunityId)
     {
         var now = DateTime.UtcNow;
         var suffix = opportunityId.ToString("N")[..QuoteNumberIdSuffixLength];
         return $"{QuoteNumberPrefix}-{now:yyyyMMddHHmmss}-{suffix}";
+    }
+
+    private static List<CreateUpdateSalesOrderLineDto> BuildQuoteLinesFromOpportunity(Opportunity entity)
+    {
+        if (entity.Lines.Count == 0)
+            throw new ArgumentException("Quote lines are required. Either provide Quote.Lines or add opportunity lines before conversion.");
+
+        var lines = new List<CreateUpdateSalesOrderLineDto>(entity.Lines.Count);
+        foreach (var l in entity.Lines)
+        {
+            if (!l.ProductId.HasValue)
+                throw new ArgumentException("All opportunity lines must have ProductId to convert to a Sales quote.");
+
+            if (decimal.Truncate(l.Quantity) != l.Quantity)
+                throw new ArgumentException("Opportunity line quantity must be a whole number to convert to a Sales quote.");
+
+            if (l.Quantity > int.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(entity), "Opportunity line quantity is too large to convert.");
+
+            lines.Add(new CreateUpdateSalesOrderLineDto(
+                ProductId: l.ProductId.Value,
+                Quantity: (int)l.Quantity,
+                UnitPrice: l.UnitPrice));
+        }
+
+        return lines;
     }
 
     public async Task<OpportunityDto> MarkLostAsync(Guid id, MarkOpportunityLostDto dto, CancellationToken cancellationToken = default)

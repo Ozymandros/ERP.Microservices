@@ -23,6 +23,32 @@ public class OpportunitiesController : ControllerBase
         _logger = logger;
     }
 
+    [HttpGet("forecast")]
+    [HasPermission("CRM", "Read")]
+    public async Task<IActionResult> GetForecast(
+        [FromQuery] string? ownerUsername,
+        [FromQuery] DateOnly? fromExpectedCloseDate,
+        [FromQuery] DateOnly? toExpectedCloseDate,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var owner = !string.IsNullOrWhiteSpace(ownerUsername)
+                ? ownerUsername
+                : User?.Identity?.Name;
+
+            if (string.IsNullOrWhiteSpace(owner))
+                return BadRequest(new { message = "ownerUsername is required." });
+
+            var summary = await _service.GetForecastSummaryAsync(owner, fromExpectedCloseDate, toExpectedCloseDate, cancellationToken);
+            return Ok(summary);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
     [HttpGet]
     [HasPermission("CRM", "Read")]
     public async Task<IActionResult> GetAll([FromQuery] QuerySpec query, CancellationToken cancellationToken)
@@ -130,6 +156,73 @@ public class OpportunitiesController : ControllerBase
         {
             var updated = await _service.MarkLostAsync(id, dto, cancellationToken);
             return Ok(updated);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
+    }
+
+    [HttpPost("{id:guid}/lines")]
+    [HasPermission("CRM", "Update")]
+    public async Task<IActionResult> AddLine(Guid id, [FromBody] CreateOpportunityLineDto dto, CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        try
+        {
+            var created = await _service.AddLineAsync(id, dto, cancellationToken);
+            return CreatedAtAction(nameof(GetById), new { id }, created);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpPut("{id:guid}/lines/{lineId:guid}")]
+    [HasPermission("CRM", "Update")]
+    public async Task<IActionResult> UpdateLine(Guid id, Guid lineId, [FromBody] UpdateOpportunityLineDto dto, CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        try
+        {
+            var updated = await _service.UpdateLineAsync(id, lineId, dto, cancellationToken);
+            return Ok(updated);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpDelete("{id:guid}/lines/{lineId:guid}")]
+    [HasPermission("CRM", "Update")]
+    public async Task<IActionResult> RemoveLine(Guid id, Guid lineId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _service.RemoveLineAsync(id, lineId, cancellationToken);
+            return NoContent();
         }
         catch (KeyNotFoundException ex)
         {

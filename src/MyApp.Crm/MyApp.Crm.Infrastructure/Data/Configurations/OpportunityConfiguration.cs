@@ -26,6 +26,11 @@ public class OpportunityConfiguration : IEntityTypeConfiguration<Opportunity>
         // DateOnly mapping (EF Core supports DateOnly in modern versions; store as date)
         builder.Property(x => x.ExpectedCloseDate).HasColumnType("date");
 
+        builder.HasMany(x => x.Lines)
+            .WithOne()
+            .HasForeignKey(l => l.OpportunityId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.HasMany(x => x.Notes)
             .WithOne()
             .HasForeignKey(n => n.OpportunityId)

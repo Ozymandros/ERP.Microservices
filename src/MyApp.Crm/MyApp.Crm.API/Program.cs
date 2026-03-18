@@ -1,5 +1,6 @@
 using MyApp.Crm.Application.Mapping;
 using MyApp.Crm.Application.Services;
+using MyApp.Crm.Domain.Accounts;
 using MyApp.Crm.Domain.Activities;
 using MyApp.Crm.Domain.Leads;
 using MyApp.Crm.Domain.Opportunities;
@@ -20,6 +21,12 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
     AutoMapperAssembly = typeof(CrmMappingProfile).Assembly,
     ConfigureServiceDependencies = services =>
     {
+        services.AddScoped<IAccountRepository, AccountRepository>();
+        services.AddScoped<MyApp.Crm.Application.Contracts.Services.IAccountService, AccountService>();
+
+        services.AddScoped<IContactRepository, ContactRepository>();
+        services.AddScoped<MyApp.Crm.Application.Contracts.Services.IContactService, ContactService>();
+
         services.AddScoped<ILeadRepository, LeadRepository>();
         services.AddScoped<MyApp.Crm.Application.Contracts.Services.ILeadService, LeadService>();
 

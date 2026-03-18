@@ -1,5 +1,7 @@
 using Dapr;
 using Microsoft.AspNetCore.Mvc;
+using MyApp.Crm.Application.Contracts.DTOs;
+using MyApp.Crm.Application.Contracts.Services;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 
@@ -10,30 +12,47 @@ namespace MyApp.Crm.API.EventHandlers;
 public class SalesEventHandlers : ControllerBase
 {
     private readonly ILogger<SalesEventHandlers> _logger;
+    private readonly IAccountService _accountService;
 
-    public SalesEventHandlers(ILogger<SalesEventHandlers> logger)
+    public SalesEventHandlers(ILogger<SalesEventHandlers> logger, IAccountService accountService)
     {
         _logger = logger;
+        _accountService = accountService;
     }
 
     [Topic(MessagingConstants.PubSubName, MessagingConstants.Topics.SalesCustomerCreated)]
     [HttpPost("customer-created")]
-    public IActionResult OnSalesCustomerCreated(SalesCustomerCreatedEvent @event)
+    public async Task<IActionResult> OnSalesCustomerCreated(SalesCustomerCreatedEvent @event, CancellationToken cancellationToken)
     {
-        // Iteration 1: log only. In a later increment we can maintain a CRM read-model snapshot.
-        _logger.LogInformation(
-            "Received SalesCustomerCreatedEvent: CustomerId={CustomerId}, Name={Name}",
-            @event.CustomerId, @event.Name);
+        await _accountService.UpsertFromSalesAsync(
+            new UpsertAccountDto(
+                CustomerId: @event.CustomerId,
+                Name: @event.Name,
+                TaxId: null,
+                BillingAddress: null,
+                ShippingAddress: null,
+                SyncedAt: DateTimeOffset.UtcNow),
+            cancellationToken);
+
+        _logger.LogInformation("Synced CRM account snapshot from SalesCustomerCreatedEvent CustomerId={CustomerId}", @event.CustomerId);
         return Ok();
     }
 
     [Topic(MessagingConstants.PubSubName, MessagingConstants.Topics.SalesCustomerUpdated)]
     [HttpPost("customer-updated")]
-    public IActionResult OnSalesCustomerUpdated(SalesCustomerUpdatedEvent @event)
+    public async Task<IActionResult> OnSalesCustomerUpdated(SalesCustomerUpdatedEvent @event, CancellationToken cancellationToken)
     {
-        _logger.LogInformation(
-            "Received SalesCustomerUpdatedEvent: CustomerId={CustomerId}, Name={Name}",
-            @event.CustomerId, @event.Name);
+        await _accountService.UpsertFromSalesAsync(
+            new UpsertAccountDto(
+                CustomerId: @event.CustomerId,
+                Name: @event.Name,
+                TaxId: null,
+                BillingAddress: null,
+                ShippingAddress: null,
+                SyncedAt: DateTimeOffset.UtcNow),
+            cancellationToken);
+
+        _logger.LogInformation("Synced CRM account snapshot from SalesCustomerUpdatedEvent CustomerId={CustomerId}", @event.CustomerId);
         return Ok();
     }
 }
