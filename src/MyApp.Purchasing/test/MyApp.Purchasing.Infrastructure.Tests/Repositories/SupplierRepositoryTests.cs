@@ -238,10 +238,10 @@ public class SupplierRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Items.Should().HaveCountLessOrEqualTo(pageSize);
+        result.Items.Should().HaveCountLessThanOrEqualTo(pageSize);
         result.PageNumber.Should().Be(pageNumber);
         result.PageSize.Should().Be(pageSize);
-        result.TotalCount.Should().BeGreaterOrEqualTo(3);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(3);
     }
 
     #endregion
@@ -263,7 +263,7 @@ public class SupplierRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(1);
         result.Items.Should().Contain(s => s.Name.Contains("Widget", StringComparison.OrdinalIgnoreCase) ||
                                           s.Email.Contains("Widget", StringComparison.OrdinalIgnoreCase));
     }
@@ -283,7 +283,7 @@ public class SupplierRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(1);
         result.Items.Should().OnlyContain(s => s.Name.Contains("Filter", StringComparison.OrdinalIgnoreCase));
     }
 
@@ -302,7 +302,7 @@ public class SupplierRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(1);
         result.Items.Should().OnlyContain(s => s.Email.Contains("filter", StringComparison.OrdinalIgnoreCase));
     }
 
@@ -323,7 +323,7 @@ public class SupplierRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(1);
         result.Items.Should().OnlyContain(s => s.ContactName.Contains("Filter", StringComparison.OrdinalIgnoreCase));
     }
 
@@ -345,8 +345,8 @@ public class SupplierRepositoryTests
         result.Should().NotBeNull();
         result.PageNumber.Should().Be(2);
         result.PageSize.Should().Be(2);
-        result.Items.Should().HaveCountLessOrEqualTo(2);
-        result.TotalCount.Should().BeGreaterOrEqualTo(4);
+        result.Items.Should().HaveCountLessThanOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(4);
     }
 
     [Fact]
@@ -371,3 +371,4 @@ public class SupplierRepositoryTests
 
     #endregion
 }
+

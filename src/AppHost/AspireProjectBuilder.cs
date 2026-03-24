@@ -1,12 +1,13 @@
+using System.Threading;
 using Aspire.Hosting.Azure;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 
 public class AspireProjectBuilder
 {
-    private int _httpPort = 5001;
-    private int _daprHttpPort = 3501;
-    private int _daprGrpcPort = 45001;
-    private int _metricsPort = 9091;
+    private int _httpPort = 5000;
+    private int _daprHttpPort = 3500;
+    private int _daprGrpcPort = 45000;
+    private int _metricsPort = 9090;
 
     private readonly IDistributedApplicationBuilder _builder;
     private readonly IResourceBuilder<SqlServerServerResource>? _sqlServer;
@@ -55,8 +56,8 @@ public class AspireProjectBuilder
         var serviceResourceName = $"{serviceNameLower}-service";
         var daprAppId = $"{serviceNameLower}-service";
 
-        // Get current ports and increment (optional)
-        var httpPort = ++_httpPort;
+        // Get current ports and increment (thread-safe)
+        var httpPort = Interlocked.Increment(ref _httpPort);
         //var daprHttpPort = _daprHttpPort++;
         //var daprGrpcPort = _daprGrpcPort++;
         //var metricsPort = _metricsPort++;
@@ -94,8 +95,14 @@ public class AspireProjectBuilder
             project = project.WithReference(database);
         }
         // Local: expose unique ports for the dashboard
-        project = project.WithHttpEndpoint(httpPort)
-        .WithHttpHealthCheck(path: "/health", statusCode: 200);
+        // Explicitly provide a unique endpoint name to avoid automatic name collisions ("http")
+        project = project.WithEndpoint("http", endpoint =>
+        {
+            endpoint.Port = httpPort;
+        });
+
+    //    project = project.WithHttpEndpoint(port: httpPort, name: "http") // use default name
+    //.WithHttpHealthCheck(path: "/health", statusCode: 200);
 
         // Application Insights
         if (applicationInsights is not null)

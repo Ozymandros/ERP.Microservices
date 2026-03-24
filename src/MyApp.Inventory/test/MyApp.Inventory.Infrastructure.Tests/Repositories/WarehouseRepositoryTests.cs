@@ -104,7 +104,7 @@ public class WarehouseRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(5); // At least 2 seeded + 3 new
+        result.Should().HaveCountGreaterThanOrEqualTo(5); // At least 2 seeded + 3 new
     }
 
     #endregion
@@ -126,10 +126,10 @@ public class WarehouseRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Items.Should().HaveCountLessOrEqualTo(pageSize);
+        result.Items.Should().HaveCountLessThanOrEqualTo(pageSize);
         result.PageNumber.Should().Be(pageNumber);
         result.PageSize.Should().Be(pageSize);
-        result.TotalCount.Should().BeGreaterOrEqualTo(5);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(5);
     }
 
     [Fact]
@@ -265,7 +265,7 @@ public class WarehouseRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(1);
         result.Items.Should().Contain(w => w.Name.Contains("Widget", StringComparison.OrdinalIgnoreCase) ||
                                            w.Location.Contains("Widget", StringComparison.OrdinalIgnoreCase));
     }
@@ -285,7 +285,7 @@ public class WarehouseRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(1);
         result.Items.Should().OnlyContain(w => w.Name.Contains("Filter", StringComparison.OrdinalIgnoreCase));
     }
 
@@ -304,7 +304,7 @@ public class WarehouseRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(1);
         result.Items.Should().OnlyContain(w => w.Location.Contains("Filter", StringComparison.OrdinalIgnoreCase));
     }
 
@@ -326,8 +326,8 @@ public class WarehouseRepositoryTests
         result.Should().NotBeNull();
         result.PageNumber.Should().Be(2);
         result.PageSize.Should().Be(2);
-        result.Items.Should().HaveCountLessOrEqualTo(2);
-        result.TotalCount.Should().BeGreaterOrEqualTo(6);
+        result.Items.Should().HaveCountLessThanOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(6);
     }
 
     [Fact]
@@ -352,3 +352,4 @@ public class WarehouseRepositoryTests
 
     #endregion
 }
+

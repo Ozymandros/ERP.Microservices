@@ -168,7 +168,7 @@ public class SalesOrderLineRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(5); // At least 3 seeded + 2 new
+        result.Should().HaveCountGreaterThanOrEqualTo(5); // At least 3 seeded + 2 new
     }
 
     #endregion
@@ -187,7 +187,7 @@ public class SalesOrderLineRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(4);
+        result.Should().HaveCountGreaterThanOrEqualTo(4);
     }
 
     #endregion
@@ -210,10 +210,10 @@ public class SalesOrderLineRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Items.Should().HaveCountLessOrEqualTo(pageSize);
+        result.Items.Should().HaveCountLessThanOrEqualTo(pageSize);
         result.PageNumber.Should().Be(pageNumber);
         result.PageSize.Should().Be(pageSize);
-        result.TotalCount.Should().BeGreaterOrEqualTo(6);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(6);
     }
 
     [Fact]
@@ -409,7 +409,7 @@ public class SalesOrderLineRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Items.Should().HaveCountLessOrEqualTo(result.TotalCount);
+        result.Items.Should().HaveCountLessThanOrEqualTo(result.TotalCount);
     }
 
     [Fact]
@@ -432,3 +432,4 @@ public class SalesOrderLineRepositoryTests
 
     #endregion
 }
+

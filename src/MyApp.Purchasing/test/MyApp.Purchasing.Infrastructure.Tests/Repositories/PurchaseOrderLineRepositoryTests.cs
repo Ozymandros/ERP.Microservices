@@ -170,7 +170,7 @@ public class PurchaseOrderLineRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(3); // At least 1 seeded + 2 new (seeded data has 2 lines for first order)
+        result.Should().HaveCountGreaterThanOrEqualTo(3); // At least 1 seeded + 2 new (seeded data has 2 lines for first order)
         result.All(l => l.PurchaseOrderId == order.Id).Should().BeTrue();
     }
 
@@ -231,7 +231,7 @@ public class PurchaseOrderLineRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(4);
+        result.Should().HaveCountGreaterThanOrEqualTo(4);
     }
 
     #endregion
@@ -254,10 +254,10 @@ public class PurchaseOrderLineRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Items.Should().HaveCountLessOrEqualTo(pageSize);
+        result.Items.Should().HaveCountLessThanOrEqualTo(pageSize);
         result.PageNumber.Should().Be(pageNumber);
         result.PageSize.Should().Be(pageSize);
-        result.TotalCount.Should().BeGreaterOrEqualTo(6);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(6);
     }
 
     #endregion
@@ -383,7 +383,7 @@ public class PurchaseOrderLineRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(4); // At least 1 seeded + 3 new
+        result.Should().HaveCountGreaterThanOrEqualTo(4); // At least 1 seeded + 3 new
         result.Any(l => l.IsFullyReceived).Should().BeTrue();
         result.Any(l => !l.IsFullyReceived).Should().BeTrue();
     }
@@ -446,8 +446,9 @@ public class PurchaseOrderLineRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Items.Should().HaveCountLessOrEqualTo(result.TotalCount);
+        result.Items.Should().HaveCountLessThanOrEqualTo(result.TotalCount);
     }
 
     #endregion
 }
+

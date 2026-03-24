@@ -93,6 +93,6 @@ public class WarehouseQuerySpecTests
 
         var result = spec.Apply(data).ToList();
 
-        result.Should().HaveCountLessOrEqualTo(2);
+        result.Should().HaveCountLessThanOrEqualTo(2);
     }
 }

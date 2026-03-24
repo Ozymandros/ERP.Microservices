@@ -7,7 +7,6 @@ using MyApp.Crm.Domain.Opportunities;
 using MyApp.Crm.Infrastructure.Data;
 using MyApp.Crm.Infrastructure.Data.Repositories;
 using MyApp.Shared.Infrastructure.Extensions;
-using MyApp.Shared.Domain.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 

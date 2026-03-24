@@ -241,10 +241,10 @@ public class ProductRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Items.Should().HaveCountLessOrEqualTo(pageSize);
+        result.Items.Should().HaveCountLessThanOrEqualTo(pageSize);
         result.PageNumber.Should().Be(pageNumber);
         result.PageSize.Should().Be(pageSize);
-        result.TotalCount.Should().BeGreaterOrEqualTo(3);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(3);
     }
 
     [Fact]
@@ -285,7 +285,7 @@ public class ProductRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(1);
         result.Items.Should().Contain(p => p.Name.Contains("Widget", StringComparison.OrdinalIgnoreCase) || 
                                            p.SKU.Contains("Widget", StringComparison.OrdinalIgnoreCase));
     }
@@ -306,7 +306,7 @@ public class ProductRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.TotalCount.Should().BeGreaterOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(2);
         result.Items.Should().OnlyContain(p => p.SKU.Contains("FILTER-SKU", StringComparison.OrdinalIgnoreCase));
     }
 
@@ -326,7 +326,7 @@ public class ProductRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.TotalCount.Should().BeGreaterOrEqualTo(1);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(1);
         result.Items.Should().OnlyContain(p => p.Name.Contains("Widget", StringComparison.OrdinalIgnoreCase));
     }
 
@@ -371,8 +371,8 @@ public class ProductRepositoryTests
         result.Should().NotBeNull();
         result.PageNumber.Should().Be(2);
         result.PageSize.Should().Be(2);
-        result.Items.Should().HaveCountLessOrEqualTo(2);
-        result.TotalCount.Should().BeGreaterOrEqualTo(4);
+        result.Items.Should().HaveCountLessThanOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(4);
     }
 
     [Fact]
@@ -417,3 +417,4 @@ public class ProductRepositoryTests
 
     #endregion
 }
+
