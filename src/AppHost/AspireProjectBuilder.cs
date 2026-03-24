@@ -1,4 +1,3 @@
-using System.Threading;
 using Aspire.Hosting.Azure;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 
@@ -58,6 +57,7 @@ public class AspireProjectBuilder
 
         // Get current ports and increment (thread-safe)
         var httpPort = Interlocked.Increment(ref _httpPort);
+        var aspNetCoreUrls = "http://127.0.0.1:" + httpPort;
         //var daprHttpPort = _daprHttpPort++;
         //var daprGrpcPort = _daprGrpcPort++;
         //var metricsPort = _metricsPort++;
@@ -82,6 +82,8 @@ public class AspireProjectBuilder
             .WithEnvironment("Jwt__SecretKey", _builder.Configuration["Jwt:SecretKey"])
             .WithEnvironment("Jwt__Issuer", _builder.Configuration["Jwt:Issuer"])
             .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"])
+            .WithEnvironment("ASPNETCORE_URLS", aspNetCoreUrls)
+            .WithEnvironment("DOTNET_LAUNCH_PROFILE", string.Empty)
             .WithEnvironment("FRONTEND_ORIGIN", origin)
             // OpenTelemetry configuration for Serilog
             .WithEnvironment("OTEL_SERVICE_NAME", serviceName)
@@ -94,12 +96,6 @@ public class AspireProjectBuilder
             project = project.WaitFor(database);
             project = project.WithReference(database);
         }
-        // Local: expose unique ports for the dashboard
-        // Explicitly provide a unique endpoint name to avoid automatic name collisions ("http")
-        project = project.WithEndpoint("http", endpoint =>
-        {
-            endpoint.Port = httpPort;
-        });
 
     //    project = project.WithHttpEndpoint(port: httpPort, name: "http") // use default name
     //.WithHttpHealthCheck(path: "/health", statusCode: 200);
