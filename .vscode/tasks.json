@@ -1,0 +1,18 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "kill-stale-apphost",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "$logPath='C:\\Projects\\ERP_ASPIRE_APP\\erp-backend\\debug-1e6d20.log'; try{ $payload=[pscustomobject]@{ sessionId='1e6d20'; runId='preLaunchTask'; hypothesisId='H_PRELAUNCH'; location='tasks.json:kill-stale-apphost'; message='preLaunch task started'; data=@{ killed='AppHost' }; timestamp=[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds() }; ($payload | ConvertTo-Json -Compress) | Add-Content -Path $logPath } catch{}; Get-Process AppHost -ErrorAction SilentlyContinue | Stop-Process -Force"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

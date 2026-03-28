@@ -51,6 +51,8 @@ public class OpportunitiesController : ControllerBase
 
     [HttpGet]
     [HasPermission("CRM", "Read")]
+    [ProducesResponseType(typeof(IEnumerable<OpportunityDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResult<OpportunityDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] QuerySpec query, CancellationToken cancellationToken)
     {
         try
@@ -61,7 +63,7 @@ public class OpportunitiesController : ControllerBase
                 query.Validate();
                 var spec = new OpportunityQuerySpec(query);
                 var result = await _service.QueryAsync(spec, cancellationToken);
-                return Ok(result.ToPaginatedResponse(query.Page, query.PageSize));
+                return Ok(result);
             }
 
             var list = await _service.ListAsync(cancellationToken);

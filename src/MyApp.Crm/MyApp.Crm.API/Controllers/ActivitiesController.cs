@@ -25,6 +25,8 @@ public class ActivitiesController : ControllerBase
 
     [HttpGet]
     [HasPermission("CRM", "Read")]
+    [ProducesResponseType(typeof(IEnumerable<ActivityDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResult<ActivityDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] QuerySpec query, CancellationToken cancellationToken)
     {
         try
@@ -35,7 +37,7 @@ public class ActivitiesController : ControllerBase
                 query.Validate();
                 var spec = new ActivityQuerySpec(query);
                 var result = await _service.QueryAsync(spec, cancellationToken);
-                return Ok(result.ToPaginatedResponse(query.Page, query.PageSize));
+                return Ok(result);
             }
 
             var list = await _service.ListAsync(cancellationToken);

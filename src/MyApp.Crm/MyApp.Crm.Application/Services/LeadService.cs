@@ -83,7 +83,7 @@ public class LeadService : ILeadService
 
     public async Task<LeadDto> UpdateAsync(Guid id, UpdateLeadDto dto, CancellationToken cancellationToken = default)
     {
-        var lead = await _leadRepository.GetByIdAsync(id);
+        var lead = await _leadRepository.GetByIdForUpdateAsync(id, cancellationToken);
         if (lead is null) throw new InvalidOperationException($"Lead with ID {id} not found.");
 
         lead.UpdateDetails(dto.Title, dto.Source, dto.ContactName, dto.ContactEmail, dto.ContactPhone);
@@ -104,7 +104,7 @@ public class LeadService : ILeadService
 
     public async Task QualifyAsync(Guid id, QualifyLeadDto dto, CancellationToken cancellationToken = default)
     {
-        var lead = await _leadRepository.GetByIdAsync(id);
+        var lead = await _leadRepository.GetByIdForUpdateAsync(id, cancellationToken);
         if (lead is null) throw new InvalidOperationException($"Lead with ID {id} not found.");
 
         lead.Qualify(dto.CustomerId);
@@ -125,7 +125,7 @@ public class LeadService : ILeadService
 
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var lead = await _leadRepository.GetByIdAsync(id);
+        var lead = await _leadRepository.GetByIdForUpdateAsync(id, cancellationToken);
         if (lead is null) return;
         await _leadRepository.DeleteAsync(lead);
     }

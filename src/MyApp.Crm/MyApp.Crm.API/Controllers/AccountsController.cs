@@ -24,6 +24,8 @@ public sealed class AccountsController : ControllerBase
 
     [HttpGet]
     [HasPermission("CRM", "Read")]
+    [ProducesResponseType(typeof(IEnumerable<AccountDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResult<AccountDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] QuerySpec query, CancellationToken cancellationToken)
     {
         try
@@ -33,7 +35,7 @@ public sealed class AccountsController : ControllerBase
                 query.BindFiltersFromQuery(Request.Query);
                 query.Validate();
                 var result = await _service.QueryAsync(query, cancellationToken);
-                return Ok(result.ToPaginatedResponse(query.Page, query.PageSize));
+                return Ok(result);
             }
 
             var list = await _service.ListAsync(cancellationToken);

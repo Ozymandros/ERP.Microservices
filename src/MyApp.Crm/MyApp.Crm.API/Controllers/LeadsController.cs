@@ -26,7 +26,7 @@ public class LeadsController : ControllerBase
     [HttpGet]
     [HasPermission("CRM", "Read")]
     [ProducesResponseType(typeof(IEnumerable<LeadDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResult<LeadDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] QuerySpec query, CancellationToken cancellationToken)
     {
         try
@@ -37,7 +37,7 @@ public class LeadsController : ControllerBase
                 query.Validate();
                 var spec = new LeadQuerySpec(query);
                 var result = await _leadService.QueryAsync(spec, cancellationToken);
-                return Ok(result.ToPaginatedResponse(query.Page, query.PageSize));
+                return Ok(result);
             }
 
             var leads = await _leadService.ListAsync(cancellationToken);

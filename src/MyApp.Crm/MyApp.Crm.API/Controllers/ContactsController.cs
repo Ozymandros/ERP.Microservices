@@ -24,6 +24,8 @@ public sealed class ContactsController : ControllerBase
 
     [HttpGet]
     [HasPermission("CRM", "Read")]
+    [ProducesResponseType(typeof(IEnumerable<ContactDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResult<ContactDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] QuerySpec query, CancellationToken cancellationToken)
     {
         try
@@ -33,7 +35,7 @@ public sealed class ContactsController : ControllerBase
                 query.BindFiltersFromQuery(Request.Query);
                 query.Validate();
                 var result = await _service.QueryAsync(query, cancellationToken);
-                return Ok(result.ToPaginatedResponse(query.Page, query.PageSize));
+                return Ok(result);
             }
 
             return Ok(Array.Empty<ContactDto>());
