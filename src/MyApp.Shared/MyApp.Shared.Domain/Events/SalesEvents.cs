@@ -24,3 +24,15 @@ public record SalesOrderStatusChangedEvent(
     string OldStatus,
     string NewStatus
 );
+
+public record SalesCustomerCreatedEvent(
+    Guid CustomerId,
+    string Name,
+    string Email
+);
+
+public record SalesCustomerUpdatedEvent(
+    Guid CustomerId,
+    string Name,
+    string Email
+);

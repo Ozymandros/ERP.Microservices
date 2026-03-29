@@ -83,7 +83,7 @@ This category covers building and maintaining individual microservices. From ser
 
 ---
 
-## 📊 6 Microservices
+## 📊 7 Microservices
 
 | Service | Port | Database | Purpose |
 |---------|------|----------|---------|
@@ -93,6 +93,7 @@ This category covers building and maintaining individual microservices. From ser
 | **Sales Service** | 5004 | sales-db | Sales management |
 | **Billing Service** | 5005 | billing-db | Billing & invoicing |
 | **Purchasing Service** | 5006 | purchasing-db | Procurement |
+| **CRM Service** | 5008 | crm-db | Leads, opportunities, activities |
 
 ---
 
@@ -256,6 +257,7 @@ When creating a new service:
 - **Database access?** → [DATABASE_ACCESS.md](DATABASE_ACCESS.md)
 - **Caching needed?** → [CACHING.md](CACHING.md)
 - **Events?** → [PUB_SUB.md](PUB_SUB.md)
+- **CRM service?** → [CRM.md](CRM.md)
 
 ---
 
@@ -264,6 +266,7 @@ When creating a new service:
 ```
 microservices/
 ├── README.md (this file)
+├── CRM.md
 ├── SERVICE_TEMPLATES.md
 ├── DAPR_INTEGRATION.md
 ├── DATABASE_ACCESS.md
@@ -273,7 +276,7 @@ microservices/
 
 ---
 
-**Last Updated:** October 27, 2025  
+**Last Updated:** March 17, 2026  
 **Category Status:** ✅ Complete  
-**Documents:** 5 files  
-**Services:** 6 total
+**Documents:** 6 files  
+**Services:** 7 total

@@ -12,6 +12,7 @@
             "MyApp.Orders/**/*.csproj",
             "MyApp.Purchasing/**/*.csproj",
             "MyApp.Sales/**/*.csproj",
+            "MyApp.Crm/**/*.csproj",
             "MyApp.Shared/**/*.csproj",
             "ErpApiGateway/**/*.csproj",
             "AppHost/**/*.csproj"

@@ -135,7 +135,7 @@ public class ReservedStockRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(3); // At least the seeded data
+        result.Should().HaveCountGreaterThanOrEqualTo(3); // At least the seeded data
     }
 
     #endregion
@@ -249,7 +249,7 @@ public class ReservedStockRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(2); // At least the seeded expired one + the new one
+        result.Should().HaveCountGreaterThanOrEqualTo(2); // At least the seeded expired one + the new one
         result.All(r => r.Status == ReservationStatus.Reserved).Should().BeTrue();
         result.All(r => r.ReservedUntil < DateTime.UtcNow).Should().BeTrue();
     }
@@ -291,7 +291,7 @@ public class ReservedStockRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(3); // At least 2 seeded + 2 new
+        result.Should().HaveCountGreaterThanOrEqualTo(3); // At least 2 seeded + 2 new
         result.All(r => r.OrderId == order.Id).Should().BeTrue();
     }
 
@@ -348,3 +348,4 @@ public class ReservedStockRepositoryTests
     // They are part of IRepository but ReservedStockRepository only implements custom methods
     // plus basic CRUD operations
 }
+

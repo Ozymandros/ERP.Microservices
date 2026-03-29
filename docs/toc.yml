@@ -16,6 +16,8 @@
       href: architecture/ARCHITECTURE_DOCUMENTATION.md
     - name: Dependency Mapping
       href: architecture/DEPENDENCY_MAPPING.md
+    - name: CRM Architecture
+      href: architecture/CRM_ARCHITECTURE.md
     - name: README
       href: architecture/README.md
 - name: Configuration
@@ -144,6 +146,8 @@
   items:
     - name: Overview
       href: microservices/README.md
+    - name: CRM Service
+      href: microservices/CRM.md
 - name: Operations
   items:
     - name: Best Practices

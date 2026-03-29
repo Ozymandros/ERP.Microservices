@@ -149,7 +149,7 @@ public static class PaginatedResponseExtensions
         var totalPages = (int)Math.Ceiling((double)result.TotalCount / pageSize);
         return new
         {
-            data = result.Items,
+            items = result.Items,
             pagination = new
             {
                 page,

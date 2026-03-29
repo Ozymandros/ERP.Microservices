@@ -136,7 +136,7 @@ public class SalesOrderRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(4); // At least 2 seeded + 2 new
+        result.Should().HaveCountGreaterThanOrEqualTo(4); // At least 2 seeded + 2 new
     }
 
     #endregion
@@ -155,7 +155,7 @@ public class SalesOrderRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(3);
+        result.Should().HaveCountGreaterThanOrEqualTo(3);
     }
 
     #endregion
@@ -178,10 +178,10 @@ public class SalesOrderRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Items.Should().HaveCountLessOrEqualTo(pageSize);
+        result.Items.Should().HaveCountLessThanOrEqualTo(pageSize);
         result.PageNumber.Should().Be(pageNumber);
         result.PageSize.Should().Be(pageSize);
-        result.TotalCount.Should().BeGreaterOrEqualTo(5);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(5);
     }
 
     [Fact]
@@ -308,7 +308,7 @@ public class SalesOrderRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.TotalCount.Should().BeGreaterOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(2);
         result.Items.Should().OnlyContain(o => o.OrderNumber.Contains("SEARCH-ORD", StringComparison.OrdinalIgnoreCase));
     }
 
@@ -329,7 +329,7 @@ public class SalesOrderRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.TotalCount.Should().BeGreaterOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(2);
         result.Items.Should().OnlyContain(o => o.OrderNumber.Contains("FILTER-ORD", StringComparison.OrdinalIgnoreCase));
     }
 
@@ -421,8 +421,8 @@ public class SalesOrderRepositoryTests
         result.Should().NotBeNull();
         result.PageNumber.Should().Be(2);
         result.PageSize.Should().Be(2);
-        result.Items.Should().HaveCountLessOrEqualTo(2);
-        result.TotalCount.Should().BeGreaterOrEqualTo(6);
+        result.Items.Should().HaveCountLessThanOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(6);
     }
 
     [Fact]
@@ -448,3 +448,4 @@ public class SalesOrderRepositoryTests
 
     #endregion
 }
+

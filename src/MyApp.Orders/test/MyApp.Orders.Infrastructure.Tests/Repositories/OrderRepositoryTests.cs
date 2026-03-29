@@ -226,7 +226,7 @@ public class OrderRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.TotalCount.Should().BeGreaterOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(2);
         result.Items.Should().OnlyContain(o => o.OrderNumber.Contains("SEARCH-ORD", StringComparison.OrdinalIgnoreCase));
     }
 
@@ -246,7 +246,7 @@ public class OrderRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.TotalCount.Should().BeGreaterOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(2);
         result.Items.Should().OnlyContain(o => o.OrderNumber.Contains("FILTER-ORD", StringComparison.OrdinalIgnoreCase));
     }
 
@@ -329,8 +329,8 @@ public class OrderRepositoryTests
         result.Should().NotBeNull();
         result.PageNumber.Should().Be(2);
         result.PageSize.Should().Be(2);
-        result.Items.Should().HaveCountLessOrEqualTo(2);
-        result.TotalCount.Should().BeGreaterOrEqualTo(4);
+        result.Items.Should().HaveCountLessThanOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(4);
     }
 
     [Fact]
@@ -375,3 +375,4 @@ public class OrderRepositoryTests
 
     #endregion
 }
+

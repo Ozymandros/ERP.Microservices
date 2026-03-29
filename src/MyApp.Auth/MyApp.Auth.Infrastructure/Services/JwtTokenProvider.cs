@@ -74,10 +74,11 @@ public class JwtTokenProvider : IJwtTokenProvider
                     resultClaims?.Add(new Claim(claim.Type, claim.Value));
                 }
 
+        // Do not use HashSet<Claim>: Claim equality can collapse distinct role/permission claims and break token creation.
         var token = new JwtSecurityToken(
             issuer: _issuer,
             audience: _audience,
-            claims: resultClaims?.ToHashSet(),
+            claims: resultClaims,
             expires: DateTime.UtcNow.AddMinutes(_accessTokenExpirationMinutes),
             signingCredentials: credentials);
 

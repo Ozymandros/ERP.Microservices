@@ -254,6 +254,46 @@
         "Limit": 100
       },
       "Priority": 1
+    },
+    {
+      "DownstreamPathTemplate": "/openapi/v1.json",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 5007 }
+      ],
+      "UpstreamPathTemplate": "/crm/openapi/v1.json",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/scalar/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 5007 }
+      ],
+      "UpstreamPathTemplate": "/crm/scalar/{everything}",
+      "UpstreamHttpMethod": ["GET"],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/api/crm/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 5007 }
+      ],
+      "UpstreamPathTemplate": "/crm/api/crm/{everything}",
+      "UpstreamHttpMethod": [
+        "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
+      ],
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
+      "RateLimitOptions": {
+        "EnableRateLimiting": false,
+        "Period": "1m",
+        "Limit": 100
+      },
+      "Priority": 1
     }
   ]
 }

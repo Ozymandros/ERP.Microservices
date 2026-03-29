@@ -149,7 +149,7 @@ public class OrderLineRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(5); // At least 3 seeded + 2 new
+        result.Should().HaveCountGreaterThanOrEqualTo(5); // At least 3 seeded + 2 new
     }
 
     #endregion
@@ -389,10 +389,11 @@ public class OrderLineRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(5);
+        result.Should().HaveCountGreaterThanOrEqualTo(5);
         result.Any(l => l.IsFulfilled).Should().BeTrue();
         result.Any(l => !l.IsFulfilled).Should().BeTrue();
     }
 
     #endregion
 }
+
