@@ -149,7 +149,7 @@ public class WarehouseStockRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(3); // At least the seeded data
+        result.Should().HaveCountGreaterThanOrEqualTo(3); // At least the seeded data
     }
 
     #endregion
@@ -168,10 +168,10 @@ public class WarehouseStockRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Items.Should().HaveCountLessOrEqualTo(pageSize);
+        result.Items.Should().HaveCountLessThanOrEqualTo(pageSize);
         result.PageNumber.Should().Be(pageNumber);
         result.PageSize.Should().Be(pageSize);
-        result.TotalCount.Should().BeGreaterOrEqualTo(3);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(3);
     }
 
     [Fact]
@@ -269,7 +269,7 @@ public class WarehouseStockRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(2);
+        result.Should().HaveCountGreaterThanOrEqualTo(2);
         result.All(s => s.ProductId == product.Id).Should().BeTrue();
         result.All(s => s.Product != null).Should().BeTrue();
     }
@@ -307,7 +307,7 @@ public class WarehouseStockRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(2);
+        result.Should().HaveCountGreaterThanOrEqualTo(2);
         result.All(s => s.WarehouseId == warehouse.Id).Should().BeTrue();
         result.All(s => s.Warehouse != null).Should().BeTrue();
     }
@@ -366,7 +366,7 @@ public class WarehouseStockRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(3); // All stocks should be below 200
+        result.Should().HaveCountGreaterThanOrEqualTo(3); // All stocks should be below 200
     }
 
     #endregion
@@ -449,3 +449,4 @@ public class WarehouseStockRepositoryTests
     // Note: QueryAsync tests will be added when WarehouseStockQuerySpec is created
     // This is covered in the query-spec-tests task
 }
+

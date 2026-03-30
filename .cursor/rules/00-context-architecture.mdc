@@ -32,9 +32,9 @@ Client → API Gateway (Ocelot) → Microservice → DAPR Sidecar → Database/R
 1. **Auth Service** - Authentication, authorization, user management
 2. **Billing Service** - Invoicing, payments, billing
 3. **Inventory Service** - Products, warehouses, stock management
-4. **Orders Service** - Operational logistics (transfers, inbound/outbound movements). Links to Sales/Purchasing via ExternalOrderId. NEVER contains CustomerId, SupplierId, or pricing.
-5. **Purchasing Service** - Purchase orders, supplier management
-6. **Sales Service** - Sales operations, SalesOrders, customers, quotes, pricing
+4. **Orders Service** - Sales orders, order processing
+5. **Purchasing Service** - Purchase orders, vendor management
+6. **Sales Service** - Sales operations, customer management
 
 ---
 

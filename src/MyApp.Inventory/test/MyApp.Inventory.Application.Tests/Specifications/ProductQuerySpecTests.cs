@@ -143,7 +143,7 @@ public class ProductQuerySpecTests
         // Assert
         // Search is case-insensitive and matches SKU, Name, or Description
         // "PROD" matches: PROD-001, PROD-002, PROD-003 (SKU), Product One, Product Two, Another Product (Name), and all descriptions contain "product"
-        result.Should().HaveCountGreaterOrEqualTo(3);
+        result.Should().HaveCountGreaterThanOrEqualTo(3);
         result.All(p => p.SKU.ToLower().Contains("prod") || p.Name.ToLower().Contains("prod") || (p.Description != null && p.Description.ToLower().Contains("prod"))).Should().BeTrue();
     }
 
@@ -279,7 +279,7 @@ public class ProductQuerySpecTests
         var result = spec.Apply(data).ToList();
 
         // Assert
-        result.Should().HaveCountLessOrEqualTo(2);
+        result.Should().HaveCountLessThanOrEqualTo(2);
     }
 
     [Fact]
@@ -294,7 +294,7 @@ public class ProductQuerySpecTests
         var result = spec.Apply(data).ToList();
 
         // Assert
-        result.Should().HaveCountLessOrEqualTo(2);
+        result.Should().HaveCountLessThanOrEqualTo(2);
     }
 
     #endregion

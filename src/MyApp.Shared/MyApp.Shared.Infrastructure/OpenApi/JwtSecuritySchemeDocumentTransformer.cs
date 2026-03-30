@@ -28,8 +28,12 @@ public sealed class JwtSecuritySchemeDocumentTransformer : IOpenApiDocumentTrans
         // Apply security requirement to all operations
         foreach (var path in document.Paths.Values)
         {
-            foreach (var operation in path.Operations.Values.Where(operation => operation != null))
+            if (path.Operations is null) continue;
+
+            foreach (var operation in path.Operations.Values)
             {
+                if (operation is null) continue;
+
                 operation.Security ??= new List<OpenApiSecurityRequirement>();
                 operation.Security.Add(new OpenApiSecurityRequirement
                 {

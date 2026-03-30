@@ -155,6 +155,7 @@ public static class MicroserviceExtensions
         // 10. AutoMapper (if enabled and assembly provided)
         if (options.EnableAutoMapper && options.AutoMapperAssembly != null)
         {
+            // AutoMapper 16+ ships its own DI registration extensions (no separate package needed).
             builder.Services.AddAutoMapper(cfg => { }, options.AutoMapperAssembly);
         }
 

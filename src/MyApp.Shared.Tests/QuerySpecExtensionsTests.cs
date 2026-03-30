@@ -206,8 +206,8 @@ public class QuerySpecExtensionsTests
         query.BindFiltersFromQuery(queryParams);
 
         // Assert
-        query.Page.Should().BeGreaterOrEqualTo(1);
-        query.PageSize.Should().BeLessOrEqualTo(100);
+        query.Page.Should().BeGreaterThanOrEqualTo(1);
+        query.PageSize.Should().BeLessThanOrEqualTo(100);
     }
 
     #endregion
@@ -385,8 +385,8 @@ public class QuerySpecExtensionsTests
         query.ToQuerySpec();
 
         // Assert
-        query.Page.Should().BeGreaterOrEqualTo(1);
-        query.PageSize.Should().BeLessOrEqualTo(100);
+        query.Page.Should().BeGreaterThanOrEqualTo(1);
+        query.PageSize.Should().BeLessThanOrEqualTo(100);
     }
 
     [Fact]
@@ -530,3 +530,4 @@ public class QuerySpecExtensionsTests
 
     #endregion
 }
+

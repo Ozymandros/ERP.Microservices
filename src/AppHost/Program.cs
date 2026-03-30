@@ -1,4 +1,3 @@
-﻿using CommunityToolkit.Aspire.Hosting.Dapr;
 using Microsoft.Extensions.DependencyInjection;
 using MyApp.Shared.Domain.Constants;
 
@@ -77,6 +76,9 @@ var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_A
 var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: SalesDB, sales-service, ports 5006, 3506, 45006, 9096
 
+var crmService = projectBuilder.AddWebProject<Projects.MyApp_Crm_API>(redis, origin, isDeployment, applicationInsights);
+// Creates: CrmDB, crm-service, ports 5007, 3507, 45007, 9097
+
 // Local Development: Reverse Proxy (YARP)
 // Alternative: YARP (without /Scalar service)
 /*var gateway = builder.AddYarp("gateway")
@@ -113,6 +115,7 @@ var gateway = builder.AddProject<Projects.ErpApiGateway>("gateway")
     .WaitFor(ordersService)
     .WaitFor(purchasingService)
     .WaitFor(salesService)
+    .WaitFor(crmService)
     .WithHttpEndpoint(port: 5000, name: "gateway-http")   // Explicitly listen on 5000 for Dapr
     .WithHttpsEndpoint(port: 7231, name: "gateway-https") // Explicitly listen on 7231 for Browser/Scalar
     .WithEnvironment("Jwt__SecretKey", jwtSecretKey)

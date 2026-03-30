@@ -150,7 +150,7 @@ public class InventoryTransactionRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(3); // At least the seeded data
+        result.Should().HaveCountGreaterThanOrEqualTo(3); // At least the seeded data
     }
 
     #endregion
@@ -169,10 +169,10 @@ public class InventoryTransactionRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Items.Should().HaveCountLessOrEqualTo(pageSize);
+        result.Items.Should().HaveCountLessThanOrEqualTo(pageSize);
         result.PageNumber.Should().Be(pageNumber);
         result.PageSize.Should().Be(pageSize);
-        result.TotalCount.Should().BeGreaterOrEqualTo(3);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(3);
     }
 
     #endregion
@@ -193,7 +193,7 @@ public class InventoryTransactionRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(3); // At least 1 seeded + 2 new
+        result.Should().HaveCountGreaterThanOrEqualTo(3); // At least 1 seeded + 2 new
         result.All(t => t.ProductId == product.Id).Should().BeTrue();
         result.All(t => t.Product != null).Should().BeTrue();
         result.All(t => t.Warehouse != null).Should().BeTrue();
@@ -232,7 +232,7 @@ public class InventoryTransactionRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(2); // At least 1 seeded + 2 new
+        result.Should().HaveCountGreaterThanOrEqualTo(2); // At least 1 seeded + 2 new
         result.All(t => t.WarehouseId == warehouse.Id).Should().BeTrue();
         result.All(t => t.Product != null).Should().BeTrue();
         result.All(t => t.Warehouse != null).Should().BeTrue();
@@ -270,7 +270,7 @@ public class InventoryTransactionRepositoryTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCountGreaterOrEqualTo(2); // At least 1 seeded + 1 new
+        result.Should().HaveCountGreaterThanOrEqualTo(2); // At least 1 seeded + 1 new
         result.All(t => t.TransactionType == TransactionType.Inbound).Should().BeTrue();
         result.All(t => t.Product != null).Should().BeTrue();
         result.All(t => t.Warehouse != null).Should().BeTrue();
@@ -480,8 +480,8 @@ public class InventoryTransactionRepositoryTests
         result.Should().NotBeNull();
         result.PageNumber.Should().Be(2);
         result.PageSize.Should().Be(2);
-        result.Items.Should().HaveCountLessOrEqualTo(2);
-        result.TotalCount.Should().BeGreaterOrEqualTo(7);
+        result.Items.Should().HaveCountLessThanOrEqualTo(2);
+        result.TotalCount.Should().BeGreaterThanOrEqualTo(7);
     }
 
     [Fact]
@@ -508,3 +508,4 @@ public class InventoryTransactionRepositoryTests
 
     #endregion
 }
+
