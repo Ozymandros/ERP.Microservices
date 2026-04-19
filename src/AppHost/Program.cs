@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using MyApp.Shared.Domain.Constants;
 
@@ -78,6 +79,9 @@ var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis,
 
 var crmService = projectBuilder.AddWebProject<Projects.MyApp_Crm_API>(redis, origin, isDeployment, applicationInsights);
 // Creates: CrmDB, crm-service, ports 5007, 3507, 45007, 9097
+
+var skService = projectBuilder.AddWebProject<Projects.MyApp_SemanticKernel>(redis, origin, isDeployment, applicationInsights, database: false);
+// Creates: skDB, sk-service, ports 5008, 3508, 45008, 9098
 
 // Local Development: Reverse Proxy (YARP)
 // Alternative: YARP (without /Scalar service)

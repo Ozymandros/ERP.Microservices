@@ -10,7 +10,7 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/api/auth/login",
-      "UpstreamHttpMethod": ["Post"],
+      "UpstreamHttpMethod": [ "Post" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -24,7 +24,7 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/openapi/v1.json",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -38,7 +38,7 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/scalar/{everything}",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -55,7 +55,7 @@
       "UpstreamHttpMethod": [
         "GET",
         "POST",
-        "PUT",  
+        "PUT",
         "DELETE",
         "PATCH",
         "OPTIONS"
@@ -82,7 +82,7 @@
         }
       ],
       "UpstreamPathTemplate": "/inventory/openapi/v1.json",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -96,7 +96,7 @@
         }
       ],
       "UpstreamPathTemplate": "/inventory/scalar/{everything}",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -136,7 +136,7 @@
         }
       ],
       "UpstreamPathTemplate": "/crm/openapi/v1.json",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -150,7 +150,7 @@
         }
       ],
       "UpstreamPathTemplate": "/crm/scalar/{everything}",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -190,7 +190,7 @@
         }
       ],
       "UpstreamPathTemplate": "/orders/openapi/v1.json",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -204,7 +204,7 @@
         }
       ],
       "UpstreamPathTemplate": "/orders/scalar/{everything}",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -244,7 +244,7 @@
         }
       ],
       "UpstreamPathTemplate": "/sales/openapi/v1.json",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -258,7 +258,7 @@
         }
       ],
       "UpstreamPathTemplate": "/sales/scalar/{everything}",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -298,7 +298,7 @@
         }
       ],
       "UpstreamPathTemplate": "/purchasing/openapi/v1.json",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -312,7 +312,7 @@
         }
       ],
       "UpstreamPathTemplate": "/purchasing/scalar/{everything}",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -350,9 +350,9 @@
           "Host": "crm-service",
           "Port": 8080
         }
-  ],
+      ],
       "UpstreamPathTemplate": "/crm/openapi/v1.json",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -366,7 +366,7 @@
         }
       ],
       "UpstreamPathTemplate": "/crm/scalar/{everything}",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
@@ -380,6 +380,60 @@
         }
       ],
       "UpstreamPathTemplate": "/crm/api/crm/{everything}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+        "OPTIONS"
+      ],
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
+      "RateLimitOptions": {
+        "EnableRateLimiting": false,
+        "Period": "1m",
+        "Limit": 100
+      },
+      "Priority": 1
+    },
+    {
+      "DownstreamPathTemplate": "/openapi/v1.json",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "sk-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/sk/openapi/v1.json",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/scalar/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "sk-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/sk/scalar/{everything}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/api/sk/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "sk-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/sk/api/{everything}",
       "UpstreamHttpMethod": [
         "GET",
         "POST",

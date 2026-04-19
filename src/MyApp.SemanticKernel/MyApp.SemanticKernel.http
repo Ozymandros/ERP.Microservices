@@ -1,0 +1,6 @@
+@MyApp.SemanticKernel_HostAddress = http://localhost:5279
+
+GET {{MyApp.SemanticKernel_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

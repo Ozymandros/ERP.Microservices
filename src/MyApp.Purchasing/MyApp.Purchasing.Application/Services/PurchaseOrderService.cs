@@ -1,19 +1,16 @@
-using System;
 using AutoMapper;
-using System.Linq;
 using Microsoft.Extensions.Logging;
+using MyApp.Orders.Application.Contracts.Dtos;
+using MyApp.Orders.Domain;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
-using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
-using System.Net.Http;
-using MyApp.Orders.Application.Contracts.Dtos;
-using MyApp.Orders.Domain;
 
 namespace MyApp.Purchasing.Application.Services;
 

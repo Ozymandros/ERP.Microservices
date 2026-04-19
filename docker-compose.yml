@@ -134,6 +134,11 @@ services:
       # Ocelot__Routes__4__DownstreamHostAndPorts__0__Port: 8080
       Ocelot__Routes__5__DownstreamHostAndPorts__0__Host: purchasing-service
       Ocelot__Routes__5__DownstreamHostAndPorts__0__Port: 8080
+      Ocelot__Routes__6__DownstreamHostAndPorts__0__Host: crm-service
+      Ocelot__Routes__6__DownstreamHostAndPorts__0__Port: 8080
+      Ocelot_Routes__7__DownstreamHostAndPorts__0__Host: sk-service
+      Ocelot_Routes__7__DownstreamHostAndPorts__0__Port: 8080
+      Ocelot__GlobalConfiguration__BaseUrl: http://localhost:5000
     ports:
       - "5000:8080"
     depends_on:
@@ -150,6 +155,8 @@ services:
       purchasing-service:
         condition: service_started
       sales-service:
+        condition: service_started
+      sk-service:
         condition: service_started
     volumes:
       - ./src/ErpApiGateway/ocelot.json:/app/ocelot.json:ro
@@ -517,6 +524,54 @@ services:
     volumes:
       - ./deploy/dapr/components:/components:ro
     network_mode: "service:crm-service"
+    restart: unless-stopped
+
+  sk-service:
+    build:
+      context: ./src
+      dockerfile: MyApp.SemanticKernel/Dockerfile.local
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+    container_name: sk-service
+    environment:
+      <<: *api-env
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      dapr-placement:
+        condition: service_started
+    ports:
+      - "5009:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 120s
+    networks:
+      - erp
+    restart: unless-stopped
+
+  sk-service-dapr:
+    image: daprio/dapr:1.15.6
+    container_name: sk-service-dapr
+    depends_on:
+      - sk-service
+      - dapr-placement
+    command:
+      [
+        "./daprd",
+        "-app-id", "sk-service",
+        "-app-port", "8080",
+        "-components-path", "/components",
+        "-placement-host-address", "dapr-placement:50009",
+        "-log-level", "info"
+      ]
+    volumes:
+      - ./deploy/dapr/components:/components:ro
+    network_mode: "service:sk-service"
     restart: unless-stopped
 
 networks:

@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-MyApp.SemanticKernel-04e6cb3e-5460-407e-8519-d85165e4908c</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\erp-backend</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.StackExchange.Redis" Version="13.2.0" />
+    <PackageReference Include="Dapr.AspNetCore" Version="1.17.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="10.0.5" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.5" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Identity.Web.DownstreamApi" Version="3.14.1" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="4.3.0" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.74.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Agents.Core" Version="1.74.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Core" Version="1.74.0" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.13.13" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyApp.Auth\MyApp.Auth.Application.Contracts\MyApp.Auth.Application.Contracts.csproj" />
+    <ProjectReference Include="..\MyApp.Billing\MyApp.Billing.Application.Contracts\MyApp.Billing.Application.Contracts.csproj" />
+    <ProjectReference Include="..\MyApp.Crm\MyApp.Crm.Application.Contracts\MyApp.Crm.Application.Contracts.csproj" />
+    <ProjectReference Include="..\MyApp.Inventory\MyApp.Inventory.Application.Contracts\MyApp.Inventory.Application.Contracts.csproj" />
+    <ProjectReference Include="..\MyApp.Orders\MyApp.Orders.Application.Contracts\MyApp.Orders.Application.Contracts.csproj" />
+    <ProjectReference Include="..\MyApp.Purchasing\MyApp.Purchasing.Application.Contracts\MyApp.Purchasing.Application.Contracts.csproj" />
+    <ProjectReference Include="..\MyApp.Sales\MyApp.Sales.Application.Contracts\MyApp.Sales.Application.Contracts.csproj" />
+    <ProjectReference Include="..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Shared\MyApp.Shared.Infrastructure\MyApp.Shared.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+</Project>

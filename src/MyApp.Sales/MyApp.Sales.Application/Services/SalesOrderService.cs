@@ -1,21 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using MyApp.Inventory.Application.Contracts.DTOs;
+using MyApp.Orders.Application.Contracts.Dtos;
+using MyApp.Orders.Domain;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
-using MyApp.Shared.Domain.Constants;
-using MyApp.Inventory.Application.Contracts.DTOs;
-using MyApp.Orders.Application.Contracts.Dtos;
-using MyApp.Orders.Domain;
 
 namespace MyApp.Sales.Application.Services
 {

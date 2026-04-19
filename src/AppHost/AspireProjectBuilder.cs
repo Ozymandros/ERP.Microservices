@@ -31,7 +31,8 @@ public class AspireProjectBuilder
         IResourceBuilder<RedisResource>? redis = null,
         string? origin = null,
         bool isDeployment = false,
-        IResourceBuilder<AzureApplicationInsightsResource>? applicationInsights = null)
+        IResourceBuilder<AzureApplicationInsightsResource>? applicationInsights = null,
+        bool hasDatabase = true)
         where T : IProjectMetadata, new()
     {
         // Extract service name from type name
@@ -90,15 +91,15 @@ public class AspireProjectBuilder
             .WithEnvironment("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317")
             .PublishAsDockerFile();
 
-        var database = _sqlServer?.AddDatabase(dbName); ;
+        var database = hasDatabase ? _sqlServer?.AddDatabase(dbName) : null;
         if (database is not null)
         {
             project = project.WaitFor(database);
             project = project.WithReference(database);
         }
 
-    //    project = project.WithHttpEndpoint(port: httpPort, name: "http") // use default name
-    //.WithHttpHealthCheck(path: "/health", statusCode: 200);
+        //    project = project.WithHttpEndpoint(port: httpPort, name: "http") // use default name
+        //.WithHttpHealthCheck(path: "/health", statusCode: 200);
 
         // Application Insights
         if (applicationInsights is not null)
