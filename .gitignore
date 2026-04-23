@@ -1,14 +1,17 @@
 ```
 # Build results
-bin/
-obj/
-out/
+**/bin/
+**/obj/
+**/out/
 
 # User-specific files
-.vs/
 *.user
 *.userosscache
 *.suo
+*.csproj.user
+*.vbproj.user
+*.fsproj.user
+*.userprefs
 
 # Log files
 *.log
@@ -16,18 +19,39 @@ out/
 # Environment specific settings
 .env
 .env.local
-*.env.*
+.env.dev
+.env.test
+.env.prod
+
+# IDE specific
+.vs/
+.idea/
+*.swp
+*.swo
 
 # OS generated files
 .DS_Store
 Thumbs.db
 
-# IDE specific files
-.vscode/
-.idea/
+# Dependencies
+node_modules/
+packages/
 
-# Test coverage
+# Testing
+TestResults/
+
+# Local DB
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+
+# Coverage
 coverage/
 *.cover
-*.coverage
+*.log
+
+# Temporary files
+*.tmp
+*.temp
 ```

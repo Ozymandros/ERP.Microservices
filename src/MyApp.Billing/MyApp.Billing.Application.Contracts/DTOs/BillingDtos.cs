@@ -1,3 +1,5 @@
+using MyApp.Shared.Domain.DTOs;
+
 namespace MyApp.Billing.Application.Contracts.DTOs;
 
 /// <summary>
@@ -81,7 +83,7 @@ public record InvoiceDto(
     List<InvoiceLineDto> Lines,
     DateTime CreatedAt,
     DateTime UpdatedAt
-);
+) : AuditableGuidDto(Id);
 
 /// <summary>
 /// DTO for invoice line details
@@ -123,4 +125,4 @@ public record CreditNoteDto(
     decimal TotalTax,
     decimal TotalGross,
     DateTime CreatedAt
-);
+) : AuditableGuidDto(Id);

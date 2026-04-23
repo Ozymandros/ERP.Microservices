@@ -5,6 +5,8 @@ using MyApp.Billing.Domain.Repositories;
 using MyApp.Billing.Infrastructure.Repositories;
 using MyApp.Billing.Application.Contracts.Services;
 using MyApp.Billing.Application.Services;
+using MyApp.Billing.Application.Contracts.DTOs;
+using MyApp.Shared.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
