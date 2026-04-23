@@ -42,7 +42,7 @@ public class OrdersServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync(ServiceNames.Orders, KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
@@ -65,14 +65,14 @@ public class OrdersServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("orders-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
         {
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
-        
+
         var order = new
         {
             CustomerId = Guid.NewGuid(),
@@ -106,14 +106,14 @@ public class OrdersServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("orders-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
         {
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
-        
+
         // Create an order first
         var newOrder = new
         {
@@ -159,14 +159,14 @@ public class OrdersServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("orders-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
         {
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
-        
+
         // Create an order first
         var newOrder = new
         {

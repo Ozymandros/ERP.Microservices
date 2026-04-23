@@ -87,13 +87,14 @@ This category covers building and maintaining individual microservices. From ser
 
 | Service | Port | Database | Purpose |
 |---------|------|----------|---------|
-| **Auth Service** | 5001 | auth-db | Authentication & authorization |
-| **Inventory Service** | 5002 | inventory-db | Product inventory |
-| **Orders Service** | 5003 | orders-db | Order processing |
-| **Sales Service** | 5004 | sales-db | Sales management |
-| **Billing Service** | 5005 | billing-db | Billing & invoicing |
-| **Purchasing Service** | 5006 | purchasing-db | Procurement |
-| **CRM Service** | 5008 | crm-db | Leads, opportunities, activities |
+| **Auth Service** | 6001 | auth-db | Authentication & authorization |
+| **Billing Service** | 6002 | billing-db | Billing & invoicing |
+| **Inventory Service** | 6004 | inventory-db | Product inventory |
+| **Orders Service** | 6005 | orders-db | Order processing |
+| **Purchasing Service** | 6006 | purchasing-db | Procurement |
+| **Sales Service** | 6007 | sales-db | Sales management |
+| **CRM Service** | 6003 | crm-db | Leads, opportunities, activities |
+| **SK Service** | 6008 | (no DB) | Semantic Kernel, AI Prompts |
 
 ---
 

@@ -151,7 +151,7 @@ auth-service:
     - redis
     - dapr-placement
   ports:
-    - "5007:8080"
+    - "6001:8080"
 ```
 
 **Bicep Mapping:**
@@ -459,7 +459,7 @@ services:
 | Service network | ✅ `erp` bridge network | ✅ Container Apps Environment | ✅ |
 | Service discovery | ✅ DNS by container name | ✅ DNS by container name | ✅ |
 | Inter-service communication | ✅ `http://auth-service:8080` | ✅ `http://auth-service:8080` | ✅ |
-| Port mapping | ✅ Mapped (5007→8080) | ✅ All services 8080 | ✅ |
+| Port mapping | ✅ Mapped (6001→8080) | ✅ All services 8080 | ✅ |
 | External access | ⚠️ Only gateway (5000) | ✅ Gateway ingress=true | ✅ |
 
 ---

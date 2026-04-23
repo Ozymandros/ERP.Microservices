@@ -25,7 +25,7 @@ Create a comprehensive frontend role management system that integrates with the 
 - Auth Service Routes: `/auth/api/*`
 
 **Direct Service Access** (if bypassing gateway):
-- Auth Service: `http://localhost:5001/api/*`
+- Auth Service: `http://localhost:6001/api/*`
 
 ### **Authentication**
 

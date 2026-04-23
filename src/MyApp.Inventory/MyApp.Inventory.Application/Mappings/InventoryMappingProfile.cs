@@ -12,7 +12,7 @@ public class InventoryMappingProfile : Profile
         CreateMap<Product, ProductDto>();
         CreateMap<ProductDto, Product>()
             .ConstructUsing(src => new Product(src.Id));
-        
+
         // CreateUpdateProductDto -> Product mapping with explicit construction
         CreateMap<CreateUpdateProductDto, Product>()
             .ConstructUsing(src => new Product(Guid.NewGuid()));
@@ -31,7 +31,7 @@ public class InventoryMappingProfile : Profile
 
         CreateMap<CreateUpdateInventoryTransactionDto, InventoryTransaction>()
             .ConstructUsing(src => new InventoryTransaction(Guid.NewGuid()));
-        
+
         // WarehouseStock mappings
         CreateMap<WarehouseStock, WarehouseStockDto>()
             .ForMember(dest => dest.WarehouseName, opt => opt.MapFrom(src => src.Warehouse != null ? src.Warehouse.Name : null));

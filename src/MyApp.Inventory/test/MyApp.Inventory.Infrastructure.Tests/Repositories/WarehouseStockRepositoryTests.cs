@@ -212,7 +212,7 @@ public class WarehouseStockRepositoryTests
         _context.Products.Add(product);
         _context.Warehouses.Add(warehouse);
         _context.SaveChanges();
-        
+
         var stock = new WarehouseStock(Guid.NewGuid())
         {
             ProductId = product.Id,

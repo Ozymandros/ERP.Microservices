@@ -8,7 +8,7 @@ public static class StockValidators
     {
         if (quantity <= 0)
             return new ValidationResult("Reservation quantity must be greater than zero");
-        
+
         if (quantity > availableQuantity)
             return new ValidationResult($"Cannot reserve {quantity} units. Only {availableQuantity} available");
 
@@ -19,7 +19,7 @@ public static class StockValidators
     {
         if (quantity <= 0)
             return new ValidationResult("Transfer quantity must be greater than zero");
-        
+
         if (quantity > availableQuantity)
             return new ValidationResult($"Cannot transfer {quantity} units. Only {availableQuantity} available");
 
@@ -38,10 +38,10 @@ public static class StockValidators
     {
         if (availableQuantity < 0)
             return new ValidationResult("Available quantity cannot be negative");
-        
+
         if (reservedQuantity < 0)
             return new ValidationResult("Reserved quantity cannot be negative");
-        
+
         if (onOrderQuantity < 0)
             return new ValidationResult("On-order quantity cannot be negative");
 

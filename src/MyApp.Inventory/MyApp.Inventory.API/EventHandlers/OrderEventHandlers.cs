@@ -76,7 +76,7 @@ public class OrderEventHandlers : ControllerBase
                     "Updated OnOrderQuantity for Product {ProductId} in Warehouse {WarehouseId}: +{Quantity}",
                     line.ProductId, @event.WarehouseId.Value, line.Quantity);
             }
-            
+
             return Ok();
         }
         catch (Exception ex)
@@ -163,7 +163,7 @@ public class OrderEventHandlers : ControllerBase
                     quantityChange,
                     @event.OrderType
                 );
-                
+
                 await _eventPublisher.PublishAsync(MessagingConstants.Topics.InventoryStockUpdated, stockUpdatedEvent);
             }
 

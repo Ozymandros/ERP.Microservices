@@ -252,7 +252,7 @@ public class RoleService : IRoleService
             }
         }
 
-        _logger.LogInformation("Added {AddedCount} permissions to role {RoleId}, skipped {SkippedCount} duplicates", 
+        _logger.LogInformation("Added {AddedCount} permissions to role {RoleId}, skipped {SkippedCount} duplicates",
             addedCount, createDto.RoleId, skippedCount);
         return addedCount > 0;
     }
@@ -285,7 +285,7 @@ public class RoleService : IRoleService
             }
         }
 
-        _logger.LogInformation("Removed {RemovedCount} permissions from role {RoleId}, {NotFoundCount} not found", 
+        _logger.LogInformation("Removed {RemovedCount} permissions from role {RoleId}, {NotFoundCount} not found",
             removedCount, deleteDto.RoleId, notFoundCount);
         return removedCount > 0;
     }
@@ -298,7 +298,7 @@ public class RoleService : IRoleService
         try
         {
             var result = await _roleRepository.QueryAsync(spec);
-            
+
             var dtos = result.Items.Select(r => new RoleDto(r.Id)
             {
                 CreatedAt = r.CreatedAt,
@@ -308,7 +308,7 @@ public class RoleService : IRoleService
                 Name = r.Name,
                 Description = null
             }).ToList();
-            
+
             return new PaginatedResult<RoleDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
         }
         catch (Exception ex)

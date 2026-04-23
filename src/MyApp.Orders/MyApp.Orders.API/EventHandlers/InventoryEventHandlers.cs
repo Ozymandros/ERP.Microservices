@@ -38,8 +38,8 @@ public class InventoryEventHandlers : ControllerBase
         {
             // Find the corresponding ReservedStock entry if it exists
             var reservations = await _reservedStockRepository.GetByOrderIdAsync(@event.OrderId);
-            var reservation = reservations.FirstOrDefault(r => 
-                r.ProductId == @event.ProductId && 
+            var reservation = reservations.FirstOrDefault(r =>
+                r.ProductId == @event.ProductId &&
                 r.WarehouseId == @event.WarehouseId);
 
             if (reservation != null)

@@ -27,5 +27,8 @@
     <None Include="MyApp.SemanticKernel\PurchasingPlugin.cs" />
     <None Include="MyApp.SemanticKernel\SalesPlugin.cs" />
     <None Include="scripts\fix-dto-tests.ps1" />
+    <None Include="src\MyApp.SemanticKernel.Tests\KernelIntegrationTests.cs" />
+    <None Include="src\MyApp.SemanticKernel.Tests\SemanticKernel.Integration.Tests.csproj" />
+    <None Include="src\MyApp.Shared.MyApp.Shared.Infrastructure.Extensions\MicroserviceExtensions.cs" />
   </ItemGroup>
 </Project>

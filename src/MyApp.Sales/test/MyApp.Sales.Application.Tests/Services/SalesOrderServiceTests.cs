@@ -705,7 +705,7 @@ public class SalesOrderServiceTests
         var dto = new ConfirmQuoteDto { QuoteId = quoteId, WarehouseId = warehouseId, ShippingAddress = "123 Street" };
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(quoteId)).ReturnsAsync(quote);
-        
+
         // Mock stock check
         var stockResponse = new StockAvailabilityDto
         {
@@ -739,7 +739,7 @@ public class SalesOrderServiceTests
         Assert.NotNull(result);
         Assert.Equal(SalesOrderStatus.Confirmed, quote.Status);
         Assert.NotNull(quote.ConvertedToOrderId);
-        
+
         _mockOrderRepository.Verify(r => r.UpdateAsync(quote), Times.Once);
         _mockEventPublisher.Verify(e => e.PublishAsync(MessagingConstants.Topics.SalesOrderConfirmed, It.IsAny<SalesOrderConfirmedEvent>(), default), Times.Once);
     }
@@ -781,7 +781,7 @@ public class SalesOrderServiceTests
         var dto = new ConfirmQuoteDto { QuoteId = quoteId, WarehouseId = Guid.NewGuid(), ShippingAddress = null };
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(quoteId)).ReturnsAsync(quote);
-        
+
         // Mock stock check - return 0 available
         var stockResponse = new StockAvailabilityDto
         {
@@ -1082,7 +1082,7 @@ public class SalesOrderServiceTests
         var order = new SalesOrder(Guid.NewGuid()) { CustomerId = customerId, OrderDate = dto.OrderDate, Lines = new List<SalesOrderLine>() };
         var createdOrder = new SalesOrder(Guid.NewGuid()) { OrderNumber = "SO-GENERATED", CustomerId = customerId };
         var expectedDto = new SalesOrderDto(createdOrder.Id) { OrderNumber = createdOrder.OrderNumber };
-        
+
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
         _mockMapper.Setup(m => m.Map<SalesOrder>(dto)).Returns(order);
         _mockMapper.Setup(m => m.Map<SalesOrderLine>(It.IsAny<CreateUpdateSalesOrderLineDto>())).Returns((CreateUpdateSalesOrderLineDto ldto) => new SalesOrderLine(Guid.NewGuid()) { ProductId = ldto.ProductId, Quantity = ldto.Quantity, UnitPrice = ldto.UnitPrice });
@@ -1118,7 +1118,7 @@ public class SalesOrderServiceTests
         var order = new SalesOrder(Guid.NewGuid()) { CustomerId = customerId, OrderDate = dto.OrderDate, Lines = new List<SalesOrderLine>() };
         var createdOrder = new SalesOrder(Guid.NewGuid()) { OrderNumber = "SO-GENERATED", CustomerId = customerId };
         var expectedDto = new SalesOrderDto(createdOrder.Id) { OrderNumber = createdOrder.OrderNumber };
-        
+
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
         _mockMapper.Setup(m => m.Map<SalesOrder>(dto)).Returns(order);
         _mockMapper.Setup(m => m.Map<SalesOrderLine>(It.IsAny<CreateUpdateSalesOrderLineDto>())).Returns((CreateUpdateSalesOrderLineDto ldto) => new SalesOrderLine(Guid.NewGuid()) { ProductId = ldto.ProductId, Quantity = ldto.Quantity, UnitPrice = ldto.UnitPrice });

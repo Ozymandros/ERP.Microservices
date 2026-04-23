@@ -49,7 +49,7 @@ public class BillingPlugin
     }
 
     [KernelFunction("Delete billing resource by id")]
-    [Description()]
+    [Description("Deletes a billing resource by its identifier")]
     public async Task<string> DeleteAsync(string id)
     {
         await _serviceInvoker.InvokeAsync<string, object>(

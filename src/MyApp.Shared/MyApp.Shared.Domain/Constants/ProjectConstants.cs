@@ -47,11 +47,11 @@ public static class MessagingConstants
         public const string SalesOrderConfirmed = "sales.order.confirmed";
         public const string PurchasingOrderApproved = "purchasing.order.approved";
         public const string PurchasingLineReceived = "purchasing.line.received";
-        
+
         public const string OrderCreated = "orders.order.created";
         public const string OrderFulfilled = "orders.order.fulfilled";
         public const string OrderCancelled = "orders.order.cancelled";
-        
+
         public const string InventoryStockUpdated = "inventory.stock.updated";
         public const string InventoryStockReleased = "inventory.stock.released";
 

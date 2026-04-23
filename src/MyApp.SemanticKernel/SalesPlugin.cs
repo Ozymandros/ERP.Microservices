@@ -49,7 +49,7 @@ public class SalesPlugin
     }
 
     [KernelFunction("Delete sales order by id")]
-    [Description()]
+    [Description("Deletes a sales order by its identifier")]
     public async Task<string> DeleteAsync(string id)
     {
         await _serviceInvoker.InvokeAsync<string, object>(

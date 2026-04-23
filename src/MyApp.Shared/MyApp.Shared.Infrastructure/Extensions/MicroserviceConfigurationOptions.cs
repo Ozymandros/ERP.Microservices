@@ -9,7 +9,7 @@ public class MicroserviceConfigurationOptions
 {
     public MicroserviceConfigurationOptions()
     {
-            
+
     }
     public MicroserviceConfigurationOptions(string? serviceName = null)
     {

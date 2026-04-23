@@ -47,7 +47,7 @@ public class InventoryServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("inventory-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
@@ -67,11 +67,11 @@ public class InventoryServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("inventory-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-        
+
         var product = new
         {
             SKU = $"TEST-{Guid.NewGuid()}",
@@ -100,11 +100,11 @@ public class InventoryServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("inventory-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-        
+
         // Create a product first
         var newProduct = new
         {
@@ -137,11 +137,11 @@ public class InventoryServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("inventory-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-        
+
         // Create a product first
         var newProduct = new
         {
@@ -188,11 +188,11 @@ public class InventoryServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("inventory-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-        
+
         // Create a product first
         var newProduct = new
         {

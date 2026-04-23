@@ -170,7 +170,7 @@ namespace MyApp.Sales.Application.Services
             // Check stock availability for all lines
             var stockChecks = await CheckStockAvailabilityAsync(dto.Lines);
             var unavailableItems = stockChecks.Where(s => !s.IsAvailable).ToList();
-            
+
             if (unavailableItems.Any())
             {
                 _logger.LogWarning(
@@ -373,7 +373,7 @@ namespace MyApp.Sales.Application.Services
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Failed to check stock for Product {ProductId}", line.ProductId);
-                    
+
                     // Return unavailable if check fails
                     results.Add(new StockAvailabilityCheckDto
                     {

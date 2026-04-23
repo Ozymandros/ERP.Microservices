@@ -26,7 +26,7 @@ public class ServiceInvoker : IServiceInvoker
         ArgumentNullException.ThrowIfNull(daprClient);
         ArgumentNullException.ThrowIfNull(logger);
         ArgumentNullException.ThrowIfNull(jsonOptions);
-        
+
         _daprClient = daprClient;
         _logger = logger;
         _enableLogging = enableLogging;

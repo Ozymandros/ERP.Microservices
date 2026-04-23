@@ -1,0 +1,35 @@
+### Quick test for Semantic Kernel endpoints
+# Notes:
+# - Start the service with `DEEPSEEK_API_KEY` set (or run via Aspire).
+# - Adjust `@baseUrl` if your service is hosted on a different port or behind the gateway.
+
+@baseUrl = http://localhost:5000
+@model = gpt-4o-mini
+
+### Health check
+GET {{baseUrl}}/health
+
+### LLM query - POST /api/sk/query
+POST {{baseUrl}}/api/sk/query
+Content-Type: application/json
+
+{
+  "prompt": "Write a short, 2-sentence summary about ERP microservices and their responsibilities.",
+  "model": "{{model}}",
+  "temperature": 0.2,
+  "maxTokens": 200
+}
+
+### Plugin invocation - POST /api/sk/invoke (Orders.Create example)
+POST {{baseUrl}}/api/sk/invoke
+Content-Type: application/json
+
+{
+  "skill": "Orders",
+  "function": "Create",
+  "input": {
+    "orderNumber": "TEST-001",
+    "type": "Transfer",
+    "sourceId": "00000000-0000-0000-0000-000000000000"
+  }
+}

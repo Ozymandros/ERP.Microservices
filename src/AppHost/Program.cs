@@ -60,28 +60,28 @@ var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "MyApp.All";
 
 // Add projects - ports auto-increment
 var authService = projectBuilder.AddWebProject<Projects.MyApp_Auth_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: BillingDB, billing-service, ports 5001, 3501, 45001, 9091
+// Creates: AuthDB, auth-service, ports 6001, 3501, 46001, 9091
 
 var billingService = projectBuilder.AddWebProject<Projects.MyApp_Billing_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: BillingDB, billing-service, ports 5002, 3502, 45002, 9092
-
-var inventoryService = projectBuilder.AddWebProject<Projects.MyApp_Inventory_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: InventoryDB, inventory-service, ports 5003, 3503, 45003, 9093
-
-var ordersService = projectBuilder.AddWebProject<Projects.MyApp_Orders_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: OrderDB, order-service, ports 5004, 3504, 45004, 9094
-
-var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: PurchasingDB, purchasing-service, ports 5005, 3505, 45005, 9095
-
-var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: SalesDB, sales-service, ports 5006, 3506, 45006, 9096
+// Creates: BillingDB, billing-service, ports 6002, 3502, 45002, 9092
 
 var crmService = projectBuilder.AddWebProject<Projects.MyApp_Crm_API>(redis, origin, isDeployment, applicationInsights);
-// Creates: CrmDB, crm-service, ports 5007, 3507, 45007, 9097
+// Creates: CrmDB, crm-service, ports 6003, 3503, 45003, 9093
 
-var skService = projectBuilder.AddWebProject<Projects.MyApp_SemanticKernel>(redis, origin, isDeployment, applicationInsights, database: false);
-// Creates: skDB, sk-service, ports 5008, 3508, 45008, 9098
+var inventoryService = projectBuilder.AddWebProject<Projects.MyApp_Inventory_API>(redis, origin, isDeployment, applicationInsights);
+// Creates: InventoryDB, inventory-service, ports 6004, 3504, 45004, 9094
+
+var ordersService = projectBuilder.AddWebProject<Projects.MyApp_Orders_API>(redis, origin, isDeployment, applicationInsights);
+// Creates: OrderDB, orders-service, ports 6005, 3505, 45005, 9095
+
+var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_API>(redis, origin, isDeployment, applicationInsights);
+// Creates: PurchasingDB, purchasing-service, ports 6006, 3506, 45006, 9096
+
+var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment, applicationInsights);
+// Creates: SalesDB, sales-service, ports 6007, 3507, 45007, 9097
+
+var skService = projectBuilder.AddWebProject<Projects.MyApp_SemanticKernel>(redis, origin, isDeployment, applicationInsights, hasDatabase: false);
+// Creates: sk-service (no DB), ports 6008, 3508, 45008, 9098
 
 // Local Development: Reverse Proxy (YARP)
 // Alternative: YARP (without /Scalar service)
@@ -120,6 +120,7 @@ var gateway = builder.AddProject<Projects.ErpApiGateway>("gateway")
     .WaitFor(purchasingService)
     .WaitFor(salesService)
     .WaitFor(crmService)
+    .WaitFor(skService)
     .WithHttpEndpoint(port: 5000, name: "gateway-http")   // Explicitly listen on 5000 for Dapr
     .WithHttpsEndpoint(port: 7231, name: "gateway-https") // Explicitly listen on 7231 for Browser/Scalar
     .WithEnvironment("Jwt__SecretKey", jwtSecretKey)

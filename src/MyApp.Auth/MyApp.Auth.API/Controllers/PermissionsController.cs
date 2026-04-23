@@ -160,7 +160,7 @@ public class PermissionsController : ControllerBase
         {
             // Bind filters from query parameters
             query.BindFiltersFromQuery(Request.Query);
-            
+
             query.Validate();
             var spec = new PermissionQuerySpec(query);
             var result = await _permissionService.QueryPermissionsAsync(spec);

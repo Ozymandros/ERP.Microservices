@@ -463,7 +463,7 @@ public class PurchaseOrderServiceTests
         };
 
         _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(po);
-        
+
         var fulfillmentOrderResponse = new OrderDto(Guid.NewGuid());
 
         _mockServiceInvoker.Setup(s => s.InvokeAsync<CreateUpdateOrderDto, OrderDto>(
@@ -491,7 +491,7 @@ public class PurchaseOrderServiceTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(5, po.Lines.First().ReceivedQuantity);
-        
+
         _mockServiceInvoker.Verify(s => s.InvokeAsync<CreateUpdateOrderDto, OrderDto>(ServiceNames.Orders, ApiEndpoints.Orders.Base, HttpMethod.Post, It.IsAny<CreateUpdateOrderDto>(), default), Times.Once);
         _mockServiceInvoker.Verify(s => s.InvokeAsync<FulfillOrderDto, OrderDto>(ServiceNames.Orders, It.Is<string>(path => path.EndsWith("/fulfill")), HttpMethod.Post, It.IsAny<FulfillOrderDto>(), default), Times.Once);
         _mockEventPublisher.Verify(e => e.PublishAsync(MessagingConstants.Topics.PurchasingLineReceived, It.IsAny<PurchaseOrderLineReceivedEvent>(), default), Times.Once);
@@ -873,7 +873,7 @@ public class PurchaseOrderServiceTests
         var order = new PurchaseOrder(Guid.NewGuid()) { SupplierId = supplierId, OrderDate = dto.OrderDate, Lines = new List<PurchaseOrderLine>() };
         var createdOrder = new PurchaseOrder(Guid.NewGuid()) { OrderNumber = "PO-TEST-12345", SupplierId = supplierId };
         var expectedDto = new PurchaseOrderDto { Id = createdOrder.Id, OrderNumber = createdOrder.OrderNumber };
-        
+
         _mockSupplierRepository.Setup(r => r.GetByIdAsync(supplierId)).ReturnsAsync(supplier);
         _mockMapper.Setup(m => m.Map<PurchaseOrder>(dto)).Returns(order);
         _mockPurchaseOrderRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<PurchaseOrder>()); // For GenerateOrderNumberAsync

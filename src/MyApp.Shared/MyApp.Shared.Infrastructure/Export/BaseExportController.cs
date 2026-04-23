@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MyApp.Shared.Infrastructure.Export
 {
-    public abstract class BaseExportController: ControllerBase
+    public abstract class BaseExportController : ControllerBase
     {
 
         // XLSX export logic is now in XlsxExportExtensions. This base class only provides the FileContentResult helper.

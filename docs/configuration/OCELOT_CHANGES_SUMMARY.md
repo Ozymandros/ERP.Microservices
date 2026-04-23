@@ -29,7 +29,7 @@
 ### 1. ✅ `ocelot.json` - Local Development
 **Changes:**
 - All 6 services with authentication, rate limiting, QoS
-- Fixed port mapping (5001-5006)
+- Fixed port mapping (6001-6008)
 - Removed notification-service route (was causing 502)
 - Added 3 health check routes (/health, /health/live, /health/ready)
 - Enhanced global configuration with error handling
@@ -117,7 +117,7 @@
 ### Local Development (ocelot.json)
 ```
 Gateway Port: 5000
-Services: 5001-5006
+Services: 6001-6008
 Rate Limit: 100/min
 Timeout: 5s
 Break Duration: 5s
@@ -145,7 +145,7 @@ Logging: Warning
 ```json
 {
   "JwtSecretKey": "your-secret-key-min-32-characters-long",
-  "JwtIssuer": "http://localhost:5001",
+  "JwtIssuer": "http://localhost:6001",
   "JwtAudience": "erp-api",
   "FRONTEND_ORIGIN": "http://localhost:3000"
 }

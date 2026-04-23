@@ -12,7 +12,7 @@ namespace MyApp.Sales.Application.Contracts.DTOs
         public decimal TotalAmount { get; init; } = 0;
         public CustomerDto? Customer { get; init; }
         public List<SalesOrderLineDto> Lines { get; init; } = new();
-        
+
         // Quote tracking
         public bool IsQuote { get; init; }
         public DateTime? QuoteExpiryDate { get; init; }

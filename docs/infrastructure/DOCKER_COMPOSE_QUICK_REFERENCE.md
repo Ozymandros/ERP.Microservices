@@ -107,10 +107,10 @@ docker compose ps
 curl http://localhost:5000/health
 
 # Auth service
-curl http://localhost:5007/health
+curl http://localhost:6001/health
 
 # Inventory service
-curl http://localhost:5001/health
+curl http://localhost:6003/health
 ```
 
 ---
@@ -135,8 +135,8 @@ curl http://localhost:5001/health
          │                 │                 │
          ▼                 ▼                 ▼
     ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
-    │ Auth Service │  │Inventory Svc │  │ Orders Svc   │
-    │ Port: 5007   │  │ Port: 5001   │  │ Port: 5002   │
+    │ Auth Service │  │Inventory Svc │  │ Billing Svc  │
+    │ Port: 6001   │  │ Port: 6003   │  │ Port: 6002   │
     │ + DAPR       │  │ + DAPR       │  │ + DAPR       │
     │ Health: /✓   │  │ Health: /✓   │  │ Health: /✓   │
     └──────────────┘  └──────────────┘  └──────────────┘
@@ -145,11 +145,19 @@ curl http://localhost:5001/health
     │                      │                        │
     ▼                      ▼                        ▼
 ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
-│ Sales Svc    │  │ Billing Svc  │  │Purchasing Svc│
-│ Port: 5003   │  │ Port: 5004   │  │ Port: 5006   │
+│ Orders Svc   │  │ Purchasing   │  │ Sales Svc    │
+│ Port: 6004   │  │ Svc: 6005    │  │ Port: 6006   │
 │ + DAPR       │  │ + DAPR       │  │ + DAPR       │
 │ Health: /✓   │  │ Health: /✓   │  │ Health: /✓   │
 └──────────────┘  └──────────────┘  └──────────────┘
+         │                 │
+         ▼                 ▼
+    ┌──────────────┐  ┌──────────────┐
+    │ CRM Service  │  │ Semantic K.  │
+    │ Port: 6003   │  │ Port: 6008   │
+    │ + DAPR       │  │ + DAPR       │
+    │ Health: /✓   │  │ Health: /✓   │
+    └──────────────┘  └──────────────┘
          │                 │                 │
          └─────────────────┼─────────────────┘
                            │
@@ -200,12 +208,14 @@ curl http://localhost:5001/health
 
 | Service | Port | Container | DAPR Port | Health |
 |---------|------|-----------|-----------|--------|
-| Auth | 5007 | auth-service | 3500 | /health |
-| Billing | 5004 | billing-service | 3502 | /health |
-| Inventory | 5001 | inventory-service | 3503 | /health |
-| Orders | 5002 | orders-service | 3504 | /health |
-| Purchasing | 5006 | purchasing-service | 3505 | /health |
-| Sales | 5003 | sales-service | 3506 | /health |
+| Auth | 6001 | auth-service | 3500 | /health |
+| Billing | 6002 | billing-service | 3501 | /health |
+| Inventory | 6004 | inventory-service | 3502 | /health |
+| Orders | 6005 | orders-service | 3503 | /health |
+| Purchasing | 6006 | purchasing-service | 3504 | /health |
+| Sales | 6007 | sales-service | 3505 | /health |
+| CRM | 6003 | crm-service | 3506 | /health |
+| SemanticKernel | 6008 | sk-service | 3507 | /health |
 
 ### Infrastructure Services
 
@@ -287,7 +297,7 @@ docker compose logs --tail=50
 curl http://localhost:5000/api/auth/health
 
 # Test service directly
-curl http://localhost:5007/health
+curl http://localhost:6001/health
 
 # Test Redis
 docker compose exec redis redis-cli -a Redis@Secure123! ping

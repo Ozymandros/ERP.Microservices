@@ -344,7 +344,7 @@ public class SupplierServiceTests
         };
 
         _mockSupplierRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
-        _mockMapper.Setup(m => m.Map<SupplierDto>(It.IsAny<Supplier>())).Returns((Supplier s) => 
+        _mockMapper.Setup(m => m.Map<SupplierDto>(It.IsAny<Supplier>())).Returns((Supplier s) =>
             new SupplierDto(s.Id) { Name = s.Name, ContactName = s.ContactName ?? "", Email = s.Email, PhoneNumber = s.PhoneNumber ?? "", Address = s.Address ?? "" });
 
         // Act
@@ -372,7 +372,7 @@ public class SupplierServiceTests
         var paginatedResult = new PaginatedResult<Supplier>(suppliers, 1, 2, 10);
 
         _mockSupplierRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
-        _mockMapper.Setup(m => m.Map<SupplierDto>(It.IsAny<Supplier>())).Returns((Supplier s) => 
+        _mockMapper.Setup(m => m.Map<SupplierDto>(It.IsAny<Supplier>())).Returns((Supplier s) =>
             new SupplierDto(s.Id) { Name = s.Name, ContactName = s.ContactName ?? "", Email = s.Email, PhoneNumber = s.PhoneNumber ?? "", Address = s.Address ?? "" });
 
         // Act

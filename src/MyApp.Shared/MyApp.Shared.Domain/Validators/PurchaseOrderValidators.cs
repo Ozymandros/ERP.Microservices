@@ -8,7 +8,7 @@ public static class PurchaseOrderValidators
     {
         if (quantity <= 0)
             return new ValidationResult("Purchase order line quantity must be greater than zero");
-        
+
         if (unitPrice < 0)
             return new ValidationResult("Unit price cannot be negative");
 
@@ -19,7 +19,7 @@ public static class PurchaseOrderValidators
     {
         if (receivedQuantity < 0)
             return new ValidationResult("Received quantity cannot be negative");
-        
+
         if (receivedQuantity > orderedQuantity)
             return new ValidationResult($"Received quantity ({receivedQuantity}) cannot exceed ordered quantity ({orderedQuantity})");
 

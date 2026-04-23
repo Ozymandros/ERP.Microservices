@@ -250,13 +250,13 @@ public class PurchaseOrderService : IPurchaseOrderService
                     ExternalOrderId = order.Id,   // Link to PurchaseOrder
                     WarehouseId = dto.WarehouseId,
                     OrderDate = dto.ReceivedDate,
-                    Lines = new List<CreateOrderLineDto> 
-                    { 
-                        new CreateOrderLineDto 
-                        { 
-                            ProductId = orderLine.ProductId, 
-                            Quantity = receivedLine.ReceivedQuantity 
-                        } 
+                    Lines = new List<CreateOrderLineDto>
+                    {
+                        new CreateOrderLineDto
+                        {
+                            ProductId = orderLine.ProductId,
+                            Quantity = receivedLine.ReceivedQuantity
+                        }
                     }
                 };
 

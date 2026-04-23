@@ -5,7 +5,7 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Shared.Infrastructure.Repositories;
 
-public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey> 
+public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
     where TEntity : class
 {
     protected readonly DbContext _dbContext;
@@ -29,7 +29,7 @@ public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
     {
         var paginationParams = new PaginationParams(pageNumber, pageSize);
         var query = _dbContext.Set<TEntity>();
-        
+
         var totalCount = await query.CountAsync();
         var items = await query
             .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
@@ -47,13 +47,13 @@ public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
     public virtual async Task<PaginatedResult<TEntity>> QueryAsync(ISpecification<TEntity> spec)
     {
         ArgumentNullException.ThrowIfNull(spec);
-        
+
         var baseQuery = _dbContext.Set<TEntity>().AsNoTracking().AsQueryable();
-        
+
         // 1. Apply only filters to get the total count of matching items (before pagination)
         var filteredQuery = spec.ApplyFilters(baseQuery);
         var totalCount = await filteredQuery.CountAsync();
-        
+
         // 2. Apply the full specification (filters + sorting + pagination)
         var finalQuery = spec.Apply(baseQuery);
         var items = await finalQuery.ToListAsync();

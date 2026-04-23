@@ -49,7 +49,7 @@ public class PurchasingPlugin
     }
 
     [KernelFunction("Delete purchasing resource by id")]
-    [Description()]
+    [Description("Deletes a purchasing resource by its identifier")]
     public async Task<string> DeleteAsync(string id)
     {
         await _serviceInvoker.InvokeAsync<string, object>(

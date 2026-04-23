@@ -21,10 +21,10 @@ public static class StockInvariants
     {
         if (availableQuantity < 0)
             throw new InvalidOperationException("Available quantity cannot be negative");
-        
+
         if (reservedQuantity < 0)
             throw new InvalidOperationException("Reserved quantity cannot be negative");
-        
+
         if (onOrderQuantity < 0)
             throw new InvalidOperationException("On-order quantity cannot be negative");
     }

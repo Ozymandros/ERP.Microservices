@@ -7,7 +7,7 @@ namespace MyApp.Orders.Domain.Entities
         public Guid OrderId { get; set; }
         public Guid ProductId { get; set; }
         public int Quantity { get; set; }
-        
+
         // Operational tracking fields
         public int PickedQuantity { get; set; }
         public Guid? ReservedStockId { get; set; }

@@ -49,7 +49,7 @@ public class CrmPlugin
     }
 
     [KernelFunction("Delete CRM resource by id")]
-    [Description()]
+    [Description("Deletes a CRM contact by its identifier")]
     public async Task<string> DeleteAsync(string id)
     {
         await _serviceInvoker.InvokeAsync<string, object>(

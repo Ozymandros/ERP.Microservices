@@ -26,7 +26,7 @@ public class InventoryTransactionConfiguration : IEntityTypeConfiguration<Invent
         builder.Property(x => x.TransactionDate)
             .IsRequired()
             .HasDefaultValueSql("GETUTCDATE()");
-        
+
         // Cross-service reference fields
         builder.Property(x => x.ReferenceNumber)
             .HasMaxLength(100);

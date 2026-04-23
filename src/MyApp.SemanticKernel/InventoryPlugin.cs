@@ -63,7 +63,7 @@ public class InventoryPlugin
     }
 
     [KernelFunction("Delete inventory resource by id")]
-    [Description()]
+    [Description("Deletes an inventory resource by its identifier")]
     public async Task<string> DeleteAsync(string id)
     {
         await _serviceInvoker.InvokeAsync<string, object>(

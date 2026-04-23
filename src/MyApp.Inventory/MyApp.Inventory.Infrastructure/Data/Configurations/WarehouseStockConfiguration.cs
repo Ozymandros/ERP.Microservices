@@ -10,7 +10,7 @@ public class WarehouseStockConfiguration : IEntityTypeConfiguration<WarehouseSto
     {
         builder.ToTable("WarehouseStocks");
         builder.HasKey(x => x.Id);
-        
+
         builder.Property(x => x.ProductId).IsRequired();
         builder.Property(x => x.WarehouseId).IsRequired();
         builder.Property(x => x.AvailableQuantity).IsRequired();

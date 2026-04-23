@@ -62,7 +62,7 @@ namespace MyApp.Auth.Infrastructure.Data.Repositories
         /// <summary>
         /// Gets permissions assigned directly to a specific user and role by UserId.
         /// </summary>
-        
+
         public async Task<IEnumerable<Permission>> GetAllPermissionsByUserId(Guid userId)
         {
             var userPermissions = await _context.Set<UserPermission>()

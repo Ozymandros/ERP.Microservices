@@ -249,16 +249,16 @@ The system is now configured for Dapr runtime. To run locally:
 
 ```bash
 # Terminal 1 - Inventory Service
-dapr run --app-id inventory --app-port 5001 --dapr-http-port 3501 --components-path deploy/dapr/components -- dotnet run --project src/MyApp.Inventory/MyApp.Inventory.API
+dapr run --app-id inventory --app-port 6003 --dapr-http-port 3502 --components-path deploy/dapr/components -- dotnet run --project src/MyApp.Inventory/MyApp.Inventory.API
 
 # Terminal 2 - Orders Service
-dapr run --app-id orders --app-port 5002 --dapr-http-port 3502 --components-path deploy/dapr/components -- dotnet run --project src/MyApp.Orders/MyApp.Orders.API
+dapr run --app-id orders --app-port 6004 --dapr-http-port 3503 --components-path deploy/dapr/components -- dotnet run --project src/MyApp.Orders/MyApp.Orders.API
 
 # Terminal 3 - Sales Service
-dapr run --app-id sales --app-port 5003 --dapr-http-port 3503 --components-path deploy/dapr/components -- dotnet run --project src/MyApp.Sales/MyApp.Sales.API
+dapr run --app-id sales --app-port 6006 --dapr-http-port 3505 --components-path deploy/dapr/components -- dotnet run --project src/MyApp.Sales/MyApp.Sales.API
 
 # Terminal 4 - Purchasing Service
-dapr run --app-id purchasing --app-port 5004 --dapr-http-port 3504 --components-path deploy/dapr/components -- dotnet run --project src/MyApp.Purchasing/MyApp.Purchasing.API
+dapr run --app-id purchasing --app-port 6005 --dapr-http-port 3504 --components-path deploy/dapr/components -- dotnet run --project src/MyApp.Purchasing/MyApp.Purchasing.API
 ```
 
 ### Option 2: With .NET Aspire

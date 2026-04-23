@@ -699,7 +699,6 @@ var users = await _context.Users
 ## 🧪 Testing Patterns
 
 ### Integration Tests with Aspire
-
 ```csharp
 // src/AppHost.Tests/Tests/AuthServiceTests.cs
 public class AuthServiceTests : IAsyncLifetime
@@ -756,7 +755,6 @@ public class AuthServiceTests : IAsyncLifetime
 ```
 
 ### Unit Tests
-
 ```csharp
 public class ProductServiceTests
 {
@@ -804,7 +802,6 @@ public class ProductServiceTests
 ## 📊 Database Patterns
 
 ### DbContext Configuration
-
 ```csharp
 // MyApp.Inventory.Infrastructure/Data/InventoryDbContext.cs
 public class InventoryDbContext : DbContext
@@ -858,7 +855,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 ```
 
 ### Repository Pattern
-
 ```csharp
 // Generic repository base class
 public class Repository<T> : IRepository<T> where T : class
@@ -1110,7 +1106,6 @@ find . -path "*/Migrations/*.cs"
    ```bash
    redis-cli ping
    ```
-
 ### Authentication Failures
 
 **Problem:** JWT validation fails with 401 Unauthorized
@@ -1147,7 +1142,6 @@ find . -path "*/Migrations/*.cs"
 ## 🎓 Decision Trees
 
 ### "Should I create a new microservice?"
-
 ```
 Is the feature a distinct business domain?
 ├─ NO → Add to existing service
@@ -1161,7 +1155,6 @@ Is the feature a distinct business domain?
 ```
 
 ### "Where should this code go?"
-
 ```
 What kind of code is this?
 ├─ HTTP endpoint → [Service].API/Controllers/
@@ -1169,12 +1162,11 @@ What kind of code is this?
 ├─ Data access → [Service].Infrastructure/Data/Repositories/
 ├─ Domain model → [Service].Domain/Entities/
 ├─ DTO → [Service].Application.Contracts/DTOs/
-├─ Cross-cutting concern → MyApp.Shared.*/
+├─ Cross-cutting concern → MyApp.Shared.*/ 
 └─ Configuration → appsettings.*.json or Azure Key Vault
 ```
 
 ### "How should services communicate?"
-
 ```
 What's the use case?
 ├─ Need immediate response?

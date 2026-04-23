@@ -33,7 +33,7 @@ Your Ocelot API Gateway configuration has been **completely remediated** with cr
 ```json
 {
   "UpstreamPathTemplate": "/auth/{everything}",
-  "DownstreamHostAndPorts": [{"Host": "localhost", "Port": 5007}]
+  "DownstreamHostAndPorts": [{"Host": "localhost", "Port": 6007}]
 }
 ```
 
@@ -44,7 +44,7 @@ Your Ocelot API Gateway configuration has been **completely remediated** with cr
   "AuthenticationOptions": {
     "AuthenticationProviderKey": "Bearer"
   },
-  "DownstreamHostAndPorts": [{"Host": "localhost", "Port": 5001}]
+  "DownstreamHostAndPorts": [{"Host": "localhost", "Port": 6001}]
 }
 ```
 
@@ -171,18 +171,20 @@ Your Ocelot API Gateway configuration has been **completely remediated** with cr
 #### Issue #7: Incorrect Port Mapping
 **Before:**
 ```json
-"Auth": "localhost:5007"        // Wrong port
-"Inventory": "localhost:5001"   // Wrong port
+"Auth": "localhost:6007"        // Wrong port
+"Inventory": "localhost:6001"   // Wrong port
 ```
 
 **After:**
 ```json
-"Auth": "localhost:5001"        // ✅ Correct
-"Inventory": "localhost:5002"   // ✅ Correct
-"Orders": "localhost:5003"      // ✅ Correct
-"Sales": "localhost:5004"       // ✅ Correct
-"Billing": "localhost:5005"     // ✅ Correct
-"Purchasing": "localhost:5006"  // ✅ Correct
+"Auth": "localhost:6001"        // ✅ Correct
+"Billing": "localhost:6002"     // ✅ Correct
+"Inventory": "localhost:6003"   // ✅ Correct
+"Orders": "localhost:6005"      // ✅ Correct
+"Purchasing": "localhost:6006"  // ✅ Correct
+"Sales": "localhost:6007"       // ✅ Correct
+"CRM": "localhost:6003"         // ✅ Correct
+"SemanticKernel": "localhost:6008"  // ✅ Correct
 ```
 
 **Impact:** **HIGH** - Routes didn't work in docker-compose environment.
@@ -196,7 +198,7 @@ Your Ocelot API Gateway configuration has been **completely remediated** with cr
 ```json
 {
   "UpstreamPathTemplate": "/notification/{everything}",
-  "DownstreamHostAndPorts": [{"Host": "localhost", "Port": 5005}]
+  "DownstreamHostAndPorts": [{"Host": "localhost", "Port": 6005}]
 }
 ```
 
@@ -268,7 +270,7 @@ Production:
 - ✅ Removed duplicate orders route
 - ✅ Removed notification-service route
 - ✅ Added 3 health check routes
-- ✅ Updated all ports to match docker-compose (5001-5006)
+- ✅ Updated all ports to match docker-compose (6001-6008)
 - ✅ Enhanced GlobalConfiguration with error handling
 - **Status:** Ready for local development
 
@@ -305,12 +307,14 @@ Production:
 | Service | Local Dev | Docker-Compose | Production |
 |---------|-----------|-----------------|-----------|
 | Gateway | 5000 | 8080 | erp-api.azurewebsites.net |
-| Auth | **5001** | auth-service:8080 | auth-service:8080 |
-| Inventory | 5002 | inventory-service:8080 | inventory-service:8080 |
-| Orders | 5003 | orders-service:8080 | orders-service:8080 |
-| Sales | 5004 | sales-service:8080 | sales-service:8080 |
-| Billing | 5005 | billing-service:8080 | billing-service:8080 |
-| Purchasing | 5006 | purchasing-service:8080 | purchasing-service:8080 |
+| Auth | 6001 | auth-service:8080 | auth-service:8080 |
+| Billing | 6002 | billing-service:8080 | billing-service:8080 |
+| Inventory | 6004 | inventory-service:8080 | inventory-service:8080 |
+| Orders | 6005 | orders-service:8080 | orders-service:8080 |
+| Purchasing | 6006 | purchasing-service:8080 | purchasing-service:8080 |
+| Sales | 6007 | sales-service:8080 | sales-service:8080 |
+| CRM | 6003 | crm-service:8080 | crm-service:8080 |
+| SemanticKernel | 6008 | sk-service:8080 | sk-service:8080 |
 
 ### Settings Comparison
 
@@ -334,7 +338,7 @@ Add these to `appsettings.json`:
 ```json
 {
   "JwtSecretKey": "your-secret-key-min-32-characters-long-change-in-production",
-  "JwtIssuer": "http://localhost:5001",
+  "JwtIssuer": "http://localhost:6001",
   "JwtAudience": "erp-api",
   "FRONTEND_ORIGIN": "http://localhost:3000"
 }

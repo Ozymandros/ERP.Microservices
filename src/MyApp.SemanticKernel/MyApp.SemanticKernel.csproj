@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.StackExchange.Redis" Version="13.2.0" />
+    <PackageReference Include="Aspire.StackExchange.Redis.DistributedCaching" Version="13.2.0" />
     <PackageReference Include="Dapr.AspNetCore" Version="1.17.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="10.0.5" NoWarn="NU1605" />
@@ -20,6 +20,8 @@
     <PackageReference Include="Microsoft.Identity.Web.DownstreamApi" Version="3.14.1" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="4.3.0" />
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.74.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Abstractions" Version="1.74.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.74.0" />
     <PackageReference Include="Microsoft.SemanticKernel.Agents.Core" Version="1.74.0" />
     <PackageReference Include="Microsoft.SemanticKernel.Core" Version="1.74.0" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.13.13" />
@@ -36,10 +38,6 @@
     <ProjectReference Include="..\MyApp.Sales\MyApp.Sales.Application.Contracts\MyApp.Sales.Application.Contracts.csproj" />
     <ProjectReference Include="..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
     <ProjectReference Include="..\MyApp.Shared\MyApp.Shared.Infrastructure\MyApp.Shared.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

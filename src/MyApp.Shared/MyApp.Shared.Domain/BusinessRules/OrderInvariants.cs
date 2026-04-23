@@ -26,10 +26,10 @@ public static class OrderInvariants
     {
         if (!IsQuantityValid(quantity))
             throw new InvalidOperationException("Order line quantity must be greater than zero");
-        
+
         if (!IsPriceValid(unitPrice))
             throw new InvalidOperationException("Unit price cannot be negative");
-        
+
         if (!IsLineTotalCorrect(quantity, unitPrice, lineTotal))
             throw new InvalidOperationException("Line total must equal quantity times unit price");
     }
@@ -38,7 +38,7 @@ public static class OrderInvariants
     {
         if (!HasOrderLines(lineCount))
             throw new InvalidOperationException("Order must have at least one line");
-        
+
         if (Math.Abs(totalAmount - calculatedTotal) >= 0.01m)
             throw new InvalidOperationException("Order total amount must match sum of line totals");
     }

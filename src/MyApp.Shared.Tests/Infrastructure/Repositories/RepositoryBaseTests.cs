@@ -22,7 +22,7 @@ public class RepositoryTestEntity
 public class RepositoryTestDbContext : DbContext
 {
     public RepositoryTestDbContext(DbContextOptions<RepositoryTestDbContext> options) : base(options) { }
-    
+
     public DbSet<RepositoryTestEntity> TestEntities => Set<RepositoryTestEntity>();
 }
 
@@ -534,7 +534,7 @@ public class RepositoryBaseTests : IDisposable
         // Assert
         result.Should().NotBeNull();
         result.Id.Should().Be(entity.Id);
-        
+
         var savedEntity = await _context.TestEntities.FindAsync(entity.Id);
         savedEntity.Should().NotBeNull();
         savedEntity!.Name.Should().Be("New Entity");

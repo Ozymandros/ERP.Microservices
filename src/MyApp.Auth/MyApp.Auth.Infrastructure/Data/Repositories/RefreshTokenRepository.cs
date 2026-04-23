@@ -30,9 +30,9 @@ public class RefreshTokenRepository : Repository<RefreshToken, Guid>, IRefreshTo
     public async Task<RefreshToken?> GetValidRefreshTokenAsync(Guid userId, string token)
     {
         return await _context.RefreshTokens
-            .FirstOrDefaultAsync(rt => rt.UserId == userId 
-                && rt.Token == token 
-                && !rt.IsRevoked 
+            .FirstOrDefaultAsync(rt => rt.UserId == userId
+                && rt.Token == token
+                && !rt.IsRevoked
                 && rt.ExpiresAt > DateTime.UtcNow);
     }
 

@@ -95,12 +95,12 @@ public class SalesServiceTests : IAsyncLifetime
                 else
                 {
                     var error = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"Admin login failed (Attempt {i+1}): {response.StatusCode} - {error}");
+                    Console.WriteLine($"Admin login failed (Attempt {i + 1}): {response.StatusCode} - {error}");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Login attempt {i+1} threw exception: {ex.Message}");
+                Console.WriteLine($"Login attempt {i + 1} threw exception: {ex.Message}");
             }
             await Task.Delay(2000); // Wait for seeder
         }
@@ -138,7 +138,7 @@ public class SalesServiceTests : IAsyncLifetime
         // Arrange
         await using var app = await CreateAndStartAppAsync();
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
-        
+
         Console.WriteLine("Step 2: Waiting for services...");
         await notifier.WaitForResourceAsync("sales-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(60));
@@ -147,7 +147,7 @@ public class SalesServiceTests : IAsyncLifetime
         Console.WriteLine("Services are ready.");
 
         var client = app.CreateHttpClient("gateway");
-        
+
         Console.WriteLine("Step 3: Getting Auth Token...");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
@@ -181,8 +181,8 @@ public class SalesServiceTests : IAsyncLifetime
         Console.WriteLine($"Create Customer Response: {custResponse.StatusCode}");
         if (!custResponse.IsSuccessStatusCode)
         {
-             var err = await custResponse.Content.ReadAsStringAsync();
-             Console.WriteLine($"Customer creation error: {err}");
+            var err = await custResponse.Content.ReadAsStringAsync();
+            Console.WriteLine($"Customer creation error: {err}");
         }
         Assert.Equal(HttpStatusCode.Created, custResponse.StatusCode);
         var createdCustomer = await custResponse.Content.ReadFromJsonAsync<CustomerResponse>();
@@ -203,8 +203,8 @@ public class SalesServiceTests : IAsyncLifetime
         Console.WriteLine($"Create Product Response: {prodResponse.StatusCode}");
         if (!prodResponse.IsSuccessStatusCode)
         {
-             var err = await prodResponse.Content.ReadAsStringAsync();
-             Console.WriteLine($"Product creation error: {err}");
+            var err = await prodResponse.Content.ReadAsStringAsync();
+            Console.WriteLine($"Product creation error: {err}");
         }
         Assert.Equal(HttpStatusCode.Created, prodResponse.StatusCode);
         var createdProduct = await prodResponse.Content.ReadFromJsonAsync<ProductResponse>();
@@ -231,7 +231,7 @@ public class SalesServiceTests : IAsyncLifetime
         // Act
         var response = await client.PostAsJsonAsync("/sales/api/sales/orders", order);
         Console.WriteLine($"Create Order Response: {response.StatusCode}");
-        
+
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         var createdOrder = await response.Content.ReadFromJsonAsync<SalesOrderResponse>();

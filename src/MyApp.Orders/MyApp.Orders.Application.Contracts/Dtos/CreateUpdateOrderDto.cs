@@ -12,14 +12,14 @@ namespace MyApp.Orders.Application.Contracts.Dtos
 
         [Required]
         public DateTime OrderDate { get; init; } = DateTime.UtcNow;
-        
+
         [Required]
         public OrderType Type { get; init; }
-        
+
         public Guid? SourceId { get; init; }
         public Guid? TargetId { get; init; }
         public Guid? ExternalOrderId { get; init; }
-        
+
         public Guid? WarehouseId { get; init; }
 
         [Required]

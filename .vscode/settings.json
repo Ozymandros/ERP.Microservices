@@ -3,7 +3,6 @@
         "dotnet build": true
     },
     "yaml.schemas": {
-        "file:///c%3A/Users/andreumv/.cursor/extensions/docsmsft.docs-yaml-1.0.5/dist/toc.schema.json": "/toc\\.yml/i",
         "kubernetes://schema/apps/v1@deployment": "file:///c%3A/Projects/ERP_ASPIRE_APP/erp-backend/deploy/oci/k8s/apps/overlays/dev/aspire-dashboard.yaml"
     }
 }

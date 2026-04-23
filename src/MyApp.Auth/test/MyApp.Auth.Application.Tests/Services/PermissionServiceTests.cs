@@ -27,8 +27,8 @@ public class PermissionServiceTests : BaseServiceTest
         _mockLogger = CreateMockLogger<PermissionService>();
         _permissionService = new PermissionService(
             _mockUserManager.Object,
-            _mockPermissionRepository.Object, 
-            Mapper, 
+            _mockPermissionRepository.Object,
+            Mapper,
             _mockLogger.Object);
     }
 
@@ -389,9 +389,9 @@ public class PermissionServiceTests : BaseServiceTest
         // Assert
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(expectedPermissionDto);
-        _mockPermissionRepository.Verify(x => x.AddAsync(It.Is<Permission>(p => 
-            p.Module == createDto.Module && 
-            p.Action == createDto.Action && 
+        _mockPermissionRepository.Verify(x => x.AddAsync(It.Is<Permission>(p =>
+            p.Module == createDto.Module &&
+            p.Action == createDto.Action &&
             p.Description == createDto.Description)), Times.Once);
     }
 

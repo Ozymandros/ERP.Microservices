@@ -28,7 +28,7 @@ public class EventPublisherTests
         _mockDaprClient = new Mock<DaprClient>();
         _mockLogger = new Mock<ILogger<EventPublisher>>();
         _mockOptions = new Mock<IOptions<EventPublisherOptions>>();
-        
+
         _mockOptions.Setup(o => o.Value).Returns(new EventPublisherOptions
         {
             PubSubName = "test-pubsub",
@@ -198,7 +198,7 @@ public class EventPublisherTests
             _eventPublisher.PublishAsync(topic, eventData));
 
         thrownException.Should().Be(exception);
-        
+
         // Verify error logging
         _mockLogger.Verify(
             x => x.Log(

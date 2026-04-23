@@ -47,7 +47,7 @@ public class ApplicationUserQuerySpec : BaseSpecification<ApplicationUser>
     {
         // Apply filters based on the Filters dictionary (case-insensitive key matching)
         var filters = Query.Filters ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        
+
         if (filters.TryGetValue(nameof(ApplicationUser.IsActive), out var isActiveStr))
         {
             if (bool.TryParse(isActiveStr, out var isActive))

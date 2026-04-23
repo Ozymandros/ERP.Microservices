@@ -188,17 +188,17 @@ public class AuthService : IAuthService
         var userRoles = await _roleRepository.GetRolesByUserIdAsync(user.Id);
         var roleNames = userRoles.Select(r => r.Name).ToList();
         bool isAdmin = userRoles.Any(r => r.Name != null && r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
-        
-        _logger.LogInformation("User {UserId} ({Email}) has roles: {Roles}, IsAdmin: {IsAdmin}", 
+
+        _logger.LogInformation("User {UserId} ({Email}) has roles: {Roles}, IsAdmin: {IsAdmin}",
             user.Id, user.Email, string.Join(", ", roleNames), isAdmin);
-        
+
         List<Permission> permissions;
         if (isAdmin)
         {
             // Admin users have all permissions
             var allPermissions = await _permissionRepository.GetAllAsync();
             permissions = allPermissions.ToList();
-            _logger.LogInformation("Admin user {UserId} ({Email}) - returning all {Count} permissions", 
+            _logger.LogInformation("Admin user {UserId} ({Email}) - returning all {Count} permissions",
                 user.Id, user.Email, permissions.Count);
         }
         else
@@ -209,39 +209,39 @@ public class AuthService : IAuthService
             {
                 var rolePermissions = await _roleRepository.GetPermissionsForRoleAsync(role.Id);
                 permissions.AddRange(rolePermissions);
-                _logger.LogInformation("Role {RoleName} ({RoleId}) has {Count} permissions", 
+                _logger.LogInformation("Role {RoleName} ({RoleId}) has {Count} permissions",
                     role.Name, role.Id, rolePermissions.Count());
             }
-            
+
             // Also get direct user permissions (only from UserPermission table, not from roles)
             // GetAllPermissionsByUserId includes role permissions, so we filter them out
             var allUserPermissions = await _permissionRepository.GetAllPermissionsByUserId(user.Id);
             var rolePermissionIds = permissions.Select(p => p.Id).ToHashSet();
             var directUserPermissions = allUserPermissions.Where(p => !rolePermissionIds.Contains(p.Id));
             permissions.AddRange(directUserPermissions);
-            
+
             var distinctPermissions = permissions.DistinctBy(p => p.Id).ToList();
-            _logger.LogInformation("User {UserId} ({Email}) - {DirectCount} direct permissions, {RoleCount} role permissions, {TotalCount} total distinct permissions", 
-                user.Id, user.Email, directUserPermissions.Count(), 
-                permissions.Count - directUserPermissions.Count(), 
+            _logger.LogInformation("User {UserId} ({Email}) - {DirectCount} direct permissions, {RoleCount} role permissions, {TotalCount} total distinct permissions",
+                user.Id, user.Email, directUserPermissions.Count(),
+                permissions.Count - directUserPermissions.Count(),
                 distinctPermissions.Count);
-            
+
             permissions = distinctPermissions;
         }
 
-        var roleDtos = userRoles.Select(r => new RoleDto(r.Id) 
-        { 
-            Name = r.Name, 
-            Description = r.Description 
+        var roleDtos = userRoles.Select(r => new RoleDto(r.Id)
+        {
+            Name = r.Name,
+            Description = r.Description
         }).Cast<RoleDto?>().ToList();
 
         var permissionDtos = permissions
             .DistinctBy(p => p.Id)
-            .Select(p => new PermissionDto(p.Id) 
-            { 
-                Module = p.Module, 
-                Action = p.Action, 
-                Description = p.Description 
+            .Select(p => new PermissionDto(p.Id)
+            {
+                Module = p.Module,
+                Action = p.Action,
+                Description = p.Description
             })
             .Cast<PermissionDto?>().ToList();
 

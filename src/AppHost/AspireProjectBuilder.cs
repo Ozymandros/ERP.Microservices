@@ -3,7 +3,7 @@ using CommunityToolkit.Aspire.Hosting.Dapr;
 
 public class AspireProjectBuilder
 {
-    private int _httpPort = 5000;
+    private int _httpPort = 6000;
     private int _daprHttpPort = 3500;
     private int _daprGrpcPort = 45000;
     private int _metricsPort = 9090;
@@ -122,9 +122,9 @@ public class AspireProjectBuilder
 
     // Optionally reset counters
     public void ResetCounters(
-        int httpPort = 5001,
+        int httpPort = 6001,
         int daprHttpPort = 3501,
-        int daprGrpcPort = 45001,
+        int daprGrpcPort = 46001,
         int metricsPort = 9091)
     {
         _httpPort = httpPort;

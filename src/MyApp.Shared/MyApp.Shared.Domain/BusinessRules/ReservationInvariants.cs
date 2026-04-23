@@ -18,10 +18,10 @@ public static class ReservationInvariants
     {
         if (!IsQuantityValid(quantity))
             throw new InvalidOperationException("Reservation quantity must be greater than zero");
-        
+
         if (quantity > availableQuantity)
             throw new InvalidOperationException($"Cannot reserve {quantity} units. Only {availableQuantity} available");
-        
+
         if (IsReservationExpired(reservedUntil))
             throw new InvalidOperationException("Reservation expiry date must be in the future");
     }

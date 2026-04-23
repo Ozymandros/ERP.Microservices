@@ -7,14 +7,14 @@ namespace MyApp.Orders.Domain.Entities
         public string OrderNumber { get; set; } = string.Empty;
         public DateTime OrderDate { get; set; }
         public OrderStatus Status { get; set; }
-        
+
         // Operational Type
         public OrderType Type { get; set; }
-        
+
         // Logistic Points (Source/Target)
         public Guid? SourceId { get; set; }
         public Guid? TargetId { get; set; }
-        
+
         // External Reference (link to SalesOrder or PurchaseOrder)
         public Guid? ExternalOrderId { get; set; }
 

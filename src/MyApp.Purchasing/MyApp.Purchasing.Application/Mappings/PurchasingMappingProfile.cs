@@ -19,7 +19,7 @@ public class PurchasingMappingProfile : Profile
         CreateMap<PurchaseOrder, PurchaseOrderDto>()
             .ForMember(dest => dest.Supplier, opt => opt.MapFrom(src => src.Supplier))
             .ForMember(dest => dest.Lines, opt => opt.MapFrom(src => src.Lines));
-        
+
         CreateMap<CreateUpdatePurchaseOrderDto, PurchaseOrder>()
             .ConstructUsing(src => new PurchaseOrder(Guid.NewGuid()))
             .ForMember(dest => dest.Lines, opt => opt.MapFrom(src => src.Lines));

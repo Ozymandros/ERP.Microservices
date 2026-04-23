@@ -291,7 +291,7 @@ public class DistributedCacheWrapperTests
                 It.IsAny<DistributedCacheEntryOptions>(),
                 It.IsAny<CancellationToken>()),
             Times.Once);
-        
+
         // DistributedCacheEntryOptions doesn't accept TimeSpan.Zero, so it uses default (1 hour)
         capturedOptions.Should().NotBeNull();
         capturedOptions!.AbsoluteExpirationRelativeToNow.Should().Be(TimeSpan.FromHours(1));

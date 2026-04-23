@@ -42,7 +42,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
             var query = _context.SalesOrders
                 .Include(o => o.Lines)
                 .Include(o => o.Customer);
-            
+
             var totalCount = await query.CountAsync();
             var items = await query
                 .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)

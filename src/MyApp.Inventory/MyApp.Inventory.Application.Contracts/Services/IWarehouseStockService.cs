@@ -8,13 +8,13 @@ public interface IWarehouseStockService
     Task<List<WarehouseStockDto>> GetByProductIdAsync(Guid productId);
     Task<List<WarehouseStockDto>> GetByWarehouseIdAsync(Guid warehouseId);
     Task<StockAvailabilityDto?> GetProductAvailabilityAsync(Guid productId);
-    
+
     Task<ReservationDto> ReserveStockAsync(ReserveStockDto dto);
     Task ReleaseReservationAsync(Guid reservationId);
-    
+
     Task TransferStockAsync(StockTransferDto dto);
     Task AdjustStockAsync(StockAdjustmentDto dto);
-    
+
     Task<List<WarehouseStockDto>> GetLowStockAsync();
     Task<List<WarehouseStockDto>> GetAllWarehouseStocksAsync();
 }

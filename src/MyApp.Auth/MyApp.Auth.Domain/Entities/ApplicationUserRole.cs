@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Auth.Domain.Entities
 {
-    public class ApplicationUserRole: IdentityUserRole<Guid>//, IEntity<Guid>
+    public class ApplicationUserRole : IdentityUserRole<Guid>//, IEntity<Guid>
     {
         //[Key]
         //public Guid Id { get; set ; }

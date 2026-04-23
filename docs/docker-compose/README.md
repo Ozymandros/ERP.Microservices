@@ -82,13 +82,15 @@ This category documents the complete local development environment using Docker 
 |---------|------|------|--------|
 | **SQL Server** | 1433 | Database | ✅ Running |
 | **Redis** | 6379 | Cache & State | ✅ Running |
-| **Auth Service** | 5001 | Authentication | ✅ Running |
-| **Inventory Service** | 5002 | Inventory Mgmt | ✅ Running |
-| **Orders Service** | 5003 | Order Processing | ✅ Running |
-| **Sales Service** | 5004 | Sales Mgmt | ✅ Running |
-| **Billing Service** | 5005 | Billing | ✅ Running |
-| **Purchasing Service** | 5006 | Procurement | ✅ Running |
-| **API Gateway** | 8000 | Request Router | ✅ Running |
+| **Gateway** | 5000 | API Gateway | ✅ Running |
+| **Auth Service** | 6001 | Authentication | ✅ Running |
+| **Billing Service** | 6002 | Billing | ✅ Running |
+| **Inventory Service** | 6004 | Inventory Mgmt | ✅ Running |
+| **Orders Service** | 6005 | Order Processing | ✅ Running |
+| **Purchasing Service** | 6006 | Procurement | ✅ Running |
+| **Sales Service** | 6007 | Sales Mgmt | ✅ Running |
+| **CRM Service** | 6003 | CRM & Leads | ✅ Running |
+| **SemanticKernel Service** | 6008 | AI Semantic Kernel | ✅ Running |
 | **DAPR Placement** | 50005 | Service Discovery | ✅ Running |
 | **DAPR Sentry** | 50001 | mTLS Authority | ✅ Running |
 | **Redis Commander** | 8081 | Redis UI | ✅ Running |
@@ -190,7 +192,7 @@ When starting local development:
 - [ ] API Gateway health check passes (`curl http://localhost:8000/health`)
 - [ ] Can access Redis Commander (`http://localhost:8081`)
 - [ ] Can access Redis Insight (`http://localhost:5540`)
-- [ ] Auth service running (`curl http://localhost:5001/health`)
+- [ ] Auth service running (`curl http://localhost:6001/health`)
 - [ ] Database accessible
 
 ---

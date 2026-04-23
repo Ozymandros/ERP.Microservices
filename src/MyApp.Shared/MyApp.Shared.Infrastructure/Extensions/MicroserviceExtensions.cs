@@ -1,8 +1,10 @@
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Permissions;
@@ -145,7 +147,8 @@ public static class MicroserviceExtensions
 
         // 9. Redis Distributed Cache
         // IMPORTANT: AddRedisDistributedCache("cache") must be called BEFORE AddServiceDefaults
-        // because it's an Aspire extension method that requires the Redis resource reference.
+        // by the API project (it's an Aspire extension method from Aspire.StackExchange.Redis.DistributedCaching
+        // that requires the Redis resource reference from the AppHost).
         // We only register the ICacheService wrapper here; the actual Redis connection is configured by Aspire.
         if (options.EnableRedisCache)
         {

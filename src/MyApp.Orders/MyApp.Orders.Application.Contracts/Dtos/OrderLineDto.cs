@@ -9,7 +9,7 @@ namespace MyApp.Orders.Application.Contracts.Dtos
 
         [Range(1, int.MaxValue)]
         public int Quantity { get; init; } = 1;
-        
+
         public int PickedQuantity { get; init; } = 0;
         public bool IsFulfilled { get; init; } = false;
     }

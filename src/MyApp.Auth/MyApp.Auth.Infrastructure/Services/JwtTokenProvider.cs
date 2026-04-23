@@ -24,7 +24,7 @@ public class JwtTokenProvider : IJwtTokenProvider
     public JwtTokenProvider(IConfiguration configuration)
     {
         ArgumentNullException.ThrowIfNull(configuration);
-        
+
         _secretKey = configuration["Jwt:SecretKey"] ?? throw new ArgumentNullException("Jwt:SecretKey");
         _issuer = configuration["Jwt:Issuer"] ?? throw new ArgumentNullException("Jwt:Issuer");
         _audience = configuration["Jwt:Audience"] ?? throw new ArgumentNullException("Jwt:Audience");

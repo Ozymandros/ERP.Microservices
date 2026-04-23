@@ -50,7 +50,7 @@ public class DistributedCacheWrapper : ICacheService
         var bytes = Encoding.UTF8.GetBytes(json);
 
         var options = new DistributedCacheEntryOptions();
-        
+
         // DistributedCacheEntryOptions requires positive expiration values
         // If expiration is null or zero, use default (1 hour)
         if (expiration.HasValue && expiration.Value > TimeSpan.Zero)

@@ -411,7 +411,7 @@ public class CustomerServiceTests
         };
 
         _mockCustomerRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
-        _mockMapper.Setup(m => m.Map<CustomerDto>(It.IsAny<Customer>())).Returns((Customer c) => 
+        _mockMapper.Setup(m => m.Map<CustomerDto>(It.IsAny<Customer>())).Returns((Customer c) =>
             new CustomerDto(c.Id) { Name = c.Name, Email = c.Email, PhoneNumber = c.PhoneNumber ?? "", Address = c.Address ?? "" });
 
         // Act
@@ -528,7 +528,7 @@ public class CustomerServiceTests
         var paginatedResult = new PaginatedResult<Customer>(customers, 1, 2, 10);
 
         _mockCustomerRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
-        _mockMapper.Setup(m => m.Map<CustomerDto>(It.IsAny<Customer>())).Returns((Customer c) => 
+        _mockMapper.Setup(m => m.Map<CustomerDto>(It.IsAny<Customer>())).Returns((Customer c) =>
             new CustomerDto(c.Id) { Name = c.Name, Email = c.Email, PhoneNumber = c.PhoneNumber ?? "", Address = c.Address ?? "" });
 
         // Act
