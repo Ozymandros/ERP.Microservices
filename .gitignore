@@ -1,64 +1,33 @@
 ```
-# Build artifacts
-*.obj
-*.exe
-*.dll
-*.so
-*.a
-*.out
-obj/
+# Build results
 bin/
 obj/
-Debug/
-Release/
-x64/
-x86/
+out/
 
-# Dependencies
-packages/
-node_modules/
-bower_components/
-jspm_packages/
-.nuget/
-packages/
-
-# IDE specific
+# User-specific files
 .vs/
 *.user
 *.userosscache
 *.suo
-*.csproj.user
-*.userprefs
-.vscode/
-.idea/
 
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-desktop.ini
-
-# Logs
+# Log files
 *.log
 
-# Environment
+# Environment specific settings
 .env
 .env.local
 *.env.*
 
-# Test results
-TestResults/
+# OS generated files
+.DS_Store
+Thumbs.db
 
-# Local DB
-*.db
-*.db-shm
-*.db-wal
+# IDE specific files
+.vscode/
+.idea/
 
-# Compiled source
-*.nupkg
-*.snupkg
+# Test coverage
+coverage/
+*.cover
+*.coverage
 ```

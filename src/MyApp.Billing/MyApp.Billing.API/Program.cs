@@ -1,4 +1,10 @@
 using MyApp.Shared.Infrastructure.Extensions;
+using Microsoft.EntityFrameworkCore;
+using MyApp.Billing.Infrastructure.Persistence;
+using MyApp.Billing.Domain.Repositories;
+using MyApp.Billing.Infrastructure.Repositories;
+using MyApp.Billing.Application.Contracts.Services;
+using MyApp.Billing.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,16 +14,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults(new MicroserviceConfigurationOptions
 {
     ServiceName = "MyApp.Billing.API",
-    EnableHealthChecks = true, // TODO: Enable when database is configured
-    EnableRedisCache = false, // TODO: Enable when needed
-    EnableAutoMapper = false, // No domain logic yet
-    DbContextType = null, // TODO: Add when billing database is implemented
-    // ConnectionStringKey will be null (no database yet)
+    EnableHealthChecks = true,
+    EnableRedisCache = false,
+    EnableAutoMapper = false,
+    DbContextType = typeof(BillingDbContext),
+    ConnectionStringKey = "BillingDb",
     ConfigureServiceDependencies = services =>
     {
-        // TODO: Add billing-specific repositories and services here
-        // services.AddScoped<IBillingRepository, BillingRepository>();
-        // services.AddScoped<IBillingService, BillingService>();
+        // Register repositories
+        services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddScoped<ICreditNoteRepository, CreditNoteRepository>();
+        
+        // Register application services
+        services.AddScoped<IInvoiceService, InvoiceService>();
     }
 });
 
@@ -26,34 +36,124 @@ var app = builder.Build();
 // ============================================================================
 // Service Defaults Pipeline
 // ============================================================================
-// Options are automatically reused from AddServiceDefaults via DI.
 app.UseServiceDefaults();
 
 // ============================================================================
-// Temporary: Weather forecast endpoint (TODO: Remove when billing endpoints added)
+// Billing API Endpoints
 // ============================================================================
-var summaries = new[]
+app.MapPost("/api/billing/invoices", async (
+    MyApp.Billing.Application.Contracts.DTOs.CreateInvoiceDto dto,
+    IInvoiceService invoiceService,
+    CancellationToken ct) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    var result = await invoiceService.CreateInvoiceAsync(dto, ct);
+    return Results.Created($"/api/billing/invoices/{result.Id}", result);
 })
-.WithName("GetWeatherForecast");
+.RequireAuthorization()
+.WithName("CreateInvoice")
+.WithOpenApi();
+
+app.MapGet("/api/billing/invoices/{invoiceId:guid}", async (
+    Guid invoiceId,
+    IInvoiceService invoiceService,
+    CancellationToken ct) =>
+{
+    var result = await invoiceService.GetInvoiceByIdAsync(invoiceId, ct);
+    return result is not null ? Results.Ok(result) : Results.NotFound();
+})
+.RequireAuthorization()
+.WithName("GetInvoiceById")
+.WithOpenApi();
+
+app.MapGet("/api/billing/customers/{customerId:guid}/invoices", async (
+    Guid customerId,
+    IInvoiceService invoiceService,
+    CancellationToken ct) =>
+{
+    var result = await invoiceService.GetInvoicesByCustomerIdAsync(customerId, ct);
+    return Results.Ok(result);
+})
+.RequireAuthorization()
+.WithName("GetInvoicesByCustomerId")
+.WithOpenApi();
+
+app.MapGet("/api/billing/invoices/open", async (
+    IInvoiceService invoiceService,
+    CancellationToken ct) =>
+{
+    var result = await invoiceService.GetOpenInvoicesAsync(ct);
+    return Results.Ok(result);
+})
+.RequireAuthorization()
+.WithName("GetOpenInvoices")
+.WithOpenApi();
+
+app.MapGet("/api/billing/orders/{orderId:guid}/invoices", async (
+    Guid orderId,
+    IInvoiceService invoiceService,
+    CancellationToken ct) =>
+{
+    var result = await invoiceService.GetInvoicesByOrderIdAsync(orderId, ct);
+    return Results.Ok(result);
+})
+.RequireAuthorization()
+.WithName("GetInvoicesByOrderId")
+.WithOpenApi();
+
+app.MapPost("/api/billing/invoices/{invoiceId:guid}/issue", async (
+    Guid invoiceId,
+    IssueInvoiceRequest request,
+    IInvoiceService invoiceService,
+    CancellationToken ct) =>
+{
+    var result = await invoiceService.IssueInvoiceAsync(invoiceId, request.InvoiceNumber, request.IssueDate, ct);
+    return Results.Ok(result);
+})
+.RequireAuthorization()
+.WithName("IssueInvoice")
+.WithOpenApi();
+
+app.MapPost("/api/billing/invoices/{invoiceId:guid}/payments", async (
+    MyApp.Billing.Application.Contracts.DTOs.RecordPaymentDto dto,
+    IInvoiceService invoiceService,
+    CancellationToken ct) =>
+{
+    var result = await invoiceService.RecordPaymentAsync(dto, ct);
+    return Results.Ok(result);
+})
+.RequireAuthorization()
+.WithName("RecordPayment")
+.WithOpenApi();
+
+app.MapPost("/api/billing/invoices/{invoiceId:guid}/cancel", async (
+    Guid invoiceId,
+    CancelInvoiceRequest request,
+    IInvoiceService invoiceService,
+    CancellationToken ct) =>
+{
+    var result = await invoiceService.CancelInvoiceAsync(invoiceId, request.Reason, ct);
+    return Results.Ok(result);
+})
+.RequireAuthorization()
+.WithName("CancelInvoice")
+.WithOpenApi();
+
+app.MapPost("/api/billing/credit-notes", async (
+    MyApp.Billing.Application.Contracts.DTOs.CreateCreditNoteDto dto,
+    IInvoiceService invoiceService,
+    CancellationToken ct) =>
+{
+    var result = await invoiceService.CreateCreditNoteAsync(dto, ct);
+    return Results.Created($"/api/billing/credit-notes/{result.Id}", result);
+})
+.RequireAuthorization()
+.WithName("CreateCreditNote")
+.WithOpenApi();
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+// ============================================================================
+// Request DTOs for endpoints that don't use the main DTOs
+// ============================================================================
+public record IssueInvoiceRequest(string InvoiceNumber, DateTime IssueDate);
+public record CancelInvoiceRequest(string Reason);
