@@ -1,1 +1,6 @@
 .azure
+*.trx
+coverage_cobertura.xml
+coverage.cobertura.xml
+test_results.txt
+_site

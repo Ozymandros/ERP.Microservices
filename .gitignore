@@ -31,3 +31,8 @@ coverage/
 *.cover
 *.coverage
 ```
+*.xml
+*.trx
+*.tmp
+*.txt
+_site
