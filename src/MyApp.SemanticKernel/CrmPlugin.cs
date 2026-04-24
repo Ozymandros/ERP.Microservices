@@ -18,7 +18,7 @@ public class CrmPlugin
     {
         var payload = JsonSerializer.Deserialize<JsonElement?>(payloadJson) ?? default;
         var result = await _serviceInvoker.InvokeAsync<JsonElement, object>(
-            ServiceNames.Notification, // fallback; CRM API lives under crm-service but use generic path
+            ServiceNames.Crm,
             "api/crm/contacts",
             HttpMethod.Post,
             payload);
@@ -29,7 +29,7 @@ public class CrmPlugin
     public async Task<string> GetByIdAsync(string id)
     {
         var result = await _serviceInvoker.InvokeAsync<string, object>(
-            ServiceNames.Notification,
+            ServiceNames.Crm,
             $"api/crm/contacts/{id}",
             HttpMethod.Get,
             string.Empty);
@@ -41,7 +41,7 @@ public class CrmPlugin
     {
         var payload = JsonSerializer.Deserialize<JsonElement?>(payloadJson) ?? default;
         var result = await _serviceInvoker.InvokeAsync<JsonElement, object>(
-            ServiceNames.Notification,
+            ServiceNames.Crm,
             "api/crm/contacts",
             HttpMethod.Put,
             payload);
@@ -53,7 +53,7 @@ public class CrmPlugin
     public async Task<string> DeleteAsync(string id)
     {
         await _serviceInvoker.InvokeAsync<string, object>(
-            ServiceNames.Notification,
+            ServiceNames.Crm,
             $"api/crm/contacts/{id}",
             HttpMethod.Delete,
             string.Empty);

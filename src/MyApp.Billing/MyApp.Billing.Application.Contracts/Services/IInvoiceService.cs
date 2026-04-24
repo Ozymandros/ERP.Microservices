@@ -1,3 +1,5 @@
+using MyApp.Billing.Application.Contracts.DTOs;
+
 namespace MyApp.Billing.Application.Contracts.Services;
 
 /// <summary>

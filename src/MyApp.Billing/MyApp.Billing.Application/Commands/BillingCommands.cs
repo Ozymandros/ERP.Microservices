@@ -1,5 +1,4 @@
 using MyApp.Billing.Domain.Entities;
-using MyApp.Shared.CQRS;
 
 namespace MyApp.Billing.Application.Commands;
 

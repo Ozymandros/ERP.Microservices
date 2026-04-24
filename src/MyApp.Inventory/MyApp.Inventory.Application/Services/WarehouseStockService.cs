@@ -16,6 +16,7 @@ public class WarehouseStockService : IWarehouseStockService
     private readonly IWarehouseStockRepository _warehouseStockRepository;
     private readonly IProductRepository _productRepository;
     private readonly IInventoryTransactionRepository _transactionRepository;
+    private readonly IInventoryReservationRepository _reservationRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<WarehouseStockService> _logger;
     private readonly IEventPublisher _eventPublisher;
@@ -24,6 +25,7 @@ public class WarehouseStockService : IWarehouseStockService
         IWarehouseStockRepository warehouseStockRepository,
         IProductRepository productRepository,
         IInventoryTransactionRepository transactionRepository,
+        IInventoryReservationRepository reservationRepository,
         IMapper mapper,
         ILogger<WarehouseStockService> logger,
         IEventPublisher eventPublisher)
@@ -31,6 +33,7 @@ public class WarehouseStockService : IWarehouseStockService
         _warehouseStockRepository = warehouseStockRepository;
         _productRepository = productRepository;
         _transactionRepository = transactionRepository;
+        _reservationRepository = reservationRepository;
         _mapper = mapper;
         _logger = logger;
         _eventPublisher = eventPublisher;
@@ -104,13 +107,25 @@ public class WarehouseStockService : IWarehouseStockService
         warehouseStock.ReservedQuantity += dto.Quantity;
         await _warehouseStockRepository.UpdateAsync(warehouseStock);
 
-        // Create reservation record (Note: This would be in Orders service, returning a DTO for now)
+        // Persist reservation record so ReleaseReservationAsync can look it up by ID
+        var reservationId = Guid.NewGuid();
         var expiresAt = dto.ExpiresAt ?? ReservationInvariants.CalculateReservationExpiry();
+
+        var reservationRecord = new InventoryReservation(reservationId)
+        {
+            ProductId = dto.ProductId,
+            WarehouseId = dto.WarehouseId,
+            OrderId = dto.OrderId,
+            OrderLineId = dto.OrderLineId,
+            Quantity = dto.Quantity,
+            ReservedUntil = expiresAt,
+            Status = InventoryReservationStatus.Reserved
+        };
+        await _reservationRepository.AddAsync(reservationRecord);
 
         _logger.LogInformation("Stock reserved successfully: {@Reservation}", new { dto.ProductId, dto.Quantity, ExpiresAt = expiresAt });
 
         // Publish StockReservedEvent via Dapr
-        var reservationId = Guid.NewGuid();
         var stockReservedEvent = new StockReservedEvent(
             reservationId,
             dto.ProductId,
@@ -146,16 +161,54 @@ public class WarehouseStockService : IWarehouseStockService
     {
         _logger.LogInformation("Releasing reservation: ReservationId={ReservationId}", reservationId);
 
-        // TODO: This would query Orders.ReservedStock to get details
-        // For now, publish event with available information
-        _logger.LogInformation("Reservation released: ReservationId={ReservationId}", reservationId);
+        // Look up the persisted reservation record
+        var reservation = await _reservationRepository.GetByIdAsync(reservationId);
+        if (reservation == null)
+        {
+            throw new KeyNotFoundException($"Reservation '{reservationId}' not found.");
+        }
+
+        if (reservation.Status != InventoryReservationStatus.Reserved)
+        {
+            _logger.LogWarning(
+                "Reservation {ReservationId} is already in status {Status} — skipping release.",
+                reservationId, reservation.Status);
+            return;
+        }
+
+        // Reverse the stock quantities
+        var warehouseStock = await _warehouseStockRepository.GetByProductAndWarehouseAsync(
+            reservation.ProductId, reservation.WarehouseId);
+
+        if (warehouseStock != null)
+        {
+            warehouseStock.ReservedQuantity = Math.Max(0, warehouseStock.ReservedQuantity - reservation.Quantity);
+            warehouseStock.AvailableQuantity += reservation.Quantity;
+            await _warehouseStockRepository.UpdateAsync(warehouseStock);
+
+            _logger.LogInformation(
+                "Reversed stock quantities for ProductId={ProductId} WarehouseId={WarehouseId}: +{Quantity} available.",
+                reservation.ProductId, reservation.WarehouseId, reservation.Quantity);
+        }
+        else
+        {
+            _logger.LogWarning(
+                "WarehouseStock not found for ProductId={ProductId} WarehouseId={WarehouseId} during reservation release.",
+                reservation.ProductId, reservation.WarehouseId);
+        }
+
+        // Mark reservation as released
+        reservation.Status = InventoryReservationStatus.Released;
+        await _reservationRepository.UpdateAsync(reservation);
+
+        _logger.LogInformation("Reservation {ReservationId} released successfully.", reservationId);
 
         // Publish StockReleasedEvent via Dapr
         var stockReleasedEvent = new StockReleasedEvent(
             reservationId,
-            Guid.Empty, // ProductId - would come from reservation query
-            Guid.Empty, // WarehouseId - would come from reservation query
-            0  // Quantity - would come from reservation query
+            reservation.ProductId,
+            reservation.WarehouseId,
+            reservation.Quantity
         );
 
         try

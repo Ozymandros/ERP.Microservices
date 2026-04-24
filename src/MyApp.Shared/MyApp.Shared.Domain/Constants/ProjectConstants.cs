@@ -8,6 +8,7 @@ public static class ServiceNames
     public const string Purchasing = "purchasing-service";
     public const string Auth = "auth-service";
     public const string Billing = "billing-service";
+    public const string Crm = "crm-service";
     public const string Notification = "notification-service";
 }
 

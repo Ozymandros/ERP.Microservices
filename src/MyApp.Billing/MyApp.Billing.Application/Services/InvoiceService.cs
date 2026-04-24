@@ -1,4 +1,3 @@
-using AutoMapper;
 using Microsoft.Extensions.Logging;
 using MyApp.Billing.Application.Contracts.DTOs;
 using MyApp.Billing.Application.Contracts.Services;
@@ -14,20 +13,17 @@ public class InvoiceService : IInvoiceService
 {
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly ICreditNoteRepository _creditNoteRepository;
-    private readonly IMapper _mapper;
     private readonly ILogger<InvoiceService> _logger;
     private readonly IEventPublisher _eventPublisher;
 
     public InvoiceService(
         IInvoiceRepository invoiceRepository,
         ICreditNoteRepository creditNoteRepository,
-        IMapper mapper,
         ILogger<InvoiceService> logger,
         IEventPublisher eventPublisher)
     {
         _invoiceRepository = invoiceRepository;
         _creditNoteRepository = creditNoteRepository;
-        _mapper = mapper;
         _logger = logger;
         _eventPublisher = eventPublisher;
     }
@@ -44,7 +40,7 @@ public class InvoiceService : IInvoiceService
         await _invoiceRepository.AddAsync(invoice);
 
         // Publish domain event
-        await _eventPublisher.PublishAsync(new InvoiceCreatedEvent(
+        await _eventPublisher.PublishAsync("billing.invoice.created", new InvoiceCreatedEvent(
             invoice.Id,
             invoice.CustomerId,
             invoice.OrderId,
@@ -65,7 +61,7 @@ public class InvoiceService : IInvoiceService
         await _invoiceRepository.UpdateAsync(invoice);
 
         // Publish domain event
-        await _eventPublisher.PublishAsync(new InvoiceIssuedEvent(
+        await _eventPublisher.PublishAsync("billing.invoice.issued", new InvoiceIssuedEvent(
             invoice.Id,
             invoice.InvoiceNumber,
             invoice.CustomerId,
@@ -89,7 +85,7 @@ public class InvoiceService : IInvoiceService
         await _invoiceRepository.UpdateAsync(invoice);
 
         // Publish domain event
-        await _eventPublisher.PublishAsync(new InvoicePaidEvent(
+        await _eventPublisher.PublishAsync("billing.invoice.paid", new InvoicePaidEvent(
             invoice.Id,
             invoice.OrderId,
             invoice.CustomerId,
@@ -111,7 +107,7 @@ public class InvoiceService : IInvoiceService
         await _invoiceRepository.UpdateAsync(invoice);
 
         // Publish domain event
-        await _eventPublisher.PublishAsync(new InvoiceCancelledEvent(
+        await _eventPublisher.PublishAsync("billing.invoice.cancelled", new InvoiceCancelledEvent(
             invoice.Id,
             invoice.InvoiceNumber,
             reason
@@ -138,7 +134,7 @@ public class InvoiceService : IInvoiceService
         await _creditNoteRepository.AddAsync(creditNote);
 
         // Publish domain event
-        await _eventPublisher.PublishAsync(new CreditNoteIssuedEvent(
+        await _eventPublisher.PublishAsync("billing.creditnote.issued", new CreditNoteIssuedEvent(
             creditNote.Id,
             creditNote.OriginalInvoiceId,
             $"CN-{creditNote.Id.ToString()[..8]}",
@@ -200,7 +196,7 @@ public class InvoiceService : IInvoiceService
                 l.LineGross
             )).ToList(),
             invoice.CreatedAt,
-            invoice.UpdatedAt
+            invoice.UpdatedAt ?? invoice.CreatedAt
         );
     }
 

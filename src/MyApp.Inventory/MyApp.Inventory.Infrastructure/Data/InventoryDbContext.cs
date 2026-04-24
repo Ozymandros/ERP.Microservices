@@ -15,6 +15,7 @@ public class InventoryDbContext : AuditableDbContext
     public DbSet<Warehouse> Warehouses { get; set; }
     public DbSet<InventoryTransaction> InventoryTransactions { get; set; }
     public DbSet<WarehouseStock> WarehouseStocks { get; set; }
+    public DbSet<InventoryReservation> InventoryReservations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

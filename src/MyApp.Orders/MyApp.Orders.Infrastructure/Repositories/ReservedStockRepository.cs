@@ -14,9 +14,27 @@ public class ReservedStockRepository : IReservedStockRepository
         _db = db;
     }
 
+    // ── IRepository<ReservedStock, Guid> (local Orders contract) ─────────────
+
+    public async Task<ReservedStock?> GetByIdAsync(Guid id)
+    {
+        return await _db.ReservedStocks.FirstOrDefaultAsync(r => r.Id == id);
+    }
+
+    public async Task<IEnumerable<ReservedStock>> ListAsync()
+    {
+        return await _db.ReservedStocks.ToListAsync();
+    }
+
     public async Task AddAsync(ReservedStock entity)
     {
         await _db.ReservedStocks.AddAsync(entity);
+        await _db.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(ReservedStock entity)
+    {
+        _db.ReservedStocks.Update(entity);
         await _db.SaveChangesAsync();
     }
 
@@ -30,21 +48,7 @@ public class ReservedStockRepository : IReservedStockRepository
         }
     }
 
-    public async Task<ReservedStock?> GetByIdAsync(Guid id)
-    {
-        return await _db.ReservedStocks.FirstOrDefaultAsync(r => r.Id == id);
-    }
-
-    public async Task<IEnumerable<ReservedStock>> ListAsync()
-    {
-        return await _db.ReservedStocks.ToListAsync();
-    }
-
-    public async Task UpdateAsync(ReservedStock entity)
-    {
-        _db.ReservedStocks.Update(entity);
-        await _db.SaveChangesAsync();
-    }
+    // ── IReservedStockRepository domain-specific queries ─────────────────────
 
     public async Task<List<ReservedStock>> GetExpiredReservationsAsync()
     {
