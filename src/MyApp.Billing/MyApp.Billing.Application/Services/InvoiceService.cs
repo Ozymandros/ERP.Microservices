@@ -9,6 +9,9 @@ using MyApp.Shared.Domain.Exceptions;
 
 namespace MyApp.Billing.Application.Services;
 
+/// <summary>
+/// Service for managing invoices, including creation, issuance, payment recording, and credit note operations.
+/// </summary>
 public class InvoiceService : IInvoiceService
 {
     private readonly IInvoiceRepository _invoiceRepository;
@@ -16,6 +19,9 @@ public class InvoiceService : IInvoiceService
     private readonly ILogger<InvoiceService> _logger;
     private readonly IEventPublisher _eventPublisher;
 
+    /// <summary>
+    /// Initializes a new instance of the InvoiceService with required dependencies.
+    /// </summary>
     public InvoiceService(
         IInvoiceRepository invoiceRepository,
         ICreditNoteRepository creditNoteRepository,
@@ -28,6 +34,9 @@ public class InvoiceService : IInvoiceService
         _eventPublisher = eventPublisher;
     }
 
+    /// <summary>
+    /// Creates a new invoice with the provided details and line items.
+    /// </summary>
     public async Task<InvoiceDto> CreateInvoiceAsync(CreateInvoiceDto dto, CancellationToken cancellationToken = default)
     {
         var invoice = new Invoice(Guid.NewGuid(), dto.CustomerId, dto.Currency);
@@ -51,6 +60,9 @@ public class InvoiceService : IInvoiceService
         return MapToDto(invoice);
     }
 
+    /// <summary>
+    /// Issues an existing invoice, assigning it an invoice number and due date.
+    /// </summary>
     public async Task<InvoiceDto> IssueInvoiceAsync(Guid invoiceId, string invoiceNumber, DateTime issueDate, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(invoiceId)
@@ -75,6 +87,9 @@ public class InvoiceService : IInvoiceService
         return MapToDto(invoice);
     }
 
+    /// <summary>
+    /// Records a payment against an invoice, updating its outstanding amount.
+    /// </summary>
     public async Task<InvoiceDto> RecordPaymentAsync(RecordPaymentDto dto, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(dto.InvoiceId)
@@ -97,6 +112,9 @@ public class InvoiceService : IInvoiceService
         return MapToDto(invoice);
     }
 
+    /// <summary>
+    /// Cancels an existing invoice with the provided cancellation reason.
+    /// </summary>
     public async Task<InvoiceDto> CancelInvoiceAsync(Guid invoiceId, string reason, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(invoiceId)
@@ -116,6 +134,9 @@ public class InvoiceService : IInvoiceService
         return MapToDto(invoice);
     }
 
+    /// <summary>
+    /// Creates a credit note for an existing invoice, allowing partial or full reversal.
+    /// </summary>
     public async Task<CreditNoteDto> CreateCreditNoteAsync(CreateCreditNoteDto dto, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(dto.InvoiceId)
@@ -145,24 +166,36 @@ public class InvoiceService : IInvoiceService
         return MapToDto(creditNote);
     }
 
+    /// <summary>
+    /// Retrieves an invoice by its unique identifier.
+    /// </summary>
     public async Task<InvoiceDto?> GetInvoiceByIdAsync(Guid invoiceId, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(invoiceId);
         return invoice != null ? MapToDto(invoice) : null;
     }
 
+    /// <summary>
+    /// Retrieves all invoices for a specific customer.
+    /// </summary>
     public async Task<List<InvoiceDto>> GetInvoicesByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default)
     {
         var invoices = await _invoiceRepository.GetByCustomerIdAsync(customerId, cancellationToken);
         return invoices.Select(MapToDto).ToList();
     }
 
+    /// <summary>
+    /// Retrieves all outstanding (issued or sent) invoices.
+    /// </summary>
     public async Task<List<InvoiceDto>> GetOpenInvoicesAsync(CancellationToken cancellationToken = default)
     {
         var invoices = await _invoiceRepository.GetOpenInvoicesAsync(cancellationToken);
         return invoices.Select(MapToDto).ToList();
     }
 
+    /// <summary>
+    /// Retrieves all invoices associated with a specific order.
+    /// </summary>
     public async Task<List<InvoiceDto>> GetInvoicesByOrderIdAsync(Guid orderId, CancellationToken cancellationToken = default)
     {
         var invoices = await _invoiceRepository.GetInvoicesByOrderIdAsync(orderId, cancellationToken);

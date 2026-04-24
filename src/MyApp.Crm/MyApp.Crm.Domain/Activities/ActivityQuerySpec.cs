@@ -3,8 +3,10 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Crm.Domain.Activities;
 
+/// <summary>Specification for querying and filtering activities.</summary>
 public class ActivityQuerySpec : BaseSpecification<Activity>
 {
+    /// <summary>Initializes a new instance of the ActivityQuerySpec class.</summary>
     public ActivityQuerySpec(QuerySpec query) : base(query)
     {
     }

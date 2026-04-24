@@ -1,5 +1,8 @@
 namespace MyApp.Shared.Domain.Events;
 
+/// <summary>
+/// Event raised when a product is created.
+/// </summary>
 public record ProductCreatedEvent(
     Guid ProductId,
     string SKU,
@@ -7,6 +10,9 @@ public record ProductCreatedEvent(
     decimal UnitPrice
 );
 
+/// <summary>
+/// Event raised when stock for a product is updated.
+/// </summary>
 public record StockUpdatedEvent(
     Guid ProductId,
     Guid WarehouseId,
@@ -14,6 +20,9 @@ public record StockUpdatedEvent(
     string TransactionType
 );
 
+/// <summary>
+/// Event raised when stock is reserved for an order.
+/// </summary>
 public record StockReservedEvent(
     Guid ReservationId,
     Guid ProductId,
@@ -22,6 +31,9 @@ public record StockReservedEvent(
     int Quantity
 );
 
+/// <summary>
+/// Event raised when a stock reservation is released.
+/// </summary>
 public record StockReleasedEvent(
     Guid ReservationId,
     Guid ProductId,
@@ -29,6 +41,9 @@ public record StockReleasedEvent(
     int Quantity
 );
 
+/// <summary>
+/// Event raised when stock falls below reorder level.
+/// </summary>
 public record LowStockAlertEvent(
     Guid ProductId,
     Guid WarehouseId,
@@ -36,6 +51,9 @@ public record LowStockAlertEvent(
     int ReorderLevel
 );
 
+/// <summary>
+/// Event raised when stock is transferred between warehouses.
+/// </summary>
 public record StockTransferredEvent(
     Guid ProductId,
     Guid FromWarehouseId,
@@ -44,6 +62,9 @@ public record StockTransferredEvent(
     string Reason
 );
 
+/// <summary>
+/// Event raised when stock quantity is adjusted.
+/// </summary>
 public record StockAdjustedEvent(
     Guid ProductId,
     Guid WarehouseId,

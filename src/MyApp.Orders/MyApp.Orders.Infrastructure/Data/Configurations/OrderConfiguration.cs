@@ -4,8 +4,10 @@ using MyApp.Orders.Domain.Entities;
 
 namespace MyApp.Orders.Infrastructure.Data.Configurations
 {
+    /// <summary>Entity Framework configuration for Order entity.</summary>
     public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
+        /// <summary>Configures the Order entity mapping.</summary>
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.ToTable("Orders");

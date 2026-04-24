@@ -9,6 +9,9 @@ using System.Security.Claims;
 
 namespace MyApp.Auth.Application.Services;
 
+/// <summary>
+/// Provides authentication and authorization services including login, registration, token refresh, and logout operations.
+/// </summary>
 public class AuthService : IAuthService
 {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -19,6 +22,9 @@ public class AuthService : IAuthService
     private readonly IPermissionRepository _permissionRepository;
     private readonly ILogger<AuthService> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the AuthService with required dependencies.
+    /// </summary>
     public AuthService(
         UserManager<ApplicationUser> userManager,
         IJwtTokenProvider jwtTokenProvider,
@@ -37,6 +43,9 @@ public class AuthService : IAuthService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Authenticates a user with email and password credentials.
+    /// </summary>
     public async Task<TokenResponseDto?> LoginAsync(LoginDto loginDto)
     {
         var user = await _userManager.FindByEmailAsync(loginDto.Email);
@@ -56,6 +65,9 @@ public class AuthService : IAuthService
         return await GenerateTokenResponseAsync(user);
     }
 
+    /// <summary>
+    /// Registers a new user account and returns authentication tokens.
+    /// </summary>
     public async Task<TokenResponseDto?> RegisterAsync(RegisterDto registerDto)
     {
         var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
@@ -88,6 +100,9 @@ public class AuthService : IAuthService
         return await GenerateTokenResponseAsync(user);
     }
 
+    /// <summary>
+    /// Generates new authentication tokens using a valid refresh token.
+    /// </summary>
     public async Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
     {
         var principal = _jwtTokenProvider.GetPrincipalFromExpiredToken(refreshTokenDto.AccessToken);
@@ -121,6 +136,9 @@ public class AuthService : IAuthService
         return await GenerateTokenResponseAsync(user);
     }
 
+    /// <summary>
+    /// Authenticates a user through an external authentication provider.
+    /// </summary>
     public async Task<TokenResponseDto?> ExternalLoginAsync(ExternalLoginDto externalLoginDto)
     {
         // Try to find existing user with external provider

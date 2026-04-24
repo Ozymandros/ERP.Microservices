@@ -4,11 +4,16 @@ using MyApp.Shared.Infrastructure.Export;
 
 namespace MyApp.Billing.API
 {
+    /// <summary>
+    /// API controller for managing billing-related values and operations.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        // GET: api/<ValuesController>
+        /// <summary>
+        /// Retrieves a list of sample billing values.
+        /// </summary>
         [HttpGet]
         public IEnumerable<string> Get()
         {

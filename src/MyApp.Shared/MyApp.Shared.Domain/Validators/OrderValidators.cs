@@ -2,8 +2,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Shared.Domain.Validators;
 
+/// <summary>
+/// Provides validation methods for order and order line items.
+/// </summary>
 public static class OrderValidators
 {
+    /// <summary>
+    /// Validates an order line item.
+    /// </summary>
     public static ValidationResult? ValidateOrderLine(int quantity, decimal unitPrice, decimal lineTotal)
     {
         if (quantity <= 0)
@@ -18,6 +24,9 @@ public static class OrderValidators
         return ValidationResult.Success;
     }
 
+    /// <summary>
+    /// Validates an entire order.
+    /// </summary>
     public static ValidationResult? ValidateOrder(int lineCount, decimal totalAmount, decimal calculatedTotal)
     {
         if (lineCount == 0)

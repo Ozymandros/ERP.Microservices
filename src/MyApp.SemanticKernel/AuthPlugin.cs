@@ -3,15 +3,24 @@ using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using System.Text.Json;
 
+/// <summary>
+/// Semantic Kernel plugin for user authentication and authorization operations.
+/// </summary>
 public class AuthPlugin
 {
     private readonly IServiceInvoker _serviceInvoker;
 
+    /// <summary>
+    /// Initializes a new instance of the AuthPlugin with the required service invoker.
+    /// </summary>
     public AuthPlugin(IServiceInvoker serviceInvoker)
     {
         _serviceInvoker = serviceInvoker;
     }
 
+    /// <summary>
+    /// Authenticates a user and returns login credentials or session information.
+    /// </summary>
     [KernelFunction("Authenticate user / login")]
     public async Task<string> LoginAsync(string payloadJson)
     {
@@ -24,6 +33,9 @@ public class AuthPlugin
         return JsonSerializer.Serialize(result);
     }
 
+    /// <summary>
+    /// Retrieves user information by user identifier.
+    /// </summary>
     [KernelFunction("Get user by id")]
     public async Task<string> GetUserAsync(string id)
     {

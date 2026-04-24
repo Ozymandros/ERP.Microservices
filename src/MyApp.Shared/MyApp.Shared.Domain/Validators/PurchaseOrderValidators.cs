@@ -2,8 +2,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Shared.Domain.Validators;
 
+/// <summary>
+/// Provides validation methods for purchase orders and their lifecycle.
+/// </summary>
 public static class PurchaseOrderValidators
 {
+    /// <summary>
+    /// Validates a purchase order line item.
+    /// </summary>
     public static ValidationResult? ValidatePurchaseOrderLine(int quantity, decimal unitPrice)
     {
         if (quantity <= 0)
@@ -15,6 +21,9 @@ public static class PurchaseOrderValidators
         return ValidationResult.Success;
     }
 
+    /// <summary>
+    /// Validates that received quantity does not exceed ordered quantity.
+    /// </summary>
     public static ValidationResult? ValidateReceivedQuantity(int receivedQuantity, int orderedQuantity)
     {
         if (receivedQuantity < 0)
@@ -26,6 +35,9 @@ public static class PurchaseOrderValidators
         return ValidationResult.Success;
     }
 
+    /// <summary>
+    /// Validates that a purchase order can be approved from its current status.
+    /// </summary>
     public static ValidationResult? ValidatePurchaseOrderApproval(string currentStatus)
     {
         if (currentStatus != "Draft")
@@ -34,6 +46,9 @@ public static class PurchaseOrderValidators
         return ValidationResult.Success;
     }
 
+    /// <summary>
+    /// Validates that a purchase order can be received from its current status.
+    /// </summary>
     public static ValidationResult? ValidatePurchaseOrderReceiving(string currentStatus)
     {
         if (currentStatus != "Approved")
