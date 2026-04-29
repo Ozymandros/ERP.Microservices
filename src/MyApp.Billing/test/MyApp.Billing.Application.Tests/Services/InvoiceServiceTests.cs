@@ -66,7 +66,7 @@ public class InvoiceServiceTests
     {
         // Arrange
         var dto = SampleCreateDto(2);
-        _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>())).ReturnsAsync((Invoice i) => i);
+        _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -92,7 +92,7 @@ public class InvoiceServiceTests
     {
         // Arrange
         var dto = SampleCreateDto();
-        _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>())).ReturnsAsync((Invoice i) => i);
+        _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -113,7 +113,7 @@ public class InvoiceServiceTests
         var orderId = Guid.NewGuid();
         var dto = new CreateInvoiceDto(Guid.NewGuid(), orderId, "EUR",
             new List<CreateInvoiceLineDto> { new("Product A", 1, 200m, 20m, 0m) }, 14);
-        _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>())).ReturnsAsync((Invoice i) => i);
+        _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -133,7 +133,7 @@ public class InvoiceServiceTests
         var invoice = BuildDraftInvoice();
         var issueDate = DateTime.UtcNow;
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).ReturnsAsync((Invoice i) => i);
+        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -167,7 +167,7 @@ public class InvoiceServiceTests
         // Arrange
         var invoice = BuildDraftInvoice();
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).ReturnsAsync((Invoice i) => i);
+        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -187,7 +187,7 @@ public class InvoiceServiceTests
         // Arrange
         var invoice = BuildDraftInvoice();
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).ReturnsAsync((Invoice i) => i);
+        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -209,7 +209,7 @@ public class InvoiceServiceTests
         var invoice = BuildIssuedInvoice();
         var dto = new RecordPaymentDto(invoice.Id, invoice.TotalGross, "BankTransfer", DateTime.UtcNow);
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).ReturnsAsync((Invoice i) => i);
+        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -230,7 +230,7 @@ public class InvoiceServiceTests
         var partialAmount = invoice.TotalGross / 2;
         var dto = new RecordPaymentDto(invoice.Id, partialAmount, "Card", DateTime.UtcNow);
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).ReturnsAsync((Invoice i) => i);
+        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -265,7 +265,7 @@ public class InvoiceServiceTests
         var invoice = BuildIssuedInvoice();
         var dto = new RecordPaymentDto(invoice.Id, invoice.TotalGross, "BankTransfer", DateTime.UtcNow);
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).ReturnsAsync((Invoice i) => i);
+        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -287,7 +287,7 @@ public class InvoiceServiceTests
         // Arrange
         var invoice = BuildIssuedInvoice();
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).ReturnsAsync((Invoice i) => i);
+        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -304,7 +304,7 @@ public class InvoiceServiceTests
         // Arrange
         var invoice = BuildDraftInvoice();
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).ReturnsAsync((Invoice i) => i);
+        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -335,7 +335,7 @@ public class InvoiceServiceTests
         // Arrange
         var invoice = BuildIssuedInvoice();
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).ReturnsAsync((Invoice i) => i);
+        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -377,7 +377,7 @@ public class InvoiceServiceTests
             new List<CreditNoteLineDto> { new("Refund", 1, 50m, 10m, 0m) },
             "Returned goods");
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _creditNoteRepo.Setup(r => r.AddAsync(It.IsAny<CreditNote>())).ReturnsAsync((CreditNote cn) => cn);
+        _creditNoteRepo.Setup(r => r.AddAsync(It.IsAny<CreditNote>())).Returns<CreditNote>(cn => Task.FromResult(cn));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -436,7 +436,7 @@ public class InvoiceServiceTests
             new List<CreditNoteLineDto> { new("Partial refund", 1, 30m, 10m, 0m) },
             "Damage");
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _creditNoteRepo.Setup(r => r.AddAsync(It.IsAny<CreditNote>())).ReturnsAsync((CreditNote cn) => cn);
+        _creditNoteRepo.Setup(r => r.AddAsync(It.IsAny<CreditNote>())).Returns<CreditNote>(cn => Task.FromResult(cn));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -458,7 +458,7 @@ public class InvoiceServiceTests
             new List<CreditNoteLineDto> { new("X", 1, 10m, 0m, 0m) },
             "Testing");
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _creditNoteRepo.Setup(r => r.AddAsync(It.IsAny<CreditNote>())).ReturnsAsync((CreditNote cn) => cn);
+        _creditNoteRepo.Setup(r => r.AddAsync(It.IsAny<CreditNote>())).Returns<CreditNote>(cn => Task.FromResult(cn));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -621,7 +621,7 @@ public class InvoiceServiceTests
         // LineNet = 200, LineTax = 20, LineGross = 220
         var dto = new CreateInvoiceDto(Guid.NewGuid(), null, "USD",
             new List<CreateInvoiceLineDto> { new("Widget", 2, 100m, 10m, 0m) }, 30);
-        _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>())).ReturnsAsync((Invoice i) => i);
+        _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 

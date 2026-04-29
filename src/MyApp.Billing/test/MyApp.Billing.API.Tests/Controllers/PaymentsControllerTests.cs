@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using MyApp.Billing.API;
+using MyApp.Billing.API.Controllers;
 using MyApp.Billing.Application.Contracts.DTOs;
 using MyApp.Billing.Domain.Entities;
 using MyApp.Billing.Domain.Repositories;
