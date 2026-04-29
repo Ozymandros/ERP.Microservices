@@ -47,3 +47,4 @@ dist/
 build/
 bin/
 obj/
+/.vs
