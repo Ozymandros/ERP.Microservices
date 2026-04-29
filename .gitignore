@@ -1,38 +1,49 @@
-```
-# Build results
-bin/
-obj/
-out/
+# Compiled and build artifacts
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.out
 
-# User-specific files
-.vs/
-*.user
-*.userosscache
-*.suo
+# Dependencies
+node_modules/
+venv/
+.venv/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+target/
+.gradle/
 
-# Log files
+# Logs and temp files
 *.log
+*.tmp
+*.swp
 
-# Environment specific settings
+# Environment
 .env
 .env.local
 *.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
 
 # OS generated files
 .DS_Store
 Thumbs.db
 
-# IDE specific files
-.vscode/
-.idea/
-
-# Test coverage
+# Coverage reports
 coverage/
-*.cover
-*.coverage
-```
-*.xml
-*.trx
-*.tmp
-*.txt
-_site
+htmlcov/
+.coverage
+
+# Build outputs
+dist/
+build/
+bin/
+obj/
