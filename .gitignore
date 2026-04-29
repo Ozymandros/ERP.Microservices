@@ -1,5 +1,4 @@
-```
-# Build artifacts
+# Compiled and build artifacts
 *.o
 *.obj
 *.exe
@@ -18,24 +17,27 @@ __pycache__/
 target/
 .gradle/
 
-# IDE/Editor files
-.vscode/
-.idea/
-*.swp
-*.swo
+# Logs and temp files
+*.log
 *.tmp
+*.swp
 
-# System files
-.DS_Store
-Thumbs.db
+# Environment
 .env
 .env.local
 *.env.*
 
-# Logs
-*.log
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# Coverage
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
 coverage/
 htmlcov/
 .coverage
@@ -45,4 +47,12 @@ dist/
 build/
 bin/
 obj/
-/.vs
+
+.vs/
+docs/_site/
+CopilotIndices/
+TestResults/
+test_results.txt
+*.user
+build_output.txt
+coverage.cobertura.xml
