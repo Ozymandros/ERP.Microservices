@@ -37,6 +37,7 @@ $filesToValidate = @(
     "$InfraPath/core/host/container-app-service.bicep",
     "$InfraPath/services/auth-service.bicep",
     "$InfraPath/services/billing-service.bicep",
+    "$InfraPath/services/crm-service.bicep",
     "$InfraPath/services/inventory-service.bicep",
     "$InfraPath/services/orders-service.bicep",
     "$InfraPath/services/purchasing-service.bicep",

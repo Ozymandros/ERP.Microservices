@@ -112,6 +112,7 @@ resource daprStateStore 'Microsoft.App/managedEnvironments/daprComponents@2024-0
     scopes: [
       'auth-service'
       'billing-service'
+      'crm-service'
       'inventory-service'
       'orders-service'
       'purchasing-service'
@@ -152,6 +153,7 @@ resource daprPubSub 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01
     scopes: [
       'auth-service'
       'billing-service'
+      'crm-service'
       'inventory-service'
       'orders-service'
       'purchasing-service'
