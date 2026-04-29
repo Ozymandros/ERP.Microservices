@@ -389,8 +389,8 @@ api-gateway            ←→                        api-gateway
 ```
 Local (Aspire):          Production (Bicep):
 localhost:5000 (gateway) ←→ api-gateway:8080
-localhost:5001 (auth)    ←→ auth-service:8080
-localhost:5002 (billing) ←→ billing-service:8080
+localhost:6001 (auth)    ←→ auth-service:8080
+localhost:6002 (billing) ←→ billing-service:8080
 ... etc
 ```
 

@@ -4,8 +4,14 @@ using MyApp.Auth.Domain.Entities;
 
 namespace MyApp.Auth.Application.Mappings;
 
+/// <summary>
+/// AutoMapper profile that defines mappings between domain entities and data transfer objects for authentication features.
+/// </summary>
 public class AuthMappingProfile : Profile
 {
+    /// <summary>
+    /// Initializes a new instance of the AuthMappingProfile with all authentication entity mappings.
+    /// </summary>
     public AuthMappingProfile()
     {
         // User mappings

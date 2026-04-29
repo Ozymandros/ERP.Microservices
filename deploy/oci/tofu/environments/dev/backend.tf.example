@@ -1,0 +1,16 @@
+terraform {
+  backend "s3" {
+    # OCI Object Storage S3-compatible endpoint:
+    # https://<namespace>.compat.objectstorage.<region>.oraclecloud.com
+    endpoint                    = "https://replace_namespace.compat.objectstorage.replace_region.oraclecloud.com"
+    region                      = "replace_region"
+    bucket                      = "replace_bucket"
+    key                         = "oci/dev/terraform.tfstate"
+    shared_credentials_file     = "~/.aws/credentials"
+    profile                     = "default"
+    skip_credentials_validation = true
+    skip_region_validation      = true
+    skip_metadata_api_check     = true
+    force_path_style            = true
+  }
+}

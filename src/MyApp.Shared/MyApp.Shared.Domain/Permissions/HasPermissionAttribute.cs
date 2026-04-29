@@ -6,18 +6,27 @@ using System.Security.Claims;
 
 namespace MyApp.Shared.Domain.Permissions;
 
+/// <summary>
+/// Authorization filter attribute that checks user permissions for specific module and action combinations.
+/// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
 public class HasPermissionAttribute : AuthorizeAttribute, IAsyncAuthorizationFilter
 {
     private readonly string _module;
     private readonly string _action;
 
+    /// <summary>
+    /// Initializes a new instance of the HasPermissionAttribute class.
+    /// </summary>
     public HasPermissionAttribute(string module, string action)
     {
         _module = module;
         _action = action;
     }
 
+    /// <summary>
+    /// Asynchronously checks if the user has permission for the specified module and action.
+    /// </summary>
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
         // 1. Verify that the user is authenticated

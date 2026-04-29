@@ -3,6 +3,9 @@ using MyApp.Sales.Domain.Entities;
 
 namespace MyApp.Sales.Domain
 {
+    /// <summary>
+    /// Defines the contract for I Customer Repository.
+    /// </summary>
     public interface ICustomerRepository : IRepository<Customer, Guid>
     {
     }

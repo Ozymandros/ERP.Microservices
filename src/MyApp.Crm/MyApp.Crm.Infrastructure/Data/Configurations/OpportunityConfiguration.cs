@@ -4,8 +4,12 @@ using MyApp.Crm.Domain.Opportunities;
 
 namespace MyApp.Crm.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Opportunity Configuration functionality.
+/// </summary>
 public class OpportunityConfiguration : IEntityTypeConfiguration<Opportunity>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<Opportunity> builder)
     {
         builder.ToTable("Opportunities");

@@ -4,8 +4,12 @@ using MyApp.Sales.Domain.Entities;
 
 namespace MyApp.Sales.Infrastructure.Data.Configurations
 {
+    /// <summary>
+    /// Provides Sales Order Configuration functionality.
+    /// </summary>
     public class SalesOrderConfiguration : IEntityTypeConfiguration<SalesOrder>
     {
+        /// <summary>Configure.</summary>
         public void Configure(EntityTypeBuilder<SalesOrder> builder)
         {
             builder.ToTable("SalesOrders");

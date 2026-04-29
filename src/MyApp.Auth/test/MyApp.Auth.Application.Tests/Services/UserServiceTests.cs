@@ -35,7 +35,7 @@ public class UserServiceTests : BaseServiceTest
         _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
         _mockPermissionRepository = new Mock<IPermissionRepository>();
         _mockLogger = CreateMockLogger<UserService>();
-        
+
         _userService = new UserService(
             _mockUserManager.Object,
             _mockRoleManager.Object,

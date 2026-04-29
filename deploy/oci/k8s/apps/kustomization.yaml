@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  # Default safe profile for Free Tier/dev.
+  - overlays/dev
+  # Production profile (Let's Encrypt + real DNS):
+  # kubectl apply -k deploy/oci/k8s/apps/overlays/prod

@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: myapp-apps
+
+resources:
+  - crm-service.yaml
+  - auth-service.yaml
+  - billing-service.yaml
+  - inventory-service.yaml
+  - orders-service.yaml
+  - purchasing-service.yaml
+  - sales-service.yaml
+  - gateway-tls-issuer.yaml
+  - gateway.yaml
+  - aspire-dashboard.yaml
+  - aspire-dashboard-secrets.example.yaml
+  - app-config.example.yaml
+  - app-secrets.example.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true

@@ -6,6 +6,13 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    "http": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:6007",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,

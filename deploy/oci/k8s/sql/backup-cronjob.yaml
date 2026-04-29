@@ -1,0 +1,70 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sql-backup-oci
+  namespace: myapp-apps
+  labels:
+    app.kubernetes.io/name: sql-backup-oci
+    app.kubernetes.io/part-of: myapp
+spec:
+  schedule: "0 2 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: backup
+              # This image must include sqlcmd + aws cli v2 for S3-compatible upload.
+              image: ghcr.io/replace-org/mssql-backup-tools:latest
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: SA_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: sql-secrets
+                      key: sa-password
+                - name: OCI_BUCKET
+                  valueFrom:
+                    secretKeyRef:
+                      name: sql-secrets
+                      key: oci-bucket
+                - name: OCI_REGION
+                  valueFrom:
+                    secretKeyRef:
+                      name: sql-secrets
+                      key: oci-region
+                - name: OCI_NAMESPACE
+                  valueFrom:
+                    secretKeyRef:
+                      name: sql-secrets
+                      key: oci-namespace
+                - name: AWS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: sql-secrets
+                      key: oci-access-key-id
+                - name: AWS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: sql-secrets
+                      key: oci-secret-access-key
+              command: ["/bin/sh", "-c"]
+              args:
+                - |
+                  set -e
+                  mkdir -p /tmp/backups
+                  TS="$(date +%Y%m%d%H%M%S)"
+                  SQLCMD_BIN="/opt/mssql-tools18/bin/sqlcmd"
+                  if [ ! -x "$SQLCMD_BIN" ]; then
+                    SQLCMD_BIN="/opt/mssql-tools/bin/sqlcmd"
+                  fi
+
+                  for db in AuthDb BillingDb InventoryDb OrdersDb PurchasingDb SalesDb CrmDb; do
+                    file="/tmp/backups/${db}_${TS}.bak"
+                    "$SQLCMD_BIN" -S sqlserver,1433 -U sa -P "$SA_PASSWORD" -Q "BACKUP DATABASE [$db] TO DISK='${file}' WITH INIT, COMPRESSION, STATS=10;"
+                    aws --endpoint-url "https://${OCI_NAMESPACE}.compat.objectstorage.${OCI_REGION}.oraclecloud.com" s3 cp "${file}" "s3://${OCI_BUCKET}/${db}/${db}_${TS}.bak"
+                  done

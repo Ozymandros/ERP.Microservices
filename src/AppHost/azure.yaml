@@ -36,6 +36,19 @@ services:
       - name: ConnectionStrings__Default
         secret: billing-db-connection
 
+  crm-service:
+    project: ../MyApp.Crm/MyApp.Crm.API
+    language: csharp
+    dist: build
+    host: containerapp
+    dapr:
+      enabled: true
+      appId: crm-service
+      appPort: 8080
+    env:
+      - name: ConnectionStrings__Default
+        secret: crm-db-connection
+
   inventory-service:
     project: ../MyApp.Inventory/MyApp.Inventory.API
     language: csharp

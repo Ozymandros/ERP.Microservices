@@ -120,6 +120,7 @@ jobs:
           declare -a SERVICES=(
               "MyApp.Auth/MyApp.Auth.API:auth-service"
               "MyApp.Billing/MyApp.Billing.API:billing-service"
+              "MyApp.Crm/MyApp.Crm.API:crm-service"
               "MyApp.Inventory/MyApp.Inventory.API:inventory-service"
               "MyApp.Orders/MyApp.Orders.API:orders-service"
               "MyApp.Purchasing/MyApp.Purchasing.API:purchasing-service"
@@ -172,7 +173,7 @@ jobs:
           echo "Registry: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
           echo "Images built:"
           echo "- ${APP_PREFIX}-microservices-base:$IMAGE_TAG"
-          for SERVICE in auth-service billing-service inventory-service orders-service purchasing-service sales-service api-gateway; do
+          for SERVICE in auth-service billing-service crm-service inventory-service orders-service purchasing-service sales-service api-gateway; do
               echo "- ${APP_PREFIX}-${SERVICE}-${AZURE_ENV_NAME}:$IMAGE_TAG"
           done
 
@@ -258,7 +259,7 @@ jobs:
           echo "Checking Container Apps health..."
           az containerapp list --resource-group "$RG_NAME" --output table
           echo ""
-          for APP in auth-service billing-service inventory-service orders-service purchasing-service sales-service api-gateway; do
+          for APP in auth-service billing-service crm-service inventory-service orders-service purchasing-service sales-service api-gateway; do
               echo "App: ${APP_PREFIX}-${AZURE_ENV_NAME}-$APP"
               az containerapp show --name "${APP_PREFIX}-${AZURE_ENV_NAME}-$APP" \
                   --resource-group "$RG_NAME" \

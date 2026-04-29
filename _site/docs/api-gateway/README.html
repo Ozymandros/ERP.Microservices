@@ -202,7 +202,7 @@ Gateway (8000)
     ↓ [Rate Limit Check]
     ↓ [Route Match]
     ↓
-Downstream Service (5001-5006)
+Downstream Service (6001-6006)
     ↓
 Database/Cache
     ↓
@@ -225,37 +225,37 @@ External Client
 <tr>
 <td><code>/api/auth</code></td>
 <td>Auth Service</td>
-<td>5001</td>
+<td>6001</td>
 <td>Authentication</td>
 </tr>
 <tr>
 <td><code>/api/inventory</code></td>
 <td>Inventory Service</td>
-<td>5002</td>
+<td>6002</td>
 <td>Inventory Management</td>
 </tr>
 <tr>
 <td><code>/api/orders</code></td>
 <td>Orders Service</td>
-<td>5003</td>
+<td>6003</td>
 <td>Order Processing</td>
 </tr>
 <tr>
 <td><code>/api/sales</code></td>
 <td>Sales Service</td>
-<td>5004</td>
+<td>6004</td>
 <td>Sales Management</td>
 </tr>
 <tr>
 <td><code>/api/billing</code></td>
 <td>Billing Service</td>
-<td>5005</td>
+<td>6005</td>
 <td>Billing &amp; Invoicing</td>
 </tr>
 <tr>
 <td><code>/api/purchasing</code></td>
 <td>Purchasing Service</td>
-<td>5006</td>
+<td>6006</td>
 <td>Procurement</td>
 </tr>
 <tr>
@@ -402,7 +402,7 @@ External Client
 <h2 id="-testing-examples">🧪 Testing Examples</h2>
 <h3 id="test-with-curl">Test with curl</h3>
 <pre><code class="lang-bash"># Get token
-TOKEN=$(curl -s -X POST http://localhost:5001/auth/token \
+TOKEN=$(curl -s -X POST http://localhost:6001/auth/token \
   -H &quot;Content-Type: application/json&quot; \
   -d '{&quot;username&quot;:&quot;test&quot;,&quot;password&quot;:&quot;test&quot;}' \
   | jq -r '.token')

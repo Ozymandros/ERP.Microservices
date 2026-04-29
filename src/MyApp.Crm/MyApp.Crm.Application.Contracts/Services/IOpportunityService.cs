@@ -5,6 +5,9 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Crm.Application.Contracts.Services;
 
+/// <summary>
+/// Defines the contract for I Opportunity Service.
+/// </summary>
 public interface IOpportunityService
 {
     Task<OpportunityDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);

@@ -9,6 +9,9 @@ using MyApp.Shared.Infrastructure.Extensions;
 
 namespace MyApp.Crm.API.Controllers;
 
+/// <summary>
+/// Provides Opportunities Controller functionality.
+/// </summary>
 [ApiController]
 [Authorize]
 [Route("api/crm/opportunities")]
@@ -17,12 +20,14 @@ public class OpportunitiesController : ControllerBase
     private readonly IOpportunityService _service;
     private readonly ILogger<OpportunitiesController> _logger;
 
+    /// <summary>I Logger.</summary>
     public OpportunitiesController(IOpportunityService service, ILogger<OpportunitiesController> logger)
     {
         _service = service;
         _logger = logger;
     }
 
+    /// <summary>Get Forecast.</summary>
     [HttpGet("forecast")]
     [HasPermission("CRM", "Read")]
     public async Task<IActionResult> GetForecast(
@@ -49,6 +54,7 @@ public class OpportunitiesController : ControllerBase
         }
     }
 
+    /// <summary>Get All.</summary>
     [HttpGet]
     [HasPermission("CRM", "Read")]
     [ProducesResponseType(typeof(IEnumerable<OpportunityDto>), StatusCodes.Status200OK)]
@@ -76,6 +82,7 @@ public class OpportunitiesController : ControllerBase
         }
     }
 
+    /// <summary>Get By Id.</summary>
     [HttpGet("{id:guid}")]
     [HasPermission("CRM", "Read")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
@@ -84,6 +91,7 @@ public class OpportunitiesController : ControllerBase
         return item is null ? NotFound(new { message = $"Opportunity with ID {id} not found." }) : Ok(item);
     }
 
+    /// <summary>Create.</summary>
     [HttpPost]
     [HasPermission("CRM", "Create")]
     public async Task<IActionResult> Create([FromBody] CreateOpportunityDto dto, CancellationToken cancellationToken)
@@ -92,6 +100,7 @@ public class OpportunitiesController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
+    /// <summary>Update Forecast.</summary>
     [HttpPut("{id:guid}/forecast")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> UpdateForecast(Guid id, [FromBody] UpdateOpportunityForecastDto dto, CancellationToken cancellationToken)
@@ -112,6 +121,7 @@ public class OpportunitiesController : ControllerBase
         }
     }
 
+    /// <summary>Move Stage.</summary>
     [HttpPost("{id:guid}/move-stage")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> MoveStage(Guid id, [FromBody] MoveOpportunityStageDto dto, CancellationToken cancellationToken)
@@ -131,6 +141,7 @@ public class OpportunitiesController : ControllerBase
         }
     }
 
+    /// <summary>Mark Won.</summary>
     [HttpPost("{id:guid}/mark-won")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> MarkWon(Guid id, [FromBody] MarkOpportunityWonRequest request, CancellationToken cancellationToken)
@@ -155,6 +166,7 @@ public class OpportunitiesController : ControllerBase
         }
     }
 
+    /// <summary>Mark Lost.</summary>
     [HttpPost("{id:guid}/mark-lost")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> MarkLost(Guid id, [FromBody] MarkOpportunityLostDto dto, CancellationToken cancellationToken)
@@ -174,6 +186,7 @@ public class OpportunitiesController : ControllerBase
         }
     }
 
+    /// <summary>Add Line.</summary>
     [HttpPost("{id:guid}/lines")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> AddLine(Guid id, [FromBody] CreateOpportunityLineDto dto, CancellationToken cancellationToken)
@@ -198,6 +211,7 @@ public class OpportunitiesController : ControllerBase
         }
     }
 
+    /// <summary>Update Line.</summary>
     [HttpPut("{id:guid}/lines/{lineId:guid}")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> UpdateLine(Guid id, Guid lineId, [FromBody] UpdateOpportunityLineDto dto, CancellationToken cancellationToken)
@@ -222,6 +236,7 @@ public class OpportunitiesController : ControllerBase
         }
     }
 
+    /// <summary>Remove Line.</summary>
     [HttpDelete("{id:guid}/lines/{lineId:guid}")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> RemoveLine(Guid id, Guid lineId, CancellationToken cancellationToken)

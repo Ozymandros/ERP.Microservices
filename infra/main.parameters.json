@@ -1,0 +1,36 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "environmentName": {
+        "value": "dev"
+      },
+      "location": {
+        "value": "westeurope"
+      },
+      "cache_password": {
+        "value": "dummy-cache-value"
+      },
+      "password": {
+        "value": "dummy-db-value"
+      },
+      "jwtSecretKey": {
+        "value": "dummy-jwt-value"
+      },
+      "jwtIssuer": {
+        "value": "MyApp.Auth"
+      },
+      "jwtAudience": {
+        "value": "MyApp.All"
+      },
+      "frontendOrigin": {
+        "value": "http://localhost:3000;http://localhost:5000"
+      },
+      "aspnetcoreEnvironment": {
+        "value": "Production"
+      },
+      "imageTag": {
+        "value": "latest"
+      }
+    }
+}

@@ -79,12 +79,14 @@ This category is a quick reference for common lookups. From terminology and envi
 
 | Service | Port | Database | Health | Docs |
 |---------|------|----------|--------|------|
-| Auth | 5001 | auth-db | `/health` | [Auth API](API_ENDPOINTS.md#auth-service) |
-| Inventory | 5002 | inventory-db | `/health` | [Inventory API](API_ENDPOINTS.md#inventory-service) |
-| Orders | 5003 | orders-db | `/health` | [Orders API](API_ENDPOINTS.md#orders-service) |
-| Sales | 5004 | sales-db | `/health` | [Sales API](API_ENDPOINTS.md#sales-service) |
-| Billing | 5005 | billing-db | `/health` | [Billing API](API_ENDPOINTS.md#billing-service) |
-| Purchasing | 5006 | purchasing-db | `/health` | [Purchasing API](API_ENDPOINTS.md#purchasing-service) |
+| Auth | 6001 | auth-db | `/health` | [Auth API](API_ENDPOINTS.md#auth-service) |
+| Billing | 6002 | billing-db | `/health` | [Billing API](API_ENDPOINTS.md#billing-service) |
+| Inventory | 6004 | inventory-db | `/health` | [Inventory API](API_ENDPOINTS.md#inventory-service) |
+| Orders | 6005 | orders-db | `/health` | [Orders API](API_ENDPOINTS.md#orders-service) |
+| Purchasing | 6006 | purchasing-db | `/health` | [Purchasing API](API_ENDPOINTS.md#purchasing-service) |
+| Sales | 6007 | sales-db | `/health` | [Sales API](API_ENDPOINTS.md#sales-service) |
+| CRM | 6003 | crm-db | `/health` | [CRM API](API_ENDPOINTS.md#crm-service) |
+| SemanticKernel | 6008 | (no DB) | `/health` | [SK API](API_ENDPOINTS.md#semantickernel-service) |
 | Gateway | 8000 | - | `/health` | [Gateway API](API_ENDPOINTS.md#gateway) |
 
 ### Key Environment Variables
@@ -101,7 +103,7 @@ This category is a quick reference for common lookups. From terminology and envi
 | Port | Service | Type | Use |
 |------|---------|------|-----|
 | 8000 | API Gateway | HTTP | External requests |
-| 5001-5006 | Services | HTTP | Inter-service |
+| 6001-6008 | Services | HTTP | Inter-service |
 | 5540 | Redis Insight | HTTP | Redis monitoring |
 | 8081 | Redis Commander | HTTP | Redis CLI |
 | 50005 | DAPR Placement | gRPC | Service discovery |
@@ -151,7 +153,7 @@ Reference documents are designed for lookup, not sequential reading:
 | Task | Document |
 |------|----------|
 | "What does X mean?" | [GLOSSARY.md](GLOSSARY.md) |
-| "What's on port 5001?" | [PORT_MAPPING.md](PORT_MAPPING.md) |
+| "What's on port 6001?" | [PORT_MAPPING.md](PORT_MAPPING.md) |
 | "How do I set X?" | [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md) |
 | "How do I call X?" | [API_ENDPOINTS.md](API_ENDPOINTS.md) |
 | "X is broken, help!" | [TROUBLESHOOTING_INDEX.md](TROUBLESHOOTING_INDEX.md) |

@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Auth.Application.Contracts.DTOs;
 
+/// <summary>
+/// Data transfer object for user login credentials.
+/// </summary>
 public record LoginDto(
     [param: Required(ErrorMessage = "Email is required")]
     [param: EmailAddress(ErrorMessage = "Invalid email address")]

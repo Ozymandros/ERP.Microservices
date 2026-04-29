@@ -14,7 +14,7 @@ properties:
         autoConfigureDataProtection: true
     ingress:
       external: false
-      targetPort: 5006
+      targetPort: 6006
       transport: http
       allowInsecure: true
     registries:
@@ -37,7 +37,7 @@ properties:
           - name: FRONTEND_ORIGIN
             value: http://localhost:3000;http://localhost:5000
           - name: HTTP_PORTS
-            value: "5006"
+            value: "6006"
           - name: Jwt__Audience
             value: MyApp.All
           - name: Jwt__Issuer

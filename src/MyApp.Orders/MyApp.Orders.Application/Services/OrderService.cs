@@ -16,6 +16,7 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Orders.Application.Services
 {
+    /// <summary>Service for managing order operations.</summary>
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orders;
@@ -26,6 +27,7 @@ namespace MyApp.Orders.Application.Services
         private readonly IEventPublisher _eventPublisher;
         private readonly IServiceInvoker _serviceInvoker;
 
+        /// <summary>Initializes a new instance of the OrderService class.</summary>
         public OrderService(
             IOrderRepository orders,
             IOrderLineRepository lines,
@@ -44,6 +46,7 @@ namespace MyApp.Orders.Application.Services
             _serviceInvoker = serviceInvoker;
         }
 
+        /// <summary>Creates a new order.</summary>
         public async Task<OrderDto> CreateAsync(CreateUpdateOrderDto dto)
         {
             var entity = _mapper.Map<Order>(dto);
@@ -65,6 +68,7 @@ namespace MyApp.Orders.Application.Services
             return _mapper.Map<OrderDto>(entity);
         }
 
+        /// <summary>Generates a unique order number.</summary>
         private async Task<string> GenerateOrderNumberAsync()
         {
             // Example: Use a timestamp and a random suffix for uniqueness (replace with a DB sequence or other logic as needed)
@@ -74,23 +78,27 @@ namespace MyApp.Orders.Application.Services
             return $"ORD-{now:yyyyMMddHHmmss}-{count}-{random}";
         }
 
+        /// <summary>Deletes an order by ID.</summary>
         public async Task DeleteAsync(Guid id)
         {
             await _orders.DeleteAsync(id);
         }
 
+        /// <summary>Retrieves an order by ID.</summary>
         public async Task<OrderDto> GetByIdAsync(Guid id)
         {
             var entity = await _orders.GetByIdAsync(id);
             return _mapper.Map<OrderDto>(entity!);
         }
 
+        /// <summary>Retrieves all orders.</summary>
         public async Task<IEnumerable<OrderDto>> ListAsync()
         {
             var list = await _orders.ListAsync();
             return list.Select(o => _mapper.Map<OrderDto>(o));
         }
 
+        /// <summary>Updates an existing order.</summary>
         public async Task UpdateAsync(Guid id, CreateUpdateOrderDto dto)
         {
             var existing = await _orders.GetByIdAsync(id);
@@ -119,6 +127,7 @@ namespace MyApp.Orders.Application.Services
             await _orders.UpdateAsync(existing);
         }
 
+        /// <summary>Creates an order with stock reservation.</summary>
         public async Task<OrderDto> CreateOrderWithReservationAsync(CreateOrderWithReservationDto dto)
         {
             _logger.LogInformation(
@@ -254,6 +263,7 @@ namespace MyApp.Orders.Application.Services
             return _mapper.Map<OrderDto>(order);
         }
 
+        /// <summary>Fulfills an order and its associated reservations.</summary>
         public async Task<OrderDto> FulfillOrderAsync(FulfillOrderDto dto)
         {
             _logger.LogInformation("Fulfilling order: OrderId={OrderId}", dto.OrderId);
@@ -332,6 +342,7 @@ namespace MyApp.Orders.Application.Services
             return _mapper.Map<OrderDto>(order);
         }
 
+        /// <summary>Cancels an order and releases its stock reservations.</summary>
         public async Task CancelOrderAsync(CancelOrderDto dto)
         {
             _logger.LogInformation(
@@ -399,6 +410,7 @@ namespace MyApp.Orders.Application.Services
             _logger.LogInformation("Order cancelled successfully: OrderId={OrderId}", order.Id);
         }
 
+        /// <summary>Queries orders based on a specification with pagination.</summary>
         public async Task<PaginatedResult<OrderDto>> QueryOrdersAsync(ISpecification<Order> spec)
         {
             var result = await _orders.QueryAsync(spec);

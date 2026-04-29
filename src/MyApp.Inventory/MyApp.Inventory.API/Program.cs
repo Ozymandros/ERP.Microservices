@@ -30,6 +30,8 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
             MyApp.Inventory.Infrastructure.Data.Repositories.WarehouseRepository>();
         services.AddScoped<MyApp.Inventory.Domain.Repositories.IWarehouseStockRepository,
             MyApp.Inventory.Infrastructure.Repositories.WarehouseStockRepository>();
+        services.AddScoped<MyApp.Inventory.Domain.Repositories.IInventoryReservationRepository,
+            MyApp.Inventory.Infrastructure.Repositories.InventoryReservationRepository>();
 
         // Register Inventory-specific services
         services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService,

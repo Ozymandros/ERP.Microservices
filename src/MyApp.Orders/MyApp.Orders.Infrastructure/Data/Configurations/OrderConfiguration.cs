@@ -4,8 +4,10 @@ using MyApp.Orders.Domain.Entities;
 
 namespace MyApp.Orders.Infrastructure.Data.Configurations
 {
+    /// <summary>Entity Framework configuration for Order entity.</summary>
     public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
+        /// <summary>Configures the Order entity mapping.</summary>
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.ToTable("Orders");
@@ -14,12 +16,12 @@ namespace MyApp.Orders.Infrastructure.Data.Configurations
             builder.Property(x => x.OrderDate).IsRequired();
             builder.Property(x => x.Status).IsRequired();
             builder.Property(x => x.Type).IsRequired();
-            
+
             // Operational fields
             builder.Property(x => x.SourceId);
             builder.Property(x => x.TargetId);
             builder.Property(x => x.ExternalOrderId);
-            
+
             // Fulfillment fields
             builder.Property(x => x.WarehouseId);
             builder.Property(x => x.FulfilledDate);

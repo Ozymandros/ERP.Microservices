@@ -17,6 +17,7 @@ $requiredModules = @(
     "services/api-gateway.bicep",
     "services/auth-service.bicep",
     "services/billing-service.bicep",
+    "services/crm-service.bicep",
     "services/inventory-service.bicep",
     "services/orders-service.bicep",
     "services/purchasing-service.bicep",
@@ -79,6 +80,7 @@ $servicesToCheck = @{
     "api-gateway" = "module apiGatewayModule"
     "auth-service" = "module authServiceModule"
     "billing-service" = "module billingServiceModule"
+    "crm-service" = "module crmServiceModule"
     "inventory-service" = "module inventoryServiceModule"
     "orders-service" = "module ordersServiceModule"
     "purchasing-service" = "module purchasingServiceModule"
@@ -135,6 +137,7 @@ $serviceDockerfiles = @{
     "api-gateway" = "src/ErpApiGateway/Dockerfile"
     "auth-service" = "src/MyApp.Auth/MyApp.Auth.API/Dockerfile"
     "billing-service" = "src/MyApp.Billing/MyApp.Billing.API/Dockerfile"
+    "crm-service" = "src/MyApp.Crm/MyApp.Crm.API/Dockerfile"
     "inventory-service" = "src/MyApp.Inventory/MyApp.Inventory.API/Dockerfile"
     "orders-service" = "src/MyApp.Orders/MyApp.Orders.API/Dockerfile"
     "purchasing-service" = "src/MyApp.Purchasing/MyApp.Purchasing.API/Dockerfile"

@@ -17,18 +17,18 @@ namespace MyApp.Orders.Application.Contracts
         Task<OrderDto> CreateAsync(CreateUpdateOrderDto dto);
         Task UpdateAsync(Guid id, CreateUpdateOrderDto dto);
         Task DeleteAsync(Guid id);
-        
+
         // Fulfillment workflows
         /// <summary>
         /// Creates an order with automatic stock reservation in the specified warehouse
         /// </summary>
         Task<OrderDto> CreateOrderWithReservationAsync(CreateOrderWithReservationDto dto);
-        
+
         /// <summary>
         /// Fulfills an order by confirming reservations and creating inventory transactions
         /// </summary>
         Task<OrderDto> FulfillOrderAsync(FulfillOrderDto dto);
-        
+
         /// <summary>
         /// Cancels an order and releases all stock reservations
         /// </summary>

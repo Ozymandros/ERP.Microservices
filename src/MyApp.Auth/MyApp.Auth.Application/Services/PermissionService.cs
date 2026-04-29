@@ -70,7 +70,8 @@ public class PermissionService : IPermissionService
                 var rolePermissions = await _permissionRepository.GetByRoleName(roleName, module, action);
                 if (rolePermissions.Any())
                     return true;
-            };
+            }
+            ;
         }
         catch (Exception ex)
         {
@@ -188,7 +189,7 @@ public class PermissionService : IPermissionService
         try
         {
             var result = await _permissionRepository.QueryAsync(spec);
-            
+
             var dtos = result.Items.Select(p => new PermissionDto(p.Id)
             {
                 CreatedAt = p.CreatedAt,
@@ -199,7 +200,7 @@ public class PermissionService : IPermissionService
                 Action = p.Action,
                 Description = p.Description
             }).ToList();
-            
+
             return new PaginatedResult<PermissionDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
         }
         catch (Exception ex)

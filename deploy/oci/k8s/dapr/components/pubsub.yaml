@@ -1,0 +1,25 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+  namespace: myapp-apps
+spec:
+  type: pubsub.redis
+  version: v1
+  metadata:
+    - name: redisHost
+      value: redis-master.myapp-platform.svc.cluster.local:6379
+    - name: redisPassword
+      secretKeyRef:
+        name: redis-secrets
+        key: redis-password
+    - name: enableTLS
+      value: "false"
+scopes:
+  - auth-service
+  - billing-service
+  - inventory-service
+  - orders-service
+  - purchasing-service
+  - sales-service
+  - crm-service

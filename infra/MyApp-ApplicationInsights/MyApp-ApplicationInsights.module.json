@@ -1,0 +1,57 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.39.26.7824",
+      "templateHash": "14726007776312875564"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "The location for the resource(s) to be deployed."
+      }
+    },
+    "applicationType": {
+      "type": "string",
+      "defaultValue": "web"
+    },
+    "kind": {
+      "type": "string",
+      "defaultValue": "web"
+    },
+    "myapp_loganalyticsworkspace_outputs_loganalyticsworkspaceid": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Insights/components",
+      "apiVersion": "2020-02-02",
+      "name": "[take(format('MyApp_ApplicationInsights-{0}', uniqueString(resourceGroup().id)), 260)]",
+      "kind": "[parameters('kind')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "Application_Type": "[parameters('applicationType')]",
+        "WorkspaceResourceId": "[parameters('myapp_loganalyticsworkspace_outputs_loganalyticsworkspaceid')]"
+      },
+      "tags": {
+        "aspire-resource-name": "MyApp-ApplicationInsights"
+      }
+    }
+  ],
+  "outputs": {
+    "appInsightsConnectionString": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Insights/components', take(format('MyApp_ApplicationInsights-{0}', uniqueString(resourceGroup().id)), 260)), '2020-02-02').ConnectionString]"
+    },
+    "name": {
+      "type": "string",
+      "value": "[take(format('MyApp_ApplicationInsights-{0}', uniqueString(resourceGroup().id)), 260)]"
+    }
+  }
+}

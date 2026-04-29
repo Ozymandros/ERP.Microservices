@@ -7,6 +7,9 @@ using MyApp.Crm.Domain.Opportunities;
 
 namespace MyApp.Crm.Application.Mapping;
 
+/// <summary>
+/// Provides Crm Mapping Profile functionality.
+/// </summary>
 public class CrmMappingProfile : Profile
 {
     public CrmMappingProfile()

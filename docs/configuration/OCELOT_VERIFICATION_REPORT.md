@@ -17,7 +17,7 @@
   - ✅ Circuit breaker (3 failures, 5s break) on all routes
   - ✅ Request tracing headers added
   - ✅ 3 health check routes added
-  - ✅ Ports corrected (5001-5006)
+  - ✅ Ports corrected (6001-6008)
   - ✅ Notification service removed
   - ✅ Global error handling configured
   - **Status:** ✅ READY FOR LOCAL DEVELOPMENT

@@ -200,7 +200,7 @@ public class OrderServiceTests
             ReservedUntil = DateTime.UtcNow.AddDays(1),
             Status = "Reserved"
         };
-        
+
         _mockServiceInvoker.Setup(s => s.InvokeAsync<ReserveStockDto, ReservationDto>(
             ServiceNames.Inventory,
             ApiEndpoints.Inventory.ReserveStock,
@@ -938,7 +938,7 @@ public class OrderServiceTests
 
         var order = new Order(Guid.NewGuid()) { OrderNumber = "ORD-MAX", Type = dto.Type, OrderDate = dto.OrderDate, Lines = new List<OrderLine>() };
         var expectedDto = new OrderDto(order.Id) { OrderNumber = "ORD-GENERATED" };
-        
+
         _mockMapper.Setup(m => m.Map<Order>(dto)).Returns(order);
         _mockOrderRepository.Setup(r => r.ListAsync()).ReturnsAsync(new List<Order>()); // For GenerateOrderNumberAsync
         _mockOrderRepository.Setup(r => r.AddAsync(It.IsAny<Order>())).Returns(Task.CompletedTask);
@@ -969,7 +969,7 @@ public class OrderServiceTests
 
         var order = new Order(Guid.NewGuid()) { OrderNumber = "", Type = dto.Type, OrderDate = dto.OrderDate, Lines = new List<OrderLine>() };
         var expectedDto = new OrderDto(order.Id) { OrderNumber = "ORD-GENERATED" };
-        
+
         _mockMapper.Setup(m => m.Map<Order>(dto)).Returns(order);
         _mockOrderRepository.Setup(r => r.ListAsync()).ReturnsAsync(new List<Order>()); // For GenerateOrderNumberAsync
         _mockOrderRepository.Setup(r => r.AddAsync(It.IsAny<Order>())).Returns(Task.CompletedTask);

@@ -164,7 +164,7 @@ public class RolesController : ControllerBase
         {
             // Bind filters from query parameters
             query.BindFiltersFromQuery(Request.Query);
-            
+
             query.Validate();
             var spec = new RoleQuerySpec(query);
             var result = await _roleService.QueryRolesAsync(spec);

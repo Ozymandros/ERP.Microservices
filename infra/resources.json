@@ -1,0 +1,639 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.39.26.7824",
+      "templateHash": "14434262490739820591"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "The location used for all deployed resources"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Tags that will be applied to all resources"
+      }
+    },
+    "namePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Base name prefix to apply to all resources (e.g., myapp-dev)"
+      }
+    },
+    "containerRegistryName": {
+      "type": "string",
+      "metadata": {
+        "description": "Container registry name"
+      }
+    },
+    "logAnalyticsWorkspaceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Log Analytics workspace name"
+      }
+    },
+    "applicationInsightsName": {
+      "type": "string",
+      "metadata": {
+        "description": "Application Insights resource name"
+      }
+    },
+    "storageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage account name for shared volumes"
+      }
+    },
+    "storageShareName": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure Files share name for cache persistence"
+      }
+    },
+    "containerEnvironmentStorageName": {
+      "type": "string",
+      "metadata": {
+        "description": "Managed environment storage name for cache volumes"
+      }
+    },
+    "containerAppsEnvironmentName": {
+      "type": "string",
+      "metadata": {
+        "description": "Container Apps Environment name"
+      }
+    },
+    "redisHostName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Redis host name for DAPR components"
+      }
+    },
+    "redisPrimaryKey": {
+      "type": "securestring",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Redis primary key for DAPR components"
+      }
+    }
+  },
+  "variables": {
+    "managedIdentityName": "[take(format('{0}-user-assigned-identity', parameters('namePrefix')), 128)]",
+    "applicationInsightsKind": "web",
+    "aspireDashboardComponentName": "aspire-dashboard",
+    "aspireDashboardComponentType": "AspireDashboard",
+    "azureRoleIdAcrPull": "7f951dda-4ed3-4680-a7ca-43fe172d538d",
+    "containerRegistrySku": "Basic",
+    "logAnalyticsSkuName": "PerGB2018",
+    "storageFileServiceName": "default",
+    "storageFileShareQuota": 1024,
+    "storageKind": "StorageV2",
+    "storageSkuName": "Standard_LRS",
+    "tagAspireResourceName": "aspire-resource-name",
+    "workloadProfileName": "consumption",
+    "workloadProfileType": "Consumption"
+  },
+  "resources": {
+    "managedIdentity": {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "apiVersion": "2023-01-31",
+      "name": "[variables('managedIdentityName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]"
+    },
+    "containerRegistry": {
+      "type": "Microsoft.ContainerRegistry/registries",
+      "apiVersion": "2023-07-01",
+      "name": "[parameters('containerRegistryName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[variables('containerRegistrySku')]"
+      },
+      "properties": {
+        "adminUserEnabled": false
+      },
+      "tags": "[parameters('tags')]"
+    },
+    "acrPullRoleAssignment": {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "scope": "[format('Microsoft.ContainerRegistry/registries/{0}', parameters('containerRegistryName'))]",
+      "name": "[guid(resourceId('Microsoft.ContainerRegistry/registries', parameters('containerRegistryName')), resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName')), subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('azureRoleIdAcrPull')))]",
+      "properties": {
+        "principalId": "[reference('managedIdentity').principalId]",
+        "principalType": "ServicePrincipal",
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('azureRoleIdAcrPull'))]"
+      },
+      "dependsOn": [
+        "containerRegistry",
+        "managedIdentity"
+      ]
+    },
+    "logAnalyticsWorkspace": {
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "apiVersion": "2022-10-01",
+      "name": "[parameters('logAnalyticsWorkspaceName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "sku": {
+          "name": "[variables('logAnalyticsSkuName')]"
+        }
+      },
+      "tags": "[union(parameters('tags'), createObject(format('{0}', variables('tagAspireResourceName')), parameters('logAnalyticsWorkspaceName')))]"
+    },
+    "applicationInsights": {
+      "type": "Microsoft.Insights/components",
+      "apiVersion": "2020-02-02",
+      "name": "[parameters('applicationInsightsName')]",
+      "location": "[parameters('location')]",
+      "kind": "[variables('applicationInsightsKind')]",
+      "properties": {
+        "Application_Type": "[variables('applicationInsightsKind')]",
+        "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]"
+      },
+      "tags": "[union(parameters('tags'), createObject(format('{0}', variables('tagAspireResourceName')), parameters('applicationInsightsName')))]",
+      "dependsOn": [
+        "logAnalyticsWorkspace"
+      ]
+    },
+    "storageVolume": {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2022-05-01",
+      "name": "[parameters('storageAccountName')]",
+      "location": "[parameters('location')]",
+      "kind": "[variables('storageKind')]",
+      "sku": {
+        "name": "[variables('storageSkuName')]"
+      },
+      "properties": {
+        "largeFileSharesState": "Enabled"
+      }
+    },
+    "storageVolumeFileService": {
+      "type": "Microsoft.Storage/storageAccounts/fileServices",
+      "apiVersion": "2022-05-01",
+      "name": "[format('{0}/{1}', parameters('storageAccountName'), variables('storageFileServiceName'))]",
+      "dependsOn": [
+        "storageVolume"
+      ]
+    },
+    "cacheRedisCacheFileShare": {
+      "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
+      "apiVersion": "2022-05-01",
+      "name": "[format('{0}/{1}/{2}', parameters('storageAccountName'), variables('storageFileServiceName'), parameters('storageShareName'))]",
+      "properties": {
+        "shareQuota": "[variables('storageFileShareQuota')]",
+        "enabledProtocols": "SMB"
+      },
+      "dependsOn": [
+        "storageVolumeFileService"
+      ]
+    },
+    "containerAppEnvironment": {
+      "existing": true,
+      "type": "Microsoft.App/managedEnvironments",
+      "apiVersion": "2024-03-01",
+      "name": "[parameters('containerAppsEnvironmentName')]"
+    },
+    "cacheRedisCacheStore": {
+      "type": "Microsoft.App/managedEnvironments/storages",
+      "apiVersion": "2023-05-01",
+      "name": "[format('{0}/{1}', parameters('containerAppsEnvironmentName'), parameters('containerEnvironmentStorageName'))]",
+      "properties": {
+        "azureFile": {
+          "shareName": "[parameters('storageShareName')]",
+          "accountName": "[parameters('storageAccountName')]",
+          "accountKey": "[listOutputsWithSecureValues('storageAccountKeys', '2025-04-01').primaryKey]",
+          "accessMode": "ReadWrite"
+        }
+      },
+      "dependsOn": [
+        "cacheRedisCacheFileShare",
+        "storageAccountKeys",
+        "storageVolume"
+      ]
+    },
+    "logAnalyticsKeys": {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "logAnalyticsWorkspaceKeys",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "workspaceName": {
+            "value": "[parameters('logAnalyticsWorkspaceName')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.39.26.7824",
+              "templateHash": "5447812479830560596"
+            }
+          },
+          "parameters": {
+            "workspaceName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the Log Analytics workspace"
+              }
+            }
+          },
+          "resources": {
+            "workspace": {
+              "existing": true,
+              "type": "Microsoft.OperationalInsights/workspaces",
+              "apiVersion": "2022-10-01",
+              "name": "[parameters('workspaceName')]"
+            }
+          },
+          "outputs": {
+            "primarySharedKey": {
+              "type": "securestring",
+              "metadata": {
+                "description": "Primary shared key for the specified Log Analytics workspace"
+              },
+              "value": "[listKeys('workspace', '2022-10-01').primarySharedKey]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "logAnalyticsWorkspace"
+      ]
+    },
+    "storageAccountKeys": {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "storageAccountKeys",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "storageAccountName": {
+            "value": "[parameters('storageAccountName')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.39.26.7824",
+              "templateHash": "2073684431773536632"
+            }
+          },
+          "parameters": {
+            "storageAccountName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the storage account"
+              }
+            }
+          },
+          "resources": {
+            "storageAccount": {
+              "existing": true,
+              "type": "Microsoft.Storage/storageAccounts",
+              "apiVersion": "2022-05-01",
+              "name": "[parameters('storageAccountName')]"
+            }
+          },
+          "outputs": {
+            "primaryKey": {
+              "type": "securestring",
+              "metadata": {
+                "description": "Primary access key for the specified storage account"
+              },
+              "value": "[listKeys('storageAccount', '2022-05-01').keys[0].value]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "storageVolume"
+      ]
+    },
+    "containerAppsEnvironment": {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "container-apps-environment",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "name": {
+            "value": "[parameters('containerAppsEnvironmentName')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "daprEnabled": {
+            "value": true
+          },
+          "logAnalyticsWorkspaceId": {
+            "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]"
+          },
+          "redisHostName": {
+            "value": "[parameters('redisHostName')]"
+          },
+          "redisPrimaryKey": {
+            "value": "[parameters('redisPrimaryKey')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.39.26.7824",
+              "templateHash": "17727831220147152383"
+            }
+          },
+          "parameters": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the Container Apps Environment"
+              }
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Location for the Container Apps Environment"
+              }
+            },
+            "tags": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Tags to apply to the Container Apps Environment"
+              }
+            },
+            "daprEnabled": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Enable Dapr on the Container Apps Environment"
+              }
+            },
+            "logAnalyticsWorkspaceId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Log Analytics Workspace ID for diagnostics"
+              }
+            },
+            "redisHostName": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Redis host name"
+              }
+            },
+            "redisPrimaryKey": {
+              "type": "securestring",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Redis primary key"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.App/managedEnvironments",
+              "apiVersion": "2024-03-01",
+              "name": "[parameters('name')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "appLogsConfiguration": "[if(not(empty(parameters('logAnalyticsWorkspaceId'))), createObject('destination', 'log-analytics', 'logAnalyticsConfiguration', createObject('customerId', reference(parameters('logAnalyticsWorkspaceId'), '2021-06-01').customerId, 'sharedKey', listKeys(parameters('logAnalyticsWorkspaceId'), '2021-06-01').primarySharedKey)), null())]"
+              }
+            },
+            {
+              "condition": "[and(and(parameters('daprEnabled'), not(empty(parameters('redisHostName')))), not(empty(parameters('redisPrimaryKey'))))]",
+              "type": "Microsoft.App/managedEnvironments/daprComponents",
+              "apiVersion": "2024-03-01",
+              "name": "[format('{0}/{1}', parameters('name'), 'statestore')]",
+              "properties": {
+                "componentType": "state.redis",
+                "version": "v1",
+                "ignoreErrors": false,
+                "initTimeout": "60s",
+                "secrets": [
+                  {
+                    "name": "redis-password",
+                    "value": "[parameters('redisPrimaryKey')]"
+                  }
+                ],
+                "metadata": [
+                  {
+                    "name": "redisHost",
+                    "value": "[format('{0}:6380', parameters('redisHostName'))]"
+                  },
+                  {
+                    "name": "redisPassword",
+                    "secretRef": "redis-password"
+                  },
+                  {
+                    "name": "enableTLS",
+                    "value": "true"
+                  },
+                  {
+                    "name": "actorStateStore",
+                    "value": "false"
+                  }
+                ],
+                "scopes": [
+                  "auth-service",
+                  "billing-service",
+                  "inventory-service",
+                  "orders-service",
+                  "purchasing-service",
+                  "sales-service"
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.App/managedEnvironments', parameters('name'))]"
+              ]
+            },
+            {
+              "condition": "[and(and(parameters('daprEnabled'), not(empty(parameters('redisHostName')))), not(empty(parameters('redisPrimaryKey'))))]",
+              "type": "Microsoft.App/managedEnvironments/daprComponents",
+              "apiVersion": "2024-03-01",
+              "name": "[format('{0}/{1}', parameters('name'), 'pubsub')]",
+              "properties": {
+                "componentType": "pubsub.redis",
+                "version": "v1",
+                "ignoreErrors": false,
+                "initTimeout": "60s",
+                "secrets": [
+                  {
+                    "name": "redis-password",
+                    "value": "[parameters('redisPrimaryKey')]"
+                  }
+                ],
+                "metadata": [
+                  {
+                    "name": "redisHost",
+                    "value": "[format('{0}:6380', parameters('redisHostName'))]"
+                  },
+                  {
+                    "name": "redisPassword",
+                    "secretRef": "redis-password"
+                  },
+                  {
+                    "name": "enableTLS",
+                    "value": "true"
+                  }
+                ],
+                "scopes": [
+                  "auth-service",
+                  "billing-service",
+                  "inventory-service",
+                  "orders-service",
+                  "purchasing-service",
+                  "sales-service"
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.App/managedEnvironments', parameters('name'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "id": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.App/managedEnvironments', parameters('name'))]"
+            },
+            "name": {
+              "type": "string",
+              "value": "[parameters('name')]"
+            },
+            "domain": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.App/managedEnvironments', parameters('name')), '2024-03-01').defaultDomain]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "logAnalyticsWorkspace"
+      ]
+    }
+  },
+  "outputs": {
+    "MANAGED_IDENTITY_CLIENT_ID": {
+      "type": "string",
+      "value": "[reference('managedIdentity').clientId]"
+    },
+    "MANAGED_IDENTITY_NAME": {
+      "type": "string",
+      "value": "[variables('managedIdentityName')]"
+    },
+    "MANAGED_IDENTITY_PRINCIPAL_ID": {
+      "type": "string",
+      "value": "[reference('managedIdentity').principalId]"
+    },
+    "AZURE_LOG_ANALYTICS_WORKSPACE_NAME": {
+      "type": "string",
+      "value": "[parameters('logAnalyticsWorkspaceName')]"
+    },
+    "AZURE_LOG_ANALYTICS_WORKSPACE_ID": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]"
+    },
+    "AZURE_CONTAINER_REGISTRY_ENDPOINT": {
+      "type": "string",
+      "value": "[reference('containerRegistry').loginServer]"
+    },
+    "AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName'))]"
+    },
+    "AZURE_CONTAINER_REGISTRY_NAME": {
+      "type": "string",
+      "value": "[parameters('containerRegistryName')]"
+    },
+    "AZURE_CONTAINER_APPS_ENVIRONMENT_NAME": {
+      "type": "string",
+      "value": "[reference('containerAppsEnvironment').outputs.name.value]"
+    },
+    "AZURE_CONTAINER_APPS_ENVIRONMENT_ID": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.App/managedEnvironments', parameters('containerAppsEnvironmentName'))]"
+    },
+    "AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN": {
+      "type": "string",
+      "value": "[reference('containerAppEnvironment').defaultDomain]"
+    },
+    "SERVICE_CACHE_VOLUME_REDISCACHE_NAME": {
+      "type": "string",
+      "value": "[parameters('containerEnvironmentStorageName')]"
+    },
+    "AZURE_VOLUMES_STORAGE_ACCOUNT": {
+      "type": "string",
+      "value": "[parameters('storageAccountName')]"
+    },
+    "AZURE_APPLICATION_INSIGHTS_ID": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Insights/components', parameters('applicationInsightsName'))]"
+    },
+    "AZURE_APPLICATION_INSIGHTS_NAME": {
+      "type": "string",
+      "value": "[parameters('applicationInsightsName')]"
+    },
+    "AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[reference('applicationInsights').ConnectionString]"
+    },
+    "AZURE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY": {
+      "type": "string",
+      "value": "[reference('applicationInsights').InstrumentationKey]"
+    },
+    "AZURE_USER_ASSIGNED_IDENTITY_PRINCIPAL_ID": {
+      "type": "string",
+      "value": "[reference('managedIdentity').principalId]"
+    },
+    "AZURE_USER_ASSIGNED_IDENTITY_CLIENT_ID": {
+      "type": "string",
+      "value": "[reference('managedIdentity').clientId]"
+    },
+    "AZURE_USER_ASSIGNED_IDENTITY_ID": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName'))]"
+    },
+    "AZURE_LOCATION": {
+      "type": "string",
+      "value": "[parameters('location')]"
+    }
+  }
+}

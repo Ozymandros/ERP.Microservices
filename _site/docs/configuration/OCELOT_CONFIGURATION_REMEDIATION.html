@@ -113,7 +113,7 @@
 <p><strong>Before:</strong></p>
 <pre><code class="lang-json">{
   &quot;UpstreamPathTemplate&quot;: &quot;/auth/{everything}&quot;,
-  &quot;DownstreamHostAndPorts&quot;: [{&quot;Host&quot;: &quot;localhost&quot;, &quot;Port&quot;: 5007}]
+  &quot;DownstreamHostAndPorts&quot;: [{&quot;Host&quot;: &quot;localhost&quot;, &quot;Port&quot;: 6007}]
 }
 </code></pre>
 <p><strong>After:</strong></p>
@@ -122,7 +122,7 @@
   &quot;AuthenticationOptions&quot;: {
     &quot;AuthenticationProviderKey&quot;: &quot;Bearer&quot;
   },
-  &quot;DownstreamHostAndPorts&quot;: [{&quot;Host&quot;: &quot;localhost&quot;, &quot;Port&quot;: 5001}]
+  &quot;DownstreamHostAndPorts&quot;: [{&quot;Host&quot;: &quot;localhost&quot;, &quot;Port&quot;: 6001}]
 }
 </code></pre>
 <p><strong>Impact:</strong> <strong>CRITICAL</strong> - Your API was completely open. Any client could access any endpoint.</p>
@@ -213,16 +213,16 @@
 <hr>
 <h4 id="issue-7-incorrect-port-mapping">Issue #7: Incorrect Port Mapping</h4>
 <p><strong>Before:</strong></p>
-<pre><code class="lang-json">&quot;Auth&quot;: &quot;localhost:5007&quot;        // Wrong port
-&quot;Inventory&quot;: &quot;localhost:5001&quot;   // Wrong port
+<pre><code class="lang-json">&quot;Auth&quot;: &quot;localhost:6007&quot;        // Wrong port
+&quot;Inventory&quot;: &quot;localhost:6001&quot;   // Wrong port
 </code></pre>
 <p><strong>After:</strong></p>
-<pre><code class="lang-json">&quot;Auth&quot;: &quot;localhost:5001&quot;        // ✅ Correct
-&quot;Inventory&quot;: &quot;localhost:5002&quot;   // ✅ Correct
-&quot;Orders&quot;: &quot;localhost:5003&quot;      // ✅ Correct
-&quot;Sales&quot;: &quot;localhost:5004&quot;       // ✅ Correct
-&quot;Billing&quot;: &quot;localhost:5005&quot;     // ✅ Correct
-&quot;Purchasing&quot;: &quot;localhost:5006&quot;  // ✅ Correct
+<pre><code class="lang-json">&quot;Auth&quot;: &quot;localhost:6001&quot;        // ✅ Correct
+&quot;Inventory&quot;: &quot;localhost:6002&quot;   // ✅ Correct
+&quot;Orders&quot;: &quot;localhost:6003&quot;      // ✅ Correct
+&quot;Sales&quot;: &quot;localhost:6004&quot;       // ✅ Correct
+&quot;Billing&quot;: &quot;localhost:6005&quot;     // ✅ Correct
+&quot;Purchasing&quot;: &quot;localhost:6006&quot;  // ✅ Correct
 </code></pre>
 <p><strong>Impact:</strong> <strong>HIGH</strong> - Routes didn't work in docker-compose environment.</p>
 <p><strong>Fix:</strong> Ports now match docker-compose service ports.</p>
@@ -231,7 +231,7 @@
 <p><strong>Before:</strong></p>
 <pre><code class="lang-json">{
   &quot;UpstreamPathTemplate&quot;: &quot;/notification/{everything}&quot;,
-  &quot;DownstreamHostAndPorts&quot;: [{&quot;Host&quot;: &quot;localhost&quot;, &quot;Port&quot;: 5005}]
+  &quot;DownstreamHostAndPorts&quot;: [{&quot;Host&quot;: &quot;localhost&quot;, &quot;Port&quot;: 6005}]
 }
 </code></pre>
 <p><strong>After:</strong> ✅ Completely removed (service doesn't exist)</p>
@@ -286,7 +286,7 @@ Production:
 <li>✅ Removed duplicate orders route</li>
 <li>✅ Removed notification-service route</li>
 <li>✅ Added 3 health check routes</li>
-<li>✅ Updated all ports to match docker-compose (5001-5006)</li>
+<li>✅ Updated all ports to match docker-compose (6001-6006)</li>
 <li>✅ Enhanced GlobalConfiguration with error handling</li>
 <li><strong>Status:</strong> Ready for local development</li>
 </ul>
@@ -338,37 +338,37 @@ Production:
 </tr>
 <tr>
 <td>Auth</td>
-<td><strong>5001</strong></td>
+<td><strong>6001</strong></td>
 <td>auth-service:8080</td>
 <td>auth-service:8080</td>
 </tr>
 <tr>
 <td>Inventory</td>
-<td>5002</td>
+<td>6002</td>
 <td>inventory-service:8080</td>
 <td>inventory-service:8080</td>
 </tr>
 <tr>
 <td>Orders</td>
-<td>5003</td>
+<td>6003</td>
 <td>orders-service:8080</td>
 <td>orders-service:8080</td>
 </tr>
 <tr>
 <td>Sales</td>
-<td>5004</td>
+<td>6004</td>
 <td>sales-service:8080</td>
 <td>sales-service:8080</td>
 </tr>
 <tr>
 <td>Billing</td>
-<td>5005</td>
+<td>6005</td>
 <td>billing-service:8080</td>
 <td>billing-service:8080</td>
 </tr>
 <tr>
 <td>Purchasing</td>
-<td>5006</td>
+<td>6006</td>
 <td>purchasing-service:8080</td>
 <td>purchasing-service:8080</td>
 </tr>
@@ -422,7 +422,7 @@ Production:
 <p>Add these to <code>appsettings.json</code>:</p>
 <pre><code class="lang-json">{
   &quot;JwtSecretKey&quot;: &quot;your-secret-key-min-32-characters-long-change-in-production&quot;,
-  &quot;JwtIssuer&quot;: &quot;http://localhost:5001&quot;,
+  &quot;JwtIssuer&quot;: &quot;http://localhost:6001&quot;,
   &quot;JwtAudience&quot;: &quot;erp-api&quot;,
   &quot;FRONTEND_ORIGIN&quot;: &quot;http://localhost:3000&quot;
 }

@@ -4,8 +4,12 @@ using MyApp.Crm.Domain.Accounts;
 
 namespace MyApp.Crm.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Account Configuration functionality.
+/// </summary>
 public sealed class AccountConfiguration : IEntityTypeConfiguration<Account>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<Account> builder)
     {
         builder.ToTable("Accounts");

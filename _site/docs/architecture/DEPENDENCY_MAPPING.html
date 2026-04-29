@@ -438,8 +438,8 @@ api-gateway            ←→                        api-gateway
 <h3 id="2-port-consistency">2. Port Consistency</h3>
 <pre><code>Local (Aspire):          Production (Bicep):
 localhost:5000 (gateway) ←→ api-gateway:8080
-localhost:5001 (auth)    ←→ auth-service:8080
-localhost:5002 (billing) ←→ billing-service:8080
+localhost:6001 (auth)    ←→ auth-service:8080
+localhost:6002 (billing) ←→ billing-service:8080
 ... etc
 </code></pre>
 <p><strong>Validación:</strong> Todos los servicios escuchan en puerto 8080 en Container Apps</p>

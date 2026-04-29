@@ -592,10 +592,10 @@ dapr --version
 #### Run with Dapr:
 ```bash
 # Inventory Service
-dapr run --app-id inventory --app-port 5001 --dapr-http-port 3501 -- dotnet run --project src/MyApp.Inventory/MyApp.Inventory.API
+dapr run --app-id inventory --app-port 6001 --dapr-http-port 3501 -- dotnet run --project src/MyApp.Inventory/MyApp.Inventory.API
 
 # Orders Service
-dapr run --app-id orders --app-port 5002 --dapr-http-port 3502 -- dotnet run --project src/MyApp.Orders/MyApp.Orders.API
+dapr run --app-id orders --app-port 6002 --dapr-http-port 3502 -- dotnet run --project src/MyApp.Orders/MyApp.Orders.API
 
 # Repeat for other services
 ```

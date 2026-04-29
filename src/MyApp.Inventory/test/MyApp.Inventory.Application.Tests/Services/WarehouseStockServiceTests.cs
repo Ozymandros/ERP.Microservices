@@ -18,6 +18,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
     private readonly Mock<IWarehouseStockRepository> _mockWarehouseStockRepository;
     private readonly Mock<IProductRepository> _mockProductRepository;
     private readonly Mock<IInventoryTransactionRepository> _mockTransactionRepository;
+    private readonly Mock<IInventoryReservationRepository> _mockReservationRepository;
     private readonly Mock<ILogger<WarehouseStockService>> _mockLogger;
     private readonly Mock<IEventPublisher> _mockEventPublisher;
     private readonly WarehouseStockService _service;
@@ -27,6 +28,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         _mockWarehouseStockRepository = new Mock<IWarehouseStockRepository>();
         _mockProductRepository = new Mock<IProductRepository>();
         _mockTransactionRepository = new Mock<IInventoryTransactionRepository>();
+        _mockReservationRepository = new Mock<IInventoryReservationRepository>();
         _mockLogger = CreateMockLogger<WarehouseStockService>();
         _mockEventPublisher = new Mock<IEventPublisher>();
 
@@ -34,6 +36,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
             _mockWarehouseStockRepository.Object,
             _mockProductRepository.Object,
             _mockTransactionRepository.Object,
+            _mockReservationRepository.Object,
             Mapper,
             _mockLogger.Object,
             _mockEventPublisher.Object);
@@ -419,7 +422,32 @@ public class WarehouseStockServiceTests : BaseServiceTest
     {
         // Arrange
         var reservationId = Guid.NewGuid();
+        var productId = Guid.NewGuid();
+        var warehouseId = Guid.NewGuid();
 
+        var reservation = new InventoryReservation(reservationId)
+        {
+            ProductId = productId,
+            WarehouseId = warehouseId,
+            Quantity = 20,
+            Status = InventoryReservationStatus.Reserved
+        };
+        var warehouseStock = new WarehouseStock(Guid.NewGuid())
+        {
+            ProductId = productId,
+            WarehouseId = warehouseId,
+            AvailableQuantity = 80,
+            ReservedQuantity = 20
+        };
+
+        _mockReservationRepository.Setup(r => r.GetByIdAsync(reservationId)).ReturnsAsync(reservation);
+        _mockReservationRepository.Setup(r => r.UpdateAsync(It.IsAny<InventoryReservation>())).ReturnsAsync(reservation);
+        _mockWarehouseStockRepository
+            .Setup(r => r.GetByProductAndWarehouseAsync(productId, warehouseId))
+            .ReturnsAsync(warehouseStock);
+        _mockWarehouseStockRepository
+            .Setup(r => r.UpdateAsync(It.IsAny<WarehouseStock>()))
+            .ReturnsAsync((WarehouseStock s) => s);
         _mockEventPublisher
             .Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>()))
             .Returns(Task.CompletedTask);
@@ -437,7 +465,32 @@ public class WarehouseStockServiceTests : BaseServiceTest
     {
         // Arrange
         var reservationId = Guid.NewGuid();
+        var productId = Guid.NewGuid();
+        var warehouseId = Guid.NewGuid();
 
+        var reservation = new InventoryReservation(reservationId)
+        {
+            ProductId = productId,
+            WarehouseId = warehouseId,
+            Quantity = 20,
+            Status = InventoryReservationStatus.Reserved
+        };
+        var warehouseStock = new WarehouseStock(Guid.NewGuid())
+        {
+            ProductId = productId,
+            WarehouseId = warehouseId,
+            AvailableQuantity = 80,
+            ReservedQuantity = 20
+        };
+
+        _mockReservationRepository.Setup(r => r.GetByIdAsync(reservationId)).ReturnsAsync(reservation);
+        _mockReservationRepository.Setup(r => r.UpdateAsync(It.IsAny<InventoryReservation>())).ReturnsAsync(reservation);
+        _mockWarehouseStockRepository
+            .Setup(r => r.GetByProductAndWarehouseAsync(productId, warehouseId))
+            .ReturnsAsync(warehouseStock);
+        _mockWarehouseStockRepository
+            .Setup(r => r.UpdateAsync(It.IsAny<WarehouseStock>()))
+            .ReturnsAsync((WarehouseStock s) => s);
         _mockEventPublisher
             .Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>()))
             .ThrowsAsync(new Exception("Event publishing failed"));

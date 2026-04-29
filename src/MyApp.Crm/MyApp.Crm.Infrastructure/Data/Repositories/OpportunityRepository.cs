@@ -4,15 +4,20 @@ using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Crm.Infrastructure.Data.Repositories;
 
+/// <summary>
+/// Provides Opportunity Repository functionality.
+/// </summary>
 public class OpportunityRepository : Repository<Opportunity, Guid>, IOpportunityRepository
 {
     private readonly CrmDbContext _context;
 
+    /// <summary>base.</summary>
     public OpportunityRepository(CrmDbContext context) : base(context)
     {
         _context = context;
     }
 
+    /// <summary>Get By Id Async.</summary>
     public override async Task<Opportunity?> GetByIdAsync(Guid id)
     {
         return await _context.Opportunities
@@ -22,11 +27,13 @@ public class OpportunityRepository : Repository<Opportunity, Guid>, IOpportunity
             .FirstOrDefaultAsync(o => o.Id == id);
     }
 
+    /// <summary>List Async.</summary>
     public async Task<IEnumerable<Opportunity>> ListAsync()
     {
         return await _context.Opportunities.AsNoTracking().ToListAsync();
     }
 
+    /// <summary>List For Forecast Async.</summary>
     public async Task<List<Opportunity>> ListForForecastAsync(
         string ownerUsername,
         DateOnly? fromExpectedCloseDate,

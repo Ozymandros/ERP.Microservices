@@ -243,7 +243,7 @@ builder.Services.AddAutoMapper(typeof(InventoryMappingProfile));
 1. Create initial migration: `dotnet ef migrations add Initial -p MyApp.Inventory.Infrastructure`
 2. Update database: `dotnet ef database update`
 3. Run API: `dotnet run --project MyApp.Inventory.API`
-4. Test endpoints via Swagger UI: `https://localhost:5001/swagger`
+4. Test endpoints via Swagger UI: `https://localhost:6004/swagger`
 5. Add integration tests for business logic validation
 6. Implement additional domain-specific queries as needed
 

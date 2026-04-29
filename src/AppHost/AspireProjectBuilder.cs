@@ -1,9 +1,12 @@
 using Aspire.Hosting.Azure;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 
+/// <summary>
+/// Provides Aspire Project Builder functionality.
+/// </summary>
 public class AspireProjectBuilder
 {
-    private int _httpPort = 5000;
+    private int _httpPort = 6000;
     private int _daprHttpPort = 3500;
     private int _daprGrpcPort = 45000;
     private int _metricsPort = 9090;
@@ -14,6 +17,13 @@ public class AspireProjectBuilder
 
     private readonly string? _keyVault;
 
+/// <summary>
+/// Aspire Project Builder constructor. Initializes the builder with optional SQL Server and Azure SQL Server resources, and an optional Key Vault reference.
+/// </summary>
+/// <param name="builder"></param>
+/// <param name="sqlServer"></param>
+/// <param name="sqlAzureServer"></param>
+/// <param name="keyVault"></param>
     public AspireProjectBuilder(
         IDistributedApplicationBuilder builder,
         IResourceBuilder<SqlServerServerResource>? sqlServer = null,
@@ -27,11 +37,23 @@ public class AspireProjectBuilder
         _keyVault = keyVault;
     }
 
+/// <summary>
+/// Add Web Project. Creates a new project with the specified type and adds it to the builder. The project is configured with Dapr, environment variables, and optional Redis and Application Insights resources.
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="redis"></param>
+/// <param name="origin"></param>
+/// <param name="isDeployment"></param>
+/// <param name="applicationInsights"></param>
+/// <param name="hasDatabase"></param>
+/// <returns></returns>
+/// <exception cref="ArgumentException"></exception>
     public IResourceBuilder<ProjectResource> AddWebProject<T>(
         IResourceBuilder<RedisResource>? redis = null,
         string? origin = null,
         bool isDeployment = false,
-        IResourceBuilder<AzureApplicationInsightsResource>? applicationInsights = null)
+        IResourceBuilder<AzureApplicationInsightsResource>? applicationInsights = null,
+        bool hasDatabase = true)
         where T : IProjectMetadata, new()
     {
         // Extract service name from type name
@@ -90,15 +112,15 @@ public class AspireProjectBuilder
             .WithEnvironment("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317")
             .PublishAsDockerFile();
 
-        var database = _sqlServer?.AddDatabase(dbName); ;
+        var database = hasDatabase ? _sqlServer?.AddDatabase(dbName) : null;
         if (database is not null)
         {
             project = project.WaitFor(database);
             project = project.WithReference(database);
         }
 
-    //    project = project.WithHttpEndpoint(port: httpPort, name: "http") // use default name
-    //.WithHttpHealthCheck(path: "/health", statusCode: 200);
+        //    project = project.WithHttpEndpoint(port: httpPort, name: "http") // use default name
+        //.WithHttpHealthCheck(path: "/health", statusCode: 200);
 
         // Application Insights
         if (applicationInsights is not null)
@@ -120,10 +142,15 @@ public class AspireProjectBuilder
     }
 
     // Optionally reset counters
+    /// <summary>Resets the port counters to the specified values.</summary>
+    /// <param name="httpPort">The starting HTTP port.</param>
+    /// <param name="daprHttpPort">The starting Dapr HTTP port.</param>
+    /// <param name="daprGrpcPort">The starting Dapr gRPC port.</param>
+    /// <param name="metricsPort">The starting metrics port.</param>
     public void ResetCounters(
-        int httpPort = 5001,
+        int httpPort = 6001,
         int daprHttpPort = 3501,
-        int daprGrpcPort = 45001,
+        int daprGrpcPort = 46001,
         int metricsPort = 9091)
     {
         _httpPort = httpPort;
@@ -134,8 +161,20 @@ public class AspireProjectBuilder
 }
 
 // Extension method for cleaner usage
+
+/// <summary>
+/// Provides Aspire Project Builder Extensions functionality. Provides a static method for creating an AspireProjectBuilder instance.
+/// </summary>
 public static class AspireProjectBuilderExtensions
 {
+    /// <summary>
+    /// Create Project Builder. Creates an AspireProjectBuilder instance with the specified resources and Key Vault reference.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <param name="sqlServer"></param>
+    /// <param name="sqlAzure"></param>
+    /// <param name="keyVault"></param>
+    /// <returns></returns>
     public static AspireProjectBuilder CreateProjectBuilder(
         this IDistributedApplicationBuilder builder,
         IResourceBuilder<SqlServerServerResource>? sqlServer = null,

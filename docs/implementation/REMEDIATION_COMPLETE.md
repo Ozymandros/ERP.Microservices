@@ -210,13 +210,15 @@ DAPR configuration
 | **Logging** | ✅ Available | `docker compose logs -f` |
 | **Monitoring** | ✅ Ready | Health status visible |
 
-### Services (6 Total)
-1. **auth-service** (Port 5007) - Identity & authentication
-2. **inventory-service** (Port 5001) - Stock management
-3. **orders-service** (Port 5002) - Order processing
-4. **sales-service** (Port 5003) - Sales operations
-5. **billing-service** (Port 5004) - Billing & payments
-6. **purchasing-service** (Port 5006) - Procurement
+### Services (8 Total)
+1. **auth-service** (Port 6001) - Identity & authentication
+2. **billing-service** (Port 6002) - Billing & payments
+3. **inventory-service** (Port 6003) - Stock management
+4. **orders-service** (Port 6004) - Order processing
+5. **purchasing-service** (Port 6005) - Procurement
+6. **sales-service** (Port 6007) - Sales operations
+7. **crm-service** (Port 6003) - CRM 7. **crm-service** (Port 6007) - CRM & leads leads
+8. **sk-service** (Port 6008) - Semantic Kernel AI
 
 ### Infrastructure
 1. **SQL Server** (Port 1455) - 6 microservice databases

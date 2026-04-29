@@ -9,6 +9,9 @@ using System.Security.Claims;
 
 namespace MyApp.Auth.Application.Services;
 
+/// <summary>
+/// Provides authentication and authorization services including login, registration, token refresh, and logout operations.
+/// </summary>
 public class AuthService : IAuthService
 {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -19,6 +22,9 @@ public class AuthService : IAuthService
     private readonly IPermissionRepository _permissionRepository;
     private readonly ILogger<AuthService> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the AuthService with required dependencies.
+    /// </summary>
     public AuthService(
         UserManager<ApplicationUser> userManager,
         IJwtTokenProvider jwtTokenProvider,
@@ -37,6 +43,9 @@ public class AuthService : IAuthService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Authenticates a user with email and password credentials.
+    /// </summary>
     public async Task<TokenResponseDto?> LoginAsync(LoginDto loginDto)
     {
         var user = await _userManager.FindByEmailAsync(loginDto.Email);
@@ -56,6 +65,9 @@ public class AuthService : IAuthService
         return await GenerateTokenResponseAsync(user);
     }
 
+    /// <summary>
+    /// Registers a new user account and returns authentication tokens.
+    /// </summary>
     public async Task<TokenResponseDto?> RegisterAsync(RegisterDto registerDto)
     {
         var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
@@ -88,6 +100,9 @@ public class AuthService : IAuthService
         return await GenerateTokenResponseAsync(user);
     }
 
+    /// <summary>
+    /// Generates new authentication tokens using a valid refresh token.
+    /// </summary>
     public async Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
     {
         var principal = _jwtTokenProvider.GetPrincipalFromExpiredToken(refreshTokenDto.AccessToken);
@@ -121,6 +136,9 @@ public class AuthService : IAuthService
         return await GenerateTokenResponseAsync(user);
     }
 
+    /// <summary>
+    /// Authenticates a user through an external authentication provider.
+    /// </summary>
     public async Task<TokenResponseDto?> ExternalLoginAsync(ExternalLoginDto externalLoginDto)
     {
         // Try to find existing user with external provider
@@ -188,17 +206,17 @@ public class AuthService : IAuthService
         var userRoles = await _roleRepository.GetRolesByUserIdAsync(user.Id);
         var roleNames = userRoles.Select(r => r.Name).ToList();
         bool isAdmin = userRoles.Any(r => r.Name != null && r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
-        
-        _logger.LogInformation("User {UserId} ({Email}) has roles: {Roles}, IsAdmin: {IsAdmin}", 
+
+        _logger.LogInformation("User {UserId} ({Email}) has roles: {Roles}, IsAdmin: {IsAdmin}",
             user.Id, user.Email, string.Join(", ", roleNames), isAdmin);
-        
+
         List<Permission> permissions;
         if (isAdmin)
         {
             // Admin users have all permissions
             var allPermissions = await _permissionRepository.GetAllAsync();
             permissions = allPermissions.ToList();
-            _logger.LogInformation("Admin user {UserId} ({Email}) - returning all {Count} permissions", 
+            _logger.LogInformation("Admin user {UserId} ({Email}) - returning all {Count} permissions",
                 user.Id, user.Email, permissions.Count);
         }
         else
@@ -209,39 +227,39 @@ public class AuthService : IAuthService
             {
                 var rolePermissions = await _roleRepository.GetPermissionsForRoleAsync(role.Id);
                 permissions.AddRange(rolePermissions);
-                _logger.LogInformation("Role {RoleName} ({RoleId}) has {Count} permissions", 
+                _logger.LogInformation("Role {RoleName} ({RoleId}) has {Count} permissions",
                     role.Name, role.Id, rolePermissions.Count());
             }
-            
+
             // Also get direct user permissions (only from UserPermission table, not from roles)
             // GetAllPermissionsByUserId includes role permissions, so we filter them out
             var allUserPermissions = await _permissionRepository.GetAllPermissionsByUserId(user.Id);
             var rolePermissionIds = permissions.Select(p => p.Id).ToHashSet();
             var directUserPermissions = allUserPermissions.Where(p => !rolePermissionIds.Contains(p.Id));
             permissions.AddRange(directUserPermissions);
-            
+
             var distinctPermissions = permissions.DistinctBy(p => p.Id).ToList();
-            _logger.LogInformation("User {UserId} ({Email}) - {DirectCount} direct permissions, {RoleCount} role permissions, {TotalCount} total distinct permissions", 
-                user.Id, user.Email, directUserPermissions.Count(), 
-                permissions.Count - directUserPermissions.Count(), 
+            _logger.LogInformation("User {UserId} ({Email}) - {DirectCount} direct permissions, {RoleCount} role permissions, {TotalCount} total distinct permissions",
+                user.Id, user.Email, directUserPermissions.Count(),
+                permissions.Count - directUserPermissions.Count(),
                 distinctPermissions.Count);
-            
+
             permissions = distinctPermissions;
         }
 
-        var roleDtos = userRoles.Select(r => new RoleDto(r.Id) 
-        { 
-            Name = r.Name, 
-            Description = r.Description 
+        var roleDtos = userRoles.Select(r => new RoleDto(r.Id)
+        {
+            Name = r.Name,
+            Description = r.Description
         }).Cast<RoleDto?>().ToList();
 
         var permissionDtos = permissions
             .DistinctBy(p => p.Id)
-            .Select(p => new PermissionDto(p.Id) 
-            { 
-                Module = p.Module, 
-                Action = p.Action, 
-                Description = p.Description 
+            .Select(p => new PermissionDto(p.Id)
+            {
+                Module = p.Module,
+                Action = p.Action,
+                Description = p.Description
             })
             .Cast<PermissionDto?>().ToList();
 

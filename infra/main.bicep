@@ -116,6 +116,7 @@ var appConfigurationName = take('${namePrefix}-app-configuration', 50)
 var sqlDatabaseNames = {
   auth: toLower('${namePrefix}-auth-db')
   billing: toLower('${namePrefix}-billing-db')
+  crm: toLower('${namePrefix}-crm-db')
   inventory: toLower('${namePrefix}-inventory-db')
   orders: toLower('${namePrefix}-orders-db')
   purchasing: toLower('${namePrefix}-purchasing-db')
@@ -126,6 +127,7 @@ var sqlDatabaseNames = {
 var sqlDatabaseList = [
   sqlDatabaseNames.auth
   sqlDatabaseNames.billing
+  sqlDatabaseNames.crm
   sqlDatabaseNames.inventory
   sqlDatabaseNames.orders
   sqlDatabaseNames.purchasing
@@ -199,6 +201,7 @@ module keyVault 'core/security/keyvault-secrets.bicep' = {
     sqlAdminPassword: password
     authDbName: sqlDatabaseNames.auth
     billingDbName: sqlDatabaseNames.billing
+    crmDbName: sqlDatabaseNames.crm
     inventoryDbName: sqlDatabaseNames.inventory
     ordersDbName: sqlDatabaseNames.orders
     purchasingDbName: sqlDatabaseNames.purchasing
@@ -279,6 +282,31 @@ module authServiceModule 'services/auth-service.bicep' = {
 
 module billingServiceModule 'services/billing-service.bicep' = {
   name: 'billing-service-deployment'
+  scope: rg
+  params: {
+    location: location
+    tags: tags
+    containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
+    containerRegistryEndpoint: ghcrRegistryEndpoint
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    jwtSecretKey: jwtSecretKey
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    frontendOrigin: frontendOrigin
+    aspnetcoreEnvironment: aspnetcoreEnvironment
+    imageTag: imageTag
+    managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
+    appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
+    namePrefix: namePrefix
+    envSlug: envSlug
+    userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
+    ghcrUsername: ghcrUsername
+    ghcrPat: ghcrPat
+  }
+}
+
+module crmServiceModule 'services/crm-service.bicep' = {
+  name: 'crm-service-deployment'
   scope: rg
   params: {
     location: location
@@ -494,6 +522,7 @@ output AZURE_KEY_VAULT_NAME string = keyVault.outputs.keyVaultUri
 // Service outputs
 output AUTH_SERVICE_FQDN string = authServiceModule.outputs.fqdn
 output BILLING_SERVICE_FQDN string = billingServiceModule.outputs.fqdn
+output CRM_SERVICE_FQDN string = crmServiceModule.outputs.fqdn
 output INVENTORY_SERVICE_FQDN string = inventoryServiceModule.outputs.fqdn
 output ORDERS_SERVICE_FQDN string = ordersServiceModule.outputs.fqdn
 output PURCHASING_SERVICE_FQDN string = purchasingServiceModule.outputs.fqdn

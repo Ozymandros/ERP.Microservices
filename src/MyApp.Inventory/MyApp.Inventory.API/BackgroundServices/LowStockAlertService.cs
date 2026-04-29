@@ -82,14 +82,14 @@ public class LowStockAlertService : BackgroundService
                     stock.AvailableQuantity,
                     10 // Default reorder level - could be fetched from Product repository if needed
                 );
-                
+
                 try
                 {
                     await eventPublisher.PublishAsync(
                         "inventory.stock.low-stock-alert",
                         lowStockEvent,
                         cancellationToken);
-                    
+
                     _logger.LogInformation("Published LowStockAlertEvent for ProductId={ProductId}", stock.ProductId);
                 }
                 catch (Exception ex)

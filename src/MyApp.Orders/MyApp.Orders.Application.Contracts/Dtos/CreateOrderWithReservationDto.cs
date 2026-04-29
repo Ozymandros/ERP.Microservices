@@ -13,7 +13,7 @@ public record CreateOrderWithReservationDto
 
     [Required]
     public OrderType Type { get; init; }
-    
+
     public Guid? SourceId { get; init; }
     public Guid? TargetId { get; init; }
     public Guid? ExternalOrderId { get; init; }

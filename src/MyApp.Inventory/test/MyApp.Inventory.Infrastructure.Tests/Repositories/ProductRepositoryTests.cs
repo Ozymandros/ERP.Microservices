@@ -286,7 +286,7 @@ public class ProductRepositoryTests
         // Assert
         result.Should().NotBeNull();
         result.TotalCount.Should().BeGreaterThanOrEqualTo(1);
-        result.Items.Should().Contain(p => p.Name.Contains("Widget", StringComparison.OrdinalIgnoreCase) || 
+        result.Items.Should().Contain(p => p.Name.Contains("Widget", StringComparison.OrdinalIgnoreCase) ||
                                            p.SKU.Contains("Widget", StringComparison.OrdinalIgnoreCase));
     }
 
@@ -338,8 +338,8 @@ public class ProductRepositoryTests
         CreateTestProduct("PRICE-002", "Mid Product", unitPrice: 50.00m);
         CreateTestProduct("PRICE-003", "Expensive Product", unitPrice: 100.00m);
         var querySpec = new QuerySpec();
-        querySpec.Filters = new Dictionary<string, string> 
-        { 
+        querySpec.Filters = new Dictionary<string, string>
+        {
             { "UnitPriceMin", "20" },
             { "UnitPriceMax", "75" }
         };

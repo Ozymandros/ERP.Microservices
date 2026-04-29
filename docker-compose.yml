@@ -16,56 +16,59 @@ x-api-env: &api-env
   DAPR_GRPC_PORT: "50001"
 
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqlserver
-    environment:
-      ACCEPT_EULA: "Y"
-      MSSQL_PID: Developer
-      MSSQL_SA_PASSWORD: ${SQL_PASSWORD:-P@ssw0rd12345!}
-    ports:
-      - "1455:1433"
+  auth-service-dapr:
+    image: daprio/dapr:1.15.6
+    container_name: auth-service-dapr
+    depends_on:
+      - auth-service
+      - dapr-placement
+    command:
+      [
+        "./daprd",
+        "-app-id", "auth-service",
+        "-app-port", "8080",
+        "-components-path", "/components",
+        "-placement-host-address", "dapr-placement:50005",
+        "-log-level", "info"
+      ]
     volumes:
-      - sqlserver-data:/var/opt/mssql
+      - ./deploy/dapr/components:/components:ro
+    network_mode: "service:auth-service"
+    restart: unless-stopped
+  billing-service:
+    build:
+      context: ./src
+      dockerfile: MyApp.Billing/MyApp.Billing.API/Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+    container_name: billing-service
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
+      Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
+      Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
+      ConnectionStrings__cache: redis:6379,password=${REDIS_PASSWORD:-Redis@Secure123!},defaultDatabase=0,abortConnect=false,connectRetry=5,connectTimeout=5000,syncTimeout=5000
+      Jwt__RequireHttpsMetadata: "false"
+      DAPR_HTTP_PORT: "3500"
+      DAPR_GRPC_PORT: "50001"
+      ConnectionStrings__BillingDb: Server=sqlserver,1433;Database=BillingDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
+    depends_on:
+      - auth-service-dapr
+      - redis
+    ports:
+      - "6002:8080"
     healthcheck:
-      # THIS IS THE CORRECT COMMAND:
-      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${SQL_PASSWORD:-P@ssw0rd12345!}' -C -Q 'SELECT 1' || exit 1"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
       timeout: 5s
       retries: 10
-    networks:
-      - erp
-
-  redis:
-    image: redis:7-alpine
-    container_name: redis
-    command: ["redis-server", "--save", "", "--appendonly", "no", "--requirepass", "${REDIS_PASSWORD:-Redis@Secure123!}"]
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
-    networks:
-      - erp
-    healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-Redis@Secure123!}", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 10           # ✅ More retries (was 3)
-      start_period: 120s    # ✅ 2 minutes startup time (was 30s)
-    restart: unless-stopped
-
-  redis-commander:
-    image: rediscommander/redis-commander:latest
-    container_name: redis-commander
-    environment:
-      REDIS_HOSTS: local:redis:6379:0:${REDIS_PASSWORD:-Redis@Secure123!}
-    ports:
-      - "8081:8081"
-    depends_on:
-      - redis
+      start_period: 120s
     networks:
       - erp
     restart: unless-stopped
+
 
   redis-insight:
     image: redis/redisinsight:2.66
@@ -121,26 +124,27 @@ services:
         BUILDKIT_INLINE_CACHE: 1
     container_name: gateway
     environment:
-      <<: *api-env
-      Ocelot__Routes__0__DownstreamHostAndPorts__0__Host: auth-service
-      Ocelot__Routes__0__DownstreamHostAndPorts__0__Port: 8080
-      Ocelot__Routes__1__DownstreamHostAndPorts__0__Host: inventory-service
-      Ocelot__Routes__1__DownstreamHostAndPorts__0__Port: 8080
-      Ocelot__Routes__2__DownstreamHostAndPorts__0__Host: orders-service
-      Ocelot__Routes__2__DownstreamHostAndPorts__0__Port: 8080
-      Ocelot__Routes__3__DownstreamHostAndPorts__0__Host: sales-service
-      Ocelot__Routes__3__DownstreamHostAndPorts__0__Port: 8080
-      # Ocelot__Routes__4__DownstreamHostAndPorts__0__Host: billing-service
-      # Ocelot__Routes__4__DownstreamHostAndPorts__0__Port: 8080
-      Ocelot__Routes__5__DownstreamHostAndPorts__0__Host: purchasing-service
-      Ocelot__Routes__5__DownstreamHostAndPorts__0__Port: 8080
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
+      Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
+      Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
+      ConnectionStrings__cache: redis:6379,password=${REDIS_PASSWORD:-Redis@Secure123!},defaultDatabase=0,abortConnect=false,connectRetry=5,connectTimeout=5000,syncTimeout=5000
+      Jwt__RequireHttpsMetadata: "false"
+      DAPR_HTTP_PORT: "3500"
+      DAPR_GRPC_PORT: "50001"
+      # NOTE: Route host/port come from the mounted ocelot.json
+      # (service-dns + 8080 for every route). No per-route env overrides —
+      # per-route indexes would desynchronize whenever routes are added/reordered.
+      Ocelot__GlobalConfiguration__BaseUrl: http://localhost:5000
     ports:
       - "5000:8080"
     depends_on:
       auth-service:
         condition: service_started
-      # billing-service:
-      #   condition: service_started
+      billing-service:
+        condition: service_started
       crm-service:
         condition: service_started
       inventory-service:
@@ -150,6 +154,8 @@ services:
       purchasing-service:
         condition: service_started
       sales-service:
+        condition: service_started
+      sk-service:
         condition: service_started
     volumes:
       - ./src/ErpApiGateway/ocelot.json:/app/ocelot.json:ro
@@ -172,7 +178,16 @@ services:
         BUILDKIT_INLINE_CACHE: 1
     container_name: auth-service
     environment:
-      <<: *api-env
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
+      Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
+      Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
+      ConnectionStrings__cache: redis:6379,password=${REDIS_PASSWORD:-Redis@Secure123!},defaultDatabase=0,abortConnect=false,connectRetry=5,connectTimeout=5000,syncTimeout=5000
+      Jwt__RequireHttpsMetadata: "false"
+      DAPR_HTTP_PORT: "3500"
+      DAPR_GRPC_PORT: "50001"
       ConnectionStrings__AuthDb: Server=sqlserver,1433;Database=AuthDb;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
       sqlserver:
@@ -182,7 +197,7 @@ services:
       dapr-placement:
         condition: service_started
     ports:
-      - "5007:8080"
+      - "6001:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
@@ -193,39 +208,6 @@ services:
       - erp
     restart: unless-stopped
 
-  auth-service-dapr:
-    image: daprio/dapr:1.15.6
-    container_name: auth-service-dapr
-    depends_on:
-      - auth-service
-      - dapr-placement
-      # - dapr-sentry
-    command:
-      [
-        "./daprd",
-        "-app-id", "auth-service",
-        "-app-port", "8080",
-        "-components-path", "/components",
-        "-placement-host-address", "dapr-placement:50005",
-        # "-sentry-address", "dapr-sentry:50001",
-        "-log-level", "info"
-      ]
-    volumes:
-      - ./deploy/dapr/components:/components:ro
-    network_mode: "service:auth-service"
-    restart: unless-stopped
-
-# TODO: 
-  # billing-service:
-  #   build:
-  #     context: ./src
-  #     dockerfile: MyApp.Billing/MyApp.Billing.API/Dockerfile
-  #   container_name: billing-service
-  #   environment:
-  #     <<: *api-env
-  #     ConnectionStrings__BillingDb: Server=sqlserver,1433;Database=BillingDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;
-  #     #TODO: ConnectionStrings__BillingDb: Server=sqlserver,1433;Database=BillingDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
-  #   depends_on:
   #     sqlserver:
   #       condition: service_healthy
   #     redis:
@@ -233,7 +215,7 @@ services:
   #     dapr-placement:
   #       condition: service_started
   #   ports:
-  #     - "5004:8080"
+  #     - "6002:8080"
   #   healthcheck:
   #     test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
   #     interval: 10s
@@ -274,7 +256,16 @@ services:
         BUILDKIT_INLINE_CACHE: 1
     container_name: inventory-service
     environment:
-      <<: *api-env
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
+      Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
+      Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
+      ConnectionStrings__cache: redis:6379,password=${REDIS_PASSWORD:-Redis@Secure123!},defaultDatabase=0,abortConnect=false,connectRetry=5,connectTimeout=5000,syncTimeout=5000
+      Jwt__RequireHttpsMetadata: "false"
+      DAPR_HTTP_PORT: "3500"
+      DAPR_GRPC_PORT: "50001"
       ConnectionStrings__InventoryDb: Server=sqlserver,1433;Database=InventoryDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
       sqlserver:
@@ -284,7 +275,7 @@ services:
       dapr-placement:
         condition: service_started
     ports:
-      - "5001:8080"
+      - "6004:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
@@ -325,7 +316,16 @@ services:
         BUILDKIT_INLINE_CACHE: 1
     container_name: orders-service
     environment:
-      <<: *api-env
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
+      Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
+      Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
+      ConnectionStrings__cache: redis:6379,password=${REDIS_PASSWORD:-Redis@Secure123!},defaultDatabase=0,abortConnect=false,connectRetry=5,connectTimeout=5000,syncTimeout=5000
+      Jwt__RequireHttpsMetadata: "false"
+      DAPR_HTTP_PORT: "3500"
+      DAPR_GRPC_PORT: "50001"
       ConnectionStrings__OrdersDb: Server=sqlserver,1433;Database=OrdersDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
       sqlserver:
@@ -335,7 +335,7 @@ services:
       dapr-placement:
         condition: service_started
     ports:
-      - "5002:8080"
+      - "6005:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
@@ -376,7 +376,16 @@ services:
         BUILDKIT_INLINE_CACHE: 1
     container_name: purchasing-service
     environment:
-      <<: *api-env
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
+      Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
+      Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
+      ConnectionStrings__cache: redis:6379,password=${REDIS_PASSWORD:-Redis@Secure123!},defaultDatabase=0,abortConnect=false,connectRetry=5,connectTimeout=5000,syncTimeout=5000
+      Jwt__RequireHttpsMetadata: "false"
+      DAPR_HTTP_PORT: "3500"
+      DAPR_GRPC_PORT: "50001"
       ConnectionStrings__PurchasingDb: Server=sqlserver,1433;Database=PurchasingDb;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
       sqlserver:
@@ -386,7 +395,7 @@ services:
       dapr-placement:
         condition: service_started
     ports:
-      - "5006:8080"
+      - "6006:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
@@ -427,7 +436,16 @@ services:
         BUILDKIT_INLINE_CACHE: 1
     container_name: sales-service
     environment:
-      <<: *api-env
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
+      Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
+      Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
+      ConnectionStrings__cache: redis:6379,password=${REDIS_PASSWORD:-Redis@Secure123!},defaultDatabase=0,abortConnect=false,connectRetry=5,connectTimeout=5000,syncTimeout=5000
+      Jwt__RequireHttpsMetadata: "false"
+      DAPR_HTTP_PORT: "3500"
+      DAPR_GRPC_PORT: "50001"
       ConnectionStrings__SalesDb: Server=sqlserver,1433;Database=SalesDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
       sqlserver:
@@ -437,7 +455,7 @@ services:
       dapr-placement:
         condition: service_started
     ports:
-      - "5003:8080"
+      - "6007:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
@@ -478,7 +496,16 @@ services:
         BUILDKIT_INLINE_CACHE: 1
     container_name: crm-service
     environment:
-      <<: *api-env
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
+      Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
+      Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
+      ConnectionStrings__cache: redis:6379,password=${REDIS_PASSWORD:-Redis@Secure123!},defaultDatabase=0,abortConnect=false,connectRetry=5,connectTimeout=5000,syncTimeout=5000
+      Jwt__RequireHttpsMetadata: "false"
+      DAPR_HTTP_PORT: "3500"
+      DAPR_GRPC_PORT: "50001"
       ConnectionStrings__CrmDb: Server=sqlserver,1433;Database=CrmDb;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
     depends_on:
       sqlserver:
@@ -488,7 +515,7 @@ services:
       dapr-placement:
         condition: service_started
     ports:
-      - "5008:8080"
+    - "6003:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
@@ -517,6 +544,103 @@ services:
     volumes:
       - ./deploy/dapr/components:/components:ro
     network_mode: "service:crm-service"
+    restart: unless-stopped
+
+
+  sk-service:
+    build:
+      context: ./src
+      dockerfile: MyApp.SemanticKernel/Dockerfile.local
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+    container_name: sk-service
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
+      Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
+      Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
+      ConnectionStrings__cache: redis:6379,password=${REDIS_PASSWORD:-Redis@Secure123!},defaultDatabase=0,abortConnect=false,connectRetry=5,connectTimeout=5000,syncTimeout=5000
+      Jwt__RequireHttpsMetadata: "false"
+      DAPR_HTTP_PORT: "3500"
+      DAPR_GRPC_PORT: "50001"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      dapr-placement:
+        condition: service_started
+    ports:
+      - "6008:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 120s
+    networks:
+      - erp
+    restart: unless-stopped
+
+  sk-service-dapr:
+    image: daprio/dapr:1.15.6
+    container_name: sk-service-dapr
+    depends_on:
+      - sk-service
+      - dapr-placement
+    command:
+      [
+        "./daprd",
+        "-app-id", "sk-service",
+        "-app-port", "8080",
+        "-components-path", "/components",
+        "-placement-host-address", "dapr-placement:50005",
+        "-log-level", "info"
+      ]
+    volumes:
+      - ./deploy/dapr/components:/components:ro
+    network_mode: "service:sk-service"
+    restart: unless-stopped
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: ${SQL_PASSWORD:-P@ssw0rd12345!}
+      MSSQL_PID: Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "${SQL_PASSWORD:-P@ssw0rd12345!}", "-Q", "SELECT 1", "-No"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 60s
+    networks:
+      - erp
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-Redis@Secure123!}
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-Redis@Secure123!}", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    networks:
+      - erp
     restart: unless-stopped
 
 networks:

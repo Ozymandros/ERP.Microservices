@@ -453,7 +453,7 @@ public class InventoryTransactionServiceTests
         };
 
         _mockTransactionRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
-        _mockMapper.Setup(m => m.Map<InventoryTransactionDto>(It.IsAny<InventoryTransaction>())).Returns((InventoryTransaction t) => 
+        _mockMapper.Setup(m => m.Map<InventoryTransactionDto>(It.IsAny<InventoryTransaction>())).Returns((InventoryTransaction t) =>
             new InventoryTransactionDto(t.Id, t.ProductId, t.WarehouseId, t.QuantityChange, t.TransactionType, t.TransactionDate, null, null));
 
         // Act
@@ -481,7 +481,7 @@ public class InventoryTransactionServiceTests
         var paginatedResult = new PaginatedResult<InventoryTransaction>(transactions, 1, 20, 1);
 
         _mockTransactionRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
-        _mockMapper.Setup(m => m.Map<InventoryTransactionDto>(It.IsAny<InventoryTransaction>())).Returns((InventoryTransaction t) => 
+        _mockMapper.Setup(m => m.Map<InventoryTransactionDto>(It.IsAny<InventoryTransaction>())).Returns((InventoryTransaction t) =>
             new InventoryTransactionDto(t.Id, t.ProductId, t.WarehouseId, t.QuantityChange, t.TransactionType, t.TransactionDate, null, null));
 
         // Act
@@ -777,7 +777,7 @@ public class InventoryTransactionServiceTests
         var paginatedResult = new PaginatedResult<InventoryTransaction>(transactions, 1, 2, 10);
 
         _mockTransactionRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
-        _mockMapper.Setup(m => m.Map<InventoryTransactionDto>(It.IsAny<InventoryTransaction>())).Returns((InventoryTransaction t) => 
+        _mockMapper.Setup(m => m.Map<InventoryTransactionDto>(It.IsAny<InventoryTransaction>())).Returns((InventoryTransaction t) =>
             new InventoryTransactionDto(t.Id, t.ProductId, t.WarehouseId, t.QuantityChange, t.TransactionType, t.TransactionDate, null, null));
 
         // Act

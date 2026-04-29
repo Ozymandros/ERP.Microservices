@@ -93,7 +93,7 @@ Gateway (8000)
     ↓ [Rate Limit Check]
     ↓ [Route Match]
     ↓
-Downstream Service (5001-5006)
+Downstream Service (6001-6008)
     ↓
 Database/Cache
     ↓
@@ -108,12 +108,14 @@ External Client
 
 | Route | Service | Port | Purpose |
 |-------|---------|------|---------|
-| `/api/auth` | Auth Service | 5001 | Authentication |
-| `/api/inventory` | Inventory Service | 5002 | Inventory Management |
-| `/api/orders` | Orders Service | 5003 | Order Processing |
-| `/api/sales` | Sales Service | 5004 | Sales Management |
-| `/api/billing` | Billing Service | 5005 | Billing & Invoicing |
-| `/api/purchasing` | Purchasing Service | 5006 | Procurement |
+| `/api/auth` | Auth Service | 6001 | Authentication |
+| `/api/billing` | Billing Service | 6002 | Billing & Invoicing |
+| `/api/inventory` | Inventory Service | 6004 | Inventory Management |
+| `/api/orders` | Orders Service | 6005 | Order Processing |
+| `/api/purchasing` | Purchasing Service | 6006 | Procurement |
+| `/api/sales` | Sales Service | 6007 | Sales Management |
+| `/api/crm` | CRM Service | 6003 | CRM & Leads |
+| `/api/sk` | SemanticKernel Service | 6008 | AI Semantic Kernel |
 | `/health` | Gateway Health | - | Status check |
 
 ---
@@ -207,7 +209,7 @@ Token expired | [AUTHENTICATION.md](AUTHENTICATION.md)
 
 ```bash
 # Get token
-TOKEN=$(curl -s -X POST http://localhost:5001/auth/token \
+TOKEN=$(curl -s -X POST http://localhost:6001/auth/token \
   -H "Content-Type: application/json" \
   -d '{"username":"test","password":"test"}' \
   | jq -r '.token')
