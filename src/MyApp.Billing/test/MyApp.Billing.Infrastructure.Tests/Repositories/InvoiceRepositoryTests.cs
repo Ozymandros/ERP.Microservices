@@ -311,7 +311,7 @@ public class InvoiceRepositoryTests
         var inv = CreateIssuedInvoice(invoiceNumber: "INV-UPD-002");
         var gross = inv.TotalGross;
         inv.RecordPayment(gross / 2, "Card", DateTime.UtcNow);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         var stored = await _context.Invoices.FindAsync(inv.Id);
         stored!.OutstandingAmount.Should().Be(gross - gross / 2);
