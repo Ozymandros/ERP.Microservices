@@ -47,4 +47,12 @@ dist/
 build/
 bin/
 obj/
-/.vs
+
+.vs/
+docs/_site/
+CopilotIndices/
+TestResults/
+test_results.txt
+*.user
+build_output.txt
+coverage.cobertura.xml
