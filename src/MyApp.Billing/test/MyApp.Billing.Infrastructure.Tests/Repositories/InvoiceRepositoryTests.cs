@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using MyApp.Billing.Domain.Entities;
 using MyApp.Billing.Infrastructure.Persistence;
 using MyApp.Billing.Infrastructure.Repositories;
@@ -178,6 +179,11 @@ public class InvoiceRepositoryTests
         // Paid invoice
         var paid = CreateIssuedInvoice(invoiceNumber: "INV-PAID");
         paid.RecordPayment(paid.TotalGross, "Card", DateTime.UtcNow);
+        // EF InMemory can treat newly created dependents as Modified when only
+        // the aggregate navigation is mutated; force the new payment to be Added
+        // so the store update does not throw concurrency exceptions.
+        var newPayment = paid.Payments.Single();
+        _context.Entry(newPayment).State = EntityState.Added;
         _context.SaveChanges();
 
         // Cancelled invoice
@@ -311,6 +317,8 @@ public class InvoiceRepositoryTests
         var inv = CreateIssuedInvoice(invoiceNumber: "INV-UPD-002");
         var gross = inv.TotalGross;
         inv.RecordPayment(gross / 2, "Card", DateTime.UtcNow);
+        var newPayment = inv.Payments.Single();
+        _context.Entry(newPayment).State = EntityState.Added;
         await _context.SaveChangesAsync();
 
         var stored = await _context.Invoices.FindAsync(inv.Id);
