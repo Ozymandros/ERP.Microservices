@@ -6,12 +6,21 @@ using MyApp.Shared.Domain.Permissions;
 
 namespace MyApp.Auth.API.Permissions;
 
+/// <summary>
+/// Provides Permission Checker functionality. Checks if a user has permission to perform an action based on their roles and permissions.
+/// </summary>
 public class PermissionChecker : IPermissionChecker
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IPermissionRepository _permissionRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    /// <summary>
+    /// Permission Checker constructor
+    /// </summary>
+    /// <param name="userManager"></param>
+    /// <param name="permissionRepository"></param>
+    /// <param name="httpContextAccessor"></param> 
     public PermissionChecker(
         UserManager<ApplicationUser> userManager,
         IPermissionRepository permissionRepository,
@@ -22,6 +31,13 @@ public class PermissionChecker : IPermissionChecker
         _httpContextAccessor = httpContextAccessor;
     }
 
+    /// <summary>
+    /// Check if user has permission to perform action
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="module"></param>
+    /// <param name="action"></param>
+    /// <returns></returns>
     public async Task<bool> HasPermissionAsync(Guid userId, string module, string action)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -46,6 +62,7 @@ public class PermissionChecker : IPermissionChecker
         return false;
     }
 
+    /// <summary>Has Permission Async.</summary>
     public async Task<bool> HasPermissionAsync(string module, string action)
     {
         if (string.IsNullOrEmpty(module))

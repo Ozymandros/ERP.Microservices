@@ -1,5 +1,8 @@
 namespace MyApp.Crm.Application.Contracts.DTOs;
 
+/// <summary>
+/// Represents the Forecast By Stage Dto data record.
+/// </summary>
 public sealed record ForecastByStageDto(
     string Stage,
     int Count,
@@ -7,6 +10,9 @@ public sealed record ForecastByStageDto(
     decimal WeightedAmount
 );
 
+/// <summary>
+/// Represents the Forecast Summary Dto data record.
+/// </summary>
 public sealed record ForecastSummaryDto(
     string OwnerUsername,
     DateOnly? FromExpectedCloseDate,

@@ -11,6 +11,9 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Crm.Application.Services;
 
+/// <summary>
+/// Provides Activity Service functionality.
+/// </summary>
 public class ActivityService : IActivityService
 {
     private readonly IActivityRepository _repository;
@@ -30,18 +33,21 @@ public class ActivityService : IActivityService
         _eventPublisher = eventPublisher;
     }
 
+    /// <summary>Get By Id Async.</summary>
     public async Task<ActivityDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
         return entity is null ? null : _mapper.Map<ActivityDto>(entity);
     }
 
+    /// <summary>List Async.</summary>
     public async Task<IEnumerable<ActivityDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         var list = await _repository.ListAsync();
         return _mapper.Map<IEnumerable<ActivityDto>>(list);
     }
 
+    /// <summary>Query Async.</summary>
     public async Task<PaginatedResult<ActivityDto>> QueryAsync(ISpecification<Activity> spec, CancellationToken cancellationToken = default)
     {
         var result = await _repository.QueryAsync(spec);
@@ -49,6 +55,7 @@ public class ActivityService : IActivityService
         return new PaginatedResult<ActivityDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }
 
+    /// <summary>Create Async.</summary>
     public async Task<ActivityDto> CreateAsync(CreateActivityDto dto, CancellationToken cancellationToken = default)
     {
         if (!Enum.TryParse<ActivityType>(dto.Type, ignoreCase: true, out var type))
@@ -84,6 +91,7 @@ public class ActivityService : IActivityService
         return _mapper.Map<ActivityDto>(entity);
     }
 
+    /// <summary>Complete Async.</summary>
     public async Task<ActivityDto> CompleteAsync(Guid id, CompleteActivityDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);

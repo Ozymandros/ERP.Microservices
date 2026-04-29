@@ -11,6 +11,9 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Crm.Application.Services;
 
+/// <summary>
+/// Provides Lead Service functionality.
+/// </summary>
 public class LeadService : ILeadService
 {
     private readonly ILeadRepository _leadRepository;
@@ -30,18 +33,21 @@ public class LeadService : ILeadService
         _eventPublisher = eventPublisher;
     }
 
+    /// <summary>Get By Id Async.</summary>
     public async Task<LeadDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var lead = await _leadRepository.GetByIdAsync(id);
         return lead is null ? null : _mapper.Map<LeadDto>(lead);
     }
 
+    /// <summary>List Async.</summary>
     public async Task<IEnumerable<LeadDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         var leads = await _leadRepository.ListAsync();
         return _mapper.Map<IEnumerable<LeadDto>>(leads);
     }
 
+    /// <summary>List Paginated Async.</summary>
     public async Task<PaginatedResult<LeadDto>> ListPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
         var result = await _leadRepository.GetAllPaginatedAsync(pageNumber, pageSize);
@@ -49,6 +55,7 @@ public class LeadService : ILeadService
         return new PaginatedResult<LeadDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }
 
+    /// <summary>Query Async.</summary>
     public async Task<PaginatedResult<LeadDto>> QueryAsync(ISpecification<Lead> spec, CancellationToken cancellationToken = default)
     {
         var result = await _leadRepository.QueryAsync(spec);
@@ -56,6 +63,7 @@ public class LeadService : ILeadService
         return new PaginatedResult<LeadDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }
 
+    /// <summary>Create Async.</summary>
     public async Task<LeadDto> CreateAsync(CreateLeadDto dto, CancellationToken cancellationToken = default)
     {
         var lead = new Lead(
@@ -81,6 +89,7 @@ public class LeadService : ILeadService
         return _mapper.Map<LeadDto>(lead);
     }
 
+    /// <summary>Update Async.</summary>
     public async Task<LeadDto> UpdateAsync(Guid id, UpdateLeadDto dto, CancellationToken cancellationToken = default)
     {
         var lead = await _leadRepository.GetByIdForUpdateAsync(id, cancellationToken);
@@ -102,6 +111,7 @@ public class LeadService : ILeadService
         return _mapper.Map<LeadDto>(lead);
     }
 
+    /// <summary>Qualify Async.</summary>
     public async Task QualifyAsync(Guid id, QualifyLeadDto dto, CancellationToken cancellationToken = default)
     {
         var lead = await _leadRepository.GetByIdForUpdateAsync(id, cancellationToken);
@@ -123,6 +133,7 @@ public class LeadService : ILeadService
         // Opportunity creation happens in a dedicated endpoint/service in later increments.
     }
 
+    /// <summary>Delete Async.</summary>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var lead = await _leadRepository.GetByIdForUpdateAsync(id, cancellationToken);

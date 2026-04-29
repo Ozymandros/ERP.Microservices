@@ -8,6 +8,9 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Purchasing.Application.Contracts.Services;
 
+/// <summary>
+/// Defines the contract for I Supplier Service.
+/// </summary>
 public interface ISupplierService
 {
     Task<SupplierDto?> GetSupplierByIdAsync(Guid id);

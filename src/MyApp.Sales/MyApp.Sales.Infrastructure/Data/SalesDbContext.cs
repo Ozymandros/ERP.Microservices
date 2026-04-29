@@ -5,12 +5,17 @@ using MyApp.Shared.Infrastructure.Data;
 
 namespace MyApp.Sales.Infrastructure.Data;
 
+/// <summary>
+/// Provides Sales Db Context functionality.
+/// </summary>
 public class SalesDbContext : AuditableDbContext
 {
+    /// <summary>base.</summary>
     public SalesDbContext(DbContextOptions<SalesDbContext> options) : base(options)
     {
     }
 
+    /// <summary>Set.</summary>
     public DbSet<SalesOrder> SalesOrders => Set<SalesOrder>();
     public DbSet<SalesOrderLine> SalesOrderLines => Set<SalesOrderLine>();
     public DbSet<Customer> Customers => Set<Customer>();
@@ -24,8 +29,12 @@ public class SalesDbContext : AuditableDbContext
     }
 }
 
+/// <summary>
+/// Provides Sales Db Context Factory functionality.
+/// </summary>
 public class SalesDbContextFactory : IDesignTimeDbContextFactory<SalesDbContext>
 {
+    /// <summary>Create Db Context.</summary>
     public SalesDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<SalesDbContext>();

@@ -8,6 +8,9 @@ using MyApp.Shared.Infrastructure.Extensions;
 
 namespace MyApp.Crm.API.Controllers;
 
+/// <summary>
+/// Provides Contacts Controller functionality.
+/// </summary>
 [ApiController]
 [Authorize]
 [Route("api/crm/contacts")]
@@ -16,12 +19,14 @@ public sealed class ContactsController : ControllerBase
     private readonly IContactService _service;
     private readonly ILogger<ContactsController> _logger;
 
+    /// <summary>I Logger.</summary>
     public ContactsController(IContactService service, ILogger<ContactsController> logger)
     {
         _service = service;
         _logger = logger;
     }
 
+    /// <summary>Get All.</summary>
     [HttpGet]
     [HasPermission("CRM", "Read")]
     [ProducesResponseType(typeof(IEnumerable<ContactDto>), StatusCodes.Status200OK)]
@@ -47,6 +52,7 @@ public sealed class ContactsController : ControllerBase
         }
     }
 
+    /// <summary>Get By Id.</summary>
     [HttpGet("{id:guid}")]
     [HasPermission("CRM", "Read")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
@@ -55,6 +61,7 @@ public sealed class ContactsController : ControllerBase
         return item is null ? NotFound(new { message = $"Contact with ID {id} not found." }) : Ok(item);
     }
 
+    /// <summary>Get By Account.</summary>
     [HttpGet("/api/crm/accounts/{accountId:guid}/contacts")]
     [HasPermission("CRM", "Read")]
     public async Task<IActionResult> GetByAccount(Guid accountId, CancellationToken cancellationToken)
@@ -63,6 +70,7 @@ public sealed class ContactsController : ControllerBase
         return Ok(list);
     }
 
+    /// <summary>Create.</summary>
     [HttpPost]
     [HasPermission("CRM", "Create")]
     public async Task<IActionResult> Create([FromBody] CreateContactDto dto, CancellationToken cancellationToken)
@@ -83,6 +91,7 @@ public sealed class ContactsController : ControllerBase
         }
     }
 
+    /// <summary>Update.</summary>
     [HttpPut("{id:guid}")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateContactDto dto, CancellationToken cancellationToken)
@@ -99,6 +108,7 @@ public sealed class ContactsController : ControllerBase
         }
     }
 
+    /// <summary>Set Primary.</summary>
     [HttpPost("/api/crm/accounts/{accountId:guid}/contacts/{contactId:guid}/set-primary")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> SetPrimary(Guid accountId, Guid contactId, CancellationToken cancellationToken)
@@ -118,6 +128,7 @@ public sealed class ContactsController : ControllerBase
         }
     }
 
+    /// <summary>Deactivate.</summary>
     [HttpDelete("{id:guid}")]
     [HasPermission("CRM", "Delete")]
     public async Task<IActionResult> Deactivate(Guid id, CancellationToken cancellationToken)

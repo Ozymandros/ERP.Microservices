@@ -8,6 +8,9 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Inventory.Application.Contracts.Services;
 
+/// <summary>
+/// Defines the contract for I Product Service.
+/// </summary>
 public interface IProductService
 {
     Task<ProductDto?> GetProductByIdAsync(Guid id);

@@ -3,6 +3,9 @@ using MyApp.Shared.Domain.Repositories;
 
 namespace MyApp.Inventory.Domain.Repositories;
 
+/// <summary>
+/// Defines the contract for I Warehouse Stock Repository.
+/// </summary>
 public interface IWarehouseStockRepository : IRepository<WarehouseStock, Guid>
 {
     Task<WarehouseStock?> GetByProductAndWarehouseAsync(Guid productId, Guid warehouseId);

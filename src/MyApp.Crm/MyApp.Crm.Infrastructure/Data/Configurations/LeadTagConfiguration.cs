@@ -5,8 +5,12 @@ using MyApp.Crm.Domain.Tags;
 
 namespace MyApp.Crm.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Lead Tag Configuration functionality.
+/// </summary>
 public class LeadTagConfiguration : IEntityTypeConfiguration<LeadTag>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<LeadTag> builder)
     {
         builder.ToTable("LeadTags");

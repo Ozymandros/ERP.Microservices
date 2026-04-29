@@ -12,6 +12,9 @@ using MyApp.Sales.Application.Contracts.DTOs;
 
 namespace MyApp.Crm.Application.Services;
 
+/// <summary>
+/// Provides Opportunity Service functionality.
+/// </summary>
 public class OpportunityService : IOpportunityService
 {
     private const string QuoteNumberPrefix = "Q-CRM";
@@ -37,18 +40,21 @@ public class OpportunityService : IOpportunityService
         _serviceInvoker = serviceInvoker;
     }
 
+    /// <summary>Get By Id Async.</summary>
     public async Task<OpportunityDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
         return entity is null ? null : _mapper.Map<OpportunityDto>(entity);
     }
 
+    /// <summary>List Async.</summary>
     public async Task<IEnumerable<OpportunityDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         var list = await _repository.ListAsync();
         return _mapper.Map<IEnumerable<OpportunityDto>>(list);
     }
 
+    /// <summary>Query Async.</summary>
     public async Task<PaginatedResult<OpportunityDto>> QueryAsync(ISpecification<Opportunity> spec, CancellationToken cancellationToken = default)
     {
         var result = await _repository.QueryAsync(spec);
@@ -56,6 +62,7 @@ public class OpportunityService : IOpportunityService
         return new PaginatedResult<OpportunityDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }
 
+    /// <summary>Create Async.</summary>
     public async Task<OpportunityDto> CreateAsync(CreateOpportunityDto dto, CancellationToken cancellationToken = default)
     {
         var entity = new Opportunity(Guid.NewGuid(), dto.CustomerId, dto.Name, dto.OwnerUsername, dto.LeadId);
@@ -74,6 +81,7 @@ public class OpportunityService : IOpportunityService
         return _mapper.Map<OpportunityDto>(entity);
     }
 
+    /// <summary>Update Forecast Async.</summary>
     public async Task<OpportunityDto> UpdateForecastAsync(Guid id, UpdateOpportunityForecastDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -85,6 +93,7 @@ public class OpportunityService : IOpportunityService
         return _mapper.Map<OpportunityDto>(entity);
     }
 
+    /// <summary>Move Stage Async.</summary>
     public async Task<OpportunityDto> MoveStageAsync(Guid id, MoveOpportunityStageDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -110,6 +119,7 @@ public class OpportunityService : IOpportunityService
         return _mapper.Map<OpportunityDto>(entity);
     }
 
+    /// <summary>Mark Won Async.</summary>
     public async Task<OpportunityDto> MarkWonAsync(Guid id, MarkOpportunityWonRequest request, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -169,6 +179,7 @@ public class OpportunityService : IOpportunityService
         return _mapper.Map<OpportunityDto>(entity);
     }
 
+    /// <summary>Add Line Async.</summary>
     public async Task<OpportunityLineDto> AddLineAsync(Guid opportunityId, CreateOpportunityLineDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(opportunityId);
@@ -187,6 +198,7 @@ public class OpportunityService : IOpportunityService
         return _mapper.Map<OpportunityLineDto>(line);
     }
 
+    /// <summary>Update Line Async.</summary>
     public async Task<OpportunityLineDto> UpdateLineAsync(Guid opportunityId, Guid lineId, UpdateOpportunityLineDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(opportunityId);
@@ -199,6 +211,7 @@ public class OpportunityService : IOpportunityService
         return _mapper.Map<OpportunityLineDto>(updated);
     }
 
+    /// <summary>Remove Line Async.</summary>
     public async Task RemoveLineAsync(Guid opportunityId, Guid lineId, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(opportunityId);
@@ -208,6 +221,7 @@ public class OpportunityService : IOpportunityService
         await _repository.UpdateAsync(entity);
     }
 
+    /// <summary>Get Forecast Summary Async.</summary>
     public async Task<ForecastSummaryDto> GetForecastSummaryAsync(
         string ownerUsername,
         DateOnly? fromExpectedCloseDate,
@@ -276,6 +290,7 @@ public class OpportunityService : IOpportunityService
         return lines;
     }
 
+    /// <summary>Mark Lost Async.</summary>
     public async Task<OpportunityDto> MarkLostAsync(Guid id, MarkOpportunityLostDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);

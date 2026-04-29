@@ -5,12 +5,17 @@ using MyApp.Inventory.Domain.Repositories;
 
 namespace MyApp.Inventory.Infrastructure.Data.Repositories;
 
+/// <summary>
+/// Provides Inventory Transaction Repository functionality.
+/// </summary>
 public class InventoryTransactionRepository : Repository<InventoryTransaction, Guid>, IInventoryTransactionRepository
 {
+    /// <summary>base.</summary>
     public InventoryTransactionRepository(InventoryDbContext dbContext) : base(dbContext)
     {
     }
 
+    /// <summary>Get By Product Id Async.</summary>
     public async Task<IEnumerable<InventoryTransaction>> GetByProductIdAsync(Guid productId)
     {
         return await _dbContext.Set<InventoryTransaction>()
@@ -20,6 +25,7 @@ public class InventoryTransactionRepository : Repository<InventoryTransaction, G
             .ToListAsync();
     }
 
+    /// <summary>Get By Warehouse Id Async.</summary>
     public async Task<IEnumerable<InventoryTransaction>> GetByWarehouseIdAsync(Guid warehouseId)
     {
         return await _dbContext.Set<InventoryTransaction>()
@@ -29,6 +35,7 @@ public class InventoryTransactionRepository : Repository<InventoryTransaction, G
             .ToListAsync();
     }
 
+    /// <summary>Get By Transaction Type Async.</summary>
     public async Task<IEnumerable<InventoryTransaction>> GetByTransactionTypeAsync(TransactionType transactionType)
     {
         return await _dbContext.Set<InventoryTransaction>()

@@ -7,6 +7,9 @@ using MyApp.Shared.Domain.Events;
 
 namespace MyApp.Crm.API.EventHandlers;
 
+/// <summary>
+/// Provides Sales Event Handlers functionality.
+/// </summary>
 [ApiController]
 [Route("api/events/sales")]
 public class SalesEventHandlers : ControllerBase
@@ -20,6 +23,7 @@ public class SalesEventHandlers : ControllerBase
         _accountService = accountService;
     }
 
+    /// <summary>On Sales Customer Created.</summary>
     [Topic(MessagingConstants.PubSubName, MessagingConstants.Topics.SalesCustomerCreated)]
     [HttpPost("customer-created")]
     public async Task<IActionResult> OnSalesCustomerCreated(SalesCustomerCreatedEvent @event, CancellationToken cancellationToken)
@@ -38,6 +42,7 @@ public class SalesEventHandlers : ControllerBase
         return Ok();
     }
 
+    /// <summary>On Sales Customer Updated.</summary>
     [Topic(MessagingConstants.PubSubName, MessagingConstants.Topics.SalesCustomerUpdated)]
     [HttpPost("customer-updated")]
     public async Task<IActionResult> OnSalesCustomerUpdated(SalesCustomerUpdatedEvent @event, CancellationToken cancellationToken)

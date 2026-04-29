@@ -18,8 +18,16 @@ public record CreditNoteLineData(
 /// </summary>
 public class CreditNote : AuditableEntity<Guid>
 {
-    public CreditNote(Guid id, Guid originalInvoiceId, List<CreditNoteLineData> lines, string reason)
-        : base(id)
+    // 1. Add this for EF Core
+    private CreditNote() : base(Guid.Empty)
+    {
+        // EF Core will use this and populate properties via reflection
+        Lines = new List<CreditNoteLine>();
+        Reason = string.Empty;
+    }
+
+    // 2. Keep your domain constructor exactly as is
+    public CreditNote(Guid id, Guid originalInvoiceId, List<CreditNoteLineData> lines, string reason) : base(id)
     {
         OriginalInvoiceId = originalInvoiceId;
         Reason = reason;

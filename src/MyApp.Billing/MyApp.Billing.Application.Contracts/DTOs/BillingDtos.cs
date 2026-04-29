@@ -124,3 +124,13 @@ public record CreditNoteDto(
     decimal TotalGross,
     DateTime CreatedAt
 );
+
+/// <summary>
+/// Request body for issuing an invoice (InvoiceId is supplied via the route).
+/// </summary>
+public record IssueInvoiceRequest(string InvoiceNumber, DateTime IssueDate);
+
+/// <summary>
+/// Request body for cancelling an invoice (InvoiceId is supplied via the route).
+/// </summary>
+public record CancelInvoiceRequest(string Reason);

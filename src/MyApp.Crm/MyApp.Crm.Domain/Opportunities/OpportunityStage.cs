@@ -1,5 +1,8 @@
 namespace MyApp.Crm.Domain.Opportunities;
 
+/// <summary>
+/// Defines the Opportunity Stage enumeration values.
+/// </summary>
 public enum OpportunityStage
 {
     Prospecting = 1,

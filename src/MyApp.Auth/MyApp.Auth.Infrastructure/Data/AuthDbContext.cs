@@ -11,20 +11,41 @@ using System.Threading;
 
 namespace MyApp.Auth.Infrastructure.Data;
 
+/// <summary>
+/// Provides Auth Db Context functionality.
+/// </summary>
 public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid, IdentityUserClaim<Guid>, ApplicationUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
 {
+    /// <summary>base.</summary>
     public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options)
     {
     }
 
+    /// <summary>Gets or sets Users.</summary>
     public override DbSet<ApplicationUser> Users { get; set; }
+
+    /// <summary>Gets or sets Roles.</summary>
     public override DbSet<ApplicationRole> Roles { get; set; }
+
+    /// <summary>Gets or sets User Roles.</summary>
     public override DbSet<ApplicationUserRole> UserRoles { get; set; }
+
+    /// <summary>Gets or sets User Permissions.</summary>
     public DbSet<UserPermission> UserPermissions { get; set; }
+
+    /// <summary>Gets or sets Role Permissions.</summary>
     public DbSet<RolePermission> RolePermissions { get; set; }
+
+    /// <summary>Gets or sets Refresh Tokens.</summary>
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+
+    /// <summary>Gets or sets Permissions.</summary>
     public DbSet<Permission> Permissions { get; set; }
 
+    /// <summary>
+    /// Auth Db Context On Model Creating. Configures the database schema for the AuthDbContext.    
+    /// </summary>
+    /// <param name="builder">The model builder used to configure the database schema.</param>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -146,6 +167,11 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
 
     }
 
+    /// <summary>
+    /// Save Changes Async. Saves the changes made to the database context to the database.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var entries = ChangeTracker.Entries()
@@ -197,8 +223,14 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
     }
 }
 
+/// <summary>
+/// Provides Auth Db Context Factory functionality.
+/// </summary>
 public class AuthDbContextFactory : IDesignTimeDbContextFactory<AuthDbContext>
 {
+    /// <summary>Create Db Context.</summary>
+    /// <param name="args">The arguments passed to the factory method.</param>
+    /// <returns>The created AuthDbContext instance.</returns>
     public AuthDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<AuthDbContext>();

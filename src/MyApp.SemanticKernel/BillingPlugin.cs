@@ -63,6 +63,11 @@ public class BillingPlugin
         return JsonSerializer.Serialize(result);
     }
 
+    /// <summary>
+    /// Permanently deletes a billing resource (invoice or payment record) by its unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the billing resource to delete.</param>
+    /// <returns>A confirmation message indicating the billing resource was deleted.</returns>
     [KernelFunction("Delete billing resource by id")]
     [Description("Deletes a billing resource by its identifier")]
     public async Task<string> DeleteAsync(string id)

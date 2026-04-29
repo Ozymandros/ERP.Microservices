@@ -4,8 +4,12 @@ using MyApp.Crm.Domain.Activities;
 
 namespace MyApp.Crm.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Activity Configuration functionality.
+/// </summary>
 public class ActivityConfiguration : IEntityTypeConfiguration<Activity>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<Activity> builder)
     {
         builder.ToTable("Activities");

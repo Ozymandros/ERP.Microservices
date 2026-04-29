@@ -7,6 +7,9 @@ using System.Text;
 
 namespace MyApp.Auth.Infrastructure.Services;
 
+/// <summary>
+/// Defines the contract for I Jwt Token Provider.
+/// </summary>
 public interface IJwtTokenProvider
 {
     Task<string> GenerateAccessTokenAsync(ApplicationUser user, IList<string>? roles = null, IList<Claim>? claims = null);
@@ -14,6 +17,9 @@ public interface IJwtTokenProvider
     ClaimsPrincipal? GetPrincipalFromExpiredToken(string token);
 }
 
+/// <summary>
+/// Provides Jwt Token Provider functionality.
+/// </summary>
 public class JwtTokenProvider : IJwtTokenProvider
 {
     private readonly string _secretKey;
@@ -21,6 +27,11 @@ public class JwtTokenProvider : IJwtTokenProvider
     private readonly string _audience;
     private readonly int _accessTokenExpirationMinutes;
 
+    /// <summary>
+    /// Jwt Token Provider constructor. Initializes the JwtTokenProvider with the specified configuration.
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public JwtTokenProvider(IConfiguration configuration)
     {
         ArgumentNullException.ThrowIfNull(configuration);
@@ -31,6 +42,13 @@ public class JwtTokenProvider : IJwtTokenProvider
         _accessTokenExpirationMinutes = int.Parse(configuration["Jwt:AccessTokenExpirationMinutes"] ?? "15");
     }
 
+    /// <summary>
+    /// Generate Access Token Async. Generates an access token for the specified user, roles, and claims.
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="roles"></param>
+    /// <param name="claims"></param>
+    /// <returns></returns>
     public Task<string> GenerateAccessTokenAsync(ApplicationUser user, IList<string>? roles = null, IList<Claim>? claims = null)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
@@ -86,6 +104,10 @@ public class JwtTokenProvider : IJwtTokenProvider
         return Task.FromResult(result);
     }
 
+    /// <summary>
+    /// Generate Refresh Token. Generates a refresh token.
+    /// </summary>
+    /// <returns>The generated refresh token.</returns>
     public string GenerateRefreshToken()
     {
         var randomNumber = new byte[32];
@@ -96,6 +118,7 @@ public class JwtTokenProvider : IJwtTokenProvider
         }
     }
 
+    /// <summary>Get Principal From Expired Token.</summary>
     public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
     {
         try

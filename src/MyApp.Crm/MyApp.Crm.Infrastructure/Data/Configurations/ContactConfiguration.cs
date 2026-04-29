@@ -4,8 +4,12 @@ using MyApp.Crm.Domain.Accounts;
 
 namespace MyApp.Crm.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Contact Configuration functionality.
+/// </summary>
 public sealed class ContactConfiguration : IEntityTypeConfiguration<Contact>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<Contact> builder)
     {
         builder.ToTable("Contacts");

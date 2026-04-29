@@ -3,8 +3,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyApp.Crm.Domain.Leads;
 namespace MyApp.Crm.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Lead Configuration functionality.
+/// </summary>
 public class LeadConfiguration : IEntityTypeConfiguration<Lead>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<Lead> builder)
     {
         builder.ToTable("Leads");

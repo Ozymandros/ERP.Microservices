@@ -2,8 +2,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Shared.Domain.Validators;
 
+/// <summary>
+/// Provides Stock Validators functionality.
+/// </summary>
 public static class StockValidators
 {
+    /// <summary>Validate Reservation.</summary>
     public static ValidationResult? ValidateReservation(int quantity, int availableQuantity)
     {
         if (quantity <= 0)
@@ -15,6 +19,7 @@ public static class StockValidators
         return ValidationResult.Success;
     }
 
+    /// <summary>Validate Transfer.</summary>
     public static ValidationResult? ValidateTransfer(int quantity, int availableQuantity)
     {
         if (quantity <= 0)
@@ -26,6 +31,7 @@ public static class StockValidators
         return ValidationResult.Success;
     }
 
+    /// <summary>Validate Adjustment.</summary>
     public static ValidationResult? ValidateAdjustment(int quantityChange, string reason)
     {
         if (string.IsNullOrWhiteSpace(reason))
@@ -34,6 +40,7 @@ public static class StockValidators
         return ValidationResult.Success;
     }
 
+    /// <summary>Validate Warehouse Stock.</summary>
     public static ValidationResult? ValidateWarehouseStock(int availableQuantity, int reservedQuantity, int onOrderQuantity)
     {
         if (availableQuantity < 0)

@@ -5,12 +5,17 @@ using MyApp.Purchasing.Domain.Repositories;
 
 namespace MyApp.Purchasing.Infrastructure.Data.Repositories;
 
+/// <summary>
+/// Provides Purchase Order Repository functionality.
+/// </summary>
 public class PurchaseOrderRepository : Repository<PurchaseOrder, Guid>, IPurchaseOrderRepository
 {
+    /// <summary>base.</summary>
     public PurchaseOrderRepository(PurchasingDbContext dbContext) : base(dbContext)
     {
     }
 
+    /// <summary>Get By Suppliers Id Async.</summary>
     public async Task<IEnumerable<PurchaseOrder>> GetBySuppliersIdAsync(Guid supplierId)
     {
         return await _dbContext.Set<PurchaseOrder>()
@@ -19,6 +24,7 @@ public class PurchaseOrderRepository : Repository<PurchaseOrder, Guid>, IPurchas
             .ToListAsync();
     }
 
+    /// <summary>Get By Status Async.</summary>
     public async Task<IEnumerable<PurchaseOrder>> GetByStatusAsync(PurchaseOrderStatus status)
     {
         return await _dbContext.Set<PurchaseOrder>()
@@ -27,6 +33,7 @@ public class PurchaseOrderRepository : Repository<PurchaseOrder, Guid>, IPurchas
             .ToListAsync();
     }
 
+    /// <summary>Get With Lines Async.</summary>
     public async Task<PurchaseOrder?> GetWithLinesAsync(Guid id)
     {
         return await _dbContext.Set<PurchaseOrder>()

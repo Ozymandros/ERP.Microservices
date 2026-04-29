@@ -5,6 +5,9 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Crm.Application.Contracts.Services;
 
+/// <summary>
+/// Defines the contract for I Activity Service.
+/// </summary>
 public interface IActivityService
 {
     Task<ActivityDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);

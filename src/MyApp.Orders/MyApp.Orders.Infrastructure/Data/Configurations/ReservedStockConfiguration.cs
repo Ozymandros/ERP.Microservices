@@ -4,8 +4,12 @@ using MyApp.Orders.Domain.Entities;
 
 namespace MyApp.Orders.Infrastructure.Data.Configurations
 {
+    /// <summary>
+    /// Provides Reserved Stock Configuration functionality.
+    /// </summary>
     public class ReservedStockConfiguration : IEntityTypeConfiguration<ReservedStock>
     {
+        /// <summary>Configure.</summary>
         public void Configure(EntityTypeBuilder<ReservedStock> builder)
         {
             builder.ToTable("ReservedStocks");

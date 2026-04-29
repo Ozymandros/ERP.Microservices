@@ -8,6 +8,9 @@ using MyApp.Shared.Infrastructure.Extensions;
 
 namespace MyApp.Crm.API.Controllers;
 
+/// <summary>
+/// Provides Accounts Controller functionality.
+/// </summary>
 [ApiController]
 [Authorize]
 [Route("api/crm/accounts")]
@@ -16,12 +19,14 @@ public sealed class AccountsController : ControllerBase
     private readonly IAccountService _service;
     private readonly ILogger<AccountsController> _logger;
 
+    /// <summary>I Logger.</summary>
     public AccountsController(IAccountService service, ILogger<AccountsController> logger)
     {
         _service = service;
         _logger = logger;
     }
 
+    /// <summary>Get All.</summary>
     [HttpGet]
     [HasPermission("CRM", "Read")]
     [ProducesResponseType(typeof(IEnumerable<AccountDto>), StatusCodes.Status200OK)]
@@ -48,6 +53,7 @@ public sealed class AccountsController : ControllerBase
         }
     }
 
+    /// <summary>Get By Id.</summary>
     [HttpGet("{id:guid}")]
     [HasPermission("CRM", "Read")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
@@ -56,6 +62,7 @@ public sealed class AccountsController : ControllerBase
         return item is null ? NotFound(new { message = $"Account with ID {id} not found." }) : Ok(item);
     }
 
+    /// <summary>Update Owner.</summary>
     [HttpPut("{id:guid}/owner")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> UpdateOwner(Guid id, [FromBody] UpdateAccountOwnerDto dto, CancellationToken cancellationToken)

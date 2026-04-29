@@ -11,6 +11,9 @@ using MyApp.Shared.Domain.Messaging;
 
 namespace MyApp.Inventory.Application.Services;
 
+/// <summary>
+/// Provides Warehouse Stock Service functionality.
+/// </summary>
 public class WarehouseStockService : IWarehouseStockService
 {
     private readonly IWarehouseStockRepository _warehouseStockRepository;
@@ -39,24 +42,28 @@ public class WarehouseStockService : IWarehouseStockService
         _eventPublisher = eventPublisher;
     }
 
+    /// <summary>Get By Product And Warehouse Async.</summary>
     public async Task<WarehouseStockDto?> GetByProductAndWarehouseAsync(Guid productId, Guid warehouseId)
     {
         var stock = await _warehouseStockRepository.GetByProductAndWarehouseAsync(productId, warehouseId);
         return stock == null ? null : _mapper.Map<WarehouseStockDto>(stock);
     }
 
+    /// <summary>Get By Product Id Async.</summary>
     public async Task<List<WarehouseStockDto>> GetByProductIdAsync(Guid productId)
     {
         var stocks = await _warehouseStockRepository.GetByProductIdAsync(productId);
         return _mapper.Map<List<WarehouseStockDto>>(stocks);
     }
 
+    /// <summary>Get By Warehouse Id Async.</summary>
     public async Task<List<WarehouseStockDto>> GetByWarehouseIdAsync(Guid warehouseId)
     {
         var stocks = await _warehouseStockRepository.GetByWarehouseIdAsync(warehouseId);
         return _mapper.Map<List<WarehouseStockDto>>(stocks);
     }
 
+    /// <summary>Get Product Availability Async.</summary>
     public async Task<StockAvailabilityDto?> GetProductAvailabilityAsync(Guid productId)
     {
         var product = await _productRepository.GetByIdAsync(productId);
@@ -79,6 +86,7 @@ public class WarehouseStockService : IWarehouseStockService
         };
     }
 
+    /// <summary>Reserve Stock Async.</summary>
     public async Task<ReservationDto> ReserveStockAsync(ReserveStockDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
@@ -157,6 +165,7 @@ public class WarehouseStockService : IWarehouseStockService
         };
     }
 
+    /// <summary>Release Reservation Async.</summary>
     public async Task ReleaseReservationAsync(Guid reservationId)
     {
         _logger.LogInformation("Releasing reservation: ReservationId={ReservationId}", reservationId);
@@ -222,6 +231,7 @@ public class WarehouseStockService : IWarehouseStockService
         }
     }
 
+    /// <summary>Transfer Stock Async.</summary>
     public async Task TransferStockAsync(StockTransferDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
@@ -311,6 +321,7 @@ public class WarehouseStockService : IWarehouseStockService
         }
     }
 
+    /// <summary>Adjust Stock Async.</summary>
     public async Task AdjustStockAsync(StockAdjustmentDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
@@ -374,12 +385,14 @@ public class WarehouseStockService : IWarehouseStockService
         }
     }
 
+    /// <summary>Get Low Stock Async.</summary>
     public async Task<List<WarehouseStockDto>> GetLowStockAsync()
     {
         var lowStocks = await _warehouseStockRepository.GetLowStockAsync();
         return _mapper.Map<List<WarehouseStockDto>>(lowStocks);
     }
 
+    /// <summary>Get All Warehouse Stocks Async.</summary>
     public async Task<List<WarehouseStockDto>> GetAllWarehouseStocksAsync()
     {
         var stocks = await _warehouseStockRepository.GetAllAsync();

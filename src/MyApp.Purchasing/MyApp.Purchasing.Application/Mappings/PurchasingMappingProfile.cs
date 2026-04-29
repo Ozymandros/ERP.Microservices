@@ -4,6 +4,9 @@ using MyApp.Purchasing.Domain.Entities;
 
 namespace MyApp.Purchasing.Application.Mappings;
 
+/// <summary>
+/// Provides Purchasing Mapping Profile functionality.
+/// </summary>
 public class PurchasingMappingProfile : Profile
 {
     public PurchasingMappingProfile()

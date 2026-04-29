@@ -1,12 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using MyApp.Billing.Domain.Entities;
+using MyApp.Shared.Infrastructure.Data;
 
 namespace MyApp.Billing.Infrastructure.Persistence;
 
 /// <summary>
 /// Entity Framework Core DbContext for the Billing service
 /// </summary>
-public class BillingDbContext : DbContext
+public class BillingDbContext : AuditableDbContext
 {
     public BillingDbContext(DbContextOptions<BillingDbContext> options) : base(options)
     {
@@ -141,5 +143,20 @@ public class BillingDbContext : DbContext
 
             entity.HasIndex(e => e.CreditNoteId);
         });
+    }
+}
+
+/// <summary>
+/// Provides BillingDbContext creation for design-time EF Core tooling (migrations).
+/// </summary>
+public class BillingDbContextFactory : IDesignTimeDbContextFactory<BillingDbContext>
+{
+    /// <summary>Creates a BillingDbContext instance for design-time operations.</summary>
+    public BillingDbContext CreateDbContext(string[] args)
+    {
+        var optionsBuilder = new DbContextOptionsBuilder<BillingDbContext>();
+        optionsBuilder.UseSqlServer("Server=localhost;Database=BillingDb;Trusted_Connection=True;");
+
+        return new BillingDbContext(optionsBuilder.Options);
     }
 }

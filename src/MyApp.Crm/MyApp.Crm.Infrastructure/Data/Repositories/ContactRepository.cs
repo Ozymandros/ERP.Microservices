@@ -4,15 +4,20 @@ using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Crm.Infrastructure.Data.Repositories;
 
+/// <summary>
+/// Provides Contact Repository functionality.
+/// </summary>
 public sealed class ContactRepository : Repository<Contact, Guid>, IContactRepository
 {
     private readonly CrmDbContext _context;
 
+    /// <summary>base.</summary>
     public ContactRepository(CrmDbContext context) : base(context)
     {
         _context = context;
     }
 
+    /// <summary>List By Account Async.</summary>
     public async Task<IEnumerable<Contact>> ListByAccountAsync(Guid accountId, CancellationToken cancellationToken = default)
     {
         return await _context.Contacts

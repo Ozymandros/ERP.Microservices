@@ -6,12 +6,17 @@ using MyApp.Shared.Domain.Entities;
 
 namespace MyApp.Shared.Infrastructure.Data;
 
+/// <summary>
+/// Provides Auditable Db Context functionality.
+/// </summary>
 public class AuditableDbContext : DbContext
 {
+    /// <summary>base.</summary>
     public AuditableDbContext(DbContextOptions options) : base(options)
     {
     }
 
+    /// <summary>Save Changes Async.</summary>
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var entries = ChangeTracker.Entries()

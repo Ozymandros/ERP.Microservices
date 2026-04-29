@@ -2,6 +2,9 @@ using MyApp.Inventory.Application.Contracts.DTOs;
 
 namespace MyApp.Inventory.Application.Contracts.Services;
 
+/// <summary>
+/// Defines the contract for I Warehouse Stock Service.
+/// </summary>
 public interface IWarehouseStockService
 {
     Task<WarehouseStockDto?> GetByProductAndWarehouseAsync(Guid productId, Guid warehouseId);

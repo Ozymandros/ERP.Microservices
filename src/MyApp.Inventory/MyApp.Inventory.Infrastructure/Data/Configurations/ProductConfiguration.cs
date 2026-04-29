@@ -4,8 +4,12 @@ using MyApp.Inventory.Domain.Entities;
 
 namespace MyApp.Inventory.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Product Configuration functionality.
+/// </summary>
 public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<Product> builder)
     {
         builder.HasKey(x => x.Id);

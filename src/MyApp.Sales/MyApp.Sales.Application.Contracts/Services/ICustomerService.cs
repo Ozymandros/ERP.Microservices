@@ -8,6 +8,9 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Sales.Application.Contracts.Services
 {
+    /// <summary>
+    /// Defines the contract for I Customer Service.
+    /// </summary>
     public interface ICustomerService
     {
         Task<CustomerDto?> GetCustomerByIdAsync(Guid id);

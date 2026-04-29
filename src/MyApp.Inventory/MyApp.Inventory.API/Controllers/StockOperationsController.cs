@@ -8,6 +8,9 @@ using MyApp.Shared.Infrastructure.Export;
 
 namespace MyApp.Inventory.API.Controllers
 {
+    /// <summary>
+    /// Provides Stock Operations Controller functionality.
+    /// </summary>
     [ApiController]
     [Authorize]
     [Route("api/inventory/stock-operations")]
@@ -16,12 +19,14 @@ namespace MyApp.Inventory.API.Controllers
         private readonly IWarehouseStockService _warehouseStockService;
         private readonly ILogger<StockOperationsController> _logger;
 
+        /// <summary>I Logger.</summary>
         public StockOperationsController(IWarehouseStockService warehouseStockService, ILogger<StockOperationsController> logger)
         {
             _warehouseStockService = warehouseStockService;
             _logger = logger;
         }
 
+        /// <summary>Reserve Stock.</summary>
         [HttpPost("reserve")]
         [HasPermission("Inventory", "Update")]
         [ProducesResponseType(typeof(ReservationDto), StatusCodes.Status201Created)]
@@ -54,6 +59,7 @@ namespace MyApp.Inventory.API.Controllers
             }
         }
 
+        /// <summary>Release Reservation.</summary>
         [HttpDelete("reservations/{reservationId}")]
         [HasPermission("Inventory", "Update")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -71,6 +77,7 @@ namespace MyApp.Inventory.API.Controllers
                 return NotFound(new { message = ex.Message });
             }
         }
+        /// <summary>Adjust Stock.</summary>
         [HttpPost("adjust")]
         [HasPermission("Inventory", "Update")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

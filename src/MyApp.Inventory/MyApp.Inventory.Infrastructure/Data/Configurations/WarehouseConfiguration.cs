@@ -4,8 +4,12 @@ using MyApp.Inventory.Domain.Entities;
 
 namespace MyApp.Inventory.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Warehouse Configuration functionality.
+/// </summary>
 public class WarehouseConfiguration : IEntityTypeConfiguration<Warehouse>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<Warehouse> builder)
     {
         builder.HasKey(x => x.Id);

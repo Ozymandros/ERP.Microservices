@@ -6,12 +6,17 @@ using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Inventory.Infrastructure.Repositories;
 
+/// <summary>
+/// Provides Inventory Reservation Repository functionality.
+/// </summary>
 public class InventoryReservationRepository : Repository<InventoryReservation, Guid>, IInventoryReservationRepository
 {
+    /// <summary>base.</summary>
     public InventoryReservationRepository(InventoryDbContext context) : base(context)
     {
     }
 
+    /// <summary>Get Active By Order Id Async.</summary>
     public async Task<List<InventoryReservation>> GetActiveByOrderIdAsync(Guid orderId)
     {
         return await _dbContext.Set<InventoryReservation>()
@@ -19,6 +24,7 @@ public class InventoryReservationRepository : Repository<InventoryReservation, G
             .ToListAsync();
     }
 
+    /// <summary>Get Expired Async.</summary>
     public async Task<List<InventoryReservation>> GetExpiredAsync()
     {
         return await _dbContext.Set<InventoryReservation>()
