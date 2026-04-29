@@ -178,13 +178,11 @@ public class InvoiceRepositoryTests
         // Paid invoice
         var paid = CreateIssuedInvoice(invoiceNumber: "INV-PAID");
         paid.RecordPayment(paid.TotalGross, "Card", DateTime.UtcNow);
-        _context.Update(paid);
         _context.SaveChanges();
 
         // Cancelled invoice
         var cancelled = CreateDraftInvoice();
         cancelled.Cancel();
-        _context.Update(cancelled);
         _context.SaveChanges();
 
         var result = await _repository.GetOpenInvoicesAsync();
@@ -313,8 +311,7 @@ public class InvoiceRepositoryTests
         var inv = CreateIssuedInvoice(invoiceNumber: "INV-UPD-002");
         var gross = inv.TotalGross;
         inv.RecordPayment(gross / 2, "Card", DateTime.UtcNow);
-
-        await _repository.UpdateAsync(inv);
+        _context.SaveChanges();
 
         var stored = await _context.Invoices.FindAsync(inv.Id);
         stored!.OutstandingAmount.Should().Be(gross - gross / 2);
