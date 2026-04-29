@@ -22,7 +22,7 @@
 //    protected virtual async Task InitializeAsync()
 //    {
 //        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
-        
+
 //        // Configure resilience and logging
 //        appHost.Services.ConfigureHttpClientDefaults(builder =>
 //        {
@@ -44,9 +44,9 @@
 //        App = await appHost.BuildAsync();
 //        ResourceNotification = App.Services.GetRequiredService<ResourceNotificationService>();
 //        Logger = App.Services.GetRequiredService<ILogger<BaseIntegrationTest>>();
-        
+
 //        await App.StartAsync();
-        
+
 //        // Initialize gateway client
 //        GatewayClient = App.CreateHttpClient("gateway");
 //        await ResourceNotification.WaitForResourceAsync("gateway", KnownResourceStates.Running)
@@ -71,7 +71,7 @@
 
 //        var response = await GatewayClient.PostAsJsonAsync("/auth/api/auth/login", credentials);
 //        var content = await response.Content.ReadFromJsonAsync<TokenResponse>();
-        
+
 //        return content?.AccessToken;
 //    }
 

@@ -230,10 +230,10 @@ docker compose config --quiet
 curl http://localhost:5000/health
 
 # Auth service
-curl http://localhost:5007/health
+curl http://localhost:6007/health
 
 # Inventory service
-curl http://localhost:5001/health
+curl http://localhost:6001/health
 </code></pre>
 <hr>
 <h2 id="-service-architecture">📊 Service Architecture</h2>
@@ -255,7 +255,7 @@ curl http://localhost:5001/health
          ▼                 ▼                 ▼
     ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
     │ Auth Service │  │Inventory Svc │  │ Orders Svc   │
-    │ Port: 5007   │  │ Port: 5001   │  │ Port: 5002   │
+    │ Port: 6007   │  │ Port: 6001   │  │ Port: 6002   │
     │ + DAPR       │  │ + DAPR       │  │ + DAPR       │
     │ Health: /✓   │  │ Health: /✓   │  │ Health: /✓   │
     └──────────────┘  └──────────────┘  └──────────────┘
@@ -265,7 +265,7 @@ curl http://localhost:5001/health
     ▼                      ▼                        ▼
 ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
 │ Sales Svc    │  │ Billing Svc  │  │Purchasing Svc│
-│ Port: 5003   │  │ Port: 5004   │  │ Port: 5006   │
+│ Port: 6003   │  │ Port: 6004   │  │ Port: 6006   │
 │ + DAPR       │  │ + DAPR       │  │ + DAPR       │
 │ Health: /✓   │  │ Health: /✓   │  │ Health: /✓   │
 └──────────────┘  └──────────────┘  └──────────────┘
@@ -318,42 +318,42 @@ curl http://localhost:5001/health
 <tbody>
 <tr>
 <td>Auth</td>
-<td>5007</td>
+<td>6007</td>
 <td>auth-service</td>
 <td>3500</td>
 <td>/health</td>
 </tr>
 <tr>
 <td>Billing</td>
-<td>5004</td>
+<td>6004</td>
 <td>billing-service</td>
 <td>3502</td>
 <td>/health</td>
 </tr>
 <tr>
 <td>Inventory</td>
-<td>5001</td>
+<td>6001</td>
 <td>inventory-service</td>
 <td>3503</td>
 <td>/health</td>
 </tr>
 <tr>
 <td>Orders</td>
-<td>5002</td>
+<td>6002</td>
 <td>orders-service</td>
 <td>3504</td>
 <td>/health</td>
 </tr>
 <tr>
 <td>Purchasing</td>
-<td>5006</td>
+<td>6006</td>
 <td>purchasing-service</td>
 <td>3505</td>
 <td>/health</td>
 </tr>
 <tr>
 <td>Sales</td>
-<td>5003</td>
+<td>6003</td>
 <td>sales-service</td>
 <td>3506</td>
 <td>/health</td>
@@ -473,7 +473,7 @@ docker compose logs --tail=50
 curl http://localhost:5000/api/auth/health
 
 # Test service directly
-curl http://localhost:5007/health
+curl http://localhost:6007/health
 
 # Test Redis
 docker compose exec redis redis-cli -a Redis@Secure123! ping

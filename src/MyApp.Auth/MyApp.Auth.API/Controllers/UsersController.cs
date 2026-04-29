@@ -153,7 +153,7 @@ public partial class UsersController : ControllerBase
         {
             // Bind filters from query parameters
             query.BindFiltersFromQuery(Request.Query);
-            
+
             query.Validate();
             var spec = new ApplicationUserQuerySpec(query);
             var result = await _userService.QueryUsersAsync(spec);

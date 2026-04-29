@@ -8,6 +8,9 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Inventory.Application.Contracts.Services;
 
+/// <summary>
+/// Defines the contract for I Inventory Transaction Service.
+/// </summary>
 public interface IInventoryTransactionService
 {
     Task<InventoryTransactionDto?> GetTransactionByIdAsync(Guid id);

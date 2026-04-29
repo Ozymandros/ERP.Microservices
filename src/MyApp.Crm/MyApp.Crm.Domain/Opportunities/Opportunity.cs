@@ -4,25 +4,41 @@ using MyApp.Shared.Domain.Entities;
 
 namespace MyApp.Crm.Domain.Opportunities;
 
+/// <summary>
+/// Provides Opportunity functionality.
+/// </summary>
 public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
 {
+    /// <summary>Gets or sets Customer Id.</summary>
     public Guid CustomerId { get; private set; }
+    /// <summary>Gets or sets Lead Id.</summary>
     public Guid? LeadId { get; private set; }
 
+    /// <summary>Gets or sets Name.</summary>
     public string Name { get; private set; } = string.Empty;
 
+    /// <summary>Gets or sets Stage.</summary>
     public OpportunityStage Stage { get; private set; } = OpportunityStage.Prospecting;
+    /// <summary>Gets or sets Probability.</summary>
     public decimal Probability { get; private set; } // 0..1
+    /// <summary>Gets or sets Expected Amount.</summary>
     public decimal? ExpectedAmount { get; private set; }
+    /// <summary>Gets or sets Expected Close Date.</summary>
     public DateOnly? ExpectedCloseDate { get; private set; }
 
+    /// <summary>Gets or sets Owner Username.</summary>
     public string OwnerUsername { get; private set; } = string.Empty;
 
+    /// <summary>Gets or sets Converted Sales Quote Id.</summary>
     public Guid? ConvertedSalesQuoteId { get; private set; }
+    /// <summary>Gets or sets Converted Sales Quote Number.</summary>
     public string? ConvertedSalesQuoteNumber { get; private set; }
 
+    /// <summary>Gets or sets Lines.</summary>
     public List<OpportunityLine> Lines { get; private set; } = new();
+    /// <summary>Gets or sets Notes.</summary>
     public List<Note> Notes { get; private set; } = new();
+    /// <summary>Gets or sets Tags.</summary>
     public List<OpportunityTag> Tags { get; private set; } = new();
 
     public Opportunity(
@@ -41,6 +57,7 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
         Probability = 0m;
     }
 
+    /// <summary>Update Forecast.</summary>
     public void UpdateForecast(decimal probability, decimal? expectedAmount, DateOnly? expectedCloseDate)
     {
         EnsureNotClosed();
@@ -56,6 +73,7 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
         ExpectedCloseDate = expectedCloseDate;
     }
 
+    /// <summary>Move To Stage.</summary>
     public void MoveToStage(OpportunityStage stage)
     {
         EnsureNotClosed();
@@ -69,6 +87,7 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
         Stage = stage;
     }
 
+    /// <summary>Mark Won.</summary>
     public void MarkWon(string? note = null)
     {
         EnsureNotClosed();
@@ -79,6 +98,7 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
         }
     }
 
+    /// <summary>Add Line.</summary>
     public OpportunityLine AddLine(
         Guid id,
         string description,
@@ -102,6 +122,7 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
         return line;
     }
 
+    /// <summary>Update Line.</summary>
     public void UpdateLine(
         Guid lineId,
         string description,
@@ -118,6 +139,7 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
         line.Update(description, quantity, unitPrice, discountPercent, productId, sku);
     }
 
+    /// <summary>Remove Line.</summary>
     public void RemoveLine(Guid lineId)
     {
         EnsureNotClosed();
@@ -126,6 +148,7 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
         Lines.Remove(line);
     }
 
+    /// <summary>Set Converted Quote.</summary>
     public void SetConvertedQuote(Guid quoteId, string quoteNumber)
     {
         if (quoteId == Guid.Empty) throw new ArgumentException("QuoteId is required.", nameof(quoteId));
@@ -138,6 +161,7 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
         ConvertedSalesQuoteNumber = quoteNumber.Trim();
     }
 
+    /// <summary>Mark Lost.</summary>
     public void MarkLost(string reasonNote)
     {
         EnsureNotClosed();

@@ -463,7 +463,7 @@ public class ProductServiceTests
         };
 
         _mockProductRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
-        _mockMapper.Setup(m => m.Map<ProductDto>(It.IsAny<Product>())).Returns((Product p) => 
+        _mockMapper.Setup(m => m.Map<ProductDto>(It.IsAny<Product>())).Returns((Product p) =>
             new ProductDto(p.Id) { SKU = p.SKU, Name = p.Name });
 
         // Act
@@ -496,7 +496,7 @@ public class ProductServiceTests
         };
 
         _mockProductRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
-        _mockMapper.Setup(m => m.Map<ProductDto>(It.IsAny<Product>())).Returns((Product p) => 
+        _mockMapper.Setup(m => m.Map<ProductDto>(It.IsAny<Product>())).Returns((Product p) =>
             new ProductDto(p.Id) { SKU = p.SKU, Name = p.Name, UnitPrice = p.UnitPrice });
 
         // Act
@@ -772,7 +772,7 @@ public class ProductServiceTests
         var paginatedResult = new PaginatedResult<Product>(products, 1, 2, 10);
 
         _mockProductRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
-        _mockMapper.Setup(m => m.Map<ProductDto>(It.IsAny<Product>())).Returns((Product p) => 
+        _mockMapper.Setup(m => m.Map<ProductDto>(It.IsAny<Product>())).Returns((Product p) =>
             new ProductDto(p.Id) { SKU = p.SKU, Name = p.Name });
 
         // Act

@@ -1,8 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MyApp.Auth.Domain.Entities;
 
+/// <summary>
+/// Provides Admin User Seeder functionality.
+/// </summary>
 public static class AdminUserSeeder
 {
+    /// <summary>
+    /// Seed Admin User. Creates an admin user if it doesn't exist.
+    /// </summary>
+    /// <param name="userManager"></param>
+    /// <returns></returns>
     public static async Task SeedAsync(UserManager<ApplicationUser> userManager)
     {
         var adminEmail = "admin@myapp.local";
@@ -26,7 +34,7 @@ public static class AdminUserSeeder
             // Ensure password is correct
             var token = await userManager.GeneratePasswordResetTokenAsync(adminUser);
             await userManager.ResetPasswordAsync(adminUser, token, "Admin123!");
-            
+
             // Ensure role is assigned
             if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
             {

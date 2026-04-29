@@ -7,6 +7,14 @@ namespace MyApp.Shared.Infrastructure.Extensions;
 /// </summary>
 public class MicroserviceConfigurationOptions
 {
+    public MicroserviceConfigurationOptions()
+    {
+
+    }
+    public MicroserviceConfigurationOptions(string? serviceName = null)
+    {
+        ServiceName = serviceName;
+    }
     /// <summary>
     /// Service name for OpenTelemetry (defaults to assembly name if not provided)
     /// </summary>

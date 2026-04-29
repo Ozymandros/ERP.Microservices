@@ -7,8 +7,12 @@ using System.Text.Json;
 
 namespace MyApp.Shared.Infrastructure.Extensions;
 
+/// <summary>
+/// Provides Health Checks Extensions functionality.
+/// </summary>
 public static class HealthChecksExtensions
 {
+    /// <summary>Add Custom Health Checks.</summary>
     public static IServiceCollection AddCustomHealthChecks(this IServiceCollection services, string dbConnectionString)
     {
         services.AddHealthChecks()
@@ -18,6 +22,7 @@ public static class HealthChecksExtensions
         return services;
     }
 
+    /// <summary>Use Custom Health Checks.</summary>
     public static IApplicationBuilder UseCustomHealthChecks(this IApplicationBuilder app)
     {
         app.UseHealthChecks("/health", new HealthCheckOptions

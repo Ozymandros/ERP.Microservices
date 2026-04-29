@@ -10,18 +10,25 @@ using MyApp.Shared.Infrastructure.Data;
 
 namespace MyApp.Crm.Infrastructure.Data;
 
+/// <summary>
+/// Provides Crm Db Context functionality.
+/// </summary>
 public class CrmDbContext : AuditableDbContext
 {
+    /// <summary>base.</summary>
     public CrmDbContext(DbContextOptions<CrmDbContext> options) : base(options)
     {
     }
 
+    /// <summary>Set.</summary>
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<Contact> Contacts => Set<Contact>();
     public DbSet<Lead> Leads => Set<Lead>();
+    /// <summary>Set.</summary>
     public DbSet<Opportunity> Opportunities => Set<Opportunity>();
     public DbSet<OpportunityLine> OpportunityLines => Set<OpportunityLine>();
     public DbSet<Activity> Activities => Set<Activity>();
+    /// <summary>Set.</summary>
     public DbSet<Note> Notes => Set<Note>();
     public DbSet<Tag> Tags => Set<Tag>();
 
@@ -42,8 +49,12 @@ public class CrmDbContext : AuditableDbContext
     }
 }
 
+/// <summary>
+/// Provides Crm Db Context Factory functionality.
+/// </summary>
 public class CrmDbContextFactory : IDesignTimeDbContextFactory<CrmDbContext>
 {
+    /// <summary>Create Db Context.</summary>
     public CrmDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<CrmDbContext>();

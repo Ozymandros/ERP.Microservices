@@ -17,7 +17,7 @@ public class RoleQuerySpec : BaseSpecification<ApplicationRole>
     {
         // Apply role-specific filters (case-insensitive key matching)
         var filters = Query.Filters ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        
+
         if (filters.TryGetValue(nameof(ApplicationRole.Name), out var nameFilter) && !string.IsNullOrEmpty(nameFilter))
             query = query.Where(r => r.Name != null && r.Name.Contains(nameFilter, StringComparison.OrdinalIgnoreCase));
 

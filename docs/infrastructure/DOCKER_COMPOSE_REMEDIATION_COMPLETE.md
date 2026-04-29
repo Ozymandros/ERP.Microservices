@@ -68,14 +68,16 @@ Template for environment variables
 
 ## 📋 Services Overview
 
-### Microservices (6 Total)
+### Microservices (8 Total)
 ```
-✅ auth-service           (Port 5007) + dapr sidecar
-✅ billing-service        (Port 5004) + dapr sidecar
-✅ inventory-service      (Port 5001) + dapr sidecar
-✅ orders-service         (Port 5002) + dapr sidecar
-✅ purchasing-service     (Port 5006) + dapr sidecar
-✅ sales-service          (Port 5003) + dapr sidecar
+✅ auth-service           (Port 6001) + dapr sidecar
+✅ billing-service        (Port 6002) + dapr sidecar
+✅ inventory-service      (Port 6003) + dapr sidecar
+✅ orders-service         (Port 6004) + dapr sidecar
+✅ purchasing-service     (Port 6005) + dapr sidecar
+✅ sales-service          (Port 6006) + dapr sidecar
+✅ crm-service            (Port 6007) + dapr sidecar
+✅ sk-service             (Port 6008) + dapr sidecar
 ```
 
 ### Infrastructure
@@ -94,13 +96,15 @@ Template for environment variables
 
 ### Gateway
 ```
-✅ API Gateway            (Port 5000) routes to 6 services
-   - Auth Service
-   - Inventory Service
-   - Orders Service
-   - Sales Service
-   - Billing Service
-   - Purchasing Service
+✅ API Gateway            (Port 5000) routes to 8 services
+   - Auth Service        (Port 6001)
+   - Billing Service     (Port 6002)
+   - Inventory Service   (Port 6004)
+   - Orders Service      (Port 6005)
+   - Purchasing Service  (Port 6006)
+   - Sales Service       (Port 6007)
+   - CRM Service         (Port 6003)
+   - Semantic Kernel     (Port 6008)
 ```
 
 ---
@@ -155,8 +159,8 @@ docker system prune -a
 docker compose ps
 
 # Verify specific service health
-curl http://localhost:5007/health   # Auth
-curl http://localhost:5001/health   # Inventory
+curl http://localhost:6001/health   # Auth
+curl http://localhost:6004/health   # Inventory
 curl http://localhost:5000/health   # Gateway
 ```
 

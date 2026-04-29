@@ -5,15 +5,26 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Purchasing.Application.Contracts.DTOs;
 
+/// <summary>
+/// Represents the Supplier Dto data record.
+/// </summary>
 public record SupplierDto(Guid Id) : AuditableGuidDto(Id)
 {
+    /// <summary>Gets or sets Name.</summary>
     public string Name { get; init; } = string.Empty;
+    /// <summary>Gets or sets Contact Name.</summary>
     public string ContactName { get; init; } = string.Empty;
+    /// <summary>Gets or sets Email.</summary>
     public string Email { get; init; } = string.Empty;
+    /// <summary>Gets or sets Phone Number.</summary>
     public string PhoneNumber { get; init; } = string.Empty;
+    /// <summary>Gets or sets Address.</summary>
     public string Address { get; init; } = string.Empty;
 }
 
+/// <summary>
+/// Represents the Create Update Supplier Dto data record.
+/// </summary>
 public record CreateUpdateSupplierDto(
     [Required(ErrorMessage = "Name is required")]
     [StringLength(255, MinimumLength = 1)]

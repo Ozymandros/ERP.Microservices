@@ -1,4 +1,4 @@
-@MyApp.Sales.API_HostAddress = http://localhost:5143
+@MyApp.Sales.API_HostAddress = http://localhost:6007
 
 GET {{MyApp.Sales.API_HostAddress}}/weatherforecast/
 Accept: application/json

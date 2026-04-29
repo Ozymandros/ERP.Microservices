@@ -3,12 +3,17 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Crm.Domain.Opportunities;
 
+/// <summary>
+/// Provides Opportunity Query Spec functionality.
+/// </summary>
 public class OpportunityQuerySpec : BaseSpecification<Opportunity>
 {
+    /// <summary>base.</summary>
     public OpportunityQuerySpec(QuerySpec query) : base(query)
     {
     }
 
+    /// <summary>Apply Filters.</summary>
     public override IQueryable<Opportunity> ApplyFilters(IQueryable<Opportunity> query)
     {
         if (Query.Filters?.TryGetValue(nameof(Opportunity.CustomerId), out var customerId) == true &&

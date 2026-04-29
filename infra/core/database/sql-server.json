@@ -1,0 +1,127 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.39.26.7824",
+      "templateHash": "11594870139032577754"
+    }
+  },
+  "parameters": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the SQL Server"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for the SQL Server"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Tags to apply to the SQL Server"
+      }
+    },
+    "administratorLogin": {
+      "type": "string",
+      "metadata": {
+        "description": "SQL Server administrator login"
+      }
+    },
+    "administratorLoginPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "SQL Server administrator password"
+      }
+    },
+    "databases": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Array of database names to create"
+      }
+    },
+    "minimalTlsVersion": {
+      "type": "string",
+      "defaultValue": "1.2",
+      "metadata": {
+        "description": "Minimum TLS version"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Sql/servers",
+      "apiVersion": "2023-05-01-preview",
+      "name": "[parameters('name')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+        "minimalTlsVersion": "[parameters('minimalTlsVersion')]",
+        "publicNetworkAccess": "Enabled"
+      }
+    },
+    {
+      "type": "Microsoft.Sql/servers/firewallRules",
+      "apiVersion": "2023-05-01-preview",
+      "name": "[format('{0}/{1}', parameters('name'), 'AllowAllWindowsAzureIps')]",
+      "properties": {
+        "startIpAddress": "0.0.0.0",
+        "endIpAddress": "0.0.0.0"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Sql/servers', parameters('name'))]"
+      ]
+    },
+    {
+      "copy": {
+        "name": "sqlDatabases",
+        "count": "[length(parameters('databases'))]"
+      },
+      "type": "Microsoft.Sql/servers/databases",
+      "apiVersion": "2023-05-01-preview",
+      "name": "[format('{0}/{1}', parameters('name'), parameters('databases')[copyIndex()].name)]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "sku": {
+        "name": "Basic",
+        "tier": "Basic"
+      },
+      "properties": {
+        "collation": "SQL_Latin1_General_CP1_CI_AS",
+        "maxSizeBytes": 2147483648,
+        "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+        "zoneRedundant": false,
+        "readScale": "Disabled",
+        "requestedBackupStorageRedundancy": "Local",
+        "isLedgerOn": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Sql/servers', parameters('name'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "id": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Sql/servers', parameters('name'))]"
+    },
+    "name": {
+      "type": "string",
+      "value": "[parameters('name')]"
+    },
+    "fqdn": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Sql/servers', parameters('name')), '2023-05-01-preview').fullyQualifiedDomainName]"
+    }
+  }
+}

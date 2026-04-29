@@ -326,7 +326,7 @@ public class WarehouseServiceTests
         };
 
         _mockWarehouseRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
-        _mockMapper.Setup(m => m.Map<WarehouseDto>(It.IsAny<Warehouse>())).Returns((Warehouse w) => 
+        _mockMapper.Setup(m => m.Map<WarehouseDto>(It.IsAny<Warehouse>())).Returns((Warehouse w) =>
             new WarehouseDto(w.Id) { Name = w.Name, Location = w.Location });
 
         // Act
@@ -354,7 +354,7 @@ public class WarehouseServiceTests
         var paginatedResult = new PaginatedResult<Warehouse>(warehouses, 1, 20, 1);
 
         _mockWarehouseRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
-        _mockMapper.Setup(m => m.Map<WarehouseDto>(It.IsAny<Warehouse>())).Returns((Warehouse w) => 
+        _mockMapper.Setup(m => m.Map<WarehouseDto>(It.IsAny<Warehouse>())).Returns((Warehouse w) =>
             new WarehouseDto(w.Id) { Name = w.Name, Location = w.Location });
 
         // Act
@@ -520,7 +520,7 @@ public class WarehouseServiceTests
         var paginatedResult = new PaginatedResult<Warehouse>(warehouses, 1, 2, 10);
 
         _mockWarehouseRepository.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paginatedResult);
-        _mockMapper.Setup(m => m.Map<WarehouseDto>(It.IsAny<Warehouse>())).Returns((Warehouse w) => 
+        _mockMapper.Setup(m => m.Map<WarehouseDto>(It.IsAny<Warehouse>())).Returns((Warehouse w) =>
             new WarehouseDto(w.Id) { Name = w.Name, Location = w.Location });
 
         // Act

@@ -22,7 +22,7 @@ public class EventPublisher : IEventPublisher
         ArgumentNullException.ThrowIfNull(daprClient);
         ArgumentNullException.ThrowIfNull(logger);
         ArgumentNullException.ThrowIfNull(options);
-        
+
         _daprClient = daprClient;
         _logger = logger;
         _options = options.Value;

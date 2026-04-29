@@ -198,7 +198,7 @@ module {serviceName}_service '{serviceName}-service/{serviceName}-service.module
 
 ### Error: "Service not found"
 ```
-❌ Host: 'auth-service' Puerto: 5001
+❌ Host: 'auth-service' Puerto: 6001
 ✅ Host: 'auth-service' Puerto: 8080
 ```
 

@@ -261,8 +261,8 @@ public class AuthIntegrationTests
         var loginResponse = await client.PostAsJsonAsync("/auth/api/auth/login", loginDto);
         var tokens = await loginResponse.Content.ReadFromJsonAsync<TokenResponseDto>();
 
-        if (tokens is null) 
-            {
+        if (tokens is null)
+        {
             throw new InvalidOperationException("Failed to retrieve tokens from login response.");
         }
 

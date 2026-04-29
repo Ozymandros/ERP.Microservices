@@ -1,5 +1,8 @@
 namespace MyApp.Crm.Application.Contracts.DTOs;
 
+/// <summary>
+/// Represents the Lead Dto data record.
+/// </summary>
 public sealed record LeadDto(
     Guid Id,
     string Title,
@@ -14,6 +17,9 @@ public sealed record LeadDto(
     DateTime? UpdatedAt
 );
 
+/// <summary>
+/// Represents the Create Lead Dto data record.
+/// </summary>
 public sealed record CreateLeadDto(
     string Title,
     string OwnerUsername,
@@ -23,6 +29,9 @@ public sealed record CreateLeadDto(
     string? ContactPhone
 );
 
+/// <summary>
+/// Represents the Update Lead Dto data record.
+/// </summary>
 public sealed record UpdateLeadDto(
     string Title,
     string? Source,
@@ -31,6 +40,9 @@ public sealed record UpdateLeadDto(
     string? ContactPhone
 );
 
+/// <summary>
+/// Represents the Qualify Lead Dto data record.
+/// </summary>
 public sealed record QualifyLeadDto(
     Guid CustomerId
 );

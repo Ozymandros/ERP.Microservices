@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Crm.Application.Contracts.DTOs;
 
+/// <summary>Data transfer object for contact information.</summary>
 public sealed record ContactDto(
     Guid Id,
     Guid AccountId,
@@ -15,6 +16,7 @@ public sealed record ContactDto(
     DateTime? UpdatedAt
 );
 
+/// <summary>Data transfer object for creating a contact.</summary>
 public sealed record CreateContactDto(
     [Required] Guid AccountId,
     [Required, StringLength(200, MinimumLength = 1)] string FullName,
@@ -24,6 +26,7 @@ public sealed record CreateContactDto(
     bool IsPrimary = false
 );
 
+/// <summary>Data transfer object for updating a contact.</summary>
 public sealed record UpdateContactDto(
     [Required, StringLength(200, MinimumLength = 1)] string FullName,
     [EmailAddress, StringLength(255)] string? Email,
@@ -31,6 +34,7 @@ public sealed record UpdateContactDto(
     [StringLength(128)] string? Title
 );
 
+/// <summary>Data transfer object for setting a primary contact.</summary>
 public sealed record SetPrimaryContactDto(
     [Required] Guid ContactId
 );

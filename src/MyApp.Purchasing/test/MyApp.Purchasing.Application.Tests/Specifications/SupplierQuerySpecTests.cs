@@ -71,7 +71,7 @@ public class SupplierQuerySpecTests
         // Search matches Name, Email, ContactName, PhoneNumber, Address
         // "Supplier" matches: Supplier One (name), Supplier Two (name), and all emails contain "@supplier.com"
         result.Should().HaveCountGreaterThanOrEqualTo(2);
-        result.All(s => s.Name.ToLower().Contains("supplier") || s.Email.ToLower().Contains("supplier") || 
+        result.All(s => s.Name.ToLower().Contains("supplier") || s.Email.ToLower().Contains("supplier") ||
                        (s.ContactName != null && s.ContactName.ToLower().Contains("supplier")) ||
                        (s.PhoneNumber != null && s.PhoneNumber.ToLower().Contains("supplier")) ||
                        (s.Address != null && s.Address.ToLower().Contains("supplier"))).Should().BeTrue();

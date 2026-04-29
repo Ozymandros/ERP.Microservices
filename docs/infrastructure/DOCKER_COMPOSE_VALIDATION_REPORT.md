@@ -282,12 +282,12 @@ docker compose ps
 | Service | URL | Port |
 |---------|-----|------|
 | API Gateway | http://localhost:5000 | 5000 |
-| Auth Service | http://localhost:5007 | 5007 |
-| Billing Service | http://localhost:5004 | 5004 |
-| Inventory Service | http://localhost:5001 | 5001 |
-| Orders Service | http://localhost:5002 | 5002 |
-| Purchasing Service | http://localhost:5006 | 5006 |
-| Sales Service | http://localhost:5003 | 5003 |
+| Auth Service | http://localhost:6001 | 6001 |
+| Billing Service | http://localhost:6002 | 6002 |
+| CRM Service | http://localhost:6003 | 6003 |
+| Inventory Service | http://localhost:6004 | 6004 |
+| Orders Service | http://localhost:6005 | 6005 |
+| Sales Service | http://localhost:6007 | 6007 |
 | Redis Commander | http://localhost:8081 | 8081 |
 | Redis Insight | http://localhost:5540 | 5540 |
 
@@ -295,7 +295,7 @@ docker compose ps
 ```bash
 # Check specific service health
 curl http://localhost:5000/health
-curl http://localhost:5001/health
+curl http://localhost:6001/health
 # etc.
 
 # View logs

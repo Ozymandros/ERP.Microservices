@@ -110,7 +110,7 @@ Your API Gateway has been **completely remediated** with production-grade securi
 ### Local Development (ocelot.json)
 ```
 Gateway:    localhost:5000
-Services:   localhost:5001-5006
+Services:   localhost:6001-6008
 Rate Limit: 100/min
 Timeout:    5 seconds
 Break:      5 seconds
@@ -142,7 +142,7 @@ Edit `appsettings.json`:
 ```json
 {
   "JwtSecretKey": "your-secret-key-min-32-characters",
-  "JwtIssuer": "http://localhost:5001",
+  "JwtIssuer": "http://localhost:6001",
   "JwtAudience": "erp-api",
   "FRONTEND_ORIGIN": "http://localhost:3000"
 }

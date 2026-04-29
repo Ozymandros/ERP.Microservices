@@ -47,6 +47,9 @@ param authDbName string
 @description('Database name for the Billing service')
 param billingDbName string
 
+@description('Database name for the CRM service')
+param crmDbName string
+
 @description('Database name for the Inventory service')
 param inventoryDbName string
 
@@ -170,6 +173,14 @@ resource kvSqlSecretBilling 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   }
 }
 
+resource kvSqlSecretCrm 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
+  parent: keyVault
+  name: 'sql-connection-crmdb'
+  properties: {
+    value: 'Server=${sqlFqdn};Database=${crmDbName};User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+  }
+}
+
 resource kvSqlSecretInventory 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   parent: keyVault
   name: 'sql-connection-inventorydb'
@@ -235,6 +246,7 @@ output redisAuthSecretName string = 'redis-cache-password'
 output jwtSecretName string = kvJwtSecret.name
 output sqlAuthSecretName string = kvSqlSecretAuth.name
 output sqlBillingSecretName string = kvSqlSecretBilling.name
+output sqlCrmSecretName string = kvSqlSecretCrm.name
 output sqlInventorySecretName string = kvSqlSecretInventory.name
 output sqlOrdersSecretName string = kvSqlSecretOrders.name
 output sqlPurchasingSecretName string = kvSqlSecretPurchasing.name

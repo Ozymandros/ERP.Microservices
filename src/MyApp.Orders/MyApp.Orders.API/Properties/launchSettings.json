@@ -7,6 +7,14 @@
       },
       "dotnetRunMessages": true
     },
+    "http": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:6005",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true
+    },
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,

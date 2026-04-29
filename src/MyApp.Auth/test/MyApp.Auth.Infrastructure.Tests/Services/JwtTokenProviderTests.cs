@@ -137,7 +137,7 @@ public class JwtTokenProviderTests
         Assert.NotNull(jsonToken?.ValidTo);
         var expectedExpiration = beforeGeneration.AddMinutes(TestAccessTokenExpirationMinutes);
         var actualExpiration = jsonToken.ValidTo;
-        
+
         // Allow 1 second tolerance for execution time
         Assert.True(Math.Abs((actualExpiration - expectedExpiration).TotalSeconds) < 1);
     }

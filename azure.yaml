@@ -21,6 +21,14 @@ services:
       path: ./src/MyApp.Billing/MyApp.Billing.API/Dockerfile
       context: .  # Root of repository
 
+  crm-service:
+    project: ./src/MyApp.Crm/MyApp.Crm.API
+    language: dotnet
+    host: containerapp
+    docker:
+      path: ./src/MyApp.Crm/MyApp.Crm.API/Dockerfile
+      context: .  # Root of repository
+
   inventory-service:
     project: ./src/MyApp.Inventory/MyApp.Inventory.API
     language: dotnet

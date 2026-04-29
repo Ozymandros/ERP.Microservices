@@ -1,0 +1,106 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.39.26.7824",
+      "templateHash": "3346437212857525481"
+    }
+  },
+  "parameters": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Redis Cache"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for the Redis Cache"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Tags to apply to the Redis Cache"
+      }
+    },
+    "sku": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "metadata": {
+        "description": "Redis Cache SKU"
+      }
+    },
+    "family": {
+      "type": "string",
+      "defaultValue": "C",
+      "metadata": {
+        "description": "Redis Cache family"
+      }
+    },
+    "capacity": {
+      "type": "int",
+      "defaultValue": 0,
+      "metadata": {
+        "description": "Redis Cache capacity"
+      }
+    }
+  },
+  "variables": {
+    "redisMaxmemoryPolicy": "allkeys-lru",
+    "redisTlsVersion": "1.2"
+  },
+  "resources": {
+    "redis": {
+      "type": "Microsoft.Cache/redis",
+      "apiVersion": "2023-08-01",
+      "name": "[parameters('name')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "sku": {
+          "name": "[parameters('sku')]",
+          "family": "[parameters('family')]",
+          "capacity": "[parameters('capacity')]"
+        },
+        "enableNonSslPort": false,
+        "minimumTlsVersion": "[variables('redisTlsVersion')]",
+        "publicNetworkAccess": "Enabled",
+        "redisConfiguration": {
+          "maxmemory-policy": "[variables('redisMaxmemoryPolicy')]"
+        }
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Cache/redis', parameters('name'))]"
+    },
+    "name": {
+      "type": "string",
+      "value": "[parameters('name')]"
+    },
+    "hostName": {
+      "type": "string",
+      "value": "[reference('redis').hostName]"
+    },
+    "sslPort": {
+      "type": "int",
+      "value": "[reference('redis').sslPort]"
+    },
+    "primaryKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Redis primary key - should be stored as a secret"
+      },
+      "value": "[listKeys('redis', '2023-08-01').primaryKey]"
+    }
+  }
+}

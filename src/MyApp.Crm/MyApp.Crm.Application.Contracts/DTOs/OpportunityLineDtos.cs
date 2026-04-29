@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Crm.Application.Contracts.DTOs;
 
+/// <summary>
+/// Represents the Opportunity Line Dto data record.
+/// </summary>
 public sealed record OpportunityLineDto(
     Guid Id,
     Guid OpportunityId,
@@ -16,6 +19,9 @@ public sealed record OpportunityLineDto(
     DateTime? UpdatedAt
 );
 
+/// <summary>
+/// Represents the Create Opportunity Line Dto data record.
+/// </summary>
 public sealed record CreateOpportunityLineDto(
     [Required, StringLength(500, MinimumLength = 1)] string Description,
     [Range(0.0001, double.MaxValue)] decimal Quantity,
@@ -25,6 +31,9 @@ public sealed record CreateOpportunityLineDto(
     [StringLength(64)] string? Sku = null
 );
 
+/// <summary>
+/// Represents the Update Opportunity Line Dto data record.
+/// </summary>
 public sealed record UpdateOpportunityLineDto(
     [Required, StringLength(500, MinimumLength = 1)] string Description,
     [Range(0.0001, double.MaxValue)] decimal Quantity,

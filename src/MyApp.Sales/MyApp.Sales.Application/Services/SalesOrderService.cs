@@ -1,21 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using MyApp.Inventory.Application.Contracts.DTOs;
+using MyApp.Orders.Application.Contracts.Dtos;
+using MyApp.Orders.Domain;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
-using MyApp.Shared.Domain.Constants;
-using MyApp.Inventory.Application.Contracts.DTOs;
-using MyApp.Orders.Application.Contracts.Dtos;
-using MyApp.Orders.Domain;
 
 namespace MyApp.Sales.Application.Services
 {
@@ -174,7 +170,7 @@ namespace MyApp.Sales.Application.Services
             // Check stock availability for all lines
             var stockChecks = await CheckStockAvailabilityAsync(dto.Lines);
             var unavailableItems = stockChecks.Where(s => !s.IsAvailable).ToList();
-            
+
             if (unavailableItems.Any())
             {
                 _logger.LogWarning(
@@ -377,7 +373,7 @@ namespace MyApp.Sales.Application.Services
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Failed to check stock for Product {ProductId}", line.ProductId);
-                    
+
                     // Return unavailable if check fails
                     results.Add(new StockAvailabilityCheckDto
                     {

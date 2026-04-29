@@ -4,8 +4,10 @@ using MyApp.Orders.Domain.Entities;
 
 namespace MyApp.Orders.Application.Mapping
 {
+    /// <summary>AutoMapper profile for Order entity mappings.</summary>
     public class OrderProfile : Profile
     {
+        /// <summary>Initializes a new instance of the OrderProfile class.</summary>
         public OrderProfile()
         {
             CreateMap<Order, OrderDto>()

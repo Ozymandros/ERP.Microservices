@@ -5,6 +5,9 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Crm.Application.Contracts.Services;
 
+/// <summary>
+/// Defines the contract for I Lead Service.
+/// </summary>
 public interface ILeadService
 {
     Task<LeadDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);

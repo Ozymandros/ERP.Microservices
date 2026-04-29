@@ -199,12 +199,12 @@
 <hr>
 <h2 id="-services-overview">📋 Services Overview</h2>
 <h3 id="microservices-6-total">Microservices (6 Total)</h3>
-<pre><code>✅ auth-service           (Port 5007) + dapr sidecar
-✅ billing-service        (Port 5004) + dapr sidecar
-✅ inventory-service      (Port 5001) + dapr sidecar
-✅ orders-service         (Port 5002) + dapr sidecar
-✅ purchasing-service     (Port 5006) + dapr sidecar
-✅ sales-service          (Port 5003) + dapr sidecar
+<pre><code>✅ auth-service           (Port 6007) + dapr sidecar
+✅ billing-service        (Port 6004) + dapr sidecar
+✅ inventory-service      (Port 6001) + dapr sidecar
+✅ orders-service         (Port 6002) + dapr sidecar
+✅ purchasing-service     (Port 6006) + dapr sidecar
+✅ sales-service          (Port 6003) + dapr sidecar
 </code></pre>
 <h3 id="infrastructure">Infrastructure</h3>
 <pre><code>✅ SQL Server             (Port 1455) with health checks
@@ -262,8 +262,8 @@ docker system prune -a
 docker compose ps
 
 # Verify specific service health
-curl http://localhost:5007/health   # Auth
-curl http://localhost:5001/health   # Inventory
+curl http://localhost:6007/health   # Auth
+curl http://localhost:6001/health   # Inventory
 curl http://localhost:5000/health   # Gateway
 </code></pre>
 <h3 id="2-redis-connectivity">2. Redis Connectivity</h3>

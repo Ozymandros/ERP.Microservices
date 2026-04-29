@@ -17,7 +17,7 @@ public class PermissionChecker : IPermissionChecker
     {
         ArgumentNullException.ThrowIfNull(serviceInvoker);
         ArgumentNullException.ThrowIfNull(httpContextAccessor);
-        
+
         _serviceInvoker = serviceInvoker;
         _httpContextAccessor = httpContextAccessor;
     }

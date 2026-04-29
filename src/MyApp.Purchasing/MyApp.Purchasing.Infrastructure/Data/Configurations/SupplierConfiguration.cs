@@ -4,8 +4,12 @@ using MyApp.Purchasing.Domain.Entities;
 
 namespace MyApp.Purchasing.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Supplier Configuration functionality.
+/// </summary>
 public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<Supplier> builder)
     {
         builder.HasKey(x => x.Id);

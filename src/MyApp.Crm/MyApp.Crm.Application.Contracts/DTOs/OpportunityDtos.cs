@@ -1,5 +1,8 @@
 namespace MyApp.Crm.Application.Contracts.DTOs;
 
+/// <summary>
+/// Represents the Opportunity Dto data record.
+/// </summary>
 public sealed record OpportunityDto(
     Guid Id,
     Guid CustomerId,
@@ -16,6 +19,9 @@ public sealed record OpportunityDto(
     DateTime? UpdatedAt
 );
 
+/// <summary>
+/// Represents the Create Opportunity Dto data record.
+/// </summary>
 public sealed record CreateOpportunityDto(
     Guid CustomerId,
     string Name,
@@ -23,16 +29,25 @@ public sealed record CreateOpportunityDto(
     Guid? LeadId
 );
 
+/// <summary>
+/// Represents the Update Opportunity Forecast Dto data record.
+/// </summary>
 public sealed record UpdateOpportunityForecastDto(
     decimal Probability,
     decimal? ExpectedAmount,
     DateOnly? ExpectedCloseDate
 );
 
+/// <summary>
+/// Represents the Move Opportunity Stage Dto data record.
+/// </summary>
 public sealed record MoveOpportunityStageDto(
     string Stage
 );
 
+/// <summary>
+/// Represents the Mark Opportunity Lost Dto data record.
+/// </summary>
 public sealed record MarkOpportunityLostDto(
     string Reason
 );

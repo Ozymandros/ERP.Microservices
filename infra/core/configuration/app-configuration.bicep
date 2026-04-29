@@ -201,6 +201,15 @@ resource sqlBillingDbRef 'Microsoft.AppConfiguration/configurationStores/keyValu
   }
 }
 
+resource sqlCrmDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  parent: appConfig
+  name: 'ConnectionStrings:CrmDb'
+  properties: {
+    value: '{"uri":"${keyVaultUri}/secrets/sql-connection-crmdb"}'
+    contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
+  }
+}
+
 resource sqlInventoryDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
   parent: appConfig
   name: 'ConnectionStrings:InventoryDb'

@@ -20,13 +20,13 @@ public interface IPurchaseOrderService
     Task<PurchaseOrderDto> UpdatePurchaseOrderAsync(Guid id, CreateUpdatePurchaseOrderDto dto);
     Task<PurchaseOrderDto> UpdatePurchaseOrderStatusAsync(Guid id, PurchaseOrderStatus status);
     Task DeletePurchaseOrderAsync(Guid id);
-    
+
     // Purchasing workflows
     /// <summary>
     /// Approves a purchase order for processing
     /// </summary>
     Task<PurchaseOrderDto> ApprovePurchaseOrderAsync(ApprovePurchaseOrderDto dto);
-    
+
     /// <summary>
     /// Receives a purchase order and creates a corresponding operational order (Inbound)
     /// </summary>

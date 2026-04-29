@@ -268,7 +268,7 @@
 <h2 id="-configuration-files">📋 Configuration Files</h2>
 <h3 id="local-development-ocelotjson">Local Development (ocelot.json)</h3>
 <pre><code>Gateway:    localhost:5000
-Services:   localhost:5001-5006
+Services:   localhost:6001-6006
 Rate Limit: 100/min
 Timeout:    5 seconds
 Break:      5 seconds
@@ -292,7 +292,7 @@ dotnet restore
 <p>Edit <code>appsettings.json</code>:</p>
 <pre><code class="lang-json">{
   &quot;JwtSecretKey&quot;: &quot;your-secret-key-min-32-characters&quot;,
-  &quot;JwtIssuer&quot;: &quot;http://localhost:5001&quot;,
+  &quot;JwtIssuer&quot;: &quot;http://localhost:6001&quot;,
   &quot;JwtAudience&quot;: &quot;erp-api&quot;,
   &quot;FRONTEND_ORIGIN&quot;: &quot;http://localhost:3000&quot;
 }

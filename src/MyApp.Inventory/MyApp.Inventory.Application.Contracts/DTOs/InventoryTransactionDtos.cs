@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
+/// <summary>
+/// Represents the Inventory Transaction Dto data record.
+/// </summary>
 public record InventoryTransactionDto(
     Guid Id,
     Guid ProductId,
@@ -14,6 +17,9 @@ public record InventoryTransactionDto(
     WarehouseDto? Warehouse = null
 );
 
+/// <summary>
+/// Represents the Create Update Inventory Transaction Dto data record.
+/// </summary>
 public record CreateUpdateInventoryTransactionDto(
     [Required(ErrorMessage = "ProductId is required")]
     Guid ProductId,

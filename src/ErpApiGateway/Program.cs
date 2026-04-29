@@ -82,7 +82,7 @@ builder.Services
     .AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-        options.Authority = builder.Configuration["Jwt:Issuer"] ?? "http://localhost:5001";
+        options.Authority = builder.Configuration["Jwt:Issuer"] ?? "http://localhost:6001";
         options.Audience = builder.Configuration["Jwt:Audience"] ?? "erp-api";
         options.TokenValidationParameters = new TokenValidationParameters
         {

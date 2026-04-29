@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.39.26.7824",
+      "templateHash": "7165202449821868059"
+    }
+  },
+  "parameters": {
+    "myapp_sqlserver_outputs_name": {
+      "type": "string"
+    },
+    "principalName": {
+      "type": "string"
+    },
+    "principalId": {
+      "type": "string",
+      "metadata": {
+        "description": "Principal ID of the managed identity requiring SQL access"
+      }
+    },
+    "roleDefinitionId": {
+      "type": "string",
+      "minLength": 36,
+      "maxLength": 36,
+      "metadata": {
+        "description": "Role Definition ID - SQL DB Contributor role ID"
+      }
+    }
+  },
+  "variables": {
+    "managedIdentityId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('principalName'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "scope": "[format('Microsoft.Sql/servers/{0}', parameters('myapp_sqlserver_outputs_name'))]",
+      "name": "[guid(resourceId('Microsoft.Sql/servers', parameters('myapp_sqlserver_outputs_name')), variables('managedIdentityId'), 'sql-db-contributor')]",
+      "properties": {
+        "principalId": "[parameters('principalId')]",
+        "principalType": "ServicePrincipal",
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', parameters('roleDefinitionId'))]"
+      }
+    }
+  ]
+}

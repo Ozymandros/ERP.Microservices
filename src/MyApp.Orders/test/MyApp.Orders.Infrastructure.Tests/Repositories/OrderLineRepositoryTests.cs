@@ -361,7 +361,7 @@ public class OrderLineRepositoryTests
         var line = CreateTestOrderLine(order.Id, quantity: 10, reservedQuantity: 10);
         line.ReservedStockId = reservedStockId;
         await _repository.UpdateAsync(line);
-        
+
         // Now remove the reservation
         line.ReservedStockId = null;
         line.ReservedQuantity = 0;

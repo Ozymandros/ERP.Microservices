@@ -3,6 +3,9 @@ using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Crm.Application.Contracts.Services;
 
+/// <summary>
+/// Defines the contract for I Account Service.
+/// </summary>
 public interface IAccountService
 {
     Task<AccountDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);

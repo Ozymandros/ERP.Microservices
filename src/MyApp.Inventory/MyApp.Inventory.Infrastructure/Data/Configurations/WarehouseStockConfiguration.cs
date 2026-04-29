@@ -4,13 +4,17 @@ using MyApp.Inventory.Domain.Entities;
 
 namespace MyApp.Inventory.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Warehouse Stock Configuration functionality.
+/// </summary>
 public class WarehouseStockConfiguration : IEntityTypeConfiguration<WarehouseStock>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<WarehouseStock> builder)
     {
         builder.ToTable("WarehouseStocks");
         builder.HasKey(x => x.Id);
-        
+
         builder.Property(x => x.ProductId).IsRequired();
         builder.Property(x => x.WarehouseId).IsRequired();
         builder.Property(x => x.AvailableQuantity).IsRequired();

@@ -22,6 +22,21 @@
       },
       "internalConsoleOptions": "neverOpen",
       "stopAtEntry": false
+    },
+    {
+      "type": "aspire",
+      "request": "launch",
+      "name": "Aspire: Launch",
+      "program": "${workspaceFolder}/src/AppHost/AppHost.csproj",
+      "debuggers": {
+        "apphost": {
+          "launchProfile": "https",
+          "env": {
+            "ASPNETCORE_ENVIRONMENT": "Development",
+            "DOTNET_ENVIRONMENT": "Development"
+          }
+        }
+      }
     }
   ]
 }

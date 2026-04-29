@@ -180,7 +180,7 @@ public class UserRepositoryTests
         var user3 = CreateTestUser("user@example.com", "regularuser");
 
         _context.UserRoles.AddRange(
-            new ApplicationUserRole{ UserId = user1.Id, RoleId = role.Id },
+            new ApplicationUserRole { UserId = user1.Id, RoleId = role.Id },
             new ApplicationUserRole { UserId = user2.Id, RoleId = role.Id }
         );
         _context.SaveChanges();

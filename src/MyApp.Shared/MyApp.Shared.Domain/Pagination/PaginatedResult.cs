@@ -27,7 +27,7 @@ public class PaginatedResult<T>
     /// <summary>
     /// Total number of items across all pages
     /// </summary>
-    [JsonPropertyName("total")] 
+    [JsonPropertyName("total")]
     public int TotalCount { get; set; }
 
     /// <summary>

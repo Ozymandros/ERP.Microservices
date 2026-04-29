@@ -17,7 +17,7 @@ public class PermissionQuerySpec : BaseSpecification<Permission>
     {
         // Apply permission-specific filters (case-insensitive key matching)
         var filters = Query.Filters ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        
+
         if (filters.TryGetValue(nameof(Permission.Module), out var moduleFilter) && !string.IsNullOrEmpty(moduleFilter))
             query = query.Where(p => p.Module.Contains(moduleFilter, StringComparison.OrdinalIgnoreCase));
 

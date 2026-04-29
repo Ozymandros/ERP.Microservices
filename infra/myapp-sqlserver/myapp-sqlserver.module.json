@@ -1,0 +1,137 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.39.26.7824",
+      "templateHash": "1144013716757476612"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "The location for the resource(s) to be deployed."
+      }
+    },
+    "sqlServerName": {
+      "type": "string",
+      "metadata": {
+        "description": "SQL Server resource name"
+      }
+    },
+    "sqlAdminIdentityName": {
+      "type": "string",
+      "metadata": {
+        "description": "User-assigned managed identity name for SQL administration"
+      }
+    },
+    "databaseNames": {
+      "type": "array",
+      "metadata": {
+        "description": "List of database names to create"
+      }
+    }
+  },
+  "variables": {
+    "databaseCollation": "SQL_Latin1_General_CP1_CI_AS",
+    "databaseMaxSizeBytes": 2147483648,
+    "databaseSkuName": "Basic",
+    "databaseSkuTier": "Basic",
+    "sqlFirewallRuleName": "AllowAllAzureIps",
+    "sqlTlsVersion": "1.2"
+  },
+  "resources": {
+    "sqlServerAdminManagedIdentity": {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "apiVersion": "2024-11-30",
+      "name": "[parameters('sqlAdminIdentityName')]",
+      "location": "[parameters('location')]"
+    },
+    "myapp_sqlserver": {
+      "type": "Microsoft.Sql/servers",
+      "apiVersion": "2023-08-01",
+      "name": "[parameters('sqlServerName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "administrators": {
+          "administratorType": "ActiveDirectory",
+          "login": "[parameters('sqlAdminIdentityName')]",
+          "sid": "[reference('sqlServerAdminManagedIdentity').principalId]",
+          "tenantId": "[subscription().tenantId]",
+          "azureADOnlyAuthentication": true
+        },
+        "minimalTlsVersion": "[variables('sqlTlsVersion')]",
+        "publicNetworkAccess": "Enabled",
+        "version": "12.0"
+      },
+      "tags": {
+        "aspire-resource-name": "[parameters('sqlServerName')]"
+      },
+      "dependsOn": [
+        "sqlServerAdminManagedIdentity"
+      ]
+    },
+    "sqlFirewallRule_AllowAllAzureIps": {
+      "type": "Microsoft.Sql/servers/firewallRules",
+      "apiVersion": "2023-08-01",
+      "name": "[format('{0}/{1}', parameters('sqlServerName'), variables('sqlFirewallRuleName'))]",
+      "properties": {
+        "endIpAddress": "0.0.0.0",
+        "startIpAddress": "0.0.0.0"
+      },
+      "dependsOn": [
+        "myapp_sqlserver"
+      ]
+    },
+    "sqlDatabases": {
+      "copy": {
+        "name": "sqlDatabases",
+        "count": "[length(parameters('databaseNames'))]"
+      },
+      "type": "Microsoft.Sql/servers/databases",
+      "apiVersion": "2023-08-01",
+      "name": "[format('{0}/{1}', parameters('sqlServerName'), parameters('databaseNames')[copyIndex()])]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "collation": "[variables('databaseCollation')]",
+        "maxSizeBytes": "[variables('databaseMaxSizeBytes')]",
+        "catalogCollation": "[variables('databaseCollation')]"
+      },
+      "sku": {
+        "name": "[variables('databaseSkuName')]",
+        "tier": "[variables('databaseSkuTier')]"
+      },
+      "tags": {
+        "aspire-resource-name": "[parameters('databaseNames')[copyIndex()]]"
+      },
+      "dependsOn": [
+        "myapp_sqlserver"
+      ]
+    }
+  },
+  "outputs": {
+    "sqlServerFqdn": {
+      "type": "string",
+      "value": "[reference('myapp_sqlserver').fullyQualifiedDomainName]"
+    },
+    "name": {
+      "type": "string",
+      "value": "[parameters('sqlServerName')]"
+    },
+    "sqlServerAdminName": {
+      "type": "string",
+      "value": "[parameters('sqlAdminIdentityName')]"
+    },
+    "databaseNames": {
+      "type": "array",
+      "copy": {
+        "count": "[length(range(0, length(parameters('databaseNames'))))]",
+        "input": "[parameters('databaseNames')[range(0, length(parameters('databaseNames')))[copyIndex()]]]"
+      }
+    }
+  }
+}

@@ -26,7 +26,7 @@ public class ServiceInvoker : IServiceInvoker
         ArgumentNullException.ThrowIfNull(daprClient);
         ArgumentNullException.ThrowIfNull(logger);
         ArgumentNullException.ThrowIfNull(jsonOptions);
-        
+
         _daprClient = daprClient;
         _logger = logger;
         _enableLogging = enableLogging;
@@ -64,12 +64,14 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
             var response = await _daprClient.InvokeMethodAsync<TRequest, TResponse>(
                 httpMethod,
                 serviceName,
                 methodPath,
                 request,
                 cancellationToken);
+            #pragma warning restore CS0618
 
             if (_enableLogging)
             {
@@ -115,11 +117,13 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
             var response = await _daprClient.InvokeMethodAsync<TResponse>(
                 httpMethod,
                 serviceName,
                 methodPath,
                 cancellationToken);
+            #pragma warning restore CS0618
 
             if (_enableLogging)
             {
@@ -165,11 +169,13 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
             await _daprClient.InvokeMethodAsync(
                 httpMethod,
                 serviceName,
                 methodPath,
                 cancellationToken);
+            #pragma warning restore CS0618
 
             if (_enableLogging)
             {
@@ -254,11 +260,13 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
             var response = await _daprClient.InvokeMethodAsync<TResponse>(request, cancellationToken);
 
             if (_enableLogging)
             {
                 _logger.LogTrace("Successfully invoked service with custom request");
+            #pragma warning restore CS0618
             }
 
             return response;

@@ -187,7 +187,7 @@ public static class PermissionConstants
     public static string[] GetAllPermissions()
     {
         var permissions = new List<string>();
-        
+
         foreach (ModuleEnum module in Enum.GetValues<ModuleEnum>())
         {
             permissions.AddRange(GetModulePermissions(module));
@@ -202,7 +202,7 @@ public static class PermissionConstants
     /// <param name="module">The module</param>
     /// <param name="action">The action</param>
     /// <returns>Permission string in format "Module.Action"</returns>
-    public static string Create(ModuleEnum module, ActionEnum action) 
+    public static string Create(ModuleEnum module, ActionEnum action)
         => $"{module}.{action}";
 
     /// <summary>

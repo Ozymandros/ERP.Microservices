@@ -3,6 +3,9 @@ using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Crm.Application.Contracts.Services;
 
+/// <summary>
+/// Defines the contract for I Contact Service.
+/// </summary>
 public interface IContactService
 {
     Task<ContactDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);

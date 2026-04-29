@@ -41,7 +41,7 @@ public class PurchasingServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("purchasing-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
@@ -64,14 +64,14 @@ public class PurchasingServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("purchasing-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
         {
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
-        
+
         var order = new
         {
             SupplierId = Guid.NewGuid(),
@@ -106,7 +106,7 @@ public class PurchasingServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("purchasing-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
@@ -129,14 +129,14 @@ public class PurchasingServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("purchasing-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
         {
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
-        
+
         var supplier = new
         {
             Name = "Test Supplier",
@@ -171,14 +171,14 @@ public class PurchasingServiceTests
         var notifier = app.Services.GetRequiredService<ResourceNotificationService>();
         await notifier.WaitForResourceAsync("purchasing-service", KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
-        
+
         var client = app.CreateHttpClient("gateway");
         var token = await GetAuthTokenAsync(client);
         if (token != null)
         {
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
-        
+
         // Create a purchase order first
         var newOrder = new
         {

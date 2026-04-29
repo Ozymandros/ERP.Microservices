@@ -61,7 +61,7 @@
       "dapr": {
         "application": "auth-service",
         "appId": "auth-service",
-        "appPort": 5001
+        "appPort": 6001
       }
     },
     "auth-service": {
@@ -88,7 +88,7 @@
           "scheme": "http",
           "protocol": "tcp",
           "transport": "http",
-          "targetPort": 5001
+          "targetPort": 6001
         }
       }
     },
@@ -97,7 +97,7 @@
       "dapr": {
         "application": "billing-service",
         "appId": "billing-service",
-        "appPort": 5002
+        "appPort": 6002
       }
     },
     "billing-service": {
@@ -124,7 +124,7 @@
           "scheme": "http",
           "protocol": "tcp",
           "transport": "http",
-          "targetPort": 5002
+          "targetPort": 6002
         }
       }
     },
@@ -133,7 +133,7 @@
       "dapr": {
         "application": "inventory-service",
         "appId": "inventory-service",
-        "appPort": 5003
+        "appPort": 6003
       }
     },
     "inventory-service": {
@@ -160,7 +160,7 @@
           "scheme": "http",
           "protocol": "tcp",
           "transport": "http",
-          "targetPort": 5003
+          "targetPort": 6003
         }
       }
     },
@@ -169,7 +169,7 @@
       "dapr": {
         "application": "orders-service",
         "appId": "orders-service",
-        "appPort": 5004
+        "appPort": 6004
       }
     },
     "orders-service": {
@@ -196,7 +196,7 @@
           "scheme": "http",
           "protocol": "tcp",
           "transport": "http",
-          "targetPort": 5004
+          "targetPort": 6004
         }
       }
     },
@@ -205,7 +205,7 @@
       "dapr": {
         "application": "purchasing-service",
         "appId": "purchasing-service",
-        "appPort": 5005
+        "appPort": 6005
       }
     },
     "purchasing-service": {
@@ -232,7 +232,7 @@
           "scheme": "http",
           "protocol": "tcp",
           "transport": "http",
-          "targetPort": 5005
+          "targetPort": 6005
         }
       }
     },
@@ -241,7 +241,7 @@
       "dapr": {
         "application": "sales-service",
         "appId": "sales-service",
-        "appPort": 5006
+        "appPort": 6006
       }
     },
     "sales-service": {
@@ -268,7 +268,7 @@
           "scheme": "http",
           "protocol": "tcp",
           "transport": "http",
-          "targetPort": 5006
+          "targetPort": 6006
         }
       }
     },

@@ -119,11 +119,11 @@ public class PdfExportExtensionsTests
         // Arrange
         var items = new List<TestItem>
         {
-            new TestItem 
-            { 
-                Id = 1, 
-                Name = "Complex Item", 
-                Price = 1234.56m, 
+            new TestItem
+            {
+                Id = 1,
+                Name = "Complex Item",
+                Price = 1234.56m,
                 CreatedAt = new DateTime(2024, 1, 1, 12, 30, 45),
                 IsActive = true
             }

@@ -4,8 +4,12 @@ using MyApp.Crm.Domain.Notes;
 
 namespace MyApp.Crm.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Note Configuration functionality.
+/// </summary>
 public class NoteConfiguration : IEntityTypeConfiguration<Note>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<Note> builder)
     {
         builder.ToTable("Notes");
