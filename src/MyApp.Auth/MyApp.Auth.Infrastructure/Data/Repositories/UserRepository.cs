@@ -5,15 +5,20 @@ using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Auth.Infrastructure.Data.Repositories;
 
+/// <summary>
+/// Provides User Repository functionality.
+/// </summary>
 public class UserRepository : Repository<ApplicationUser, Guid>, IUserRepository
 {
     private readonly AuthDbContext _context;
 
+    /// <summary>base.</summary>
     public UserRepository(AuthDbContext context) : base(context)
     {
         _context = context;
     }
 
+    /// <summary>Get By Email Async.</summary>
     public async Task<ApplicationUser?> GetByEmailAsync(string email)
     {
         return await _context.Users
@@ -22,6 +27,7 @@ public class UserRepository : Repository<ApplicationUser, Guid>, IUserRepository
             .FirstOrDefaultAsync(u => u.Email == email);
     }
 
+    /// <summary>Get By External Id Async.</summary>
     public async Task<ApplicationUser?> GetByExternalIdAsync(string externalProvider, string externalId)
     {
         return await _context.Users
@@ -29,6 +35,7 @@ public class UserRepository : Repository<ApplicationUser, Guid>, IUserRepository
             .FirstOrDefaultAsync(u => u.ExternalProvider == externalProvider && u.ExternalId == externalId);
     }
 
+    /// <summary>Get By Role Async.</summary>
     public async Task<IEnumerable<ApplicationUser>> GetByRoleAsync(string roleName)
     {
         var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
@@ -41,6 +48,7 @@ public class UserRepository : Repository<ApplicationUser, Guid>, IUserRepository
             .ToListAsync();
     }
 
+    /// <summary>Email Exists Async.</summary>
     public async Task<bool> EmailExistsAsync(string email)
     {
         return await _context.Users.AnyAsync(u => u.Email == email);

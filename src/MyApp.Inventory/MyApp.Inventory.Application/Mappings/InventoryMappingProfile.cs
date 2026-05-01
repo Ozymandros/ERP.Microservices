@@ -4,6 +4,9 @@ using MyApp.Inventory.Domain.Entities;
 
 namespace MyApp.Inventory.Application.Mappings;
 
+/// <summary>
+/// Provides Inventory Mapping Profile functionality.
+/// </summary>
 public class InventoryMappingProfile : Profile
 {
     public InventoryMappingProfile()

@@ -6,6 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MyApp.SemanticKernel.Services;
 
+/// <summary>
+/// Orchestration service for the Semantic Kernel layer. Resolves plugin types at runtime and
+/// dispatches function calls to a registered <see cref="Kernel"/> instance when available,
+/// falling back to direct reflection-based invocation otherwise. Also exposes
+/// <see cref="RunPromptAsync"/> to send free-form prompts to the configured LLM provider.
+/// </summary>
 public class SemanticKernelService
 {
     private readonly IServiceProvider _provider;
@@ -14,6 +20,12 @@ public class SemanticKernelService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="SemanticKernelService"/>, attempting to resolve
+    /// a <see cref="Kernel"/> instance from the DI container for native SK invocation.
+    /// </summary>
+    /// <param name="provider">The application's DI service provider, used to resolve plugins and the Kernel.</param>
+    /// <param name="logger">Logger for diagnostic messages and invocation errors.</param>
     public SemanticKernelService(IServiceProvider provider, ILogger<SemanticKernelService> logger)
     {
         _provider = provider;
@@ -36,6 +48,21 @@ public class SemanticKernelService
         _configuration = provider.GetService<IConfiguration>() ?? throw new InvalidOperationException("IConfiguration not available");
     }
 
+    /// <summary>
+    /// Invokes a named function on a plugin by first attempting to use the <see cref="Kernel"/>
+    /// (if configured), then falling back to direct reflection-based method invocation.
+    /// </summary>
+    /// <param name="skill">
+    /// The plugin name, with or without the <c>Plugin</c> suffix (e.g. <c>"Orders"</c> or <c>"OrdersPlugin"</c>).
+    /// </param>
+    /// <param name="function">
+    /// The method name to invoke, with or without the <c>Async</c> suffix (e.g. <c>"Create"</c> or <c>"CreateAsync"</c>).
+    /// </param>
+    /// <param name="inputJson">JSON string forwarded as the plugin method's single input argument.</param>
+    /// <returns>JSON-serialized result returned by the plugin function.</returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the plugin type or function cannot be found, or when the method signature is unsupported.
+    /// </exception>
     public async Task<string> InvokePluginAsync(string skill, string function, string inputJson)
     {
         if (string.IsNullOrWhiteSpace(skill)) throw new ArgumentException("skill required", nameof(skill));
@@ -184,6 +211,15 @@ public class SemanticKernelService
         return resultObj != null ? System.Text.Json.JsonSerializer.Serialize(resultObj) : string.Empty;
     }
 
+    /// <summary>
+    /// Runs a free-form natural-language prompt through the configured LLM provider via the Kernel.
+    /// Requires an LLM backend (e.g. DeepSeek, Azure OpenAI) to be registered in the Kernel.
+    /// </summary>
+    /// <param name="prompt">The natural-language prompt to send to the LLM.</param>
+    /// <returns>The LLM's response as a plain string.</returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when no Kernel or LLM provider is configured, or when the Kernel invocation fails.
+    /// </exception>
     public async Task<string> RunPromptAsync(string prompt)
     {
         // If kernel with AI services is available, use it. Otherwise, try a simple HTTP call to OpenAI-compatible API

@@ -8,6 +8,9 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Inventory.Application.Contracts.Services;
 
+/// <summary>
+/// Defines the contract for I Warehouse Service.
+/// </summary>
 public interface IWarehouseService
 {
     Task<WarehouseDto?> GetWarehouseByIdAsync(Guid id);

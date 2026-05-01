@@ -4,8 +4,12 @@ using MyApp.Inventory.Domain.Entities;
 
 namespace MyApp.Inventory.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Inventory Transaction Configuration functionality.
+/// </summary>
 public class InventoryTransactionConfiguration : IEntityTypeConfiguration<InventoryTransaction>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<InventoryTransaction> builder)
     {
         builder.HasKey(x => x.Id);

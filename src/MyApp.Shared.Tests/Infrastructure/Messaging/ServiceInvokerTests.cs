@@ -497,9 +497,11 @@ public class ServiceInvokerTests
         var expectedResponse = new TestResponse { Result = "Success" };
 
         _mockDaprClient
+#pragma warning disable CS0618 // Dapr InvokeMethodAsync(HttpRequestMessage) is obsolete but tested intentionally
             .Setup(c => c.InvokeMethodAsync<TestResponse>(
                 request,
                 It.IsAny<CancellationToken>()))
+#pragma warning restore CS0618
             .ReturnsAsync(expectedResponse);
 
         // Act
@@ -526,9 +528,11 @@ public class ServiceInvokerTests
         var exception = new Exception("Dapr error");
 
         _mockDaprClient
+#pragma warning disable CS0618 // Dapr InvokeMethodAsync(HttpRequestMessage) is obsolete but tested intentionally
             .Setup(c => c.InvokeMethodAsync<TestResponse>(
                 request,
                 It.IsAny<CancellationToken>()))
+#pragma warning restore CS0618
             .ThrowsAsync(exception);
 
         // Act & Assert
@@ -574,9 +578,11 @@ public class ServiceInvokerTests
         var expectedResponse = new TestResponse { Result = "Success" };
 
         _mockDaprClient
+#pragma warning disable CS0618 // Dapr InvokeMethodAsync(HttpRequestMessage) is obsolete but tested intentionally
             .Setup(c => c.InvokeMethodAsync<TestResponse>(
                 request,
                 It.IsAny<CancellationToken>()))
+#pragma warning restore CS0618
             .ReturnsAsync(expectedResponse);
 
         // Act

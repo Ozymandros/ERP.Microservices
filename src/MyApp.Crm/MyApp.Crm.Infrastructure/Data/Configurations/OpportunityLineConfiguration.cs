@@ -4,8 +4,12 @@ using MyApp.Crm.Domain.Opportunities;
 
 namespace MyApp.Crm.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Opportunity Line Configuration functionality.
+/// </summary>
 public sealed class OpportunityLineConfiguration : IEntityTypeConfiguration<OpportunityLine>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<OpportunityLine> builder)
     {
         builder.ToTable("OpportunityLines");

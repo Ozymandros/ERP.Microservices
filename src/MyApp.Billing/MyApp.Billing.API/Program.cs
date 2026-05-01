@@ -1,59 +1,35 @@
+using MyApp.Billing.Application.Contracts.Services;
+using MyApp.Billing.Application.Mapping;
+using MyApp.Billing.Application.Services;
+using MyApp.Billing.Domain.Repositories;
+using MyApp.Billing.Infrastructure.Persistence;
+using MyApp.Billing.Infrastructure.Repositories;
 using MyApp.Shared.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ============================================================================
-// Service Defaults Configuration
-// ============================================================================
+builder.AddRedisDistributedCache("cache");
+
 builder.AddServiceDefaults(new MicroserviceConfigurationOptions
 {
     ServiceName = "MyApp.Billing.API",
-    EnableHealthChecks = true, // TODO: Enable when database is configured
-    EnableRedisCache = false, // TODO: Enable when needed
-    EnableAutoMapper = false, // No domain logic yet
-    DbContextType = null, // TODO: Add when billing database is implemented
-    // ConnectionStringKey will be null (no database yet)
+    ConnectionStringKey = "billingdb",
+    DbContextType = typeof(BillingDbContext),
+    AutoMapperAssembly = typeof(BillingMappingProfile).Assembly,
     ConfigureServiceDependencies = services =>
     {
-        // TODO: Add billing-specific repositories and services here
-        // services.AddScoped<IBillingRepository, BillingRepository>();
-        // services.AddScoped<IBillingService, BillingService>();
+        // Register repositories
+        services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddScoped<ICreditNoteRepository, CreditNoteRepository>();
+
+        // Register application services
+        services.AddScoped<IInvoiceService, InvoiceService>();
     }
 });
 
 var app = builder.Build();
 
-// ============================================================================
-// Service Defaults Pipeline
-// ============================================================================
-// Options are automatically reused from AddServiceDefaults via DI.
 app.UseServiceDefaults();
 
-// ============================================================================
-// Temporary: Weather forecast endpoint (TODO: Remove when billing endpoints added)
-// ============================================================================
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

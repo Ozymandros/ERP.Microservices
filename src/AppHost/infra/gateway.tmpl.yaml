@@ -36,6 +36,8 @@ properties:
             value: http://auth-service
           - name: REVERSEPROXY__CLUSTERS__cluster_billing-service__DESTINATIONS__destination1__ADDRESS
             value: http://billing-service
+          - name: REVERSEPROXY__CLUSTERS__cluster_crm-service__DESTINATIONS__destination1__ADDRESS
+            value: http://crm-service
           - name: REVERSEPROXY__CLUSTERS__cluster_inventory-service__DESTINATIONS__destination1__ADDRESS
             value: http://inventory-service
           - name: REVERSEPROXY__CLUSTERS__cluster_orders-service__DESTINATIONS__destination1__ADDRESS
@@ -65,25 +67,31 @@ properties:
           - name: REVERSEPROXY__ROUTES__route4__MATCH__PATH
             value: /api/billing/{**catch-all}
           - name: REVERSEPROXY__ROUTES__route5__CLUSTERID
-            value: cluster_inventory-service
+            value: cluster_crm-service
           - name: REVERSEPROXY__ROUTES__route5__MATCH__PATH
-            value: /api/inventory/{**catch-all}
+            value: /api/crm/{**catch-all}
           - name: REVERSEPROXY__ROUTES__route6__CLUSTERID
-            value: cluster_orders-service
+            value: cluster_inventory-service
           - name: REVERSEPROXY__ROUTES__route6__MATCH__PATH
-            value: /api/orders/{**catch-all}
+            value: /api/inventory/{**catch-all}
           - name: REVERSEPROXY__ROUTES__route7__CLUSTERID
-            value: cluster_purchasing-service
+            value: cluster_orders-service
           - name: REVERSEPROXY__ROUTES__route7__MATCH__PATH
-            value: /api/purchasing/{**catch-all}
+            value: /api/orders/{**catch-all}
           - name: REVERSEPROXY__ROUTES__route8__CLUSTERID
-            value: cluster_sales-service
+            value: cluster_purchasing-service
           - name: REVERSEPROXY__ROUTES__route8__MATCH__PATH
+            value: /api/purchasing/{**catch-all}
+          - name: REVERSEPROXY__ROUTES__route9__CLUSTERID
+            value: cluster_sales-service
+          - name: REVERSEPROXY__ROUTES__route9__MATCH__PATH
             value: /api/sales/{**catch-all}
           - name: services__auth-service__http__0
             value: http://auth-service.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
           - name: services__billing-service__http__0
             value: http://billing-service.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: services__crm-service__http__0
+            value: http://crm-service.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
           - name: services__inventory-service__http__0
             value: http://inventory-service.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
           - name: services__orders-service__http__0

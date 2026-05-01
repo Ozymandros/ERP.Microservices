@@ -1,0 +1,293 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.39.26.7824",
+      "templateHash": "6986775172119383455"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for App Configuration resource"
+      }
+    },
+    "environmentName": {
+      "type": "string",
+      "defaultValue": "Production",
+      "metadata": {
+        "description": "Environment name (dev, staging, prod)"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "metadata": {
+        "description": "Resource tags"
+      }
+    },
+    "appConfigName": {
+      "type": "string",
+      "metadata": {
+        "description": "App Configuration resource name"
+      }
+    },
+    "keyVaultName": {
+      "type": "string",
+      "metadata": {
+        "description": "Key Vault name for secret references"
+      }
+    },
+    "jwtIssuer": {
+      "type": "string",
+      "metadata": {
+        "description": "JWT Issuer value"
+      }
+    },
+    "jwtAudience": {
+      "type": "string",
+      "metadata": {
+        "description": "JWT Audience value"
+      }
+    },
+    "frontendOrigin": {
+      "type": "string",
+      "metadata": {
+        "description": "Frontend origin for CORS"
+      }
+    },
+    "aspnetcoreEnvironment": {
+      "type": "string",
+      "metadata": {
+        "description": "ASP.NET Core environment"
+      }
+    }
+  },
+  "variables": {
+    "keyVaultUri": "[format('https://{0}.{1}', parameters('keyVaultName'), environment().suffixes.keyvaultDns)]"
+  },
+  "resources": {
+    "appConfig": {
+      "type": "Microsoft.AppConfiguration/configurationStores",
+      "apiVersion": "2023-03-01",
+      "name": "[parameters('appConfigName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "free"
+      },
+      "tags": "[union(parameters('tags'), createObject('environment-name', parameters('environmentName')))]",
+      "identity": {
+        "type": "SystemAssigned"
+      }
+    },
+    "jwtIssuerSetting": {
+      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}/{1}', parameters('appConfigName'), 'Jwt:Issuer')]",
+      "properties": {
+        "value": "[parameters('jwtIssuer')]",
+        "contentType": "application/json"
+      },
+      "dependsOn": [
+        "appConfig"
+      ]
+    },
+    "jwtAudienceSetting": {
+      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}/{1}', parameters('appConfigName'), 'Jwt:Audience')]",
+      "properties": {
+        "value": "[parameters('jwtAudience')]",
+        "contentType": "application/json"
+      },
+      "dependsOn": [
+        "appConfig"
+      ]
+    },
+    "frontendOriginSetting": {
+      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}/{1}', parameters('appConfigName'), 'Frontend:Origin')]",
+      "properties": {
+        "value": "[parameters('frontendOrigin')]",
+        "contentType": "application/json"
+      },
+      "dependsOn": [
+        "appConfig"
+      ]
+    },
+    "jwtSecretKeyRef": {
+      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}/{1}', parameters('appConfigName'), 'Jwt:SecretKey')]",
+      "properties": {
+        "value": "[format('{{\"uri\":\"{0}/secrets/jwt-secret-key\"}}', variables('keyVaultUri'))]",
+        "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+      },
+      "dependsOn": [
+        "appConfig"
+      ]
+    },
+    "redisCacheSetting": {
+      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}/{1}', parameters('appConfigName'), 'ConnectionStrings:cache')]",
+      "properties": {
+        "value": "[format('{{\"uri\":\"{0}/secrets/redis-connection\"}}', variables('keyVaultUri'))]",
+        "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+      },
+      "dependsOn": [
+        "appConfig"
+      ]
+    },
+    "daprStateStoreSetting": {
+      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}/{1}', parameters('appConfigName'), 'Dapr:StateStore')]",
+      "properties": {
+        "value": "statestore",
+        "contentType": "application/json"
+      },
+      "dependsOn": [
+        "appConfig"
+      ]
+    },
+    "daprPubSubSetting": {
+      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}/{1}', parameters('appConfigName'), 'Dapr:PubSub')]",
+      "properties": {
+        "value": "pubsub",
+        "contentType": "application/json"
+      },
+      "dependsOn": [
+        "appConfig"
+      ]
+    },
+    "cacheConnectionSetting": {
+      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}/{1}', parameters('appConfigName'), 'ConnectionStrings:Redis')]",
+      "properties": {
+        "value": "[format('{{\"uri\":\"{0}/secrets/redis-connection\"}}', variables('keyVaultUri'))]",
+        "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+      },
+      "dependsOn": [
+        "appConfig"
+      ]
+    },
+    "sqlAuthDbRef": {
+      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}/{1}', parameters('appConfigName'), 'ConnectionStrings:AuthDb')]",
+      "properties": {
+        "value": "[format('{{\"uri\":\"{0}/secrets/sql-connection-authdb\"}}', variables('keyVaultUri'))]",
+        "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+      },
+      "dependsOn": [
+        "appConfig"
+      ]
+    },
+    "sqlBillingDbRef": {
+      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}/{1}', parameters('appConfigName'), 'ConnectionStrings:BillingDb')]",
+      "properties": {
+        "value": "[format('{{\"uri\":\"{0}/secrets/sql-connection-billingdb\"}}', variables('keyVaultUri'))]",
+        "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+      },
+      "dependsOn": [
+        "appConfig"
+      ]
+    },
+    "sqlInventoryDbRef": {
+      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}/{1}', parameters('appConfigName'), 'ConnectionStrings:InventoryDb')]",
+      "properties": {
+        "value": "[format('{{\"uri\":\"{0}/secrets/sql-connection-inventorydb\"}}', variables('keyVaultUri'))]",
+        "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+      },
+      "dependsOn": [
+        "appConfig"
+      ]
+    },
+    "sqlOrdersDbRef": {
+      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}/{1}', parameters('appConfigName'), 'ConnectionStrings:OrdersDb')]",
+      "properties": {
+        "value": "[format('{{\"uri\":\"{0}/secrets/sql-connection-ordersdb\"}}', variables('keyVaultUri'))]",
+        "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+      },
+      "dependsOn": [
+        "appConfig"
+      ]
+    },
+    "sqlPurchasingDbRef": {
+      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}/{1}', parameters('appConfigName'), 'ConnectionStrings:PurchasingDb')]",
+      "properties": {
+        "value": "[format('{{\"uri\":\"{0}/secrets/sql-connection-purchasingdb\"}}', variables('keyVaultUri'))]",
+        "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+      },
+      "dependsOn": [
+        "appConfig"
+      ]
+    },
+    "sqlSalesDbRef": {
+      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}/{1}', parameters('appConfigName'), 'ConnectionStrings:SalesDb')]",
+      "properties": {
+        "value": "[format('{{\"uri\":\"{0}/secrets/sql-connection-salesdb\"}}', variables('keyVaultUri'))]",
+        "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+      },
+      "dependsOn": [
+        "appConfig"
+      ]
+    }
+  },
+  "outputs": {
+    "appConfigEndpoint": {
+      "type": "string",
+      "metadata": {
+        "description": "Endpoint URL for App Configuration"
+      },
+      "value": "[reference('appConfig').endpoint]"
+    },
+    "appConfigName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of App Configuration resource"
+      },
+      "value": "[parameters('appConfigName')]"
+    },
+    "appConfigResourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource ID of App Configuration"
+      },
+      "value": "[resourceId('Microsoft.AppConfiguration/configurationStores', parameters('appConfigName'))]"
+    },
+    "appConfigPrincipalId": {
+      "type": "string",
+      "metadata": {
+        "description": "Managed identity principal ID for RBAC"
+      },
+      "value": "[reference('appConfig', '2023-03-01', 'full').identity.principalId]"
+    },
+    "appConfigConnectionString": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Connection string for App Configuration - marked as secure"
+      },
+      "value": "[listKeys('appConfig', '2023-03-01').value[0].connectionString]"
+    }
+  }
+}

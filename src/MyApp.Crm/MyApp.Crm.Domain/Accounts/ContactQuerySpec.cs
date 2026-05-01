@@ -3,8 +3,10 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Crm.Domain.Accounts;
 
+/// <summary>Specification for querying and filtering contacts.</summary>
 public sealed class ContactQuerySpec : BaseSpecification<Contact>
 {
+    /// <summary>Initializes a new instance of the ContactQuerySpec class.</summary>
     public ContactQuerySpec(QuerySpec query) : base(query)
     {
     }

@@ -85,17 +85,8 @@ static Kernel AddSemanticKernel(WebApplicationBuilder builder)
         }
         else
         {
-            // If a custom API base is provided (OpenAI-compatible), use the overload that accepts base url if available.
-            // Many SK versions support AddOpenAIChatCompletion(model, apiKey, apiBase)
-            try
-            {
-                kernelBuilder.AddOpenAIChatCompletion(model, deepseekKey, apiUrl);
-            }
-            catch
-            {
-                // Fallback to registering without base URL if overload not available
-                kernelBuilder.AddOpenAIChatCompletion(model, deepseekKey);
-            }
+            // Custom OpenAI-compatible endpoint (e.g. DeepSeek, Azure, local LLM)
+            kernelBuilder.AddOpenAIChatCompletion(model, new Uri(apiUrl), deepseekKey);
         }
     }
 

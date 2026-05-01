@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MyApp.Shared.Infrastructure.Export
 {
+    /// <summary>
+    /// Provides Base Export Controller functionality.
+    /// </summary>
     public abstract class BaseExportController : ControllerBase
     {
 

@@ -4,8 +4,12 @@ using MyApp.Sales.Domain.Entities;
 
 namespace MyApp.Sales.Infrastructure.Data.Configurations
 {
+    /// <summary>
+    /// Provides Customer Configuration functionality.
+    /// </summary>
     public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
     {
+        /// <summary>Configure.</summary>
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
             builder.ToTable("Customers");

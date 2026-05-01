@@ -3,16 +3,28 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
+/// <summary>
+/// Represents the Product Dto data record.
+/// </summary>
 public record ProductDto(Guid Id) : AuditableGuidDto(Id)
 {
+    /// <summary>Gets or sets S K U.</summary>
     public string SKU { get; init; } = string.Empty;
+    /// <summary>Gets or sets Name.</summary>
     public string Name { get; init; } = string.Empty;
+    /// <summary>Gets or sets Description.</summary>
     public string Description { get; init; } = string.Empty;
+    /// <summary>Gets or sets Unit Price.</summary>
     public decimal UnitPrice { get; init; } = 0;
+    /// <summary>Gets or sets Quantity In Stock.</summary>
     public int QuantityInStock { get; init; } = 0;
+    /// <summary>Gets or sets Reorder Level.</summary>
     public int ReorderLevel { get; init; } = 0;
 }
 
+/// <summary>
+/// Represents the Create Update Product Dto data record.
+/// </summary>
 public record CreateUpdateProductDto(
     [Required(ErrorMessage = "SKU is required")]
     [StringLength(64, MinimumLength = 1)]

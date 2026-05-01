@@ -103,6 +103,7 @@ if ($Verify -or ($SkipBuild -eq $false -and $SkipDeploy -eq $false)) {
     $Services = @(
         'auth-service',
         'billing-service',
+        'crm-service',
         'inventory-service',
         'orders-service',
         'purchasing-service',

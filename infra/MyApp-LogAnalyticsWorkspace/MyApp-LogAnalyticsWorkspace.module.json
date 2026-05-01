@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.39.26.7824",
+      "templateHash": "824658379986200835"
+    }
+  },
+  "parameters": {
+    "logAnalyticsWorkspaceName": {
+      "type": "string",
+      "defaultValue": "[format('law-{0}', uniqueString(resourceGroup().id))]",
+      "metadata": {
+        "description": "Log Analytics workspace name. Defaults to the shared workspace provisioned in resources.bicep."
+      }
+    }
+  },
+  "resources": [],
+  "outputs": {
+    "logAnalyticsWorkspaceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]"
+    },
+    "name": {
+      "type": "string",
+      "value": "[parameters('logAnalyticsWorkspaceName')]"
+    }
+  }
+}

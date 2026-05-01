@@ -5,8 +5,12 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace MyApp.Shared.Infrastructure.Export
 {
+    /// <summary>
+    /// Provides Xlsx Export Extensions functionality.
+    /// </summary>
     public static class XlsxExportExtensions
     {
+        /// <summary>Export To Xlsx.</summary>
         public static byte[] ExportToXlsx<T>(this IEnumerable<T> items)
         {
             var itemList = items.ToList();

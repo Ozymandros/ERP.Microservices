@@ -9,6 +9,9 @@ using MyApp.Shared.Infrastructure.Extensions;
 
 namespace MyApp.Crm.API.Controllers;
 
+/// <summary>
+/// Provides Leads Controller functionality.
+/// </summary>
 [ApiController]
 [Authorize]
 [Route("api/crm/leads")]
@@ -17,12 +20,14 @@ public class LeadsController : ControllerBase
     private readonly ILeadService _leadService;
     private readonly ILogger<LeadsController> _logger;
 
+    /// <summary>I Logger.</summary>
     public LeadsController(ILeadService leadService, ILogger<LeadsController> logger)
     {
         _leadService = leadService;
         _logger = logger;
     }
 
+    /// <summary>Get All.</summary>
     [HttpGet]
     [HasPermission("CRM", "Read")]
     [ProducesResponseType(typeof(IEnumerable<LeadDto>), StatusCodes.Status200OK)]
@@ -55,6 +60,7 @@ public class LeadsController : ControllerBase
         }
     }
 
+    /// <summary>Get By Id.</summary>
     [HttpGet("{id:guid}")]
     [HasPermission("CRM", "Read")]
     [ProducesResponseType(typeof(LeadDto), StatusCodes.Status200OK)]
@@ -65,6 +71,7 @@ public class LeadsController : ControllerBase
         return lead is null ? NotFound(new { message = $"Lead with ID {id} not found." }) : Ok(lead);
     }
 
+    /// <summary>Create.</summary>
     [HttpPost]
     [HasPermission("CRM", "Create")]
     [ProducesResponseType(typeof(LeadDto), StatusCodes.Status201Created)]
@@ -76,6 +83,7 @@ public class LeadsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
+    /// <summary>Update.</summary>
     [HttpPut("{id:guid}")]
     [HasPermission("CRM", "Update")]
     [ProducesResponseType(typeof(LeadDto), StatusCodes.Status200OK)]
@@ -93,6 +101,7 @@ public class LeadsController : ControllerBase
         }
     }
 
+    /// <summary>Qualify.</summary>
     [HttpPost("{id:guid}/qualify")]
     [HasPermission("CRM", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -110,6 +119,7 @@ public class LeadsController : ControllerBase
         }
     }
 
+    /// <summary>Delete.</summary>
     [HttpDelete("{id:guid}")]
     [HasPermission("CRM", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

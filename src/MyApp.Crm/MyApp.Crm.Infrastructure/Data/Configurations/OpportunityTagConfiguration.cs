@@ -5,8 +5,12 @@ using MyApp.Crm.Domain.Tags;
 
 namespace MyApp.Crm.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Opportunity Tag Configuration functionality.
+/// </summary>
 public class OpportunityTagConfiguration : IEntityTypeConfiguration<OpportunityTag>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<OpportunityTag> builder)
     {
         builder.ToTable("OpportunityTags");

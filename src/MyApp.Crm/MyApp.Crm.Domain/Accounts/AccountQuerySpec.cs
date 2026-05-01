@@ -3,8 +3,10 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Crm.Domain.Accounts;
 
+/// <summary>Specification for querying and filtering accounts.</summary>
 public sealed class AccountQuerySpec : BaseSpecification<Account>
 {
+    /// <summary>Initializes a new instance of the AccountQuerySpec class.</summary>
     public AccountQuerySpec(QuerySpec query) : base(query)
     {
     }

@@ -8,12 +8,16 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Crm.Application.Services;
 
+/// <summary>
+/// Provides Account Service functionality.
+/// </summary>
 public sealed class AccountService : IAccountService
 {
     private readonly IAccountRepository _repository;
     private readonly IMapper _mapper;
     private readonly ILogger<AccountService> _logger;
 
+    /// <summary>I Logger.</summary>
     public AccountService(IAccountRepository repository, IMapper mapper, ILogger<AccountService> logger)
     {
         _repository = repository;
@@ -21,24 +25,28 @@ public sealed class AccountService : IAccountService
         _logger = logger;
     }
 
+    /// <summary>Get By Id Async.</summary>
     public async Task<AccountDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
         return entity is null ? null : _mapper.Map<AccountDto>(entity);
     }
 
+    /// <summary>Get By Customer Id Async.</summary>
     public async Task<AccountDto?> GetByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByCustomerIdAsync(customerId, cancellationToken);
         return entity is null ? null : _mapper.Map<AccountDto>(entity);
     }
 
+    /// <summary>List Async.</summary>
     public async Task<IEnumerable<AccountDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         var list = await _repository.ListAsync(cancellationToken);
         return _mapper.Map<IEnumerable<AccountDto>>(list);
     }
 
+    /// <summary>Query Async.</summary>
     public async Task<PaginatedResult<AccountDto>> QueryAsync(QuerySpec query, CancellationToken cancellationToken = default)
     {
         var spec = new AccountQuerySpec(query);
@@ -47,6 +55,7 @@ public sealed class AccountService : IAccountService
         return new PaginatedResult<AccountDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }
 
+    /// <summary>Upsert From Sales Async.</summary>
     public async Task<AccountDto> UpsertFromSalesAsync(UpsertAccountDto dto, CancellationToken cancellationToken = default)
     {
         if (dto.CustomerId == Guid.Empty) throw new ArgumentException("CustomerId is required.", nameof(dto.CustomerId));
@@ -68,6 +77,7 @@ public sealed class AccountService : IAccountService
         return _mapper.Map<AccountDto>(entity);
     }
 
+    /// <summary>Update Owner Async.</summary>
     public async Task<AccountDto> UpdateOwnerAsync(Guid id, UpdateAccountOwnerDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);

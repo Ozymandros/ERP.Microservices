@@ -9,6 +9,9 @@ using MyApp.Orders.Infrastructure.Data;
 
 namespace MyApp.Orders.Infrastructure.Repositories
 {
+    /// <summary>
+    /// Provides Order Line Repository functionality.
+    /// </summary>
     public class OrderLineRepository : IOrderLineRepository
     {
         private readonly OrdersDbContext _db;
@@ -18,12 +21,14 @@ namespace MyApp.Orders.Infrastructure.Repositories
             _db = db;
         }
 
+        /// <summary>Add Async.</summary>
         public async Task AddAsync(OrderLine entity)
         {
             await _db.OrderLines.AddAsync(entity);
             await _db.SaveChangesAsync();
         }
 
+        /// <summary>Delete Async.</summary>
         public async Task DeleteAsync(Guid id)
         {
             var existing = await _db.OrderLines.FindAsync(id);
@@ -34,16 +39,19 @@ namespace MyApp.Orders.Infrastructure.Repositories
             }
         }
 
+        /// <summary>Get By Id Async.</summary>
         public async Task<OrderLine?> GetByIdAsync(Guid id)
         {
             return await _db.OrderLines.FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        /// <summary>List Async.</summary>
         public async Task<IEnumerable<OrderLine>> ListAsync()
         {
             return await _db.OrderLines.ToListAsync();
         }
 
+        /// <summary>Update Async.</summary>
         public async Task UpdateAsync(OrderLine entity)
         {
             _db.OrderLines.Update(entity);

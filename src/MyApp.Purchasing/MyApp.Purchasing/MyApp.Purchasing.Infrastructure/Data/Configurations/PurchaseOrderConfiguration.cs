@@ -4,8 +4,12 @@ using MyApp.Purchasing.Domain.Entities;
 
 namespace MyApp.Purchasing.Infrastructure.Data.Configurations;
 
+/// <summary>
+/// Provides Purchase Order Configuration functionality.
+/// </summary>
 public class PurchaseOrderConfiguration : IEntityTypeConfiguration<PurchaseOrder>
 {
+    /// <summary>Configure.</summary>
     public void Configure(EntityTypeBuilder<PurchaseOrder> builder)
     {
         builder.HasKey(x => x.Id);

@@ -6,15 +6,20 @@ using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Sales.Infrastructure.Data.Repositories
 {
+    /// <summary>
+    /// Provides Sales Order Repository functionality.
+    /// </summary>
     public class SalesOrderRepository : Repository<SalesOrder, Guid>, ISalesOrderRepository
     {
         private readonly SalesDbContext _context;
 
+        /// <summary>base.</summary>
         public SalesOrderRepository(SalesDbContext context) : base(context)
         {
             _context = context;
         }
 
+        /// <summary>Get By Id Async.</summary>
         public override async Task<SalesOrder?> GetByIdAsync(Guid id)
         {
             return await _context.SalesOrders
@@ -23,6 +28,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
                 .FirstOrDefaultAsync(o => o.Id == id);
         }
 
+        /// <summary>List Async.</summary>
         public async Task<IEnumerable<SalesOrder>> ListAsync()
         {
             return await _context.SalesOrders
@@ -31,11 +37,13 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
                 .ToListAsync();
         }
 
+        /// <summary>Get All Async.</summary>
         public override async Task<IEnumerable<SalesOrder>> GetAllAsync()
         {
             return await ListAsync();
         }
 
+        /// <summary>Get All Paginated Async.</summary>
         public override async Task<PaginatedResult<SalesOrder>> GetAllPaginatedAsync(int pageNumber, int pageSize)
         {
             var paginationParams = new PaginationParams(pageNumber, pageSize);
@@ -52,6 +60,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
             return new PaginatedResult<SalesOrder>(items, paginationParams.PageNumber, paginationParams.PageSize, totalCount);
         }
 
+        /// <summary>Delete Async.</summary>
         public async Task DeleteAsync(Guid id)
         {
             var order = await _context.SalesOrders.FindAsync(id);

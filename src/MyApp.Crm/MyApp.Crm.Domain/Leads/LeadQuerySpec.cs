@@ -3,8 +3,10 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Crm.Domain.Leads;
 
+/// <summary>Specification for querying and filtering leads.</summary>
 public class LeadQuerySpec : BaseSpecification<Lead>
 {
+    /// <summary>Initializes a new instance of the LeadQuerySpec class.</summary>
     public LeadQuerySpec(QuerySpec query) : base(query)
     {
     }

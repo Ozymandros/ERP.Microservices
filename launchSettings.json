@@ -1,12 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "AppHost (Aspire)": {
-      "commandName": "Executable",
-      "executablePath": "dotnet",
-      "commandLineArgs": "run --project src/AppHost/AppHost.csproj --launch-profile https",
-      "workingDirectory": ".",
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:17001;http://localhost:15001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DOTNET_ENVIRONMENT": "Development"

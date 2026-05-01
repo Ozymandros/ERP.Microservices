@@ -5,8 +5,12 @@ using Serilog.Sinks.OpenTelemetry;
 
 namespace MyApp.Shared.Infrastructure.Logging;
 
+/// <summary>
+/// Provides Logging Extensions functionality.
+/// </summary>
 public static class LoggingExtensions
 {
+    /// <summary>Add Custom Logging.</summary>
     public static IHostApplicationBuilder AddCustomLogging(this IHostApplicationBuilder builder)
     {
         builder.Services.AddSerilog((services, loggerConfiguration) =>
