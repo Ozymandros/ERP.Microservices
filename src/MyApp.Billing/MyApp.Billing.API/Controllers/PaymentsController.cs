@@ -10,7 +10,7 @@ namespace MyApp.Billing.API.Controllers;
 /// <summary>
 /// Read-only access to payment records associated with invoices.
 /// </summary>
-[Route("api/[controller]")]
+[Route("api/billing/payments")]
 [Authorize]
 [ApiController]
 public class PaymentsController : ControllerBase

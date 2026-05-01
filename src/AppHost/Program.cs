@@ -59,25 +59,25 @@ var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "MyApp.Auth";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "MyApp.All";
 
 // Add projects - ports auto-increment
-var authService = projectBuilder.AddWebProject<Projects.MyApp_Auth_API>(redis, origin, isDeployment, applicationInsights);
+var authService = projectBuilder.AddWebProject<Projects.MyApp_Auth_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore);
 // Creates: AuthDB, auth-service, ports 6001, 3501, 46001, 9091
 
-var billingService = projectBuilder.AddWebProject<Projects.MyApp_Billing_API>(redis, origin, isDeployment, applicationInsights);
+var billingService = projectBuilder.AddWebProject<Projects.MyApp_Billing_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore);
 // Creates: BillingDB, billing-service, ports 6002, 3502, 45002, 9092
 
-var crmService = projectBuilder.AddWebProject<Projects.MyApp_Crm_API>(redis, origin, isDeployment, applicationInsights);
+var crmService = projectBuilder.AddWebProject<Projects.MyApp_Crm_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore);
 // Creates: CrmDB, crm-service, ports 6003, 3503, 45003, 9093
 
-var inventoryService = projectBuilder.AddWebProject<Projects.MyApp_Inventory_API>(redis, origin, isDeployment, applicationInsights);
+var inventoryService = projectBuilder.AddWebProject<Projects.MyApp_Inventory_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore);
 // Creates: InventoryDB, inventory-service, ports 6004, 3504, 45004, 9094
 
-var ordersService = projectBuilder.AddWebProject<Projects.MyApp_Orders_API>(redis, origin, isDeployment, applicationInsights);
+var ordersService = projectBuilder.AddWebProject<Projects.MyApp_Orders_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore);
 // Creates: OrderDB, orders-service, ports 6005, 3505, 45005, 9095
 
-var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_API>(redis, origin, isDeployment, applicationInsights);
+var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore);
 // Creates: PurchasingDB, purchasing-service, ports 6006, 3506, 45006, 9096
 
-var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment, applicationInsights);
+var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore);
 // Creates: SalesDB, sales-service, ports 6007, 3507, 45007, 9097
 
 var skService = projectBuilder.AddWebProject<Projects.MyApp_SemanticKernel>(redis, origin, isDeployment, applicationInsights, hasDatabase: false);

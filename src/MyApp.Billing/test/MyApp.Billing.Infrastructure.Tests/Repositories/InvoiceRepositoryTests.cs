@@ -22,9 +22,9 @@ public class InvoiceRepositoryTests
     // ─── factory helpers ──────────────────────────────────────────────────────
 
     private Invoice CreateDraftInvoice(Guid? customerId = null, Guid? orderId = null,
-        string currency = "USD", string invoiceNumber = "")
+        string currency = "USD", string invoiceNumber = "INV-TEST-DRAFT")
     {
-        var inv = new Invoice(Guid.NewGuid(), customerId ?? Guid.NewGuid(), currency);
+        var inv = new Invoice(Guid.NewGuid(), invoiceNumber, customerId ?? Guid.NewGuid(), currency);
         inv.AddLine("Widget", 2, 50m, 10m);
         _context.Invoices.Add(inv);
         _context.SaveChanges();
@@ -34,7 +34,7 @@ public class InvoiceRepositoryTests
     private Invoice CreateIssuedInvoice(Guid? customerId = null, Guid? orderId = null,
         string invoiceNumber = "INV-001", int dueDays = 30)
     {
-        var inv = new Invoice(Guid.NewGuid(), customerId ?? Guid.NewGuid(), "USD");
+        var inv = new Invoice(Guid.NewGuid(), $"INV-BYORDER-{Guid.NewGuid().ToString()[..8]}", customerId ?? Guid.NewGuid(), "USD");
         inv.AddLine("Widget", 2, 50m, 10m);
         inv.Issue(invoiceNumber, DateTime.UtcNow, dueDays);
         _context.Invoices.Add(inv);
@@ -139,13 +139,13 @@ public class InvoiceRepositoryTests
 
         // AuditableDbContext only overrides SaveChangesAsync; the helper calls the sync
         // variant, so CreatedAt stays at DateTime.MinValue unless we set it explicitly.
-        var inv1 = new Invoice(Guid.NewGuid(), customerId, "USD");
+        var inv1 = new Invoice(Guid.NewGuid(), "INV-ORDER-1", customerId, "USD");
         inv1.AddLine("Widget", 2, 50m, 10m);
         inv1.CreatedAt = DateTime.UtcNow.AddSeconds(-10);
         _context.Invoices.Add(inv1);
         _context.SaveChanges();
 
-        var inv2 = new Invoice(Guid.NewGuid(), customerId, "USD");
+        var inv2 = new Invoice(Guid.NewGuid(), "INV-ORDER-2", customerId, "USD");
         inv2.AddLine("Widget", 2, 50m, 10m);
         inv2.CreatedAt = DateTime.UtcNow;
         _context.Invoices.Add(inv2);
@@ -273,7 +273,7 @@ public class InvoiceRepositoryTests
     [Fact]
     public async Task AddAsync_PersistsInvoice()
     {
-        var inv = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "EUR");
+        var inv = new Invoice(Guid.NewGuid(), $"INV-ADD-{Guid.NewGuid().ToString()[..8]}", Guid.NewGuid(), "EUR");
         inv.AddLine("Product A", 1, 100m, 10m);
 
         await _repository.AddAsync(inv);
@@ -286,7 +286,7 @@ public class InvoiceRepositoryTests
     [Fact]
     public async Task AddAsync_SetsAuditFields()
     {
-        var inv = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var inv = new Invoice(Guid.NewGuid(), $"INV-AUDIT-{Guid.NewGuid().ToString()[..8]}", Guid.NewGuid(), "USD");
         inv.AddLine("X", 1, 10m, 0m);
 
         await _repository.AddAsync(inv);
@@ -325,12 +325,34 @@ public class InvoiceRepositoryTests
         stored!.OutstandingAmount.Should().Be(gross - gross / 2);
     }
 
+    [Fact]
+    public async Task SaveChangesAsync_RecordPaymentGraph_PersistsNewPaymentWithoutManualStateFix()
+    {
+        // Arrange
+        var inv = CreateIssuedInvoice(invoiceNumber: "INV-SAVE-001");
+        var gross = inv.TotalGross;
+        inv.RecordPayment(10m, "Card", DateTime.UtcNow);
+
+        // Act
+        await _repository.SaveChangesAsync();
+
+        // Assert
+        var paymentCount = await _context.Payments.CountAsync(p => p.InvoiceId == inv.Id);
+        paymentCount.Should().Be(1);
+
+        var stored = await _context.Invoices.FindAsync(inv.Id);
+        stored!.OutstandingAmount.Should().Be(gross - 10m);
+    }
+
     // ─── DeleteAsync ──────────────────────────────────────────────────────────
 
     [Fact]
     public async Task DeleteAsync_RemovesInvoice()
     {
-        var inv = CreateDraftInvoice();
+        var inv = new Invoice(Guid.NewGuid(), $"INV-DEL-{Guid.NewGuid().ToString()[..8]}", Guid.NewGuid(), "USD");
+        inv.AddLine("Widget", 2, 50m, 10m);
+        _context.Invoices.Add(inv);
+        _context.SaveChanges();
 
         await _repository.DeleteAsync(inv);
 
@@ -346,7 +368,7 @@ public class InvoiceRepositoryTests
     /// </summary>
     private Invoice BuildInvoiceWithOrderId(Guid orderId)
     {
-        var inv = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var inv = new Invoice(Guid.NewGuid(), $"INV-ORDERID-{Guid.NewGuid().ToString()[..8]}", Guid.NewGuid(), "USD");
         inv.AddLine("Item", 1, 100m, 10m);
         _context.Invoices.Add(inv);
         _context.Entry(inv).Property(e => e.OrderId).CurrentValue = orderId;

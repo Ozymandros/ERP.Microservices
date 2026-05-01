@@ -7,8 +7,11 @@ namespace MyApp.Billing.Domain.Entities;
 /// </summary>
 public class Invoice : AuditableEntity<Guid>
 {
-    public Invoice(Guid id, Guid customerId, string currency) : base(id)
+    public Invoice(Guid id, string invoiceNumber, Guid customerId, string currency) : base(id)
     {
+        // Keep materialization/read paths resilient (legacy data may contain empty values).
+        // Create/issue flows enforce strict invoice-number validation at application/domain write boundaries.
+        InvoiceNumber = invoiceNumber ?? string.Empty;
         CustomerId = customerId;
         Currency = currency;
         Status = InvoiceStatus.Draft;
@@ -17,7 +20,7 @@ public class Invoice : AuditableEntity<Guid>
     }
 
     // Basic info
-    public string InvoiceNumber { get; private set; } = string.Empty;
+    public string InvoiceNumber { get; private set; }
     public Guid CustomerId { get; private set; }
     public Guid? OrderId { get; private set; }
     public string Currency { get; private set; }
@@ -61,6 +64,9 @@ public class Invoice : AuditableEntity<Guid>
     {
         if (Status != InvoiceStatus.Draft)
             throw new InvalidOperationException("Only draft invoices can be issued.");
+
+        if (string.IsNullOrWhiteSpace(invoiceNumber))
+            throw new ArgumentException("InvoiceNumber must be a non-empty unique value.", nameof(invoiceNumber));
 
         if (Lines.Count == 0)
             throw new InvalidOperationException("Cannot issue invoice without lines.");
@@ -120,7 +126,7 @@ public class Invoice : AuditableEntity<Guid>
 
         var creditNote = new CreditNote(Guid.NewGuid(), Id, lines, reason);
         CreditNotes.Add(creditNote);
-        
+
         // Adjust outstanding amount
         foreach (var line in lines)
         {

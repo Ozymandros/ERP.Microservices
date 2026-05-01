@@ -11,7 +11,7 @@ namespace MyApp.Billing.API.Controllers;
 /// <summary>
 /// Read-only access to credit notes. Credit notes are created via POST /api/invoices/{id}/credit-notes.
 /// </summary>
-[Route("api/[controller]")]
+[Route("api/billing/credit-notes")]
 [Authorize]
 [ApiController]
 public class CreditNotesController : ControllerBase

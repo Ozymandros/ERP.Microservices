@@ -4,6 +4,7 @@ namespace MyApp.Billing.Application.Contracts.DTOs;
 /// DTO for creating an invoice from an order
 /// </summary>
 public record CreateInvoiceDto(
+    string InvoiceNumber, // Now required, not nullable
     Guid CustomerId,
     Guid? OrderId,
     string Currency,
