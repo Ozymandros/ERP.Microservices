@@ -12,6 +12,7 @@ public interface IInvoiceRepository : IRepository<Invoice, Guid>
     Task<List<Invoice>> GetByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default);
     Task<List<Invoice>> GetOpenInvoicesAsync(CancellationToken cancellationToken = default);
     Task<List<Invoice>> GetInvoicesByOrderIdAsync(Guid orderId, CancellationToken cancellationToken = default);
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }
 
 /// <summary>

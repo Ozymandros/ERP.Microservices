@@ -23,7 +23,7 @@ public class CreditNoteRepositoryTests
     /// <summary>Seeds a persisted issued invoice so credit notes can reference a valid FK.</summary>
     private Invoice SeedIssuedInvoice(string? invoiceNumber = null)
     {
-        var inv = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var inv = new Invoice(Guid.NewGuid(), $"INV-CN-{Guid.NewGuid().ToString()[..8]}", Guid.NewGuid(), "USD");
         inv.AddLine("Widget", 2, 100m, 10m);
         inv.Issue(invoiceNumber ?? $"INV-{Guid.NewGuid().ToString()[..8]}", DateTime.UtcNow, 30);
         _context.Invoices.Add(inv);

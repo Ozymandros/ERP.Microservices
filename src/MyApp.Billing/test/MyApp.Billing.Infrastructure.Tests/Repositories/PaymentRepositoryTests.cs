@@ -23,7 +23,7 @@ public class PaymentRepositoryTests
     /// <summary>Seeds a persisted invoice so payments can reference a valid FK.</summary>
     private Invoice SeedInvoice()
     {
-        var inv = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var inv = new Invoice(Guid.NewGuid(), $"INV-PAY-{Guid.NewGuid().ToString()[..8]}", Guid.NewGuid(), "USD");
         inv.AddLine("Widget", 1, 100m, 10m);
         inv.Issue($"INV-{Guid.NewGuid().ToString()[..8]}", DateTime.UtcNow, 30);
         _context.Invoices.Add(inv);
@@ -97,7 +97,7 @@ public class PaymentRepositoryTests
     {
         var inv = SeedInvoice();
         var earlier = DateTime.UtcNow.AddDays(-2);
-        var later   = DateTime.UtcNow.AddDays(-1);
+        var later = DateTime.UtcNow.AddDays(-1);
 
         AddPayment(inv.Id, 20m, paidAt: earlier);
         await Task.Delay(5);
