@@ -1,0 +1,150 @@
+{
+  "name": "CollectionsAgent",
+  "domain": "Account Receivables & Collections",
+  "version": "1.0.0",
+  "description": "AR collections specialist skill - identifies overdue invoices, checks customer payment history, drafts collection reminders, and manages collections workflow",
+  "author": "Ozymandros AI Engineering",
+  "tags": ["collections", "accounts-receivable", "billing", "credit-management"],
+  
+  "pluginDependencies": [
+    {
+      "name": "BillingPlugin",
+      "service": "myapp-billing",
+      "daprAppId": "myapp-billing",
+      "description": "Invoice and payment management",
+      "requiredMethods": [
+        "GetByIdAsync",
+        "SearchAsync", 
+        "CreateAsync",
+        "UpdateAsync"
+      ]
+    },
+    {
+      "name": "CrmPlugin",
+      "service": "myapp-crm",
+      "daprAppId": "myapp-crm",
+      "description": "Customer profile and contact management",
+      "requiredMethods": [
+        "GetByIdAsync",
+        "UpdateAsync"
+      ]
+    },
+    {
+      "name": "DocsPlugin",
+      "service": "myapp-agentic",
+      "daprAppId": "myapp-agentic",
+      "description": "Documentation and policy search",
+      "requiredMethods": [
+        "SearchAsync",
+        "GetTopicAsync",
+        "GetSectionsAsync"
+      ]
+    }
+  ],
+
+  "guardrails": {
+    "writeOperationsRequireConfirmation": true,
+    "thresholdForApproval": 1000,
+    "specialistAuthorityLimit": 5000,
+    "seniorAuthorityLimit": 25000,
+    "managerAuthorityLimit": null,
+    "dangerousActions": [
+      {
+        "action": "Delete invoice",
+        "requiresConfirmation": true,
+        "requiresRole": "Manager"
+      },
+      {
+        "action": "Write off debt",
+        "requiresConfirmation": true,
+        "requiresRole": "Finance"
+      },
+      {
+        "action": "Send to collections agency",
+        "requiresConfirmation": true,
+        "requiresRole": "CollectionsManager"
+      },
+      {
+        "action": "Update credit limit above threshold",
+        "requiresConfirmation": true,
+        "threshold": 10000,
+        "requiresRole": "CreditManager"
+      },
+      {
+        "action": "Approve payment plan above authority",
+        "requiresConfirmation": true,
+        "requiresEscalation": true
+      }
+    ],
+    "autoExecuteActions": [
+      "Query invoice status",
+      "View customer history",
+      "Search documentation",
+      "Calculate metrics",
+      "Draft communications (before send)"
+    ]
+  },
+
+  "collectionStages": {
+    "1": {
+      "name": "Reminder",
+      "description": "Friendly reminder",
+      "daysPastDue": "1-30",
+      "action": "Send friendly payment reminder",
+      "escalation": false
+    },
+    "2": {
+      "name": "Demand",
+      "description": "Formal demand notice",
+      "daysPastDue": "31-60",
+      "action": "Send formal demand letter",
+      "escalation": false
+    },
+    "3": {
+      "name": "Final Notice",
+      "description": "Final notice before collections",
+      "daysPastDue": "61-90",
+      "action": "Send final notice with deadline",
+      "escalation": false
+    },
+    "4": {
+      "name": "Collections",
+      "description": "Collections agency escalation",
+      "daysPastDue": "90+",
+      "action": "Escalate to collections agency",
+      "escalation": true
+    }
+  },
+
+  "riskScoring": {
+    "excellentThreshold": 90,
+    "goodThreshold": 70,
+    "monitorThreshold": 50,
+    "deductions": {
+      "perLatePayment": 5,
+      "perCollectionEscalation": 10,
+      "perWriteOff": 20
+    }
+  },
+
+  "approvalMatrix": {
+    "autoApprove": {
+      "minScore": 90,
+      "maxOutstandingRatio": 1.0
+    },
+    "review": {
+      "scoreRange": "50-89",
+      "outstandingRatioRange": "0.5-0.75"
+    },
+    "decline": {
+      "maxScore": 50
+    }
+  },
+
+  "metadata": {
+    "createdAt": "2024-01-15T00:00:00Z",
+    "updatedAt": "2024-01-15T00:00:00Z",
+    "supportedLanguage": "en-US",
+    "targetFramework": ".NET 10.0"
+  }
+}

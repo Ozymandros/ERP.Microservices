@@ -9,6 +9,7 @@ using MyApp.Agentic.Domain.Sessions;
 using MyApp.Agentic.Infrastructure.Memory;
 using MyApp.Agentic.Infrastructure.Secrets;
 using MyApp.Agentic.Infrastructure.State;
+using MyApp.Agentic.Domain.Skills;
 
 namespace MyApp.Agentic.Application.Services;
 
