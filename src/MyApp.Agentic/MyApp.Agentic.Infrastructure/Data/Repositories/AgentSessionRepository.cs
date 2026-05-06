@@ -27,4 +27,24 @@ public class AgentSessionRepository : Repository<AgentSession, Guid>, IAgentSess
             .OrderByDescending(s => s.LastMessageAt ?? s.StartedAt)
             .FirstOrDefaultAsync(cancellationToken);
     }
+
+    public async Task<AgentSession?> GetByIdWithAgentAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _context.AgentSessions
+            .Include(s => s.Agent)
+                .ThenInclude(a => a!.Model)
+                    .ThenInclude(m => m!.Provider)
+            .Include(s => s.Agent)
+                .ThenInclude(a => a!.Plugins)
+            .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+    }
+
+    public async Task<IEnumerable<AgentSession>> GetByUserIdAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        return await _context.AgentSessions
+            .Include(s => s.Agent)
+            .Where(s => s.UserId == userId)
+            .OrderByDescending(s => s.LastMessageAt ?? s.StartedAt)
+            .ToListAsync(cancellationToken);
+    }
 }

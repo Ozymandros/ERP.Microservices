@@ -1,3 +1,5 @@
+using MyApp.Agentic.Domain.Agents;
+
 namespace MyApp.Agentic.Application.Contracts.DTOs;
 
 public record AgentDto(
@@ -6,6 +8,8 @@ public record AgentDto(
     string Description,
     Guid ModelId,
     string ModelName,
+    BotType BotType,
+    string SystemPrompt,
     double Temperature,
     int TopK,
     int MaxTokens,
@@ -13,7 +17,6 @@ public record AgentDto(
     bool EnableMemory,
     bool EnableRAG,
     string? EmbeddingModelName,
-    string SystemInstructions,
     bool IsActive,
     Guid? TenantId
 );
@@ -23,6 +26,7 @@ public record AgentListDto(
     string Name,
     string Description,
     string ModelName,
+    BotType BotType,
     bool IsActive,
     bool EnableMemory,
     bool EnableRAG
@@ -33,8 +37,9 @@ public record CreateAgentDto(
     string Description,
     Guid ModelId,
     double Temperature,
-    string SystemInstructions,
+    string SystemPrompt,
     Guid? TenantId,
+    BotType BotType = BotType.Chat,
     int TopK = 3,
     int MaxTokens = 2048,
     int EmbeddingDimensions = 1536,
@@ -48,7 +53,8 @@ public record UpdateAgentDto(
     string Description,
     Guid ModelId,
     double Temperature,
-    string SystemInstructions,
+    string SystemPrompt,
+    BotType? BotType = null,
     int? TopK = null,
     int? MaxTokens = null,
     int? EmbeddingDimensions = null,

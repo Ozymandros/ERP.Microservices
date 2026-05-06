@@ -16,6 +16,9 @@ public class AgentSessionConfiguration : IEntityTypeConfiguration<AgentSession>
             .IsRequired()
             .HasMaxLength(200);
 
+        builder.Property(p => p.Title)
+            .HasMaxLength(500);
+
         builder.Property(p => p.StartedAt)
             .IsRequired();
 

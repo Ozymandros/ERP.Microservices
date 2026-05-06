@@ -52,6 +52,11 @@ public class AgentConfiguration : IEntityTypeConfiguration<Agent>
         builder.Property(p => p.IsActive)
             .IsRequired();
 
+        builder.Property(p => p.BotType)
+            .IsRequired()
+            .HasConversion<string>()
+            .HasDefaultValue(BotType.Chat);
+
         builder.Property(p => p.TenantId)
             .IsRequired(false);
 

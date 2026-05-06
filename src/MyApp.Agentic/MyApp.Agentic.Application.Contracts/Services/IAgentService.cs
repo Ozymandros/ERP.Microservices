@@ -1,4 +1,5 @@
 using MyApp.Agentic.Application.Contracts.DTOs;
+using MyApp.Agentic.Domain.Agents;
 
 namespace MyApp.Agentic.Application.Contracts.Services;
 
@@ -14,5 +15,34 @@ public interface IAgentService
         ProcessAgentMessageRequest request,
         string authenticatedUserId,
         Guid? tenantId,
+        CancellationToken cancellationToken = default);
+
+    Task<StartSessionResponse> StartSessionAsync(
+        StartSessionRequest request,
+        string authenticatedUserId,
+        Guid? tenantId,
+        CancellationToken cancellationToken = default);
+
+    Task<SendMessageResponse> SendMessageAsync(
+        Guid sessionId,
+        SendMessageRequest request,
+        string authenticatedUserId,
+        Guid? tenantId,
+        CancellationToken cancellationToken = default);
+
+    Task<SessionDetailsResponse?> GetSessionAsync(
+        Guid sessionId,
+        string authenticatedUserId,
+        Guid? tenantId,
+        CancellationToken cancellationToken = default);
+
+    Task<IEnumerable<SessionListItemDto>> ListSessionsAsync(
+        string authenticatedUserId,
+        Guid? tenantId,
+        CancellationToken cancellationToken = default);
+
+    Task EndSessionAsync(
+        Guid sessionId,
+        string authenticatedUserId,
         CancellationToken cancellationToken = default);
 }

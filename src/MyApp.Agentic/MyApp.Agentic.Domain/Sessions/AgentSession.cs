@@ -14,16 +14,18 @@ public class AgentSession(Guid id) : AuditableEntity<Guid>(id)
 {
     public Guid AgentId { get; private set; }
     public string UserId { get; private set; } = string.Empty;
+    public string? Title { get; private set; }
     public DateTime StartedAt { get; private set; }
     public DateTime? LastMessageAt { get; private set; }
     public SessionStatus Status { get; private set; } = SessionStatus.Active;
 
     public Agent? Agent { get; private set; }
 
-    public AgentSession(Guid id, Guid agentId, string userId) : this(id)
+    public AgentSession(Guid id, Guid agentId, string userId, string? title = null) : this(id)
     {
         AgentId = agentId;
         UserId = NormalizeRequired(userId, nameof(userId));
+        Title = title?.Trim();
         StartedAt = DateTime.UtcNow;
         Status = SessionStatus.Active;
     }
