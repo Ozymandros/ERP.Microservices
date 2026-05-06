@@ -155,7 +155,7 @@ services:
         condition: service_started
       sales-service:
         condition: service_started
-      sk-service:
+      agentic-service:
         condition: service_started
     volumes:
       - ./src/ErpApiGateway/ocelot.json:/app/ocelot.json:ro
@@ -547,13 +547,13 @@ services:
     restart: unless-stopped
 
 
-  sk-service:
+  agentic-service:
     build:
       context: ./src
-      dockerfile: MyApp.SemanticKernel/Dockerfile.local
+      dockerfile: MyApp.Agentic/MyApp.Agentic.API/Dockerfile.local
       args:
         BUILDKIT_INLINE_CACHE: 1
-    container_name: sk-service
+    container_name: agentic-service
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
@@ -565,6 +565,8 @@ services:
       Jwt__RequireHttpsMetadata: "false"
       DAPR_HTTP_PORT: "3500"
       DAPR_GRPC_PORT: "50001"
+      ConnectionStrings__AgenticDb: Server=sqlserver,1433;Database=AgenticDB;User Id=sa;Password=${SQL_PASSWORD:-P@ssw0rd12345!};TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;
+      ConnectionStrings__MemoryDb: Host=agentic-memory;Port=5432;Database=agentic_memory;Username=postgres;Password=${POSTGRES_PASSWORD:-Postgres@123}
     depends_on:
       sqlserver:
         condition: service_healthy
@@ -572,8 +574,10 @@ services:
         condition: service_healthy
       dapr-placement:
         condition: service_started
+      agentic-memory:
+        condition: service_healthy
     ports:
-      - "6008:8080"
+      - "6009:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
@@ -584,16 +588,16 @@ services:
       - erp
     restart: unless-stopped
 
-  sk-service-dapr:
+  agentic-service-dapr:
     image: daprio/dapr:1.15.6
-    container_name: sk-service-dapr
+    container_name: agentic-service-dapr
     depends_on:
-      - sk-service
+      - agentic-service
       - dapr-placement
     command:
       [
         "./daprd",
-        "-app-id", "sk-service",
+        "-app-id", "agentic-service",
         "-app-port", "8080",
         "-components-path", "/components",
         "-placement-host-address", "dapr-placement:50005",
@@ -601,7 +605,27 @@ services:
       ]
     volumes:
       - ./deploy/dapr/components:/components:ro
-    network_mode: "service:sk-service"
+    network_mode: "service:agentic-service"
+    restart: unless-stopped
+
+  agentic-memory:
+    image: pgvector/pgvector:pg16
+    container_name: agentic-memory
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-Postgres@123}
+      POSTGRES_DB: agentic_memory
+    ports:
+      - "5433:5432"
+    volumes:
+      - agentic-memory-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - erp
     restart: unless-stopped
 
   sqlserver:
@@ -650,3 +674,4 @@ networks:
 volumes:
   sqlserver-data:
   redis-data:
+  agentic-memory-data:

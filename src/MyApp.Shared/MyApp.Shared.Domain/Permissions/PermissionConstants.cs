@@ -86,6 +86,21 @@ public static class PermissionConstants
         public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
     }
 
+    /// <summary>CRM module permissions</summary>
+    public static class CRM
+    {
+        public const string Read = "CRM.Read";
+        public const string Create = "CRM.Create";
+        public const string Update = "CRM.Update";
+        public const string Delete = "CRM.Delete";
+        public const string Execute = "CRM.Execute";
+        public const string Export = "CRM.Export";
+        public const string Import = "CRM.Import";
+
+        /// <summary>All CRM permissions</summary>
+        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+    }
+
     /// <summary>Notification module permissions</summary>
     public static class Notification
     {
@@ -161,6 +176,21 @@ public static class PermissionConstants
         public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
     }
 
+    /// <summary>Agentic module permissions - AI agent and bot orchestration</summary>
+    public static class Agentic
+    {
+        public const string Read = "Agentic.Read";
+        public const string Create = "Agentic.Create";
+        public const string Update = "Agentic.Update";
+        public const string Delete = "Agentic.Delete";
+        public const string Execute = "Agentic.Execute";
+        public const string Export = "Agentic.Export";
+        public const string Import = "Agentic.Import";
+
+        /// <summary>All Agentic permissions</summary>
+        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+    }
+
     /// <summary>
     /// Gets all permissions for a specific module.
     /// </summary>
@@ -175,7 +205,9 @@ public static class PermissionConstants
             ModuleEnum.Orders => Orders.All,
             ModuleEnum.Sales => Sales.All,
             ModuleEnum.Billing => Billing.All,
+            ModuleEnum.CRM => CRM.All,
             ModuleEnum.Auth => Auth.All,
+            ModuleEnum.Agentic => Agentic.All,
             _ => Array.Empty<string>()
         };
     }
