@@ -170,6 +170,34 @@ public class SuppliersController : ControllerBase
     }
 
     /// <summary>
+    /// Get supplier by Name - Requires Purchasing.Read permission
+    /// </summary>
+    [HttpGet("name/{name}")]
+    [HasPermission("Purchasing", "Read")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<SupplierDto>> GetSupplierByName(string name)
+    {
+        try
+        {
+            _logger.LogInformation("Retrieving supplier with name: {@Name}", new { Name = name });
+            var supplier = await _supplierService.GetSupplierByNameAsync(name);
+            if (supplier == null)
+            {
+                _logger.LogWarning("Supplier with name {@Name} not found", new { Name = name });
+                return NotFound();
+            }
+            return Ok(supplier);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving supplier with name {@Name}", new { Name = name });
+            var supplier = await _supplierService.GetSupplierByNameAsync(name);
+            return supplier == null ? NotFound() : Ok(supplier);
+        }
+    }
+
+    /// <summary>
     /// Search suppliers by name - Requires Purchasing.Read permission
     /// </summary>
     [HttpGet("search/{name}")]

@@ -166,8 +166,42 @@ namespace MyApp.Sales.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Get a specific customer by ID - Requires Sales.Read permission
+    /// <summary>
+    /// Get a sales order by Order Number - Requires Sales.Read permission
+    /// </summary>
+    [HttpGet("code/{orderNumber}")]
+    [HasPermission("Sales", "Read")]
+    [ProducesResponseType(typeof(SalesOrderDto), 200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetByOrderNumber(string orderNumber)
+    {
+        try
+        {
+            string cacheKey = "SalesOrder-Code-" + orderNumber;
+            var salesOrder = await _cacheService.GetStateAsync<SalesOrderDto>(cacheKey);
+
+            if (salesOrder != null)
+            {
+                return Ok(salesOrder);
+            }
+
+            salesOrder = await _salesOrderService.GetSalesOrderByOrderNumberAsync(orderNumber);
+            if (salesOrder == null)
+                return NotFound(new { message = $"SalesOrder with order number '{orderNumber}' not found." });
+
+            await _cacheService.SaveStateAsync(cacheKey, salesOrder);
+            return Ok(salesOrder);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving salesOrder {@OrderNumber}", new { OrderNumber = orderNumber });
+            var salesOrder = await _salesOrderService.GetSalesOrderByOrderNumberAsync(orderNumber);
+            return salesOrder == null ? NotFound(new { message = $"SalesOrder with order number '{orderNumber}' not found." }) : Ok(salesOrder);
+        }
+    }
+
+    /// <summary>
+    /// Get a specific customer by ID - Requires Sales.Read permission
         /// </summary>
         [HttpGet("{id}")]
         [HasPermission("Sales", "Read")]

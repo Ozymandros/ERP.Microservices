@@ -40,6 +40,18 @@ namespace MyApp.Sales.Application.Services
             return customer != null ? _mapper.Map<CustomerDto>(customer) : null;
         }
 
+        public async Task<CustomerDto?> GetCustomerByNameAsync(string name)
+        {
+            var customer = await _customerRepository.GetByNameAsync(name);
+            return customer != null ? _mapper.Map<CustomerDto>(customer) : null;
+        }
+
+        public async Task<CustomerDto?> GetCustomerByEmailAsync(string email)
+        {
+            var customer = await _customerRepository.GetByEmailAsync(email);
+            return customer != null ? _mapper.Map<CustomerDto>(customer) : null;
+        }
+
         public async Task<IEnumerable<CustomerDto>> ListCustomersAsync()
         {
             var customers = await _customerRepository.ListAsync();

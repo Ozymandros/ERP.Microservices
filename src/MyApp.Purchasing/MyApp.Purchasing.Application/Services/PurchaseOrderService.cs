@@ -48,6 +48,12 @@ public class PurchaseOrderService : IPurchaseOrderService
         return order == null ? null : _mapper.Map<PurchaseOrderDto>(order);
     }
 
+    public async Task<PurchaseOrderDto?> GetPurchaseOrderByOrderNumberAsync(string orderNumber)
+    {
+        var order = await _purchaseOrderRepository.GetByOrderNumberAsync(orderNumber);
+        return order == null ? null : _mapper.Map<PurchaseOrderDto>(order);
+    }
+
     public async Task<IEnumerable<PurchaseOrderDto>> GetAllPurchaseOrdersAsync()
     {
         var orders = await _purchaseOrderRepository.GetAllAsync();

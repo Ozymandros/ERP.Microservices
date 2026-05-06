@@ -86,4 +86,38 @@ public class CrmPlugin
             string.Empty);
         return $"CRM contact {id} deleted successfully.";
     }
+
+    /// <summary>
+    /// Gets a CRM account by its tax ID.
+    /// </summary>
+    /// <param name="taxId">The tax identification number.</param>
+    /// <returns>JSON representation of the account, or an error description if not found.</returns>
+    [Description("Get CRM account by tax ID")]
+    public async Task<string> GetAccountByTaxIdAsync(string taxId)
+    {
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Crm,
+            $"api/crm/accounts/taxid/{taxId}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
+
+    /// <summary>
+    /// Gets a CRM account by its customer ID.
+    /// </summary>
+    /// <param name="customerId">The customer identifier.</param>
+    /// <returns>JSON representation of the account, or an error description if not found.</returns>
+    [Description("Get CRM account by customer ID")]
+    public async Task<string> GetAccountByCustomerIdAsync(string customerId)
+    {
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Crm,
+            $"api/crm/accounts/customer/{customerId}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
 }

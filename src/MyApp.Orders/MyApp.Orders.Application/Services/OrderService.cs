@@ -91,6 +91,13 @@ namespace MyApp.Orders.Application.Services
             return _mapper.Map<OrderDto>(entity!);
         }
 
+        /// <summary>Retrieves an order by order number.</summary>
+        public async Task<OrderDto?> GetByOrderNumberAsync(string orderNumber)
+        {
+            var entity = await _orders.GetByOrderNumberAsync(orderNumber);
+            return entity == null ? null : _mapper.Map<OrderDto>(entity);
+        }
+
         /// <summary>Retrieves all orders.</summary>
         public async Task<IEnumerable<OrderDto>> ListAsync()
         {

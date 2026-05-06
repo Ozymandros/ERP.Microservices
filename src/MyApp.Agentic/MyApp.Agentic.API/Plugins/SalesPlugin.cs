@@ -87,4 +87,55 @@ public class SalesPlugin
             string.Empty);
         return $"Sales order {id} deleted successfully.";
     }
+
+    /// <summary>
+    /// Gets a customer by its name.
+    /// </summary>
+    /// <param name="name">The customer name.</param>
+    /// <returns>JSON representation of the customer, or an error description if not found.</returns>
+    [Description("Get customer by name")]
+    public async Task<string> GetCustomerByNameAsync(string name)
+    {
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Sales,
+            $"api/sales/customers/name/{name}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
+
+    /// <summary>
+    /// Gets a customer by its email.
+    /// </summary>
+    /// <param name="email">The customer email.</param>
+    /// <returns>JSON representation of the customer, or an error description if not found.</returns>
+    [Description("Get customer by email")]
+    public async Task<string> GetCustomerByEmailAsync(string email)
+    {
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Sales,
+            $"api/sales/customers/email/{email}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
+
+    /// <summary>
+    /// Gets a sales order by its order number.
+    /// </summary>
+    /// <param name="orderNumber">The sales order number.</param>
+    /// <returns>JSON representation of the sales order, or an error description if not found.</returns>
+    [Description("Get sales order by order number")]
+    public async Task<string> GetSalesOrderByCodeAsync(string orderNumber)
+    {
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Sales,
+            $"api/sales/salesorders/code/{orderNumber}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
 }

@@ -87,4 +87,38 @@ public class PurchasingPlugin
             string.Empty);
         return $"Purchasing resource {id} deleted successfully.";
     }
+
+    /// <summary>
+    /// Gets a supplier by its name.
+    /// </summary>
+    /// <param name="name">The supplier name.</param>
+    /// <returns>JSON representation of the supplier, or an error description if not found.</returns>
+    [Description("Get supplier by name")]
+    public async Task<string> GetSupplierByNameAsync(string name)
+    {
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Purchasing,
+            $"api/purchasing/suppliers/name/{name}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
+
+    /// <summary>
+    /// Gets a purchase order by its order number.
+    /// </summary>
+    /// <param name="orderNumber">The purchase order number.</param>
+    /// <returns>JSON representation of the purchase order, or an error description if not found.</returns>
+    [Description("Get purchase order by order number")]
+    public async Task<string> GetPurchaseOrderByCodeAsync(string orderNumber)
+    {
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Purchasing,
+            $"api/purchasing/purchaseorders/code/{orderNumber}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
 }

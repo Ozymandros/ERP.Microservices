@@ -30,6 +30,12 @@ public class InventoryTransactionService : IInventoryTransactionService
         return transaction == null ? null : _mapper.Map<InventoryTransactionDto>(transaction);
     }
 
+    public async Task<InventoryTransactionDto?> GetTransactionByReferenceNumberAsync(string referenceNumber)
+    {
+        var transaction = await _transactionRepository.GetByReferenceNumberAsync(referenceNumber);
+        return transaction == null ? null : _mapper.Map<InventoryTransactionDto>(transaction);
+    }
+
     public async Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByProductIdAsync(Guid productId)
     {
         var transactions = await _transactionRepository.GetByProductIdAsync(productId);

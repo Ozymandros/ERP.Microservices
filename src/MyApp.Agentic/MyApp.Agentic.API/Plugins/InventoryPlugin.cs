@@ -107,4 +107,55 @@ public class InventoryPlugin
 
         return $"Inventory resource {id} deleted successfully.";
     }
+
+    /// <summary>
+    /// Gets a product by its name.
+    /// </summary>
+    /// <param name="name">The product name.</param>
+    /// <returns>JSON representation of the product, or an error description if not found.</returns>
+    [Description("Get product by name")]
+    public async Task<string> GetProductByNameAsync(string name)
+    {
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Inventory,
+            $"api/inventory/products/name/{name}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
+
+    /// <summary>
+    /// Gets a warehouse by its name.
+    /// </summary>
+    /// <param name="name">The warehouse name.</param>
+    /// <returns>JSON representation of the warehouse, or an error description if not found.</returns>
+    [Description("Get warehouse by name")]
+    public async Task<string> GetWarehouseByNameAsync(string name)
+    {
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Inventory,
+            $"api/inventory/warehouses/name/{name}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
+
+    /// <summary>
+    /// Gets an inventory transaction by its reference number.
+    /// </summary>
+    /// <param name="referenceNumber">The transaction reference number.</param>
+    /// <returns>JSON representation of the transaction, or an error description if not found.</returns>
+    [Description("Get inventory transaction by reference number")]
+    public async Task<string> GetTransactionByReferenceNumberAsync(string referenceNumber)
+    {
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Inventory,
+            $"api/inventory/transactions/reference/{referenceNumber}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
 }

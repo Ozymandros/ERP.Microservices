@@ -190,5 +190,11 @@ public class PaymentRepository : Repository<Payment, Guid>, IPaymentRepository
             .OrderByDescending(p => p.PaidAt)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<Payment?> GetByExternalPaymentIdAsync(string externalPaymentId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Payments
+            .FirstOrDefaultAsync(p => p.ExternalPaymentId == externalPaymentId, cancellationToken);
+    }
 }
 

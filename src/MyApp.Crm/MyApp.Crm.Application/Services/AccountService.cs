@@ -33,13 +33,18 @@ public sealed class AccountService : IAccountService
     }
 
     /// <summary>Get By Customer Id Async.</summary>
-    public async Task<AccountDto?> GetByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default)
+public async Task<AccountDto?> GetByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByCustomerIdAsync(customerId, cancellationToken);
         return entity is null ? null : _mapper.Map<AccountDto>(entity);
     }
 
-    /// <summary>List Async.</summary>
+    public async Task<AccountDto?> GetByTaxIdAsync(string taxId, CancellationToken cancellationToken = default)
+    {
+        var entity = await _repository.GetByTaxIdAsync(taxId, cancellationToken);
+        return entity is null ? null : _mapper.Map<AccountDto>(entity);
+    }
+
     public async Task<IEnumerable<AccountDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         var list = await _repository.ListAsync(cancellationToken);

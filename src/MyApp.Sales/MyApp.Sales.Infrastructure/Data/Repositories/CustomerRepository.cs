@@ -66,5 +66,19 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<Customer?> GetByNameAsync(string name)
+        {
+            return await _context.Customers
+                .Include(c => c.Orders)
+                .FirstOrDefaultAsync(c => c.Name == name);
+        }
+
+        public async Task<Customer?> GetByEmailAsync(string email)
+        {
+            return await _context.Customers
+                .Include(c => c.Orders)
+                .FirstOrDefaultAsync(c => c.Email == email);
+        }
     }
 }

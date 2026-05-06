@@ -93,4 +93,21 @@ public class OrdersPlugin
 
         return $"Order {id} deleted successfully.";
     }
+
+    /// <summary>
+    /// Gets an order by its order number.
+    /// </summary>
+    /// <param name="orderNumber">The order number.</param>
+    /// <returns>JSON representation of the order, or an error description if not found.</returns>
+    [Description("Get order by order number")]
+    public async Task<string> GetByOrderNumberAsync(string orderNumber)
+    {
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Orders,
+            $"api/orders/code/{orderNumber}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
 }

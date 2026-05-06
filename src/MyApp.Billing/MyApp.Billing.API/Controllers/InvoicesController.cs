@@ -90,6 +90,43 @@ public class InvoicesController : ControllerBase
     }
 
     /// <summary>
+    /// Get invoice by Invoice Number - Requires Billing.Read permission
+    /// </summary>
+    [HttpGet("number/{invoiceNumber}")]
+    [HasPermission("Billing", "Read")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetByInvoiceNumber(string invoiceNumber, CancellationToken cancellationToken)
+    {
+        try
+        {
+            string cacheKey = "Invoice-Number-" + invoiceNumber;
+            var invoice = await _cacheService.GetStateAsync<InvoiceDto>(cacheKey)
+                ?? await _invoiceService.GetInvoiceByInvoiceNumberAsync(invoiceNumber, cancellationToken);
+
+            if (invoice == null)
+            {
+                _logger.LogWarning("Invoice with number {@InvoiceNumber} not found", new { InvoiceNumber = invoiceNumber });
+                return NotFound();
+            }
+
+            if (await _cacheService.GetStateAsync<InvoiceDto>(cacheKey) == null)
+            {
+                await _cacheService.SaveStateAsync(cacheKey, invoice);
+            }
+
+            _logger.LogInformation("Retrieved invoice with number {@InvoiceNumber}", new { InvoiceNumber = invoiceNumber });
+            return Ok(invoice);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving invoice with number {@InvoiceNumber}", new { InvoiceNumber = invoiceNumber });
+            var invoice = await _invoiceService.GetInvoiceByInvoiceNumberAsync(invoiceNumber, cancellationToken);
+            return invoice == null ? NotFound() : Ok(invoice);
+        }
+    }
+
+    /// <summary>
     /// Returns all invoices belonging to the specified customer.
     /// </summary>
     [HttpGet("customer/{customerId:guid}")]

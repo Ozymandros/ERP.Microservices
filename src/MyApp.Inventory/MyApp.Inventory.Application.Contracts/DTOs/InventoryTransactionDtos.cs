@@ -14,7 +14,8 @@ public record InventoryTransactionDto(
     TransactionType TransactionType,
     DateTime TransactionDate,
     ProductDto? Product = null,
-    WarehouseDto? Warehouse = null
+    WarehouseDto? Warehouse = null,
+    string? ReferenceNumber = null
 );
 
 /// <summary>

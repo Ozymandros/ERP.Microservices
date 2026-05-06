@@ -77,4 +77,38 @@ public class BillingPlugin
             string.Empty);
         return $"Billing resource {id} deleted successfully.";
     }
+
+    /// <summary>
+    /// Gets an invoice by its invoice number.
+    /// </summary>
+    /// <param name="invoiceNumber">The invoice number.</param>
+    /// <returns>JSON representation of the invoice, or an error description if not found.</returns>
+    [Description("Get invoice by number")]
+    public async Task<string> GetInvoiceByNumberAsync(string invoiceNumber)
+    {
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Billing,
+            $"api/billing/invoices/number/{invoiceNumber}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
+
+    /// <summary>
+    /// Gets a payment by its external payment ID.
+    /// </summary>
+    /// <param name="externalPaymentId">The external payment identifier.</param>
+    /// <returns>JSON representation of the payment, or an error description if not found.</returns>
+    [Description("Get payment by external payment ID")]
+    public async Task<string> GetPaymentByExternalIdAsync(string externalPaymentId)
+    {
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Billing,
+            $"api/billing/payments/external/{externalPaymentId}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
 }

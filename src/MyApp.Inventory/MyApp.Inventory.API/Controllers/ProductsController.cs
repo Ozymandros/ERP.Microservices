@@ -250,6 +250,45 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
+    /// Get product by Name - Requires Inventory.Read permission
+    /// </summary>
+    [HttpGet("name/{name}")]
+    [HasPermission("Inventory", "Read")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ProductDto>> GetProductByName(string name)
+    {
+        try
+        {
+            string cacheKey = "Product-Name-" + name;
+            var product = await _cacheService.GetStateAsync<ProductDto>(cacheKey);
+
+            if (product != null)
+            {
+                _logger.LogInformation("Retrieved product with name {@Product} from cache", new { Name = name });
+                return Ok(product);
+            }
+
+            product = await _productService.GetProductByNameAsync(name);
+            if (product == null)
+            {
+                _logger.LogWarning("Product with name {@Product} not found", new { Name = name });
+                return NotFound();
+            }
+
+            await _cacheService.SaveStateAsync(cacheKey, product);
+            _logger.LogInformation("Retrieved product with name {@Product} from database and cached", new { Name = name });
+            return Ok(product);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving product with name {@Product}", new { Name = name });
+            var product = await _productService.GetProductByNameAsync(name);
+            return product == null ? NotFound() : Ok(product);
+        }
+    }
+
+    /// <summary>
     /// Get low stock products - Requires Inventory.Read permission
     /// </summary>
     [HttpGet("low-stock")]

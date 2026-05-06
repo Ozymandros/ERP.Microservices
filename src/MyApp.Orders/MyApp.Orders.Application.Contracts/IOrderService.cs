@@ -9,14 +9,15 @@ using MyApp.Orders.Domain.Entities;
 
 namespace MyApp.Orders.Application.Contracts
 {
-    public interface IOrderService
-    {
-        // Basic CRUD operations
-        Task<OrderDto> GetByIdAsync(Guid id);
-        Task<IEnumerable<OrderDto>> ListAsync();
-        Task<OrderDto> CreateAsync(CreateUpdateOrderDto dto);
-        Task UpdateAsync(Guid id, CreateUpdateOrderDto dto);
-        Task DeleteAsync(Guid id);
+public interface IOrderService
+{
+    // Basic CRUD operations
+    Task<OrderDto> GetByIdAsync(Guid id);
+    Task<OrderDto?> GetByOrderNumberAsync(string orderNumber);
+    Task<IEnumerable<OrderDto>> ListAsync();
+    Task<OrderDto> CreateAsync(CreateUpdateOrderDto dto);
+    Task UpdateAsync(Guid id, CreateUpdateOrderDto dto);
+    Task DeleteAsync(Guid id);
 
         // Fulfillment workflows
         /// <summary>

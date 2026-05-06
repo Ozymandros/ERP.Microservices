@@ -12,6 +12,7 @@ public interface IPurchaseOrderService
 {
     // Basic CRUD operations
     Task<PurchaseOrderDto?> GetPurchaseOrderByIdAsync(Guid id);
+    Task<PurchaseOrderDto?> GetPurchaseOrderByOrderNumberAsync(string orderNumber);
     Task<IEnumerable<PurchaseOrderDto>> GetAllPurchaseOrdersAsync();
     Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersBySupplierAsync(Guid supplierId);
     Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersByStatusAsync(PurchaseOrderStatus status);

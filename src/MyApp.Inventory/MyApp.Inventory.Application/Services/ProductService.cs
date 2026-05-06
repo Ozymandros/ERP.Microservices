@@ -31,6 +31,12 @@ public class ProductService : IProductService
         return product == null ? null : _mapper.Map<ProductDto>(product);
     }
 
+    public async Task<ProductDto?> GetProductByNameAsync(string name)
+    {
+        var product = await _productRepository.GetByNameAsync(name);
+        return product == null ? null : _mapper.Map<ProductDto>(product);
+    }
+
     public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
     {
         var products = await _productRepository.GetAllAsync();

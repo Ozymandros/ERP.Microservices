@@ -8,5 +8,6 @@ namespace MyApp.Sales.Domain
     /// </summary>
     public interface ISalesOrderRepository : IRepository<SalesOrder, Guid>
     {
+        Task<SalesOrder?> GetByOrderNumberAsync(string orderNumber);
     }
 }

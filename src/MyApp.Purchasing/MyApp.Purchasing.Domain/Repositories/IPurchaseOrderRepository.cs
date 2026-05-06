@@ -11,4 +11,5 @@ public interface IPurchaseOrderRepository : IRepository<PurchaseOrder, Guid>
     Task<IEnumerable<PurchaseOrder>> GetBySuppliersIdAsync(Guid supplierId);
     Task<IEnumerable<PurchaseOrder>> GetByStatusAsync(PurchaseOrderStatus status);
     Task<PurchaseOrder?> GetWithLinesAsync(Guid id);
+    Task<PurchaseOrder?> GetByOrderNumberAsync(string orderNumber);
 }

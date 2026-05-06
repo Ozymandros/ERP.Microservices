@@ -89,6 +89,96 @@ public class CustomerServiceTests
 
     #endregion
 
+    #region GetCustomerByNameAsync Tests
+
+    [Fact]
+    public async Task GetCustomerByNameAsync_WithExistingName_ReturnsCustomerDto()
+    {
+        // Arrange
+        var name = "Test Customer";
+        var customer = new Customer(Guid.NewGuid()) { Name = name, Email = "test@example.com" };
+        var expectedDto = new CustomerDto(Guid.NewGuid())
+        {
+            Name = name,
+            Email = "test@example.com",
+            PhoneNumber = "",
+            Address = ""
+        };
+
+        _mockCustomerRepository.Setup(r => r.GetByNameAsync(name)).ReturnsAsync(customer);
+        _mockMapper.Setup(m => m.Map<CustomerDto>(customer)).Returns(expectedDto);
+
+        // Act
+        var result = await _customerService.GetCustomerByNameAsync(name);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(name, result.Name);
+        _mockCustomerRepository.Verify(r => r.GetByNameAsync(name), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetCustomerByNameAsync_WithNonExistentName_ReturnsNull()
+    {
+        // Arrange
+        var name = "Non-Existent Customer";
+        _mockCustomerRepository.Setup(r => r.GetByNameAsync(name)).ReturnsAsync((Customer?)null);
+
+        // Act
+        var result = await _customerService.GetCustomerByNameAsync(name);
+
+        // Assert
+        Assert.Null(result);
+        _mockCustomerRepository.Verify(r => r.GetByNameAsync(name), Times.Once);
+    }
+
+    #endregion
+
+    #region GetCustomerByEmailAsync Tests
+
+    [Fact]
+    public async Task GetCustomerByEmailAsync_WithExistingEmail_ReturnsCustomerDto()
+    {
+        // Arrange
+        var email = "test@example.com";
+        var customer = new Customer(Guid.NewGuid()) { Name = "Test Customer", Email = email };
+        var expectedDto = new CustomerDto(Guid.NewGuid())
+        {
+            Name = "Test Customer",
+            Email = email,
+            PhoneNumber = "",
+            Address = ""
+        };
+
+        _mockCustomerRepository.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync(customer);
+        _mockMapper.Setup(m => m.Map<CustomerDto>(customer)).Returns(expectedDto);
+
+        // Act
+        var result = await _customerService.GetCustomerByEmailAsync(email);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(email, result.Email);
+        _mockCustomerRepository.Verify(r => r.GetByEmailAsync(email), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetCustomerByEmailAsync_WithNonExistentEmail_ReturnsNull()
+    {
+        // Arrange
+        var email = "nonexistent@example.com";
+        _mockCustomerRepository.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync((Customer?)null);
+
+        // Act
+        var result = await _customerService.GetCustomerByEmailAsync(email);
+
+        // Assert
+        Assert.Null(result);
+        _mockCustomerRepository.Verify(r => r.GetByEmailAsync(email), Times.Once);
+    }
+
+    #endregion
+
     #region ListCustomersAsync Tests
 
     [Fact]

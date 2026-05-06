@@ -70,5 +70,13 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<SalesOrder?> GetByOrderNumberAsync(string orderNumber)
+        {
+            return await _context.SalesOrders
+                .Include(o => o.Lines)
+                .Include(o => o.Customer)
+                .FirstOrDefaultAsync(o => o.OrderNumber == orderNumber);
+        }
     }
 }
