@@ -3,11 +3,13 @@ using MyApp.Agentic.Domain.Sessions;
 
 namespace MyApp.Agentic.Application.Contracts.DTOs;
 
+/// <summary>Request to start a new conversation session.</summary>
 public record StartSessionRequest(
     Guid? AgentId,
     string? Title
 );
 
+/// <summary>Response from starting a new session.</summary>
 public record StartSessionResponse(
     Guid SessionId,
     Guid AgentId,
@@ -19,11 +21,13 @@ public record StartSessionResponse(
     SessionStatus Status
 );
 
+/// <summary>Request to send a message in an existing session.</summary>
 public record SendMessageRequest(
     string Message,
     ProcessMessageOptions? Options
 );
 
+/// <summary>Options for message processing.</summary>
 public record ProcessMessageOptions(
     double? Temperature = null,
     int? MaxTokens = null,
@@ -32,6 +36,7 @@ public record ProcessMessageOptions(
     bool? EnableRAG = null
 );
 
+/// <summary>Response from sending a message.</summary>
 public record SendMessageResponse(
     Guid MessageId,
     string Content,
@@ -40,6 +45,7 @@ public record SendMessageResponse(
     Guid SessionId
 );
 
+/// <summary>Result of a tool call executed by the agent.</summary>
 public record ToolCallResult(
     string ToolName,
     string Arguments,
@@ -47,6 +53,7 @@ public record ToolCallResult(
     bool Success
 );
 
+/// <summary>Detailed response for a session including messages.</summary>
 public record SessionDetailsResponse(
     Guid SessionId,
     Guid AgentId,
@@ -60,6 +67,7 @@ public record SessionDetailsResponse(
     List<SessionMessageDto> Messages
 );
 
+/// <summary>A message within a session.</summary>
 public record SessionMessageDto(
     Guid Id,
     string Role,
@@ -67,6 +75,7 @@ public record SessionMessageDto(
     DateTime Timestamp
 );
 
+/// <summary>Summary of a session for list views.</summary>
 public record SessionListItemDto(
     Guid SessionId,
     Guid AgentId,

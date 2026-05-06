@@ -2,6 +2,7 @@ using MyApp.Agentic.Domain.Agents;
 
 namespace MyApp.Agentic.Application.Contracts.DTOs;
 
+/// <summary>Full agent details response.</summary>
 public record AgentDto(
     Guid Id,
     string Name,
@@ -21,6 +22,7 @@ public record AgentDto(
     Guid? TenantId
 );
 
+/// <summary>Summary for agent list views.</summary>
 public record AgentListDto(
     Guid Id,
     string Name,
@@ -32,6 +34,7 @@ public record AgentListDto(
     bool EnableRAG
 );
 
+/// <summary>Request to create a new agent.</summary>
 public record CreateAgentDto(
     string Name,
     string Description,
@@ -48,6 +51,7 @@ public record CreateAgentDto(
     string? EmbeddingModelName = null
 );
 
+/// <summary>Request to update an existing agent.</summary>
 public record UpdateAgentDto(
     string Name,
     string Description,

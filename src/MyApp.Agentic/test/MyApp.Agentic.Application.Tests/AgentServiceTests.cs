@@ -386,6 +386,205 @@ public class AgentServiceTests
 
         Assert.Equal(2, result.Count());
     }
+
+    [Fact]
+    public async Task StartSessionAsync_WithValidRequest_ReturnsSession()
+    {
+        var agentId = Guid.NewGuid();
+        var agent = CreateTestAgent(agentId);
+        var userId = "user-123";
+        var request = new StartSessionRequest(agentId, "Test Session");
+
+        _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(agent);
+
+        _mockSessionRepository.Setup(r => r.AddAsync(It.IsAny<AgentSession>()))
+            .ReturnsAsync((AgentSession s) => s);
+
+        var result = await _service.StartSessionAsync(request, userId, null);
+
+        Assert.NotNull(result);
+        Assert.Equal(agentId, result.AgentId);
+        Assert.Equal(userId, result.UserId);
+    }
+
+    [Fact]
+    public async Task StartSessionAsync_WhenAgentNotFound_ThrowsException()
+    {
+        var agentId = Guid.NewGuid();
+        var request = new StartSessionRequest(agentId, "Test");
+
+        _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((Agent?)null);
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            _service.StartSessionAsync(request, "user-123", null));
+    }
+
+    [Fact]
+    public async Task StartSessionAsync_WhenAgentNotActive_ThrowsException()
+    {
+        var agentId = Guid.NewGuid();
+        var agent = CreateTestAgent(agentId);
+        agent.Deactivate();
+        var request = new StartSessionRequest(agentId, "Test");
+
+        _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(agent);
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            _service.StartSessionAsync(request, "user-123", null));
+    }
+
+    [Fact]
+    public async Task SendMessageAsync_WithValidSession_ReturnsResponse()
+    {
+        var sessionId = Guid.NewGuid();
+        var agentId = Guid.NewGuid();
+        var userId = "user-123";
+        var agent = CreateTestAgent(agentId);
+        var session = new AgentSession(sessionId, agentId, userId, "Test Session");
+        
+        typeof(AgentSession).GetProperty("Agent")?.SetValue(session, agent);
+
+        var request = new SendMessageRequest("Hello", new ProcessMessageOptions(0.8));
+
+        _mockSessionRepository.Setup(r => r.GetByIdWithAgentAsync(sessionId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(session);
+
+        _mockSecretStore.Setup(s => s.GetSecretAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync("api-key");
+
+        _mockSessionStateStore.Setup(s => s.GetSessionAsync(sessionId, userId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((SessionState?)null);
+
+        _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync("Response");
+
+        _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        var result = await _service.SendMessageAsync(sessionId, request, userId, null);
+
+        Assert.NotNull(result);
+        Assert.Equal(sessionId, result.SessionId);
+    }
+
+    [Fact]
+    public async Task SendMessageAsync_WhenSessionNotFound_ThrowsException()
+    {
+        var sessionId = Guid.NewGuid();
+        var request = new SendMessageRequest("Hello", null);
+
+        _mockSessionRepository.Setup(r => r.GetByIdWithAgentAsync(sessionId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((AgentSession?)null);
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            _service.SendMessageAsync(sessionId, request, "user-123", null));
+    }
+
+    [Fact]
+    public async Task SendMessageAsync_WhenUserNotOwner_ThrowsException()
+    {
+        var sessionId = Guid.NewGuid();
+        var agentId = Guid.NewGuid();
+        var session = new AgentSession(sessionId, agentId, "other-user", "Test");
+        var request = new SendMessageRequest("Hello", null);
+
+        _mockSessionRepository.Setup(r => r.GetByIdWithAgentAsync(sessionId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(session);
+
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() =>
+            _service.SendMessageAsync(sessionId, request, "user-123", null));
+    }
+
+    [Fact]
+    public async Task GetSessionAsync_WhenSessionExists_ReturnsDetails()
+    {
+        var sessionId = Guid.NewGuid();
+        var agentId = Guid.NewGuid();
+        var userId = "user-123";
+        var agent = CreateTestAgent(agentId);
+        var session = new AgentSession(sessionId, agentId, userId, "Test Session");
+        
+        typeof(AgentSession).GetProperty("Agent")?.SetValue(session, agent);
+
+        _mockSessionRepository.Setup(r => r.GetByIdWithAgentAsync(sessionId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(session);
+
+        _mockSessionStateStore.Setup(s => s.GetSessionAsync(sessionId, userId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((SessionState?)null);
+
+        var result = await _service.GetSessionAsync(sessionId, userId, null);
+
+        Assert.NotNull(result);
+        Assert.Equal(sessionId, result.SessionId);
+    }
+
+    [Fact]
+    public async Task GetSessionAsync_WhenSessionNotExists_ReturnsNull()
+    {
+        var sessionId = Guid.NewGuid();
+
+        _mockSessionRepository.Setup(r => r.GetByIdWithAgentAsync(sessionId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((AgentSession?)null);
+
+        var result = await _service.GetSessionAsync(sessionId, "user-123", null);
+
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public async Task ListSessionsAsync_ReturnsUserSessions()
+    {
+        var userId = "user-123";
+        var sessions = new List<AgentSession>
+        {
+            new AgentSession(Guid.NewGuid(), Guid.NewGuid(), userId, "Session 1"),
+            new AgentSession(Guid.NewGuid(), Guid.NewGuid(), userId, "Session 2")
+        };
+
+        _mockSessionRepository.Setup(r => r.GetByUserIdAsync(userId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(sessions);
+
+        _mockSessionStateStore.Setup(s => s.GetSessionAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((SessionState?)null);
+
+        var result = await _service.ListSessionsAsync(userId, null);
+
+        Assert.Equal(2, result.Count());
+    }
+
+    [Fact]
+    public async Task EndSessionAsync_MarksSessionCompleted()
+    {
+        var sessionId = Guid.NewGuid();
+        var userId = "user-123";
+        var session = new AgentSession(sessionId, Guid.NewGuid(), userId);
+
+        _mockSessionRepository.Setup(r => r.GetByIdAsync(sessionId))
+            .ReturnsAsync(session);
+
+        _mockSessionRepository.Setup(r => r.UpdateAsync(It.IsAny<AgentSession>()))
+            .ReturnsAsync((AgentSession s) => s);
+
+        await _service.EndSessionAsync(sessionId, userId);
+
+        _mockSessionRepository.Verify(r => r.UpdateAsync(It.IsAny<AgentSession>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task EndSessionAsync_WhenNotOwner_ThrowsException()
+    {
+        var sessionId = Guid.NewGuid();
+        var session = new AgentSession(sessionId, Guid.NewGuid(), "other-user");
+
+        _mockSessionRepository.Setup(r => r.GetByIdAsync(sessionId))
+            .ReturnsAsync(session);
+
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() =>
+            _service.EndSessionAsync(sessionId, "user-123"));
+    }
 }
 
 public static class AgentTestHelpers
