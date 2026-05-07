@@ -51,4 +51,27 @@ public class AgenticCatalogSeederTests
         Assert.Equal("HuggingFace", model.Provider?.Name);
         Assert.True(model.TokenLimit >= 1000000);
     }
+
+    [Fact]
+    public async Task SeedAsync_SetsProviderDefaultConfiguration()
+    {
+        var options = new DbContextOptionsBuilder<AgenticDbContext>()
+            .UseInMemoryDatabase($"agentic-seeder-provider-defaults-{Guid.NewGuid()}")
+            .Options;
+
+        await using var dbContext = new AgenticDbContext(options);
+        var sut = new AgenticCatalogSeeder(dbContext);
+
+        await sut.SeedAsync();
+
+        var provider = await dbContext.AIProviders.FirstOrDefaultAsync(p => p.Name == "OpenAI");
+        Assert.NotNull(provider);
+        Assert.Equal(0.7, provider!.DefaultTemperature);
+        Assert.Equal(3, provider.DefaultTopK);
+        Assert.Equal(2048, provider.DefaultMaxTokens);
+        Assert.Equal(1536, provider.DefaultEmbeddingDimensions);
+        Assert.True(provider.DefaultEnableMemory);
+        Assert.True(provider.DefaultEnableRAG);
+        Assert.Equal("You are a helpful AI assistant.", provider.DefaultSystemPrompt);
+    }
 }

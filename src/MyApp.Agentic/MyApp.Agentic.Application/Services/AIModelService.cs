@@ -35,7 +35,7 @@ public class AIModelService(
 
     public async Task<AIModelDto> CreateAsync(CreateAIModelDto dto, CancellationToken cancellationToken = default)
     {
-        await EnsureProviderExistsAsync(dto.ProviderId);
+        var provider = await EnsureProviderExistsAsync(dto.ProviderId);
 
         var model = new AIModel(
             Guid.NewGuid(),
@@ -44,15 +44,15 @@ public class AIModelService(
             dto.TechnicalName,
             dto.TokenLimit,
             dto.Capabilities,
-            dto.DefaultTemperature,
-            dto.DefaultTopK,
-            dto.DefaultMaxTokens,
-            dto.DefaultEmbeddingDimensions,
-            dto.DefaultEnableMemory,
-            dto.DefaultEnableRAG,
-            dto.DefaultEmbeddingModelName,
-            dto.DefaultBotType,
-            dto.DefaultSystemPrompt);
+            dto.DefaultTemperature ?? provider.DefaultTemperature,
+            dto.DefaultTopK ?? provider.DefaultTopK,
+            dto.DefaultMaxTokens ?? provider.DefaultMaxTokens,
+            dto.DefaultEmbeddingDimensions ?? provider.DefaultEmbeddingDimensions,
+            dto.DefaultEnableMemory ?? provider.DefaultEnableMemory,
+            dto.DefaultEnableRAG ?? provider.DefaultEnableRAG,
+            dto.DefaultEmbeddingModelName ?? provider.DefaultEmbeddingModelName,
+            dto.DefaultBotType ?? provider.DefaultBotType,
+            dto.DefaultSystemPrompt ?? provider.DefaultSystemPrompt);
 
         await modelRepository.AddAsync(model);
         var persisted = await modelRepository.GetByIdAsync(model.Id) ?? model;
@@ -97,7 +97,7 @@ public class AIModelService(
         await modelRepository.DeleteAsync(model);
     }
 
-    private async Task EnsureProviderExistsAsync(Guid providerId)
+    private async Task<AIProvider> EnsureProviderExistsAsync(Guid providerId)
     {
         if (providerId == Guid.Empty)
             throw new ArgumentException("ProviderId is required.", nameof(providerId));
@@ -105,6 +105,8 @@ public class AIModelService(
         var provider = await providerRepository.GetByIdAsync(providerId);
         if (provider is null)
             throw new InvalidOperationException($"AI provider with ID {providerId} not found.");
+
+        return provider;
     }
 
     private static AIModelDto MapToDto(AIModel model) => new(

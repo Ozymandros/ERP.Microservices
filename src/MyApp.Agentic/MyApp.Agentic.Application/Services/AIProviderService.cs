@@ -23,7 +23,20 @@ public class AIProviderService(
 
     public async Task<AIProviderDto> CreateAsync(CreateAIProviderDto dto, CancellationToken cancellationToken = default)
     {
-        var provider = new AIProvider(Guid.NewGuid(), dto.Name, dto.BaseUrl, dto.SecretKeyName);
+        var provider = new AIProvider(
+            Guid.NewGuid(),
+            dto.Name,
+            dto.BaseUrl,
+            dto.SecretKeyName,
+            dto.DefaultTemperature,
+            dto.DefaultTopK,
+            dto.DefaultMaxTokens,
+            dto.DefaultEmbeddingDimensions,
+            dto.DefaultEnableMemory,
+            dto.DefaultEnableRAG,
+            dto.DefaultEmbeddingModelName,
+            dto.DefaultBotType,
+            dto.DefaultSystemPrompt);
         await providerRepository.AddAsync(provider);
         return MapToDto(provider);
     }
@@ -34,7 +47,19 @@ public class AIProviderService(
         if (provider is null)
             throw new InvalidOperationException($"AI provider with ID {id} not found.");
 
-        provider.Update(dto.Name, dto.BaseUrl, dto.SecretKeyName);
+        provider.Update(
+            dto.Name,
+            dto.BaseUrl,
+            dto.SecretKeyName,
+            dto.DefaultTemperature,
+            dto.DefaultTopK,
+            dto.DefaultMaxTokens,
+            dto.DefaultEmbeddingDimensions,
+            dto.DefaultEnableMemory,
+            dto.DefaultEnableRAG,
+            dto.DefaultEmbeddingModelName,
+            dto.DefaultBotType,
+            dto.DefaultSystemPrompt);
         await providerRepository.UpdateAsync(provider);
         return MapToDto(provider);
     }
@@ -52,5 +77,14 @@ public class AIProviderService(
         provider.Id,
         provider.Name,
         provider.BaseUrl,
-        provider.SecretKeyName);
+        provider.SecretKeyName,
+        provider.DefaultTemperature,
+        provider.DefaultTopK,
+        provider.DefaultMaxTokens,
+        provider.DefaultEmbeddingDimensions,
+        provider.DefaultEnableMemory,
+        provider.DefaultEnableRAG,
+        provider.DefaultEmbeddingModelName,
+        provider.DefaultBotType,
+        provider.DefaultSystemPrompt);
 }

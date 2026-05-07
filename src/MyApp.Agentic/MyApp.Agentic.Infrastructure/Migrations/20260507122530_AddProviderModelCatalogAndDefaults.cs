@@ -94,6 +94,72 @@ namespace MyApp.Agentic.Infrastructure.Migrations
                 column: "Name",
                 unique: true);
 
+            migrationBuilder.AddColumn<string>(
+                name: "DefaultBotType",
+                table: "AIProviders",
+                type: "nvarchar(20)",
+                maxLength: 20,
+                nullable: false,
+                defaultValue: "Chat");
+
+            migrationBuilder.AddColumn<int>(
+                name: "DefaultEmbeddingDimensions",
+                table: "AIProviders",
+                type: "int",
+                nullable: false,
+                defaultValue: 1536);
+
+            migrationBuilder.AddColumn<string>(
+                name: "DefaultEmbeddingModelName",
+                table: "AIProviders",
+                type: "nvarchar(200)",
+                maxLength: 200,
+                nullable: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "DefaultEnableMemory",
+                table: "AIProviders",
+                type: "bit",
+                nullable: false,
+                defaultValue: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "DefaultEnableRAG",
+                table: "AIProviders",
+                type: "bit",
+                nullable: false,
+                defaultValue: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "DefaultMaxTokens",
+                table: "AIProviders",
+                type: "int",
+                nullable: false,
+                defaultValue: 2048);
+
+            migrationBuilder.AddColumn<string>(
+                name: "DefaultSystemPrompt",
+                table: "AIProviders",
+                type: "nvarchar(max)",
+                maxLength: 8000,
+                nullable: true);
+
+            migrationBuilder.AddColumn<double>(
+                name: "DefaultTemperature",
+                table: "AIProviders",
+                type: "float(3)",
+                precision: 3,
+                scale: 2,
+                nullable: false,
+                defaultValue: 0.69999999999999996);
+
+            migrationBuilder.AddColumn<int>(
+                name: "DefaultTopK",
+                table: "AIProviders",
+                type: "int",
+                nullable: false,
+                defaultValue: 3);
+
             migrationBuilder.CreateIndex(
                 name: "IX_AIModels_ProviderId_CommercialName",
                 table: "AIModels",
@@ -112,6 +178,42 @@ namespace MyApp.Agentic.Infrastructure.Migrations
         {
             migrationBuilder.DropIndex(
                 name: "IX_AIProviders_Name",
+                table: "AIProviders");
+
+            migrationBuilder.DropColumn(
+                name: "DefaultBotType",
+                table: "AIProviders");
+
+            migrationBuilder.DropColumn(
+                name: "DefaultEmbeddingDimensions",
+                table: "AIProviders");
+
+            migrationBuilder.DropColumn(
+                name: "DefaultEmbeddingModelName",
+                table: "AIProviders");
+
+            migrationBuilder.DropColumn(
+                name: "DefaultEnableMemory",
+                table: "AIProviders");
+
+            migrationBuilder.DropColumn(
+                name: "DefaultEnableRAG",
+                table: "AIProviders");
+
+            migrationBuilder.DropColumn(
+                name: "DefaultMaxTokens",
+                table: "AIProviders");
+
+            migrationBuilder.DropColumn(
+                name: "DefaultSystemPrompt",
+                table: "AIProviders");
+
+            migrationBuilder.DropColumn(
+                name: "DefaultTemperature",
+                table: "AIProviders");
+
+            migrationBuilder.DropColumn(
+                name: "DefaultTopK",
                 table: "AIProviders");
 
             migrationBuilder.DropIndex(

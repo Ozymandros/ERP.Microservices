@@ -6,19 +6,46 @@ public record AIProviderDto(
     Guid Id,
     string Name,
     string BaseUrl,
-    string SecretKeyName
+    string SecretKeyName,
+    double DefaultTemperature,
+    int DefaultTopK,
+    int DefaultMaxTokens,
+    int DefaultEmbeddingDimensions,
+    bool DefaultEnableMemory,
+    bool DefaultEnableRAG,
+    string? DefaultEmbeddingModelName,
+    BotType DefaultBotType,
+    string? DefaultSystemPrompt
 );
 
 public record CreateAIProviderDto(
     string Name,
     string BaseUrl,
-    string SecretKeyName
+    string SecretKeyName,
+    double DefaultTemperature = 0.7,
+    int DefaultTopK = 3,
+    int DefaultMaxTokens = 2048,
+    int DefaultEmbeddingDimensions = 1536,
+    bool DefaultEnableMemory = true,
+    bool DefaultEnableRAG = true,
+    string? DefaultEmbeddingModelName = null,
+    BotType DefaultBotType = BotType.Chat,
+    string? DefaultSystemPrompt = null
 );
 
 public record UpdateAIProviderDto(
     string Name,
     string BaseUrl,
-    string SecretKeyName
+    string SecretKeyName,
+    double DefaultTemperature = 0.7,
+    int DefaultTopK = 3,
+    int DefaultMaxTokens = 2048,
+    int DefaultEmbeddingDimensions = 1536,
+    bool DefaultEnableMemory = true,
+    bool DefaultEnableRAG = true,
+    string? DefaultEmbeddingModelName = null,
+    BotType DefaultBotType = BotType.Chat,
+    string? DefaultSystemPrompt = null
 );
 
 public record AIModelDto(
@@ -46,14 +73,14 @@ public record CreateAIModelDto(
     string TechnicalName,
     int TokenLimit,
     string Capabilities,
-    double DefaultTemperature = 0.7,
-    int DefaultTopK = 3,
-    int DefaultMaxTokens = 2048,
-    int DefaultEmbeddingDimensions = 1536,
-    bool DefaultEnableMemory = true,
-    bool DefaultEnableRAG = true,
+    double? DefaultTemperature = null,
+    int? DefaultTopK = null,
+    int? DefaultMaxTokens = null,
+    int? DefaultEmbeddingDimensions = null,
+    bool? DefaultEnableMemory = null,
+    bool? DefaultEnableRAG = null,
     string? DefaultEmbeddingModelName = null,
-    BotType DefaultBotType = BotType.Chat,
+    BotType? DefaultBotType = null,
     string? DefaultSystemPrompt = null
 );
 
