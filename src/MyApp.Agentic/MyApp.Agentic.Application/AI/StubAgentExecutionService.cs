@@ -22,6 +22,16 @@ public class StubAgentExecutionService : IAgentExecutionService
         _logger.LogDebug("Conversation History: {Count}", context.ConversationHistory.Count);
         _logger.LogDebug("Available Tools: {ToolCount}", context.Tools.Count);
 
+        var model = context.Agent.Model;
+        if (model is not null && string.Equals(model.Provider?.Name, "HuggingFace", StringComparison.OrdinalIgnoreCase))
+        {
+            // Keep execution in stub mode, but validate adapter wiring for HF-routed models.
+            _ = AgentAdapterFactory.CreateHuggingFaceClient(
+                model.TechnicalName,
+                context.ApiKey);
+            _logger.LogDebug("HuggingFace adapter initialized for model {ModelId}", model.TechnicalName);
+        }
+
         await Task.Delay(100, cancellationToken);
 
         var response = $"[AI Response to: \"{userMessage}\"] " +

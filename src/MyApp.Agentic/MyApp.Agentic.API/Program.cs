@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using MyApp.Agentic.Application.AI;
 using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Agentic.Application.Services;
@@ -16,6 +15,7 @@ using MyApp.Agentic.Infrastructure.Data.Repositories;
 using MyApp.Agentic.Infrastructure.Memory;
 using MyApp.Agentic.Infrastructure.Secrets;
 using MyApp.Agentic.Infrastructure.State;
+using MyApp.Agentic.Infrastructure.Data.Seeders;
 using MyApp.Shared.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -77,12 +77,22 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
         services.AddScoped<IAgentExecutionService, StubAgentExecutionService>();
 
         services.AddScoped<IAgentService, AgentService>();
+        services.AddScoped<IAIProviderService, AIProviderService>();
+        services.AddScoped<IAIModelService, AIModelService>();
+        services.AddScoped<AgenticCatalogSeeder>();
     }
 });
 
 var app = builder.Build();
 
 app.UseServiceDefaults();
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AgenticDbContext>();
+    await dbContext.Database.MigrateAsync();
+    var seeder = scope.ServiceProvider.GetRequiredService<AgenticCatalogSeeder>();
+    await seeder.SeedAsync();
+}
 
 app.Run();
 

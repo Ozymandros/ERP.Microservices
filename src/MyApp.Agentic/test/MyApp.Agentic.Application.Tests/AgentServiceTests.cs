@@ -18,6 +18,8 @@ namespace MyApp.Agentic.Application.Tests;
 public class AgentServiceTests
 {
     private readonly Mock<IAgentRepository> _mockAgentRepository;
+    private readonly Mock<IAIProviderRepository> _mockProviderRepository;
+    private readonly Mock<IAIModelRepository> _mockModelRepository;
     private readonly Mock<IAgentSessionRepository> _mockSessionRepository;
     private readonly Mock<IMemoryRepository> _mockMemoryRepository;
     private readonly Mock<ISecretStore> _mockSecretStore;
@@ -31,6 +33,8 @@ public class AgentServiceTests
     public AgentServiceTests()
     {
         _mockAgentRepository = new Mock<IAgentRepository>();
+        _mockProviderRepository = new Mock<IAIProviderRepository>();
+        _mockModelRepository = new Mock<IAIModelRepository>();
         _mockSessionRepository = new Mock<IAgentSessionRepository>();
         _mockMemoryRepository = new Mock<IMemoryRepository>();
         _mockSecretStore = new Mock<ISecretStore>();
@@ -42,6 +46,8 @@ public class AgentServiceTests
 
         _service = new AgentService(
             _mockAgentRepository.Object,
+            _mockProviderRepository.Object,
+            _mockModelRepository.Object,
             _mockSessionRepository.Object,
             _mockMemoryRepository.Object,
             _mockSecretStore.Object,
@@ -55,7 +61,7 @@ public class AgentServiceTests
     private Agent CreateTestAgent(Guid id = default, Guid? tenantId = null)
     {
         var provider = new AIProvider(Guid.NewGuid(), "OpenAI", "https://api.openai.com", "openai-key");
-        var model = new AIModel(Guid.NewGuid(), provider.Id, "gpt-4", 8192, "chat");
+        var model = new AIModel(Guid.NewGuid(), provider.Id, "GPT-4", "gpt-4", 8192, "chat");
         model.SetProviderForTest(provider);
 
         var agent = new Agent(
@@ -121,6 +127,7 @@ public class AgentServiceTests
             "New Agent",
             "Description",
             Guid.NewGuid(),
+            Guid.NewGuid(),
             0.5,
             "Instructions",
             null,
@@ -132,6 +139,8 @@ public class AgentServiceTests
             true,
             "text-embedding-ada-002");
 
+        _mockProviderRepository.Setup(r => r.GetByIdAsync(dto.ProviderId)).ReturnsAsync(new AIProvider(dto.ProviderId, "OpenAI", "https://api.openai.com/v1", "OpenAI__ApiKey"));
+        _mockModelRepository.Setup(r => r.GetByIdAsync(dto.ModelId)).ReturnsAsync(new AIModel(dto.ModelId, dto.ProviderId, "GPT-5", "gpt-5", 8192, "chat"));
         _mockAgentRepository.Setup(r => r.AddAsync(It.IsAny<Agent>())).ReturnsAsync((Agent a) => a);
 
         var result = await _service.CreateAsync(dto);
@@ -155,6 +164,7 @@ public class AgentServiceTests
             "Updated Name",
             "Updated Description",
             Guid.NewGuid(),
+            Guid.NewGuid(),
             0.9,
             "Updated Instructions",
             BotType.Chat,
@@ -165,6 +175,8 @@ public class AgentServiceTests
             true,
             "custom-embedding");
 
+        _mockProviderRepository.Setup(r => r.GetByIdAsync(dto.ProviderId)).ReturnsAsync(new AIProvider(dto.ProviderId, "OpenAI", "https://api.openai.com/v1", "OpenAI__ApiKey"));
+        _mockModelRepository.Setup(r => r.GetByIdAsync(dto.ModelId)).ReturnsAsync(new AIModel(dto.ModelId, dto.ProviderId, "GPT-5", "gpt-5", 8192, "chat"));
         _mockAgentRepository.Setup(r => r.GetByIdAsync(agentId)).ReturnsAsync(agent);
         _mockAgentRepository.Setup(r => r.UpdateAsync(It.IsAny<Agent>())).ReturnsAsync((Agent a) => a);
 
@@ -180,11 +192,46 @@ public class AgentServiceTests
     public async Task UpdateAsync_WhenAgentNotExists_ThrowsException()
     {
         var agentId = Guid.NewGuid();
-        var dto = new UpdateAgentDto("Name", "Desc", Guid.NewGuid(), 0.7, "Instructions");
+        var dto = new UpdateAgentDto("Name", "Desc", Guid.NewGuid(), Guid.NewGuid(), 0.7, "Instructions");
 
         _mockAgentRepository.Setup(r => r.GetByIdAsync(agentId)).ReturnsAsync((Agent?)null);
 
         await Assert.ThrowsAsync<InvalidOperationException>(() => _service.UpdateAsync(agentId, dto));
+    }
+
+    [Fact]
+    public async Task CreateAsync_WhenModelDoesNotBelongToProvider_ThrowsException()
+    {
+        var providerId = Guid.NewGuid();
+        var otherProviderId = Guid.NewGuid();
+        var modelId = Guid.NewGuid();
+        var dto = new CreateAgentDto("New Agent", "Description", providerId, modelId, 0.5, "Instructions", null);
+
+        _mockProviderRepository.Setup(r => r.GetByIdAsync(providerId))
+            .ReturnsAsync(new AIProvider(providerId, "OpenAI", "https://api.openai.com/v1", "OpenAI__ApiKey"));
+        _mockModelRepository.Setup(r => r.GetByIdAsync(modelId))
+            .ReturnsAsync(new AIModel(modelId, otherProviderId, "GPT-5", "gpt-5", 8192, "chat"));
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _service.CreateAsync(dto));
+    }
+
+    [Fact]
+    public async Task CreateAsync_WhenProviderIdIsEmpty_ThrowsException()
+    {
+        var dto = new CreateAgentDto("New Agent", "Description", Guid.Empty, Guid.NewGuid(), 0.5, "Instructions", null);
+        await Assert.ThrowsAsync<ArgumentException>(() => _service.CreateAsync(dto));
+    }
+
+    [Fact]
+    public async Task CreateAsync_WhenModelIdIsEmpty_ThrowsException()
+    {
+        var providerId = Guid.NewGuid();
+        var dto = new CreateAgentDto("New Agent", "Description", providerId, Guid.Empty, 0.5, "Instructions", null);
+
+        _mockProviderRepository.Setup(r => r.GetByIdAsync(providerId))
+            .ReturnsAsync(new AIProvider(providerId, "OpenAI", "https://api.openai.com/v1", "OpenAI__ApiKey"));
+
+        await Assert.ThrowsAsync<ArgumentException>(() => _service.CreateAsync(dto));
     }
 
     [Fact]

@@ -7,6 +7,8 @@ public record AgentDto(
     Guid Id,
     string Name,
     string Description,
+    Guid ProviderId,
+    string ProviderName,
     Guid ModelId,
     string ModelName,
     BotType BotType,
@@ -38,6 +40,7 @@ public record AgentListDto(
 public record CreateAgentDto(
     string Name,
     string Description,
+    Guid ProviderId,
     Guid ModelId,
     double Temperature,
     string SystemPrompt,
@@ -55,6 +58,7 @@ public record CreateAgentDto(
 public record UpdateAgentDto(
     string Name,
     string Description,
+    Guid ProviderId,
     Guid ModelId,
     double Temperature,
     string SystemPrompt,

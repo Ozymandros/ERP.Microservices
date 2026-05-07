@@ -10,12 +10,16 @@ using MyApp.Agentic.Infrastructure.Memory;
 using MyApp.Agentic.Infrastructure.Secrets;
 using MyApp.Agentic.Infrastructure.State;
 using MyApp.Agentic.Domain.Skills;
+using MyApp.Agentic.Domain.AIModels;
+using MyApp.Agentic.Domain.AIProviders;
 
 namespace MyApp.Agentic.Application.Services;
 
 public class AgentService : IAgentService
 {
     private readonly IAgentRepository _agentRepository;
+    private readonly IAIProviderRepository _providerRepository;
+    private readonly IAIModelRepository _modelRepository;
     private readonly IAgentSessionRepository _sessionRepository;
     private readonly IMemoryRepository _memoryRepository;
     private readonly ISecretStore _secretStore;
@@ -27,6 +31,8 @@ public class AgentService : IAgentService
 
     public AgentService(
         IAgentRepository agentRepository,
+        IAIProviderRepository providerRepository,
+        IAIModelRepository modelRepository,
         IAgentSessionRepository sessionRepository,
         IMemoryRepository memoryRepository,
         ISecretStore secretStore,
@@ -37,6 +43,8 @@ public class AgentService : IAgentService
         ILogger<AgentService> logger)
     {
         _agentRepository = agentRepository;
+        _providerRepository = providerRepository;
+        _modelRepository = modelRepository;
         _sessionRepository = sessionRepository;
         _memoryRepository = memoryRepository;
         _secretStore = secretStore;
@@ -70,6 +78,8 @@ public class AgentService : IAgentService
 
     public async Task<AgentDto> CreateAsync(CreateAgentDto dto, CancellationToken cancellationToken = default)
     {
+        await ValidateProviderModelAsync(dto.ProviderId, dto.ModelId, cancellationToken);
+
         var agent = new Agent(
             id: Guid.NewGuid(),
             name: dto.Name,
@@ -92,6 +102,8 @@ public class AgentService : IAgentService
 
     public async Task<AgentDto> UpdateAsync(Guid id, UpdateAgentDto dto, CancellationToken cancellationToken = default)
     {
+        await ValidateProviderModelAsync(dto.ProviderId, dto.ModelId, cancellationToken);
+
         var agent = await _agentRepository.GetByIdAsync(id);
         if (agent == null) throw new InvalidOperationException($"Agent with ID {id} not found.");
 
@@ -221,8 +233,12 @@ public class AgentService : IAgentService
         Guid? tenantId,
         CancellationToken cancellationToken = default)
     {
-        var agent = await _agentRepository.GetByIdWithDetailsAsync(request.AgentId.Value, cancellationToken)
-            ?? throw new InvalidOperationException($"Agent with ID {request.AgentId} not found.");
+        if (!request.AgentId.HasValue || request.AgentId.Value == Guid.Empty)
+            throw new InvalidOperationException("AgentId is required.");
+
+        var agentId = request.AgentId.Value;
+        var agent = await _agentRepository.GetByIdWithDetailsAsync(agentId, cancellationToken)
+            ?? throw new InvalidOperationException($"Agent with ID {agentId} not found.");
 
         if (!agent.IsActive)
             throw new InvalidOperationException($"Agent {request.AgentId} is not active.");
@@ -438,6 +454,8 @@ public class AgentService : IAgentService
         agent.Id,
         agent.Name,
         agent.Description,
+        agent.Model?.ProviderId ?? Guid.Empty,
+        agent.Model?.Provider?.Name ?? "N/A",
         agent.ModelId,
         agent.Model?.TechnicalName ?? "N/A",
         agent.BotType,
@@ -451,6 +469,26 @@ public class AgentService : IAgentService
         agent.EmbeddingModelName,
         agent.IsActive,
         agent.TenantId);
+
+    private async Task ValidateProviderModelAsync(Guid providerId, Guid modelId, CancellationToken cancellationToken)
+    {
+        if (providerId == Guid.Empty)
+            throw new ArgumentException("ProviderId is required.", nameof(providerId));
+
+        if (modelId == Guid.Empty)
+            throw new ArgumentException("ModelId is required.", nameof(modelId));
+
+        var provider = await _providerRepository.GetByIdAsync(providerId);
+        if (provider is null)
+            throw new InvalidOperationException($"AI provider with ID {providerId} was not found.");
+
+        var model = await _modelRepository.GetByIdAsync(modelId);
+        if (model is null)
+            throw new InvalidOperationException($"AI model with ID {modelId} was not found.");
+
+        if (model.ProviderId != providerId)
+            throw new InvalidOperationException("Selected model does not belong to the selected provider.");
+    }
 
     private static AgentListDto MapToListDto(Agent agent) => new(
         agent.Id,
