@@ -77,7 +77,7 @@ Template for environment variables
 ✅ purchasing-service     (Port 6005) + dapr sidecar
 ✅ sales-service          (Port 6006) + dapr sidecar
 ✅ crm-service            (Port 6007) + dapr sidecar
-✅ sk-service             (Port 6008) + dapr sidecar
+✅ agentic-service             (Port 6008) + dapr sidecar
 ```
 
 ### Infrastructure

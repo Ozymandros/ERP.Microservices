@@ -184,7 +184,7 @@ Your Ocelot API Gateway configuration has been **completely remediated** with cr
 "Purchasing": "localhost:6006"  // ✅ Correct
 "Sales": "localhost:6007"       // ✅ Correct
 "CRM": "localhost:6003"         // ✅ Correct
-"SemanticKernel": "localhost:6008"  // ✅ Correct
+"Agentic": "localhost:6008"  // ✅ Correct
 ```
 
 **Impact:** **HIGH** - Routes didn't work in docker-compose environment.
@@ -314,7 +314,7 @@ Production:
 | Purchasing | 6006 | purchasing-service:8080 | purchasing-service:8080 |
 | Sales | 6007 | sales-service:8080 | sales-service:8080 |
 | CRM | 6003 | crm-service:8080 | crm-service:8080 |
-| SemanticKernel | 6008 | sk-service:8080 | sk-service:8080 |
+| Agentic | 6008 | agentic-service:8080 | agentic-service:8080 |
 
 ### Settings Comparison
 

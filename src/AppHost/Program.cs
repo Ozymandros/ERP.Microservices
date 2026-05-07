@@ -95,7 +95,7 @@ var agenticMemoryDb = builder.AddPostgres("agentic-memory", password: password)
 var agenticService = projectBuilder.AddWebProject<Projects.MyApp_Agentic_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore, hasDatabase: true)
     .WaitFor(agenticMemoryDb)
     .WithReference(agenticMemoryDb);
-// Creates: sk-service (no DB), ports 6008, 3508, 45008, 9098
+// Creates: agentic-service (no DB), ports 6008, 3508, 45008, 9098
 
 // Local Development: Reverse Proxy (YARP)
 // Alternative: YARP (without /Scalar service)

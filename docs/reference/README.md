@@ -86,7 +86,7 @@ This category is a quick reference for common lookups. From terminology and envi
 | Purchasing | 6006 | purchasing-db | `/health` | [Purchasing API](API_ENDPOINTS.md#purchasing-service) |
 | Sales | 6007 | sales-db | `/health` | [Sales API](API_ENDPOINTS.md#sales-service) |
 | CRM | 6003 | crm-db | `/health` | [CRM API](API_ENDPOINTS.md#crm-service) |
-| SemanticKernel | 6008 | (no DB) | `/health` | [SK API](API_ENDPOINTS.md#semantickernel-service) |
+| Agentic | 6008 | (no DB) | `/health` | [Agentic API](API_ENDPOINTS.md#agentic-service) |
 | Gateway | 8000 | - | `/health` | [Gateway API](API_ENDPOINTS.md#gateway) |
 
 ### Key Environment Variables

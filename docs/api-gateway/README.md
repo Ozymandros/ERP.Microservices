@@ -115,7 +115,7 @@ External Client
 | `/api/purchasing` | Purchasing Service | 6006 | Procurement |
 | `/api/sales` | Sales Service | 6007 | Sales Management |
 | `/api/crm` | CRM Service | 6003 | CRM & Leads |
-| `/api/sk` | SemanticKernel Service | 6008 | AI Semantic Kernel |
+| `/api/agentic` | Agentic Service | 6008 | AI Agentic Service |
 | `/health` | Gateway Health | - | Status check |
 
 ---
