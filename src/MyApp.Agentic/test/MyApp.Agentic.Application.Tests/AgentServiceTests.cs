@@ -518,6 +518,110 @@ public class AgentServiceTests
     }
 
     [Fact]
+    public async Task SendMessageAsync_WithChatBotType_IncludesOnlyGetTools()
+    {
+        var sessionId = Guid.NewGuid();
+        var agentId = Guid.NewGuid();
+        var userId = "user-123";
+
+        var provider = new AIProvider(Guid.NewGuid(), "OpenAI", "https://api.openai.com", "openai-key");
+        var model = new AIModel(Guid.NewGuid(), provider.Id, "GPT-4", "gpt-4", 8192, "chat");
+        model.SetProviderForTest(provider);
+
+        var agent = new Agent(
+            agentId,
+            "Chat Agent",
+            "Chat-only agent",
+            model.Id,
+            0.7,
+            "You are a helpful assistant.",
+            botType: BotType.Chat);
+
+        agent.SetModelForTest(model);
+        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "GetByIdAsync", "inventory.getById"));
+        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "CreateAsync", "inventory.create"));
+
+        var session = new AgentSession(sessionId, agentId, userId, "Test Session");
+        typeof(AgentSession).GetProperty("Agent")?.SetValue(session, agent);
+
+        var request = new SendMessageRequest("Hello", null);
+        AgentExecutionContext? capturedContext = null;
+
+        _mockSessionRepository.Setup(r => r.GetByIdWithAgentAsync(sessionId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(session);
+        _mockSecretStore.Setup(s => s.GetSecretAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync("api-key");
+        _mockSessionStateStore.Setup(s => s.GetSessionAsync(sessionId, userId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((SessionState?)null);
+        _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Callback<AgentExecutionContext, string, CancellationToken>((ctx, _, _) => capturedContext = ctx)
+            .ReturnsAsync("Response");
+        _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        await _service.SendMessageAsync(sessionId, request, userId, null);
+
+        Assert.NotNull(capturedContext);
+        Assert.Single(capturedContext!.Tools);
+        Assert.Equal("GetByIdAsync", capturedContext.Tools[0].Name);
+        Assert.Equal(ToolHttpVerb.Get, capturedContext.Tools[0].Verb);
+    }
+
+    [Fact]
+    public async Task SendMessageAsync_WithAgentBotType_IncludesAllToolVerbs()
+    {
+        var sessionId = Guid.NewGuid();
+        var agentId = Guid.NewGuid();
+        var userId = "user-123";
+
+        var provider = new AIProvider(Guid.NewGuid(), "OpenAI", "https://api.openai.com", "openai-key");
+        var model = new AIModel(Guid.NewGuid(), provider.Id, "GPT-4", "gpt-4", 8192, "chat");
+        model.SetProviderForTest(provider);
+
+        var agent = new Agent(
+            agentId,
+            "Agent Mode",
+            "Full tools agent",
+            model.Id,
+            0.7,
+            "You are a helpful assistant.",
+            botType: BotType.Agent);
+
+        agent.SetModelForTest(model);
+        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "GetByIdAsync", "inventory.getById"));
+        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "CreateAsync", "inventory.create"));
+        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "UpdateAsync", "inventory.update"));
+        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "DeleteAsync", "inventory.delete"));
+
+        var session = new AgentSession(sessionId, agentId, userId, "Test Session");
+        typeof(AgentSession).GetProperty("Agent")?.SetValue(session, agent);
+
+        var request = new SendMessageRequest("Hello", null);
+        AgentExecutionContext? capturedContext = null;
+
+        _mockSessionRepository.Setup(r => r.GetByIdWithAgentAsync(sessionId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(session);
+        _mockSecretStore.Setup(s => s.GetSecretAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync("api-key");
+        _mockSessionStateStore.Setup(s => s.GetSessionAsync(sessionId, userId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((SessionState?)null);
+        _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Callback<AgentExecutionContext, string, CancellationToken>((ctx, _, _) => capturedContext = ctx)
+            .ReturnsAsync("Response");
+        _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        await _service.SendMessageAsync(sessionId, request, userId, null);
+
+        Assert.NotNull(capturedContext);
+        Assert.Equal(4, capturedContext!.Tools.Count);
+        Assert.Contains(capturedContext.Tools, t => t.Verb == ToolHttpVerb.Get);
+        Assert.Contains(capturedContext.Tools, t => t.Verb == ToolHttpVerb.Post);
+        Assert.Contains(capturedContext.Tools, t => t.Verb == ToolHttpVerb.Put);
+        Assert.Contains(capturedContext.Tools, t => t.Verb == ToolHttpVerb.Delete);
+    }
+
+    [Fact]
     public async Task SendMessageAsync_WhenSessionNotFound_ThrowsException()
     {
         var sessionId = Guid.NewGuid();

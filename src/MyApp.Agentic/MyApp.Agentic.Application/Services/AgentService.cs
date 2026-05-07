@@ -318,9 +318,7 @@ public class AgentService : IAgentService
 
         var conversationHistory = sessionState?.Messages.Select(m => $"{m.Role}: {m.Content}").ToList() ?? new List<string>();
 
-        var pluginTools = agent.BotType == BotType.Agent
-            ? agent.Plugins.Select(p => new ToolDefinition(p.PluginName, p.DaprAppIdEndpoint)).ToList()
-            : new List<ToolDefinition>();
+        var pluginTools = BuildToolsForBotMode(agent);
 
         var context = new AgentExecutionContext
         {
@@ -499,4 +497,47 @@ public class AgentService : IAgentService
         agent.IsActive,
         agent.EnableMemory,
         agent.EnableRAG);
+
+    private static List<ToolDefinition> BuildToolsForBotMode(Agent agent)
+    {
+        var mappedTools = agent.Plugins
+            .Select(p => new ToolDefinition(p.PluginName, p.DaprAppIdEndpoint, InferVerb(p.PluginName)))
+            .ToList();
+
+        return agent.BotType == BotType.Chat
+            ? mappedTools.Where(t => t.Verb == ToolHttpVerb.Get).ToList()
+            : mappedTools;
+    }
+
+    private static ToolHttpVerb InferVerb(string toolName)
+    {
+        if (string.IsNullOrWhiteSpace(toolName))
+            return ToolHttpVerb.Unknown;
+
+        if (toolName.StartsWith("Get", StringComparison.OrdinalIgnoreCase)
+            || toolName.StartsWith("List", StringComparison.OrdinalIgnoreCase)
+            || toolName.StartsWith("Find", StringComparison.OrdinalIgnoreCase)
+            || toolName.StartsWith("Search", StringComparison.OrdinalIgnoreCase)
+            || toolName.StartsWith("Read", StringComparison.OrdinalIgnoreCase))
+            return ToolHttpVerb.Get;
+
+        if (toolName.StartsWith("Create", StringComparison.OrdinalIgnoreCase)
+            || toolName.StartsWith("Add", StringComparison.OrdinalIgnoreCase)
+            || toolName.StartsWith("Post", StringComparison.OrdinalIgnoreCase))
+            return ToolHttpVerb.Post;
+
+        if (toolName.StartsWith("Update", StringComparison.OrdinalIgnoreCase)
+            || toolName.StartsWith("Edit", StringComparison.OrdinalIgnoreCase)
+            || toolName.StartsWith("Put", StringComparison.OrdinalIgnoreCase))
+            return ToolHttpVerb.Put;
+
+        if (toolName.StartsWith("Delete", StringComparison.OrdinalIgnoreCase)
+            || toolName.StartsWith("Remove", StringComparison.OrdinalIgnoreCase))
+            return ToolHttpVerb.Delete;
+
+        if (toolName.StartsWith("Patch", StringComparison.OrdinalIgnoreCase))
+            return ToolHttpVerb.Patch;
+
+        return ToolHttpVerb.Unknown;
+    }
 }

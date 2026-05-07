@@ -2,16 +2,34 @@ using MyApp.Agentic.Domain.Agents;
 
 namespace MyApp.Agentic.Application.AI;
 
+public enum ToolHttpVerb
+{
+    Unknown = 0,
+    Get = 1,
+    Post = 2,
+    Put = 3,
+    Delete = 4,
+    Patch = 5
+}
+
 public class ToolDefinition
 {
     public string Name { get; init; } = string.Empty;
     public string Endpoint { get; init; } = string.Empty;
+    public ToolHttpVerb Verb { get; init; } = ToolHttpVerb.Unknown;
 
     public ToolDefinition() { }
     public ToolDefinition(string name, string endpoint)
     {
         Name = name;
         Endpoint = endpoint;
+    }
+
+    public ToolDefinition(string name, string endpoint, ToolHttpVerb verb)
+    {
+        Name = name;
+        Endpoint = endpoint;
+        Verb = verb;
     }
 }
 

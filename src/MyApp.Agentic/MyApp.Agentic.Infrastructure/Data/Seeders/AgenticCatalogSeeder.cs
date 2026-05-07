@@ -80,7 +80,8 @@ public class AgenticCatalogSeeder(AgenticDbContext dbContext)
         new(Guid.NewGuid(), "Google", "https://generativelanguage.googleapis.com/v1beta", "Google__ApiKey", defaultSystemPrompt: "You are a helpful AI assistant."),
         new(Guid.NewGuid(), "OpenAI", "https://api.openai.com/v1", "OpenAI__ApiKey", defaultSystemPrompt: "You are a helpful AI assistant."),
         new(Guid.NewGuid(), "Anthropic", "https://api.anthropic.com/v1", "Anthropic__ApiKey", defaultSystemPrompt: "You are a helpful AI assistant."),
-        new(Guid.NewGuid(), "HuggingFace", "https://router.huggingface.co/v1", "HuggingFace__ApiKey", defaultSystemPrompt: "You are a helpful AI assistant.")
+        new(Guid.NewGuid(), "HuggingFace", "https://router.huggingface.co/v1", "HuggingFace__ApiKey", defaultSystemPrompt: "You are a helpful AI assistant."),
+        new(Guid.NewGuid(), "OpenCode", "https://opencode.ai", "OpenCode__ApiKey", defaultSystemPrompt: "You are a helpful AI assistant.")
     ];
 
     private static IEnumerable<AIModel> BuildModels(IReadOnlyDictionary<string, AIProvider> providers)
@@ -89,6 +90,7 @@ public class AgenticCatalogSeeder(AgenticDbContext dbContext)
         var openAi = providers["OpenAI"].Id;
         var anthropic = providers["Anthropic"].Id;
         var huggingFace = providers["HuggingFace"].Id;
+        var openCode = providers["OpenCode"].Id;
 
         return
         [
@@ -110,7 +112,12 @@ public class AgenticCatalogSeeder(AgenticDbContext dbContext)
             CreateModel(huggingFace, "Mistral 7B", "mistralai/mistral-7b", 8192, "chat"),
             CreateModel(huggingFace, "Gemma 4", "google/gemma-4", 8192, "chat"),
             CreateModel(huggingFace, "Kimi", "moonshotai/kimi", 16384, "chat,tool-calling"),
-            CreateModel(huggingFace, "MiMo V2.5 Pro", "XiaomiMiMo/MiMo-V2.5-Pro", 1000000, "agent,long-context,code,chat,tool-calling")
+            CreateModel(huggingFace, "MiMo V2.5 Pro", "XiaomiMiMo/MiMo-V2.5-Pro", 1000000, "agent,long-context,code,chat,tool-calling"),
+
+            CreateModel(openCode, "GPT 5.3 Codex (Zen)", "opencode/gpt-5.3-codex", 32768, "chat,tool-calling,reasoning,code"),
+            CreateModel(openCode, "Claude Sonnet 4.6 (Zen)", "opencode/claude-sonnet-4-6", 32768, "chat,tool-calling,reasoning"),
+            CreateModel(openCode, "Kimi K2.6 (Go)", "opencode-go/kimi-k2.6", 32768, "chat,tool-calling,reasoning,code"),
+            CreateModel(openCode, "DeepSeek V4 Flash (Go)", "opencode-go/deepseek-v4-flash", 32768, "chat,tool-calling,code")
         ];
     }
 

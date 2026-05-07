@@ -26,8 +26,8 @@ public class AgenticCatalogSeederTests
 
         Assert.Equal(providerCountFirst, providerCountSecond);
         Assert.Equal(modelCountFirst, modelCountSecond);
-        Assert.True(providerCountSecond >= 4);
-        Assert.True(modelCountSecond >= 16);
+        Assert.True(providerCountSecond >= 5);
+        Assert.True(modelCountSecond >= 20);
     }
 
     [Fact]
@@ -73,5 +73,31 @@ public class AgenticCatalogSeederTests
         Assert.True(provider.DefaultEnableMemory);
         Assert.True(provider.DefaultEnableRAG);
         Assert.Equal("You are a helpful AI assistant.", provider.DefaultSystemPrompt);
+    }
+
+    [Fact]
+    public async Task SeedAsync_AddsOpenCodeProviderAndConfiguredModels()
+    {
+        var options = new DbContextOptionsBuilder<AgenticDbContext>()
+            .UseInMemoryDatabase($"agentic-seeder-opencode-{Guid.NewGuid()}")
+            .Options;
+
+        await using var dbContext = new AgenticDbContext(options);
+        var sut = new AgenticCatalogSeeder(dbContext);
+
+        await sut.SeedAsync();
+
+        var provider = await dbContext.AIProviders.FirstOrDefaultAsync(p => p.Name == "OpenCode");
+        Assert.NotNull(provider);
+
+        var providerModels = await dbContext.AIModels
+            .Where(m => m.ProviderId == provider!.Id)
+            .Select(m => m.TechnicalName)
+            .ToListAsync();
+
+        Assert.Contains("opencode/gpt-5.3-codex", providerModels);
+        Assert.Contains("opencode/claude-sonnet-4-6", providerModels);
+        Assert.Contains("opencode-go/kimi-k2.6", providerModels);
+        Assert.Contains("opencode-go/deepseek-v4-flash", providerModels);
     }
 }
