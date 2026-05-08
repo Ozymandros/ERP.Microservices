@@ -57,10 +57,10 @@ public class AgentConfiguration : IEntityTypeConfiguration<Agent>
             .HasConversion<string>()
             .HasDefaultValue(BotType.Chat);
 
-        builder.Property(p => p.TenantId)
-            .IsRequired(false);
+        builder.Property(p => p.OwnerUserId)
+            .HasMaxLength(200);
 
-        builder.HasIndex(p => p.TenantId);
+        builder.HasIndex(p => p.OwnerUserId);
         builder.HasIndex(p => p.IsActive);
 
         builder.HasMany(p => p.Plugins)

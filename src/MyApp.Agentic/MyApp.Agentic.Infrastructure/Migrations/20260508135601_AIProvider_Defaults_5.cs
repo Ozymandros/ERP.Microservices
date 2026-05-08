@@ -5,7 +5,7 @@
 namespace MyApp.Agentic.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddProviderModelCatalogAndDefaults : Migration
+    public partial class AIProvider_Defaults_5 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -144,103 +144,13 @@ namespace MyApp.Agentic.Infrastructure.Migrations
                 )
                 CREATE UNIQUE INDEX [IX_AIModels_ProviderId_TechnicalName] ON [AIModels] ([ProviderId], [TechnicalName]);
                 """);
+
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_AIProviders_Name",
-                table: "AIProviders");
 
-            migrationBuilder.DropColumn(
-                name: "DefaultBotType",
-                table: "AIProviders");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultEmbeddingDimensions",
-                table: "AIProviders");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultEmbeddingModelName",
-                table: "AIProviders");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultEnableMemory",
-                table: "AIProviders");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultEnableRAG",
-                table: "AIProviders");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultMaxTokens",
-                table: "AIProviders");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultSystemPrompt",
-                table: "AIProviders");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultTemperature",
-                table: "AIProviders");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultTopK",
-                table: "AIProviders");
-
-            migrationBuilder.DropIndex(
-                name: "IX_AIModels_ProviderId_CommercialName",
-                table: "AIModels");
-
-            migrationBuilder.DropIndex(
-                name: "IX_AIModels_ProviderId_TechnicalName",
-                table: "AIModels");
-
-            migrationBuilder.DropColumn(
-                name: "CommercialName",
-                table: "AIModels");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultBotType",
-                table: "AIModels");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultEmbeddingDimensions",
-                table: "AIModels");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultEmbeddingModelName",
-                table: "AIModels");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultEnableMemory",
-                table: "AIModels");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultEnableRAG",
-                table: "AIModels");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultMaxTokens",
-                table: "AIModels");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultSystemPrompt",
-                table: "AIModels");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultTemperature",
-                table: "AIModels");
-
-            migrationBuilder.DropColumn(
-                name: "DefaultTopK",
-                table: "AIModels");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AIModels_ProviderId",
-                table: "AIModels",
-                column: "ProviderId");
         }
     }
 }

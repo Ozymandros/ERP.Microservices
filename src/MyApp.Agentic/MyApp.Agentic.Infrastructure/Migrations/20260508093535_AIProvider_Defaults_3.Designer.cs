@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyApp.Agentic.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using MyApp.Agentic.Infrastructure.Data;
 namespace MyApp.Agentic.Infrastructure.Migrations
 {
     [DbContext(typeof(AgenticDbContext))]
-    partial class AgenticDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260508093535_AIProvider_Defaults_3")]
+    partial class AIProvider_Defaults_3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -266,10 +269,6 @@ namespace MyApp.Agentic.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("OwnerUserId")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<string>("SystemInstructions")
                         .IsRequired()
                         .HasMaxLength(8000)
@@ -278,6 +277,9 @@ namespace MyApp.Agentic.Infrastructure.Migrations
                     b.Property<double>("Temperature")
                         .HasPrecision(3, 2)
                         .HasColumnType("float(3)");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("TopK")
                         .ValueGeneratedOnAdd()
@@ -296,7 +298,7 @@ namespace MyApp.Agentic.Infrastructure.Migrations
 
                     b.HasIndex("ModelId");
 
-                    b.HasIndex("OwnerUserId");
+                    b.HasIndex("TenantId");
 
                     b.ToTable("Agents", (string)null);
                 });

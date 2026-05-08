@@ -21,7 +21,7 @@ public record AgentDto(
     bool EnableRAG,
     string? EmbeddingModelName,
     bool IsActive,
-    Guid? TenantId
+    string? OwnerUserId
 );
 
 /// <summary>Summary for agent list views.</summary>
@@ -44,7 +44,7 @@ public record CreateAgentDto(
     Guid ModelId,
     double Temperature,
     string SystemPrompt,
-    Guid? TenantId,
+    string? OwnerUserId,
     BotType BotType = BotType.Chat,
     int TopK = 3,
     int MaxTokens = 2048,

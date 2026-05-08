@@ -30,16 +30,11 @@ public class SessionsController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-            ?? User.FindFirstValue("sub")
-            ?? throw new UnauthorizedAccessException("User identifier not found in token.");
-
-        var tenantIdClaim = User.FindFirstValue("tenant_id");
-        Guid? tenantId = string.IsNullOrEmpty(tenantIdClaim) ? null : Guid.TryParse(tenantIdClaim, out var tid) ? tid : null;
+        var userId = GetAuthenticatedUserId();
 
         try
         {
-            var response = await _agentService.StartSessionAsync(request, userId, tenantId, cancellationToken);
+            var response = await _agentService.StartSessionAsync(request, userId, cancellationToken);
             return CreatedAtAction(nameof(GetSession), new { id = response.SessionId }, response);
         }
         catch (InvalidOperationException ex)
@@ -59,16 +54,11 @@ public class SessionsController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<SessionListItemDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> ListSessions(CancellationToken cancellationToken)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-            ?? User.FindFirstValue("sub")
-            ?? throw new UnauthorizedAccessException("User identifier not found in token.");
-
-        var tenantIdClaim = User.FindFirstValue("tenant_id");
-        Guid? tenantId = string.IsNullOrEmpty(tenantIdClaim) ? null : Guid.TryParse(tenantIdClaim, out var tid) ? tid : null;
+        var userId = GetAuthenticatedUserId();
 
         try
         {
-            var sessions = await _agentService.ListSessionsAsync(userId, tenantId, cancellationToken);
+            var sessions = await _agentService.ListSessionsAsync(userId, cancellationToken);
             return Ok(sessions);
         }
         catch (Exception ex)
@@ -84,16 +74,11 @@ public class SessionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetSession(Guid id, CancellationToken cancellationToken)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-            ?? User.FindFirstValue("sub")
-            ?? throw new UnauthorizedAccessException("User identifier not found in token.");
-
-        var tenantIdClaim = User.FindFirstValue("tenant_id");
-        Guid? tenantId = string.IsNullOrEmpty(tenantIdClaim) ? null : Guid.TryParse(tenantIdClaim, out var tid) ? tid : null;
+        var userId = GetAuthenticatedUserId();
 
         try
         {
-            var session = await _agentService.GetSessionAsync(id, userId, tenantId, cancellationToken);
+            var session = await _agentService.GetSessionAsync(id, userId, cancellationToken);
             return session is null ? NotFound(new { message = $"Session with ID {id} not found." }) : Ok(session);
         }
         catch (Exception ex)
@@ -109,16 +94,11 @@ public class SessionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetSessionMessages(Guid id, CancellationToken cancellationToken)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-            ?? User.FindFirstValue("sub")
-            ?? throw new UnauthorizedAccessException("User identifier not found in token.");
-
-        var tenantIdClaim = User.FindFirstValue("tenant_id");
-        Guid? tenantId = string.IsNullOrEmpty(tenantIdClaim) ? null : Guid.TryParse(tenantIdClaim, out var tid) ? tid : null;
+        var userId = GetAuthenticatedUserId();
 
         try
         {
-            var session = await _agentService.GetSessionAsync(id, userId, tenantId, cancellationToken);
+            var session = await _agentService.GetSessionAsync(id, userId, cancellationToken);
             return session is null ? NotFound(new { message = $"Session with ID {id} not found." }) : Ok(session);
         }
         catch (Exception ex)
@@ -137,16 +117,11 @@ public class SessionsController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-            ?? User.FindFirstValue("sub")
-            ?? throw new UnauthorizedAccessException("User identifier not found in token.");
-
-        var tenantIdClaim = User.FindFirstValue("tenant_id");
-        Guid? tenantId = string.IsNullOrEmpty(tenantIdClaim) ? null : Guid.TryParse(tenantIdClaim, out var tid) ? tid : null;
+        var userId = GetAuthenticatedUserId();
 
         try
         {
-            var response = await _agentService.SendMessageAsync(id, request, userId, tenantId, cancellationToken);
+            var response = await _agentService.SendMessageAsync(id, request, userId, cancellationToken);
             return Ok(response);
         }
         catch (InvalidOperationException ex)
@@ -167,9 +142,7 @@ public class SessionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> EndSession(Guid id, CancellationToken cancellationToken)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-            ?? User.FindFirstValue("sub")
-            ?? throw new UnauthorizedAccessException("User identifier not found in token.");
+        var userId = GetAuthenticatedUserId();
 
         try
         {
@@ -187,4 +160,9 @@ public class SessionsController : ControllerBase
             return StatusCode(500, new { message = "An error occurred ending the session" });
         }
     }
+
+    private string GetAuthenticatedUserId() =>
+        User.FindFirstValue(ClaimTypes.NameIdentifier)
+        ?? User.FindFirstValue("sub")
+        ?? throw new UnauthorizedAccessException("User identifier not found in token.");
 }

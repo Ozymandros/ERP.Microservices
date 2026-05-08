@@ -21,7 +21,7 @@ public class Agent(Guid id) : AuditableEntity<Guid>(id)
 
     public string SystemInstructions { get; private set; } = string.Empty;
     public bool IsActive { get; private set; } = true;
-    public Guid? TenantId { get; private set; }
+    public string? OwnerUserId { get; private set; }
 
     public AIModel? Model { get; private set; }
     public ICollection<AgentPlugin> Plugins { get; private set; } = new List<AgentPlugin>();
@@ -34,7 +34,7 @@ public class Agent(Guid id) : AuditableEntity<Guid>(id)
         Guid modelId,
         double temperature,
         string systemInstructions,
-        Guid? tenantId = null,
+        string? ownerUserId = null,
         int topK = 3,
         int maxTokens = 2048,
         int embeddingDimensions = 1536,
@@ -48,7 +48,7 @@ public class Agent(Guid id) : AuditableEntity<Guid>(id)
         ModelId = modelId;
         Temperature = ClampTemperature(temperature);
         SystemInstructions = systemInstructions?.Trim() ?? string.Empty;
-        TenantId = tenantId;
+        OwnerUserId = string.IsNullOrWhiteSpace(ownerUserId) ? null : ownerUserId.Trim();
         IsActive = true;
         TopK = topK > 0 ? topK : 3;
         MaxTokens = maxTokens > 0 ? maxTokens : 2048;

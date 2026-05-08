@@ -12,6 +12,7 @@ using MyApp.Agentic.Domain.Sessions;
 using MyApp.Agentic.Infrastructure.Memory;
 using MyApp.Agentic.Infrastructure.Secrets;
 using MyApp.Agentic.Infrastructure.State;
+using MyApp.Shared.Domain.Messaging;
 
 namespace MyApp.Agentic.Application.Tests;
 
@@ -26,6 +27,7 @@ public class AgentServiceTests
     private readonly Mock<ISessionStateStore> _mockSessionStateStore;
     private readonly Mock<IEmbeddingService> _mockEmbeddingService;
     private readonly Mock<IAgentExecutionService> _mockExecutionService;
+    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly Mock<IMapper> _mockMapper;
     private readonly Mock<ILogger<AgentService>> _mockLogger;
     private readonly AgentService _service;
@@ -41,8 +43,18 @@ public class AgentServiceTests
         _mockSessionStateStore = new Mock<ISessionStateStore>();
         _mockEmbeddingService = new Mock<IEmbeddingService>();
         _mockExecutionService = new Mock<IAgentExecutionService>();
+        _mockServiceInvoker = new Mock<IServiceInvoker>();
         _mockMapper = new Mock<IMapper>();
         _mockLogger = new Mock<ILogger<AgentService>>();
+
+        _mockServiceInvoker
+            .Setup(s => s.InvokeAsync<string, object>(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<HttpMethod>(),
+                It.IsAny<string>(),
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new object());
 
         _service = new AgentService(
             _mockAgentRepository.Object,
@@ -54,11 +66,12 @@ public class AgentServiceTests
             _mockSessionStateStore.Object,
             _mockEmbeddingService.Object,
             _mockExecutionService.Object,
+            _mockServiceInvoker.Object,
             _mockMapper.Object,
             _mockLogger.Object);
     }
 
-    private Agent CreateTestAgent(Guid id = default, Guid? tenantId = null)
+    private Agent CreateTestAgent(Guid id = default, string? ownerUserId = null)
     {
         var provider = new AIProvider(Guid.NewGuid(), "OpenAI", "https://api.openai.com", "openai-key");
         var model = new AIModel(Guid.NewGuid(), provider.Id, "GPT-4", "gpt-4", 8192, "chat");
@@ -71,7 +84,7 @@ public class AgentServiceTests
             model.Id,
             0.7,
             "You are a helpful assistant.",
-            tenantId);
+            ownerUserId);
 
         agent.SetModelForTest(model);
 
@@ -275,7 +288,7 @@ public class AgentServiceTests
         _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
-        var result = await _service.ProcessMessageAsync(request, userId, null);
+        var result = await _service.ProcessMessageAsync(request, userId);
 
         Assert.NotNull(result);
         Assert.Equal(userId, result.UserId);
@@ -297,15 +310,15 @@ public class AgentServiceTests
             .ReturnsAsync(agent);
 
         await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            _service.ProcessMessageAsync(request, userId, null));
+            _service.ProcessMessageAsync(request, userId));
     }
 
     [Fact]
-    public async Task ProcessMessageAsync_WhenAgentTenantMismatch_ThrowsException()
+    public async Task ProcessMessageAsync_WhenAgentOwnerMismatch_ThrowsException()
     {
         var agentId = Guid.NewGuid();
-        var tenantId = Guid.NewGuid();
-        var agent = CreateTestAgent(agentId, tenantId);
+        var ownerUserId = "owner-user";
+        var agent = CreateTestAgent(agentId, ownerUserId);
 
         var request = new ProcessAgentMessageRequest(agentId, "Hello");
 
@@ -313,7 +326,7 @@ public class AgentServiceTests
             .ReturnsAsync(agent);
 
         await Assert.ThrowsAsync<UnauthorizedAccessException>(() =>
-            _service.ProcessMessageAsync(request, "user-123", Guid.NewGuid()));
+            _service.ProcessMessageAsync(request, "different-user"));
     }
 
     [Fact]
@@ -363,7 +376,7 @@ public class AgentServiceTests
         _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
-        var result = await _service.ProcessMessageAsync(request, userId, null);
+        var result = await _service.ProcessMessageAsync(request, userId);
 
         _mockExecutionService.Verify(e => e.ExecuteAsync(
             It.Is<AgentExecutionContext>(ctx => ctx.ContextMemories.Count > 0),
@@ -395,41 +408,41 @@ public class AgentServiceTests
         _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
-        await _service.ProcessMessageAsync(request, userId, null);
+        await _service.ProcessMessageAsync(request, userId);
 
         _mockMemoryRepository.Verify(r => r.AddMemoryAsync(It.IsAny<AgentMemory>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
-    public async Task ListByTenantAsync_FiltersByTenant()
+    public async Task ListByOwnerAsync_FiltersByOwner()
     {
-        var tenantId = Guid.NewGuid();
+        var ownerUserId = "owner-user";
         var agents = new List<Agent>
         {
-            CreateTestAgent(Guid.NewGuid(), tenantId),
-            CreateTestAgent(Guid.NewGuid(), tenantId),
+            CreateTestAgent(Guid.NewGuid(), ownerUserId),
+            CreateTestAgent(Guid.NewGuid(), ownerUserId),
             CreateTestAgent(Guid.NewGuid(), null)
         };
 
         _mockAgentRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(agents);
 
-        var result = await _service.ListByTenantAsync(tenantId);
+        var result = await _service.ListByOwnerAsync(ownerUserId);
 
         Assert.Equal(3, result.Count());
     }
 
     [Fact]
-    public async Task ListByTenantAsync_WithoutTenant_ReturnsAll()
+    public async Task ListByOwnerAsync_WithoutOwner_ReturnsAll()
     {
         var agents = new List<Agent>
         {
-            CreateTestAgent(Guid.NewGuid(), Guid.NewGuid()),
+            CreateTestAgent(Guid.NewGuid(), "another-owner"),
             CreateTestAgent(Guid.NewGuid(), null)
         };
 
         _mockAgentRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(agents);
 
-        var result = await _service.ListByTenantAsync(null);
+        var result = await _service.ListByOwnerAsync(null);
 
         Assert.Equal(2, result.Count());
     }
@@ -448,7 +461,7 @@ public class AgentServiceTests
         _mockSessionRepository.Setup(r => r.AddAsync(It.IsAny<AgentSession>()))
             .ReturnsAsync((AgentSession s) => s);
 
-        var result = await _service.StartSessionAsync(request, userId, null);
+        var result = await _service.StartSessionAsync(request, userId);
 
         Assert.NotNull(result);
         Assert.Equal(agentId, result.AgentId);
@@ -465,7 +478,7 @@ public class AgentServiceTests
             .ReturnsAsync((Agent?)null);
 
         await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            _service.StartSessionAsync(request, "user-123", null));
+            _service.StartSessionAsync(request, "user-123"));
     }
 
     [Fact]
@@ -480,7 +493,7 @@ public class AgentServiceTests
             .ReturnsAsync(agent);
 
         await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            _service.StartSessionAsync(request, "user-123", null));
+            _service.StartSessionAsync(request, "user-123"));
     }
 
     [Fact]
@@ -511,7 +524,7 @@ public class AgentServiceTests
         _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
-        var result = await _service.SendMessageAsync(sessionId, request, userId, null);
+        var result = await _service.SendMessageAsync(sessionId, request, userId);
 
         Assert.NotNull(result);
         Assert.Equal(sessionId, result.SessionId);
@@ -559,7 +572,7 @@ public class AgentServiceTests
         _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
-        await _service.SendMessageAsync(sessionId, request, userId, null);
+        await _service.SendMessageAsync(sessionId, request, userId);
 
         Assert.NotNull(capturedContext);
         Assert.Single(capturedContext!.Tools);
@@ -611,7 +624,7 @@ public class AgentServiceTests
         _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
-        await _service.SendMessageAsync(sessionId, request, userId, null);
+        await _service.SendMessageAsync(sessionId, request, userId);
 
         Assert.NotNull(capturedContext);
         Assert.Equal(4, capturedContext!.Tools.Count);
@@ -631,7 +644,7 @@ public class AgentServiceTests
             .ReturnsAsync((AgentSession?)null);
 
         await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            _service.SendMessageAsync(sessionId, request, "user-123", null));
+            _service.SendMessageAsync(sessionId, request, "user-123"));
     }
 
     [Fact]
@@ -646,7 +659,7 @@ public class AgentServiceTests
             .ReturnsAsync(session);
 
         await Assert.ThrowsAsync<UnauthorizedAccessException>(() =>
-            _service.SendMessageAsync(sessionId, request, "user-123", null));
+            _service.SendMessageAsync(sessionId, request, "user-123"));
     }
 
     [Fact]
@@ -666,7 +679,7 @@ public class AgentServiceTests
         _mockSessionStateStore.Setup(s => s.GetSessionAsync(sessionId, userId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((SessionState?)null);
 
-        var result = await _service.GetSessionAsync(sessionId, userId, null);
+        var result = await _service.GetSessionAsync(sessionId, userId);
 
         Assert.NotNull(result);
         Assert.Equal(sessionId, result.SessionId);
@@ -680,7 +693,7 @@ public class AgentServiceTests
         _mockSessionRepository.Setup(r => r.GetByIdWithAgentAsync(sessionId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((AgentSession?)null);
 
-        var result = await _service.GetSessionAsync(sessionId, "user-123", null);
+        var result = await _service.GetSessionAsync(sessionId, "user-123");
 
         Assert.Null(result);
     }
@@ -701,7 +714,7 @@ public class AgentServiceTests
         _mockSessionStateStore.Setup(s => s.GetSessionAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((SessionState?)null);
 
-        var result = await _service.ListSessionsAsync(userId, null);
+        var result = await _service.ListSessionsAsync(userId);
 
         Assert.Equal(2, result.Count());
     }

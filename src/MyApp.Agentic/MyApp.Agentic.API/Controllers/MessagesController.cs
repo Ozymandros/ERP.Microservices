@@ -34,12 +34,9 @@ public class MessagesController : ControllerBase
             ?? User.FindFirstValue("sub")
             ?? throw new UnauthorizedAccessException("User identifier not found in token.");
 
-        var tenantIdClaim = User.FindFirstValue("tenant_id");
-        Guid? tenantId = string.IsNullOrEmpty(tenantIdClaim) ? null : Guid.TryParse(tenantIdClaim, out var tid) ? tid : null;
-
         try
         {
-            var response = await _agentService.ProcessMessageAsync(request, userId, tenantId, cancellationToken);
+            var response = await _agentService.ProcessMessageAsync(request, userId, cancellationToken);
             return Ok(response);
         }
         catch (InvalidOperationException ex)

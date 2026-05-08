@@ -12,6 +12,8 @@ using MyApp.Agentic.Infrastructure.State;
 using MyApp.Agentic.Domain.Skills;
 using MyApp.Agentic.Domain.AIModels;
 using MyApp.Agentic.Domain.AIProviders;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Messaging;
 
 namespace MyApp.Agentic.Application.Services;
 
@@ -26,6 +28,7 @@ public class AgentService : IAgentService
     private readonly ISessionStateStore _sessionStateStore;
     private readonly IEmbeddingService _embeddingService;
     private readonly IAgentExecutionService _agentExecutionService;
+    private readonly IServiceInvoker _serviceInvoker;
     private readonly IMapper _mapper;
     private readonly ILogger<AgentService> _logger;
 
@@ -39,6 +42,7 @@ public class AgentService : IAgentService
         ISessionStateStore sessionStateStore,
         IEmbeddingService embeddingService,
         IAgentExecutionService agentExecutionService,
+        IServiceInvoker serviceInvoker,
         IMapper mapper,
         ILogger<AgentService> logger)
     {
@@ -51,6 +55,7 @@ public class AgentService : IAgentService
         _sessionStateStore = sessionStateStore;
         _embeddingService = embeddingService;
         _agentExecutionService = agentExecutionService;
+        _serviceInvoker = serviceInvoker;
         _mapper = mapper;
         _logger = logger;
     }
@@ -67,18 +72,23 @@ public class AgentService : IAgentService
         return agents.Select(MapToListDto);
     }
 
-    public async Task<IEnumerable<AgentListDto>> ListByTenantAsync(Guid? tenantId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<AgentListDto>> ListByOwnerAsync(string? ownerUserId, CancellationToken cancellationToken = default)
     {
         var agents = await _agentRepository.GetAllAsync();
-        var filtered = tenantId.HasValue
-            ? agents.Where(a => a.TenantId == tenantId || a.TenantId == null)
-            : agents;
+        var filtered = string.IsNullOrWhiteSpace(ownerUserId)
+            ? agents
+            : agents.Where(a => a.OwnerUserId == ownerUserId || a.OwnerUserId == null);
         return filtered.Select(MapToListDto);
     }
 
     public async Task<AgentDto> CreateAsync(CreateAgentDto dto, CancellationToken cancellationToken = default)
     {
         await ValidateProviderModelAsync(dto.ProviderId, dto.ModelId, cancellationToken);
+
+        if (!string.IsNullOrWhiteSpace(dto.OwnerUserId))
+        {
+            await ValidateUserExistsAsync(dto.OwnerUserId!, cancellationToken);
+        }
 
         var agent = new Agent(
             id: Guid.NewGuid(),
@@ -87,7 +97,7 @@ public class AgentService : IAgentService
             modelId: dto.ModelId,
             temperature: dto.Temperature,
             systemInstructions: dto.SystemPrompt,
-            tenantId: dto.TenantId,
+            ownerUserId: dto.OwnerUserId,
             botType: dto.BotType,
             topK: dto.TopK,
             maxTokens: dto.MaxTokens,
@@ -135,7 +145,6 @@ public class AgentService : IAgentService
     public async Task<ProcessAgentMessageResponse> ProcessMessageAsync(
         ProcessAgentMessageRequest request,
         string authenticatedUserId,
-        Guid? tenantId,
         CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Processing message for Agent {AgentId}, User {UserId}", request.AgentId, authenticatedUserId);
@@ -146,7 +155,7 @@ public class AgentService : IAgentService
         if (!agent.IsActive)
             throw new InvalidOperationException($"Agent {request.AgentId} is not active.");
 
-        if (agent.TenantId.HasValue && agent.TenantId != tenantId)
+        if (!string.IsNullOrWhiteSpace(agent.OwnerUserId) && agent.OwnerUserId != authenticatedUserId)
             throw new UnauthorizedAccessException("User does not have access to this agent.");
 
         var provider = agent.Model?.Provider
@@ -230,11 +239,12 @@ public class AgentService : IAgentService
     public async Task<StartSessionResponse> StartSessionAsync(
         StartSessionRequest request,
         string authenticatedUserId,
-        Guid? tenantId,
         CancellationToken cancellationToken = default)
     {
         if (!request.AgentId.HasValue || request.AgentId.Value == Guid.Empty)
             throw new InvalidOperationException("AgentId is required.");
+
+        await ValidateUserExistsAsync(authenticatedUserId, cancellationToken);
 
         var agentId = request.AgentId.Value;
         var agent = await _agentRepository.GetByIdWithDetailsAsync(agentId, cancellationToken)
@@ -243,7 +253,7 @@ public class AgentService : IAgentService
         if (!agent.IsActive)
             throw new InvalidOperationException($"Agent {request.AgentId} is not active.");
 
-        if (agent.TenantId.HasValue && agent.TenantId != tenantId)
+        if (!string.IsNullOrWhiteSpace(agent.OwnerUserId) && agent.OwnerUserId != authenticatedUserId)
             throw new UnauthorizedAccessException("User does not have access to this agent.");
 
         var session = new AgentSession(
@@ -269,7 +279,6 @@ public class AgentService : IAgentService
         Guid sessionId,
         SendMessageRequest request,
         string authenticatedUserId,
-        Guid? tenantId,
         CancellationToken cancellationToken = default)
     {
         var session = await _sessionRepository.GetByIdWithAgentAsync(sessionId, cancellationToken)
@@ -287,7 +296,7 @@ public class AgentService : IAgentService
         if (!agent.IsActive)
             throw new InvalidOperationException($"Agent {agent.Id} is not active.");
 
-        if (agent.TenantId.HasValue && agent.TenantId != tenantId)
+        if (!string.IsNullOrWhiteSpace(agent.OwnerUserId) && agent.OwnerUserId != authenticatedUserId)
             throw new UnauthorizedAccessException("User does not have access to this agent.");
 
         var provider = agent.Model?.Provider
@@ -380,7 +389,6 @@ public class AgentService : IAgentService
     public async Task<SessionDetailsResponse?> GetSessionAsync(
         Guid sessionId,
         string authenticatedUserId,
-        Guid? tenantId,
         CancellationToken cancellationToken = default)
     {
         var session = await _sessionRepository.GetByIdWithAgentAsync(sessionId, cancellationToken);
@@ -407,7 +415,6 @@ public class AgentService : IAgentService
 
     public async Task<IEnumerable<SessionListItemDto>> ListSessionsAsync(
         string authenticatedUserId,
-        Guid? tenantId,
         CancellationToken cancellationToken = default)
     {
         var sessions = await _sessionRepository.GetByUserIdAsync(authenticatedUserId, cancellationToken);
@@ -466,7 +473,7 @@ public class AgentService : IAgentService
         agent.EnableRAG,
         agent.EmbeddingModelName,
         agent.IsActive,
-        agent.TenantId);
+        agent.OwnerUserId);
 
     private async Task ValidateProviderModelAsync(Guid providerId, Guid modelId, CancellationToken cancellationToken)
     {
@@ -486,6 +493,34 @@ public class AgentService : IAgentService
 
         if (model.ProviderId != providerId)
             throw new InvalidOperationException("Selected model does not belong to the selected provider.");
+    }
+
+    private async Task ValidateUserExistsAsync(string userId, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(userId))
+            throw new ArgumentException("UserId is required.", nameof(userId));
+
+        try
+        {
+            var user = await _serviceInvoker.InvokeAsync<string, object>(
+                ServiceNames.Auth,
+                $"api/users/{userId}",
+                HttpMethod.Get,
+                string.Empty,
+                cancellationToken);
+
+            if (user is null)
+                throw new InvalidOperationException($"User {userId} not found in auth-service.");
+        }
+        catch (InvalidOperationException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to validate user {UserId} via auth-service", userId);
+            throw new InvalidOperationException($"User {userId} could not be validated against auth-service.", ex);
+        }
     }
 
     private static AgentListDto MapToListDto(Agent agent) => new(
