@@ -453,7 +453,7 @@ public class AgentServiceTests
         var agentId = Guid.NewGuid();
         var agent = CreateTestAgent(agentId);
         var userId = "user-123";
-        var request = new StartSessionRequest(agentId, "Test Session");
+        var request = new StartSessionRequest(agentId, userId, "Test Session");
 
         _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(agent);
@@ -472,7 +472,8 @@ public class AgentServiceTests
     public async Task StartSessionAsync_WhenAgentNotFound_ThrowsException()
     {
         var agentId = Guid.NewGuid();
-        var request = new StartSessionRequest(agentId, "Test");
+        var userId = "user-123";
+        var request = new StartSessionRequest(agentId, userId, "Test");
 
         _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((Agent?)null);
@@ -487,7 +488,8 @@ public class AgentServiceTests
         var agentId = Guid.NewGuid();
         var agent = CreateTestAgent(agentId);
         agent.Deactivate();
-        var request = new StartSessionRequest(agentId, "Test");
+        var userId = "user-123";
+        var request = new StartSessionRequest(agentId, userId, "Test");
 
         _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(agent);

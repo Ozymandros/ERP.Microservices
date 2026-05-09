@@ -17,6 +17,14 @@ using MyApp.Shared.Domain.Messaging;
 
 namespace MyApp.Agentic.Application.Services;
 
+/// <summary>
+/// Coordinates agent lifecycle operations, conversation execution, session management,
+/// retrieval-augmented context loading, and long-term memory persistence.
+/// </summary>
+/// <remarks>
+/// This service orchestrates multiple infrastructure and domain components:
+/// repositories, secret resolution, session state, embeddings, tool mapping, and AI execution.
+/// </remarks>
 public class AgentService : IAgentService
 {
     private readonly IAgentRepository _agentRepository;
@@ -32,6 +40,21 @@ public class AgentService : IAgentService
     private readonly IMapper _mapper;
     private readonly ILogger<AgentService> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AgentService"/> class.
+    /// </summary>
+    /// <param name="agentRepository">Repository for agent aggregate persistence.</param>
+    /// <param name="providerRepository">Repository for AI provider metadata.</param>
+    /// <param name="modelRepository">Repository for AI model metadata.</param>
+    /// <param name="sessionRepository">Repository for persisted agent sessions.</param>
+    /// <param name="memoryRepository">Repository for vectorized conversational memories.</param>
+    /// <param name="secretStore">Secret store used to resolve provider API keys.</param>
+    /// <param name="sessionStateStore">Transient/operational store for conversation state.</param>
+    /// <param name="embeddingService">Service used to generate embeddings for RAG and memory.</param>
+    /// <param name="agentExecutionService">Service that executes prompts against the configured model/provider.</param>
+    /// <param name="serviceInvoker">Cross-service invoker for validating external dependencies (for example auth users).</param>
+    /// <param name="mapper">Object mapper dependency.</param>
+    /// <param name="logger">Structured logger for diagnostics and operational tracing.</param>
     public AgentService(
         IAgentRepository agentRepository,
         IAIProviderRepository providerRepository,
@@ -60,18 +83,37 @@ public class AgentService : IAgentService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Gets a single agent by identifier.
+    /// </summary>
+    /// <param name="id">Agent identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The mapped <see cref="AgentDto"/> when found; otherwise <see langword="null"/>.</returns>
     public async Task<AgentDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var agent = await _agentRepository.GetByIdAsync(id);
         return agent == null ? null : MapToDto(agent);
     }
 
+    /// <summary>
+    /// Lists all agents.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A collection of lightweight agent list DTOs.</returns>
     public async Task<IEnumerable<AgentListDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         var agents = await _agentRepository.GetAllAsync();
         return agents.Select(MapToListDto);
     }
 
+    /// <summary>
+    /// Lists agents visible to a given owner context.
+    /// </summary>
+    /// <param name="ownerUserId">
+    /// Owner user identifier. When null/empty, all agents are returned; otherwise owned and shared (owner null) agents are returned.
+    /// </param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Filtered collection of <see cref="AgentListDto"/>.</returns>
     public async Task<IEnumerable<AgentListDto>> ListByOwnerAsync(string? ownerUserId, CancellationToken cancellationToken = default)
     {
         var agents = await _agentRepository.GetAllAsync();
@@ -81,6 +123,14 @@ public class AgentService : IAgentService
         return filtered.Select(MapToListDto);
     }
 
+    /// <summary>
+    /// Creates a new agent after validating provider/model consistency and optional owner existence.
+    /// </summary>
+    /// <param name="dto">Agent creation payload.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The created agent as <see cref="AgentDto"/>.</returns>
+    /// <exception cref="ArgumentException">Thrown when required identifiers are invalid.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when provider/model/user validation fails.</exception>
     public async Task<AgentDto> CreateAsync(CreateAgentDto dto, CancellationToken cancellationToken = default)
     {
         await ValidateProviderModelAsync(dto.ProviderId, dto.ModelId, cancellationToken);
@@ -110,6 +160,14 @@ public class AgentService : IAgentService
         return MapToDto(agent);
     }
 
+    /// <summary>
+    /// Updates an existing agent configuration.
+    /// </summary>
+    /// <param name="id">Agent identifier.</param>
+    /// <param name="dto">Update payload.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The updated agent as <see cref="AgentDto"/>.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when the agent, provider, or model is invalid/not found.</exception>
     public async Task<AgentDto> UpdateAsync(Guid id, UpdateAgentDto dto, CancellationToken cancellationToken = default)
     {
         await ValidateProviderModelAsync(dto.ProviderId, dto.ModelId, cancellationToken);
@@ -135,6 +193,11 @@ public class AgentService : IAgentService
         return MapToDto(agent);
     }
 
+    /// <summary>
+    /// Deletes an agent when it exists. No-op if the agent is not found.
+    /// </summary>
+    /// <param name="id">Agent identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var agent = await _agentRepository.GetByIdAsync(id);
@@ -142,6 +205,16 @@ public class AgentService : IAgentService
         await _agentRepository.DeleteAsync(agent);
     }
 
+    /// <summary>
+    /// Processes a direct agent message (agent-scoped session state path), executes AI response generation,
+    /// appends conversation state, and optionally stores vector memories.
+    /// </summary>
+    /// <param name="request">Message request and runtime options.</param>
+    /// <param name="authenticatedUserId">Authenticated user identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Response containing session information and assistant output.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when agent/provider/configuration prerequisites are invalid.</exception>
+    /// <exception cref="UnauthorizedAccessException">Thrown when user access to the agent is not allowed.</exception>
     public async Task<ProcessAgentMessageResponse> ProcessMessageAsync(
         ProcessAgentMessageRequest request,
         string authenticatedUserId,
@@ -236,6 +309,15 @@ public class AgentService : IAgentService
         return new ProcessAgentMessageResponse(currentSessionId, authenticatedUserId, request.Message, aiResponse, DateTime.UtcNow);
     }
 
+    /// <summary>
+    /// Starts a persisted chat session for an agent and user.
+    /// </summary>
+    /// <param name="request">Session start request.</param>
+    /// <param name="authenticatedUserId">Authenticated user identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The created session descriptor.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when request data or agent state is invalid.</exception>
+    /// <exception cref="UnauthorizedAccessException">Thrown when user access to the agent is not allowed.</exception>
     public async Task<StartSessionResponse> StartSessionAsync(
         StartSessionRequest request,
         string authenticatedUserId,
@@ -275,6 +357,17 @@ public class AgentService : IAgentService
             session.Status);
     }
 
+    /// <summary>
+    /// Sends a message to an existing session, executes the agent with optional tool definitions,
+    /// persists activity timestamps, and optionally writes vector memories.
+    /// </summary>
+    /// <param name="sessionId">Session identifier.</param>
+    /// <param name="request">Message request and runtime options.</param>
+    /// <param name="authenticatedUserId">Authenticated user identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Assistant response payload associated with the session.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when session or agent state is invalid.</exception>
+    /// <exception cref="UnauthorizedAccessException">Thrown when the session/agent is not owned or accessible by the user.</exception>
     public async Task<SendMessageResponse> SendMessageAsync(
         Guid sessionId,
         SendMessageRequest request,
@@ -386,6 +479,14 @@ public class AgentService : IAgentService
             sessionId);
     }
 
+    /// <summary>
+    /// Gets full session details, including message history from session state storage.
+    /// </summary>
+    /// <param name="sessionId">Session identifier.</param>
+    /// <param name="authenticatedUserId">Authenticated user identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The session details when found; otherwise <see langword="null"/>.</returns>
+    /// <exception cref="UnauthorizedAccessException">Thrown when user does not own the session.</exception>
     public async Task<SessionDetailsResponse?> GetSessionAsync(
         Guid sessionId,
         string authenticatedUserId,
@@ -413,6 +514,12 @@ public class AgentService : IAgentService
             messages.Select(m => new SessionMessageDto(Guid.NewGuid(), m.Role, m.Content, m.Timestamp)).ToList());
     }
 
+    /// <summary>
+    /// Lists sessions for the authenticated user and enriches each with message count from state storage.
+    /// </summary>
+    /// <param name="authenticatedUserId">Authenticated user identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>User session list items with summary metadata.</returns>
     public async Task<IEnumerable<SessionListItemDto>> ListSessionsAsync(
         string authenticatedUserId,
         CancellationToken cancellationToken = default)
@@ -440,6 +547,14 @@ public class AgentService : IAgentService
         return sessionDtos;
     }
 
+    /// <summary>
+    /// Marks an active session as completed.
+    /// </summary>
+    /// <param name="sessionId">Session identifier.</param>
+    /// <param name="authenticatedUserId">Authenticated user identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <exception cref="InvalidOperationException">Thrown when session is not found.</exception>
+    /// <exception cref="UnauthorizedAccessException">Thrown when user does not own the session.</exception>
     public async Task EndSessionAsync(
         Guid sessionId,
         string authenticatedUserId,
@@ -455,6 +570,11 @@ public class AgentService : IAgentService
         await _sessionRepository.UpdateAsync(session);
     }
 
+    /// <summary>
+    /// Maps the domain <see cref="Agent"/> to a detailed API DTO.
+    /// </summary>
+    /// <param name="agent">Source domain entity.</param>
+    /// <returns>Mapped <see cref="AgentDto"/>.</returns>
     private static AgentDto MapToDto(Agent agent) => new(
         agent.Id,
         agent.Name,
@@ -475,6 +595,14 @@ public class AgentService : IAgentService
         agent.IsActive,
         agent.OwnerUserId);
 
+    /// <summary>
+    /// Validates that provider and model identifiers are present, exist, and are compatible.
+    /// </summary>
+    /// <param name="providerId">Provider identifier.</param>
+    /// <param name="modelId">Model identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <exception cref="ArgumentException">Thrown when an identifier is empty.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when entities do not exist or mismatch.</exception>
     private async Task ValidateProviderModelAsync(Guid providerId, Guid modelId, CancellationToken cancellationToken)
     {
         if (providerId == Guid.Empty)
@@ -495,6 +623,13 @@ public class AgentService : IAgentService
             throw new InvalidOperationException("Selected model does not belong to the selected provider.");
     }
 
+    /// <summary>
+    /// Validates user existence by querying the auth service.
+    /// </summary>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <exception cref="ArgumentException">Thrown when user identifier is empty.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when user cannot be found or validation fails.</exception>
     private async Task ValidateUserExistsAsync(string userId, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(userId))
@@ -523,6 +658,11 @@ public class AgentService : IAgentService
         }
     }
 
+    /// <summary>
+    /// Maps the domain <see cref="Agent"/> to a lightweight listing DTO.
+    /// </summary>
+    /// <param name="agent">Source domain entity.</param>
+    /// <returns>Mapped <see cref="AgentListDto"/>.</returns>
     private static AgentListDto MapToListDto(Agent agent) => new(
         agent.Id,
         agent.Name,
@@ -533,6 +673,12 @@ public class AgentService : IAgentService
         agent.EnableMemory,
         agent.EnableRAG);
 
+    /// <summary>
+    /// Builds executable tool definitions from configured plugins.
+    /// For chat bots, only safe read-oriented (<see cref="ToolHttpVerb.Get"/>) tools are exposed.
+    /// </summary>
+    /// <param name="agent">Agent whose plugins should be converted to tools.</param>
+    /// <returns>Filtered list of tool definitions for runtime execution.</returns>
     private static List<ToolDefinition> BuildToolsForBotMode(Agent agent)
     {
         var mappedTools = agent.Plugins
@@ -544,6 +690,11 @@ public class AgentService : IAgentService
             : mappedTools;
     }
 
+    /// <summary>
+    /// Infers HTTP verb semantics from plugin/tool naming conventions.
+    /// </summary>
+    /// <param name="toolName">Tool name.</param>
+    /// <returns>Inferred <see cref="ToolHttpVerb"/> or <see cref="ToolHttpVerb.Unknown"/>.</returns>
     private static ToolHttpVerb InferVerb(string toolName)
     {
         if (string.IsNullOrWhiteSpace(toolName))
