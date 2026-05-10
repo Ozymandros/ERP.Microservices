@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyApp.Agentic.Domain.Memory;
 using MyApp.Agentic.Infrastructure.Data;
+using Pgvector;
 
 namespace MyApp.Agentic.Infrastructure.Memory;
 
@@ -32,16 +33,17 @@ public class MemoryRepository : IMemoryRepository
 
     public async Task<IEnumerable<AgentMemory>> SearchSimilarAsync(Guid sessionId, float[] embedding, int topK = 3, CancellationToken cancellationToken = default)
     {
-        var embeddingString = "[" + string.Join(",", embedding.Select(x => x.ToString("F6"))) + "]";
+        // Convert float[] to Pgvector.Vector for typed parameter passing
+        var vector = new Vector(embedding);
 
         var sql = @"
             SELECT * FROM ""AgentMemories""
             WHERE ""SessionId"" = {0} AND ""Embedding"" IS NOT NULL
-            ORDER BY ""Embedding"" <=> {1}::vector
+            ORDER BY ""Embedding"" <=> {1}
             LIMIT {2}";
 
         var results = await _context.AgentMemories
-            .FromSqlRaw(sql, sessionId, embeddingString, topK)
+            .FromSqlRaw(sql, sessionId, vector, topK)
             .ToListAsync(cancellationToken);
 
         return results;

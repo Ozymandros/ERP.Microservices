@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyApp.Agentic.Domain.Memory;
-using Npgsql;
-using NpgsqlTypes;
+using Pgvector;
+using Pgvector.EntityFrameworkCore;
 
 namespace MyApp.Agentic.Infrastructure.Data;
 
@@ -34,8 +35,12 @@ public class MemoryDbContext : DbContext
             entity.Property(e => e.Content)
                 .IsRequired();
 
+            // Convert float[] <-> Pgvector.Vector at EF Core boundary
             entity.Property(e => e.Embedding)
-                .HasColumnType("vector(1536)");
+                .HasColumnType("vector(1536)")
+                .HasConversion(
+                    v => v == null ? null : new Vector(v),
+                    v => v == null ? null : v.ToArray());
 
             entity.Property(e => e.Metadata)
                 .HasColumnType("jsonb");
@@ -56,7 +61,7 @@ public class MemoryDbContextFactory : IDesignTimeDbContextFactory<MemoryDbContex
     public MemoryDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<MemoryDbContext>();
-        optionsBuilder.UseNpgsql("Host=localhost;Database=agentic-memory;Username=postgres;Password=Your_strong_(!)Password123");
+        optionsBuilder.UseNpgsql("Host=localhost;Database=agentic-memory;Username=postgres;Password=Your_strong_(!)Password123", o => o.UseVector());
         return new MemoryDbContext(optionsBuilder.Options);
     }
 }

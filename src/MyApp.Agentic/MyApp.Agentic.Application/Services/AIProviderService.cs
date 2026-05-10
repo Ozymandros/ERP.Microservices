@@ -57,7 +57,8 @@ public class AIProviderService(
         if (!string.IsNullOrWhiteSpace(dto.ApiKey))
         {
             var requestedApiKey = dto.ApiKey.Trim();
-            if (string.IsNullOrWhiteSpace(provider.EncryptedApiKey) || !string.Equals(requestedApiKey, secretCryptoService.Decrypt(provider.EncryptedApiKey), StringComparison.Ordinal))
+            // Only re-encrypt if the incoming value differs from the stored encrypted value
+            if (!string.Equals(requestedApiKey, provider.EncryptedApiKey, StringComparison.Ordinal))
                 encryptedApiKey = secretCryptoService.Encrypt(requestedApiKey);
         }
 
