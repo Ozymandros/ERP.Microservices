@@ -55,7 +55,11 @@ public class AIProviderService(
 
         var encryptedApiKey = provider.EncryptedApiKey;
         if (!string.IsNullOrWhiteSpace(dto.ApiKey))
-            encryptedApiKey = secretCryptoService.Encrypt(dto.ApiKey);
+        {
+            var requestedApiKey = dto.ApiKey.Trim();
+            if (string.IsNullOrWhiteSpace(provider.EncryptedApiKey) || !string.Equals(requestedApiKey, secretCryptoService.Decrypt(provider.EncryptedApiKey), StringComparison.Ordinal))
+                encryptedApiKey = secretCryptoService.Encrypt(requestedApiKey);
+        }
 
         provider.Update(
             dto.Name,
@@ -86,9 +90,7 @@ public class AIProviderService(
     private AIProviderDto MapToDto(AIProvider provider)
     {
         var hasApiKey = !string.IsNullOrWhiteSpace(provider.EncryptedApiKey);
-        var apiKey = hasApiKey
-            ? secretCryptoService.Decrypt(provider.EncryptedApiKey!)
-            : null;
+        var apiKey = hasApiKey ? provider.EncryptedApiKey : null;
 
         return new AIProviderDto(
             provider.Id,

@@ -21,19 +21,19 @@ public class AgenticCatalogSeeder(AgenticDbContext dbContext)
             }
             else
             {
-                existing.Update(
-                    provider.Name,
-                    provider.BaseUrl,
-                    provider.EncryptedApiKey,
-                    provider.DefaultTemperature,
-                    provider.DefaultTopK,
-                    provider.DefaultMaxTokens,
-                    provider.DefaultEmbeddingDimensions,
-                    provider.DefaultEnableMemory,
-                    provider.DefaultEnableRAG,
-                    provider.DefaultEmbeddingModelName,
-                    provider.DefaultBotType,
-                    provider.DefaultSystemPrompt);
+                //existing.Update(
+                //    provider.Name,
+                //    provider.BaseUrl,
+                //    provider.EncryptedApiKey,
+                //    provider.DefaultTemperature,
+                //    provider.DefaultTopK,
+                //    provider.DefaultMaxTokens,
+                //    provider.DefaultEmbeddingDimensions,
+                //    provider.DefaultEnableMemory,
+                //    provider.DefaultEnableRAG,
+                //    provider.DefaultEmbeddingModelName,
+                //    provider.DefaultBotType,
+                //    provider.DefaultSystemPrompt);
             }
         }
 
@@ -54,21 +54,21 @@ public class AgenticCatalogSeeder(AgenticDbContext dbContext)
             }
             else
             {
-                existing.Update(
-                    model.ProviderId,
-                    model.CommercialName,
-                    model.TechnicalName,
-                    model.TokenLimit,
-                    model.Capabilities,
-                    model.DefaultTemperature,
-                    model.DefaultTopK,
-                    model.DefaultMaxTokens,
-                    model.DefaultEmbeddingDimensions,
-                    model.DefaultEnableMemory,
-                    model.DefaultEnableRAG,
-                    model.DefaultEmbeddingModelName,
-                    model.DefaultBotType,
-                    model.DefaultSystemPrompt);
+                //existing.Update(
+                //    model.ProviderId,
+                //    model.CommercialName,
+                //    model.TechnicalName,
+                //    model.TokenLimit,
+                //    model.Capabilities,
+                //    model.DefaultTemperature,
+                //    model.DefaultTopK,
+                //    model.DefaultMaxTokens,
+                //    model.DefaultEmbeddingDimensions,
+                //    model.DefaultEnableMemory,
+                //    model.DefaultEnableRAG,
+                //    model.DefaultEmbeddingModelName,
+                //    model.DefaultBotType,
+                //    model.DefaultSystemPrompt);
             }
         }
 
