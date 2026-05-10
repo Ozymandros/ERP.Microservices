@@ -6,7 +6,8 @@ public record AIProviderDto(
     Guid Id,
     string Name,
     string BaseUrl,
-    string SecretKeyName,
+    string? ApiKey,
+    bool HasApiKey,
     double DefaultTemperature,
     int DefaultTopK,
     int DefaultMaxTokens,
@@ -21,7 +22,7 @@ public record AIProviderDto(
 public record CreateAIProviderDto(
     string Name,
     string BaseUrl,
-    string SecretKeyName,
+    string? ApiKey,
     double DefaultTemperature = 0.7,
     int DefaultTopK = 3,
     int DefaultMaxTokens = 2048,
@@ -36,7 +37,7 @@ public record CreateAIProviderDto(
 public record UpdateAIProviderDto(
     string Name,
     string BaseUrl,
-    string SecretKeyName,
+    string? ApiKey,
     double DefaultTemperature = 0.7,
     int DefaultTopK = 3,
     int DefaultMaxTokens = 2048,

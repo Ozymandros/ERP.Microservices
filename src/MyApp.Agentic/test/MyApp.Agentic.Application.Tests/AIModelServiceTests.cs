@@ -12,7 +12,7 @@ public class AIModelServiceTests
     public async Task ListByProviderAsync_ReturnsOnlyProviderModels()
     {
         var providerId = Guid.NewGuid();
-        var provider = new AIProvider(providerId, "OpenAI", "https://api.openai.com/v1", "OpenAI__ApiKey");
+        var provider = new AIProvider(providerId, "OpenAI", "https://api.openai.com/v1", "sk-test-key");
         var models = new List<AIModel>
         {
             new(Guid.NewGuid(), providerId, "GPT-5", "gpt-5", 8192, "chat"),
@@ -54,7 +54,7 @@ public class AIModelServiceTests
             providerId,
             "OpenAI",
             "https://api.openai.com/v1",
-            "OpenAI__ApiKey",
+            "sk-test-key",
             defaultTemperature: 1.1,
             defaultTopK: 7,
             defaultMaxTokens: 4096,
@@ -99,7 +99,7 @@ public class AIModelServiceTests
             providerId,
             "OpenAI",
             "https://api.openai.com/v1",
-            "OpenAI__ApiKey",
+            "sk-test-key",
             defaultTemperature: 0.2,
             defaultTopK: 2,
             defaultMaxTokens: 2048,

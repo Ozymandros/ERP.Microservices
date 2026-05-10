@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using MyApp.Agentic.Application.AI;
 using MyApp.Agentic.Application.Contracts.DTOs;
+using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Agentic.Application.Services;
 using MyApp.Agentic.Domain.Agents;
 using MyApp.Agentic.Domain.AIModels;
@@ -10,9 +11,9 @@ using MyApp.Agentic.Domain.AIProviders;
 using MyApp.Agentic.Domain.Memory;
 using MyApp.Agentic.Domain.Sessions;
 using MyApp.Agentic.Infrastructure.Memory;
-using MyApp.Agentic.Infrastructure.Secrets;
 using MyApp.Agentic.Infrastructure.State;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Agentic.Application.Tests;
 
@@ -23,7 +24,7 @@ public class AgentServiceTests
     private readonly Mock<IAIModelRepository> _mockModelRepository;
     private readonly Mock<IAgentSessionRepository> _mockSessionRepository;
     private readonly Mock<IMemoryRepository> _mockMemoryRepository;
-    private readonly Mock<ISecretStore> _mockSecretStore;
+    private readonly Mock<ISecretCryptoService> _mockSecretCryptoService;
     private readonly Mock<ISessionStateStore> _mockSessionStateStore;
     private readonly Mock<IEmbeddingService> _mockEmbeddingService;
     private readonly Mock<IAgentExecutionService> _mockExecutionService;
@@ -39,7 +40,7 @@ public class AgentServiceTests
         _mockModelRepository = new Mock<IAIModelRepository>();
         _mockSessionRepository = new Mock<IAgentSessionRepository>();
         _mockMemoryRepository = new Mock<IMemoryRepository>();
-        _mockSecretStore = new Mock<ISecretStore>();
+        _mockSecretCryptoService = new Mock<ISecretCryptoService>();
         _mockSessionStateStore = new Mock<ISessionStateStore>();
         _mockEmbeddingService = new Mock<IEmbeddingService>();
         _mockExecutionService = new Mock<IAgentExecutionService>();
@@ -56,13 +57,17 @@ public class AgentServiceTests
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(new object());
 
+        _mockSecretCryptoService
+            .Setup(s => s.Decrypt(It.IsAny<string>()))
+            .Returns("test-api-key");
+
         _service = new AgentService(
             _mockAgentRepository.Object,
             _mockProviderRepository.Object,
             _mockModelRepository.Object,
             _mockSessionRepository.Object,
             _mockMemoryRepository.Object,
-            _mockSecretStore.Object,
+            _mockSecretCryptoService.Object,
             _mockSessionStateStore.Object,
             _mockEmbeddingService.Object,
             _mockExecutionService.Object,
@@ -152,7 +157,7 @@ public class AgentServiceTests
             true,
             "text-embedding-ada-002");
 
-        _mockProviderRepository.Setup(r => r.GetByIdAsync(dto.ProviderId)).ReturnsAsync(new AIProvider(dto.ProviderId, "OpenAI", "https://api.openai.com/v1", "OpenAI__ApiKey"));
+        _mockProviderRepository.Setup(r => r.GetByIdAsync(dto.ProviderId)).ReturnsAsync(new AIProvider(dto.ProviderId, "OpenAI", "https://api.openai.com/v1", "sk-test-key"));
         _mockModelRepository.Setup(r => r.GetByIdAsync(dto.ModelId)).ReturnsAsync(new AIModel(dto.ModelId, dto.ProviderId, "GPT-5", "gpt-5", 8192, "chat"));
         _mockAgentRepository.Setup(r => r.AddAsync(It.IsAny<Agent>())).ReturnsAsync((Agent a) => a);
 
@@ -188,7 +193,7 @@ public class AgentServiceTests
             true,
             "custom-embedding");
 
-        _mockProviderRepository.Setup(r => r.GetByIdAsync(dto.ProviderId)).ReturnsAsync(new AIProvider(dto.ProviderId, "OpenAI", "https://api.openai.com/v1", "OpenAI__ApiKey"));
+        _mockProviderRepository.Setup(r => r.GetByIdAsync(dto.ProviderId)).ReturnsAsync(new AIProvider(dto.ProviderId, "OpenAI", "https://api.openai.com/v1", "sk-test-key"));
         _mockModelRepository.Setup(r => r.GetByIdAsync(dto.ModelId)).ReturnsAsync(new AIModel(dto.ModelId, dto.ProviderId, "GPT-5", "gpt-5", 8192, "chat"));
         _mockAgentRepository.Setup(r => r.GetByIdAsync(agentId)).ReturnsAsync(agent);
         _mockAgentRepository.Setup(r => r.UpdateAsync(It.IsAny<Agent>())).ReturnsAsync((Agent a) => a);
@@ -221,7 +226,7 @@ public class AgentServiceTests
         var dto = new CreateAgentDto("New Agent", "Description", providerId, modelId, 0.5, "Instructions", null);
 
         _mockProviderRepository.Setup(r => r.GetByIdAsync(providerId))
-            .ReturnsAsync(new AIProvider(providerId, "OpenAI", "https://api.openai.com/v1", "OpenAI__ApiKey"));
+            .ReturnsAsync(new AIProvider(providerId, "OpenAI", "https://api.openai.com/v1", "sk-test-key"));
         _mockModelRepository.Setup(r => r.GetByIdAsync(modelId))
             .ReturnsAsync(new AIModel(modelId, otherProviderId, "GPT-5", "gpt-5", 8192, "chat"));
 
@@ -242,7 +247,7 @@ public class AgentServiceTests
         var dto = new CreateAgentDto("New Agent", "Description", providerId, Guid.Empty, 0.5, "Instructions", null);
 
         _mockProviderRepository.Setup(r => r.GetByIdAsync(providerId))
-            .ReturnsAsync(new AIProvider(providerId, "OpenAI", "https://api.openai.com/v1", "OpenAI__ApiKey"));
+            .ReturnsAsync(new AIProvider(providerId, "OpenAI", "https://api.openai.com/v1", "sk-test-key"));
 
         await Assert.ThrowsAsync<ArgumentException>(() => _service.CreateAsync(dto));
     }
@@ -272,9 +277,6 @@ public class AgentServiceTests
 
         _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(agent);
-
-        _mockSecretStore.Setup(s => s.GetSecretAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync("test-api-key");
 
         _mockSessionStateStore.Setup(s => s.GetSessionAsync(agentId, userId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((SessionState?)null);
@@ -353,9 +355,6 @@ public class AgentServiceTests
         _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(agent);
 
-        _mockSecretStore.Setup(s => s.GetSecretAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync("test-api-key");
-
         _mockSessionStateStore.Setup(s => s.GetSessionAsync(agentId, userId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingSession);
 
@@ -395,9 +394,6 @@ public class AgentServiceTests
 
         _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(agent);
-
-        _mockSecretStore.Setup(s => s.GetSecretAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync("test-api-key");
 
         _mockSessionStateStore.Setup(s => s.GetSessionAsync(agentId, userId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((SessionState?)null);
@@ -514,9 +510,6 @@ public class AgentServiceTests
         _mockSessionRepository.Setup(r => r.GetByIdWithAgentAsync(sessionId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(session);
 
-        _mockSecretStore.Setup(s => s.GetSecretAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync("api-key");
-
         _mockSessionStateStore.Setup(s => s.GetSessionAsync(sessionId, userId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((SessionState?)null);
 
@@ -564,8 +557,6 @@ public class AgentServiceTests
 
         _mockSessionRepository.Setup(r => r.GetByIdWithAgentAsync(sessionId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(session);
-        _mockSecretStore.Setup(s => s.GetSecretAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync("api-key");
         _mockSessionStateStore.Setup(s => s.GetSessionAsync(sessionId, userId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((SessionState?)null);
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -616,8 +607,6 @@ public class AgentServiceTests
 
         _mockSessionRepository.Setup(r => r.GetByIdWithAgentAsync(sessionId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(session);
-        _mockSecretStore.Setup(s => s.GetSecretAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync("api-key");
         _mockSessionStateStore.Setup(s => s.GetSessionAsync(sessionId, userId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((SessionState?)null);
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))

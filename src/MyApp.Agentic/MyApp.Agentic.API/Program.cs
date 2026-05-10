@@ -13,7 +13,6 @@ using MyApp.Agentic.Domain.Skills;
 using MyApp.Agentic.Infrastructure.Data;
 using MyApp.Agentic.Infrastructure.Data.Repositories;
 using MyApp.Agentic.Infrastructure.Memory;
-using MyApp.Agentic.Infrastructure.Secrets;
 using MyApp.Agentic.Infrastructure.State;
 using MyApp.Agentic.Infrastructure.Data.Seeders;
 using MyApp.Shared.Infrastructure.Extensions;
@@ -51,6 +50,7 @@ builder.Services.AddSingleton<SkillService>(sp =>
 });
 
 builder.Services.AddSingleton<ISkillService>(sp => sp.GetRequiredService<SkillService>());
+builder.Services.AddSecretCrypto(builder.Configuration, "ProviderSecretsCrypto");
 
 builder.AddServiceDefaults(new MicroserviceConfigurationOptions
 {
@@ -70,7 +70,6 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
         services.AddScoped<IAgentSessionRepository, AgentSessionRepository>();
         services.AddScoped<IMemoryRepository, MemoryRepository>();
 
-        services.AddScoped<ISecretStore, DaprSecretStore>();
         services.AddScoped<ISessionStateStore, DaprSessionStateStore>();
 
         services.AddScoped<IEmbeddingService, StubEmbeddingService>();

@@ -22,9 +22,8 @@ public class AIProviderConfiguration : IEntityTypeConfiguration<AIProvider>
             .IsRequired()
             .HasMaxLength(500);
 
-        builder.Property(p => p.SecretKeyName)
-            .IsRequired()
-            .HasMaxLength(200);
+        builder.Property(p => p.EncryptedApiKey)
+            .HasColumnType("nvarchar(max)");
 
         builder.Property(p => p.DefaultTemperature)
             .IsRequired()

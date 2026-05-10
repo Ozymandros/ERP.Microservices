@@ -1,8 +1,10 @@
 using Moq;
 using MyApp.Agentic.Application.Contracts.DTOs;
+using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Agentic.Application.Services;
 using MyApp.Agentic.Domain.AIProviders;
 using MyApp.Agentic.Domain.Agents;
+using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Agentic.Application.Tests;
 
@@ -13,15 +15,17 @@ public class AIProviderServiceTests
     {
         AIProvider? captured = null;
         var repo = new Mock<IAIProviderRepository>();
+        var crypto = new Mock<ISecretCryptoService>();
+        crypto.Setup(c => c.Encrypt(It.IsAny<string>())).Returns((string s) => $"enc::{s}");
         repo.Setup(r => r.AddAsync(It.IsAny<AIProvider>()))
             .Callback<AIProvider>(p => captured = p)
             .ReturnsAsync((AIProvider p) => p);
 
-        var sut = new AIProviderService(repo.Object);
+        var sut = new AIProviderService(repo.Object, crypto.Object);
         var dto = new CreateAIProviderDto(
             "OpenAI",
             "https://api.openai.com/v1",
-            "OpenAI__ApiKey",
+            "sk-test-key",
             DefaultTemperature: 1.2,
             DefaultTopK: 5,
             DefaultMaxTokens: 5000,
@@ -44,8 +48,10 @@ public class AIProviderServiceTests
         Assert.Equal("text-embedding-3-large", captured.DefaultEmbeddingModelName);
         Assert.Equal(BotType.Agent, captured.DefaultBotType);
         Assert.Equal("Provider prompt", captured.DefaultSystemPrompt);
+        Assert.Equal("enc::sk-test-key", captured.EncryptedApiKey);
 
         Assert.Equal("OpenAI", result.Name);
+        Assert.True(result.HasApiKey);
         Assert.Equal(1.2, result.DefaultTemperature);
         Assert.Equal(BotType.Agent, result.DefaultBotType);
     }
@@ -54,16 +60,18 @@ public class AIProviderServiceTests
     public async Task UpdateAsync_UpdatesConfiguredDefaults()
     {
         var providerId = Guid.NewGuid();
-        var existing = new AIProvider(providerId, "OpenAI", "https://api.openai.com/v1", "OpenAI__ApiKey");
+        var existing = new AIProvider(providerId, "OpenAI", "https://api.openai.com/v1", "sk-old-key");
         var repo = new Mock<IAIProviderRepository>();
+        var crypto = new Mock<ISecretCryptoService>();
+        crypto.Setup(c => c.Encrypt(It.IsAny<string>())).Returns((string s) => $"enc::{s}");
         repo.Setup(r => r.GetByIdAsync(providerId)).ReturnsAsync(existing);
         repo.Setup(r => r.UpdateAsync(existing)).ReturnsAsync(existing);
 
-        var sut = new AIProviderService(repo.Object);
+        var sut = new AIProviderService(repo.Object, crypto.Object);
         var dto = new UpdateAIProviderDto(
             "OpenAI",
             "https://api.openai.com/v1",
-            "OpenAI__ApiKey",
+            "sk-new-key",
             DefaultTemperature: 0.9,
             DefaultTopK: 8,
             DefaultMaxTokens: 6000,
@@ -85,6 +93,8 @@ public class AIProviderServiceTests
         Assert.Equal("embed-v2", existing.DefaultEmbeddingModelName);
         Assert.Equal(BotType.Chat, existing.DefaultBotType);
         Assert.Equal("Updated provider prompt", existing.DefaultSystemPrompt);
+        Assert.Equal("enc::sk-new-key", existing.EncryptedApiKey);
+        Assert.True(result.HasApiKey);
         Assert.Equal(existing.DefaultTemperature, result.DefaultTemperature);
     }
 }

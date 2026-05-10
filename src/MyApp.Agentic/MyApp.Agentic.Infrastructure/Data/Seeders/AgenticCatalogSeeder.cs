@@ -24,7 +24,7 @@ public class AgenticCatalogSeeder(AgenticDbContext dbContext)
                 existing.Update(
                     provider.Name,
                     provider.BaseUrl,
-                    provider.SecretKeyName,
+                    provider.EncryptedApiKey,
                     provider.DefaultTemperature,
                     provider.DefaultTopK,
                     provider.DefaultMaxTokens,
@@ -77,11 +77,11 @@ public class AgenticCatalogSeeder(AgenticDbContext dbContext)
 
     private static List<AIProvider> BuildProviders() =>
     [
-        new(Guid.NewGuid(), "Google", "https://generativelanguage.googleapis.com/v1beta", "Google__ApiKey", defaultSystemPrompt: "You are a helpful AI assistant."),
-        new(Guid.NewGuid(), "OpenAI", "https://api.openai.com/v1", "OpenAI__ApiKey", defaultSystemPrompt: "You are a helpful AI assistant."),
-        new(Guid.NewGuid(), "Anthropic", "https://api.anthropic.com/v1", "Anthropic__ApiKey", defaultSystemPrompt: "You are a helpful AI assistant."),
-        new(Guid.NewGuid(), "HuggingFace", "https://router.huggingface.co/v1", "HuggingFace__ApiKey", defaultSystemPrompt: "You are a helpful AI assistant."),
-        new(Guid.NewGuid(), "OpenCode", "https://opencode.ai", "OpenCode__ApiKey", defaultSystemPrompt: "You are a helpful AI assistant.")
+        new(Guid.NewGuid(), "Google", "https://generativelanguage.googleapis.com/v1beta", null, defaultSystemPrompt: "You are a helpful AI assistant."),
+        new(Guid.NewGuid(), "OpenAI", "https://api.openai.com/v1", null, defaultSystemPrompt: "You are a helpful AI assistant."),
+        new(Guid.NewGuid(), "Anthropic", "https://api.anthropic.com/v1", null, defaultSystemPrompt: "You are a helpful AI assistant."),
+        new(Guid.NewGuid(), "HuggingFace", "https://router.huggingface.co/v1", null, defaultSystemPrompt: "You are a helpful AI assistant."),
+        new(Guid.NewGuid(), "OpenCode", "https://opencode.ai", null, defaultSystemPrompt: "You are a helpful AI assistant.")
     ];
 
     private static IEnumerable<AIModel> BuildModels(IReadOnlyDictionary<string, AIProvider> providers)

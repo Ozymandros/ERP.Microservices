@@ -8,7 +8,7 @@ public class AIProvider(Guid id) : AuditableEntity<Guid>(id)
 {
     public string Name { get; private set; } = string.Empty;
     public string BaseUrl { get; private set; } = string.Empty;
-    public string SecretKeyName { get; private set; } = string.Empty;
+    public string? EncryptedApiKey { get; private set; }
     public double DefaultTemperature { get; private set; } = 0.7;
     public int DefaultTopK { get; private set; } = 3;
     public int DefaultMaxTokens { get; private set; } = 2048;
@@ -25,7 +25,7 @@ public class AIProvider(Guid id) : AuditableEntity<Guid>(id)
         Guid id,
         string name,
         string baseUrl,
-        string secretKeyName,
+        string? encryptedApiKey,
         double defaultTemperature = 0.7,
         int defaultTopK = 3,
         int defaultMaxTokens = 2048,
@@ -38,7 +38,7 @@ public class AIProvider(Guid id) : AuditableEntity<Guid>(id)
     {
         Name = NormalizeRequired(name, nameof(name));
         BaseUrl = NormalizeRequired(baseUrl, nameof(baseUrl));
-        SecretKeyName = NormalizeRequired(secretKeyName, nameof(secretKeyName));
+        EncryptedApiKey = NormalizeOptional(encryptedApiKey);
         DefaultTemperature = ClampTemperature(defaultTemperature);
         DefaultTopK = defaultTopK > 0 ? defaultTopK : throw new ArgumentException("DefaultTopK must be positive.", nameof(defaultTopK));
         DefaultMaxTokens = defaultMaxTokens > 0 ? defaultMaxTokens : throw new ArgumentException("DefaultMaxTokens must be positive.", nameof(defaultMaxTokens));
@@ -53,7 +53,7 @@ public class AIProvider(Guid id) : AuditableEntity<Guid>(id)
     public void Update(
         string name,
         string baseUrl,
-        string secretKeyName,
+        string? encryptedApiKey,
         double defaultTemperature = 0.7,
         int defaultTopK = 3,
         int defaultMaxTokens = 2048,
@@ -66,7 +66,7 @@ public class AIProvider(Guid id) : AuditableEntity<Guid>(id)
     {
         Name = NormalizeRequired(name, nameof(name));
         BaseUrl = NormalizeRequired(baseUrl, nameof(baseUrl));
-        SecretKeyName = NormalizeRequired(secretKeyName, nameof(secretKeyName));
+        EncryptedApiKey = NormalizeOptional(encryptedApiKey);
         DefaultTemperature = ClampTemperature(defaultTemperature);
         DefaultTopK = defaultTopK > 0 ? defaultTopK : throw new ArgumentException("DefaultTopK must be positive.", nameof(defaultTopK));
         DefaultMaxTokens = defaultMaxTokens > 0 ? defaultMaxTokens : throw new ArgumentException("DefaultMaxTokens must be positive.", nameof(defaultMaxTokens));
@@ -81,6 +81,12 @@ public class AIProvider(Guid id) : AuditableEntity<Guid>(id)
     private static string NormalizeRequired(string value, string paramName)
     {
         if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException("Value is required.", paramName);
+        return value.Trim();
+    }
+
+    private static string? NormalizeOptional(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return null;
         return value.Trim();
     }
 

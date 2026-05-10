@@ -7,13 +7,13 @@ using MyApp.Agentic.Domain.Agents;
 using MyApp.Agentic.Domain.Memory;
 using MyApp.Agentic.Domain.Sessions;
 using MyApp.Agentic.Infrastructure.Memory;
-using MyApp.Agentic.Infrastructure.Secrets;
 using MyApp.Agentic.Infrastructure.State;
 using MyApp.Agentic.Domain.Skills;
 using MyApp.Agentic.Domain.AIModels;
 using MyApp.Agentic.Domain.AIProviders;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Agentic.Application.Services;
 
@@ -32,7 +32,7 @@ public class AgentService : IAgentService
     private readonly IAIModelRepository _modelRepository;
     private readonly IAgentSessionRepository _sessionRepository;
     private readonly IMemoryRepository _memoryRepository;
-    private readonly ISecretStore _secretStore;
+    private readonly ISecretCryptoService _secretCryptoService;
     private readonly ISessionStateStore _sessionStateStore;
     private readonly IEmbeddingService _embeddingService;
     private readonly IAgentExecutionService _agentExecutionService;
@@ -48,7 +48,7 @@ public class AgentService : IAgentService
     /// <param name="modelRepository">Repository for AI model metadata.</param>
     /// <param name="sessionRepository">Repository for persisted agent sessions.</param>
     /// <param name="memoryRepository">Repository for vectorized conversational memories.</param>
-    /// <param name="secretStore">Secret store used to resolve provider API keys.</param>
+    /// <param name="secretCryptoService">Service used to decrypt provider API keys for runtime execution.</param>
     /// <param name="sessionStateStore">Transient/operational store for conversation state.</param>
     /// <param name="embeddingService">Service used to generate embeddings for RAG and memory.</param>
     /// <param name="agentExecutionService">Service that executes prompts against the configured model/provider.</param>
@@ -61,7 +61,7 @@ public class AgentService : IAgentService
         IAIModelRepository modelRepository,
         IAgentSessionRepository sessionRepository,
         IMemoryRepository memoryRepository,
-        ISecretStore secretStore,
+        ISecretCryptoService secretCryptoService,
         ISessionStateStore sessionStateStore,
         IEmbeddingService embeddingService,
         IAgentExecutionService agentExecutionService,
@@ -74,7 +74,7 @@ public class AgentService : IAgentService
         _modelRepository = modelRepository;
         _sessionRepository = sessionRepository;
         _memoryRepository = memoryRepository;
-        _secretStore = secretStore;
+        _secretCryptoService = secretCryptoService;
         _sessionStateStore = sessionStateStore;
         _embeddingService = embeddingService;
         _agentExecutionService = agentExecutionService;
@@ -234,8 +234,11 @@ public class AgentService : IAgentService
         var provider = agent.Model?.Provider
             ?? throw new InvalidOperationException($"Agent {request.AgentId} has no model configured.");
 
-        var apiKey = await _secretStore.GetSecretAsync(provider.SecretKeyName, cancellationToken)
-            ?? throw new InvalidOperationException($"API key not found for provider {provider.Name}.");
+        var encryptedApiKey = provider.EncryptedApiKey;
+        if (string.IsNullOrWhiteSpace(encryptedApiKey))
+            throw new InvalidOperationException($"API key not configured for provider {provider.Name}.");
+
+        var apiKey = _secretCryptoService.Decrypt(encryptedApiKey);
 
         var sessionState = await _sessionStateStore.GetSessionAsync(request.AgentId, authenticatedUserId, cancellationToken);
 
@@ -395,8 +398,11 @@ public class AgentService : IAgentService
         var provider = agent.Model?.Provider
             ?? throw new InvalidOperationException($"Agent {agent.Id} has no model configured.");
 
-        var apiKey = await _secretStore.GetSecretAsync(provider.SecretKeyName, cancellationToken)
-            ?? throw new InvalidOperationException($"API key not found for provider {provider.Name}.");
+        var encryptedApiKey = provider.EncryptedApiKey;
+        if (string.IsNullOrWhiteSpace(encryptedApiKey))
+            throw new InvalidOperationException($"API key not configured for provider {provider.Name}.");
+
+        var apiKey = _secretCryptoService.Decrypt(encryptedApiKey);
 
         var sessionState = await _sessionStateStore.GetSessionAsync(sessionId, authenticatedUserId, cancellationToken);
 

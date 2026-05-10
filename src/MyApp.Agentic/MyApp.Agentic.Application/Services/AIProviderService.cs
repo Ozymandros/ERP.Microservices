@@ -1,11 +1,13 @@
 using MyApp.Agentic.Application.Contracts.DTOs;
 using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Agentic.Domain.AIProviders;
+using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Agentic.Application.Services;
 
 public class AIProviderService(
-    IAIProviderRepository providerRepository) : IAIProviderService
+    IAIProviderRepository providerRepository,
+    ISecretCryptoService secretCryptoService) : IAIProviderService
 {
     public async Task<IEnumerable<AIProviderDto>> ListAsync(CancellationToken cancellationToken = default)
     {
@@ -23,11 +25,15 @@ public class AIProviderService(
 
     public async Task<AIProviderDto> CreateAsync(CreateAIProviderDto dto, CancellationToken cancellationToken = default)
     {
+        var encryptedApiKey = string.IsNullOrWhiteSpace(dto.ApiKey)
+            ? null
+            : secretCryptoService.Encrypt(dto.ApiKey);
+
         var provider = new AIProvider(
             Guid.NewGuid(),
             dto.Name,
             dto.BaseUrl,
-            dto.SecretKeyName,
+            encryptedApiKey,
             dto.DefaultTemperature,
             dto.DefaultTopK,
             dto.DefaultMaxTokens,
@@ -47,10 +53,14 @@ public class AIProviderService(
         if (provider is null)
             throw new InvalidOperationException($"AI provider with ID {id} not found.");
 
+        var encryptedApiKey = provider.EncryptedApiKey;
+        if (!string.IsNullOrWhiteSpace(dto.ApiKey))
+            encryptedApiKey = secretCryptoService.Encrypt(dto.ApiKey);
+
         provider.Update(
             dto.Name,
             dto.BaseUrl,
-            dto.SecretKeyName,
+            encryptedApiKey,
             dto.DefaultTemperature,
             dto.DefaultTopK,
             dto.DefaultMaxTokens,
@@ -77,7 +87,8 @@ public class AIProviderService(
         provider.Id,
         provider.Name,
         provider.BaseUrl,
-        provider.SecretKeyName,
+        provider.EncryptedApiKey,
+        !string.IsNullOrWhiteSpace(provider.EncryptedApiKey),
         provider.DefaultTemperature,
         provider.DefaultTopK,
         provider.DefaultMaxTokens,

@@ -88,8 +88,8 @@ Base route: `api/agentic/*`
 
 ```
 ┌─────────────┐     ┌──────────────┐     ┌─────────────────┐
-│  Request    │────>│  Resolve     │────>│  Fetch API Key  │
-│  (UserId     │     │  Agent Config │     │  (Dapr Secrets)  │
+│  Request    │────>│  Resolve     │────>│  Read API Key   │
+│  (UserId     │     │  Agent Config │     │  (SQL Server)    │
 │   from JWT) │     │  (SQL Server) │     └─────────────────┘
 └─────────────┘     └──────────────┘               │
                           │                          │
@@ -156,9 +156,9 @@ The service uses Dapr State Store (`statestore`) for:
 - Short-term conversation session caching
 - Quick retrieval of recent conversation history
 
-### Secret Store
+### Provider API Keys
 
-API keys for AI providers are stored in Dapr Secret Store (`secretstore`) and referenced by `SecretKeyName` on `AIProvider` entities.
+API keys for AI providers are stored encrypted on `AIProvider` records in SQL Server (`EncryptedApiKey`).
 
 ### Pub/Sub
 
@@ -176,7 +176,7 @@ CREATE TABLE AIProviders (
     Id uniqueidentifier PRIMARY KEY,
     Name nvarchar(100) NOT NULL,
     BaseUrl nvarchar(500) NOT NULL,
-    SecretKeyName nvarchar(200) NOT NULL,
+    EncryptedApiKey nvarchar(max) NULL,
     CreatedAt datetime2 NOT NULL,
     CreatedBy nvarchar(200) NOT NULL,
     UpdatedAt datetime2 NULL,
@@ -291,12 +291,24 @@ WITH (lists = 100);
 }
 ```
 
+### Provider Secrets Crypto
+
+Configure a Base64-encoded 32-byte key for provider API key encryption/decryption:
+
+```json
+{
+  "SecretCrypto": {
+    "MasterKey": "<BASE64_32_BYTE_KEY>"
+  }
+}
+```
+
 ### Dapr Components
 
 Ensure the following components are configured in your Dapr deployment:
 
 1. **State Store** (`statestore`): Redis-backed state storage
-2. **Secret Store** (`secretstore`): For API keys
+2. **Secret Store** (`secretstore`): Optional for other secrets not managed by Agentic providers
 3. **Pub Sub** (`pubsub`): For event publishing (optional)
 
 ## Error Handling
@@ -334,7 +346,7 @@ To add Agentic to an existing deployment:
    await PermissionSeeder.SeedPermissionsAsync(authDbContext);
    ```
 4. Configure Dapr components
-5. Add API keys to Dapr Secret Store
+5. Set provider API keys through `PUT api/agentic/providers/{id}`
 
 ## Integration Notes
 
