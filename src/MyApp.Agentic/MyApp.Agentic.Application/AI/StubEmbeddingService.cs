@@ -12,7 +12,7 @@ public class StubEmbeddingService : IEmbeddingService
         _logger = logger;
     }
 
-    public Task<float[]> GenerateEmbeddingAsync(string text, CancellationToken cancellationToken = default)
+    public Task<ReadOnlyMemory<float>> GenerateEmbeddingAsync(string text, CancellationToken cancellationToken = default)
     {
         _logger.LogDebug("Generating stub embedding for text of length {Length}", text.Length);
 
@@ -29,6 +29,6 @@ public class StubEmbeddingService : IEmbeddingService
             embedding[i] = (float)(embedding[i] / magnitude);
         }
 
-        return Task.FromResult(embedding);
+        return Task.FromResult(new ReadOnlyMemory<float>(embedding));
     }
 }

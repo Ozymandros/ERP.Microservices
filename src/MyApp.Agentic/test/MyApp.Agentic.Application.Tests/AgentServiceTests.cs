@@ -282,7 +282,7 @@ public class AgentServiceTests
             .ReturnsAsync((SessionState?)null);
 
         _mockEmbeddingService.Setup(e => e.GenerateEmbeddingAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new float[1536]);
+            .ReturnsAsync(new ReadOnlyMemory<float>(new float[1536]));
 
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync("Hello! How can I help you?");
@@ -359,14 +359,14 @@ public class AgentServiceTests
             .ReturnsAsync(existingSession);
 
         _mockEmbeddingService.Setup(e => e.GenerateEmbeddingAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new float[1536]);
+            .ReturnsAsync(new ReadOnlyMemory<float>(new float[1536]));
 
         var memories = new List<AgentMemory>
         {
-            new(Guid.NewGuid(), sessionId, MemoryRole.User, "Previous context", new float[1536])
+            new(Guid.NewGuid(), sessionId, MemoryRole.User, "Previous context", new ReadOnlyMemory<float>(new float[1536]))
         };
 
-        _mockMemoryRepository.Setup(r => r.SearchSimilarAsync(sessionId, It.IsAny<float[]>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
+        _mockMemoryRepository.Setup(r => r.SearchSimilarAsync(sessionId, It.IsAny<ReadOnlyMemory<float>>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(memories);
 
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))

@@ -35,12 +35,12 @@ public class MemoryDbContext : DbContext
             entity.Property(e => e.Content)
                 .IsRequired();
 
-            // Convert float[] <-> Pgvector.Vector at EF Core boundary
+            // Convert ReadOnlyMemory<float> <-> Pgvector.Vector at EF Core boundary
             entity.Property(e => e.Embedding)
                 .HasColumnType("vector(1536)")
                 .HasConversion(
-                    v => v == null ? null : new Vector(v),
-                    v => v == null ? null : v.ToArray());
+                    v => v.HasValue ? new Vector(v.Value.ToArray()) : null,
+                    v => v != null ? new ReadOnlyMemory<float>(v.ToArray()) : null);
 
             entity.Property(e => e.Metadata)
                 .HasColumnType("jsonb");

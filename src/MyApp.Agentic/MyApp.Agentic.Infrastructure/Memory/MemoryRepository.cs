@@ -8,7 +8,7 @@ namespace MyApp.Agentic.Infrastructure.Memory;
 public interface IMemoryRepository
 {
     Task<IEnumerable<AgentMemory>> GetRecentMemoriesAsync(Guid sessionId, int count, CancellationToken cancellationToken = default);
-    Task<IEnumerable<AgentMemory>> SearchSimilarAsync(Guid sessionId, float[] embedding, int topK = 3, CancellationToken cancellationToken = default);
+    Task<IEnumerable<AgentMemory>> SearchSimilarAsync(Guid sessionId, ReadOnlyMemory<float> embedding, int topK = 3, CancellationToken cancellationToken = default);
     Task AddMemoryAsync(AgentMemory memory, CancellationToken cancellationToken = default);
     Task AddMemoriesAsync(IEnumerable<AgentMemory> memories, CancellationToken cancellationToken = default);
 }
@@ -31,10 +31,10 @@ public class MemoryRepository : IMemoryRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<AgentMemory>> SearchSimilarAsync(Guid sessionId, float[] embedding, int topK = 3, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<AgentMemory>> SearchSimilarAsync(Guid sessionId, ReadOnlyMemory<float> embedding, int topK = 3, CancellationToken cancellationToken = default)
     {
-        // Convert float[] to Pgvector.Vector for typed parameter passing
-        var vector = new Vector(embedding);
+        // Convert ReadOnlyMemory<float> to Pgvector.Vector for typed parameter passing
+        var vector = new Vector(embedding.ToArray());
 
         var sql = @"
             SELECT * FROM ""AgentMemories""
