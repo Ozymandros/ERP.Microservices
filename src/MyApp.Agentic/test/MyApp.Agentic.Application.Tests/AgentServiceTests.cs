@@ -449,7 +449,7 @@ public class AgentServiceTests
         var agentId = Guid.NewGuid();
         var agent = CreateTestAgent(agentId);
         var userId = "user-123";
-        var request = new StartSessionRequest(agentId, userId, "Test Session");
+        var request = new StartSessionRequest(agentId, "Test Session");
 
         _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(agent);
@@ -469,7 +469,7 @@ public class AgentServiceTests
     {
         var agentId = Guid.NewGuid();
         var userId = "user-123";
-        var request = new StartSessionRequest(agentId, userId, "Test");
+        var request = new StartSessionRequest(agentId, "Test");
 
         _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((Agent?)null);
@@ -485,7 +485,7 @@ public class AgentServiceTests
         var agent = CreateTestAgent(agentId);
         agent.Deactivate();
         var userId = "user-123";
-        var request = new StartSessionRequest(agentId, userId, "Test");
+        var request = new StartSessionRequest(agentId, "Test");
 
         _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(agent);

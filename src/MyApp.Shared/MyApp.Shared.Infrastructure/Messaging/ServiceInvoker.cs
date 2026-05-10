@@ -1,8 +1,10 @@
 using Dapr.Client;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyApp.Shared.Domain.Messaging;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace MyApp.Shared.Infrastructure.Messaging;
@@ -16,11 +18,13 @@ public class ServiceInvoker : IServiceInvoker
     private readonly ILogger<ServiceInvoker> _logger;
     private readonly bool _enableLogging;
     private readonly JsonSerializerOptions _jsonOptions;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public ServiceInvoker(
         DaprClient daprClient,
         ILogger<ServiceInvoker> logger,
         IOptions<JsonSerializerOptions> jsonOptions,
+        IHttpContextAccessor httpContextAccessor,
         bool enableLogging = true)
     {
         ArgumentNullException.ThrowIfNull(daprClient);
@@ -36,6 +40,7 @@ public class ServiceInvoker : IServiceInvoker
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
             WriteIndented = false
         };
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<TResponse> InvokeAsync<TRequest, TResponse>(
@@ -91,6 +96,13 @@ public class ServiceInvoker : IServiceInvoker
             throw;
         }
     }
+
+    public async Task<TResponse> GetAsync<TRequest, TResponse>(
+        string serviceName,
+        string methodPath,
+        TRequest request,
+        CancellationToken cancellationToken = default) => await InvokeAsync<TRequest, TResponse>(
+            serviceName, methodPath, HttpMethod.Get, request, cancellationToken);
 
     public async Task<TResponse> InvokeAsync<TResponse>(
         string serviceName,
@@ -259,6 +271,12 @@ public class ServiceInvoker : IServiceInvoker
             }
 
             cancellationToken.ThrowIfCancellationRequested();
+
+            if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
+            {
+                var token = authHeader.ToString().Replace("Bearer ", string.Empty, StringComparison.OrdinalIgnoreCase);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
 
 #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
             var response = await _daprClient.InvokeMethodAsync<TResponse>(request, cancellationToken);

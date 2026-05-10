@@ -83,19 +83,27 @@ public class AIProviderService(
         await providerRepository.DeleteAsync(provider);
     }
 
-    private static AIProviderDto MapToDto(AIProvider provider) => new(
-        provider.Id,
-        provider.Name,
-        provider.BaseUrl,
-        provider.EncryptedApiKey,
-        !string.IsNullOrWhiteSpace(provider.EncryptedApiKey),
-        provider.DefaultTemperature,
-        provider.DefaultTopK,
-        provider.DefaultMaxTokens,
-        provider.DefaultEmbeddingDimensions,
-        provider.DefaultEnableMemory,
-        provider.DefaultEnableRAG,
-        provider.DefaultEmbeddingModelName,
-        provider.DefaultBotType,
-        provider.DefaultSystemPrompt);
+    private AIProviderDto MapToDto(AIProvider provider)
+    {
+        var hasApiKey = !string.IsNullOrWhiteSpace(provider.EncryptedApiKey);
+        var apiKey = hasApiKey
+            ? secretCryptoService.Decrypt(provider.EncryptedApiKey!)
+            : null;
+
+        return new AIProviderDto(
+            provider.Id,
+            provider.Name,
+            provider.BaseUrl,
+            apiKey,
+            hasApiKey,
+            provider.DefaultTemperature,
+            provider.DefaultTopK,
+            provider.DefaultMaxTokens,
+            provider.DefaultEmbeddingDimensions,
+            provider.DefaultEnableMemory,
+            provider.DefaultEnableRAG,
+            provider.DefaultEmbeddingModelName,
+            provider.DefaultBotType,
+            provider.DefaultSystemPrompt);
+    }
 }

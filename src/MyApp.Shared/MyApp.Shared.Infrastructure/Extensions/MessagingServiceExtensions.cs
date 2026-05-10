@@ -6,6 +6,7 @@ using Dapr.AspNetCore;
 using Dapr.Client;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Infrastructure.Messaging;
+using Microsoft.AspNetCore.Http;
 
 namespace MyApp.Shared.Infrastructure.Extensions;
 
@@ -85,10 +86,11 @@ public static class MessagingServiceExtensions
         services.AddSingleton<IServiceInvoker>(sp =>
         {
             var daprClient = sp.GetRequiredService<Dapr.Client.DaprClient>();
+            var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
             var logger = sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<ServiceInvoker>>();
             var jsonOptions = sp.GetRequiredService<IOptions<System.Text.Json.JsonSerializerOptions>>();
 
-            return new ServiceInvoker(daprClient, logger, jsonOptions, enableServiceInvocationLogging);
+            return new ServiceInvoker(daprClient, logger, jsonOptions, httpContextAccessor, enableServiceInvocationLogging);
         });
 
         return services;
@@ -171,7 +173,8 @@ public static class MessagingServiceExtensions
             var daprClient = sp.GetRequiredService<Dapr.Client.DaprClient>();
             var logger = sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<ServiceInvoker>>();
             var jsonOptions = sp.GetRequiredService<IOptions<System.Text.Json.JsonSerializerOptions>>();
-            return new ServiceInvoker(daprClient, logger, jsonOptions, enableLogging);
+            var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
+            return new ServiceInvoker(daprClient, logger, jsonOptions, httpContextAccessor, enableLogging);
         });
 
         return services;

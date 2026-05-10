@@ -1,19 +1,21 @@
 using AutoMapper;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.Extensions.Logging;
 using MyApp.Agentic.Application.AI;
 using MyApp.Agentic.Application.Contracts.DTOs;
 using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Agentic.Domain.Agents;
-using MyApp.Agentic.Domain.Memory;
-using MyApp.Agentic.Domain.Sessions;
-using MyApp.Agentic.Infrastructure.Memory;
-using MyApp.Agentic.Infrastructure.State;
-using MyApp.Agentic.Domain.Skills;
 using MyApp.Agentic.Domain.AIModels;
 using MyApp.Agentic.Domain.AIProviders;
+using MyApp.Agentic.Domain.Memory;
+using MyApp.Agentic.Domain.Sessions;
+using MyApp.Agentic.Domain.Skills;
+using MyApp.Agentic.Infrastructure.Memory;
+using MyApp.Agentic.Infrastructure.State;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Security;
+using System.Net.Http.Headers;
 
 namespace MyApp.Agentic.Application.Services;
 
@@ -643,12 +645,18 @@ public class AgentService : IAgentService
 
         try
         {
-            var user = await _serviceInvoker.InvokeAsync<string, object>(
+            using var request = _serviceInvoker.CreateRequest(
                 ServiceNames.Auth,
                 $"api/users/{userId}",
-                HttpMethod.Get,
-                string.Empty,
-                cancellationToken);
+                HttpMethod.Get);
+
+            var user = await _serviceInvoker.InvokeAsync<object>(request, cancellationToken);
+
+            //var user = await _serviceInvoker.GetAsync<string, object>(
+            //    ServiceNames.Auth,
+            //    $"api/users/{userId}",
+            //    string.Empty,
+            //    cancellationToken);
 
             if (user is null)
                 throw new InvalidOperationException($"User {userId} not found in auth-service.");

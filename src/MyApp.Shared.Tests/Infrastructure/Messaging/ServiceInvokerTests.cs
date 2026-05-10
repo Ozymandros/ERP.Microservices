@@ -1,5 +1,6 @@
 using Dapr.Client;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -28,6 +29,7 @@ public class ServiceInvokerTests
     private readonly Mock<DaprClient> _mockDaprClient;
     private readonly Mock<ILogger<ServiceInvoker>> _mockLogger;
     private readonly Mock<IOptions<JsonSerializerOptions>> _mockJsonOptions;
+    private readonly Mock<IHttpContextAccessor> _mockHttpContextAccessor;
     private readonly ServiceInvoker _serviceInvoker;
 
     public ServiceInvokerTests()
@@ -35,6 +37,7 @@ public class ServiceInvokerTests
         _mockDaprClient = new Mock<DaprClient>();
         _mockLogger = new Mock<ILogger<ServiceInvoker>>();
         _mockJsonOptions = new Mock<IOptions<JsonSerializerOptions>>();
+        _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
 
         var jsonOptions = new JsonSerializerOptions
         {
@@ -49,6 +52,7 @@ public class ServiceInvokerTests
             _mockDaprClient.Object,
             _mockLogger.Object,
             _mockJsonOptions.Object,
+            _mockHttpContextAccessor.Object,
             enableLogging: true);
     }
 
@@ -61,7 +65,8 @@ public class ServiceInvokerTests
         Assert.Throws<ArgumentNullException>(() => new ServiceInvoker(
             null!,
             _mockLogger.Object,
-            _mockJsonOptions.Object));
+            _mockJsonOptions.Object,
+            _mockHttpContextAccessor.Object));
     }
 
     [Fact]
@@ -71,7 +76,8 @@ public class ServiceInvokerTests
         Assert.Throws<ArgumentNullException>(() => new ServiceInvoker(
             _mockDaprClient.Object,
             null!,
-            _mockJsonOptions.Object));
+            _mockJsonOptions.Object,
+            _mockHttpContextAccessor.Object));
     }
 
     [Fact]
@@ -81,7 +87,8 @@ public class ServiceInvokerTests
         Assert.Throws<ArgumentNullException>(() => new ServiceInvoker(
             _mockDaprClient.Object,
             _mockLogger.Object,
-            null!));
+            null!,
+            _mockHttpContextAccessor.Object));
     }
 
     [Fact]
@@ -95,7 +102,8 @@ public class ServiceInvokerTests
         var invoker = new ServiceInvoker(
             _mockDaprClient.Object,
             _mockLogger.Object,
-            nullOptions.Object);
+            nullOptions.Object,
+            _mockHttpContextAccessor.Object);
 
         // Assert
         invoker.Should().NotBeNull();
@@ -572,6 +580,7 @@ public class ServiceInvokerTests
             _mockDaprClient.Object,
             _mockLogger.Object,
             _mockJsonOptions.Object,
+            _mockHttpContextAccessor.Object,
             enableLogging: false);
 
         var request = new HttpRequestMessage(HttpMethod.Post, "http://test");

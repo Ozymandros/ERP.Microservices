@@ -6,7 +6,6 @@ namespace MyApp.Agentic.Application.Contracts.DTOs;
 /// <summary>Request to start a new conversation session.</summary>
 public record StartSessionRequest(
     Guid? AgentId,
-    string UserId,
     string? Title
 );
 

@@ -41,7 +41,7 @@ public class AuthPlugin
     {
         var result = await _serviceInvoker.InvokeAsync<string, object>(
             ServiceNames.Auth,
-            $"api/auth/users/{id}",
+            $"api/users/{id}",
             HttpMethod.Get,
             string.Empty);
         return JsonSerializer.Serialize(result);
