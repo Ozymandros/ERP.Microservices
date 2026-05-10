@@ -62,7 +62,10 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
     {
         services.AddDbContext<MemoryDbContext>(opts =>
             opts.UseNpgsql(memoryDbConnectionString, npgsqlOpts =>
-                npgsqlOpts.EnableRetryOnFailure()));
+            {
+                npgsqlOpts.EnableRetryOnFailure();
+                npgsqlOpts.UseVector();
+            }));
 
         services.AddScoped<IAIProviderRepository, AIProviderRepository>();
         services.AddScoped<IAIModelRepository, AIModelRepository>();

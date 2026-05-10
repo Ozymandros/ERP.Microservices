@@ -57,6 +57,19 @@ public class AgentServiceTests
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(new object());
 
+        _mockServiceInvoker
+            .Setup(s => s.CreateRequest(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<HttpMethod>()))
+            .Returns(new HttpRequestMessage(HttpMethod.Get, "http://test"));
+
+        _mockServiceInvoker
+            .Setup(s => s.InvokeAsync<object>(
+                It.IsAny<HttpRequestMessage>(),
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new object());
+
         _mockSecretCryptoService
             .Setup(s => s.Decrypt(It.IsAny<string>()))
             .Returns("test-api-key");

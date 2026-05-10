@@ -52,8 +52,10 @@ public class AIProviderServiceTests
 
         Assert.Equal("OpenAI", result.Name);
         Assert.True(result.HasApiKey);
+        Assert.Equal("enc::sk-test-key", result.ApiKey);
         Assert.Equal(1.2, result.DefaultTemperature);
         Assert.Equal(BotType.Agent, result.DefaultBotType);
+        crypto.Verify(c => c.Decrypt(It.IsAny<string>()), Times.Never);
     }
 
     [Fact]
@@ -95,6 +97,34 @@ public class AIProviderServiceTests
         Assert.Equal("Updated provider prompt", existing.DefaultSystemPrompt);
         Assert.Equal("enc::sk-new-key", existing.EncryptedApiKey);
         Assert.True(result.HasApiKey);
+        Assert.Equal("enc::sk-new-key", result.ApiKey);
         Assert.Equal(existing.DefaultTemperature, result.DefaultTemperature);
+        crypto.Verify(c => c.Encrypt("sk-new-key"), Times.Once);
+        crypto.Verify(c => c.Decrypt(It.IsAny<string>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_WhenApiKeyIsSameEncryptedValue_DoesNotReEncrypt()
+    {
+        var providerId = Guid.NewGuid();
+        var existing = new AIProvider(providerId, "OpenAI", "https://api.openai.com/v1", "enc::sk-same-key");
+        var repo = new Mock<IAIProviderRepository>();
+        var crypto = new Mock<ISecretCryptoService>();
+        repo.Setup(r => r.GetByIdAsync(providerId)).ReturnsAsync(existing);
+        repo.Setup(r => r.UpdateAsync(existing)).ReturnsAsync(existing);
+
+        var sut = new AIProviderService(repo.Object, crypto.Object);
+        var dto = new UpdateAIProviderDto(
+            "OpenAI",
+            "https://api.openai.com/v1",
+            "enc::sk-same-key");
+
+        var result = await sut.UpdateAsync(providerId, dto);
+
+        Assert.Equal("enc::sk-same-key", existing.EncryptedApiKey);
+        Assert.True(result.HasApiKey);
+        Assert.Equal("enc::sk-same-key", result.ApiKey);
+        crypto.Verify(c => c.Encrypt(It.IsAny<string>()), Times.Never);
+        crypto.Verify(c => c.Decrypt(It.IsAny<string>()), Times.Never);
     }
 }
