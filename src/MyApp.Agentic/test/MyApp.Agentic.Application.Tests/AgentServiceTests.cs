@@ -295,7 +295,7 @@ public class AgentServiceTests
             .ReturnsAsync((SessionState?)null);
 
         _mockEmbeddingService.Setup(e => e.GenerateEmbeddingAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ReadOnlyMemory<float>(new float[1536]));
+            .ReturnsAsync("query embedding");
 
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync("Hello! How can I help you?");
@@ -372,14 +372,14 @@ public class AgentServiceTests
             .ReturnsAsync(existingSession);
 
         _mockEmbeddingService.Setup(e => e.GenerateEmbeddingAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ReadOnlyMemory<float>(new float[1536]));
+            .ReturnsAsync("query embedding");
 
         var memories = new List<AgentMemory>
         {
-            new(Guid.NewGuid(), sessionId, MemoryRole.User, "Previous context", new ReadOnlyMemory<float>(new float[1536]))
+            new(Guid.NewGuid(), sessionId, MemoryRole.User, "Previous context")
         };
 
-        _mockMemoryRepository.Setup(r => r.SearchSimilarAsync(sessionId, It.IsAny<ReadOnlyMemory<float>>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
+        _mockMemoryRepository.Setup(r => r.SearchSimilarAsync(sessionId, It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(memories);
 
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -481,7 +481,6 @@ public class AgentServiceTests
     public async Task StartSessionAsync_WhenAgentNotFound_ThrowsException()
     {
         var agentId = Guid.NewGuid();
-        var userId = "user-123";
         var request = new StartSessionRequest(agentId, "Test");
 
         _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
@@ -497,7 +496,6 @@ public class AgentServiceTests
         var agentId = Guid.NewGuid();
         var agent = CreateTestAgent(agentId);
         agent.Deactivate();
-        var userId = "user-123";
         var request = new StartSessionRequest(agentId, "Test");
 
         _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))

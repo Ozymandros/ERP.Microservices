@@ -6,9 +6,9 @@ namespace MyApp.Agentic.Infrastructure.Data.Repositories;
 
 public class AgentRepository : Repository<Agent, Guid>, IAgentRepository
 {
-    private readonly AgenticDbContext _context;
+    private readonly AgenticSqlDbContext _context;
 
-    public AgentRepository(AgenticDbContext context) : base(context)
+    public AgentRepository(AgenticSqlDbContext context) : base(context)
     {
         _context = context;
     }

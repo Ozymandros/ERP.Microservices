@@ -38,7 +38,7 @@ public class DocsPlugin
                     var results = apiIndex.Documents
                         .Where(d => 
                             d.Name.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                            d.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                            (d.Title?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false) ||
                             (d.SearchKeywords?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false))
                         .Take(10)
                         .Select(d => new DocSearchResult 
@@ -173,7 +173,7 @@ public class DocsPlugin
             else
             {
                 var classes = apiIndex?.Documents
-                    ?.Where(d => d.Namespace.Contains(namespaceOrClass, StringComparison.OrdinalIgnoreCase))
+                    ?.Where(d => d.Namespace?.Contains(namespaceOrClass, StringComparison.OrdinalIgnoreCase) ?? false)
                     .Take(20)
                     .Select(d => new { name = d.Name, href = d.Href, summary = d.Summary })
                     .ToList();

@@ -1,5 +1,4 @@
 using AutoMapper;
-using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.Extensions.Logging;
 using MyApp.Agentic.Application.AI;
 using MyApp.Agentic.Application.Contracts.DTOs;
@@ -15,7 +14,6 @@ using MyApp.Agentic.Infrastructure.State;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Security;
-using System.Net.Http.Headers;
 
 namespace MyApp.Agentic.Application.Services;
 
@@ -252,14 +250,16 @@ public class AgentService : IAgentService
         var contextMemories = new List<string>();
         if (enableRAG && sessionState?.Messages.Any() == true)
         {
-            var userEmbedding = await _embeddingService.GenerateEmbeddingAsync(request.Message, cancellationToken);
             var similarMemories = await _memoryRepository.SearchSimilarAsync(
                 sessionState.SessionId,
-                userEmbedding,
+                request.Message,
                 topK: effectiveTopK,
                 cancellationToken);
 
-            contextMemories = similarMemories.Select(m => m.Content).ToList();
+            contextMemories = similarMemories
+                .Where(m => !string.IsNullOrWhiteSpace(m.Content))
+                .Select(m => m.Content!)
+                .ToList();
         }
 
         var conversationHistory = sessionState?.Messages.Select(m => $"{m.Role}: {m.Content}").ToList() ?? new List<string>();
@@ -299,15 +299,12 @@ public class AgentService : IAgentService
 
         if (enableMemory)
         {
-            var userMessageEmbedding = await _embeddingService.GenerateEmbeddingAsync(request.Message, cancellationToken);
-            var responseEmbedding = await _embeddingService.GenerateEmbeddingAsync(aiResponse, cancellationToken);
-
             await _memoryRepository.AddMemoryAsync(
-                new AgentMemory(Guid.NewGuid(), currentSessionId, MemoryRole.User, request.Message, userMessageEmbedding),
+                new AgentMemory(Guid.NewGuid(), currentSessionId, MemoryRole.User, request.Message),
                 cancellationToken);
 
             await _memoryRepository.AddMemoryAsync(
-                new AgentMemory(Guid.NewGuid(), currentSessionId, MemoryRole.Assistant, aiResponse, responseEmbedding),
+                new AgentMemory(Guid.NewGuid(), currentSessionId, MemoryRole.Assistant, aiResponse),
                 cancellationToken);
         }
 
@@ -416,14 +413,16 @@ public class AgentService : IAgentService
         var contextMemories = new List<string>();
         if (enableRAG && sessionState?.Messages.Any() == true)
         {
-            var userEmbedding = await _embeddingService.GenerateEmbeddingAsync(request.Message, cancellationToken);
             var similarMemories = await _memoryRepository.SearchSimilarAsync(
                 sessionId,
-                userEmbedding,
+                request.Message,
                 topK: effectiveTopK,
                 cancellationToken);
 
-            contextMemories = similarMemories.Select(m => m.Content).ToList();
+            contextMemories = similarMemories
+                .Where(m => !string.IsNullOrWhiteSpace(m.Content))
+                .Select(m => m.Content!)
+                .ToList();
         }
 
         var conversationHistory = sessionState?.Messages.Select(m => $"{m.Role}: {m.Content}").ToList() ?? new List<string>();
@@ -467,15 +466,12 @@ public class AgentService : IAgentService
 
         if (enableMemory)
         {
-            var userMessageEmbedding = await _embeddingService.GenerateEmbeddingAsync(request.Message, cancellationToken);
-            var responseEmbedding = await _embeddingService.GenerateEmbeddingAsync(aiResponse, cancellationToken);
-
             await _memoryRepository.AddMemoryAsync(
-                new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.User, request.Message, userMessageEmbedding),
+                new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.User, request.Message),
                 cancellationToken);
 
             await _memoryRepository.AddMemoryAsync(
-                new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.Assistant, aiResponse, responseEmbedding),
+                new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.Assistant, aiResponse),
                 cancellationToken);
         }
 

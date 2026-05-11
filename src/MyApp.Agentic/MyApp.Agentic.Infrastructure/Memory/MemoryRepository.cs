@@ -1,99 +1,149 @@
+using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlTypes;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Agentic.Domain.Memory;
 using MyApp.Agentic.Infrastructure.Data;
-using Pgvector;
+using System.Data;
+using System.Globalization;
 
 namespace MyApp.Agentic.Infrastructure.Memory;
 
 public interface IMemoryRepository
 {
     Task<IEnumerable<AgentMemory>> GetRecentMemoriesAsync(Guid sessionId, int count, CancellationToken cancellationToken = default);
-    Task<IEnumerable<AgentMemory>> SearchSimilarAsync(Guid sessionId, ReadOnlyMemory<float> embedding, int topK = 3, CancellationToken cancellationToken = default);
+    Task<IEnumerable<AgentMemory>> SearchSimilarAsync(Guid sessionId, string query, int topK = 3, CancellationToken cancellationToken = default);
     Task AddMemoryAsync(AgentMemory memory, CancellationToken cancellationToken = default);
     Task AddMemoriesAsync(IEnumerable<AgentMemory> memories, CancellationToken cancellationToken = default);
 }
 
 public class MemoryRepository : IMemoryRepository
 {
-    private readonly MemoryDbContext _context;
+    private readonly AgenticSqlDbContext _context;
+    private readonly IMemoryEmbeddingGenerator _embeddingGenerator;
 
-    public MemoryRepository(MemoryDbContext context)
+    public MemoryRepository(AgenticSqlDbContext context, IMemoryEmbeddingGenerator embeddingGenerator)
     {
         _context = context;
+        _embeddingGenerator = embeddingGenerator;
     }
 
     public async Task<IEnumerable<AgentMemory>> GetRecentMemoriesAsync(Guid sessionId, int count, CancellationToken cancellationToken = default)
     {
+        if (count <= 0)
+            return Enumerable.Empty<AgentMemory>();
+
         return await _context.AgentMemories
+            .AsNoTracking()
             .Where(m => m.SessionId == sessionId)
             .OrderByDescending(m => m.CreatedAt)
             .Take(count)
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<AgentMemory>> SearchSimilarAsync(Guid sessionId, ReadOnlyMemory<float> embedding, int topK = 3, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<AgentMemory>> SearchSimilarAsync(Guid sessionId, string query, int topK = 3, CancellationToken cancellationToken = default)
     {
-        // Load all memories for the session with embeddings
-        var memories = await _context.AgentMemories
-            .Where(m => m.SessionId == sessionId && m.Embedding.HasValue)
-            .ToListAsync(cancellationToken);
-
-        if (!memories.Any())
+        if (string.IsNullOrWhiteSpace(query))
             return Enumerable.Empty<AgentMemory>();
 
-        // Calculate cosine similarity in-memory
-        var queryVector = embedding.ToArray();
-        var results = memories
-            .Select(m => new
+        if (topK <= 0)
+            return Enumerable.Empty<AgentMemory>();
+
+        var embedding = await _embeddingGenerator.GenerateEmbeddingAsync(query.Trim(), cancellationToken);
+        var embeddingLiteral = SerializeVector(embedding);
+
+        const string sql = """
+            SELECT TOP (@topK)
+                [Id],
+                [SessionId],
+                [Role],
+                [Content],
+                [Metadata],
+                [CreatedAt]
+            FROM [AgentMemories]
+            WHERE [SessionId] = @sessionId
+              AND [EmbeddingVector] IS NOT NULL
+            ORDER BY VECTOR_DISTANCE('cosine', [EmbeddingVector], CAST(@queryVector AS vector(1536)))
+            """;
+
+        await using var connection = _context.Database.GetDbConnection();
+        if (connection.State != ConnectionState.Open)
+        {
+            await connection.OpenAsync(cancellationToken);
+        }
+
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+
+        var topKParam = new SqlParameter("@topK", SqlDbType.Int) { Value = topK };
+        var sessionParam = new SqlParameter("@sessionId", SqlDbType.UniqueIdentifier) { Value = sessionId };
+        var vectorParam = new SqlParameter("@queryVector", SqlDbType.NVarChar) { Value = embeddingLiteral };
+
+        command.Parameters.Add(topKParam);
+        command.Parameters.Add(sessionParam);
+        command.Parameters.Add(vectorParam);
+
+        var results = new List<AgentMemory>();
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        while (await reader.ReadAsync(cancellationToken))
+        {
+            var id = reader.GetGuid(0);
+            var recordSessionId = reader.GetGuid(1);
+            var role = ParseRole(reader.GetString(2));
+            var content = reader.GetString(3);
+            var metadata = reader.IsDBNull(4) ? null : reader.GetString(4);
+            var createdAt = reader.GetDateTime(5);
+
+            var memory = new AgentMemory(id, recordSessionId, role, content, metadata)
             {
-                Memory = m,
-                Similarity = CosineSimilarity(queryVector, m.Embedding!.Value.ToArray())
-            })
-            .OrderByDescending(x => x.Similarity)
-            .Take(topK)
-            .Select(x => x.Memory)
-            .ToList();
+                CreatedAt = createdAt
+            };
+
+            results.Add(memory);
+        }
 
         return results;
     }
 
-    /// <summary>
-    /// Calculates cosine similarity between two vectors.
-    /// </summary>
-    private static float CosineSimilarity(float[] vectorA, float[] vectorB)
-    {
-        if (vectorA.Length != vectorB.Length)
-            throw new ArgumentException("Vectors must have the same length");
-
-        float dotProduct = 0f;
-        float magnitudeA = 0f;
-        float magnitudeB = 0f;
-
-        for (int i = 0; i < vectorA.Length; i++)
-        {
-            dotProduct += vectorA[i] * vectorB[i];
-            magnitudeA += vectorA[i] * vectorA[i];
-            magnitudeB += vectorB[i] * vectorB[i];
-        }
-
-        magnitudeA = (float)Math.Sqrt(magnitudeA);
-        magnitudeB = (float)Math.Sqrt(magnitudeB);
-
-        if (magnitudeA == 0f || magnitudeB == 0f)
-            return 0f;
-
-        return dotProduct / (magnitudeA * magnitudeB);
-    }
-
     public async Task AddMemoryAsync(AgentMemory memory, CancellationToken cancellationToken = default)
     {
-        await _context.AgentMemories.AddAsync(memory, cancellationToken);
+        var embedding = memory.Embedding ?? await _embeddingGenerator.GenerateEmbeddingAsync(memory.Content ?? string.Empty, cancellationToken);
+
+        _context.AgentMemories.Add(memory);
+        _context.Entry(memory).Property("EmbeddingVector").CurrentValue = new SqlVector<float>(embedding);
         await _context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task AddMemoriesAsync(IEnumerable<AgentMemory> memories, CancellationToken cancellationToken = default)
     {
-        await _context.AgentMemories.AddRangeAsync(memories, cancellationToken);
+        var prepared = new List<(AgentMemory Memory, float[] Embedding)>();
+        foreach (var memory in memories)
+        {
+            var embedding = memory.Embedding ?? await _embeddingGenerator.GenerateEmbeddingAsync(memory.Content ?? string.Empty, cancellationToken);
+            prepared.Add((memory, embedding));
+        }
+
+        if (prepared.Count == 0)
+            return;
+
+        foreach (var (memory, embedding) in prepared)
+        {
+            _context.AgentMemories.Add(memory);
+            _context.Entry(memory).Property("EmbeddingVector").CurrentValue = new SqlVector<float>(embedding);
+        }
+
         await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    private static MemoryRole ParseRole(string value)
+    {
+        return Enum.TryParse<MemoryRole>(value, ignoreCase: true, out var role)
+            ? role
+            : MemoryRole.User;
+    }
+
+    private static string SerializeVector(float[] values)
+    {
+        var serialized = string.Join(',', values.Select(v => v.ToString("G9", CultureInfo.InvariantCulture)));
+        return $"[{serialized}]";
     }
 }

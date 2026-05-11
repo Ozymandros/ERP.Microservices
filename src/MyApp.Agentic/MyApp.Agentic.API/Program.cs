@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Http;
 using MyApp.Agentic.Application.AI;
 using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Agentic.Application.Services;
@@ -18,9 +19,6 @@ using MyApp.Agentic.Infrastructure.Data.Seeders;
 using MyApp.Shared.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-
-var memoryDbConnectionString = builder.Configuration.GetConnectionString("AgenticMemory")
-    ?? throw new InvalidOperationException("Connection string 'agentic-memory' not found.");
 
 builder.AddRedisDistributedCache("cache");
 
@@ -56,16 +54,17 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
 {
     ServiceName = "MyApp.Agentic.API",
     ConnectionStringKey = "agenticdb",
-    DbContextType = typeof(AgenticDbContext),
+    DbContextType = typeof(AgenticSqlDbContext),
     AutoMapperAssembly = typeof(AgentService).Assembly,
     ConfigureServiceDependencies = services =>
     {
-        services.AddDbContext<MemoryDbContext>(opts =>
-            opts.UseNpgsql(memoryDbConnectionString, npgsqlOpts =>
-            {
-                npgsqlOpts.EnableRetryOnFailure();
-                npgsqlOpts.UseVector();
-            }));
+        services.AddHttpClient("MemoryEmbeddingProvider", client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(30);
+        });
+
+        services.AddSingleton<DeterministicTextEmbeddingGenerator>();
+        services.AddSingleton<IMemoryEmbeddingGenerator, ProviderBackedMemoryEmbeddingGenerator>();
 
         services.AddScoped<IAIProviderRepository, AIProviderRepository>();
         services.AddScoped<IAIModelRepository, AIModelRepository>();
@@ -90,8 +89,10 @@ var app = builder.Build();
 app.UseServiceDefaults();
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<AgenticDbContext>();
-    await dbContext.Database.MigrateAsync();
+    // Migrate SQL Server (Metadata)
+    var sqlDbContext = scope.ServiceProvider.GetRequiredService<AgenticSqlDbContext>();
+    await sqlDbContext.Database.MigrateAsync();
+
     var seeder = scope.ServiceProvider.GetRequiredService<AgenticCatalogSeeder>();
     await seeder.SeedAsync();
 }
@@ -113,22 +114,6 @@ static string LoadSkillInstructions(string path)
     }
     catch { }
     return string.Empty;
-}
-
-static Dictionary<string, object> LoadSkillConfig(string path)
-{
-    try
-    {
-        var fullPath = Path.Combine(AppContext.BaseDirectory, path);
-        if (File.Exists(fullPath))
-        {
-            var json = File.ReadAllText(fullPath);
-            return System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(json) 
-                ?? new Dictionary<string, object>();
-        }
-    }
-    catch { }
-    return new Dictionary<string, object>();
 }
 
 public static class AgentSkillExtensions

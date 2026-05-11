@@ -9,11 +9,11 @@ public class AgenticCatalogSeederTests
     [Fact]
     public async Task SeedAsync_IsIdempotent_ForProvidersAndModels()
     {
-        var options = new DbContextOptionsBuilder<AgenticDbContext>()
+        var options = new DbContextOptionsBuilder<AgenticSqlDbContext>()
             .UseInMemoryDatabase($"agentic-seeder-{Guid.NewGuid()}")
             .Options;
 
-        await using var dbContext = new AgenticDbContext(options);
+        await using var dbContext = new AgenticSqlDbContext(options);
         var sut = new AgenticCatalogSeeder(dbContext);
 
         await sut.SeedAsync();
@@ -33,11 +33,11 @@ public class AgenticCatalogSeederTests
     [Fact]
     public async Task SeedAsync_IncludesMimoV25ProUnderHuggingFace()
     {
-        var options = new DbContextOptionsBuilder<AgenticDbContext>()
+        var options = new DbContextOptionsBuilder<AgenticSqlDbContext>()
             .UseInMemoryDatabase($"agentic-seeder-mimo-{Guid.NewGuid()}")
             .Options;
 
-        await using var dbContext = new AgenticDbContext(options);
+        await using var dbContext = new AgenticSqlDbContext(options);
         var sut = new AgenticCatalogSeeder(dbContext);
 
         await sut.SeedAsync();
@@ -55,11 +55,11 @@ public class AgenticCatalogSeederTests
     [Fact]
     public async Task SeedAsync_SetsProviderDefaultConfiguration()
     {
-        var options = new DbContextOptionsBuilder<AgenticDbContext>()
+        var options = new DbContextOptionsBuilder<AgenticSqlDbContext>()
             .UseInMemoryDatabase($"agentic-seeder-provider-defaults-{Guid.NewGuid()}")
             .Options;
 
-        await using var dbContext = new AgenticDbContext(options);
+        await using var dbContext = new AgenticSqlDbContext(options);
         var sut = new AgenticCatalogSeeder(dbContext);
 
         await sut.SeedAsync();
@@ -78,11 +78,11 @@ public class AgenticCatalogSeederTests
     [Fact]
     public async Task SeedAsync_AddsOpenCodeProviderAndConfiguredModels()
     {
-        var options = new DbContextOptionsBuilder<AgenticDbContext>()
+        var options = new DbContextOptionsBuilder<AgenticSqlDbContext>()
             .UseInMemoryDatabase($"agentic-seeder-opencode-{Guid.NewGuid()}")
             .Options;
 
-        await using var dbContext = new AgenticDbContext(options);
+        await using var dbContext = new AgenticSqlDbContext(options);
         var sut = new AgenticCatalogSeeder(dbContext);
 
         await sut.SeedAsync();

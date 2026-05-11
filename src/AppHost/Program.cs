@@ -49,8 +49,10 @@ if (isDeployment)
 else
 {
     sqlServer = builder.AddSqlServer("myapp-sqlserver", password, 1455)
-        .WithLifetime(ContainerLifetime.Persistent) // restarts periodically for development environments
-        .WithDataVolume("sqlserver-data"); // named volume → persists between restarts
+        .WithImage("mssql/server", "2025-latest")
+        .WithImageRegistry("mcr.microsoft.com")
+        .WithLifetime(ContainerLifetime.Persistent)
+        .WithDataVolume("sqlserver-data");
     projectBuilder = builder.CreateProjectBuilder(sqlServer: sqlServer);
 }
 

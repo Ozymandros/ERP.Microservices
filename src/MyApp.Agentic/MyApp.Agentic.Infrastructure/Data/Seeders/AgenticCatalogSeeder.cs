@@ -5,7 +5,7 @@ using MyApp.Agentic.Domain.Agents;
 
 namespace MyApp.Agentic.Infrastructure.Data.Seeders;
 
-public class AgenticCatalogSeeder(AgenticDbContext dbContext)
+public class AgenticCatalogSeeder(AgenticSqlDbContext dbContext)
 {
     public async Task SeedAsync(CancellationToken cancellationToken = default)
     {

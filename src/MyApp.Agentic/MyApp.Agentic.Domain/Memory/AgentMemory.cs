@@ -1,4 +1,6 @@
 using MyApp.Shared.Domain.Entities;
+using Microsoft.Extensions.VectorData;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyApp.Agentic.Domain.Memory;
 
@@ -9,45 +11,60 @@ public enum MemoryRole
 }
 
 /// <summary>
-/// Represents a conversation memory entry with vector embedding for similarity search.
-/// Uses ReadOnlyMemory of float for the embedding to align with Microsoft.Extensions.AI patterns.
-/// Implements VectorStore record pattern for integration with Microsoft.Extensions.VectorData.
+/// Represents a conversation memory entry with vector-store metadata for similarity search.
 /// </summary>
-[VectorStoreRecord]
-public class AgentMemory(Guid id) : DomainEntity<Guid>(id)
+public class AgentMemory
 {
-    [VectorStoreRecordKey]
-    public new Guid Id => base.Id;
+    private readonly float[]? _embedding;
 
-    [VectorStoreRecordData]
-    public Guid SessionId { get; private set; }
-    
-    [VectorStoreRecordData]
-    public MemoryRole Role { get; private set; }
-    
-    [VectorStoreRecordData]
-    public string Content { get; private set; } = string.Empty;
+    // Constructor vacío para EF Core
+    private AgentMemory() { Id = Guid.NewGuid(); }
 
-    /// <summary>
-    /// Vector embedding of the Content for semantic similarity search.
-    /// Converted to/from pgvector.Vector at the EF Core data mapping boundary.
-    /// </summary>
-    [VectorStoreRecordVector(1536, "CosineSimilarity")]
-    public ReadOnlyMemory<float>? Embedding { get; private set; }
-
-    [VectorStoreRecordData]
-    public string? Metadata { get; private set; }
-    
-    [VectorStoreRecordData]
-    public DateTime CreatedAt { get; private set; }
-
-    public AgentMemory(Guid id, Guid sessionId, MemoryRole role, string content, ReadOnlyMemory<float>? embedding = null, string? metadata = null) : this(id)
+    public AgentMemory(Guid sessionId, MemoryRole role, string content, string? metadata = null, float[]? embedding = null)
     {
+        Id = Guid.NewGuid();
         SessionId = sessionId;
         Role = role;
-        Content = content ?? throw new ArgumentNullException(nameof(content));
-        Embedding = embedding;
+        Content = content;
         Metadata = metadata;
+        _embedding = embedding;
         CreatedAt = DateTime.UtcNow;
     }
+
+    public AgentMemory(Guid id, Guid sessionId, MemoryRole role, string content, string? metadata = null, float[]? embedding = null)
+    {
+        Id = id;
+        SessionId = sessionId;
+        Role = role;
+        Content = content;
+        Metadata = metadata;
+        _embedding = embedding;
+        CreatedAt = DateTime.UtcNow;
+    }
+    // ... propiedades ...
+
+    [VectorStoreKey]
+    public Guid Id { get; set; }
+
+    [VectorStoreData]
+    public Guid SessionId { get; set; }
+
+    [VectorStoreData]
+    public MemoryRole Role { get; set; }
+
+    [VectorStoreData]
+    public string? Content { get; set; }
+
+    /// <summary>
+    /// Optional in-memory embedding payload; excluded from EF persistence.
+    /// </summary>
+    [VectorStoreVector(1536, DistanceFunction = Microsoft.Extensions.VectorData.DistanceFunction.CosineSimilarity)]
+    [NotMapped]
+    public float[]? Embedding => _embedding;
+
+    [VectorStoreData]
+    public string? Metadata { get; set; }
+
+    [VectorStoreData]
+    public DateTime CreatedAt { get; set; }
 }
