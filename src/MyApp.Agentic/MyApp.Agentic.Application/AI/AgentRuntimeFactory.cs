@@ -12,23 +12,13 @@ public class AgentRuntimeFactory : IAgentRuntimeFactory
         var provider = context.Agent.Model?.Provider?.Name ?? string.Empty;
         var modelId = context.Agent.Model?.TechnicalName ?? string.Empty;
 
-        if (string.Equals(provider, "OpenAI", StringComparison.OrdinalIgnoreCase))
-        {
-            return CreateOpenAIClient(modelId, context.ApiKey, context.BaseUrl);
-        }
-
-        if (string.Equals(provider, "HuggingFace", StringComparison.OrdinalIgnoreCase))
-        {
-            return CreateHuggingFaceClient(modelId, context.ApiKey, context.BaseUrl);
-        }
-
-        if (string.Equals(provider, "OpenCode", StringComparison.OrdinalIgnoreCase))
-        {
-            return CreateOpenAIClient(modelId, context.ApiKey, context.BaseUrl);
-        }
-
-        throw new InvalidOperationException($"AI provider '{provider}' is not supported by the current MAF runtime.");
+        return UsesOpenAICompatibleRuntime(provider)
+            ? CreateOpenAIClient(modelId, context.ApiKey, context.BaseUrl)
+            : CreateHuggingFaceClient(modelId, context.ApiKey, context.BaseUrl);
     }
+
+    private static bool UsesOpenAICompatibleRuntime(string provider) =>
+        !string.Equals(provider, "HuggingFace", StringComparison.OrdinalIgnoreCase);
 
     private static IChatClient CreateOpenAIClient(string modelId, string apiKey, string baseUrl)
     {

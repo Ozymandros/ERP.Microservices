@@ -77,7 +77,7 @@ public class AgenticCatalogSeeder(AgenticSqlDbContext dbContext)
 
     private static List<AIProvider> BuildProviders() =>
     [
-        new(Guid.NewGuid(), "Google", "https://generativelanguage.googleapis.com/v1beta", null, defaultSystemPrompt: "You are a helpful AI assistant."),
+        new(Guid.NewGuid(), "Google", "https://aiplatform.googleapis.com/v1/projects/MyApp--ERP-Microservices/locations/LOCATION/endpoints/openapi", null, defaultSystemPrompt: "You are a helpful AI assistant."),
         new(Guid.NewGuid(), "OpenAI", "https://api.openai.com/v1", null, defaultSystemPrompt: "You are a helpful AI assistant."),
         new(Guid.NewGuid(), "Anthropic", "https://api.anthropic.com/v1", null, defaultSystemPrompt: "You are a helpful AI assistant."),
         new(Guid.NewGuid(), "HuggingFace", "https://router.huggingface.co/v1", null, defaultSystemPrompt: "You are a helpful AI assistant."),
