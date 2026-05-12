@@ -17,7 +17,7 @@ public class AgentMemory
 {
     private readonly float[]? _embedding;
 
-    // Constructor vacío para EF Core
+    // Parameterless constructor for EF Core
     private AgentMemory() { Id = Guid.NewGuid(); }
 
     public AgentMemory(Guid sessionId, MemoryRole role, string content, string? metadata = null, float[]? embedding = null)

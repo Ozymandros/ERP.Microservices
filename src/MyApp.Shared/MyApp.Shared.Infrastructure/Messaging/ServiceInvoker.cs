@@ -227,20 +227,20 @@ public class ServiceInvoker : IServiceInvoker
         string finalPath = methodPath;
         if (queryParams != null && queryParams.Count > 0)
         {
-            // El teu loop de validaci� de claus/valors �s correcte
+            // Your key/value validation loop is correct
             finalPath = QueryHelpers.AddQueryString(methodPath, queryParams);
         }
 
-        // 2. Crear la petici� base a Dapr
-        // IMPORTANT: No passem el 'requestBody' aqu� encara per tenir control total
+        // 2. Create the base request to Dapr
+        // IMPORTANT: Do not pass the 'requestBody' here yet so we keep full control
         request = _daprClient.CreateInvokeMethodRequest(httpMethod, serviceName, finalPath);
 
-        // 3. Gestionar el Body (NOM�S si no �s GET)
+        // 3. Handle the body (ONLY if it is not GET)
         if (requestBody != null)
         {
             if (httpMethod == HttpMethod.Get)
             {
-                // Opcional: Pots llan�ar una excepci� o simplement ignorar-lo i avisar
+                // Optional: You can throw an exception or simply ignore it and log a warning
                 _logger.LogWarning("Intent de passar un body en una petici� GET al servei {Service}. El body ser� ignorat.", serviceName);
             }
             else

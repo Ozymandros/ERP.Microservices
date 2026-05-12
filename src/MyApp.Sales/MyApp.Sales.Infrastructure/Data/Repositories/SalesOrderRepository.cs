@@ -44,20 +44,9 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         }
 
         /// <summary>Get All Paginated Async.</summary>
-        public override async Task<PaginatedResult<SalesOrder>> GetAllPaginatedAsync(int pageNumber, int pageSize)
+        public async Task<PaginatedResult<SalesOrder>> GetAllPaginatedAsync(int pageNumber, int pageSize)
         {
-            var paginationParams = new PaginationParams(pageNumber, pageSize);
-            var query = _context.SalesOrders
-                .Include(o => o.Lines)
-                .Include(o => o.Customer);
-
-            var totalCount = await query.CountAsync();
-            var items = await query
-                .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
-                .Take(paginationParams.PageSize)
-                .ToListAsync();
-
-            return new PaginatedResult<SalesOrder>(items, paginationParams.PageNumber, paginationParams.PageSize, totalCount);
+            return await base.GetAllPaginatedAsync(pageNumber, pageSize, [o => o.Lines, o => o.Customer]);
         }
 
         /// <summary>Delete Async.</summary>

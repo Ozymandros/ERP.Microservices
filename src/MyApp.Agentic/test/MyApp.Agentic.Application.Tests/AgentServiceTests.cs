@@ -298,7 +298,7 @@ public class AgentServiceTests
             .ReturnsAsync("query embedding");
 
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync("Hello! How can I help you?");
+            .ReturnsAsync(new AgentExecutionResult("Hello! How can I help you?"));
 
         _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
@@ -383,7 +383,7 @@ public class AgentServiceTests
             .ReturnsAsync(memories);
 
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync("Response with context");
+            .ReturnsAsync(new AgentExecutionResult("Response with context"));
 
         _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
@@ -412,7 +412,7 @@ public class AgentServiceTests
             .ReturnsAsync((SessionState?)null);
 
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync("Response");
+            .ReturnsAsync(new AgentExecutionResult("Response"));
 
         _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
@@ -525,7 +525,7 @@ public class AgentServiceTests
             .ReturnsAsync((SessionState?)null);
 
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync("Response");
+            .ReturnsAsync(new AgentExecutionResult("Response"));
 
         _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
@@ -572,7 +572,7 @@ public class AgentServiceTests
             .ReturnsAsync((SessionState?)null);
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .Callback<AgentExecutionContext, string, CancellationToken>((ctx, _, _) => capturedContext = ctx)
-            .ReturnsAsync("Response");
+            .ReturnsAsync(new AgentExecutionResult("Response"));
         _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
@@ -622,7 +622,7 @@ public class AgentServiceTests
             .ReturnsAsync((SessionState?)null);
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .Callback<AgentExecutionContext, string, CancellationToken>((ctx, _, _) => capturedContext = ctx)
-            .ReturnsAsync("Response");
+            .ReturnsAsync(new AgentExecutionResult("Response"));
         _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 

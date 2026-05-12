@@ -74,8 +74,21 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
 
         services.AddScoped<ISessionStateStore, DaprSessionStateStore>();
 
+        services.AddScoped<IAgentRuntimeFactory, AgentRuntimeFactory>();
+        services.AddSingleton<IAgentToolRegistry, AgentToolRegistry>();
+        services.AddScoped<IAgentToolExecutor, DefaultAgentToolExecutor>();
+
         services.AddScoped<IEmbeddingService, StubEmbeddingService>();
-        services.AddScoped<IAgentExecutionService, StubAgentExecutionService>();
+        services.AddScoped<IAgentExecutionService, MicrosoftAgentExecutionService>();
+
+        services.AddScoped<BillingPlugin>();
+        services.AddScoped<OrdersPlugin>();
+        services.AddScoped<InventoryPlugin>();
+        services.AddScoped<PurchasingPlugin>();
+        services.AddScoped<SalesPlugin>();
+        services.AddScoped<AuthPlugin>();
+        services.AddScoped<CrmPlugin>();
+        services.AddScoped<DocsPlugin>();
 
         services.AddScoped<IAgentService, AgentService>();
         services.AddScoped<IAIProviderService, AIProviderService>();
@@ -95,6 +108,26 @@ using (var scope = app.Services.CreateScope())
 
     var seeder = scope.ServiceProvider.GetRequiredService<AgenticCatalogSeeder>();
     await seeder.SeedAsync();
+
+    // Register Tools in the Registry
+    var toolRegistry = scope.ServiceProvider.GetRequiredService<IAgentToolRegistry>();
+    
+    // Billing
+    var billing = scope.ServiceProvider.GetRequiredService<BillingPlugin>();
+    toolRegistry.RegisterTool("get_invoice", (args, ct) => billing.GetInvoiceByNumberAsync(args));
+    toolRegistry.RegisterTool("get_billing", (args, ct) => billing.GetByIdAsync(args));
+    
+    // Orders
+    var orders = scope.ServiceProvider.GetRequiredService<OrdersPlugin>();
+    toolRegistry.RegisterTool("get_order", (args, ct) => orders.GetByIdAsync(args));
+    
+    // Inventory
+    var inventory = scope.ServiceProvider.GetRequiredService<InventoryPlugin>();
+    toolRegistry.RegisterTool("get_product", (args, ct) => inventory.GetByIdAsync(args));
+    
+    // Docs
+    var docs = scope.ServiceProvider.GetRequiredService<DocsPlugin>();
+    toolRegistry.RegisterTool("search_docs", (args, ct) => docs.SearchAsync(args));
 }
 
 app.Run();

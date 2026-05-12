@@ -133,7 +133,7 @@ public class AgentService : IAgentService
     /// <exception cref="InvalidOperationException">Thrown when provider/model/user validation fails.</exception>
     public async Task<AgentDto> CreateAsync(CreateAgentDto dto, CancellationToken cancellationToken = default)
     {
-        await ValidateProviderModelAsync(dto.ProviderId, dto.ModelId, cancellationToken);
+        var model = await ValidateProviderModelAsync(dto.ProviderId, dto.ModelId, cancellationToken);
 
         if (!string.IsNullOrWhiteSpace(dto.OwnerUserId))
         {
@@ -156,6 +156,8 @@ public class AgentService : IAgentService
             enableRAG: dto.EnableRAG,
             embeddingModelName: dto.EmbeddingModelName);
 
+        agent.SetModel(model);
+
         await _agentRepository.AddAsync(agent);
         return MapToDto(agent);
     }
@@ -170,7 +172,7 @@ public class AgentService : IAgentService
     /// <exception cref="InvalidOperationException">Thrown when the agent, provider, or model is invalid/not found.</exception>
     public async Task<AgentDto> UpdateAsync(Guid id, UpdateAgentDto dto, CancellationToken cancellationToken = default)
     {
-        await ValidateProviderModelAsync(dto.ProviderId, dto.ModelId, cancellationToken);
+        var model = await ValidateProviderModelAsync(dto.ProviderId, dto.ModelId, cancellationToken);
 
         var agent = await _agentRepository.GetByIdAsync(id);
         if (agent == null) throw new InvalidOperationException($"Agent with ID {id} not found.");
@@ -188,6 +190,8 @@ public class AgentService : IAgentService
             dto.EnableRAG,
             dto.EmbeddingModelName,
             dto.BotType);
+
+        agent.SetModel(model);
 
         await _agentRepository.UpdateAsync(agent);
         return MapToDto(agent);
@@ -276,7 +280,8 @@ public class AgentService : IAgentService
             MaxTokens = request.Options?.MaxTokens ?? agent.MaxTokens
         };
 
-        var aiResponse = await _agentExecutionService.ExecuteAsync(context, request.Message, cancellationToken);
+        var executionResult = await _agentExecutionService.ExecuteAsync(context, request.Message, cancellationToken);
+        var aiResponse = executionResult.Content;
 
         var currentSessionId = sessionState?.SessionId ?? Guid.NewGuid();
 
@@ -308,7 +313,7 @@ public class AgentService : IAgentService
                 cancellationToken);
         }
 
-        return new ProcessAgentMessageResponse(currentSessionId, authenticatedUserId, request.Message, aiResponse, DateTime.UtcNow);
+        return new ProcessAgentMessageResponse(currentSessionId, authenticatedUserId, request.Message, aiResponse, DateTime.UtcNow, executionResult.ToolCalls);
     }
 
     /// <summary>
@@ -442,7 +447,8 @@ public class AgentService : IAgentService
             Tools = pluginTools
         };
 
-        var aiResponse = await _agentExecutionService.ExecuteAsync(context, request.Message, cancellationToken);
+        var executionResult = await _agentExecutionService.ExecuteAsync(context, request.Message, cancellationToken);
+        var aiResponse = executionResult.Content;
 
         session.RecordMessage();
         await _sessionRepository.UpdateAsync(session);
@@ -479,7 +485,7 @@ public class AgentService : IAgentService
             Guid.NewGuid(),
             aiResponse,
             DateTime.UtcNow,
-            null,
+            executionResult.ToolCalls,
             sessionId);
     }
 
@@ -607,7 +613,7 @@ public class AgentService : IAgentService
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <exception cref="ArgumentException">Thrown when an identifier is empty.</exception>
     /// <exception cref="InvalidOperationException">Thrown when entities do not exist or mismatch.</exception>
-    private async Task ValidateProviderModelAsync(Guid providerId, Guid modelId, CancellationToken cancellationToken)
+    private async Task<AIModel> ValidateProviderModelAsync(Guid providerId, Guid modelId, CancellationToken cancellationToken)
     {
         if (providerId == Guid.Empty)
             throw new ArgumentException("ProviderId is required.", nameof(providerId));
@@ -625,6 +631,8 @@ public class AgentService : IAgentService
 
         if (model.ProviderId != providerId)
             throw new InvalidOperationException("Selected model does not belong to the selected provider.");
+
+        return model;
     }
 
     /// <summary>
@@ -677,7 +685,7 @@ public class AgentService : IAgentService
         agent.Id,
         agent.Name,
         agent.Description,
-        agent.Model?.TechnicalName ?? "N/A",
+        agent.Model?.CommercialName ?? agent.Model?.TechnicalName ?? "N/A",
         agent.BotType,
         agent.IsActive,
         agent.EnableMemory,

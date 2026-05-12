@@ -33,16 +33,16 @@
 //    {
 //        var fullTableName = string.IsNullOrEmpty(schema) ? $"[{name}]" : $"[{schema}].[{name}]";
 
-//        // 1. Injectem un SQL que obre un bloc IF en cas que la taula NO existeixi.
-//        // Fem servir un 'EXEC' amb una cadena oberta perquè SQL Server no s'embulli amb la sintaxi.
+//        // 1. Inject SQL that opens an IF block when the table does not exist.
+//        // We use an 'EXEC' with an open string so SQL Server does not get confused by the syntax.
 //        migrationBuilder.Sql($@"
 //            IF OBJECT_ID(N'{fullTableName}', N'U') IS NULL
 //            BEGIN
-//                -- El següent codi de creació s'executarà dins d'aquest IF
+//                -- The following creation code will run inside this IF
 //        ");
 
-//        // 2. Cridem al mètode original d'EF Core. 
-//        // Això afegirà tota la definició de columnes i claus tal com ho fa sempre.
+//        // 2. Call the original EF Core method.
+//        // This will add the full column and key definition as it always does.
 //        migrationBuilder.CreateTable(
 //            name: name,
 //            schema: schema,
@@ -50,7 +50,7 @@
 //            constraints: constraints
 //        );
 
-//        // 3. Tanquem el bloc condicional 'BEGIN / END' que hem obert al principi.
+//        // 3. Close the conditional 'BEGIN / END' block we opened at the start.
 //        migrationBuilder.Sql("END");
 //    }
 
@@ -73,7 +73,7 @@
 //        this MigrationBuilder migrationBuilder,
 //        string name,
 //        string table,
-//        string column, // o string[] columns si és compost
+//        string column, // or string[] columns if composite
 //        string schema = null,
 //        bool unique = false,
 //        string? filter = null,
@@ -81,18 +81,18 @@
 //    {
 //        var fullTableName = string.IsNullOrEmpty(schema) ? $"[{table}]" : $"[{schema}].[{table}]";
 
-//        // 1. Obrim el condicional: Comprovem si la TAULA existeix i si l'ÍNDEX NO existeix
+//        // 1. Open the conditional: check whether the TABLE exists and the INDEX does not exist
 //        migrationBuilder.Sql($@"
 //            IF OBJECT_ID(N'{fullTableName}', N'U') IS NOT NULL 
 //               AND NOT EXISTS (SELECT * FROM sys.indexes WHERE name = N'{name}' AND object_id = OBJECT_ID(N'{fullTableName}'))
 //            BEGIN
 //        ");
 
-//        // 2. Cridem al mètode original d'EF Core
+//        // 2. Call the original EF Core method
 //        migrationBuilder.CreateIndex(name, table, column, schema, unique);
 
 
-//        // 3. Tanquem el bloc
+//        // 3. Close the block
 //        migrationBuilder.Sql("END");
 //    }
 
@@ -125,17 +125,17 @@
 //    {
 //        var fullTableName = string.IsNullOrEmpty(schema) ? $"[{table}]" : $"[{schema}].[{table}]";
 
-//        // 1. Obrim el condicional: Comprovem si la TAULA existeix i si l'ÍNDEX NO existeix
+//        // 1. Open the conditional: check whether the TABLE exists and the INDEX does not exist
 //        migrationBuilder.Sql($@"
 //            IF OBJECT_ID(N'{fullTableName}', N'U') IS NOT NULL 
 //               AND NOT EXISTS (SELECT * FROM sys.indexes WHERE name = N'{name}' AND object_id = OBJECT_ID(N'{fullTableName}'))
 //            BEGIN
 //        ");
 
-//        // 2. Cridem al mètode original d'EF Core
+//        // 2. Call the original EF Core method
 //        var result = migrationBuilder.CreateIndex(name, table, columns, schema, unique);
 
-//        // 3. Tanquem el bloc
+//        // 3. Close the block
 //        migrationBuilder.Sql("END");
         
 //        return result;

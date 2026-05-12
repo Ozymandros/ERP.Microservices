@@ -19,5 +19,9 @@ public record ProcessAgentMessageResponse(
     string UserId,
     string UserMessage,
     string AIResponse,
-    DateTime Timestamp
-);
+    DateTime Timestamp,
+    List<ToolCallResult>? ToolCalls = null
+)
+{
+    public string Content => AIResponse;
+}

@@ -45,7 +45,7 @@ public class StubAgentExecutionService : IAgentExecutionService
     /// <exception cref="OperationCanceledException">
     /// Thrown when <paramref name="cancellationToken"/> is canceled during the simulated delay.
     /// </exception>
-    public async Task<string> ExecuteAsync(AgentExecutionContext context, string userMessage, CancellationToken cancellationToken = default)
+    public async Task<AgentExecutionResult> ExecuteAsync(AgentExecutionContext context, string userMessage, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Executing AI request for Agent {AgentId} with Model {ModelName}",
             context.Agent.Id, context.Agent.Model?.TechnicalName ?? "Unknown");
@@ -82,6 +82,6 @@ public class StubAgentExecutionService : IAgentExecutionService
             response += $" [Available tools: {string.Join(", ", context.Tools.Select(t => t.Name))}]";
         }
 
-        return response;
+        return new AgentExecutionResult(response);
     }
 }

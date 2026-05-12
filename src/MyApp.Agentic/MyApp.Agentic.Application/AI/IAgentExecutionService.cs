@@ -1,4 +1,5 @@
 using MyApp.Agentic.Domain.Agents;
+using MyApp.Agentic.Application.Contracts.DTOs;
 
 namespace MyApp.Agentic.Application.AI;
 
@@ -46,7 +47,14 @@ public class AgentExecutionContext
     public int MaxTokens { get; init; } = 2048;
 }
 
+public record AgentExecutionResult(
+    string Content,
+    List<ToolCallResult>? ToolCalls = null,
+    string? FinishReason = null,
+    Dictionary<string, string>? Metadata = null
+);
+
 public interface IAgentExecutionService
 {
-    Task<string> ExecuteAsync(AgentExecutionContext context, string userMessage, CancellationToken cancellationToken = default);
+    Task<AgentExecutionResult> ExecuteAsync(AgentExecutionContext context, string userMessage, CancellationToken cancellationToken = default);
 }

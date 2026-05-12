@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Specifications;
+using System.Linq.Expressions;
 
 namespace MyApp.Shared.Infrastructure.Repositories;
 
@@ -25,10 +26,16 @@ public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
         return await _dbContext.Set<TEntity>().ToListAsync();
     }
 
-    public virtual async Task<PaginatedResult<TEntity>> GetAllPaginatedAsync(int pageNumber, int pageSize)
+    public virtual async Task<PaginatedResult<TEntity>> GetAllPaginatedAsync(int pageNumber, int pageSize, IEnumerable<Expression<Func<TEntity, object>>>? includes = null)
     {
         var paginationParams = new PaginationParams(pageNumber, pageSize);
-        var query = _dbContext.Set<TEntity>();
+        IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+
+        if (includes is not null)
+            foreach (var includeExpression in includes)
+            {
+                query = query.Include(includeExpression);
+            }
 
         var totalCount = await query.CountAsync();
         var items = await query

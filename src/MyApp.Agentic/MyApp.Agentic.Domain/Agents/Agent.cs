@@ -75,7 +75,14 @@ public class Agent(Guid id) : AuditableEntity<Guid>(id)
     {
         Name = NormalizeRequired(name, nameof(name));
         Description = description?.Trim() ?? string.Empty;
+
+        var modelChanged = ModelId != modelId;
         ModelId = modelId;
+        if (modelChanged && Model is not null && Model.Id != modelId)
+        {
+            Model = null;
+        }
+
         Temperature = ClampTemperature(temperature);
         SystemInstructions = systemInstructions?.Trim() ?? string.Empty;
         if (topK.HasValue) TopK = topK.Value > 0 ? topK.Value : 3;
@@ -85,6 +92,13 @@ public class Agent(Guid id) : AuditableEntity<Guid>(id)
         if (enableRAG.HasValue) EnableRAG = enableRAG.Value;
         EmbeddingModelName = embeddingModelName?.Trim();
         if (botType.HasValue) BotType = botType.Value;
+    }
+
+    public void SetModel(AIModel model)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+        ModelId = model.Id;
+        Model = model;
     }
 
     public void Activate() { IsActive = true; }
