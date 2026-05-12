@@ -74,6 +74,14 @@ public class AgentServiceTests
             .Setup(s => s.Decrypt(It.IsAny<string>()))
             .Returns("test-api-key");
 
+        _mockMemoryRepository
+            .Setup(r => r.GetMessagesAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<AgentMemory>());
+
+        _mockMemoryRepository
+            .Setup(r => r.AddMemoriesAsync(It.IsAny<IEnumerable<AgentMemory>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
         _service = new AgentService(
             _mockAgentRepository.Object,
             _mockProviderRepository.Object,
@@ -283,16 +291,18 @@ public class AgentServiceTests
     public async Task ProcessMessageAsync_WithValidRequest_ReturnsResponse()
     {
         var agentId = Guid.NewGuid();
+        var sessionId = Guid.NewGuid();
         var userId = "user-123";
         var agent = CreateTestAgent(agentId);
+        var session = new AgentSession(sessionId, agentId, userId, "Test Session");
 
         var request = new ProcessAgentMessageRequest(agentId, "Hello", new AgentExecutionOptions(0.8));
 
         _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(agent);
 
-        _mockSessionStateStore.Setup(s => s.GetSessionAsync(agentId, userId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((SessionState?)null);
+        _mockSessionRepository.Setup(r => r.GetActiveSessionAsync(agentId, userId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(session);
 
         _mockEmbeddingService.Setup(e => e.GenerateEmbeddingAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync("query embedding");
@@ -300,15 +310,67 @@ public class AgentServiceTests
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new AgentExecutionResult("Hello! How can I help you?"));
 
-        _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
+        _mockSessionStateStore.Setup(s => s.AppendMessageAsync(sessionId, userId, It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+
+        _mockSessionRepository.Setup(r => r.UpdateAsync(It.IsAny<AgentSession>()))
+            .ReturnsAsync((AgentSession value) => value);
 
         var result = await _service.ProcessMessageAsync(request, userId);
 
         Assert.NotNull(result);
+        Assert.Equal(sessionId, result.SessionId);
         Assert.Equal(userId, result.UserId);
         Assert.Equal("Hello", result.UserMessage);
         Assert.NotNull(result.AIResponse);
+        _mockSessionStateStore.Verify(s => s.AppendMessageAsync(sessionId, userId, It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+        _mockMemoryRepository.Verify(r => r.AddMemoriesAsync(
+            It.Is<IEnumerable<AgentMemory>>(values => values.Count() == 2 && values.All(m => m.SessionId == sessionId)),
+            true,
+            It.IsAny<CancellationToken>()), Times.Once);
+        _mockSessionRepository.Verify(r => r.UpdateAsync(It.Is<AgentSession>(value => value.Id == sessionId && value.LastMessageAt.HasValue)), Times.Once);
+    }
+
+    [Fact]
+    public async Task ProcessMessageAsync_WithoutActiveSession_CreatesAndUsesPersistedSession()
+    {
+        var agentId = Guid.NewGuid();
+        var userId = "user-123";
+        var agent = CreateTestAgent(agentId);
+        AgentSession? createdSession = null;
+
+        var request = new ProcessAgentMessageRequest(agentId, "Hello");
+
+        _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(agent);
+
+        _mockSessionRepository.Setup(r => r.GetActiveSessionAsync(agentId, userId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((AgentSession?)null);
+
+        _mockSessionRepository.Setup(r => r.AddAsync(It.IsAny<AgentSession>()))
+            .Callback<AgentSession>(value => createdSession = value)
+            .ReturnsAsync((AgentSession value) => value);
+
+        _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new AgentExecutionResult("Response"));
+
+        _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), userId, It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        _mockSessionRepository.Setup(r => r.UpdateAsync(It.IsAny<AgentSession>()))
+            .ReturnsAsync((AgentSession value) => value);
+
+        var result = await _service.ProcessMessageAsync(request, userId);
+
+        Assert.NotNull(createdSession);
+        Assert.Equal(createdSession!.Id, result.SessionId);
+        _mockSessionStateStore.Verify(s => s.AppendMessageAsync(createdSession.Id, userId, It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+        _mockMemoryRepository.Verify(r => r.AddMemoriesAsync(
+            It.Is<IEnumerable<AgentMemory>>(values => values.Count() == 2 && values.All(m => m.SessionId == createdSession.Id)),
+            true,
+            It.IsAny<CancellationToken>()), Times.Once);
+        _mockSessionRepository.Verify(r => r.AddAsync(It.Is<AgentSession>(value => value.Id == createdSession.Id && value.AgentId == agentId && value.UserId == userId)), Times.Once);
+        _mockSessionRepository.Verify(r => r.UpdateAsync(It.Is<AgentSession>(value => value.Id == createdSession.Id && value.LastMessageAt.HasValue)), Times.Once);
     }
 
     [Fact]
@@ -351,28 +413,23 @@ public class AgentServiceTests
         var userId = "user-123";
         var sessionId = Guid.NewGuid();
         var agent = CreateTestAgent(agentId);
-
-        var existingSession = new SessionState
-        {
-            SessionId = sessionId,
-            AgentId = agentId,
-            UserId = userId,
-            Messages = new List<ConversationMessage>
-            {
-                new() { Role = "user", Content = "Previous message", Timestamp = DateTime.UtcNow }
-            }
-        };
+        var session = new AgentSession(sessionId, agentId, userId, "Test Session");
 
         var request = new ProcessAgentMessageRequest(agentId, "Hello", new AgentExecutionOptions(null, null, null, null, true));
 
         _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(agent);
 
-        _mockSessionStateStore.Setup(s => s.GetSessionAsync(agentId, userId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(existingSession);
+        _mockSessionRepository.Setup(r => r.GetActiveSessionAsync(agentId, userId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(session);
 
         _mockEmbeddingService.Setup(e => e.GenerateEmbeddingAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync("query embedding");
+
+        _mockMemoryRepository.Setup(r => r.GetMessagesAsync(sessionId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync([
+                new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.User, "Previous message")
+            ]);
 
         var memories = new List<AgentMemory>
         {
@@ -385,8 +442,11 @@ public class AgentServiceTests
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new AgentExecutionResult("Response with context"));
 
-        _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
+        _mockSessionStateStore.Setup(s => s.AppendMessageAsync(sessionId, userId, It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+
+        _mockSessionRepository.Setup(r => r.UpdateAsync(It.IsAny<AgentSession>()))
+            .ReturnsAsync((AgentSession value) => value);
 
         var result = await _service.ProcessMessageAsync(request, userId);
 
@@ -397,29 +457,37 @@ public class AgentServiceTests
     }
 
     [Fact]
-    public async Task ProcessMessageAsync_WithMemoryDisabled_DoesNotStoreMemory()
+    public async Task ProcessMessageAsync_WithMemoryDisabled_PersistsMessagesWithoutEmbeddings()
     {
         var agentId = Guid.NewGuid();
+        var sessionId = Guid.NewGuid();
         var userId = "user-123";
         var agent = CreateTestAgent(agentId);
+        var session = new AgentSession(sessionId, agentId, userId, "Test Session");
 
         var request = new ProcessAgentMessageRequest(agentId, "Hello", new AgentExecutionOptions(null, null, null, false));
 
         _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(agent);
 
-        _mockSessionStateStore.Setup(s => s.GetSessionAsync(agentId, userId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((SessionState?)null);
+        _mockSessionRepository.Setup(r => r.GetActiveSessionAsync(agentId, userId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(session);
 
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new AgentExecutionResult("Response"));
 
-        _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
+        _mockSessionStateStore.Setup(s => s.AppendMessageAsync(sessionId, userId, It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+
+        _mockSessionRepository.Setup(r => r.UpdateAsync(It.IsAny<AgentSession>()))
+            .ReturnsAsync((AgentSession value) => value);
 
         await _service.ProcessMessageAsync(request, userId);
 
-        _mockMemoryRepository.Verify(r => r.AddMemoryAsync(It.IsAny<AgentMemory>(), It.IsAny<CancellationToken>()), Times.Never);
+        _mockMemoryRepository.Verify(r => r.AddMemoriesAsync(
+            It.Is<IEnumerable<AgentMemory>>(values => values.Count() == 2 && values.All(m => m.SessionId == sessionId)),
+            false,
+            It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -678,13 +746,18 @@ public class AgentServiceTests
         _mockSessionRepository.Setup(r => r.GetByIdWithAgentAsync(sessionId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(session);
 
-        _mockSessionStateStore.Setup(s => s.GetSessionAsync(sessionId, userId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((SessionState?)null);
+        _mockMemoryRepository.Setup(r => r.GetMessagesAsync(sessionId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync([
+                new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.User, "Hello from SQL")
+            ]);
 
         var result = await _service.GetSessionAsync(sessionId, userId);
 
         Assert.NotNull(result);
         Assert.Equal(sessionId, result.SessionId);
+        Assert.Single(result.Messages);
+        Assert.Equal("user", result.Messages[0].Role);
+        Assert.Equal("Hello from SQL", result.Messages[0].Content);
     }
 
     [Fact]
@@ -713,12 +786,15 @@ public class AgentServiceTests
         _mockSessionRepository.Setup(r => r.GetByUserIdAsync(userId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(sessions);
 
-        _mockSessionStateStore.Setup(s => s.GetSessionAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((SessionState?)null);
+        _mockMemoryRepository.Setup(r => r.GetMessagesAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync([
+                new AgentMemory(Guid.NewGuid(), Guid.NewGuid(), MemoryRole.User, "Persisted message")
+            ]);
 
         var result = await _service.ListSessionsAsync(userId);
 
         Assert.Equal(2, result.Count());
+        Assert.All(result, item => Assert.Equal(1, item.MessageCount));
     }
 
     [Fact]

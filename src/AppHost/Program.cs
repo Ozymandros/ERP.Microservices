@@ -85,18 +85,7 @@ var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_A
 var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore);
 // Creates: SalesDB, sales-service, ports 6007, 3507, 45007, 9097
 
-// Add PostgreSQL for Agentic memory store (pgvector extension enabled via docker image)
-// Note: Enable pgvector manually in docker-compose or via InitScript
-// Use an image that already has pgvector installed to avoid "InitScript" headaches in the cloud
-var agenticMemoryDb = builder.AddPostgres("agentic-memory", password: password)
-    .WithImage("ankane/pgvector") // Cloud-agnostic: ensuring pgvector is present in the image
-    .WithImageTag("latest")
-    .WithDataVolume("agentic-postgres")
-    .AddDatabase("AgenticMemory");
-
-var agenticService = projectBuilder.AddWebProject<Projects.MyApp_Agentic_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore, hasDatabase: true)
-    .WaitFor(agenticMemoryDb)
-    .WithReference(agenticMemoryDb);
+var agenticService = projectBuilder.AddWebProject<Projects.MyApp_Agentic_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore, hasDatabase: true);
 // Creates: agentic-service (no DB), ports 6008, 3508, 45008, 9098
 
 // Local Development: Reverse Proxy (YARP)

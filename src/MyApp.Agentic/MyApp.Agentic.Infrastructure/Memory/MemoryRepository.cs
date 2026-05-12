@@ -10,10 +10,11 @@ namespace MyApp.Agentic.Infrastructure.Memory;
 
 public interface IMemoryRepository
 {
+    Task<IReadOnlyList<AgentMemory>> GetMessagesAsync(Guid sessionId, CancellationToken cancellationToken = default);
     Task<IEnumerable<AgentMemory>> GetRecentMemoriesAsync(Guid sessionId, int count, CancellationToken cancellationToken = default);
     Task<IEnumerable<AgentMemory>> SearchSimilarAsync(Guid sessionId, string query, int topK = 3, CancellationToken cancellationToken = default);
-    Task AddMemoryAsync(AgentMemory memory, CancellationToken cancellationToken = default);
-    Task AddMemoriesAsync(IEnumerable<AgentMemory> memories, CancellationToken cancellationToken = default);
+    Task AddMemoryAsync(AgentMemory memory, bool generateEmbedding = true, CancellationToken cancellationToken = default);
+    Task AddMemoriesAsync(IEnumerable<AgentMemory> memories, bool generateEmbeddings = true, CancellationToken cancellationToken = default);
 }
 
 public class MemoryRepository : IMemoryRepository
@@ -25,6 +26,15 @@ public class MemoryRepository : IMemoryRepository
     {
         _context = context;
         _embeddingGenerator = embeddingGenerator;
+    }
+
+    public async Task<IReadOnlyList<AgentMemory>> GetMessagesAsync(Guid sessionId, CancellationToken cancellationToken = default)
+    {
+        return await _context.AgentMemories
+            .AsNoTracking()
+            .Where(m => m.SessionId == sessionId)
+            .OrderBy(m => m.CreatedAt)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<IEnumerable<AgentMemory>> GetRecentMemoriesAsync(Guid sessionId, int count, CancellationToken cancellationToken = default)
@@ -104,26 +114,30 @@ public class MemoryRepository : IMemoryRepository
         return results;
     }
 
-    public async Task AddMemoryAsync(AgentMemory memory, CancellationToken cancellationToken = default)
+    public Task AddMemoryAsync(AgentMemory memory, bool generateEmbedding = true, CancellationToken cancellationToken = default)
     {
-        var embedding = memory.Embedding ?? await _embeddingGenerator.GenerateEmbeddingAsync(memory.Content ?? string.Empty, cancellationToken);
-
-        _context.AgentMemories.Add(memory);
-        _context.Entry(memory).Property("EmbeddingVector").CurrentValue = new SqlVector<float>(embedding);
-        await _context.SaveChangesAsync(cancellationToken);
+        return AddMemoriesAsync([memory], generateEmbedding, cancellationToken);
     }
 
-    public async Task AddMemoriesAsync(IEnumerable<AgentMemory> memories, CancellationToken cancellationToken = default)
+    public async Task AddMemoriesAsync(IEnumerable<AgentMemory> memories, bool generateEmbeddings = true, CancellationToken cancellationToken = default)
     {
-        var prepared = new List<(AgentMemory Memory, float[] Embedding)>();
-        foreach (var memory in memories)
+        var memoryList = memories.ToList();
+        if (memoryList.Count == 0)
+            return;
+
+        if (!generateEmbeddings)
+        {
+            _context.AgentMemories.AddRange(memoryList);
+            await _context.SaveChangesAsync(cancellationToken);
+            return;
+        }
+
+        var prepared = new List<(AgentMemory Memory, float[] Embedding)>(memoryList.Count);
+        foreach (var memory in memoryList)
         {
             var embedding = memory.Embedding ?? await _embeddingGenerator.GenerateEmbeddingAsync(memory.Content ?? string.Empty, cancellationToken);
             prepared.Add((memory, embedding));
         }
-
-        if (prepared.Count == 0)
-            return;
 
         foreach (var (memory, embedding) in prepared)
         {

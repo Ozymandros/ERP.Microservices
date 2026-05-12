@@ -1,4 +1,3 @@
-using MyApp.Shared.Domain.Entities;
 using Microsoft.Extensions.VectorData;
 using System.ComponentModel.DataAnnotations.Schema;
 

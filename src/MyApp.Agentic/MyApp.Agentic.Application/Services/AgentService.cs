@@ -244,7 +244,15 @@ public class AgentService : IAgentService
 
         var apiKey = _secretCryptoService.Decrypt(encryptedApiKey);
 
-        var sessionState = await _sessionStateStore.GetSessionAsync(request.AgentId, authenticatedUserId, cancellationToken);
+        var session = await _sessionRepository.GetActiveSessionAsync(request.AgentId, authenticatedUserId, cancellationToken);
+        if (session is null)
+        {
+            session = new AgentSession(Guid.NewGuid(), request.AgentId, authenticatedUserId);
+            await _sessionRepository.AddAsync(session);
+        }
+
+        var sessionId = session.Id;
+        var sessionMessages = await _memoryRepository.GetMessagesAsync(sessionId, cancellationToken);
 
         var effectiveTopK = request.Options?.TopK ?? agent.TopK;
         var effectiveTemperature = request.Options?.Temperature ?? agent.Temperature;
@@ -252,10 +260,10 @@ public class AgentService : IAgentService
         var enableRAG = request.Options?.EnableRAG ?? agent.EnableRAG;
 
         var contextMemories = new List<string>();
-        if (enableRAG && sessionState?.Messages.Any() == true)
+        if (enableRAG && sessionMessages.Count > 0)
         {
             var similarMemories = await _memoryRepository.SearchSimilarAsync(
-                sessionState.SessionId,
+                sessionId,
                 request.Message,
                 topK: effectiveTopK,
                 cancellationToken);
@@ -266,7 +274,9 @@ public class AgentService : IAgentService
                 .ToList();
         }
 
-        var conversationHistory = sessionState?.Messages.Select(m => $"{m.Role}: {m.Content}").ToList() ?? new List<string>();
+        var conversationHistory = sessionMessages
+            .Select(m => $"{m.Role.ToString().ToLowerInvariant()}: {m.Content}")
+            .ToList();
 
         var context = new AgentExecutionContext
         {
@@ -283,8 +293,6 @@ public class AgentService : IAgentService
         var executionResult = await _agentExecutionService.ExecuteAsync(context, request.Message, cancellationToken);
         var aiResponse = executionResult.Content;
 
-        var currentSessionId = sessionState?.SessionId ?? Guid.NewGuid();
-
         var userMessage = new ConversationMessage
         {
             Role = "user",
@@ -299,21 +307,21 @@ public class AgentService : IAgentService
             Timestamp = DateTime.UtcNow
         };
 
-        await _sessionStateStore.AppendMessageAsync(request.AgentId, authenticatedUserId, userMessage, cancellationToken);
-        await _sessionStateStore.AppendMessageAsync(request.AgentId, authenticatedUserId, assistantMessage, cancellationToken);
+        await _sessionStateStore.AppendMessageAsync(sessionId, authenticatedUserId, userMessage, cancellationToken);
+        await _sessionStateStore.AppendMessageAsync(sessionId, authenticatedUserId, assistantMessage, cancellationToken);
 
-        if (enableMemory)
-        {
-            await _memoryRepository.AddMemoryAsync(
-                new AgentMemory(Guid.NewGuid(), currentSessionId, MemoryRole.User, request.Message),
-                cancellationToken);
+        await _memoryRepository.AddMemoriesAsync(
+            [
+                new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.User, request.Message),
+                new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.Assistant, aiResponse)
+            ],
+            generateEmbeddings: enableMemory,
+            cancellationToken: cancellationToken);
 
-            await _memoryRepository.AddMemoryAsync(
-                new AgentMemory(Guid.NewGuid(), currentSessionId, MemoryRole.Assistant, aiResponse),
-                cancellationToken);
-        }
+        session.RecordMessage();
+        await _sessionRepository.UpdateAsync(session);
 
-        return new ProcessAgentMessageResponse(currentSessionId, authenticatedUserId, request.Message, aiResponse, DateTime.UtcNow, executionResult.ToolCalls);
+        return new ProcessAgentMessageResponse(sessionId, authenticatedUserId, request.Message, aiResponse, DateTime.UtcNow, executionResult.ToolCalls);
     }
 
     /// <summary>
@@ -408,7 +416,7 @@ public class AgentService : IAgentService
 
         var apiKey = _secretCryptoService.Decrypt(encryptedApiKey);
 
-        var sessionState = await _sessionStateStore.GetSessionAsync(sessionId, authenticatedUserId, cancellationToken);
+        var sessionMessages = await _memoryRepository.GetMessagesAsync(sessionId, cancellationToken);
 
         var effectiveTopK = request.Options?.TopK ?? agent.TopK;
         var effectiveTemperature = request.Options?.Temperature ?? agent.Temperature;
@@ -416,7 +424,7 @@ public class AgentService : IAgentService
         var enableRAG = request.Options?.EnableRAG ?? agent.EnableRAG;
 
         var contextMemories = new List<string>();
-        if (enableRAG && sessionState?.Messages.Any() == true)
+        if (enableRAG && sessionMessages.Count > 0)
         {
             var similarMemories = await _memoryRepository.SearchSimilarAsync(
                 sessionId,
@@ -430,7 +438,9 @@ public class AgentService : IAgentService
                 .ToList();
         }
 
-        var conversationHistory = sessionState?.Messages.Select(m => $"{m.Role}: {m.Content}").ToList() ?? new List<string>();
+        var conversationHistory = sessionMessages
+            .Select(m => $"{m.Role.ToString().ToLowerInvariant()}: {m.Content}")
+            .ToList();
 
         var pluginTools = BuildToolsForBotMode(agent);
 
@@ -470,16 +480,13 @@ public class AgentService : IAgentService
         await _sessionStateStore.AppendMessageAsync(sessionId, authenticatedUserId, userMessage, cancellationToken);
         await _sessionStateStore.AppendMessageAsync(sessionId, authenticatedUserId, assistantMessage, cancellationToken);
 
-        if (enableMemory)
-        {
-            await _memoryRepository.AddMemoryAsync(
+        await _memoryRepository.AddMemoriesAsync(
+            [
                 new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.User, request.Message),
-                cancellationToken);
-
-            await _memoryRepository.AddMemoryAsync(
-                new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.Assistant, aiResponse),
-                cancellationToken);
-        }
+                new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.Assistant, aiResponse)
+            ],
+            generateEmbeddings: enableMemory,
+            cancellationToken: cancellationToken);
 
         return new SendMessageResponse(
             Guid.NewGuid(),
@@ -508,8 +515,7 @@ public class AgentService : IAgentService
         if (session.UserId != authenticatedUserId)
             throw new UnauthorizedAccessException("User does not own this session.");
 
-        var sessionState = await _sessionStateStore.GetSessionAsync(sessionId, authenticatedUserId, cancellationToken);
-        var messages = sessionState?.Messages ?? new List<ConversationMessage>();
+        var messages = await _memoryRepository.GetMessagesAsync(sessionId, cancellationToken);
 
         return new SessionDetailsResponse(
             session.Id,
@@ -521,7 +527,7 @@ public class AgentService : IAgentService
             session.StartedAt,
             session.LastMessageAt,
             session.Status,
-            messages.Select(m => new SessionMessageDto(Guid.NewGuid(), m.Role, m.Content, m.Timestamp)).ToList());
+            messages.Select(m => new SessionMessageDto(m.Id, m.Role.ToString().ToLowerInvariant(), m.Content ?? string.Empty, m.CreatedAt)).ToList());
     }
 
     /// <summary>
@@ -539,8 +545,7 @@ public class AgentService : IAgentService
         var sessionDtos = new List<SessionListItemDto>();
         foreach (var session in sessions)
         {
-            var sessionState = await _sessionStateStore.GetSessionAsync(session.Id, authenticatedUserId, cancellationToken);
-            var messageCount = sessionState?.Messages.Count ?? 0;
+            var messageCount = (await _memoryRepository.GetMessagesAsync(session.Id, cancellationToken)).Count;
 
             sessionDtos.Add(new SessionListItemDto(
                 session.Id,
