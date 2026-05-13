@@ -1,3 +1,4 @@
+using MyApp.Agentic.API.Plugins;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using System.ComponentModel;
@@ -138,4 +139,22 @@ public class SalesPlugin
 
         return JsonSerializer.Serialize(result);
     }
+
+    /// <summary>
+    /// Searches ERP customers using the Sales service <c>/search</c> endpoint.
+    /// </summary>
+    /// <param name="queryJson">Search term or JSON query specification for customers.</param>
+    /// <returns>JSON paginated search result for matching customers.</returns>
+    [Description("Search ERP customers by term, name, email, or filters")]
+    public Task<string> SearchCustomersAsync(string queryJson) =>
+        PluginQueryHelper.SearchAsync(_serviceInvoker, ServiceNames.Sales, "api/sales/customers/search", queryJson);
+
+    /// <summary>
+    /// Searches ERP sales orders using the Sales service <c>/search</c> endpoint.
+    /// </summary>
+    /// <param name="queryJson">Search term or JSON query specification for sales orders.</param>
+    /// <returns>JSON paginated search result for matching sales orders.</returns>
+    [Description("Search ERP sales orders by term, order code, or filters")]
+    public Task<string> SearchSalesOrdersAsync(string queryJson) =>
+        PluginQueryHelper.SearchAsync(_serviceInvoker, ServiceNames.Sales, "api/sales/orders/search", queryJson);
 }

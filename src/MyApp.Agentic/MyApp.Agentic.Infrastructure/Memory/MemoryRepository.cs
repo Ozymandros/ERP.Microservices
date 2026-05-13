@@ -8,21 +8,64 @@ using System.Globalization;
 
 namespace MyApp.Agentic.Infrastructure.Memory;
 
+/// <summary>
+/// Persists and retrieves agent conversation memories from SQL Server.
+/// </summary>
 public interface IMemoryRepository
 {
+    /// <summary>
+    /// Gets the ordered session transcript without vector similarity ranking.
+    /// </summary>
+    /// <param name="sessionId">Conversation session identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Chronological session messages.</returns>
     Task<IReadOnlyList<AgentMemory>> GetMessagesAsync(Guid sessionId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets the most recent memories for a session.
+    /// </summary>
+    /// <param name="sessionId">Conversation session identifier.</param>
+    /// <param name="count">Maximum number of memories to return.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Recent session memories.</returns>
     Task<IEnumerable<AgentMemory>> GetRecentMemoriesAsync(Guid sessionId, int count, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Performs vector similarity search over memories in a session.
+    /// </summary>
+    /// <param name="sessionId">Conversation session identifier.</param>
+    /// <param name="query">User query text to embed and search against.</param>
+    /// <param name="embeddingProvider">Provider context used to generate the query embedding.</param>
+    /// <param name="topK">Maximum number of similar memories to return.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Most similar memories for retrieval-augmented generation.</returns>
     Task<IEnumerable<AgentMemory>> SearchSimilarAsync(
         Guid sessionId,
         string query,
         MemoryEmbeddingProviderContext embeddingProvider,
         int topK = 3,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Persists a single memory row for a session.
+    /// </summary>
+    /// <param name="memory">Memory entity to store.</param>
+    /// <param name="embeddingProvider">Provider context used when embeddings are generated.</param>
+    /// <param name="generateEmbedding">Whether to generate and store an embedding vector.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     Task AddMemoryAsync(
         AgentMemory memory,
         MemoryEmbeddingProviderContext embeddingProvider,
         bool generateEmbedding = true,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Persists multiple memory rows for a session.
+    /// </summary>
+    /// <param name="memories">Memory entities to store.</param>
+    /// <param name="embeddingProvider">Provider context used when embeddings are generated.</param>
+    /// <param name="generateEmbeddings">Whether to generate and store embedding vectors.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     Task AddMemoriesAsync(
         IEnumerable<AgentMemory> memories,
         MemoryEmbeddingProviderContext embeddingProvider,
@@ -30,17 +73,26 @@ public interface IMemoryRepository
         CancellationToken cancellationToken = default);
 }
 
+/// <summary>
+/// SQL Server implementation of <see cref="IMemoryRepository"/>.
+/// </summary>
 public class MemoryRepository : IMemoryRepository
 {
     private readonly AgenticSqlDbContext _context;
     private readonly IMemoryEmbeddingGenerator _embeddingGenerator;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MemoryRepository"/> class.
+    /// </summary>
+    /// <param name="context">Agentic SQL database context.</param>
+    /// <param name="embeddingGenerator">Embedding generator used for vector search and memory indexing.</param>
     public MemoryRepository(AgenticSqlDbContext context, IMemoryEmbeddingGenerator embeddingGenerator)
     {
         _context = context;
         _embeddingGenerator = embeddingGenerator;
     }
 
+    /// <inheritdoc />
     public async Task<IReadOnlyList<AgentMemory>> GetMessagesAsync(Guid sessionId, CancellationToken cancellationToken = default)
     {
         return await _context.AgentMemories
@@ -50,6 +102,7 @@ public class MemoryRepository : IMemoryRepository
             .ToListAsync(cancellationToken);
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<AgentMemory>> GetRecentMemoriesAsync(Guid sessionId, int count, CancellationToken cancellationToken = default)
     {
         if (count <= 0)
@@ -63,6 +116,7 @@ public class MemoryRepository : IMemoryRepository
             .ToListAsync(cancellationToken);
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<AgentMemory>> SearchSimilarAsync(
         Guid sessionId,
         string query,
@@ -137,6 +191,7 @@ public class MemoryRepository : IMemoryRepository
         }
     }
 
+    /// <inheritdoc />
     public Task AddMemoryAsync(
         AgentMemory memory,
         MemoryEmbeddingProviderContext embeddingProvider,
@@ -146,6 +201,7 @@ public class MemoryRepository : IMemoryRepository
         return AddMemoriesAsync([memory], embeddingProvider, generateEmbedding, cancellationToken);
     }
 
+    /// <inheritdoc />
     public async Task AddMemoriesAsync(
         IEnumerable<AgentMemory> memories,
         MemoryEmbeddingProviderContext embeddingProvider,

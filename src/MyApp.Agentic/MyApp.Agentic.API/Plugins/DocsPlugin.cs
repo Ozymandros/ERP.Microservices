@@ -4,12 +4,21 @@ using System.Text.Json;
 
 namespace MyApp.Agentic.API.Plugins;
 
+/// <summary>
+/// Plugin that exposes MyApp ERP documentation search and retrieval tools to agents.
+/// </summary>
 public class DocsPlugin
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<DocsPlugin> _logger;
     private readonly string _docsBaseUrl;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DocsPlugin"/> class.
+    /// </summary>
+    /// <param name="httpClientFactory">HTTP client factory for documentation requests.</param>
+    /// <param name="logger">Structured logger.</param>
+    /// <param name="configuration">Application configuration containing <c>Docs:BaseUrl</c>.</param>
     public DocsPlugin(IHttpClientFactory httpClientFactory, ILogger<DocsPlugin> logger, IConfiguration configuration)
     {
         _httpClient = httpClientFactory.CreateClient("DocsPlugin");
@@ -18,6 +27,11 @@ public class DocsPlugin
             ?? "https://ozymandros.github.io/ERP.Microservices/";
     }
 
+    /// <summary>
+    /// Searches published ERP documentation by keyword.
+    /// </summary>
+    /// <param name="query">Keyword or phrase to search for.</param>
+    /// <returns>JSON list of matching documentation entries, or a not-found/error payload.</returns>
     [Description("Search documentation by keyword")]
     public async Task<string> SearchAsync(string query)
     {
@@ -76,6 +90,11 @@ public class DocsPlugin
         }
     }
 
+    /// <summary>
+    /// Retrieves summary metadata for a documentation topic.
+    /// </summary>
+    /// <param name="topic">Topic name such as <c>agentic</c>, <c>api</c>, or <c>architecture</c>.</param>
+    /// <returns>JSON topic summary with URL and title, or an error payload.</returns>
     [Description("Get documentation for a specific topic")]
     public async Task<string> GetTopicAsync(string topic)
     {
@@ -134,6 +153,11 @@ public class DocsPlugin
         }
     }
 
+    /// <summary>
+    /// Retrieves API reference namespaces or classes from the documentation index.
+    /// </summary>
+    /// <param name="namespaceOrClass">Optional namespace or class filter. When omitted, returns namespace list.</param>
+    /// <returns>JSON API reference index data.</returns>
     [Description("Get API reference documentation")]
     public async Task<string> GetApiReferenceAsync(string? namespaceOrClass = null)
     {
@@ -196,6 +220,10 @@ public class DocsPlugin
         }
     }
 
+    /// <summary>
+    /// Lists the top-level documentation sections available on the docs site.
+    /// </summary>
+    /// <returns>JSON array of documentation sections with names, descriptions, and URLs.</returns>
     [Description("Get list of all documentation sections")]
     public async Task<string> GetSectionsAsync()
     {
@@ -222,25 +250,53 @@ public class DocsPlugin
     }
 }
 
+/// <summary>
+/// Documentation search result entry returned by <see cref="DocsPlugin.SearchAsync"/>.
+/// </summary>
 public class DocSearchResult
 {
+    /// <summary>Document file name or identifier.</summary>
     public string Name { get; set; } = string.Empty;
+
+    /// <summary>Human-readable document title.</summary>
     public string Title { get; set; } = string.Empty;
+
+    /// <summary>Relative or absolute documentation URL.</summary>
     public string Href { get; set; } = string.Empty;
+
+    /// <summary>Short summary text for the document.</summary>
     public string Summary { get; set; } = string.Empty;
 }
 
+/// <summary>
+/// Root documentation API index payload.
+/// </summary>
 public class DocApiIndex
 {
+    /// <summary>Indexed documentation documents.</summary>
     public List<DocApiDocument>? Documents { get; set; }
 }
 
+/// <summary>
+/// Single documentation index entry from the docs API.
+/// </summary>
 public class DocApiDocument
 {
+    /// <summary>Document file name or identifier.</summary>
     public string Name { get; set; } = string.Empty;
+
+    /// <summary>Human-readable document title.</summary>
     public string? Title { get; set; }
+
+    /// <summary>Relative or absolute documentation URL.</summary>
     public string? Href { get; set; }
+
+    /// <summary>Short summary text for the document.</summary>
     public string? Summary { get; set; }
+
+    /// <summary>API namespace associated with the document.</summary>
     public string? Namespace { get; set; }
+
+    /// <summary>Additional search keywords for indexing.</summary>
     public string? SearchKeywords { get; set; }
 }

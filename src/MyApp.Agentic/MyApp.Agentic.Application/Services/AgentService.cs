@@ -697,6 +697,10 @@ public class AgentService : IAgentService
     /// <summary>
     /// Builds embedding API settings from the agent's selected model and its provider.
     /// </summary>
+    /// <param name="provider">AI provider configured on the agent's model.</param>
+    /// <param name="model">Selected AI model, if available.</param>
+    /// <param name="apiKey">Decrypted provider API key.</param>
+    /// <returns>Provider context used for memory embedding generation.</returns>
     private static MemoryEmbeddingProviderContext CreateEmbeddingProviderContext(
         AIProvider provider,
         AIModel? model,

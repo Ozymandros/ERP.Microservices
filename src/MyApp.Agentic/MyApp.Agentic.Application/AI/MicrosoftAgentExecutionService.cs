@@ -5,12 +5,21 @@ using System.Text.Json;
 
 namespace MyApp.Agentic.Application.AI;
 
+/// <summary>
+/// Microsoft.Extensions.AI-backed implementation of <see cref="IAgentExecutionService"/>.
+/// </summary>
 public class MicrosoftAgentExecutionService : IAgentExecutionService
 {
     private readonly IAgentRuntimeFactory _runtimeFactory;
     private readonly IAgentToolExecutor _toolExecutor;
     private readonly ILogger<MicrosoftAgentExecutionService> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MicrosoftAgentExecutionService"/> class.
+    /// </summary>
+    /// <param name="runtimeFactory">Factory that creates provider-specific chat clients.</param>
+    /// <param name="toolExecutor">Executor for registered ERP tools.</param>
+    /// <param name="logger">Structured logger.</param>
     public MicrosoftAgentExecutionService(
         IAgentRuntimeFactory runtimeFactory,
         IAgentToolExecutor toolExecutor,
@@ -21,6 +30,7 @@ public class MicrosoftAgentExecutionService : IAgentExecutionService
         _logger = logger;
     }
 
+    /// <inheritdoc />
     public async Task<AgentExecutionResult> ExecuteAsync(AgentExecutionContext context, string userMessage, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Executing real AI request for Agent {AgentId} with Model {ModelName} via MAF",
@@ -40,10 +50,6 @@ public class MicrosoftAgentExecutionService : IAgentExecutionService
         };
 
         var toolCallResults = new List<ToolCallResult>();
-        
-        // Simple execution loop for tool calling
-        // Note: IChatClient can handle this automatically if we use a middleware, 
-        // but for explicit control and logging we'll do a basic loop here.
         
         int iterations = 0;
         const int maxIterations = 5;
@@ -102,6 +108,12 @@ public class MicrosoftAgentExecutionService : IAgentExecutionService
             finishReason);
     }
 
+    /// <summary>
+    /// Builds the chat message list from system prompt, history, memories, and the current user turn.
+    /// </summary>
+    /// <param name="context">Execution context.</param>
+    /// <param name="userMessage">Current user message.</param>
+    /// <returns>Messages ready to send to the chat client.</returns>
     private static List<ChatMessage> BuildMessages(AgentExecutionContext context, string userMessage)
     {
         var messages = new List<ChatMessage>();
@@ -111,10 +123,8 @@ public class MicrosoftAgentExecutionService : IAgentExecutionService
             messages.Add(new ChatMessage(ChatRole.System, context.SystemPrompt));
         }
 
-        // Add history
         foreach (var historyItem in context.ConversationHistory)
         {
-            // Simple parsing of "Role: Content" format used in AgentService
             var parts = historyItem.Split(':', 2);
             if (parts.Length == 2)
             {
@@ -128,7 +138,6 @@ public class MicrosoftAgentExecutionService : IAgentExecutionService
             }
         }
 
-        // Add RAG context as a system message or part of the user message
         if (context.ContextMemories.Any())
         {
             var contextText = "Relevant context information:\n" + string.Join("\n", context.ContextMemories);
@@ -140,15 +149,16 @@ public class MicrosoftAgentExecutionService : IAgentExecutionService
         return messages;
     }
 
+    /// <summary>
+    /// Converts resolved tool definitions into Microsoft.Extensions.AI tool metadata.
+    /// </summary>
+    /// <param name="context">Execution context containing resolved tools.</param>
+    /// <returns>AI tools exposed to the model for this turn.</returns>
     private List<AITool> BuildTools(AgentExecutionContext context)
     {
         var tools = new List<AITool>();
         foreach (var toolDef in context.Tools)
         {
-            // We create a function that just returns its name and args, 
-            // the loop will handle the actual execution via _toolExecutor.
-            // This allows us to keep the IAgentToolExecutor abstraction.
-            
             var description = string.IsNullOrWhiteSpace(toolDef.Description)
                 ? $"ERP tool: {toolDef.Name}."
                 : toolDef.Description;

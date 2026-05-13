@@ -3,12 +3,18 @@ using System.Text;
 
 namespace MyApp.Agentic.Infrastructure.Memory;
 
+/// <summary>
+/// Produces deterministic normalized embedding vectors from text hashes.
+/// Used as a fallback when provider-backed embedding generation is unavailable.
+/// </summary>
 public sealed class DeterministicTextEmbeddingGenerator : IMemoryEmbeddingGenerator
 {
     private const int DefaultVectorSize = 1536;
 
+    /// <inheritdoc />
     public int VectorSize => DefaultVectorSize;
 
+    /// <inheritdoc />
     public Task<float[]> GenerateEmbeddingAsync(
         string text,
         MemoryEmbeddingProviderContext provider,

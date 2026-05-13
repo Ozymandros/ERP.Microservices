@@ -1,3 +1,4 @@
+using MyApp.Agentic.API.Plugins;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using System.ComponentModel;
@@ -111,14 +112,15 @@ public class InventoryPlugin
     /// <summary>
     /// Gets a product by its name.
     /// </summary>
-    /// <param name="name">The product name.</param>
+    /// <param name="name">Product name, or JSON such as <c>{"name":"Alpha Bolt"}</c>.</param>
     /// <returns>JSON representation of the product, or an error description if not found.</returns>
     [Description("Get product by name")]
     public async Task<string> GetProductByNameAsync(string name)
     {
+        var resolvedName = PluginQueryHelper.ResolveScalarArgument(name);
         var result = await _serviceInvoker.InvokeAsync<string, object>(
             ServiceNames.Inventory,
-            $"api/inventory/products/name/{name}",
+            $"api/inventory/products/name/{resolvedName}",
             HttpMethod.Get,
             string.Empty);
 
@@ -153,6 +155,68 @@ public class InventoryPlugin
         var result = await _serviceInvoker.InvokeAsync<string, object>(
             ServiceNames.Inventory,
             $"api/inventory/transactions/reference/{referenceNumber}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
+
+    /// <summary>
+    /// Gets a product by its SKU.
+    /// </summary>
+    /// <param name="sku">Product SKU, or JSON such as <c>{"sku":"ABC-123"}</c>.</param>
+    /// <returns>JSON representation of the product, or an error description if not found.</returns>
+    [Description("Get product by SKU")]
+    public async Task<string> GetProductBySkuAsync(string sku)
+    {
+        var resolvedSku = PluginQueryHelper.ResolveScalarArgument(sku, "sku");
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Inventory,
+            $"api/inventory/products/sku/{resolvedSku}",
+            HttpMethod.Get,
+            string.Empty);
+
+        return JsonSerializer.Serialize(result);
+    }
+
+    /// <summary>
+    /// Searches ERP products using the Inventory service <c>/search</c> endpoint.
+    /// </summary>
+    /// <param name="queryJson">Search term or JSON query specification for products.</param>
+    /// <returns>JSON paginated search result for matching products.</returns>
+    [Description("Search ERP products by term, name, description, SKU, or filters")]
+    public Task<string> SearchProductsAsync(string queryJson) =>
+        PluginQueryHelper.SearchAsync(_serviceInvoker, ServiceNames.Inventory, "api/inventory/products/search", queryJson);
+
+    /// <summary>
+    /// Searches ERP warehouses using the Inventory service <c>/search</c> endpoint.
+    /// </summary>
+    /// <param name="queryJson">Search term or JSON query specification for warehouses.</param>
+    /// <returns>JSON paginated search result for matching warehouses.</returns>
+    [Description("Search ERP warehouses by term, name, or filters")]
+    public Task<string> SearchWarehousesAsync(string queryJson) =>
+        PluginQueryHelper.SearchAsync(_serviceInvoker, ServiceNames.Inventory, "api/inventory/warehouses/search", queryJson);
+
+    /// <summary>
+    /// Searches ERP inventory transactions using the Inventory service <c>/search</c> endpoint.
+    /// </summary>
+    /// <param name="queryJson">Search term or JSON query specification for transactions.</param>
+    /// <returns>JSON paginated search result for matching inventory transactions.</returns>
+    [Description("Search ERP inventory transactions by term or filters")]
+    public Task<string> SearchInventoryTransactionsAsync(string queryJson) =>
+        PluginQueryHelper.SearchAsync(_serviceInvoker, ServiceNames.Inventory, "api/inventory/transactions/search", queryJson);
+
+    /// <summary>
+    /// Lists ERP products that are below their configured low-stock threshold.
+    /// </summary>
+    /// <param name="unused">Ignored. Present only to satisfy the tool invocation signature.</param>
+    /// <returns>JSON collection of low-stock products.</returns>
+    [Description("List ERP products with low stock levels")]
+    public async Task<string> GetLowStockProductsAsync(string unused = "")
+    {
+        var result = await _serviceInvoker.InvokeAsync<string, object>(
+            ServiceNames.Inventory,
+            "api/inventory/products/low-stock",
             HttpMethod.Get,
             string.Empty);
 

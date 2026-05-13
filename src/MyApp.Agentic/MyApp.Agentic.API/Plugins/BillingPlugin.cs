@@ -1,3 +1,4 @@
+using MyApp.Agentic.API.Plugins;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using System.ComponentModel;
@@ -13,6 +14,7 @@ public class BillingPlugin
     /// <summary>
     /// Initializes a new instance of the BillingPlugin with the required service invoker.
     /// </summary>
+    /// <param name="serviceInvoker">The inter-service HTTP invoker used to call the Billing service.</param>
     public BillingPlugin(IServiceInvoker serviceInvoker)
     {
         _serviceInvoker = serviceInvoker;
@@ -21,6 +23,8 @@ public class BillingPlugin
     /// <summary>
     /// Creates a new billing resource such as an invoice or payment record.
     /// </summary>
+    /// <param name="payloadJson">JSON-serialized billing create request.</param>
+    /// <returns>JSON representation of the newly created billing resource.</returns>
     [Description("Create billing resource")]
     public async Task<string> CreateAsync(string payloadJson)
     {
@@ -36,6 +40,8 @@ public class BillingPlugin
     /// <summary>
     /// Retrieves a billing resource by its unique identifier.
     /// </summary>
+    /// <param name="id">The unique identifier of the billing resource.</param>
+    /// <returns>JSON representation of the billing resource, or an error description if not found.</returns>
     [Description("Get billing resource by id")]
     public async Task<string> GetByIdAsync(string id)
     {
@@ -50,6 +56,8 @@ public class BillingPlugin
     /// <summary>
     /// Updates an existing billing resource with new information.
     /// </summary>
+    /// <param name="payloadJson">JSON-serialized billing update request.</param>
+    /// <returns>JSON representation of the updated billing resource.</returns>
     [Description("Update billing resource")]
     public async Task<string> UpdateAsync(string payloadJson)
     {
@@ -111,4 +119,13 @@ public class BillingPlugin
 
         return JsonSerializer.Serialize(result);
     }
+
+    /// <summary>
+    /// Searches ERP invoices using the Billing service <c>/search</c> endpoint.
+    /// </summary>
+    /// <param name="queryJson">Search term or JSON query specification for invoices.</param>
+    /// <returns>JSON paginated search result for matching invoices.</returns>
+    [Description("Search ERP invoices by term, invoice number, or filters")]
+    public Task<string> SearchInvoicesAsync(string queryJson) =>
+        PluginQueryHelper.SearchAsync(_serviceInvoker, ServiceNames.Billing, "api/billing/invoices/search", queryJson);
 }

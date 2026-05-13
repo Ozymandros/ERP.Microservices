@@ -1,3 +1,4 @@
+using MyApp.Agentic.API.Plugins;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using System.ComponentModel;
@@ -110,4 +111,13 @@ public class OrdersPlugin
 
         return JsonSerializer.Serialize(result);
     }
+
+    /// <summary>
+    /// Searches ERP operational orders using the Orders service <c>/search</c> endpoint.
+    /// </summary>
+    /// <param name="queryJson">Search term or JSON query specification for orders.</param>
+    /// <returns>JSON paginated search result for matching orders.</returns>
+    [Description("Search ERP operational orders by term, order number, or filters")]
+    public Task<string> SearchOrdersAsync(string queryJson) =>
+        PluginQueryHelper.SearchAsync(_serviceInvoker, ServiceNames.Orders, "api/orders/search", queryJson);
 }

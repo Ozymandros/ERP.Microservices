@@ -1,3 +1,4 @@
+using MyApp.Agentic.API.Plugins;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using System.ComponentModel;
@@ -121,4 +122,22 @@ public class PurchasingPlugin
 
         return JsonSerializer.Serialize(result);
     }
+
+    /// <summary>
+    /// Searches ERP purchase orders using the Purchasing service <c>/search</c> endpoint.
+    /// </summary>
+    /// <param name="queryJson">Search term or JSON query specification for purchase orders.</param>
+    /// <returns>JSON paginated search result for matching purchase orders.</returns>
+    [Description("Search ERP purchase orders by term, code, or filters")]
+    public Task<string> SearchPurchaseOrdersAsync(string queryJson) =>
+        PluginQueryHelper.SearchAsync(_serviceInvoker, ServiceNames.Purchasing, "api/purchasing/purchaseorders/search", queryJson);
+
+    /// <summary>
+    /// Searches ERP suppliers using the Purchasing service advanced search endpoint.
+    /// </summary>
+    /// <param name="queryJson">Search term or JSON query specification for suppliers.</param>
+    /// <returns>JSON paginated search result for matching suppliers.</returns>
+    [Description("Search ERP suppliers by term, name, email, or filters")]
+    public Task<string> SearchSuppliersAsync(string queryJson) =>
+        PluginQueryHelper.SearchAsync(_serviceInvoker, ServiceNames.Purchasing, "api/purchasing/suppliers/advanced-search", queryJson);
 }

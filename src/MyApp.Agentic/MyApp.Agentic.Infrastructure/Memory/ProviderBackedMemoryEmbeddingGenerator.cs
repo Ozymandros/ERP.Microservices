@@ -5,6 +5,10 @@ using Microsoft.Extensions.Logging;
 
 namespace MyApp.Agentic.Infrastructure.Memory;
 
+/// <summary>
+/// Generates memory embeddings through the agent's configured provider embeddings API,
+/// with deterministic fallback when provider calls fail.
+/// </summary>
 public sealed class ProviderBackedMemoryEmbeddingGenerator : IMemoryEmbeddingGenerator
 {
     private const string DefaultEmbeddingModel = "text-embedding-3-small";
@@ -12,6 +16,12 @@ public sealed class ProviderBackedMemoryEmbeddingGenerator : IMemoryEmbeddingGen
     private readonly DeterministicTextEmbeddingGenerator _fallbackGenerator;
     private readonly ILogger<ProviderBackedMemoryEmbeddingGenerator> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ProviderBackedMemoryEmbeddingGenerator"/> class.
+    /// </summary>
+    /// <param name="httpClientFactory">HTTP client factory for provider embedding requests.</param>
+    /// <param name="fallbackGenerator">Deterministic fallback embedding generator.</param>
+    /// <param name="logger">Structured logger.</param>
     public ProviderBackedMemoryEmbeddingGenerator(
         IHttpClientFactory httpClientFactory,
         DeterministicTextEmbeddingGenerator fallbackGenerator,
@@ -22,8 +32,10 @@ public sealed class ProviderBackedMemoryEmbeddingGenerator : IMemoryEmbeddingGen
         _logger = logger;
     }
 
+    /// <inheritdoc />
     public int VectorSize => _fallbackGenerator.VectorSize;
 
+    /// <inheritdoc />
     public async Task<float[]> GenerateEmbeddingAsync(
         string text,
         MemoryEmbeddingProviderContext provider,
@@ -77,6 +89,11 @@ public sealed class ProviderBackedMemoryEmbeddingGenerator : IMemoryEmbeddingGen
         }
     }
 
+    /// <summary>
+    /// Builds the provider embeddings endpoint from a configured base URL.
+    /// </summary>
+    /// <param name="baseUrl">Provider base URL.</param>
+    /// <returns>Fully qualified embeddings endpoint.</returns>
     private static string BuildEmbeddingsEndpoint(string baseUrl)
     {
         var normalized = (baseUrl ?? string.Empty).Trim();
@@ -90,6 +107,12 @@ public sealed class ProviderBackedMemoryEmbeddingGenerator : IMemoryEmbeddingGen
             : normalized.TrimEnd('/') + "/embeddings";
     }
 
+    /// <summary>
+    /// Reads the first embedding vector from an OpenAI-compatible embeddings response payload.
+    /// </summary>
+    /// <param name="root">Response JSON root element.</param>
+    /// <param name="values">Parsed embedding values when successful.</param>
+    /// <returns><see langword="true"/> when an embedding array was found; otherwise <see langword="false"/>.</returns>
     private static bool TryReadFirstEmbedding(JsonElement root, out float[] values)
     {
         values = Array.Empty<float>();
@@ -121,6 +144,12 @@ public sealed class ProviderBackedMemoryEmbeddingGenerator : IMemoryEmbeddingGen
         return true;
     }
 
+    /// <summary>
+    /// Normalizes an embedding vector to the configured storage size.
+    /// </summary>
+    /// <param name="source">Source embedding values.</param>
+    /// <param name="targetSize">Target vector dimensionality.</param>
+    /// <returns>Normalized vector of <paramref name="targetSize"/> length.</returns>
     private static float[] NormalizeSize(float[] source, int targetSize)
     {
         var result = new float[targetSize];
