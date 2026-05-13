@@ -78,6 +78,7 @@ public static class MessagingServiceExtensions
 
         // Register messaging services
         services.AddSingleton<IEventPublisher, EventPublisher>();
+        services.AddHttpContextAccessor();
 
         // Register ServiceInvoker - use captured options value to avoid DI resolution from root provider
         // This approach avoids the "Cannot resolve scoped service from root provider" error entirely
@@ -168,6 +169,7 @@ public static class MessagingServiceExtensions
             options.WriteIndented = jsonOptions.WriteIndented;
         });
 
+        services.AddHttpContextAccessor();
         services.AddSingleton<IServiceInvoker>(sp =>
         {
             var daprClient = sp.GetRequiredService<Dapr.Client.DaprClient>();
