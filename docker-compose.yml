@@ -38,7 +38,7 @@ services:
   billing-service:
     build:
       context: ./src
-      dockerfile: MyApp.Billing/MyApp.Billing.API/Dockerfile
+      dockerfile: MyApp.Billing/MyApp.Billing.API/Dockerfile.local
       args:
         BUILDKIT_INLINE_CACHE: 1
     container_name: billing-service

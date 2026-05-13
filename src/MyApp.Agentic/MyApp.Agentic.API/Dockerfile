@@ -13,33 +13,32 @@ COPY src/nuget.config ./
 COPY ["src/MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.csproj", "MyApp.Shared/MyApp.Shared.Infrastructure/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.CQRS/MyApp.Shared.CQRS.csproj", "MyApp.Shared/MyApp.Shared.CQRS/"]
-COPY ["src/MyApp.Shared/MyApp.Shared.SignalR/MyApp.Shared.SignalR.csproj", "MyApp.Shared/MyApp.Shared.SignalR/"]
 
-# Copy Sales service projects
-COPY ["src/MyApp.Sales/MyApp.Sales.Domain/MyApp.Sales.Domain.csproj", "MyApp.Sales/MyApp.Sales.Domain/"]
-COPY ["src/MyApp.Sales/MyApp.Sales.Application.Contracts/MyApp.Sales.Application.Contracts.csproj", "MyApp.Sales/MyApp.Sales.Application.Contracts/"]
-COPY ["src/MyApp.Sales/MyApp.Sales.Application/MyApp.Sales.Application.csproj", "MyApp.Sales/MyApp.Sales.Application/"]
-COPY ["src/MyApp.Sales/MyApp.Sales.Infrastructure/MyApp.Sales.Infrastructure.csproj", "MyApp.Sales/MyApp.Sales.Infrastructure/"]
-COPY ["src/MyApp.Sales/MyApp.Sales.API/MyApp.Sales.API.csproj", "MyApp.Sales/MyApp.Sales.API/"]
+# Copy Agentic service projects
+COPY ["src/MyApp.Agentic/MyApp.Agentic.Domain/MyApp.Agentic.Domain.csproj", "MyApp.Agentic/MyApp.Agentic.Domain/"]
+COPY ["src/MyApp.Agentic/MyApp.Agentic.Application.Contracts/MyApp.Agentic.Application.Contracts.csproj", "MyApp.Agentic/MyApp.Agentic.Application.Contracts/"]
+COPY ["src/MyApp.Agentic/MyApp.Agentic.Application/MyApp.Agentic.Application.csproj", "MyApp.Agentic/MyApp.Agentic.Application/"]
+COPY ["src/MyApp.Agentic/MyApp.Agentic.Infrastructure/MyApp.Agentic.Infrastructure.csproj", "MyApp.Agentic/MyApp.Agentic.Infrastructure/"]
+COPY ["src/MyApp.Agentic/MyApp.Agentic.API/MyApp.Agentic.API.csproj", "MyApp.Agentic/MyApp.Agentic.API/"]
 
 # Restore dependencies
-RUN dotnet restore "MyApp.Sales/MyApp.Sales.API/MyApp.Sales.API.csproj"
+RUN dotnet restore "MyApp.Agentic/MyApp.Agentic.API/MyApp.Agentic.API.csproj"
 
 # Copy only needed source files (not everything from context)
 COPY src/MyApp.Shared/ MyApp.Shared/
-COPY src/MyApp.Sales/ MyApp.Sales/
+COPY src/MyApp.Agentic/ MyApp.Agentic/
 
 # Build the project
-WORKDIR "/src/MyApp.Sales/MyApp.Sales.API"
-RUN dotnet build "MyApp.Sales.API.csproj" -c Release -o /app/build --no-restore
+WORKDIR "/src/MyApp.Agentic/MyApp.Agentic.API"
+RUN dotnet build "MyApp.Agentic.API.csproj" -c Release -o /app/build --no-restore
 
 # Publish stage
 FROM build AS publish
-RUN dotnet publish "MyApp.Sales.API.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
+RUN dotnet publish "MyApp.Agentic.API.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
 
 # Runtime stage - Use shared base image
 # BASE_IMAGE_REGISTRY is defined at the top of the file
 FROM ${BASE_IMAGE_REGISTRY}myapp-microservices-base:10.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "MyApp.Sales.API.dll"]
+ENTRYPOINT ["dotnet", "MyApp.Agentic.API.dll"]

@@ -1,0 +1,44 @@
+# Local / docker-compose build (build context: ./src)
+
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+
+# Copy nuget.config to ensure clean package resolution (build context is ./src)
+COPY nuget.config ./
+
+# Copy shared projects
+COPY ["MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
+COPY ["MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.csproj", "MyApp.Shared/MyApp.Shared.Infrastructure/"]
+COPY ["MyApp.Shared/MyApp.Shared.CQRS/MyApp.Shared.CQRS.csproj", "MyApp.Shared/MyApp.Shared.CQRS/"]
+
+# Copy Agentic service projects
+COPY ["MyApp.Agentic/MyApp.Agentic.Domain/MyApp.Agentic.Domain.csproj", "MyApp.Agentic/MyApp.Agentic.Domain/"]
+COPY ["MyApp.Agentic/MyApp.Agentic.Application.Contracts/MyApp.Agentic.Application.Contracts.csproj", "MyApp.Agentic/MyApp.Agentic.Application.Contracts/"]
+COPY ["MyApp.Agentic/MyApp.Agentic.Application/MyApp.Agentic.Application.csproj", "MyApp.Agentic/MyApp.Agentic.Application/"]
+COPY ["MyApp.Agentic/MyApp.Agentic.Infrastructure/MyApp.Agentic.Infrastructure.csproj", "MyApp.Agentic/MyApp.Agentic.Infrastructure/"]
+COPY ["MyApp.Agentic/MyApp.Agentic.API/MyApp.Agentic.API.csproj", "MyApp.Agentic/MyApp.Agentic.API/"]
+
+# Restore dependencies with BuildKit cache mount (faster local rebuilds)
+RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
+    dotnet restore "MyApp.Agentic/MyApp.Agentic.API/MyApp.Agentic.API.csproj"
+
+# Copy only needed source files
+COPY MyApp.Shared/ MyApp.Shared/
+COPY MyApp.Agentic/ MyApp.Agentic/
+
+# Build the project
+WORKDIR "/src/MyApp.Agentic/MyApp.Agentic.API"
+RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
+    dotnet build "MyApp.Agentic.API.csproj" -c Release -o /app/build --no-restore
+
+# Publish stage
+FROM build AS publish
+RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
+    dotnet publish "MyApp.Agentic.API.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
+
+# Runtime stage - Use shared base image
+FROM myapp-microservices-base:10.0 AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "MyApp.Agentic.API.dll"]

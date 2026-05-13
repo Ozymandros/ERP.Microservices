@@ -24,8 +24,8 @@ COPY ["src/MyApp.Auth/MyApp.Auth.API/MyApp.Auth.API.csproj", "MyApp.Auth/MyApp.A
 RUN dotnet restore "MyApp.Auth/MyApp.Auth.API/MyApp.Auth.API.csproj"
 
 # Copy only needed source files (not everything from context)
-COPY ["src/MyApp.Shared/", "MyApp.Shared/"]
-COPY ["src/MyApp.Auth/", "MyApp.Auth/"]
+COPY src/MyApp.Shared/ MyApp.Shared/
+COPY src/MyApp.Auth/ MyApp.Auth/
 
 # Build the project
 WORKDIR "/src/MyApp.Auth/MyApp.Auth.API"
