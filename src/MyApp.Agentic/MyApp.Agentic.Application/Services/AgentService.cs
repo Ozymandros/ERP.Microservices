@@ -243,6 +243,7 @@ public class AgentService : IAgentService
             throw new InvalidOperationException($"API key not configured for provider {provider.Name}.");
 
         var apiKey = _secretCryptoService.Decrypt(encryptedApiKey);
+        var embeddingProvider = CreateEmbeddingProviderContext(provider, agent.Model, apiKey);
 
         var session = await _sessionRepository.GetActiveSessionAsync(request.AgentId, authenticatedUserId, cancellationToken);
         if (session is null)
@@ -265,6 +266,7 @@ public class AgentService : IAgentService
             var similarMemories = await _memoryRepository.SearchSimilarAsync(
                 sessionId,
                 request.Message,
+                embeddingProvider,
                 topK: effectiveTopK,
                 cancellationToken);
 
@@ -315,6 +317,7 @@ public class AgentService : IAgentService
                 new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.User, request.Message),
                 new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.Assistant, aiResponse)
             ],
+            embeddingProvider,
             generateEmbeddings: enableMemory,
             cancellationToken: cancellationToken);
 
@@ -415,6 +418,7 @@ public class AgentService : IAgentService
             throw new InvalidOperationException($"API key not configured for provider {provider.Name}.");
 
         var apiKey = _secretCryptoService.Decrypt(encryptedApiKey);
+        var embeddingProvider = CreateEmbeddingProviderContext(provider, agent.Model, apiKey);
 
         var sessionMessages = await _memoryRepository.GetMessagesAsync(sessionId, cancellationToken);
 
@@ -429,6 +433,7 @@ public class AgentService : IAgentService
             var similarMemories = await _memoryRepository.SearchSimilarAsync(
                 sessionId,
                 request.Message,
+                embeddingProvider,
                 topK: effectiveTopK,
                 cancellationToken);
 
@@ -485,6 +490,7 @@ public class AgentService : IAgentService
                 new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.User, request.Message),
                 new AgentMemory(Guid.NewGuid(), sessionId, MemoryRole.Assistant, aiResponse)
             ],
+            embeddingProvider,
             generateEmbeddings: enableMemory,
             cancellationToken: cancellationToken);
 
@@ -679,6 +685,28 @@ public class AgentService : IAgentService
             _logger.LogWarning(ex, "Failed to validate user {UserId} via auth-service", userId);
             throw new InvalidOperationException($"User {userId} could not be validated against auth-service.", ex);
         }
+    }
+
+    /// <summary>
+    /// Builds embedding API settings from the agent's selected model and its provider.
+    /// </summary>
+    private static MemoryEmbeddingProviderContext CreateEmbeddingProviderContext(
+        AIProvider provider,
+        AIModel? model,
+        string apiKey)
+    {
+        const string defaultEmbeddingModel = "text-embedding-3-small";
+
+        var embeddingModel = !string.IsNullOrWhiteSpace(model?.DefaultEmbeddingModelName)
+            ? model.DefaultEmbeddingModelName!.Trim()
+            : !string.IsNullOrWhiteSpace(provider.DefaultEmbeddingModelName)
+                ? provider.DefaultEmbeddingModelName!.Trim()
+                : defaultEmbeddingModel;
+
+        return new MemoryEmbeddingProviderContext(
+            apiKey,
+            provider.BaseUrl ?? string.Empty,
+            embeddingModel);
     }
 
     /// <summary>

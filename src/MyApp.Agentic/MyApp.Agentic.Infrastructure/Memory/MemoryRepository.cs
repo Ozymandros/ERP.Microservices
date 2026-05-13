@@ -12,9 +12,22 @@ public interface IMemoryRepository
 {
     Task<IReadOnlyList<AgentMemory>> GetMessagesAsync(Guid sessionId, CancellationToken cancellationToken = default);
     Task<IEnumerable<AgentMemory>> GetRecentMemoriesAsync(Guid sessionId, int count, CancellationToken cancellationToken = default);
-    Task<IEnumerable<AgentMemory>> SearchSimilarAsync(Guid sessionId, string query, int topK = 3, CancellationToken cancellationToken = default);
-    Task AddMemoryAsync(AgentMemory memory, bool generateEmbedding = true, CancellationToken cancellationToken = default);
-    Task AddMemoriesAsync(IEnumerable<AgentMemory> memories, bool generateEmbeddings = true, CancellationToken cancellationToken = default);
+    Task<IEnumerable<AgentMemory>> SearchSimilarAsync(
+        Guid sessionId,
+        string query,
+        MemoryEmbeddingProviderContext embeddingProvider,
+        int topK = 3,
+        CancellationToken cancellationToken = default);
+    Task AddMemoryAsync(
+        AgentMemory memory,
+        MemoryEmbeddingProviderContext embeddingProvider,
+        bool generateEmbedding = true,
+        CancellationToken cancellationToken = default);
+    Task AddMemoriesAsync(
+        IEnumerable<AgentMemory> memories,
+        MemoryEmbeddingProviderContext embeddingProvider,
+        bool generateEmbeddings = true,
+        CancellationToken cancellationToken = default);
 }
 
 public class MemoryRepository : IMemoryRepository
@@ -50,7 +63,12 @@ public class MemoryRepository : IMemoryRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<AgentMemory>> SearchSimilarAsync(Guid sessionId, string query, int topK = 3, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<AgentMemory>> SearchSimilarAsync(
+        Guid sessionId,
+        string query,
+        MemoryEmbeddingProviderContext embeddingProvider,
+        int topK = 3,
+        CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(query))
             return Enumerable.Empty<AgentMemory>();
@@ -58,7 +76,7 @@ public class MemoryRepository : IMemoryRepository
         if (topK <= 0)
             return Enumerable.Empty<AgentMemory>();
 
-        var embedding = await _embeddingGenerator.GenerateEmbeddingAsync(query.Trim(), cancellationToken);
+        var embedding = await _embeddingGenerator.GenerateEmbeddingAsync(query.Trim(), embeddingProvider, cancellationToken);
         var embeddingLiteral = SerializeVector(embedding);
 
         const string sql = """
@@ -75,51 +93,64 @@ public class MemoryRepository : IMemoryRepository
             ORDER BY VECTOR_DISTANCE('cosine', [EmbeddingVector], CAST(@queryVector AS vector(1536)))
             """;
 
-        await using var connection = _context.Database.GetDbConnection();
-        if (connection.State != ConnectionState.Open)
+        // Never dispose DbContext.Database.GetDbConnection(): it is owned by the context.
+        // `await using` on that connection disposes it and breaks later SaveChanges on the same scope.
+        await _context.Database.OpenConnectionAsync(cancellationToken);
+        try
         {
-            await connection.OpenAsync(cancellationToken);
-        }
+            var connection = _context.Database.GetDbConnection();
+            await using var command = connection.CreateCommand();
+            command.CommandText = sql;
 
-        await using var command = connection.CreateCommand();
-        command.CommandText = sql;
+            var topKParam = new SqlParameter("@topK", SqlDbType.Int) { Value = topK };
+            var sessionParam = new SqlParameter("@sessionId", SqlDbType.UniqueIdentifier) { Value = sessionId };
+            var vectorParam = new SqlParameter("@queryVector", SqlDbType.NVarChar) { Value = embeddingLiteral };
 
-        var topKParam = new SqlParameter("@topK", SqlDbType.Int) { Value = topK };
-        var sessionParam = new SqlParameter("@sessionId", SqlDbType.UniqueIdentifier) { Value = sessionId };
-        var vectorParam = new SqlParameter("@queryVector", SqlDbType.NVarChar) { Value = embeddingLiteral };
+            command.Parameters.Add(topKParam);
+            command.Parameters.Add(sessionParam);
+            command.Parameters.Add(vectorParam);
 
-        command.Parameters.Add(topKParam);
-        command.Parameters.Add(sessionParam);
-        command.Parameters.Add(vectorParam);
-
-        var results = new List<AgentMemory>();
-        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
-        while (await reader.ReadAsync(cancellationToken))
-        {
-            var id = reader.GetGuid(0);
-            var recordSessionId = reader.GetGuid(1);
-            var role = ParseRole(reader.GetString(2));
-            var content = reader.GetString(3);
-            var metadata = reader.IsDBNull(4) ? null : reader.GetString(4);
-            var createdAt = reader.GetDateTime(5);
-
-            var memory = new AgentMemory(id, recordSessionId, role, content, metadata)
+            var results = new List<AgentMemory>();
+            await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+            while (await reader.ReadAsync(cancellationToken))
             {
-                CreatedAt = createdAt
-            };
+                var id = reader.GetGuid(0);
+                var recordSessionId = reader.GetGuid(1);
+                var role = ParseRole(reader.GetString(2));
+                var content = reader.GetString(3);
+                var metadata = reader.IsDBNull(4) ? null : reader.GetString(4);
+                var createdAt = reader.GetDateTime(5);
 
-            results.Add(memory);
+                var memory = new AgentMemory(id, recordSessionId, role, content, metadata)
+                {
+                    CreatedAt = createdAt
+                };
+
+                results.Add(memory);
+            }
+
+            return results;
         }
-
-        return results;
+        finally
+        {
+            await _context.Database.CloseConnectionAsync();
+        }
     }
 
-    public Task AddMemoryAsync(AgentMemory memory, bool generateEmbedding = true, CancellationToken cancellationToken = default)
+    public Task AddMemoryAsync(
+        AgentMemory memory,
+        MemoryEmbeddingProviderContext embeddingProvider,
+        bool generateEmbedding = true,
+        CancellationToken cancellationToken = default)
     {
-        return AddMemoriesAsync([memory], generateEmbedding, cancellationToken);
+        return AddMemoriesAsync([memory], embeddingProvider, generateEmbedding, cancellationToken);
     }
 
-    public async Task AddMemoriesAsync(IEnumerable<AgentMemory> memories, bool generateEmbeddings = true, CancellationToken cancellationToken = default)
+    public async Task AddMemoriesAsync(
+        IEnumerable<AgentMemory> memories,
+        MemoryEmbeddingProviderContext embeddingProvider,
+        bool generateEmbeddings = true,
+        CancellationToken cancellationToken = default)
     {
         var memoryList = memories.ToList();
         if (memoryList.Count == 0)
@@ -135,7 +166,7 @@ public class MemoryRepository : IMemoryRepository
         var prepared = new List<(AgentMemory Memory, float[] Embedding)>(memoryList.Count);
         foreach (var memory in memoryList)
         {
-            var embedding = memory.Embedding ?? await _embeddingGenerator.GenerateEmbeddingAsync(memory.Content ?? string.Empty, cancellationToken);
+            var embedding = memory.Embedding ?? await _embeddingGenerator.GenerateEmbeddingAsync(memory.Content ?? string.Empty, embeddingProvider, cancellationToken);
             prepared.Add((memory, embedding));
         }
 

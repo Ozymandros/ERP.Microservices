@@ -9,7 +9,10 @@ public sealed class DeterministicTextEmbeddingGenerator : IMemoryEmbeddingGenera
 
     public int VectorSize => DefaultVectorSize;
 
-    public Task<float[]> GenerateEmbeddingAsync(string text, CancellationToken cancellationToken = default)
+    public Task<float[]> GenerateEmbeddingAsync(
+        string text,
+        MemoryEmbeddingProviderContext provider,
+        CancellationToken cancellationToken = default)
     {
         var input = text ?? string.Empty;
         var vector = new float[VectorSize];

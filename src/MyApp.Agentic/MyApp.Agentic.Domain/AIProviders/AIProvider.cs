@@ -13,8 +13,8 @@ public class AIProvider(Guid id) : AuditableEntity<Guid>(id)
     public int DefaultTopK { get; private set; } = 3;
     public int DefaultMaxTokens { get; private set; } = 2048;
     public int DefaultEmbeddingDimensions { get; private set; } = 1536;
-    public bool DefaultEnableMemory { get; private set; } = true;
-    public bool DefaultEnableRAG { get; private set; } = true;
+    public bool DefaultEnableMemory { get; private set; } = false;
+    public bool DefaultEnableRAG { get; private set; } = false;
     public string? DefaultEmbeddingModelName { get; private set; }
     public BotType DefaultBotType { get; private set; } = BotType.Chat;
     public string? DefaultSystemPrompt { get; private set; }

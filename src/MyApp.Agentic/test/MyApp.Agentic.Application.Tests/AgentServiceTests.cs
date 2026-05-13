@@ -79,7 +79,7 @@ public class AgentServiceTests
             .ReturnsAsync(Array.Empty<AgentMemory>());
 
         _mockMemoryRepository
-            .Setup(r => r.AddMemoriesAsync(It.IsAny<IEnumerable<AgentMemory>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+            .Setup(r => r.AddMemoriesAsync(It.IsAny<IEnumerable<AgentMemory>>(), It.IsAny<MemoryEmbeddingProviderContext>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
         _service = new AgentService(
@@ -326,6 +326,7 @@ public class AgentServiceTests
         _mockSessionStateStore.Verify(s => s.AppendMessageAsync(sessionId, userId, It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
         _mockMemoryRepository.Verify(r => r.AddMemoriesAsync(
             It.Is<IEnumerable<AgentMemory>>(values => values.Count() == 2 && values.All(m => m.SessionId == sessionId)),
+            It.Is<MemoryEmbeddingProviderContext>(ctx => ctx.ApiKey == "test-api-key" && ctx.BaseUrl == "https://api.openai.com"),
             true,
             It.IsAny<CancellationToken>()), Times.Once);
         _mockSessionRepository.Verify(r => r.UpdateAsync(It.Is<AgentSession>(value => value.Id == sessionId && value.LastMessageAt.HasValue)), Times.Once);
@@ -367,6 +368,7 @@ public class AgentServiceTests
         _mockSessionStateStore.Verify(s => s.AppendMessageAsync(createdSession.Id, userId, It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
         _mockMemoryRepository.Verify(r => r.AddMemoriesAsync(
             It.Is<IEnumerable<AgentMemory>>(values => values.Count() == 2 && values.All(m => m.SessionId == createdSession.Id)),
+            It.Is<MemoryEmbeddingProviderContext>(ctx => ctx.ApiKey == "test-api-key"),
             true,
             It.IsAny<CancellationToken>()), Times.Once);
         _mockSessionRepository.Verify(r => r.AddAsync(It.Is<AgentSession>(value => value.Id == createdSession.Id && value.AgentId == agentId && value.UserId == userId)), Times.Once);
@@ -436,7 +438,7 @@ public class AgentServiceTests
             new(Guid.NewGuid(), sessionId, MemoryRole.User, "Previous context")
         };
 
-        _mockMemoryRepository.Setup(r => r.SearchSimilarAsync(sessionId, It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
+        _mockMemoryRepository.Setup(r => r.SearchSimilarAsync(sessionId, It.IsAny<string>(), It.IsAny<MemoryEmbeddingProviderContext>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(memories);
 
         _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -486,6 +488,7 @@ public class AgentServiceTests
 
         _mockMemoryRepository.Verify(r => r.AddMemoriesAsync(
             It.Is<IEnumerable<AgentMemory>>(values => values.Count() == 2 && values.All(m => m.SessionId == sessionId)),
+            It.IsAny<MemoryEmbeddingProviderContext>(),
             false,
             It.IsAny<CancellationToken>()), Times.Once);
     }

@@ -1,33 +1,22 @@
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MyApp.Agentic.Infrastructure.Data;
-using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Agentic.Infrastructure.Memory;
 
 public sealed class ProviderBackedMemoryEmbeddingGenerator : IMemoryEmbeddingGenerator
 {
     private const string DefaultEmbeddingModel = "text-embedding-3-small";
-    private readonly ISecretCryptoService _secretCryptoService;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly DeterministicTextEmbeddingGenerator _fallbackGenerator;
     private readonly ILogger<ProviderBackedMemoryEmbeddingGenerator> _logger;
 
-    private readonly IServiceProvider _serviceProvider;
-
     public ProviderBackedMemoryEmbeddingGenerator(
-        IServiceProvider serviceProvider,
-        ISecretCryptoService secretCryptoService,
         IHttpClientFactory httpClientFactory,
         DeterministicTextEmbeddingGenerator fallbackGenerator,
         ILogger<ProviderBackedMemoryEmbeddingGenerator> logger)
     {
-        _serviceProvider = serviceProvider;
-        _secretCryptoService = secretCryptoService;
         _httpClientFactory = httpClientFactory;
         _fallbackGenerator = fallbackGenerator;
         _logger = logger;
@@ -35,35 +24,23 @@ public sealed class ProviderBackedMemoryEmbeddingGenerator : IMemoryEmbeddingGen
 
     public int VectorSize => _fallbackGenerator.VectorSize;
 
-    public async Task<float[]> GenerateEmbeddingAsync(string text, CancellationToken cancellationToken = default)
+    public async Task<float[]> GenerateEmbeddingAsync(
+        string text,
+        MemoryEmbeddingProviderContext provider,
+        CancellationToken cancellationToken = default)
     {
-        // Create a temporary scope when you need to access the DbContext
-        using var scope = _serviceProvider.CreateScope();
-        using var dbContext = scope.ServiceProvider.GetRequiredService<AgenticSqlDbContext>(); var input = text ?? string.Empty;
+        var input = text ?? string.Empty;
+
+        if (string.IsNullOrWhiteSpace(provider.ApiKey))
+        {
+            return await _fallbackGenerator.GenerateEmbeddingAsync(input, provider, cancellationToken);
+        }
 
         try
         {
-            var provider = await dbContext.AIProviders
-                .AsNoTracking()
-                .Where(p => !string.IsNullOrWhiteSpace(p.EncryptedApiKey))
-                .OrderByDescending(p => p.Name == "OpenAI")
-                .ThenBy(p => p.Name)
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (provider is null)
-            {
-                return await _fallbackGenerator.GenerateEmbeddingAsync(input, cancellationToken);
-            }
-
-            var apiKey = _secretCryptoService.Decrypt(provider.EncryptedApiKey!);
-            if (string.IsNullOrWhiteSpace(apiKey))
-            {
-                return await _fallbackGenerator.GenerateEmbeddingAsync(input, cancellationToken);
-            }
-
-            var model = string.IsNullOrWhiteSpace(provider.DefaultEmbeddingModelName)
+            var model = string.IsNullOrWhiteSpace(provider.EmbeddingModelName)
                 ? DefaultEmbeddingModel
-                : provider.DefaultEmbeddingModelName.Trim();
+                : provider.EmbeddingModelName.Trim();
 
             var endpoint = BuildEmbeddingsEndpoint(provider.BaseUrl);
             var requestBody = JsonSerializer.Serialize(new
@@ -77,7 +54,7 @@ public sealed class ProviderBackedMemoryEmbeddingGenerator : IMemoryEmbeddingGen
                 Content = new StringContent(requestBody, Encoding.UTF8, "application/json")
             };
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", provider.ApiKey);
 
             var client = _httpClientFactory.CreateClient("MemoryEmbeddingProvider");
             using var response = await client.SendAsync(request, cancellationToken);
@@ -88,7 +65,7 @@ public sealed class ProviderBackedMemoryEmbeddingGenerator : IMemoryEmbeddingGen
 
             if (!TryReadFirstEmbedding(document.RootElement, out var values))
             {
-                return await _fallbackGenerator.GenerateEmbeddingAsync(input, cancellationToken);
+                return await _fallbackGenerator.GenerateEmbeddingAsync(input, provider, cancellationToken);
             }
 
             return NormalizeSize(values, VectorSize);
@@ -96,7 +73,7 @@ public sealed class ProviderBackedMemoryEmbeddingGenerator : IMemoryEmbeddingGen
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to generate provider-backed embedding, using deterministic fallback.");
-            return await _fallbackGenerator.GenerateEmbeddingAsync(input, cancellationToken);
+            return await _fallbackGenerator.GenerateEmbeddingAsync(input, provider, cancellationToken);
         }
     }
 
