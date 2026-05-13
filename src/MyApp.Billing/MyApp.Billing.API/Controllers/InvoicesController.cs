@@ -2,16 +2,19 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Billing.Application.Contracts.DTOs;
 using MyApp.Billing.Application.Contracts.Services;
+using MyApp.Billing.Domain.Specifications;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Infrastructure.Export;
+using MyApp.Shared.Infrastructure.Extensions;
 
 namespace MyApp.Billing.API.Controllers;
 
 /// <summary>
 /// Manages billing invoices — creation, lifecycle transitions, payment recording and export.
 /// </summary>
-[Route("api/[controller]")]
+[Route("api/billing/invoices")]
 [Authorize]
 [ApiController]
 public class InvoicesController : ControllerBase
@@ -87,6 +90,43 @@ public class InvoicesController : ControllerBase
     }
 
     /// <summary>
+    /// Get invoice by Invoice Number - Requires Billing.Read permission
+    /// </summary>
+    [HttpGet("number/{invoiceNumber}")]
+    [HasPermission("Billing", "Read")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetByInvoiceNumber(string invoiceNumber, CancellationToken cancellationToken)
+    {
+        try
+        {
+            string cacheKey = "Invoice-Number-" + invoiceNumber;
+            var invoice = await _cacheService.GetStateAsync<InvoiceDto>(cacheKey)
+                ?? await _invoiceService.GetInvoiceByInvoiceNumberAsync(invoiceNumber, cancellationToken);
+
+            if (invoice == null)
+            {
+                _logger.LogWarning("Invoice with number {@InvoiceNumber} not found", new { InvoiceNumber = invoiceNumber });
+                return NotFound();
+            }
+
+            if (await _cacheService.GetStateAsync<InvoiceDto>(cacheKey) == null)
+            {
+                await _cacheService.SaveStateAsync(cacheKey, invoice);
+            }
+
+            _logger.LogInformation("Retrieved invoice with number {@InvoiceNumber}", new { InvoiceNumber = invoiceNumber });
+            return Ok(invoice);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving invoice with number {@InvoiceNumber}", new { InvoiceNumber = invoiceNumber });
+            var invoice = await _invoiceService.GetInvoiceByInvoiceNumberAsync(invoiceNumber, cancellationToken);
+            return invoice == null ? NotFound() : Ok(invoice);
+        }
+    }
+
+    /// <summary>
     /// Returns all invoices belonging to the specified customer.
     /// </summary>
     [HttpGet("customer/{customerId:guid}")]
@@ -133,6 +173,42 @@ public class InvoicesController : ControllerBase
         {
             _logger.LogError(ex, "Error retrieving invoices for order {OrderId}", orderId);
             return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred retrieving order invoices" });
+        }
+    }
+
+    /// <summary>
+    /// Searches invoices with filter, sort and pagination.
+    /// </summary>
+    [HttpGet("search")]
+    [HasPermission("Billing", "Read")]
+    [ProducesResponseType(typeof(PaginatedResult<InvoiceDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Search([FromQuery] QuerySpec query, CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        try
+        {
+            query.BindFiltersFromQuery(Request.Query);
+            query.Validate();
+
+            var spec = new InvoiceQuerySpec(query);
+            var result = await _invoiceService.QueryInvoicesAsync(spec, cancellationToken);
+
+            _logger.LogInformation("Searched invoices with query: {@Query}", query);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Invalid query specification for invoice search");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching invoices");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred searching invoices" });
         }
     }
 

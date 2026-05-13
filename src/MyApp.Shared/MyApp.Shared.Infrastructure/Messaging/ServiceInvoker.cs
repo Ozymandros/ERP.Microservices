@@ -1,8 +1,10 @@
 using Dapr.Client;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyApp.Shared.Domain.Messaging;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace MyApp.Shared.Infrastructure.Messaging;
@@ -16,11 +18,13 @@ public class ServiceInvoker : IServiceInvoker
     private readonly ILogger<ServiceInvoker> _logger;
     private readonly bool _enableLogging;
     private readonly JsonSerializerOptions _jsonOptions;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public ServiceInvoker(
         DaprClient daprClient,
         ILogger<ServiceInvoker> logger,
         IOptions<JsonSerializerOptions> jsonOptions,
+        IHttpContextAccessor httpContextAccessor,
         bool enableLogging = true)
     {
         ArgumentNullException.ThrowIfNull(daprClient);
@@ -36,6 +40,7 @@ public class ServiceInvoker : IServiceInvoker
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
             WriteIndented = false
         };
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<TResponse> InvokeAsync<TRequest, TResponse>(
@@ -64,14 +69,14 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
+#pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
             var response = await _daprClient.InvokeMethodAsync<TRequest, TResponse>(
                 httpMethod,
                 serviceName,
                 methodPath,
                 request,
                 cancellationToken);
-            #pragma warning restore CS0618
+#pragma warning restore CS0618
 
             if (_enableLogging)
             {
@@ -91,6 +96,13 @@ public class ServiceInvoker : IServiceInvoker
             throw;
         }
     }
+
+    public async Task<TResponse> GetAsync<TRequest, TResponse>(
+        string serviceName,
+        string methodPath,
+        TRequest request,
+        CancellationToken cancellationToken = default) => await InvokeAsync<TRequest, TResponse>(
+            serviceName, methodPath, HttpMethod.Get, request, cancellationToken);
 
     public async Task<TResponse> InvokeAsync<TResponse>(
         string serviceName,
@@ -117,13 +129,13 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
+#pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
             var response = await _daprClient.InvokeMethodAsync<TResponse>(
                 httpMethod,
                 serviceName,
                 methodPath,
                 cancellationToken);
-            #pragma warning restore CS0618
+#pragma warning restore CS0618
 
             if (_enableLogging)
             {
@@ -169,13 +181,13 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
+#pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
             await _daprClient.InvokeMethodAsync(
                 httpMethod,
                 serviceName,
                 methodPath,
                 cancellationToken);
-            #pragma warning restore CS0618
+#pragma warning restore CS0618
 
             if (_enableLogging)
             {
@@ -215,20 +227,20 @@ public class ServiceInvoker : IServiceInvoker
         string finalPath = methodPath;
         if (queryParams != null && queryParams.Count > 0)
         {
-            // El teu loop de validaci� de claus/valors �s correcte
+            // Your key/value validation loop is correct
             finalPath = QueryHelpers.AddQueryString(methodPath, queryParams);
         }
 
-        // 2. Crear la petici� base a Dapr
-        // IMPORTANT: No passem el 'requestBody' aqu� encara per tenir control total
+        // 2. Create the base request to Dapr
+        // IMPORTANT: Do not pass the 'requestBody' here yet so we keep full control
         request = _daprClient.CreateInvokeMethodRequest(httpMethod, serviceName, finalPath);
 
-        // 3. Gestionar el Body (NOM�S si no �s GET)
+        // 3. Handle the body (ONLY if it is not GET)
         if (requestBody != null)
         {
             if (httpMethod == HttpMethod.Get)
             {
-                // Opcional: Pots llan�ar una excepci� o simplement ignorar-lo i avisar
+                // Optional: You can throw an exception or simply ignore it and log a warning
                 _logger.LogWarning("Intent de passar un body en una petici� GET al servei {Service}. El body ser� ignorat.", serviceName);
             }
             else
@@ -260,13 +272,19 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
+            if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
+            {
+                var token = authHeader.ToString().Replace("Bearer ", string.Empty, StringComparison.OrdinalIgnoreCase);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+
+#pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
             var response = await _daprClient.InvokeMethodAsync<TResponse>(request, cancellationToken);
 
             if (_enableLogging)
             {
                 _logger.LogTrace("Successfully invoked service with custom request");
-            #pragma warning restore CS0618
+#pragma warning restore CS0618
             }
 
             return response;

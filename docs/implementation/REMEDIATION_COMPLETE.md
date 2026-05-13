@@ -218,7 +218,7 @@ DAPR configuration
 5. **purchasing-service** (Port 6005) - Procurement
 6. **sales-service** (Port 6007) - Sales operations
 7. **crm-service** (Port 6003) - CRM 7. **crm-service** (Port 6007) - CRM & leads leads
-8. **sk-service** (Port 6008) - Semantic Kernel AI
+8. **agentic-service** (Port 6008) - Semantic Kernel AI
 
 ### Infrastructure
 1. **SQL Server** (Port 1455) - 6 microservice databases

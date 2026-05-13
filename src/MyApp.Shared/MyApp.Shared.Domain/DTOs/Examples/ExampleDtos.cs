@@ -13,7 +13,7 @@ namespace MyApp.Shared.Domain.DTOs.Examples
     }
 
     // Example: DTO with audit trail and Guid ID
-    // Propietats heretades (CreatedAt, CreatedBy, etc.) no es redefinixen
+    // Inherited properties (CreatedAt, CreatedBy, etc.) are not redefined
     /// <summary>
     /// Represents the Order Dto data record.
     /// </summary>
@@ -40,7 +40,7 @@ namespace MyApp.Shared.Domain.DTOs.Examples
     }
 
     // Example: DTO with audit trail and integer ID
-    // Propietats heretades (CreatedAt, CreatedBy, etc.) no es redefinixen
+    // Inherited properties (CreatedAt, CreatedBy, etc.) are not redefined
     /// <summary>
     /// Represents the Product Dto data record.
     /// </summary>

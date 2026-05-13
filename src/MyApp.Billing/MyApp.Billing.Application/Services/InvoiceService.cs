@@ -6,6 +6,8 @@ using MyApp.Billing.Domain.Events;
 using MyApp.Billing.Domain.Repositories;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Exceptions;
+using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Billing.Application.Services;
 
@@ -39,8 +41,15 @@ public class InvoiceService : IInvoiceService
     /// </summary>
     public async Task<InvoiceDto> CreateInvoiceAsync(CreateInvoiceDto dto, CancellationToken cancellationToken = default)
     {
-        var invoice = new Invoice(Guid.NewGuid(), dto.CustomerId, dto.Currency);
-        
+        if (string.IsNullOrWhiteSpace(dto.InvoiceNumber))
+            throw new ArgumentException("InvoiceNumber must be a non-empty unique value.", nameof(dto.InvoiceNumber));
+
+        var existingInvoice = await _invoiceRepository.GetByInvoiceNumberAsync(dto.InvoiceNumber, cancellationToken);
+        if (existingInvoice is not null)
+            throw new InvalidOperationException($"Invoice number '{dto.InvoiceNumber}' already exists.");
+
+        var invoice = new Invoice(Guid.NewGuid(), dto.InvoiceNumber, dto.CustomerId, dto.Currency);
+
         foreach (var line in dto.Lines)
         {
             invoice.AddLine(line.Description, line.Quantity, line.UnitPrice, line.TaxRate, line.Discount);
@@ -65,11 +74,18 @@ public class InvoiceService : IInvoiceService
     /// </summary>
     public async Task<InvoiceDto> IssueInvoiceAsync(Guid invoiceId, string invoiceNumber, DateTime issueDate, CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(invoiceNumber))
+            throw new ArgumentException("InvoiceNumber must be a non-empty unique value.", nameof(invoiceNumber));
+
         var invoice = await _invoiceRepository.GetByIdAsync(invoiceId)
             ?? throw new NotFoundException($"Invoice {invoiceId} not found");
 
+        var existingInvoice = await _invoiceRepository.GetByInvoiceNumberAsync(invoiceNumber, cancellationToken);
+        if (existingInvoice is not null && existingInvoice.Id != invoiceId)
+            throw new InvalidOperationException($"Invoice number '{invoiceNumber}' already exists.");
+
         invoice.Issue(invoiceNumber, issueDate, invoice.PaymentTermsDays);
-        
+
         await _invoiceRepository.UpdateAsync(invoice);
 
         // Publish domain event
@@ -96,8 +112,8 @@ public class InvoiceService : IInvoiceService
             ?? throw new NotFoundException($"Invoice {dto.InvoiceId} not found");
 
         invoice.RecordPayment(dto.Amount, dto.Method, dto.PaidAt, dto.ExternalPaymentId);
-        
-        await _invoiceRepository.UpdateAsync(invoice);
+
+        await _invoiceRepository.SaveChangesAsync(cancellationToken);
 
         // Publish domain event
         await _eventPublisher.PublishAsync("billing.invoice.paid", new InvoicePaidEvent(
@@ -121,7 +137,7 @@ public class InvoiceService : IInvoiceService
             ?? throw new NotFoundException($"Invoice {invoiceId} not found");
 
         invoice.Cancel();
-        
+
         await _invoiceRepository.UpdateAsync(invoice);
 
         // Publish domain event
@@ -151,7 +167,7 @@ public class InvoiceService : IInvoiceService
         )).ToList();
 
         var creditNote = invoice.CreateCreditNote(lines, dto.Reason);
-        
+
         await _creditNoteRepository.AddAsync(creditNote);
 
         // Publish domain event
@@ -172,6 +188,15 @@ public class InvoiceService : IInvoiceService
     public async Task<InvoiceDto?> GetInvoiceByIdAsync(Guid invoiceId, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(invoiceId);
+        return invoice != null ? MapToDto(invoice) : null;
+    }
+
+    /// <summary>
+    /// Retrieves an invoice by its invoice number.
+    /// </summary>
+    public async Task<InvoiceDto?> GetInvoiceByInvoiceNumberAsync(string invoiceNumber, CancellationToken cancellationToken = default)
+    {
+        var invoice = await _invoiceRepository.GetByInvoiceNumberAsync(invoiceNumber, cancellationToken);
         return invoice != null ? MapToDto(invoice) : null;
     }
 
@@ -200,6 +225,16 @@ public class InvoiceService : IInvoiceService
     {
         var invoices = await _invoiceRepository.GetInvoicesByOrderIdAsync(orderId, cancellationToken);
         return invoices.Select(MapToDto).ToList();
+    }
+
+    /// <summary>
+    /// Queries invoices with filtering, sorting, and pagination.
+    /// </summary>
+    public async Task<PaginatedResult<InvoiceDto>> QueryInvoicesAsync(ISpecification<Invoice> spec, CancellationToken cancellationToken = default)
+    {
+        var result = await _invoiceRepository.QueryAsync(spec);
+        var invoices = result.Items.Select(MapToDto).ToList();
+        return new PaginatedResult<InvoiceDto>(invoices, result.PageNumber, result.PageSize, result.TotalCount);
     }
 
     private InvoiceDto MapToDto(Invoice invoice)

@@ -15,7 +15,7 @@ namespace MyApp.Shared.Domain.DTOs
     public abstract record BaseLongDto(long Id) : BaseDto<long>(Id);
 
     // Auditable DTO aliases for common ID types
-    // Propietats heretades (CreatedAt, CreatedBy, etc.) no es redefinixen
+    // Inherited properties (CreatedAt, CreatedBy, etc.) are not redefined
     /// <summary>
     /// Represents the Auditable Guid Dto data record.
     /// </summary>

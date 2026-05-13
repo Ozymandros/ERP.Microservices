@@ -17,13 +17,13 @@ public class BillingMappingProfile : Profile
     {
         CreateMap<Invoice, InvoiceDto>()
             .ForMember(d => d.Status, opt => opt.MapFrom(s => s.Status.ToString()));
-        
+
         CreateMap<CreditNote, CreditNoteDto>()
             .ForMember(d => d.Status, opt => opt.MapFrom(s => s.Status.ToString()));
 
         CreateMap<Payment, PaymentDto>()
             .ForMember(d => d.Status, opt => opt.MapFrom(s => s.Status.ToString()));
-        
+
         //CreateMap<CreditNoteLineData, CreditNoteLineDataDto>();
     }
 }

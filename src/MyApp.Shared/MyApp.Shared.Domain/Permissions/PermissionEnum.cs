@@ -28,7 +28,10 @@ public enum ModuleEnum
     Notification = 7,
 
     /// <summary>Auth module - manages users, roles, and authentication</summary>
-    Auth = 8
+    Auth = 8,
+
+    /// <summary>Agentic module - manages AI agents and bot orchestration</summary>
+    Agentic = 9
 }
 
 /// <summary>

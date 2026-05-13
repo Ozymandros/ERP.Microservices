@@ -14,6 +14,7 @@ namespace MyApp.Inventory.Application.Contracts.Services;
 public interface IInventoryTransactionService
 {
     Task<InventoryTransactionDto?> GetTransactionByIdAsync(Guid id);
+    Task<InventoryTransactionDto?> GetTransactionByReferenceNumberAsync(string referenceNumber);
     Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByProductIdAsync(Guid productId);
     Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByWarehouseIdAsync(Guid warehouseId);
     Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByTypeAsync(TransactionType transactionType);

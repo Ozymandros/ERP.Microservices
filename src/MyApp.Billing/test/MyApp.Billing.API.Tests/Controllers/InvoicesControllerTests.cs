@@ -6,8 +6,11 @@ using Moq;
 using MyApp.Billing.API.Controllers;
 using MyApp.Billing.Application.Contracts.DTOs;
 using MyApp.Billing.Application.Contracts.Services;
+using MyApp.Billing.Domain.Entities;
+using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Exceptions;
+using MyApp.Shared.Domain.Specifications;
 using Xunit;
 
 namespace MyApp.Billing.API.Tests.Controllers;
@@ -251,14 +254,85 @@ public class InvoicesControllerTests
         _invoiceService.Verify(s => s.GetInvoicesByOrderIdAsync(orderId, It.IsAny<CancellationToken>()), Times.Once);
     }
 
+    // ─── Search ───────────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task Search_ValidQuery_ReturnsPaginatedResult()
+    {
+        // Arrange
+        _sut.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _sut.HttpContext.Request.QueryString = new QueryString("?searchTerm=INV&page=1&pageSize=20");
+
+        var query = new QuerySpec { Page = 1, PageSize = 20, SearchTerm = "INV" };
+        var paginated = new PaginatedResult<InvoiceDto>(SampleInvoiceList(2), 1, 20, 2);
+        _invoiceService.Setup(s => s.QueryInvoicesAsync(It.IsAny<ISpecification<Invoice>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(paginated);
+
+        // Act
+        var result = await _sut.Search(query, CancellationToken.None);
+
+        // Assert
+        result.Should().BeOfType<OkObjectResult>()
+            .Which.Value.Should().BeSameAs(paginated);
+        _invoiceService.Verify(s => s.QueryInvoicesAsync(It.IsAny<ISpecification<Invoice>>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task Search_InvalidModel_ReturnsBadRequest()
+    {
+        // Arrange
+        _sut.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        var query = new QuerySpec();
+        _sut.ModelState.AddModelError("Page", "Invalid page");
+
+        // Act
+        var result = await _sut.Search(query, CancellationToken.None);
+
+        // Assert
+        result.Should().BeOfType<BadRequestObjectResult>();
+        _invoiceService.Verify(s => s.QueryInvoicesAsync(It.IsAny<ISpecification<Invoice>>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task Search_InvalidQuerySpec_ReturnsBadRequest()
+    {
+        // Arrange
+        _sut.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _sut.HttpContext.Request.QueryString = new QueryString("?page=1&pageSize=20");
+
+        var query = new QuerySpec();
+        _invoiceService.Setup(s => s.QueryInvoicesAsync(It.IsAny<ISpecification<Invoice>>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new ArgumentException("Invalid query"));
+
+        // Act
+        var result = await _sut.Search(query, CancellationToken.None);
+
+        // Assert
+        result.Should().BeOfType<BadRequestObjectResult>();
+    }
+
     // ─── Create ───────────────────────────────────────────────────────────────
 
     [Fact]
     public async Task Create_ValidDto_Returns201Created()
     {
         // Arrange
-        var dto = new CreateInvoiceDto(Guid.NewGuid(), null, "USD",
-            new List<CreateInvoiceLineDto> { new("Item", 1, 100m, 10m, 0m) }, 30);
+        var dto = new CreateInvoiceDto(
+            "INV-TEST-" + Guid.NewGuid().ToString()[..8], // InvoiceNumber
+            Guid.NewGuid(),
+            null,
+            "USD",
+            new List<CreateInvoiceLineDto> { new("Item", 1, 100m, 10m, 0m) },
+            30);
         var created = SampleInvoiceDto("Draft");
         _invoiceService.Setup(s => s.CreateInvoiceAsync(dto, It.IsAny<CancellationToken>()))
                        .ReturnsAsync(created);
@@ -277,7 +351,13 @@ public class InvoicesControllerTests
     public async Task Create_InvalidModel_Returns400()
     {
         // Arrange
-        var dto = new CreateInvoiceDto(Guid.NewGuid(), null, "USD", new List<CreateInvoiceLineDto>(), 30);
+        var dto = new CreateInvoiceDto(
+            "asd", // InvoiceNumber
+            Guid.NewGuid(),
+            null,
+            "USD",
+            new List<CreateInvoiceLineDto>(),
+            30);
         _sut.ModelState.AddModelError("Lines", "At least one line required");
 
         // Act
@@ -292,8 +372,13 @@ public class InvoicesControllerTests
     public async Task Create_ServiceThrowsInvalidOperation_Returns400()
     {
         // Arrange
-        var dto = new CreateInvoiceDto(Guid.NewGuid(), null, "USD",
-            new List<CreateInvoiceLineDto> { new("Item", 1, 100m, 10m, 0m) }, 30);
+        var dto = new CreateInvoiceDto(
+            "INV-TEST-" + Guid.NewGuid().ToString()[..8], // InvoiceNumber
+            Guid.NewGuid(),
+            null,
+            "USD",
+            new List<CreateInvoiceLineDto> { new("Item", 1, 100m, 10m, 0m) },
+            30);
         _invoiceService.Setup(s => s.CreateInvoiceAsync(dto, It.IsAny<CancellationToken>()))
                        .ThrowsAsync(new InvalidOperationException("Customer blocked"));
 
@@ -308,8 +393,13 @@ public class InvoicesControllerTests
     public async Task Create_InvalidatesOpenInvoicesCache()
     {
         // Arrange
-        var dto = new CreateInvoiceDto(Guid.NewGuid(), null, "USD",
-            new List<CreateInvoiceLineDto> { new("Item", 1, 100m, 10m, 0m) }, 30);
+        var dto = new CreateInvoiceDto(
+            "INV-TEST-" + Guid.NewGuid().ToString()[..8], // InvoiceNumber
+            Guid.NewGuid(),
+            null,
+            "USD",
+            new List<CreateInvoiceLineDto> { new("Item", 1, 100m, 10m, 0m) },
+            30);
         _invoiceService.Setup(s => s.CreateInvoiceAsync(dto, It.IsAny<CancellationToken>()))
                        .ReturnsAsync(SampleInvoiceDto("Draft"));
         _cacheService.Setup(c => c.RemoveStateAsync(It.IsAny<string>())).Returns(Task.CompletedTask);

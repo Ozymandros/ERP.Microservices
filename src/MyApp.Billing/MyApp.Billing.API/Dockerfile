@@ -6,6 +6,9 @@ ARG BASE_IMAGE_REGISTRY=
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
+# Copy nuget.config to ensure clean package resolution (with src/ prefix since build context is root)
+COPY src/nuget.config ./
+
 # Copy shared projects (with src/ prefix since build context is root)
 COPY ["src/MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.csproj", "MyApp.Shared/MyApp.Shared.Infrastructure/"]
@@ -23,8 +26,8 @@ COPY ["src/MyApp.Billing/MyApp.Billing.API/MyApp.Billing.API.csproj", "MyApp.Bil
 RUN dotnet restore "MyApp.Billing/MyApp.Billing.API/MyApp.Billing.API.csproj"
 
 # Copy only needed source files (not everything from context)
-COPY ["src/MyApp.Shared/", "MyApp.Shared/"]
-COPY ["src/MyApp.Billing/", "MyApp.Billing/"]
+COPY src/MyApp.Shared/ MyApp.Shared/
+COPY src/MyApp.Billing/ MyApp.Billing/
 
 # Build the project
 WORKDIR "/src/MyApp.Billing/MyApp.Billing.API"

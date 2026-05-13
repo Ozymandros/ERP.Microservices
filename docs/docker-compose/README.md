@@ -90,7 +90,7 @@ This category documents the complete local development environment using Docker 
 | **Purchasing Service** | 6006 | Procurement | ✅ Running |
 | **Sales Service** | 6007 | Sales Mgmt | ✅ Running |
 | **CRM Service** | 6003 | CRM & Leads | ✅ Running |
-| **SemanticKernel Service** | 6008 | AI Semantic Kernel | ✅ Running |
+| **Agentic Service** | 6008 | AI Semantic Kernel | ✅ Running |
 | **DAPR Placement** | 50005 | Service Discovery | ✅ Running |
 | **DAPR Sentry** | 50001 | mTLS Authority | ✅ Running |
 | **Redis Commander** | 8081 | Redis UI | ✅ Running |

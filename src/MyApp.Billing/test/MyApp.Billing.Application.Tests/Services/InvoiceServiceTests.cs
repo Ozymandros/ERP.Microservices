@@ -5,8 +5,10 @@ using MyApp.Billing.Application.Contracts.DTOs;
 using MyApp.Billing.Application.Services;
 using MyApp.Billing.Domain.Entities;
 using MyApp.Billing.Domain.Repositories;
+using MyApp.Billing.Domain.Specifications;
 using MyApp.Shared.Domain.Exceptions;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Pagination;
 using Xunit;
 
 namespace MyApp.Billing.Application.Tests.Services;
@@ -37,7 +39,7 @@ public class InvoiceServiceTests
 
     private static Invoice BuildDraftInvoice(Guid? customerId = null)
     {
-        var inv = new Invoice(Guid.NewGuid(), customerId ?? Guid.NewGuid(), "USD");
+        var inv = new Invoice(Guid.NewGuid(), $"INV-DRAFT-{Guid.NewGuid().ToString()[..8]}", customerId ?? Guid.NewGuid(), "USD");
         inv.AddLine("Widget", 2, 50m, 10m);
         return inv;
     }
@@ -51,6 +53,7 @@ public class InvoiceServiceTests
 
     private static CreateInvoiceDto SampleCreateDto(int lineCount = 1) =>
         new(
+            $"INV-TEST-{Guid.NewGuid().ToString()[..8]}", // Always a valid, unique InvoiceNumber
             CustomerId: Guid.NewGuid(),
             OrderId: null,
             Currency: "USD",
@@ -66,6 +69,8 @@ public class InvoiceServiceTests
     {
         // Arrange
         var dto = SampleCreateDto(2);
+        _invoiceRepo.Setup(r => r.GetByInvoiceNumberAsync(dto.InvoiceNumber, It.IsAny<CancellationToken>()))
+                    .ReturnsAsync((Invoice?)null);
         _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
@@ -92,6 +97,8 @@ public class InvoiceServiceTests
     {
         // Arrange
         var dto = SampleCreateDto();
+        _invoiceRepo.Setup(r => r.GetByInvoiceNumberAsync(dto.InvoiceNumber, It.IsAny<CancellationToken>()))
+                    .ReturnsAsync((Invoice?)null);
         _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
@@ -111,8 +118,15 @@ public class InvoiceServiceTests
     {
         // Arrange
         var orderId = Guid.NewGuid();
-        var dto = new CreateInvoiceDto(Guid.NewGuid(), orderId, "EUR",
-            new List<CreateInvoiceLineDto> { new("Product A", 1, 200m, 20m, 0m) }, 14);
+        var dto = new CreateInvoiceDto(
+            "123", // InvoiceNumber
+            Guid.NewGuid(),
+            orderId,
+            "EUR",
+            new List<CreateInvoiceLineDto> { new("Product A", 1, 200m, 20m, 0m) },
+            14);
+        _invoiceRepo.Setup(r => r.GetByInvoiceNumberAsync(dto.InvoiceNumber, It.IsAny<CancellationToken>()))
+                    .ReturnsAsync((Invoice?)null);
         _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
@@ -124,6 +138,24 @@ public class InvoiceServiceTests
         result.Currency.Should().Be("EUR");
     }
 
+    [Fact]
+    public async Task CreateInvoiceAsync_DuplicateInvoiceNumber_ThrowsInvalidOperationException()
+    {
+        // Arrange
+        var dto = SampleCreateDto();
+        var existingInvoice = BuildDraftInvoice();
+        _invoiceRepo.Setup(r => r.GetByInvoiceNumberAsync(dto.InvoiceNumber, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(existingInvoice);
+
+        // Act
+        Func<Task> act = () => _sut.CreateInvoiceAsync(dto);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage($"*{dto.InvoiceNumber}*");
+        _invoiceRepo.Verify(r => r.AddAsync(It.IsAny<Invoice>()), Times.Never);
+    }
+
     // ─── IssueInvoiceAsync ───────────────────────────────────────────────────
 
     [Fact]
@@ -133,6 +165,8 @@ public class InvoiceServiceTests
         var invoice = BuildDraftInvoice();
         var issueDate = DateTime.UtcNow;
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
+        _invoiceRepo.Setup(r => r.GetByInvoiceNumberAsync("INV-100", It.IsAny<CancellationToken>()))
+                    .ReturnsAsync((Invoice?)null);
         _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
@@ -167,6 +201,8 @@ public class InvoiceServiceTests
         // Arrange
         var invoice = BuildDraftInvoice();
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
+        _invoiceRepo.Setup(r => r.GetByInvoiceNumberAsync("INV-200", It.IsAny<CancellationToken>()))
+                    .ReturnsAsync((Invoice?)null);
         _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
@@ -187,6 +223,8 @@ public class InvoiceServiceTests
         // Arrange
         var invoice = BuildDraftInvoice();
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
+        _invoiceRepo.Setup(r => r.GetByInvoiceNumberAsync("INV-300", It.IsAny<CancellationToken>()))
+                    .ReturnsAsync((Invoice?)null);
         _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
@@ -200,6 +238,26 @@ public class InvoiceServiceTests
             i.InvoiceNumber == "INV-300")), Times.Once);
     }
 
+    [Fact]
+    public async Task IssueInvoiceAsync_DuplicateInvoiceNumberUsedByAnotherInvoice_ThrowsInvalidOperationException()
+    {
+        // Arrange
+        var invoice = BuildDraftInvoice();
+        var conflictingInvoice = BuildDraftInvoice();
+        const string duplicateNumber = "INV-DUPLICATE-001";
+        _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
+        _invoiceRepo.Setup(r => r.GetByInvoiceNumberAsync(duplicateNumber, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(conflictingInvoice);
+
+        // Act
+        Func<Task> act = () => _sut.IssueInvoiceAsync(invoice.Id, duplicateNumber, DateTime.UtcNow);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage($"*{duplicateNumber}*");
+        _invoiceRepo.Verify(r => r.UpdateAsync(It.IsAny<Invoice>()), Times.Never);
+    }
+
     // ─── RecordPaymentAsync ──────────────────────────────────────────────────
 
     [Fact]
@@ -209,7 +267,7 @@ public class InvoiceServiceTests
         var invoice = BuildIssuedInvoice();
         var dto = new RecordPaymentDto(invoice.Id, invoice.TotalGross, "BankTransfer", DateTime.UtcNow);
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
+        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -230,7 +288,7 @@ public class InvoiceServiceTests
         var partialAmount = invoice.TotalGross / 2;
         var dto = new RecordPaymentDto(invoice.Id, partialAmount, "Card", DateTime.UtcNow);
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
+        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -265,7 +323,7 @@ public class InvoiceServiceTests
         var invoice = BuildIssuedInvoice();
         var dto = new RecordPaymentDto(invoice.Id, invoice.TotalGross, "BankTransfer", DateTime.UtcNow);
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
+        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -504,6 +562,38 @@ public class InvoiceServiceTests
         result.Should().BeNull();
     }
 
+    [Fact]
+    public async Task GetInvoiceByInvoiceNumberAsync_ExistingNumber_ReturnsDto()
+    {
+        // Arrange
+        var invoice = BuildIssuedInvoice();
+        _invoiceRepo.Setup(r => r.GetByInvoiceNumberAsync(invoice.InvoiceNumber, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(invoice);
+
+        // Act
+        var result = await _sut.GetInvoiceByInvoiceNumberAsync(invoice.InvoiceNumber);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.InvoiceNumber.Should().Be(invoice.InvoiceNumber);
+        result.Id.Should().Be(invoice.Id);
+    }
+
+    [Fact]
+    public async Task GetInvoiceByInvoiceNumberAsync_UnknownNumber_ReturnsNull()
+    {
+        // Arrange
+        const string unknownInvoiceNumber = "INV-UNKNOWN-123";
+        _invoiceRepo.Setup(r => r.GetByInvoiceNumberAsync(unknownInvoiceNumber, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((Invoice?)null);
+
+        // Act
+        var result = await _sut.GetInvoiceByInvoiceNumberAsync(unknownInvoiceNumber);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
     // ─── GetInvoicesByCustomerIdAsync ────────────────────────────────────────
 
     [Fact]
@@ -513,8 +603,8 @@ public class InvoiceServiceTests
         var customerId = Guid.NewGuid();
         var invoices = new List<Invoice>
         {
-            new Invoice(Guid.NewGuid(), customerId, "USD"),
-            new Invoice(Guid.NewGuid(), customerId, "EUR"),
+            new Invoice(Guid.NewGuid(), $"INV-CUST-{Guid.NewGuid().ToString()[..8]}", customerId, "USD"),
+            new Invoice(Guid.NewGuid(), $"INV-CUST-{Guid.NewGuid().ToString()[..8]}", customerId, "EUR"),
         };
         _invoiceRepo.Setup(r => r.GetByCustomerIdAsync(customerId, It.IsAny<CancellationToken>()))
                     .ReturnsAsync(invoices);
@@ -612,6 +702,26 @@ public class InvoiceServiceTests
         result.Should().BeEmpty();
     }
 
+    [Fact]
+    public async Task QueryInvoicesAsync_ReturnsPaginatedMappedDtos()
+    {
+        // Arrange
+        var invoices = new List<Invoice> { BuildIssuedInvoice(), BuildIssuedInvoice() };
+        var spec = new InvoiceQuerySpec(new QuerySpec { Page = 1, PageSize = 10 });
+        var paged = new PaginatedResult<Invoice>(invoices, 1, 10, 2);
+        _invoiceRepo.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paged);
+
+        // Act
+        var result = await _sut.QueryInvoicesAsync(spec);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(10);
+        result.TotalCount.Should().Be(2);
+        result.Items.Should().HaveCount(2);
+    }
+
     // ─── DTO mapping ─────────────────────────────────────────────────────────
 
     [Fact]
@@ -619,8 +729,15 @@ public class InvoiceServiceTests
     {
         // Arrange – 1 line: qty 2, price 100, tax 10%, discount 0
         // LineNet = 200, LineTax = 20, LineGross = 220
-        var dto = new CreateInvoiceDto(Guid.NewGuid(), null, "USD",
-            new List<CreateInvoiceLineDto> { new("Widget", 2, 100m, 10m, 0m) }, 30);
+        var dto = new CreateInvoiceDto(
+            "432", // InvoiceNumber
+            Guid.NewGuid(),
+            null,
+            "USD",
+            new List<CreateInvoiceLineDto> { new("Widget", 2, 100m, 10m, 0m) },
+            30);
+        _invoiceRepo.Setup(r => r.GetByInvoiceNumberAsync(dto.InvoiceNumber, It.IsAny<CancellationToken>()))
+                    .ReturnsAsync((Invoice?)null);
         _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>())).Returns<Invoice>(i => Task.FromResult(i));
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
@@ -656,4 +773,5 @@ public class InvoiceServiceTests
         result.DueDate.Should().NotBeNull();
         result.Lines.Should().HaveCount(1);
     }
+
 }

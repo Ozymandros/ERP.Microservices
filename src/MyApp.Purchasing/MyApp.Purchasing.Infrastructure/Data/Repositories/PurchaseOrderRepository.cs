@@ -41,4 +41,12 @@ public class PurchaseOrderRepository : Repository<PurchaseOrder, Guid>, IPurchas
             .Include(x => x.Supplier)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task<PurchaseOrder?> GetByOrderNumberAsync(string orderNumber)
+    {
+        return await _dbContext.Set<PurchaseOrder>()
+            .Include(x => x.Lines)
+            .Include(x => x.Supplier)
+            .FirstOrDefaultAsync(x => x.OrderNumber == orderNumber);
+    }
 }

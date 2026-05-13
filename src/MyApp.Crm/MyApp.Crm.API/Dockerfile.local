@@ -1,3 +1,5 @@
+# Local / docker-compose build (build context: ./src)
+
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
@@ -5,7 +7,7 @@ WORKDIR /src
 # Copy nuget.config to ensure clean package resolution (build context is ./src)
 COPY nuget.config ./
 
-# Copy shared projects
+# Copy shared projects (CRM uses Domain, Infrastructure, CQRS — no SignalR)
 COPY ["MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
 COPY ["MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.csproj", "MyApp.Shared/MyApp.Shared.Infrastructure/"]
 COPY ["MyApp.Shared/MyApp.Shared.CQRS/MyApp.Shared.CQRS.csproj", "MyApp.Shared/MyApp.Shared.CQRS/"]
@@ -17,27 +19,26 @@ COPY ["MyApp.Crm/MyApp.Crm.Application/MyApp.Crm.Application.csproj", "MyApp.Crm
 COPY ["MyApp.Crm/MyApp.Crm.Infrastructure/MyApp.Crm.Infrastructure.csproj", "MyApp.Crm/MyApp.Crm.Infrastructure/"]
 COPY ["MyApp.Crm/MyApp.Crm.API/MyApp.Crm.API.csproj", "MyApp.Crm/MyApp.Crm.API/"]
 
-# Restore dependencies with BuildKit cache mount
+# Restore dependencies with BuildKit cache mount (faster local rebuilds)
 RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
     dotnet restore "MyApp.Crm/MyApp.Crm.API/MyApp.Crm.API.csproj"
 
-# Copy only needed source files
+# Copy only needed source files (not everything from context)
 COPY MyApp.Shared/ MyApp.Shared/
 COPY MyApp.Crm/ MyApp.Crm/
 
 # Build the project
 WORKDIR "/src/MyApp.Crm/MyApp.Crm.API"
 RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
-    dotnet build "MyApp.Crm.API.csproj" -c Release -o /app/build
+    dotnet build "MyApp.Crm.API.csproj" -c Release -o /app/build --no-restore
 
 # Publish stage
 FROM build AS publish
 RUN --mount=type=cache,id=nuget-shared,target=/root/.nuget/packages \
-    dotnet publish "MyApp.Crm.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
+    dotnet publish "MyApp.Crm.API.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
 
 # Runtime stage - Use shared base image
 FROM myapp-microservices-base:10.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MyApp.Crm.API.dll"]
-

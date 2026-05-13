@@ -24,6 +24,23 @@ public interface IServiceInvoker
         CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Executes a GET request with an optional request object and returns a typed response.
+    /// </summary>
+    /// <typeparam name="TRequest">The request model used to supply query/input values.</typeparam>
+    /// <typeparam name="TResponse">The expected response payload type.</typeparam>
+    /// <param name="serviceName">The logical name (or app id) of the target service.</param>
+    /// <param name="methodPath">The relative endpoint path (for example, <c>api/products</c>).</param>
+    /// <param name="request">The request model used by the invoker to build query/input data.</param>
+    /// <param name="cancellationToken">A token used to cancel the in-flight operation.</param>
+    /// <returns>A task that resolves to the deserialized <typeparamref name="TResponse"/>.</returns>
+    Task<TResponse> GetAsync<TRequest, TResponse>(
+        string serviceName,
+        string methodPath,
+        TRequest request,
+        CancellationToken cancellationToken = default) => InvokeAsync<TRequest, TResponse>(
+            serviceName, methodPath, HttpMethod.Get, request, cancellationToken);
+
+    /// <summary>
     /// Invokes a remote service method with only a response
     /// </summary>
     /// <typeparam name="TResponse">The response type</typeparam>

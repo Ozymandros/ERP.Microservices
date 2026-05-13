@@ -8,5 +8,7 @@ namespace MyApp.Sales.Domain
     /// </summary>
     public interface ICustomerRepository : IRepository<Customer, Guid>
     {
+        Task<Customer?> GetByNameAsync(string name);
+        Task<Customer?> GetByEmailAsync(string email);
     }
 }

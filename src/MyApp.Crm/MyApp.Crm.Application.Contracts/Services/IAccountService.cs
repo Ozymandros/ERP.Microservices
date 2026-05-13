@@ -10,6 +10,7 @@ public interface IAccountService
 {
     Task<AccountDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<AccountDto?> GetByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default);
+    Task<AccountDto?> GetByTaxIdAsync(string taxId, CancellationToken cancellationToken = default);
     Task<IEnumerable<AccountDto>> ListAsync(CancellationToken cancellationToken = default);
     Task<PaginatedResult<AccountDto>> QueryAsync(QuerySpec query, CancellationToken cancellationToken = default);
 

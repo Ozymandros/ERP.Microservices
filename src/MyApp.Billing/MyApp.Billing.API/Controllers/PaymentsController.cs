@@ -10,7 +10,7 @@ namespace MyApp.Billing.API.Controllers;
 /// <summary>
 /// Read-only access to payment records associated with invoices.
 /// </summary>
-[Route("api/[controller]")]
+[Route("api/billing/payments")]
 [Authorize]
 [ApiController]
 public class PaymentsController : ControllerBase
@@ -64,6 +64,62 @@ public class PaymentsController : ControllerBase
         {
             _logger.LogError(ex, "Error retrieving payments for invoice {InvoiceId}", invoiceId);
             return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred retrieving payments" });
+        }
+    }
+
+    /// <summary>
+    /// Get payment by External Payment ID - Requires Billing.Read permission
+    /// </summary>
+    [HttpGet("external/{externalPaymentId}")]
+    [HasPermission("Billing", "Read")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetByExternalPaymentId(string externalPaymentId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            string cacheKey = "Payment-External-" + externalPaymentId;
+            var cached = await _cacheService.GetStateAsync<PaymentDto>(cacheKey);
+            if (cached != null)
+            {
+                _logger.LogInformation("Retrieved payment with external ID {@ExternalPaymentId} from cache", new { ExternalPaymentId = externalPaymentId });
+                return Ok(cached);
+            }
+
+            var payment = await _paymentRepository.GetByExternalPaymentIdAsync(externalPaymentId, cancellationToken);
+            if (payment == null)
+            {
+                _logger.LogWarning("Payment with external ID {@ExternalPaymentId} not found", new { ExternalPaymentId = externalPaymentId });
+                return NotFound();
+            }
+
+            var dto = new PaymentDto(
+                payment.Id,
+                payment.InvoiceId,
+                payment.Amount,
+                payment.Currency,
+                payment.Method,
+                payment.Status.ToString(),
+                payment.PaidAt);
+
+            await _cacheService.SaveStateAsync(cacheKey, dto);
+            _logger.LogInformation("Retrieved payment with external ID {@ExternalPaymentId} from database and cached", new { ExternalPaymentId = externalPaymentId });
+            return Ok(dto);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving payment with external ID {@ExternalPaymentId}", new { ExternalPaymentId = externalPaymentId });
+            var payment = await _paymentRepository.GetByExternalPaymentIdAsync(externalPaymentId, cancellationToken);
+            if (payment == null)
+                return NotFound();
+            return Ok(new PaymentDto(
+                payment.Id,
+                payment.InvoiceId,
+                payment.Amount,
+                payment.Currency,
+                payment.Method,
+                payment.Status.ToString(),
+                payment.PaidAt));
         }
     }
 }

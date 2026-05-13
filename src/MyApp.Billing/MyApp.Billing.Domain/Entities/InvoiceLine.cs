@@ -16,7 +16,7 @@ public class InvoiceLine : AuditableEntity<Guid>
         UnitPrice = unitPrice;
         TaxRate = taxRate;
         Discount = discount;
-        
+
         // Calculate line totals
         LineNet = quantity * unitPrice - discount;
         LineTax = LineNet * (taxRate / 100m);
@@ -29,7 +29,7 @@ public class InvoiceLine : AuditableEntity<Guid>
     public decimal UnitPrice { get; private set; }
     public decimal Discount { get; private set; }
     public decimal TaxRate { get; private set; }
-    
+
     // Calculated totals
     public decimal LineNet { get; private set; }
     public decimal LineTax { get; private set; }

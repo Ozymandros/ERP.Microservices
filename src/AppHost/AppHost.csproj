@@ -23,9 +23,10 @@
 		<PackageReference Include="Aspire.Hosting.Azure.Sql" Version="13.2.4" />
 		<PackageReference Include="Aspire.Hosting.Redis" Version="13.2.4" />
 		<PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="13.2.4" />
+		<PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.2.4" />
+		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="13.2.4" />
 	</ItemGroup>
     <ItemGroup>
-				<ProjectReference Include="..\MyApp.SemanticKernel\MyApp.SemanticKernel.csproj" />
 		<ProjectReference Include="..\MyApp.Auth\MyApp.Auth.API\MyApp.Auth.API.csproj" />
 		<ProjectReference Include="..\MyApp.Sales\MyApp.Sales.API\MyApp.Sales.API.csproj" />
 		<ProjectReference Include="..\MyApp.Billing\MyApp.Billing.API\MyApp.Billing.API.csproj" />
@@ -35,5 +36,6 @@
 		<ProjectReference Include="..\ErpApiGateway\ErpApiGateway.csproj" />
 		<ProjectReference Include="..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" IsAspireProjectResource="false" />
 		<ProjectReference Include="..\MyApp.Crm\MyApp.Crm.API\MyApp.Crm.API.csproj" />
+		<ProjectReference Include="..\MyApp.Agentic\MyApp.Agentic.API\MyApp.Agentic.API.csproj" />
 	</ItemGroup>
 </Project>

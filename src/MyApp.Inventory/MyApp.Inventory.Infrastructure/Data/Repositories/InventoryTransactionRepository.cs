@@ -44,4 +44,13 @@ public class InventoryTransactionRepository : Repository<InventoryTransaction, G
             .Include(x => x.Warehouse)
             .ToListAsync();
     }
+
+    public async Task<InventoryTransaction?> GetByReferenceNumberAsync(string referenceNumber)
+    {
+        return await _dbContext.Set<InventoryTransaction>()
+            .Where(x => x.ReferenceNumber == referenceNumber)
+            .Include(x => x.Product)
+            .Include(x => x.Warehouse)
+            .FirstOrDefaultAsync();
+    }
 }

@@ -23,7 +23,7 @@ public class PaymentRepositoryTests
     /// <summary>Seeds a persisted invoice so payments can reference a valid FK.</summary>
     private Invoice SeedInvoice()
     {
-        var inv = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var inv = new Invoice(Guid.NewGuid(), $"INV-PAY-{Guid.NewGuid().ToString()[..8]}", Guid.NewGuid(), "USD");
         inv.AddLine("Widget", 1, 100m, 10m);
         inv.Issue($"INV-{Guid.NewGuid().ToString()[..8]}", DateTime.UtcNow, 30);
         _context.Invoices.Add(inv);
@@ -97,7 +97,7 @@ public class PaymentRepositoryTests
     {
         var inv = SeedInvoice();
         var earlier = DateTime.UtcNow.AddDays(-2);
-        var later   = DateTime.UtcNow.AddDays(-1);
+        var later = DateTime.UtcNow.AddDays(-1);
 
         AddPayment(inv.Id, 20m, paidAt: earlier);
         await Task.Delay(5);
@@ -119,6 +119,31 @@ public class PaymentRepositoryTests
 
         result.Single().Amount.Should().Be(123.45m);
         result.Single().Method.Should().Be("BankTransfer");
+    }
+
+    // ─── GetByExternalPaymentIdAsync ──────────────────────────────────────────────
+
+    [Fact]
+    public async Task GetByExternalPaymentIdAsync_WithExistingExternalId_ReturnsPayment()
+    {
+        var inv = SeedInvoice();
+        var externalPaymentId = "EXT-PAY-001";
+        var payment = new Payment(Guid.NewGuid(), inv.Id, 100m, "USD", "Card", DateTime.UtcNow, externalPaymentId);
+        _context.Payments.Add(payment);
+        _context.SaveChanges();
+
+        var result = await _repository.GetByExternalPaymentIdAsync(externalPaymentId);
+
+        result.Should().NotBeNull();
+        result!.ExternalPaymentId.Should().Be(externalPaymentId);
+    }
+
+    [Fact]
+    public async Task GetByExternalPaymentIdAsync_WithNonExistentExternalId_ReturnsNull()
+    {
+        var result = await _repository.GetByExternalPaymentIdAsync("NONEXISTENT");
+
+        result.Should().BeNull();
     }
 
     // ─── AddAsync ─────────────────────────────────────────────────────────────

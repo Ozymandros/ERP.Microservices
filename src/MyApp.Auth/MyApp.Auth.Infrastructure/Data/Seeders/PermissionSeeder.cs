@@ -49,6 +49,7 @@ public static class PermissionSeeder
         AddModulePermissions(permissions, "Users", PermissionConstants.Users.All);
         AddModulePermissions(permissions, "Roles", PermissionConstants.Roles.All);
         AddModulePermissions(permissions, "Permissions", PermissionConstants.Permissions.All);
+        AddModulePermissions(permissions, "Agentic", PermissionConstants.Agentic.All);
 
         return permissions;
     }

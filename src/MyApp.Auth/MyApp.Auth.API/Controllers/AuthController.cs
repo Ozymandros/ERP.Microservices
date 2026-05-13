@@ -88,8 +88,8 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     public IActionResult HandleRefreshOptions()
     {
-        // Retornem un 204 No Content. 
-        // El middleware CORS ara tindr� l'oportunitat d'afegir les cap�aleres abans de finalitzar la resposta.
+        // Return a 204 No Content.
+        // The CORS middleware now has a chance to add headers before the response is finalized.
         return NoContent();
     }
 

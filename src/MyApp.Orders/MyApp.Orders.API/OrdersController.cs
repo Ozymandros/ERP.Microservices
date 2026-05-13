@@ -127,11 +127,36 @@ namespace MyApp.Orders.API
                 _logger.LogError(ex, "Error retrieving order {@Order}", new { OrderId = id });
                 var order = await _orderService.GetByIdAsync(id);
                 return order == null ? NotFound(new { message = $"Order with ID {id} not found." }) : Ok(order);
-            }
-        }
+}
+    }
 
-        /// <summary>
-        /// Create a new operational order (Transfer, Inbound, Outbound, Return)
+    /// <summary>
+    /// Get order by Order Number - Requires Orders.Read permission
+    /// </summary>
+    [HttpGet("code/{orderNumber}")]
+    [HasPermission("Orders", "Read")]
+    [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetByOrderNumber(string orderNumber)
+    {
+        try
+        {
+            var order = await _orderService.GetByOrderNumberAsync(orderNumber);
+            if (order == null)
+                return NotFound(new { message = $"Order with number '{orderNumber}' not found." });
+            return Ok(order);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving order {@OrderNumber}", new { OrderNumber = orderNumber });
+            var order = await _orderService.GetByOrderNumberAsync(orderNumber);
+            return order == null ? NotFound(new { message = $"Order with number '{orderNumber}' not found." }) : Ok(order);
+        }
+    }
+
+    /// <summary>
+    /// Create a new operational order (Transfer, Inbound, Outbound, Return)
         /// </summary>
         [HttpPost]
         [HasPermission("Orders", "Create")]

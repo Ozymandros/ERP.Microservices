@@ -63,6 +63,54 @@ public class InventoryTransactionServiceTests
         Assert.Null(result);
     }
 
+    #region GetTransactionByReferenceNumberAsync Tests
+
+    [Fact]
+    public async Task GetTransactionByReferenceNumberAsync_WithExistingReference_ReturnsTransactionDto()
+    {
+        // Arrange
+        var referenceNumber = "REF-001";
+        var transaction = new InventoryTransaction(Guid.NewGuid()) { ReferenceNumber = referenceNumber };
+        var expectedDto = new InventoryTransactionDto(
+            transaction.Id,
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            10,
+            TransactionType.Inbound,
+            DateTime.UtcNow,
+            null,
+            null,
+            referenceNumber);
+
+        _mockTransactionRepository.Setup(r => r.GetByReferenceNumberAsync(referenceNumber)).ReturnsAsync(transaction);
+        _mockMapper.Setup(m => m.Map<InventoryTransactionDto>(transaction)).Returns(expectedDto);
+
+        // Act
+        var result = await _transactionService.GetTransactionByReferenceNumberAsync(referenceNumber);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(referenceNumber, result.ReferenceNumber);
+        _mockTransactionRepository.Verify(r => r.GetByReferenceNumberAsync(referenceNumber), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetTransactionByReferenceNumberAsync_WithNonExistentReference_ReturnsNull()
+    {
+        // Arrange
+        var referenceNumber = "NONEXISTENT";
+        _mockTransactionRepository.Setup(r => r.GetByReferenceNumberAsync(referenceNumber)).ReturnsAsync((InventoryTransaction?)null);
+
+        // Act
+        var result = await _transactionService.GetTransactionByReferenceNumberAsync(referenceNumber);
+
+        // Assert
+        Assert.Null(result);
+        _mockTransactionRepository.Verify(r => r.GetByReferenceNumberAsync(referenceNumber), Times.Once);
+    }
+
+    #endregion
+
     [Fact]
     public async Task GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct()
     {

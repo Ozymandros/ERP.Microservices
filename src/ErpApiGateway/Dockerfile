@@ -1,39 +1,46 @@
+# CI / production build (build context: repository root)
+#
+# Build args: Gateway uses mcr.microsoft.com/dotnet/aspnet:10.0 for the final image (not myapp-microservices-base).
+# No BASE_IMAGE_REGISTRY here unless you introduce one and substitute the Runtime FROM (microservices use ${BASE_IMAGE_REGISTRY}myapp-microservices-base).
+
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-# Copy only the Gateway project file for restore (with src/ prefix since build context is root)
+# Copy nuget.config to ensure clean package resolution (with src/ prefix since build context is repository root)
+COPY src/nuget.config ./
+
+# Copy ErpApiGateway project (with src/ prefix since build context is repository root)
 COPY ["src/ErpApiGateway/ErpApiGateway.csproj", "ErpApiGateway/"]
 
-# Copy shared projects
+# Copy shared projects (with src/ prefix since build context is repository root)
 COPY ["src/MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.csproj", "MyApp.Shared/MyApp.Shared.Infrastructure/"]
 
 # Restore dependencies
 RUN dotnet restore "ErpApiGateway/ErpApiGateway.csproj"
 
-# Copy source files for Gateway
+# Copy only needed source files (Gateway sources then Shared — preserve this order for deterministic layers)
 COPY src/ErpApiGateway/ ErpApiGateway/
 COPY src/MyApp.Shared/ MyApp.Shared/
 
 # Build the project
 WORKDIR "/src/ErpApiGateway"
-RUN dotnet build "ErpApiGateway.csproj" -c Release -o /app/build
+RUN dotnet build "ErpApiGateway.csproj" -c Release -o /app/build --no-restore
 
 # Publish stage
 FROM build AS publish
-RUN dotnet publish "ErpApiGateway.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "ErpApiGateway.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
 
-# Runtime stage
+# Runtime stage — aspnet:10.0 final (not myapp-microservices-base). BASE_IMAGE_REGISTRY N/A for this image.
+# curl/ca-certificates for HTTP health checks; runs as non-root appuser after chown.
+# Critical copy order: COPY published output before RUN chown so /app is owned by appuser.
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 EXPOSE 8080
 
-# --- THE LINES FROM YOUR IMAGE (Preserving everything) ---
 ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080
 
-# Pre-install dependencies in a separate layer for better caching
-# This layer will be cached and reused unless the base image changes
 USER root
 RUN apt-get update && \
     apt-get install -y --no-install-recommends curl ca-certificates && \
@@ -41,21 +48,9 @@ RUN apt-get update && \
     groupadd -r appuser && \
     useradd -r -g appuser appuser
 
-# --- CRITICAL ORDER CHANGE ---
-# 
-# 1. Copy the files FIRST while still root
-# If we change to 'appuser' before this, the files will be owned by root 
-# and the non-root user won't have permissions to run them.
 COPY --from=publish /app/publish .
-
-# Note: DocFX _site directory is mounted via volume in docker-compose.yml
-# No need to COPY it here since the build context is ./src and _site is at the root
-
-# 2. Change ownership AFTER the files are already in the folder
-# This ensures that 'appuser' owns the actual DLLs.
 RUN chown -R appuser:appuser /app
 
-# 3. NOW switch to the non-root user for security (principle of least privilege)
 USER appuser
 
 ENTRYPOINT ["dotnet", "ErpApiGateway.dll"]

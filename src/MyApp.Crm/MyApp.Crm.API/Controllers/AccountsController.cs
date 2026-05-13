@@ -50,16 +50,25 @@ public sealed class AccountsController : ControllerBase
         {
             _logger.LogWarning(ex, "Invalid query spec for accounts");
             return BadRequest(new { message = ex.Message });
-        }
+}
     }
 
-    /// <summary>Get By Id.</summary>
-    [HttpGet("{id:guid}")]
+    /// <summary>Get By Tax Id.</summary>
+    [HttpGet("taxid/{taxId}")]
     [HasPermission("CRM", "Read")]
-    public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetByTaxId(string taxId, CancellationToken cancellationToken)
     {
-        var item = await _service.GetByIdAsync(id, cancellationToken);
-        return item is null ? NotFound(new { message = $"Account with ID {id} not found." }) : Ok(item);
+        var item = await _service.GetByTaxIdAsync(taxId, cancellationToken);
+        return item is null ? NotFound(new { message = $"Account with tax ID '{taxId}' not found." }) : Ok(item);
+    }
+
+    /// <summary>Get By Customer Id.</summary>
+    [HttpGet("customer/{customerId:guid}")]
+    [HasPermission("CRM", "Read")]
+    public async Task<IActionResult> GetByCustomerId(Guid customerId, CancellationToken cancellationToken)
+    {
+        var item = await _service.GetByCustomerIdAsync(customerId, cancellationToken);
+        return item is null ? NotFound(new { message = $"Account with customer ID '{customerId}' not found." }) : Ok(item);
     }
 
     /// <summary>Update Owner.</summary>

@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using MyApp.Billing.Domain.Entities;
 using MyApp.Billing.Domain.Repositories;
 using MyApp.Billing.Infrastructure.Persistence;
+using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Specifications;
 using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Billing.Infrastructure.Repositories;
@@ -11,6 +13,17 @@ namespace MyApp.Billing.Infrastructure.Repositories;
 /// </summary>
 public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
 {
+    /// <summary>
+    /// Retrieves an invoice by its identifier with related lines and payments loaded.
+    /// </summary>
+    public override async Task<Invoice?> GetByIdAsync(Guid id)
+    {
+        return await _context.Invoices
+            .Include(i => i.Lines)
+            .Include(i => i.Payments)
+            .FirstOrDefaultAsync(i => i.Id == id);
+    }
+
     private readonly BillingDbContext _context;
 
     /// <summary>
@@ -65,6 +78,64 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
             .Where(i => i.OrderId == orderId)
             .ToListAsync(cancellationToken);
     }
+
+    /// <summary>
+    /// Persists pending changes for tracked invoice aggregates.
+    /// </summary>
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        // When payments are appended through the Invoice aggregate, EF can occasionally
+        // track new Payment rows as Modified instead of Added in this graph path.
+        // Correct that state before SaveChanges to avoid false concurrency exceptions.
+        var paymentEntries = _context.ChangeTracker.Entries<Payment>()
+            .Where(e => e.State == EntityState.Modified)
+            .ToList();
+
+        foreach (var entry in paymentEntries)
+        {
+            var paymentId = entry.Entity.Id;
+            var exists = await _context.Payments
+                .AsNoTracking()
+                .AnyAsync(p => p.Id == paymentId, cancellationToken);
+
+            if (!exists)
+            {
+                entry.State = EntityState.Added;
+            }
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Queries invoices using specification with lines included.
+    /// </summary>
+    public override async Task<PaginatedResult<Invoice>> QueryAsync(ISpecification<Invoice> spec)
+    {
+        ArgumentNullException.ThrowIfNull(spec);
+
+        var baseQuery = _context.Invoices
+            .Include(i => i.Lines)
+            .AsNoTracking()
+            .AsQueryable();
+
+        var filteredQuery = spec.ApplyFilters(baseQuery);
+        var totalCount = await filteredQuery.CountAsync();
+
+        var finalQuery = spec.Apply(baseQuery);
+        var items = await finalQuery.ToListAsync();
+
+        var pageNumber = 1;
+        var pageSize = items.Count;
+
+        if (spec is BaseSpecification<Invoice> baseSpec)
+        {
+            pageNumber = baseSpec.Query.Page;
+            pageSize = baseSpec.Query.PageSize;
+        }
+
+        return new PaginatedResult<Invoice>(items, pageNumber, pageSize, totalCount);
+    }
 }
 
 /// <summary>
@@ -118,6 +189,12 @@ public class PaymentRepository : Repository<Payment, Guid>, IPaymentRepository
             .Where(p => p.InvoiceId == invoiceId)
             .OrderByDescending(p => p.PaidAt)
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task<Payment?> GetByExternalPaymentIdAsync(string externalPaymentId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Payments
+            .FirstOrDefaultAsync(p => p.ExternalPaymentId == externalPaymentId, cancellationToken);
     }
 }
 

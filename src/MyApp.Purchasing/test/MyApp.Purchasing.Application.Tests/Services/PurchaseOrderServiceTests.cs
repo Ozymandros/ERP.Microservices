@@ -81,6 +81,40 @@ public class PurchaseOrderServiceTests
     }
 
     [Fact]
+    public async Task GetPurchaseOrderByOrderNumberAsync_WithExistingOrderNumber_ReturnsOrderDto()
+    {
+        // Arrange
+        var orderNumber = "PO-001";
+        var order = new PurchaseOrder(Guid.NewGuid()) { OrderNumber = orderNumber };
+        var expectedDto = new PurchaseOrderDto { OrderNumber = orderNumber };
+
+        _mockPurchaseOrderRepository.Setup(r => r.GetByOrderNumberAsync(orderNumber)).ReturnsAsync(order);
+        _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(order)).Returns(expectedDto);
+
+        // Act
+        var result = await _purchaseOrderService.GetPurchaseOrderByOrderNumberAsync(orderNumber);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(orderNumber, result.OrderNumber);
+        _mockPurchaseOrderRepository.Verify(r => r.GetByOrderNumberAsync(orderNumber), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetPurchaseOrderByOrderNumberAsync_WithNonExistentNumber_ReturnsNull()
+    {
+        // Arrange
+        var orderNumber = "NONEXISTENT";
+        _mockPurchaseOrderRepository.Setup(r => r.GetByOrderNumberAsync(orderNumber)).ReturnsAsync((PurchaseOrder?)null);
+
+        // Act
+        var result = await _purchaseOrderService.GetPurchaseOrderByOrderNumberAsync(orderNumber);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
     public async Task GetAllPurchaseOrdersAsync_ReturnsAllOrders()
     {
         // Arrange

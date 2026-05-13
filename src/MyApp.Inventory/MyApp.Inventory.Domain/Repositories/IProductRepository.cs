@@ -9,5 +9,6 @@ namespace MyApp.Inventory.Domain.Repositories;
 public interface IProductRepository : IRepository<Product, Guid>
 {
     Task<Product?> GetBySkuAsync(string sku);
+    Task<Product?> GetByNameAsync(string name);
     Task<IEnumerable<Product>> GetLowStockProductsAsync();
 }
