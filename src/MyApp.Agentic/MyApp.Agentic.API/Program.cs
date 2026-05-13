@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Http;
+using MyApp.Agentic.API;
 using MyApp.Agentic.Application.AI;
 using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Agentic.Application.Services;
@@ -76,6 +77,7 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
 
         services.AddScoped<IAgentRuntimeFactory, AgentRuntimeFactory>();
         services.AddSingleton<IAgentToolRegistry, AgentToolRegistry>();
+        services.AddSingleton<IAgentToolResolver, AgentToolResolver>();
         services.AddScoped<IAgentToolExecutor, DefaultAgentToolExecutor>();
 
         services.AddScoped<IEmbeddingService, StubEmbeddingService>();
@@ -109,25 +111,9 @@ using (var scope = app.Services.CreateScope())
     var seeder = scope.ServiceProvider.GetRequiredService<AgenticCatalogSeeder>();
     await seeder.SeedAsync();
 
-    // Register Tools in the Registry
+    // Register ERP tools in the registry
     var toolRegistry = scope.ServiceProvider.GetRequiredService<IAgentToolRegistry>();
-    
-    // Billing
-    var billing = scope.ServiceProvider.GetRequiredService<BillingPlugin>();
-    toolRegistry.RegisterTool("get_invoice", (args, ct) => billing.GetInvoiceByNumberAsync(args));
-    toolRegistry.RegisterTool("get_billing", (args, ct) => billing.GetByIdAsync(args));
-    
-    // Orders
-    var orders = scope.ServiceProvider.GetRequiredService<OrdersPlugin>();
-    toolRegistry.RegisterTool("get_order", (args, ct) => orders.GetByIdAsync(args));
-    
-    // Inventory
-    var inventory = scope.ServiceProvider.GetRequiredService<InventoryPlugin>();
-    toolRegistry.RegisterTool("get_product", (args, ct) => inventory.GetByIdAsync(args));
-    
-    // Docs
-    var docs = scope.ServiceProvider.GetRequiredService<DocsPlugin>();
-    toolRegistry.RegisterTool("search_docs", (args, ct) => docs.SearchAsync(args));
+    AgentToolRegistration.RegisterErpTools(scope.ServiceProvider, toolRegistry);
 }
 
 app.Run();

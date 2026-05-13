@@ -18,6 +18,7 @@ public class ToolDefinition
     public string Name { get; init; } = string.Empty;
     public string Endpoint { get; init; } = string.Empty;
     public ToolHttpVerb Verb { get; init; } = ToolHttpVerb.Unknown;
+    public string Description { get; init; } = string.Empty;
 
     public ToolDefinition() { }
     public ToolDefinition(string name, string endpoint)

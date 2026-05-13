@@ -36,6 +36,7 @@ public class AgentService : IAgentService
     private readonly ISessionStateStore _sessionStateStore;
     private readonly IEmbeddingService _embeddingService;
     private readonly IAgentExecutionService _agentExecutionService;
+    private readonly IAgentToolResolver _toolResolver;
     private readonly IServiceInvoker _serviceInvoker;
     private readonly IMapper _mapper;
     private readonly ILogger<AgentService> _logger;
@@ -52,6 +53,7 @@ public class AgentService : IAgentService
     /// <param name="sessionStateStore">Transient/operational store for conversation state.</param>
     /// <param name="embeddingService">Service used to generate embeddings for RAG and memory.</param>
     /// <param name="agentExecutionService">Service that executes prompts against the configured model/provider.</param>
+    /// <param name="toolResolver">Resolves ERP plugin tools available to an agent at runtime.</param>
     /// <param name="serviceInvoker">Cross-service invoker for validating external dependencies (for example auth users).</param>
     /// <param name="mapper">Object mapper dependency.</param>
     /// <param name="logger">Structured logger for diagnostics and operational tracing.</param>
@@ -65,6 +67,7 @@ public class AgentService : IAgentService
         ISessionStateStore sessionStateStore,
         IEmbeddingService embeddingService,
         IAgentExecutionService agentExecutionService,
+        IAgentToolResolver toolResolver,
         IServiceInvoker serviceInvoker,
         IMapper mapper,
         ILogger<AgentService> logger)
@@ -78,6 +81,7 @@ public class AgentService : IAgentService
         _sessionStateStore = sessionStateStore;
         _embeddingService = embeddingService;
         _agentExecutionService = agentExecutionService;
+        _toolResolver = toolResolver;
         _serviceInvoker = serviceInvoker;
         _mapper = mapper;
         _logger = logger;
@@ -280,16 +284,19 @@ public class AgentService : IAgentService
             .Select(m => $"{m.Role.ToString().ToLowerInvariant()}: {m.Content}")
             .ToList();
 
+        var pluginTools = _toolResolver.ResolveTools(agent);
+
         var context = new AgentExecutionContext
         {
             Agent = agent,
             ApiKey = apiKey,
             BaseUrl = provider.BaseUrl,
-            SystemPrompt = agent.SystemInstructions,
+            SystemPrompt = ErpAgentSystemPrompt.Compose(agent.SystemInstructions),
             ConversationHistory = conversationHistory,
             ContextMemories = contextMemories,
             Temperature = effectiveTemperature,
-            MaxTokens = request.Options?.MaxTokens ?? agent.MaxTokens
+            MaxTokens = request.Options?.MaxTokens ?? agent.MaxTokens,
+            Tools = pluginTools.ToList()
         };
 
         var executionResult = await _agentExecutionService.ExecuteAsync(context, request.Message, cancellationToken);
@@ -447,19 +454,19 @@ public class AgentService : IAgentService
             .Select(m => $"{m.Role.ToString().ToLowerInvariant()}: {m.Content}")
             .ToList();
 
-        var pluginTools = BuildToolsForBotMode(agent);
+        var pluginTools = _toolResolver.ResolveTools(agent);
 
         var context = new AgentExecutionContext
         {
             Agent = agent,
             ApiKey = apiKey,
             BaseUrl = provider.BaseUrl,
-            SystemPrompt = agent.SystemInstructions,
+            SystemPrompt = ErpAgentSystemPrompt.Compose(agent.SystemInstructions),
             ConversationHistory = conversationHistory,
             ContextMemories = contextMemories,
             Temperature = effectiveTemperature,
             MaxTokens = request.Options?.MaxTokens ?? agent.MaxTokens,
-            Tools = pluginTools
+            Tools = pluginTools.ToList()
         };
 
         var executionResult = await _agentExecutionService.ExecuteAsync(context, request.Message, cancellationToken);
@@ -723,58 +730,4 @@ public class AgentService : IAgentService
         agent.IsActive,
         agent.EnableMemory,
         agent.EnableRAG);
-
-    /// <summary>
-    /// Builds executable tool definitions from configured plugins.
-    /// For chat bots, only safe read-oriented (<see cref="ToolHttpVerb.Get"/>) tools are exposed.
-    /// </summary>
-    /// <param name="agent">Agent whose plugins should be converted to tools.</param>
-    /// <returns>Filtered list of tool definitions for runtime execution.</returns>
-    private static List<ToolDefinition> BuildToolsForBotMode(Agent agent)
-    {
-        var mappedTools = agent.Plugins
-            .Select(p => new ToolDefinition(p.PluginName, p.DaprAppIdEndpoint, InferVerb(p.PluginName)))
-            .ToList();
-
-        return agent.BotType == BotType.Chat
-            ? mappedTools.Where(t => t.Verb == ToolHttpVerb.Get).ToList()
-            : mappedTools;
-    }
-
-    /// <summary>
-    /// Infers HTTP verb semantics from plugin/tool naming conventions.
-    /// </summary>
-    /// <param name="toolName">Tool name.</param>
-    /// <returns>Inferred <see cref="ToolHttpVerb"/> or <see cref="ToolHttpVerb.Unknown"/>.</returns>
-    private static ToolHttpVerb InferVerb(string toolName)
-    {
-        if (string.IsNullOrWhiteSpace(toolName))
-            return ToolHttpVerb.Unknown;
-
-        if (toolName.StartsWith("Get", StringComparison.OrdinalIgnoreCase)
-            || toolName.StartsWith("List", StringComparison.OrdinalIgnoreCase)
-            || toolName.StartsWith("Find", StringComparison.OrdinalIgnoreCase)
-            || toolName.StartsWith("Search", StringComparison.OrdinalIgnoreCase)
-            || toolName.StartsWith("Read", StringComparison.OrdinalIgnoreCase))
-            return ToolHttpVerb.Get;
-
-        if (toolName.StartsWith("Create", StringComparison.OrdinalIgnoreCase)
-            || toolName.StartsWith("Add", StringComparison.OrdinalIgnoreCase)
-            || toolName.StartsWith("Post", StringComparison.OrdinalIgnoreCase))
-            return ToolHttpVerb.Post;
-
-        if (toolName.StartsWith("Update", StringComparison.OrdinalIgnoreCase)
-            || toolName.StartsWith("Edit", StringComparison.OrdinalIgnoreCase)
-            || toolName.StartsWith("Put", StringComparison.OrdinalIgnoreCase))
-            return ToolHttpVerb.Put;
-
-        if (toolName.StartsWith("Delete", StringComparison.OrdinalIgnoreCase)
-            || toolName.StartsWith("Remove", StringComparison.OrdinalIgnoreCase))
-            return ToolHttpVerb.Delete;
-
-        if (toolName.StartsWith("Patch", StringComparison.OrdinalIgnoreCase))
-            return ToolHttpVerb.Patch;
-
-        return ToolHttpVerb.Unknown;
-    }
 }

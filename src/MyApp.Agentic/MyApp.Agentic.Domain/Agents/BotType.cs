@@ -5,8 +5,14 @@ namespace MyApp.Agentic.Domain.Agents;
 /// </summary>
 public enum BotType
 {
-    /// <summary>Basic chat mode - conversational only, no tool execution.</summary>
+    /// <summary>
+    /// Chat mode: read-only ERP tools (GET) such as get-by-name, search, and docs.
+    /// POST, PUT, PATCH, and DELETE tools are not exposed.
+    /// </summary>
     Chat,
-    /// <summary>Full agent mode - supports tool/plugin execution via Dapr service invocation.</summary>
+
+    /// <summary>
+    /// Agent mode: full ERP tool surface, including POST, PUT, PATCH, and DELETE operations.
+    /// </summary>
     Agent
 }

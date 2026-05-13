@@ -1,5 +1,11 @@
 namespace MyApp.Agentic.Application.AI;
 
+public sealed record RegisteredAgentTool(
+    string Name,
+    string Description,
+    ToolHttpVerb Verb,
+    string? Endpoint = null);
+
 public interface IAgentToolExecutor
 {
     Task<string> ExecuteAsync(string toolName, string arguments, CancellationToken cancellationToken = default);
@@ -7,7 +13,7 @@ public interface IAgentToolExecutor
 
 public interface IAgentToolRegistry
 {
-    void RegisterTool(string toolName, Func<string, CancellationToken, Task<string>> handler);
+    void RegisterTool(RegisteredAgentTool tool, Func<string, CancellationToken, Task<string>> handler);
     Func<string, CancellationToken, Task<string>>? GetHandler(string toolName);
-    IEnumerable<string> GetRegisteredToolNames();
+    IReadOnlyList<RegisteredAgentTool> GetRegisteredTools();
 }

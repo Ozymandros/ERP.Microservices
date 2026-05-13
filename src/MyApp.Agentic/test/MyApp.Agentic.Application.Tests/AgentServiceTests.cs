@@ -28,6 +28,8 @@ public class AgentServiceTests
     private readonly Mock<ISessionStateStore> _mockSessionStateStore;
     private readonly Mock<IEmbeddingService> _mockEmbeddingService;
     private readonly Mock<IAgentExecutionService> _mockExecutionService;
+    private readonly AgentToolRegistry _toolRegistry;
+    private readonly AgentToolResolver _toolResolver;
     private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly Mock<IMapper> _mockMapper;
     private readonly Mock<ILogger<AgentService>> _mockLogger;
@@ -44,6 +46,8 @@ public class AgentServiceTests
         _mockSessionStateStore = new Mock<ISessionStateStore>();
         _mockEmbeddingService = new Mock<IEmbeddingService>();
         _mockExecutionService = new Mock<IAgentExecutionService>();
+        _toolRegistry = new AgentToolRegistry();
+        _toolResolver = new AgentToolResolver(_toolRegistry);
         _mockServiceInvoker = new Mock<IServiceInvoker>();
         _mockMapper = new Mock<IMapper>();
         _mockLogger = new Mock<ILogger<AgentService>>();
@@ -92,6 +96,7 @@ public class AgentServiceTests
             _mockSessionStateStore.Object,
             _mockEmbeddingService.Object,
             _mockExecutionService.Object,
+            _toolResolver,
             _mockServiceInvoker.Object,
             _mockMapper.Object,
             _mockLogger.Object);
@@ -494,6 +499,42 @@ public class AgentServiceTests
     }
 
     [Fact]
+    public async Task ProcessMessageAsync_PassesResolvedToolsAndErpPromptToExecution()
+    {
+        var agentId = Guid.NewGuid();
+        var userId = "user-123";
+        var agent = CreateTestAgent(agentId);
+        var session = new AgentSession(Guid.NewGuid(), agentId, userId, "Test Session");
+        var request = new ProcessAgentMessageRequest(agentId, "What stock do we have for product Alpha?");
+
+        _toolRegistry.RegisterTool(
+            new RegisteredAgentTool("get_product_by_name", "Get ERP product by name.", ToolHttpVerb.Get),
+            (_, _) => Task.FromResult("{}"));
+
+        _mockAgentRepository.Setup(r => r.GetByIdWithDetailsAsync(agentId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(agent);
+        _mockSessionRepository.Setup(r => r.GetActiveSessionAsync(agentId, userId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(session);
+        _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new AgentExecutionResult("Response"));
+        _mockSessionStateStore.Setup(s => s.AppendMessageAsync(It.IsAny<Guid>(), userId, It.IsAny<ConversationMessage>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+        _mockSessionRepository.Setup(r => r.UpdateAsync(It.IsAny<AgentSession>()))
+            .ReturnsAsync((AgentSession value) => value);
+
+        AgentExecutionContext? capturedContext = null;
+        _mockExecutionService.Setup(e => e.ExecuteAsync(It.IsAny<AgentExecutionContext>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Callback<AgentExecutionContext, string, CancellationToken>((ctx, _, _) => capturedContext = ctx)
+            .ReturnsAsync(new AgentExecutionResult("Response"));
+
+        await _service.ProcessMessageAsync(request, userId);
+
+        Assert.NotNull(capturedContext);
+        Assert.Contains(capturedContext!.Tools, tool => tool.Name == "get_product_by_name");
+        Assert.Contains("MyApp ERP assistant", capturedContext.SystemPrompt, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public async Task ListByOwnerAsync_FiltersByOwner()
     {
         var ownerUserId = "owner-user";
@@ -628,8 +669,14 @@ public class AgentServiceTests
             botType: BotType.Chat);
 
         agent.SetModelForTest(model);
-        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "GetByIdAsync", "inventory.getById"));
-        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "CreateAsync", "inventory.create"));
+        _toolRegistry.RegisterTool(
+            new RegisteredAgentTool("get_inventory_stock", "Get inventory stock by id.", ToolHttpVerb.Get),
+            (_, _) => Task.FromResult("{}"));
+        _toolRegistry.RegisterTool(
+            new RegisteredAgentTool("create_inventory_stock", "Create inventory stock.", ToolHttpVerb.Post),
+            (_, _) => Task.FromResult("{}"));
+        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "get_inventory_stock", "inventory.getById"));
+        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "create_inventory_stock", "inventory.create"));
 
         var session = new AgentSession(sessionId, agentId, userId, "Test Session");
         typeof(AgentSession).GetProperty("Agent")?.SetValue(session, agent);
@@ -651,7 +698,7 @@ public class AgentServiceTests
 
         Assert.NotNull(capturedContext);
         Assert.Single(capturedContext!.Tools);
-        Assert.Equal("GetByIdAsync", capturedContext.Tools[0].Name);
+        Assert.Equal("get_inventory_stock", capturedContext.Tools[0].Name);
         Assert.Equal(ToolHttpVerb.Get, capturedContext.Tools[0].Verb);
     }
 
@@ -676,10 +723,22 @@ public class AgentServiceTests
             botType: BotType.Agent);
 
         agent.SetModelForTest(model);
-        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "GetByIdAsync", "inventory.getById"));
-        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "CreateAsync", "inventory.create"));
-        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "UpdateAsync", "inventory.update"));
-        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "DeleteAsync", "inventory.delete"));
+        _toolRegistry.RegisterTool(
+            new RegisteredAgentTool("get_inventory_stock", "Get inventory stock by id.", ToolHttpVerb.Get),
+            (_, _) => Task.FromResult("{}"));
+        _toolRegistry.RegisterTool(
+            new RegisteredAgentTool("create_inventory_stock", "Create inventory stock.", ToolHttpVerb.Post),
+            (_, _) => Task.FromResult("{}"));
+        _toolRegistry.RegisterTool(
+            new RegisteredAgentTool("update_inventory_stock", "Update inventory stock.", ToolHttpVerb.Put),
+            (_, _) => Task.FromResult("{}"));
+        _toolRegistry.RegisterTool(
+            new RegisteredAgentTool("delete_inventory_stock", "Delete inventory stock.", ToolHttpVerb.Delete),
+            (_, _) => Task.FromResult("{}"));
+        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "get_inventory_stock", "inventory.getById"));
+        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "create_inventory_stock", "inventory.create"));
+        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "update_inventory_stock", "inventory.update"));
+        agent.Plugins.Add(new AgentPlugin(Guid.NewGuid(), agent.Id, "delete_inventory_stock", "inventory.delete"));
 
         var session = new AgentSession(sessionId, agentId, userId, "Test Session");
         typeof(AgentSession).GetProperty("Agent")?.SetValue(session, agent);

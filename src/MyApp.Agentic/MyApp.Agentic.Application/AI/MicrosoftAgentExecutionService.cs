@@ -149,7 +149,11 @@ public class MicrosoftAgentExecutionService : IAgentExecutionService
             // the loop will handle the actual execution via _toolExecutor.
             // This allows us to keep the IAgentToolExecutor abstraction.
             
-            var function = AIFunctionFactory.Create((string arguments) => "Handled by loop", toolDef.Name, $"Execute {toolDef.Name} operation");
+            var description = string.IsNullOrWhiteSpace(toolDef.Description)
+                ? $"ERP tool: {toolDef.Name}."
+                : toolDef.Description;
+
+            var function = AIFunctionFactory.Create((string arguments) => "Handled by loop", toolDef.Name, description);
             tools.Add(function);
         }
         return tools;
