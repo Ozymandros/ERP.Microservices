@@ -33,6 +33,14 @@ public sealed class AccountRepository : Repository<Account, Guid>, IAccountRepos
             .FirstOrDefaultAsync(a => a.CustomerId == customerId, cancellationToken);
     }
 
+    /// <summary>Get By Tax Id Async.</summary>
+    public async Task<Account?> GetByTaxIdAsync(string taxId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Accounts
+            .Include(a => a.Contacts)
+            .FirstOrDefaultAsync(a => a.TaxId == taxId, cancellationToken);
+    }
+
     /// <summary>List Async.</summary>
     public async Task<IEnumerable<Account>> ListAsync(CancellationToken cancellationToken = default)
     {

@@ -149,8 +149,76 @@ namespace MyApp.Sales.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Search customers with advanced filtering, sorting, and pagination - Requires Sales.Read permission
+    /// <summary>
+    /// Get a specific customer by Name - Requires Sales.Read permission
+    /// </summary>
+    [HttpGet("name/{name}")]
+    [HasPermission("Sales", "Read")]
+    [ProducesResponseType(typeof(CustomerDto), 200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetByName(string name)
+    {
+        try
+        {
+            string cacheKey = "Customer-Name-" + name;
+            var customer = await _cacheService.GetStateAsync<CustomerDto>(cacheKey);
+
+            if (customer != null)
+            {
+                return Ok(customer);
+            }
+
+            customer = await _customerService.GetCustomerByNameAsync(name);
+            if (customer == null)
+                return NotFound(new { message = $"Customer with name '{name}' not found." });
+
+            await _cacheService.SaveStateAsync(cacheKey, customer);
+            return Ok(customer);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving customer {@Name}", new { Name = name });
+            var customer = await _customerService.GetCustomerByNameAsync(name);
+            return customer == null ? NotFound(new { message = $"Customer with name '{name}' not found." }) : Ok(customer);
+        }
+    }
+
+    /// <summary>
+    /// Get a specific customer by Email - Requires Sales.Read permission
+    /// </summary>
+    [HttpGet("email/{email}")]
+    [HasPermission("Sales", "Read")]
+    [ProducesResponseType(typeof(CustomerDto), 200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetByEmail(string email)
+    {
+        try
+        {
+            string cacheKey = "Customer-Email-" + email;
+            var customer = await _cacheService.GetStateAsync<CustomerDto>(cacheKey);
+
+            if (customer != null)
+            {
+                return Ok(customer);
+            }
+
+            customer = await _customerService.GetCustomerByEmailAsync(email);
+            if (customer == null)
+                return NotFound(new { message = $"Customer with email '{email}' not found." });
+
+            await _cacheService.SaveStateAsync(cacheKey, customer);
+            return Ok(customer);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving customer {@Email}", new { Email = email });
+            var customer = await _customerService.GetCustomerByEmailAsync(email);
+            return customer == null ? NotFound(new { message = $"Customer with email '{email}' not found." }) : Ok(customer);
+        }
+    }
+
+    /// <summary>
+    /// Search customers with advanced filtering, sorting, and pagination - Requires Sales.Read permission
         /// </summary>
         /// <remarks>
         /// Supported filters: name, email, country, city, isActive

@@ -1,3 +1,4 @@
+using Aspire.Hosting.Azure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using MyApp.Shared.Domain.Constants;
@@ -35,20 +36,24 @@ var redis = builder.AddRedis("cache")
 
 // Create builder with automatic port management
 AspireProjectBuilder projectBuilder;
+IResourceBuilder<SqlServerServerResource>? sqlServer = null;
+IResourceBuilder<AzureSqlServerResource>? sqlAzure = null;
 
 // Add SQL Server as a container
 var password = builder.AddParameter("password", secret: true, value: "Your_strong_(!)Password123");
 if (isDeployment)
 {
-    var sqlServer = builder.AddAzureSqlServer("myapp-sqlserver");
-    projectBuilder = builder.CreateProjectBuilder(null, sqlServer);
+    sqlAzure = builder.AddAzureSqlServer("myapp-sqlserver");
+    projectBuilder = builder.CreateProjectBuilder(sqlAzure: sqlAzure);
 }
 else
 {
-    var sqlServer = builder.AddSqlServer("myapp-sqlserver", password, 1455)
-        .WithLifetime(ContainerLifetime.Persistent) // restarts periodically for development environments
-        .WithDataVolume("sqlserver-data"); // named volume → persists between restarts
-    projectBuilder = builder.CreateProjectBuilder(sqlServer);
+    sqlServer = builder.AddSqlServer("myapp-sqlserver", password, 1455)
+        .WithImage("mssql/server", "2025-latest")
+        .WithImageRegistry("mcr.microsoft.com")
+        .WithLifetime(ContainerLifetime.Persistent)
+        .WithDataVolume("sqlserver-data");
+    projectBuilder = builder.CreateProjectBuilder(sqlServer: sqlServer);
 }
 
 var origin = builder.Configuration["Parameters:FrontendOrigin"];
@@ -80,8 +85,8 @@ var purchasingService = projectBuilder.AddWebProject<Projects.MyApp_Purchasing_A
 var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore);
 // Creates: SalesDB, sales-service, ports 6007, 3507, 45007, 9097
 
-var skService = projectBuilder.AddWebProject<Projects.MyApp_SemanticKernel>(redis, origin, isDeployment, applicationInsights, hasDatabase: false);
-// Creates: sk-service (no DB), ports 6008, 3508, 45008, 9098
+var agenticService = projectBuilder.AddWebProject<Projects.MyApp_Agentic_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore, hasDatabase: true);
+// Creates: agentic-service (no DB), ports 6008, 3508, 45008, 9098
 
 // Local Development: Reverse Proxy (YARP)
 // Alternative: YARP (without /Scalar service)
@@ -120,7 +125,7 @@ var gateway = builder.AddProject<Projects.ErpApiGateway>("gateway")
     .WaitFor(purchasingService)
     .WaitFor(salesService)
     .WaitFor(crmService)
-    .WaitFor(skService)
+    .WaitFor(agenticService)
     .WithHttpEndpoint(port: 5000, name: "gateway-http")   // Explicitly listen on 5000 for Dapr
     .WithHttpsEndpoint(port: 7231, name: "gateway-https") // Explicitly listen on 7231 for Browser/Scalar
     .WithEnvironment("Jwt__SecretKey", jwtSecretKey)

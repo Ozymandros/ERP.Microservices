@@ -265,7 +265,7 @@
       "DownstreamHostAndPorts": [
         { "Host": "localhost", "Port": 6008 }
       ],
-      "UpstreamPathTemplate": "/sk/openapi/v1.json",
+      "UpstreamPathTemplate": "/agentic/openapi/v1.json",
       "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
@@ -276,7 +276,7 @@
       "DownstreamHostAndPorts": [
         { "Host": "localhost", "Port": 6008 }
       ],
-      "UpstreamPathTemplate": "/sk/scalar/{everything}",
+      "UpstreamPathTemplate": "/agentic/scalar/{everything}",
       "UpstreamHttpMethod": [ "GET" ],
       "Priority": 100,
       "RateLimitOptions": { "EnableRateLimiting": false }
@@ -287,7 +287,7 @@
       "DownstreamHostAndPorts": [
         { "Host": "localhost", "Port": 6008 }
       ],
-      "UpstreamPathTemplate": "/sk/api/{everything}",
+      "UpstreamPathTemplate": "/agentic/api/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS" ],
       "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
       "RateLimitOptions": { "EnableRateLimiting": false, "Period": "1m", "Limit": 100 },

@@ -12,6 +12,6 @@ namespace MyApp.Shared.Domain.Entities
         /// Gets or sets the unique identifier for the entity.
         /// </summary>
         [Key]
-        public T Id { get; set; } = id;
+        public virtual T Id { get; set; } = id;
     }
 }

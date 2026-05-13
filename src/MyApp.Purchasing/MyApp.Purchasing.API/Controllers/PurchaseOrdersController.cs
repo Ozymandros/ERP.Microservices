@@ -158,6 +158,45 @@ public class PurchaseOrdersController : ControllerBase
     }
 
     /// <summary>
+    /// Get purchase order by Order Number - Requires Purchasing.Read permission
+    /// </summary>
+    [HttpGet("code/{orderNumber}")]
+    [HasPermission("Purchasing", "Read")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<PurchaseOrderDto>> GetPurchaseOrderByOrderNumber(string orderNumber)
+    {
+        try
+        {
+            string cacheKey = "PurchaseOrder-Code-" + orderNumber;
+            var order = await _cacheService.GetStateAsync<PurchaseOrderDto>(cacheKey);
+
+            if (order != null)
+            {
+                _logger.LogInformation("Retrieved purchase order with code {@OrderNumber} from cache", new { OrderNumber = orderNumber });
+                return Ok(order);
+            }
+
+            order = await _purchaseOrderService.GetPurchaseOrderByOrderNumberAsync(orderNumber);
+            if (order == null)
+            {
+                _logger.LogWarning("Purchase order with code {@OrderNumber} not found", new { OrderNumber = orderNumber });
+                return NotFound();
+            }
+
+            await _cacheService.SaveStateAsync(cacheKey, order);
+            _logger.LogInformation("Retrieved purchase order with code {@OrderNumber} from database and cached", new { OrderNumber = orderNumber });
+            return Ok(order);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving purchase order with code {@OrderNumber}", new { OrderNumber = orderNumber });
+            var order = await _purchaseOrderService.GetPurchaseOrderByOrderNumberAsync(orderNumber);
+            return order == null ? NotFound() : Ok(order);
+        }
+    }
+
+    /// <summary>
     /// Search purchase orders with advanced filtering, sorting, and pagination - Requires Purchasing.Read permission
     /// </summary>
     /// <remarks>

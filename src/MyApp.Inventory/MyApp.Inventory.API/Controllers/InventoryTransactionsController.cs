@@ -4,6 +4,7 @@ using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Specifications;
+using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Infrastructure.Export;
@@ -16,12 +17,14 @@ namespace MyApp.Inventory.API.Controllers
     public class InventoryTransactionsController : ControllerBase
     {
         private readonly IInventoryTransactionService _transactionService;
+        private readonly ICacheService _cacheService;
         private readonly ILogger<InventoryTransactionsController> _logger;
 
-        public InventoryTransactionsController(IInventoryTransactionService transactionService, ILogger<InventoryTransactionsController> logger)
+        public InventoryTransactionsController(IInventoryTransactionService transactionService, ILogger<InventoryTransactionsController> logger, ICacheService cacheService)
         {
             _transactionService = transactionService;
             _logger = logger;
+            _cacheService = cacheService;
         }
 
         /// <summary>
@@ -136,6 +139,45 @@ namespace MyApp.Inventory.API.Controllers
                 return NotFound();
             }
             return Ok(transaction);
+        }
+
+        /// <summary>
+        /// Get transaction by Reference Number - Requires Inventory.Read permission
+        /// </summary>
+        [HttpGet("reference/{referenceNumber}")]
+        [HasPermission("Inventory", "Read")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<InventoryTransactionDto>> GetTransactionByReferenceNumber(string referenceNumber)
+        {
+            try
+            {
+                string cacheKey = "Transaction-Reference-" + referenceNumber;
+                var transaction = await _cacheService.GetStateAsync<InventoryTransactionDto>(cacheKey);
+
+                if (transaction != null)
+                {
+                    _logger.LogInformation("Retrieved transaction with reference {@Reference} from cache", new { ReferenceNumber = referenceNumber });
+                    return Ok(transaction);
+                }
+
+                transaction = await _transactionService.GetTransactionByReferenceNumberAsync(referenceNumber);
+                if (transaction == null)
+                {
+                    _logger.LogWarning("Transaction with reference {@Reference} not found", new { ReferenceNumber = referenceNumber });
+                    return NotFound();
+                }
+
+                await _cacheService.SaveStateAsync(cacheKey, transaction);
+                _logger.LogInformation("Retrieved transaction with reference {@Reference} from database and cached", new { ReferenceNumber = referenceNumber });
+                return Ok(transaction);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving transaction with reference {@Reference}", new { ReferenceNumber = referenceNumber });
+                var transaction = await _transactionService.GetTransactionByReferenceNumberAsync(referenceNumber);
+                return transaction == null ? NotFound() : Ok(transaction);
+            }
         }
 
         [HttpGet("product/{productId}")]

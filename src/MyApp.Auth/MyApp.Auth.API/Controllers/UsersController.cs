@@ -238,14 +238,14 @@ public partial class UsersController : ControllerBase
         try
         {
             string cacheKey = "User-" + id;
-            var user = await _cacheService.GetStateAsync<UserDto>(cacheKey); // 1. Intentar obtenir de la cache
+            var user = await _cacheService.GetStateAsync<UserDto>(cacheKey); // 1. Try to get it from cache
 
             if (user is not null)
             {
-                return Ok(user); // Retorna des de la cache
+                return Ok(user); // Return from cache
             }
 
-            // 2. La dada NO �s a la cache, obtenir de la DB
+            // 2. The data is NOT in cache, fetch it from the DB
             user = await _userService.GetUserByIdAsync(id);
             if (user is null)
             {
@@ -441,14 +441,14 @@ public partial class UsersController : ControllerBase
         try
         {
             string cacheKey = "Roles-" + id;
-            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>(cacheKey); // 1. Intentar obtenir de la cache
+            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>(cacheKey); // 1. Try to get it from cache
 
             if (roles is not null)
             {
-                return Ok(roles); // Retorna des de la cache
+                return Ok(roles); // Return from cache
             }
 
-            // 2. La dada NO �s a la cache, obtenir de la DB
+            // 2. The data is NOT in cache, fetch it from the DB
             roles = await _userService.GetUserRolesAsync(id);
             await _cacheService.SaveStateAsync(cacheKey, roles);
 

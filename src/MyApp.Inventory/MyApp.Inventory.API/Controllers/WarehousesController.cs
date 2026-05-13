@@ -3,6 +3,7 @@ using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Specifications;
 using Microsoft.AspNetCore.Authorization;
+using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 
@@ -16,8 +17,16 @@ namespace MyApp.Inventory.API.Controllers;
 public class WarehousesController : ControllerBase
 {
     private readonly IWarehouseService _warehouseService;
+    private readonly ICacheService _cacheService;
     private readonly ILogger<WarehousesController> _logger;
 
+
+    public WarehousesController(IWarehouseService warehouseService, ILogger<WarehousesController> logger, ICacheService cacheService)
+    {
+        _warehouseService = warehouseService;
+        _logger = logger;
+        _cacheService = cacheService;
+    }
 
     /// <summary>
     /// Export all warehouses as XLSX
@@ -61,12 +70,6 @@ public class WarehousesController : ControllerBase
             _logger.LogError(ex, "Error exporting warehouses to PDF");
             return StatusCode(500, new { message = "An error occurred exporting warehouses" });
         }
-    }
-
-    public WarehousesController(IWarehouseService warehouseService, ILogger<WarehousesController> logger)
-    {
-        _warehouseService = warehouseService;
-        _logger = logger;
     }
 
     /// <summary>
@@ -175,6 +178,45 @@ public class WarehousesController : ControllerBase
             return NotFound();
         }
         return Ok(warehouse);
+    }
+
+    /// <summary>
+    /// Get warehouse by Name - Requires Inventory.Read permission
+    /// </summary>
+    [HttpGet("name/{name}")]
+    [HasPermission("Inventory", "Read")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<WarehouseDto>> GetWarehouseByName(string name)
+    {
+        try
+        {
+            string cacheKey = "Warehouse-Name-" + name;
+            var warehouse = await _cacheService.GetStateAsync<WarehouseDto>(cacheKey);
+
+            if (warehouse != null)
+            {
+                _logger.LogInformation("Retrieved warehouse with name {@Warehouse} from cache", new { Name = name });
+                return Ok(warehouse);
+            }
+
+            warehouse = await _warehouseService.GetWarehouseByNameAsync(name);
+            if (warehouse == null)
+            {
+                _logger.LogWarning("Warehouse with name {@Warehouse} not found", new { Name = name });
+                return NotFound();
+            }
+
+            await _cacheService.SaveStateAsync(cacheKey, warehouse);
+            _logger.LogInformation("Retrieved warehouse with name {@Warehouse} from database and cached", new { Name = name });
+            return Ok(warehouse);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving warehouse with name {@Warehouse}", new { Name = name });
+            var warehouse = await _warehouseService.GetWarehouseByNameAsync(name);
+            return warehouse == null ? NotFound() : Ok(warehouse);
+        }
     }
 
     /// <summary>

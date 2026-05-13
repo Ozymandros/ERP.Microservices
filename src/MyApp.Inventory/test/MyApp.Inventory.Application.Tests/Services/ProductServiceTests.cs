@@ -113,6 +113,49 @@ public class ProductServiceTests
 
     #endregion
 
+    #region GetProductByNameAsync Tests
+
+    [Fact]
+    public async Task GetProductByNameAsync_WithExistingName_ReturnsProductDto()
+    {
+        // Arrange
+        var name = "Test Product";
+        var product = new Product(Guid.NewGuid()) { SKU = "PRD-001", Name = name };
+        var expectedDto = new ProductDto(Guid.NewGuid())
+        {
+            SKU = "PRD-001",
+            Name = name
+        };
+
+        _mockProductRepository.Setup(r => r.GetByNameAsync(name)).ReturnsAsync(product);
+        _mockMapper.Setup(m => m.Map<ProductDto>(product)).Returns(expectedDto);
+
+        // Act
+        var result = await _productService.GetProductByNameAsync(name);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(name, result.Name);
+        _mockProductRepository.Verify(r => r.GetByNameAsync(name), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetProductByNameAsync_WithNonExistentName_ReturnsNull()
+    {
+        // Arrange
+        var name = "Non-Existent Product";
+        _mockProductRepository.Setup(r => r.GetByNameAsync(name)).ReturnsAsync((Product?)null);
+
+        // Act
+        var result = await _productService.GetProductByNameAsync(name);
+
+        // Assert
+        Assert.Null(result);
+        _mockProductRepository.Verify(r => r.GetByNameAsync(name), Times.Once);
+    }
+
+    #endregion
+
     #region GetAllProductsAsync Tests
 
     [Fact]

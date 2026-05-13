@@ -19,16 +19,13 @@
     <None Include="docs\development\TEST_COMPILATION_FIXES.md" />
     <None Include="docs\development\TEST_FIX_STRATEGY.md" />
     <None Include="docs\OPTIMIZATIONS_APPLIED.md" />
-    <None Include="MyApp.SemanticKernel\AuthPlugin.cs" />
-    <None Include="MyApp.SemanticKernel\BillingPlugin.cs" />
-    <None Include="MyApp.SemanticKernel\CrmPlugin.cs" />
-    <None Include="MyApp.SemanticKernel\InventoryPlugin.cs" />
-    <None Include="MyApp.SemanticKernel\OrdersPlugin.cs" />
-    <None Include="MyApp.SemanticKernel\PurchasingPlugin.cs" />
-    <None Include="MyApp.SemanticKernel\SalesPlugin.cs" />
-    <None Include="scripts\fix-dto-tests.ps1" />
-    <None Include="src\MyApp.SemanticKernel.Tests\KernelIntegrationTests.cs" />
-    <None Include="src\MyApp.SemanticKernel.Tests\SemanticKernel.Integration.Tests.csproj" />
+    <None Include="MyApp.Agentic\AuthPlugin.cs" />
+    <None Include="MyApp.Agentic\BillingPlugin.cs" />
+    <None Include="MyApp.Agentic\CrmPlugin.cs" />
+    <None Include="MyApp.Agentic\InventoryPlugin.cs" />
+    <None Include="MyApp.Agentic\OrdersPlugin.cs" />
+    <None Include="MyApp.Agentic\PurchasingPlugin.cs" />
+    <None Include="MyApp.Agentic\SalesPlugin.cs" />
     <None Include="src\MyApp.Shared.MyApp.Shared.Infrastructure.Extensions\MicroserviceExtensions.cs" />
   </ItemGroup>
 </Project>

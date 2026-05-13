@@ -110,6 +110,47 @@ public class SupplierServiceTests
     }
 
     [Fact]
+    public async Task GetSupplierByNameAsync_WithExistingName_ReturnsSupplierDto()
+    {
+        // Arrange
+        var name = "Test Supplier";
+        var supplier = new Supplier(Guid.NewGuid()) { Name = name, ContactName = "Contact", Email = "test@supplier.com" };
+        var expectedDto = new SupplierDto(Guid.NewGuid())
+        {
+            Name = name,
+            ContactName = "Contact",
+            Email = "test@supplier.com",
+            PhoneNumber = "",
+            Address = ""
+        };
+
+        _mockSupplierRepository.Setup(r => r.GetByNameAsync(name)).ReturnsAsync(new List<Supplier> { supplier });
+        _mockMapper.Setup(m => m.Map<SupplierDto>(supplier)).Returns(expectedDto);
+
+        // Act
+        var result = await _supplierService.GetSupplierByNameAsync(name);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(name, result.Name);
+        _mockSupplierRepository.Verify(r => r.GetByNameAsync(name), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetSupplierByNameAsync_WithNonExistentName_ReturnsNull()
+    {
+        // Arrange
+        var name = "Non-Existent Supplier";
+        _mockSupplierRepository.Setup(r => r.GetByNameAsync(name)).ReturnsAsync(new List<Supplier>());
+
+        // Act
+        var result = await _supplierService.GetSupplierByNameAsync(name);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
     public async Task GetSuppliersByNameAsync_ReturnsMatchingSuppliers()
     {
         // Arrange

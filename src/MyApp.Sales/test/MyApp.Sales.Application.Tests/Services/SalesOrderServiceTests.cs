@@ -96,6 +96,50 @@ public class SalesOrderServiceTests
 
     #endregion
 
+    #region GetSalesOrderByOrderNumberAsync Tests
+
+    [Fact]
+    public async Task GetSalesOrderByOrderNumberAsync_WithExistingNumber_ReturnsSalesOrderDto()
+    {
+        // Arrange
+        var orderNumber = "SO-001";
+        var order = new SalesOrder(Guid.NewGuid()) { OrderNumber = orderNumber };
+        var expectedDto = new SalesOrderDto(Guid.NewGuid())
+        {
+            OrderNumber = orderNumber,
+            OrderDate = DateTime.UtcNow,
+            CustomerId = Guid.NewGuid()
+        };
+
+        _mockOrderRepository.Setup(r => r.GetByOrderNumberAsync(orderNumber)).ReturnsAsync(order);
+        _mockMapper.Setup(m => m.Map<SalesOrderDto>(order)).Returns(expectedDto);
+
+        // Act
+        var result = await _salesOrderService.GetSalesOrderByOrderNumberAsync(orderNumber);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(orderNumber, result.OrderNumber);
+        _mockOrderRepository.Verify(r => r.GetByOrderNumberAsync(orderNumber), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetSalesOrderByOrderNumberAsync_WithNonExistentNumber_ReturnsNull()
+    {
+        // Arrange
+        var orderNumber = "NONEXISTENT";
+        _mockOrderRepository.Setup(r => r.GetByOrderNumberAsync(orderNumber)).ReturnsAsync((SalesOrder?)null);
+
+        // Act
+        var result = await _salesOrderService.GetSalesOrderByOrderNumberAsync(orderNumber);
+
+        // Assert
+        Assert.Null(result);
+        _mockOrderRepository.Verify(r => r.GetByOrderNumberAsync(orderNumber), Times.Once);
+    }
+
+    #endregion
+
     #region ListSalesOrdersAsync Tests
 
     [Fact]

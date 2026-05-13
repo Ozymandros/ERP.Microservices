@@ -6,11 +6,13 @@ ARG BASE_IMAGE_REGISTRY=
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-# Copy shared projects (with src/ prefix since build context is root)
+# Copy nuget.config to ensure clean package resolution (with src/ prefix since build context is root)
+COPY src/nuget.config ./
+
+# Copy shared projects (with src/ prefix since build context is root); CRM uses Domain, Infrastructure, CQRS (no SignalR)
 COPY ["src/MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.csproj", "MyApp.Shared/MyApp.Shared.Infrastructure/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.CQRS/MyApp.Shared.CQRS.csproj", "MyApp.Shared/MyApp.Shared.CQRS/"]
-COPY ["src/MyApp.Shared/MyApp.Shared.SignalR/MyApp.Shared.SignalR.csproj", "MyApp.Shared/MyApp.Shared.SignalR/"]
 
 # Copy CRM service projects
 COPY ["src/MyApp.Crm/MyApp.Crm.Domain/MyApp.Crm.Domain.csproj", "MyApp.Crm/MyApp.Crm.Domain/"]
@@ -23,8 +25,8 @@ COPY ["src/MyApp.Crm/MyApp.Crm.API/MyApp.Crm.API.csproj", "MyApp.Crm/MyApp.Crm.A
 RUN dotnet restore "MyApp.Crm/MyApp.Crm.API/MyApp.Crm.API.csproj"
 
 # Copy only needed source files (not everything from context)
-COPY ["src/MyApp.Shared/", "MyApp.Shared/"]
-COPY ["src/MyApp.Crm/", "MyApp.Crm/"]
+COPY src/MyApp.Shared/ MyApp.Shared/
+COPY src/MyApp.Crm/ MyApp.Crm/
 
 # Build the project
 WORKDIR "/src/MyApp.Crm/MyApp.Crm.API"

@@ -121,6 +121,31 @@ public class PaymentRepositoryTests
         result.Single().Method.Should().Be("BankTransfer");
     }
 
+    // ─── GetByExternalPaymentIdAsync ──────────────────────────────────────────────
+
+    [Fact]
+    public async Task GetByExternalPaymentIdAsync_WithExistingExternalId_ReturnsPayment()
+    {
+        var inv = SeedInvoice();
+        var externalPaymentId = "EXT-PAY-001";
+        var payment = new Payment(Guid.NewGuid(), inv.Id, 100m, "USD", "Card", DateTime.UtcNow, externalPaymentId);
+        _context.Payments.Add(payment);
+        _context.SaveChanges();
+
+        var result = await _repository.GetByExternalPaymentIdAsync(externalPaymentId);
+
+        result.Should().NotBeNull();
+        result!.ExternalPaymentId.Should().Be(externalPaymentId);
+    }
+
+    [Fact]
+    public async Task GetByExternalPaymentIdAsync_WithNonExistentExternalId_ReturnsNull()
+    {
+        var result = await _repository.GetByExternalPaymentIdAsync("NONEXISTENT");
+
+        result.Should().BeNull();
+    }
+
     // ─── AddAsync ─────────────────────────────────────────────────────────────
 
     [Fact]

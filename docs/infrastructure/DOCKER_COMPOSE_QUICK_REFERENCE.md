@@ -215,7 +215,7 @@ curl http://localhost:6003/health
 | Purchasing | 6006 | purchasing-service | 3504 | /health |
 | Sales | 6007 | sales-service | 3505 | /health |
 | CRM | 6003 | crm-service | 3506 | /health |
-| SemanticKernel | 6008 | sk-service | 3507 | /health |
+| Agentic | 6008 | agentic-service | 3507 | /health |
 
 ### Infrastructure Services
 

@@ -31,6 +31,13 @@ public class SupplierService : ISupplierService
         return supplier == null ? null : _mapper.Map<SupplierDto>(supplier);
     }
 
+    public async Task<SupplierDto?> GetSupplierByNameAsync(string name)
+    {
+        var suppliers = await _supplierRepository.GetByNameAsync(name);
+        var supplier = suppliers.FirstOrDefault();
+        return supplier == null ? null : _mapper.Map<SupplierDto>(supplier);
+    }
+
     public async Task<IEnumerable<SupplierDto>> GetSuppliersByNameAsync(string name)
     {
         var suppliers = await _supplierRepository.GetByNameAsync(name);

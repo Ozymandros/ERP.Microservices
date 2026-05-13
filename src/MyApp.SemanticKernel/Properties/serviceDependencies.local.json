@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "identityapp1": {
-      "connectionInfo": "App registration: erp-microservices-deploy, Tenant: Default Directory (andreumvhotmail.onmicrosoft.com - Microsoft Entra ID)",
-      "type": "identityapp.default"
-    }
-  }
-}

@@ -46,6 +46,12 @@ namespace MyApp.Sales.Application.Services
             return order != null ? _mapper.Map<SalesOrderDto>(order) : null;
         }
 
+        public async Task<SalesOrderDto?> GetSalesOrderByOrderNumberAsync(string orderNumber)
+        {
+            var order = await _orderRepository.GetByOrderNumberAsync(orderNumber);
+            return order != null ? _mapper.Map<SalesOrderDto>(order) : null;
+        }
+
         public async Task<IEnumerable<SalesOrderDto>> ListSalesOrdersAsync()
         {
             var orders = await _orderRepository.ListAsync();

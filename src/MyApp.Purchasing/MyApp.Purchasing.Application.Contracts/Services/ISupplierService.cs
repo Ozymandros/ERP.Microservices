@@ -15,6 +15,7 @@ public interface ISupplierService
 {
     Task<SupplierDto?> GetSupplierByIdAsync(Guid id);
     Task<SupplierDto?> GetSupplierByEmailAsync(string email);
+    Task<SupplierDto?> GetSupplierByNameAsync(string name);
     Task<IEnumerable<SupplierDto>> GetSuppliersByNameAsync(string name);
     Task<IEnumerable<SupplierDto>> GetAllSuppliersAsync();
     Task<PaginatedResult<SupplierDto>> QuerySuppliersAsync(ISpecification<Supplier> spec);

@@ -9,7 +9,7 @@ WORKDIR /src
 # Copy nuget.config to ensure clean package resolution (with src/ prefix since build context is root)
 COPY src/nuget.config ./
 
-# Copy shared projects
+# Copy shared projects (with src/ prefix since build context is root)
 COPY ["src/MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.csproj", "MyApp.Shared/MyApp.Shared.Infrastructure/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.CQRS/MyApp.Shared.CQRS.csproj", "MyApp.Shared/MyApp.Shared.CQRS/"]
@@ -31,11 +31,11 @@ COPY src/MyApp.Orders/ MyApp.Orders/
 
 # Build the project
 WORKDIR "/src/MyApp.Orders/MyApp.Orders.API"
-RUN dotnet build "MyApp.Orders.API.csproj" -c Release -o /app/build
+RUN dotnet build "MyApp.Orders.API.csproj" -c Release -o /app/build --no-restore
 
 # Publish stage
 FROM build AS publish
-RUN dotnet publish "MyApp.Orders.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "MyApp.Orders.API.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
 
 # Runtime stage - Use shared base image
 # BASE_IMAGE_REGISTRY is defined at the top of the file

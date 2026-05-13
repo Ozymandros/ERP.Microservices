@@ -127,6 +127,8 @@ jobs:
             dockerfile: src/MyApp.Sales/MyApp.Sales.API/Dockerfile
           - service: crm-service
             dockerfile: src/MyApp.Crm/MyApp.Crm.API/Dockerfile
+          - service: agentic-service
+            dockerfile: src/MyApp.Agentic/MyApp.Agentic.API/Dockerfile
           - service: gateway
             dockerfile: src/ErpApiGateway/Dockerfile
     steps:
@@ -268,7 +270,7 @@ jobs:
           set -euo pipefail
           IMAGE_TAG="${{ needs.prepare.outputs.image_tag }}"
           REPO="${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}"
-          for svc in auth-service billing-service inventory-service orders-service purchasing-service sales-service crm-service gateway; do
+          for svc in auth-service billing-service inventory-service orders-service purchasing-service sales-service crm-service agentic-service gateway; do
             find deploy/oci/k8s/apps -type f -name "*.yaml" -exec sed -i "s|ghcr.io/replace-org/replace-repo/myapp-${svc}:latest|${REPO}/myapp-${svc}:${IMAGE_TAG}|g" {} +
           done
           echo "Patched app images to tag ${IMAGE_TAG}"

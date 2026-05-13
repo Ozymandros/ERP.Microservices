@@ -15,6 +15,7 @@ public interface IProductService
 {
     Task<ProductDto?> GetProductByIdAsync(Guid id);
     Task<ProductDto?> GetProductBySkuAsync(string sku);
+    Task<ProductDto?> GetProductByNameAsync(string name);
     Task<IEnumerable<ProductDto>> GetAllProductsAsync();
     Task<PaginatedResult<ProductDto>> GetAllProductsPaginatedAsync(int pageNumber, int pageSize);
     Task<PaginatedResult<ProductDto>> QueryProductsAsync(ISpecification<Product> spec);

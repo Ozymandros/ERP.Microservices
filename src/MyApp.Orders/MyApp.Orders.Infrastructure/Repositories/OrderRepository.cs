@@ -41,13 +41,19 @@ namespace MyApp.Orders.Infrastructure.Repositories
             }
         }
 
-        /// <summary>Get By Id Async.</summary>
-        public async Task<Order?> GetByIdAsync(Guid id)
-        {
-            return await _db.Orders.Include(o => o.Lines).FirstOrDefaultAsync(o => o.Id == id);
-        }
+/// <summary>Get By Id Async.</summary>
+    public async Task<Order?> GetByIdAsync(Guid id)
+    {
+        return await _db.Orders.Include(o => o.Lines).FirstOrDefaultAsync(o => o.Id == id);
+    }
 
-        /// <summary>List Async.</summary>
+    /// <summary>Get By Order Number Async.</summary>
+    public async Task<Order?> GetByOrderNumberAsync(string orderNumber)
+    {
+        return await _db.Orders.Include(o => o.Lines).FirstOrDefaultAsync(o => o.OrderNumber == orderNumber);
+    }
+
+    /// <summary>List Async.</summary>
         public async Task<IEnumerable<Order>> ListAsync()
         {
             return await _db.Orders.Include(o => o.Lines).ToListAsync();

@@ -141,7 +141,7 @@ var authBuilder = builder.Services
             ValidateLifetime = true,
             ClockSkew = TimeSpan.FromSeconds(30) // Allows 30 seconds margin for Docker/container synchronization
         };
-        // Si es Desarrollo, permitimos HTTP. Si no (Prod/Staging), HTTPS es obligatorio.
+        // If running in Development, allow HTTP. Otherwise (Prod/Staging), HTTPS is required.
         if (builder.Environment.IsDevelopment())
         {
             options.RequireHttpsMetadata = false;

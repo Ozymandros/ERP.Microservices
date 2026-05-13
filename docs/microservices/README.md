@@ -83,7 +83,7 @@ This category covers building and maintaining individual microservices. From ser
 
 ---
 
-## 📊 7 Microservices
+## 📊 8 Microservices
 
 | Service | Port | Database | Purpose |
 |---------|------|----------|---------|
@@ -94,7 +94,7 @@ This category covers building and maintaining individual microservices. From ser
 | **Purchasing Service** | 6006 | purchasing-db | Procurement |
 | **Sales Service** | 6007 | sales-db | Sales management |
 | **CRM Service** | 6003 | crm-db | Leads, opportunities, activities |
-| **SK Service** | 6008 | (no DB) | Semantic Kernel, AI Prompts |
+| **Agentic Service** | 6008 | agentic-db + postgres | AI Agents, Bot orchestration |
 
 ---
 
@@ -267,6 +267,7 @@ When creating a new service:
 ```
 microservices/
 ├── README.md (this file)
+├── AGENTIC.md
 ├── CRM.md
 ├── SERVICE_TEMPLATES.md
 ├── DAPR_INTEGRATION.md
@@ -277,7 +278,7 @@ microservices/
 
 ---
 
-**Last Updated:** March 17, 2026  
+**Last Updated:** May 6, 2026  
 **Category Status:** ✅ Complete  
-**Documents:** 6 files  
-**Services:** 7 total
+**Documents:** 7 files  
+**Services:** 8 total

@@ -65,6 +65,49 @@ public class WarehouseServiceTests
         Assert.Null(result);
     }
 
+    #region GetWarehouseByNameAsync Tests
+
+    [Fact]
+    public async Task GetWarehouseByNameAsync_WithExistingName_ReturnsWarehouseDto()
+    {
+        // Arrange
+        var name = "Main Warehouse";
+        var warehouse = new Warehouse(Guid.NewGuid()) { Name = name };
+        var expectedDto = new WarehouseDto(Guid.NewGuid())
+        {
+            Name = name,
+            Location = ""
+        };
+
+        _mockWarehouseRepository.Setup(r => r.GetByNameAsync(name)).ReturnsAsync(warehouse);
+        _mockMapper.Setup(m => m.Map<WarehouseDto>(warehouse)).Returns(expectedDto);
+
+        // Act
+        var result = await _warehouseService.GetWarehouseByNameAsync(name);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(name, result.Name);
+        _mockWarehouseRepository.Verify(r => r.GetByNameAsync(name), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetWarehouseByNameAsync_WithNonExistentName_ReturnsNull()
+    {
+        // Arrange
+        var name = "Non-Existent Warehouse";
+        _mockWarehouseRepository.Setup(r => r.GetByNameAsync(name)).ReturnsAsync((Warehouse?)null);
+
+        // Act
+        var result = await _warehouseService.GetWarehouseByNameAsync(name);
+
+        // Assert
+        Assert.Null(result);
+        _mockWarehouseRepository.Verify(r => r.GetByNameAsync(name), Times.Once);
+    }
+
+    #endregion
+
     [Fact]
     public async Task GetAllWarehousesAsync_ReturnsAllWarehouses()
     {

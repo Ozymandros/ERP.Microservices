@@ -11,4 +11,5 @@ public interface IInventoryTransactionRepository : IRepository<InventoryTransact
     Task<IEnumerable<InventoryTransaction>> GetByProductIdAsync(Guid productId);
     Task<IEnumerable<InventoryTransaction>> GetByWarehouseIdAsync(Guid warehouseId);
     Task<IEnumerable<InventoryTransaction>> GetByTransactionTypeAsync(TransactionType transactionType);
+    Task<InventoryTransaction?> GetByReferenceNumberAsync(string referenceNumber);
 }

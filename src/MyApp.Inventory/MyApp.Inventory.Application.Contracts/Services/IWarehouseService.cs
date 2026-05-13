@@ -14,6 +14,7 @@ namespace MyApp.Inventory.Application.Contracts.Services;
 public interface IWarehouseService
 {
     Task<WarehouseDto?> GetWarehouseByIdAsync(Guid id);
+    Task<WarehouseDto?> GetWarehouseByNameAsync(string name);
     Task<IEnumerable<WarehouseDto>> GetAllWarehousesAsync();
     Task<PaginatedResult<WarehouseDto>> GetAllWarehousesPaginatedAsync(int pageNumber, int pageSize);
     Task<PaginatedResult<WarehouseDto>> QueryWarehousesAsync(ISpecification<Warehouse> spec);

@@ -25,6 +25,12 @@ public class WarehouseService : IWarehouseService
         return warehouse == null ? null : _mapper.Map<WarehouseDto>(warehouse);
     }
 
+    public async Task<WarehouseDto?> GetWarehouseByNameAsync(string name)
+    {
+        var warehouse = await _warehouseRepository.GetByNameAsync(name);
+        return warehouse == null ? null : _mapper.Map<WarehouseDto>(warehouse);
+    }
+
     public async Task<IEnumerable<WarehouseDto>> GetAllWarehousesAsync()
     {
         var warehouses = await _warehouseRepository.GetAllAsync();
