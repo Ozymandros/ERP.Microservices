@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Minimal cheap dev: generic workloads + gp3 PVC + smaller resource requests only.
+# Backup CronJob, IRSA, and External Secrets live under overlays/prod (or enable manually).
+resources:
+  - ../../../../k8s/overlays/dev
+
+patchesStrategicMerge:
+  - patch-sql-pvc-gp3.yaml
+  - patch-sql-resources.yaml

@@ -1,0 +1,60 @@
+name: K8s validate or apply
+
+on:
+  workflow_call:
+    inputs:
+      kustomize_path:
+        required: true
+        type: string
+      apply_mode:
+        required: true
+        type: string
+      dapr_components_path:
+        required: false
+        type: string
+        default: deploy/k8s/base/dapr/components
+
+jobs:
+  k8s-deploy:
+    name: K8s ${{ inputs.apply_mode }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: latest
+
+      - name: Validate manifests
+        if: ${{ inputs.apply_mode == 'validate' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          kubectl apply --dry-run=client -k "${{ inputs.kustomize_path }}"
+          if [[ -d "${{ inputs.dapr_components_path }}" ]]; then
+            kubectl apply --dry-run=client -f "${{ inputs.dapr_components_path }}/dapr-config.yaml"
+            kubectl apply --dry-run=client -f "${{ inputs.dapr_components_path }}/statestore.yaml"
+            kubectl apply --dry-run=client -f "${{ inputs.dapr_components_path }}/pubsub.yaml"
+          fi
+
+      - name: Apply manifests
+        if: ${{ inputs.apply_mode == 'apply' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          kubectl apply -k "${{ inputs.kustomize_path }}"
+          if [[ -d "${{ inputs.dapr_components_path }}" ]]; then
+            kubectl apply -f "${{ inputs.dapr_components_path }}/dapr-config.yaml"
+            kubectl apply -f "${{ inputs.dapr_components_path }}/statestore.yaml"
+            kubectl apply -f "${{ inputs.dapr_components_path }}/pubsub.yaml"
+          fi
+
+      - name: Post-deploy checks
+        if: ${{ inputs.apply_mode == 'apply' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          kubectl get pods -A
+          kubectl get ingress -A

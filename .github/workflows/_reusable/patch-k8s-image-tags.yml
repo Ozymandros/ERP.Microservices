@@ -1,0 +1,63 @@
+name: Patch K8s image tags
+
+on:
+  workflow_call:
+    inputs:
+      image_tag:
+        required: true
+        type: string
+      registry:
+        required: false
+        type: string
+        default: ghcr.io
+      image_namespace:
+        required: false
+        type: string
+        default: ""
+      search_paths:
+        required: false
+        type: string
+        default: deploy/k8s deploy/aws/k8s
+      services_config_path:
+        required: false
+        type: string
+        default: deploy/k8s/contracts/services.yaml
+
+jobs:
+  patch-tags:
+    name: Patch manifest image tags
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Replace image placeholders
+        shell: bash
+        run: |
+          set -euo pipefail
+          pip install --quiet pyyaml
+          NAMESPACE="${{ inputs.image_namespace }}"
+          if [[ -z "$NAMESPACE" ]]; then
+            NAMESPACE="${{ github.repository }}"
+          fi
+          REPO="${{ inputs.registry }}/${NAMESPACE}"
+          IMAGE_TAG="${{ inputs.image_tag }}"
+          SEARCH_PATHS="${{ inputs.search_paths }}"
+
+          mapfile -t SERVICES < <(python - <<'PY'
+          import yaml
+          from pathlib import Path
+          data = yaml.safe_load(Path("${{ inputs.services_config_path }}").read_text(encoding="utf-8"))
+          for item in data["services"]:
+              print(item["name"])
+          PY
+          )
+
+          for root in $SEARCH_PATHS; do
+            [[ -d "$root" ]] || continue
+            for svc in "${SERVICES[@]}"; do
+              find "$root" -type f -name "*.yaml" -exec sed -i "s|ghcr.io/replace-org/replace-repo/myapp-${svc}:latest|${REPO}/myapp-${svc}:${IMAGE_TAG}|g" {} +
+            done
+          done
+
+          echo "Patched images to tag ${IMAGE_TAG} under: ${SEARCH_PATHS}"
