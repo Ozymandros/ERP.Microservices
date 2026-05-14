@@ -60,6 +60,10 @@ concurrency:
   group: aws-k8s-${{ github.ref }}-${{ github.event.inputs.profile }}
   cancel-in-progress: false
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   prepare:
     name: Prepare deployment context

@@ -6,4 +6,5 @@ resources:
   - letsencrypt-clusterissuers.yaml
 
 patchesStrategicMerge:
+  - patch-aspnetcore-environment.yaml
   - patch-gateway-ingress-letsencrypt.yaml
