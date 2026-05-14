@@ -2,14 +2,7 @@
   "name": "Aspire with Dapr",
   "image": "mcr.microsoft.com/devcontainers/dotnet:10.0-noble",
 
-  "forwardPorts": [
-    5000,
-    7231,
-    6379,
-    1455,
-    15000,
-    3500
-  ],
+  "forwardPorts": [5000, 7231, 6379, 1455, 15000, 3500],
   "portsAttributes": {
     "5000": {
       "label": "API Gateway (HTTP)",

@@ -274,6 +274,16 @@ if (app.Environment.IsDevelopment())
         var baseUrl = builder.Configuration["Gateway:BaseUrl"]
             ?? "http://localhost:5000";
 
+        // Auto-detect if we are running inside a GitHub Codespace
+        if (Environment.GetEnvironmentVariable("CODESPACES") == "true")
+        {
+            var codespaceName = Environment.GetEnvironmentVariable("CODESPACE_NAME");
+            var domain = Environment.GetEnvironmentVariable("GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN");
+
+            // Dynamically builds: https://your-codespace-id-5000.app.github.dev
+            baseUrl = $"https://{codespaceName}-5000.{domain}";
+        }
+
         app.MapScalarApiReference("/scalar", options =>
         {
             options.WithTitle("ERP Centralized Gateway API")
@@ -320,9 +330,4 @@ app.Run();
 record OcelotRoute
 {
     public string UpstreamPathTemplate { get; set; } = string.Empty;
-}
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
