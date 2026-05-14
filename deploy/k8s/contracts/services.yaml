@@ -1,0 +1,26 @@
+# Canonical service catalog for image builds and manifest tag patching.
+services:
+  - name: auth-service
+    dockerfile: src/MyApp.Auth/MyApp.Auth.API/Dockerfile
+  - name: billing-service
+    dockerfile: src/MyApp.Billing/MyApp.Billing.API/Dockerfile
+  - name: inventory-service
+    dockerfile: src/MyApp.Inventory/MyApp.Inventory.API/Dockerfile
+  - name: orders-service
+    dockerfile: src/MyApp.Orders/MyApp.Orders.API/Dockerfile
+  - name: purchasing-service
+    dockerfile: src/MyApp.Purchasing/MyApp.Purchasing.API/Dockerfile
+  - name: sales-service
+    dockerfile: src/MyApp.Sales/MyApp.Sales.API/Dockerfile
+  - name: crm-service
+    dockerfile: src/MyApp.Crm/MyApp.Crm.API/Dockerfile
+  - name: agentic-service
+    dockerfile: src/MyApp.Agentic/MyApp.Agentic.API/Dockerfile
+  - name: gateway
+    dockerfile: src/ErpApiGateway/Dockerfile
+
+image:
+  registry: ghcr.io
+  placeholder_org: replace-org
+  placeholder_repo: replace-repo
+  name_prefix: myapp

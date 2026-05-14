@@ -1,9 +1,9 @@
 {
   "name": "Aspire with Dapr",
-  "image": "mcr.microsoft.com/devcontainers/dotnet:10.0-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:10.0-noble",
 
   "features": {
-    "ghcr.io/devcontainers/features/git:1": {}
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
 
   "onCreateCommand": "dotnet new install Aspire.ProjectTemplates --force",
@@ -19,10 +19,5 @@
         "ms-azuretools.vscode-dapr"
       ]
     }
-  },
-
-  "workspaceFolder": "/workspace",
-  "mounts": [
-    "source=${localWorkspaceFolder},target=/workspace,type=bind"
-  ]
+  }
 }

@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespaces.yaml
+  - redis.yaml
+
+configMapGenerator:
+  - name: platform-bootstrap
+    namespace: myapp-platform
+    literals:
+      - PLATFORM_PHASE=phase2
+      - DAPR_STATESTORE_NAME=statestore
+      - DAPR_PUBSUB_NAME=pubsub
+
+generatorOptions:
+  disableNameSuffixHash: true
