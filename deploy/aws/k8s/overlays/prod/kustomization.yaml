@@ -9,6 +9,6 @@ resources:
   - backup-cronjob.yaml
   - external-secrets-aws.yaml
 
-patchesStrategicMerge:
-  - patch-sql-pvc-gp3.yaml
-  - patch-sql-resources.yaml
+patches:
+  - path: patch-sql-pvc-gp3.yaml
+  - path: patch-sql-resources.yaml

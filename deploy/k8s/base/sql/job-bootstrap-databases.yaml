@@ -25,6 +25,11 @@ spec:
                 secretKeyRef:
                   name: sql-secrets
                   key: sa-password
+            - name: SQLADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sql-secrets
+                  key: sqladmin-password
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -50,12 +55,20 @@ spec:
               "
 
               echo "Creating sqladmin login for connection-string parity..."
-              "$SQLCMD_BIN" -S sqlserver,1433 -U sa -P "$SA_PASSWORD" -Q "
-              IF NOT EXISTS (SELECT name FROM sys.server_principals WHERE name = 'sqladmin')
-              BEGIN
-                CREATE LOGIN [sqladmin] WITH PASSWORD = '$SA_PASSWORD', CHECK_POLICY = ON;
-              END
-              "
+              # Write SQL to a secure temp file so the sqlcmd scripting variable $(SQLADMIN_PWD)
+              # is substituted by sqlcmd (not the shell), preventing T-SQL injection from
+              # special characters in the password. sqladmin uses its own distinct secret.
+              LOGIN_SQL="$(mktemp /tmp/create_login_XXXXXX.sql)"
+              cat > "$LOGIN_SQL" <<'SQLEOF'
+IF NOT EXISTS (SELECT name FROM sys.server_principals WHERE name = 'sqladmin')
+BEGIN
+  CREATE LOGIN [sqladmin] WITH PASSWORD = N'$(SQLADMIN_PWD)', CHECK_POLICY = ON;
+END
+SQLEOF
+              "$SQLCMD_BIN" -S sqlserver,1433 -U sa -P "$SA_PASSWORD" \
+                -v SQLADMIN_PWD="$SQLADMIN_PASSWORD" \
+                -i "$LOGIN_SQL"
+              rm -f "$LOGIN_SQL"
 
               for db in AuthDb BillingDb InventoryDb OrdersDb PurchasingDb SalesDb CrmDb; do
                 "$SQLCMD_BIN" -S sqlserver,1433 -U sa -P "$SA_PASSWORD" -Q "

@@ -4,7 +4,7 @@ metadata:
   name: gateway
   namespace: myapp-apps
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     cert-manager.io/issuer: null
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
