@@ -17,17 +17,18 @@ module "vpc" {
 module "eks" {
   source = "./modules/eks"
 
-  name_prefix         = local.name_prefix
-  kubernetes_version  = var.kubernetes_version
-  vpc_id              = module.vpc.vpc_id
-  cluster_subnet_ids  = local.cluster_subnet_ids
-  node_subnet_ids     = local.node_subnet_ids
-  node_instance_types = var.node_instance_types
-  node_capacity_type  = var.node_capacity_type
-  node_desired_size   = var.node_desired_size
-  node_min_size       = var.node_min_size
-  node_max_size       = var.node_max_size
-  tags                = local.base_tags
+  name_prefix          = local.name_prefix
+  kubernetes_version   = var.kubernetes_version
+  vpc_id               = module.vpc.vpc_id
+  cluster_subnet_ids   = local.cluster_subnet_ids
+  node_subnet_ids      = local.node_subnet_ids
+  node_instance_types  = var.node_instance_types
+  node_capacity_type   = var.node_capacity_type
+  node_desired_size    = var.node_desired_size
+  node_min_size        = var.node_min_size
+  node_max_size        = var.node_max_size
+  public_access_cidrs  = var.eks_public_access_cidrs
+  tags                 = local.base_tags
 }
 
 resource "aws_s3_bucket" "sql_backups" {
@@ -41,6 +42,28 @@ resource "aws_s3_bucket_versioning" "sql_backups" {
 
   versioning_configuration {
     status = "Disabled"
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "sql_backups" {
+  count  = var.create_backup_bucket ? 1 : 0
+  bucket = aws_s3_bucket.sql_backups[0].id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "sql_backups" {
+  count  = var.create_backup_bucket ? 1 : 0
+  bucket = aws_s3_bucket.sql_backups[0].id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "aws:kms"
+    }
+    bucket_key_enabled = true
   }
 }
 

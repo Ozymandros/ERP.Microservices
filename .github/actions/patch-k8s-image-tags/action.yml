@@ -1,0 +1,59 @@
+name: Patch K8s Image Tags
+description: Replace image placeholder tags in Kubernetes manifests (single source of truth used by the reusable workflow and the main deploy workflow).
+
+inputs:
+  image_tag:
+    required: true
+    description: Image tag to write into manifests
+  registry:
+    required: false
+    default: ghcr.io
+    description: Container registry host
+  image_namespace:
+    required: false
+    default: ""
+    description: Registry namespace / path prefix. Defaults to github.repository when empty.
+  search_paths:
+    required: false
+    default: "deploy/k8s deploy/aws/k8s"
+    description: Space-separated list of directories to search for YAML manifests
+  services_config_path:
+    required: false
+    default: deploy/k8s/contracts/services.yaml
+    description: Path to the services catalog YAML file
+
+runs:
+  using: composite
+  steps:
+    - name: Replace image placeholders
+      shell: bash
+      run: |
+        set -euo pipefail
+        pip install --quiet pyyaml
+        NAMESPACE="${{ inputs.image_namespace }}"
+        if [[ -z "$NAMESPACE" ]]; then
+          NAMESPACE="${{ github.repository }}"
+        fi
+        REPO="${{ inputs.registry }}/${NAMESPACE}"
+        IMAGE_TAG="${{ inputs.image_tag }}"
+        SEARCH_PATHS="${{ inputs.search_paths }}"
+        SERVICES_CONFIG="${{ inputs.services_config_path }}"
+
+        mapfile -t SERVICES < <(python - <<PY
+        import yaml
+        from pathlib import Path
+        data = yaml.safe_load(Path("${SERVICES_CONFIG}").read_text(encoding="utf-8"))
+        for item in data["services"]:
+            print(item["name"])
+        PY
+        )
+
+        for root in $SEARCH_PATHS; do
+          [[ -d "$root" ]] || continue
+          for svc in "${SERVICES[@]}"; do
+            find "$root" -type f -name "*.yaml" -exec sed -i \
+              "s|ghcr.io/replace-org/replace-repo/myapp-${svc}:latest|${REPO}/myapp-${svc}:${IMAGE_TAG}|g" {} +
+          done
+        done
+
+        echo "Patched images to tag ${IMAGE_TAG} under: ${SEARCH_PATHS}"

@@ -101,3 +101,9 @@ variable "enable_external_secrets_irsa" {
   type        = bool
   default     = false
 }
+
+variable "eks_public_access_cidrs" {
+  description = "CIDR blocks allowed to access the EKS public API endpoint. Use a narrow allowlist (e.g. your CI runner IPs) for production. Set to [] to disable public access."
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
