@@ -110,7 +110,7 @@ jobs:
     name: Build service images
     needs: prepare
     if: ${{ needs.prepare.outputs.do_build == 'true' }}
-    uses: ./.github/workflows/_reusable/build-service-images.yml
+    uses: ./.github/workflows/reusable-build-service-images.yml
     with:
       image_tag: ${{ needs.prepare.outputs.image_tag }}
       do_push: ${{ needs.prepare.outputs.do_push == 'true' }}
