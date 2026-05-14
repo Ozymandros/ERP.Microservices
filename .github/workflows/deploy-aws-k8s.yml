@@ -149,10 +149,6 @@ jobs:
             echo "build-push only works with apply_mode=apply"
             exit 1
           fi
-          if [[ "$INFRA_STEP" != "skip" && -z "${{ vars.AWS_DEPLOY_ROLE_ARN }}" ]]; then
-            echo "infra_step requires vars.AWS_DEPLOY_ROLE_ARN and vars.AWS_REGION"
-            exit 1
-          fi
           if [[ -z "${{ vars.AWS_DEPLOY_ROLE_ARN }}" ]]; then
             echo "vars.AWS_DEPLOY_ROLE_ARN is required (used for AWS OIDC and eks update-kubeconfig)"
             exit 1
