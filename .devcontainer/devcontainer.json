@@ -2,6 +2,45 @@
   "name": "Aspire with Dapr",
   "image": "mcr.microsoft.com/devcontainers/dotnet:10.0-noble",
 
+  "forwardPorts": [
+    5000,
+    7231,
+    6379,
+    1455,
+    15000,
+    3500
+  ],
+  "portsAttributes": {
+    "5000": {
+      "label": "API Gateway (HTTP)",
+      "onAutoForward": "notify"
+    },
+    "7231": {
+      "label": "API Gateway (HTTPS)",
+      "onAutoForward": "notify"
+    },
+    "6379": {
+      "label": "Redis",
+      "onAutoForward": "silent"
+    },
+    "1455": {
+      "label": "SQL Server",
+      "onAutoForward": "silent"
+    },
+    "15000": {
+      "label": "Aspire Dashboard",
+      "onAutoForward": "notify"
+    },
+    "3500": {
+      "label": "Dapr HTTP (standalone default)",
+      "onAutoForward": "silent"
+    },
+    "50001": {
+      "label": "Dapr gRPC (standalone default)",
+      "onAutoForward": "silent"
+    }
+  },
+
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "ghcr.io/devcontainers/features/powershell:1": {},
@@ -9,6 +48,8 @@
   },
 
   "onCreateCommand": "curl -sSL https://aspire.dev/install.sh | bash",
+
+  "postCreateCommand": "wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash && dapr init",
 
   "postStartCommand": "dotnet dev-certs https --trust",
 
