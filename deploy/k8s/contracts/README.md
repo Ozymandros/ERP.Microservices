@@ -13,7 +13,7 @@ Cloud overlays document additional backup-related keys (S3 on AWS, Object Storag
 
 `services.yaml` is the single source of truth for:
 
-- GitHub Actions image build matrix (`.github/workflows/_reusable/build-service-images.yml`)
+- GitHub Actions image build matrix (`.github/workflows/reusable-build-service-images.yml`)
 - Image tag patching (`patch-k8s-image-tags.yml`)
 
 ## Helm prerequisites (any cluster)
