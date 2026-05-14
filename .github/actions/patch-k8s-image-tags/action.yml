@@ -32,7 +32,7 @@ runs:
         pip install --quiet pyyaml
         NAMESPACE="${{ inputs.image_namespace }}"
         if [[ -z "$NAMESPACE" ]]; then
-          NAMESPACE="${{ github.repository }}"
+          NAMESPACE="${GITHUB_REPOSITORY,,}"
         fi
         REPO="${{ inputs.registry }}/${NAMESPACE}"
         IMAGE_TAG="${{ inputs.image_tag }}"

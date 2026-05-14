@@ -75,6 +75,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Compute lowercase repo name
+        id: repo
+        shell: bash
+        run: echo "name=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+
       - name: Build or build+push image
         uses: docker/build-push-action@v6
         with:
@@ -83,7 +88,7 @@ jobs:
           platforms: ${{ inputs.platform }}
           push: ${{ inputs.do_push }}
           tags: |
-            ghcr.io/${{ github.repository }}/myapp-${{ matrix.service }}:${{ inputs.image_tag }}
-            ghcr.io/${{ github.repository }}/myapp-${{ matrix.service }}:latest
+            ghcr.io/${{ steps.repo.outputs.name }}/myapp-${{ matrix.service }}:${{ inputs.image_tag }}
+            ghcr.io/${{ steps.repo.outputs.name }}/myapp-${{ matrix.service }}:latest
           cache-from: type=gha,scope=${{ matrix.service }}
           cache-to: type=gha,mode=max,scope=${{ matrix.service }}
