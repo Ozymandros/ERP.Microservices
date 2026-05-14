@@ -1,0 +1,41 @@
+name: Patch K8s image tags
+
+on:
+  workflow_call:
+    inputs:
+      image_tag:
+        required: true
+        type: string
+      registry:
+        required: false
+        type: string
+        default: ghcr.io
+      image_namespace:
+        required: false
+        type: string
+        default: ""
+      search_paths:
+        required: false
+        type: string
+        default: deploy/k8s deploy/aws/k8s
+      services_config_path:
+        required: false
+        type: string
+        default: deploy/k8s/contracts/services.yaml
+
+jobs:
+  patch-tags:
+    name: Patch manifest image tags
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Patch image tags
+        uses: ./.github/actions/patch-k8s-image-tags
+        with:
+          image_tag: ${{ inputs.image_tag }}
+          registry: ${{ inputs.registry }}
+          image_namespace: ${{ inputs.image_namespace }}
+          search_paths: ${{ inputs.search_paths }}
+          services_config_path: ${{ inputs.services_config_path }}

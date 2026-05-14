@@ -1,0 +1,24 @@
+# Cheap dev defaults — scale up for staging/prod via variables below.
+aws_region  = "eu-west-1"
+project     = "myapp"
+environment = "dev"
+
+vpc_cidr             = "10.70.0.0/16"
+public_subnet_cidrs  = ["10.70.1.0/24", "10.70.2.0/24"]
+private_subnet_cidrs = ["10.70.11.0/24", "10.70.12.0/24"]
+
+# ~$32/mo saved: nodes run in public subnets with public IPs.
+enable_nat_gateway = false
+
+kubernetes_version  = "1.30"
+node_instance_types = ["t3.xlarge"]
+node_capacity_type  = "SPOT"
+node_desired_size   = 1
+node_min_size       = 1
+node_max_size       = 2
+
+# Off for dev — enable with deploy/aws/k8s/overlays/prod.
+create_backup_bucket         = false
+enable_external_secrets_irsa = false
+
+# backup_bucket_name = "myapp-dev-sql-backups-unique-suffix"

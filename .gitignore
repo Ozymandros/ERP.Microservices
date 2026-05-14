@@ -56,3 +56,9 @@ test_results.txt
 *.user
 build_output.txt
 coverage.cobertura.xml
+
+# OpenTofu / Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars

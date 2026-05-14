@@ -1,0 +1,47 @@
+name: AWS Phase 1 Scaffold Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_validation:
+        description: "Run OpenTofu fmt/validate skeleton"
+        required: false
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+concurrency:
+  group: aws-phase1-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  tofu-skeleton-check:
+    name: OpenTofu Skeleton Check
+    if: ${{ github.event.inputs.run_validation == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+
+      - name: Tofu fmt and validate
+        working-directory: deploy/aws/tofu
+        run: |
+          tofu fmt -check -recursive
+          tofu init -backend=false
+          tofu validate
+
+      - name: Tofu plan skeleton
+        working-directory: deploy/aws/tofu
+        run: |
+          cp environments/dev/terraform.tfvars.example terraform.tfvars
+          echo "Skipping real plan because AWS credentials are not configured in this skeleton workflow."
+          tofu plan -refresh=false -lock=false || true

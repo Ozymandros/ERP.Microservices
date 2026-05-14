@@ -1,0 +1,247 @@
+name: Deploy AWS Kubernetes Stack
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_step:
+        description: "Container image stage"
+        required: true
+        default: skip
+        type: choice
+        options:
+          - skip
+          - build
+          - build-push
+      app_image_tag:
+        description: "Optional explicit app image tag (default: short SHA)"
+        required: false
+        default: ""
+        type: string
+      infra_step:
+        description: "OpenTofu stage before Kubernetes deploy"
+        required: true
+        default: skip
+        type: choice
+        options:
+          - skip
+          - validate
+          - apply
+      profile:
+        description: "Deployment profile"
+        required: true
+        default: dev
+        type: choice
+        options:
+          - dev
+          - prod
+      apply_mode:
+        description: "Validation mode or real apply"
+        required: true
+        default: validate
+        type: choice
+        options:
+          - validate
+          - apply
+      ingress_domain:
+        description: "Required for prod profile (example: api.example.com)"
+        required: false
+        default: ""
+        type: string
+      letsencrypt_issuer:
+        description: "Used by prod profile patch"
+        required: true
+        default: letsencrypt-staging
+        type: choice
+        options:
+          - letsencrypt-staging
+          - letsencrypt-prod
+
+concurrency:
+  group: aws-k8s-${{ github.ref }}-${{ github.event.inputs.profile }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  prepare:
+    name: Prepare deployment context
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.vars.outputs.image_tag }}
+      do_build: ${{ steps.vars.outputs.do_build }}
+      do_push: ${{ steps.vars.outputs.do_push }}
+      kustomize_path: ${{ steps.vars.outputs.kustomize_path }}
+    steps:
+      - name: Compute execution variables
+        id: vars
+        shell: bash
+        run: |
+          set -euo pipefail
+          INPUT_TAG="${{ github.event.inputs.app_image_tag }}"
+          IMAGE_STEP="${{ github.event.inputs.image_step }}"
+          APPLY_MODE="${{ github.event.inputs.apply_mode }}"
+          PROFILE="${{ github.event.inputs.profile }}"
+
+          if [[ -n "$INPUT_TAG" ]]; then
+            IMAGE_TAG="$INPUT_TAG"
+          else
+            IMAGE_TAG="${GITHUB_SHA::7}"
+          fi
+
+          DO_BUILD="false"
+          DO_PUSH="false"
+          if [[ "$IMAGE_STEP" != "skip" ]]; then
+            DO_BUILD="true"
+          fi
+          if [[ "$IMAGE_STEP" == "build-push" && "$APPLY_MODE" == "apply" ]]; then
+            DO_PUSH="true"
+          fi
+
+          if [[ "$PROFILE" == "prod" ]]; then
+            KUSTOMIZE_PATH="deploy/aws/k8s/overlays/prod"
+          else
+            KUSTOMIZE_PATH="deploy/aws/k8s/overlays/dev"
+          fi
+
+          echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+          echo "do_build=$DO_BUILD" >> "$GITHUB_OUTPUT"
+          echo "do_push=$DO_PUSH" >> "$GITHUB_OUTPUT"
+          echo "kustomize_path=$KUSTOMIZE_PATH" >> "$GITHUB_OUTPUT"
+
+  build-images:
+    name: Build service images
+    needs: prepare
+    if: ${{ needs.prepare.outputs.do_build == 'true' }}
+    uses: ./.github/workflows/reusable-build-service-images.yml
+    with:
+      image_tag: ${{ needs.prepare.outputs.image_tag }}
+      do_push: ${{ needs.prepare.outputs.do_push == 'true' }}
+      platform: linux/amd64
+
+  deploy-k8s:
+    name: Deploy AWS EKS (${{ github.event.inputs.profile }})
+    needs: [prepare, build-images]
+    if: ${{ needs.prepare.result == 'success' && (needs.build-images.result == 'success' || needs.build-images.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Validate workflow inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          PROFILE="${{ github.event.inputs.profile }}"
+          DOMAIN="${{ github.event.inputs.ingress_domain }}"
+          INFRA_STEP="${{ github.event.inputs.infra_step }}"
+          if [[ "$PROFILE" == "prod" && -z "$DOMAIN" ]]; then
+            echo "ingress_domain is required when profile=prod"
+            exit 1
+          fi
+          if [[ "${{ github.event.inputs.image_step }}" == "build-push" && "${{ github.event.inputs.apply_mode }}" != "apply" ]]; then
+            echo "build-push only works with apply_mode=apply"
+            exit 1
+          fi
+          if [[ -z "${{ vars.AWS_DEPLOY_ROLE_ARN }}" ]]; then
+            echo "vars.AWS_DEPLOY_ROLE_ARN is required (used for AWS OIDC and eks update-kubeconfig)"
+            exit 1
+          fi
+          if [[ -z "${{ vars.AWS_EKS_CLUSTER_NAME }}" || -z "${{ vars.AWS_REGION }}" ]]; then
+            echo "vars.AWS_EKS_CLUSTER_NAME and vars.AWS_REGION are required for deploy"
+            exit 1
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Setup OpenTofu
+        if: ${{ github.event.inputs.infra_step != 'skip' }}
+        uses: opentofu/setup-opentofu@v1
+
+      - name: OpenTofu validate/plan
+        if: ${{ github.event.inputs.infra_step == 'validate' }}
+        shell: bash
+        working-directory: deploy/aws/tofu
+        run: |
+          set -euo pipefail
+          tofu fmt -check -recursive
+          tofu init -backend=false
+          tofu validate
+          tofu plan -refresh=false -lock=false
+
+      - name: OpenTofu apply
+        if: ${{ github.event.inputs.infra_step == 'apply' }}
+        shell: bash
+        working-directory: deploy/aws/tofu
+        run: |
+          set -euo pipefail
+          tofu fmt -check -recursive
+          tofu init
+          tofu validate
+          tofu apply -auto-approve
+
+      - name: Update kubeconfig
+        shell: bash
+        run: |
+          set -euo pipefail
+          aws eks update-kubeconfig \
+            --name "${{ vars.AWS_EKS_CLUSTER_NAME }}" \
+            --region "${{ vars.AWS_REGION }}"
+          kubectl config current-context
+
+      - name: Patch prod ingress host and issuer
+        if: ${{ github.event.inputs.profile == 'prod' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          DOMAIN="${{ github.event.inputs.ingress_domain }}"
+          ISSUER="${{ github.event.inputs.letsencrypt_issuer }}"
+          PATCH_FILE="deploy/k8s/overlays/prod/patch-gateway-ingress-letsencrypt.yaml"
+          sed -i "s/api.replace-with-real-domain.com/${DOMAIN}/g" "$PATCH_FILE"
+          sed -i "s/letsencrypt-staging/${ISSUER}/g" "$PATCH_FILE"
+          echo "Patched $PATCH_FILE with domain=${DOMAIN} issuer=${ISSUER}"
+
+      - name: Patch deployment image tags
+        uses: ./.github/actions/patch-k8s-image-tags
+        with:
+          image_tag: ${{ needs.prepare.outputs.image_tag }}
+
+      - name: Validate manifests
+        if: ${{ github.event.inputs.apply_mode == 'validate' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          KUSTOMIZE_PATH="${{ needs.prepare.outputs.kustomize_path }}"
+          kubectl apply --dry-run=client -k "$KUSTOMIZE_PATH"
+          kubectl apply --dry-run=client -f deploy/k8s/base/dapr/components/dapr-config.yaml
+          kubectl apply --dry-run=client -f deploy/k8s/base/dapr/components/statestore.yaml
+          kubectl apply --dry-run=client -f deploy/k8s/base/dapr/components/pubsub.yaml
+
+      - name: Apply manifests
+        if: ${{ github.event.inputs.apply_mode == 'apply' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          KUSTOMIZE_PATH="${{ needs.prepare.outputs.kustomize_path }}"
+          kubectl apply -k "$KUSTOMIZE_PATH"
+          kubectl apply -f deploy/k8s/base/dapr/components/dapr-config.yaml
+          kubectl apply -f deploy/k8s/base/dapr/components/statestore.yaml
+          kubectl apply -f deploy/k8s/base/dapr/components/pubsub.yaml
+
+      - name: Post-deploy quick checks
+        if: ${{ github.event.inputs.apply_mode == 'apply' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          kubectl get pods -A
+          kubectl get ingress -A

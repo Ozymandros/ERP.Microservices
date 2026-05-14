@@ -1,0 +1,42 @@
+# AWS EKS Phase 1 (OpenTofu)
+
+Scaffold for VPC, EKS managed node group, EBS CSI addon, and optional IRSA/S3.
+
+**Default variable values target a cheap non-prod lab** (1× Spot node, no NAT, no backup bucket).
+
+## Modules
+
+| Module | Resources |
+|--------|-----------|
+| `vpc` | VPC, subnets, IGW, optional single NAT |
+| `eks` | EKS cluster, Spot/On-Demand node group, OIDC, EBS CSI |
+| `irsa` | Optional SQL backup + External Secrets roles |
+
+## Cost levers
+
+| Variable | Cheap dev | Scale up |
+|----------|-----------|----------|
+| `enable_nat_gateway` | `false` | `true` (private nodes) |
+| `node_capacity_type` | `SPOT` | `ON_DEMAND` |
+| `node_desired_size` | `1` | `2+` |
+| `node_instance_types` | `["t3.xlarge"]` | `["m6i.large"]` etc. |
+| `create_backup_bucket` | `false` | `true` + prod k8s overlay |
+| `enable_external_secrets_irsa` | `false` | `true` + prod k8s overlay |
+
+Pair tofu with `deploy/aws/k8s/overlays/dev` for minimal manifests.
+
+## Local run
+
+```powershell
+cd deploy/aws/tofu
+copy environments\dev\terraform.tfvars.example terraform.tfvars
+tofu init
+tofu fmt -check -recursive
+tofu validate
+tofu plan
+```
+
+## CI
+
+- `.github/workflows/deploy-aws-phase1.yml`
+- `.github/workflows/deploy-aws-k8s.yml` (`profile=dev` for cheap overlay)

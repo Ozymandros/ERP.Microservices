@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sales-service
+  namespace: myapp-apps
+  labels:
+    app.kubernetes.io/name: sales-service
+    app.kubernetes.io/part-of: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sales-service
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sales-service
+        app.kubernetes.io/part-of: myapp
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "sales-service"
+        dapr.io/app-port: "8080"
+        dapr.io/log-level: "info"
+        dapr.io/config: "daprConfig"
+    spec:
+      containers:
+        - name: sales-service
+          image: ghcr.io/replace-org/replace-repo/myapp-sales-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 6
+          env:
+            - name: ASPNETCORE_URLS
+              value: "http://+:8080"
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Development"
+            - name: FRONTEND_ORIGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: FRONTEND_ORIGIN
+            - name: Jwt__Issuer
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: Jwt__Issuer
+            - name: Jwt__Audience
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: Jwt__Audience
+            - name: Jwt__SecretKey
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: jwt-secret-key
+            - name: ConnectionStrings__cache
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: redis-connection
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://aspire-dashboard.myapp-platform.svc.cluster.local:4317"
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: "grpc"
+            - name: OTEL_EXPORTER_OTLP_HEADERS
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: otlp-header
+            - name: ConnectionStrings__SalesDb
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: sql-connection-salesdb
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "600m"
+              memory: "768Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sales-service
+  namespace: myapp-apps
+  labels:
+    app.kubernetes.io/name: sales-service
+    app.kubernetes.io/part-of: myapp
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: sales-service
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080

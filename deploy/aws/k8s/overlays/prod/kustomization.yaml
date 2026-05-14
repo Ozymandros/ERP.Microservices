@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Prod-oriented AWS add-ons (backup, ESO/IRSA). Not required for cheap dev.
+resources:
+  - ../../../../k8s/overlays/prod
+  - serviceaccount-sql-backup.yaml
+  - serviceaccount-external-secrets.yaml
+  - backup-cronjob.yaml
+  - external-secrets-aws.yaml
+
+patches:
+  - path: patch-sql-pvc-gp3.yaml
+  - path: patch-sql-resources.yaml
