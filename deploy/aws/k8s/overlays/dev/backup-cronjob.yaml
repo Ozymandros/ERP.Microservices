@@ -19,6 +19,10 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: backup
+              # Image contract: the image must include both sqlcmd (mssql-tools18 or mssql-tools)
+              # and the AWS CLI (aws). Replace the placeholder with a real image that satisfies
+              # these requirements, e.g. a custom image built from mcr.microsoft.com/mssql-tools
+              # with the AWS CLI layer added on top.
               image: ghcr.io/replace-org/mssql-backup-tools:latest
               imagePullPolicy: IfNotPresent
               env:
@@ -52,4 +56,5 @@ spec:
                     file="/tmp/backups/${db}_${TS}.bak"
                     "$SQLCMD_BIN" -S sqlserver,1433 -U sa -P "$SA_PASSWORD" -Q "BACKUP DATABASE [$db] TO DISK='${file}' WITH INIT, COMPRESSION, STATS=10;"
                     aws s3 cp "${file}" "s3://${S3_BUCKET}/${db}/${db}_${TS}.bak"
+                    rm "${file}"
                   done
