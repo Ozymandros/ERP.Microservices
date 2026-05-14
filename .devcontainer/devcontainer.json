@@ -3,10 +3,12 @@
   "image": "mcr.microsoft.com/devcontainers/dotnet:10.0-noble",
 
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/powershell:1": {},
+    "ghcr.io/devcontainers/features/node:1": {}
   },
 
-  "onCreateCommand": "dotnet new install Aspire.ProjectTemplates --force",
+  "onCreateCommand": "curl -sSL https://aspire.dev/install.sh | bash",
 
   "postStartCommand": "dotnet dev-certs https --trust",
 
