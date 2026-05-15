@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.HttpOverrides; // <-- REQUIRED FOR PROXY HEADERS
-using Microsoft.AspNetCore.OpenApi;
+using ErpApiGateway.Infrastructure;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
-using MyApp.Shared.Infrastructure.OpenApi;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Polly;
@@ -16,7 +16,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 var serviceName = builder.Environment.ApplicationName ?? typeof(Program).Assembly.GetName().Name ?? "ErpApiGateway";
 
-// Configure OpenTelemetry pipeline.
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService(serviceName))
     .WithTracing(tracing => tracing
@@ -28,26 +27,26 @@ builder.Services.AddOpenTelemetry()
         .AddRuntimeInstrumentation()
         .AddOtlpExporter());
 
-// ========================================
-// Configuration
-// ========================================
-
 var environment = builder.Environment.EnvironmentName;
 builder.Configuration
     .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"ocelot.{environment}.json", optional: true, reloadOnChange: true);
 
-var ocelotRoutes = builder.Configuration.GetSection("Routes").GetChildren();
-var microserviceNames = new HashSet<string>();
+ApplyOcelotBaseUrlFromEnvironment(builder.Configuration);
 
-// ========================================
-// Services
-// ========================================
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
+        | ForwardedHeaders.XForwardedHost
+        | ForwardedHeaders.XForwardedProto
+        | ForwardedHeaders.XForwardedPrefix;
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 builder.Services.AddOcelot(builder.Configuration).AddPolly();
 builder.Services.AddMvcCore().AddApiExplorer();
 
-// Add Authentication - JWT Bearer
 var jwtSecretKey = builder.Configuration["Jwt:SecretKey"]
     ?? throw new InvalidOperationException("JwtSecretKey configuration is required");
 var key = Encoding.ASCII.GetBytes(jwtSecretKey);
@@ -87,7 +86,6 @@ builder.Services
         };
     });
 
-// Add Authorization
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("ApiAccess", policy =>
@@ -96,7 +94,6 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
-// Add CORS
 var origins = builder.Configuration["FRONTEND_ORIGIN"]?.Split(';') ?? new[] { "http://localhost:3000" };
 builder.Services.AddCors(options =>
 {
@@ -109,7 +106,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add Health Checks
 builder.Services.AddHealthChecks()
     .AddCheck("Gateway", () =>
     {
@@ -118,7 +114,6 @@ builder.Services.AddHealthChecks()
             "Gateway is operational");
     });
 
-// Add Logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 if (environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
@@ -126,33 +121,16 @@ if (environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
     builder.Logging.AddDebug();
 }
 
-// ========================================
-// Build App
-// ========================================
-
 var app = builder.Build();
 
-// ========================================
-// Middleware Configuration
-// ========================================
+app.UseForwardedHeaders();
 
-// 1. DYNAMIC CLOUD FIX: Force app to read standard reverse-proxy headers (Azure, AWS, Codespaces, etc.)
-var forwardedOptions = new ForwardedHeadersOptions
-{
-    ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto
-};
-forwardedOptions.KnownNetworks.Clear();
-forwardedOptions.KnownProxies.Clear();
-app.UseForwardedHeaders(forwardedOptions);
-
-// Health check endpoints
 app.UseHealthChecks("/health");
 app.UseHealthChecks("/health/live");
 app.UseHealthChecks("/health/ready");
 
 app.UseRouting();
 
-// Configure DocFX static files
 string sitePath;
 if (Directory.Exists("/_site")) sitePath = "/_site";
 else if (Directory.Exists(Path.Combine(AppContext.BaseDirectory, "_site"))) sitePath = Path.Combine(AppContext.BaseDirectory, "_site");
@@ -217,28 +195,22 @@ if (app.Environment.IsDevelopment())
 
     if (endpoints.Count > 0)
     {
-        // 2. DYNAMIC CLOUD FIX: Use the MapScalarApiReference lambda to read HttpContext runtime values
         app.MapScalarApiReference("/scalar", (options, httpContext) =>
         {
             options.WithTitle("ERP Centralized Gateway API")
                    .WithTheme(ScalarTheme.Moon)
                    .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
 
-            // This calculates the real external address (whether on localhost, Azure, AWS, or Codespaces)
-            var dynamicBaseUrl = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}";
+            var publicBaseUrl = GatewayUrlResolver.GetPublicBaseUrl(httpContext, configuration);
 
             var servers = new List<Scalar.AspNetCore.ScalarServer>();
-            for (int i = 0; i < endpoints.Count; i++)
+            for (var i = 0; i < endpoints.Count; i++)
             {
                 var (serviceDisplayName, upstreamPath) = endpoints[i];
-                var servicePrefix = upstreamPath.Split('/')[1];
-
-                // Build server endpoint cleanly from the dynamically calculated address
-                var serverUrl = $"{dynamicBaseUrl}/{servicePrefix}";
+                var servicePrefix = upstreamPath.Split('/', StringSplitOptions.RemoveEmptyEntries)[0];
+                var serverUrl = $"{publicBaseUrl}/{servicePrefix}";
                 servers.Add(new(serverUrl, serviceDisplayName));
-
-                bool isDefault = i == 0;
-                options.AddDocument(servicePrefix, serviceDisplayName, upstreamPath, isDefault: isDefault);
+                options.AddDocument(servicePrefix, serviceDisplayName, upstreamPath, isDefault: i == 0);
             }
 
             options.Servers = servers;
@@ -257,7 +229,14 @@ app.UseAuthorization();
 await app.UseOcelot();
 app.Run();
 
-record OcelotRoute
+static void ApplyOcelotBaseUrlFromEnvironment(ConfigurationManager configuration)
 {
-    public string UpstreamPathTemplate { get; set; } = string.Empty;
+    // Env Ocelot__GlobalConfiguration__BaseUrl -> configuration key Ocelot:GlobalConfiguration:BaseUrl
+    var ocelotBaseUrl = configuration["Ocelot:GlobalConfiguration:BaseUrl"];
+    if (string.IsNullOrWhiteSpace(ocelotBaseUrl))
+    {
+        return;
+    }
+
+    configuration["GlobalConfiguration:BaseUrl"] = ocelotBaseUrl.TrimEnd('/');
 }
