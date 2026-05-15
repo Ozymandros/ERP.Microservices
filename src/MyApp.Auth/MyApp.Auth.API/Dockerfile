@@ -1,5 +1,4 @@
-# Build arg for registry prefix (must be defined before any FROM that uses it)
-# e.g., "myappdevcontainerregistry.azurecr.io/" for ACR builds, empty for local builds
+# Optional registry prefix for myapp-microservices-base (empty = local; CI: ghcr.io/<owner>/<repo>/)
 ARG BASE_IMAGE_REGISTRY=
 
 # Build stage
@@ -35,8 +34,7 @@ RUN dotnet build "MyApp.Auth.API.csproj" -c Release -o /app/build --no-restore
 FROM build AS publish
 RUN dotnet publish "MyApp.Auth.API.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
 
-# Runtime stage - Use shared base image
-# BASE_IMAGE_REGISTRY is defined at the top of the file
+# Runtime stage - shared microservices base
 FROM ${BASE_IMAGE_REGISTRY}myapp-microservices-base:10.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

@@ -1,23 +1,41 @@
 # Canonical service catalog for image builds and manifest tag patching.
+#
+# runtime_from_shared_base: final stage uses docker/microservices-base (BASE_IMAGE_REGISTRY in Dockerfile).
+# Gateway uses aspnet:10.0 directly and does not use the shared base image.
+
+base_image:
+  name: myapp-microservices-base
+  tag: "10.0"
+  dockerfile: docker/microservices-base.Dockerfile
+
 services:
   - name: auth-service
     dockerfile: src/MyApp.Auth/MyApp.Auth.API/Dockerfile
+    runtime_from_shared_base: true
   - name: billing-service
     dockerfile: src/MyApp.Billing/MyApp.Billing.API/Dockerfile
+    runtime_from_shared_base: true
   - name: inventory-service
     dockerfile: src/MyApp.Inventory/MyApp.Inventory.API/Dockerfile
+    runtime_from_shared_base: true
   - name: orders-service
     dockerfile: src/MyApp.Orders/MyApp.Orders.API/Dockerfile
+    runtime_from_shared_base: true
   - name: purchasing-service
     dockerfile: src/MyApp.Purchasing/MyApp.Purchasing.API/Dockerfile
+    runtime_from_shared_base: true
   - name: sales-service
     dockerfile: src/MyApp.Sales/MyApp.Sales.API/Dockerfile
+    runtime_from_shared_base: true
   - name: crm-service
     dockerfile: src/MyApp.Crm/MyApp.Crm.API/Dockerfile
+    runtime_from_shared_base: true
   - name: agentic-service
     dockerfile: src/MyApp.Agentic/MyApp.Agentic.API/Dockerfile
+    runtime_from_shared_base: true
   - name: gateway
     dockerfile: src/ErpApiGateway/Dockerfile
+    runtime_from_shared_base: false
 
 image:
   registry: ghcr.io

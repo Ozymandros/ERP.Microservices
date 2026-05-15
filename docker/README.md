@@ -72,18 +72,13 @@ These services maintain their own Dockerfiles.
 
 ## CI/CD Integration
 
-In your CI/CD pipeline:
+GitHub Actions (`.github/workflows/reusable-build-service-images.yml`):
 
-```yaml
-- name: Build shared base
-  run: docker build -f docker/microservices-base.Dockerfile -t myapp-microservices-base:10.0 .
+1. Pushes `myapp-microservices-base:10.0` to GHCR when `do_push=true`.
+2. Builds each service from `deploy/k8s/contracts/services.yaml`.
+3. Passes `BASE_IMAGE_REGISTRY=ghcr.io/<owner>/<repo>/` to services with `runtime_from_shared_base: true`.
 
-- name: Build services
-  run: |
-    docker build -f src/MyApp.Billing/MyApp.Billing.API/Dockerfile -t billing:latest .
-    docker build -f src/MyApp.Inventory/MyApp.Inventory.API/Dockerfile -t inventory:latest .
-    # ... etc
-```
+Local builds keep `BASE_IMAGE_REGISTRY` empty and use the local tag from `build-base-image.ps1`.
 
 ## Versioning
 
