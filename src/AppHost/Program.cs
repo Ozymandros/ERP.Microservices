@@ -56,7 +56,8 @@ else
     projectBuilder = builder.CreateProjectBuilder(sqlServer: sqlServer);
 }
 
-var origin = builder.Configuration["Parameters:FrontendOrigin"];
+var origin = builder.Configuration["Parameters:AllowedOrigins"]
+    ?? builder.Configuration["Parameters:FrontendOrigin"];
 
 // Get JWT configuration from appsettings.json or use defaults
 var jwtSecretKey = builder.Configuration["Jwt:SecretKey"] ?? "a_very_long_and_super_ultra_secret_key_01234566789";

@@ -162,18 +162,8 @@ public static class MicroserviceExtensions
             builder.Services.AddAutoMapper(cfg => { }, options.AutoMapperAssembly);
         }
 
-        // 11. CORS (always configured with defaults)
-        var origins = builder.Configuration["FRONTEND_ORIGIN"]?.Split(';') ?? new[] { "http://localhost:3000" };
-        builder.Services.AddCors(corsOptions =>
-        {
-            corsOptions.AddPolicy("AllowFrontend", policy =>
-            {
-                policy.WithOrigins(origins)
-                      .AllowAnyMethod()
-                      .AllowAnyHeader()
-                      .AllowCredentials();
-            });
-        });
+        // 11. CORS: any origin in dev; localhost-only in production
+        builder.Services.AddAllowFrontendCors(builder.Configuration, builder.Environment);
 
         // 12. Service-specific dependencies
         options.ConfigureServiceDependencies?.Invoke(builder.Services);

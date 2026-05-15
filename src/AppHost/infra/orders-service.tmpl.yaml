@@ -34,7 +34,7 @@ properties:
             value: {{ .Env.MANAGED_IDENTITY_CLIENT_ID }}
           - name: ASPNETCORE_FORWARDEDHEADERS_ENABLED
             value: "true"
-          - name: FRONTEND_ORIGIN
+          - name: ALLOWED_ORIGINS
             value: http://localhost:3000;http://localhost:5000
           - name: HTTP_PORTS
             value: "6004"

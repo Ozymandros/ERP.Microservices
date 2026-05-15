@@ -111,7 +111,7 @@ public class AspireProjectBuilder
             .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"])
             .WithEnvironment("ASPNETCORE_URLS", aspNetCoreUrls)
             .WithEnvironment("DOTNET_LAUNCH_PROFILE", string.Empty)
-            .WithEnvironment("FRONTEND_ORIGIN", origin)
+            .WithEnvironment("ALLOWED_ORIGINS", origin)
             // OpenTelemetry configuration for Serilog
             .WithEnvironment("OTEL_SERVICE_NAME", serviceName)
             .WithEnvironment("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317")

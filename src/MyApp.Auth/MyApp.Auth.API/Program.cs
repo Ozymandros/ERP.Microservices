@@ -233,18 +233,7 @@ builder.Services.AddAutoMapper(
     typeof(MyApp.Auth.Application.Mappings.AuthMappingProfile).Assembly
 );
 
-var origins = builder.Configuration["FRONTEND_ORIGIN"]?.Split(';') ?? ["http://localhost:3000"];
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowFrontend", policy =>
-    {
-        policy.WithOrigins(origins)
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
-    });
-});
+builder.Services.AddAllowFrontendCors(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
 

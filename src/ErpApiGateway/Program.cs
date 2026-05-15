@@ -1,4 +1,5 @@
 using ErpApiGateway.Infrastructure;
+using MyApp.Shared.Infrastructure.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
@@ -94,17 +95,7 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
-var origins = builder.Configuration["FRONTEND_ORIGIN"]?.Split(';') ?? new[] { "http://localhost:3000" };
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowFrontend", policy =>
-    {
-        policy.WithOrigins(origins)
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
-    });
-});
+builder.Services.AddAllowFrontendCors(builder.Configuration, builder.Environment);
 
 builder.Services.AddHealthChecks()
     .AddCheck("Gateway", () =>
