@@ -19,6 +19,28 @@ public static class GatewayUrlResolver
         }
 
         var request = httpContext.Request;
-        return $"{request.Scheme}://{request.Host}{request.PathBase}".TrimEnd('/');
+        var fromRequest = $"{request.Scheme}://{request.Host}{request.PathBase}".TrimEnd('/');
+
+        // When browsing Scalar via localhost inside a dev container, prefer the configured Ocelot public URL.
+        if (IsLoopbackHost(request.Host.Host))
+        {
+            var ocelotBase = configuration["GlobalConfiguration:BaseUrl"];
+            if (!string.IsNullOrWhiteSpace(ocelotBase) && !IsLoopbackHost(GetHostFromUrl(ocelotBase)))
+            {
+                return ocelotBase.TrimEnd('/');
+            }
+        }
+
+        return fromRequest;
+    }
+
+    private static bool IsLoopbackHost(string? host) =>
+        string.Equals(host, "localhost", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(host, "127.0.0.1", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(host, "[::1]", StringComparison.OrdinalIgnoreCase);
+
+    private static string? GetHostFromUrl(string url)
+    {
+        return Uri.TryCreate(url, UriKind.Absolute, out var uri) ? uri.Host : null;
     }
 }

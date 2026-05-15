@@ -46,6 +46,10 @@
 
   "postStartCommand": "dotnet dev-certs https --trust",
 
+  "containerEnv": {
+    "Ocelot__GlobalConfiguration__BaseUrl": "https://${localEnv:CODESPACE_NAME}-5000.${localEnv:GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
+  },
+
   "customizations": {
     "vscode": {
       "extensions": [

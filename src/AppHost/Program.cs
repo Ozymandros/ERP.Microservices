@@ -133,6 +133,12 @@ var gateway = builder.AddProject<Projects.ErpApiGateway>("gateway")
     .WithEnvironment("Jwt__Audience", jwtAudience)
     .WithEnvironment("OCELOT_ENVIRONMENT", "Development");
 
+var codespaceGatewayBaseUrl = GetCodespacesForwardedGatewayUrl(5000);
+if (!string.IsNullOrWhiteSpace(codespaceGatewayBaseUrl))
+{
+    gateway = gateway.WithEnvironment("Ocelot__GlobalConfiguration__BaseUrl", codespaceGatewayBaseUrl);
+}
+
 if (isDeployment)
 {
     gateway.WithEnvironment("OCELOT_ENVIRONMENT", "Production");
@@ -157,4 +163,16 @@ catch (AggregateException ex)
         Console.WriteLine(inner.StackTrace);
     }
     throw;
+}
+
+static string? GetCodespacesForwardedGatewayUrl(int port)
+{
+    var codespaceName = Environment.GetEnvironmentVariable("CODESPACE_NAME");
+    var forwardingDomain = Environment.GetEnvironmentVariable("GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN");
+    if (string.IsNullOrWhiteSpace(codespaceName) || string.IsNullOrWhiteSpace(forwardingDomain))
+    {
+        return null;
+    }
+
+    return $"https://{codespaceName}-{port}.{forwardingDomain}";
 }

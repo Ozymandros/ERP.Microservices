@@ -231,12 +231,20 @@ app.Run();
 
 static void ApplyOcelotBaseUrlFromEnvironment(ConfigurationManager configuration)
 {
-    // Env Ocelot__GlobalConfiguration__BaseUrl -> configuration key Ocelot:GlobalConfiguration:BaseUrl
-    var ocelotBaseUrl = configuration["Ocelot:GlobalConfiguration:BaseUrl"];
+    // Env Ocelot__GlobalConfiguration__BaseUrl -> Ocelot:GlobalConfiguration:BaseUrl in IConfiguration
+    var ocelotBaseUrl = Environment.GetEnvironmentVariable("Ocelot__GlobalConfiguration__BaseUrl")
+        ?? configuration["Ocelot:GlobalConfiguration:BaseUrl"];
     if (string.IsNullOrWhiteSpace(ocelotBaseUrl))
     {
         return;
     }
 
-    configuration["GlobalConfiguration:BaseUrl"] = ocelotBaseUrl.TrimEnd('/');
+    ocelotBaseUrl = ocelotBaseUrl.TrimEnd('/');
+    configuration["GlobalConfiguration:BaseUrl"] = ocelotBaseUrl;
+
+    // Scalar: reuse the same public URL unless Gateway:PublicBaseUrl is explicitly set
+    if (string.IsNullOrWhiteSpace(configuration["Gateway:PublicBaseUrl"]))
+    {
+        configuration["Gateway:PublicBaseUrl"] = ocelotBaseUrl;
+    }
 }
