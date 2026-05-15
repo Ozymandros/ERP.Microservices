@@ -50,9 +50,49 @@ jobs:
           )"
           echo "matrix=$MATRIX_JSON" >> "$GITHUB_OUTPUT"
 
+  build-base-image:
+    name: Build microservices base image
+    if: ${{ inputs.do_push }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute lowercase repo name
+        id: repo
+        shell: bash
+        run: echo "name=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push base image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/microservices-base.Dockerfile
+          platforms: ${{ inputs.platform }}
+          push: true
+          tags: |
+            ghcr.io/${{ steps.repo.outputs.name }}/myapp-microservices-base:10.0
+            ghcr.io/${{ steps.repo.outputs.name }}/myapp-microservices-base:${{ inputs.image_tag }}
+          cache-from: type=gha,scope=microservices-base
+          cache-to: type=gha,mode=max,scope=microservices-base
+
   build-images:
     name: Build ${{ matrix.service }}
-    needs: prepare-matrix
+    needs: [prepare-matrix, build-base-image]
+    if: ${{ always() && needs.prepare-matrix.result == 'success' && (needs.build-base-image.result == 'success' || needs.build-base-image.result == 'skipped') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -80,6 +120,19 @@ jobs:
         shell: bash
         run: echo "name=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
 
+      - name: Build shared base image locally
+        if: ${{ !inputs.do_push }}
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/microservices-base.Dockerfile
+          platforms: ${{ inputs.platform }}
+          push: false
+          load: true
+          tags: myapp-microservices-base:10.0
+          cache-from: type=gha,scope=microservices-base
+          cache-to: type=gha,mode=max,scope=microservices-base
+
       - name: Build or build+push image
         uses: docker/build-push-action@v6
         with:
@@ -87,8 +140,12 @@ jobs:
           file: ${{ matrix.dockerfile }}
           platforms: ${{ inputs.platform }}
           push: ${{ inputs.do_push }}
+          build-args: |
+            BASE_IMAGE_REGISTRY=${{ inputs.do_push && format('ghcr.io/{0}/', steps.repo.outputs.name) || '' }}
           tags: |
             ghcr.io/${{ steps.repo.outputs.name }}/myapp-${{ matrix.service }}:${{ inputs.image_tag }}
             ghcr.io/${{ steps.repo.outputs.name }}/myapp-${{ matrix.service }}:latest
-          cache-from: type=gha,scope=${{ matrix.service }}
+          cache-from: |
+            type=gha,scope=microservices-base
+            type=gha,scope=${{ matrix.service }}
           cache-to: type=gha,mode=max,scope=${{ matrix.service }}
