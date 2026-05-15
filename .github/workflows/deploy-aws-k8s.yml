@@ -140,7 +140,6 @@ jobs:
           set -euo pipefail
           PROFILE="${{ github.event.inputs.profile }}"
           DOMAIN="${{ github.event.inputs.ingress_domain }}"
-          INFRA_STEP="${{ github.event.inputs.infra_step }}"
           if [[ "$PROFILE" == "prod" && -z "$DOMAIN" ]]; then
             echo "ingress_domain is required when profile=prod"
             exit 1
@@ -149,20 +148,71 @@ jobs:
             echo "build-push only works with apply_mode=apply"
             exit 1
           fi
-          if [[ -z "${{ vars.AWS_DEPLOY_ROLE_ARN }}" ]]; then
-            echo "vars.AWS_DEPLOY_ROLE_ARN is required (used for AWS OIDC and eks update-kubeconfig)"
+
+      - name: Resolve AWS configuration
+        id: aws_config
+        shell: bash
+        run: |
+          set -euo pipefail
+          missing=()
+
+          resolve() {
+            local name="$1"
+            local value="$2"
+            local fallback="$3"
+            if [[ -n "$value" ]]; then
+              printf '%s' "$value"
+            elif [[ -n "$fallback" ]]; then
+              printf '%s' "$fallback"
+            fi
+          }
+
+          AWS_DEPLOY_ROLE_ARN="$(resolve AWS_DEPLOY_ROLE_ARN "${{ vars.AWS_DEPLOY_ROLE_ARN }}" "${{ secrets.AWS_DEPLOY_ROLE_ARN }}")"
+          AWS_EKS_CLUSTER_NAME="$(resolve AWS_EKS_CLUSTER_NAME "${{ vars.AWS_EKS_CLUSTER_NAME }}" "${{ secrets.AWS_EKS_CLUSTER_NAME }}")"
+          AWS_REGION="$(resolve AWS_REGION "${{ vars.AWS_REGION }}" "${{ secrets.AWS_REGION }}")"
+
+          if [[ -z "$AWS_DEPLOY_ROLE_ARN" ]]; then
+            missing+=("AWS_DEPLOY_ROLE_ARN")
+          fi
+          if [[ -z "$AWS_EKS_CLUSTER_NAME" ]]; then
+            missing+=("AWS_EKS_CLUSTER_NAME")
+          fi
+          if [[ -z "$AWS_REGION" ]]; then
+            missing+=("AWS_REGION")
+          fi
+
+          if [[ ${#missing[@]} -gt 0 ]]; then
+            echo "::error::Missing GitHub configuration: ${missing[*]}"
+            echo ""
+            echo "Set these under Settings → Secrets and variables → Actions → Variables (preferred):"
+            echo "  AWS_DEPLOY_ROLE_ARN, AWS_EKS_CLUSTER_NAME, AWS_REGION"
+            echo ""
+            echo "After OpenTofu apply (deploy/aws/tofu):"
+            echo "  tofu output -raw github_actions_deploy_role_arn"
+            echo "  tofu output -raw eks_cluster_name"
+            echo "  tofu output -raw aws_region"
+            echo ""
+            echo "Or run this workflow with infra_step=apply (same run can read outputs after apply if role is already configured for tofu)."
             exit 1
           fi
-          if [[ -z "${{ vars.AWS_EKS_CLUSTER_NAME }}" || -z "${{ vars.AWS_REGION }}" ]]; then
-            echo "vars.AWS_EKS_CLUSTER_NAME and vars.AWS_REGION are required for deploy"
-            exit 1
+
+          if [[ -n "${{ vars.AWS_DEPLOY_ROLE_ARN }}" ]]; then
+            echo "Using AWS_DEPLOY_ROLE_ARN from repository variable."
+          else
+            echo "::warning::AWS_DEPLOY_ROLE_ARN is set as a secret; use a repository variable instead (Settings → Actions → Variables)."
           fi
+
+          {
+            echo "AWS_DEPLOY_ROLE_ARN=$AWS_DEPLOY_ROLE_ARN"
+            echo "AWS_EKS_CLUSTER_NAME=$AWS_EKS_CLUSTER_NAME"
+            echo "AWS_REGION=$AWS_REGION"
+          } >> "$GITHUB_ENV"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
-          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ env.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Setup OpenTofu
         if: ${{ github.event.inputs.infra_step != 'skip' }}
@@ -190,13 +240,26 @@ jobs:
           tofu validate
           tofu apply -auto-approve
 
+      - name: Load AWS values from OpenTofu outputs
+        if: ${{ github.event.inputs.infra_step == 'apply' }}
+        shell: bash
+        working-directory: deploy/aws/tofu
+        run: |
+          set -euo pipefail
+          if tofu output -raw github_actions_deploy_role_arn >/dev/null 2>&1; then
+            echo "AWS_DEPLOY_ROLE_ARN=$(tofu output -raw github_actions_deploy_role_arn)" >> "$GITHUB_ENV"
+          fi
+          echo "AWS_EKS_CLUSTER_NAME=$(tofu output -raw eks_cluster_name)" >> "$GITHUB_ENV"
+          echo "AWS_REGION=$(tofu output -raw aws_region)" >> "$GITHUB_ENV"
+          echo "Loaded cluster/region (and deploy role when enabled) from OpenTofu outputs."
+
       - name: Update kubeconfig
         shell: bash
         run: |
           set -euo pipefail
           aws eks update-kubeconfig \
-            --name "${{ vars.AWS_EKS_CLUSTER_NAME }}" \
-            --region "${{ vars.AWS_REGION }}"
+            --name "${{ env.AWS_EKS_CLUSTER_NAME }}" \
+            --region "${{ env.AWS_REGION }}"
           kubectl config current-context
 
       - name: Patch prod ingress host and issuer

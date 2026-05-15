@@ -11,6 +11,7 @@ Scaffold for VPC, EKS managed node group, EBS CSI addon, and optional IRSA/S3.
 | `vpc` | VPC, subnets, IGW, optional single NAT |
 | `eks` | EKS cluster, Spot/On-Demand node group, OIDC, EBS CSI |
 | `irsa` | Optional SQL backup + External Secrets roles |
+| `github-oidc` | GitHub Actions deploy IAM role + EKS cluster admin access entry |
 
 ## Cost levers
 
@@ -35,6 +36,22 @@ tofu fmt -check -recursive
 tofu validate
 tofu plan
 ```
+
+## GitHub Actions (after apply)
+
+```powershell
+tofu output -raw github_actions_deploy_role_arn   # → variable AWS_DEPLOY_ROLE_ARN
+tofu output -raw eks_cluster_name                   # → variable AWS_EKS_CLUSTER_NAME
+tofu output -raw aws_region                         # → variable AWS_REGION
+```
+
+Set those as repository **Variables** (Settings → Actions → Variables). See `deploy/aws/k8s/README.md`.
+
+| Variable | Default |
+|----------|---------|
+| `enable_github_actions_deploy` | `true` |
+| `github_repository` | `Ozymandros/ERP.Microservices` |
+| `github_oidc_provider_arn` | `""` (create provider; set ARN if one already exists) |
 
 ## CI
 

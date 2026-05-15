@@ -22,3 +22,8 @@ create_backup_bucket         = false
 enable_external_secrets_irsa = false
 
 # backup_bucket_name = "myapp-dev-sql-backups-unique-suffix"
+
+# GitHub Actions OIDC deploy role (outputs → repository Variables)
+enable_github_actions_deploy = true
+github_repository            = "Ozymandros/ERP.Microservices"
+# github_oidc_provider_arn   = "arn:aws:iam::ACCOUNT:oidc-provider/token.actions.githubusercontent.com"

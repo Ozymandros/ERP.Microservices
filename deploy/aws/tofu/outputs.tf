@@ -34,3 +34,13 @@ output "external_secrets_role_arn" {
 output "backup_bucket_name" {
   value = var.create_backup_bucket ? aws_s3_bucket.sql_backups[0].bucket : null
 }
+
+output "aws_region" {
+  description = "Set as GitHub Actions variable AWS_REGION."
+  value       = var.aws_region
+}
+
+output "github_actions_deploy_role_arn" {
+  description = "Set as GitHub Actions variable AWS_DEPLOY_ROLE_ARN (Repository variables, not Secrets)."
+  value       = var.enable_github_actions_deploy ? module.github_oidc[0].deploy_role_arn : null
+}

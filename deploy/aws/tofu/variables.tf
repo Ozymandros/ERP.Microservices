@@ -107,3 +107,21 @@ variable "eks_public_access_cidrs" {
   type        = list(string)
   default     = ["0.0.0.0/0"]
 }
+
+variable "enable_github_actions_deploy" {
+  description = "IAM role + EKS access entry for GitHub Actions OIDC (deploy-aws-k8s workflow)."
+  type        = bool
+  default     = true
+}
+
+variable "github_repository" {
+  description = "GitHub org/repo allowed to assume the deploy role (e.g. Ozymandros/ERP.Microservices)."
+  type        = string
+  default     = "Ozymandros/ERP.Microservices"
+}
+
+variable "github_oidc_provider_arn" {
+  description = "Optional existing account-wide GitHub OIDC provider ARN. Set when apply fails with EntityAlreadyExists on the provider."
+  type        = string
+  default     = ""
+}
