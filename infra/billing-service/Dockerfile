@@ -12,8 +12,9 @@ RUN dotnet build "MyApp.Billing.API.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "MyApp.Billing.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# Runtime stage
-FROM myapp-microservices-base:10.0 AS final
+# Runtime stage (azd copies only this folder; CI passes BASE_IMAGE_REGISTRY)
+ARG BASE_IMAGE_REGISTRY=
+FROM ${BASE_IMAGE_REGISTRY}myapp-microservices-base:10.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MyApp.Billing.API.dll"]

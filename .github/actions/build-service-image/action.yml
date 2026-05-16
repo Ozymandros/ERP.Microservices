@@ -32,18 +32,16 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Load shared base image into buildx (local builds only)
-      if: ${{ inputs.runtime_from_shared_base == 'true' && inputs.do_push != 'true' }}
-      uses: docker/build-push-action@v6
-      with:
-        context: .
-        file: docker/microservices-base.Dockerfile
-        platforms: ${{ inputs.platform }}
-        push: false
-        load: true
-        tags: myapp-microservices-base:10.0
-        cache-from: type=gha,scope=microservices-base
-        cache-to: type=gha,mode=max,scope=microservices-base
+    - name: Verify shared base registry prefix
+      if: ${{ inputs.runtime_from_shared_base == 'true' }}
+      shell: bash
+      run: |
+        set -euo pipefail
+        if [[ -z "${{ inputs.base_image_registry }}" ]]; then
+          echo "::error::BASE_IMAGE_REGISTRY is empty. The build-base-image job must run and push to GHCR before service images build."
+          exit 1
+        fi
+        echo "Using BASE_IMAGE_REGISTRY=${{ inputs.base_image_registry }}"
 
     - name: Build and push (shared runtime base)
       if: ${{ inputs.runtime_from_shared_base == 'true' }}
@@ -53,7 +51,8 @@ runs:
         file: ${{ inputs.dockerfile }}
         platforms: ${{ inputs.platform }}
         push: ${{ inputs.do_push }}
-        build-args: BASE_IMAGE_REGISTRY=${{ inputs.base_image_registry }}
+        build-args: |
+          BASE_IMAGE_REGISTRY=${{ inputs.base_image_registry }}
         tags: |
           ghcr.io/${{ inputs.ghcr_repo }}/myapp-${{ inputs.service }}:${{ inputs.image_tag }}
           ghcr.io/${{ inputs.ghcr_repo }}/myapp-${{ inputs.service }}:latest
