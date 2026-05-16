@@ -3,7 +3,13 @@ output "vpc_id" {
 }
 
 output "eks_cluster_name" {
-  value = module.eks.cluster_name
+  description = "Live cluster name (after apply). Same as planned_eks_cluster_name when infra matches tfvars."
+  value       = module.eks.cluster_name
+}
+
+output "planned_eks_cluster_name" {
+  description = "Cluster name from naming convention; readable via tofu console before apply."
+  value       = local.eks_cluster_name
 }
 
 output "eks_cluster_endpoint" {

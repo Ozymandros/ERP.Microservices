@@ -1,9 +1,9 @@
 data "aws_partition" "current" {}
 
 locals {
-  github_oidc_url      = "https://token.actions.githubusercontent.com"
-  role_name              = "${var.name_prefix}-github-actions-deploy"
-  github_oidc_provider_arn = var.github_oidc_provider_arn != "" ? var.github_oidc_provider_arn : aws_iam_openid_connect_provider.github[0].arn
+  github_oidc_url            = "https://token.actions.githubusercontent.com"
+  role_name                  = "${var.name_prefix}-github-actions-deploy"
+  github_oidc_provider_arn   = var.github_oidc_provider_arn != "" ? var.github_oidc_provider_arn : aws_iam_openid_connect_provider.github[0].arn
 }
 
 resource "aws_iam_openid_connect_provider" "github" {

@@ -13,28 +13,23 @@ Thin AWS-specific patches on top of `deploy/k8s/`.
 
 Scale up later via `deploy/aws/tofu` variables (`node_max_size`, `enable_nat_gateway`, `create_backup_bucket`, etc.) without changing the generic `deploy/k8s/` layer.
 
-## Repository variables (GitHub Actions OIDC)
+## GitHub Actions + OpenTofu (source of truth)
 
-Configure under **Settings → Secrets and variables → Actions → Variables** (not Secrets).
+`deploy-aws-k8s.yml` resolves **cluster name** and **region** via OpenTofu (`tofu console` on `local.eks_cluster_name` and `var.aws_region` from tfvars). Optional override: workflow input `aws_region` or variable `AWS_REGION` (passed as `-var`).
 
-| Variable | Purpose |
-|----------|---------|
-| `AWS_DEPLOY_ROLE_ARN` | IAM role for GitHub OIDC (`tofu output -raw github_actions_deploy_role_arn`) |
-| `AWS_REGION` | e.g. `eu-west-1` (`tofu output -raw aws_region`) |
-| `AWS_EKS_CLUSTER_NAME` | Target cluster (`tofu output -raw eks_cluster_name`) |
+| Setting | How CI gets it |
+|---------|----------------|
+| Cluster | `local.eks_cluster_name` → `{project}-{environment}-eks` |
+| Region | `var.aws_region` (default `eu-west-1` in `variables.tf`) |
+| Deploy role ARN | `tofu output` after apply, or repository variable `AWS_DEPLOY_ROLE_ARN` |
 
-After the first `tofu apply` in `deploy/aws/tofu`:
+**Only bootstrap variable required:**
 
 ```powershell
 cd deploy/aws/tofu
-tofu output -raw github_actions_deploy_role_arn
-tofu output -raw eks_cluster_name
-tofu output -raw aws_region
+tofu apply
+tofu output -raw github_actions_deploy_role_arn   # → AWS_DEPLOY_ROLE_ARN
 ```
-
-Paste the three values into repository **Variables**. The deploy role is created by OpenTofu (`modules/github-oidc`); default trust is `repo:Ozymandros/ERP.Microservices:*` (override `github_repository` in `terraform.tfvars`).
-
-**Bootstrap:** the first `tofu apply` still needs AWS admin credentials (local CLI or a one-off IAM user in Secrets). After that, only `AWS_DEPLOY_ROLE_ARN` is needed for `deploy-aws-k8s.yml`.
 
 If the GitHub OIDC provider already exists in your account, set `github_oidc_provider_arn` in `terraform.tfvars` instead of creating a duplicate.
 

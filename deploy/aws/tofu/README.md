@@ -37,15 +37,15 @@ tofu validate
 tofu plan
 ```
 
-## GitHub Actions (after apply)
+## GitHub Actions
+
+CI reads cluster/region from OpenTofu (`tofu console` + tfvars). After apply, store only:
 
 ```powershell
-tofu output -raw github_actions_deploy_role_arn   # → variable AWS_DEPLOY_ROLE_ARN
-tofu output -raw eks_cluster_name                   # → variable AWS_EKS_CLUSTER_NAME
-tofu output -raw aws_region                         # → variable AWS_REGION
+tofu output -raw github_actions_deploy_role_arn   # → repository variable AWS_DEPLOY_ROLE_ARN
 ```
 
-Set those as repository **Variables** (Settings → Actions → Variables). See `deploy/aws/k8s/README.md`.
+See `deploy/aws/k8s/README.md`.
 
 | Variable | Default |
 |----------|---------|
