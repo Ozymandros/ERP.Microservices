@@ -38,7 +38,7 @@ runs:
       run: |
         set -euo pipefail
         if [[ -z "${{ inputs.base_image_registry }}" ]]; then
-          echo "::error::BASE_IMAGE_REGISTRY is empty. The build-base-image job must run and push to GHCR before service images build."
+          echo "::error::BASE_IMAGE_REGISTRY is empty. The build-base-image job must run first and push myapp-microservices-base:10.0 to GHCR."
           exit 1
         fi
         echo "Using BASE_IMAGE_REGISTRY=${{ inputs.base_image_registry }}"

@@ -23,38 +23,62 @@ jobs:
     name: Prepare build context
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.catalog.outputs.matrix }}
-      ghcr_repo: ${{ steps.catalog.outputs.ghcr_repo }}
-      base_image_registry: ${{ steps.catalog.outputs.base_image_registry }}
+      matrix: ${{ steps.matrix.outputs.matrix }}
+      ghcr_repo: ${{ steps.repo.outputs.name }}
+      base_image_registry: ${{ steps.repo.outputs.registry }}
       needs_shared_base: ${{ steps.catalog.outputs.needs_shared_base }}
     steps:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
+      - name: Resolve GHCR coordinates
+        id: repo
+        shell: bash
+        run: |
+          set -euo pipefail
+          name="${GITHUB_REPOSITORY,,}"
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "registry=ghcr.io/${name}/" >> "$GITHUB_OUTPUT"
+
       - name: Read services catalog
         id: catalog
         shell: bash
         env:
-          DO_PUSH: ${{ inputs.do_push }}
-          IMAGE_TAG: ${{ inputs.image_tag }}
           CONFIG_PATH: ${{ inputs.services_config_path }}
         run: |
           set -euo pipefail
           pip install --quiet pyyaml
-          python - <<'PY'
+          NEEDS_SHARED_BASE="$(python - <<'PY'
+          import os
+          import yaml
+          from pathlib import Path
+
+          data = yaml.safe_load(Path(os.environ["CONFIG_PATH"]).read_text(encoding="utf-8"))
+          include = [
+              bool(item.get("runtime_from_shared_base", True))
+              for item in data["services"]
+          ]
+          print("true" if any(include) else "false")
+          PY
+          )"
+          echo "needs_shared_base=$NEEDS_SHARED_BASE" >> "$GITHUB_OUTPUT"
+
+      - name: Build matrix from services catalog
+        id: matrix
+        shell: bash
+        env:
+          CONFIG_PATH: ${{ inputs.services_config_path }}
+        run: |
+          set -euo pipefail
+          pip install --quiet pyyaml
+          MATRIX_JSON="$(python - <<'PY'
           import json
           import os
           import yaml
           from pathlib import Path
 
-          do_push = os.environ["DO_PUSH"].lower() == "true"
           config_path = Path(os.environ["CONFIG_PATH"])
           data = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-
-          ghcr_repo = os.environ["GITHUB_REPOSITORY"].lower()
-          # Service Dockerfiles always pull the shared base from GHCR in CI (see build-base-image).
-          base_image_registry = f"ghcr.io/{ghcr_repo}/"
-
           include = [
               {
                   "service": item["name"],
@@ -63,20 +87,18 @@ jobs:
               }
               for item in data["services"]
           ]
-          needs_shared_base = any(item["runtime_from_shared_base"] for item in include)
-
-          out = os.environ["GITHUB_OUTPUT"]
-          with open(out, "a", encoding="utf-8") as f:
-              f.write(f"matrix={json.dumps({'include': include})}\n")
-              f.write(f"ghcr_repo={ghcr_repo}\n")
-              f.write(f"base_image_registry={base_image_registry}\n")
-              f.write(f"needs_shared_base={'true' if needs_shared_base else 'false'}\n")
+          print(json.dumps({"include": include}))
           PY
+          )"
+          {
+            echo "matrix<<EOF"
+            echo "$MATRIX_JSON"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
   build-base-image:
     name: Build microservices base image
     needs: prepare
-    # Always run when the catalog includes shared-base services (not gated on do_push).
     if: ${{ needs.prepare.outputs.needs_shared_base == 'true' }}
     runs-on: ubuntu-latest
     permissions:
