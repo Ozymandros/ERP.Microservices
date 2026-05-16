@@ -15,13 +15,13 @@ Scale up later via `deploy/aws/tofu` variables (`node_max_size`, `enable_nat_gat
 
 ## GitHub Actions + OpenTofu (source of truth)
 
-`deploy-aws-k8s.yml` resolves **cluster name** and **region** via OpenTofu (`tofu console` on `local.eks_cluster_name` and `var.aws_region` from tfvars). Optional override: workflow input `aws_region` or variable `AWS_REGION` (passed as `-var`).
+`deploy-aws-k8s.yml` assumes OIDC with `AWS_DEPLOY_ROLE_ARN`, then runs `tofu init` + `tofu output` for cluster/region. If state is not available yet, it falls back to `{project}-{environment}-eks` from the profile tfvars. Optional override: workflow input `aws_region` or variable `AWS_REGION`.
 
 | Setting | How CI gets it |
 |---------|----------------|
-| Cluster | `local.eks_cluster_name` → `{project}-{environment}-eks` |
-| Region | `var.aws_region` (default `eu-west-1` in `variables.tf`) |
-| Deploy role ARN | `tofu output` after apply, or repository variable `AWS_DEPLOY_ROLE_ARN` |
+| Cluster | `tofu output eks_cluster_name` (or `planned_eks_cluster_name` / tfvars naming) |
+| Region | `tofu output aws_region` (or tfvars / default `eu-west-1`) |
+| Deploy role ARN | Repository variable `AWS_DEPLOY_ROLE_ARN` (from `tofu output` after first apply) |
 
 **Only bootstrap variable required:**
 

@@ -39,7 +39,7 @@ tofu plan
 
 ## GitHub Actions
 
-CI reads cluster/region from OpenTofu (`tofu console` + tfvars). After apply, store only:
+CI reads cluster/region from OpenTofu state (`tofu output` after OIDC auth), with tfvars fallback when state is empty. After apply, store only:
 
 ```powershell
 tofu output -raw github_actions_deploy_role_arn   # → repository variable AWS_DEPLOY_ROLE_ARN

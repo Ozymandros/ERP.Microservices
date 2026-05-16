@@ -160,9 +160,24 @@ jobs:
       - name: Setup OpenTofu
         uses: opentofu/setup-opentofu@v1
 
-      - name: Resolve AWS configuration from OpenTofu
-        id: aws_config
-        working-directory: deploy/aws/tofu
+      - name: Resolve AWS deploy role ARN
+        shell: bash
+        run: |
+          set -euo pipefail
+          AWS_DEPLOY_ROLE_ARN="${{ vars.AWS_DEPLOY_ROLE_ARN }}"
+          if [[ -z "$AWS_DEPLOY_ROLE_ARN" ]]; then
+            AWS_DEPLOY_ROLE_ARN="${{ secrets.AWS_DEPLOY_ROLE_ARN }}"
+          fi
+          if [[ -z "$AWS_DEPLOY_ROLE_ARN" ]]; then
+            echo "::error::AWS_DEPLOY_ROLE_ARN is required."
+            echo "Run: cd deploy/aws/tofu && tofu apply"
+            echo "Then: tofu output -raw github_actions_deploy_role_arn"
+            echo "Set that value as repository variable AWS_DEPLOY_ROLE_ARN."
+            exit 1
+          fi
+          echo "AWS_DEPLOY_ROLE_ARN=$AWS_DEPLOY_ROLE_ARN" >> "$GITHUB_ENV"
+
+      - name: Resolve AWS region for credentials
         shell: bash
         env:
           PROFILE: ${{ github.event.inputs.profile }}
@@ -170,65 +185,41 @@ jobs:
           VAR_AWS_REGION: ${{ vars.AWS_REGION }}
         run: |
           set -euo pipefail
-
-          TFVARS_ARGS=()
-          if [[ -f terraform.tfvars ]]; then
-            TFVARS_ARGS+=(-var-file=terraform.tfvars)
-          elif [[ -f "environments/${PROFILE}/terraform.tfvars" ]]; then
-            TFVARS_ARGS+=(-var-file="environments/${PROFILE}/terraform.tfvars")
-          else
-            TFVARS_ARGS+=(-var-file="environments/${PROFILE}/terraform.tfvars.example")
-          fi
-
-          if [[ -n "$INPUT_AWS_REGION" ]]; then
-            TFVARS_ARGS+=(-var="aws_region=${INPUT_AWS_REGION}")
-          elif [[ -n "$VAR_AWS_REGION" ]]; then
-            TFVARS_ARGS+=(-var="aws_region=${VAR_AWS_REGION}")
-          fi
-
-          tofu init -backend=false -input=false
-
-          tofu_query() {
-            printf '%s' "$1" | tofu console "${TFVARS_ARGS[@]}" 2>/dev/null | tr -d '"'
+          read_tfvar() {
+            local name="$1" file="$2" default="${3:-}"
+            [[ ! -f "$file" ]] && { echo "$default"; return; }
+            local line
+            line="$(grep -E "^[[:space:]]*${name}[[:space:]]*=" "$file" | tail -1 || true)"
+            [[ -z "$line" ]] && { echo "$default"; return; }
+            echo "$line" | sed -E 's/^[^=]+=[[:space:]]*"?([^"#[:space:]]+)"?.*/\1/' | tr -d "'"
           }
-
-          AWS_EKS_CLUSTER_NAME="$(tofu_query local.eks_cluster_name)"
-          AWS_REGION="$(tofu_query var.aws_region)"
-
-          if [[ -z "$AWS_EKS_CLUSTER_NAME" || -z "$AWS_REGION" ]]; then
-            echo "::error::OpenTofu could not resolve cluster name or region. Check tfvars under deploy/aws/tofu."
-            exit 1
-          fi
-
-          echo "OpenTofu resolved AWS_EKS_CLUSTER_NAME=${AWS_EKS_CLUSTER_NAME} AWS_REGION=${AWS_REGION}"
-
-          AWS_DEPLOY_ROLE_ARN="${{ vars.AWS_DEPLOY_ROLE_ARN }}"
-          if [[ -z "$AWS_DEPLOY_ROLE_ARN" ]]; then
-            AWS_DEPLOY_ROLE_ARN="${{ secrets.AWS_DEPLOY_ROLE_ARN }}"
-          fi
-
-          if [[ -z "$AWS_DEPLOY_ROLE_ARN" ]]; then
-            tofu init -input=false >/dev/null 2>&1 || true
-            AWS_DEPLOY_ROLE_ARN="$(tofu output -raw github_actions_deploy_role_arn 2>/dev/null || true)"
-            if [[ -n "$AWS_DEPLOY_ROLE_ARN" && "$AWS_DEPLOY_ROLE_ARN" != "null" ]]; then
-              echo "Using AWS_DEPLOY_ROLE_ARN from tofu output (state)."
-            fi
+          TOFU_DIR="deploy/aws/tofu"
+          if [[ -f "${TOFU_DIR}/terraform.tfvars" ]]; then
+            TFVARS_FILE="terraform.tfvars"
+            TFVARS_PATH="${TOFU_DIR}/terraform.tfvars"
+          elif [[ -f "${TOFU_DIR}/environments/${PROFILE}/terraform.tfvars" ]]; then
+            TFVARS_FILE="environments/${PROFILE}/terraform.tfvars"
+            TFVARS_PATH="${TOFU_DIR}/${TFVARS_FILE}"
           else
-            echo "Using AWS_DEPLOY_ROLE_ARN from repository variable or secret."
+            TFVARS_FILE="environments/${PROFILE}/terraform.tfvars.example"
+            TFVARS_PATH="${TOFU_DIR}/${TFVARS_FILE}"
           fi
-
-          if [[ -z "$AWS_DEPLOY_ROLE_ARN" || "$AWS_DEPLOY_ROLE_ARN" == "null" ]]; then
-            echo "::error::AWS_DEPLOY_ROLE_ARN is required (not derivable without applied state)."
-            echo "Run: tofu apply  then: tofu output -raw github_actions_deploy_role_arn"
-            echo "Set that value as repository variable AWS_DEPLOY_ROLE_ARN."
-            exit 1
+          AWS_REGION="$INPUT_AWS_REGION"
+          if [[ -z "$AWS_REGION" ]]; then
+            AWS_REGION="$VAR_AWS_REGION"
           fi
-
+          if [[ -z "$AWS_REGION" ]]; then
+            AWS_REGION="$(read_tfvar aws_region "$TFVARS_PATH" "eu-west-1")"
+          fi
           {
-            echo "AWS_EKS_CLUSTER_NAME=$AWS_EKS_CLUSTER_NAME"
             echo "AWS_REGION=$AWS_REGION"
-            echo "AWS_DEPLOY_ROLE_ARN=$AWS_DEPLOY_ROLE_ARN"
+            echo "TOFU_VAR_FILE=$TFVARS_FILE"
           } >> "$GITHUB_ENV"
+          if [[ -n "$INPUT_AWS_REGION" ]]; then
+            echo "TOFU_AWS_REGION_VAR=-var=aws_region=${INPUT_AWS_REGION}" >> "$GITHUB_ENV"
+          elif [[ -n "$VAR_AWS_REGION" ]]; then
+            echo "TOFU_AWS_REGION_VAR=-var=aws_region=${VAR_AWS_REGION}" >> "$GITHUB_ENV"
+          fi
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -236,27 +227,87 @@ jobs:
           role-to-assume: ${{ env.AWS_DEPLOY_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Resolve AWS cluster and region from OpenTofu
+        working-directory: deploy/aws/tofu
+        shell: bash
+        env:
+          TOFU_VAR_FILE: ${{ env.TOFU_VAR_FILE }}
+          TOFU_AWS_REGION_VAR: ${{ env.TOFU_AWS_REGION_VAR }}
+        run: |
+          set -euo pipefail
+
+          read_tfvar() {
+            local name="$1" file="$2" default="${3:-}"
+            [[ ! -f "$file" ]] && { echo "$default"; return; }
+            local line
+            line="$(grep -E "^[[:space:]]*${name}[[:space:]]*=" "$file" | tail -1 || true)"
+            [[ -z "$line" ]] && { echo "$default"; return; }
+            echo "$line" | sed -E 's/^[^=]+=[[:space:]]*"?([^"#[:space:]]+)"?.*/\1/' | tr -d "'"
+          }
+
+          tofu_output() {
+            tofu output -raw "$1" 2>/dev/null || true
+          }
+
+          tofu init -input=false
+
+          AWS_EKS_CLUSTER_NAME="$(tofu_output eks_cluster_name)"
+          if [[ -z "$AWS_EKS_CLUSTER_NAME" || "$AWS_EKS_CLUSTER_NAME" == "null" ]]; then
+            AWS_EKS_CLUSTER_NAME="$(tofu_output planned_eks_cluster_name)"
+          fi
+
+          AWS_REGION="$(tofu_output aws_region)"
+          if [[ -z "$AWS_REGION" || "$AWS_REGION" == "null" ]]; then
+            AWS_REGION="${{ env.AWS_REGION }}"
+          fi
+
+          if [[ -z "$AWS_EKS_CLUSTER_NAME" || "$AWS_EKS_CLUSTER_NAME" == "null" ]]; then
+            PROJECT="$(read_tfvar project "$TOFU_VAR_FILE" "myapp")"
+            ENVIRONMENT="$(read_tfvar environment "$TOFU_VAR_FILE" "${{ github.event.inputs.profile }}")"
+            AWS_EKS_CLUSTER_NAME="${PROJECT}-${ENVIRONMENT}-eks"
+            echo "No OpenTofu state yet; using naming convention: ${AWS_EKS_CLUSTER_NAME}"
+          else
+            echo "Resolved cluster from OpenTofu output: ${AWS_EKS_CLUSTER_NAME}"
+          fi
+
+          echo "AWS_EKS_CLUSTER_NAME=${AWS_EKS_CLUSTER_NAME}" >> "$GITHUB_ENV"
+          echo "AWS_REGION=${AWS_REGION}" >> "$GITHUB_ENV"
+
       - name: OpenTofu validate/plan
         if: ${{ github.event.inputs.infra_step == 'validate' }}
         shell: bash
         working-directory: deploy/aws/tofu
+        env:
+          TOFU_VAR_FILE: ${{ env.TOFU_VAR_FILE }}
+          TOFU_AWS_REGION_VAR: ${{ env.TOFU_AWS_REGION_VAR }}
         run: |
           set -euo pipefail
+          VAR_ARGS=(-var-file="$TOFU_VAR_FILE")
+          if [[ -n "${TOFU_AWS_REGION_VAR:-}" ]]; then
+            VAR_ARGS+=("$TOFU_AWS_REGION_VAR")
+          fi
           tofu fmt -check -recursive
-          tofu init -backend=false
-          tofu validate
-          tofu plan -refresh=false -lock=false
+          tofu init -backend=false -input=false
+          tofu validate "${VAR_ARGS[@]}"
+          tofu plan -refresh=false -lock=false "${VAR_ARGS[@]}"
 
       - name: OpenTofu apply
         if: ${{ github.event.inputs.infra_step == 'apply' }}
         shell: bash
         working-directory: deploy/aws/tofu
+        env:
+          TOFU_VAR_FILE: ${{ env.TOFU_VAR_FILE }}
+          TOFU_AWS_REGION_VAR: ${{ env.TOFU_AWS_REGION_VAR }}
         run: |
           set -euo pipefail
+          VAR_ARGS=(-var-file="$TOFU_VAR_FILE")
+          if [[ -n "${TOFU_AWS_REGION_VAR:-}" ]]; then
+            VAR_ARGS+=("$TOFU_AWS_REGION_VAR")
+          fi
           tofu fmt -check -recursive
-          tofu init
-          tofu validate
-          tofu apply -auto-approve
+          tofu init -input=false
+          tofu validate "${VAR_ARGS[@]}"
+          tofu apply -auto-approve "${VAR_ARGS[@]}"
 
       - name: Refresh AWS settings from OpenTofu outputs
         if: ${{ github.event.inputs.infra_step == 'apply' }}

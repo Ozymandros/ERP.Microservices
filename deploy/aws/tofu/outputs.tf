@@ -8,7 +8,7 @@ output "eks_cluster_name" {
 }
 
 output "planned_eks_cluster_name" {
-  description = "Cluster name from naming convention; readable via tofu console before apply."
+  description = "Cluster name from naming convention (same as eks_cluster_name once infra matches tfvars)."
   value       = local.eks_cluster_name
 }
 
