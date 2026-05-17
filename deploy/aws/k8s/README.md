@@ -23,13 +23,48 @@ Scale up later via `deploy/aws/tofu` variables (`node_max_size`, `enable_nat_gat
 | Region | `tofu output aws_region` (or tfvars / default `eu-west-1`) |
 | Deploy role ARN | Repository variable `AWS_DEPLOY_ROLE_ARN` (from `tofu output` after first apply) |
 
-**Only bootstrap variable required:**
+### Bootstrap (first time — fixes OIDC error)
+
+**CI error:** `No OpenIDConnect provider found in your account for https://token.actions.githubusercontent.com`
+
+GitHub Actions cannot create the OIDC provider without admin AWS access. Pick **one** path:
+
+#### Option A — GitHub workflow (no local AWS CLI)
+
+1. In the repo, add **Actions secrets** (temporary):
+   - `AWS_BOOTSTRAP_ACCESS_KEY_ID`
+   - `AWS_BOOTSTRAP_SECRET_ACCESS_KEY`
+   - (optional) `AWS_BOOTSTRAP_SESSION_TOKEN`
+2. Run workflow **Bootstrap AWS Infrastructure (OIDC)** (`.github/workflows/bootstrap-aws-infrastructure.yml`), profile `dev`.
+3. Copy `AWS_DEPLOY_ROLE_ARN` from the job **summary** into **Repository variables**.
+4. Delete the bootstrap secrets.
+5. Re-run **Deploy AWS Kubernetes Stack** (`infra_step=skip` is fine).
+
+Or run **Deploy AWS Kubernetes Stack** with **`bootstrap_oidc=true`** once (same secrets required); it runs bootstrap then deploy in one go.
+
+#### Option B — Local script
+
+```powershell
+# AWS admin credentials via aws configure or $Env:AWS_ACCESS_KEY_ID
+.\scripts\bootstrap-aws-infrastructure.ps1 -Profile dev
+```
+
+#### Option C — Manual OpenTofu
 
 ```powershell
 cd deploy/aws/tofu
-tofu apply
+copy environments\dev\terraform.tfvars.example terraform.tfvars
+tofu init && tofu apply
 tofu output -raw github_actions_deploy_role_arn   # → AWS_DEPLOY_ROLE_ARN
 ```
+
+Verify: `aws iam list-open-id-connect-providers` includes `token.actions.githubusercontent.com`.
+
+| Cause | Fix |
+|-------|-----|
+| `AWS_DEPLOY_ROLE_ARN` set before `tofu apply` | Bootstrap (A/B/C), then update the variable |
+| Role ARN from another AWS account | Use output from the target account |
+| Provider already exists | Set `github_oidc_provider_arn` in `terraform.tfvars` |
 
 If the GitHub OIDC provider already exists in your account, set `github_oidc_provider_arn` in `terraform.tfvars` instead of creating a duplicate.
 

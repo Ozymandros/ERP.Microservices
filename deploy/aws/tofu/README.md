@@ -39,11 +39,15 @@ tofu plan
 
 ## GitHub Actions
 
-CI reads cluster/region from OpenTofu state (`tofu output` after OIDC auth), with tfvars fallback when state is empty. After apply, store only:
+**First deploy:** run `.github/workflows/bootstrap-aws-infrastructure.yml` (or `scripts/bootstrap-aws-infrastructure.ps1` locally) with admin AWS credentials. That creates the GitHub OIDC provider and deploy role.
+
+Then set repository variable `AWS_DEPLOY_ROLE_ARN` from:
 
 ```powershell
-tofu output -raw github_actions_deploy_role_arn   # → repository variable AWS_DEPLOY_ROLE_ARN
+tofu output -raw github_actions_deploy_role_arn
 ```
+
+CI reads cluster/region from OpenTofu state (`tofu output` after OIDC auth), with tfvars fallback when state is empty.
 
 See `deploy/aws/k8s/README.md`.
 

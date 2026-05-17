@@ -60,6 +60,11 @@ on:
         required: false
         default: ""
         type: string
+      bootstrap_oidc:
+        description: "First-time: run Bootstrap AWS Infrastructure (needs AWS_BOOTSTRAP_* secrets)"
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: aws-k8s-${{ github.ref }}-${{ github.event.inputs.profile }}
@@ -128,10 +133,20 @@ jobs:
       do_push: ${{ needs.prepare.outputs.do_push == 'true' }}
       platform: linux/amd64
 
+  bootstrap-aws:
+    name: Bootstrap AWS OIDC + infra
+    if: ${{ github.event.inputs.bootstrap_oidc == true }}
+    uses: ./.github/workflows/bootstrap-aws-infrastructure.yml
+    secrets: inherit
+    with:
+      profile: ${{ github.event.inputs.profile }}
+      aws_region: ${{ github.event.inputs.aws_region }}
+      auto_approve: "true"
+
   deploy-k8s:
     name: Deploy AWS EKS (${{ github.event.inputs.profile }})
-    needs: [prepare, build-images]
-    if: ${{ needs.prepare.result == 'success' && (needs.build-images.result == 'success' || needs.build-images.result == 'skipped') }}
+    needs: [prepare, build-images, bootstrap-aws]
+    if: ${{ always() && needs.prepare.result == 'success' && (needs.build-images.result == 'success' || needs.build-images.result == 'skipped') && (needs.bootstrap-aws.result == 'success' || needs.bootstrap-aws.result == 'skipped') }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -162,17 +177,22 @@ jobs:
 
       - name: Resolve AWS deploy role ARN
         shell: bash
+        env:
+          BOOTSTRAP_ROLE: ${{ needs.bootstrap-aws.outputs.deploy_role_arn }}
         run: |
           set -euo pipefail
-          AWS_DEPLOY_ROLE_ARN="${{ vars.AWS_DEPLOY_ROLE_ARN }}"
+          AWS_DEPLOY_ROLE_ARN="$BOOTSTRAP_ROLE"
+          if [[ -z "$AWS_DEPLOY_ROLE_ARN" ]]; then
+            AWS_DEPLOY_ROLE_ARN="${{ vars.AWS_DEPLOY_ROLE_ARN }}"
+          fi
           if [[ -z "$AWS_DEPLOY_ROLE_ARN" ]]; then
             AWS_DEPLOY_ROLE_ARN="${{ secrets.AWS_DEPLOY_ROLE_ARN }}"
           fi
           if [[ -z "$AWS_DEPLOY_ROLE_ARN" ]]; then
             echo "::error::AWS_DEPLOY_ROLE_ARN is required."
-            echo "Run: cd deploy/aws/tofu && tofu apply"
-            echo "Then: tofu output -raw github_actions_deploy_role_arn"
-            echo "Set that value as repository variable AWS_DEPLOY_ROLE_ARN."
+            echo "Fix OIDC: run workflow 'Bootstrap AWS Infrastructure (OIDC)' with AWS_BOOTSTRAP_* secrets,"
+            echo "or locally: cd deploy/aws/tofu && tofu apply && tofu output -raw github_actions_deploy_role_arn"
+            echo "Set repository variable AWS_DEPLOY_ROLE_ARN to that ARN."
             exit 1
           fi
           echo "AWS_DEPLOY_ROLE_ARN=$AWS_DEPLOY_ROLE_ARN" >> "$GITHUB_ENV"
@@ -222,10 +242,21 @@ jobs:
           fi
 
       - name: Configure AWS credentials
+        id: aws_creds
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ env.AWS_DEPLOY_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
+
+      - name: OIDC bootstrap hint
+        if: ${{ failure() && steps.aws_creds.outcome == 'failure' }}
+        shell: bash
+        run: |
+          echo "::error::GitHub OIDC provider missing or role ARN wrong for this AWS account."
+          echo "1. Add secrets AWS_BOOTSTRAP_ACCESS_KEY_ID + AWS_BOOTSTRAP_SECRET_ACCESS_KEY (admin IAM user)."
+          echo "2. Run 'Bootstrap AWS Infrastructure (OIDC)' OR re-run this workflow with bootstrap_oidc=true."
+          echo "3. Set variable AWS_DEPLOY_ROLE_ARN from the workflow summary output."
+          echo "4. Delete bootstrap secrets, re-run deploy."
 
       - name: Resolve AWS cluster and region from OpenTofu
         working-directory: deploy/aws/tofu
@@ -233,8 +264,17 @@ jobs:
         env:
           TOFU_VAR_FILE: ${{ env.TOFU_VAR_FILE }}
           TOFU_AWS_REGION_VAR: ${{ env.TOFU_AWS_REGION_VAR }}
+          BOOTSTRAP_CLUSTER: ${{ needs.bootstrap-aws.outputs.eks_cluster_name }}
+          BOOTSTRAP_REGION: ${{ needs.bootstrap-aws.outputs.aws_region }}
         run: |
           set -euo pipefail
+
+          if [[ -n "$BOOTSTRAP_CLUSTER" ]]; then
+            echo "AWS_EKS_CLUSTER_NAME=${BOOTSTRAP_CLUSTER}" >> "$GITHUB_ENV"
+            echo "AWS_REGION=${BOOTSTRAP_REGION}" >> "$GITHUB_ENV"
+            echo "Using cluster/region from bootstrap job."
+            exit 0
+          fi
 
           read_tfvar() {
             local name="$1" file="$2" default="${3:-}"
