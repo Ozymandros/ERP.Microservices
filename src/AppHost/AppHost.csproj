@@ -12,21 +12,22 @@
 		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Aspire.Hosting.JavaScript" Version="13.2.4" />
-		<PackageReference Include="Aspire.Hosting.Yarp" Version="13.2.4" />
+		<PackageReference Include="Aspire.Hosting.JavaScript" Version="13.3.3" />
+		<PackageReference Include="Aspire.Hosting.Yarp" Version="13.3.3" />
 		<PackageReference Include="CommunityToolkit.Aspire.Hosting.Dapr" Version="13.0.0" />
 		<PackageReference Include="Dapr.AspNetCore" Version="1.17.9" />
 		<PackageReference Include="Dapr.Client" Version="1.17.9" />
-		<PackageReference Include="Aspire.Hosting.Azure.ApplicationInsights" Version="13.2.4" />
-		<PackageReference Include="Aspire.Hosting.SqlServer" Version="13.2.4" />
-		<PackageReference Include="Aspire.Hosting.Azure.OperationalInsights" Version="13.2.4" />
-		<PackageReference Include="Aspire.Hosting.Azure.Sql" Version="13.2.4" />
-		<PackageReference Include="Aspire.Hosting.Redis" Version="13.2.4" />
-		<PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="13.2.4" />
-		<PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.2.4" />
-		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="13.2.4" />
+		<PackageReference Include="Aspire.Hosting.Azure.ApplicationInsights" Version="13.3.3" />
+		<PackageReference Include="Aspire.Hosting.SqlServer" Version="13.3.3" />
+		<PackageReference Include="Aspire.Hosting.Azure.OperationalInsights" Version="13.3.3" />
+		<PackageReference Include="Aspire.Hosting.Azure.Sql" Version="13.3.3" />
+		<PackageReference Include="Aspire.Hosting.Redis" Version="13.3.3" />
+		<PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="13.3.3" />
+		<PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.3.3" />
+		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="13.3.3" />
 	</ItemGroup>
     <ItemGroup>
+		<ProjectReference Include="..\MyApp.Audit\MyApp.Audit.API\MyApp.Audit.API.csproj" />
 		<ProjectReference Include="..\MyApp.Auth\MyApp.Auth.API\MyApp.Auth.API.csproj" />
 		<ProjectReference Include="..\MyApp.Sales\MyApp.Sales.API\MyApp.Sales.API.csproj" />
 		<ProjectReference Include="..\MyApp.Billing\MyApp.Billing.API\MyApp.Billing.API.csproj" />

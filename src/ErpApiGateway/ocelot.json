@@ -293,6 +293,41 @@
       "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
       "RateLimitOptions": { "EnableRateLimiting": false, "Period": "1m", "Limit": 100 },
       "Priority": 1
+    },
+
+    {
+      "DownstreamPathTemplate": "/openapi/v1.json",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "audit-service", "Port": 8080 }
+      ],
+      "UpstreamPathTemplate": "/audit/openapi/v1.json",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/scalar/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "audit-service", "Port": 8080 }
+      ],
+      "UpstreamPathTemplate": "/audit/scalar/{everything}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/api/audit/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "audit-service", "Port": 8080 }
+      ],
+      "UpstreamPathTemplate": "/audit/api/audit/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS" ],
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
+      "RateLimitOptions": { "EnableRateLimiting": false, "Period": "1m", "Limit": 100 },
+      "Priority": 1
     }
   ],
   "GlobalConfiguration": {

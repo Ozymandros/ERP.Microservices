@@ -191,6 +191,21 @@ public static class PermissionConstants
         public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
     }
 
+    /// <summary>Audit module permissions</summary>
+    public static class Audit
+    {
+        public const string Read = "Audit.Read";
+        public const string Create = "Audit.Create";
+        public const string Update = "Audit.Update";
+        public const string Delete = "Audit.Delete";
+        public const string Execute = "Audit.Execute";
+        public const string Export = "Audit.Export";
+        public const string Import = "Audit.Import";
+
+        /// <summary>All Audit permissions</summary>
+        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+    }
+
     /// <summary>
     /// Gets all permissions for a specific module.
     /// </summary>
@@ -208,6 +223,7 @@ public static class PermissionConstants
             ModuleEnum.CRM => CRM.All,
             ModuleEnum.Auth => Auth.All,
             ModuleEnum.Agentic => Agentic.All,
+            ModuleEnum.Audit => Audit.All,
             _ => Array.Empty<string>()
         };
     }

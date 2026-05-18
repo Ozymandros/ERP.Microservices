@@ -89,6 +89,9 @@ var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis,
 var agenticService = projectBuilder.AddWebProject<Projects.MyApp_Agentic_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore, hasDatabase: true);
 // Creates: agentic-service (no DB), ports 6008, 3508, 45008, 9098
 
+var auditService = projectBuilder.AddWebProject<Projects.MyApp_Audit_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore, hasDatabase: true);
+// Creates: audit-service (no DB), ports 6009, 3509, 45009, 9099
+
 // Local Development: Reverse Proxy (YARP)
 // Alternative: YARP (without /Scalar service)
 /*var gateway = builder.AddYarp("gateway")
@@ -127,6 +130,7 @@ var gateway = builder.AddProject<Projects.ErpApiGateway>("gateway")
     .WaitFor(salesService)
     .WaitFor(crmService)
     .WaitFor(agenticService)
+    .WaitFor(auditService)
     .WithHttpEndpoint(port: 5000, name: "gateway-http")   // Explicitly listen on 5000 for Dapr
     .WithHttpsEndpoint(port: 7231, name: "gateway-https") // Explicitly listen on 7231 for Browser/Scalar
     .WithEnvironment("Jwt__SecretKey", jwtSecretKey)
