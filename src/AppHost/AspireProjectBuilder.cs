@@ -83,13 +83,15 @@ public class AspireProjectBuilder
 
         // Get current ports and increment (thread-safe)
         var httpPort = Interlocked.Increment(ref _httpPort);
-        var aspNetCoreUrls = "http://127.0.0.1:" + httpPort;
+        // Avoid explicit loopback binding to prevent conflicts with existing localhost bindings.
+        // Let Kestrel/ASPNETCORE_URLS use localhost to match launch profiles.
+        var aspNetCoreUrls = "http://localhost:" + httpPort;
         //var daprHttpPort = _daprHttpPort++;
         //var daprGrpcPort = _daprGrpcPort++;
         //var metricsPort = _metricsPort++;
 
-        // Add project
-        var project = _builder.AddProject<T>(serviceResourceName);
+        // AppHost owns ports/URLs — do not apply launchSettings applicationUrl (e.g. audit https://7062).
+        var project = _builder.AddProject<T>(serviceResourceName, launchProfileName: null);
 
         var sidecarOptions = new DaprSidecarOptions
         {
@@ -110,8 +112,8 @@ public class AspireProjectBuilder
             .WithEnvironment("Jwt__Issuer", _builder.Configuration["Jwt:Issuer"])
             .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"])
             .WithEnvironment("ASPNETCORE_URLS", aspNetCoreUrls)
-            .WithEnvironment("DOTNET_LAUNCH_PROFILE", string.Empty)
             .WithEnvironment("ALLOWED_ORIGINS", origin)
+            .WithExternalHttpEndpoints()
             // OpenTelemetry configuration for Serilog
             .WithEnvironment("OTEL_SERVICE_NAME", serviceName)
             .WithEnvironment("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317")

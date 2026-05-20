@@ -29,15 +29,22 @@ public class AppServiceBaseTests
     {
         var entityId1 = Guid.NewGuid();
         var entityId2 = Guid.NewGuid();
+        const string createdNewJson = """{"Name":"Widget"}""";
+        const string updatedOriginalJson = """{"Email":"old@x.com"}""";
+        const string updatedNewJson = """{"Email":"new@x.com"}""";
 
         _repository
             .Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<EntityEntryDto>
             {
                 new("Product", entityId1, "Added",
-                    new[] { new PropertyChangeEntryDto("Name", null, "Widget") }),
+                    new[] { new PropertyChangeEntryDto("Name", null, "Widget") },
+                    OriginalValue: null,
+                    NewValue: createdNewJson),
                 new("Customer", entityId2, "Modified",
-                    new[] { new PropertyChangeEntryDto("Email", "old@x.com", "new@x.com") })
+                    new[] { new PropertyChangeEntryDto("Email", "old@x.com", "new@x.com") },
+                    OriginalValue: updatedOriginalJson,
+                    NewValue: updatedNewJson)
             });
 
         var result = await _sut.SaveAsync();
@@ -52,6 +59,8 @@ public class AppServiceBaseTests
                     d.EntityName == "Product"
                     && d.EntityId == entityId1
                     && d.ChangeType == ChangeTypeEnum.Created
+                    && d.OriginalValue == null
+                    && d.NewValue == createdNewJson
                     && d.PropertyChanges.Count == 1
                     && d.PropertyChanges[0].PropertyName == "Name"
                     && d.PropertyChanges[0].NewValue == "Widget"),
@@ -66,7 +75,74 @@ public class AppServiceBaseTests
                 It.Is<CreateEntityChangeDto>(d =>
                     d.EntityName == "Customer"
                     && d.EntityId == entityId2
-                    && d.ChangeType == ChangeTypeEnum.Updated),
+                    && d.ChangeType == ChangeTypeEnum.Updated
+                    && d.OriginalValue == updatedOriginalJson
+                    && d.NewValue == updatedNewJson),
+                It.IsAny<CancellationToken>()),
+            Times.Once);
+    }
+
+    [Fact]
+    public async Task SaveChangesAsync_ForwardsEntitySnapshotJson_WithCorrectNullRulesByChangeType()
+    {
+        var createdId = Guid.NewGuid();
+        var deletedId = Guid.NewGuid();
+        var updatedId = Guid.NewGuid();
+        const string deletedOriginalJson = """{"Name":"Gone"}""";
+        const string updatedOriginalJson = """{"Qty":1}""";
+        const string updatedNewJson = """{"Qty":2}""";
+        const string createdNewJson = """{"Name":"New"}""";
+
+        _repository
+            .Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new List<EntityEntryDto>
+            {
+                new("Product", createdId, "Added", [],
+                    OriginalValue: null, NewValue: createdNewJson),
+                new("Product", deletedId, "Deleted", [],
+                    OriginalValue: deletedOriginalJson, NewValue: null),
+                new("Product", updatedId, "Modified", [],
+                    OriginalValue: updatedOriginalJson, NewValue: updatedNewJson)
+            });
+
+        await _sut.SaveAsync();
+
+        _serviceInvoker.Verify(
+            s => s.InvokeAsync<CreateEntityChangeDto, EntityChangeDto>(
+                ServiceNames.Audit,
+                ApiEndpoints.Audit.EntityChanges,
+                HttpMethod.Post,
+                It.Is<CreateEntityChangeDto>(d =>
+                    d.EntityId == createdId
+                    && d.ChangeType == ChangeTypeEnum.Created
+                    && d.OriginalValue == null
+                    && d.NewValue == createdNewJson),
+                It.IsAny<CancellationToken>()),
+            Times.Once);
+
+        _serviceInvoker.Verify(
+            s => s.InvokeAsync<CreateEntityChangeDto, EntityChangeDto>(
+                ServiceNames.Audit,
+                ApiEndpoints.Audit.EntityChanges,
+                HttpMethod.Post,
+                It.Is<CreateEntityChangeDto>(d =>
+                    d.EntityId == deletedId
+                    && d.ChangeType == ChangeTypeEnum.Deleted
+                    && d.OriginalValue == deletedOriginalJson
+                    && d.NewValue == null),
+                It.IsAny<CancellationToken>()),
+            Times.Once);
+
+        _serviceInvoker.Verify(
+            s => s.InvokeAsync<CreateEntityChangeDto, EntityChangeDto>(
+                ServiceNames.Audit,
+                ApiEndpoints.Audit.EntityChanges,
+                HttpMethod.Post,
+                It.Is<CreateEntityChangeDto>(d =>
+                    d.EntityId == updatedId
+                    && d.ChangeType == ChangeTypeEnum.Updated
+                    && d.OriginalValue == updatedOriginalJson
+                    && d.NewValue == updatedNewJson),
                 It.IsAny<CancellationToken>()),
             Times.Once);
     }

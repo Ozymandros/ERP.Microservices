@@ -298,7 +298,7 @@
       "DownstreamPathTemplate": "/openapi/v1.json",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "audit-service", "Port": 8080 }
+        { "Host": "localhost", "Port": 6009 }
       ],
       "UpstreamPathTemplate": "/audit/openapi/v1.json",
       "UpstreamHttpMethod": [ "GET" ],
@@ -309,7 +309,7 @@
       "DownstreamPathTemplate": "/scalar/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "audit-service", "Port": 8080 }
+        { "Host": "localhost", "Port": 6009 }
       ],
       "UpstreamPathTemplate": "/audit/scalar/{everything}",
       "UpstreamHttpMethod": [ "GET" ],
@@ -320,7 +320,7 @@
       "DownstreamPathTemplate": "/api/audit/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "audit-service", "Port": 8080 }
+        { "Host": "localhost", "Port": 6009 }
       ],
       "UpstreamPathTemplate": "/audit/api/audit/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS" ],

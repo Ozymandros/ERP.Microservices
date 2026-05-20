@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MyApp.Agentic.Infrastructure.Migrations.AgenticSqlDb
 {
     /// <inheritdoc />
-    public partial class InitialSqlServerWithMemory : Migration
+    public partial class InitialBaseline : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

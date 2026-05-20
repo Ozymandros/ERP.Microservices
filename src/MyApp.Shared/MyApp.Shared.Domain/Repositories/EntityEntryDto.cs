@@ -21,8 +21,16 @@ public sealed record PropertyChangeEntryDto(
 /// </param>
 /// <param name="State">The EF entity state name (Added, Modified, or Deleted).</param>
 /// <param name="Properties">Property-level old/new values for the change.</param>
+/// <param name="OriginalValue">
+/// JSON snapshot of the whole entity before the change. <see langword="null"/> for Added (Created).
+/// </param>
+/// <param name="NewValue">
+/// JSON snapshot of the whole entity after the change. <see langword="null"/> for Deleted.
+/// </param>
 public sealed record EntityEntryDto(
     string EntityName,
     object? EntityId,
     string State,
-    IReadOnlyCollection<PropertyChangeEntryDto> Properties);
+    IReadOnlyCollection<PropertyChangeEntryDto> Properties,
+    string? OriginalValue = null,
+    string? NewValue = null);

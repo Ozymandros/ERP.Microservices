@@ -132,8 +132,8 @@ public abstract class AppServiceBase
             EntityName = change.EntityName,
             EntityId = entityId.Value,
             ChangeType = changeType.Value,
-            OriginalValue = null,
-            NewValue = null,
+            OriginalValue = changeType == ChangeTypeEnum.Created ? null : change.OriginalValue,
+            NewValue = changeType == ChangeTypeEnum.Deleted ? null : change.NewValue,
             PropertyChanges = propertyChanges
         };
     }

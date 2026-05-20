@@ -4,6 +4,8 @@ using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Specifications;
 using System.Linq.Expressions;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MyApp.Shared.Infrastructure.Repositories;
 
@@ -18,6 +20,12 @@ namespace MyApp.Shared.Infrastructure.Repositories;
 /// </remarks>
 public abstract class DbContextRepositoryBase : IRepository
 {
+    private static readonly JsonSerializerOptions SnapshotJsonOptions = new()
+    {
+        WriteIndented = false,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+    };
+
     /// <summary>
     /// Gets the EF Core database context used by this repository.
     /// </summary>
@@ -49,12 +57,18 @@ public abstract class DbContextRepositoryBase : IRepository
         // and EF state are still meaningful. EntityId for Added rows may not be assigned
         // yet (store-generated keys), so we resolve it again AFTER SaveChanges below.
         var snapshots = entries
-            .Select(entry => new
+            .Select(entry =>
             {
-                Entry = entry,
-                EntityName = entry.Metadata.ClrType.Name,
-                State = entry.State.ToString(),
-                Properties = GetPropertyChanges(entry)
+                var (originalJson, newJson) = ResolveEntitySnapshots(entry);
+                return new
+                {
+                    Entry = entry,
+                    EntityName = entry.Metadata.ClrType.Name,
+                    State = entry.State.ToString(),
+                    Properties = GetPropertyChanges(entry),
+                    OriginalValue = originalJson,
+                    NewValue = newJson
+                };
             })
             .ToList();
 
@@ -65,8 +79,39 @@ public abstract class DbContextRepositoryBase : IRepository
                 s.EntityName,
                 ResolvePrimaryKey(s.Entry),
                 s.State,
-                s.Properties))
+                s.Properties,
+                s.OriginalValue,
+                s.NewValue))
             .ToList();
+    }
+
+    private static (string? OriginalValue, string? NewValue) ResolveEntitySnapshots(EntityEntry entry)
+    {
+        return entry.State switch
+        {
+            EntityState.Added => (null, BuildEntitySnapshotJson(entry, useOriginalValues: false)),
+            EntityState.Deleted => (BuildEntitySnapshotJson(entry, useOriginalValues: true), null),
+            EntityState.Modified => (
+                BuildEntitySnapshotJson(entry, useOriginalValues: true),
+                BuildEntitySnapshotJson(entry, useOriginalValues: false)),
+            _ => (null, null)
+        };
+    }
+
+    private static string? BuildEntitySnapshotJson(EntityEntry entry, bool useOriginalValues)
+    {
+        var dict = new Dictionary<string, object?>(StringComparer.Ordinal);
+        foreach (var property in entry.Properties)
+        {
+            if (property.Metadata.IsPrimaryKey())
+                continue;
+
+            dict[property.Metadata.Name] = useOriginalValues
+                ? property.OriginalValue
+                : property.CurrentValue;
+        }
+
+        return dict.Count == 0 ? null : JsonSerializer.Serialize(dict, SnapshotJsonOptions);
     }
 
     private static object? ResolvePrimaryKey(EntityEntry entry)

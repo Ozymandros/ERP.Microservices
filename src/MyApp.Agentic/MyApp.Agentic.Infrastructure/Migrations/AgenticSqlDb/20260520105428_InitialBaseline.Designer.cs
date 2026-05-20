@@ -13,15 +13,15 @@ using MyApp.Agentic.Infrastructure.Data;
 namespace MyApp.Agentic.Infrastructure.Migrations.AgenticSqlDb
 {
     [DbContext(typeof(AgenticSqlDbContext))]
-    [Migration("20260511124225_InitialSqlServerWithMemory")]
-    partial class InitialSqlServerWithMemory
+    [Migration("20260520105428_InitialBaseline")]
+    partial class InitialBaseline
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.7")
+                .HasAnnotation("ProductVersion", "10.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
