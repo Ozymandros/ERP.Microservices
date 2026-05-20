@@ -6,6 +6,7 @@ using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
@@ -14,7 +15,7 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Purchasing.Application.Services;
 
-public class PurchaseOrderService : IPurchaseOrderService
+public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
 {
     private readonly IPurchaseOrderRepository _purchaseOrderRepository;
     private readonly IPurchaseOrderLineRepository _lineRepository;
@@ -32,6 +33,7 @@ public class PurchaseOrderService : IPurchaseOrderService
         ILogger<PurchaseOrderService> logger,
         IEventPublisher eventPublisher,
         IServiceInvoker serviceInvoker)
+        : base(serviceInvoker, logger)
     {
         _purchaseOrderRepository = purchaseOrderRepository;
         _lineRepository = lineRepository;

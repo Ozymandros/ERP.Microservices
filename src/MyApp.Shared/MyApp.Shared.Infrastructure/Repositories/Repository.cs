@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Specifications;
@@ -6,36 +7,190 @@ using System.Linq.Expressions;
 
 namespace MyApp.Shared.Infrastructure.Repositories;
 
-public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
+/// <summary>
+/// Base class for EF Core repositories that centralizes access to the database context
+/// and provides a virtual hook for persisting unit-of-work changes.
+/// </summary>
+/// <remarks>
+/// Derived types should call <see cref="SaveChangesAsync"/> instead of invoking
+/// <see cref="DbContext.SaveChangesAsync(CancellationToken)"/> directly so cross-cutting
+/// behavior can be applied consistently.
+/// </remarks>
+public abstract class DbContextRepositoryBase : IRepository
+{
+    /// <summary>
+    /// Gets the EF Core database context used by this repository.
+    /// </summary>
+    protected readonly DbContext DbContext;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DbContextRepositoryBase"/> class.
+    /// </summary>
+    /// <param name="dbContext">The EF Core context for the service database.</param>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="dbContext"/> is <see langword="null"/>.
+    /// </exception>
+    protected DbContextRepositoryBase(DbContext dbContext)
+    {
+        DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+    }
+
+    /// <inheritdoc />
+    public virtual async Task<IReadOnlyCollection<EntityEntryDto>> SaveChangesAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var entries = DbContext.ChangeTracker
+            .Entries()
+            .Where(e =>
+                e.State is EntityState.Added or EntityState.Modified or EntityState.Deleted)
+            .ToList();
+
+        // Capture the state and property snapshots BEFORE SaveChanges so original values
+        // and EF state are still meaningful. EntityId for Added rows may not be assigned
+        // yet (store-generated keys), so we resolve it again AFTER SaveChanges below.
+        var snapshots = entries
+            .Select(entry => new
+            {
+                Entry = entry,
+                EntityName = entry.Metadata.ClrType.Name,
+                State = entry.State.ToString(),
+                Properties = GetPropertyChanges(entry)
+            })
+            .ToList();
+
+        await DbContext.SaveChangesAsync(cancellationToken);
+
+        return snapshots
+            .Select(s => new EntityEntryDto(
+                s.EntityName,
+                ResolvePrimaryKey(s.Entry),
+                s.State,
+                s.Properties))
+            .ToList();
+    }
+
+    private static object? ResolvePrimaryKey(EntityEntry entry)
+    {
+        var primaryKey = entry.Metadata.FindPrimaryKey();
+        if (primaryKey is null)
+            return null;
+
+        var keyProperties = primaryKey.Properties;
+        if (keyProperties.Count == 0)
+            return null;
+
+        if (keyProperties.Count == 1)
+        {
+            return entry.Property(keyProperties[0].Name).CurrentValue;
+        }
+
+        // Composite key: join individual values with '|' as a stable string representation.
+        var parts = keyProperties
+            .Select(p => entry.Property(p.Name).CurrentValue?.ToString() ?? string.Empty);
+        return string.Join("|", parts);
+    }
+
+    private static IReadOnlyCollection<PropertyChangeEntryDto> GetPropertyChanges(EntityEntry entry)
+    {
+        var properties = new List<PropertyChangeEntryDto>();
+
+        foreach (var property in entry.Properties)
+        {
+            if (property.Metadata.IsPrimaryKey())
+                continue;
+
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    properties.Add(new PropertyChangeEntryDto(
+                        property.Metadata.Name,
+                        null,
+                        property.CurrentValue));
+                    break;
+
+                case EntityState.Deleted:
+                    properties.Add(new PropertyChangeEntryDto(
+                        property.Metadata.Name,
+                        property.OriginalValue,
+                        null));
+                    break;
+
+                case EntityState.Modified:
+                    if (!property.IsModified)
+                        continue;
+
+                    var oldValue = property.OriginalValue;
+                    var newValue = property.CurrentValue;
+
+                    if (Equals(oldValue, newValue))
+                        continue;
+
+                    properties.Add(new PropertyChangeEntryDto(
+                        property.Metadata.Name,
+                        oldValue,
+                        newValue));
+                    break;
+            }
+        }
+
+        return properties;
+    }
+}
+
+/// <summary>
+/// Generic EF Core repository that implements standard CRUD and query operations for an entity type.
+/// </summary>
+/// <typeparam name="TEntity">The domain entity type stored in the database.</typeparam>
+/// <typeparam name="TKey">The type of the entity primary key.</typeparam>
+public abstract class Repository<TEntity, TKey> : DbContextRepositoryBase, IRepository<TEntity, TKey>
     where TEntity : class
 {
-    protected readonly DbContext _dbContext;
+    /// <summary>
+    /// Gets the tracked <see cref="DbSet{TEntity}"/> for this repository's entity type.
+    /// </summary>
+    protected virtual DbSet<TEntity> DbSet => DbContext.Set<TEntity>();
 
-    protected Repository(DbContext dbContext)
+    /// <summary>
+    /// Gets a no-tracking queryable surface for read-only queries against this entity type.
+    /// </summary>
+    protected virtual IQueryable<TEntity> Queryable => DbContext.Set<TEntity>().AsNoTracking();
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Repository{TEntity, TKey}"/> class.
+    /// </summary>
+    /// <param name="dbContext">The EF Core context for the service database.</param>
+    protected Repository(DbContext dbContext) : base(dbContext)
     {
-        _dbContext = dbContext;
     }
 
+    /// <inheritdoc />
     public virtual async Task<TEntity?> GetByIdAsync(TKey id)
     {
-        return await _dbContext.Set<TEntity>().FindAsync(id);
+        return await DbSet.FindAsync(id);
     }
 
+    /// <inheritdoc />
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
-        return await _dbContext.Set<TEntity>().ToListAsync();
+        return await Queryable.ToListAsync();
     }
 
-    public virtual async Task<PaginatedResult<TEntity>> GetAllPaginatedAsync(int pageNumber, int pageSize, IEnumerable<Expression<Func<TEntity, object>>>? includes = null)
+    /// <inheritdoc />
+    public virtual async Task<PaginatedResult<TEntity>> GetAllPaginatedAsync(
+        int pageNumber,
+        int pageSize,
+        IEnumerable<Expression<Func<TEntity, object>>>? includes = null)
     {
         var paginationParams = new PaginationParams(pageNumber, pageSize);
-        IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+        IQueryable<TEntity> query = DbContext.Set<TEntity>().AsNoTracking();
 
         if (includes is not null)
+        {
             foreach (var includeExpression in includes)
             {
                 query = query.Include(includeExpression);
             }
+        }
 
         var totalCount = await query.CountAsync();
         var items = await query
@@ -46,26 +201,19 @@ public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
         return new PaginatedResult<TEntity>(items, paginationParams.PageNumber, paginationParams.PageSize, totalCount);
     }
 
-    /// <summary>
-    /// Query entities using a specification for filtering, sorting, and pagination.
-    /// </summary>
-    /// <param name="spec">The specification defining the query logic</param>
-    /// <returns>A paginated result with filtered and sorted items</returns>
+    /// <inheritdoc />
     public virtual async Task<PaginatedResult<TEntity>> QueryAsync(ISpecification<TEntity> spec)
     {
         ArgumentNullException.ThrowIfNull(spec);
 
-        var baseQuery = _dbContext.Set<TEntity>().AsNoTracking().AsQueryable();
+        var baseQuery = DbContext.Set<TEntity>().AsNoTracking().AsQueryable();
 
-        // 1. Apply only filters to get the total count of matching items (before pagination)
         var filteredQuery = spec.ApplyFilters(baseQuery);
         var totalCount = await filteredQuery.CountAsync();
 
-        // 2. Apply the full specification (filters + sorting + pagination)
         var finalQuery = spec.Apply(baseQuery);
         var items = await finalQuery.ToListAsync();
 
-        // 3. Extract pagination info from the spec if possible
         int pageNumber = 1;
         int pageSize = items.Count;
 
@@ -78,23 +226,26 @@ public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
         return new PaginatedResult<TEntity>(items, pageNumber, pageSize, totalCount);
     }
 
+    /// <inheritdoc />
     public virtual async Task<TEntity> AddAsync(TEntity entity)
     {
-        await _dbContext.Set<TEntity>().AddAsync(entity);
-        await _dbContext.SaveChangesAsync();
+        await DbSet.AddAsync(entity);
+        await SaveChangesAsync();
         return entity;
     }
 
+    /// <inheritdoc />
     public virtual async Task<TEntity> UpdateAsync(TEntity entity)
     {
-        _dbContext.Set<TEntity>().Update(entity);
-        await _dbContext.SaveChangesAsync();
+        DbSet.Update(entity);
+        await SaveChangesAsync();
         return entity;
     }
 
+    /// <inheritdoc />
     public virtual async Task DeleteAsync(TEntity entity)
     {
-        _dbContext.Set<TEntity>().Remove(entity);
-        await _dbContext.SaveChangesAsync();
+        DbSet.Remove(entity);
+        await SaveChangesAsync();
     }
 }

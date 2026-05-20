@@ -31,7 +31,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Shared\MyApp.Shared.Application\MyApp.Shared.Application.csproj" />
     <ProjectReference Include="..\MyApp.Shared\MyApp.Shared.Infrastructure\MyApp.Shared.Infrastructure.csproj" />
+    <ProjectReference Include="..\MyApp.Audit\MyApp.Audit.Application.Contracts\MyApp.Audit.Application.Contracts.csproj" />
+    <ProjectReference Include="..\MyApp.Audit\MyApp.Audit.Domain\MyApp.Audit.Domain.csproj" />
   </ItemGroup>
 
 </Project>

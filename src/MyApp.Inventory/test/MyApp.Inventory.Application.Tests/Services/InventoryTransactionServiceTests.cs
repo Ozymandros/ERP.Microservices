@@ -1,11 +1,13 @@
 using AutoMapper;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Inventory.Domain.Specifications;
+using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using Xunit;
 
@@ -16,6 +18,8 @@ public class InventoryTransactionServiceTests
     private readonly Mock<IInventoryTransactionRepository> _mockTransactionRepository;
     private readonly Mock<IProductRepository> _mockProductRepository;
     private readonly Mock<IMapper> _mockMapper;
+    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
+    private readonly Mock<ILogger<InventoryTransactionService>> _mockLogger;
     private readonly InventoryTransactionService _transactionService;
 
     public InventoryTransactionServiceTests()
@@ -23,11 +27,15 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository = new Mock<IInventoryTransactionRepository>();
         _mockProductRepository = new Mock<IProductRepository>();
         _mockMapper = new Mock<IMapper>();
+        _mockServiceInvoker = new Mock<IServiceInvoker>();
+        _mockLogger = new Mock<ILogger<InventoryTransactionService>>();
 
         _transactionService = new InventoryTransactionService(
             _mockTransactionRepository.Object,
             _mockProductRepository.Object,
-            _mockMapper.Object);
+            _mockMapper.Object,
+            _mockServiceInvoker.Object,
+            _mockLogger.Object);
     }
 
     [Fact]

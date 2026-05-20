@@ -2,22 +2,21 @@ using Microsoft.EntityFrameworkCore;
 using MyApp.Orders.Domain.Entities;
 using MyApp.Orders.Domain.Repositories;
 using MyApp.Orders.Infrastructure.Data;
+using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Orders.Infrastructure.Repositories;
 
 /// <summary>
 /// Provides Reserved Stock Repository functionality.
 /// </summary>
-public class ReservedStockRepository : IReservedStockRepository
+public class ReservedStockRepository : DbContextRepositoryBase, IReservedStockRepository
 {
     private readonly OrdersDbContext _db;
 
-    public ReservedStockRepository(OrdersDbContext db)
+    public ReservedStockRepository(OrdersDbContext db) : base(db)
     {
         _db = db;
     }
-
-    // ── IRepository<ReservedStock, Guid> (local Orders contract) ─────────────
 
     /// <summary>Get By Id Async.</summary>
     public async Task<ReservedStock?> GetByIdAsync(Guid id)
@@ -35,14 +34,14 @@ public class ReservedStockRepository : IReservedStockRepository
     public async Task AddAsync(ReservedStock entity)
     {
         await _db.ReservedStocks.AddAsync(entity);
-        await _db.SaveChangesAsync();
+        await base.SaveChangesAsync();
     }
 
     /// <summary>Update Async.</summary>
     public async Task UpdateAsync(ReservedStock entity)
     {
         _db.ReservedStocks.Update(entity);
-        await _db.SaveChangesAsync();
+        await base.SaveChangesAsync();
     }
 
     /// <summary>Delete Async.</summary>
@@ -52,11 +51,9 @@ public class ReservedStockRepository : IReservedStockRepository
         if (existing != null)
         {
             _db.ReservedStocks.Remove(existing);
-            await _db.SaveChangesAsync();
+            await base.SaveChangesAsync();
         }
     }
-
-    // ── IReservedStockRepository domain-specific queries ─────────────────────
 
     /// <summary>Get Expired Reservations Async.</summary>
     public async Task<List<ReservedStock>> GetExpiredReservationsAsync()

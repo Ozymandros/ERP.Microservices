@@ -18,14 +18,14 @@ public class SupplierRepository : Repository<Supplier, Guid>, ISupplierRepositor
     /// <summary>Get By Email Async.</summary>
     public async Task<Supplier?> GetByEmailAsync(string email)
     {
-        return await _dbContext.Set<Supplier>()
+        return await DbContext.Set<Supplier>()
             .FirstOrDefaultAsync(x => x.Email == email);
     }
 
     /// <summary>Get By Name Async.</summary>
     public async Task<IEnumerable<Supplier>> GetByNameAsync(string name)
     {
-        return await _dbContext.Set<Supplier>()
+        return await DbContext.Set<Supplier>()
             .Where(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
             .ToListAsync();
     }

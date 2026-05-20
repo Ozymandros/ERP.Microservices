@@ -1,11 +1,13 @@
 using AutoMapper;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Services;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
 using MyApp.Purchasing.Domain.Specifications;
+using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using Xunit;
 
@@ -15,16 +17,22 @@ public class SupplierServiceTests
 {
     private readonly Mock<ISupplierRepository> _mockSupplierRepository;
     private readonly Mock<IMapper> _mockMapper;
+    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
+    private readonly Mock<ILogger<SupplierService>> _mockLogger;
     private readonly SupplierService _supplierService;
 
     public SupplierServiceTests()
     {
         _mockSupplierRepository = new Mock<ISupplierRepository>();
         _mockMapper = new Mock<IMapper>();
+        _mockServiceInvoker = new Mock<IServiceInvoker>();
+        _mockLogger = new Mock<ILogger<SupplierService>>();
 
         _supplierService = new SupplierService(
             _mockSupplierRepository.Object,
-            _mockMapper.Object);
+            _mockMapper.Object,
+            _mockServiceInvoker.Object,
+            _mockLogger.Object);
     }
 
     [Fact]

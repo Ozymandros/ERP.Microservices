@@ -70,7 +70,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
             if (customer != null)
             {
                 _context.Customers.Remove(customer);
-                await _context.SaveChangesAsync();
+                await base.SaveChangesAsync();
             }
         }
 

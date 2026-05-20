@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using MyApp.Crm.Application.Contracts.DTOs;
 using MyApp.Crm.Application.Contracts.Services;
 using MyApp.Crm.Domain.Opportunities;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
@@ -15,7 +16,7 @@ namespace MyApp.Crm.Application.Services;
 /// <summary>
 /// Provides Opportunity Service functionality.
 /// </summary>
-public class OpportunityService : IOpportunityService
+public class OpportunityService : AppServiceBase, IOpportunityService
 {
     private const string QuoteNumberPrefix = "Q-CRM";
     private const int QuoteNumberIdSuffixLength = 8;
@@ -32,6 +33,7 @@ public class OpportunityService : IOpportunityService
         ILogger<OpportunityService> logger,
         IEventPublisher eventPublisher,
         IServiceInvoker serviceInvoker)
+        : base(serviceInvoker, logger)
     {
         _repository = repository;
         _mapper = mapper;

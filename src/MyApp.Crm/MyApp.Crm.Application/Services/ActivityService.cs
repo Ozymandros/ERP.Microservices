@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using MyApp.Crm.Application.Contracts.DTOs;
 using MyApp.Crm.Application.Contracts.Services;
 using MyApp.Crm.Domain.Activities;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
@@ -14,7 +15,7 @@ namespace MyApp.Crm.Application.Services;
 /// <summary>
 /// Provides Activity Service functionality.
 /// </summary>
-public class ActivityService : IActivityService
+public class ActivityService : AppServiceBase, IActivityService
 {
     private readonly IActivityRepository _repository;
     private readonly IMapper _mapper;
@@ -24,8 +25,10 @@ public class ActivityService : IActivityService
     public ActivityService(
         IActivityRepository repository,
         IMapper mapper,
+        IServiceInvoker serviceInvoker,
         ILogger<ActivityService> logger,
         IEventPublisher eventPublisher)
+        : base(serviceInvoker, logger)
     {
         _repository = repository;
         _mapper = mapper;

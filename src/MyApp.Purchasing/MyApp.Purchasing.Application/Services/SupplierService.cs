@@ -1,19 +1,27 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Purchasing.Application.Services;
 
-public class SupplierService : ISupplierService
+public class SupplierService : AppServiceBase, ISupplierService
 {
     private readonly ISupplierRepository _supplierRepository;
     private readonly IMapper _mapper;
 
-    public SupplierService(ISupplierRepository supplierRepository, IMapper mapper)
+    public SupplierService(
+        ISupplierRepository supplierRepository,
+        IMapper mapper,
+        IServiceInvoker serviceInvoker,
+        ILogger<SupplierService> logger)
+        : base(serviceInvoker, logger)
     {
         _supplierRepository = supplierRepository;
         _mapper = mapper;

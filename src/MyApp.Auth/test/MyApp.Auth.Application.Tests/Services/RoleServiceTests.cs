@@ -10,6 +10,7 @@ using MyApp.Auth.Application.Tests.Builders;
 using MyApp.Auth.Application.Tests.Common;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Domain.Messaging;
 using Xunit;
 
 namespace MyApp.Auth.Application.Tests.Services;
@@ -20,6 +21,7 @@ public class RoleServiceTests : BaseServiceTest
     private readonly Mock<RoleManager<ApplicationRole>> _mockRoleManager;
     private readonly Mock<UserManager<ApplicationUser>> _mockUserManager;
     private readonly Mock<IUserRepository> _mockUserRepository;
+    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly Mock<ILogger<RoleService>> _mockLogger;
     private readonly RoleService _roleService;
 
@@ -29,6 +31,7 @@ public class RoleServiceTests : BaseServiceTest
         _mockRoleManager = CreateMockRoleManager();
         _mockUserManager = CreateMockUserManager();
         _mockUserRepository = new Mock<IUserRepository>();
+        _mockServiceInvoker = new Mock<IServiceInvoker>();
         _mockLogger = CreateMockLogger<RoleService>();
 
         _roleService = new RoleService(
@@ -37,6 +40,7 @@ public class RoleServiceTests : BaseServiceTest
             _mockRoleRepository.Object,
             _mockUserRepository.Object,
             Mapper,
+            _mockServiceInvoker.Object,
             _mockLogger.Object);
     }
 

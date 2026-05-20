@@ -5,13 +5,15 @@ using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Entities;
+using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Auth.Application.Services;
 
-public class PermissionService : IPermissionService
+public class PermissionService : AppServiceBase, IPermissionService
 {
     private readonly IPermissionRepository _permissionRepository;
     private readonly IMapper _mapper;
@@ -21,7 +23,9 @@ public class PermissionService : IPermissionService
     public PermissionService(UserManager<ApplicationUser> userManager,
         IPermissionRepository permissionRepository,
         IMapper mapper,
+        IServiceInvoker serviceInvoker,
         ILogger<PermissionService> logger)
+        : base(serviceInvoker, logger)
     {
         _userManager = userManager;
         _permissionRepository = permissionRepository;

@@ -36,7 +36,7 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     public async Task<IEnumerable<ApplicationRole>> GetRolesByUserIdAsync(Guid userId)
     {
         // Query directly from UserRoles join table to get only roles assigned to this user
-        var roleIds = await _context.UserRoles
+        var roleIds = await _context.UserRoles.AsNoTracking()
             .Where(ur => ur.UserId == userId)
             .Select(ur => ur.RoleId)
             .Distinct()
@@ -47,7 +47,7 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
             return Enumerable.Empty<ApplicationRole>();
         }
 
-        return await _context.Roles
+        return await this.Queryable
             .Where(r => roleIds.Contains(r.Id))
             .Include(r => r.RoleClaims)
             .ToListAsync();
@@ -56,7 +56,7 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     /// <summary>Get Permissions For Role Async.</summary>
     public async Task<IEnumerable<Permission>> GetPermissionsForRoleAsync(Guid roleId)
     {
-        var permissions = await _context.Roles
+        var permissions = await this.Queryable
             .Where(r => r.Id == roleId)
             .SelectMany(r => r.RolePermissions.Select(rp => rp.Permission)) // Traverse through the join table to the Permission
             .ToListAsync();
@@ -67,7 +67,7 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     /// <summary>Has Permission Async.</summary>
     public async Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId)
     {
-        return await _context.RolePermissions
+        return await _context.RolePermissions.AsNoTracking()
             .AnyAsync(rp => rp.RoleId == roleId && rp.PermissionId == permissionId);
     }
 
@@ -83,14 +83,14 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
         }
 
         _context.RolePermissions.Remove(rolePermission);
-        await _context.SaveChangesAsync();
+        await this.SaveChangesAsync();
 
         // Update role's UpdatedAt timestamp
         var role = await _context.Roles.FindAsync(roleId);
         if (role != null)
         {
             role.UpdatedAt = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
+            await this.SaveChangesAsync();
         }
 
         return true;

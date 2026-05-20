@@ -3,6 +3,7 @@ using MyApp.Billing.Domain.Entities;
 using MyApp.Billing.Domain.Repositories;
 using MyApp.Billing.Infrastructure.Persistence;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Specifications;
 using MyApp.Shared.Infrastructure.Repositories;
 
@@ -82,7 +83,7 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
     /// <summary>
     /// Persists pending changes for tracked invoice aggregates.
     /// </summary>
-    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    public new async Task<IReadOnlyCollection<EntityEntryDto>> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         // When payments are appended through the Invoice aggregate, EF can occasionally
         // track new Payment rows as Modified instead of Added in this graph path.
@@ -104,7 +105,7 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
             }
         }
 
-        await _context.SaveChangesAsync(cancellationToken);
+        return await base.SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>

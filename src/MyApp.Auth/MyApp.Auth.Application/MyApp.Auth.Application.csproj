@@ -15,5 +15,6 @@
     <ProjectReference Include="..\MyApp.Auth.Application.Contracts\MyApp.Auth.Application.Contracts.csproj" />
     <ProjectReference Include="..\MyApp.Auth.Infrastructure\MyApp.Auth.Infrastructure.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Application\MyApp.Shared.Application.csproj" />
   </ItemGroup>
 </Project>

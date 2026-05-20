@@ -18,7 +18,7 @@ public class PurchaseOrderRepository : Repository<PurchaseOrder, Guid>, IPurchas
     /// <summary>Get By Suppliers Id Async.</summary>
     public async Task<IEnumerable<PurchaseOrder>> GetBySuppliersIdAsync(Guid supplierId)
     {
-        return await _dbContext.Set<PurchaseOrder>()
+        return await DbContext.Set<PurchaseOrder>()
             .Where(x => x.SupplierId == supplierId)
             .Include(x => x.Lines)
             .ToListAsync();
@@ -27,7 +27,7 @@ public class PurchaseOrderRepository : Repository<PurchaseOrder, Guid>, IPurchas
     /// <summary>Get By Status Async.</summary>
     public async Task<IEnumerable<PurchaseOrder>> GetByStatusAsync(PurchaseOrderStatus status)
     {
-        return await _dbContext.Set<PurchaseOrder>()
+        return await DbContext.Set<PurchaseOrder>()
             .Where(x => x.Status == status)
             .Include(x => x.Lines)
             .ToListAsync();
@@ -36,7 +36,7 @@ public class PurchaseOrderRepository : Repository<PurchaseOrder, Guid>, IPurchas
     /// <summary>Get With Lines Async.</summary>
     public async Task<PurchaseOrder?> GetWithLinesAsync(Guid id)
     {
-        return await _dbContext.Set<PurchaseOrder>()
+        return await DbContext.Set<PurchaseOrder>()
             .Include(x => x.Lines)
             .Include(x => x.Supplier)
             .FirstOrDefaultAsync(x => x.Id == id);
@@ -44,7 +44,7 @@ public class PurchaseOrderRepository : Repository<PurchaseOrder, Guid>, IPurchas
 
     public async Task<PurchaseOrder?> GetByOrderNumberAsync(string orderNumber)
     {
-        return await _dbContext.Set<PurchaseOrder>()
+        return await DbContext.Set<PurchaseOrder>()
             .Include(x => x.Lines)
             .Include(x => x.Supplier)
             .FirstOrDefaultAsync(x => x.OrderNumber == orderNumber);

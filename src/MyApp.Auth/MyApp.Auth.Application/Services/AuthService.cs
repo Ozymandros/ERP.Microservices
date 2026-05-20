@@ -5,6 +5,8 @@ using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
 using MyApp.Auth.Infrastructure.Services;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Messaging;
 using System.Security.Claims;
 
 namespace MyApp.Auth.Application.Services;
@@ -12,7 +14,7 @@ namespace MyApp.Auth.Application.Services;
 /// <summary>
 /// Provides authentication and authorization services including login, registration, token refresh, and logout operations.
 /// </summary>
-public class AuthService : IAuthService
+public class AuthService : AppServiceBase, IAuthService
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IJwtTokenProvider _jwtTokenProvider;
@@ -32,7 +34,9 @@ public class AuthService : IAuthService
         IUserRepository userRepository,
         IRoleRepository roleRepository,
         IPermissionRepository permissionRepository,
+        IServiceInvoker serviceInvoker,
         ILogger<AuthService> logger)
+        : base(serviceInvoker, logger)
     {
         _userManager = userManager;
         _jwtTokenProvider = jwtTokenProvider;

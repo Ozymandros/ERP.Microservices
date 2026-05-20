@@ -19,6 +19,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
     private readonly Mock<IProductRepository> _mockProductRepository;
     private readonly Mock<IInventoryTransactionRepository> _mockTransactionRepository;
     private readonly Mock<IInventoryReservationRepository> _mockReservationRepository;
+    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly Mock<ILogger<WarehouseStockService>> _mockLogger;
     private readonly Mock<IEventPublisher> _mockEventPublisher;
     private readonly WarehouseStockService _service;
@@ -29,6 +30,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         _mockProductRepository = new Mock<IProductRepository>();
         _mockTransactionRepository = new Mock<IInventoryTransactionRepository>();
         _mockReservationRepository = new Mock<IInventoryReservationRepository>();
+        _mockServiceInvoker = new Mock<IServiceInvoker>();
         _mockLogger = CreateMockLogger<WarehouseStockService>();
         _mockEventPublisher = new Mock<IEventPublisher>();
 
@@ -38,6 +40,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
             _mockTransactionRepository.Object,
             _mockReservationRepository.Object,
             Mapper,
+            _mockServiceInvoker.Object,
             _mockLogger.Object,
             _mockEventPublisher.Object);
     }

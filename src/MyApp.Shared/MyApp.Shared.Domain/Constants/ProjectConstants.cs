@@ -28,6 +28,9 @@ public static class ServiceNames
 
     /// <summary>Gets the identifier for the Notification service.</summary>
     public const string Notification = "notification-service";
+
+    /// <summary>Gets the identifier for the Audit service.</summary>
+    public const string Audit = "audit-service";
 }
 
 /// <summary>
@@ -69,6 +72,13 @@ public static class ApiEndpoints
 
         /// <summary>Gets the endpoint for sales quotes.</summary>
         public const string Quotes = "api/sales/orders/quotes";
+    }
+
+    /// <summary>Audit service endpoints.</summary>
+    public static class Audit
+    {
+        /// <summary>Gets the base endpoint for recording entity changes.</summary>
+        public const string EntityChanges = "api/audit/entity-changes";
     }
 }
 

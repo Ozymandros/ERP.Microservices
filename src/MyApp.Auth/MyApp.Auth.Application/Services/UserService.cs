@@ -6,13 +6,15 @@ using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Entities;
+using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Auth.Application.Services;
 
-public class UserService : IUserService
+public class UserService : AppServiceBase, IUserService
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
@@ -29,9 +31,11 @@ public class UserService : IUserService
         IUserRepository userRepository,
         IRoleRepository roleRepository,
         IMapper mapper,
+        IServiceInvoker serviceInvoker,
         ILogger<UserService> logger,
         IHttpContextAccessor httpContextAccessor,
         IPermissionRepository permissionRepository)
+        : base(serviceInvoker, logger)
     {
         _userManager = userManager;
         _roleManager = roleManager;

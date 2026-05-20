@@ -9,6 +9,7 @@ using MyApp.Auth.Application.Tests.Common;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
 using MyApp.Auth.Infrastructure.Services;
+using MyApp.Shared.Domain.Messaging;
 using System.Security.Claims;
 using Xunit;
 
@@ -19,6 +20,7 @@ public class AuthServiceTests : BaseServiceTest
     private readonly Mock<UserManager<ApplicationUser>> _mockUserManager;
     private readonly Mock<IJwtTokenProvider> _mockJwtTokenProvider;
     private readonly Mock<IRefreshTokenRepository> _mockRefreshTokenRepository;
+    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly Mock<ILogger<AuthService>> _mockLogger;
     private readonly AuthService _authService;
     private readonly Mock<IMapper> _mockMapper;
@@ -32,6 +34,7 @@ public class AuthServiceTests : BaseServiceTest
         _mockUserManager = CreateMockUserManager();
         _mockJwtTokenProvider = new Mock<IJwtTokenProvider>();
         _mockRefreshTokenRepository = new Mock<IRefreshTokenRepository>();
+        _mockServiceInvoker = new Mock<IServiceInvoker>();
         _mockLogger = CreateMockLogger<AuthService>();
         _mockMapper = new Mock<IMapper>();
         _mockUserRepository = new Mock<IUserRepository>();
@@ -46,6 +49,7 @@ public class AuthServiceTests : BaseServiceTest
             _mockUserRepository.Object,
             _mockRoleRepository.Object,
             _mockPermissionRepository.Object,
+            _mockServiceInvoker.Object,
             _mockLogger.Object);
     }
 

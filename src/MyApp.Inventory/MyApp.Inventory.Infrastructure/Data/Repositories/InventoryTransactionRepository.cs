@@ -18,7 +18,7 @@ public class InventoryTransactionRepository : Repository<InventoryTransaction, G
     /// <summary>Get By Product Id Async.</summary>
     public async Task<IEnumerable<InventoryTransaction>> GetByProductIdAsync(Guid productId)
     {
-        return await _dbContext.Set<InventoryTransaction>()
+        return await DbContext.Set<InventoryTransaction>()
             .Where(x => x.ProductId == productId)
             .Include(x => x.Product)
             .Include(x => x.Warehouse)
@@ -28,7 +28,7 @@ public class InventoryTransactionRepository : Repository<InventoryTransaction, G
     /// <summary>Get By Warehouse Id Async.</summary>
     public async Task<IEnumerable<InventoryTransaction>> GetByWarehouseIdAsync(Guid warehouseId)
     {
-        return await _dbContext.Set<InventoryTransaction>()
+        return await DbContext.Set<InventoryTransaction>()
             .Where(x => x.WarehouseId == warehouseId)
             .Include(x => x.Product)
             .Include(x => x.Warehouse)
@@ -38,7 +38,7 @@ public class InventoryTransactionRepository : Repository<InventoryTransaction, G
     /// <summary>Get By Transaction Type Async.</summary>
     public async Task<IEnumerable<InventoryTransaction>> GetByTransactionTypeAsync(TransactionType transactionType)
     {
-        return await _dbContext.Set<InventoryTransaction>()
+        return await DbContext.Set<InventoryTransaction>()
             .Where(x => x.TransactionType == transactionType)
             .Include(x => x.Product)
             .Include(x => x.Warehouse)
@@ -47,7 +47,7 @@ public class InventoryTransactionRepository : Repository<InventoryTransaction, G
 
     public async Task<InventoryTransaction?> GetByReferenceNumberAsync(string referenceNumber)
     {
-        return await _dbContext.Set<InventoryTransaction>()
+        return await DbContext.Set<InventoryTransaction>()
             .Where(x => x.ReferenceNumber == referenceNumber)
             .Include(x => x.Product)
             .Include(x => x.Warehouse)

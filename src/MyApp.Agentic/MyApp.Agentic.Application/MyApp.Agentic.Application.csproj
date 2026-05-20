@@ -13,6 +13,7 @@
     <ProjectReference Include="..\MyApp.Agentic.Application.Contracts\MyApp.Agentic.Application.Contracts.csproj" />
     <ProjectReference Include="..\MyApp.Agentic.Infrastructure\MyApp.Agentic.Infrastructure.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Application\MyApp.Shared.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

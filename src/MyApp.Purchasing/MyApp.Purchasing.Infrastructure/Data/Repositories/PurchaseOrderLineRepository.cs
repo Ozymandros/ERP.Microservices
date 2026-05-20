@@ -18,7 +18,7 @@ public class PurchaseOrderLineRepository : Repository<PurchaseOrderLine, Guid>, 
     /// <summary>Get By Purchase Order Id Async.</summary>
     public async Task<IEnumerable<PurchaseOrderLine>> GetByPurchaseOrderIdAsync(Guid purchaseOrderId)
     {
-        return await _dbContext.Set<PurchaseOrderLine>()
+        return await DbContext.Set<PurchaseOrderLine>()
             .Where(x => x.PurchaseOrderId == purchaseOrderId)
             .ToListAsync();
     }

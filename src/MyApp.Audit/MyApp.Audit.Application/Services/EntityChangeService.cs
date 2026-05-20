@@ -4,14 +4,16 @@ using MyApp.Audit.Application.Contracts.DTOs;
 using MyApp.Audit.Application.Contracts.Services;
 using MyApp.Audit.Domain;
 using MyApp.Audit.Domain.Repositories;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Audit.Application.Services;
 
 /// <summary>Application service for recording and querying audit trail entries.</summary>
-public class EntityChangeService : IEntityChangeService
+public class EntityChangeService : AppServiceBase, IEntityChangeService
 {
     private static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(5);
 
@@ -20,11 +22,21 @@ public class EntityChangeService : IEntityChangeService
     private readonly ICacheService _cache;
     private readonly ILogger<EntityChangeService> _logger;
 
+    /// <inheritdoc />
+    /// <remarks>
+    /// The Audit microservice must never publish audit records to itself, otherwise it would
+    /// enter an infinite recursion on every write. This override disables audit publishing
+    /// for the service that backs the audit-service.
+    /// </remarks>
+    protected override bool DisableAuditPublishing => true;
+
     public EntityChangeService(
         IEntityChangeRepository repository,
         IMapper mapper,
         ICacheService cache,
+        IServiceInvoker serviceInvoker,
         ILogger<EntityChangeService> logger)
+        : base(serviceInvoker, logger)
     {
         _repository = repository;
         _mapper = mapper;

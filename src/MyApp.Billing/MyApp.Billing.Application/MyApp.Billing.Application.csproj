@@ -14,6 +14,7 @@
     <ProjectReference Include="..\MyApp.Billing.Domain\MyApp.Billing.Domain.csproj" />
     <ProjectReference Include="..\MyApp.Billing.Application.Contracts\MyApp.Billing.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Application\MyApp.Shared.Application.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj" />
   </ItemGroup>
 </Project>

@@ -18,21 +18,21 @@ public class ProductRepository : Repository<Product, Guid>, IProductRepository
     /// <summary>Get By Sku Async.</summary>
     public async Task<Product?> GetBySkuAsync(string sku)
     {
-        return await _dbContext.Set<Product>()
+        return await DbContext.Set<Product>()
             .FirstOrDefaultAsync(x => x.SKU == sku);
     }
 
     /// <summary>Get By Name Async.</summary>
     public async Task<Product?> GetByNameAsync(string name)
     {
-        return await _dbContext.Set<Product>()
+        return await DbContext.Set<Product>()
             .FirstOrDefaultAsync(x => x.Name == name);
     }
 
     /// <summary>Get Low Stock Products Async.</summary>
     public async Task<IEnumerable<Product>> GetLowStockProductsAsync()
     {
-        return await _dbContext.Set<Product>()
+        return await DbContext.Set<Product>()
             .Where(x => x.QuantityInStock < x.ReorderLevel)
             .ToListAsync();
     }

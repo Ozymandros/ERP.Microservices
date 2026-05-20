@@ -9,6 +9,7 @@ using MyApp.Billing.Domain.Specifications;
 using MyApp.Shared.Domain.Exceptions;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Repositories;
 using Xunit;
 
 namespace MyApp.Billing.Application.Tests.Services;
@@ -17,6 +18,7 @@ public class InvoiceServiceTests
 {
     private readonly Mock<IInvoiceRepository> _invoiceRepo;
     private readonly Mock<ICreditNoteRepository> _creditNoteRepo;
+    private readonly Mock<IServiceInvoker> _serviceInvoker;
     private readonly Mock<ILogger<InvoiceService>> _logger;
     private readonly Mock<IEventPublisher> _eventPublisher;
     private readonly InvoiceService _sut;
@@ -25,12 +27,14 @@ public class InvoiceServiceTests
     {
         _invoiceRepo = new Mock<IInvoiceRepository>();
         _creditNoteRepo = new Mock<ICreditNoteRepository>();
+        _serviceInvoker = new Mock<IServiceInvoker>();
         _logger = new Mock<ILogger<InvoiceService>>();
         _eventPublisher = new Mock<IEventPublisher>();
 
         _sut = new InvoiceService(
             _invoiceRepo.Object,
             _creditNoteRepo.Object,
+            _serviceInvoker.Object,
             _logger.Object,
             _eventPublisher.Object);
     }
@@ -267,7 +271,7 @@ public class InvoiceServiceTests
         var invoice = BuildIssuedInvoice();
         var dto = new RecordPaymentDto(invoice.Id, invoice.TotalGross, "BankTransfer", DateTime.UtcNow);
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<EntityEntryDto>());
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -288,7 +292,7 @@ public class InvoiceServiceTests
         var partialAmount = invoice.TotalGross / 2;
         var dto = new RecordPaymentDto(invoice.Id, partialAmount, "Card", DateTime.UtcNow);
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<EntityEntryDto>());
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -323,7 +327,7 @@ public class InvoiceServiceTests
         var invoice = BuildIssuedInvoice();
         var dto = new RecordPaymentDto(invoice.Id, invoice.TotalGross, "BankTransfer", DateTime.UtcNow);
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<EntityEntryDto>());
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 

@@ -1,14 +1,17 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Inventory.Application.Services;
 
-public class InventoryTransactionService : IInventoryTransactionService
+public class InventoryTransactionService : AppServiceBase, IInventoryTransactionService
 {
     private readonly IInventoryTransactionRepository _transactionRepository;
     private readonly IProductRepository _productRepository;
@@ -17,7 +20,10 @@ public class InventoryTransactionService : IInventoryTransactionService
     public InventoryTransactionService(
         IInventoryTransactionRepository transactionRepository,
         IProductRepository productRepository,
-        IMapper mapper)
+        IMapper mapper,
+        IServiceInvoker serviceInvoker,
+        ILogger<InventoryTransactionService> logger)
+        : base(serviceInvoker, logger)
     {
         _transactionRepository = transactionRepository;
         _productRepository = productRepository;

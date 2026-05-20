@@ -1,14 +1,29 @@
+using Microsoft.Extensions.Logging;
 using MyApp.Agentic.Application.Contracts.DTOs;
 using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Agentic.Domain.AIModels;
 using MyApp.Agentic.Domain.AIProviders;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Messaging;
 
 namespace MyApp.Agentic.Application.Services;
 
-public class AIModelService(
-    IAIModelRepository modelRepository,
-    IAIProviderRepository providerRepository) : IAIModelService
+public class AIModelService : AppServiceBase, IAIModelService
 {
+    private readonly IAIModelRepository modelRepository;
+    private readonly IAIProviderRepository providerRepository;
+
+    public AIModelService(
+        IAIModelRepository modelRepository,
+        IAIProviderRepository providerRepository,
+        IServiceInvoker serviceInvoker,
+        ILogger<AIModelService> logger)
+        : base(serviceInvoker, logger)
+    {
+        this.modelRepository = modelRepository;
+        this.providerRepository = providerRepository;
+    }
+
     public async Task<IEnumerable<AIModelDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         var models = await modelRepository.GetAllAsync();

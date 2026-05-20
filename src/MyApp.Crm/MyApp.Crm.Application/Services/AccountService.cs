@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using MyApp.Crm.Application.Contracts.DTOs;
 using MyApp.Crm.Application.Contracts.Services;
 using MyApp.Crm.Domain.Accounts;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -11,14 +13,19 @@ namespace MyApp.Crm.Application.Services;
 /// <summary>
 /// Provides Account Service functionality.
 /// </summary>
-public sealed class AccountService : IAccountService
+public sealed class AccountService : AppServiceBase, IAccountService
 {
     private readonly IAccountRepository _repository;
     private readonly IMapper _mapper;
     private readonly ILogger<AccountService> _logger;
 
     /// <summary>I Logger.</summary>
-    public AccountService(IAccountRepository repository, IMapper mapper, ILogger<AccountService> logger)
+    public AccountService(
+        IAccountRepository repository,
+        IMapper mapper,
+        IServiceInvoker serviceInvoker,
+        ILogger<AccountService> logger)
+        : base(serviceInvoker, logger)
     {
         _repository = repository;
         _mapper = mapper;

@@ -8,6 +8,7 @@ using MyApp.Audit.Application.Tests.Common;
 using MyApp.Audit.Domain;
 using MyApp.Audit.Domain.Repositories;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Audit.Domain.Specifications;
 using Xunit;
@@ -18,6 +19,7 @@ public class EntityChangeServiceTests
 {
     private readonly Mock<IEntityChangeRepository> _repository = new();
     private readonly Mock<ICacheService> _cache = new();
+    private readonly Mock<IServiceInvoker> _serviceInvoker = new();
     private readonly Mock<ILogger<EntityChangeService>> _logger = new();
     private readonly IMapper _mapper;
     private readonly EntityChangeService _sut;
@@ -25,7 +27,7 @@ public class EntityChangeServiceTests
     public EntityChangeServiceTests()
     {
         _mapper = MapperTestHelper.CreateMapper();
-        _sut = new EntityChangeService(_repository.Object, _mapper, _cache.Object, _logger.Object);
+        _sut = new EntityChangeService(_repository.Object, _mapper, _cache.Object, _serviceInvoker.Object, _logger.Object);
     }
 
     [Fact]

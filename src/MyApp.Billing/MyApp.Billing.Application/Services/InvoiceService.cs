@@ -4,6 +4,7 @@ using MyApp.Billing.Application.Contracts.Services;
 using MyApp.Billing.Domain.Entities;
 using MyApp.Billing.Domain.Events;
 using MyApp.Billing.Domain.Repositories;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Exceptions;
 using MyApp.Shared.Domain.Pagination;
@@ -14,7 +15,7 @@ namespace MyApp.Billing.Application.Services;
 /// <summary>
 /// Service for managing invoices, including creation, issuance, payment recording, and credit note operations.
 /// </summary>
-public class InvoiceService : IInvoiceService
+public class InvoiceService : AppServiceBase, IInvoiceService
 {
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly ICreditNoteRepository _creditNoteRepository;
@@ -27,8 +28,10 @@ public class InvoiceService : IInvoiceService
     public InvoiceService(
         IInvoiceRepository invoiceRepository,
         ICreditNoteRepository creditNoteRepository,
+        IServiceInvoker serviceInvoker,
         ILogger<InvoiceService> logger,
         IEventPublisher eventPublisher)
+        : base(serviceInvoker, logger)
     {
         _invoiceRepository = invoiceRepository;
         _creditNoteRepository = creditNoteRepository;
@@ -113,7 +116,8 @@ public class InvoiceService : IInvoiceService
 
         invoice.RecordPayment(dto.Amount, dto.Method, dto.PaidAt, dto.ExternalPaymentId);
 
-        await _invoiceRepository.SaveChangesAsync(cancellationToken);
+        var changes = await _invoiceRepository.SaveChangesAsync(cancellationToken);
+        await PublishAuditAsync(changes, cancellationToken);
 
         // Publish domain event
         await _eventPublisher.PublishAsync("billing.invoice.paid", new InvoicePaidEvent(

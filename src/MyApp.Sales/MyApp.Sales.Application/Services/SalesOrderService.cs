@@ -7,6 +7,7 @@ using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
@@ -15,7 +16,7 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Sales.Application.Services
 {
-    public class SalesOrderService : ISalesOrderService
+    public class SalesOrderService : AppServiceBase, ISalesOrderService
     {
         private readonly ISalesOrderRepository _orderRepository;
         private readonly ICustomerRepository _customerRepository;
@@ -31,6 +32,7 @@ namespace MyApp.Sales.Application.Services
             ILogger<SalesOrderService> logger,
             IEventPublisher eventPublisher,
             IServiceInvoker serviceInvoker)
+            : base(serviceInvoker, logger)
         {
             _orderRepository = orderRepository;
             _customerRepository = customerRepository;

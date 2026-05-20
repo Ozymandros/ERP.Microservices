@@ -17,6 +17,7 @@ public class CustomerServiceTests
 {
     private readonly Mock<ICustomerRepository> _mockCustomerRepository;
     private readonly Mock<IMapper> _mockMapper;
+    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly Mock<ILogger<CustomerService>> _mockLogger;
     private readonly Mock<IEventPublisher> _mockEventPublisher;
     private readonly CustomerService _customerService;
@@ -25,12 +26,14 @@ public class CustomerServiceTests
     {
         _mockCustomerRepository = new Mock<ICustomerRepository>();
         _mockMapper = new Mock<IMapper>();
+        _mockServiceInvoker = new Mock<IServiceInvoker>();
         _mockLogger = new Mock<ILogger<CustomerService>>();
         _mockEventPublisher = new Mock<IEventPublisher>();
 
         _customerService = new CustomerService(
             _mockCustomerRepository.Object,
             _mockMapper.Object,
+            _mockServiceInvoker.Object,
             _mockLogger.Object,
             _mockEventPublisher.Object);
     }

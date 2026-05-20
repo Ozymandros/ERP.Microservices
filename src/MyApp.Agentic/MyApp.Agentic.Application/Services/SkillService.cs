@@ -1,15 +1,20 @@
 using Microsoft.Extensions.Logging;
 using MyApp.Agentic.Domain.Skills;
 using MyApp.Agentic.Application.Contracts.Services;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Messaging;
 
 namespace MyApp.Agentic.Application.Services;
 
-public class SkillService : ISkillService
+public class SkillService : AppServiceBase, ISkillService
 {
     private readonly Dictionary<string, SkillDefinition> _skills = new();
     private readonly ILogger<SkillService> _logger;
 
-    public SkillService(ILogger<SkillService> logger)
+    public SkillService(
+        IServiceInvoker serviceInvoker,
+        ILogger<SkillService> logger)
+        : base(serviceInvoker, logger)
     {
         _logger = logger;
     }

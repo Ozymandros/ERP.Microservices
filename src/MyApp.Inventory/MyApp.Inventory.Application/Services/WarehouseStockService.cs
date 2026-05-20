@@ -4,6 +4,7 @@ using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.BusinessRules;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Exceptions;
@@ -14,7 +15,7 @@ namespace MyApp.Inventory.Application.Services;
 /// <summary>
 /// Provides Warehouse Stock Service functionality.
 /// </summary>
-public class WarehouseStockService : IWarehouseStockService
+public class WarehouseStockService : AppServiceBase, IWarehouseStockService
 {
     private readonly IWarehouseStockRepository _warehouseStockRepository;
     private readonly IProductRepository _productRepository;
@@ -30,8 +31,10 @@ public class WarehouseStockService : IWarehouseStockService
         IInventoryTransactionRepository transactionRepository,
         IInventoryReservationRepository reservationRepository,
         IMapper mapper,
+        IServiceInvoker serviceInvoker,
         ILogger<WarehouseStockService> logger,
         IEventPublisher eventPublisher)
+        : base(serviceInvoker, logger)
     {
         _warehouseStockRepository = warehouseStockRepository;
         _productRepository = productRepository;

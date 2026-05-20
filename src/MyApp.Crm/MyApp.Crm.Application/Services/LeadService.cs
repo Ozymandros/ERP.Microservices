@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using MyApp.Crm.Application.Contracts.DTOs;
 using MyApp.Crm.Application.Contracts.Services;
 using MyApp.Crm.Domain.Leads;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
@@ -14,7 +15,7 @@ namespace MyApp.Crm.Application.Services;
 /// <summary>
 /// Provides Lead Service functionality.
 /// </summary>
-public class LeadService : ILeadService
+public class LeadService : AppServiceBase, ILeadService
 {
     private readonly ILeadRepository _leadRepository;
     private readonly IMapper _mapper;
@@ -24,8 +25,10 @@ public class LeadService : ILeadService
     public LeadService(
         ILeadRepository leadRepository,
         IMapper mapper,
+        IServiceInvoker serviceInvoker,
         ILogger<LeadService> logger,
         IEventPublisher eventPublisher)
+        : base(serviceInvoker, logger)
     {
         _leadRepository = leadRepository;
         _mapper = mapper;

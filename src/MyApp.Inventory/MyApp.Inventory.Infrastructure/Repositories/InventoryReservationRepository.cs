@@ -19,7 +19,7 @@ public class InventoryReservationRepository : Repository<InventoryReservation, G
     /// <summary>Get Active By Order Id Async.</summary>
     public async Task<List<InventoryReservation>> GetActiveByOrderIdAsync(Guid orderId)
     {
-        return await _dbContext.Set<InventoryReservation>()
+        return await DbContext.Set<InventoryReservation>()
             .Where(r => r.OrderId == orderId && r.Status == InventoryReservationStatus.Reserved)
             .ToListAsync();
     }
@@ -27,7 +27,7 @@ public class InventoryReservationRepository : Repository<InventoryReservation, G
     /// <summary>Get Expired Async.</summary>
     public async Task<List<InventoryReservation>> GetExpiredAsync()
     {
-        return await _dbContext.Set<InventoryReservation>()
+        return await DbContext.Set<InventoryReservation>()
             .Where(r => r.Status == InventoryReservationStatus.Reserved && r.ReservedUntil < DateTime.UtcNow)
             .ToListAsync();
     }

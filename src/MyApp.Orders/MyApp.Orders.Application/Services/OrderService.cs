@@ -11,13 +11,14 @@ using MyApp.Shared.Domain.Exceptions;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Inventory.Application.Contracts.DTOs;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Orders.Application.Services
 {
     /// <summary>Service for managing order operations.</summary>
-    public class OrderService : IOrderService
+    public class OrderService : AppServiceBase, IOrderService
     {
         private readonly IOrderRepository _orders;
         private readonly IOrderLineRepository _lines;
@@ -36,6 +37,7 @@ namespace MyApp.Orders.Application.Services
             ILogger<OrderService> logger,
             IEventPublisher eventPublisher,
             IServiceInvoker serviceInvoker)
+            : base(serviceInvoker, logger)
         {
             _orders = orders;
             _lines = lines;

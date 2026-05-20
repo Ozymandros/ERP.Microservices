@@ -23,8 +23,9 @@ public class LeadServiceTests
 
         var logger = new Mock<ILogger<LeadService>>();
         var publisher = new Mock<IEventPublisher>();
+        var serviceInvoker = new Mock<IServiceInvoker>();
 
-        var svc = new LeadService(repo.Object, mapper.Object, logger.Object, publisher.Object);
+        var svc = new LeadService(repo.Object, mapper.Object, serviceInvoker.Object, logger.Object, publisher.Object);
 
         var dto = new CreateLeadDto("Lead", "owner", "web", null, null, null);
         await svc.CreateAsync(dto);

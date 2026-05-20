@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using MyApp.Crm.Application.Contracts.DTOs;
 using MyApp.Crm.Application.Contracts.Services;
 using MyApp.Crm.Domain.Accounts;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Crm.Application.Services;
@@ -10,7 +12,7 @@ namespace MyApp.Crm.Application.Services;
 /// <summary>
 /// Provides Contact Service functionality.
 /// </summary>
-public sealed class ContactService : IContactService
+public sealed class ContactService : AppServiceBase, IContactService
 {
     private readonly IAccountRepository _accountRepository;
     private readonly IContactRepository _contactRepository;
@@ -21,7 +23,9 @@ public sealed class ContactService : IContactService
         IAccountRepository accountRepository,
         IContactRepository contactRepository,
         IMapper mapper,
+        IServiceInvoker serviceInvoker,
         ILogger<ContactService> logger)
+        : base(serviceInvoker, logger)
     {
         _accountRepository = accountRepository;
         _contactRepository = contactRepository;

@@ -11,6 +11,7 @@ using MyApp.Agentic.Domain.Sessions;
 using MyApp.Agentic.Domain.Skills;
 using MyApp.Agentic.Infrastructure.Memory;
 using MyApp.Agentic.Infrastructure.State;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Security;
@@ -25,7 +26,7 @@ namespace MyApp.Agentic.Application.Services;
 /// This service orchestrates multiple infrastructure and domain components:
 /// repositories, secret resolution, session state, embeddings, tool mapping, and AI execution.
 /// </remarks>
-public class AgentService : IAgentService
+public class AgentService : AppServiceBase, IAgentService
 {
     private readonly IAgentRepository _agentRepository;
     private readonly IAIProviderRepository _providerRepository;
@@ -71,6 +72,7 @@ public class AgentService : IAgentService
         IServiceInvoker serviceInvoker,
         IMapper mapper,
         ILogger<AgentService> logger)
+        : base(serviceInvoker, logger)
     {
         _agentRepository = agentRepository;
         _providerRepository = providerRepository;

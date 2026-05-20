@@ -3,6 +3,7 @@ using Microsoft.Data.SqlTypes;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Agentic.Domain.Memory;
 using MyApp.Agentic.Infrastructure.Data;
+using MyApp.Shared.Infrastructure.Repositories;
 using System.Data;
 using System.Globalization;
 
@@ -76,7 +77,7 @@ public interface IMemoryRepository
 /// <summary>
 /// SQL Server implementation of <see cref="IMemoryRepository"/>.
 /// </summary>
-public class MemoryRepository : IMemoryRepository
+public class MemoryRepository : DbContextRepositoryBase, IMemoryRepository
 {
     private readonly AgenticSqlDbContext _context;
     private readonly IMemoryEmbeddingGenerator _embeddingGenerator;
@@ -87,6 +88,7 @@ public class MemoryRepository : IMemoryRepository
     /// <param name="context">Agentic SQL database context.</param>
     /// <param name="embeddingGenerator">Embedding generator used for vector search and memory indexing.</param>
     public MemoryRepository(AgenticSqlDbContext context, IMemoryEmbeddingGenerator embeddingGenerator)
+        : base(context)
     {
         _context = context;
         _embeddingGenerator = embeddingGenerator;
@@ -215,7 +217,7 @@ public class MemoryRepository : IMemoryRepository
         if (!generateEmbeddings)
         {
             _context.AgentMemories.AddRange(memoryList);
-            await _context.SaveChangesAsync(cancellationToken);
+            await base.SaveChangesAsync(cancellationToken);
             return;
         }
 
@@ -232,7 +234,7 @@ public class MemoryRepository : IMemoryRepository
             _context.Entry(memory).Property("EmbeddingVector").CurrentValue = new SqlVector<float>(embedding);
         }
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await base.SaveChangesAsync(cancellationToken);
     }
 
     private static MemoryRole ParseRole(string value)
