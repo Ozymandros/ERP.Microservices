@@ -112,6 +112,8 @@ public class AspireProjectBuilder
             .WithEnvironment("Jwt__Issuer", _builder.Configuration["Jwt:Issuer"])
             .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"])
             .WithEnvironment("ASPNETCORE_URLS", aspNetCoreUrls)
+            .WithEnvironment("ASPNETCORE_ENVIRONMENT", "Development")
+            .WithEnvironment("DOTNET_ENVIRONMENT", "Development")
             .WithEnvironment("ALLOWED_ORIGINS", origin)
             .WithExternalHttpEndpoints()
             // OpenTelemetry configuration for Serilog
