@@ -1,80 +1,203 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 using Microsoft.Extensions.Configuration;
+
 using Microsoft.Extensions.DependencyInjection;
+
+using Microsoft.Extensions.Logging;
+
 using Microsoft.IdentityModel.Tokens;
+
+using System.Security.Claims;
+
 using System.Text;
+
+
 
 namespace MyApp.Shared.Infrastructure.Extensions;
 
+
+
 /// <summary>
+
 /// Extension methods for configuring JWT Bearer authentication across microservices
+
 /// </summary>
+
 public static class JwtAuthenticationExtensions
+
 {
+
     /// <summary>
+
     /// Add JWT Bearer authentication with automatic configuration from appsettings.json
+
     /// 
+
     /// Expected configuration in appsettings.json:
+
     /// {
+
     ///   "Jwt": {
+
     ///     "SecretKey": "your-secret-key",
+
     ///     "Issuer": "MyApp.Auth",
+
     ///     "Audience": "MyApp.Clients"
+
     ///   }
+
     /// }
+
     /// </summary>
+
     public static IServiceCollection AddJwtAuthentication(
+
         this IServiceCollection services,
+
         IConfiguration configuration)
+
     {
+
         var jwtSettings = configuration.GetSection("Jwt");
+
         var secretKey = jwtSettings["SecretKey"];
+
         var issuer = jwtSettings["Issuer"];
+
         var audience = jwtSettings["Audience"];
+
         var https = jwtSettings.GetValue<bool>("RequireHttpsMetadata");
 
+
+
         if (string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
+
         {
+
             throw new InvalidOperationException(
+
                 "JWT configuration is missing. Ensure Jwt:SecretKey, Jwt:Issuer, and Jwt:Audience are set in appsettings.json");
+
         }
+
+
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
+
+
         services
+
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+
             .AddJwtBearer(options =>
+
             {
+
+                // Keep claim types as issued (ClaimTypes.Name, NameIdentifier URIs) for permission checks.
+
+                options.MapInboundClaims = false;
+
+
+
                 options.TokenValidationParameters = new TokenValidationParameters
+
                 {
+
                     ValidateIssuerSigningKey = true,
+
                     IssuerSigningKey = key,
+
                     ValidateIssuer = true,
+
                     ValidIssuer = issuer,
+
                     ValidateAudience = true,
+
                     ValidAudience = audience,
+
                     ValidateLifetime = true,
-                    ClockSkew = TimeSpan.FromSeconds(30) // Allows 30 seconds margin for Docker/container synchronization
+
+                    ClockSkew = TimeSpan.FromSeconds(30),
+
+                    NameClaimType = ClaimTypes.Name,
+
+                    RoleClaimType = ClaimTypes.Role,
+
                 };
+
+
 
                 options.RequireHttpsMetadata = https;
 
-                // Optional: Log authentication events for debugging
+
+
                 options.Events = new JwtBearerEvents
+
                 {
-                    OnAuthenticationFailed = context =>
+
+                    OnMessageReceived = context =>
+
                     {
-                        if (context.Exception is SecurityTokenExpiredException)
-                        {
-                            context.Response.Headers.TryAdd("X-Token-Expired", "true");
-                        }
+
+                        if (context.Request.Path.StartsWithSegments("/api/internal/permissions"))
+
+                            context.NoResult();
+
                         return Task.CompletedTask;
-                    }
+
+                    },
+
+                    OnAuthenticationFailed = context =>
+
+                    {
+
+                        if (context.Exception is SecurityTokenExpiredException)
+
+                        {
+
+                            context.Response.Headers.TryAdd("X-Token-Expired", "true");
+
+                        }
+
+
+
+                        var logger = context.HttpContext.RequestServices
+
+                            .GetService<ILoggerFactory>()
+
+                            ?.CreateLogger("JwtBearer");
+
+                        logger?.LogWarning(
+
+                            context.Exception,
+
+                            "JWT authentication failed for {Path}",
+
+                            context.Request.Path);
+
+
+
+                        return Task.CompletedTask;
+
+                    },
+
                 };
+
             });
+
+
 
         services.AddAuthorization();
 
+
+
         return services;
+
     }
+
 }
+
+

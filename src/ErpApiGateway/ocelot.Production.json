@@ -43,11 +43,7 @@
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS" ],
       "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
       "RateLimitOptions": { "EnableRateLimiting": false, "Period": "1m", "Limit": 100 },
-      "Priority": 1,
-      "AddHeadersToRequest": {
-        "X-Forwarded-For": "{RemoteIpAddress}",
-        "X-Request-ID": "{RequestId}"
-      }
+      "Priority": 1
     },
 
     {

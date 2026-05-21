@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
+using MyApp.Auth.API.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Domain.Specifications;
+using MyApp.Auth.Infrastructure.Services;
+using MyApp.Shared.Domain.Authentication;
+using System.Security.Claims;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
@@ -13,21 +17,24 @@ namespace MyApp.Auth.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[AuthorizeJwt]
 [Produces("application/json")]
 public class PermissionsController : ControllerBase
 {
     private readonly IPermissionService _permissionService;
     private readonly ICacheService _cacheService;
+    private readonly IJwtTokenProvider _jwtTokenProvider;
     private readonly ILogger<PermissionsController> _logger;
 
     public PermissionsController(
         IPermissionService permissionService,
         ICacheService cacheService,
+        IJwtTokenProvider jwtTokenProvider,
         ILogger<PermissionsController> logger)
     {
         _permissionService = permissionService;
         _cacheService = cacheService;
+        _jwtTokenProvider = jwtTokenProvider;
         _logger = logger;
     }
 
@@ -259,25 +266,85 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Check if a user has a specific permission by username
+    /// Check if a user has a specific permission (used by other services via Dapr).
+    /// Allows anonymous so the Bearer token can be validated in-action for service-to-service calls.
     /// </summary>
     [HttpGet("check")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<bool>> CheckPermission(string module, string action)
+    public async Task<ActionResult<bool>> CheckPermission(
+        string module,
+        string action,
+        [FromQuery] Guid? userId = null)
     {
-        var user = this.HttpContext.User;
-        var username = user.Identity?.Name;
+        var effectiveUserId = ResolveUserIdFromRequest(userId);
+        if (!effectiveUserId.HasValue)
+            return Unauthorized();
+
         try
         {
-            var hasPermission = await _permissionService.HasPermissionAsync(username, module, action);
+            var hasPermission = await _permissionService.HasPermissionAsync(
+                effectiveUserId.Value, module, action);
             return Ok(hasPermission);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error checking permission: {@Permission}", new { Username = username, Module = module, Action = action });
+            _logger.LogError(
+                ex,
+                "Error checking permission: {@Permission}",
+                new { UserId = effectiveUserId, Module = module, Action = action });
             return StatusCode(500, new { message = "An error occurred checking the permission" });
         }
+    }
+
+    /// <summary>
+    /// Resolves the caller's user id from the authenticated principal or Bearer token.
+    /// When <paramref name="queryUserId"/> is supplied (Dapr from Sales), it must match the token subject.
+    /// </summary>
+    private Guid? ResolveUserIdFromRequest(Guid? queryUserId)
+    {
+        var principal = User.Identity?.IsAuthenticated == true
+            ? User
+            : TryGetPrincipalFromBearerHeader();
+
+        var tokenUserId = GetUserIdFromPrincipal(principal);
+        if (!tokenUserId.HasValue)
+            return null;
+
+        if (queryUserId.HasValue && queryUserId.Value != tokenUserId.Value)
+        {
+            _logger.LogWarning(
+                "Permission check userId mismatch: query {QueryUserId} vs token {TokenUserId}",
+                queryUserId,
+                tokenUserId);
+            return null;
+        }
+
+        return queryUserId ?? tokenUserId;
+    }
+
+    private ClaimsPrincipal? TryGetPrincipalFromBearerHeader()
+    {
+        if (!Request.Headers.TryGetValue("Authorization", out var authHeader))
+            return null;
+
+        var token = BearerTokenHelper.ExtractToken(authHeader);
+        if (string.IsNullOrWhiteSpace(token))
+            return null;
+
+        return _jwtTokenProvider.ValidateAccessToken(token);
+    }
+
+    private static Guid? GetUserIdFromPrincipal(ClaimsPrincipal? principal)
+    {
+        if (principal is null)
+            return null;
+
+        var id = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value
+            ?? principal.FindFirst("sub")?.Value;
+
+        return Guid.TryParse(id, out var userId) ? userId : null;
     }
 
     /// <summary>

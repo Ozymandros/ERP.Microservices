@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyApp.Auth.API.Authorization;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Shared.Infrastructure.Extensions;
@@ -14,7 +14,7 @@ namespace MyApp.Auth.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[AuthorizeJwt]
 [Produces("application/json")]
 public partial class UsersController : ControllerBase
 {

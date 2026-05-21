@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using MyApp.Auth.API.Permissions;
 using MyApp.Auth.Application.Contracts;
@@ -47,6 +49,14 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
         services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
         services.AddScoped<IPermissionChecker, MyApp.Auth.API.Permissions.PermissionChecker>();
     }
+});
+
+// AddIdentity sets cookie auth as the default scheme; API controllers use [AuthorizeJwt] / this policy.
+builder.Services.AddAuthorization(options =>
+{
+    options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser()
+        .Build();
 });
 
 var app = builder.Build();

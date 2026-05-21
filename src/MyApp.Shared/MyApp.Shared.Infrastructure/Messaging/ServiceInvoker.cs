@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MyApp.Shared.Domain.Authentication;
 using MyApp.Shared.Domain.Messaging;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -274,8 +275,9 @@ public class ServiceInvoker : IServiceInvoker
 
             if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
             {
-                var token = authHeader.ToString().Replace("Bearer ", string.Empty, StringComparison.OrdinalIgnoreCase);
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var token = BearerTokenHelper.ExtractToken(authHeader);
+                if (!string.IsNullOrWhiteSpace(token))
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
 
 #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used

@@ -7,6 +7,7 @@ using MyApp.Auth.Domain.Repositories;
 using MyApp.Auth.Infrastructure.Services;
 using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Permissions;
 using System.Security.Claims;
 
 namespace MyApp.Auth.Application.Services;
@@ -186,27 +187,9 @@ public class AuthService : AppServiceBase, IAuthService
 
     private async Task<TokenResponseDto> GenerateTokenResponseAsync(ApplicationUser user)
     {
-        // ⭐️ Step 1: Retrieve user Roles and Claims
         var roles = await _userManager.GetRolesAsync(user);
-        var claims = await _userManager.GetClaimsAsync(user); // Call to get the claims
+        var identityClaims = await _userManager.GetClaimsAsync(user);
 
-        // ⭐️ Step 2: Generate Access Token
-        // Assume that your provider accepts the list of roles and claims to include them in the JWT.
-        var accessToken = await _jwtTokenProvider.GenerateAccessTokenAsync(user, roles, claims);
-
-        // Generar Refresh Token
-        var refreshToken = _jwtTokenProvider.GenerateRefreshToken();
-
-        var refreshTokenEntity = new RefreshToken
-        {
-            UserId = user.Id,
-            Token = refreshToken,
-            ExpiresAt = DateTime.UtcNow.AddDays(7)
-        };
-
-        await _refreshTokenRepository.CreateAsync(refreshTokenEntity);
-
-        // ⭐️ Step 3: Populate UserDto with Roles and Permissions
         var userRoles = await _roleRepository.GetRolesByUserIdAsync(user.Id);
         var roleNames = userRoles.Select(r => r.Name).ToList();
         bool isAdmin = userRoles.Any(r => r.Name != null && r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
@@ -217,7 +200,6 @@ public class AuthService : AppServiceBase, IAuthService
         List<Permission> permissions;
         if (isAdmin)
         {
-            // Admin users have all permissions
             var allPermissions = await _permissionRepository.GetAllAsync();
             permissions = allPermissions.ToList();
             _logger.LogInformation("Admin user {UserId} ({Email}) - returning all {Count} permissions",
@@ -225,7 +207,6 @@ public class AuthService : AppServiceBase, IAuthService
         }
         else
         {
-            // Get permissions from user's roles
             permissions = new List<Permission>();
             foreach (var role in userRoles)
             {
@@ -235,8 +216,6 @@ public class AuthService : AppServiceBase, IAuthService
                     role.Name, role.Id, rolePermissions.Count());
             }
 
-            // Also get direct user permissions (only from UserPermission table, not from roles)
-            // GetAllPermissionsByUserId includes role permissions, so we filter them out
             var allUserPermissions = await _permissionRepository.GetAllPermissionsByUserId(user.Id);
             var rolePermissionIds = permissions.Select(p => p.Id).ToHashSet();
             var directUserPermissions = allUserPermissions.Where(p => !rolePermissionIds.Contains(p.Id));
@@ -250,6 +229,24 @@ public class AuthService : AppServiceBase, IAuthService
 
             permissions = distinctPermissions;
         }
+
+        var permissionClaims = permissions
+            .Where(p => !string.IsNullOrWhiteSpace(p.Module) && !string.IsNullOrWhiteSpace(p.Action))
+            .Select(p => new Claim(HasPermissionAttribute.PermissionClaimType, $"{p.Module}:{p.Action}"))
+            .ToList();
+
+        var tokenClaims = identityClaims.Concat(permissionClaims).ToList();
+        var accessToken = await _jwtTokenProvider.GenerateAccessTokenAsync(user, roles, tokenClaims);
+
+        var refreshToken = _jwtTokenProvider.GenerateRefreshToken();
+        var refreshTokenEntity = new RefreshToken
+        {
+            UserId = user.Id,
+            Token = refreshToken,
+            ExpiresAt = DateTime.UtcNow.AddDays(7)
+        };
+
+        await _refreshTokenRepository.CreateAsync(refreshTokenEntity);
 
         var roleDtos = userRoles.Select(r => new RoleDto(r.Id)
         {

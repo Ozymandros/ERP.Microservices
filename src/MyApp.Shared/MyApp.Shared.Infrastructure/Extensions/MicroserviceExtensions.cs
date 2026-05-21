@@ -239,8 +239,9 @@ public static class MicroserviceExtensions
             app.MapScalarApiReference();
         }
 
-        // HTTPS redirection
-        app.UseHttpsRedirection();
+        // Dapr invokes over HTTP; HTTPS redirection breaks sidecar calls in local dev.
+        if (!app.Environment.IsDevelopment())
+            app.UseHttpsRedirection();
 
         // Routing
         app.UseRouting();
