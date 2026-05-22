@@ -64,6 +64,6 @@ public class AuditableDbContext : DbContext
                 entity.UpdatedBy = currentUser;
             }
 
-        return await base.SaveChangesAsync(cancellationToken);
+        return await base.SaveChangesAsync(false, cancellationToken);
     }
 }

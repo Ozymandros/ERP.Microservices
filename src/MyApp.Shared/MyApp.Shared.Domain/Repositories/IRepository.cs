@@ -12,9 +12,10 @@ public interface IRepository
     /// <summary>
     /// Persists all pending changes and returns a summary of affected entities.
     /// </summary>
+    /// <param name="disableTracking">Whether to disable change tracking for this operation.</param>
     /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
     /// <returns>Change summaries captured immediately before persistence.</returns>
-    Task<IReadOnlyCollection<EntityEntryDto>> SaveChangesAsync(CancellationToken cancellationToken = default);
+    Task<IReadOnlyCollection<EntityEntryDto>> SaveChangesAsync(bool disableTracking = false, CancellationToken cancellationToken = default);
 }
 
 /// <summary>

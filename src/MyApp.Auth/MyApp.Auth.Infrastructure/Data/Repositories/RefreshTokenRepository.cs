@@ -47,7 +47,7 @@ public class RefreshTokenRepository : Repository<RefreshToken, Guid>, IRefreshTo
     public async Task<RefreshToken> CreateAsync(RefreshToken refreshToken)
     {
         _context.RefreshTokens.Add(refreshToken);
-        await base.SaveChangesAsync();
+        await base.SaveChangesAsync(disableTracking: true);
         return refreshToken;
     }
 
@@ -58,7 +58,7 @@ public class RefreshTokenRepository : Repository<RefreshToken, Guid>, IRefreshTo
         if (token != null)
         {
             token.IsRevoked = true;
-            await base.SaveChangesAsync();
+            await base.SaveChangesAsync(disableTracking: true);
         }
     }
 
@@ -74,6 +74,6 @@ public class RefreshTokenRepository : Repository<RefreshToken, Guid>, IRefreshTo
             token.IsRevoked = true;
         }
 
-        await base.SaveChangesAsync();
+        await base.SaveChangesAsync(disableTracking: true);
     }
 }

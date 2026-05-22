@@ -217,7 +217,7 @@ public class MemoryRepository : DbContextRepositoryBase, IMemoryRepository
         if (!generateEmbeddings)
         {
             _context.AgentMemories.AddRange(memoryList);
-            await base.SaveChangesAsync(cancellationToken);
+            await base.SaveChangesAsync(disableTracking: true, cancellationToken);
             return;
         }
 
@@ -234,7 +234,7 @@ public class MemoryRepository : DbContextRepositoryBase, IMemoryRepository
             _context.Entry(memory).Property("EmbeddingVector").CurrentValue = new SqlVector<float>(embedding);
         }
 
-        await base.SaveChangesAsync(cancellationToken);
+        await base.SaveChangesAsync(disableTracking: true,cancellationToken);
     }
 
     private static MemoryRole ParseRole(string value)

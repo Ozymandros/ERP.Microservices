@@ -105,7 +105,7 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
             }
         }
 
-        return await base.SaveChangesAsync(cancellationToken);
+        return await base.SaveChangesAsync(disableTracking: false, cancellationToken);
     }
 
     /// <summary>

@@ -219,7 +219,7 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
                 entity.UpdatedBy = currentUser;
             }
 
-        return await base.SaveChangesAsync(cancellationToken);
+        return await base.SaveChangesAsync(false, cancellationToken);
     }
 }
 

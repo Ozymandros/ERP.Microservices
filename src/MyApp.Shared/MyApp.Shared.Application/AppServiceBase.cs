@@ -177,7 +177,7 @@ public abstract class AppServiceBase<T, TEntity, TEntityDto> : AppServiceBase
     protected virtual async Task<IReadOnlyCollection<EntityEntryDto>> SaveChangesAsync(
         CancellationToken cancellationToken = default)
     {
-        var changes = await Repository.SaveChangesAsync(cancellationToken);
+        var changes = await Repository.SaveChangesAsync(false, cancellationToken);
         await PublishAuditAsync(changes, cancellationToken);
         return changes;
     }

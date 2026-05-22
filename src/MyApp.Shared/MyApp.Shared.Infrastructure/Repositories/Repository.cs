@@ -44,9 +44,14 @@ public abstract class DbContextRepositoryBase : IRepository
     }
 
     /// <inheritdoc />
-    public virtual async Task<IReadOnlyCollection<EntityEntryDto>> SaveChangesAsync(
-        CancellationToken cancellationToken = default)
+    public virtual async Task<IReadOnlyCollection<EntityEntryDto>> SaveChangesAsync(bool disableTracking = false, CancellationToken cancellationToken = default)
     {
+        if (disableTracking)
+        {
+            await DbContext.SaveChangesAsync(false, cancellationToken);
+            return [];
+        }
+
         var entries = DbContext.ChangeTracker
             .Entries()
             .Where(e =>
@@ -72,7 +77,7 @@ public abstract class DbContextRepositoryBase : IRepository
             })
             .ToList();
 
-        await DbContext.SaveChangesAsync(cancellationToken);
+        await DbContext.SaveChangesAsync(false, cancellationToken);
 
         return snapshots
             .Select(s => new EntityEntryDto(

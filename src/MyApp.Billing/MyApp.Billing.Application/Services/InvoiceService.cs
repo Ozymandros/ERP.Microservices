@@ -116,7 +116,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
 
         invoice.RecordPayment(dto.Amount, dto.Method, dto.PaidAt, dto.ExternalPaymentId);
 
-        var changes = await _invoiceRepository.SaveChangesAsync(cancellationToken);
+        var changes = await _invoiceRepository.SaveChangesAsync(false, cancellationToken);
         await PublishAuditAsync(changes, cancellationToken);
 
         // Publish domain event

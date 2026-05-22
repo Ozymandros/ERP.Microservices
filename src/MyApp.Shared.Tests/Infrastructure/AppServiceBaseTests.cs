@@ -34,7 +34,7 @@ public class AppServiceBaseTests
         const string updatedNewJson = """{"Email":"new@x.com"}""";
 
         _repository
-            .Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .Setup(r => r.SaveChangesAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<EntityEntryDto>
             {
                 new("Product", entityId1, "Added",
@@ -94,7 +94,7 @@ public class AppServiceBaseTests
         const string createdNewJson = """{"Name":"New"}""";
 
         _repository
-            .Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .Setup(r => r.SaveChangesAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<EntityEntryDto>
             {
                 new("Product", createdId, "Added", [],
@@ -151,7 +151,7 @@ public class AppServiceBaseTests
     public async Task SaveChangesAsync_SkipsEntriesWithNonGuidEntityId()
     {
         _repository
-            .Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .Setup(r => r.SaveChangesAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<EntityEntryDto>
             {
                 new("LegacyEntity", 42, "Added", Array.Empty<PropertyChangeEntryDto>())
@@ -175,7 +175,7 @@ public class AppServiceBaseTests
         var entityId = Guid.NewGuid();
 
         _repository
-            .Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .Setup(r => r.SaveChangesAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<EntityEntryDto>
             {
                 new("Product", entityId, "Added", Array.Empty<PropertyChangeEntryDto>())
@@ -199,7 +199,7 @@ public class AppServiceBaseTests
     public async Task SaveChangesAsync_NoChanges_DoesNotInvokeAuditService()
     {
         _repository
-            .Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .Setup(r => r.SaveChangesAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<EntityEntryDto>());
 
         await _sut.SaveAsync();

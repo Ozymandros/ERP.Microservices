@@ -271,7 +271,7 @@ public class InvoiceServiceTests
         var invoice = BuildIssuedInvoice();
         var dto = new RecordPaymentDto(invoice.Id, invoice.TotalGross, "BankTransfer", DateTime.UtcNow);
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<EntityEntryDto>());
+        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<EntityEntryDto>());
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -292,7 +292,7 @@ public class InvoiceServiceTests
         var partialAmount = invoice.TotalGross / 2;
         var dto = new RecordPaymentDto(invoice.Id, partialAmount, "Card", DateTime.UtcNow);
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<EntityEntryDto>());
+        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<EntityEntryDto>());
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
@@ -327,7 +327,7 @@ public class InvoiceServiceTests
         var invoice = BuildIssuedInvoice();
         var dto = new RecordPaymentDto(invoice.Id, invoice.TotalGross, "BankTransfer", DateTime.UtcNow);
         _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
-        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<EntityEntryDto>());
+        _invoiceRepo.Setup(r => r.SaveChangesAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<EntityEntryDto>());
         _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
                        .Returns(Task.CompletedTask);
 
