@@ -5,7 +5,9 @@ using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -19,9 +21,10 @@ public class ProductService : AppServiceBase, IProductService
     public ProductService(
         IProductRepository productRepository,
         IMapper mapper,
-        IServiceInvoker serviceInvoker,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         ILogger<ProductService> logger)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Inventory)
     {
         _productRepository = productRepository;
         _mapper = mapper;
@@ -75,6 +78,7 @@ public class ProductService : AppServiceBase, IProductService
 
         var product = _mapper.Map<Product>(dto);
         var createdProduct = await _productRepository.AddAsync(product);
+        await SaveChangesAsync();
 
         return _mapper.Map<ProductDto>(createdProduct);
     }
@@ -99,6 +103,7 @@ public class ProductService : AppServiceBase, IProductService
 
         _mapper.Map(dto, product);
         var updatedProduct = await _productRepository.UpdateAsync(product);
+        await SaveChangesAsync();
 
         return _mapper.Map<ProductDto>(updatedProduct);
     }
@@ -112,6 +117,7 @@ public class ProductService : AppServiceBase, IProductService
         }
 
         await _productRepository.DeleteAsync(product);
+        await SaveChangesAsync();
     }
 
     /// <summary>

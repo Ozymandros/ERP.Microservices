@@ -4,7 +4,9 @@ using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Agentic.Domain.AIModels;
 using MyApp.Agentic.Domain.AIProviders;
 using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 
 namespace MyApp.Agentic.Application.Services;
 
@@ -16,9 +18,10 @@ public class AIModelService : AppServiceBase, IAIModelService
     public AIModelService(
         IAIModelRepository modelRepository,
         IAIProviderRepository providerRepository,
-        IServiceInvoker serviceInvoker,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         ILogger<AIModelService> logger)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Agentic)
     {
         this.modelRepository = modelRepository;
         this.providerRepository = providerRepository;
@@ -70,6 +73,7 @@ public class AIModelService : AppServiceBase, IAIModelService
             dto.DefaultSystemPrompt ?? provider.DefaultSystemPrompt);
 
         await modelRepository.AddAsync(model);
+        await SaveChangesAsync(cancellationToken);
         var persisted = await modelRepository.GetByIdAsync(model.Id) ?? model;
         return MapToDto(persisted);
     }
@@ -99,6 +103,7 @@ public class AIModelService : AppServiceBase, IAIModelService
             dto.DefaultSystemPrompt);
 
         await modelRepository.UpdateAsync(model);
+        await SaveChangesAsync(cancellationToken);
         var persisted = await modelRepository.GetByIdAsync(model.Id) ?? model;
         return MapToDto(persisted);
     }
@@ -110,6 +115,7 @@ public class AIModelService : AppServiceBase, IAIModelService
             return;
 
         await modelRepository.DeleteAsync(model);
+        await SaveChangesAsync(cancellationToken);
     }
 
     private async Task<AIProvider> EnsureProviderExistsAsync(Guid providerId)

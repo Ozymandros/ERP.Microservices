@@ -9,7 +9,9 @@ using MyApp.Auth.Application.Tests.Builders;
 using MyApp.Auth.Application.Tests.Common;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using Xunit;
 
 namespace MyApp.Auth.Application.Tests.Services;
@@ -18,7 +20,8 @@ public class PermissionServiceTests : BaseServiceTest
 {
     private readonly Mock<IPermissionRepository> _mockPermissionRepository;
     private readonly Mock<UserManager<ApplicationUser>> _mockUserManager;
-    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
+    private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+    private readonly Mock<IEventPublisher> _mockEventPublisher;
     private readonly Mock<ILogger<PermissionService>> _mockLogger;
     private readonly PermissionService _permissionService;
 
@@ -26,13 +29,17 @@ public class PermissionServiceTests : BaseServiceTest
     {
         _mockPermissionRepository = new Mock<IPermissionRepository>();
         _mockUserManager = CreateMockUserManager();
-        _mockServiceInvoker = new Mock<IServiceInvoker>();
+        _mockUnitOfWork = new Mock<IUnitOfWork>();
+        _mockEventPublisher = new Mock<IEventPublisher>();
         _mockLogger = CreateMockLogger<PermissionService>();
+        _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
         _permissionService = new PermissionService(
             _mockUserManager.Object,
             _mockPermissionRepository.Object,
             Mapper,
-            _mockServiceInvoker.Object,
+            _mockUnitOfWork.Object,
+            _mockEventPublisher.Object,
             _mockLogger.Object);
     }
 

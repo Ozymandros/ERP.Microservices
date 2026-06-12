@@ -5,7 +5,9 @@ using MyApp.Billing.Domain.Entities;
 using MyApp.Billing.Domain.Events;
 using MyApp.Billing.Domain.Repositories;
 using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Exceptions;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
@@ -20,7 +22,6 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly ICreditNoteRepository _creditNoteRepository;
     private readonly ILogger<InvoiceService> _logger;
-    private readonly IEventPublisher _eventPublisher;
 
     /// <summary>
     /// Initializes a new instance of the InvoiceService with required dependencies.
@@ -28,16 +29,14 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     public InvoiceService(
         IInvoiceRepository invoiceRepository,
         ICreditNoteRepository creditNoteRepository,
-        IServiceInvoker serviceInvoker,
         ILogger<InvoiceService> logger,
+        IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Billing)
     {
         _invoiceRepository = invoiceRepository;
         _creditNoteRepository = creditNoteRepository;
-        _logger = logger;
-        _eventPublisher = eventPublisher;
-    }
+        _logger = logger;    }
 
     /// <summary>
     /// Creates a new invoice with the provided details and line items.
@@ -59,9 +58,10 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         }
 
         await _invoiceRepository.AddAsync(invoice);
+        await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await _eventPublisher.PublishAsync("billing.invoice.created", new InvoiceCreatedEvent(
+        await EventPublisher.PublishAsync("billing.invoice.created", new InvoiceCreatedEvent(
             invoice.Id,
             invoice.CustomerId,
             invoice.OrderId,
@@ -90,9 +90,10 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         invoice.Issue(invoiceNumber, issueDate, invoice.PaymentTermsDays);
 
         await _invoiceRepository.UpdateAsync(invoice);
+        await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await _eventPublisher.PublishAsync("billing.invoice.issued", new InvoiceIssuedEvent(
+        await EventPublisher.PublishAsync("billing.invoice.issued", new InvoiceIssuedEvent(
             invoice.Id,
             invoice.InvoiceNumber,
             invoice.CustomerId,
@@ -116,11 +117,10 @@ public class InvoiceService : AppServiceBase, IInvoiceService
 
         invoice.RecordPayment(dto.Amount, dto.Method, dto.PaidAt, dto.ExternalPaymentId);
 
-        var changes = await _invoiceRepository.SaveChangesAsync(false, cancellationToken);
-        await PublishAuditAsync(changes, cancellationToken);
+        await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await _eventPublisher.PublishAsync("billing.invoice.paid", new InvoicePaidEvent(
+        await EventPublisher.PublishAsync("billing.invoice.paid", new InvoicePaidEvent(
             invoice.Id,
             invoice.OrderId,
             invoice.CustomerId,
@@ -143,9 +143,10 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         invoice.Cancel();
 
         await _invoiceRepository.UpdateAsync(invoice);
+        await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await _eventPublisher.PublishAsync("billing.invoice.cancelled", new InvoiceCancelledEvent(
+        await EventPublisher.PublishAsync("billing.invoice.cancelled", new InvoiceCancelledEvent(
             invoice.Id,
             invoice.InvoiceNumber,
             reason
@@ -173,9 +174,10 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         var creditNote = invoice.CreateCreditNote(lines, dto.Reason);
 
         await _creditNoteRepository.AddAsync(creditNote);
+        await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await _eventPublisher.PublishAsync("billing.creditnote.issued", new CreditNoteIssuedEvent(
+        await EventPublisher.PublishAsync("billing.creditnote.issued", new CreditNoteIssuedEvent(
             creditNote.Id,
             creditNote.OriginalInvoiceId,
             $"CN-{creditNote.Id.ToString()[..8]}",

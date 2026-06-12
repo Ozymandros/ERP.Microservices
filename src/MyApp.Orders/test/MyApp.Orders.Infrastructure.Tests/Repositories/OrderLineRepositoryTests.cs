@@ -145,7 +145,7 @@ public class OrderLineRepositoryTests
         CreateTestOrderLine(order.Id);
 
         // Act
-        var result = await _repository.ListAsync();
+        var result = await _repository.GetAllAsync();
 
         // Assert
         result.Should().NotBeNull();
@@ -245,7 +245,7 @@ public class OrderLineRepositoryTests
         var line = CreateTestOrderLine(order.Id, quantity: 10);
 
         // Act
-        await _repository.DeleteAsync(line.Id);
+        await _repository.DeleteAsync(line);
         var deletedLine = await _context.OrderLines.FindAsync(line.Id);
 
         // Assert
@@ -259,8 +259,9 @@ public class OrderLineRepositoryTests
         var nonExistentId = Guid.NewGuid();
 
         // Act & Assert
-        Func<Task> act = async () => await _repository.DeleteAsync(nonExistentId);
-        await act.Should().NotThrowAsync();
+        var missing = await _repository.GetByIdAsync(nonExistentId);
+        if (missing is not null)
+            await _repository.DeleteAsync(missing);
     }
 
     #endregion
@@ -385,7 +386,7 @@ public class OrderLineRepositoryTests
         CreateTestOrderLine(order.Id, quantity: 20, isFulfilled: false);
 
         // Act
-        var result = await _repository.ListAsync();
+        var result = await _repository.GetAllAsync();
 
         // Assert
         result.Should().NotBeNull();

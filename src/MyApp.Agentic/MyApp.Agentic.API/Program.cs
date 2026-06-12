@@ -18,7 +18,9 @@ using MyApp.Agentic.Infrastructure.Memory;
 using MyApp.Agentic.Infrastructure.State;
 using MyApp.Agentic.Infrastructure.Data.Seeders;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Infrastructure.Extensions;
+using MyApp.Shared.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,8 +35,8 @@ builder.Services.AddHttpClient<DocsPlugin>(client =>
 builder.Services.AddSingleton<SkillService>(sp =>
 {
     var logger = sp.GetRequiredService<ILogger<SkillService>>();
-    var serviceInvoker = sp.GetRequiredService<IServiceInvoker>();
-    var service = new SkillService(serviceInvoker, logger);
+    var eventPublisher = sp.GetRequiredService<IEventPublisher>();
+    var service = new SkillService(new NoOpUnitOfWork(), eventPublisher, logger);
     
     // Load CollectionsAgent Skill
     var instructions = LoadSkillInstructions("Agent.Skills/CollectionsAgent/skill.md");
@@ -149,8 +151,8 @@ public static class AgentSkillExtensions
         services.AddSingleton<SkillService>(sp =>
         {
             var logger = sp.GetRequiredService<ILogger<SkillService>>();
-            var serviceInvoker = sp.GetRequiredService<IServiceInvoker>();
-            var service = new SkillService(serviceInvoker, logger);
+            var eventPublisher = sp.GetRequiredService<IEventPublisher>();
+            var service = new SkillService(new NoOpUnitOfWork(), eventPublisher, logger);
             options.LoadSkills(service);
             return service;
         });

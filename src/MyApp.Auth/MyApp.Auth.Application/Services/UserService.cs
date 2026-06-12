@@ -7,8 +7,10 @@ using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
 using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Entities;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -31,11 +33,12 @@ public class UserService : AppServiceBase, IUserService
         IUserRepository userRepository,
         IRoleRepository roleRepository,
         IMapper mapper,
-        IServiceInvoker serviceInvoker,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         ILogger<UserService> logger,
         IHttpContextAccessor httpContextAccessor,
         IPermissionRepository permissionRepository)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Auth)
     {
         _userManager = userManager;
         _roleManager = roleManager;

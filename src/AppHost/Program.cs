@@ -1,3 +1,4 @@
+using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Azure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,13 +9,6 @@ var isDeployment =
     Environment.GetEnvironmentVariable("IS_DEPLOYMENT") == "true";
 
 var builder = DistributedApplication.CreateBuilder(args).AddDapr();
-
-// Dapr components: PubSub and State Store
-// Note: Placement service is NOT needed - only required for Dapr Actors (we don't use actors)
-// Note: Scheduler service is NOT needed - only required for scheduled jobs/workflows (we don't use)
-// The connection errors for Placement (6050) and Scheduler (6060) are harmless warnings.
-var stateStore = builder.AddDaprStateStore("statestore");
-var pubSub = builder.AddDaprPubSub(MessagingConstants.PubSubName);
 
 var analyticsWorkspace = isDeployment ? builder
     .AddAzureLogAnalyticsWorkspace("MyApp-LogAnalyticsWorkspace") : null;
@@ -33,6 +27,24 @@ var redis = builder.AddRedis("cache")
     .WithRedisCommander()
     .WithRedisInsight()
     .WithDataVolume("redis-cache");
+
+// Dapr pub/sub + state: explicit Redis component types (not building-block in-memory fallbacks).
+// redisHost must be host:port only — never a URL. enableTLS must match Aspire Redis tcp endpoint.
+var redisTcp = redis.GetEndpoint("tcp");
+var redisHost = redisTcp.Property(EndpointProperty.HostAndPort);
+var redisTls = redisTcp.Property(EndpointProperty.TlsEnabled);
+
+var stateStore = builder.AddDaprComponent("statestore", "state.redis")
+    .WithMetadata("redisHost", redisHost)
+    .WithMetadata("redisPassword", redis.Resource.PasswordParameter!)
+    .WithMetadata("enableTLS", redisTls)
+    .WaitFor(redis);
+
+var pubSub = builder.AddDaprComponent(MessagingConstants.PubSubName, "pubsub.redis")
+    .WithMetadata("redisHost", redisHost)
+    .WithMetadata("redisPassword", redis.Resource.PasswordParameter!)
+    .WithMetadata("enableTLS", redisTls)
+    .WaitFor(redis);
 
 // Create builder with automatic port management
 AspireProjectBuilder projectBuilder;

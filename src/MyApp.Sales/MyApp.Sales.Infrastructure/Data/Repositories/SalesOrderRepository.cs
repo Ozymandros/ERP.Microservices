@@ -56,7 +56,6 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
             if (order != null)
             {
                 _context.SalesOrders.Remove(order);
-                await base.SaveChangesAsync();
             }
         }
 

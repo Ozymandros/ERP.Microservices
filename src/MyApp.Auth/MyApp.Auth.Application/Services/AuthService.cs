@@ -6,7 +6,9 @@ using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
 using MyApp.Auth.Infrastructure.Services;
 using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Permissions;
 using System.Security.Claims;
 
@@ -35,9 +37,10 @@ public class AuthService : AppServiceBase, IAuthService
         IUserRepository userRepository,
         IRoleRepository roleRepository,
         IPermissionRepository permissionRepository,
-        IServiceInvoker serviceInvoker,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         ILogger<AuthService> logger)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Auth)
     {
         _userManager = userManager;
         _jwtTokenProvider = jwtTokenProvider;
@@ -182,6 +185,7 @@ public class AuthService : AppServiceBase, IAuthService
     public async Task LogoutAsync(Guid userId)
     {
         await _refreshTokenRepository.RevokeUserTokensAsync(userId);
+        await SaveChangesAsync();
         _logger.LogInformation("User logged out: {UserId}", userId);
     }
 
@@ -247,6 +251,7 @@ public class AuthService : AppServiceBase, IAuthService
         };
 
         await _refreshTokenRepository.CreateAsync(refreshTokenEntity);
+        await SaveChangesAsync();
 
         var roleDtos = userRoles.Select(r => new RoleDto(r.Id)
         {

@@ -4,7 +4,9 @@ using MyApp.Crm.Application.Contracts.DTOs;
 using MyApp.Crm.Application.Contracts.Services;
 using MyApp.Crm.Domain.Accounts;
 using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 
 namespace MyApp.Crm.Application.Services;
@@ -23,9 +25,10 @@ public sealed class ContactService : AppServiceBase, IContactService
         IAccountRepository accountRepository,
         IContactRepository contactRepository,
         IMapper mapper,
-        IServiceInvoker serviceInvoker,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         ILogger<ContactService> logger)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Crm)
     {
         _accountRepository = accountRepository;
         _contactRepository = contactRepository;
@@ -71,6 +74,7 @@ public sealed class ContactService : AppServiceBase, IContactService
             dto.IsPrimary);
 
         await _accountRepository.UpdateAsync(account);
+        await SaveChangesAsync(cancellationToken);
         _logger.LogInformation("Created contact {ContactId} for Account {AccountId}", contact.Id, account.Id);
 
         return _mapper.Map<ContactDto>(contact);
@@ -84,6 +88,7 @@ public sealed class ContactService : AppServiceBase, IContactService
 
         contact.Update(dto.FullName, dto.Email, dto.Phone, dto.Title);
         await _contactRepository.UpdateAsync(contact);
+        await SaveChangesAsync(cancellationToken);
 
         return _mapper.Map<ContactDto>(contact);
     }
@@ -96,6 +101,7 @@ public sealed class ContactService : AppServiceBase, IContactService
 
         account.SetPrimaryContact(contactId);
         await _accountRepository.UpdateAsync(account);
+        await SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>Deactivate Async.</summary>
@@ -106,6 +112,7 @@ public sealed class ContactService : AppServiceBase, IContactService
 
         contact.Deactivate();
         await _contactRepository.UpdateAsync(contact);
+        await SaveChangesAsync(cancellationToken);
     }
 }
 

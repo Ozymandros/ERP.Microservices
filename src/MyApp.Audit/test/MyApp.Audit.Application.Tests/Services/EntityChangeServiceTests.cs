@@ -8,8 +8,12 @@ using MyApp.Audit.Application.Tests.Common;
 using MyApp.Audit.Domain;
 using MyApp.Audit.Domain.Repositories;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.DTOs;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Audit.Domain.Specifications;
 using Xunit;
 
@@ -19,7 +23,8 @@ public class EntityChangeServiceTests
 {
     private readonly Mock<IEntityChangeRepository> _repository = new();
     private readonly Mock<ICacheService> _cache = new();
-    private readonly Mock<IServiceInvoker> _serviceInvoker = new();
+    private readonly Mock<IUnitOfWork> _unitOfWork = new();
+    private readonly Mock<IEventPublisher> _eventPublisher = new();
     private readonly Mock<ILogger<EntityChangeService>> _logger = new();
     private readonly IMapper _mapper;
     private readonly EntityChangeService _sut;
@@ -27,7 +32,9 @@ public class EntityChangeServiceTests
     public EntityChangeServiceTests()
     {
         _mapper = MapperTestHelper.CreateMapper();
-        _sut = new EntityChangeService(_repository.Object, _mapper, _cache.Object, _serviceInvoker.Object, _logger.Object);
+        _unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
+        _sut = new EntityChangeService(_repository.Object, _mapper, _cache.Object, _unitOfWork.Object, _eventPublisher.Object, _logger.Object);
     }
 
     [Fact]
@@ -94,6 +101,8 @@ public class EntityChangeServiceTests
         _repository.Setup(r => r.AddAsync(It.IsAny<EntityChange>()))
             .Callback<EntityChange>(e => saved = e)
             .ReturnsAsync((EntityChange e) => e);
+        _unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
         _repository.Setup(r => r.GetByIdWithPropertiesAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(() => saved);
 
@@ -127,5 +136,73 @@ public class EntityChangeServiceTests
 
         result.Items.Should().HaveCount(1);
         result.Items.First().ChangeType.Should().Be("Deleted");
+    }
+
+    [Fact]
+    public async Task RecordFromEventAsync_PersistsEachMappedChange()
+    {
+        var entityId = Guid.NewGuid();
+        var evt = new EntityChangesSavedEvent(
+            ServiceNames.Billing,
+            [
+                new EntityChangePayload(
+                    "Invoice",
+                    entityId,
+                    "Modified",
+                    [new PropertyChangePayload("Status", "Draft", "Issued")],
+                    """{"Status":"Draft"}""",
+                    """{"Status":"Issued"}""")
+            ]);
+
+        _repository.Setup(r => r.AddAsync(It.IsAny<EntityChange>())).ReturnsAsync((EntityChange e) => e);
+        _unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
+        _repository.Setup(r => r.GetByIdWithPropertiesAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((Guid id, CancellationToken _) => new EntityChange(id)
+            {
+                EntityName = "Invoice",
+                EntityId = entityId,
+                ChangeType = ChangeTypeEnum.Updated,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = "system"
+            });
+
+        await _sut.RecordFromEventAsync(evt);
+
+        _repository.Verify(r => r.AddAsync(It.IsAny<EntityChange>()), Times.Once);
+        _unitOfWork.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task RecordAsync_DoesNotPublishAuditTopic()
+    {
+        var dto = new CreateEntityChangeDto
+        {
+            EntityName = "Order",
+            EntityId = Guid.NewGuid(),
+            ChangeType = ChangeTypeEnum.Created
+        };
+
+        _repository.Setup(r => r.AddAsync(It.IsAny<EntityChange>())).ReturnsAsync((EntityChange e) => e);
+        _unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
+        _repository.Setup(r => r.GetByIdWithPropertiesAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((Guid id, CancellationToken _) => new EntityChange(id)
+            {
+                EntityName = "Order",
+                EntityId = dto.EntityId,
+                ChangeType = ChangeTypeEnum.Created,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = "system"
+            });
+
+        await _sut.RecordAsync(dto);
+
+        _eventPublisher.Verify(
+            e => e.PublishAsync(
+                MessagingConstants.Topics.AuditEntityChangesSaved,
+                It.IsAny<EntityChangesSavedEvent>(),
+                It.IsAny<CancellationToken>()),
+            Times.Never);
     }
 }

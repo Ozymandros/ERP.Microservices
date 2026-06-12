@@ -37,7 +37,6 @@ public class SalesOrderLineRepository : Repository<SalesOrderLine, Guid>, ISales
         if (line != null)
         {
             _context.SalesOrderLines.Remove(line);
-            await base.SaveChangesAsync();
         }
     }
 }

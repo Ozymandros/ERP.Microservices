@@ -4,9 +4,13 @@ using MyApp.Audit.Application.Contracts.DTOs;
 using MyApp.Audit.Application.Contracts.Services;
 using MyApp.Audit.Domain;
 using MyApp.Audit.Domain.Repositories;
+using MyApp.Audit.Application.Mapping;
 using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Caching;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -34,9 +38,10 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
         IEntityChangeRepository repository,
         IMapper mapper,
         ICacheService cache,
-        IServiceInvoker serviceInvoker,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         ILogger<EntityChangeService> logger)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Audit)
     {
         _repository = repository;
         _mapper = mapper;
@@ -58,7 +63,7 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
             return null;
         }
 
-        var dto = _mapper.Map<EntityChangeDto>(entity);
+        var dto = EnrichUpdatedPropertyChanges(_mapper.Map<EntityChangeDto>(entity), entity);
         await _cache.SaveStateAsync(cacheKey, dto, CacheDuration);
         return dto;
     }
@@ -74,7 +79,7 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
             return cached;
 
         var entities = await _repository.GetByEntityAsync(entityName, entityId, cancellationToken);
-        var dtos = _mapper.Map<List<EntityChangeDto>>(entities);
+        var dtos = entities.Select(e => EnrichUpdatedPropertyChanges(_mapper.Map<EntityChangeDto>(e), e)).ToList();
         await _cache.SaveStateAsync(cacheKey, dtos, CacheDuration);
         return dtos;
     }
@@ -84,12 +89,28 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
         CancellationToken cancellationToken = default)
     {
         var result = await _repository.QueryAsync(spec);
-        var items = _mapper.Map<IEnumerable<EntityChangeDto>>(result.Items);
+        var items = result.Items
+            .Select(e => EnrichUpdatedPropertyChanges(_mapper.Map<EntityChangeDto>(e), e));
         return new PaginatedResult<EntityChangeDto>(
             items,
             result.PageNumber,
             result.PageSize,
             result.TotalCount);
+    }
+
+    private static EntityChangeDto EnrichUpdatedPropertyChanges(EntityChangeDto dto, EntityChange entity)
+    {
+        if (entity.ChangeType != ChangeTypeEnum.Updated || dto.PropertyChanges.Count > 0)
+            return dto;
+
+        if (string.IsNullOrWhiteSpace(entity.OriginalValue) || string.IsNullOrWhiteSpace(entity.NewValue))
+            return dto;
+
+        var derived = SnapshotPropertyChangeDeriver.DeriveReadDtos(entity.OriginalValue, entity.NewValue);
+        if (derived.Count == 0)
+            return dto;
+
+        return dto with { PropertyChanges = derived };
     }
 
     public async Task<EntityChangeDto> RecordAsync(CreateEntityChangeDto dto, CancellationToken cancellationToken = default)
@@ -116,6 +137,7 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
         }
 
         await _repository.AddAsync(entityChange);
+        await SaveChangesAsync(cancellationToken);
 
         await _cache.RemoveStateAsync($"audit:entity:{dto.EntityName}:{dto.EntityId}");
 
@@ -128,6 +150,28 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
         var saved = await _repository.GetByIdWithPropertiesAsync(changeId, cancellationToken)
             ?? entityChange;
 
-        return _mapper.Map<EntityChangeDto>(saved);
+        return EnrichUpdatedPropertyChanges(_mapper.Map<EntityChangeDto>(saved), saved);
+    }
+
+    /// <inheritdoc />
+    public async Task RecordFromEventAsync(
+        EntityChangesSavedEvent @event,
+        CancellationToken cancellationToken = default)
+    {
+        foreach (var payload in @event.Changes)
+        {
+            var dto = EntityChangeEventMapper.ToCreateDto(payload);
+            if (dto is null)
+            {
+                _logger.LogDebug(
+                    "Skipping audit ingest for {EntityName} {State} from {SourceService}",
+                    payload.EntityName,
+                    payload.State,
+                    @event.SourceService);
+                continue;
+            }
+
+            await RecordAsync(dto, cancellationToken);
+        }
     }
 }

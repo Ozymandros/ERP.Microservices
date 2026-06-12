@@ -5,7 +5,9 @@ using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -19,9 +21,10 @@ public class WarehouseService : AppServiceBase, IWarehouseService
     public WarehouseService(
         IWarehouseRepository warehouseRepository,
         IMapper mapper,
-        IServiceInvoker serviceInvoker,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         ILogger<WarehouseService> logger)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Inventory)
     {
         _warehouseRepository = warehouseRepository;
         _mapper = mapper;
@@ -63,6 +66,7 @@ public class WarehouseService : AppServiceBase, IWarehouseService
 
         var warehouse = _mapper.Map<Warehouse>(dto);
         var createdWarehouse = await _warehouseRepository.AddAsync(warehouse);
+        await SaveChangesAsync();
 
         return _mapper.Map<WarehouseDto>(createdWarehouse);
     }
@@ -87,6 +91,7 @@ public class WarehouseService : AppServiceBase, IWarehouseService
 
         _mapper.Map(dto, warehouse);
         var updatedWarehouse = await _warehouseRepository.UpdateAsync(warehouse);
+        await SaveChangesAsync();
 
         return _mapper.Map<WarehouseDto>(updatedWarehouse);
     }
@@ -100,6 +105,7 @@ public class WarehouseService : AppServiceBase, IWarehouseService
         }
 
         await _warehouseRepository.DeleteAsync(warehouse);
+        await SaveChangesAsync();
     }
 
     /// <summary>

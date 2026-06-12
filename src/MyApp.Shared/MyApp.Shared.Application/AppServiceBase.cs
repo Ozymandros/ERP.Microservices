@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
-using MyApp.Audit.Application.Contracts.DTOs;
-using MyApp.Audit.Domain;
+using MyApp.Shared.Domain.Audit;
 using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Entities;
 using MyApp.Shared.Domain.Messaging;
@@ -10,144 +10,164 @@ using MyApp.Shared.Domain.Repositories;
 namespace MyApp.Shared.Application;
 
 /// <summary>
-/// Non-generic base class for application services. Centralizes the dependencies required
-/// to publish audit records via Dapr and exposes a best-effort audit publisher that derived
-/// services can invoke after a unit-of-work has been persisted.
+/// Non-generic base class for application services. Commits via <see cref="IUnitOfWork"/>
+/// and best-effort publishes entity-change audit events after successful persistence.
 /// </summary>
 /// <remarks>
-/// <para>
-/// All application services in the solution should derive from this class (directly or via
-/// the generic <see cref="AppServiceBase{T, TEntity, TEntityDto}"/>) so that audit publishing
-/// is uniform across the system.
-/// </para>
-/// <para>
-/// The Audit microservice itself MUST set <see cref="DisableAuditPublishing"/> in its
-/// derived classes to avoid recursively publishing its own writes back to itself.
-/// </para>
+/// The Audit microservice MUST set <see cref="DisableAuditPublishing"/> to avoid recursion.
+/// <see cref="AuditExclusions"/> entity types (RefreshToken, AgentMemory, AgentSession, EntityChange, PropertyChange, etc.) are never published.
 /// </remarks>
 public abstract class AppServiceBase
 {
     /// <summary>
-    /// Gets the Dapr-based service invoker used to call the audit-service.
+    /// Gets the unit of work for the current service database scope.
     /// </summary>
-    protected IServiceInvoker ServiceInvoker { get; }
+    protected IUnitOfWork UnitOfWork { get; }
 
     /// <summary>
-    /// Gets the logger associated with the derived service for audit-publish diagnostics.
+    /// Gets the Dapr event publisher (audit uses topic <see cref="MessagingConstants.Topics.AuditEntityChangesSaved"/>).
+    /// </summary>
+    protected IEventPublisher EventPublisher { get; }
+
+    /// <summary>
+    /// Gets the logger for audit-publish diagnostics.
     /// </summary>
     protected ILogger Logger { get; }
 
     /// <summary>
-    /// When <see langword="true"/>, <see cref="PublishAuditAsync"/> is a no-op. Derived
-    /// services owned by the Audit microservice itself must override this and return true.
+    /// Dapr app-id of this microservice, included in audit events. May be null if unknown.
+    /// </summary>
+    protected string? SourceServiceName { get; }
+
+    /// <summary>
+    /// When <see langword="true"/>, audit publishing is a no-op (Audit microservice).
     /// </summary>
     protected virtual bool DisableAuditPublishing => false;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AppServiceBase"/> class.
     /// </summary>
-    /// <param name="serviceInvoker">Dapr-based service invoker used to call the audit-service.</param>
-    /// <param name="logger">Logger used to record audit-publish warnings without failing the caller.</param>
-    protected AppServiceBase(IServiceInvoker serviceInvoker, ILogger logger)
+    protected AppServiceBase(
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        ILogger logger,
+        string? sourceServiceName = null)
     {
-        ServiceInvoker = serviceInvoker ?? throw new ArgumentNullException(nameof(serviceInvoker));
+        UnitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+        EventPublisher = eventPublisher ?? throw new ArgumentNullException(nameof(eventPublisher));
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        SourceServiceName = sourceServiceName;
     }
 
     /// <summary>
-    /// Best-effort publishes a collection of entity changes to the audit-service. One HTTP POST
-    /// is issued per change. Failures are logged at Warning and swallowed so business
-    /// operations continue to succeed even when the audit-service is unavailable.
+    /// Commits pending unit-of-work changes and best-effort publishes an audit event.
     /// </summary>
-    protected async Task PublishAuditAsync(
+    protected async Task<IReadOnlyCollection<EntityEntryDto>> SaveChangesAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var changes = await UnitOfWork.CommitAsync(cancellationToken);
+        await PublishEntityChangesAuditAsync(changes, cancellationToken);
+        return changes;
+    }
+
+    /// <summary>
+    /// Best-effort publishes entity changes to the audit topic. Failures are logged and swallowed.
+    /// </summary>
+    protected async Task PublishEntityChangesAuditAsync(
         IReadOnlyCollection<EntityEntryDto> changes,
         CancellationToken cancellationToken = default)
     {
         if (DisableAuditPublishing || changes.Count == 0)
             return;
 
-        foreach (var change in changes)
-        {
-            var dto = MapToCreateEntityChangeDto(change);
-            if (dto is null)
-            {
-                Logger.LogDebug(
-                    "Skipping audit publish for {EntityName} {State}: EntityId is not a Guid",
-                    change.EntityName, change.State);
-                continue;
-            }
+        changes = AuditExclusions.FilterForAudit(changes, c => c.EntityName);
+        if (changes.Count == 0)
+            return;
 
-            try
-            {
-                await ServiceInvoker.InvokeAsync<CreateEntityChangeDto, EntityChangeDto>(
-                    ServiceNames.Audit,
-                    ApiEndpoints.Audit.EntityChanges,
-                    HttpMethod.Post,
-                    dto,
-                    cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogWarning(ex,
-                    "Audit publish failed for {EntityName} {State} {EntityId}",
-                    change.EntityName, change.State, change.EntityId);
-            }
+        if (string.IsNullOrWhiteSpace(SourceServiceName))
+        {
+            Logger.LogWarning(
+                "Skipping audit publish: {ChangeCount} changes but SourceServiceName is not configured",
+                changes.Count);
+            return;
+        }
+
+        var payloads = changes
+            .Select(MapToPayload)
+            .Where(p => p is not null)
+            .Cast<EntityChangePayload>()
+            .ToList();
+
+        if (payloads.Count == 0)
+        {
+            Logger.LogWarning(
+                "Skipping audit publish for {SourceService}: {TrackedCount} tracked changes produced no publishable payloads (check entity IDs are Guid)",
+                SourceServiceName,
+                changes.Count);
+            return;
+        }
+
+        var evt = new EntityChangesSavedEvent(SourceServiceName, payloads);
+
+        try
+        {
+            await EventPublisher.PublishAsync(
+                MessagingConstants.Topics.AuditEntityChangesSaved,
+                evt,
+                cancellationToken);
+
+            Logger.LogInformation(
+                "Published audit event: topic={Topic} source={SourceService} changes={ChangeCount}",
+                MessagingConstants.Topics.AuditEntityChangesSaved,
+                SourceServiceName,
+                payloads.Count);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex,
+                "Audit event publish failed for {SourceService} with {ChangeCount} changes on topic {Topic}",
+                SourceServiceName,
+                payloads.Count,
+                MessagingConstants.Topics.AuditEntityChangesSaved);
         }
     }
 
-    private static CreateEntityChangeDto? MapToCreateEntityChangeDto(EntityEntryDto change)
+    private static EntityChangePayload? MapToPayload(EntityEntryDto change)
     {
-        var entityId = change.EntityId switch
-        {
-            Guid guid => guid,
-            string s when Guid.TryParse(s, out var parsed) => parsed,
-            _ => (Guid?)null
-        };
-
-        if (entityId is null || entityId == Guid.Empty)
+        if (change.EntityId is null)
             return null;
 
-        var changeType = change.State switch
-        {
-            "Added" => ChangeTypeEnum.Created,
-            "Modified" => ChangeTypeEnum.Updated,
-            "Deleted" => ChangeTypeEnum.Deleted,
-            _ => (ChangeTypeEnum?)null
-        };
-
-        if (changeType is null)
+        var resolvedId = ResolveEntityIdForAudit(change.EntityId);
+        if (resolvedId is null)
             return null;
 
-        var propertyChanges = change.Properties
-            .Select(p => new CreatePropertyChangeDto
-            {
-                PropertyName = p.PropertyName,
-                OriginalValue = p.OldValue?.ToString(),
-                NewValue = p.NewValue?.ToString()
-            })
+        var properties = change.Properties
+            .Select(p => new PropertyChangePayload(
+                p.PropertyName,
+                p.OldValue,
+                p.NewValue))
             .ToList();
 
-        return new CreateEntityChangeDto
-        {
-            EntityName = change.EntityName,
-            EntityId = entityId.Value,
-            ChangeType = changeType.Value,
-            OriginalValue = changeType == ChangeTypeEnum.Created ? null : change.OriginalValue,
-            NewValue = changeType == ChangeTypeEnum.Deleted ? null : change.NewValue,
-            PropertyChanges = propertyChanges
-        };
+        return new EntityChangePayload(
+            change.EntityName,
+            resolvedId,
+            change.State,
+            properties,
+            change.OriginalValue,
+            change.NewValue);
     }
+
+    private static Guid? ResolveEntityIdForAudit(object? entityId) => entityId switch
+    {
+        Guid guid when guid != Guid.Empty => guid,
+        string s when Guid.TryParse(s, out var parsed) && parsed != Guid.Empty => parsed,
+        _ => null
+    };
 }
 
 /// <summary>
-/// Generic application service base bound to a single aggregate. Exposes a
-/// <see cref="SaveChangesAsync"/> entry point that persists pending changes through the
-/// injected repository and forwards the resulting <see cref="EntityEntryDto"/> collection to
-/// <see cref="AppServiceBase.PublishAuditAsync"/>.
+/// Generic application service base bound to a single aggregate repository.
 /// </summary>
-/// <typeparam name="T">The primary key type for <typeparamref name="TEntity"/>.</typeparam>
-/// <typeparam name="TEntity">The aggregate root entity type owned by the service.</typeparam>
-/// <typeparam name="TEntityDto">The DTO used to expose <typeparamref name="TEntity"/> to callers.</typeparam>
 public abstract class AppServiceBase<T, TEntity, TEntityDto> : AppServiceBase
     where TEntity : class, IEntity<T>
     where T : IComparable, IComparable<T>, IEquatable<T>, IFormattable, IParsable<T>
@@ -163,22 +183,12 @@ public abstract class AppServiceBase<T, TEntity, TEntityDto> : AppServiceBase
     /// </summary>
     protected AppServiceBase(
         IRepository<TEntity, T> repository,
-        IServiceInvoker serviceInvoker,
-        ILogger logger)
-        : base(serviceInvoker, logger)
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        ILogger logger,
+        string? sourceServiceName = null)
+        : base(unitOfWork, eventPublisher, logger, sourceServiceName)
     {
         Repository = repository ?? throw new ArgumentNullException(nameof(repository));
-    }
-
-    /// <summary>
-    /// Persists pending repository changes and best-effort publishes each entity change
-    /// to the audit-service. Audit failures are logged and swallowed.
-    /// </summary>
-    protected virtual async Task<IReadOnlyCollection<EntityEntryDto>> SaveChangesAsync(
-        CancellationToken cancellationToken = default)
-    {
-        var changes = await Repository.SaveChangesAsync(false, cancellationToken);
-        await PublishAuditAsync(changes, cancellationToken);
-        return changes;
     }
 }

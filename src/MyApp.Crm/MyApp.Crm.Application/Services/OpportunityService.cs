@@ -7,6 +7,7 @@ using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 using MyApp.Sales.Application.Contracts.DTOs;
@@ -24,22 +25,20 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     private readonly IOpportunityRepository _repository;
     private readonly IMapper _mapper;
     private readonly ILogger<OpportunityService> _logger;
-    private readonly IEventPublisher _eventPublisher;
     private readonly IServiceInvoker _serviceInvoker;
 
     public OpportunityService(
         IOpportunityRepository repository,
         IMapper mapper,
         ILogger<OpportunityService> logger,
+        IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher,
         IServiceInvoker serviceInvoker)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Crm)
     {
         _repository = repository;
         _mapper = mapper;
-        _logger = logger;
-        _eventPublisher = eventPublisher;
-        _serviceInvoker = serviceInvoker;
+        _logger = logger;        _serviceInvoker = serviceInvoker;
     }
 
     /// <summary>Get By Id Async.</summary>
@@ -69,11 +68,12 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     {
         var entity = new Opportunity(Guid.NewGuid(), dto.CustomerId, dto.Name, dto.OwnerUsername, dto.LeadId);
         await _repository.AddAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         try
         {
             var @event = new CrmOpportunityCreatedEvent(entity.Id, entity.CustomerId, entity.Name, entity.OwnerUsername);
-            await _eventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityCreated, @event, cancellationToken);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityCreated, @event, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -91,6 +91,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
 
         entity.UpdateForecast(dto.Probability, dto.ExpectedAmount, dto.ExpectedCloseDate);
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         return _mapper.Map<OpportunityDto>(entity);
     }
@@ -107,11 +108,12 @@ public class OpportunityService : AppServiceBase, IOpportunityService
         var oldStage = entity.Stage;
         entity.MoveToStage(newStage);
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         try
         {
             var @event = new CrmOpportunityStageChangedEvent(entity.Id, oldStage.ToString(), entity.Stage.ToString());
-            await _eventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityStageChanged, @event, cancellationToken);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityStageChanged, @event, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -167,11 +169,12 @@ public class OpportunityService : AppServiceBase, IOpportunityService
         }
 
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         try
         {
             var @event = new CrmOpportunityWonEvent(entity.Id, entity.CustomerId);
-            await _eventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityWon, @event, cancellationToken);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityWon, @event, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -197,6 +200,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
             dto.Sku);
 
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
         return _mapper.Map<OpportunityLineDto>(line);
     }
 
@@ -208,6 +212,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
 
         entity.UpdateLine(lineId, dto.Description, dto.Quantity, dto.UnitPrice, dto.DiscountPercent, dto.ProductId, dto.Sku);
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         var updated = entity.Lines.First(l => l.Id == lineId);
         return _mapper.Map<OpportunityLineDto>(updated);
@@ -221,6 +226,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
 
         entity.RemoveLine(lineId);
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>Get Forecast Summary Async.</summary>
@@ -300,11 +306,12 @@ public class OpportunityService : AppServiceBase, IOpportunityService
 
         entity.MarkLost(dto.Reason);
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         try
         {
             var @event = new CrmOpportunityLostEvent(entity.Id, entity.CustomerId, dto.Reason);
-            await _eventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityLost, @event, cancellationToken);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityLost, @event, cancellationToken);
         }
         catch (Exception ex)
         {

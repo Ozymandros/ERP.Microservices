@@ -10,7 +10,9 @@ using MyApp.Auth.Application.Tests.Builders;
 using MyApp.Auth.Application.Tests.Common;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using System.Security.Claims;
 using Xunit;
 
@@ -24,7 +26,8 @@ public class UserServiceTests : BaseServiceTest
     private readonly Mock<RoleManager<ApplicationRole>> _mockRoleManager;
     private readonly Mock<IHttpContextAccessor> _mockHttpContextAccessor;
     private readonly Mock<IPermissionRepository> _mockPermissionRepository;
-    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
+    private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+    private readonly Mock<IEventPublisher> _mockEventPublisher;
     private readonly Mock<ILogger<UserService>> _mockLogger;
     private readonly UserService _userService;
 
@@ -36,8 +39,11 @@ public class UserServiceTests : BaseServiceTest
         _mockRoleManager = CreateMockRoleManager();
         _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
         _mockPermissionRepository = new Mock<IPermissionRepository>();
-        _mockServiceInvoker = new Mock<IServiceInvoker>();
+        _mockUnitOfWork = new Mock<IUnitOfWork>();
+        _mockEventPublisher = new Mock<IEventPublisher>();
         _mockLogger = CreateMockLogger<UserService>();
+        _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
 
         _userService = new UserService(
             _mockUserManager.Object,
@@ -45,7 +51,8 @@ public class UserServiceTests : BaseServiceTest
             _mockUserRepository.Object,
             _mockRoleRepository.Object,
             Mapper,
-            _mockServiceInvoker.Object,
+            _mockUnitOfWork.Object,
+            _mockEventPublisher.Object,
             _mockLogger.Object,
             _mockHttpContextAccessor.Object,
             _mockPermissionRepository.Object);

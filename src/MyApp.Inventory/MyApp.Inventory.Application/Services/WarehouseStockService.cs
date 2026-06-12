@@ -5,10 +5,12 @@ using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.BusinessRules;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Exceptions;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 
 namespace MyApp.Inventory.Application.Services;
 
@@ -23,7 +25,6 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
     private readonly IInventoryReservationRepository _reservationRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<WarehouseStockService> _logger;
-    private readonly IEventPublisher _eventPublisher;
 
     public WarehouseStockService(
         IWarehouseStockRepository warehouseStockRepository,
@@ -31,19 +32,17 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
         IInventoryTransactionRepository transactionRepository,
         IInventoryReservationRepository reservationRepository,
         IMapper mapper,
-        IServiceInvoker serviceInvoker,
-        ILogger<WarehouseStockService> logger,
-        IEventPublisher eventPublisher)
-        : base(serviceInvoker, logger)
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        ILogger<WarehouseStockService> logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Inventory)
     {
         _warehouseStockRepository = warehouseStockRepository;
         _productRepository = productRepository;
         _transactionRepository = transactionRepository;
         _reservationRepository = reservationRepository;
         _mapper = mapper;
-        _logger = logger;
-        _eventPublisher = eventPublisher;
-    }
+        _logger = logger;    }
 
     /// <summary>Get By Product And Warehouse Async.</summary>
     public async Task<WarehouseStockDto?> GetByProductAndWarehouseAsync(Guid productId, Guid warehouseId)
@@ -133,6 +132,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
             Status = InventoryReservationStatus.Reserved
         };
         await _reservationRepository.AddAsync(reservationRecord);
+        await SaveChangesAsync();
 
         _logger.LogInformation("Stock reserved successfully: {@Reservation}", new { dto.ProductId, dto.Quantity, ExpiresAt = expiresAt });
 
@@ -147,7 +147,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
 
         try
         {
-            await _eventPublisher.PublishAsync("inventory.stock.reserved", stockReservedEvent);
+            await EventPublisher.PublishAsync("inventory.stock.reserved", stockReservedEvent);
             _logger.LogInformation("Published StockReservedEvent for reservation {ReservationId}", reservationId);
         }
         catch (Exception ex)
@@ -212,6 +212,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
         // Mark reservation as released
         reservation.Status = InventoryReservationStatus.Released;
         await _reservationRepository.UpdateAsync(reservation);
+        await SaveChangesAsync();
 
         _logger.LogInformation("Reservation {ReservationId} released successfully.", reservationId);
 
@@ -225,7 +226,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
 
         try
         {
-            await _eventPublisher.PublishAsync("inventory.stock.released", stockReleasedEvent);
+            await EventPublisher.PublishAsync("inventory.stock.released", stockReleasedEvent);
             _logger.LogInformation("Published StockReleasedEvent for reservation {ReservationId}", reservationId);
         }
         catch (Exception ex)
@@ -301,6 +302,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
 
         await _transactionRepository.AddAsync(outboundTx);
         await _transactionRepository.AddAsync(inboundTx);
+        await SaveChangesAsync();
 
         _logger.LogInformation("Stock transferred successfully: {@Transfer}", new { dto.ProductId, dto.Quantity });
 
@@ -315,7 +317,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
 
         try
         {
-            await _eventPublisher.PublishAsync("inventory.stock.transferred", stockTransferredEvent);
+            await EventPublisher.PublishAsync("inventory.stock.transferred", stockTransferredEvent);
             _logger.LogInformation("Published StockTransferredEvent: {@Event}", new { ProductId = dto.ProductId });
         }
         catch (Exception ex)
@@ -365,6 +367,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
         };
 
         await _transactionRepository.AddAsync(transaction);
+        await SaveChangesAsync();
 
         _logger.LogInformation("Stock adjusted successfully: {@Adjustment}", new { dto.ProductId, NewQuantity = warehouseStock.AvailableQuantity });
 
@@ -379,7 +382,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
 
         try
         {
-            await _eventPublisher.PublishAsync("inventory.stock.adjusted", stockAdjustedEvent);
+            await EventPublisher.PublishAsync("inventory.stock.adjusted", stockAdjustedEvent);
             _logger.LogInformation("Published StockAdjustedEvent: {@Event}", new { ProductId = dto.ProductId });
         }
         catch (Exception ex)

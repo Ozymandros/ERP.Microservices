@@ -14,6 +14,7 @@ using MyApp.Agentic.Infrastructure.State;
 using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Agentic.Application.Services;
@@ -69,10 +70,12 @@ public class AgentService : AppServiceBase, IAgentService
         IEmbeddingService embeddingService,
         IAgentExecutionService agentExecutionService,
         IAgentToolResolver toolResolver,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         IServiceInvoker serviceInvoker,
         IMapper mapper,
         ILogger<AgentService> logger)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Agentic)
     {
         _agentRepository = agentRepository;
         _providerRepository = providerRepository;
@@ -165,6 +168,7 @@ public class AgentService : AppServiceBase, IAgentService
         agent.SetModel(model);
 
         await _agentRepository.AddAsync(agent);
+        await SaveChangesAsync(cancellationToken);
         return MapToDto(agent);
     }
 
@@ -200,6 +204,7 @@ public class AgentService : AppServiceBase, IAgentService
         agent.SetModel(model);
 
         await _agentRepository.UpdateAsync(agent);
+        await SaveChangesAsync(cancellationToken);
         return MapToDto(agent);
     }
 
@@ -213,6 +218,7 @@ public class AgentService : AppServiceBase, IAgentService
         var agent = await _agentRepository.GetByIdAsync(id);
         if (agent == null) return;
         await _agentRepository.DeleteAsync(agent);
+        await SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>
@@ -332,6 +338,7 @@ public class AgentService : AppServiceBase, IAgentService
 
         session.RecordMessage();
         await _sessionRepository.UpdateAsync(session);
+        await SaveChangesAsync(cancellationToken);
 
         return new ProcessAgentMessageResponse(sessionId, authenticatedUserId, request.Message, aiResponse, DateTime.UtcNow, executionResult.ToolCalls);
     }
@@ -372,6 +379,7 @@ public class AgentService : AppServiceBase, IAgentService
             title: request.Title);
 
         await _sessionRepository.AddAsync(session);
+        await SaveChangesAsync(cancellationToken);
 
         return new StartSessionResponse(
             session.Id,
@@ -476,6 +484,7 @@ public class AgentService : AppServiceBase, IAgentService
 
         session.RecordMessage();
         await _sessionRepository.UpdateAsync(session);
+        await SaveChangesAsync(cancellationToken);
 
         var userMessage = new ConversationMessage
         {
@@ -598,6 +607,7 @@ public class AgentService : AppServiceBase, IAgentService
 
         session.Complete();
         await _sessionRepository.UpdateAsync(session);
+        await SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>

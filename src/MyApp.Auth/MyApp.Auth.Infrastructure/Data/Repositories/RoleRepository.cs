@@ -83,14 +83,11 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
         }
 
         _context.RolePermissions.Remove(rolePermission);
-        await this.SaveChangesAsync();
 
-        // Update role's UpdatedAt timestamp
         var role = await _context.Roles.FindAsync(roleId);
         if (role != null)
         {
             role.UpdatedAt = DateTime.UtcNow;
-            await this.SaveChangesAsync();
         }
 
         return true;

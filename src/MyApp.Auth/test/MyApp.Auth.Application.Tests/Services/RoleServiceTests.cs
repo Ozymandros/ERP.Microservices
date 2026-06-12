@@ -10,7 +10,9 @@ using MyApp.Auth.Application.Tests.Builders;
 using MyApp.Auth.Application.Tests.Common;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using Xunit;
 
 namespace MyApp.Auth.Application.Tests.Services;
@@ -21,7 +23,8 @@ public class RoleServiceTests : BaseServiceTest
     private readonly Mock<RoleManager<ApplicationRole>> _mockRoleManager;
     private readonly Mock<UserManager<ApplicationUser>> _mockUserManager;
     private readonly Mock<IUserRepository> _mockUserRepository;
-    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
+    private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+    private readonly Mock<IEventPublisher> _mockEventPublisher;
     private readonly Mock<ILogger<RoleService>> _mockLogger;
     private readonly RoleService _roleService;
 
@@ -31,8 +34,11 @@ public class RoleServiceTests : BaseServiceTest
         _mockRoleManager = CreateMockRoleManager();
         _mockUserManager = CreateMockUserManager();
         _mockUserRepository = new Mock<IUserRepository>();
-        _mockServiceInvoker = new Mock<IServiceInvoker>();
+        _mockUnitOfWork = new Mock<IUnitOfWork>();
+        _mockEventPublisher = new Mock<IEventPublisher>();
         _mockLogger = CreateMockLogger<RoleService>();
+        _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
 
         _roleService = new RoleService(
             _mockRoleManager.Object,
@@ -40,7 +46,8 @@ public class RoleServiceTests : BaseServiceTest
             _mockRoleRepository.Object,
             _mockUserRepository.Object,
             Mapper,
-            _mockServiceInvoker.Object,
+            _mockUnitOfWork.Object,
+            _mockEventPublisher.Object,
             _mockLogger.Object);
     }
 
@@ -159,9 +166,13 @@ public class RoleServiceTests : BaseServiceTest
             .WithDescription(createDto.Description ?? string.Empty)
             .Build();
 
-        _mockRoleManager
-            .Setup(x => x.CreateAsync(It.IsAny<ApplicationRole>()))
-            .ReturnsAsync(IdentityResult.Success);
+        _mockRoleRepository
+            .Setup(x => x.NameExistsAsync(createDto.Name))
+            .ReturnsAsync(false);
+
+        _mockRoleRepository
+            .Setup(x => x.AddAsync(It.IsAny<ApplicationRole>()))
+            .ReturnsAsync((ApplicationRole r) => r);
 
         MockMapper
             .Setup(x => x.Map<RoleDto>(It.IsAny<ApplicationRole>()))
@@ -173,9 +184,10 @@ public class RoleServiceTests : BaseServiceTest
         // Assert
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(roleDto);
-        _mockRoleManager.Verify(x => x.CreateAsync(It.Is<ApplicationRole>(r =>
+        _mockRoleRepository.Verify(x => x.AddAsync(It.Is<ApplicationRole>(r =>
             r.Name == createDto.Name &&
             r.Description == createDto.Description)), Times.Once);
+        _mockUnitOfWork.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -184,14 +196,9 @@ public class RoleServiceTests : BaseServiceTest
         // Arrange
         var createDto = new CreateRoleDto("ExistingRole", "Description");
 
-        var identityErrors = new List<IdentityError>
-        {
-            new IdentityError { Code = "DuplicateRoleName", Description = "Role name already exists" }
-        };
-
-        _mockRoleManager
-            .Setup(x => x.CreateAsync(It.IsAny<ApplicationRole>()))
-            .ReturnsAsync(IdentityResult.Failed(identityErrors.ToArray()));
+        _mockRoleRepository
+            .Setup(x => x.NameExistsAsync(createDto.Name))
+            .ReturnsAsync(true);
 
         // Act
         var result = await _roleService.CreateRoleAsync(createDto);
@@ -214,13 +221,13 @@ public class RoleServiceTests : BaseServiceTest
 
         var existingRole = new RoleBuilder().WithId(roleId).Build();
 
-        _mockRoleManager
-            .Setup(x => x.FindByIdAsync(roleId.ToString()))
+        _mockRoleRepository
+            .Setup(x => x.GetByIdAsync(roleId))
             .ReturnsAsync(existingRole);
 
-        _mockRoleManager
+        _mockRoleRepository
             .Setup(x => x.UpdateAsync(existingRole))
-            .ReturnsAsync(IdentityResult.Success);
+            .ReturnsAsync(existingRole);
 
         // Act
         var result = await _roleService.UpdateRoleAsync(roleId, updateDto);
@@ -229,7 +236,8 @@ public class RoleServiceTests : BaseServiceTest
         result.Should().BeTrue();
         existingRole.Name.Should().Be(updateDto.Name);
         existingRole.Description.Should().Be(updateDto.Description);
-        _mockRoleManager.Verify(x => x.UpdateAsync(existingRole), Times.Once);
+        _mockRoleRepository.Verify(x => x.UpdateAsync(existingRole), Times.Once);
+        _mockUnitOfWork.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -248,7 +256,7 @@ public class RoleServiceTests : BaseServiceTest
 
         // Assert
         result.Should().BeFalse();
-        _mockRoleManager.Verify(x => x.UpdateAsync(It.IsAny<ApplicationRole>()), Times.Never);
+        _mockRoleRepository.Verify(x => x.UpdateAsync(It.IsAny<ApplicationRole>()), Times.Never);
         VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.Once());
     }
 
@@ -263,20 +271,21 @@ public class RoleServiceTests : BaseServiceTest
         var roleId = Guid.NewGuid();
         var role = new RoleBuilder().WithId(roleId).Build();
 
-        _mockRoleManager
-            .Setup(x => x.FindByIdAsync(roleId.ToString()))
+        _mockRoleRepository
+            .Setup(x => x.GetByIdAsync(roleId))
             .ReturnsAsync(role);
 
-        _mockRoleManager
+        _mockRoleRepository
             .Setup(x => x.DeleteAsync(role))
-            .ReturnsAsync(IdentityResult.Success);
+            .Returns(Task.CompletedTask);
 
         // Act
         var result = await _roleService.DeleteRoleAsync(roleId);
 
         // Assert
         result.Should().BeTrue();
-        _mockRoleManager.Verify(x => x.DeleteAsync(role), Times.Once);
+        _mockRoleRepository.Verify(x => x.DeleteAsync(role), Times.Once);
+        _mockUnitOfWork.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -294,7 +303,7 @@ public class RoleServiceTests : BaseServiceTest
 
         // Assert
         result.Should().BeFalse();
-        _mockRoleManager.Verify(x => x.DeleteAsync(It.IsAny<ApplicationRole>()), Times.Never);
+        _mockRoleRepository.Verify(x => x.DeleteAsync(It.IsAny<ApplicationRole>()), Times.Never);
         VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.Once());
     }
 
@@ -312,13 +321,17 @@ public class RoleServiceTests : BaseServiceTest
         var role = new RoleBuilder().WithId(roleId).Build();
         role.RolePermissions = new List<RolePermission>();
 
-        _mockRoleManager
-            .Setup(x => x.FindByIdAsync(roleId.ToString()))
+        _mockRoleRepository
+            .Setup(x => x.GetByIdAsync(roleId))
             .ReturnsAsync(role);
 
-        _mockRoleManager
+        _mockRoleRepository
+            .Setup(x => x.HasPermissionAsync(roleId, permissionId))
+            .ReturnsAsync(false);
+
+        _mockRoleRepository
             .Setup(x => x.UpdateAsync(role))
-            .ReturnsAsync(IdentityResult.Success);
+            .ReturnsAsync(role);
 
         // Act
         var result = await _roleService.AddPermissionToRole(createDto);
@@ -494,8 +507,8 @@ public class RoleServiceTests : BaseServiceTest
         var role = new RoleBuilder().WithId(roleId).Build();
         role.RolePermissions = new List<RolePermission>();
 
-        _mockRoleManager.Setup(x => x.FindByIdAsync(roleId.ToString())).ReturnsAsync(role);
-        _mockRoleManager.Setup(x => x.UpdateAsync(role)).ReturnsAsync(IdentityResult.Success);
+        _mockRoleRepository.Setup(x => x.GetByIdAsync(roleId)).ReturnsAsync(role);
+        _mockRoleRepository.Setup(x => x.UpdateAsync(role)).ReturnsAsync(role);
         _mockRoleRepository.Setup(x => x.HasPermissionAsync(roleId, It.IsAny<Guid>())).ReturnsAsync(false);
 
         // Act
@@ -504,7 +517,8 @@ public class RoleServiceTests : BaseServiceTest
         // Assert
         result.Should().BeTrue();
         role.RolePermissions.Should().HaveCount(2);
-        _mockRoleManager.Verify(x => x.UpdateAsync(role), Times.Once);
+        _mockRoleRepository.Verify(x => x.UpdateAsync(role), Times.Once);
+        _mockUnitOfWork.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -515,7 +529,7 @@ public class RoleServiceTests : BaseServiceTest
         var permissionIds = new List<Guid> { Guid.NewGuid() };
         var createDto = new CreateRolePermissionsDto(roleId, permissionIds);
 
-        _mockRoleManager.Setup(x => x.FindByIdAsync(roleId.ToString())).ReturnsAsync((ApplicationRole?)null);
+        _mockRoleRepository.Setup(x => x.GetByIdAsync(roleId)).ReturnsAsync((ApplicationRole?)null);
 
         // Act
         var result = await _roleService.AddPermissionsToRole(createDto);
@@ -536,8 +550,8 @@ public class RoleServiceTests : BaseServiceTest
         var role = new RoleBuilder().WithId(roleId).Build();
         role.RolePermissions = new List<RolePermission>();
 
-        _mockRoleManager.Setup(x => x.FindByIdAsync(roleId.ToString())).ReturnsAsync(role);
-        _mockRoleManager.Setup(x => x.UpdateAsync(role)).ReturnsAsync(IdentityResult.Success);
+        _mockRoleRepository.Setup(x => x.GetByIdAsync(roleId)).ReturnsAsync(role);
+        _mockRoleRepository.Setup(x => x.UpdateAsync(role)).ReturnsAsync(role);
         _mockRoleRepository.Setup(x => x.HasPermissionAsync(roleId, permissionId1)).ReturnsAsync(true); // Already exists
         _mockRoleRepository.Setup(x => x.HasPermissionAsync(roleId, permissionId2)).ReturnsAsync(false); // New
 
@@ -559,7 +573,7 @@ public class RoleServiceTests : BaseServiceTest
         var role = new RoleBuilder().WithId(roleId).Build();
         role.RolePermissions = new List<RolePermission>();
 
-        _mockRoleManager.Setup(x => x.FindByIdAsync(roleId.ToString())).ReturnsAsync(role);
+        _mockRoleRepository.Setup(x => x.GetByIdAsync(roleId)).ReturnsAsync(role);
         _mockRoleRepository.Setup(x => x.HasPermissionAsync(roleId, It.IsAny<Guid>())).ReturnsAsync(true); // All duplicates
 
         // Act
@@ -567,7 +581,7 @@ public class RoleServiceTests : BaseServiceTest
 
         // Assert
         result.Should().BeFalse();
-        _mockRoleManager.Verify(x => x.UpdateAsync(It.IsAny<ApplicationRole>()), Times.Never);
+        _mockRoleRepository.Verify(x => x.UpdateAsync(It.IsAny<ApplicationRole>()), Times.Never);
     }
 
     #endregion
@@ -583,7 +597,7 @@ public class RoleServiceTests : BaseServiceTest
         var deleteDto = new DeleteRolePermissionsDto(roleId, permissionIds);
         var role = new RoleBuilder().WithId(roleId).Build();
 
-        _mockRoleManager.Setup(x => x.FindByIdAsync(roleId.ToString())).ReturnsAsync(role);
+        _mockRoleRepository.Setup(x => x.GetByIdAsync(roleId)).ReturnsAsync(role);
         _mockRoleRepository.Setup(x => x.HasPermissionAsync(roleId, It.IsAny<Guid>())).ReturnsAsync(true);
         _mockRoleRepository.Setup(x => x.RemovePermissionFromRoleAsync(roleId, It.IsAny<Guid>())).ReturnsAsync(true);
 
@@ -593,6 +607,7 @@ public class RoleServiceTests : BaseServiceTest
         // Assert
         result.Should().BeTrue();
         _mockRoleRepository.Verify(x => x.RemovePermissionFromRoleAsync(roleId, It.IsAny<Guid>()), Times.Exactly(2));
+        _mockUnitOfWork.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -603,7 +618,7 @@ public class RoleServiceTests : BaseServiceTest
         var permissionIds = new List<Guid> { Guid.NewGuid() };
         var deleteDto = new DeleteRolePermissionsDto(roleId, permissionIds);
 
-        _mockRoleManager.Setup(x => x.FindByIdAsync(roleId.ToString())).ReturnsAsync((ApplicationRole?)null);
+        _mockRoleRepository.Setup(x => x.GetByIdAsync(roleId)).ReturnsAsync((ApplicationRole?)null);
 
         // Act
         var result = await _roleService.RemovePermissionsFromRoleAsync(deleteDto);
@@ -623,7 +638,7 @@ public class RoleServiceTests : BaseServiceTest
         var deleteDto = new DeleteRolePermissionsDto(roleId, permissionIds);
         var role = new RoleBuilder().WithId(roleId).Build();
 
-        _mockRoleManager.Setup(x => x.FindByIdAsync(roleId.ToString())).ReturnsAsync(role);
+        _mockRoleRepository.Setup(x => x.GetByIdAsync(roleId)).ReturnsAsync(role);
         _mockRoleRepository.Setup(x => x.HasPermissionAsync(roleId, permissionId1)).ReturnsAsync(true);
         _mockRoleRepository.Setup(x => x.HasPermissionAsync(roleId, permissionId2)).ReturnsAsync(false); // Not found
         _mockRoleRepository.Setup(x => x.RemovePermissionFromRoleAsync(roleId, permissionId1)).ReturnsAsync(true);
@@ -646,7 +661,7 @@ public class RoleServiceTests : BaseServiceTest
         var deleteDto = new DeleteRolePermissionsDto(roleId, permissionIds);
         var role = new RoleBuilder().WithId(roleId).Build();
 
-        _mockRoleManager.Setup(x => x.FindByIdAsync(roleId.ToString())).ReturnsAsync(role);
+        _mockRoleRepository.Setup(x => x.GetByIdAsync(roleId)).ReturnsAsync(role);
         _mockRoleRepository.Setup(x => x.HasPermissionAsync(roleId, It.IsAny<Guid>())).ReturnsAsync(false); // All not found
 
         // Act

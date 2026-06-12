@@ -5,7 +5,9 @@ using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -21,9 +23,10 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
         IInventoryTransactionRepository transactionRepository,
         IProductRepository productRepository,
         IMapper mapper,
-        IServiceInvoker serviceInvoker,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         ILogger<InventoryTransactionService> logger)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Inventory)
     {
         _transactionRepository = transactionRepository;
         _productRepository = productRepository;
@@ -96,6 +99,7 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
         }
 
         await _productRepository.UpdateAsync(product);
+        await SaveChangesAsync();
 
         // Load related data for response
         createdTransaction = await _transactionRepository.GetByIdAsync(createdTransaction.Id);
@@ -134,6 +138,7 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
         _mapper.Map(dto, transaction);
         var updatedTransaction = await _transactionRepository.UpdateAsync(transaction);
         await _productRepository.UpdateAsync(product);
+        await SaveChangesAsync();
 
         return _mapper.Map<InventoryTransactionDto>(updatedTransaction);
     }
@@ -155,6 +160,7 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
         }
 
         await _transactionRepository.DeleteAsync(transaction);
+        await SaveChangesAsync();
     }
 
     /// <summary>

@@ -334,7 +334,7 @@ public class InvoiceRepositoryTests
         inv.RecordPayment(10m, "Card", DateTime.UtcNow);
 
         // Act
-        await _repository.SaveChangesAsync();
+        await _context.SaveChangesAsync();
 
         // Assert
         var paymentCount = await _context.Payments.CountAsync(p => p.InvoiceId == inv.Id);

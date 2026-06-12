@@ -3,7 +3,9 @@ using MyApp.Agentic.Application.Contracts.DTOs;
 using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Agentic.Domain.AIProviders;
 using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Agentic.Application.Services;
@@ -16,9 +18,10 @@ public class AIProviderService : AppServiceBase, IAIProviderService
     public AIProviderService(
         IAIProviderRepository providerRepository,
         ISecretCryptoService secretCryptoService,
-        IServiceInvoker serviceInvoker,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         ILogger<AIProviderService> logger)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Agentic)
     {
         this.providerRepository = providerRepository;
         this.secretCryptoService = secretCryptoService;
@@ -59,6 +62,7 @@ public class AIProviderService : AppServiceBase, IAIProviderService
             dto.DefaultBotType,
             dto.DefaultSystemPrompt);
         await providerRepository.AddAsync(provider);
+        await SaveChangesAsync(cancellationToken);
         return MapToDto(provider);
     }
 
@@ -91,6 +95,7 @@ public class AIProviderService : AppServiceBase, IAIProviderService
             dto.DefaultBotType,
             dto.DefaultSystemPrompt);
         await providerRepository.UpdateAsync(provider);
+        await SaveChangesAsync(cancellationToken);
         return MapToDto(provider);
     }
 
@@ -101,6 +106,7 @@ public class AIProviderService : AppServiceBase, IAIProviderService
             return;
 
         await providerRepository.DeleteAsync(provider);
+        await SaveChangesAsync(cancellationToken);
     }
 
     private AIProviderDto MapToDto(AIProvider provider)

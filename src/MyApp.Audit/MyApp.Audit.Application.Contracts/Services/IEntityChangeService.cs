@@ -1,5 +1,6 @@
 using MyApp.Audit.Application.Contracts.DTOs;
 using MyApp.Audit.Domain;
+using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -20,4 +21,7 @@ public interface IEntityChangeService
         CancellationToken cancellationToken = default);
 
     Task<EntityChangeDto> RecordAsync(CreateEntityChangeDto dto, CancellationToken cancellationToken = default);
+
+    /// <summary>Persists entity changes from a pub/sub audit event.</summary>
+    Task RecordFromEventAsync(EntityChangesSavedEvent @event, CancellationToken cancellationToken = default);
 }

@@ -5,7 +5,9 @@ using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
 using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -19,9 +21,10 @@ public class SupplierService : AppServiceBase, ISupplierService
     public SupplierService(
         ISupplierRepository supplierRepository,
         IMapper mapper,
-        IServiceInvoker serviceInvoker,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         ILogger<SupplierService> logger)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Purchasing)
     {
         _supplierRepository = supplierRepository;
         _mapper = mapper;
@@ -69,6 +72,7 @@ public class SupplierService : AppServiceBase, ISupplierService
 
         var supplier = _mapper.Map<Supplier>(dto);
         var createdSupplier = await _supplierRepository.AddAsync(supplier);
+        await SaveChangesAsync();
 
         return _mapper.Map<SupplierDto>(createdSupplier);
     }
@@ -93,6 +97,7 @@ public class SupplierService : AppServiceBase, ISupplierService
 
         _mapper.Map(dto, supplier);
         var updatedSupplier = await _supplierRepository.UpdateAsync(supplier);
+        await SaveChangesAsync();
 
         return _mapper.Map<SupplierDto>(updatedSupplier);
     }
@@ -106,6 +111,7 @@ public class SupplierService : AppServiceBase, ISupplierService
         }
 
         await _supplierRepository.DeleteAsync(supplier);
+        await SaveChangesAsync();
     }
 
     /// <summary>

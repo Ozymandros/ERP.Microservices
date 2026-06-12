@@ -6,10 +6,8 @@ using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Orders.Infrastructure.Repositories;
 
-/// <summary>
-/// Provides Reserved Stock Repository functionality.
-/// </summary>
-public class ReservedStockRepository : DbContextRepositoryBase, IReservedStockRepository
+/// <summary>EF Core repository for <see cref="ReservedStock"/> entities.</summary>
+public class ReservedStockRepository : Repository<ReservedStock, Guid>, IReservedStockRepository
 {
     private readonly OrdersDbContext _db;
 
@@ -18,44 +16,7 @@ public class ReservedStockRepository : DbContextRepositoryBase, IReservedStockRe
         _db = db;
     }
 
-    /// <summary>Get By Id Async.</summary>
-    public async Task<ReservedStock?> GetByIdAsync(Guid id)
-    {
-        return await _db.ReservedStocks.FirstOrDefaultAsync(r => r.Id == id);
-    }
-
-    /// <summary>List Async.</summary>
-    public async Task<IEnumerable<ReservedStock>> ListAsync()
-    {
-        return await _db.ReservedStocks.ToListAsync();
-    }
-
-    /// <summary>Add Async.</summary>
-    public async Task AddAsync(ReservedStock entity)
-    {
-        await _db.ReservedStocks.AddAsync(entity);
-        await base.SaveChangesAsync();
-    }
-
-    /// <summary>Update Async.</summary>
-    public async Task UpdateAsync(ReservedStock entity)
-    {
-        _db.ReservedStocks.Update(entity);
-        await base.SaveChangesAsync();
-    }
-
-    /// <summary>Delete Async.</summary>
-    public async Task DeleteAsync(Guid id)
-    {
-        var existing = await _db.ReservedStocks.FindAsync(id);
-        if (existing != null)
-        {
-            _db.ReservedStocks.Remove(existing);
-            await base.SaveChangesAsync();
-        }
-    }
-
-    /// <summary>Get Expired Reservations Async.</summary>
+    /// <inheritdoc />
     public async Task<List<ReservedStock>> GetExpiredReservationsAsync()
     {
         return await _db.ReservedStocks
@@ -63,7 +24,7 @@ public class ReservedStockRepository : DbContextRepositoryBase, IReservedStockRe
             .ToListAsync();
     }
 
-    /// <summary>Get By Order Id Async.</summary>
+    /// <inheritdoc />
     public async Task<List<ReservedStock>> GetByOrderIdAsync(Guid orderId)
     {
         return await _db.ReservedStocks
@@ -71,7 +32,7 @@ public class ReservedStockRepository : DbContextRepositoryBase, IReservedStockRe
             .ToListAsync();
     }
 
-    /// <summary>Get By Id With Details Async.</summary>
+    /// <inheritdoc />
     public async Task<ReservedStock?> GetByIdWithDetailsAsync(Guid id)
     {
         return await _db.ReservedStocks

@@ -105,7 +105,7 @@ public class OrderRepositoryTests
         CreateTestOrder("ORD-005");
 
         // Act
-        var result = await _repository.ListAsync();
+        var result = await _repository.GetAllAsync();
 
         // Assert
         Assert.NotNull(result);
@@ -120,7 +120,7 @@ public class OrderRepositoryTests
         _context.SaveChanges();
 
         // Act
-        var result = await _repository.ListAsync();
+        var result = await _repository.GetAllAsync();
 
         // Assert
         Assert.NotNull(result);
@@ -187,7 +187,7 @@ public class OrderRepositoryTests
         var order = CreateTestOrder("ORD-DELETE");
 
         // Act
-        await _repository.DeleteAsync(order.Id);
+        await _repository.DeleteAsync(order);
         var result = await _context.Orders.FindAsync(order.Id);
 
         // Assert
@@ -201,7 +201,9 @@ public class OrderRepositoryTests
         var nonExistentId = Guid.NewGuid();
 
         // Act & Assert
-        await _repository.DeleteAsync(nonExistentId); // Should not throw
+        var missing = await _repository.GetByIdAsync(nonExistentId);
+        if (missing is not null)
+            await _repository.DeleteAsync(missing);
     }
 
     #endregion

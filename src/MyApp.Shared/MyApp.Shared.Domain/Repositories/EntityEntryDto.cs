@@ -12,7 +12,7 @@ public sealed record PropertyChangeEntryDto(
     object? NewValue);
 
 /// <summary>
-/// Summarizes pending changes for one tracked entity before <see cref="IRepository.SaveChangesAsync"/> completes.
+/// Summarizes pending changes for one tracked entity captured at <see cref="IUnitOfWork.CommitAsync"/> time.
 /// </summary>
 /// <param name="EntityName">The CLR type name of the entity.</param>
 /// <param name="EntityId">

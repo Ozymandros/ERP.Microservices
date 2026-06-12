@@ -31,6 +31,9 @@ public static class ServiceNames
 
     /// <summary>Gets the identifier for the Audit service.</summary>
     public const string Audit = "audit-service";
+
+    /// <summary>Gets the identifier for the Agentic service.</summary>
+    public const string Agentic = "agentic-service";
 }
 
 /// <summary>
@@ -152,6 +155,9 @@ public static class MessagingConstants
 
         /// <summary>Gets the topic name for CRM activity completed events.</summary>
         public const string CrmActivityCompleted = "crm.activity.completed";
+
+        /// <summary>Gets the topic name for entity-change audit events after a service DB commit.</summary>
+        public const string AuditEntityChangesSaved = "audit.entity-changes.saved";
     }
 }
 

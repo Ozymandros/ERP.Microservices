@@ -24,5 +24,6 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
 });
 
 var app = builder.Build();
+
 app.UseServiceDefaults();
 app.Run();

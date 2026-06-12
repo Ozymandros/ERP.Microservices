@@ -7,7 +7,9 @@ using MyApp.Inventory.Application.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Inventory.Domain.Specifications;
+using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using Xunit;
 
@@ -17,7 +19,8 @@ public class WarehouseServiceTests
 {
     private readonly Mock<IWarehouseRepository> _mockWarehouseRepository;
     private readonly Mock<IMapper> _mockMapper;
-    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
+    private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+    private readonly Mock<IEventPublisher> _mockEventPublisher;
     private readonly Mock<ILogger<WarehouseService>> _mockLogger;
     private readonly WarehouseService _warehouseService;
 
@@ -25,13 +28,17 @@ public class WarehouseServiceTests
     {
         _mockWarehouseRepository = new Mock<IWarehouseRepository>();
         _mockMapper = new Mock<IMapper>();
-        _mockServiceInvoker = new Mock<IServiceInvoker>();
+        _mockUnitOfWork = new Mock<IUnitOfWork>();
+        _mockEventPublisher = new Mock<IEventPublisher>();
         _mockLogger = new Mock<ILogger<WarehouseService>>();
+        _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
 
         _warehouseService = new WarehouseService(
             _mockWarehouseRepository.Object,
             _mockMapper.Object,
-            _mockServiceInvoker.Object,
+            _mockUnitOfWork.Object,
+            _mockEventPublisher.Object,
             _mockLogger.Object);
     }
 

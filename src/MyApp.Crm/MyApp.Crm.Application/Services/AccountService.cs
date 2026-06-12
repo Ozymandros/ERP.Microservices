@@ -4,7 +4,9 @@ using MyApp.Crm.Application.Contracts.DTOs;
 using MyApp.Crm.Application.Contracts.Services;
 using MyApp.Crm.Domain.Accounts;
 using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -23,9 +25,10 @@ public sealed class AccountService : AppServiceBase, IAccountService
     public AccountService(
         IAccountRepository repository,
         IMapper mapper,
-        IServiceInvoker serviceInvoker,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         ILogger<AccountService> logger)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Crm)
     {
         _repository = repository;
         _mapper = mapper;
@@ -85,6 +88,8 @@ public async Task<AccountDto?> GetByCustomerIdAsync(Guid customerId, Cancellatio
             await _repository.UpdateAsync(entity);
         }
 
+        await SaveChangesAsync(cancellationToken);
+
         _logger.LogInformation("Upserted CRM account snapshot for CustomerId={CustomerId}", dto.CustomerId);
         return _mapper.Map<AccountDto>(entity);
     }
@@ -97,6 +102,7 @@ public async Task<AccountDto?> GetByCustomerIdAsync(Guid customerId, Cancellatio
 
         entity.SetOwner(dto.OwnerUsername);
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         return _mapper.Map<AccountDto>(entity);
     }

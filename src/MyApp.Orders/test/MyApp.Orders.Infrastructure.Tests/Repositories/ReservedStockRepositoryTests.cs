@@ -131,7 +131,7 @@ public class ReservedStockRepositoryTests
     public async Task ListAsync_ReturnsAllReservations()
     {
         // Act
-        var result = await _repository.ListAsync();
+        var result = await _repository.GetAllAsync();
 
         // Assert
         result.Should().NotBeNull();
@@ -202,7 +202,7 @@ public class ReservedStockRepositoryTests
         var reservation = CreateTestReservation(orderId);
 
         // Act
-        await _repository.DeleteAsync(reservation.Id);
+        await _repository.DeleteAsync(reservation);
         var deletedReservation = await _context.ReservedStocks.FindAsync(reservation.Id);
 
         // Assert
@@ -216,10 +216,9 @@ public class ReservedStockRepositoryTests
         var nonExistentId = Guid.NewGuid();
 
         // Act
-        Func<Task> act = async () => await _repository.DeleteAsync(nonExistentId);
-
-        // Assert
-        await act.Should().NotThrowAsync();
+        var missing = await _repository.GetByIdAsync(nonExistentId);
+        if (missing is not null)
+            await _repository.DeleteAsync(missing);
     }
 
     #endregion

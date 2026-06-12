@@ -81,34 +81,6 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
     }
 
     /// <summary>
-    /// Persists pending changes for tracked invoice aggregates.
-    /// </summary>
-    public new async Task<IReadOnlyCollection<EntityEntryDto>> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        // When payments are appended through the Invoice aggregate, EF can occasionally
-        // track new Payment rows as Modified instead of Added in this graph path.
-        // Correct that state before SaveChanges to avoid false concurrency exceptions.
-        var paymentEntries = _context.ChangeTracker.Entries<Payment>()
-            .Where(e => e.State == EntityState.Modified)
-            .ToList();
-
-        foreach (var entry in paymentEntries)
-        {
-            var paymentId = entry.Entity.Id;
-            var exists = await _context.Payments
-                .AsNoTracking()
-                .AnyAsync(p => p.Id == paymentId, cancellationToken);
-
-            if (!exists)
-            {
-                entry.State = EntityState.Added;
-            }
-        }
-
-        return await base.SaveChangesAsync(disableTracking: false, cancellationToken);
-    }
-
-    /// <summary>
     /// Queries invoices using specification with lines included.
     /// </summary>
     public override async Task<PaginatedResult<Invoice>> QueryAsync(ISpecification<Invoice> spec)

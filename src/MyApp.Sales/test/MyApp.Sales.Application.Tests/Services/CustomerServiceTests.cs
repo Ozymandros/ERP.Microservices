@@ -7,7 +7,9 @@ using MyApp.Sales.Application.Services;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
 using MyApp.Sales.Domain.Specifications;
+using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using Xunit;
 
@@ -17,8 +19,8 @@ public class CustomerServiceTests
 {
     private readonly Mock<ICustomerRepository> _mockCustomerRepository;
     private readonly Mock<IMapper> _mockMapper;
-    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly Mock<ILogger<CustomerService>> _mockLogger;
+    private readonly Mock<IUnitOfWork> _mockUnitOfWork;
     private readonly Mock<IEventPublisher> _mockEventPublisher;
     private readonly CustomerService _customerService;
 
@@ -26,15 +28,17 @@ public class CustomerServiceTests
     {
         _mockCustomerRepository = new Mock<ICustomerRepository>();
         _mockMapper = new Mock<IMapper>();
-        _mockServiceInvoker = new Mock<IServiceInvoker>();
         _mockLogger = new Mock<ILogger<CustomerService>>();
+        _mockUnitOfWork = new Mock<IUnitOfWork>();
         _mockEventPublisher = new Mock<IEventPublisher>();
+        _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
 
         _customerService = new CustomerService(
             _mockCustomerRepository.Object,
             _mockMapper.Object,
-            _mockServiceInvoker.Object,
             _mockLogger.Object,
+            _mockUnitOfWork.Object,
             _mockEventPublisher.Object);
     }
 
@@ -338,7 +342,7 @@ public class CustomerServiceTests
             Email = "old@example.com"
         };
 
-        var updateDto = new CustomerDto(Guid.NewGuid())
+        var updateDto = new CreateUpdateCustomerDto
         {
             Name = "New Name",
             Email = "new@example.com",
@@ -370,7 +374,7 @@ public class CustomerServiceTests
         Assert.Equal("New Name", result.Name);
 
         _mockCustomerRepository.Verify(r => r.GetByIdAsync(customerId), Times.Once);
-        _mockCustomerRepository.Verify(r => r.UpdateAsync(existingCustomer), Times.Once);
+        _mockCustomerRepository.Verify(r => r.UpdateAsync(It.IsAny<Customer>()), Times.Never);
         _mockMapper.Verify(m => m.Map(updateDto, existingCustomer), Times.Once);
     }
 
@@ -379,7 +383,7 @@ public class CustomerServiceTests
     {
         // Arrange
         var customerId = Guid.NewGuid();
-        var updateDto = new CustomerDto(Guid.NewGuid())
+        var updateDto = new CreateUpdateCustomerDto
         {
             Name = "Test",
             Email = "test@example.com",
@@ -577,7 +581,7 @@ public class CustomerServiceTests
         // Arrange
         var customerId = Guid.NewGuid();
         var existingCustomer = new Customer(customerId) { Name = "Old Name", Email = "old@example.com" };
-        var updateDto = new CustomerDto(Guid.NewGuid()) { Name = "", Email = "old@example.com", PhoneNumber = "", Address = "" };
+        var updateDto = new CreateUpdateCustomerDto { Name = "", Email = "old@example.com", PhoneNumber = "", Address = "" };
         var expectedDto = new CustomerDto(customerId) { Name = "", Email = "old@example.com", PhoneNumber = "", Address = "" };
 
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(existingCustomer);

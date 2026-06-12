@@ -11,6 +11,7 @@ using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -21,21 +22,18 @@ namespace MyApp.Sales.Application.Services
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<CustomerService> _logger;
-        private readonly IEventPublisher _eventPublisher;
 
         public CustomerService(
             ICustomerRepository customerRepository,
             IMapper mapper,
-            IServiceInvoker serviceInvoker,
             ILogger<CustomerService> logger,
+            IUnitOfWork unitOfWork,
             IEventPublisher eventPublisher)
-            : base(serviceInvoker, logger)
+            : base(unitOfWork, eventPublisher, logger, ServiceNames.Sales)
         {
             _customerRepository = customerRepository;
             _mapper = mapper;
-            _logger = logger;
-            _eventPublisher = eventPublisher;
-        }
+            _logger = logger;        }
 
         public async Task<CustomerDto?> GetCustomerByIdAsync(Guid id)
         {
@@ -73,11 +71,12 @@ namespace MyApp.Sales.Application.Services
             var customer = _mapper.Map<Customer>(dto);
             customer.Id = Guid.NewGuid();
             await _customerRepository.AddAsync(customer);
+            await SaveChangesAsync();
 
             try
             {
                 var @event = new SalesCustomerCreatedEvent(customer.Id, customer.Name, customer.Email);
-                await _eventPublisher.PublishAsync(MessagingConstants.Topics.SalesCustomerCreated, @event);
+                await EventPublisher.PublishAsync(MessagingConstants.Topics.SalesCustomerCreated, @event);
             }
             catch (Exception ex)
             {
@@ -87,19 +86,19 @@ namespace MyApp.Sales.Application.Services
             return _mapper.Map<CustomerDto>(customer);
         }
 
-        public async Task<CustomerDto> UpdateCustomerAsync(Guid id, CustomerDto dto)
+        public async Task<CustomerDto> UpdateCustomerAsync(Guid id, CreateUpdateCustomerDto dto)
         {
             var customer = await _customerRepository.GetByIdAsync(id);
             if (customer == null)
                 throw new InvalidOperationException($"Customer with ID {id} not found.");
 
             _mapper.Map(dto, customer);
-            await _customerRepository.UpdateAsync(customer);
+            await SaveChangesAsync();
 
             try
             {
                 var @event = new SalesCustomerUpdatedEvent(customer.Id, customer.Name, customer.Email);
-                await _eventPublisher.PublishAsync(MessagingConstants.Topics.SalesCustomerUpdated, @event);
+                await EventPublisher.PublishAsync(MessagingConstants.Topics.SalesCustomerUpdated, @event);
             }
             catch (Exception ex)
             {
@@ -112,6 +111,7 @@ namespace MyApp.Sales.Application.Services
         public async Task DeleteCustomerAsync(Guid id)
         {
             await _customerRepository.DeleteAsync(id);
+            await SaveChangesAsync();
         }
 
         /// <summary>

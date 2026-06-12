@@ -7,7 +7,9 @@ using MyApp.Orders.Application.Services;
 using MyApp.Orders.Domain;
 using MyApp.Orders.Domain.Entities;
 using MyApp.Orders.Domain.Repositories;
+using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Shared.Domain.Pagination;
@@ -24,6 +26,7 @@ public class OrderServiceTests
     private readonly Mock<IReservedStockRepository> _mockReservedStockRepository;
     private readonly Mock<IMapper> _mockMapper;
     private readonly Mock<ILogger<OrderService>> _mockLogger;
+    private readonly Mock<IUnitOfWork> _mockUnitOfWork;
     private readonly Mock<IEventPublisher> _mockEventPublisher;
     private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly OrderService _orderService;
@@ -37,6 +40,9 @@ public class OrderServiceTests
         _mockLogger = new Mock<ILogger<OrderService>>();
         _mockEventPublisher = new Mock<IEventPublisher>();
         _mockServiceInvoker = new Mock<IServiceInvoker>();
+        _mockUnitOfWork = new Mock<IUnitOfWork>();
+        _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
 
         _orderService = new OrderService(
             _mockOrderRepository.Object,
@@ -44,6 +50,7 @@ public class OrderServiceTests
             _mockReservedStockRepository.Object,
             _mockMapper.Object,
             _mockLogger.Object,
+            _mockUnitOfWork.Object,
             _mockEventPublisher.Object,
             _mockServiceInvoker.Object);
     }
@@ -284,7 +291,7 @@ public class OrderServiceTests
         };
         var expectedDtos = orders.Select(o => new OrderDto(o.Id) { OrderNumber = o.OrderNumber, Type = o.Type.ToString(), Status = o.Status.ToString() }).ToList();
 
-        _mockOrderRepository.Setup(r => r.ListAsync()).ReturnsAsync(orders);
+        _mockOrderRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(orders);
         _mockMapper.Setup(m => m.Map<OrderDto>(It.IsAny<Order>()))
             .Returns<Order>(o => expectedDtos.First(d => d.Id == o.Id));
 
@@ -294,14 +301,14 @@ public class OrderServiceTests
         // Assert
         result.Should().NotBeNull();
         result.Should().HaveCount(2);
-        _mockOrderRepository.Verify(r => r.ListAsync(), Times.Once);
+        _mockOrderRepository.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
     [Fact]
     public async Task ListAsync_WithNoOrders_ReturnsEmptyList()
     {
         // Arrange
-        _mockOrderRepository.Setup(r => r.ListAsync()).ReturnsAsync(new List<Order>());
+        _mockOrderRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<Order>());
 
         // Act
         var result = await _orderService.ListAsync();
@@ -309,7 +316,7 @@ public class OrderServiceTests
         // Assert
         result.Should().NotBeNull();
         result.Should().BeEmpty();
-        _mockOrderRepository.Verify(r => r.ListAsync(), Times.Once);
+        _mockOrderRepository.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
     #endregion
@@ -345,7 +352,7 @@ public class OrderServiceTests
         };
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(existingOrder);
-        _mockOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<Order>())).Returns(Task.CompletedTask);
+        _mockOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<Order>())).ReturnsAsync((Order o) => o);
 
         // Act
         await _orderService.UpdateAsync(orderId, updateDto);
@@ -439,8 +446,7 @@ public class OrderServiceTests
 
         _mockOrderRepository
             .Setup(r => r.AddAsync(It.IsAny<Order>()))
-            .Returns(Task.CompletedTask)
-            .Callback<Order>(o => order = o);
+            .ReturnsAsync((Order o) => { order = o; return o; });
         _mockOrderRepository
             .Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(() => order);
@@ -463,7 +469,7 @@ public class OrderServiceTests
             .Returns(Task.CompletedTask);
         _mockOrderRepository
             .Setup(r => r.UpdateAsync(It.IsAny<Order>()))
-            .Returns(Task.CompletedTask);
+            .ReturnsAsync((Order o) => o);
 
         // Act
         Func<Task> act = async () => await _orderService.CreateOrderWithReservationAsync(dto);
@@ -522,13 +528,13 @@ public class OrderServiceTests
 
         _mockReservedStockRepository
             .Setup(r => r.AddAsync(It.IsAny<ReservedStock>()))
-            .Returns(Task.CompletedTask);
+            .ReturnsAsync((ReservedStock rs) => rs);
         _mockOrderRepository
             .Setup(r => r.AddAsync(It.IsAny<Order>()))
-            .Returns(Task.CompletedTask);
+            .ReturnsAsync((Order o) => o);
         _mockOrderRepository
             .Setup(r => r.UpdateAsync(It.IsAny<Order>()))
-            .Returns(Task.CompletedTask);
+            .ReturnsAsync((Order o) => o);
         _mockEventPublisher
             .Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>()))
             .Returns(Task.CompletedTask);
@@ -559,12 +565,15 @@ public class OrderServiceTests
     {
         // Arrange
         var orderId = Guid.NewGuid();
+        var order = new Order(orderId);
+        _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
 
         // Act
         await _orderService.DeleteAsync(orderId);
 
         // Assert
-        _mockOrderRepository.Verify(r => r.DeleteAsync(orderId), Times.Once);
+        _mockOrderRepository.Verify(r => r.DeleteAsync(It.Is<Order>(o => o.Id == orderId)), Times.Once);
+        _mockUnitOfWork.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     #endregion
@@ -608,8 +617,8 @@ public class OrderServiceTests
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
         _mockReservedStockRepository.Setup(r => r.GetByOrderIdAsync(orderId)).ReturnsAsync(reservations);
-        _mockReservedStockRepository.Setup(r => r.UpdateAsync(It.IsAny<ReservedStock>())).Returns(Task.CompletedTask);
-        _mockOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<Order>())).Returns(Task.CompletedTask);
+        _mockReservedStockRepository.Setup(r => r.UpdateAsync(It.IsAny<ReservedStock>())).ReturnsAsync((ReservedStock rs) => rs);
+        _mockOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<Order>())).ReturnsAsync((Order o) => o);
         _mockEventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>())).Returns(Task.CompletedTask);
         _mockMapper.Setup(m => m.Map<OrderDto>(It.IsAny<Order>())).Returns(new OrderDto(orderId));
 
@@ -775,8 +784,8 @@ public class OrderServiceTests
                 It.IsAny<string>(),
                 HttpMethod.Delete))
             .Returns(Task.CompletedTask);
-        _mockReservedStockRepository.Setup(r => r.UpdateAsync(It.IsAny<ReservedStock>())).Returns(Task.CompletedTask);
-        _mockOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<Order>())).Returns(Task.CompletedTask);
+        _mockReservedStockRepository.Setup(r => r.UpdateAsync(It.IsAny<ReservedStock>())).ReturnsAsync((ReservedStock rs) => rs);
+        _mockOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<Order>())).ReturnsAsync((Order o) => o);
         _mockEventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>())).Returns(Task.CompletedTask);
 
         // Act
@@ -873,7 +882,7 @@ public class OrderServiceTests
                 It.IsAny<string>(),
                 HttpMethod.Delete))
             .ThrowsAsync(new Exception("Release failed"));
-        _mockOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<Order>())).Returns(Task.CompletedTask);
+        _mockOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<Order>())).ReturnsAsync((Order o) => o);
         _mockEventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>())).Returns(Task.CompletedTask);
 
         // Act
@@ -940,9 +949,9 @@ public class OrderServiceTests
         var expectedDto = new OrderDto(order.Id) { OrderNumber = "ORD-GENERATED" };
 
         _mockMapper.Setup(m => m.Map<Order>(dto)).Returns(order);
-        _mockOrderRepository.Setup(r => r.ListAsync()).ReturnsAsync(new List<Order>()); // For GenerateOrderNumberAsync
-        _mockOrderRepository.Setup(r => r.AddAsync(It.IsAny<Order>())).Returns(Task.CompletedTask);
-        _mockOrderLineRepository.Setup(r => r.AddAsync(It.IsAny<OrderLine>())).Returns(Task.CompletedTask);
+        _mockOrderRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<Order>()); // For GenerateOrderNumberAsync
+        _mockOrderRepository.Setup(r => r.AddAsync(It.IsAny<Order>())).ReturnsAsync((Order o) => o);
+        _mockOrderLineRepository.Setup(r => r.AddAsync(It.IsAny<OrderLine>())).ReturnsAsync((OrderLine l) => l);
         _mockMapper.Setup(m => m.Map<OrderDto>(It.Is<Order>(o => o.Id == order.Id))).Returns(expectedDto);
 
         // Act
@@ -971,9 +980,9 @@ public class OrderServiceTests
         var expectedDto = new OrderDto(order.Id) { OrderNumber = "ORD-GENERATED" };
 
         _mockMapper.Setup(m => m.Map<Order>(dto)).Returns(order);
-        _mockOrderRepository.Setup(r => r.ListAsync()).ReturnsAsync(new List<Order>()); // For GenerateOrderNumberAsync
-        _mockOrderRepository.Setup(r => r.AddAsync(It.IsAny<Order>())).Returns(Task.CompletedTask);
-        _mockOrderLineRepository.Setup(r => r.AddAsync(It.IsAny<OrderLine>())).Returns(Task.CompletedTask);
+        _mockOrderRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<Order>()); // For GenerateOrderNumberAsync
+        _mockOrderRepository.Setup(r => r.AddAsync(It.IsAny<Order>())).ReturnsAsync((Order o) => o);
+        _mockOrderLineRepository.Setup(r => r.AddAsync(It.IsAny<OrderLine>())).ReturnsAsync((OrderLine l) => l);
         _mockMapper.Setup(m => m.Map<OrderDto>(It.Is<Order>(o => o.Id == order.Id))).Returns(expectedDto);
 
         // Act
@@ -1015,7 +1024,7 @@ public class OrderServiceTests
         var dto = new FulfillOrderDto { OrderId = orderId, TrackingNumber = "" };
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
-        _mockOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<Order>())).Returns(Task.CompletedTask);
+        _mockOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<Order>())).ReturnsAsync((Order o) => o);
         _mockMapper.Setup(m => m.Map<OrderDto>(It.IsAny<Order>())).Returns((Order o) => new OrderDto(o.Id) { OrderNumber = o.OrderNumber });
 
         // Act

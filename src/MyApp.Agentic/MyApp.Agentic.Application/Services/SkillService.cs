@@ -2,7 +2,9 @@ using Microsoft.Extensions.Logging;
 using MyApp.Agentic.Domain.Skills;
 using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 
 namespace MyApp.Agentic.Application.Services;
 
@@ -12,9 +14,10 @@ public class SkillService : AppServiceBase, ISkillService
     private readonly ILogger<SkillService> _logger;
 
     public SkillService(
-        IServiceInvoker serviceInvoker,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         ILogger<SkillService> logger)
-        : base(serviceInvoker, logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Agentic)
     {
         _logger = logger;
     }
