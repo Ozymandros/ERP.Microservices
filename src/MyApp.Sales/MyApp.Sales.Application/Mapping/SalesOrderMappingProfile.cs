@@ -27,6 +27,9 @@ namespace MyApp.Sales.Application.Mapping
             CreateMap<Customer, CustomerDto>();
             CreateMap<CustomerDto, Customer>()
                 .ConstructUsing(src => new Customer(src.Id));
+            CreateMap<CreateUpdateCustomerDto, Customer>()
+                .ForMember(d => d.Id, opt => opt.Ignore())
+                .ForMember(d => d.Orders, opt => opt.Ignore());
             CreateMap<CreateUpdateSalesOrderDto, SalesOrder>()
                 .ConstructUsing(src => new SalesOrder(Guid.NewGuid()))
                 .ForMember(d => d.Status, opt => opt.MapFrom(s => (SalesOrderStatus)s.Status))

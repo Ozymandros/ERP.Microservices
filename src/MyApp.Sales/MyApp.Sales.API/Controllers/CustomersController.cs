@@ -284,7 +284,7 @@ namespace MyApp.Sales.API.Controllers
         [ProducesResponseType(typeof(CustomerDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> Update(Guid id, [FromBody] CustomerDto dto)
+        public async Task<IActionResult> Update(Guid id, [FromBody] CreateUpdateCustomerDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

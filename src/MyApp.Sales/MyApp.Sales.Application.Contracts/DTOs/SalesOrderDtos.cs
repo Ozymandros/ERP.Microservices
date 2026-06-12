@@ -52,6 +52,25 @@ namespace MyApp.Sales.Application.Contracts.DTOs
         public string Address { get; init; } = string.Empty;
     }
 
+    public record CreateUpdateCustomerDto
+    {
+        [Required(ErrorMessage = "Name is required")]
+        [StringLength(255, MinimumLength = 1)]
+        public string Name { get; init; } = string.Empty;
+
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress]
+        [StringLength(255)]
+        public string Email { get; init; } = string.Empty;
+
+        [Phone]
+        [StringLength(20)]
+        public string PhoneNumber { get; init; } = string.Empty;
+
+        [StringLength(500)]
+        public string Address { get; init; } = string.Empty;
+    }
+
     public record CreateUpdateSalesOrderDto(
         [Required(ErrorMessage = "CustomerId is required")]
         Guid CustomerId,
