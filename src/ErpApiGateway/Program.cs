@@ -31,8 +31,15 @@ builder.Services.AddOpenTelemetry()
 
 var environment = builder.Environment.EnvironmentName;
 builder.Configuration
-    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"ocelot.{environment}.json", optional: true, reloadOnChange: true);
+    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+
+// Local Aspire uses localhost ports in ocelot.Development.json. Other environments use ocelot.json
+// only (K8s service DNS). Loading ocelot.Production.json on top of ocelot.json merges Routes arrays
+// and leaves duplicate upstream templates.
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddJsonFile("ocelot.Development.json", optional: true, reloadOnChange: true);
+}
 
 ApplyOcelotBaseUrlFromEnvironment(builder.Configuration);
 
@@ -173,7 +180,7 @@ else
     logger.LogWarning("DocFX _site directory not found.");
 }
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 {
     var configuration = app.Services.GetRequiredService<IConfiguration>();
     var routesConfig = configuration.GetSection("Routes").GetChildren();

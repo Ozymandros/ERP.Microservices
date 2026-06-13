@@ -75,6 +75,18 @@ function Use-MinikubeContext {
     return $true
 }
 
+function Invoke-KubectlQuiet {
+    param([Parameter(Mandatory)][string[]] $KubectlArgs)
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'SilentlyContinue'
+    try {
+        return & kubectl @KubectlArgs 2>$null
+    }
+    finally {
+        $ErrorActionPreference = $prev
+    }
+}
+
 function Invoke-KubectlDelete {
     param(
         [string] $Label,
@@ -133,15 +145,17 @@ function Remove-Namespaces {
     param([string[]] $Names)
 
     foreach ($ns in $Names) {
-        $exists = kubectl get namespace $ns -o name 2>$null
-        if (-not $exists) { continue }
+        $exists = Invoke-KubectlQuiet -KubectlArgs @('get', 'namespace', $ns, '-o', 'name')
+        if ($LASTEXITCODE -ne 0 -or -not $exists) { continue }
 
         Write-Host "  deleting namespace $ns ..." -ForegroundColor DarkGray
         if ($Wait) {
-            kubectl delete namespace $ns --wait=true --timeout="${NamespaceWaitTimeoutSec}s" 2>$null | Out-Null
+            Invoke-KubectlQuiet -KubectlArgs @(
+                'delete', 'namespace', $ns, '--wait=true', "--timeout=${NamespaceWaitTimeoutSec}s"
+            ) | Out-Null
         }
         else {
-            kubectl delete namespace $ns --wait=false 2>$null | Out-Null
+            Invoke-KubectlQuiet -KubectlArgs @('delete', 'namespace', $ns, '--wait=false') | Out-Null
         }
         Write-Ok "namespace $ns delete requested"
     }
@@ -152,8 +166,8 @@ function Wait-NamespacesGone {
     $deadline = (Get-Date).AddSeconds($NamespaceWaitTimeoutSec)
     foreach ($ns in $Names) {
         while ((Get-Date) -lt $deadline) {
-            $exists = kubectl get namespace $ns -o name 2>$null
-            if (-not $exists) {
+            $exists = Invoke-KubectlQuiet -KubectlArgs @('get', 'namespace', $ns, '-o', 'name')
+            if ($LASTEXITCODE -ne 0 -or -not $exists) {
                 Write-Ok "namespace $ns terminated"
                 break
             }

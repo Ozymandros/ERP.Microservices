@@ -29,6 +29,7 @@ param(
     [switch] $SkipBuild,
     [switch] $SkipApply,
     [switch] $SkipWait,
+    [switch] $NoPortForward,
 
     [string] $MinikubeProfile = 'minikube',
     [int] $MinikubeMemoryMb = 12288,
@@ -255,12 +256,31 @@ function Wait-BootstrapJob {
     Write-Warn2 'Bootstrap job still running; apps may retry migrations until DBs exist'
 }
 
+function Restart-BuiltDeployments {
+    param([string[]] $Names)
+
+    if ($Names.Count -eq 0) { return }
+
+    Write-Title 'Restart deployments (pick up rebuilt :minikube-stage images)'
+    foreach ($name in $Names) {
+        Write-Host "  rollout restart deployment/$name ..." -ForegroundColor Yellow
+        kubectl rollout restart "deployment/$name" -n myapp-apps
+        if ($LASTEXITCODE -ne 0) { throw "rollout restart failed: $name" }
+    }
+
+    foreach ($name in $Names) {
+        Write-Host "  Waiting for deployment/$name ..." -ForegroundColor DarkGray
+        kubectl rollout status "deployment/$name" -n myapp-apps --timeout="${AppReadyTimeoutSec}s"
+        if ($LASTEXITCODE -ne 0) { throw "rollout status failed: $name" }
+        Write-Ok "$name restarted"
+    }
+}
+
 function Wait-AppDeployments {
     param([string[]] $Names)
     Write-Title "Wait for application deployments"
     $deadline = (Get-Date).AddSeconds($AppReadyTimeoutSec)
     foreach ($name in $Names) {
-        if ($name -eq 'gateway') { continue } # ingress + TLS can lag; checked separately
         while ((Get-Date) -lt $deadline) {
             $ready = Invoke-KubectlQuiet -KubectlArgs @(
                 'get', 'deploy', $name, '-n', 'myapp-apps', '-o', 'jsonpath={.status.readyReplicas}'
@@ -278,23 +298,78 @@ function Wait-AppDeployments {
     }
 }
 
+function Start-GatewayPortForward {
+    param([int] $LocalPort = 8080)
+
+    $listening = Get-NetTCPConnection -LocalPort $LocalPort -State Listen -ErrorAction SilentlyContinue
+    if ($listening) {
+        Write-Ok "localhost:$LocalPort already listening (port-forward may be running)"
+        return $true
+    }
+
+    Write-Host "  Starting kubectl port-forward svc/gateway ${LocalPort}:8080 ..." -ForegroundColor Yellow
+    $logDir = Join-Path $env:TEMP 'myapp-gateway-portforward'
+    New-Item -ItemType Directory -Force -Path $logDir | Out-Null
+    $stdoutLog = Join-Path $logDir 'stdout.log'
+    $stderrLog = Join-Path $logDir 'stderr.log'
+    Start-Process -FilePath kubectl -ArgumentList @(
+        'port-forward', '-n', 'myapp-apps', 'svc/gateway', "${LocalPort}:8080"
+    ) -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog | Out-Null
+
+    $deadline = (Get-Date).AddSeconds(15)
+    while ((Get-Date) -lt $deadline) {
+        Start-Sleep -Milliseconds 500
+        try {
+            $response = Invoke-WebRequest -Uri "http://127.0.0.1:${LocalPort}/health" -UseBasicParsing -TimeoutSec 2
+            if ($response.StatusCode -eq 200) {
+                Write-Ok "Gateway reachable at http://localhost:${LocalPort}/health"
+                return $true
+            }
+        }
+        catch {
+            # port-forward still starting
+        }
+    }
+
+    Write-Warn2 "Port-forward started; if /health fails, wait a few seconds or check $logDir"
+    return $false
+}
+
 function Show-AccessInfo {
+    param([bool] $PortForwardActive = $false)
+
     Write-Title 'Stage-test access'
     $ip = minikube -p $MinikubeProfile ip 2>$null
     if ($LASTEXITCODE -ne 0) { $ip = '<minikube-ip>' }
 
-    Write-Host @"
+    if ($PortForwardActive) {
+        Write-Host @"
 
-  Hosts file (Administrator may be required):
-    $ip    gateway.local
+  Gateway (direct — port-forward running):
+    http://localhost:8080/health
+    http://localhost:8080/scalar/          (unified API docs)
+    http://localhost:8080/auth/api/...   (via Ocelot routes)
 
-  Gateway (self-signed TLS):
-    https://gateway.local/health
-    https://gateway.local/auth/api/...   (via Ocelot routes)
+"@ -ForegroundColor Green
+    }
+    else {
+        Write-Host @"
 
-  If ingress is not reachable, port-forward:
+  Gateway is ClusterIP-only inside the cluster — localhost:8080 is NOT open until you port-forward:
     kubectl port-forward -n myapp-apps svc/gateway 8080:8080
     http://localhost:8080/health
+
+  Or re-run deploy without -NoPortForward to start port-forward automatically.
+
+"@ -ForegroundColor Yellow
+    }
+
+    Write-Host @"
+
+  Gateway via ingress (HTTPS, self-signed cert):
+    1. Add to hosts file:  $ip    gateway.local
+    2. In another terminal: minikube tunnel -p $MinikubeProfile
+    3. Open: https://gateway.local/health
 
   Aspire dashboard UI:
     kubectl port-forward -n myapp-platform svc/aspire-dashboard 18888:18888
@@ -331,7 +406,7 @@ Assert-Command docker
 
 $overlay = Get-OverlayPath
 $toBuild = Get-ServicesToBuild
-$appDeployments = $toBuild | Where-Object { $_ -ne 'gateway' }
+$appDeployments = @($toBuild)
 
 if (-not $SkipMinikubeStart) {
     Write-Title "Minikube profile '$MinikubeProfile'"
@@ -420,11 +495,20 @@ if (-not $SkipApply) {
     kubectl apply -k $overlay
     if ($LASTEXITCODE -ne 0) { throw 'overlay apply failed' }
 
+    if (-not $SkipBuild) {
+        Restart-BuiltDeployments -Names $toBuild
+    }
+
     if (-not $SkipWait) {
         Wait-BootstrapJob
         Wait-AppDeployments -Names $appDeployments
     }
 }
 
-Show-AccessInfo
+$portForwardActive = $false
+if (-not $SkipApply -and -not $NoPortForward) {
+    $portForwardActive = [bool](Start-GatewayPortForward)
+}
+
+Show-AccessInfo -PortForwardActive $portForwardActive
 Write-Ok 'Stage-test deploy finished'
