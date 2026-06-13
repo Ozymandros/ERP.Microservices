@@ -40,6 +40,7 @@ RUN dotnet publish "MyApp.Agentic.API.csproj" -c Release -o /app/publish /p:UseA
 # Runtime stage - Use shared base image
 # BASE_IMAGE_REGISTRY is defined at the top of the file
 FROM ${BASE_IMAGE_REGISTRY}myapp-microservices-base:10.0 AS final
+USER appuser
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --chown=appuser:appuser --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MyApp.Agentic.API.dll"]

@@ -16,6 +16,7 @@ public class AspireProjectBuilder
     private readonly IResourceBuilder<AzureSqlServerResource>? _sqlAzureServer;
 
     private readonly string? _keyVault;
+    private readonly IResourceBuilder<ParameterResource>? _jwtSecretKey;
 
     /// <summary>
     /// Aspire Project Builder constructor. Initializes the builder with optional SQL Server and Azure SQL Server resources, and an optional Key Vault reference.
@@ -24,17 +25,20 @@ public class AspireProjectBuilder
     /// <param name="sqlServer"></param>
     /// <param name="sqlAzureServer"></param>
     /// <param name="keyVault"></param>
+    /// <param name="jwtSecretKey"></param>
     public AspireProjectBuilder(
         IDistributedApplicationBuilder builder,
         IResourceBuilder<SqlServerServerResource>? sqlServer = null,
         IResourceBuilder<AzureSqlServerResource>? sqlAzureServer = null,
-        string? keyVault = null
+        string? keyVault = null,
+        IResourceBuilder<ParameterResource>? jwtSecretKey = null
         )
     {
         _builder = builder;
         _sqlServer = sqlServer;
         _sqlAzureServer = sqlAzureServer;
         _keyVault = keyVault;
+        _jwtSecretKey = jwtSecretKey;
     }
 
     /// <summary>
@@ -106,9 +110,15 @@ public class AspireProjectBuilder
         // Note: Aspire uses its own integrated Dapr runtime version (currently 1.15.x)
         // The Dapr CLI installation in DevContainer does not affect the sidecar version
         // Scheduler and Placement connection errors are harmless warnings (not used)
+        if (_jwtSecretKey is null)
+        {
+            throw new InvalidOperationException(
+                "JWT secret parameter is required. Pass jwtSecretKey to CreateProjectBuilder.");
+        }
+
         project = project
             .WithDaprSidecar(CreateSidecarMapping(sidecarOptions, pubSub, stateStore))
-            .WithEnvironment("Jwt__SecretKey", _builder.Configuration["Jwt:SecretKey"])
+            .WithEnvironment("Jwt__SecretKey", _jwtSecretKey)
             .WithEnvironment("Jwt__Issuer", _builder.Configuration["Jwt:Issuer"])
             .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"])
             .WithEnvironment("ASPNETCORE_URLS", aspNetCoreUrls)
@@ -202,8 +212,9 @@ public static class AspireProjectBuilderExtensions
         this IDistributedApplicationBuilder builder,
         IResourceBuilder<SqlServerServerResource>? sqlServer = null,
         IResourceBuilder<AzureSqlServerResource>? sqlAzure = null,
-        string? keyVault = null)
+        string? keyVault = null,
+        IResourceBuilder<ParameterResource>? jwtSecretKey = null)
     {
-        return new AspireProjectBuilder(builder, sqlServer, sqlAzure, keyVault);
+        return new AspireProjectBuilder(builder, sqlServer, sqlAzure, keyVault, jwtSecretKey);
     }
 }

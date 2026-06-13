@@ -60,8 +60,7 @@ builder.Services.AddOcelot(builder.Configuration)
     .AddDelegatingHandler<ForwardAuthorizationDelegatingHandler>(true);
 builder.Services.AddMvcCore().AddApiExplorer();
 
-var jwtSecretKey = builder.Configuration["Jwt:SecretKey"]
-    ?? throw new InvalidOperationException("Jwt:SecretKey configuration is required");
+var jwtSecretKey = JwtSecretResolver.GetRequiredSecretKey();
 var jwtIssuer = builder.Configuration["Jwt:Issuer"]
     ?? throw new InvalidOperationException("Jwt:Issuer configuration is required");
 var jwtAudience = builder.Configuration["Jwt:Audience"]

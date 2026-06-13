@@ -10,6 +10,8 @@ var isDeployment =
 
 var builder = DistributedApplication.CreateBuilder(args).AddDapr();
 
+var jwtSecretKey = builder.AddParameter("jwt-secret", secret: true, value: "DevOnlyLocalJwtSecretKey32CharsMinimum!");
+
 var analyticsWorkspace = isDeployment ? builder
     .AddAzureLogAnalyticsWorkspace("MyApp-LogAnalyticsWorkspace") : null;
 var applicationInsights = isDeployment ? builder
@@ -56,7 +58,7 @@ var password = builder.AddParameter("password", secret: true, value: "Your_stron
 if (isDeployment)
 {
     sqlAzure = builder.AddAzureSqlServer("myapp-sqlserver");
-    projectBuilder = builder.CreateProjectBuilder(sqlAzure: sqlAzure);
+    projectBuilder = builder.CreateProjectBuilder(sqlAzure: sqlAzure, jwtSecretKey: jwtSecretKey);
 }
 else
 {
@@ -65,14 +67,13 @@ else
         .WithImageRegistry("mcr.microsoft.com")
         .WithLifetime(ContainerLifetime.Persistent)
         .WithDataVolume("sqlserver-data");
-    projectBuilder = builder.CreateProjectBuilder(sqlServer: sqlServer);
+    projectBuilder = builder.CreateProjectBuilder(sqlServer: sqlServer, jwtSecretKey: jwtSecretKey);
 }
 
 var origin = builder.Configuration["Parameters:AllowedOrigins"]
     ?? builder.Configuration["Parameters:FrontendOrigin"];
 
-// Get JWT configuration from appsettings.json or use defaults
-var jwtSecretKey = builder.Configuration["Jwt:SecretKey"] ?? "a_very_long_and_super_ultra_secret_key_01234566789";
+// JWT signing key is injected via Aspire secret parameter (Jwt__SecretKey env var)
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "MyApp.Auth";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "MyApp.All";
 

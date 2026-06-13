@@ -43,7 +43,7 @@ properties:
           - name: Jwt__Issuer
             value: MyApp.Auth
           - name: Jwt__SecretKey
-            value: una_clau_molt_llarga_i_super_ultra_secreta_01234566789
+            secretRef: jwt-secret-key
           - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES
             value: "true"
           - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES

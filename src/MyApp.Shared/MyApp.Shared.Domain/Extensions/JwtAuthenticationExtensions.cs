@@ -24,7 +24,7 @@ namespace MyApp.Shared.Infrastructure.Extensions;
 public static class JwtAuthenticationExtensions
 {
     /// <summary>
-    /// Adds JWT Bearer authentication using Jwt:SecretKey, Jwt:Issuer, and Jwt:Audience from configuration.
+    /// Adds JWT Bearer authentication using Jwt__SecretKey (env), Jwt:Issuer, and Jwt:Audience from configuration.
     /// </summary>
     public static IServiceCollection AddJwtAuthentication(
         this IServiceCollection services,
@@ -34,7 +34,7 @@ public static class JwtAuthenticationExtensions
 
         var jwtSettings = configuration.GetSection("Jwt");
 
-        var secretKey = jwtSettings["SecretKey"];
+        var secretKey = JwtSecretResolver.GetRequiredSecretKey();
 
         var issuer = jwtSettings["Issuer"];
 
@@ -44,13 +44,13 @@ public static class JwtAuthenticationExtensions
 
 
 
-        if (string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
+        if (string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
 
         {
 
             throw new InvalidOperationException(
 
-                "JWT configuration is missing. Ensure Jwt:SecretKey, Jwt:Issuer, and Jwt:Audience are set in appsettings.json");
+                "JWT configuration is missing. Ensure Jwt:Issuer and Jwt:Audience are set in appsettings.json");
 
         }
 

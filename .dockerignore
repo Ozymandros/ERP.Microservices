@@ -18,11 +18,18 @@
 **/build/
 **/.next/
 
-# --- VERSION CONTROL AND DOCKER ---
-**/.git
-**/.gitignore
-**/.dockerignore
+# --- SECRETS AND LOCAL CONFIG (never ship in images) ---
 **/.env
+**/.env.*
+**/appsettings.Development.json
+**/appsettings.Local.json
+**/appsettings.*.local.json
+**/secrets.json
+**/*secret*.yaml
+**/stage-dev-secrets.yaml
+**/user-secrets.json
+
+# --- VERSION CONTROL AND DOCKER ---
 **/.project
 **/.settings
 **/.classpath

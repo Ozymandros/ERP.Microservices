@@ -72,7 +72,8 @@ jobs:
             /o:"$SONAR_ORG" \
             /d:sonar.token="$SONAR_TOKEN" \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.sources="src" \
+            /d:sonar.sources="src,infra,.github" \
+            /d:sonar.exclusions="**/_site/**,**/src/AppHost/.aspire/**,**/*.original,**/Dockerfile.local,**/Dockerfile,infra/**/Dockerfile,.github/workflows/azure-*.yml" \
             /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/TestResults/*.trx" \
             /d:sonar.cs.opencover.reportsPaths="${{ github.workspace }}/TestResults/**/*.xml" \
             /d:sonar.verbose=true

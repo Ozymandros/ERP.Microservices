@@ -37,6 +37,7 @@ RUN dotnet publish "MyApp.Auth.API.csproj" -c Release -o /app/publish /p:UseAppH
 
 # Runtime stage - shared microservices base
 FROM ${BASE_IMAGE_REGISTRY}myapp-microservices-base:10.0 AS final
+USER appuser
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --chown=appuser:appuser --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MyApp.Auth.API.dll"]

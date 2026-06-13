@@ -74,6 +74,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
         targetPort: targetPort
         transport: 'auto'
         allowInsecure: false
+        clientCertificateMode: 'Ignore'
       }
       registries: [
         {
