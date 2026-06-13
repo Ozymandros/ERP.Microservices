@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using MyApp.Auth.API.Permissions;
+using MyApp.Auth.API.Seeders;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Application.Mappings;

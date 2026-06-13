@@ -3,6 +3,8 @@ using MyApp.Shared.Domain.Messaging;
 using System.ComponentModel;
 using System.Text.Json;
 
+namespace MyApp.Agentic.API.Plugins;
+
 /// <summary>
 /// Semantic Kernel plugin that exposes CRM contact operations to the AI kernel.
 /// All functions delegate to the CRM microservice via <see cref="IServiceInvoker"/>,

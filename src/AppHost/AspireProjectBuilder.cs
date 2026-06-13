@@ -1,6 +1,8 @@
 using Aspire.Hosting.Azure;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 
+namespace AppHost;
+
 /// <summary>
 /// Provides Aspire Project Builder functionality.
 /// </summary>

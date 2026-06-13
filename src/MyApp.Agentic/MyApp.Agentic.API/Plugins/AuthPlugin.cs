@@ -3,6 +3,8 @@ using MyApp.Shared.Domain.Messaging;
 using System.ComponentModel;
 using System.Text.Json;
 
+namespace MyApp.Agentic.API.Plugins;
+
 /// <summary>
 /// Semantic Kernel plugin for user authentication and authorization operations.
 /// </summary>

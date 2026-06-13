@@ -1,3 +1,4 @@
+using AppHost;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Azure;
 using Microsoft.EntityFrameworkCore.Storage;

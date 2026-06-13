@@ -138,27 +138,3 @@ static string LoadSkillInstructions(string path)
     catch { }
     return string.Empty;
 }
-
-public static class AgentSkillExtensions
-{
-    public static IServiceCollection AddAgentSkills(
-        this IServiceCollection services,
-        Action<AgentSkillOptions> configure)
-    {
-        var options = new AgentSkillOptions();
-        configure(options);
-
-        services.AddSingleton<SkillService>(sp =>
-        {
-            var logger = sp.GetRequiredService<ILogger<SkillService>>();
-            var eventPublisher = sp.GetRequiredService<IEventPublisher>();
-            var service = new SkillService(new NoOpUnitOfWork(), eventPublisher, logger);
-            options.LoadSkills(service);
-            return service;
-        });
-
-        services.AddSingleton<ISkillService>(sp => sp.GetRequiredService<SkillService>());
-
-        return services;
-    }
-}

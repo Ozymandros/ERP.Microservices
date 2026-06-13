@@ -1,5 +1,7 @@
 ﻿using MyApp.Shared.Domain.DTOs;
 
+namespace MyApp.Auth.Application.Contracts.DTOs;
+
 /// <summary>
 /// Data transfer object for representing a permission with audit information.
 /// </summary>

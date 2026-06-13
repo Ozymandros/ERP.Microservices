@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MyApp.Shared.Domain.Entities;
 
+namespace MyApp.Auth.Domain.Entities;
+
 /// <summary>
 /// Represents a permission that can be assigned to roles or users.
 /// </summary>
