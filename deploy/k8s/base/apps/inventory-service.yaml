@@ -21,7 +21,7 @@ spec:
         dapr.io/app-id: "inventory-service"
         dapr.io/app-port: "8080"
         dapr.io/log-level: "info"
-        dapr.io/config: "daprConfig"
+        dapr.io/config: "dapr-config"
     spec:
       containers:
         - name: inventory-service

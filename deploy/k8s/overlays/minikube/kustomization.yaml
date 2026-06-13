@@ -3,14 +3,11 @@ kind: Kustomization
 
 resources:
   - ../../base/platform
-  - ../../base/sql
+  - sql
   - ../../base/apps
-  - ../dev/gateway-tls-issuer.yaml
+  - gateway-tls-issuer.yaml
   - app-config.yaml
   - stage-dev-secrets.yaml
-
-patches:
-  - path: patch-sql-resources.yaml
 
 images:
   - name: ghcr.io/replace-org/replace-repo/myapp-auth-service

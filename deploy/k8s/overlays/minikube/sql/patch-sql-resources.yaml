@@ -1,3 +1,5 @@
+# Minikube / local stage only — lower SQL Server footprint.
+# Production and dev overlays use deploy/k8s/base/sql (full resources).
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:

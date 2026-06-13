@@ -80,11 +80,11 @@ function Assert-Command([string] $Name) {
 }
 
 function Invoke-KubectlQuiet {
-    param([Parameter(ValueFromRemainingArguments = $true)][string[]] $Args)
+    param([Parameter(Mandatory)][string[]] $KubectlArgs)
     $prev = $ErrorActionPreference
     $ErrorActionPreference = 'SilentlyContinue'
     try {
-        return & kubectl @Args 2>$null
+        return & kubectl @KubectlArgs 2>$null
     }
     finally {
         $ErrorActionPreference = $prev
@@ -187,18 +187,48 @@ function Build-StageImages {
 
 function Wait-SqlReady {
     Write-Title "Wait for SQL Server"
+    $namespace = 'myapp-apps'
+    $label = 'app.kubernetes.io/name=sqlserver'
     $deadline = (Get-Date).AddSeconds($SqlReadyTimeoutSec)
+    $podName = $null
+
     while ((Get-Date) -lt $deadline) {
-        $phase = Invoke-KubectlQuiet get pod -n myapp-apps -l app.kubernetes.io/name=sqlserver -o jsonpath='{.items[0].status.phase}'
-        $ready = Invoke-KubectlQuiet get pod -n myapp-apps -l app.kubernetes.io/name=sqlserver -o jsonpath='{.items[0].status.conditions[?(@.type=="Ready")].status}'
-        if ($phase -eq 'Running' -and $ready -eq 'True') {
-            Write-Ok 'SQL Server pod is ready'
+        $podName = Invoke-KubectlQuiet -KubectlArgs @(
+            'get', 'pod', '-n', $namespace, '-l', $label,
+            '-o', 'jsonpath={.items[0].metadata.name}'
+        )
+        if ($podName) { break }
+        Write-Host '  Waiting for sqlserver pod to be created...' -ForegroundColor DarkGray
+        Start-Sleep -Seconds 5
+    }
+    if (-not $podName) {
+        throw "SQL Server pod was not created within ${SqlReadyTimeoutSec}s. Check: kubectl get sts,pvc -n $namespace"
+    }
+
+    while ((Get-Date) -lt $deadline) {
+        $phase = Invoke-KubectlQuiet -KubectlArgs @(
+            'get', 'pod', $podName, '-n', $namespace,
+            '-o', 'jsonpath={.status.phase}'
+        )
+        $ready = Invoke-KubectlQuiet -KubectlArgs @(
+            'get', 'pod', $podName, '-n', $namespace,
+            '-o', 'jsonpath={.status.containerStatuses[0].ready}'
+        )
+        if ($phase -eq 'Running' -and $ready -eq 'true') {
+            Write-Ok "SQL Server pod is ready ($podName)"
             return
         }
-        Write-Host "  SQL pod phase=$phase ready=$ready - waiting..." -ForegroundColor DarkGray
+
+        $waiting = Invoke-KubectlQuiet -KubectlArgs @(
+            'get', 'pod', $podName, '-n', $namespace,
+            '-o', 'jsonpath={.status.containerStatuses[0].state.waiting.reason}'
+        )
+        $suffix = if ($waiting) { " waiting=$waiting" } else { '' }
+        Write-Host "  $podName phase=$phase ready=$ready$suffix" -ForegroundColor DarkGray
         Start-Sleep -Seconds 10
     }
-    throw "SQL Server not ready within ${SqlReadyTimeoutSec}s. Check: kubectl describe pod -n myapp-apps -l app.kubernetes.io/name=sqlserver"
+
+    throw "SQL Server not ready within ${SqlReadyTimeoutSec}s. Check: kubectl describe pod -n $namespace $podName"
 }
 
 function Wait-BootstrapJob {
@@ -206,14 +236,18 @@ function Wait-BootstrapJob {
     $job = 'sql-bootstrap-databases'
     $deadline = (Get-Date).AddSeconds(300)
     while ((Get-Date) -lt $deadline) {
-        $succeeded = Invoke-KubectlQuiet get job $job -n myapp-apps -o jsonpath='{.status.succeeded}'
-        $failed = Invoke-KubectlQuiet get job $job -n myapp-apps -o jsonpath='{.status.failed}'
+        $succeeded = Invoke-KubectlQuiet -KubectlArgs @(
+            'get', 'job', $job, '-n', 'myapp-apps', '-o', 'jsonpath={.status.succeeded}'
+        )
+        $failed = Invoke-KubectlQuiet -KubectlArgs @(
+            'get', 'job', $job, '-n', 'myapp-apps', '-o', 'jsonpath={.status.failed}'
+        )
         if ($succeeded -eq '1') {
             Write-Ok 'Bootstrap job completed'
             return
         }
         if ($failed -and [int]$failed -ge 1) {
-            Invoke-KubectlQuiet logs -n myapp-apps "job/$job" --tail=80 | Out-Host
+            Invoke-KubectlQuiet -KubectlArgs @('logs', '-n', 'myapp-apps', "job/$job", '--tail=80') | Out-Host
             throw 'Bootstrap job failed - see logs above'
         }
         Start-Sleep -Seconds 5
@@ -228,8 +262,12 @@ function Wait-AppDeployments {
     foreach ($name in $Names) {
         if ($name -eq 'gateway') { continue } # ingress + TLS can lag; checked separately
         while ((Get-Date) -lt $deadline) {
-            $ready = Invoke-KubectlQuiet get deploy $name -n myapp-apps -o jsonpath='{.status.readyReplicas}'
-            $desired = Invoke-KubectlQuiet get deploy $name -n myapp-apps -o jsonpath='{.spec.replicas}'
+            $ready = Invoke-KubectlQuiet -KubectlArgs @(
+                'get', 'deploy', $name, '-n', 'myapp-apps', '-o', 'jsonpath={.status.readyReplicas}'
+            )
+            $desired = Invoke-KubectlQuiet -KubectlArgs @(
+                'get', 'deploy', $name, '-n', 'myapp-apps', '-o', 'jsonpath={.spec.replicas}'
+            )
             if ($ready -eq $desired -and $ready -eq '1') {
                 Write-Ok "$name ready"
                 break
@@ -346,6 +384,11 @@ if (-not $SkipApply) {
     if ($LASTEXITCODE -ne 0) { throw "kustomize validation failed for $overlay" }
     Write-Ok "Overlay OK: $overlay"
 
+    Write-Title 'Create namespaces'
+    $namespacesFile = Join-Path $RepoRoot 'deploy/k8s/base/platform/namespaces.yaml'
+    kubectl apply -f $namespacesFile
+    if ($LASTEXITCODE -ne 0) { throw 'namespaces apply failed' }
+
     Write-Title 'Apply stage secrets and config (before Redis/SQL)'
     $secretsFile = Join-Path $RepoRoot 'deploy/k8s/overlays/minikube/stage-dev-secrets.yaml'
     $configFile = Join-Path $RepoRoot 'deploy/k8s/overlays/minikube/app-config.yaml'
@@ -358,7 +401,9 @@ if (-not $SkipApply) {
     kubectl apply -k (Join-Path $RepoRoot 'deploy/k8s/base/platform')
     if ($LASTEXITCODE -ne 0) { throw 'platform apply failed' }
 
-    kubectl apply -k (Join-Path $RepoRoot 'deploy/k8s/base/sql')
+    # Job pod template is immutable; remove prior run so spec changes take effect.
+    kubectl delete job sql-bootstrap-databases -n myapp-apps --ignore-not-found 2>$null | Out-Null
+    kubectl apply -k (Join-Path $RepoRoot 'deploy/k8s/overlays/minikube/sql')
     if ($LASTEXITCODE -ne 0) { throw 'sql apply failed' }
 
     if (-not $SkipWait) {

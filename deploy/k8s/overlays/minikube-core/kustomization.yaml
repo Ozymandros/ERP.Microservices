@@ -4,16 +4,13 @@ kind: Kustomization
 # Minimal stage slice: platform + SQL + Dapr + auth + gateway (+ dashboard for OTLP).
 resources:
   - ../../base/platform
-  - ../../base/sql
+  - ../minikube/sql
   - ../../base/apps/auth-service.yaml
   - ../../base/apps/gateway.yaml
   - ../../base/apps/aspire-dashboard.yaml
-  - ../dev/gateway-tls-issuer.yaml
+  - ../minikube/gateway-tls-issuer.yaml
   - ../minikube/app-config.yaml
   - ../minikube/stage-dev-secrets.yaml
-
-patches:
-  - path: ../minikube/patch-sql-resources.yaml
 
 images:
   - name: ghcr.io/replace-org/replace-repo/myapp-auth-service

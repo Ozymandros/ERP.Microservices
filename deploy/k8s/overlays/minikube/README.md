@@ -67,7 +67,7 @@ Shortcut (delegates to teardown script):
 
 | Item | Change |
 |------|--------|
-| SQL Server | Lower CPU/RAM vs base manifest |
+| SQL Server | Lower CPU/RAM via `overlays/minikube/sql` patch (base manifest keeps prod-sized defaults) |
 | Images | `myapp-<service>:minikube-stage` (built into Minikube Docker) |
 | Secrets / ConfigMap | Stage dev values + `app-config` (missing from base `dev` overlay) |
 | Redis secret | Duplicated in `myapp-platform` and `myapp-apps` (Dapr + Redis pod) |
