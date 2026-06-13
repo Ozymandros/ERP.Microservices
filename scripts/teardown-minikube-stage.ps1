@@ -68,7 +68,7 @@ function Test-MinikubeRunning {
 
 function Use-MinikubeContext {
     if (-not (Test-MinikubeRunning)) {
-        Write-Warn2 "Minikube profile '$MinikubeProfile' is not running — skipping cluster operations"
+        Write-Warn2 "Minikube profile '$MinikubeProfile' is not running - skipping cluster operations"
         return $false
     }
     minikube -p $MinikubeProfile update-context 2>$null | Out-Null
@@ -86,7 +86,7 @@ function Invoke-KubectlDelete {
         Write-Ok $Label
     }
     catch {
-        Write-Warn2 "$Label — $($_.Exception.Message)"
+        Write-Warn2 "$Label - $($_.Exception.Message)"
     }
 }
 
@@ -109,7 +109,7 @@ function Remove-DaprComponents {
 
 function Uninstall-HelmReleases {
     if (-not (Get-Command helm -ErrorAction SilentlyContinue)) {
-        Write-Warn2 'helm not found — skipping Helm uninstall'
+        Write-Warn2 'helm not found - skipping Helm uninstall'
         return
     }
 
@@ -218,7 +218,7 @@ if ($clusterAvailable) {
     }
 }
 else {
-    Write-Warn2 'Cluster not available — only local Minikube delete may apply'
+    Write-Warn2 'Cluster not available - only local Minikube delete may apply'
 }
 
 if ($DeleteMinikube) {

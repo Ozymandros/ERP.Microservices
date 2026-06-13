@@ -79,6 +79,18 @@ function Assert-Command([string] $Name) {
     }
 }
 
+function Invoke-KubectlQuiet {
+    param([Parameter(ValueFromRemainingArguments = $true)][string[]] $Args)
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'SilentlyContinue'
+    try {
+        return & kubectl @Args 2>$null
+    }
+    finally {
+        $ErrorActionPreference = $prev
+    }
+}
+
 function Invoke-Checked {
     param(
         [scriptblock] $Block,
@@ -115,11 +127,6 @@ function Install-HelmRelease {
         [string] $Namespace,
         [string[]] $Set = @()
     )
-    $nsExists = kubectl get namespace $Namespace -o name 2>$null
-    if (-not $nsExists) {
-        kubectl create namespace $Namespace | Out-Null
-    }
-
     $helmArgs = @(
         'upgrade', '--install', $Release, $Chart,
         '--namespace', $Namespace,
@@ -182,13 +189,13 @@ function Wait-SqlReady {
     Write-Title "Wait for SQL Server"
     $deadline = (Get-Date).AddSeconds($SqlReadyTimeoutSec)
     while ((Get-Date) -lt $deadline) {
-        $phase = kubectl get pod -n myapp-apps -l app.kubernetes.io/name=sqlserver -o jsonpath='{.items[0].status.phase}' 2>$null
-        $ready = kubectl get pod -n myapp-apps -l app.kubernetes.io/name=sqlserver -o jsonpath='{.items[0].status.conditions[?(@.type=="Ready")].status}' 2>$null
+        $phase = Invoke-KubectlQuiet get pod -n myapp-apps -l app.kubernetes.io/name=sqlserver -o jsonpath='{.items[0].status.phase}'
+        $ready = Invoke-KubectlQuiet get pod -n myapp-apps -l app.kubernetes.io/name=sqlserver -o jsonpath='{.items[0].status.conditions[?(@.type=="Ready")].status}'
         if ($phase -eq 'Running' -and $ready -eq 'True') {
             Write-Ok 'SQL Server pod is ready'
             return
         }
-        Write-Host "  SQL pod phase=$phase ready=$ready — waiting..." -ForegroundColor DarkGray
+        Write-Host "  SQL pod phase=$phase ready=$ready - waiting..." -ForegroundColor DarkGray
         Start-Sleep -Seconds 10
     }
     throw "SQL Server not ready within ${SqlReadyTimeoutSec}s. Check: kubectl describe pod -n myapp-apps -l app.kubernetes.io/name=sqlserver"
@@ -199,15 +206,15 @@ function Wait-BootstrapJob {
     $job = 'sql-bootstrap-databases'
     $deadline = (Get-Date).AddSeconds(300)
     while ((Get-Date) -lt $deadline) {
-        $succeeded = kubectl get job $job -n myapp-apps -o jsonpath='{.status.succeeded}' 2>$null
-        $failed = kubectl get job $job -n myapp-apps -o jsonpath='{.status.failed}' 2>$null
+        $succeeded = Invoke-KubectlQuiet get job $job -n myapp-apps -o jsonpath='{.status.succeeded}'
+        $failed = Invoke-KubectlQuiet get job $job -n myapp-apps -o jsonpath='{.status.failed}'
         if ($succeeded -eq '1') {
             Write-Ok 'Bootstrap job completed'
             return
         }
         if ($failed -and [int]$failed -ge 1) {
-            kubectl logs -n myapp-apps "job/$job" --tail=80 2>$null
-            throw 'Bootstrap job failed — see logs above'
+            Invoke-KubectlQuiet logs -n myapp-apps "job/$job" --tail=80 | Out-Host
+            throw 'Bootstrap job failed - see logs above'
         }
         Start-Sleep -Seconds 5
     }
@@ -221,8 +228,8 @@ function Wait-AppDeployments {
     foreach ($name in $Names) {
         if ($name -eq 'gateway') { continue } # ingress + TLS can lag; checked separately
         while ((Get-Date) -lt $deadline) {
-            $ready = kubectl get deploy $name -n myapp-apps -o jsonpath='{.status.readyReplicas}' 2>$null
-            $desired = kubectl get deploy $name -n myapp-apps -o jsonpath='{.spec.replicas}' 2>$null
+            $ready = Invoke-KubectlQuiet get deploy $name -n myapp-apps -o jsonpath='{.status.readyReplicas}'
+            $desired = Invoke-KubectlQuiet get deploy $name -n myapp-apps -o jsonpath='{.spec.replicas}'
             if ($ready -eq $desired -and $ready -eq '1') {
                 Write-Ok "$name ready"
                 break
@@ -261,7 +268,7 @@ function Show-AccessInfo {
     dapr list -k
     minikube dashboard
 
-  DEV secrets only — see deploy/k8s/overlays/minikube/stage-dev-secrets.yaml
+  DEV secrets only - see deploy/k8s/overlays/minikube/stage-dev-secrets.yaml
 
 "@ -ForegroundColor Gray
 }
@@ -270,7 +277,7 @@ function Show-AccessInfo {
 
 Write-Host ''
 Write-Host 'ERP Minikube stage-test deploy' -ForegroundColor Cyan
-Write-Host 'NOT FOR PRODUCTION — fixed dev passwords' -ForegroundColor Yellow
+Write-Host 'NOT FOR PRODUCTION - fixed dev passwords' -ForegroundColor Yellow
 Write-Host ''
 
 if ($Teardown) {
@@ -290,7 +297,10 @@ $appDeployments = $toBuild | Where-Object { $_ -ne 'gateway' }
 
 if (-not $SkipMinikubeStart) {
     Write-Title "Minikube profile '$MinikubeProfile'"
+    $prevEap = $ErrorActionPreference
+    $ErrorActionPreference = 'SilentlyContinue'
     $status = minikube status -p $MinikubeProfile -f '{{.Host}}' 2>$null
+    $ErrorActionPreference = $prevEap
     if ($status -ne 'Running') {
         Write-Host "  Starting Minikube (memory=${MinikubeMemoryMb}MB cpus=$MinikubeCpus)..." -ForegroundColor Yellow
         minikube start -p $MinikubeProfile `
