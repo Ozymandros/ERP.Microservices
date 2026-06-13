@@ -246,6 +246,7 @@ public class OrderLineRepositoryTests
 
         // Act
         await _repository.DeleteAsync(line);
+        await _context.SaveChangesAsync();
         var deletedLine = await _context.OrderLines.FindAsync(line.Id);
 
         // Assert

@@ -23,7 +23,7 @@ public interface IRepository<TEntity, TKey>
     Task<PaginatedResult<TEntity>> GetAllPaginatedAsync(
         int pageNumber,
         int pageSize,
-        IEnumerable<Expression<Func<TEntity?, object>>>? includes = null);
+        IEnumerable<Expression<Func<TEntity, object>>>? includes = null);
 
     /// <summary>Query entities using a specification for filtering, sorting, and pagination.</summary>
     Task<PaginatedResult<TEntity>> QueryAsync(ISpecification<TEntity> spec);

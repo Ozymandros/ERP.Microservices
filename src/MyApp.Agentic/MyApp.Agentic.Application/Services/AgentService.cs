@@ -56,6 +56,8 @@ public class AgentService : AppServiceBase, IAgentService
     /// <param name="embeddingService">Service used to generate embeddings for RAG and memory.</param>
     /// <param name="agentExecutionService">Service that executes prompts against the configured model/provider.</param>
     /// <param name="toolResolver">Resolves ERP plugin tools available to an agent at runtime.</param>
+    /// <param name="unitOfWork">Unit of work for transactional persistence.</param>
+    /// <param name="eventPublisher">Publisher for domain integration events.</param>
     /// <param name="serviceInvoker">Cross-service invoker for validating external dependencies (for example auth users).</param>
     /// <param name="mapper">Object mapper dependency.</param>
     /// <param name="logger">Structured logger for diagnostics and operational tracing.</param>

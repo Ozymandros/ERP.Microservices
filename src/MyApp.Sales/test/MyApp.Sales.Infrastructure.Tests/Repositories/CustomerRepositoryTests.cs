@@ -185,6 +185,7 @@ public class CustomerRepositoryTests
 
         // Act
         await _repository.DeleteAsync(customer.Id);
+        await _context.SaveChangesAsync();
         var result = await _context.Customers.FindAsync(customer.Id);
 
         // Assert

@@ -203,6 +203,7 @@ public class ReservedStockRepositoryTests
 
         // Act
         await _repository.DeleteAsync(reservation);
+        await _context.SaveChangesAsync();
         var deletedReservation = await _context.ReservedStocks.FindAsync(reservation.Id);
 
         // Assert

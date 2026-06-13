@@ -37,7 +37,7 @@ public class AgenticCatalogSeeder(AgenticSqlDbContext dbContext)
             }
         }
 
-        await dbContext.SaveChangesAsync(false, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         var providerByName = await dbContext.AIProviders.ToDictionaryAsync(p => p.Name, cancellationToken);
         var models = BuildModels(providerByName);
@@ -72,7 +72,7 @@ public class AgenticCatalogSeeder(AgenticSqlDbContext dbContext)
             }
         }
 
-        await dbContext.SaveChangesAsync(false, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private static List<AIProvider> BuildProviders() =>

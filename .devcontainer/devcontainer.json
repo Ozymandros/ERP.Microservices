@@ -40,9 +40,9 @@
     "ghcr.io/devcontainers/features/node:1": {}
   },
 
-  "onCreateCommand": "curl -sSL https://aspire.dev/install.sh | bash",
+  "onCreateCommand": "bash -euo pipefail -c 'curl -fsSL https://aspire.dev/install.sh | bash'",
 
-  "postCreateCommand": "wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash && dapr init",
+  "postCreateCommand": "bash -euo pipefail -c 'curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | bash && dapr init'",
 
   "postStartCommand": "dotnet dev-certs https --trust",
 

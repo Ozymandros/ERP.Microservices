@@ -19,43 +19,15 @@ namespace MyApp.Shared.Infrastructure.Extensions;
 
 
 /// <summary>
-
-/// Extension methods for configuring JWT Bearer authentication across microservices
-
+/// Extension methods for configuring JWT Bearer authentication across microservices.
 /// </summary>
-
 public static class JwtAuthenticationExtensions
-
 {
-
     /// <summary>
-
-    /// Add JWT Bearer authentication with automatic configuration from appsettings.json
-
-    /// 
-
-    /// Expected configuration in appsettings.json:
-
-    /// {
-
-    ///   "Jwt": {
-
-    ///     "SecretKey": "your-secret-key",
-
-    ///     "Issuer": "MyApp.Auth",
-
-    ///     "Audience": "MyApp.Clients"
-
-    ///   }
-
-    /// }
-
+    /// Adds JWT Bearer authentication using Jwt:SecretKey, Jwt:Issuer, and Jwt:Audience from configuration.
     /// </summary>
-
     public static IServiceCollection AddJwtAuthentication(
-
         this IServiceCollection services,
-
         IConfiguration configuration)
 
     {

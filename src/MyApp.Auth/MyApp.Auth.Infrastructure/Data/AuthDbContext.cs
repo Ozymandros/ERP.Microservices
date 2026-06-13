@@ -168,11 +168,33 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
     }
 
     /// <summary>
+    /// Saves the changes made to the database context to the database.
+    /// </summary>
+    public override int SaveChanges()
+    {
+        ApplyAuditInformation();
+        return base.SaveChanges();
+    }
+
+    /// <inheritdoc />
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        ApplyAuditInformation();
+        return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
+    /// <summary>
     /// Save Changes Async. Saves the changes made to the database context to the database.
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        ApplyAuditInformation();
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void ApplyAuditInformation()
     {
         var entries = ChangeTracker.Entries()
             .Where(e => e.Entity is IAuditableEntity &&
@@ -182,10 +204,6 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
             if (entry.Entity is IAuditableEntity)
             {
                 var entity = (IAuditableEntity)entry.Entity;
-                // Resolve current user name from common ambient contexts:
-                // 1. Try IHttpContextAccessor from the DbContext service provider (if available)
-                // 2. Fall back to Thread.CurrentPrincipal
-                // 3. Final fallback to SystemUser
                 string currentUser = "SystemUser";
                 try
                 {
@@ -218,8 +236,6 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
                 entity.UpdatedAt = DateTime.UtcNow;
                 entity.UpdatedBy = currentUser;
             }
-
-        return await base.SaveChangesAsync(false, cancellationToken);
     }
 }
 

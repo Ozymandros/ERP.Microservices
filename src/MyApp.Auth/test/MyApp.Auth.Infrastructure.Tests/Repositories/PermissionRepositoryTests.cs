@@ -394,6 +394,7 @@ public class PermissionRepositoryTests
 
         // Act
         await _repository.DeleteAsync(permission);
+        await _context.SaveChangesAsync();
         var result = await _repository.GetByIdAsync(permission.Id);
 
         // Assert

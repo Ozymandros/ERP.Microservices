@@ -1,7 +1,7 @@
 namespace MyApp.Shared.Domain.Repositories;
 
 /// <summary>
-/// Commits pending changes for a single service <see cref="Microsoft.EntityFrameworkCore.DbContext"/>
+/// Commits pending changes for a single service DbContext within one microservice boundary.
 /// within one microservice boundary. Returns entity change snapshots for audit publishing.
 /// </summary>
 public interface IUnitOfWork

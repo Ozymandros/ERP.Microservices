@@ -290,6 +290,7 @@ public class InvoiceRepositoryTests
         inv.AddLine("X", 1, 10m, 0m);
 
         await _repository.AddAsync(inv);
+        await _context.SaveChangesAsync();
 
         var stored = await _context.Invoices.FindAsync(inv.Id);
         stored!.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
@@ -331,16 +332,18 @@ public class InvoiceRepositoryTests
         // Arrange
         var inv = CreateIssuedInvoice(invoiceNumber: "INV-SAVE-001");
         var gross = inv.TotalGross;
-        inv.RecordPayment(10m, "Card", DateTime.UtcNow);
+        var tracked = await _repository.GetByIdAsync(inv.Id);
+        tracked.Should().NotBeNull();
 
         // Act
+        tracked!.RecordPayment(10m, "Card", DateTime.UtcNow);
         await _context.SaveChangesAsync();
 
         // Assert
-        var paymentCount = await _context.Payments.CountAsync(p => p.InvoiceId == inv.Id);
+        var paymentCount = await _context.Payments.CountAsync(p => p.InvoiceId == tracked.Id);
         paymentCount.Should().Be(1);
 
-        var stored = await _context.Invoices.FindAsync(inv.Id);
+        var stored = await _context.Invoices.FindAsync(tracked.Id);
         stored!.OutstandingAmount.Should().Be(gross - 10m);
     }
 
@@ -355,6 +358,7 @@ public class InvoiceRepositoryTests
         _context.SaveChanges();
 
         await _repository.DeleteAsync(inv);
+        await _context.SaveChangesAsync();
 
         var stored = await _context.Invoices.FindAsync(inv.Id);
         stored.Should().BeNull();

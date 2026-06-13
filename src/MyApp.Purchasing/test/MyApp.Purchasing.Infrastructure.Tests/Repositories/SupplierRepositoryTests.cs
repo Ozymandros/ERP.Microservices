@@ -193,6 +193,7 @@ public class SupplierRepositoryTests
 
         // Act
         await _repository.DeleteAsync(supplier);
+        await _context.SaveChangesAsync();
         var result = await _context.Suppliers.FindAsync(supplier.Id);
 
         // Assert

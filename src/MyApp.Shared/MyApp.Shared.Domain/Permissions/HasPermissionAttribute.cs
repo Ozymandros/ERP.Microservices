@@ -15,35 +15,20 @@ namespace MyApp.Shared.Domain.Permissions;
 
 
 /// <summary>
-
 /// Authorization filter attribute that checks user permissions for specific module and action combinations.
-
 /// </summary>
-
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-
 public class HasPermissionAttribute : Attribute, IAsyncAuthorizationFilter
-
 {
-
     /// <summary>JWT claim type for module:action permission entries.</summary>
-
     public const string PermissionClaimType = "permission";
 
-
-
     private readonly string _module;
-
     private readonly string _action;
 
-
-
     /// <summary>
-
-    /// Initializes a new instance of the HasPermissionAttribute class.
-
+    /// Initializes a new instance of the <see cref="HasPermissionAttribute"/> class.
     /// </summary>
-
     public HasPermissionAttribute(string module, string action)
 
     {
@@ -57,11 +42,8 @@ public class HasPermissionAttribute : Attribute, IAsyncAuthorizationFilter
 
 
     /// <summary>
-
     /// Asynchronously checks if the user has permission for the specified module and action.
-
     /// </summary>
-
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
 
     {

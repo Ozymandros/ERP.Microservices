@@ -11,6 +11,7 @@ COPY src/nuget.config ./
 
 # Copy shared projects (with src/ prefix since build context is root); CRM uses Domain, Infrastructure, CQRS (no SignalR)
 COPY ["src/MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
+COPY ["src/MyApp.Shared/MyApp.Shared.Application/MyApp.Shared.Application.csproj", "MyApp.Shared/MyApp.Shared.Application/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.csproj", "MyApp.Shared/MyApp.Shared.Infrastructure/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.CQRS/MyApp.Shared.CQRS.csproj", "MyApp.Shared/MyApp.Shared.CQRS/"]
 

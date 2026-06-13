@@ -20,6 +20,58 @@ public class BillingDbContext : AuditableDbContext
     public DbSet<CreditNote> CreditNotes => Set<CreditNote>();
     public DbSet<CreditNoteLine> CreditNoteLines => Set<CreditNoteLine>();
 
+    public override int SaveChanges()
+    {
+        RegisterNewAggregateEntries();
+        return base.SaveChanges();
+    }
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        RegisterNewAggregateEntries();
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void RegisterNewAggregateEntries()
+    {
+        ChangeTracker.DetectChanges();
+
+        foreach (var invoiceEntry in ChangeTracker.Entries<Invoice>()
+                     .Where(e => e.State is EntityState.Modified or EntityState.Unchanged))
+        {
+            foreach (var payment in invoiceEntry.Entity.Payments)
+            {
+                var alreadyStored = Payments.AsNoTracking().Any(p => p.Id == payment.Id);
+                if (!alreadyStored)
+                {
+                    Entry(payment).State = EntityState.Added;
+                }
+            }
+
+            foreach (var creditNote in invoiceEntry.Entity.CreditNotes)
+            {
+                var alreadyStored = CreditNotes.AsNoTracking().Any(cn => cn.Id == creditNote.Id);
+                if (!alreadyStored)
+                {
+                    Entry(creditNote).State = EntityState.Added;
+                }
+            }
+        }
+
+        foreach (var creditNoteEntry in ChangeTracker.Entries<CreditNote>()
+                     .Where(e => e.State is EntityState.Modified or EntityState.Unchanged))
+        {
+            foreach (var line in creditNoteEntry.Entity.Lines)
+            {
+                var alreadyStored = CreditNoteLines.AsNoTracking().Any(l => l.Id == line.Id);
+                if (!alreadyStored)
+                {
+                    Entry(line).State = EntityState.Added;
+                }
+            }
+        }
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

@@ -188,6 +188,7 @@ public class OrderRepositoryTests
 
         // Act
         await _repository.DeleteAsync(order);
+        await _context.SaveChangesAsync();
         var result = await _context.Orders.FindAsync(order.Id);
 
         // Assert
