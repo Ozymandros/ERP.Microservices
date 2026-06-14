@@ -10,21 +10,22 @@ using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Exceptions;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Inventory.Application.Contracts.DTOs;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Orders.Application.Services
 {
     /// <summary>Service for managing order operations.</summary>
-    public class OrderService : IOrderService
+    public class OrderService : AppServiceBase, IOrderService
     {
         private readonly IOrderRepository _orders;
         private readonly IOrderLineRepository _lines;
         private readonly IReservedStockRepository _reservedStockRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<OrderService> _logger;
-        private readonly IEventPublisher _eventPublisher;
         private readonly IServiceInvoker _serviceInvoker;
 
         /// <summary>Initializes a new instance of the OrderService class.</summary>
@@ -34,17 +35,17 @@ namespace MyApp.Orders.Application.Services
             IReservedStockRepository reservedStockRepository,
             IMapper mapper,
             ILogger<OrderService> logger,
+            IUnitOfWork unitOfWork,
             IEventPublisher eventPublisher,
             IServiceInvoker serviceInvoker)
+            : base(unitOfWork, eventPublisher, logger, ServiceNames.Orders)
         {
             _orders = orders;
             _lines = lines;
             _reservedStockRepository = reservedStockRepository;
             _mapper = mapper;
             _logger = logger;
-            _eventPublisher = eventPublisher;
-            _serviceInvoker = serviceInvoker;
-        }
+            _serviceInvoker = serviceInvoker;        }
 
         /// <summary>Creates a new order.</summary>
         public async Task<OrderDto> CreateAsync(CreateUpdateOrderDto dto)
@@ -64,6 +65,7 @@ namespace MyApp.Orders.Application.Services
             }
 
             await _orders.AddAsync(entity);
+            await SaveChangesAsync();
 
             return _mapper.Map<OrderDto>(entity);
         }
@@ -74,14 +76,19 @@ namespace MyApp.Orders.Application.Services
             // Example: Use a timestamp and a random suffix for uniqueness (replace with a DB sequence or other logic as needed)
             var now = DateTime.UtcNow;
             var random = Guid.NewGuid().ToString()[..8];
-            var count = (await _orders.ListAsync()).Count() + 1; // Not perfect for concurrency, but placeholder
+            var count = (await _orders.GetAllAsync()).Count() + 1; // Not perfect for concurrency, but placeholder
             return $"ORD-{now:yyyyMMddHHmmss}-{count}-{random}";
         }
 
         /// <summary>Deletes an order by ID.</summary>
         public async Task DeleteAsync(Guid id)
         {
-            await _orders.DeleteAsync(id);
+            var entity = await _orders.GetByIdAsync(id);
+            if (entity == null)
+                return;
+
+            await _orders.DeleteAsync(entity);
+            await SaveChangesAsync();
         }
 
         /// <summary>Retrieves an order by ID.</summary>
@@ -101,7 +108,7 @@ namespace MyApp.Orders.Application.Services
         /// <summary>Retrieves all orders.</summary>
         public async Task<IEnumerable<OrderDto>> ListAsync()
         {
-            var list = await _orders.ListAsync();
+            var list = await _orders.GetAllAsync();
             return list.Select(o => _mapper.Map<OrderDto>(o));
         }
 
@@ -132,6 +139,7 @@ namespace MyApp.Orders.Application.Services
             }
 
             await _orders.UpdateAsync(existing);
+            await SaveChangesAsync();
         }
 
         /// <summary>Creates an order with stock reservation.</summary>
@@ -258,13 +266,15 @@ namespace MyApp.Orders.Application.Services
 
             try
             {
-                await _eventPublisher.PublishAsync(MessagingConstants.Topics.OrderCreated, orderCreatedEvent);
+                await EventPublisher.PublishAsync(MessagingConstants.Topics.OrderCreated, orderCreatedEvent);
                 _logger.LogInformation("Published OrderCreatedEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to publish OrderCreatedEvent for Order {OrderId}", order.Id);
             }
+
+            await SaveChangesAsync();
 
             _logger.LogInformation("Order created successfully with reservations: OrderId={OrderId}", order.Id);
             return _mapper.Map<OrderDto>(order);
@@ -337,13 +347,15 @@ namespace MyApp.Orders.Application.Services
 
             try
             {
-                await _eventPublisher.PublishAsync(MessagingConstants.Topics.OrderFulfilled, orderFulfilledEvent);
+                await EventPublisher.PublishAsync(MessagingConstants.Topics.OrderFulfilled, orderFulfilledEvent);
                 _logger.LogInformation("Published OrderFulfilledEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to publish OrderFulfilledEvent for Order {OrderId}", order.Id);
             }
+
+            await SaveChangesAsync();
 
             _logger.LogInformation("Order fulfilled successfully: OrderId={OrderId}", order.Id);
             return _mapper.Map<OrderDto>(order);
@@ -406,13 +418,15 @@ namespace MyApp.Orders.Application.Services
 
             try
             {
-                await _eventPublisher.PublishAsync(MessagingConstants.Topics.OrderCancelled, orderCancelledEvent);
+                await EventPublisher.PublishAsync(MessagingConstants.Topics.OrderCancelled, orderCancelledEvent);
                 _logger.LogInformation("Published OrderCancelledEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to publish OrderCancelledEvent for Order {OrderId}", order.Id);
             }
+
+            await SaveChangesAsync();
 
             _logger.LogInformation("Order cancelled successfully: OrderId={OrderId}", order.Id);
         }

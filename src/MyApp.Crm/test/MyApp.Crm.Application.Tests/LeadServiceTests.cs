@@ -4,8 +4,10 @@ using Moq;
 using MyApp.Crm.Application.Contracts.DTOs;
 using MyApp.Crm.Application.Services;
 using MyApp.Crm.Domain.Leads;
+using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 
 namespace MyApp.Crm.Application.Tests;
 
@@ -23,8 +25,11 @@ public class LeadServiceTests
 
         var logger = new Mock<ILogger<LeadService>>();
         var publisher = new Mock<IEventPublisher>();
+        var unitOfWork = new Mock<IUnitOfWork>();
+        unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
 
-        var svc = new LeadService(repo.Object, mapper.Object, logger.Object, publisher.Object);
+        var svc = new LeadService(repo.Object, mapper.Object, logger.Object, unitOfWork.Object, publisher.Object);
 
         var dto = new CreateLeadDto("Lead", "owner", "web", null, null, null);
         await svc.CreateAsync(dto);

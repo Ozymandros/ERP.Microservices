@@ -7,21 +7,22 @@ using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Sales.Application.Services
 {
-    public class SalesOrderService : ISalesOrderService
+    public class SalesOrderService : AppServiceBase, ISalesOrderService
     {
         private readonly ISalesOrderRepository _orderRepository;
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<SalesOrderService> _logger;
-        private readonly IEventPublisher _eventPublisher;
         private readonly IServiceInvoker _serviceInvoker;
 
         public SalesOrderService(
@@ -29,15 +30,15 @@ namespace MyApp.Sales.Application.Services
             ICustomerRepository customerRepository,
             IMapper mapper,
             ILogger<SalesOrderService> logger,
+            IUnitOfWork unitOfWork,
             IEventPublisher eventPublisher,
             IServiceInvoker serviceInvoker)
+            : base(unitOfWork, eventPublisher, logger, ServiceNames.Sales)
         {
             _orderRepository = orderRepository;
             _customerRepository = customerRepository;
             _mapper = mapper;
-            _logger = logger;
-            _eventPublisher = eventPublisher;
-            _serviceInvoker = serviceInvoker;
+            _logger = logger;            _serviceInvoker = serviceInvoker;
         }
 
         public async Task<SalesOrderDto?> GetSalesOrderByIdAsync(Guid id)
@@ -96,6 +97,7 @@ namespace MyApp.Sales.Application.Services
             }
 
             var createdOrder = await _orderRepository.AddAsync(order);
+            await SaveChangesAsync();
             return _mapper.Map<SalesOrderDto>(createdOrder);
         }
 
@@ -144,12 +146,14 @@ namespace MyApp.Sales.Application.Services
             }
 
             await _orderRepository.UpdateAsync(order);
+            await SaveChangesAsync();
             return _mapper.Map<SalesOrderDto>(order);
         }
 
         public async Task DeleteSalesOrderAsync(Guid id)
         {
             await _orderRepository.DeleteAsync(id);
+            await SaveChangesAsync();
         }
 
         /// <summary>
@@ -213,6 +217,7 @@ namespace MyApp.Sales.Application.Services
             quote.TotalAmount = quote.Lines.Sum(l => l.LineTotal);
 
             await _orderRepository.AddAsync(quote);
+            await SaveChangesAsync();
 
             // Publish SalesOrderCreatedEvent
             var salesOrderCreatedEvent = new SalesOrderCreatedEvent(
@@ -225,7 +230,7 @@ namespace MyApp.Sales.Application.Services
 
             try
             {
-                await _eventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderCreated, salesOrderCreatedEvent);
+                await EventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderCreated, salesOrderCreatedEvent);
                 _logger.LogInformation("Published SalesOrderCreatedEvent for Quote {QuoteId}", quote.Id);
             }
             catch (Exception ex)
@@ -308,6 +313,7 @@ namespace MyApp.Sales.Application.Services
                 quote.Status = SalesOrderStatus.Confirmed;
                 quote.ConvertedToOrderId = fulfillmentOrder.Id;
                 await _orderRepository.UpdateAsync(quote);
+                await SaveChangesAsync();
 
                 // Publish SalesOrderConfirmedEvent
                 var salesOrderConfirmedEvent = new SalesOrderConfirmedEvent(
@@ -318,7 +324,7 @@ namespace MyApp.Sales.Application.Services
 
                 try
                 {
-                    await _eventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderConfirmed, salesOrderConfirmedEvent);
+                    await EventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderConfirmed, salesOrderConfirmedEvent);
                     _logger.LogInformation(
                         "Published SalesOrderConfirmedEvent for Quote {QuoteId}, Order {OrderId}",
                         quote.Id, quote.ConvertedToOrderId);

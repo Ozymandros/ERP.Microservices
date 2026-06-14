@@ -1,8 +1,9 @@
-using MyApp.Agentic.API.Plugins;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using System.ComponentModel;
 using System.Text.Json;
+
+namespace MyApp.Agentic.API.Plugins;
 
 /// <summary>
 /// Semantic Kernel plugin that exposes Sales order and quote operations to the AI kernel.

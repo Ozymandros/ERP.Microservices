@@ -8,8 +8,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Permissions;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.OpenApi;
+using MyApp.Shared.Infrastructure.Repositories;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -165,7 +167,17 @@ public static class MicroserviceExtensions
         // 11. CORS: any origin in dev; localhost-only in production
         builder.Services.AddAllowFrontendCors(builder.Configuration, builder.Environment);
 
-        // 12. Service-specific dependencies
+        // 12. Unit of work (per service DbContext); override in ConfigureServiceDependencies if needed
+        if (options.DbContextType != null)
+        {
+            builder.Services.AddScoped<IUnitOfWork>(sp =>
+            {
+                var dbContext = (DbContext)sp.GetRequiredService(options.DbContextType);
+                return new EfUnitOfWork(dbContext);
+            });
+        }
+
+        // 13. Service-specific dependencies
         options.ConfigureServiceDependencies?.Invoke(builder.Services);
 
         // Store options in DI for UseServiceDefaults to reuse (avoids passing options twice)
@@ -239,11 +251,16 @@ public static class MicroserviceExtensions
             app.MapScalarApiReference();
         }
 
-        // HTTPS redirection
-        app.UseHttpsRedirection();
+        // Dapr invokes over HTTP; HTTPS redirection breaks sidecar calls in local dev.
+        if (!app.Environment.IsDevelopment())
+            app.UseHttpsRedirection();
 
         // Routing
         app.UseRouting();
+
+        // Dapr pub/sub delivers CloudEvents; unwrap before model binding on [Topic] handlers.
+        if (options.EnableDapr)
+            app.UseCloudEvents();
 
         // CORS
         app.UseCors("AllowFrontend");
@@ -258,18 +275,13 @@ public static class MicroserviceExtensions
         // Controllers
         app.MapControllers();
 
+        // Registers /dapr/subscribe and wires [Topic] endpoints to the Dapr sidecar
+        if (options.EnableDapr)
+            app.MapSubscribeHandler();
+
         // Health checks
         if (options.EnableHealthChecks)
-        {
             app.UseCustomHealthChecks();
-        }
-
-        // Dapr pub/sub subscriptions (automatically configured if Dapr is enabled)
-        // This replaces the need to manually call app.MapSubscribeHandler() in Program.cs
-        if (options.EnableDapr)
-        {
-            app.MapSubscribeHandler();
-        }
 
         return app;
     }

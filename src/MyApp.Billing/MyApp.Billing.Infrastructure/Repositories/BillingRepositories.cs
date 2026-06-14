@@ -3,6 +3,7 @@ using MyApp.Billing.Domain.Entities;
 using MyApp.Billing.Domain.Repositories;
 using MyApp.Billing.Infrastructure.Persistence;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Specifications;
 using MyApp.Shared.Infrastructure.Repositories;
 
@@ -77,34 +78,6 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
             .Include(i => i.Lines)
             .Where(i => i.OrderId == orderId)
             .ToListAsync(cancellationToken);
-    }
-
-    /// <summary>
-    /// Persists pending changes for tracked invoice aggregates.
-    /// </summary>
-    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        // When payments are appended through the Invoice aggregate, EF can occasionally
-        // track new Payment rows as Modified instead of Added in this graph path.
-        // Correct that state before SaveChanges to avoid false concurrency exceptions.
-        var paymentEntries = _context.ChangeTracker.Entries<Payment>()
-            .Where(e => e.State == EntityState.Modified)
-            .ToList();
-
-        foreach (var entry in paymentEntries)
-        {
-            var paymentId = entry.Entity.Id;
-            var exists = await _context.Payments
-                .AsNoTracking()
-                .AnyAsync(p => p.Id == paymentId, cancellationToken);
-
-            if (!exists)
-            {
-                entry.State = EntityState.Added;
-            }
-        }
-
-        await _context.SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>

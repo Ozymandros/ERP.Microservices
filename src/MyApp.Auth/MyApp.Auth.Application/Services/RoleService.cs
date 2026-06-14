@@ -6,13 +6,16 @@ using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
-using MyApp.Shared.Domain.Entities;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Auth.Application.Services;
 
-public class RoleService : IRoleService
+public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRoleService
 {
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly UserManager<ApplicationUser> _userManager;
@@ -27,7 +30,9 @@ public class RoleService : IRoleService
         IRoleRepository roleRepository,
         IUserRepository userRepository,
         IMapper mapper,
-        ILogger<RoleService> logger)
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        ILogger<RoleService> logger) : base(roleRepository, unitOfWork, eventPublisher, logger, ServiceNames.Auth)
     {
         _roleManager = roleManager;
         _userManager = userManager;
@@ -64,8 +69,7 @@ public class RoleService : IRoleService
 
     public async Task<RoleDto?> CreateRoleAsync(CreateRoleDto createRoleDto)
     {
-        var roleExists = await _roleManager.RoleExistsAsync(createRoleDto.Name);
-        if (roleExists)
+        if (await _roleRepository.NameExistsAsync(createRoleDto.Name))
         {
             _logger.LogWarning("Role already exists: {@RoleData}", new { createRoleDto });
             return null;
@@ -73,24 +77,22 @@ public class RoleService : IRoleService
 
         var role = new ApplicationRole(createRoleDto.Name)
         {
+            Id = Guid.NewGuid(),
             Name = createRoleDto.Name,
+            NormalizedName = createRoleDto.Name.ToUpperInvariant(),
             Description = createRoleDto.Description,
             CreatedAt = DateTime.UtcNow
         };
 
-        var result = await _roleManager.CreateAsync(role);
-        if (!result.Succeeded)
-        {
-            _logger.LogWarning("Failed to create role: {@RoleData}", new { createRoleDto });
-            return null;
-        }
+        await _roleRepository.AddAsync(role);
+        await SaveChangesAsync();
 
         return _mapper.Map<RoleDto>(role);
     }
 
     public async Task<bool> UpdateRoleAsync(Guid roleId, CreateRoleDto updateRoleDto)
     {
-        var role = await _roleManager.FindByIdAsync(roleId.ToString());
+        var role = await _roleRepository.GetByIdAsync(roleId);
         if (role == null)
         {
             _logger.LogWarning("Role not found: {RoleId}", roleId);
@@ -100,34 +102,27 @@ public class RoleService : IRoleService
         _logger.LogInformation("Updating role: {@RoleUpdate}", new { RoleId = roleId, updateRoleDto });
 
         role.Name = updateRoleDto.Name;
+        role.NormalizedName = updateRoleDto.Name.ToUpperInvariant();
         role.Description = updateRoleDto.Description;
         role.UpdatedAt = DateTime.UtcNow;
 
-        var result = await _roleManager.UpdateAsync(role);
-        if (!result.Succeeded)
-        {
-            _logger.LogWarning("Failed to update role: {RoleId}", roleId);
-            return false;
-        }
+        await _roleRepository.UpdateAsync(role);
+        await SaveChangesAsync();
 
         return true;
     }
 
     public async Task<bool> DeleteRoleAsync(Guid roleId)
     {
-        var role = await _roleManager.FindByIdAsync(roleId.ToString());
+        var role = await _roleRepository.GetByIdAsync(roleId);
         if (role == null)
         {
             _logger.LogWarning("Role not found: {RoleId}", roleId);
             return false;
         }
 
-        var result = await _roleManager.DeleteAsync(role);
-        if (!result.Succeeded)
-        {
-            _logger.LogWarning("Failed to delete role: {RoleId}", roleId);
-            return false;
-        }
+        await _roleRepository.DeleteAsync(role);
+        await SaveChangesAsync();
 
         return true;
     }
@@ -140,7 +135,7 @@ public class RoleService : IRoleService
 
     public async Task<bool> AddPermissionToRole(CreateRolePermissionDto createDto)
     {
-        var role = await _roleManager.FindByIdAsync(createDto.RoleId.ToString());
+        var role = await _roleRepository.GetByIdAsync(createDto.RoleId);
         if (role == null)
         {
             _logger.LogWarning("Role not found: {RoleId}", createDto.RoleId);
@@ -162,12 +157,8 @@ public class RoleService : IRoleService
             PermissionId = createDto.PermissionId
         });
 
-        var result = await _roleManager.UpdateAsync(role);
-        if (!result.Succeeded)
-        {
-            _logger.LogWarning("Failed to update role: {RoleId}", createDto.RoleId);
-            return false;
-        }
+        await _roleRepository.UpdateAsync(role);
+        await SaveChangesAsync();
 
         _logger.LogInformation("Permission added to role: {RoleId}, {PermissionId}", createDto.RoleId, createDto.PermissionId);
         return true;
@@ -190,6 +181,7 @@ public class RoleService : IRoleService
         }
 
         var result = await _roleRepository.RemovePermissionFromRoleAsync(deleteDto.RoleId, deleteDto.PermissionId);
+        await SaveChangesAsync();
         if (!result)
         {
             _logger.LogWarning("Failed to remove permission from role: {RoleId}, {PermissionId}", deleteDto.RoleId, deleteDto.PermissionId);
@@ -213,7 +205,7 @@ public class RoleService : IRoleService
 
     public async Task<bool> AddPermissionsToRole(CreateRolePermissionsDto createDto)
     {
-        var role = await _roleManager.FindByIdAsync(createDto.RoleId.ToString());
+        var role = await _roleRepository.GetByIdAsync(createDto.RoleId);
         if (role == null)
         {
             _logger.LogWarning("Role not found: {RoleId}", createDto.RoleId);
@@ -244,12 +236,8 @@ public class RoleService : IRoleService
         if (addedCount > 0)
         {
             role.UpdatedAt = DateTime.UtcNow;
-            var result = await _roleManager.UpdateAsync(role);
-            if (!result.Succeeded)
-            {
-                _logger.LogWarning("Failed to update role: {RoleId}", createDto.RoleId);
-                return false;
-            }
+            await _roleRepository.UpdateAsync(role);
+            await SaveChangesAsync();
         }
 
         _logger.LogInformation("Added {AddedCount} permissions to role {RoleId}, skipped {SkippedCount} duplicates",
@@ -259,8 +247,7 @@ public class RoleService : IRoleService
 
     public async Task<bool> RemovePermissionsFromRoleAsync(DeleteRolePermissionsDto deleteDto)
     {
-        var role = await _roleManager.FindByIdAsync(deleteDto.RoleId.ToString());
-        if (role == null)
+        if (await _roleRepository.GetByIdAsync(deleteDto.RoleId) is null)
         {
             _logger.LogWarning("Role not found: {RoleId}", deleteDto.RoleId);
             return false;
@@ -284,6 +271,9 @@ public class RoleService : IRoleService
                 removedCount++;
             }
         }
+
+        if (removedCount > 0)
+            await SaveChangesAsync();
 
         _logger.LogInformation("Removed {RemovedCount} permissions from role {RoleId}, {NotFoundCount} not found",
             removedCount, deleteDto.RoleId, notFoundCount);

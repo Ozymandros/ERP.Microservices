@@ -46,7 +46,9 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         /// <summary>Get All Paginated Async.</summary>
         public async Task<PaginatedResult<SalesOrder>> GetAllPaginatedAsync(int pageNumber, int pageSize)
         {
+#pragma warning disable CS8603 // Customer navigation is loaded via Include; null-forgiving would break EF translation
             return await base.GetAllPaginatedAsync(pageNumber, pageSize, [o => o.Lines, o => o.Customer]);
+#pragma warning restore CS8603
         }
 
         /// <summary>Delete Async.</summary>
@@ -56,7 +58,6 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
             if (order != null)
             {
                 _context.SalesOrders.Remove(order);
-                await _context.SaveChangesAsync();
             }
         }
 

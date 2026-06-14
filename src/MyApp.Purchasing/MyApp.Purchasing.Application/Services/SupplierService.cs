@@ -1,19 +1,30 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Purchasing.Application.Services;
 
-public class SupplierService : ISupplierService
+public class SupplierService : AppServiceBase, ISupplierService
 {
     private readonly ISupplierRepository _supplierRepository;
     private readonly IMapper _mapper;
 
-    public SupplierService(ISupplierRepository supplierRepository, IMapper mapper)
+    public SupplierService(
+        ISupplierRepository supplierRepository,
+        IMapper mapper,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        ILogger<SupplierService> logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Purchasing)
     {
         _supplierRepository = supplierRepository;
         _mapper = mapper;
@@ -61,6 +72,7 @@ public class SupplierService : ISupplierService
 
         var supplier = _mapper.Map<Supplier>(dto);
         var createdSupplier = await _supplierRepository.AddAsync(supplier);
+        await SaveChangesAsync();
 
         return _mapper.Map<SupplierDto>(createdSupplier);
     }
@@ -85,6 +97,7 @@ public class SupplierService : ISupplierService
 
         _mapper.Map(dto, supplier);
         var updatedSupplier = await _supplierRepository.UpdateAsync(supplier);
+        await SaveChangesAsync();
 
         return _mapper.Map<SupplierDto>(updatedSupplier);
     }
@@ -98,6 +111,7 @@ public class SupplierService : ISupplierService
         }
 
         await _supplierRepository.DeleteAsync(supplier);
+        await SaveChangesAsync();
     }
 
     /// <summary>

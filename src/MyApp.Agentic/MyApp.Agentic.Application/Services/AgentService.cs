@@ -11,8 +11,10 @@ using MyApp.Agentic.Domain.Sessions;
 using MyApp.Agentic.Domain.Skills;
 using MyApp.Agentic.Infrastructure.Memory;
 using MyApp.Agentic.Infrastructure.State;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Agentic.Application.Services;
@@ -25,7 +27,7 @@ namespace MyApp.Agentic.Application.Services;
 /// This service orchestrates multiple infrastructure and domain components:
 /// repositories, secret resolution, session state, embeddings, tool mapping, and AI execution.
 /// </remarks>
-public class AgentService : IAgentService
+public class AgentService : AppServiceBase, IAgentService
 {
     private readonly IAgentRepository _agentRepository;
     private readonly IAIProviderRepository _providerRepository;
@@ -54,6 +56,8 @@ public class AgentService : IAgentService
     /// <param name="embeddingService">Service used to generate embeddings for RAG and memory.</param>
     /// <param name="agentExecutionService">Service that executes prompts against the configured model/provider.</param>
     /// <param name="toolResolver">Resolves ERP plugin tools available to an agent at runtime.</param>
+    /// <param name="unitOfWork">Unit of work for transactional persistence.</param>
+    /// <param name="eventPublisher">Publisher for domain integration events.</param>
     /// <param name="serviceInvoker">Cross-service invoker for validating external dependencies (for example auth users).</param>
     /// <param name="mapper">Object mapper dependency.</param>
     /// <param name="logger">Structured logger for diagnostics and operational tracing.</param>
@@ -68,9 +72,12 @@ public class AgentService : IAgentService
         IEmbeddingService embeddingService,
         IAgentExecutionService agentExecutionService,
         IAgentToolResolver toolResolver,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         IServiceInvoker serviceInvoker,
         IMapper mapper,
         ILogger<AgentService> logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Agentic)
     {
         _agentRepository = agentRepository;
         _providerRepository = providerRepository;
@@ -163,6 +170,7 @@ public class AgentService : IAgentService
         agent.SetModel(model);
 
         await _agentRepository.AddAsync(agent);
+        await SaveChangesAsync(cancellationToken);
         return MapToDto(agent);
     }
 
@@ -198,6 +206,7 @@ public class AgentService : IAgentService
         agent.SetModel(model);
 
         await _agentRepository.UpdateAsync(agent);
+        await SaveChangesAsync(cancellationToken);
         return MapToDto(agent);
     }
 
@@ -211,6 +220,7 @@ public class AgentService : IAgentService
         var agent = await _agentRepository.GetByIdAsync(id);
         if (agent == null) return;
         await _agentRepository.DeleteAsync(agent);
+        await SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>
@@ -330,6 +340,7 @@ public class AgentService : IAgentService
 
         session.RecordMessage();
         await _sessionRepository.UpdateAsync(session);
+        await SaveChangesAsync(cancellationToken);
 
         return new ProcessAgentMessageResponse(sessionId, authenticatedUserId, request.Message, aiResponse, DateTime.UtcNow, executionResult.ToolCalls);
     }
@@ -370,6 +381,7 @@ public class AgentService : IAgentService
             title: request.Title);
 
         await _sessionRepository.AddAsync(session);
+        await SaveChangesAsync(cancellationToken);
 
         return new StartSessionResponse(
             session.Id,
@@ -474,6 +486,7 @@ public class AgentService : IAgentService
 
         session.RecordMessage();
         await _sessionRepository.UpdateAsync(session);
+        await SaveChangesAsync(cancellationToken);
 
         var userMessage = new ConversationMessage
         {
@@ -596,6 +609,7 @@ public class AgentService : IAgentService
 
         session.Complete();
         await _sessionRepository.UpdateAsync(session);
+        await SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>

@@ -18,7 +18,7 @@ public class WarehouseRepository : Repository<Warehouse, Guid>, IWarehouseReposi
     /// <summary>Get By Name Async.</summary>
     public async Task<Warehouse?> GetByNameAsync(string name)
     {
-        return await _dbContext.Set<Warehouse>()
+        return await DbContext.Set<Warehouse>()
             .FirstOrDefaultAsync(x => x.Name == name);
     }
 }

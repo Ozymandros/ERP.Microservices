@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Authentication;
 using System.Net.Http.Headers;
 
 namespace MyApp.Shared.Domain.Permissions;
@@ -34,16 +35,12 @@ public class PermissionChecker : IPermissionChecker
         // 1. Create the request manually
         var request = _serviceInvoker.CreateRequest(
             ServiceNames.Auth,
-            "api/Permissions/check",
+            "api/internal/permissions/check",
             HttpMethod.Get,
             null,
             query);
 
-        // 2. Add the authentication header
-        if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
-        {
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authHeader.ToString().Replace("Bearer ", ""));
-        }
+        AttachBearerToken(request);
 
         // 3. Make the call via Dapr
         try
@@ -64,6 +61,10 @@ public class PermissionChecker : IPermissionChecker
         if (string.IsNullOrEmpty(action))
             throw new ArgumentException($"'{nameof(action)}' cannot be null or empty.", nameof(action));
 
+        var userId = GetUserIdFromHttpContext();
+        if (userId.HasValue)
+            return await HasPermissionAsync(userId.Value, module, action);
+
         var query = new Dictionary<string, string?>
         {
             ["module"] = module,
@@ -73,16 +74,12 @@ public class PermissionChecker : IPermissionChecker
         // 1. Create the request
         using var request = _serviceInvoker.CreateRequest(
             ServiceNames.Auth,
-            "api/Permissions/check",
+            "api/internal/permissions/check",
             HttpMethod.Get,
             null,
             query);
 
-        // 2. Add the authentication header
-        if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
-        {
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authHeader.ToString().Replace("Bearer ", ""));
-        }
+        AttachBearerToken(request);
 
         // 3. Make the call via Dapr
         try
@@ -94,5 +91,29 @@ public class PermissionChecker : IPermissionChecker
         {
             return false;
         }
+    }
+
+    private void AttachBearerToken(HttpRequestMessage request)
+    {
+        if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is not true)
+            return;
+
+        var token = BearerTokenHelper.ExtractToken(authHeader);
+        if (string.IsNullOrWhiteSpace(token))
+            return;
+
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+    }
+
+    private Guid? GetUserIdFromHttpContext()
+    {
+        var user = _httpContextAccessor.HttpContext?.User;
+        if (user?.Identity?.IsAuthenticated is not true)
+            return null;
+
+        var id = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+            ?? user.FindFirst("sub")?.Value;
+
+        return Guid.TryParse(id, out var userId) ? userId : null;
     }
 }

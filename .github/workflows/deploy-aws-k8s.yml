@@ -178,7 +178,7 @@ jobs:
       - name: Resolve AWS deploy role ARN
         shell: bash
         env:
-          BOOTSTRAP_ROLE: ${{ needs.bootstrap-aws.outputs.deploy_role_arn }}
+          BOOTSTRAP_ROLE: ${{ needs.bootstrap-aws.result == 'success' && needs.bootstrap-aws.outputs.deploy_role_arn || '' }}
         run: |
           set -euo pipefail
           AWS_DEPLOY_ROLE_ARN="$BOOTSTRAP_ROLE"
@@ -264,8 +264,8 @@ jobs:
         env:
           TOFU_VAR_FILE: ${{ env.TOFU_VAR_FILE }}
           TOFU_AWS_REGION_VAR: ${{ env.TOFU_AWS_REGION_VAR }}
-          BOOTSTRAP_CLUSTER: ${{ needs.bootstrap-aws.outputs.eks_cluster_name }}
-          BOOTSTRAP_REGION: ${{ needs.bootstrap-aws.outputs.aws_region }}
+          BOOTSTRAP_CLUSTER: ${{ needs.bootstrap-aws.result == 'success' && needs.bootstrap-aws.outputs.eks_cluster_name || '' }}
+          BOOTSTRAP_REGION: ${{ needs.bootstrap-aws.result == 'success' && needs.bootstrap-aws.outputs.aws_region || '' }}
         run: |
           set -euo pipefail
 

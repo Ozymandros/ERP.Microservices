@@ -2,7 +2,6 @@ using Dapr.Client;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyApp.Shared.Domain.Messaging;
-
 namespace MyApp.Shared.Infrastructure.Messaging;
 
 /// <summary>

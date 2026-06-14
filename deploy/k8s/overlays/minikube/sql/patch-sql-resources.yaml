@@ -1,0 +1,19 @@
+# Minikube / local stage only — lower SQL Server footprint.
+# Production and dev overlays use deploy/k8s/base/sql (full resources).
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sqlserver
+  namespace: myapp-apps
+spec:
+  template:
+    spec:
+      containers:
+        - name: mssql
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "2Gi"
+            limits:
+              cpu: "1"
+              memory: "4Gi"

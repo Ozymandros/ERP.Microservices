@@ -1,14 +1,32 @@
+using Microsoft.Extensions.Logging;
 using MyApp.Agentic.Application.Contracts.DTOs;
 using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Agentic.Domain.AIProviders;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Agentic.Application.Services;
 
-public class AIProviderService(
-    IAIProviderRepository providerRepository,
-    ISecretCryptoService secretCryptoService) : IAIProviderService
+public class AIProviderService : AppServiceBase, IAIProviderService
 {
+    private readonly IAIProviderRepository providerRepository;
+    private readonly ISecretCryptoService secretCryptoService;
+
+    public AIProviderService(
+        IAIProviderRepository providerRepository,
+        ISecretCryptoService secretCryptoService,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        ILogger<AIProviderService> logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Agentic)
+    {
+        this.providerRepository = providerRepository;
+        this.secretCryptoService = secretCryptoService;
+    }
+
     public async Task<IEnumerable<AIProviderDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         var providers = await providerRepository.GetAllAsync();
@@ -44,6 +62,7 @@ public class AIProviderService(
             dto.DefaultBotType,
             dto.DefaultSystemPrompt);
         await providerRepository.AddAsync(provider);
+        await SaveChangesAsync(cancellationToken);
         return MapToDto(provider);
     }
 
@@ -76,6 +95,7 @@ public class AIProviderService(
             dto.DefaultBotType,
             dto.DefaultSystemPrompt);
         await providerRepository.UpdateAsync(provider);
+        await SaveChangesAsync(cancellationToken);
         return MapToDto(provider);
     }
 
@@ -86,6 +106,7 @@ public class AIProviderService(
             return;
 
         await providerRepository.DeleteAsync(provider);
+        await SaveChangesAsync(cancellationToken);
     }
 
     private AIProviderDto MapToDto(AIProvider provider)

@@ -1,3 +1,5 @@
+using AppHost;
+using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Azure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,12 +11,7 @@ var isDeployment =
 
 var builder = DistributedApplication.CreateBuilder(args).AddDapr();
 
-// Dapr components: PubSub and State Store
-// Note: Placement service is NOT needed - only required for Dapr Actors (we don't use actors)
-// Note: Scheduler service is NOT needed - only required for scheduled jobs/workflows (we don't use)
-// The connection errors for Placement (6050) and Scheduler (6060) are harmless warnings.
-var stateStore = builder.AddDaprStateStore("statestore");
-var pubSub = builder.AddDaprPubSub(MessagingConstants.PubSubName);
+var jwtSecretKey = builder.AddParameter("jwt-secret", secret: true, value: "DevOnlyLocalJwtSecretKey32CharsMinimum!");
 
 var analyticsWorkspace = isDeployment ? builder
     .AddAzureLogAnalyticsWorkspace("MyApp-LogAnalyticsWorkspace") : null;
@@ -34,6 +31,24 @@ var redis = builder.AddRedis("cache")
     .WithRedisInsight()
     .WithDataVolume("redis-cache");
 
+// Dapr pub/sub + state: explicit Redis component types (not building-block in-memory fallbacks).
+// redisHost must be host:port only — never a URL. enableTLS must match Aspire Redis tcp endpoint.
+var redisTcp = redis.GetEndpoint("tcp");
+var redisHost = redisTcp.Property(EndpointProperty.HostAndPort);
+var redisTls = redisTcp.Property(EndpointProperty.TlsEnabled);
+
+var stateStore = builder.AddDaprComponent("statestore", "state.redis")
+    .WithMetadata("redisHost", redisHost)
+    .WithMetadata("redisPassword", redis.Resource.PasswordParameter!)
+    .WithMetadata("enableTLS", redisTls)
+    .WaitFor(redis);
+
+var pubSub = builder.AddDaprComponent(MessagingConstants.PubSubName, "pubsub.redis")
+    .WithMetadata("redisHost", redisHost)
+    .WithMetadata("redisPassword", redis.Resource.PasswordParameter!)
+    .WithMetadata("enableTLS", redisTls)
+    .WaitFor(redis);
+
 // Create builder with automatic port management
 AspireProjectBuilder projectBuilder;
 IResourceBuilder<SqlServerServerResource>? sqlServer = null;
@@ -44,7 +59,7 @@ var password = builder.AddParameter("password", secret: true, value: "Your_stron
 if (isDeployment)
 {
     sqlAzure = builder.AddAzureSqlServer("myapp-sqlserver");
-    projectBuilder = builder.CreateProjectBuilder(sqlAzure: sqlAzure);
+    projectBuilder = builder.CreateProjectBuilder(sqlAzure: sqlAzure, jwtSecretKey: jwtSecretKey);
 }
 else
 {
@@ -53,14 +68,13 @@ else
         .WithImageRegistry("mcr.microsoft.com")
         .WithLifetime(ContainerLifetime.Persistent)
         .WithDataVolume("sqlserver-data");
-    projectBuilder = builder.CreateProjectBuilder(sqlServer: sqlServer);
+    projectBuilder = builder.CreateProjectBuilder(sqlServer: sqlServer, jwtSecretKey: jwtSecretKey);
 }
 
 var origin = builder.Configuration["Parameters:AllowedOrigins"]
     ?? builder.Configuration["Parameters:FrontendOrigin"];
 
-// Get JWT configuration from appsettings.json or use defaults
-var jwtSecretKey = builder.Configuration["Jwt:SecretKey"] ?? "a_very_long_and_super_ultra_secret_key_01234566789";
+// JWT signing key is injected via Aspire secret parameter (Jwt__SecretKey env var)
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "MyApp.Auth";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "MyApp.All";
 
@@ -88,6 +102,9 @@ var salesService = projectBuilder.AddWebProject<Projects.MyApp_Sales_API>(redis,
 
 var agenticService = projectBuilder.AddWebProject<Projects.MyApp_Agentic_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore, hasDatabase: true);
 // Creates: agentic-service (no DB), ports 6008, 3508, 45008, 9098
+
+var auditService = projectBuilder.AddWebProject<Projects.MyApp_Audit_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore, hasDatabase: true);
+// Creates: audit-service (no DB), ports 6009, 3509, 45009, 9099
 
 // Local Development: Reverse Proxy (YARP)
 // Alternative: YARP (without /Scalar service)
@@ -127,6 +144,7 @@ var gateway = builder.AddProject<Projects.ErpApiGateway>("gateway")
     .WaitFor(salesService)
     .WaitFor(crmService)
     .WaitFor(agenticService)
+    .WaitFor(auditService)
     .WithHttpEndpoint(port: 5000, name: "gateway-http")   // Explicitly listen on 5000 for Dapr
     .WithHttpsEndpoint(port: 7231, name: "gateway-https") // Explicitly listen on 7231 for Browser/Scalar
     .WithEnvironment("Jwt__SecretKey", jwtSecretKey)

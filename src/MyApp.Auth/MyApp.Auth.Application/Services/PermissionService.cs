@@ -5,13 +5,17 @@ using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Entities;
+using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Auth.Application.Services;
 
-public class PermissionService : IPermissionService
+public class PermissionService : AppServiceBase, IPermissionService
 {
     private readonly IPermissionRepository _permissionRepository;
     private readonly IMapper _mapper;
@@ -21,7 +25,10 @@ public class PermissionService : IPermissionService
     public PermissionService(UserManager<ApplicationUser> userManager,
         IPermissionRepository permissionRepository,
         IMapper mapper,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
         ILogger<PermissionService> logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Auth)
     {
         _userManager = userManager;
         _permissionRepository = permissionRepository;
@@ -126,6 +133,7 @@ public class PermissionService : IPermissionService
             };
 
             await _permissionRepository.AddAsync(entity);
+            await SaveChangesAsync();
             return _mapper.Map<PermissionDto>(entity);
         }
         catch (Exception ex)
@@ -151,6 +159,7 @@ public class PermissionService : IPermissionService
             entity.Description = updatePermissionDto.Description;
 
             await _permissionRepository.UpdateAsync(entity);
+            await SaveChangesAsync();
             return true;
         }
         catch (Exception ex)
@@ -172,6 +181,7 @@ public class PermissionService : IPermissionService
             }
 
             await _permissionRepository.DeleteAsync(entity);
+            await SaveChangesAsync();
             return true;
         }
         catch (Exception ex)

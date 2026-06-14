@@ -11,6 +11,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Scalar.AspNetCore;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,8 +31,15 @@ builder.Services.AddOpenTelemetry()
 
 var environment = builder.Environment.EnvironmentName;
 builder.Configuration
-    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"ocelot.{environment}.json", optional: true, reloadOnChange: true);
+    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+
+// Local Aspire uses localhost ports in ocelot.Development.json. Other environments use ocelot.json
+// only (K8s service DNS). Loading ocelot.Production.json on top of ocelot.json merges Routes arrays
+// and leaves duplicate upstream templates.
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddJsonFile("ocelot.Development.json", optional: true, reloadOnChange: true);
+}
 
 ApplyOcelotBaseUrlFromEnvironment(builder.Configuration);
 
@@ -45,29 +53,39 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.KnownProxies.Clear();
 });
 
-builder.Services.AddOcelot(builder.Configuration).AddPolly();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<ForwardAuthorizationDelegatingHandler>();
+builder.Services.AddOcelot(builder.Configuration)
+    .AddPolly()
+    .AddDelegatingHandler<ForwardAuthorizationDelegatingHandler>(true);
 builder.Services.AddMvcCore().AddApiExplorer();
 
-var jwtSecretKey = builder.Configuration["Jwt:SecretKey"]
-    ?? throw new InvalidOperationException("JwtSecretKey configuration is required");
-var key = Encoding.ASCII.GetBytes(jwtSecretKey);
+var jwtSecretKey = JwtSecretResolver.GetRequiredSecretKey();
+var jwtIssuer = builder.Configuration["Jwt:Issuer"]
+    ?? throw new InvalidOperationException("Jwt:Issuer configuration is required");
+var jwtAudience = builder.Configuration["Jwt:Audience"]
+    ?? throw new InvalidOperationException("Jwt:Audience configuration is required");
+var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey));
 
 builder.Services
     .AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-        options.Authority = builder.Configuration["Jwt:Issuer"] ?? "http://localhost:6001";
-        options.Audience = builder.Configuration["Jwt:Audience"] ?? "erp-api";
+        options.MapInboundClaims = false;
+
+        // Symmetric JWT: do not set Authority/Audience (OIDC metadata); match microservice validation.
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateIssuer = !environment.Equals("Development", StringComparison.OrdinalIgnoreCase),
-            ValidIssuer = options.Authority,
-            ValidateAudience = !environment.Equals("Development", StringComparison.OrdinalIgnoreCase),
-            ValidAudience = options.Audience,
+            IssuerSigningKey = signingKey,
+            ValidateIssuer = true,
+            ValidIssuer = jwtIssuer,
+            ValidateAudience = true,
+            ValidAudience = jwtAudience,
             ValidateLifetime = true,
-            ClockSkew = TimeSpan.FromSeconds(30)
+            ClockSkew = TimeSpan.FromSeconds(30),
+            NameClaimType = ClaimTypes.Name,
+            RoleClaimType = ClaimTypes.Role,
         };
         options.RequireHttpsMetadata = builder.Configuration.GetValue<bool>("Jwt:RequireHttpsMetadata");
         options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
@@ -75,15 +93,13 @@ builder.Services
             OnAuthenticationFailed = context =>
             {
                 var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
-                logger.LogWarning("Authentication failed: {Message}", context.Exception?.Message);
-                context.Response.StatusCode = 401;
-                context.Response.ContentType = "application/json";
-                return context.Response.WriteAsJsonAsync(new
-                {
-                    error = "Authentication failed",
-                    message = context.Exception?.Message ?? "Invalid token"
-                });
-            }
+                logger.LogWarning(
+                    context.Exception,
+                    "JWT bearer authentication failed for {Method} {Path}",
+                    context.Request.Method,
+                    context.Request.Path);
+                return Task.CompletedTask;
+            },
         };
     });
 
@@ -163,7 +179,7 @@ else
     logger.LogWarning("DocFX _site directory not found.");
 }
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 {
     var configuration = app.Services.GetRequiredService<IConfiguration>();
     var routesConfig = configuration.GetSection("Routes").GetChildren();
@@ -216,6 +232,13 @@ else
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.Use(async (context, next) =>
+{
+    if (context.Request.Headers.TryGetValue("Authorization", out var authorization))
+        context.Items["OcelotForwardAuthorization"] = authorization.ToString();
+    await next();
+});
 
 await app.UseOcelot();
 app.Run();

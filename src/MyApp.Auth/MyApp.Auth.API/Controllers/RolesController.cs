@@ -1,6 +1,6 @@
 
 
-using Microsoft.AspNetCore.Authorization;
+using MyApp.Auth.API.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
@@ -18,7 +18,7 @@ namespace MyApp.Auth.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[AuthorizeJwt]
 [Produces("application/json")]
 public class RolesController : ControllerBase
 {

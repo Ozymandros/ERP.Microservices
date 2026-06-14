@@ -18,11 +18,18 @@
 **/build/
 **/.next/
 
-# --- VERSION CONTROL AND DOCKER ---
-**/.git
-**/.gitignore
-**/.dockerignore
+# --- SECRETS AND LOCAL CONFIG (never ship in images) ---
 **/.env
+**/.env.*
+**/appsettings.Development.json
+**/appsettings.Local.json
+**/appsettings.*.local.json
+**/secrets.json
+**/*secret*.yaml
+**/stage-dev-secrets.yaml
+**/user-secrets.json
+
+# --- VERSION CONTROL AND DOCKER ---
 **/.project
 **/.settings
 **/.classpath
@@ -34,3 +41,10 @@
 
 # --- EXCEPTIONS (Make sure these are NOT in the list above) ---
 # Do not put docker-compose.yml or docker-compose.override.yml here
+
+_site/
+**/TestResults/
+**/test_results.txt
+**/coverage.cobertura.xml
+
+/docs/

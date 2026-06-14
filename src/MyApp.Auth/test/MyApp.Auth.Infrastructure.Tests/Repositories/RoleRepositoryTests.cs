@@ -335,6 +335,7 @@ public class RoleRepositoryTests
 
         // Act
         await _repository.DeleteAsync(role);
+        await _context.SaveChangesAsync();
         var result = _context.Roles.Find(role.Id);
 
         // Assert

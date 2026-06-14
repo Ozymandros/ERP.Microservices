@@ -31,7 +31,10 @@ public enum ModuleEnum
     Auth = 8,
 
     /// <summary>Agentic module - manages AI agents and bot orchestration</summary>
-    Agentic = 9
+    Agentic = 9,
+
+    /// <summary>Audit module - manages entity change audit trail</summary>
+    Audit = 10
 }
 
 /// <summary>

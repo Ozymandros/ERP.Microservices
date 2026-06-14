@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MyApp.Auth.Domain.Entities;
 
+namespace MyApp.Auth.API.Seeders;
+
 /// <summary>
 /// Provides Role Seeder functionality.
 /// </summary>

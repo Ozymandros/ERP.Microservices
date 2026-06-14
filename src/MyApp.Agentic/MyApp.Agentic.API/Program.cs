@@ -17,7 +17,10 @@ using MyApp.Agentic.Infrastructure.Data.Repositories;
 using MyApp.Agentic.Infrastructure.Memory;
 using MyApp.Agentic.Infrastructure.State;
 using MyApp.Agentic.Infrastructure.Data.Seeders;
+using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Infrastructure.Extensions;
+using MyApp.Shared.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +35,8 @@ builder.Services.AddHttpClient<DocsPlugin>(client =>
 builder.Services.AddSingleton<SkillService>(sp =>
 {
     var logger = sp.GetRequiredService<ILogger<SkillService>>();
-    var service = new SkillService(logger);
+    var eventPublisher = sp.GetRequiredService<IEventPublisher>();
+    var service = new SkillService(new NoOpUnitOfWork(), eventPublisher, logger);
     
     // Load CollectionsAgent Skill
     var instructions = LoadSkillInstructions("Agent.Skills/CollectionsAgent/skill.md");
@@ -133,27 +137,4 @@ static string LoadSkillInstructions(string path)
     }
     catch { }
     return string.Empty;
-}
-
-public static class AgentSkillExtensions
-{
-    public static IServiceCollection AddAgentSkills(
-        this IServiceCollection services,
-        Action<AgentSkillOptions> configure)
-    {
-        var options = new AgentSkillOptions();
-        configure(options);
-
-        services.AddSingleton<SkillService>(sp =>
-        {
-            var logger = sp.GetRequiredService<ILogger<SkillService>>();
-            var service = new SkillService(logger);
-            options.LoadSkills(service);
-            return service;
-        });
-
-        services.AddSingleton<ISkillService>(sp => sp.GetRequiredService<SkillService>());
-
-        return services;
-    }
 }

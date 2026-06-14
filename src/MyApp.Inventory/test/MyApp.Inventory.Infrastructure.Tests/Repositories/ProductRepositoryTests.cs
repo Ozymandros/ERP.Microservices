@@ -196,6 +196,7 @@ public class ProductRepositoryTests
 
         // Act
         await _repository.DeleteAsync(product);
+        await _context.SaveChangesAsync();
         var result = await _context.Products.FindAsync(product.Id);
 
         // Assert

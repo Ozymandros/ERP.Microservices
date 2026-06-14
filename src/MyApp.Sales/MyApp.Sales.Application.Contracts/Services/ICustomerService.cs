@@ -20,7 +20,7 @@ public interface ICustomerService
     Task<PaginatedResult<CustomerDto>> ListCustomersPaginatedAsync(int pageNumber, int pageSize);
     Task<PaginatedResult<CustomerDto>> QueryCustomersAsync(ISpecification<Customer> spec);
     Task<CustomerDto> CreateCustomerAsync(CustomerDto dto);
-    Task<CustomerDto> UpdateCustomerAsync(Guid id, CustomerDto dto);
+    Task<CustomerDto> UpdateCustomerAsync(Guid id, CreateUpdateCustomerDto dto);
     Task DeleteCustomerAsync(Guid id);
 }
 }

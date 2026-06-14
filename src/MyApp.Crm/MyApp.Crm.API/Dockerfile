@@ -11,6 +11,7 @@ COPY src/nuget.config ./
 
 # Copy shared projects (with src/ prefix since build context is root); CRM uses Domain, Infrastructure, CQRS (no SignalR)
 COPY ["src/MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
+COPY ["src/MyApp.Shared/MyApp.Shared.Application/MyApp.Shared.Application.csproj", "MyApp.Shared/MyApp.Shared.Application/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.csproj", "MyApp.Shared/MyApp.Shared.Infrastructure/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.CQRS/MyApp.Shared.CQRS.csproj", "MyApp.Shared/MyApp.Shared.CQRS/"]
 
@@ -45,6 +46,7 @@ RUN dotnet publish "MyApp.Crm.API.csproj" -c Release -o /app/publish /p:UseAppHo
 # Runtime stage - Use shared base image
 # BASE_IMAGE_REGISTRY is defined at the top of the file
 FROM ${BASE_IMAGE_REGISTRY}myapp-microservices-base:10.0 AS final
+USER appuser
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --chown=appuser:appuser --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MyApp.Crm.API.dll"]

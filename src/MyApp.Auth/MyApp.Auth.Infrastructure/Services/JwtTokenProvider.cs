@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MyApp.Auth.Domain.Entities;
+using MyApp.Shared.Infrastructure.Extensions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -14,6 +15,7 @@ public interface IJwtTokenProvider
 {
     Task<string> GenerateAccessTokenAsync(ApplicationUser user, IList<string>? roles = null, IList<Claim>? claims = null);
     string GenerateRefreshToken();
+    ClaimsPrincipal? ValidateAccessToken(string token);
     ClaimsPrincipal? GetPrincipalFromExpiredToken(string token);
 }
 
@@ -36,7 +38,7 @@ public class JwtTokenProvider : IJwtTokenProvider
     {
         ArgumentNullException.ThrowIfNull(configuration);
 
-        _secretKey = configuration["Jwt:SecretKey"] ?? throw new ArgumentNullException("Jwt:SecretKey");
+        _secretKey = JwtSecretResolver.GetRequiredSecretKey();
         _issuer = configuration["Jwt:Issuer"] ?? throw new ArgumentNullException("Jwt:Issuer");
         _audience = configuration["Jwt:Audience"] ?? throw new ArgumentNullException("Jwt:Audience");
         _accessTokenExpirationMinutes = int.Parse(configuration["Jwt:AccessTokenExpirationMinutes"] ?? "15");
@@ -100,8 +102,7 @@ public class JwtTokenProvider : IJwtTokenProvider
             expires: DateTime.UtcNow.AddMinutes(_accessTokenExpirationMinutes),
             signingCredentials: credentials);
 
-        var result = new JwtSecurityTokenHandler().WriteToken(token);
-        return Task.FromResult(result);
+        return Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
     }
 
     /// <summary>
@@ -115,6 +116,43 @@ public class JwtTokenProvider : IJwtTokenProvider
         {
             rng.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
+        }
+    }
+
+    /// <summary>Validates an access token (signature, issuer, audience, lifetime).</summary>
+    public ClaimsPrincipal? ValidateAccessToken(string token)
+    {
+        try
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = securityKey,
+                ValidateIssuer = true,
+                ValidIssuer = _issuer,
+                ValidateAudience = true,
+                ValidAudience = _audience,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.FromSeconds(30),
+                NameClaimType = ClaimTypes.Name,
+                RoleClaimType = ClaimTypes.Role,
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler { MapInboundClaims = false };
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+
+            if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return null;
+            }
+
+            return principal;
+        }
+        catch
+        {
+            return null;
         }
     }
 

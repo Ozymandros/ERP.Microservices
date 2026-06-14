@@ -6,22 +6,23 @@ using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Purchasing.Application.Services;
 
-public class PurchaseOrderService : IPurchaseOrderService
+public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
 {
     private readonly IPurchaseOrderRepository _purchaseOrderRepository;
     private readonly IPurchaseOrderLineRepository _lineRepository;
     private readonly ISupplierRepository _supplierRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<PurchaseOrderService> _logger;
-    private readonly IEventPublisher _eventPublisher;
     private readonly IServiceInvoker _serviceInvoker;
 
     public PurchaseOrderService(
@@ -30,16 +31,16 @@ public class PurchaseOrderService : IPurchaseOrderService
         ISupplierRepository supplierRepository,
         IMapper mapper,
         ILogger<PurchaseOrderService> logger,
+        IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher,
         IServiceInvoker serviceInvoker)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Purchasing)
     {
         _purchaseOrderRepository = purchaseOrderRepository;
         _lineRepository = lineRepository;
         _supplierRepository = supplierRepository;
         _mapper = mapper;
-        _logger = logger;
-        _eventPublisher = eventPublisher;
-        _serviceInvoker = serviceInvoker;
+        _logger = logger;        _serviceInvoker = serviceInvoker;
     }
 
     public async Task<PurchaseOrderDto?> GetPurchaseOrderByIdAsync(Guid id)
@@ -93,6 +94,7 @@ public class PurchaseOrderService : IPurchaseOrderService
         }
 
         var createdOrder = await _purchaseOrderRepository.AddAsync(order);
+        await SaveChangesAsync();
         return _mapper.Map<PurchaseOrderDto>(createdOrder);
     }
 
@@ -133,6 +135,7 @@ public class PurchaseOrderService : IPurchaseOrderService
         }
 
         var updatedOrder = await _purchaseOrderRepository.UpdateAsync(order);
+        await SaveChangesAsync();
         return _mapper.Map<PurchaseOrderDto>(updatedOrder);
     }
 
@@ -146,6 +149,7 @@ public class PurchaseOrderService : IPurchaseOrderService
 
         order.Status = status;
         var updatedOrder = await _purchaseOrderRepository.UpdateAsync(order);
+        await SaveChangesAsync();
 
         return _mapper.Map<PurchaseOrderDto>(updatedOrder);
     }
@@ -159,6 +163,7 @@ public class PurchaseOrderService : IPurchaseOrderService
         }
 
         await _purchaseOrderRepository.DeleteAsync(order);
+        await SaveChangesAsync();
     }
 
     /// <summary>
@@ -189,6 +194,7 @@ public class PurchaseOrderService : IPurchaseOrderService
         // Update status to Approved
         order.Status = PurchaseOrderStatus.Approved;
         await _purchaseOrderRepository.UpdateAsync(order);
+        await SaveChangesAsync();
 
         // Publish PurchaseOrderApprovedEvent
         var purchaseOrderApprovedEvent = new PurchaseOrderApprovedEvent(
@@ -199,7 +205,7 @@ public class PurchaseOrderService : IPurchaseOrderService
 
         try
         {
-            await _eventPublisher.PublishAsync(MessagingConstants.Topics.PurchasingOrderApproved, purchaseOrderApprovedEvent);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.PurchasingOrderApproved, purchaseOrderApprovedEvent);
             _logger.LogInformation("Published PurchaseOrderApprovedEvent for PO {PurchaseOrderId}", order.Id);
         }
         catch (Exception ex)
@@ -302,7 +308,7 @@ public class PurchaseOrderService : IPurchaseOrderService
                     dto.WarehouseId
                 );
 
-                await _eventPublisher.PublishAsync(MessagingConstants.Topics.PurchasingLineReceived, lineReceivedEvent);
+                await EventPublisher.PublishAsync(MessagingConstants.Topics.PurchasingLineReceived, lineReceivedEvent);
             }
             catch (Exception ex)
             {
@@ -324,6 +330,7 @@ public class PurchaseOrderService : IPurchaseOrderService
         order.Status = allLinesReceived ? PurchaseOrderStatus.Received : PurchaseOrderStatus.Approved;
 
         await _purchaseOrderRepository.UpdateAsync(order);
+        await SaveChangesAsync();
 
         // Publish PurchaseOrderReceivedEvent if fully received
         if (allLinesReceived)
@@ -336,7 +343,7 @@ public class PurchaseOrderService : IPurchaseOrderService
 
             try
             {
-                await _eventPublisher.PublishAsync("purchasing.order.received", purchaseOrderReceivedEvent);
+                await EventPublisher.PublishAsync("purchasing.order.received", purchaseOrderReceivedEvent);
                 _logger.LogInformation("Published PurchaseOrderReceivedEvent for PO {PurchaseOrderId}", order.Id);
             }
             catch (Exception ex)

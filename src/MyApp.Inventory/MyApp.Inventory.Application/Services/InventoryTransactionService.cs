@@ -1,14 +1,19 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Inventory.Application.Services;
 
-public class InventoryTransactionService : IInventoryTransactionService
+public class InventoryTransactionService : AppServiceBase, IInventoryTransactionService
 {
     private readonly IInventoryTransactionRepository _transactionRepository;
     private readonly IProductRepository _productRepository;
@@ -17,7 +22,11 @@ public class InventoryTransactionService : IInventoryTransactionService
     public InventoryTransactionService(
         IInventoryTransactionRepository transactionRepository,
         IProductRepository productRepository,
-        IMapper mapper)
+        IMapper mapper,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        ILogger<InventoryTransactionService> logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Inventory)
     {
         _transactionRepository = transactionRepository;
         _productRepository = productRepository;
@@ -90,6 +99,7 @@ public class InventoryTransactionService : IInventoryTransactionService
         }
 
         await _productRepository.UpdateAsync(product);
+        await SaveChangesAsync();
 
         // Load related data for response
         createdTransaction = await _transactionRepository.GetByIdAsync(createdTransaction.Id);
@@ -128,6 +138,7 @@ public class InventoryTransactionService : IInventoryTransactionService
         _mapper.Map(dto, transaction);
         var updatedTransaction = await _transactionRepository.UpdateAsync(transaction);
         await _productRepository.UpdateAsync(product);
+        await SaveChangesAsync();
 
         return _mapper.Map<InventoryTransactionDto>(updatedTransaction);
     }
@@ -149,6 +160,7 @@ public class InventoryTransactionService : IInventoryTransactionService
         }
 
         await _transactionRepository.DeleteAsync(transaction);
+        await SaveChangesAsync();
     }
 
     /// <summary>

@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
-  name: daprConfig
+  name: dapr-config
   namespace: myapp-apps
 spec:
   tracing:
@@ -16,28 +16,6 @@ spec:
           secretKeyRef:
             name: app-secrets
             key: otlp-api-key
-  mtls:
-    enabled: false
-  accessControl:
-    defaultAction: allow
-    trustDomain: localhost
-    policies:
-      - appId: gateway
-        actions: ["*"]
-      - appId: auth-service
-        actions: ["invoke/*"]
-      - appId: billing-service
-        actions: ["invoke/*"]
-      - appId: inventory-service
-        actions: ["invoke/*"]
-      - appId: orders-service
-        actions: ["invoke/*"]
-      - appId: purchasing-service
-        actions: ["invoke/*"]
-      - appId: sales-service
-        actions: ["invoke/*"]
-      - appId: crm-service
-        actions: ["invoke/*"]
   secrets:
     scopes:
       - storeName: local-secrets

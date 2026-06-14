@@ -438,6 +438,7 @@ public class WarehouseStockRepositoryTests
 
         // Act
         await _repository.DeleteAsync(stock);
+        await _context.SaveChangesAsync();
         var deletedStock = await _context.WarehouseStocks.FindAsync(stock.Id);
 
         // Assert

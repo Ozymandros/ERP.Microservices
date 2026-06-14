@@ -37,8 +37,6 @@ public class AgentRepository : Repository<Agent, Guid>, IAgentRepository
         entry.State = EntityState.Modified;
         entry.Property(a => a.ModelId).IsModified = true;
 
-        await _context.SaveChangesAsync();
-
         await _context.Agents
             .Where(a => a.Id == entity.Id)
             .ExecuteUpdateAsync(setters => setters.SetProperty(a => a.ModelId, entity.ModelId));
@@ -57,7 +55,7 @@ public class AgentRepository : Repository<Agent, Guid>, IAgentRepository
 
     public override  async Task<IEnumerable<Agent>> GetAllAsync()
     {
-        return await _dbContext.Set<Agent>().Include(x => x.Model).ToListAsync();
+        return await DbContext.Set<Agent>().Include(x => x.Model).ToListAsync();
     }
 
     public override Task<PaginatedResult<Agent>> GetAllPaginatedAsync(int pageNumber, int pageSize, IEnumerable<Expression<Func<Agent, object>>>? includes = null)

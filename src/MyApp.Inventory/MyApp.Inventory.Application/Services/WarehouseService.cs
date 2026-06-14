@@ -1,19 +1,30 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Inventory.Application.Services;
 
-public class WarehouseService : IWarehouseService
+public class WarehouseService : AppServiceBase, IWarehouseService
 {
     private readonly IWarehouseRepository _warehouseRepository;
     private readonly IMapper _mapper;
 
-    public WarehouseService(IWarehouseRepository warehouseRepository, IMapper mapper)
+    public WarehouseService(
+        IWarehouseRepository warehouseRepository,
+        IMapper mapper,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        ILogger<WarehouseService> logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Inventory)
     {
         _warehouseRepository = warehouseRepository;
         _mapper = mapper;
@@ -55,6 +66,7 @@ public class WarehouseService : IWarehouseService
 
         var warehouse = _mapper.Map<Warehouse>(dto);
         var createdWarehouse = await _warehouseRepository.AddAsync(warehouse);
+        await SaveChangesAsync();
 
         return _mapper.Map<WarehouseDto>(createdWarehouse);
     }
@@ -79,6 +91,7 @@ public class WarehouseService : IWarehouseService
 
         _mapper.Map(dto, warehouse);
         var updatedWarehouse = await _warehouseRepository.UpdateAsync(warehouse);
+        await SaveChangesAsync();
 
         return _mapper.Map<WarehouseDto>(updatedWarehouse);
     }
@@ -92,6 +105,7 @@ public class WarehouseService : IWarehouseService
         }
 
         await _warehouseRepository.DeleteAsync(warehouse);
+        await SaveChangesAsync();
     }
 
     /// <summary>

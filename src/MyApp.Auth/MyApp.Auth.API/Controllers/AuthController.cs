@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyApp.Auth.API.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
@@ -26,6 +27,7 @@ public class AuthController : ControllerBase
     /// Login with email and password
     /// </summary>
     [HttpPost("login")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(TokenResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -44,6 +46,7 @@ public class AuthController : ControllerBase
             }
 
             _logger.LogInformation("User logged in: {@User}", new { Email = loginDto.Email });
+
             return Ok(result);
         }
         catch (Exception ex)
@@ -57,6 +60,7 @@ public class AuthController : ControllerBase
     /// Register a new user
     /// </summary>
     [HttpPost("register")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(TokenResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -97,6 +101,7 @@ public class AuthController : ControllerBase
     /// Refresh access token using refresh token
     /// </summary>
     [HttpPost("refresh")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(TokenResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -195,7 +200,7 @@ public class AuthController : ControllerBase
     /// Logout user
     /// </summary>
     [HttpPost("logout")]
-    [Authorize]
+    [AuthorizeJwt]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Logout()

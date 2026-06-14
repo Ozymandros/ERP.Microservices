@@ -10,6 +10,7 @@ COPY src/nuget.config ./
 
 # Copy shared projects (with src/ prefix since build context is root)
 COPY ["src/MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
+COPY ["src/MyApp.Shared/MyApp.Shared.Application/MyApp.Shared.Application.csproj", "MyApp.Shared/MyApp.Shared.Application/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.csproj", "MyApp.Shared/MyApp.Shared.Infrastructure/"]
 
 # Copy Auth service projects
@@ -36,6 +37,7 @@ RUN dotnet publish "MyApp.Auth.API.csproj" -c Release -o /app/publish /p:UseAppH
 
 # Runtime stage - shared microservices base
 FROM ${BASE_IMAGE_REGISTRY}myapp-microservices-base:10.0 AS final
+USER appuser
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --chown=appuser:appuser --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MyApp.Auth.API.dll"]

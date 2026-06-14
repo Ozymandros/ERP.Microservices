@@ -367,6 +367,7 @@ public class InventoryTransactionRepositoryTests
 
         // Act
         await _repository.DeleteAsync(transaction);
+        await _context.SaveChangesAsync();
         var deletedTransaction = await _context.InventoryTransactions.FindAsync(transaction.Id);
 
         // Assert

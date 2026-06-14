@@ -3,9 +3,11 @@ using Microsoft.Extensions.Logging;
 using MyApp.Crm.Application.Contracts.DTOs;
 using MyApp.Crm.Application.Contracts.Services;
 using MyApp.Crm.Domain.Leads;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -14,24 +16,23 @@ namespace MyApp.Crm.Application.Services;
 /// <summary>
 /// Provides Lead Service functionality.
 /// </summary>
-public class LeadService : ILeadService
+public class LeadService : AppServiceBase, ILeadService
 {
     private readonly ILeadRepository _leadRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<LeadService> _logger;
-    private readonly IEventPublisher _eventPublisher;
 
     public LeadService(
         ILeadRepository leadRepository,
         IMapper mapper,
         ILogger<LeadService> logger,
+        IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Crm)
     {
         _leadRepository = leadRepository;
         _mapper = mapper;
-        _logger = logger;
-        _eventPublisher = eventPublisher;
-    }
+        _logger = logger;    }
 
     /// <summary>Get By Id Async.</summary>
     public async Task<LeadDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -75,11 +76,12 @@ public class LeadService : ILeadService
         lead.UpdateDetails(dto.Title, dto.Source, dto.ContactName, dto.ContactEmail, dto.ContactPhone);
 
         await _leadRepository.AddAsync(lead);
+        await SaveChangesAsync(cancellationToken);
 
         try
         {
             var @event = new CrmLeadCreatedEvent(lead.Id, lead.Title, lead.OwnerUsername, lead.Source);
-            await _eventPublisher.PublishAsync(MessagingConstants.Topics.CrmLeadCreated, @event, cancellationToken);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.CrmLeadCreated, @event, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -97,11 +99,12 @@ public class LeadService : ILeadService
 
         lead.UpdateDetails(dto.Title, dto.Source, dto.ContactName, dto.ContactEmail, dto.ContactPhone);
         await _leadRepository.UpdateAsync(lead);
+        await SaveChangesAsync(cancellationToken);
 
         try
         {
             var @event = new CrmLeadUpdatedEvent(lead.Id, lead.Title, lead.OwnerUsername, lead.Source);
-            await _eventPublisher.PublishAsync(MessagingConstants.Topics.CrmLeadUpdated, @event, cancellationToken);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.CrmLeadUpdated, @event, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -119,11 +122,12 @@ public class LeadService : ILeadService
 
         lead.Qualify(dto.CustomerId);
         await _leadRepository.UpdateAsync(lead);
+        await SaveChangesAsync(cancellationToken);
 
         try
         {
             var @event = new CrmLeadQualifiedEvent(lead.Id, lead.CustomerId!.Value);
-            await _eventPublisher.PublishAsync(MessagingConstants.Topics.CrmLeadQualified, @event, cancellationToken);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.CrmLeadQualified, @event, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -139,6 +143,7 @@ public class LeadService : ILeadService
         var lead = await _leadRepository.GetByIdForUpdateAsync(id, cancellationToken);
         if (lead is null) return;
         await _leadRepository.DeleteAsync(lead);
+        await SaveChangesAsync(cancellationToken);
     }
 }
 

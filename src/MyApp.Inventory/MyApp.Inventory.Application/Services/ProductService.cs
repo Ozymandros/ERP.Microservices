@@ -1,19 +1,30 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Inventory.Application.Services;
 
-public class ProductService : IProductService
+public class ProductService : AppServiceBase, IProductService
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
 
-    public ProductService(IProductRepository productRepository, IMapper mapper)
+    public ProductService(
+        IProductRepository productRepository,
+        IMapper mapper,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        ILogger<ProductService> logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Inventory)
     {
         _productRepository = productRepository;
         _mapper = mapper;
@@ -67,6 +78,7 @@ public class ProductService : IProductService
 
         var product = _mapper.Map<Product>(dto);
         var createdProduct = await _productRepository.AddAsync(product);
+        await SaveChangesAsync();
 
         return _mapper.Map<ProductDto>(createdProduct);
     }
@@ -91,6 +103,7 @@ public class ProductService : IProductService
 
         _mapper.Map(dto, product);
         var updatedProduct = await _productRepository.UpdateAsync(product);
+        await SaveChangesAsync();
 
         return _mapper.Map<ProductDto>(updatedProduct);
     }
@@ -104,6 +117,7 @@ public class ProductService : IProductService
         }
 
         await _productRepository.DeleteAsync(product);
+        await SaveChangesAsync();
     }
 
     /// <summary>

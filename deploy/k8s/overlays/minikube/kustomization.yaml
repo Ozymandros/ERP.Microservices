@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base/platform
+  - sql
+  - ../../base/apps
+  - gateway-tls-issuer.yaml
+  - app-config.yaml
+  - stage-dev-secrets.yaml
+
+images:
+  - name: ghcr.io/replace-org/replace-repo/myapp-auth-service
+    newName: myapp-auth-service
+    newTag: minikube-stage
+  - name: ghcr.io/replace-org/replace-repo/myapp-billing-service
+    newName: myapp-billing-service
+    newTag: minikube-stage
+  - name: ghcr.io/replace-org/replace-repo/myapp-inventory-service
+    newName: myapp-inventory-service
+    newTag: minikube-stage
+  - name: ghcr.io/replace-org/replace-repo/myapp-orders-service
+    newName: myapp-orders-service
+    newTag: minikube-stage
+  - name: ghcr.io/replace-org/replace-repo/myapp-purchasing-service
+    newName: myapp-purchasing-service
+    newTag: minikube-stage
+  - name: ghcr.io/replace-org/replace-repo/myapp-sales-service
+    newName: myapp-sales-service
+    newTag: minikube-stage
+  - name: ghcr.io/replace-org/replace-repo/myapp-crm-service
+    newName: myapp-crm-service
+    newTag: minikube-stage
+  - name: ghcr.io/replace-org/replace-repo/myapp-gateway
+    newName: myapp-gateway
+    newTag: minikube-stage

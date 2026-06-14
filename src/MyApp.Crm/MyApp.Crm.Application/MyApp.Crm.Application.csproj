@@ -13,12 +13,13 @@
     <ProjectReference Include="..\MyApp.Crm.Application.Contracts\MyApp.Crm.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\MyApp.Sales\MyApp.Sales.Application.Contracts\MyApp.Sales.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Application\MyApp.Shared.Application.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.1.1" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.17.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.18.0" />
   </ItemGroup>
 
 </Project>

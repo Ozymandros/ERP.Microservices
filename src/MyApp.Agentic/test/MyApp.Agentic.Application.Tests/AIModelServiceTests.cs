@@ -1,8 +1,12 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using MyApp.Agentic.Application.Contracts.DTOs;
 using MyApp.Agentic.Application.Services;
 using MyApp.Agentic.Domain.AIModels;
 using MyApp.Agentic.Domain.AIProviders;
+using MyApp.Shared.Domain.DTOs;
+using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 
 namespace MyApp.Agentic.Application.Tests;
 
@@ -24,7 +28,10 @@ public class AIModelServiceTests
         modelRepo.Setup(r => r.GetByProviderIdAsync(providerId, It.IsAny<CancellationToken>())).ReturnsAsync(models);
         providerRepo.Setup(r => r.GetByIdAsync(providerId)).ReturnsAsync(provider);
 
-        var sut = new AIModelService(modelRepo.Object, providerRepo.Object);
+        var unitOfWork = new Mock<IUnitOfWork>();
+        unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
+        var sut = new AIModelService(modelRepo.Object, providerRepo.Object, unitOfWork.Object, Mock.Of<IEventPublisher>(), Mock.Of<ILogger<AIModelService>>());
 
         var result = await sut.ListByProviderAsync(providerId);
 
@@ -40,7 +47,10 @@ public class AIModelServiceTests
         var providerRepo = new Mock<IAIProviderRepository>();
         providerRepo.Setup(r => r.GetByIdAsync(providerId)).ReturnsAsync((AIProvider?)null);
 
-        var sut = new AIModelService(modelRepo.Object, providerRepo.Object);
+        var unitOfWork = new Mock<IUnitOfWork>();
+        unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
+        var sut = new AIModelService(modelRepo.Object, providerRepo.Object, unitOfWork.Object, Mock.Of<IEventPublisher>(), Mock.Of<ILogger<AIModelService>>());
         var dto = new CreateAIModelDto(providerId, "GPT-5", "gpt-5", 8192, "chat");
 
         await Assert.ThrowsAsync<InvalidOperationException>(() => sut.CreateAsync(dto));
@@ -74,7 +84,10 @@ public class AIModelServiceTests
             .ReturnsAsync((AIModel m) => m);
         modelRepo.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((AIModel?)null);
 
-        var sut = new AIModelService(modelRepo.Object, providerRepo.Object);
+        var unitOfWork = new Mock<IUnitOfWork>();
+        unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
+        var sut = new AIModelService(modelRepo.Object, providerRepo.Object, unitOfWork.Object, Mock.Of<IEventPublisher>(), Mock.Of<ILogger<AIModelService>>());
         var dto = new CreateAIModelDto(providerId, "GPT-5", "gpt-5", 8192, "chat");
 
         await sut.CreateAsync(dto);
@@ -119,7 +132,10 @@ public class AIModelServiceTests
             .ReturnsAsync((AIModel m) => m);
         modelRepo.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((AIModel?)null);
 
-        var sut = new AIModelService(modelRepo.Object, providerRepo.Object);
+        var unitOfWork = new Mock<IUnitOfWork>();
+        unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
+        var sut = new AIModelService(modelRepo.Object, providerRepo.Object, unitOfWork.Object, Mock.Of<IEventPublisher>(), Mock.Of<ILogger<AIModelService>>());
         var dto = new CreateAIModelDto(
             providerId,
             "GPT-5",

@@ -4,7 +4,9 @@ using Moq;
 using MyApp.Crm.Application.Contracts.DTOs;
 using MyApp.Crm.Application.Services;
 using MyApp.Crm.Domain.Opportunities;
+using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Sales.Application.Contracts.DTOs;
 
 namespace MyApp.Crm.Application.Tests;
@@ -33,6 +35,9 @@ public class OpportunityServiceTests
 
         var logger = new Mock<ILogger<OpportunityService>>();
         var publisher = new Mock<IEventPublisher>();
+        var unitOfWork = new Mock<IUnitOfWork>();
+        unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
 
         var invoker = new Mock<IServiceInvoker>();
         invoker.Setup(i => i.InvokeAsync<CreateQuoteDto, SalesOrderDto>(
@@ -46,7 +51,7 @@ public class OpportunityServiceTests
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(new SalesOrderDto(Guid.NewGuid()) { OrderNumber = "Q-1" });
 
-        var svc = new OpportunityService(repo.Object, mapper.Object, logger.Object, publisher.Object, invoker.Object);
+        var svc = new OpportunityService(repo.Object, mapper.Object, logger.Object, unitOfWork.Object, publisher.Object, invoker.Object);
 
         var request = new MarkOpportunityWonRequest(
             Note: null,
