@@ -52,6 +52,7 @@ jobs:
 
   build-shared-base:
     name: Build shared base image
+    if: ${{ inputs.do_push }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -92,14 +93,10 @@ jobs:
           cache-from: type=gha,scope=base-image
           cache-to: type=gha,mode=max,scope=base-image
 
-      - name: Skip shared base push for build-only runs
-        if: ${{ !inputs.do_push }}
-        shell: bash
-        run: echo "Skipping shared base push because do_push=false; service jobs will build it locally."
-
   build-images:
     name: Build ${{ matrix.service }}
     needs: [prepare-matrix, build-shared-base]
+    if: ${{ always() && needs.prepare-matrix.result == 'success' && (inputs.do_push == false || needs.build-shared-base.result == 'success') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
