@@ -126,10 +126,17 @@ jobs:
         shell: bash
         run: echo "name=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
 
-      - name: Use local Buildx driver for build-only runs
+      - name: Select Docker-backed Buildx driver for build-only runs
         if: ${{ !inputs.do_push }}
         shell: bash
-        run: docker buildx use default
+        run: |
+          set -euo pipefail
+          BUILDER_NAME="$(docker buildx ls | awk '$2 == "docker" { gsub(/\\*/, "", $1); print $1; exit }')"
+          if [[ -z "$BUILDER_NAME" ]]; then
+            echo "No Docker-backed buildx builder is available for build-only runs."
+            exit 1
+          fi
+          docker buildx use "$BUILDER_NAME"
 
       - name: Build shared base image locally
         if: ${{ !inputs.do_push }}
