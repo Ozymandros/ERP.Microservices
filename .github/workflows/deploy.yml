@@ -131,6 +131,7 @@ jobs:
           BASE_IMAGE_REGISTRY="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/"
           
           echo "Building service images with tag: $IMAGE_TAG"
+          echo "Base image name: $BASE_IMAGE_REGISTRY"
           
           for SERVICE in "${SERVICES[@]}"; do
               IFS=':' read -r SERVICE_PATH SERVICE_NAME <<< "$SERVICE"
