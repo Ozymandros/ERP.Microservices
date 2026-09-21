@@ -50,21 +50,19 @@ jobs:
           )"
           echo "matrix=$MATRIX_JSON" >> "$GITHUB_OUTPUT"
 
-  build-images:
-    name: Build ${{ matrix.service }}
-    needs: prepare-matrix
+  build-shared-base:
+    name: Build shared base image
+    if: ${{ inputs.do_push }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Set up Docker Buildx
+        if: ${{ inputs.do_push }}
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to GHCR
@@ -80,13 +78,120 @@ jobs:
         shell: bash
         run: echo "name=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
 
-      - name: Build or build+push image
+      - name: Build and push shared base image
+        if: ${{ inputs.do_push }}
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/microservices-base.Dockerfile
+          platforms: ${{ inputs.platform }}
+          push: true
+          tags: |
+            ghcr.io/${{ steps.repo.outputs.name }}/myapp-microservices-base:${{ inputs.image_tag }}
+            ghcr.io/${{ steps.repo.outputs.name }}/myapp-microservices-base:10.0
+            ghcr.io/${{ steps.repo.outputs.name }}/myapp-microservices-base:latest
+          cache-from: type=gha,scope=base-image
+          cache-to: type=gha,mode=max,scope=base-image
+
+  build-images-local:
+    name: Build ${{ matrix.service }}
+    needs: prepare-matrix
+    if: ${{ !inputs.do_push && needs.prepare-matrix.result == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          use: false
+
+      - name: Compute lowercase repo name
+        id: repo
+        shell: bash
+        run: echo "name=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Compute effective local build platform
+        id: local-platform
+        shell: bash
+        run: |
+          set -euo pipefail
+          EFFECTIVE_PLATFORM="${{ inputs.platform }}"
+          EFFECTIVE_PLATFORM="${EFFECTIVE_PLATFORM%%,*}"
+          echo "value=$EFFECTIVE_PLATFORM" >> "$GITHUB_OUTPUT"
+          if [[ "$EFFECTIVE_PLATFORM" != "${{ inputs.platform }}" ]]; then
+            echo "Build-only runs use platform $EFFECTIVE_PLATFORM because docker buildx --load supports a single platform."
+          fi
+
+      - name: Build shared base image locally
+        shell: bash
+        run: |
+          docker buildx build \
+            --platform "${{ steps.local-platform.outputs.value }}" \
+            --load \
+            --file docker/microservices-base.Dockerfile \
+            --tag myapp-microservices-base:10.0 \
+            --tag "ghcr.io/${{ steps.repo.outputs.name }}/myapp-microservices-base:10.0" \
+            .
+
+      - name: Build image locally
+        shell: bash
+        run: |
+          docker buildx build \
+            --platform "${{ steps.local-platform.outputs.value }}" \
+            --load \
+            --build-arg BASE_IMAGE_REGISTRY= \
+            --file "${{ matrix.dockerfile }}" \
+            --tag "ghcr.io/${{ steps.repo.outputs.name }}/myapp-${{ matrix.service }}:${{ inputs.image_tag }}" \
+            --tag "ghcr.io/${{ steps.repo.outputs.name }}/myapp-${{ matrix.service }}:latest" \
+            .
+
+  build-images-push:
+    name: Build ${{ matrix.service }}
+    needs: [prepare-matrix, build-shared-base]
+    if: ${{ inputs.do_push && needs.prepare-matrix.result == 'success' && needs.build-shared-base.result == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute lowercase repo name
+        id: repo
+        shell: bash
+        run: echo "name=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push image
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ${{ matrix.dockerfile }}
           platforms: ${{ inputs.platform }}
-          push: ${{ inputs.do_push }}
+          push: true
+          build-args: |
+            BASE_IMAGE_REGISTRY=ghcr.io/${{ steps.repo.outputs.name }}/
           tags: |
             ghcr.io/${{ steps.repo.outputs.name }}/myapp-${{ matrix.service }}:${{ inputs.image_tag }}
             ghcr.io/${{ steps.repo.outputs.name }}/myapp-${{ matrix.service }}:latest
