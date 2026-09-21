@@ -96,7 +96,7 @@ jobs:
   build-images:
     name: Build ${{ matrix.service }}
     needs: [prepare-matrix, build-shared-base]
-    if: ${{ always() && needs.prepare-matrix.result == 'success' && (inputs.do_push == false || needs.build-shared-base.result == 'success') }}
+    if: ${{ needs.prepare-matrix.result == 'success' && (inputs.do_push == false || needs.build-shared-base.result == 'success') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
