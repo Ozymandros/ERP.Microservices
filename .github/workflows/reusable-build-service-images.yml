@@ -149,6 +149,7 @@ jobs:
             --platform "${{ steps.local-platform.outputs.value }}" \
             --load \
             --file docker/microservices-base.Dockerfile \
+            --tag myapp-microservices-base:10.0 \
             --tag "ghcr.io/${{ steps.repo.outputs.name }}/myapp-microservices-base:10.0" \
             .
 
@@ -159,7 +160,7 @@ jobs:
           docker buildx build \
             --platform "${{ steps.local-platform.outputs.value }}" \
             --load \
-            --build-arg "BASE_IMAGE_REGISTRY=ghcr.io/${{ steps.repo.outputs.name }}/" \
+            --build-arg BASE_IMAGE_REGISTRY= \
             --file "${{ matrix.dockerfile }}" \
             --tag "ghcr.io/${{ steps.repo.outputs.name }}/myapp-${{ matrix.service }}:${{ inputs.image_tag }}" \
             --tag "ghcr.io/${{ steps.repo.outputs.name }}/myapp-${{ matrix.service }}:latest" \
