@@ -138,12 +138,25 @@ jobs:
           fi
           docker buildx use "$BUILDER_NAME"
 
+      - name: Compute effective local build platform
+        if: ${{ !inputs.do_push }}
+        id: local-platform
+        shell: bash
+        run: |
+          set -euo pipefail
+          EFFECTIVE_PLATFORM="${{ inputs.platform }}"
+          EFFECTIVE_PLATFORM="${EFFECTIVE_PLATFORM%%,*}"
+          echo "value=$EFFECTIVE_PLATFORM" >> "$GITHUB_OUTPUT"
+          if [[ "$EFFECTIVE_PLATFORM" != "${{ inputs.platform }}" ]]; then
+            echo "Build-only runs use platform $EFFECTIVE_PLATFORM because docker buildx --load supports a single platform."
+          fi
+
       - name: Build shared base image locally
         if: ${{ !inputs.do_push }}
         shell: bash
         run: |
           docker buildx build \
-            --platform "${{ inputs.platform }}" \
+            --platform "${{ steps.local-platform.outputs.value }}" \
             --load \
             --file docker/microservices-base.Dockerfile \
             --tag myapp-microservices-base:10.0 \
@@ -154,7 +167,7 @@ jobs:
         shell: bash
         run: |
           docker buildx build \
-            --platform "${{ inputs.platform }}" \
+            --platform "${{ steps.local-platform.outputs.value }}" \
             --load \
             --build-arg BASE_IMAGE_REGISTRY= \
             --file "${{ matrix.dockerfile }}" \
