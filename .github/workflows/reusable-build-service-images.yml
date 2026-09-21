@@ -126,16 +126,29 @@ jobs:
         shell: bash
         run: echo "name=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
 
+      - name: Use local Buildx driver for build-only runs
+        if: ${{ !inputs.do_push }}
+        shell: bash
+        run: docker buildx use default
+
       - name: Build shared base image locally
         if: ${{ !inputs.do_push }}
         shell: bash
-        run: docker build --file docker/microservices-base.Dockerfile --tag myapp-microservices-base:10.0 .
+        run: |
+          docker buildx build \
+            --platform "${{ inputs.platform }}" \
+            --load \
+            --file docker/microservices-base.Dockerfile \
+            --tag myapp-microservices-base:10.0 \
+            .
 
       - name: Build image locally
         if: ${{ !inputs.do_push }}
         shell: bash
         run: |
-          docker build \
+          docker buildx build \
+            --platform "${{ inputs.platform }}" \
+            --load \
             --build-arg BASE_IMAGE_REGISTRY= \
             --file "${{ matrix.dockerfile }}" \
             --tag "ghcr.io/${{ steps.repo.outputs.name }}/myapp-${{ matrix.service }}:${{ inputs.image_tag }}" \
