@@ -60,12 +60,26 @@ jobs:
           echo "DaprCliPath=$DAPR_PATH" >> $GITHUB_ENV
           echo "DAPR_HOME=$HOME/.dapr" >> $GITHUB_ENV
 
+      - name: Resolve SonarCloud configuration
+        env:
+          SONAR_PROJECT_KEY_INPUT: ${{ vars.SONAR_PROJECT_KEY }}
+          SONAR_PROJECT_KEY_SECRET: ${{ secrets.SONAR_PROJECT_KEY }}
+          SONAR_ORG_INPUT: ${{ vars.SONAR_ORG }}
+          SONAR_ORG_SECRET: ${{ secrets.SONAR_ORG }}
+        run: |
+          sonar_project_key="${SONAR_PROJECT_KEY_INPUT:-$SONAR_PROJECT_KEY_SECRET}"
+          sonar_org="${SONAR_ORG_INPUT:-$SONAR_ORG_SECRET}"
+
+          sonar_project_key="${sonar_project_key:-Ozymandros_ERP.Microservices}"
+          sonar_org="${sonar_org:-${GITHUB_REPOSITORY_OWNER}}"
+
+          echo "SONAR_PROJECT_KEY=$sonar_project_key" >> "$GITHUB_ENV"
+          echo "SONAR_ORG=$sonar_org" >> "$GITHUB_ENV"
+
       - name: Begin SonarCloud analysis
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
-          SONAR_ORG: ${{ secrets.SONAR_ORG }}
         run: |
           dotnet sonarscanner begin \
             /k:"$SONAR_PROJECT_KEY" \
@@ -105,8 +119,6 @@ jobs:
       - name: Comment PR with SonarCloud link
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
-        env:
-          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
         with:
           script: |
             const projectKey = process.env.SONAR_PROJECT_KEY;
