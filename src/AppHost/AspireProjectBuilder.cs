@@ -209,6 +209,7 @@ public static class AspireProjectBuilderExtensions
     /// <param name="sqlServer"></param>
     /// <param name="sqlAzure"></param>
     /// <param name="keyVault"></param>
+    /// <param name="jwtSecretKey"></param>
     /// <returns></returns>
     public static AspireProjectBuilder CreateProjectBuilder(
         this IDistributedApplicationBuilder builder,

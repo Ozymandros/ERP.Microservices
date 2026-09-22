@@ -25,6 +25,8 @@ properties:
         value: '{{ .Env.MYAPP_APPLICATIONINSIGHTS_APPINSIGHTSCONNECTIONSTRING }}'
       - name: connectionstrings--cache
         value: cache:6379,password={{ securedParameter "cache_password" }}
+      - name: jwt-secret-key
+        value: '{{ securedParameter "jwt-secret" }}'
   template:
     containers:
       - image: {{ .Image }}
