@@ -17,6 +17,10 @@ public class SalesEventHandlers : ControllerBase
     private readonly ILogger<SalesEventHandlers> _logger;
     private readonly IAccountService _accountService;
 
+    /// <summary>Initializes a new instance of the SalesEventHandlers class.</summary>
+    /// Initializes a new instance of the SalesEventHandlers class.
+    /// <param name="logger">The logger.</param>
+    /// <param name="accountService">The account Service.</param>
     public SalesEventHandlers(ILogger<SalesEventHandlers> logger, IAccountService accountService)
     {
         _logger = logger;
@@ -24,6 +28,8 @@ public class SalesEventHandlers : ControllerBase
     }
 
     /// <summary>On Sales Customer Created.</summary>
+    /// <param name="event">The event.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [Topic(MessagingConstants.PubSubName, MessagingConstants.Topics.SalesCustomerCreated)]
     [HttpPost("customer-created")]
     public async Task<IActionResult> OnSalesCustomerCreated(SalesCustomerCreatedEvent @event, CancellationToken cancellationToken)
@@ -43,6 +49,8 @@ public class SalesEventHandlers : ControllerBase
     }
 
     /// <summary>On Sales Customer Updated.</summary>
+    /// <param name="event">The event.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [Topic(MessagingConstants.PubSubName, MessagingConstants.Topics.SalesCustomerUpdated)]
     [HttpPost("customer-updated")]
     public async Task<IActionResult> OnSalesCustomerUpdated(SalesCustomerUpdatedEvent @event, CancellationToken cancellationToken)

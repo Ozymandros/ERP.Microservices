@@ -12,6 +12,28 @@
       "RateLimitOptions": { "EnableRateLimiting": false }
     },
     {
+      "DownstreamPathTemplate": "/api/auth/register",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 6001 }
+      ],
+      "UpstreamPathTemplate": "/auth/api/auth/register",
+      "UpstreamHttpMethod": [ "Post" ],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/refresh",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 6001 }
+      ],
+      "UpstreamPathTemplate": "/auth/api/auth/refresh",
+      "UpstreamHttpMethod": [ "Post", "Options" ],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
       "DownstreamPathTemplate": "/openapi/v1.json",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -43,11 +65,7 @@
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS" ],
       "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
       "RateLimitOptions": { "EnableRateLimiting": false, "Period": "1m", "Limit": 100 },
-      "Priority": 1,
-      "AddHeadersToRequest": {
-        "X-Forwarded-For": "{RemoteIpAddress}",
-        "X-Request-ID": "{RequestId}"
-      }
+      "Priority": 1
     },
 
     {
@@ -288,6 +306,41 @@
         { "Host": "localhost", "Port": 6008 }
       ],
       "UpstreamPathTemplate": "/agentic/api/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS" ],
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
+      "RateLimitOptions": { "EnableRateLimiting": false, "Period": "1m", "Limit": 100 },
+      "Priority": 1
+    },
+
+    {
+      "DownstreamPathTemplate": "/openapi/v1.json",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 6009 }
+      ],
+      "UpstreamPathTemplate": "/audit/openapi/v1.json",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/scalar/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 6009 }
+      ],
+      "UpstreamPathTemplate": "/audit/scalar/{everything}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/api/audit/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 6009 }
+      ],
+      "UpstreamPathTemplate": "/audit/api/audit/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS" ],
       "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
       "RateLimitOptions": { "EnableRateLimiting": false, "Period": "1m", "Limit": 100 },

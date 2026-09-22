@@ -7,6 +7,7 @@ using MyApp.Shared.Infrastructure.Export;
 
 namespace MyApp.Inventory.API.Controllers
 {
+    /// <summary>API controller for warehouse stock query and availability operations in the Inventory service.</summary>
     [ApiController]
     [Authorize]
     [Route("api/inventory/warehouse-stocks")]
@@ -15,6 +16,10 @@ namespace MyApp.Inventory.API.Controllers
         private readonly IWarehouseStockService _warehouseStockService;
         private readonly ILogger<WarehouseStocksController> _logger;
 
+        /// <summary>Initialises a new instance of <see cref="WarehouseStocksController"/>.</summary>
+        /// Initializes a new instance of the WarehouseStocksController class.
+        /// <param name="warehouseStockService">The warehouse Stock Service.</param>
+        /// <param name="logger">The logger.</param>
         public WarehouseStocksController(IWarehouseStockService warehouseStockService, ILogger<WarehouseStocksController> logger)
         {
             _warehouseStockService = warehouseStockService;
@@ -77,6 +82,11 @@ namespace MyApp.Inventory.API.Controllers
             return Ok(stocks);
         }
 
+        /// <summary>
+        /// Get stock record for a specific product in a specific warehouse - Requires Inventory.Read permission
+        /// </summary>
+        /// <param name="productId">The product Id.</param>
+        /// <param name="warehouseId">The warehouse Id.</param>
         [HttpGet("by-product-warehouse/{productId}/{warehouseId}")]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(typeof(WarehouseStockDto), StatusCodes.Status200OK)]
@@ -91,6 +101,10 @@ namespace MyApp.Inventory.API.Controllers
             return Ok(stock);
         }
 
+        /// <summary>
+        /// Get all stock records for a product across all warehouses - Requires Inventory.Read permission
+        /// </summary>
+        /// <param name="productId">The product Id.</param>
         [HttpGet("product/{productId}")]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(typeof(List<WarehouseStockDto>), StatusCodes.Status200OK)]
@@ -100,6 +114,10 @@ namespace MyApp.Inventory.API.Controllers
             return Ok(stocks);
         }
 
+        /// <summary>
+        /// Get all stock records held in a specific warehouse - Requires Inventory.Read permission
+        /// </summary>
+        /// <param name="warehouseId">The warehouse Id.</param>
         [HttpGet("warehouse/{warehouseId}")]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(typeof(List<WarehouseStockDto>), StatusCodes.Status200OK)]
@@ -109,6 +127,10 @@ namespace MyApp.Inventory.API.Controllers
             return Ok(stocks);
         }
 
+        /// <summary>
+        /// Get aggregated stock availability for a product across all warehouses - Requires Inventory.Read permission
+        /// </summary>
+        /// <param name="productId">The product Id.</param>
         [HttpGet("availability/{productId}")]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(typeof(StockAvailabilityDto), StatusCodes.Status200OK)]
@@ -123,6 +145,9 @@ namespace MyApp.Inventory.API.Controllers
             return Ok(availability);
         }
 
+        /// <summary>
+        /// Get all warehouse stock records whose available quantity is at or below the product reorder level - Requires Inventory.Read permission
+        /// </summary>
         [HttpGet("low-stock")]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(typeof(List<WarehouseStockDto>), StatusCodes.Status200OK)]

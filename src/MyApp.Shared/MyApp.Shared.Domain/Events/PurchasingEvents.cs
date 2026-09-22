@@ -1,8 +1,12 @@
 namespace MyApp.Shared.Domain.Events;
 
 /// <summary>
-/// Event raised when a purchase order is created.
+/// Purchase order created event.
 /// </summary>
+/// <param name="PurchaseOrderId">The purchase Order Id.</param>
+/// <param name="SupplierId">The supplier Id.</param>
+/// <param name="OrderNumber">The order Number.</param>
+/// <param name="TotalAmount">The total Amount.</param>
 public record PurchaseOrderCreatedEvent(
     Guid PurchaseOrderId,
     Guid SupplierId,
@@ -11,8 +15,11 @@ public record PurchaseOrderCreatedEvent(
 );
 
 /// <summary>
-/// Event raised when a purchase order is approved.
+/// Purchase order approved event.
 /// </summary>
+/// <param name="PurchaseOrderId">The purchase Order Id.</param>
+/// <param name="SupplierId">The supplier Id.</param>
+/// <param name="ApprovedDate">The approved Date.</param>
 public record PurchaseOrderApprovedEvent(
     Guid PurchaseOrderId,
     Guid SupplierId,
@@ -20,8 +27,11 @@ public record PurchaseOrderApprovedEvent(
 );
 
 /// <summary>
-/// Event raised when a purchase order is received.
+/// Purchase order received event.
 /// </summary>
+/// <param name="PurchaseOrderId">The purchase Order Id.</param>
+/// <param name="WarehouseId">The warehouse Id.</param>
+/// <param name="ReceivedDate">The received Date.</param>
 public record PurchaseOrderReceivedEvent(
     Guid PurchaseOrderId,
     Guid WarehouseId,
@@ -29,8 +39,13 @@ public record PurchaseOrderReceivedEvent(
 );
 
 /// <summary>
-/// Event raised when a line item in a purchase order is received.
+/// Purchase order line received event.
 /// </summary>
+/// <param name="PurchaseOrderId">The purchase Order Id.</param>
+/// <param name="PurchaseOrderLineId">The purchase Order Line Id.</param>
+/// <param name="ProductId">The product Id.</param>
+/// <param name="ReceivedQuantity">The received Quantity.</param>
+/// <param name="WarehouseId">The warehouse Id.</param>
 public record PurchaseOrderLineReceivedEvent(
     Guid PurchaseOrderId,
     Guid PurchaseOrderLineId,

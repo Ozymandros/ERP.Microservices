@@ -1,14 +1,45 @@
+using Microsoft.Extensions.Logging;
 using MyApp.Agentic.Application.Contracts.DTOs;
 using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Agentic.Domain.AIProviders;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Agentic.Application.Services;
 
-public class AIProviderService(
-    IAIProviderRepository providerRepository,
-    ISecretCryptoService secretCryptoService) : IAIProviderService
+public class AIProviderService : AppServiceBase, IAIProviderService
 {
+    private readonly IAIProviderRepository providerRepository;
+    private readonly ISecretCryptoService secretCryptoService;
+
+    /// <summary>
+    /// Initializes a new instance of the AIProviderService class.
+    /// </summary>
+    /// <param name="providerRepository">The provider Repository.</param>
+    /// <param name="secretCryptoService">The secret Crypto Service.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="logger">The logger.</param>
+    public AIProviderService(
+        IAIProviderRepository providerRepository,
+        ISecretCryptoService secretCryptoService,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        ILogger<AIProviderService> logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Agentic)
+    {
+        this.providerRepository = providerRepository;
+        this.secretCryptoService = secretCryptoService;
+    }
+
+    /// <summary>
+    /// Lists items asynchronously.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<IEnumerable<AIProviderDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         var providers = await providerRepository.GetAllAsync();
@@ -17,12 +48,24 @@ public class AIProviderService(
             .Select(MapToDto);
     }
 
+    /// <summary>
+    /// Gets an item by its unique identifier asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<AIProviderDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var provider = await providerRepository.GetByIdAsync(id);
         return provider is null ? null : MapToDto(provider);
     }
 
+    /// <summary>
+    /// Creates a new item asynchronously.
+    /// </summary>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<AIProviderDto> CreateAsync(CreateAIProviderDto dto, CancellationToken cancellationToken = default)
     {
         var encryptedApiKey = string.IsNullOrWhiteSpace(dto.ApiKey)
@@ -44,9 +87,17 @@ public class AIProviderService(
             dto.DefaultBotType,
             dto.DefaultSystemPrompt);
         await providerRepository.AddAsync(provider);
+        await SaveChangesAsync(cancellationToken);
         return MapToDto(provider);
     }
 
+    /// <summary>
+    /// Updates an existing item asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<AIProviderDto> UpdateAsync(Guid id, UpdateAIProviderDto dto, CancellationToken cancellationToken = default)
     {
         var provider = await providerRepository.GetByIdAsync(id);
@@ -76,9 +127,15 @@ public class AIProviderService(
             dto.DefaultBotType,
             dto.DefaultSystemPrompt);
         await providerRepository.UpdateAsync(provider);
+        await SaveChangesAsync(cancellationToken);
         return MapToDto(provider);
     }
 
+    /// <summary>
+    /// Deletes an item asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var provider = await providerRepository.GetByIdAsync(id);
@@ -86,6 +143,7 @@ public class AIProviderService(
             return;
 
         await providerRepository.DeleteAsync(provider);
+        await SaveChangesAsync(cancellationToken);
     }
 
     private AIProviderDto MapToDto(AIProvider provider)

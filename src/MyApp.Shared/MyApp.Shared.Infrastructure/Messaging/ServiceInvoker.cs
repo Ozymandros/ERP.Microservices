@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MyApp.Shared.Domain.Authentication;
 using MyApp.Shared.Domain.Messaging;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -20,6 +21,14 @@ public class ServiceInvoker : IServiceInvoker
     private readonly JsonSerializerOptions _jsonOptions;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    /// <summary>
+    /// Initializes a new instance of the ServiceInvoker class.
+    /// </summary>
+    /// <param name="daprClient">The dapr Client.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="jsonOptions">The json Options.</param>
+    /// <param name="httpContextAccessor">The http Context Accessor.</param>
+    /// <param name="enableLogging">The enable Logging.</param>
     public ServiceInvoker(
         DaprClient daprClient,
         ILogger<ServiceInvoker> logger,
@@ -156,6 +165,13 @@ public class ServiceInvoker : IServiceInvoker
         }
     }
 
+    /// <summary>
+    /// Invoke asynchronously.
+    /// </summary>
+    /// <param name="serviceName">The service Name.</param>
+    /// <param name="methodPath">The method Path.</param>
+    /// <param name="httpMethod">The http Method.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task InvokeAsync(
         string serviceName,
         string methodPath,
@@ -206,6 +222,15 @@ public class ServiceInvoker : IServiceInvoker
         }
     }
 
+    /// <summary>
+    /// Creates a request.
+    /// </summary>
+    /// <param name="serviceName">The service Name.</param>
+    /// <param name="methodPath">The method Path.</param>
+    /// <param name="httpMethod">The http Method.</param>
+    /// <param name="requestBody">The request Body.</param>
+    /// <param name="queryParams">The query Params.</param>
+    /// <returns>The result of the operation.</returns>
     public HttpRequestMessage CreateRequest(
         string serviceName,
         string methodPath,
@@ -274,8 +299,9 @@ public class ServiceInvoker : IServiceInvoker
 
             if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
             {
-                var token = authHeader.ToString().Replace("Bearer ", string.Empty, StringComparison.OrdinalIgnoreCase);
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var token = BearerTokenHelper.ExtractToken(authHeader);
+                if (!string.IsNullOrWhiteSpace(token))
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
 
 #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used

@@ -78,3 +78,17 @@ module "irsa" {
   create_external_secrets_role = var.enable_external_secrets_irsa
   tags                         = local.base_tags
 }
+
+module "github_oidc" {
+  count  = var.enable_github_actions_deploy ? 1 : 0
+  source = "./modules/github-oidc"
+
+  name_prefix              = local.name_prefix
+  github_repository        = var.github_repository
+  eks_cluster_name         = module.eks.cluster_name
+  eks_cluster_arn          = module.eks.cluster_arn
+  github_oidc_provider_arn = var.github_oidc_provider_arn
+  tags                     = local.base_tags
+
+  depends_on = [module.eks]
+}

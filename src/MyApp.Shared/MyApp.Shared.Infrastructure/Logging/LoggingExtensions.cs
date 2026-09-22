@@ -11,6 +11,7 @@ namespace MyApp.Shared.Infrastructure.Logging;
 public static class LoggingExtensions
 {
     /// <summary>Add Custom Logging.</summary>
+    /// <param name="builder">The builder.</param>
     public static IHostApplicationBuilder AddCustomLogging(this IHostApplicationBuilder builder)
     {
         builder.Services.AddSerilog((services, loggerConfiguration) =>

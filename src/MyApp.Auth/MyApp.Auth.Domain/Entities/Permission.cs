@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MyApp.Shared.Domain.Entities;
 
+namespace MyApp.Auth.Domain.Entities;
+
 /// <summary>
-/// Represents a permission that can be assigned to roles or users.
+/// Permission.
 /// </summary>
+/// <param name="id">The id.</param>
 public class Permission(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>
@@ -28,14 +31,17 @@ public class Permission(Guid id) : AuditableEntity<Guid>(id)
 public class PermissionComparer : IEqualityComparer<Permission>
 {
     /// <summary>
-    /// Compares two permissions by their unique identifiers.
+    /// Equals.
     /// </summary>
+    /// <param name="x">The x.</param>
+    /// <param name="y">The y.</param>
     public bool Equals(Permission? x, Permission? y)
         => x?.Id == y?.Id;
 
     /// <summary>
-    /// Returns the hash code for a permission based on its unique identifier.
+    /// Gets the hash code.
     /// </summary>
+    /// <param name="obj">The obj.</param>
     public int GetHashCode(Permission obj)
         => obj.Id.GetHashCode();
 }

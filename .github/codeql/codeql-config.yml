@@ -1,8 +1,12 @@
 name: "CodeQL Configuration"
 
+# Security-focused suite only. Do not use security-and-quality here — it floods
+# the GitHub Security tab with maintainability findings (unused locals, etc.).
 queries:
-  - uses: security-and-quality
   - uses: security-extended
+
+packs:
+  - ./.github/codeql
 
 paths-ignore:
   - '**/bin/**'
@@ -10,6 +14,9 @@ paths-ignore:
   - '**/Migrations/**'
   - '**/test/**'
   - '**/Tests/**'
+  - '**/*Tests/**'
+  - '**/*.Tests/**'
   - '**/*.Designer.cs'
   - '**/*.g.cs'
   - '**/*.g.i.cs'
+  - '**/generated/**'

@@ -2,7 +2,6 @@ using Dapr.Client;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyApp.Shared.Domain.Messaging;
-
 namespace MyApp.Shared.Infrastructure.Messaging;
 
 /// <summary>
@@ -14,6 +13,12 @@ public class EventPublisher : IEventPublisher
     private readonly ILogger<EventPublisher> _logger;
     private readonly EventPublisherOptions _options;
 
+    /// <summary>
+    /// Initializes a new instance of the EventPublisher class.
+    /// </summary>
+    /// <param name="daprClient">The dapr Client.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="options">The options.</param>
     public EventPublisher(
         DaprClient daprClient,
         ILogger<EventPublisher> logger,

@@ -6,7 +6,7 @@ x-buildkit: &buildkit
 x-api-env: &api-env
   ASPNETCORE_ENVIRONMENT: Development
   ASPNETCORE_URLS: http://+:8080
-  FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+  ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000;http://localhost:5000}
   Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
   Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
   Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
@@ -45,7 +45,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
-      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000;http://localhost:5000}
       Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
       Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
       Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
@@ -126,7 +126,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
-      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000;http://localhost:5000}
       Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
       Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
       Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
@@ -180,7 +180,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
-      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000;http://localhost:5000}
       Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
       Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
       Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
@@ -258,7 +258,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
-      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000;http://localhost:5000}
       Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
       Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
       Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
@@ -318,7 +318,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
-      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000;http://localhost:5000}
       Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
       Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
       Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
@@ -378,7 +378,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
-      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000;http://localhost:5000}
       Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
       Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
       Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
@@ -438,7 +438,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
-      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000;http://localhost:5000}
       Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
       Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
       Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
@@ -498,7 +498,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
-      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000;http://localhost:5000}
       Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
       Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
       Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}
@@ -557,7 +557,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
-      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000;http://localhost:5000}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000;http://localhost:5000}
       Jwt__SecretKey: ${JWT_SECRET:-una_clau_molt_llarga_i_super_ultra_secreta_01234566789}
       Jwt__Issuer: ${JWT_ISSUER:-MyApp.Auth}
       Jwt__Audience: ${JWT_AUDIENCE:-MyApp.All}

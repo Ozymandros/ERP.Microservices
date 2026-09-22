@@ -328,6 +328,7 @@ public class UserRepositoryTests
 
         // Act
         await _repository.DeleteAsync(user);
+        await _context.SaveChangesAsync();
         var result = _context.Users.Find(user.Id);
 
         // Assert

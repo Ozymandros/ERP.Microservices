@@ -11,14 +11,16 @@ namespace MyApp.Purchasing.Infrastructure.Data.Repositories;
 public class PurchaseOrderLineRepository : Repository<PurchaseOrderLine, Guid>, IPurchaseOrderLineRepository
 {
     /// <summary>base.</summary>
+    /// <param name="dbContext">The db Context.</param>
     public PurchaseOrderLineRepository(PurchasingDbContext dbContext) : base(dbContext)
     {
     }
 
     /// <summary>Get By Purchase Order Id Async.</summary>
+    /// <param name="purchaseOrderId">The purchase Order Id.</param>
     public async Task<IEnumerable<PurchaseOrderLine>> GetByPurchaseOrderIdAsync(Guid purchaseOrderId)
     {
-        return await _dbContext.Set<PurchaseOrderLine>()
+        return await DbContext.Set<PurchaseOrderLine>()
             .Where(x => x.PurchaseOrderId == purchaseOrderId)
             .ToListAsync();
     }

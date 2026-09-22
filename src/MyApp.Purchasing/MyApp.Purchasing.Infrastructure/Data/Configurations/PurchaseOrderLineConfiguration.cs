@@ -10,6 +10,7 @@ namespace MyApp.Purchasing.Infrastructure.Data.Configurations;
 public class PurchaseOrderLineConfiguration : IEntityTypeConfiguration<PurchaseOrderLine>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<PurchaseOrderLine> builder)
     {
         builder.HasKey(x => x.Id);

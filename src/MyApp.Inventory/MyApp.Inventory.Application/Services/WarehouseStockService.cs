@@ -4,17 +4,20 @@ using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.BusinessRules;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Exceptions;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 
 namespace MyApp.Inventory.Application.Services;
 
 /// <summary>
 /// Provides Warehouse Stock Service functionality.
 /// </summary>
-public class WarehouseStockService : IWarehouseStockService
+public class WarehouseStockService : AppServiceBase, IWarehouseStockService
 {
     private readonly IWarehouseStockRepository _warehouseStockRepository;
     private readonly IProductRepository _productRepository;
@@ -22,27 +25,38 @@ public class WarehouseStockService : IWarehouseStockService
     private readonly IInventoryReservationRepository _reservationRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<WarehouseStockService> _logger;
-    private readonly IEventPublisher _eventPublisher;
 
+    /// <summary>Initialises a new instance of <see cref="WarehouseStockService"/>.</summary>
+    /// Initializes a new instance of the WarehouseStockService class.
+    /// <param name="warehouseStockRepository">The warehouse Stock Repository.</param>
+    /// <param name="productRepository">The product Repository.</param>
+    /// <param name="transactionRepository">The transaction Repository.</param>
+    /// <param name="reservationRepository">The reservation Repository.</param>
+    /// <param name="mapper">The mapper.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="logger">The logger.</param>
     public WarehouseStockService(
         IWarehouseStockRepository warehouseStockRepository,
         IProductRepository productRepository,
         IInventoryTransactionRepository transactionRepository,
         IInventoryReservationRepository reservationRepository,
         IMapper mapper,
-        ILogger<WarehouseStockService> logger,
-        IEventPublisher eventPublisher)
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        ILogger<WarehouseStockService> logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Inventory)
     {
         _warehouseStockRepository = warehouseStockRepository;
         _productRepository = productRepository;
         _transactionRepository = transactionRepository;
         _reservationRepository = reservationRepository;
         _mapper = mapper;
-        _logger = logger;
-        _eventPublisher = eventPublisher;
-    }
+        _logger = logger;    }
 
     /// <summary>Get By Product And Warehouse Async.</summary>
+    /// <param name="productId">The product Id.</param>
+    /// <param name="warehouseId">The warehouse Id.</param>
     public async Task<WarehouseStockDto?> GetByProductAndWarehouseAsync(Guid productId, Guid warehouseId)
     {
         var stock = await _warehouseStockRepository.GetByProductAndWarehouseAsync(productId, warehouseId);
@@ -50,6 +64,7 @@ public class WarehouseStockService : IWarehouseStockService
     }
 
     /// <summary>Get By Product Id Async.</summary>
+    /// <param name="productId">The product Id.</param>
     public async Task<List<WarehouseStockDto>> GetByProductIdAsync(Guid productId)
     {
         var stocks = await _warehouseStockRepository.GetByProductIdAsync(productId);
@@ -57,6 +72,7 @@ public class WarehouseStockService : IWarehouseStockService
     }
 
     /// <summary>Get By Warehouse Id Async.</summary>
+    /// <param name="warehouseId">The warehouse Id.</param>
     public async Task<List<WarehouseStockDto>> GetByWarehouseIdAsync(Guid warehouseId)
     {
         var stocks = await _warehouseStockRepository.GetByWarehouseIdAsync(warehouseId);
@@ -64,6 +80,7 @@ public class WarehouseStockService : IWarehouseStockService
     }
 
     /// <summary>Get Product Availability Async.</summary>
+    /// <param name="productId">The product Id.</param>
     public async Task<StockAvailabilityDto?> GetProductAvailabilityAsync(Guid productId)
     {
         var product = await _productRepository.GetByIdAsync(productId);
@@ -87,6 +104,7 @@ public class WarehouseStockService : IWarehouseStockService
     }
 
     /// <summary>Reserve Stock Async.</summary>
+    /// <param name="dto">The dto.</param>
     public async Task<ReservationDto> ReserveStockAsync(ReserveStockDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
@@ -130,6 +148,7 @@ public class WarehouseStockService : IWarehouseStockService
             Status = InventoryReservationStatus.Reserved
         };
         await _reservationRepository.AddAsync(reservationRecord);
+        await SaveChangesAsync();
 
         _logger.LogInformation("Stock reserved successfully: {@Reservation}", new { dto.ProductId, dto.Quantity, ExpiresAt = expiresAt });
 
@@ -144,7 +163,7 @@ public class WarehouseStockService : IWarehouseStockService
 
         try
         {
-            await _eventPublisher.PublishAsync("inventory.stock.reserved", stockReservedEvent);
+            await EventPublisher.PublishAsync("inventory.stock.reserved", stockReservedEvent);
             _logger.LogInformation("Published StockReservedEvent for reservation {ReservationId}", reservationId);
         }
         catch (Exception ex)
@@ -166,6 +185,7 @@ public class WarehouseStockService : IWarehouseStockService
     }
 
     /// <summary>Release Reservation Async.</summary>
+    /// <param name="reservationId">The reservation Id.</param>
     public async Task ReleaseReservationAsync(Guid reservationId)
     {
         _logger.LogInformation("Releasing reservation: ReservationId={ReservationId}", reservationId);
@@ -209,6 +229,7 @@ public class WarehouseStockService : IWarehouseStockService
         // Mark reservation as released
         reservation.Status = InventoryReservationStatus.Released;
         await _reservationRepository.UpdateAsync(reservation);
+        await SaveChangesAsync();
 
         _logger.LogInformation("Reservation {ReservationId} released successfully.", reservationId);
 
@@ -222,7 +243,7 @@ public class WarehouseStockService : IWarehouseStockService
 
         try
         {
-            await _eventPublisher.PublishAsync("inventory.stock.released", stockReleasedEvent);
+            await EventPublisher.PublishAsync("inventory.stock.released", stockReleasedEvent);
             _logger.LogInformation("Published StockReleasedEvent for reservation {ReservationId}", reservationId);
         }
         catch (Exception ex)
@@ -232,6 +253,7 @@ public class WarehouseStockService : IWarehouseStockService
     }
 
     /// <summary>Transfer Stock Async.</summary>
+    /// <param name="dto">The dto.</param>
     public async Task TransferStockAsync(StockTransferDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
@@ -298,6 +320,7 @@ public class WarehouseStockService : IWarehouseStockService
 
         await _transactionRepository.AddAsync(outboundTx);
         await _transactionRepository.AddAsync(inboundTx);
+        await SaveChangesAsync();
 
         _logger.LogInformation("Stock transferred successfully: {@Transfer}", new { dto.ProductId, dto.Quantity });
 
@@ -312,7 +335,7 @@ public class WarehouseStockService : IWarehouseStockService
 
         try
         {
-            await _eventPublisher.PublishAsync("inventory.stock.transferred", stockTransferredEvent);
+            await EventPublisher.PublishAsync("inventory.stock.transferred", stockTransferredEvent);
             _logger.LogInformation("Published StockTransferredEvent: {@Event}", new { ProductId = dto.ProductId });
         }
         catch (Exception ex)
@@ -322,6 +345,7 @@ public class WarehouseStockService : IWarehouseStockService
     }
 
     /// <summary>Adjust Stock Async.</summary>
+    /// <param name="dto">The dto.</param>
     public async Task AdjustStockAsync(StockAdjustmentDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
@@ -362,6 +386,7 @@ public class WarehouseStockService : IWarehouseStockService
         };
 
         await _transactionRepository.AddAsync(transaction);
+        await SaveChangesAsync();
 
         _logger.LogInformation("Stock adjusted successfully: {@Adjustment}", new { dto.ProductId, NewQuantity = warehouseStock.AvailableQuantity });
 
@@ -376,7 +401,7 @@ public class WarehouseStockService : IWarehouseStockService
 
         try
         {
-            await _eventPublisher.PublishAsync("inventory.stock.adjusted", stockAdjustedEvent);
+            await EventPublisher.PublishAsync("inventory.stock.adjusted", stockAdjustedEvent);
             _logger.LogInformation("Published StockAdjustedEvent: {@Event}", new { ProductId = dto.ProductId });
         }
         catch (Exception ex)

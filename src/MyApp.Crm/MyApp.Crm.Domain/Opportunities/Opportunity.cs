@@ -5,8 +5,9 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Crm.Domain.Opportunities;
 
 /// <summary>
-/// Provides Opportunity functionality.
+/// Opportunity.
 /// </summary>
+/// <param name="id">The id.</param>
 public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>Gets or sets Customer Id.</summary>
@@ -41,6 +42,14 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
     /// <summary>Gets or sets Tags.</summary>
     public List<OpportunityTag> Tags { get; private set; } = new();
 
+    /// <summary>Initializes a new instance of the Opportunity class.</summary>
+    /// Initializes a new instance of the Opportunity class.
+    /// <param name="id">The id.</param>
+    /// <param name="customerId">The customer Id.</param>
+    /// <param name="name">The name.</param>
+    /// <param name="ownerUsername">The owner Username.</param>
+    /// <param name="leadId">The lead Id.</param>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="customerId"/> is empty.</exception>
     public Opportunity(
         Guid id,
         Guid customerId,
@@ -58,6 +67,9 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Update Forecast.</summary>
+    /// <param name="probability">The probability.</param>
+    /// <param name="expectedAmount">The expected Amount.</param>
+    /// <param name="expectedCloseDate">The expected Close Date.</param>
     public void UpdateForecast(decimal probability, decimal? expectedAmount, DateOnly? expectedCloseDate)
     {
         EnsureNotClosed();
@@ -74,6 +86,7 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Move To Stage.</summary>
+    /// <param name="stage">The stage.</param>
     public void MoveToStage(OpportunityStage stage)
     {
         EnsureNotClosed();
@@ -88,6 +101,7 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Mark Won.</summary>
+    /// <param name="note">The note.</param>
     public void MarkWon(string? note = null)
     {
         EnsureNotClosed();
@@ -99,6 +113,13 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Add Line.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="description">The description.</param>
+    /// <param name="quantity">The quantity.</param>
+    /// <param name="unitPrice">The unit Price.</param>
+    /// <param name="discountPercent">The discount Percent.</param>
+    /// <param name="productId">The product Id.</param>
+    /// <param name="sku">The sku.</param>
     public OpportunityLine AddLine(
         Guid id,
         string description,
@@ -123,6 +144,13 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Update Line.</summary>
+    /// <param name="lineId">The line Id.</param>
+    /// <param name="description">The description.</param>
+    /// <param name="quantity">The quantity.</param>
+    /// <param name="unitPrice">The unit Price.</param>
+    /// <param name="discountPercent">The discount Percent.</param>
+    /// <param name="productId">The product Id.</param>
+    /// <param name="sku">The sku.</param>
     public void UpdateLine(
         Guid lineId,
         string description,
@@ -140,6 +168,7 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Remove Line.</summary>
+    /// <param name="lineId">The line Id.</param>
     public void RemoveLine(Guid lineId)
     {
         EnsureNotClosed();
@@ -149,6 +178,8 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Set Converted Quote.</summary>
+    /// <param name="quoteId">The quote Id.</param>
+    /// <param name="quoteNumber">The quote Number.</param>
     public void SetConvertedQuote(Guid quoteId, string quoteNumber)
     {
         if (quoteId == Guid.Empty) throw new ArgumentException("QuoteId is required.", nameof(quoteId));
@@ -162,6 +193,7 @@ public class Opportunity(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Mark Lost.</summary>
+    /// <param name="reasonNote">The reason Note.</param>
     public void MarkLost(string reasonNote)
     {
         EnsureNotClosed();

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyApp.Audit.Domain\MyApp.Audit.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Audit.Application.Contracts\MyApp.Audit.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Application\MyApp.Shared.Application.csproj" />
+  </ItemGroup>
+</Project>

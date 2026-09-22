@@ -28,6 +28,12 @@ public static class ServiceNames
 
     /// <summary>Gets the identifier for the Notification service.</summary>
     public const string Notification = "notification-service";
+
+    /// <summary>Gets the identifier for the Audit service.</summary>
+    public const string Audit = "audit-service";
+
+    /// <summary>Gets the identifier for the Agentic service.</summary>
+    public const string Agentic = "agentic-service";
 }
 
 /// <summary>
@@ -69,6 +75,13 @@ public static class ApiEndpoints
 
         /// <summary>Gets the endpoint for sales quotes.</summary>
         public const string Quotes = "api/sales/orders/quotes";
+    }
+
+    /// <summary>Audit service endpoints.</summary>
+    public static class Audit
+    {
+        /// <summary>Gets the base endpoint for recording entity changes.</summary>
+        public const string EntityChanges = "api/audit/entity-changes";
     }
 }
 
@@ -142,6 +155,9 @@ public static class MessagingConstants
 
         /// <summary>Gets the topic name for CRM activity completed events.</summary>
         public const string CrmActivityCompleted = "crm.activity.completed";
+
+        /// <summary>Gets the topic name for entity-change audit events after a service DB commit.</summary>
+        public const string AuditEntityChangesSaved = "audit.entity-changes.saved";
     }
 }
 

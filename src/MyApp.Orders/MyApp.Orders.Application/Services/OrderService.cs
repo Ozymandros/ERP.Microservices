@@ -10,43 +10,56 @@ using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Exceptions;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Inventory.Application.Contracts.DTOs;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Orders.Application.Services
 {
     /// <summary>Service for managing order operations.</summary>
-    public class OrderService : IOrderService
+    public class OrderService : AppServiceBase, IOrderService
     {
         private readonly IOrderRepository _orders;
         private readonly IOrderLineRepository _lines;
         private readonly IReservedStockRepository _reservedStockRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<OrderService> _logger;
-        private readonly IEventPublisher _eventPublisher;
         private readonly IServiceInvoker _serviceInvoker;
 
-        /// <summary>Initializes a new instance of the OrderService class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="OrderService"/> class.</summary>
+        /// Initializes a new instance of the OrderService class.
+        /// <param name="orders">The orders.</param>
+        /// <param name="lines">The lines.</param>
+        /// <param name="reservedStockRepository">The reserved Stock Repository.</param>
+        /// <param name="mapper">The mapper.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="unitOfWork">The unit Of Work.</param>
+        /// <param name="eventPublisher">The event Publisher.</param>
+        /// <param name="serviceInvoker">The service Invoker.</param>
         public OrderService(
             IOrderRepository orders,
             IOrderLineRepository lines,
             IReservedStockRepository reservedStockRepository,
             IMapper mapper,
             ILogger<OrderService> logger,
+            IUnitOfWork unitOfWork,
             IEventPublisher eventPublisher,
             IServiceInvoker serviceInvoker)
+            : base(unitOfWork, eventPublisher, logger, ServiceNames.Orders)
         {
             _orders = orders;
             _lines = lines;
             _reservedStockRepository = reservedStockRepository;
             _mapper = mapper;
             _logger = logger;
-            _eventPublisher = eventPublisher;
-            _serviceInvoker = serviceInvoker;
-        }
+            _serviceInvoker = serviceInvoker;        }
 
         /// <summary>Creates a new order.</summary>
+        /// Creates a new item asynchronously.
+        /// <param name="dto">The dto.</param>
+        /// <returns>The created order DTO.</returns>
         public async Task<OrderDto> CreateAsync(CreateUpdateOrderDto dto)
         {
             var entity = _mapper.Map<Order>(dto);
@@ -64,6 +77,7 @@ namespace MyApp.Orders.Application.Services
             }
 
             await _orders.AddAsync(entity);
+            await SaveChangesAsync();
 
             return _mapper.Map<OrderDto>(entity);
         }
@@ -74,17 +88,27 @@ namespace MyApp.Orders.Application.Services
             // Example: Use a timestamp and a random suffix for uniqueness (replace with a DB sequence or other logic as needed)
             var now = DateTime.UtcNow;
             var random = Guid.NewGuid().ToString()[..8];
-            var count = (await _orders.ListAsync()).Count() + 1; // Not perfect for concurrency, but placeholder
+            var count = (await _orders.GetAllAsync()).Count() + 1; // Not perfect for concurrency, but placeholder
             return $"ORD-{now:yyyyMMddHHmmss}-{count}-{random}";
         }
 
         /// <summary>Deletes an order by ID.</summary>
+        /// Deletes an item asynchronously.
+        /// <param name="id">The id.</param>
         public async Task DeleteAsync(Guid id)
         {
-            await _orders.DeleteAsync(id);
+            var entity = await _orders.GetByIdAsync(id);
+            if (entity == null)
+                return;
+
+            await _orders.DeleteAsync(entity);
+            await SaveChangesAsync();
         }
 
         /// <summary>Retrieves an order by ID.</summary>
+        /// Gets an item by its unique identifier asynchronously.
+        /// <param name="id">The id.</param>
+        /// <returns>The order DTO corresponding to the specified ID.</returns>
         public async Task<OrderDto> GetByIdAsync(Guid id)
         {
             var entity = await _orders.GetByIdAsync(id);
@@ -92,6 +116,9 @@ namespace MyApp.Orders.Application.Services
         }
 
         /// <summary>Retrieves an order by order number.</summary>
+        /// Gets the order number asynchronously.
+        /// <param name="orderNumber">The order Number.</param>
+        /// <returns>The matching order DTO, or null if not found.</returns>
         public async Task<OrderDto?> GetByOrderNumberAsync(string orderNumber)
         {
             var entity = await _orders.GetByOrderNumberAsync(orderNumber);
@@ -99,13 +126,17 @@ namespace MyApp.Orders.Application.Services
         }
 
         /// <summary>Retrieves all orders.</summary>
+        /// Lists items asynchronously.
         public async Task<IEnumerable<OrderDto>> ListAsync()
         {
-            var list = await _orders.ListAsync();
+            var list = await _orders.GetAllAsync();
             return list.Select(o => _mapper.Map<OrderDto>(o));
         }
 
         /// <summary>Updates an existing order.</summary>
+        /// Updates an existing item asynchronously.
+        /// <param name="id">The id.</param>
+        /// <param name="dto">The dto.</param>
         public async Task UpdateAsync(Guid id, CreateUpdateOrderDto dto)
         {
             var existing = await _orders.GetByIdAsync(id);
@@ -132,9 +163,15 @@ namespace MyApp.Orders.Application.Services
             }
 
             await _orders.UpdateAsync(existing);
+            await SaveChangesAsync();
         }
 
         /// <summary>Creates an order with stock reservation.</summary>
+        /// Creates an order with reservation asynchronously.
+        /// <param name="dto">The dto.</param>
+        /// <returns>The created order DTO with reservation details.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the order has no lines.</exception>
+        /// <exception cref="MyApp.Shared.Domain.Exceptions.OrderFulfillmentException">Thrown when stock reservation fails for any line.</exception>
         public async Task<OrderDto> CreateOrderWithReservationAsync(CreateOrderWithReservationDto dto)
         {
             _logger.LogInformation(
@@ -258,7 +295,7 @@ namespace MyApp.Orders.Application.Services
 
             try
             {
-                await _eventPublisher.PublishAsync(MessagingConstants.Topics.OrderCreated, orderCreatedEvent);
+                await EventPublisher.PublishAsync(MessagingConstants.Topics.OrderCreated, orderCreatedEvent);
                 _logger.LogInformation("Published OrderCreatedEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)
@@ -266,11 +303,18 @@ namespace MyApp.Orders.Application.Services
                 _logger.LogError(ex, "Failed to publish OrderCreatedEvent for Order {OrderId}", order.Id);
             }
 
+            await SaveChangesAsync();
+
             _logger.LogInformation("Order created successfully with reservations: OrderId={OrderId}", order.Id);
             return _mapper.Map<OrderDto>(order);
         }
 
         /// <summary>Fulfills an order and its associated reservations.</summary>
+        /// Fulfill order asynchronously.
+        /// <param name="dto">The dto.</param>
+        /// <returns>The fulfilled order DTO.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the order is not found.</exception>
+        /// <exception cref="MyApp.Shared.Domain.Exceptions.OrderFulfillmentException">Thrown when the order cannot be fulfilled in its current state or reservations are invalid.</exception>
         public async Task<OrderDto> FulfillOrderAsync(FulfillOrderDto dto)
         {
             _logger.LogInformation("Fulfilling order: OrderId={OrderId}", dto.OrderId);
@@ -337,7 +381,7 @@ namespace MyApp.Orders.Application.Services
 
             try
             {
-                await _eventPublisher.PublishAsync(MessagingConstants.Topics.OrderFulfilled, orderFulfilledEvent);
+                await EventPublisher.PublishAsync(MessagingConstants.Topics.OrderFulfilled, orderFulfilledEvent);
                 _logger.LogInformation("Published OrderFulfilledEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)
@@ -345,11 +389,16 @@ namespace MyApp.Orders.Application.Services
                 _logger.LogError(ex, "Failed to publish OrderFulfilledEvent for Order {OrderId}", order.Id);
             }
 
+            await SaveChangesAsync();
+
             _logger.LogInformation("Order fulfilled successfully: OrderId={OrderId}", order.Id);
             return _mapper.Map<OrderDto>(order);
         }
 
         /// <summary>Cancels an order and releases its stock reservations.</summary>
+        /// Cancel order asynchronously.
+        /// <param name="dto">The dto.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the order is not found or is already completed.</exception>
         public async Task CancelOrderAsync(CancelOrderDto dto)
         {
             _logger.LogInformation(
@@ -406,7 +455,7 @@ namespace MyApp.Orders.Application.Services
 
             try
             {
-                await _eventPublisher.PublishAsync(MessagingConstants.Topics.OrderCancelled, orderCancelledEvent);
+                await EventPublisher.PublishAsync(MessagingConstants.Topics.OrderCancelled, orderCancelledEvent);
                 _logger.LogInformation("Published OrderCancelledEvent for Order {OrderId}", order.Id);
             }
             catch (Exception ex)
@@ -414,10 +463,15 @@ namespace MyApp.Orders.Application.Services
                 _logger.LogError(ex, "Failed to publish OrderCancelledEvent for Order {OrderId}", order.Id);
             }
 
+            await SaveChangesAsync();
+
             _logger.LogInformation("Order cancelled successfully: OrderId={OrderId}", order.Id);
         }
 
         /// <summary>Queries orders based on a specification with pagination.</summary>
+        /// Query orders asynchronously.
+        /// <param name="spec">The spec.</param>
+        /// <returns>A paginated result of order DTOs matching the specification.</returns>
         public async Task<PaginatedResult<OrderDto>> QueryOrdersAsync(ISpecification<Order> spec)
         {
             var result = await _orders.QueryAsync(spec);

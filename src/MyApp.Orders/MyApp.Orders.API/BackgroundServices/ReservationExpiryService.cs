@@ -16,6 +16,10 @@ public class ReservationExpiryService : BackgroundService
     private readonly ILogger<ReservationExpiryService> _logger;
     private readonly TimeSpan _checkInterval = TimeSpan.FromMinutes(5);
 
+    /// <summary>Initializes a new instance of the <see cref="ReservationExpiryService"/> class.</summary>
+    /// Initializes a new instance of the ReservationExpiryService class.
+    /// <param name="serviceProvider">The service Provider.</param>
+    /// <param name="logger">The logger.</param>
     public ReservationExpiryService(
         IServiceProvider serviceProvider,
         ILogger<ReservationExpiryService> logger)
@@ -24,6 +28,9 @@ public class ReservationExpiryService : BackgroundService
         _logger = logger;
     }
 
+    /// <summary>Executes the background service loop, checking for and releasing expired reservations at regular intervals.</summary>
+    /// <param name="stoppingToken">A cancellation token that is triggered when the service is stopping.</param>
+    /// <returns>A task representing the long-running background operation.</returns>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Reservation Expiry Service starting");

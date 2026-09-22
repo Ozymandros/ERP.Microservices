@@ -2,8 +2,9 @@ namespace MyApp.Shared.Domain.DTOs.Examples
 {
     // Example: Simple DTO with Guid ID
     /// <summary>
-    /// Represents the User Dto data record.
+    /// User dto.
     /// </summary>
+    /// <param name="Id">The id.</param>
     public record UserDto(Guid Id) : BaseGuidDto(Id)
     {
         /// <summary>Gets or sets Name.</summary>
@@ -15,8 +16,9 @@ namespace MyApp.Shared.Domain.DTOs.Examples
     // Example: DTO with audit trail and Guid ID
     // Inherited properties (CreatedAt, CreatedBy, etc.) are not redefined
     /// <summary>
-    /// Represents the Order Dto data record.
+    /// Order dto.
     /// </summary>
+    /// <param name="Id">The id.</param>
     public record OrderDto(Guid Id) : AuditableGuidDto(Id)
     {
         /// <summary>Gets or sets Order Number.</summary>
@@ -29,8 +31,9 @@ namespace MyApp.Shared.Domain.DTOs.Examples
 
     // Example: DTO with integer ID
     /// <summary>
-    /// Represents the Category Dto data record.
+    /// Category dto.
     /// </summary>
+    /// <param name="Id">The id.</param>
     public record CategoryDto(int Id) : BaseIntDto(Id)
     {
         /// <summary>Gets or sets Name.</summary>
@@ -42,8 +45,9 @@ namespace MyApp.Shared.Domain.DTOs.Examples
     // Example: DTO with audit trail and integer ID
     // Inherited properties (CreatedAt, CreatedBy, etc.) are not redefined
     /// <summary>
-    /// Represents the Product Dto data record.
+    /// Product dto.
     /// </summary>
+    /// <param name="Id">The id.</param>
     public record ProductDto(int Id) : AuditableIntDto(Id)
     {
         /// <summary>Gets or sets Name.</summary>

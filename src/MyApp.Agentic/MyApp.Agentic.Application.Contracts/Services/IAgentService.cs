@@ -172,7 +172,7 @@ public interface IAgentService
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="request"/> or <paramref name="authenticatedUserId"/> is <c>null</c>.
     /// </exception>
-    /// <exception cref="UnauthorizedException">
+    /// <exception cref="UnauthorizedAccessException">
     /// Thrown when the authenticated user does not have permission to use the specified agent.
     /// </exception>
     /// <remarks>
@@ -205,7 +205,7 @@ public interface IAgentService
     /// <exception cref="NotFoundException">
     /// Thrown when the specified agent does not exist.
     /// </exception>
-    /// <exception cref="UnauthorizedException">
+    /// <exception cref="UnauthorizedAccessException">
     /// Thrown when the authenticated user does not have permission to create sessions with the specified agent.
     /// </exception>
     /// <remarks>
@@ -239,7 +239,7 @@ public interface IAgentService
     /// <exception cref="NotFoundException">
     /// Thrown when no session with the specified <paramref name="sessionId"/> exists.
     /// </exception>
-    /// <exception cref="UnauthorizedException">
+    /// <exception cref="UnauthorizedAccessException">
     /// Thrown when the authenticated user is not the owner of the specified session.
     /// </exception>
     /// <exception cref="InvalidOperationException">
@@ -271,7 +271,7 @@ public interface IAgentService
     /// A task representing the asynchronous operation. The task result contains the session
     /// details as a <see cref="SessionDetailsResponse"/>, or <c>null</c> if the session does not exist.
     /// </returns>
-    /// <exception cref="UnauthorizedException">
+    /// <exception cref="UnauthorizedAccessException">
     /// Thrown when the authenticated user is not the owner of the specified session.
     /// </exception>
     /// <remarks>
@@ -320,7 +320,7 @@ public interface IAgentService
     /// <exception cref="NotFoundException">
     /// Thrown when no session with the specified <paramref name="sessionId"/> exists.
     /// </exception>
-    /// <exception cref="UnauthorizedException">
+    /// <exception cref="UnauthorizedAccessException">
     /// Thrown when the authenticated user is not the owner of the specified session.
     /// </exception>
     /// <remarks>

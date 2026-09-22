@@ -16,7 +16,10 @@ namespace MyApp.Auth.Infrastructure.Data;
 /// </summary>
 public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid, IdentityUserClaim<Guid>, ApplicationUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
 {
-    /// <summary>base.</summary>
+    /// <summary>
+    /// Initializes a new instance of the AuthDbContext class.
+    /// </summary>
+    /// <param name="options">The options.</param>
     public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options)
     {
     }
@@ -168,11 +171,37 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
     }
 
     /// <summary>
-    /// Save Changes Async. Saves the changes made to the database context to the database.
+    /// Save changes.
     /// </summary>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    public override int SaveChanges()
+    {
+        ApplyAuditInformation();
+        return base.SaveChanges();
+    }
+
+    /// <summary>
+    /// Save changes.
+    /// </summary>
+    /// <param name="acceptAllChangesOnSuccess">The accept All Changes On Success.</param>
+    /// <returns>The number of state entries written to the database.</returns>
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        ApplyAuditInformation();
+        return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
+    /// <summary>
+    /// Save changes asynchronously.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>The number of state entries written to the database.</returns>
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        ApplyAuditInformation();
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void ApplyAuditInformation()
     {
         var entries = ChangeTracker.Entries()
             .Where(e => e.Entity is IAuditableEntity &&
@@ -182,10 +211,6 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
             if (entry.Entity is IAuditableEntity)
             {
                 var entity = (IAuditableEntity)entry.Entity;
-                // Resolve current user name from common ambient contexts:
-                // 1. Try IHttpContextAccessor from the DbContext service provider (if available)
-                // 2. Fall back to Thread.CurrentPrincipal
-                // 3. Final fallback to SystemUser
                 string currentUser = "SystemUser";
                 try
                 {
@@ -218,8 +243,6 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
                 entity.UpdatedAt = DateTime.UtcNow;
                 entity.UpdatedBy = currentUser;
             }
-
-        return await base.SaveChangesAsync(cancellationToken);
     }
 }
 
@@ -229,7 +252,7 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
 public class AuthDbContextFactory : IDesignTimeDbContextFactory<AuthDbContext>
 {
     /// <summary>Create Db Context.</summary>
-    /// <param name="args">The arguments passed to the factory method.</param>
+    /// Creates a db context.
     /// <returns>The created AuthDbContext instance.</returns>
     public AuthDbContext CreateDbContext(string[] args)
     {

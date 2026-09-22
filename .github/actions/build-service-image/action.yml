@@ -1,0 +1,76 @@
+name: Build service container image
+description: Build or build+push one service image using repository conventions.
+
+inputs:
+  dockerfile:
+    description: Dockerfile path relative to repository root
+    required: true
+  service:
+    description: Service name from deploy/k8s/contracts/services.yaml
+    required: true
+  image_tag:
+    description: Image tag (e.g. short SHA)
+    required: true
+  do_push:
+    description: Push image to GHCR
+    required: true
+  platform:
+    description: Target platform
+    required: false
+    default: linux/amd64
+  ghcr_repo:
+    description: Lowercase owner/repo for ghcr.io image names
+    required: true
+  base_image_registry:
+    description: Registry prefix for BASE_IMAGE_REGISTRY (e.g. ghcr.io/org/repo/). Empty for local builds.
+    required: false
+    default: ""
+  runtime_from_shared_base:
+    description: Whether the Dockerfile uses the shared microservices base image
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Verify shared base registry prefix
+      if: ${{ inputs.runtime_from_shared_base == 'true' }}
+      shell: bash
+      run: |
+        set -euo pipefail
+        if [[ -z "${{ inputs.base_image_registry }}" ]]; then
+          echo "::error::BASE_IMAGE_REGISTRY is empty. The build-base-image job must run first and push myapp-microservices-base:10.0 to GHCR."
+          exit 1
+        fi
+        echo "Using BASE_IMAGE_REGISTRY=${{ inputs.base_image_registry }}"
+
+    - name: Build and push (shared runtime base)
+      if: ${{ inputs.runtime_from_shared_base == 'true' }}
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        file: ${{ inputs.dockerfile }}
+        platforms: ${{ inputs.platform }}
+        push: ${{ inputs.do_push }}
+        build-args: |
+          BASE_IMAGE_REGISTRY=${{ inputs.base_image_registry }}
+        tags: |
+          ghcr.io/${{ inputs.ghcr_repo }}/myapp-${{ inputs.service }}:${{ inputs.image_tag }}
+          ghcr.io/${{ inputs.ghcr_repo }}/myapp-${{ inputs.service }}:latest
+        cache-from: |
+          type=gha,scope=microservices-base
+          type=gha,scope=${{ inputs.service }}
+        cache-to: type=gha,mode=max,scope=${{ inputs.service }}
+
+    - name: Build and push (standalone runtime)
+      if: ${{ inputs.runtime_from_shared_base != 'true' }}
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        file: ${{ inputs.dockerfile }}
+        platforms: ${{ inputs.platform }}
+        push: ${{ inputs.do_push }}
+        tags: |
+          ghcr.io/${{ inputs.ghcr_repo }}/myapp-${{ inputs.service }}:${{ inputs.image_tag }}
+          ghcr.io/${{ inputs.ghcr_repo }}/myapp-${{ inputs.service }}:latest
+        cache-from: type=gha,scope=${{ inputs.service }}
+        cache-to: type=gha,mode=max,scope=${{ inputs.service }}

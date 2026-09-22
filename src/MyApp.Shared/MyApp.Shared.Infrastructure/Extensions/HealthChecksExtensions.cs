@@ -13,6 +13,8 @@ namespace MyApp.Shared.Infrastructure.Extensions;
 public static class HealthChecksExtensions
 {
     /// <summary>Add Custom Health Checks.</summary>
+    /// <param name="services">The services.</param>
+    /// <param name="dbConnectionString">The db Connection String.</param>
     public static IServiceCollection AddCustomHealthChecks(this IServiceCollection services, string dbConnectionString)
     {
         services.AddHealthChecks()
@@ -23,6 +25,7 @@ public static class HealthChecksExtensions
     }
 
     /// <summary>Use Custom Health Checks.</summary>
+    /// <param name="app">The app.</param>
     public static IApplicationBuilder UseCustomHealthChecks(this IApplicationBuilder app)
     {
         app.UseHealthChecks("/health", new HealthCheckOptions

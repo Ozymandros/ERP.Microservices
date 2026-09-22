@@ -5,8 +5,13 @@ using System.ClientModel;
 
 namespace MyApp.Agentic.Application.AI;
 
+/// <summary>Creates provider-specific <see cref="IChatClient"/> instances based on the agent execution context.</summary>
 public class AgentRuntimeFactory : IAgentRuntimeFactory
 {
+    /// <summary>Creates a <see cref="IChatClient"/> configured for the provider associated with the agent.</summary>
+    /// Creates a client.
+    /// <param name="context">The context.</param>
+    /// <returns>Configured chat client for the resolved provider.</returns>
     public IChatClient CreateClient(AgentExecutionContext context)
     {
         var provider = context.Agent.Model?.Provider?.Name ?? string.Empty;

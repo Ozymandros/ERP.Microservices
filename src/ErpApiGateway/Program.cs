@@ -1,7 +1,9 @@
-using Microsoft.AspNetCore.OpenApi;
+using ErpApiGateway.Infrastructure;
+using MyApp.Shared.Infrastructure.Extensions;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
-using MyApp.Shared.Infrastructure.OpenApi;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Polly;
@@ -9,13 +11,13 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Scalar.AspNetCore;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var serviceName = builder.Environment.ApplicationName ?? typeof(Program).Assembly.GetName().Name ?? "ErpApiGateway";
 
-// Configure OpenTelemetry pipeline.
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService(serviceName))
     .WithTracing(tracing => tracing
@@ -27,93 +29,81 @@ builder.Services.AddOpenTelemetry()
         .AddRuntimeInstrumentation()
         .AddOtlpExporter());
 
-// Configure JSON options for Controllers (for any JSON response from the Gateway)
-// builder.Services.ConfigureHttpJsonOptions(options =>
-// {
-//     options.SerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-//     options.SerializerOptions.Converters.Add(new MyApp.Shared.Infrastructure.Json.DateTimeConverter());
-//     options.SerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
-// });
-
-// Configure JSON options for Controllers as well
-// builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
-// {
-//     options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-//     options.JsonSerializerOptions.Converters.Add(new MyApp.Shared.Infrastructure.Json.DateTimeConverter());
-//     options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
-// });
-
-// ========================================
-// Configuration
-// ========================================
-
-// Configure Ocelot with environment-specific configuration
 var environment = builder.Environment.EnvironmentName;
 builder.Configuration
-    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"ocelot.{environment}.json", optional: true, reloadOnChange: true);
+    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
 
-// According to Microsoft's official guidelines for .NET 10:
-// The Gateway does NOT generate its own OpenAPI document (it has no controllers).
-// It only configures "placeholder" documents for each microservice it consumes remotely.
-// These documents do not look for local controllers, they only serve as identifiers.
-// We read microservices dynamically from Ocelot's configuration.
-var ocelotRoutes = builder.Configuration.GetSection("Routes").GetChildren();
-var microserviceNames = new HashSet<string>();
+// Local Aspire uses localhost ports in ocelot.Development.json. Other environments use ocelot.json
+// only (K8s service DNS). Loading ocelot.Production.json on top of ocelot.json merges Routes arrays
+// and leaves duplicate upstream templates.
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddJsonFile("ocelot.Development.json", optional: true, reloadOnChange: true);
+}
 
-// Note: Scalar does not need configuration in the builder when using MapScalarApiReference()
-// Configuration is done directly in MapScalarApiReference() with the options
+ApplyOcelotBaseUrlFromEnvironment(builder.Configuration);
 
-// ========================================
-// Services
-// ========================================
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
+        | ForwardedHeaders.XForwardedHost
+        | ForwardedHeaders.XForwardedProto
+        | ForwardedHeaders.XForwardedPrefix;
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
-// Add Ocelot
-builder.Services.AddOcelot(builder.Configuration).AddPolly();
-
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<ForwardAuthorizationDelegatingHandler>();
+builder.Services.AddOcelot(builder.Configuration)
+    .AddPolly()
+    .AddDelegatingHandler<ForwardAuthorizationDelegatingHandler>(true);
 builder.Services.AddMvcCore().AddApiExplorer();
 
-// Add Authentication - JWT Bearer
-var jwtSecretKey = builder.Configuration["Jwt:SecretKey"]
-    ?? throw new InvalidOperationException("JwtSecretKey configuration is required");
-var key = Encoding.ASCII.GetBytes(jwtSecretKey);
+var jwtSecretKey = JwtSecretResolver.GetRequiredSecretKey();
+var jwtIssuer = builder.Configuration["Jwt:Issuer"]
+    ?? throw new InvalidOperationException("Jwt:Issuer configuration is required");
+var jwtAudience = builder.Configuration["Jwt:Audience"]
+    ?? throw new InvalidOperationException("Jwt:Audience configuration is required");
+var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey));
 
 builder.Services
     .AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-        options.Authority = builder.Configuration["Jwt:Issuer"] ?? "http://localhost:6001";
-        options.Audience = builder.Configuration["Jwt:Audience"] ?? "erp-api";
+        options.MapInboundClaims = false;
+
+        // Symmetric JWT: do not set Authority/Audience (OIDC metadata); match microservice validation.
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateIssuer = !environment.Equals("Development", StringComparison.OrdinalIgnoreCase),
-            ValidIssuer = options.Authority,
-            ValidateAudience = !environment.Equals("Development", StringComparison.OrdinalIgnoreCase),
-            ValidAudience = options.Audience,
+            IssuerSigningKey = signingKey,
+            ValidateIssuer = true,
+            ValidIssuer = jwtIssuer,
+            ValidateAudience = true,
+            ValidAudience = jwtAudience,
             ValidateLifetime = true,
-            ClockSkew = TimeSpan.FromSeconds(30) // Allows 30 seconds margin for Docker/container synchronization
+            ClockSkew = TimeSpan.FromSeconds(30),
+            NameClaimType = ClaimTypes.Name,
+            RoleClaimType = ClaimTypes.Role,
         };
-        options.RequireHttpsMetadata = builder.Configuration.GetValue<bool>("Jwt:RequireHttpsMetadata"); // For development/Docker environments
+        options.RequireHttpsMetadata = builder.Configuration.GetValue<bool>("Jwt:RequireHttpsMetadata");
         options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
         {
             OnAuthenticationFailed = context =>
             {
                 var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
-                logger.LogWarning("Authentication failed: {Message}", context.Exception?.Message);
-                context.Response.StatusCode = 401;
-                context.Response.ContentType = "application/json";
-                return context.Response.WriteAsJsonAsync(new
-                {
-                    error = "Authentication failed",
-                    message = context.Exception?.Message ?? "Invalid token"
-                });
-            }
+                var sanitizer = new MyApp.Shared.Domain.Security.LogSanitizer();
+                logger.LogWarning(
+                    context.Exception,
+                    "JWT bearer authentication failed for {Method} {Path}",
+                    sanitizer.Sanitize(context.Request.Method),
+                    sanitizer.Sanitize(context.Request.Path.Value));
+                return Task.CompletedTask;
+            },
         };
     });
 
-// Add Authorization
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("ApiAccess", policy =>
@@ -122,20 +112,8 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
-// Add CORS
-var origins = builder.Configuration["FRONTEND_ORIGIN"]?.Split(';') ?? new[] { "http://localhost:3000" };
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowFrontend", policy =>
-    {
-        policy.WithOrigins(origins)
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
-    });
-});
+builder.Services.AddAllowFrontendCors(builder.Configuration, builder.Environment);
 
-// Add Health Checks
 builder.Services.AddHealthChecks()
     .AddCheck("Gateway", () =>
     {
@@ -144,7 +122,6 @@ builder.Services.AddHealthChecks()
             "Gateway is operational");
     });
 
-// Add Logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 if (environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
@@ -152,50 +129,24 @@ if (environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
     builder.Logging.AddDebug();
 }
 
-// ========================================
-// Build App
-// ========================================
-
 var app = builder.Build();
 
-// ========================================
-// Middleware
-// ========================================
+app.UseForwardedHeaders();
 
-// Health check endpoints (no auth required)
 app.UseHealthChecks("/health");
 app.UseHealthChecks("/health/live");
 app.UseHealthChecks("/health/ready");
 
-// According to Microsoft's official guidelines for .NET 10:
-// The Gateway does NOT generate its own OpenAPI document (it has no controllers).
-// Therefore, we do NOT call MapOpenApi() here.
-
-// Configure routing first (required for MapGet with ShortCircuit)
 app.UseRouting();
 
-// Configure DocFX static files: Serve documentation at /docs
-// The _site directory contains the generated DocFX documentation
-// IMPORTANT: These routes must be registered BEFORE Ocelot to prevent it from intercepting
-// In Docker, _site is mounted at /_site (see docker-compose.yml) or copied to /app/_site (see Dockerfile)
-// In local development, it's at ../_site relative to ContentRootPath
-// Security: Path.GetFullPath resolves ".." safely and prevents directory traversal attacks
 string sitePath;
-if (Directory.Exists("/_site"))
-{
-    sitePath = "/_site";  // Docker: mounted volume (preferred)
-}
-else if (Directory.Exists(Path.Combine(AppContext.BaseDirectory, "_site")))
-{
-    sitePath = Path.Combine(AppContext.BaseDirectory, "_site");  // Docker: copied to /app/_site (fallback)
-}
+if (Directory.Exists("/_site")) sitePath = "/_site";
+else if (Directory.Exists(Path.Combine(AppContext.BaseDirectory, "_site"))) sitePath = Path.Combine(AppContext.BaseDirectory, "_site");
 else
 {
-    // Local: relative path - Path.GetFullPath resolves ".." safely
     var relativePath = Path.Combine(builder.Environment.ContentRootPath, "..", "_site");
     sitePath = Path.GetFullPath(relativePath);
 
-    // Security: Validate that resolved path is within expected directory structure
     var contentRootFullPath = Path.GetFullPath(builder.Environment.ContentRootPath);
     if (!sitePath.StartsWith(contentRootFullPath, StringComparison.OrdinalIgnoreCase) &&
         !sitePath.StartsWith(Path.GetDirectoryName(contentRootFullPath) ?? "", StringComparison.OrdinalIgnoreCase))
@@ -206,99 +157,72 @@ else
 
 if (Directory.Exists(sitePath))
 {
-    // Middleware to handle /docs and /docs/ before UseStaticFiles processes them
-    // This prevents ambiguity and ensures proper redirect to /docs/index.html
     app.Use(async (context, next) =>
     {
         var path = context.Request.Path.Value;
         if (path == "/docs" || path == "/docs/")
         {
             context.Response.Redirect("/docs/index.html", permanent: false);
-            return; // Don't call next() - we've handled the request
+            return;
         }
         await next();
     });
 
-    // Use StaticFiles middleware: handles entire directory hierarchy automatically
-    // This is more efficient and simpler than MapGet with subpath
     app.UseStaticFiles(new StaticFileOptions
     {
         FileProvider = new PhysicalFileProvider(sitePath),
-        RequestPath = "/docs" // The prefix users see in the browser
+        RequestPath = "/docs"
     });
 }
 else
 {
-    // Log warning if _site directory doesn't exist
     var logger = app.Services.GetRequiredService<ILogger<Program>>();
-    logger.LogWarning("DocFX _site directory not found. Tried paths: /_site, {AppBasePath}/_site, {RelativePath}",
-        AppContext.BaseDirectory,
-        Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, "..", "_site")));
+    logger.LogWarning("DocFX _site directory not found.");
 }
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 {
-    // Centralized Gateway: Single Scalar interface with multiple dynamic endpoints
-    // We read OpenAPI routes from Ocelot to create endpoints automatically
     var configuration = app.Services.GetRequiredService<IConfiguration>();
     var routesConfig = configuration.GetSection("Routes").GetChildren();
     var endpoints = new List<(string ServiceDisplayName, string UpstreamPath)>();
 
-    // Collect all OpenAPI endpoints dynamically
     foreach (var route in routesConfig)
     {
         var upstreamPath = route.GetValue<string>("UpstreamPathTemplate");
-
-        // Look for routes that point to OpenAPI documents (e.g., /auth/openapi/v1.json)
         if (!string.IsNullOrEmpty(upstreamPath) && upstreamPath.EndsWith("openapi/v1.json"))
         {
             var parts = upstreamPath.Split('/', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length > 0)
             {
-                // Extract the service name from the prefix (e.g., "auth" → "Auth Service")
                 var servicePrefix = parts[0];
                 var serviceDisplayName = $"{char.ToUpperInvariant(servicePrefix[0])}{servicePrefix.Substring(1)} Service";
-
                 endpoints.Add((serviceDisplayName, upstreamPath));
             }
         }
     }
 
-    // Create a SINGLE instance of Scalar with ALL dynamic endpoints
-    // Scalar will show a dropdown to select between different services
     if (endpoints.Count > 0)
     {
-        // Get the gateway base URL from configuration or use default
-        // In Docker, the gateway is exposed on port 5000 (mapped from 8080)
-        // In local development, use the configured URL or default to localhost:5000
-        var baseUrl = builder.Configuration["Gateway:BaseUrl"]
-            ?? "http://localhost:5000";
-
-        app.MapScalarApiReference("/scalar", options =>
+        app.MapScalarApiReference("/scalar", (options, httpContext) =>
         {
             options.WithTitle("ERP Centralized Gateway API")
                    .WithTheme(ScalarTheme.Moon)
                    .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
 
-            // Generate servers and documents dynamically from the same endpoints list
-            // Each endpoint is both a document and a server (they are synonyms)
+            var publicBaseUrl = GatewayUrlResolver.GetPublicBaseUrl(httpContext, configuration);
+
             var servers = new List<Scalar.AspNetCore.ScalarServer>();
-            for (int i = 0; i < endpoints.Count; i++)
+            for (var i = 0; i < endpoints.Count; i++)
             {
                 var (serviceDisplayName, upstreamPath) = endpoints[i];
-                var servicePrefix = upstreamPath.Split('/')[1]; // e.g., "auth" from "/auth/openapi/v1.json"
-
-                // Create server: gateway base URL + service prefix
-                var serverUrl = $"{baseUrl}/{servicePrefix}";
+                var servicePrefix = upstreamPath.Split('/', StringSplitOptions.RemoveEmptyEntries)[0];
+                var serverUrl = $"{publicBaseUrl}/{servicePrefix}";
                 servers.Add(new(serverUrl, serviceDisplayName));
-
-                // Add document: same endpoint info
-                bool isDefault = i == 0; // The first service is the default
-                options.AddDocument(servicePrefix, serviceDisplayName, upstreamPath, isDefault: isDefault);
+                options.AddDocument(servicePrefix, serviceDisplayName, upstreamPath, isDefault: i == 0);
             }
 
             options.Servers = servers;
-        }).ShortCircuit(); // CRITICAL: Prevents Ocelot from processing the /scalar route
+        }).ShortCircuit();
     }
 }
 else
@@ -307,22 +231,35 @@ else
 }
 
 app.UseCors("AllowFrontend");
-
-// Authentication and Authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Ocelot middleware - must be last
-await app.UseOcelot();
+app.Use(async (context, next) =>
+{
+    if (context.Request.Headers.TryGetValue("Authorization", out var authorization))
+        context.Items["OcelotForwardAuthorization"] = authorization.ToString();
+    await next();
+});
 
+await app.UseOcelot();
 app.Run();
 
-record OcelotRoute
+static void ApplyOcelotBaseUrlFromEnvironment(ConfigurationManager configuration)
 {
-    public string UpstreamPathTemplate { get; set; } = string.Empty;
-}
+    // Env Ocelot__GlobalConfiguration__BaseUrl -> Ocelot:GlobalConfiguration:BaseUrl in IConfiguration
+    var ocelotBaseUrl = Environment.GetEnvironmentVariable("Ocelot__GlobalConfiguration__BaseUrl")
+        ?? configuration["Ocelot:GlobalConfiguration:BaseUrl"];
+    if (string.IsNullOrWhiteSpace(ocelotBaseUrl))
+    {
+        return;
+    }
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    ocelotBaseUrl = ocelotBaseUrl.TrimEnd('/');
+    configuration["GlobalConfiguration:BaseUrl"] = ocelotBaseUrl;
+
+    // Scalar: reuse the same public URL unless Gateway:PublicBaseUrl is explicitly set
+    if (string.IsNullOrWhiteSpace(configuration["Gateway:PublicBaseUrl"]))
+    {
+        configuration["Gateway:PublicBaseUrl"] = ocelotBaseUrl;
+    }
 }

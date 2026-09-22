@@ -8,7 +8,9 @@ using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Inventory.Application.Tests.Common;
 using MyApp.Shared.Domain.Exceptions;
+using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using Xunit;
 
 namespace MyApp.Inventory.Application.Tests.Services;
@@ -20,6 +22,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
     private readonly Mock<IInventoryTransactionRepository> _mockTransactionRepository;
     private readonly Mock<IInventoryReservationRepository> _mockReservationRepository;
     private readonly Mock<ILogger<WarehouseStockService>> _mockLogger;
+    private readonly Mock<IUnitOfWork> _mockUnitOfWork;
     private readonly Mock<IEventPublisher> _mockEventPublisher;
     private readonly WarehouseStockService _service;
 
@@ -30,7 +33,10 @@ public class WarehouseStockServiceTests : BaseServiceTest
         _mockTransactionRepository = new Mock<IInventoryTransactionRepository>();
         _mockReservationRepository = new Mock<IInventoryReservationRepository>();
         _mockLogger = CreateMockLogger<WarehouseStockService>();
+        _mockUnitOfWork = new Mock<IUnitOfWork>();
         _mockEventPublisher = new Mock<IEventPublisher>();
+        _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
 
         _service = new WarehouseStockService(
             _mockWarehouseStockRepository.Object,
@@ -38,8 +44,9 @@ public class WarehouseStockServiceTests : BaseServiceTest
             _mockTransactionRepository.Object,
             _mockReservationRepository.Object,
             Mapper,
-            _mockLogger.Object,
-            _mockEventPublisher.Object);
+            _mockUnitOfWork.Object,
+            _mockEventPublisher.Object,
+            _mockLogger.Object);
     }
 
     #region GetByProductAndWarehouseAsync Tests

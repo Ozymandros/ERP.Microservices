@@ -16,20 +16,26 @@ namespace MyApp.Crm.Infrastructure.Data;
 public class CrmDbContext : AuditableDbContext
 {
     /// <summary>base.</summary>
+    /// <param name="options">The options.</param>
     public CrmDbContext(DbContextOptions<CrmDbContext> options) : base(options)
     {
     }
 
-    /// <summary>Set.</summary>
+    /// <summary>Gets the DbSet for Account entities.</summary>
     public DbSet<Account> Accounts => Set<Account>();
+    /// <summary>Gets the DbSet for Contact entities.</summary>
     public DbSet<Contact> Contacts => Set<Contact>();
+    /// <summary>Gets the DbSet for Lead entities.</summary>
     public DbSet<Lead> Leads => Set<Lead>();
-    /// <summary>Set.</summary>
+    /// <summary>Gets the DbSet for Opportunity entities.</summary>
     public DbSet<Opportunity> Opportunities => Set<Opportunity>();
+    /// <summary>Gets the DbSet for OpportunityLine entities.</summary>
     public DbSet<OpportunityLine> OpportunityLines => Set<OpportunityLine>();
+    /// <summary>Gets the DbSet for Activity entities.</summary>
     public DbSet<Activity> Activities => Set<Activity>();
-    /// <summary>Set.</summary>
+    /// <summary>Gets the DbSet for Note entities.</summary>
     public DbSet<Note> Notes => Set<Note>();
+    /// <summary>Gets the DbSet for Tag entities.</summary>
     public DbSet<Tag> Tags => Set<Tag>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

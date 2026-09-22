@@ -12,10 +12,19 @@ public class PurchaseOrderQuerySpec : BaseSpecification<PurchaseOrder>
     private const string MinTotalFilterKey = $"{nameof(PurchaseOrder.TotalAmount)}Min";
     private const string MaxTotalFilterKey = $"{nameof(PurchaseOrder.TotalAmount)}Max";
 
+    /// <summary>
+    /// Initializes a new instance of the PurchaseOrderQuerySpec class.
+    /// </summary>
+    /// <param name="query">The query.</param>
     public PurchaseOrderQuerySpec(QuerySpec query) : base(query)
     {
     }
 
+    /// <summary>
+    /// Applies query filters to the specification.
+    /// </summary>
+    /// <param name="query">The query.</param>
+    /// <returns>The result of the operation.</returns>
     public override IQueryable<PurchaseOrder> ApplyFilters(IQueryable<PurchaseOrder> query)
     {
         // Apply purchase order-specific filters

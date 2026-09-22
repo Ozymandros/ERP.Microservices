@@ -3,6 +3,8 @@ using MyApp.Shared.Domain.Messaging;
 using System.ComponentModel;
 using System.Text.Json;
 
+namespace MyApp.Agentic.API.Plugins;
+
 /// <summary>
 /// Semantic Kernel plugin for user authentication and authorization operations.
 /// </summary>
@@ -11,9 +13,9 @@ public class AuthPlugin
     private readonly IServiceInvoker _serviceInvoker;
 
     /// <summary>
-    /// Initializes a new instance of the AuthPlugin with the required service invoker.
+    /// Initializes a new instance of the AuthPlugin class.
     /// </summary>
-    /// <param name="serviceInvoker">The inter-service HTTP invoker used to call the Auth service.</param>
+    /// <param name="serviceInvoker">The service Invoker.</param>
     public AuthPlugin(IServiceInvoker serviceInvoker)
     {
         _serviceInvoker = serviceInvoker;
@@ -22,7 +24,7 @@ public class AuthPlugin
     /// <summary>
     /// Authenticates a user and returns login credentials or session information.
     /// </summary>
-    /// <param name="payloadJson">JSON-serialized login request containing credentials.</param>
+    /// <param name="payloadJson">The payload Json.</param>
     /// <returns>JSON representation of the authentication result.</returns>
     [Description("Authenticate user / login")]
     public async Task<string> LoginAsync(string payloadJson)
@@ -39,7 +41,7 @@ public class AuthPlugin
     /// <summary>
     /// Retrieves user information by user identifier.
     /// </summary>
-    /// <param name="id">The unique identifier of the user.</param>
+    /// <param name="id">The id.</param>
     /// <returns>JSON representation of the user, or an error description if not found.</returns>
     [Description("Get user by id")]
     public async Task<string> GetUserAsync(string id)

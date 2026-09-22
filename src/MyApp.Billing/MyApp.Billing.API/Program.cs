@@ -4,6 +4,7 @@ using MyApp.Billing.Application.Services;
 using MyApp.Billing.Domain.Repositories;
 using MyApp.Billing.Infrastructure.Persistence;
 using MyApp.Billing.Infrastructure.Repositories;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,9 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
         services.AddScoped<IInvoiceRepository, InvoiceRepository>();
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<ICreditNoteRepository, CreditNoteRepository>();
+
+        services.AddScoped<IUnitOfWork>(sp =>
+            new BillingEfUnitOfWork(sp.GetRequiredService<BillingDbContext>()));
 
         // Register application services
         services.AddScoped<IInvoiceService, InvoiceService>();

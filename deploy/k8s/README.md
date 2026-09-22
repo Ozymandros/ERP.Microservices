@@ -25,6 +25,19 @@ kubectl kustomize deploy/k8s/overlays/prod
 
 Secrets must exist in the cluster before apply (`redis-secrets`, `app-secrets`, `sql-secrets`, etc.). See `contracts/`.
 
+## Local Minikube stage-test
+
+Optional scripted deploy (dev passwords, reduced SQL resources, local image build):
+
+```powershell
+.\scripts\deploy-minikube-stage.ps1
+.\scripts\deploy-minikube-stage.ps1 -Profile Core   # auth + gateway only
+.\scripts\teardown-minikube-stage.ps1               # take down workloads + Helm
+.\scripts\teardown-minikube-stage.ps1 -DeleteMinikube -Force  # remove cluster
+```
+
+See `deploy/k8s/overlays/minikube/README.md`.
+
 ## Cloud-specific overlays
 
 | Cloud | Overlay path |

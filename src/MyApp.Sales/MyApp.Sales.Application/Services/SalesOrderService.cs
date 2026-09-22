@@ -7,57 +7,83 @@ using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Sales.Application.Services
 {
-    public class SalesOrderService : ISalesOrderService
+    /// <summary>Implements sales order management and commercial workflow operations, including CRUD, quote creation, and quote confirmation via the Orders service.</summary>
+    public class SalesOrderService : AppServiceBase, ISalesOrderService
     {
         private readonly ISalesOrderRepository _orderRepository;
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<SalesOrderService> _logger;
-        private readonly IEventPublisher _eventPublisher;
         private readonly IServiceInvoker _serviceInvoker;
 
+        /// <summary>Initializes a new <see cref="SalesOrderService"/> with the required dependencies.</summary>
+        /// Initializes a new instance of the SalesOrderService class.
+        /// <param name="orderRepository">The order Repository.</param>
+        /// <param name="customerRepository">The customer Repository.</param>
+        /// <param name="mapper">The mapper.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="unitOfWork">The unit Of Work.</param>
+        /// <param name="eventPublisher">The event Publisher.</param>
+        /// <param name="serviceInvoker">The service Invoker.</param>
         public SalesOrderService(
             ISalesOrderRepository orderRepository,
             ICustomerRepository customerRepository,
             IMapper mapper,
             ILogger<SalesOrderService> logger,
+            IUnitOfWork unitOfWork,
             IEventPublisher eventPublisher,
             IServiceInvoker serviceInvoker)
+            : base(unitOfWork, eventPublisher, logger, ServiceNames.Sales)
         {
             _orderRepository = orderRepository;
             _customerRepository = customerRepository;
             _mapper = mapper;
-            _logger = logger;
-            _eventPublisher = eventPublisher;
-            _serviceInvoker = serviceInvoker;
+            _logger = logger;            _serviceInvoker = serviceInvoker;
         }
 
+        /// <summary>Returns the sales order with the given identifier, or <see langword="null"/> if not found.</summary>
+        /// Gets the sales order by id asynchronously.
+        /// <param name="id">The id.</param>
+        /// <returns>The matching <see cref="SalesOrderDto"/>, or <see langword="null"/>.</returns>
         public async Task<SalesOrderDto?> GetSalesOrderByIdAsync(Guid id)
         {
             var order = await _orderRepository.GetByIdAsync(id);
             return order != null ? _mapper.Map<SalesOrderDto>(order) : null;
         }
 
+        /// <summary>Returns the sales order with the given order number, or <see langword="null"/> if not found.</summary>
+        /// Gets the sales order by order number asynchronously.
+        /// <param name="orderNumber">The order Number.</param>
+        /// <returns>The matching <see cref="SalesOrderDto"/>, or <see langword="null"/>.</returns>
         public async Task<SalesOrderDto?> GetSalesOrderByOrderNumberAsync(string orderNumber)
         {
             var order = await _orderRepository.GetByOrderNumberAsync(orderNumber);
             return order != null ? _mapper.Map<SalesOrderDto>(order) : null;
         }
 
+        /// <summary>Returns all sales orders as an enumerable sequence.</summary>
+        /// Lists sales orders asynchronously.
         public async Task<IEnumerable<SalesOrderDto>> ListSalesOrdersAsync()
         {
             var orders = await _orderRepository.ListAsync();
             return _mapper.Map<IEnumerable<SalesOrderDto>>(orders);
         }
 
+        /// <summary>Returns a paginated list of sales orders.</summary>
+        /// Lists sales orders paginated asynchronously.
+        /// <param name="pageNumber">The page Number.</param>
+        /// <param name="pageSize">The page Size.</param>
+        /// <returns>A <see cref="PaginatedResult{T}"/> containing the requested page of sales orders.</returns>
         public async Task<PaginatedResult<SalesOrderDto>> ListSalesOrdersPaginatedAsync(int pageNumber, int pageSize)
         {
             var paginatedOrders = await _orderRepository.GetAllPaginatedAsync(pageNumber, pageSize);
@@ -65,6 +91,11 @@ namespace MyApp.Sales.Application.Services
             return new PaginatedResult<SalesOrderDto>(orderDtos, paginatedOrders.PageNumber, paginatedOrders.PageSize, paginatedOrders.TotalCount);
         }
 
+        /// <summary>Creates a new sales order, validates customer existence, computes line totals, and persists the order.</summary>
+        /// Creates a sales order asynchronously.
+        /// <param name="dto">The dto.</param>
+        /// <returns>The created <see cref="SalesOrderDto"/>.</returns>
+        /// <exception cref="KeyNotFoundException">Thrown when the customer specified by <paramref name="dto"/> does not exist.</exception>
         public async Task<SalesOrderDto> CreateSalesOrderAsync(CreateUpdateSalesOrderDto dto)
         {
             // Validate customer exists
@@ -96,9 +127,12 @@ namespace MyApp.Sales.Application.Services
             }
 
             var createdOrder = await _orderRepository.AddAsync(order);
+            await SaveChangesAsync();
             return _mapper.Map<SalesOrderDto>(createdOrder);
         }
 
+        /// <summary>Generates a unique order number using timestamp, sequential count, and a random suffix.</summary>
+        /// <returns>A unique order number string in the format <c>SO-{timestamp}-{count}-{random}</c>.</returns>
         private async Task<string> GenerateOrderNumberAsync()
         {
             // Example: Use a timestamp and a random suffix for uniqueness (replace with a DB sequence or other logic as needed)
@@ -108,6 +142,12 @@ namespace MyApp.Sales.Application.Services
             return $"SO-{now:yyyyMMddHHmmss}-{count}-{random}";
         }
 
+        /// <summary>Updates the sales order with the given identifier, recalculates line totals if lines are provided, and persists the changes.</summary>
+        /// Updates the sales order asynchronously.
+        /// <param name="id">The id.</param>
+        /// <param name="dto">The dto.</param>
+        /// <returns>The updated <see cref="SalesOrderDto"/>.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the order or the referenced customer does not exist.</exception>
         public async Task<SalesOrderDto> UpdateSalesOrderAsync(Guid id, CreateUpdateSalesOrderDto dto)
         {
             var order = await _orderRepository.GetByIdAsync(id);
@@ -144,17 +184,23 @@ namespace MyApp.Sales.Application.Services
             }
 
             await _orderRepository.UpdateAsync(order);
+            await SaveChangesAsync();
             return _mapper.Map<SalesOrderDto>(order);
         }
 
+        /// <summary>Deletes the sales order with the given identifier.</summary>
+        /// Deletes the sales order asynchronously.
+        /// <param name="id">The id.</param>
         public async Task DeleteSalesOrderAsync(Guid id)
         {
             await _orderRepository.DeleteAsync(id);
+            await SaveChangesAsync();
         }
 
-        /// <summary>
-        /// Query sales orders with filtering, sorting, and pagination
-        /// </summary>
+        /// <summary>Returns a paginated list of sales orders that satisfy the given specification.</summary>
+        /// Query sales orders asynchronously.
+        /// <param name="spec">The spec.</param>
+        /// <returns>A <see cref="PaginatedResult{T}"/> containing matching sales orders.</returns>
         public async Task<PaginatedResult<SalesOrderDto>> QuerySalesOrdersAsync(ISpecification<SalesOrder> spec)
         {
             var result = await _orderRepository.QueryAsync(spec);
@@ -162,11 +208,16 @@ namespace MyApp.Sales.Application.Services
             return new PaginatedResult<SalesOrderDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
         }
 
+        /// <summary>Creates a quote with stock availability validation and publishes a <c>SalesOrderCreatedEvent</c>.</summary>
+        /// Creates a quote asynchronously.
+        /// <param name="dto">The dto.</param>
+        /// <returns>The created quote as a <see cref="SalesOrderDto"/> with <c>IsQuote</c> set to <see langword="true"/>.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the customer specified by <paramref name="dto"/> does not exist.</exception>
         public async Task<SalesOrderDto> CreateQuoteAsync(CreateQuoteDto dto)
         {
             _logger.LogInformation(
                 "Creating quote: OrderNumber={OrderNumber}, CustomerId={CustomerId}",
-                dto.OrderNumber, dto.CustomerId);
+                new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(dto.OrderNumber), dto.CustomerId);
 
             // Validate customer exists
             var customer = await _customerRepository.GetByIdAsync(dto.CustomerId);
@@ -213,6 +264,7 @@ namespace MyApp.Sales.Application.Services
             quote.TotalAmount = quote.Lines.Sum(l => l.LineTotal);
 
             await _orderRepository.AddAsync(quote);
+            await SaveChangesAsync();
 
             // Publish SalesOrderCreatedEvent
             var salesOrderCreatedEvent = new SalesOrderCreatedEvent(
@@ -225,7 +277,7 @@ namespace MyApp.Sales.Application.Services
 
             try
             {
-                await _eventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderCreated, salesOrderCreatedEvent);
+                await EventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderCreated, salesOrderCreatedEvent);
                 _logger.LogInformation("Published SalesOrderCreatedEvent for Quote {QuoteId}", quote.Id);
             }
             catch (Exception ex)
@@ -240,6 +292,11 @@ namespace MyApp.Sales.Application.Services
             return _mapper.Map<SalesOrderDto>(quote);
         }
 
+        /// <summary>Confirms a quote by re-validating stock, creating a fulfillment order via the Orders service, and publishing a <c>SalesOrderConfirmedEvent</c>.</summary>
+        /// Confirm quote asynchronously.
+        /// <param name="dto">The dto.</param>
+        /// <returns>The confirmed <see cref="SalesOrderDto"/> linked to the created fulfillment order.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the quote does not exist, is not in Draft status, has expired, has insufficient stock, or the fulfillment order creation fails.</exception>
         public async Task<SalesOrderDto> ConfirmQuoteAsync(ConfirmQuoteDto dto)
         {
             _logger.LogInformation("Confirming quote: QuoteId={QuoteId}", dto.QuoteId);
@@ -308,6 +365,7 @@ namespace MyApp.Sales.Application.Services
                 quote.Status = SalesOrderStatus.Confirmed;
                 quote.ConvertedToOrderId = fulfillmentOrder.Id;
                 await _orderRepository.UpdateAsync(quote);
+                await SaveChangesAsync();
 
                 // Publish SalesOrderConfirmedEvent
                 var salesOrderConfirmedEvent = new SalesOrderConfirmedEvent(
@@ -318,7 +376,7 @@ namespace MyApp.Sales.Application.Services
 
                 try
                 {
-                    await _eventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderConfirmed, salesOrderConfirmedEvent);
+                    await EventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderConfirmed, salesOrderConfirmedEvent);
                     _logger.LogInformation(
                         "Published SalesOrderConfirmedEvent for Quote {QuoteId}, Order {OrderId}",
                         quote.Id, quote.ConvertedToOrderId);
@@ -341,6 +399,10 @@ namespace MyApp.Sales.Application.Services
             }
         }
 
+        /// <summary>Checks stock availability for the specified line items by calling the Inventory service for each product.</summary>
+        /// Check stock availability asynchronously.
+        /// <param name="lines">The lines.</param>
+        /// <returns>A list of <see cref="StockAvailabilityCheckDto"/> with per-product availability results.</returns>
         public async Task<List<StockAvailabilityCheckDto>> CheckStockAvailabilityAsync(List<CreateUpdateSalesOrderLineDto> lines)
         {
             _logger.LogInformation("Checking stock availability for {LineCount} items", lines.Count);

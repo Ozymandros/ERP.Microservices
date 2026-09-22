@@ -5,6 +5,9 @@ using Aspire.Hosting;
 
 namespace MyApp.Tests.Integration;
 
+/// <summary>
+/// Integration tests for the Purchasing service, verifying purchase order and supplier CRUD operations through the API gateway.
+/// </summary>
 public class PurchasingServiceTests
 {
     private async Task<DistributedApplication> CreateAndStartAppAsync()
@@ -33,6 +36,9 @@ public class PurchasingServiceTests
         return content?.AccessToken;
     }
 
+    /// <summary>
+    /// Verifies that retrieving the purchase orders list with a valid Bearer token returns an OK response.
+    /// </summary>
     [Fact]
     public async Task GetPurchaseOrders_WithValidToken_ReturnsSuccessStatusCode()
     {
@@ -56,6 +62,9 @@ public class PurchasingServiceTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that creating a purchase order with valid data returns a Created response and includes a generated identifier.
+    /// </summary>
     [Fact]
     public async Task CreatePurchaseOrder_WithValidData_ReturnsCreatedStatusCode()
     {
@@ -98,6 +107,9 @@ public class PurchasingServiceTests
         Assert.NotNull(createdOrder?.Id);
     }
 
+    /// <summary>
+    /// Verifies that retrieving the suppliers list with a valid Bearer token returns an OK response.
+    /// </summary>
     [Fact]
     public async Task GetSuppliers_WithValidToken_ReturnsSuccessStatusCode()
     {
@@ -121,6 +133,9 @@ public class PurchasingServiceTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that creating a supplier with valid data returns a Created response and that the supplier's email is reflected in the response body.
+    /// </summary>
     [Fact]
     public async Task CreateSupplier_WithValidData_ReturnsCreatedStatusCode()
     {
@@ -163,6 +178,9 @@ public class PurchasingServiceTests
         Assert.Equal(supplier.Email, createdSupplier?.Email);
     }
 
+    /// <summary>
+    /// Verifies that updating the status of a purchase order to a valid value returns an OK response and that the new status is persisted.
+    /// </summary>
     [Fact]
     public async Task UpdatePurchaseOrderStatus_WithValidStatus_ReturnsSuccessStatusCode()
     {

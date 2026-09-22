@@ -169,6 +169,7 @@ public class PaymentRepositoryTests
         var payment = new Payment(Guid.NewGuid(), inv.Id, 50m, "USD", "Card", DateTime.UtcNow);
 
         await _repository.AddAsync(payment);
+        await _context.SaveChangesAsync();
 
         var stored = await _context.Payments.FindAsync(payment.Id);
         stored!.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
@@ -201,6 +202,7 @@ public class PaymentRepositoryTests
         var payment = AddPayment(inv.Id);
 
         await _repository.DeleteAsync(payment);
+        await _context.SaveChangesAsync();
 
         var stored = await _context.Payments.FindAsync(payment.Id);
         stored.Should().BeNull();

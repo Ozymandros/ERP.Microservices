@@ -11,6 +11,7 @@ COPY src/nuget.config ./
 
 # Copy shared projects (with src/ prefix since build context is root)
 COPY ["src/MyApp.Shared/MyApp.Shared.Domain/MyApp.Shared.Domain.csproj", "MyApp.Shared/MyApp.Shared.Domain/"]
+COPY ["src/MyApp.Shared/MyApp.Shared.Application/MyApp.Shared.Application.csproj", "MyApp.Shared/MyApp.Shared.Application/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.Infrastructure/MyApp.Shared.Infrastructure.csproj", "MyApp.Shared/MyApp.Shared.Infrastructure/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.CQRS/MyApp.Shared.CQRS.csproj", "MyApp.Shared/MyApp.Shared.CQRS/"]
 COPY ["src/MyApp.Shared/MyApp.Shared.SignalR/MyApp.Shared.SignalR.csproj", "MyApp.Shared/MyApp.Shared.SignalR/"]
@@ -22,11 +23,17 @@ COPY ["src/MyApp.Purchasing/MyApp.Purchasing.Application/MyApp.Purchasing.Applic
 COPY ["src/MyApp.Purchasing/MyApp.Purchasing.Infrastructure/MyApp.Purchasing.Infrastructure.csproj", "MyApp.Purchasing/MyApp.Purchasing.Infrastructure/"]
 COPY ["src/MyApp.Purchasing/MyApp.Purchasing.API/MyApp.Purchasing.API.csproj", "MyApp.Purchasing/MyApp.Purchasing.API/"]
 
+# Cross-service Application.Contracts (compile-time DTO references only)
+COPY ["src/MyApp.Orders/MyApp.Orders.Domain/MyApp.Orders.Domain.csproj", "MyApp.Orders/MyApp.Orders.Domain/"]
+COPY ["src/MyApp.Orders/MyApp.Orders.Application.Contracts/MyApp.Orders.Application.Contracts.csproj", "MyApp.Orders/MyApp.Orders.Application.Contracts/"]
+
 # Restore dependencies
 RUN dotnet restore "MyApp.Purchasing/MyApp.Purchasing.API/MyApp.Purchasing.API.csproj"
 
 # Copy only needed source files (not everything from context)
 COPY src/MyApp.Shared/ MyApp.Shared/
+COPY src/MyApp.Orders/MyApp.Orders.Domain/ MyApp.Orders/MyApp.Orders.Domain/
+COPY src/MyApp.Orders/MyApp.Orders.Application.Contracts/ MyApp.Orders/MyApp.Orders.Application.Contracts/
 COPY src/MyApp.Purchasing/ MyApp.Purchasing/
 
 # Build the project
@@ -40,6 +47,7 @@ RUN dotnet publish "MyApp.Purchasing.API.csproj" -c Release -o /app/publish /p:U
 # Runtime stage - Use shared base image
 # BASE_IMAGE_REGISTRY is defined at the top of the file
 FROM ${BASE_IMAGE_REGISTRY}myapp-microservices-base:10.0 AS final
+USER appuser
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --chown=appuser:appuser --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MyApp.Purchasing.API.dll"]

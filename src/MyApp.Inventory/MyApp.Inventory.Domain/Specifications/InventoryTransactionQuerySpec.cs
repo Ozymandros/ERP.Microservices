@@ -12,10 +12,17 @@ public class InventoryTransactionQuerySpec : BaseSpecification<InventoryTransact
     private const string MinQuantityFilterKey = $"{nameof(InventoryTransaction.QuantityChange)}Min";
     private const string MaxQuantityFilterKey = $"{nameof(InventoryTransaction.QuantityChange)}Max";
 
+    /// <summary>Initialises a new instance of <see cref="InventoryTransactionQuerySpec"/> with the supplied query parameters.</summary>
+    /// Initializes a new instance of the InventoryTransactionQuerySpec class.
+    /// <param name="query">The query.</param>
     public InventoryTransactionQuerySpec(QuerySpec query) : base(query)
     {
     }
 
+    /// <summary>Applies transaction-specific filters (type, product, warehouse, quantity range) to the query.</summary>
+    /// Applies query filters to the specification.
+    /// <param name="query">The query.</param>
+    /// <returns>The filtered <see cref="IQueryable{InventoryTransaction}"/>.</returns>
     public override IQueryable<InventoryTransaction> ApplyFilters(IQueryable<InventoryTransaction> query)
     {
         // Apply transaction-specific filters

@@ -50,6 +50,7 @@ obj/
 
 .vs/
 docs/_site/
+_site/
 CopilotIndices/
 TestResults/
 test_results.txt

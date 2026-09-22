@@ -10,12 +10,13 @@
     <ProjectReference Include="..\MyApp.Orders.Domain\MyApp.Orders.Domain.csproj" />
     <ProjectReference Include="..\MyApp.Orders.Application.Contracts\MyApp.Orders.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Application\MyApp.Shared.Application.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.CQRS\MyApp.Shared.CQRS.csproj" />
     <ProjectReference Include="..\..\MyApp.Inventory\MyApp.Inventory.Application.Contracts\MyApp.Inventory.Application.Contracts.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.7" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.17.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.8" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.18.0" />
   </ItemGroup>
 </Project>

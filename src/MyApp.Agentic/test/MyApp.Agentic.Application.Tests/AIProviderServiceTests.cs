@@ -1,9 +1,13 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using MyApp.Agentic.Application.Contracts.DTOs;
 using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Agentic.Application.Services;
 using MyApp.Agentic.Domain.AIProviders;
 using MyApp.Agentic.Domain.Agents;
+using MyApp.Shared.Domain.DTOs;
+using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Agentic.Application.Tests;
@@ -21,7 +25,10 @@ public class AIProviderServiceTests
             .Callback<AIProvider>(p => captured = p)
             .ReturnsAsync((AIProvider p) => p);
 
-        var sut = new AIProviderService(repo.Object, crypto.Object);
+        var unitOfWork = new Mock<IUnitOfWork>();
+        unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
+        var sut = new AIProviderService(repo.Object, crypto.Object, unitOfWork.Object, Mock.Of<IEventPublisher>(), Mock.Of<ILogger<AIProviderService>>());
         var dto = new CreateAIProviderDto(
             "OpenAI",
             "https://api.openai.com/v1",
@@ -69,7 +76,10 @@ public class AIProviderServiceTests
         repo.Setup(r => r.GetByIdAsync(providerId)).ReturnsAsync(existing);
         repo.Setup(r => r.UpdateAsync(existing)).ReturnsAsync(existing);
 
-        var sut = new AIProviderService(repo.Object, crypto.Object);
+        var unitOfWork = new Mock<IUnitOfWork>();
+        unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
+        var sut = new AIProviderService(repo.Object, crypto.Object, unitOfWork.Object, Mock.Of<IEventPublisher>(), Mock.Of<ILogger<AIProviderService>>());
         var dto = new UpdateAIProviderDto(
             "OpenAI",
             "https://api.openai.com/v1",
@@ -113,7 +123,10 @@ public class AIProviderServiceTests
         repo.Setup(r => r.GetByIdAsync(providerId)).ReturnsAsync(existing);
         repo.Setup(r => r.UpdateAsync(existing)).ReturnsAsync(existing);
 
-        var sut = new AIProviderService(repo.Object, crypto.Object);
+        var unitOfWork = new Mock<IUnitOfWork>();
+        unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
+        var sut = new AIProviderService(repo.Object, crypto.Object, unitOfWork.Object, Mock.Of<IEventPublisher>(), Mock.Of<ILogger<AIProviderService>>());
         var dto = new UpdateAIProviderDto(
             "OpenAI",
             "https://api.openai.com/v1",

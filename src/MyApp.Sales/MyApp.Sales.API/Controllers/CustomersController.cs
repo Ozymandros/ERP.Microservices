@@ -22,6 +22,12 @@ namespace MyApp.Sales.API.Controllers
         private readonly ICacheService _cacheService;
         private readonly ILogger<CustomersController> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of the CustomersController class.
+        /// </summary>
+        /// <param name="customerService">The customer Service.</param>
+        /// <param name="cacheService">The cache Service.</param>
+        /// <param name="logger">The logger.</param>
         public CustomersController(ICustomerService customerService, ICacheService cacheService, ILogger<CustomersController> logger)
         {
             _customerService = customerService;
@@ -78,6 +84,7 @@ namespace MyApp.Sales.API.Controllers
         /// <summary>
         /// Get all customers (optionally paginated and filtered)
         /// </summary>
+        /// <param name="query">The query.</param>
         [HttpGet]
         [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(IEnumerable<CustomerDto>), 200)]
@@ -118,6 +125,7 @@ namespace MyApp.Sales.API.Controllers
         /// <summary>
         /// Get a specific customer by ID - Requires Sales.Read permission
         /// </summary>
+        /// <param name="id">The id.</param>
         [HttpGet("{id}")]
         [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(CustomerDto), 200)]
@@ -152,6 +160,7 @@ namespace MyApp.Sales.API.Controllers
     /// <summary>
     /// Get a specific customer by Name - Requires Sales.Read permission
     /// </summary>
+    /// <param name="name">The name.</param>
     [HttpGet("name/{name}")]
     [HasPermission("Sales", "Read")]
     [ProducesResponseType(typeof(CustomerDto), 200)]
@@ -186,6 +195,7 @@ namespace MyApp.Sales.API.Controllers
     /// <summary>
     /// Get a specific customer by Email - Requires Sales.Read permission
     /// </summary>
+    /// <param name="email">The email.</param>
     [HttpGet("email/{email}")]
     [HasPermission("Sales", "Read")]
     [ProducesResponseType(typeof(CustomerDto), 200)]
@@ -211,7 +221,10 @@ namespace MyApp.Sales.API.Controllers
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving customer {@Email}", new { Email = email });
+            _logger.LogError(
+                ex,
+                "Error retrieving customer {@Email}",
+                new { Email = new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(email) });
             var customer = await _customerService.GetCustomerByEmailAsync(email);
             return customer == null ? NotFound(new { message = $"Customer with email '{email}' not found." }) : Ok(customer);
         }
@@ -220,6 +233,7 @@ namespace MyApp.Sales.API.Controllers
     /// <summary>
     /// Search customers with advanced filtering, sorting, and pagination - Requires Sales.Read permission
         /// </summary>
+    /// <param name="query">The query.</param>
         /// <remarks>
         /// Supported filters: name, email, country, city, isActive
         /// Supported sort fields: id, name, email, city, country, createdAt
@@ -236,7 +250,7 @@ namespace MyApp.Sales.API.Controllers
                 query.Validate();
                 var spec = new CustomerQuerySpec(query);
                 var result = await _customerService.QueryCustomersAsync(spec);
-                _logger.LogInformation("Searched customers with query: {@Query}", query);
+                _logger.LogInformation("Searched customers");
                 return Ok(result);
             }
             catch (ArgumentException ex)
@@ -254,6 +268,7 @@ namespace MyApp.Sales.API.Controllers
         /// <summary>
         /// Create a new customer - Requires Sales.Create permission
         /// </summary>
+        /// <param name="dto">The dto.</param>
         [HttpPost]
         [HasPermission("Sales", "Create")]
         [ProducesResponseType(typeof(CustomerDto), 201)]
@@ -279,12 +294,14 @@ namespace MyApp.Sales.API.Controllers
         /// <summary>
         /// Update an existing customer - Requires Sales.Update permission
         /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="dto">The dto.</param>
         [HttpPut("{id}")]
         [HasPermission("Sales", "Update")]
         [ProducesResponseType(typeof(CustomerDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> Update(Guid id, [FromBody] CustomerDto dto)
+        public async Task<IActionResult> Update(Guid id, [FromBody] CreateUpdateCustomerDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -307,6 +324,7 @@ namespace MyApp.Sales.API.Controllers
         /// <summary>
         /// Delete a customer - Requires Sales.Delete permission
         /// </summary>
+        /// <param name="id">The id.</param>
         [HttpDelete("{id}")]
         [HasPermission("Sales", "Delete")]
         [ProducesResponseType(204)]

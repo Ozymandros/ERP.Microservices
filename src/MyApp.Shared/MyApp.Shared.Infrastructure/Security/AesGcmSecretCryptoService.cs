@@ -11,6 +11,10 @@ public class AesGcmSecretCryptoService : ISecretCryptoService
     private const int TagSize = 16;
     private readonly byte[] _key;
 
+    /// <summary>
+    /// Initializes a new instance of the AesGcmSecretCryptoService class.
+    /// </summary>
+    /// <param name="options">The options.</param>
     public AesGcmSecretCryptoService(IOptions<SecretCryptoOptions> options)
     {
         var configured = options.Value.MasterKey?.Trim();
@@ -30,6 +34,11 @@ public class AesGcmSecretCryptoService : ISecretCryptoService
             throw new InvalidOperationException("Secret crypto master key must be 32 bytes (Base64-encoded).");
     }
 
+    /// <summary>
+    /// Encrypts the plaintext value.
+    /// </summary>
+    /// <param name="plainText">The plain Text.</param>
+    /// <returns>The resulting string.</returns>
     public string Encrypt(string plainText)
     {
         if (string.IsNullOrWhiteSpace(plainText))
@@ -54,6 +63,11 @@ public class AesGcmSecretCryptoService : ISecretCryptoService
         return Convert.ToBase64String(payload);
     }
 
+    /// <summary>
+    /// Decrypts the ciphertext value.
+    /// </summary>
+    /// <param name="cipherText">The cipher Text.</param>
+    /// <returns>The resulting string.</returns>
     public string Decrypt(string cipherText)
     {
         if (string.IsNullOrWhiteSpace(cipherText))

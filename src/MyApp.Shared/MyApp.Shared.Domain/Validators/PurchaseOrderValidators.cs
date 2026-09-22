@@ -8,8 +8,10 @@ namespace MyApp.Shared.Domain.Validators;
 public static class PurchaseOrderValidators
 {
     /// <summary>
-    /// Validates a purchase order line item.
+    /// Validate purchase order line.
     /// </summary>
+    /// <param name="quantity">The quantity.</param>
+    /// <param name="unitPrice">The unit Price.</param>
     public static ValidationResult? ValidatePurchaseOrderLine(int quantity, decimal unitPrice)
     {
         if (quantity <= 0)
@@ -22,8 +24,10 @@ public static class PurchaseOrderValidators
     }
 
     /// <summary>
-    /// Validates that received quantity does not exceed ordered quantity.
+    /// Validate received quantity.
     /// </summary>
+    /// <param name="receivedQuantity">The received Quantity.</param>
+    /// <param name="orderedQuantity">The ordered Quantity.</param>
     public static ValidationResult? ValidateReceivedQuantity(int receivedQuantity, int orderedQuantity)
     {
         if (receivedQuantity < 0)
@@ -36,8 +40,9 @@ public static class PurchaseOrderValidators
     }
 
     /// <summary>
-    /// Validates that a purchase order can be approved from its current status.
+    /// Validate purchase order approval.
     /// </summary>
+    /// <param name="currentStatus">The current Status.</param>
     public static ValidationResult? ValidatePurchaseOrderApproval(string currentStatus)
     {
         if (currentStatus != "Draft")
@@ -47,8 +52,9 @@ public static class PurchaseOrderValidators
     }
 
     /// <summary>
-    /// Validates that a purchase order can be received from its current status.
+    /// Validate purchase order receiving.
     /// </summary>
+    /// <param name="currentStatus">The current Status.</param>
     public static ValidationResult? ValidatePurchaseOrderReceiving(string currentStatus)
     {
         if (currentStatus != "Approved")

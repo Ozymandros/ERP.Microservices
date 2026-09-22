@@ -15,12 +15,23 @@ public class SessionsController : ControllerBase
     private readonly IAgentService _agentService;
     private readonly ILogger<SessionsController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the SessionsController class.
+    /// </summary>
+    /// <param name="agentService">The agent Service.</param>
+    /// <param name="logger">The logger.</param>
     public SessionsController(IAgentService agentService, ILogger<SessionsController> logger)
     {
         _agentService = agentService;
         _logger = logger;
     }
 
+    /// <summary>
+    /// Creates a session.
+    /// </summary>
+    /// <param name="request">The request.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpPost]
     [HasPermission("Agentic", "Execute")]
     [ProducesResponseType(typeof(StartSessionResponse), StatusCodes.Status201Created)]
@@ -49,6 +60,11 @@ public class SessionsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Lists sessions.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpGet]
     [HasPermission("Agentic", "Read")]
     [ProducesResponseType(typeof(IEnumerable<SessionListItemDto>), StatusCodes.Status200OK)]
@@ -68,6 +84,12 @@ public class SessionsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Gets the session.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpGet("{id:guid}")]
     [HasPermission("Agentic", "Read")]
     [ProducesResponseType(typeof(SessionDetailsResponse), StatusCodes.Status200OK)]
@@ -88,6 +110,12 @@ public class SessionsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Gets the session messages.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpGet("{id:guid}/messages")]
     [HasPermission("Agentic", "Read")]
     [ProducesResponseType(typeof(SessionDetailsResponse), StatusCodes.Status200OK)]
@@ -108,6 +136,13 @@ public class SessionsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Sends the message.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="request">The request.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpPost("{id:guid}/messages")]
     [HasPermission("Agentic", "Execute")]
     [ProducesResponseType(typeof(SendMessageResponse), StatusCodes.Status200OK)]
@@ -136,6 +171,12 @@ public class SessionsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Ends the session.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpDelete("{id:guid}")]
     [HasPermission("Agentic", "Execute")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

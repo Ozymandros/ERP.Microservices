@@ -10,6 +10,7 @@ namespace MyApp.Sales.Infrastructure.Data.Configurations
     public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
     {
         /// <summary>Configure.</summary>
+        /// <param name="builder">The builder.</param>
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
             builder.ToTable("Customers");

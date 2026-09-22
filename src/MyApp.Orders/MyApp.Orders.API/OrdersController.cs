@@ -10,6 +10,7 @@ using MyApp.Shared.Infrastructure.Export;
 using MyApp.Shared.Infrastructure.Extensions;
 namespace MyApp.Orders.API
 {
+    /// <summary>API controller for managing operational orders.</summary>
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
@@ -19,6 +20,11 @@ namespace MyApp.Orders.API
         private readonly ICacheService _cacheService;
         private readonly ILogger<OrdersController> _logger;
 
+        /// <summary>Initializes a new instance of the <see cref="OrdersController"/> class.</summary>
+        /// Initializes a new instance of the OrdersController class.
+        /// <param name="orderService">The order Service.</param>
+        /// <param name="cacheService">The cache Service.</param>
+        /// <param name="logger">The logger.</param>
         public OrdersController(IOrderService orderService, ICacheService cacheService, ILogger<OrdersController> logger)
         {
             _orderService = orderService;
@@ -29,6 +35,7 @@ namespace MyApp.Orders.API
         /// <summary>
         /// Export all operational orders as XLSX
         /// </summary>
+        /// <returns>An Excel spreadsheet file containing all orders.</returns>
         [HttpGet("export-xlsx")]
         [HasPermission("Orders", "Read")]
         [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
@@ -52,6 +59,7 @@ namespace MyApp.Orders.API
         /// <summary>
         /// Export all operational orders as PDF
         /// </summary>
+        /// <returns>A PDF file containing all orders.</returns>
         [HttpGet("export-pdf")]
         [HasPermission("Orders", "Read")]
         [Produces("application/pdf")]
@@ -75,6 +83,8 @@ namespace MyApp.Orders.API
         /// <summary>
         /// Get all operational orders (optionally paginated and filtered)
         /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns>A list of orders, or a paginated result when query parameters are supplied.</returns>
         [HttpGet]
         [HasPermission("Orders", "Read")]
         [ProducesResponseType(typeof(IEnumerable<OrderDto>), StatusCodes.Status200OK)]
@@ -108,6 +118,8 @@ namespace MyApp.Orders.API
         /// <summary>
         /// Get operational order by ID
         /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>The order DTO if found; otherwise a 404 response.</returns>
         [HttpGet("{id}")]
         [HasPermission("Orders", "Read")]
         [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
@@ -133,6 +145,8 @@ namespace MyApp.Orders.API
     /// <summary>
     /// Get order by Order Number - Requires Orders.Read permission
     /// </summary>
+    /// <param name="orderNumber">The order Number.</param>
+    /// <returns>The order DTO if found; otherwise a 404 response.</returns>
     [HttpGet("code/{orderNumber}")]
     [HasPermission("Orders", "Read")]
     [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
@@ -158,6 +172,8 @@ namespace MyApp.Orders.API
     /// <summary>
     /// Create a new operational order (Transfer, Inbound, Outbound, Return)
         /// </summary>
+    /// <param name="dto">The dto.</param>
+        /// <returns>The created order DTO with a 201 status code.</returns>
         [HttpPost]
         [HasPermission("Orders", "Create")]
         [ProducesResponseType(typeof(OrderDto), StatusCodes.Status201Created)]
@@ -184,6 +200,8 @@ namespace MyApp.Orders.API
         /// <summary>
         /// Create operational order with automatic stock reservation
         /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <returns>The created order DTO with reservation details and a 201 status code.</returns>
         [HttpPost("with-reservation")]
         [HasPermission("Orders", "Create")]
         [ProducesResponseType(typeof(OrderDto), StatusCodes.Status201Created)]
@@ -210,6 +228,9 @@ namespace MyApp.Orders.API
         /// <summary>
         /// Update operational order
         /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="dto">The dto.</param>
+        /// <returns>A 204 No Content response on success.</returns>
         [HttpPut("{id}")]
         [HasPermission("Orders", "Update")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -242,6 +263,9 @@ namespace MyApp.Orders.API
         /// <summary>
         /// Fulfill operational order (mark as completed)
         /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="dto">The dto.</param>
+        /// <returns>The fulfilled order DTO.</returns>
         [HttpPost("{id}/fulfill")]
         [HasPermission("Orders", "Update")]
         [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
@@ -274,6 +298,9 @@ namespace MyApp.Orders.API
         /// <summary>
         /// Cancel operational order
         /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="dto">The dto.</param>
+        /// <returns>A 204 No Content response on success.</returns>
         [HttpPost("{id}/cancel")]
         [HasPermission("Orders", "Update")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -306,6 +333,8 @@ namespace MyApp.Orders.API
         /// <summary>
         /// Delete operational order
         /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>A 204 No Content response on success.</returns>
         [HttpDelete("{id}")]
         [HasPermission("Orders", "Delete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -334,6 +363,8 @@ namespace MyApp.Orders.API
         /// <summary>
         /// Search operational orders with filter, sort, and pagination
         /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns>A paginated result of matching order DTOs.</returns>
         [HttpGet("search")]
         [HasPermission("Orders", "Read")]
         [ProducesResponseType(typeof(PaginatedResult<OrderDto>), StatusCodes.Status200OK)]
@@ -349,7 +380,7 @@ namespace MyApp.Orders.API
                 query.Validate();
                 var spec = new OrderQuerySpec(query);
                 var result = await _orderService.QueryOrdersAsync(spec);
-                _logger.LogInformation("Searched orders with query: {@Query}", query);
+                _logger.LogInformation("Searched orders");
                 return Ok(result);
             }
             catch (ArgumentException ex)

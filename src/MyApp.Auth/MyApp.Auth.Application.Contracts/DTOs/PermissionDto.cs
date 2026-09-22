@@ -1,8 +1,11 @@
 ﻿using MyApp.Shared.Domain.DTOs;
 
+namespace MyApp.Auth.Application.Contracts.DTOs;
+
 /// <summary>
-/// Data transfer object for representing a permission with audit information.
+/// Permission dto.
 /// </summary>
+/// <param name="Id">The id.</param>
 public record PermissionDto(Guid Id) : AuditableGuidDto(Id)
 {
     /// <summary>

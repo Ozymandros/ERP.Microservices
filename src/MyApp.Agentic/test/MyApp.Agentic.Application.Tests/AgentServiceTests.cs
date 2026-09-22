@@ -12,7 +12,9 @@ using MyApp.Agentic.Domain.Memory;
 using MyApp.Agentic.Domain.Sessions;
 using MyApp.Agentic.Infrastructure.Memory;
 using MyApp.Agentic.Infrastructure.State;
+using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Agentic.Application.Tests;
@@ -30,6 +32,8 @@ public class AgentServiceTests
     private readonly Mock<IAgentExecutionService> _mockExecutionService;
     private readonly AgentToolRegistry _toolRegistry;
     private readonly AgentToolResolver _toolResolver;
+    private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+    private readonly Mock<IEventPublisher> _mockEventPublisher;
     private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly Mock<IMapper> _mockMapper;
     private readonly Mock<ILogger<AgentService>> _mockLogger;
@@ -48,7 +52,11 @@ public class AgentServiceTests
         _mockExecutionService = new Mock<IAgentExecutionService>();
         _toolRegistry = new AgentToolRegistry();
         _toolResolver = new AgentToolResolver(_toolRegistry);
+        _mockUnitOfWork = new Mock<IUnitOfWork>();
+        _mockEventPublisher = new Mock<IEventPublisher>();
         _mockServiceInvoker = new Mock<IServiceInvoker>();
+        _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
         _mockMapper = new Mock<IMapper>();
         _mockLogger = new Mock<ILogger<AgentService>>();
 
@@ -97,6 +105,8 @@ public class AgentServiceTests
             _mockEmbeddingService.Object,
             _mockExecutionService.Object,
             _toolResolver,
+            _mockUnitOfWork.Object,
+            _mockEventPublisher.Object,
             _mockServiceInvoker.Object,
             _mockMapper.Object,
             _mockLogger.Object);

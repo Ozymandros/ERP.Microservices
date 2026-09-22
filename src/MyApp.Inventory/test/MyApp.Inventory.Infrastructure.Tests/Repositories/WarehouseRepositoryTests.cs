@@ -240,6 +240,7 @@ public class WarehouseRepositoryTests
 
         // Act
         await _repository.DeleteAsync(warehouse);
+        await _context.SaveChangesAsync();
         var deletedWarehouse = await _context.Warehouses.FindAsync(warehouse.Id);
 
         // Assert

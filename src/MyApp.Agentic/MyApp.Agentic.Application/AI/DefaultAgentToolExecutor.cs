@@ -8,14 +8,20 @@ public class DefaultAgentToolExecutor : IAgentToolExecutor
     private readonly IAgentToolRegistry _registry;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DefaultAgentToolExecutor"/> class.
+    /// Initializes a new instance of the DefaultAgentToolExecutor class.
     /// </summary>
-    /// <param name="registry">Registry containing registered ERP tool handlers.</param>
+    /// <param name="registry">The registry.</param>
     public DefaultAgentToolExecutor(IAgentToolRegistry registry)
     {
         _registry = registry;
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="toolName">The tool Name.</param>
+    /// <param name="arguments">The arguments.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public async Task<string> ExecuteAsync(string toolName, string arguments, CancellationToken cancellationToken = default)
     {

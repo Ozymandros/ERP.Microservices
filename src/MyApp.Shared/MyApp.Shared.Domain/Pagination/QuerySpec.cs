@@ -45,13 +45,18 @@ public class QuerySpec
     /// </summary>
     public string? SearchTerm { get; set; }
 
+    /// <summary>
+    /// Initializes a new instance of the QuerySpec class.
+    /// </summary>
     public QuerySpec()
     {
     }
 
     /// <summary>
-    /// Creates a QuerySpec with specified page and page size.
+    /// Initializes a new instance of the QuerySpec class.
     /// </summary>
+    /// <param name="page">The page.</param>
+    /// <param name="pageSize">The page Size.</param>
     public QuerySpec(int page, int pageSize)
     {
         Page = page > 0 ? page : 1;
@@ -59,7 +64,7 @@ public class QuerySpec
     }
 
     /// <summary>
-    /// Validate and normalize the query spec.
+    /// Validate.
     /// </summary>
     public void Validate()
     {

@@ -11,24 +11,29 @@ public static class ReservationInvariants
     public static readonly TimeSpan DefaultReservationDuration = TimeSpan.FromHours(24);
 
     /// <summary>
-    /// Determines whether a reservation has expired based on its expiry timestamp.
+    /// Determines whether reservation expired.
     /// </summary>
+    /// <param name="reservedUntil">The reserved Until.</param>
     public static bool IsReservationExpired(DateTime reservedUntil)
     {
         return DateTime.UtcNow > reservedUntil;
     }
 
     /// <summary>
-    /// Determines whether a quantity is valid (greater than zero).
+    /// Determines whether quantity valid.
     /// </summary>
+    /// <param name="quantity">The quantity.</param>
     public static bool IsQuantityValid(int quantity)
     {
         return quantity > 0;
     }
 
     /// <summary>
-    /// Validates a stock reservation against all invariants.
+    /// Validate reservation.
     /// </summary>
+    /// <param name="quantity">The quantity.</param>
+    /// <param name="availableQuantity">The available Quantity.</param>
+    /// <param name="reservedUntil">The reserved Until.</param>
     public static void ValidateReservation(int quantity, int availableQuantity, DateTime reservedUntil)
     {
         if (!IsQuantityValid(quantity))
@@ -42,7 +47,7 @@ public static class ReservationInvariants
     }
 
     /// <summary>
-    /// Calculates the expiry time for a new reservation using the default duration.
+    /// Calculate reservation expiry.
     /// </summary>
     public static DateTime CalculateReservationExpiry()
     {

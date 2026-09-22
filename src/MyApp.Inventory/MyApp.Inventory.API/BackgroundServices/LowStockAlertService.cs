@@ -14,6 +14,10 @@ public class LowStockAlertService : BackgroundService
     private readonly ILogger<LowStockAlertService> _logger;
     private readonly TimeSpan _checkInterval = TimeSpan.FromHours(1);
 
+    /// <summary>Initialises a new instance of <see cref="LowStockAlertService"/>.</summary>
+    /// Initializes a new instance of the LowStockAlertService class.
+    /// <param name="serviceProvider">The service Provider.</param>
+    /// <param name="logger">The logger.</param>
     public LowStockAlertService(
         IServiceProvider serviceProvider,
         ILogger<LowStockAlertService> logger)

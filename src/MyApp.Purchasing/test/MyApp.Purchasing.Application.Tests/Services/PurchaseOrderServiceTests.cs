@@ -9,7 +9,9 @@ using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
+using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 using Xunit;
@@ -23,6 +25,7 @@ public class PurchaseOrderServiceTests
     private readonly Mock<ISupplierRepository> _mockSupplierRepository;
     private readonly Mock<IMapper> _mockMapper;
     private readonly Mock<ILogger<PurchaseOrderService>> _mockLogger;
+    private readonly Mock<IUnitOfWork> _mockUnitOfWork;
     private readonly Mock<IEventPublisher> _mockEventPublisher;
     private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly PurchaseOrderService _purchaseOrderService;
@@ -34,8 +37,11 @@ public class PurchaseOrderServiceTests
         _mockSupplierRepository = new Mock<ISupplierRepository>();
         _mockMapper = new Mock<IMapper>();
         _mockLogger = new Mock<ILogger<PurchaseOrderService>>();
+        _mockUnitOfWork = new Mock<IUnitOfWork>();
         _mockEventPublisher = new Mock<IEventPublisher>();
         _mockServiceInvoker = new Mock<IServiceInvoker>();
+        _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
 
         _purchaseOrderService = new PurchaseOrderService(
             _mockPurchaseOrderRepository.Object,
@@ -43,6 +49,7 @@ public class PurchaseOrderServiceTests
             _mockSupplierRepository.Object,
             _mockMapper.Object,
             _mockLogger.Object,
+            _mockUnitOfWork.Object,
             _mockEventPublisher.Object,
             _mockServiceInvoker.Object);
     }

@@ -5,30 +5,61 @@ using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Entities;
+using MyApp.Shared.Domain.Security;
+using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Auth.Application.Services;
 
-public class PermissionService : IPermissionService
+/// <summary>
+/// Provides operations for managing permissions and checking user access rights.
+/// </summary>
+public class PermissionService : AppServiceBase, IPermissionService
 {
     private readonly IPermissionRepository _permissionRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<PermissionService> _logger;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ILogSanitizer _logSanitizer;
 
+    /// <summary>
+    /// Initializes a new instance of the PermissionService class.
+    /// </summary>
+    /// <param name="userManager">The user Manager.</param>
+    /// <param name="permissionRepository">The permission Repository.</param>
+    /// <param name="mapper">The mapper.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="logSanitizer">The log Sanitizer.</param>
+    /// <param name="logger">The logger.</param>
     public PermissionService(UserManager<ApplicationUser> userManager,
         IPermissionRepository permissionRepository,
         IMapper mapper,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        ILogSanitizer logSanitizer,
         ILogger<PermissionService> logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Auth)
     {
         _userManager = userManager;
         _permissionRepository = permissionRepository;
         _mapper = mapper;
+        _logSanitizer = logSanitizer;
         _logger = logger;
     }
 
+    /// <summary>
+    /// Determines whether permission asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <returns><c>true</c> if the user has the permission; otherwise, <c>false</c>.</returns>
     public async Task<bool> HasPermissionAsync(Guid userId, string module, string action)
     {
         try
@@ -43,6 +74,13 @@ public class PermissionService : IPermissionService
         }
     }
 
+    /// <summary>
+    /// Determines whether permission asynchronously.
+    /// </summary>
+    /// <param name="username">The username.</param>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <returns><c>true</c> if the user has the permission; otherwise, <c>false</c>.</returns>
     public async Task<bool> HasPermissionAsync(string? username, string module, string action)
     {
         if (string.IsNullOrWhiteSpace(username))
@@ -75,18 +113,31 @@ public class PermissionService : IPermissionService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error checking permission for username {Username}", username);
+            _logger.LogError(
+                ex,
+                "Error checking permission for username {Username}",
+                _logSanitizer.Sanitize(username));
         }
 
         return false;
     }
 
+    /// <summary>
+    /// Gets all permissions asynchronously.
+    /// </summary>
+    /// <returns>A collection of all <see cref="PermissionDto"/> objects.</returns>
     public async Task<IEnumerable<PermissionDto>> GetAllPermissionsAsync()
     {
         var entities = await _permissionRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<PermissionDto>>(entities);
     }
 
+    /// <summary>
+    /// Gets all permissions paginated asynchronously.
+    /// </summary>
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
+    /// <returns>A paginated result containing <see cref="PermissionDto"/> objects for the requested page.</returns>
     public async Task<PaginatedResult<PermissionDto>> GetAllPermissionsPaginatedAsync(int pageNumber, int pageSize)
     {
         var paginatedPermissions = await _permissionRepository.GetAllPaginatedAsync(pageNumber, pageSize);
@@ -94,12 +145,23 @@ public class PermissionService : IPermissionService
         return new PaginatedResult<PermissionDto>(permissionDtos, paginatedPermissions.PageNumber, paginatedPermissions.PageSize, paginatedPermissions.TotalCount);
     }
 
+    /// <summary>
+    /// Gets the permission by id asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <returns>The <see cref="PermissionDto"/> if found; otherwise, <c>null</c>.</returns>
     public async Task<PermissionDto?> GetPermissionByIdAsync(Guid id)
     {
         var entity = await _permissionRepository.GetByIdAsync(id);
         return entity == null ? null : _mapper.Map<PermissionDto>(entity);
     }
 
+    /// <summary>
+    /// Gets the permission by module action asynchronously.
+    /// </summary>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <returns>The matching <see cref="PermissionDto"/> if found; otherwise, <c>null</c>.</returns>
     public async Task<PermissionDto?> GetPermissionByModuleActionAsync(string module, string action)
     {
         var entities = await _permissionRepository.GetByUserName("", module, action); // Not ideal, but repository offers specific methods
@@ -107,6 +169,11 @@ public class PermissionService : IPermissionService
         return match == null ? null : _mapper.Map<PermissionDto>(match);
     }
 
+    /// <summary>
+    /// Creates a permission asynchronously.
+    /// </summary>
+    /// <param name="createPermissionDto">The create Permission Dto.</param>
+    /// <returns>The created <see cref="PermissionDto"/> on success, or <c>null</c> if a duplicate exists or creation fails.</returns>
     public async Task<PermissionDto?> CreatePermissionAsync(MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto createPermissionDto)
     {
         try
@@ -114,7 +181,13 @@ public class PermissionService : IPermissionService
             var existing = await _permissionRepository.GetAllAsync();
             if (existing.Any(p => p.Module == createPermissionDto.Module && p.Action == createPermissionDto.Action))
             {
-                _logger.LogWarning("Permission already exists: {Module}:{Action}", createPermissionDto.Module, createPermissionDto.Action);
+                _logger.LogWarning(
+                    "Permission already exists: {@Permission}",
+                    new
+                    {
+                        Module = _logSanitizer.Sanitize(createPermissionDto.Module),
+                        Action = _logSanitizer.Sanitize(createPermissionDto.Action)
+                    });
                 return null;
             }
 
@@ -126,15 +199,29 @@ public class PermissionService : IPermissionService
             };
 
             await _permissionRepository.AddAsync(entity);
+            await SaveChangesAsync();
             return _mapper.Map<PermissionDto>(entity);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating permission {Module}:{Action}", createPermissionDto.Module, createPermissionDto.Action);
+            _logger.LogError(
+                ex,
+                "Error creating permission {@Permission}",
+                new
+                {
+                    Module = _logSanitizer.Sanitize(createPermissionDto.Module),
+                    Action = _logSanitizer.Sanitize(createPermissionDto.Action)
+                });
             return null;
         }
     }
 
+    /// <summary>
+    /// Updates the permission asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="updatePermissionDto">The update Permission Dto.</param>
+    /// <returns><c>true</c> if the update succeeded; otherwise, <c>false</c>.</returns>
     public async Task<bool> UpdatePermissionAsync(Guid id, MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto updatePermissionDto)
     {
         try
@@ -151,6 +238,7 @@ public class PermissionService : IPermissionService
             entity.Description = updatePermissionDto.Description;
 
             await _permissionRepository.UpdateAsync(entity);
+            await SaveChangesAsync();
             return true;
         }
         catch (Exception ex)
@@ -160,6 +248,11 @@ public class PermissionService : IPermissionService
         }
     }
 
+    /// <summary>
+    /// Deletes the permission asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <returns><c>true</c> if deletion succeeded; otherwise, <c>false</c>.</returns>
     public async Task<bool> DeletePermissionAsync(Guid id)
     {
         try
@@ -172,6 +265,7 @@ public class PermissionService : IPermissionService
             }
 
             await _permissionRepository.DeleteAsync(entity);
+            await SaveChangesAsync();
             return true;
         }
         catch (Exception ex)
@@ -182,8 +276,10 @@ public class PermissionService : IPermissionService
     }
 
     /// <summary>
-    /// Query permissions with filtering, sorting, and pagination
+    /// Query permissions asynchronously.
     /// </summary>
+    /// <param name="spec">The spec.</param>
+    /// <returns>A paginated result containing matched <see cref="PermissionDto"/> objects.</returns>
     public async Task<PaginatedResult<PermissionDto>> QueryPermissionsAsync(ISpecification<Permission> spec)
     {
         try

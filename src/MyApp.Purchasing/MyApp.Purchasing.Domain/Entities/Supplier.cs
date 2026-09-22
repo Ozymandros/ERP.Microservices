@@ -3,8 +3,9 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Purchasing.Domain.Entities;
 
 /// <summary>
-/// Provides Supplier functionality.
+/// Supplier.
 /// </summary>
+/// <param name="id">The id.</param>
 public class Supplier(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>Gets or sets Name.</summary>

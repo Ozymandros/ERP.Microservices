@@ -13,12 +13,14 @@ public class SalesOrderLineRepository : Repository<SalesOrderLine, Guid>, ISales
     private readonly SalesDbContext _context;
 
     /// <summary>base.</summary>
+    /// <param name="context">The context.</param>
     public SalesOrderLineRepository(SalesDbContext context) : base(context)
     {
         _context = context;
     }
 
     /// <summary>Get By Id Async.</summary>
+    /// <param name="id">The id.</param>
     public override async Task<SalesOrderLine?> GetByIdAsync(Guid id)
     {
         return await _context.SalesOrderLines.FirstOrDefaultAsync(l => l.Id == id);
@@ -31,13 +33,13 @@ public class SalesOrderLineRepository : Repository<SalesOrderLine, Guid>, ISales
     }
 
     /// <summary>Delete Async.</summary>
+    /// <param name="id">The id.</param>
     public async Task DeleteAsync(Guid id)
     {
         var line = await _context.SalesOrderLines.FindAsync(id);
         if (line != null)
         {
             _context.SalesOrderLines.Remove(line);
-            await _context.SaveChangesAsync();
         }
     }
 }

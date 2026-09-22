@@ -1,36 +1,70 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Purchasing.Application.Services;
 
-public class SupplierService : ISupplierService
+public class SupplierService : AppServiceBase, ISupplierService
 {
     private readonly ISupplierRepository _supplierRepository;
     private readonly IMapper _mapper;
 
-    public SupplierService(ISupplierRepository supplierRepository, IMapper mapper)
+    /// <summary>
+    /// Initializes a new instance of the SupplierService class.
+    /// </summary>
+    /// <param name="supplierRepository">The supplier Repository.</param>
+    /// <param name="mapper">The mapper.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="logger">The logger.</param>
+    public SupplierService(
+        ISupplierRepository supplierRepository,
+        IMapper mapper,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        ILogger<SupplierService> logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Purchasing)
     {
         _supplierRepository = supplierRepository;
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Gets the supplier by id asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<SupplierDto?> GetSupplierByIdAsync(Guid id)
     {
         var supplier = await _supplierRepository.GetByIdAsync(id);
         return supplier == null ? null : _mapper.Map<SupplierDto>(supplier);
     }
 
+    /// <summary>
+    /// Gets the supplier by email asynchronously.
+    /// </summary>
+    /// <param name="email">The email.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<SupplierDto?> GetSupplierByEmailAsync(string email)
     {
         var supplier = await _supplierRepository.GetByEmailAsync(email);
         return supplier == null ? null : _mapper.Map<SupplierDto>(supplier);
     }
 
+    /// <summary>
+    /// Gets the supplier by name asynchronously.
+    /// </summary>
+    /// <param name="name">The name.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<SupplierDto?> GetSupplierByNameAsync(string name)
     {
         var suppliers = await _supplierRepository.GetByNameAsync(name);
@@ -38,18 +72,32 @@ public class SupplierService : ISupplierService
         return supplier == null ? null : _mapper.Map<SupplierDto>(supplier);
     }
 
+    /// <summary>
+    /// Gets the suppliers by name asynchronously.
+    /// </summary>
+    /// <param name="name">The name.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<IEnumerable<SupplierDto>> GetSuppliersByNameAsync(string name)
     {
         var suppliers = await _supplierRepository.GetByNameAsync(name);
         return _mapper.Map<IEnumerable<SupplierDto>>(suppliers);
     }
 
+    /// <summary>
+    /// Gets all suppliers asynchronously.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<IEnumerable<SupplierDto>> GetAllSuppliersAsync()
     {
         var suppliers = await _supplierRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<SupplierDto>>(suppliers);
     }
 
+    /// <summary>
+    /// Creates a supplier asynchronously.
+    /// </summary>
+    /// <param name="dto">The dto.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<SupplierDto> CreateSupplierAsync(CreateUpdateSupplierDto dto)
     {
         // Check if supplier with same email already exists
@@ -61,10 +109,17 @@ public class SupplierService : ISupplierService
 
         var supplier = _mapper.Map<Supplier>(dto);
         var createdSupplier = await _supplierRepository.AddAsync(supplier);
+        await SaveChangesAsync();
 
         return _mapper.Map<SupplierDto>(createdSupplier);
     }
 
+    /// <summary>
+    /// Updates the supplier asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<SupplierDto> UpdateSupplierAsync(Guid id, CreateUpdateSupplierDto dto)
     {
         var supplier = await _supplierRepository.GetByIdAsync(id);
@@ -85,10 +140,15 @@ public class SupplierService : ISupplierService
 
         _mapper.Map(dto, supplier);
         var updatedSupplier = await _supplierRepository.UpdateAsync(supplier);
+        await SaveChangesAsync();
 
         return _mapper.Map<SupplierDto>(updatedSupplier);
     }
 
+    /// <summary>
+    /// Deletes the supplier asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
     public async Task DeleteSupplierAsync(Guid id)
     {
         var supplier = await _supplierRepository.GetByIdAsync(id);
@@ -98,11 +158,13 @@ public class SupplierService : ISupplierService
         }
 
         await _supplierRepository.DeleteAsync(supplier);
+        await SaveChangesAsync();
     }
 
     /// <summary>
-    /// Query suppliers with filtering, sorting, and pagination
+    /// Query suppliers asynchronously.
     /// </summary>
+    /// <param name="spec">The spec.</param>
     public async Task<PaginatedResult<SupplierDto>> QuerySuppliersAsync(ISpecification<Supplier> spec)
     {
         var result = await _supplierRepository.QueryAsync(spec);

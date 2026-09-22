@@ -12,10 +12,17 @@ public class SalesOrderQuerySpec : BaseSpecification<SalesOrder>
     private const string MinTotalFilterKey = $"{nameof(SalesOrder.TotalAmount)}Min";
     private const string MaxTotalFilterKey = $"{nameof(SalesOrder.TotalAmount)}Max";
 
+    /// <summary>Initializes a new <see cref="SalesOrderQuerySpec"/> with the given query parameters.</summary>
+    /// Initializes a new instance of the SalesOrderQuerySpec class.
+    /// <param name="query">The query.</param>
     public SalesOrderQuerySpec(QuerySpec query) : base(query)
     {
     }
 
+    /// <summary>Applies sales order-specific filters (order number, customer, status, total amount range) and search term to the query.</summary>
+    /// Applies query filters to the specification.
+    /// <param name="query">The query.</param>
+    /// <returns>The filtered queryable.</returns>
     public override IQueryable<SalesOrder> ApplyFilters(IQueryable<SalesOrder> query)
     {
         // Apply sales order-specific filters

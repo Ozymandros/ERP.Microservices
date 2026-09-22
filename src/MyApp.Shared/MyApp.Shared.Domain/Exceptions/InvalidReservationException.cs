@@ -11,8 +11,10 @@ public class InvalidReservationException : Exception
     public Guid? ReservationId { get; }
 
     /// <summary>
-    /// Initializes a new instance of the InvalidReservationException class with reservation and message.
+    /// Initializes a new instance of the InvalidReservationException class.
     /// </summary>
+    /// <param name="reservationId">The reservation Id.</param>
+    /// <param name="message">The message.</param>
     public InvalidReservationException(Guid reservationId, string message)
         : base($"Invalid reservation {reservationId}: {message}")
     {
@@ -20,15 +22,18 @@ public class InvalidReservationException : Exception
     }
 
     /// <summary>
-    /// Initializes a new instance of the InvalidReservationException class with a message.
+    /// Initializes a new instance of the InvalidReservationException class.
     /// </summary>
+    /// <param name="message">The message.</param>
     public InvalidReservationException(string message) : base(message)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the InvalidReservationException class with a message and inner exception.
+    /// Initializes a new instance of the InvalidReservationException class.
     /// </summary>
+    /// <param name="message">The message.</param>
+    /// <param name="innerException">The inner Exception.</param>
     public InvalidReservationException(string message, Exception innerException)
         : base(message, innerException)
     {

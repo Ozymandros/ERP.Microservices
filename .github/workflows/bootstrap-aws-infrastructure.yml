@@ -1,0 +1,206 @@
+name: Bootstrap AWS Infrastructure (OIDC)
+
+# One-time (or occasional) apply with admin IAM user keys.
+# Creates GitHub OIDC provider, deploy role, EKS, etc. Then set AWS_DEPLOY_ROLE_ARN and remove bootstrap secrets.
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: "OpenTofu tfvars profile"
+        required: true
+        default: dev
+        type: choice
+        options:
+          - dev
+          - prod
+      aws_region:
+        description: "Optional override for var.aws_region"
+        required: false
+        default: ""
+        type: string
+      auto_approve:
+        description: "Run tofu apply -auto-approve"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+  workflow_call:
+    inputs:
+      profile:
+        required: true
+        type: string
+      aws_region:
+        required: false
+        type: string
+        default: ""
+      auto_approve:
+        required: false
+        type: string
+        default: "true"
+    outputs:
+      deploy_role_arn:
+        description: "IAM role ARN for GitHub Actions OIDC"
+        value: ${{ jobs.bootstrap.outputs.deploy_role_arn }}
+      eks_cluster_name:
+        value: ${{ jobs.bootstrap.outputs.eks_cluster_name }}
+      aws_region:
+        value: ${{ jobs.bootstrap.outputs.aws_region }}
+    secrets:
+      AWS_BOOTSTRAP_ACCESS_KEY_ID:
+        required: true
+      AWS_BOOTSTRAP_SECRET_ACCESS_KEY:
+        required: true
+      AWS_BOOTSTRAP_SESSION_TOKEN:
+        required: false
+
+concurrency:
+  group: aws-bootstrap-${{ inputs.profile || github.event.inputs.profile }}
+  cancel-in-progress: false
+
+jobs:
+  bootstrap:
+    name: OpenTofu apply (${{ inputs.profile || github.event.inputs.profile }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Require bootstrap credentials
+        shell: bash
+        env:
+          BOOTSTRAP_KEY: ${{ secrets.AWS_BOOTSTRAP_ACCESS_KEY_ID }}
+          BOOTSTRAP_SECRET: ${{ secrets.AWS_BOOTSTRAP_SECRET_ACCESS_KEY }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$BOOTSTRAP_KEY" || -z "$BOOTSTRAP_SECRET" ]]; then
+            echo "::error::Missing AWS_BOOTSTRAP_ACCESS_KEY_ID / AWS_BOOTSTRAP_SECRET_ACCESS_KEY secrets."
+            echo "Create an IAM user with permissions for EKS + IAM OIDC, add keys as Actions secrets, run this workflow once, then delete the secrets."
+            exit 1
+          fi
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+
+      - name: Resolve tfvars and region
+        id: tfvars
+        shell: bash
+        env:
+          PROFILE: ${{ inputs.profile || github.event.inputs.profile }}
+          INPUT_AWS_REGION: ${{ inputs.aws_region || github.event.inputs.aws_region }}
+        run: |
+          set -euo pipefail
+          read_tfvar() {
+            local name="$1" file="$2" default="${3:-}"
+            [[ ! -f "$file" ]] && { echo "$default"; return; }
+            local line
+            line="$(grep -E "^[[:space:]]*${name}[[:space:]]*=" "$file" | tail -1 || true)"
+            [[ -z "$line" ]] && { echo "$default"; return; }
+            echo "$line" | sed -E 's/^[^=]+=[[:space:]]*"?([^"#[:space:]]+)"?.*/\1/' | tr -d "'"
+          }
+          TOFU_DIR="deploy/aws/tofu"
+          if [[ -f "${TOFU_DIR}/terraform.tfvars" ]]; then
+            TFVARS_FILE="terraform.tfvars"
+            TFVARS_PATH="${TOFU_DIR}/terraform.tfvars"
+          elif [[ -f "${TOFU_DIR}/environments/${PROFILE}/terraform.tfvars" ]]; then
+            TFVARS_FILE="environments/${PROFILE}/terraform.tfvars"
+            TFVARS_PATH="${TOFU_DIR}/${TFVARS_FILE}"
+          else
+            TFVARS_FILE="environments/${PROFILE}/terraform.tfvars.example"
+            TFVARS_PATH="${TOFU_DIR}/${TFVARS_FILE}"
+          fi
+          AWS_REGION="$INPUT_AWS_REGION"
+          if [[ -z "$AWS_REGION" ]]; then
+            AWS_REGION="$(read_tfvar aws_region "$TFVARS_PATH" "eu-west-1")"
+          fi
+          echo "tfvars_file=$TFVARS_FILE" >> "$GITHUB_OUTPUT"
+          echo "aws_region=$AWS_REGION" >> "$GITHUB_OUTPUT"
+          if [[ -n "$INPUT_AWS_REGION" ]]; then
+            echo "aws_region_var=-var=aws_region=${INPUT_AWS_REGION}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Configure AWS credentials (bootstrap)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_BOOTSTRAP_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_BOOTSTRAP_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_BOOTSTRAP_SESSION_TOKEN }}
+          aws-region: ${{ steps.tfvars.outputs.aws_region }}
+
+      - name: OpenTofu init, plan, apply
+        working-directory: deploy/aws/tofu
+        shell: bash
+        env:
+          TFVARS_FILE: ${{ steps.tfvars.outputs.tfvars_file }}
+          AWS_REGION_VAR: ${{ steps.tfvars.outputs.aws_region_var }}
+          AUTO_APPROVE: ${{ inputs.auto_approve || github.event.inputs.auto_approve }}
+        run: |
+          set -euo pipefail
+          VAR_ARGS=(-var-file="$TFVARS_FILE")
+          if [[ -n "${AWS_REGION_VAR:-}" ]]; then
+            VAR_ARGS+=("$AWS_REGION_VAR")
+          fi
+          tofu fmt -check -recursive
+          tofu init -input=false
+          tofu validate "${VAR_ARGS[@]}"
+          tofu plan "${VAR_ARGS[@]}" -out=tfplan
+          if [[ "$AUTO_APPROVE" == "true" ]]; then
+            tofu apply -auto-approve tfplan
+          else
+            echo "auto_approve=false — review the plan above and re-run with auto_approve=true"
+            exit 1
+          fi
+
+      - name: Verify GitHub OIDC provider
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! aws iam list-open-id-connect-providers --output text | grep -q 'token.actions.githubusercontent.com'; then
+            echo "::error::GitHub OIDC provider still missing after apply. Check enable_github_actions_deploy in tfvars."
+            exit 1
+          fi
+          echo "GitHub OIDC provider present."
+
+      - name: Publish outputs for GitHub configuration
+        id: publish
+        working-directory: deploy/aws/tofu
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROLE="$(tofu output -raw github_actions_deploy_role_arn)"
+          CLUSTER="$(tofu output -raw eks_cluster_name)"
+          REGION="$(tofu output -raw aws_region)"
+          ACCOUNT="$(aws sts get-caller-identity --query Account --output text)"
+          {
+            echo "## Bootstrap complete"
+            echo ""
+            echo "| Item | Value |"
+            echo "|------|-------|"
+            echo "| AWS account | \`${ACCOUNT}\` |"
+            echo "| EKS cluster | \`${CLUSTER}\` |"
+            echo "| Region | \`${REGION}\` |"
+            echo ""
+            echo "### Required: set repository variable"
+            echo ""
+            echo "\`AWS_DEPLOY_ROLE_ARN\` = \`${ROLE}\`"
+            echo ""
+            echo "Settings → Secrets and variables → Actions → Variables"
+            echo ""
+            echo "### Then"
+            echo "1. Delete secrets \`AWS_BOOTSTRAP_ACCESS_KEY_ID\` and \`AWS_BOOTSTRAP_SECRET_ACCESS_KEY\` (recommended)."
+            echo "2. Re-run **Deploy AWS Kubernetes Stack** with \`infra_step=skip\` or \`apply\` as needed."
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "deploy_role_arn=$ROLE" >> "$GITHUB_OUTPUT"
+          echo "eks_cluster_name=$CLUSTER" >> "$GITHUB_OUTPUT"
+          echo "aws_region=$REGION" >> "$GITHUB_OUTPUT"
+
+    outputs:
+      deploy_role_arn: ${{ steps.publish.outputs.deploy_role_arn }}
+      eks_cluster_name: ${{ steps.publish.outputs.eks_cluster_name }}
+      aws_region: ${{ steps.publish.outputs.aws_region }}

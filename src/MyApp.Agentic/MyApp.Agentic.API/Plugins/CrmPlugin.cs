@@ -3,6 +3,8 @@ using MyApp.Shared.Domain.Messaging;
 using System.ComponentModel;
 using System.Text.Json;
 
+namespace MyApp.Agentic.API.Plugins;
+
 /// <summary>
 /// Semantic Kernel plugin that exposes CRM contact operations to the AI kernel.
 /// All functions delegate to the CRM microservice via <see cref="IServiceInvoker"/>,
@@ -13,9 +15,9 @@ public class CrmPlugin
     private readonly IServiceInvoker _serviceInvoker;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="CrmPlugin"/> with the required service invoker.
+    /// Initializes a new instance of the CrmPlugin class.
     /// </summary>
-    /// <param name="serviceInvoker">The inter-service HTTP invoker used to call the CRM service.</param>
+    /// <param name="serviceInvoker">The service Invoker.</param>
     public CrmPlugin(IServiceInvoker serviceInvoker)
     {
         _serviceInvoker = serviceInvoker;
@@ -24,7 +26,7 @@ public class CrmPlugin
     /// <summary>
     /// Creates a new CRM contact from the supplied JSON payload and returns the created resource as JSON.
     /// </summary>
-    /// <param name="payloadJson">JSON-serialized contact creation request.</param>
+    /// <param name="payloadJson">The payload Json.</param>
     /// <returns>JSON representation of the newly created CRM contact.</returns>
     [Description("Create CRM resource")]
     public async Task<string> CreateAsync(string payloadJson)
@@ -41,7 +43,7 @@ public class CrmPlugin
     /// <summary>
     /// Retrieves a CRM contact by its unique identifier.
     /// </summary>
-    /// <param name="id">The unique identifier of the CRM contact.</param>
+    /// <param name="id">The id.</param>
     /// <returns>JSON representation of the CRM contact, or an error description if not found.</returns>
     [Description("Get CRM resource by id")]
     public async Task<string> GetByIdAsync(string id)
@@ -57,7 +59,7 @@ public class CrmPlugin
     /// <summary>
     /// Updates an existing CRM contact with the values provided in the JSON payload.
     /// </summary>
-    /// <param name="payloadJson">JSON-serialized contact update request, including the contact identifier.</param>
+    /// <param name="payloadJson">The payload Json.</param>
     /// <returns>JSON representation of the updated CRM contact.</returns>
     [Description("Update CRM resource")]
     public async Task<string> UpdateAsync(string payloadJson)
@@ -74,7 +76,7 @@ public class CrmPlugin
     /// <summary>
     /// Permanently deletes a CRM contact by its unique identifier.
     /// </summary>
-    /// <param name="id">The unique identifier of the CRM contact to delete.</param>
+    /// <param name="id">The id.</param>
     /// <returns>A confirmation message indicating the contact was deleted.</returns>
     [Description("Delete CRM resource by id")]
     public async Task<string> DeleteAsync(string id)
@@ -90,7 +92,7 @@ public class CrmPlugin
     /// <summary>
     /// Gets a CRM account by its tax ID.
     /// </summary>
-    /// <param name="taxId">The tax identification number.</param>
+    /// <param name="taxId">The tax Id.</param>
     /// <returns>JSON representation of the account, or an error description if not found.</returns>
     [Description("Get CRM account by tax ID")]
     public async Task<string> GetAccountByTaxIdAsync(string taxId)
@@ -107,7 +109,7 @@ public class CrmPlugin
     /// <summary>
     /// Gets a CRM account by its customer ID.
     /// </summary>
-    /// <param name="customerId">The customer identifier.</param>
+    /// <param name="customerId">The customer Id.</param>
     /// <returns>JSON representation of the account, or an error description if not found.</returns>
     [Description("Get CRM account by customer ID")]
     public async Task<string> GetAccountByCustomerIdAsync(string customerId)

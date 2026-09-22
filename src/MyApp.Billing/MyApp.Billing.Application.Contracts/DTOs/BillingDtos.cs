@@ -1,8 +1,14 @@
 namespace MyApp.Billing.Application.Contracts.DTOs;
 
 /// <summary>
-/// DTO for creating an invoice from an order
+/// Creates an invoice dto.
 /// </summary>
+/// <param name="InvoiceNumber">The invoice number.</param>
+/// <param name="CustomerId">The customer identifier.</param>
+/// <param name="OrderId">The related order identifier, if any.</param>
+/// <param name="Currency">The currency code.</param>
+/// <param name="Lines">The invoice line items.</param>
+/// <param name="PaymentTermsDays">The payment terms in days.</param>
 public record CreateInvoiceDto(
     string InvoiceNumber, // Now required, not nullable
     Guid CustomerId,
@@ -13,8 +19,13 @@ public record CreateInvoiceDto(
 );
 
 /// <summary>
-/// DTO for creating an invoice line
+/// Creates an invoice line dto.
 /// </summary>
+/// <param name="Description">The description.</param>
+/// <param name="Quantity">The quantity.</param>
+/// <param name="UnitPrice">The unit Price.</param>
+/// <param name="TaxRate">The tax Rate.</param>
+/// <param name="Discount">The discount.</param>
 public record CreateInvoiceLineDto(
     string Description,
     int Quantity,
@@ -24,8 +35,11 @@ public record CreateInvoiceLineDto(
 );
 
 /// <summary>
-/// DTO for issuing an invoice
+/// Issue sue invoice dto.
 /// </summary>
+/// <param name="InvoiceId">The invoice Id.</param>
+/// <param name="InvoiceNumber">The invoice Number.</param>
+/// <param name="IssueDate">The issue Date.</param>
 public record IssueInvoiceDto(
     Guid InvoiceId,
     string InvoiceNumber,
@@ -33,8 +47,13 @@ public record IssueInvoiceDto(
 );
 
 /// <summary>
-/// DTO for recording a payment
+/// Record payment dto.
 /// </summary>
+/// <param name="InvoiceId">The invoice Id.</param>
+/// <param name="Amount">The amount.</param>
+/// <param name="Method">The method.</param>
+/// <param name="PaidAt">The paid At.</param>
+/// <param name="ExternalPaymentId">The external Payment Id.</param>
 public record RecordPaymentDto(
     Guid InvoiceId,
     decimal Amount,
@@ -44,8 +63,11 @@ public record RecordPaymentDto(
 );
 
 /// <summary>
-/// DTO for creating a credit note
+/// Creates a credit note dto.
 /// </summary>
+/// <param name="InvoiceId">The invoice Id.</param>
+/// <param name="Lines">The lines.</param>
+/// <param name="Reason">The reason.</param>
 public record CreateCreditNoteDto(
     Guid InvoiceId,
     List<CreditNoteLineDto> Lines,
@@ -53,8 +75,13 @@ public record CreateCreditNoteDto(
 );
 
 /// <summary>
-/// DTO for a credit note line
+/// Credit note line dto.
 /// </summary>
+/// <param name="Description">The description.</param>
+/// <param name="Quantity">The quantity.</param>
+/// <param name="UnitPrice">The unit Price.</param>
+/// <param name="TaxRate">The tax Rate.</param>
+/// <param name="Discount">The discount.</param>
 public record CreditNoteLineDto(
     string Description,
     int Quantity,
@@ -64,8 +91,23 @@ public record CreditNoteLineDto(
 );
 
 /// <summary>
-/// DTO for invoice details
+/// Invoice dto.
 /// </summary>
+/// <param name="Id">The id.</param>
+/// <param name="InvoiceNumber">The invoice Number.</param>
+/// <param name="CustomerId">The customer Id.</param>
+/// <param name="OrderId">The order Id.</param>
+/// <param name="Currency">The currency.</param>
+/// <param name="Status">The status.</param>
+/// <param name="IssueDate">The issue Date.</param>
+/// <param name="DueDate">The due Date.</param>
+/// <param name="TotalNet">The total Net.</param>
+/// <param name="TotalTax">The total Tax.</param>
+/// <param name="TotalGross">The total Gross.</param>
+/// <param name="OutstandingAmount">The outstanding Amount.</param>
+/// <param name="Lines">The lines.</param>
+/// <param name="CreatedAt">The created At.</param>
+/// <param name="UpdatedAt">The updated At.</param>
 public record InvoiceDto(
     Guid Id,
     string InvoiceNumber,
@@ -85,8 +127,17 @@ public record InvoiceDto(
 );
 
 /// <summary>
-/// DTO for invoice line details
+/// Invoice line dto.
 /// </summary>
+/// <param name="Id">The id.</param>
+/// <param name="Description">The description.</param>
+/// <param name="Quantity">The quantity.</param>
+/// <param name="UnitPrice">The unit Price.</param>
+/// <param name="Discount">The discount.</param>
+/// <param name="TaxRate">The tax Rate.</param>
+/// <param name="LineNet">The line Net.</param>
+/// <param name="LineTax">The line Tax.</param>
+/// <param name="LineGross">The line Gross.</param>
 public record InvoiceLineDto(
     Guid Id,
     string Description,
@@ -100,8 +151,15 @@ public record InvoiceLineDto(
 );
 
 /// <summary>
-/// DTO for payment details
+/// Payment dto.
 /// </summary>
+/// <param name="Id">The id.</param>
+/// <param name="InvoiceId">The invoice Id.</param>
+/// <param name="Amount">The amount.</param>
+/// <param name="Currency">The currency.</param>
+/// <param name="Method">The method.</param>
+/// <param name="Status">The status.</param>
+/// <param name="PaidAt">The paid At.</param>
 public record PaymentDto(
     Guid Id,
     Guid InvoiceId,
@@ -113,8 +171,16 @@ public record PaymentDto(
 );
 
 /// <summary>
-/// DTO for credit note details
+/// Credit note dto.
 /// </summary>
+/// <param name="Id">The id.</param>
+/// <param name="OriginalInvoiceId">The original Invoice Id.</param>
+/// <param name="Reason">The reason.</param>
+/// <param name="Status">The status.</param>
+/// <param name="TotalNet">The total Net.</param>
+/// <param name="TotalTax">The total Tax.</param>
+/// <param name="TotalGross">The total Gross.</param>
+/// <param name="CreatedAt">The created At.</param>
 public record CreditNoteDto(
     Guid Id,
     Guid OriginalInvoiceId,
@@ -127,11 +193,14 @@ public record CreditNoteDto(
 );
 
 /// <summary>
-/// Request body for issuing an invoice (InvoiceId is supplied via the route).
+/// Issue sue invoice request.
 /// </summary>
+/// <param name="InvoiceNumber">The invoice Number.</param>
+/// <param name="IssueDate">The issue Date.</param>
 public record IssueInvoiceRequest(string InvoiceNumber, DateTime IssueDate);
 
 /// <summary>
-/// Request body for cancelling an invoice (InvoiceId is supplied via the route).
+/// Cancel invoice request.
 /// </summary>
+/// <param name="Reason">The reason.</param>
 public record CancelInvoiceRequest(string Reason);

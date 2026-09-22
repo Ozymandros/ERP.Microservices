@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Authentication;
 using System.Net.Http.Headers;
 
 namespace MyApp.Shared.Domain.Permissions;
@@ -13,6 +14,11 @@ public class PermissionChecker : IPermissionChecker
     private readonly IServiceInvoker _serviceInvoker;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    /// <summary>
+    /// Initializes a new instance of the PermissionChecker class.
+    /// </summary>
+    /// <param name="serviceInvoker">The service Invoker.</param>
+    /// <param name="httpContextAccessor">The http Context Accessor.</param>
     public PermissionChecker(IServiceInvoker serviceInvoker, IHttpContextAccessor httpContextAccessor)
     {
         ArgumentNullException.ThrowIfNull(serviceInvoker);
@@ -22,6 +28,13 @@ public class PermissionChecker : IPermissionChecker
         _httpContextAccessor = httpContextAccessor;
     }
 
+    /// <summary>
+    /// Determines whether permission asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains <c>true</c> if successful; otherwise, <c>false</c>.</returns>
     public async Task<bool> HasPermissionAsync(Guid userId, string module, string action)
     {
         var query = new Dictionary<string, string?>
@@ -34,16 +47,12 @@ public class PermissionChecker : IPermissionChecker
         // 1. Create the request manually
         var request = _serviceInvoker.CreateRequest(
             ServiceNames.Auth,
-            "api/Permissions/check",
+            "api/internal/permissions/check",
             HttpMethod.Get,
             null,
             query);
 
-        // 2. Add the authentication header
-        if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
-        {
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authHeader.ToString().Replace("Bearer ", ""));
-        }
+        AttachBearerToken(request);
 
         // 3. Make the call via Dapr
         try
@@ -57,12 +66,22 @@ public class PermissionChecker : IPermissionChecker
         }
     }
 
+    /// <summary>
+    /// Determines whether permission asynchronously.
+    /// </summary>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains <c>true</c> if successful; otherwise, <c>false</c>.</returns>
     public async Task<bool> HasPermissionAsync(string module, string action)
     {
         if (string.IsNullOrEmpty(module))
             throw new ArgumentException($"'{nameof(module)}' cannot be null or empty.", nameof(module));
         if (string.IsNullOrEmpty(action))
             throw new ArgumentException($"'{nameof(action)}' cannot be null or empty.", nameof(action));
+
+        var userId = GetUserIdFromHttpContext();
+        if (userId.HasValue)
+            return await HasPermissionAsync(userId.Value, module, action);
 
         var query = new Dictionary<string, string?>
         {
@@ -73,16 +92,12 @@ public class PermissionChecker : IPermissionChecker
         // 1. Create the request
         using var request = _serviceInvoker.CreateRequest(
             ServiceNames.Auth,
-            "api/Permissions/check",
+            "api/internal/permissions/check",
             HttpMethod.Get,
             null,
             query);
 
-        // 2. Add the authentication header
-        if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
-        {
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authHeader.ToString().Replace("Bearer ", ""));
-        }
+        AttachBearerToken(request);
 
         // 3. Make the call via Dapr
         try
@@ -94,5 +109,29 @@ public class PermissionChecker : IPermissionChecker
         {
             return false;
         }
+    }
+
+    private void AttachBearerToken(HttpRequestMessage request)
+    {
+        if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is not true)
+            return;
+
+        var token = BearerTokenHelper.ExtractToken(authHeader);
+        if (string.IsNullOrWhiteSpace(token))
+            return;
+
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+    }
+
+    private Guid? GetUserIdFromHttpContext()
+    {
+        var user = _httpContextAccessor.HttpContext?.User;
+        if (user?.Identity?.IsAuthenticated is not true)
+            return null;
+
+        var id = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+            ?? user.FindFirst("sub")?.Value;
+
+        return Guid.TryParse(id, out var userId) ? userId : null;
     }
 }

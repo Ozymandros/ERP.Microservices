@@ -2,6 +2,21 @@ using MyApp.Agentic.Domain.Agents;
 
 namespace MyApp.Agentic.Application.Contracts.DTOs;
 
+/// <summary>Represents an AI provider response DTO including masked API key information.</summary>
+/// <param name="Id">The id.</param>
+/// <param name="Name">The name.</param>
+/// <param name="BaseUrl">The base Url.</param>
+/// <param name="ApiKey">The api Key.</param>
+/// <param name="HasApiKey">The has Api Key.</param>
+/// <param name="DefaultTemperature">The default Temperature.</param>
+/// <param name="DefaultTopK">The default Top K.</param>
+/// <param name="DefaultMaxTokens">The default Max Tokens.</param>
+/// <param name="DefaultEmbeddingDimensions">The default Embedding Dimensions.</param>
+/// <param name="DefaultEnableMemory">The default Enable Memory.</param>
+/// <param name="DefaultEnableRAG">The default Enable RAG.</param>
+/// <param name="DefaultEmbeddingModelName">The default Embedding Model Name.</param>
+/// <param name="DefaultBotType">The default Bot Type.</param>
+/// <param name="DefaultSystemPrompt">The default System Prompt.</param>
 public record AIProviderDto(
     Guid Id,
     string Name,
@@ -19,6 +34,19 @@ public record AIProviderDto(
     string? DefaultSystemPrompt
 );
 
+/// <summary>Request payload for creating a new AI provider.</summary>
+/// <param name="Name">The name.</param>
+/// <param name="BaseUrl">The base Url.</param>
+/// <param name="ApiKey">The api Key.</param>
+/// <param name="DefaultTemperature">The default Temperature.</param>
+/// <param name="DefaultTopK">The default Top K.</param>
+/// <param name="DefaultMaxTokens">The default Max Tokens.</param>
+/// <param name="DefaultEmbeddingDimensions">The default Embedding Dimensions.</param>
+/// <param name="DefaultEnableMemory">The default Enable Memory.</param>
+/// <param name="DefaultEnableRAG">The default Enable RAG.</param>
+/// <param name="DefaultEmbeddingModelName">The default Embedding Model Name.</param>
+/// <param name="DefaultBotType">The default Bot Type.</param>
+/// <param name="DefaultSystemPrompt">The default System Prompt.</param>
 public record CreateAIProviderDto(
     string Name,
     string BaseUrl,
@@ -34,6 +62,19 @@ public record CreateAIProviderDto(
     string? DefaultSystemPrompt = null
 );
 
+/// <summary>Request payload for updating an existing AI provider.</summary>
+/// <param name="Name">The name.</param>
+/// <param name="BaseUrl">The base Url.</param>
+/// <param name="ApiKey">The api Key.</param>
+/// <param name="DefaultTemperature">The default Temperature.</param>
+/// <param name="DefaultTopK">The default Top K.</param>
+/// <param name="DefaultMaxTokens">The default Max Tokens.</param>
+/// <param name="DefaultEmbeddingDimensions">The default Embedding Dimensions.</param>
+/// <param name="DefaultEnableMemory">The default Enable Memory.</param>
+/// <param name="DefaultEnableRAG">The default Enable RAG.</param>
+/// <param name="DefaultEmbeddingModelName">The default Embedding Model Name.</param>
+/// <param name="DefaultBotType">The default Bot Type.</param>
+/// <param name="DefaultSystemPrompt">The default System Prompt.</param>
 public record UpdateAIProviderDto(
     string Name,
     string BaseUrl,
@@ -49,6 +90,23 @@ public record UpdateAIProviderDto(
     string? DefaultSystemPrompt = null
 );
 
+/// <summary>Represents an AI model response DTO including provider information.</summary>
+/// <param name="Id">The id.</param>
+/// <param name="ProviderId">The provider Id.</param>
+/// <param name="ProviderName">The provider Name.</param>
+/// <param name="CommercialName">The commercial Name.</param>
+/// <param name="TechnicalName">The technical Name.</param>
+/// <param name="TokenLimit">The token Limit.</param>
+/// <param name="Capabilities">The capabilities.</param>
+/// <param name="DefaultTemperature">The default Temperature.</param>
+/// <param name="DefaultTopK">The default Top K.</param>
+/// <param name="DefaultMaxTokens">The default Max Tokens.</param>
+/// <param name="DefaultEmbeddingDimensions">The default Embedding Dimensions.</param>
+/// <param name="DefaultEnableMemory">The default Enable Memory.</param>
+/// <param name="DefaultEnableRAG">The default Enable RAG.</param>
+/// <param name="DefaultEmbeddingModelName">The default Embedding Model Name.</param>
+/// <param name="DefaultBotType">The default Bot Type.</param>
+/// <param name="DefaultSystemPrompt">The default System Prompt.</param>
 public record AIModelDto(
     Guid Id,
     Guid ProviderId,
@@ -68,6 +126,21 @@ public record AIModelDto(
     string? DefaultSystemPrompt
 );
 
+/// <summary>Request payload for creating a new AI model. Null fields inherit defaults from the provider.</summary>
+/// <param name="ProviderId">The provider Id.</param>
+/// <param name="CommercialName">The commercial Name.</param>
+/// <param name="TechnicalName">The technical Name.</param>
+/// <param name="TokenLimit">The token Limit.</param>
+/// <param name="Capabilities">The capabilities.</param>
+/// <param name="DefaultTemperature">The default Temperature.</param>
+/// <param name="DefaultTopK">The default Top K.</param>
+/// <param name="DefaultMaxTokens">The default Max Tokens.</param>
+/// <param name="DefaultEmbeddingDimensions">The default Embedding Dimensions.</param>
+/// <param name="DefaultEnableMemory">The default Enable Memory.</param>
+/// <param name="DefaultEnableRAG">The default Enable RAG.</param>
+/// <param name="DefaultEmbeddingModelName">The default Embedding Model Name.</param>
+/// <param name="DefaultBotType">The default Bot Type.</param>
+/// <param name="DefaultSystemPrompt">The default System Prompt.</param>
 public record CreateAIModelDto(
     Guid ProviderId,
     string CommercialName,
@@ -85,6 +158,21 @@ public record CreateAIModelDto(
     string? DefaultSystemPrompt = null
 );
 
+/// <summary>Request payload for updating an existing AI model.</summary>
+/// <param name="ProviderId">The provider Id.</param>
+/// <param name="CommercialName">The commercial Name.</param>
+/// <param name="TechnicalName">The technical Name.</param>
+/// <param name="TokenLimit">The token Limit.</param>
+/// <param name="Capabilities">The capabilities.</param>
+/// <param name="DefaultTemperature">The default Temperature.</param>
+/// <param name="DefaultTopK">The default Top K.</param>
+/// <param name="DefaultMaxTokens">The default Max Tokens.</param>
+/// <param name="DefaultEmbeddingDimensions">The default Embedding Dimensions.</param>
+/// <param name="DefaultEnableMemory">The default Enable Memory.</param>
+/// <param name="DefaultEnableRAG">The default Enable RAG.</param>
+/// <param name="DefaultEmbeddingModelName">The default Embedding Model Name.</param>
+/// <param name="DefaultBotType">The default Bot Type.</param>
+/// <param name="DefaultSystemPrompt">The default System Prompt.</param>
 public record UpdateAIModelDto(
     Guid ProviderId,
     string CommercialName,

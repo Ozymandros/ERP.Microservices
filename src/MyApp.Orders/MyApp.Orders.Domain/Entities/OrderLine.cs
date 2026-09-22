@@ -3,6 +3,7 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Orders.Domain.Entities
 {
     /// <summary>Represents a single line item in an order.</summary>
+    /// <param name="id">The id.</param>
     public class OrderLine(Guid id) : AuditableEntity<Guid>(id)
     {
         /// <summary>Gets or sets the ID of the parent order.</summary>

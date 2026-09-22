@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MyApp.Auth.Domain.Entities;
+using MyApp.Shared.Infrastructure.Extensions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -8,17 +9,42 @@ using System.Text;
 namespace MyApp.Auth.Infrastructure.Services;
 
 /// <summary>
-/// Defines the contract for I Jwt Token Provider.
+/// Defines the contract for generating and validating JWT access tokens and refresh tokens.
 /// </summary>
 public interface IJwtTokenProvider
 {
+    /// <summary>
+    /// Generates a signed JWT access token for the specified user, embedding the given roles and claims.
+    /// </summary>
+    /// <param name="user">The user for whom the token is generated.</param>
+    /// <param name="roles">Optional list of role names to embed as role claims.</param>
+    /// <param name="claims">Optional list of additional claims to embed in the token.</param>
+    /// <returns>A signed JWT access token string.</returns>
     Task<string> GenerateAccessTokenAsync(ApplicationUser user, IList<string>? roles = null, IList<Claim>? claims = null);
+
+    /// <summary>
+    /// Generates a cryptographically random refresh token string.
+    /// </summary>
+    /// <returns>A Base64-encoded refresh token string.</returns>
     string GenerateRefreshToken();
+
+    /// <summary>
+    /// Validates a JWT access token, checking signature, issuer, audience, and lifetime.
+    /// </summary>
+    /// <param name="token">The JWT token string to validate.</param>
+    /// <returns>The <see cref="ClaimsPrincipal"/> from the token if valid; otherwise, <c>null</c>.</returns>
+    ClaimsPrincipal? ValidateAccessToken(string token);
+
+    /// <summary>
+    /// Extracts the claims principal from an expired JWT token without validating the lifetime.
+    /// </summary>
+    /// <param name="token">The expired JWT token string.</param>
+    /// <returns>The <see cref="ClaimsPrincipal"/> from the token if the signature is valid; otherwise, <c>null</c>.</returns>
     ClaimsPrincipal? GetPrincipalFromExpiredToken(string token);
 }
 
 /// <summary>
-/// Provides Jwt Token Provider functionality.
+/// Generates and validates JWT access tokens and refresh tokens using HMAC-SHA256 signing.
 /// </summary>
 public class JwtTokenProvider : IJwtTokenProvider
 {
@@ -28,27 +54,27 @@ public class JwtTokenProvider : IJwtTokenProvider
     private readonly int _accessTokenExpirationMinutes;
 
     /// <summary>
-    /// Jwt Token Provider constructor. Initializes the JwtTokenProvider with the specified configuration.
+    /// Initializes a new instance of the JwtTokenProvider class.
     /// </summary>
-    /// <param name="configuration"></param>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <param name="configuration">The configuration.</param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="configuration"/> is <c>null</c>, or when required configuration values are missing.</exception>
     public JwtTokenProvider(IConfiguration configuration)
     {
         ArgumentNullException.ThrowIfNull(configuration);
 
-        _secretKey = configuration["Jwt:SecretKey"] ?? throw new ArgumentNullException("Jwt:SecretKey");
+        _secretKey = JwtSecretResolver.GetRequiredSecretKey();
         _issuer = configuration["Jwt:Issuer"] ?? throw new ArgumentNullException("Jwt:Issuer");
         _audience = configuration["Jwt:Audience"] ?? throw new ArgumentNullException("Jwt:Audience");
         _accessTokenExpirationMinutes = int.Parse(configuration["Jwt:AccessTokenExpirationMinutes"] ?? "15");
     }
 
     /// <summary>
-    /// Generate Access Token Async. Generates an access token for the specified user, roles, and claims.
+    /// Generate access token asynchronously.
     /// </summary>
-    /// <param name="user"></param>
-    /// <param name="roles"></param>
-    /// <param name="claims"></param>
-    /// <returns></returns>
+    /// <param name="user">The user.</param>
+    /// <param name="roles">The roles.</param>
+    /// <param name="claims">The claims.</param>
+    /// <returns>A signed JWT access token string.</returns>
     public Task<string> GenerateAccessTokenAsync(ApplicationUser user, IList<string>? roles = null, IList<Claim>? claims = null)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
@@ -100,14 +126,13 @@ public class JwtTokenProvider : IJwtTokenProvider
             expires: DateTime.UtcNow.AddMinutes(_accessTokenExpirationMinutes),
             signingCredentials: credentials);
 
-        var result = new JwtSecurityTokenHandler().WriteToken(token);
-        return Task.FromResult(result);
+        return Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
     }
 
     /// <summary>
-    /// Generate Refresh Token. Generates a refresh token.
+    /// Generate refresh token.
     /// </summary>
-    /// <returns>The generated refresh token.</returns>
+    /// <returns>A Base64-encoded 32-byte random refresh token.</returns>
     public string GenerateRefreshToken()
     {
         var randomNumber = new byte[32];
@@ -118,7 +143,52 @@ public class JwtTokenProvider : IJwtTokenProvider
         }
     }
 
-    /// <summary>Get Principal From Expired Token.</summary>
+    /// <summary>
+    /// Validate access token.
+    /// </summary>
+    /// <param name="token">The token.</param>
+    /// <returns>The <see cref="ClaimsPrincipal"/> from the token if valid; otherwise, <c>null</c>.</returns>
+    public ClaimsPrincipal? ValidateAccessToken(string token)
+    {
+        try
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = securityKey,
+                ValidateIssuer = true,
+                ValidIssuer = _issuer,
+                ValidateAudience = true,
+                ValidAudience = _audience,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.FromSeconds(30),
+                NameClaimType = ClaimTypes.Name,
+                RoleClaimType = ClaimTypes.Role,
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler { MapInboundClaims = false };
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+
+            if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return null;
+            }
+
+            return principal;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Gets the principal from expired token.
+    /// </summary>
+    /// <param name="token">The token.</param>
+    /// <returns>The <see cref="ClaimsPrincipal"/> from the token if the signature is valid; otherwise, <c>null</c>.</returns>
     public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
     {
         try

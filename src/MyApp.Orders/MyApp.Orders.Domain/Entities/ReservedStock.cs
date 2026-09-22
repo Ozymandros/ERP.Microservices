@@ -3,6 +3,7 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Orders.Domain.Entities
 {
     /// <summary>Represents reserved stock for an order.</summary>
+    /// <param name="id">The id.</param>
     public class ReservedStock(Guid id) : AuditableEntity<Guid>(id)
     {
         /// <summary>Gets or sets the product ID that is reserved.</summary>

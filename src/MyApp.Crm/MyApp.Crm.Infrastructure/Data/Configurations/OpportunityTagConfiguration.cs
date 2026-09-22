@@ -11,6 +11,7 @@ namespace MyApp.Crm.Infrastructure.Data.Configurations;
 public class OpportunityTagConfiguration : IEntityTypeConfiguration<OpportunityTag>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<OpportunityTag> builder)
     {
         builder.ToTable("OpportunityTags");

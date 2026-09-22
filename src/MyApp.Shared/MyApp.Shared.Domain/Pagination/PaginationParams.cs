@@ -15,10 +15,18 @@ public class PaginationParams
     /// </summary>
     public int PageSize { get; set; } = 10;
 
+    /// <summary>
+    /// Initializes a new instance of the PaginationParams class.
+    /// </summary>
     public PaginationParams()
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the PaginationParams class.
+    /// </summary>
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
     public PaginationParams(int pageNumber, int pageSize)
     {
         PageNumber = pageNumber > 0 ? pageNumber : 1;

@@ -4,11 +4,10 @@ using MyApp.Sales.Domain.Entities;
 
 namespace MyApp.Sales.Application.Mapping
 {
-    /// <summary>
-    /// Provides Sales Order Mapping Profile functionality.
-    /// </summary>
+    /// <summary>Provides Sales Order Mapping Profile functionality.</summary>
     public class SalesOrderMappingProfile : Profile
     {
+        /// <summary>Initializes a new <see cref="SalesOrderMappingProfile"/> and registers all Sales entity-to-DTO mappings.</summary>
         public SalesOrderMappingProfile()
         {
             CreateMap<SalesOrder, SalesOrderDto>()
@@ -27,6 +26,9 @@ namespace MyApp.Sales.Application.Mapping
             CreateMap<Customer, CustomerDto>();
             CreateMap<CustomerDto, Customer>()
                 .ConstructUsing(src => new Customer(src.Id));
+            CreateMap<CreateUpdateCustomerDto, Customer>()
+                .ForMember(d => d.Id, opt => opt.Ignore())
+                .ForMember(d => d.Orders, opt => opt.Ignore());
             CreateMap<CreateUpdateSalesOrderDto, SalesOrder>()
                 .ConstructUsing(src => new SalesOrder(Guid.NewGuid()))
                 .ForMember(d => d.Status, opt => opt.MapFrom(s => (SalesOrderStatus)s.Status))

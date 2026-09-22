@@ -6,6 +6,9 @@ using MyApp.Shared.Domain.Constants;
 
 namespace MyApp.Tests.Integration;
 
+/// <summary>
+/// Integration tests for the Orders service, verifying order retrieval, creation, status update, and lookup by identifier through the API gateway.
+/// </summary>
 public class OrdersServiceTests
 {
     private async Task<DistributedApplication> CreateAndStartAppAsync()
@@ -34,6 +37,9 @@ public class OrdersServiceTests
         return content?.AccessToken;
     }
 
+    /// <summary>
+    /// Verifies that retrieving the orders list with a valid Bearer token returns an OK response.
+    /// </summary>
     [Fact]
     public async Task GetOrders_WithValidToken_ReturnsSuccessStatusCode()
     {
@@ -57,6 +63,9 @@ public class OrdersServiceTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that creating an order with valid data returns a Created response and includes a generated identifier.
+    /// </summary>
     [Fact]
     public async Task CreateOrder_WithValidData_ReturnsCreatedStatusCode()
     {
@@ -98,6 +107,9 @@ public class OrdersServiceTests
         Assert.NotNull(createdOrder?.Id);
     }
 
+    /// <summary>
+    /// Verifies that updating the status of an existing order with a valid status value returns an OK response and that the new status is persisted.
+    /// </summary>
     [Fact]
     public async Task UpdateOrderStatus_WithValidStatus_ReturnsSuccessStatusCode()
     {
@@ -151,6 +163,9 @@ public class OrdersServiceTests
         Assert.Equal("Processing", updatedOrder?.Status);
     }
 
+    /// <summary>
+    /// Verifies that retrieving an order by its identifier returns an OK response with the matching order data.
+    /// </summary>
     [Fact]
     public async Task GetOrderById_WithValidId_ReturnsOrder()
     {

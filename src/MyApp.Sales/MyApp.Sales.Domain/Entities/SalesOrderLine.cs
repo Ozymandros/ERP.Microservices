@@ -3,8 +3,9 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Sales.Domain.Entities
 {
     /// <summary>
-    /// Provides Sales Order Line functionality.
+    /// Sales order line.
     /// </summary>
+    /// <param name="id">The id.</param>
     public class SalesOrderLine(Guid id) : AuditableEntity<Guid>(id)
     {
         /// <summary>Gets or sets Sales Order Id.</summary>

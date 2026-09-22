@@ -530,6 +530,7 @@ public class RepositoryBaseTests : IDisposable
 
         // Act
         var result = await _repository.AddAsync(entity);
+        await _context.SaveChangesAsync();
 
         // Assert
         result.Should().NotBeNull();
@@ -550,6 +551,7 @@ public class RepositoryBaseTests : IDisposable
         // Act
         await _repository.AddAsync(entity1);
         await _repository.AddAsync(entity2);
+        await _context.SaveChangesAsync();
 
         // Assert
         var allEntities = await _repository.GetAllAsync();
@@ -573,6 +575,7 @@ public class RepositoryBaseTests : IDisposable
 
         // Act
         var result = await _repository.UpdateAsync(entity);
+        await _context.SaveChangesAsync();
 
         // Assert
         result.Should().NotBeNull();
@@ -599,6 +602,7 @@ public class RepositoryBaseTests : IDisposable
 
         // Act
         var result = await _repository.UpdateAsync(entity);
+        await _context.SaveChangesAsync();
 
         // Assert
         result.Should().NotBeNull();
@@ -623,6 +627,7 @@ public class RepositoryBaseTests : IDisposable
 
         // Act
         await _repository.DeleteAsync(entity);
+        await _context.SaveChangesAsync();
 
         // Assert
         var deletedEntity = await _context.TestEntities.FindAsync(entity.Id);
@@ -643,6 +648,7 @@ public class RepositoryBaseTests : IDisposable
 
         // Act
         await _repository.DeleteAsync(entity1);
+        await _context.SaveChangesAsync();
 
         // Assert
         var remainingEntities = await _repository.GetAllAsync();

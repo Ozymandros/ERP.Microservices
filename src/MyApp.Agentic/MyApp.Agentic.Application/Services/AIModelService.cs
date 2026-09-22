@@ -1,14 +1,44 @@
+using Microsoft.Extensions.Logging;
 using MyApp.Agentic.Application.Contracts.DTOs;
 using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Agentic.Domain.AIModels;
 using MyApp.Agentic.Domain.AIProviders;
+using MyApp.Shared.Application;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 
 namespace MyApp.Agentic.Application.Services;
 
-public class AIModelService(
-    IAIModelRepository modelRepository,
-    IAIProviderRepository providerRepository) : IAIModelService
+/// <summary>Application service for managing AI model definitions within the Agentic service.</summary>
+public class AIModelService : AppServiceBase, IAIModelService
 {
+    private readonly IAIModelRepository modelRepository;
+    private readonly IAIProviderRepository providerRepository;
+
+    /// <summary>Initializes a new instance of the <see cref="AIModelService"/> class.</summary>
+    /// Initializes a new instance of the AIModelService class.
+    /// <param name="modelRepository">The model Repository.</param>
+    /// <param name="providerRepository">The provider Repository.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="logger">The logger.</param>
+    public AIModelService(
+        IAIModelRepository modelRepository,
+        IAIProviderRepository providerRepository,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        ILogger<AIModelService> logger)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Agentic)
+    {
+        this.modelRepository = modelRepository;
+        this.providerRepository = providerRepository;
+    }
+
+    /// <summary>Returns all AI models ordered by provider name then commercial name.</summary>
+    /// Lists items asynchronously.
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>All AI model DTOs.</returns>
     public async Task<IEnumerable<AIModelDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         var models = await modelRepository.GetAllAsync();
@@ -18,6 +48,12 @@ public class AIModelService(
             .Select(MapToDto);
     }
 
+    /// <summary>Returns all AI models belonging to the specified provider.</summary>
+    /// Lists by provider asynchronously.
+    /// <param name="providerId">The provider Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>AI model DTOs for the given provider.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="providerId"/> is empty.</exception>
     public async Task<IEnumerable<AIModelDto>> ListByProviderAsync(Guid providerId, CancellationToken cancellationToken = default)
     {
         if (providerId == Guid.Empty)
@@ -27,12 +63,23 @@ public class AIModelService(
         return models.Select(MapToDto);
     }
 
+    /// <summary>Retrieves a single AI model by its identifier.</summary>
+    /// Gets an item by its unique identifier asynchronously.
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>The model DTO, or <see langword="null"/> if not found.</returns>
     public async Task<AIModelDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var model = await modelRepository.GetByIdAsync(id);
         return model is null ? null : MapToDto(model);
     }
 
+    /// <summary>Creates a new AI model, inheriting unspecified parameters from the parent provider.</summary>
+    /// Creates a new item asynchronously.
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>The created model DTO.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when the referenced provider does not exist.</exception>
     public async Task<AIModelDto> CreateAsync(CreateAIModelDto dto, CancellationToken cancellationToken = default)
     {
         var provider = await EnsureProviderExistsAsync(dto.ProviderId);
@@ -55,10 +102,18 @@ public class AIModelService(
             dto.DefaultSystemPrompt ?? provider.DefaultSystemPrompt);
 
         await modelRepository.AddAsync(model);
+        await SaveChangesAsync(cancellationToken);
         var persisted = await modelRepository.GetByIdAsync(model.Id) ?? model;
         return MapToDto(persisted);
     }
 
+    /// <summary>Updates an existing AI model.</summary>
+    /// Updates an existing item asynchronously.
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>The updated model DTO.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when the model or referenced provider does not exist.</exception>
     public async Task<AIModelDto> UpdateAsync(Guid id, UpdateAIModelDto dto, CancellationToken cancellationToken = default)
     {
         await EnsureProviderExistsAsync(dto.ProviderId);
@@ -84,10 +139,16 @@ public class AIModelService(
             dto.DefaultSystemPrompt);
 
         await modelRepository.UpdateAsync(model);
+        await SaveChangesAsync(cancellationToken);
         var persisted = await modelRepository.GetByIdAsync(model.Id) ?? model;
         return MapToDto(persisted);
     }
 
+    /// <summary>
+    /// Deletes an item asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var model = await modelRepository.GetByIdAsync(id);
@@ -95,6 +156,7 @@ public class AIModelService(
             return;
 
         await modelRepository.DeleteAsync(model);
+        await SaveChangesAsync(cancellationToken);
     }
 
     private async Task<AIProvider> EnsureProviderExistsAsync(Guid providerId)

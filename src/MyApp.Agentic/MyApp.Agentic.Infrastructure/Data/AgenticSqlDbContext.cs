@@ -12,6 +12,10 @@ namespace MyApp.Agentic.Infrastructure.Data;
 
 public class AgenticSqlDbContext : AuditableDbContext
 {
+    /// <summary>
+    /// Initializes a new instance of the AgenticSqlDbContext class.
+    /// </summary>
+    /// <param name="options">The options.</param>
     public AgenticSqlDbContext(DbContextOptions<AgenticSqlDbContext> options) : base(options)
     {
     }
@@ -71,6 +75,10 @@ public class AgenticSqlDbContext : AuditableDbContext
 
 public class AgenticSqlDbContextFactory : IDesignTimeDbContextFactory<AgenticSqlDbContext>
 {
+    /// <summary>
+    /// Creates a db context.
+    /// </summary>
+    /// <returns>The result of the operation.</returns>
     public AgenticSqlDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<AgenticSqlDbContext>();

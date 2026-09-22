@@ -15,24 +15,12 @@ namespace MyApp.Shared.Domain.DTOs
     /// </summary>
     public interface IAuditableDto
     {
-        /// <summary>
-        /// Gets the timestamp when the DTO was created.
-        /// </summary>
         DateTime CreatedAt { get; init; }
 
-        /// <summary>
-        /// Gets the username of the user who created the DTO.
-        /// </summary>
         string CreatedBy { get; init; }
 
-        /// <summary>
-        /// Gets the timestamp when the DTO was last modified.
-        /// </summary>
         DateTime? UpdatedAt { get; init; }
 
-        /// <summary>
-        /// Gets the username of the user who last modified the DTO.
-        /// </summary>
         string? UpdatedBy { get; init; }
     }
 }

@@ -1,11 +1,16 @@
 using Microsoft.AspNetCore.Authorization;
+using MyApp.Auth.API.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Domain.Specifications;
+using MyApp.Auth.Infrastructure.Services;
+using MyApp.Shared.Domain.Authentication;
+using System.Security.Claims;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
+using MyApp.Shared.Domain.Security;
 using MyApp.Shared.Infrastructure.Export;
 using MyApp.Shared.Infrastructure.Extensions;
 
@@ -13,21 +18,35 @@ namespace MyApp.Auth.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[AuthorizeJwt]
 [Produces("application/json")]
 public class PermissionsController : ControllerBase
 {
     private readonly IPermissionService _permissionService;
     private readonly ICacheService _cacheService;
+    private readonly IJwtTokenProvider _jwtTokenProvider;
+    private readonly ILogSanitizer _logSanitizer;
     private readonly ILogger<PermissionsController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the PermissionsController class.
+    /// </summary>
+    /// <param name="permissionService">The permission Service.</param>
+    /// <param name="cacheService">The cache Service.</param>
+    /// <param name="jwtTokenProvider">The jwt Token Provider.</param>
+    /// <param name="logSanitizer">The log Sanitizer.</param>
+    /// <param name="logger">The logger.</param>
     public PermissionsController(
         IPermissionService permissionService,
         ICacheService cacheService,
+        IJwtTokenProvider jwtTokenProvider,
+        ILogSanitizer logSanitizer,
         ILogger<PermissionsController> logger)
     {
         _permissionService = permissionService;
         _cacheService = cacheService;
+        _jwtTokenProvider = jwtTokenProvider;
+        _logSanitizer = logSanitizer;
         _logger = logger;
     }
 
@@ -80,6 +99,7 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Get all permissions (optionally paginated and filtered)
     /// </summary>
+    /// <param name="query">The query.</param>
     [HttpGet]
     [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(IEnumerable<PermissionDto>), StatusCodes.Status200OK)]
@@ -124,6 +144,8 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Get all permissions with pagination
     /// </summary>
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
     [HttpGet("paginated")]
     [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<PermissionDto>), StatusCodes.Status200OK)]
@@ -145,6 +167,7 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Search permissions with advanced filtering, sorting, and pagination
     /// </summary>
+    /// <param name="query">The query.</param>
     /// <remarks>
     /// Supported filters: resource, action, description
     /// Supported sort fields: id, resource, action, createdAt
@@ -181,6 +204,7 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Get permission by ID
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpGet("{id}")]
     [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(PermissionDto), StatusCodes.Status200OK)]
@@ -221,6 +245,8 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Get permission by module and action
     /// </summary>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
     [HttpGet("module-action")]
     [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(PermissionDto), StatusCodes.Status200OK)]
@@ -235,54 +261,132 @@ public class PermissionsController : ControllerBase
 
             if (permission is not null)
             {
-                _logger.LogInformation("Retrieved permission by module/action {@Permission} from cache", new { Module = module, Action = action });
+                _logger.LogInformation(
+                    "Retrieved permission by module/action {@Permission} from cache",
+                    new { Module = _logSanitizer.Sanitize(module), Action = _logSanitizer.Sanitize(action) });
                 return Ok(permission);
             }
 
             permission = await _permissionService.GetPermissionByModuleActionAsync(module, action);
             if (permission is null)
             {
-                _logger.LogWarning("Permission with module/action {@Permission} not found", new { Module = module, Action = action });
+                _logger.LogWarning(
+                    "Permission with module/action {@Permission} not found",
+                    new { Module = _logSanitizer.Sanitize(module), Action = _logSanitizer.Sanitize(action) });
                 return NotFound(new { message = "Permission not found" });
             }
 
             await _cacheService.SaveStateAsync(cacheKey, permission);
-            _logger.LogInformation("Retrieved permission by module/action {@Permission} from database and cached", new { Module = module, Action = action });
+            _logger.LogInformation(
+                "Retrieved permission by module/action {@Permission} from database and cached",
+                new { Module = _logSanitizer.Sanitize(module), Action = _logSanitizer.Sanitize(action) });
 
             return Ok(permission);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving permission by module/action: {@Permission}", new { Module = module, Action = action });
+            _logger.LogError(
+                ex,
+                "Error retrieving permission by module/action: {@Permission}",
+                new { Module = _logSanitizer.Sanitize(module), Action = _logSanitizer.Sanitize(action) });
             return StatusCode(500, new { message = "An error occurred retrieving the permission" });
         }
     }
 
     /// <summary>
-    /// Check if a user has a specific permission by username
+    /// Check if a user has a specific permission (used by other services via Dapr).
+    /// Allows anonymous so the Bearer token can be validated in-action for service-to-service calls.
     /// </summary>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <param name="userId">The user Id.</param>
     [HttpGet("check")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<bool>> CheckPermission(string module, string action)
+    public async Task<ActionResult<bool>> CheckPermission(
+        string module,
+        string action,
+        [FromQuery] Guid? userId = null)
     {
-        var user = this.HttpContext.User;
-        var username = user.Identity?.Name;
+        var effectiveUserId = ResolveUserIdFromRequest(userId);
+        if (!effectiveUserId.HasValue)
+            return Unauthorized();
+
         try
         {
-            var hasPermission = await _permissionService.HasPermissionAsync(username, module, action);
+            var hasPermission = await _permissionService.HasPermissionAsync(
+                effectiveUserId.Value, module, action);
             return Ok(hasPermission);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error checking permission: {@Permission}", new { Username = username, Module = module, Action = action });
+            _logger.LogError(
+                ex,
+                "Error checking permission: {@Permission}",
+                new
+                {
+                    UserId = effectiveUserId,
+                    Module = _logSanitizer.Sanitize(module),
+                    Action = _logSanitizer.Sanitize(action)
+                });
             return StatusCode(500, new { message = "An error occurred checking the permission" });
         }
     }
 
     /// <summary>
+    /// Resolves the caller's user id from the authenticated principal or Bearer token.
+    /// When <paramref name="queryUserId"/> is supplied (Dapr from Sales), it must match the token subject.
+    /// </summary>
+    private Guid? ResolveUserIdFromRequest(Guid? queryUserId)
+    {
+        var principal = User.Identity?.IsAuthenticated == true
+            ? User
+            : TryGetPrincipalFromBearerHeader();
+
+        var tokenUserId = GetUserIdFromPrincipal(principal);
+        if (!tokenUserId.HasValue)
+            return null;
+
+        if (queryUserId.HasValue && queryUserId.Value != tokenUserId.Value)
+        {
+            _logger.LogWarning(
+                "Permission check userId mismatch: query {QueryUserId} vs token {TokenUserId}",
+                _logSanitizer.Sanitize(queryUserId.Value.ToString()),
+                _logSanitizer.Sanitize(tokenUserId.Value.ToString()));
+            return null;
+        }
+
+        return queryUserId ?? tokenUserId;
+    }
+
+    private ClaimsPrincipal? TryGetPrincipalFromBearerHeader()
+    {
+        if (!Request.Headers.TryGetValue("Authorization", out var authHeader))
+            return null;
+
+        var token = BearerTokenHelper.ExtractToken(authHeader);
+        if (string.IsNullOrWhiteSpace(token))
+            return null;
+
+        return _jwtTokenProvider.ValidateAccessToken(token);
+    }
+
+    private static Guid? GetUserIdFromPrincipal(ClaimsPrincipal? principal)
+    {
+        if (principal is null)
+            return null;
+
+        var id = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value
+            ?? principal.FindFirst("sub")?.Value;
+
+        return Guid.TryParse(id, out var userId) ? userId : null;
+    }
+
+    /// <summary>
     /// Create a new permission
     /// </summary>
+    /// <param name="createPermissionDto">The create Permission Dto.</param>
     [HttpPost]
     [HasPermission("Permissions", "Create")]
     [ProducesResponseType(typeof(PermissionDto), StatusCodes.Status201Created)]
@@ -299,18 +403,37 @@ public class PermissionsController : ControllerBase
             var result = await _permissionService.CreatePermissionAsync(createPermissionDto);
             if (result == null)
             {
-                _logger.LogWarning("Failed to create permission: {@Permission}", new { Module = createPermissionDto.Module, Action = createPermissionDto.Action });
+                _logger.LogWarning(
+                    "Failed to create permission: {@Permission}",
+                    new
+                    {
+                        Module = _logSanitizer.Sanitize(createPermissionDto.Module),
+                        Action = _logSanitizer.Sanitize(createPermissionDto.Action)
+                    });
                 return Conflict(new { message = "Permission already exists" });
             }
 
             await _cacheService.RemoveStateAsync("all_permissions");
-            _logger.LogInformation("Permission created: {@Permission}", new { Module = createPermissionDto.Module, Action = createPermissionDto.Action });
+            _logger.LogInformation(
+                "Permission created: {@Permission}",
+                new
+                {
+                    Module = _logSanitizer.Sanitize(createPermissionDto.Module),
+                    Action = _logSanitizer.Sanitize(createPermissionDto.Action)
+                });
 
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating permission: {@Permission}", new { Module = createPermissionDto.Module, Action = createPermissionDto.Action });
+            _logger.LogError(
+                ex,
+                "Error creating permission: {@Permission}",
+                new
+                {
+                    Module = _logSanitizer.Sanitize(createPermissionDto.Module),
+                    Action = _logSanitizer.Sanitize(createPermissionDto.Action)
+                });
             return StatusCode(500, new { message = "An error occurred creating the permission" });
         }
     }
@@ -318,6 +441,8 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Update an existing permission
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="updatePermissionDto">The update Permission Dto.</param>
     [HttpPut("{id}")]
     [HasPermission("Permissions", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -355,6 +480,7 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Delete a permission
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpDelete("{id}")]
     [HasPermission("Permissions", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

@@ -8,6 +8,11 @@ public class AgentToolRegistry : IAgentToolRegistry
     private readonly Dictionary<string, RegisteredAgentTool> _tools = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, Func<string, CancellationToken, Task<string>>> _handlers = new(StringComparer.OrdinalIgnoreCase);
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="tool">The tool.</param>
+    /// <param name="handler">The handler.</param>
     /// <inheritdoc />
     public void RegisterTool(RegisteredAgentTool tool, Func<string, CancellationToken, Task<string>> handler)
     {
@@ -16,6 +21,10 @@ public class AgentToolRegistry : IAgentToolRegistry
         _handlers[tool.Name] = handler;
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="toolName">The tool Name.</param>
     /// <inheritdoc />
     /// <inheritdoc />
     public Func<string, CancellationToken, Task<string>>? GetHandler(string toolName)
@@ -23,6 +32,9 @@ public class AgentToolRegistry : IAgentToolRegistry
         return _handlers.TryGetValue(toolName, out var handler) ? handler : null;
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
     /// <inheritdoc />
     public IReadOnlyList<RegisteredAgentTool> GetRegisteredTools() => _tools.Values.ToList();
 }

@@ -9,6 +9,7 @@ namespace MyApp.Orders.Infrastructure.Data;
 public class OrdersDbContext : AuditableDbContext
 {
     /// <summary>Initializes a new instance of the OrdersDbContext class.</summary>
+    /// <param name="options">The options.</param>
     public OrdersDbContext(DbContextOptions<OrdersDbContext> options) : base(options)
     {
     }

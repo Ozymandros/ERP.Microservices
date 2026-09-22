@@ -140,7 +140,7 @@ var environmentVariables = concat(
       value: jwtAudience
     }
     {
-      name: 'FRONTEND_ORIGIN'
+      name: 'ALLOWED_ORIGINS'
       value: frontendOrigin
     }
   ],

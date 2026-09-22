@@ -1,6 +1,7 @@
 variable "aws_region" {
   description = "AWS region for all resources."
   type        = string
+  default     = "eu-west-1"
 }
 
 variable "project" {
@@ -106,4 +107,22 @@ variable "eks_public_access_cidrs" {
   description = "CIDR blocks allowed to access the EKS public API endpoint. Use a narrow allowlist (e.g. your CI runner IPs) for production. Set to [] to disable public access."
   type        = list(string)
   default     = ["0.0.0.0/0"]
+}
+
+variable "enable_github_actions_deploy" {
+  description = "IAM role + EKS access entry for GitHub Actions OIDC (deploy-aws-k8s workflow)."
+  type        = bool
+  default     = true
+}
+
+variable "github_repository" {
+  description = "GitHub org/repo allowed to assume the deploy role (e.g. Ozymandros/ERP.Microservices)."
+  type        = string
+  default     = "Ozymandros/ERP.Microservices"
+}
+
+variable "github_oidc_provider_arn" {
+  description = "Optional existing account-wide GitHub OIDC provider ARN. Set when apply fails with EntityAlreadyExists on the provider."
+  type        = string
+  default     = ""
 }

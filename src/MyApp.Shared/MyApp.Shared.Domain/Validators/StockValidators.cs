@@ -8,6 +8,8 @@ namespace MyApp.Shared.Domain.Validators;
 public static class StockValidators
 {
     /// <summary>Validate Reservation.</summary>
+    /// <param name="quantity">The quantity.</param>
+    /// <param name="availableQuantity">The available Quantity.</param>
     public static ValidationResult? ValidateReservation(int quantity, int availableQuantity)
     {
         if (quantity <= 0)
@@ -20,6 +22,8 @@ public static class StockValidators
     }
 
     /// <summary>Validate Transfer.</summary>
+    /// <param name="quantity">The quantity.</param>
+    /// <param name="availableQuantity">The available Quantity.</param>
     public static ValidationResult? ValidateTransfer(int quantity, int availableQuantity)
     {
         if (quantity <= 0)
@@ -32,6 +36,8 @@ public static class StockValidators
     }
 
     /// <summary>Validate Adjustment.</summary>
+    /// <param name="quantityChange">The quantity Change.</param>
+    /// <param name="reason">The reason.</param>
     public static ValidationResult? ValidateAdjustment(int quantityChange, string reason)
     {
         if (string.IsNullOrWhiteSpace(reason))
@@ -41,6 +47,9 @@ public static class StockValidators
     }
 
     /// <summary>Validate Warehouse Stock.</summary>
+    /// <param name="availableQuantity">The available Quantity.</param>
+    /// <param name="reservedQuantity">The reserved Quantity.</param>
+    /// <param name="onOrderQuantity">The on Order Quantity.</param>
     public static ValidationResult? ValidateWarehouseStock(int availableQuantity, int reservedQuantity, int onOrderQuantity)
     {
         if (availableQuantity < 0)

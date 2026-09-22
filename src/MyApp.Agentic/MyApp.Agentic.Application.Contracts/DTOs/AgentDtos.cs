@@ -3,6 +3,24 @@ using MyApp.Agentic.Domain.Agents;
 namespace MyApp.Agentic.Application.Contracts.DTOs;
 
 /// <summary>Full agent details response.</summary>
+/// <param name="Id">The id.</param>
+/// <param name="Name">The name.</param>
+/// <param name="Description">The description.</param>
+/// <param name="ProviderId">The provider Id.</param>
+/// <param name="ProviderName">The provider Name.</param>
+/// <param name="ModelId">The model Id.</param>
+/// <param name="ModelName">The model Name.</param>
+/// <param name="BotType">The bot Type.</param>
+/// <param name="SystemPrompt">The system Prompt.</param>
+/// <param name="Temperature">The temperature.</param>
+/// <param name="TopK">The top K.</param>
+/// <param name="MaxTokens">The max Tokens.</param>
+/// <param name="EmbeddingDimensions">The embedding Dimensions.</param>
+/// <param name="EnableMemory">The enable Memory.</param>
+/// <param name="EnableRAG">The enable RAG.</param>
+/// <param name="EmbeddingModelName">The embedding Model Name.</param>
+/// <param name="IsActive">The is Active.</param>
+/// <param name="OwnerUserId">The owner User Id.</param>
 public record AgentDto(
     Guid Id,
     string Name,
@@ -25,6 +43,14 @@ public record AgentDto(
 );
 
 /// <summary>Summary for agent list views.</summary>
+/// <param name="Id">The id.</param>
+/// <param name="Name">The name.</param>
+/// <param name="Description">The description.</param>
+/// <param name="ModelName">The model Name.</param>
+/// <param name="BotType">The bot Type.</param>
+/// <param name="IsActive">The is Active.</param>
+/// <param name="EnableMemory">The enable Memory.</param>
+/// <param name="EnableRAG">The enable RAG.</param>
 public record AgentListDto(
     Guid Id,
     string Name,
@@ -37,6 +63,20 @@ public record AgentListDto(
 );
 
 /// <summary>Request to create a new agent.</summary>
+/// <param name="Name">The name.</param>
+/// <param name="Description">The description.</param>
+/// <param name="ProviderId">The provider Id.</param>
+/// <param name="ModelId">The model Id.</param>
+/// <param name="Temperature">The temperature.</param>
+/// <param name="SystemPrompt">The system Prompt.</param>
+/// <param name="OwnerUserId">The owner User Id.</param>
+/// <param name="BotType">The bot Type.</param>
+/// <param name="TopK">The top K.</param>
+/// <param name="MaxTokens">The max Tokens.</param>
+/// <param name="EmbeddingDimensions">The embedding Dimensions.</param>
+/// <param name="EnableMemory">The enable Memory.</param>
+/// <param name="EnableRAG">The enable RAG.</param>
+/// <param name="EmbeddingModelName">The embedding Model Name.</param>
 public record CreateAgentDto(
     string Name,
     string Description,
@@ -55,6 +95,19 @@ public record CreateAgentDto(
 );
 
 /// <summary>Request to update an existing agent.</summary>
+/// <param name="Name">The name.</param>
+/// <param name="Description">The description.</param>
+/// <param name="ProviderId">The provider Id.</param>
+/// <param name="ModelId">The model Id.</param>
+/// <param name="Temperature">The temperature.</param>
+/// <param name="SystemPrompt">The system Prompt.</param>
+/// <param name="BotType">The bot Type.</param>
+/// <param name="TopK">The top K.</param>
+/// <param name="MaxTokens">The max Tokens.</param>
+/// <param name="EmbeddingDimensions">The embedding Dimensions.</param>
+/// <param name="EnableMemory">The enable Memory.</param>
+/// <param name="EnableRAG">The enable RAG.</param>
+/// <param name="EmbeddingModelName">The embedding Model Name.</param>
 public record UpdateAgentDto(
     string Name,
     string Description,

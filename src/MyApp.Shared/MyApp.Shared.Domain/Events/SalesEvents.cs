@@ -1,8 +1,13 @@
 namespace MyApp.Shared.Domain.Events;
 
 /// <summary>
-/// Event raised when a sales order is created.
+/// Sales order created event.
 /// </summary>
+/// <param name="SalesOrderId">The sales Order Id.</param>
+/// <param name="CustomerId">The customer Id.</param>
+/// <param name="OrderNumber">The order Number.</param>
+/// <param name="IsQuote">The is Quote.</param>
+/// <param name="TotalAmount">The total Amount.</param>
 public record SalesOrderCreatedEvent(
     Guid SalesOrderId,
     Guid CustomerId,
@@ -12,8 +17,11 @@ public record SalesOrderCreatedEvent(
 );
 
 /// <summary>
-/// Event raised when a sales order is confirmed into an order.
+/// Sales order confirmed event.
 /// </summary>
+/// <param name="SalesOrderId">The sales Order Id.</param>
+/// <param name="OrderId">The order Id.</param>
+/// <param name="ConfirmedDate">The confirmed Date.</param>
 public record SalesOrderConfirmedEvent(
     Guid SalesOrderId,
     Guid OrderId,
@@ -21,16 +29,21 @@ public record SalesOrderConfirmedEvent(
 );
 
 /// <summary>
-/// Event raised when a sales quote expires.
+/// Quote expired event.
 /// </summary>
+/// <param name="SalesOrderId">The sales Order Id.</param>
+/// <param name="ExpiryDate">The expiry Date.</param>
 public record QuoteExpiredEvent(
     Guid SalesOrderId,
     DateTime ExpiryDate
 );
 
 /// <summary>
-/// Event raised when a sales order status changes.
+/// Sales order status changed event.
 /// </summary>
+/// <param name="SalesOrderId">The sales Order Id.</param>
+/// <param name="OldStatus">The old Status.</param>
+/// <param name="NewStatus">The new Status.</param>
 public record SalesOrderStatusChangedEvent(
     Guid SalesOrderId,
     string OldStatus,
@@ -38,8 +51,11 @@ public record SalesOrderStatusChangedEvent(
 );
 
 /// <summary>
-/// Event raised when a sales customer is created.
+/// Sales customer created event.
 /// </summary>
+/// <param name="CustomerId">The customer Id.</param>
+/// <param name="Name">The name.</param>
+/// <param name="Email">The email.</param>
 public record SalesCustomerCreatedEvent(
     Guid CustomerId,
     string Name,
@@ -47,8 +63,11 @@ public record SalesCustomerCreatedEvent(
 );
 
 /// <summary>
-/// Event raised when a sales customer is updated.
+/// Sales customer updated event.
 /// </summary>
+/// <param name="CustomerId">The customer Id.</param>
+/// <param name="Name">The name.</param>
+/// <param name="Email">The email.</param>
 public record SalesCustomerUpdatedEvent(
     Guid CustomerId,
     string Name,

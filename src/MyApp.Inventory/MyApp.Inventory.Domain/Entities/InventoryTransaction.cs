@@ -7,14 +7,18 @@ namespace MyApp.Inventory.Domain.Entities;
 /// </summary>
 public enum TransactionType
 {
+    /// <summary>Stock is received into a warehouse.</summary>
     Inbound,
+    /// <summary>Stock is dispatched from a warehouse.</summary>
     Outbound,
+    /// <summary>Stock level is manually corrected.</summary>
     Adjustment
 }
 
 /// <summary>
-/// Provides Inventory Transaction functionality.
+/// Inventory transaction.
 /// </summary>
+/// <param name="id">The id.</param>
 public class InventoryTransaction(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>Gets or sets Product Id.</summary>

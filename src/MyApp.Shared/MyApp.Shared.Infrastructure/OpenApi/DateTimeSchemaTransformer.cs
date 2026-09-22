@@ -10,6 +10,12 @@ namespace MyApp.Shared.Infrastructure.OpenApi;
 /// </summary>
 public sealed class DateTimeSchemaTransformer : IOpenApiSchemaTransformer
 {
+    /// <summary>
+    /// Transform asynchronously.
+    /// </summary>
+    /// <param name="schema">The schema.</param>
+    /// <param name="context">The context.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public Task TransformAsync(OpenApiSchema schema, OpenApiSchemaTransformerContext context, CancellationToken cancellationToken)
     {
         if (schema == null) return Task.CompletedTask;
@@ -21,7 +27,7 @@ public sealed class DateTimeSchemaTransformer : IOpenApiSchemaTransformer
             schema.Type = JsonSchemaType.String;
             schema.Format = "date-time";
             schema.Default = null; // Prevents the engine from trying to serialize a default(DateTime)
-            schema.Example = null;
+            schema.Examples = null;
             return Task.CompletedTask;
         }
 
@@ -29,7 +35,7 @@ public sealed class DateTimeSchemaTransformer : IOpenApiSchemaTransformer
         if (schema.Type == JsonSchemaType.String && schema.Format == "date-time")
         {
             schema.Default = null;
-            schema.Example = null;
+            schema.Examples = null;
         }
 
         // Recursively fix nested schemas

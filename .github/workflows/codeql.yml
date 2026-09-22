@@ -41,6 +41,7 @@ jobs:
       uses: github/codeql-action/init@v4 # v3.28.10
       with:
         languages: ${{ matrix.language }}
+        config-file: ./.github/codeql/codeql-config.yml
 
     - name: Build solution
       run: dotnet build ERP.Microservices.sln --configuration Release

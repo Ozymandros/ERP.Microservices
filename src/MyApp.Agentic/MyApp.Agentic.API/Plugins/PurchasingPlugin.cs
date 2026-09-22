@@ -1,8 +1,9 @@
-using MyApp.Agentic.API.Plugins;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using System.ComponentModel;
 using System.Text.Json;
+
+namespace MyApp.Agentic.API.Plugins;
 
 /// <summary>
 /// Semantic Kernel plugin that exposes Purchase Order management functions to the AI kernel.
@@ -15,9 +16,9 @@ public class PurchasingPlugin
     private readonly IServiceInvoker _serviceInvoker;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="PurchasingPlugin"/> with the required service invoker.
+    /// Initializes a new instance of the PurchasingPlugin class.
     /// </summary>
-    /// <param name="serviceInvoker">The inter-service HTTP invoker used to call the Purchasing service.</param>
+    /// <param name="serviceInvoker">The service Invoker.</param>
     public PurchasingPlugin(IServiceInvoker serviceInvoker)
     {
         _serviceInvoker = serviceInvoker;
@@ -26,7 +27,7 @@ public class PurchasingPlugin
     /// <summary>
     /// Creates a new purchase order from the supplied JSON payload and returns the created resource.
     /// </summary>
-    /// <param name="payloadJson">JSON-serialized purchase order creation request including supplier and line items.</param>
+    /// <param name="payloadJson">The payload Json.</param>
     /// <returns>JSON representation of the newly created purchase order.</returns>
     [Description("Create purchasing resource")]
     public async Task<string> CreateAsync(string payloadJson)
@@ -43,7 +44,7 @@ public class PurchasingPlugin
     /// <summary>
     /// Retrieves a purchase order by its unique identifier, including line items and receiving status.
     /// </summary>
-    /// <param name="id">The unique identifier of the purchase order.</param>
+    /// <param name="id">The id.</param>
     /// <returns>JSON representation of the purchase order, or an error description if not found.</returns>
     [Description("Get purchasing resource by id")]
     public async Task<string> GetByIdAsync(string id)
@@ -59,7 +60,7 @@ public class PurchasingPlugin
     /// <summary>
     /// Updates an existing purchase order with the values provided in the JSON payload.
     /// </summary>
-    /// <param name="payloadJson">JSON-serialized purchase order update request, including the order identifier.</param>
+    /// <param name="payloadJson">The payload Json.</param>
     /// <returns>JSON representation of the updated purchase order.</returns>
     [Description("Update purchasing resource")]
     public async Task<string> UpdateAsync(string payloadJson)
@@ -76,7 +77,7 @@ public class PurchasingPlugin
     /// <summary>
     /// Permanently deletes a purchase order by its unique identifier.
     /// </summary>
-    /// <param name="id">The unique identifier of the purchase order to delete.</param>
+    /// <param name="id">The id.</param>
     /// <returns>A confirmation message indicating the purchase order was deleted.</returns>
     [Description("Delete purchasing resource by id")]
     public async Task<string> DeleteAsync(string id)
@@ -92,7 +93,7 @@ public class PurchasingPlugin
     /// <summary>
     /// Gets a supplier by its name.
     /// </summary>
-    /// <param name="name">The supplier name.</param>
+    /// <param name="name">The name.</param>
     /// <returns>JSON representation of the supplier, or an error description if not found.</returns>
     [Description("Get supplier by name")]
     public async Task<string> GetSupplierByNameAsync(string name)
@@ -109,7 +110,7 @@ public class PurchasingPlugin
     /// <summary>
     /// Gets a purchase order by its order number.
     /// </summary>
-    /// <param name="orderNumber">The purchase order number.</param>
+    /// <param name="orderNumber">The order Number.</param>
     /// <returns>JSON representation of the purchase order, or an error description if not found.</returns>
     [Description("Get purchase order by order number")]
     public async Task<string> GetPurchaseOrderByCodeAsync(string orderNumber)
@@ -126,7 +127,7 @@ public class PurchasingPlugin
     /// <summary>
     /// Searches ERP purchase orders using the Purchasing service <c>/search</c> endpoint.
     /// </summary>
-    /// <param name="queryJson">Search term or JSON query specification for purchase orders.</param>
+    /// <param name="queryJson">The query Json.</param>
     /// <returns>JSON paginated search result for matching purchase orders.</returns>
     [Description("Search ERP purchase orders by term, code, or filters")]
     public Task<string> SearchPurchaseOrdersAsync(string queryJson) =>
@@ -135,7 +136,7 @@ public class PurchasingPlugin
     /// <summary>
     /// Searches ERP suppliers using the Purchasing service advanced search endpoint.
     /// </summary>
-    /// <param name="queryJson">Search term or JSON query specification for suppliers.</param>
+    /// <param name="queryJson">The query Json.</param>
     /// <returns>JSON paginated search result for matching suppliers.</returns>
     [Description("Search ERP suppliers by term, name, email, or filters")]
     public Task<string> SearchSuppliersAsync(string queryJson) =>

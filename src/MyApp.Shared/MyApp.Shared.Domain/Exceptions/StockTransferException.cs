@@ -21,8 +21,12 @@ public class StockTransferException : Exception
     public Guid? ToWarehouseId { get; }
 
     /// <summary>
-    /// Initializes a new instance of the StockTransferException class with transfer details.
+    /// Initializes a new instance of the StockTransferException class.
     /// </summary>
+    /// <param name="productId">The product Id.</param>
+    /// <param name="fromWarehouseId">The from Warehouse Id.</param>
+    /// <param name="toWarehouseId">The to Warehouse Id.</param>
+    /// <param name="message">The message.</param>
     public StockTransferException(
         Guid productId,
         Guid fromWarehouseId,
@@ -36,15 +40,18 @@ public class StockTransferException : Exception
     }
 
     /// <summary>
-    /// Initializes a new instance of the StockTransferException class with a message.
+    /// Initializes a new instance of the StockTransferException class.
     /// </summary>
+    /// <param name="message">The message.</param>
     public StockTransferException(string message) : base(message)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the StockTransferException class with a message and inner exception.
+    /// Initializes a new instance of the StockTransferException class.
     /// </summary>
+    /// <param name="message">The message.</param>
+    /// <param name="innerException">The inner Exception.</param>
     public StockTransferException(string message, Exception innerException)
         : base(message, innerException)
     {

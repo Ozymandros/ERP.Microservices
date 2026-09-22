@@ -16,11 +16,11 @@ public class PermissionChecker : IPermissionChecker
     private readonly IHttpContextAccessor _httpContextAccessor;
 
     /// <summary>
-    /// Permission Checker constructor
+    /// Initializes a new instance of the PermissionChecker class.
     /// </summary>
-    /// <param name="userManager"></param>
-    /// <param name="permissionRepository"></param>
-    /// <param name="httpContextAccessor"></param> 
+    /// <param name="userManager">The user Manager.</param>
+    /// <param name="permissionRepository">The permission Repository.</param>
+    /// <param name="httpContextAccessor">The http Context Accessor.</param>
     public PermissionChecker(
         UserManager<ApplicationUser> userManager,
         IPermissionRepository permissionRepository,
@@ -32,12 +32,12 @@ public class PermissionChecker : IPermissionChecker
     }
 
     /// <summary>
-    /// Check if user has permission to perform action
+    /// Determines whether permission asynchronously.
     /// </summary>
-    /// <param name="userId"></param>
-    /// <param name="module"></param>
-    /// <param name="action"></param>
-    /// <returns></returns>
+    /// <param name="userId">The user Id.</param>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <returns><c>true</c> if the user has the permission; otherwise, <c>false</c>.</returns>
     public async Task<bool> HasPermissionAsync(Guid userId, string module, string action)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -62,7 +62,13 @@ public class PermissionChecker : IPermissionChecker
         return false;
     }
 
-    /// <summary>Has Permission Async.</summary>
+    /// <summary>
+    /// Determines whether permission asynchronously.
+    /// </summary>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <returns><c>true</c> if the current user has the permission; otherwise, <c>false</c>.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="module"/> or <paramref name="action"/> is null or empty.</exception>
     public async Task<bool> HasPermissionAsync(string module, string action)
     {
         if (string.IsNullOrEmpty(module))

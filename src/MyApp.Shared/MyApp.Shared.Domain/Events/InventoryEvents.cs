@@ -1,8 +1,12 @@
 namespace MyApp.Shared.Domain.Events;
 
 /// <summary>
-/// Event raised when a product is created.
+/// Product created event.
 /// </summary>
+/// <param name="ProductId">The product Id.</param>
+/// <param name="SKU">The sKU.</param>
+/// <param name="Name">The name.</param>
+/// <param name="UnitPrice">The unit Price.</param>
 public record ProductCreatedEvent(
     Guid ProductId,
     string SKU,
@@ -11,8 +15,12 @@ public record ProductCreatedEvent(
 );
 
 /// <summary>
-/// Event raised when stock for a product is updated.
+/// Stock updated event.
 /// </summary>
+/// <param name="ProductId">The product Id.</param>
+/// <param name="WarehouseId">The warehouse Id.</param>
+/// <param name="QuantityChange">The quantity Change.</param>
+/// <param name="TransactionType">The transaction Type.</param>
 public record StockUpdatedEvent(
     Guid ProductId,
     Guid WarehouseId,
@@ -21,8 +29,13 @@ public record StockUpdatedEvent(
 );
 
 /// <summary>
-/// Event raised when stock is reserved for an order.
+/// Stock reserved event.
 /// </summary>
+/// <param name="ReservationId">The reservation Id.</param>
+/// <param name="ProductId">The product Id.</param>
+/// <param name="WarehouseId">The warehouse Id.</param>
+/// <param name="OrderId">The order Id.</param>
+/// <param name="Quantity">The quantity.</param>
 public record StockReservedEvent(
     Guid ReservationId,
     Guid ProductId,
@@ -32,8 +45,12 @@ public record StockReservedEvent(
 );
 
 /// <summary>
-/// Event raised when a stock reservation is released.
+/// Stock released event.
 /// </summary>
+/// <param name="ReservationId">The reservation Id.</param>
+/// <param name="ProductId">The product Id.</param>
+/// <param name="WarehouseId">The warehouse Id.</param>
+/// <param name="Quantity">The quantity.</param>
 public record StockReleasedEvent(
     Guid ReservationId,
     Guid ProductId,
@@ -42,8 +59,12 @@ public record StockReleasedEvent(
 );
 
 /// <summary>
-/// Event raised when stock falls below reorder level.
+/// Low stock alert event.
 /// </summary>
+/// <param name="ProductId">The product Id.</param>
+/// <param name="WarehouseId">The warehouse Id.</param>
+/// <param name="AvailableQuantity">The available Quantity.</param>
+/// <param name="ReorderLevel">The reorder Level.</param>
 public record LowStockAlertEvent(
     Guid ProductId,
     Guid WarehouseId,
@@ -52,8 +73,13 @@ public record LowStockAlertEvent(
 );
 
 /// <summary>
-/// Event raised when stock is transferred between warehouses.
+/// Stock transferred event.
 /// </summary>
+/// <param name="ProductId">The product Id.</param>
+/// <param name="FromWarehouseId">The from Warehouse Id.</param>
+/// <param name="ToWarehouseId">The to Warehouse Id.</param>
+/// <param name="Quantity">The quantity.</param>
+/// <param name="Reason">The reason.</param>
 public record StockTransferredEvent(
     Guid ProductId,
     Guid FromWarehouseId,
@@ -63,8 +89,13 @@ public record StockTransferredEvent(
 );
 
 /// <summary>
-/// Event raised when stock quantity is adjusted.
+/// Stock adjusted event.
 /// </summary>
+/// <param name="ProductId">The product Id.</param>
+/// <param name="WarehouseId">The warehouse Id.</param>
+/// <param name="QuantityChange">The quantity Change.</param>
+/// <param name="Reason">The reason.</param>
+/// <param name="Reference">The reference.</param>
 public record StockAdjustedEvent(
     Guid ProductId,
     Guid WarehouseId,

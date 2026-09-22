@@ -21,6 +21,8 @@ public class ActivitiesController : ControllerBase
     private readonly ILogger<ActivitiesController> _logger;
 
     /// <summary>I Logger.</summary>
+    /// <param name="service">The service.</param>
+    /// <param name="logger">The logger.</param>
     public ActivitiesController(IActivityService service, ILogger<ActivitiesController> logger)
     {
         _service = service;
@@ -28,6 +30,8 @@ public class ActivitiesController : ControllerBase
     }
 
     /// <summary>Get All.</summary>
+    /// <param name="query">The query.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet]
     [HasPermission("CRM", "Read")]
     [ProducesResponseType(typeof(IEnumerable<ActivityDto>), StatusCodes.Status200OK)]
@@ -56,6 +60,8 @@ public class ActivitiesController : ControllerBase
     }
 
     /// <summary>Get By Id.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet("{id:guid}")]
     [HasPermission("CRM", "Read")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
@@ -65,6 +71,8 @@ public class ActivitiesController : ControllerBase
     }
 
     /// <summary>Create.</summary>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpPost]
     [HasPermission("CRM", "Create")]
     public async Task<IActionResult> Create([FromBody] CreateActivityDto dto, CancellationToken cancellationToken)
@@ -81,6 +89,9 @@ public class ActivitiesController : ControllerBase
     }
 
     /// <summary>Complete.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpPost("{id:guid}/complete")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> Complete(Guid id, [FromBody] CompleteActivityDto dto, CancellationToken cancellationToken)

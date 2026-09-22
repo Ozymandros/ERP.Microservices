@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyApp.Auth.API.Authorization;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
 using MyApp.Shared.Infrastructure.Extensions;
@@ -7,6 +7,7 @@ using MyApp.Auth.Domain.Specifications;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
+using MyApp.Shared.Domain.Security;
 
 using MyApp.Shared.Infrastructure.Export;
 
@@ -14,24 +15,38 @@ namespace MyApp.Auth.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[AuthorizeJwt]
 [Produces("application/json")]
 public partial class UsersController : ControllerBase
 {
     private readonly ICacheService _cacheService;
     private readonly IUserService _userService;
+    private readonly ILogSanitizer _logSanitizer;
     private readonly ILogger<UsersController> _logger;
 
-    public UsersController(IUserService userService, ILogger<UsersController> logger, ICacheService cacheService)
+    /// <summary>
+    /// Initializes a new instance of the UsersController class.
+    /// </summary>
+    /// <param name="userService">The user Service.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="cacheService">The cache Service.</param>
+    /// <param name="logSanitizer">The log Sanitizer.</param>
+    public UsersController(
+        IUserService userService,
+        ILogger<UsersController> logger,
+        ICacheService cacheService,
+        ILogSanitizer logSanitizer)
     {
         _userService = userService;
         _logger = logger;
         _cacheService = cacheService;
+        _logSanitizer = logSanitizer;
     }
 
     /// <summary>
     /// Get all users (optionally paginated and filtered)
     /// </summary>
+    /// <param name="query">The query.</param>
     [HttpGet]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
@@ -117,6 +132,8 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Get all users with pagination
     /// </summary>
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
     [HttpGet("paginated")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
@@ -138,6 +155,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Search users with advanced filtering, sorting, and pagination
     /// </summary>
+    /// <param name="query">The query.</param>
     /// <remarks>
     /// Supported filters: isActive, email, userName, isExternalLogin
     /// Supported sort fields: createdAt, email, userName, firstName, lastName
@@ -174,7 +192,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Create a new user
     /// </summary>
-    /// <param name="user">User to create</param>
+    /// <param name="user">The user.</param>
     /// <returns>Created user</returns>
     [HttpPost("create")]
     [HasPermission("Users", "Create")]
@@ -228,6 +246,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Get user by ID
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpGet("{id}")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
@@ -266,6 +285,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Get user by email
     /// </summary>
+    /// <param name="email">The email.</param>
     [HttpGet("email/{email}")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
@@ -278,7 +298,9 @@ public partial class UsersController : ControllerBase
             var user = await _userService.GetUserByEmailAsync(email);
             if (user == null)
             {
-                _logger.LogWarning("User with email {@User} not found", new { Email = email });
+                _logger.LogWarning(
+                    "User with email {@User} not found",
+                    new { Email = _logSanitizer.Sanitize(email) });
                 return NotFound(new { message = "User not found" });
             }
 
@@ -286,7 +308,10 @@ public partial class UsersController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving user by email: {@User}", new { Email = email });
+            _logger.LogError(
+                ex,
+                "Error retrieving user by email: {@User}",
+                new { Email = _logSanitizer.Sanitize(email) });
             return StatusCode(500, new { message = "An error occurred retrieving the user" });
         }
     }
@@ -294,6 +319,8 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Update user
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="updateUserDto">The update User Dto.</param>
     [HttpPut("{id}")]
     [HasPermission("Users", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -330,6 +357,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Delete user
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpDelete("{id}")]
     [HasPermission("Users", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -363,6 +391,8 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Assign role to user
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="roleName">The role Name.</param>
     [HttpPost("{id}/roles/{roleName}")]
     [HasPermission("Users", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -397,6 +427,8 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Remove role from user
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="roleName">The role Name.</param>
     [HttpDelete("{id}/roles/{roleName}")]
     [HasPermission("Users", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -431,6 +463,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Get user roles
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpGet("{id}/roles")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(IEnumerable<RoleDto>), StatusCodes.Status200OK)]

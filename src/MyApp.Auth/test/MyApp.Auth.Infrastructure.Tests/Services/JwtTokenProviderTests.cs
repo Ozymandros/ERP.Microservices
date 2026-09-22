@@ -6,11 +6,12 @@ using Microsoft.IdentityModel.Tokens;
 using Moq;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Infrastructure.Services;
+using MyApp.Shared.Infrastructure.Extensions;
 using Xunit;
 
 namespace MyApp.Auth.Tests.Services;
 
-public class JwtTokenProviderTests
+public class JwtTokenProviderTests : IDisposable
 {
     private readonly Mock<IConfiguration> _configurationMock;
     private readonly IJwtTokenProvider _tokenProvider;
@@ -18,17 +19,25 @@ public class JwtTokenProviderTests
     private readonly string _testIssuer = "TestIssuer";
     private readonly string _testAudience = "TestAudience";
     private const int TestAccessTokenExpirationMinutes = 15;
+    private readonly string? _previousSecretKey;
 
     public JwtTokenProviderTests()
     {
+        _previousSecretKey = Environment.GetEnvironmentVariable(JwtSecretResolver.EnvironmentVariableName);
+        Environment.SetEnvironmentVariable(JwtSecretResolver.EnvironmentVariableName, _testSecretKey);
+
         _configurationMock = new Mock<IConfiguration>();
         SetupConfigurationMock();
         _tokenProvider = new JwtTokenProvider(_configurationMock.Object);
     }
 
+    public void Dispose()
+    {
+        Environment.SetEnvironmentVariable(JwtSecretResolver.EnvironmentVariableName, _previousSecretKey);
+    }
+
     private void SetupConfigurationMock()
     {
-        _configurationMock.Setup(x => x["Jwt:SecretKey"]).Returns(_testSecretKey);
         _configurationMock.Setup(x => x["Jwt:Issuer"]).Returns(_testIssuer);
         _configurationMock.Setup(x => x["Jwt:Audience"]).Returns(_testAudience);
         _configurationMock.Setup(x => x["Jwt:AccessTokenExpirationMinutes"]).Returns(TestAccessTokenExpirationMinutes.ToString());
@@ -324,17 +333,26 @@ public class JwtTokenProviderTests
     #region Configuration Tests
 
     [Fact]
-    public void Constructor_WithMissingSecretKey_ThrowsArgumentNullException()
+    public void Constructor_WithMissingSecretKey_ThrowsInvalidOperationException()
     {
         // Arrange
+        var previousSecret = Environment.GetEnvironmentVariable(JwtSecretResolver.EnvironmentVariableName);
+        Environment.SetEnvironmentVariable(JwtSecretResolver.EnvironmentVariableName, null);
+
         var configMock = new Mock<IConfiguration>();
-        configMock.Setup(x => x["Jwt:SecretKey"]).Returns((string)null!);
         configMock.Setup(x => x["Jwt:Issuer"]).Returns(_testIssuer);
         configMock.Setup(x => x["Jwt:Audience"]).Returns(_testAudience);
 
-        // Act & Assert
-        var ex = Assert.Throws<ArgumentNullException>(() => new JwtTokenProvider(configMock.Object));
-        Assert.Contains("Jwt:SecretKey", ex.Message);
+        try
+        {
+            // Act & Assert
+            var ex = Assert.Throws<InvalidOperationException>(() => new JwtTokenProvider(configMock.Object));
+            Assert.Contains(JwtSecretResolver.EnvironmentVariableName, ex.Message);
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable(JwtSecretResolver.EnvironmentVariableName, previousSecret);
+        }
     }
 
     [Fact]
@@ -342,7 +360,6 @@ public class JwtTokenProviderTests
     {
         // Arrange
         var configMock = new Mock<IConfiguration>();
-        configMock.Setup(x => x["Jwt:SecretKey"]).Returns(_testSecretKey);
         configMock.Setup(x => x["Jwt:Issuer"]).Returns((string)null!);
         configMock.Setup(x => x["Jwt:Audience"]).Returns(_testAudience);
 
@@ -356,7 +373,6 @@ public class JwtTokenProviderTests
     {
         // Arrange
         var configMock = new Mock<IConfiguration>();
-        configMock.Setup(x => x["Jwt:SecretKey"]).Returns(_testSecretKey);
         configMock.Setup(x => x["Jwt:Issuer"]).Returns(_testIssuer);
         configMock.Setup(x => x["Jwt:Audience"]).Returns((string)null!);
 

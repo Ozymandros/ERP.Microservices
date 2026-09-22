@@ -10,6 +10,7 @@ namespace MyApp.Purchasing.Infrastructure.Data.Configurations;
 public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<Supplier> builder)
     {
         builder.HasKey(x => x.Id);

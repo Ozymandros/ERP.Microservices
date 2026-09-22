@@ -1,12 +1,16 @@
 ﻿namespace MyApp.Auth.Application.Contracts
 {
     /// <summary>
-    /// Data transfer object for assigning a single permission to a role.
+    /// Creates a role permission dto.
     /// </summary>
+    /// <param name="RoleId">The role Id.</param>
+    /// <param name="PermissionId">The permission Id.</param>
     public record CreateRolePermissionDto(Guid RoleId, Guid PermissionId);
 
     /// <summary>
-    /// Data transfer object for assigning multiple permissions to a role.
+    /// Creates a role permissions dto.
     /// </summary>
+    /// <param name="RoleId">The role Id.</param>
+    /// <param name="PermissionIds">The permission Ids.</param>
     public record CreateRolePermissionsDto(Guid RoleId, IEnumerable<Guid> PermissionIds);
 }

@@ -10,6 +10,7 @@ namespace MyApp.Crm.Infrastructure.Data.Configurations;
 public sealed class OpportunityLineConfiguration : IEntityTypeConfiguration<OpportunityLine>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<OpportunityLine> builder)
     {
         builder.ToTable("OpportunityLines");

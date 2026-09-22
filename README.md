@@ -213,7 +213,8 @@ Modular CI/CD with separate workflows for security and speed:
 **Coverage**: Tests collect coverage using Coverlet (Cobertura format), merged to `coverage/coverage.cobertura.xml` and analyzed by SonarCloud.
 
 **Required secrets** (deploy): `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`.  
-**Required secrets** (SonarCloud): `SONAR_TOKEN`, `SONAR_PROJECT_KEY`, `SONAR_ORG`.
+**Required secrets** (SonarCloud): `SONAR_TOKEN`.  
+**Optional SonarCloud configuration**: `SONAR_PROJECT_KEY` and `SONAR_ORG` can be provided as repository variables or secrets; otherwise the workflow falls back to `Ozymandros_ERP.Microservices` and the repository owner.
 
 ## 🔐 Security
 

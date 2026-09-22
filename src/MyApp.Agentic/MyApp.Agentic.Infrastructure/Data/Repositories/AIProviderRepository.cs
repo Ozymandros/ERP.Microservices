@@ -8,11 +8,20 @@ public class AIProviderRepository : Repository<AIProvider, Guid>, IAIProviderRep
 {
     private readonly AgenticSqlDbContext _context;
 
+    /// <summary>
+    /// Initializes a new instance of the AIProviderRepository class.
+    /// </summary>
+    /// <param name="context">The context.</param>
     public AIProviderRepository(AgenticSqlDbContext context) : base(context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Gets an item by its unique identifier asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public override async Task<AIProvider?> GetByIdAsync(Guid id)
     {
         return await _context.AIProviders

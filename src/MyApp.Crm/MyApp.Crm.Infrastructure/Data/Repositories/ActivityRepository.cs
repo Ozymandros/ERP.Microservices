@@ -12,12 +12,14 @@ public class ActivityRepository : Repository<Activity, Guid>, IActivityRepositor
     private readonly CrmDbContext _context;
 
     /// <summary>base.</summary>
+    /// <param name="context">The context.</param>
     public ActivityRepository(CrmDbContext context) : base(context)
     {
         _context = context;
     }
 
     /// <summary>Get By Id Async.</summary>
+    /// <param name="id">The id.</param>
     public override async Task<Activity?> GetByIdAsync(Guid id)
     {
         return await _context.Activities

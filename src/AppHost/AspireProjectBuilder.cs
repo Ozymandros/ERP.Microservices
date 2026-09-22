@@ -1,6 +1,8 @@
 using Aspire.Hosting.Azure;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 
+namespace AppHost;
+
 /// <summary>
 /// Provides Aspire Project Builder functionality.
 /// </summary>
@@ -16,25 +18,29 @@ public class AspireProjectBuilder
     private readonly IResourceBuilder<AzureSqlServerResource>? _sqlAzureServer;
 
     private readonly string? _keyVault;
+    private readonly IResourceBuilder<ParameterResource>? _jwtSecretKey;
 
     /// <summary>
-    /// Aspire Project Builder constructor. Initializes the builder with optional SQL Server and Azure SQL Server resources, and an optional Key Vault reference.
+    /// Initializes a new instance of the AspireProjectBuilder class.
     /// </summary>
-    /// <param name="builder"></param>
-    /// <param name="sqlServer"></param>
-    /// <param name="sqlAzureServer"></param>
-    /// <param name="keyVault"></param>
+    /// <param name="builder">The builder.</param>
+    /// <param name="sqlServer">The sql Server.</param>
+    /// <param name="sqlAzureServer">The sql Azure Server.</param>
+    /// <param name="keyVault">The key Vault.</param>
+    /// <param name="jwtSecretKey">The jwt Secret Key.</param>
     public AspireProjectBuilder(
         IDistributedApplicationBuilder builder,
         IResourceBuilder<SqlServerServerResource>? sqlServer = null,
         IResourceBuilder<AzureSqlServerResource>? sqlAzureServer = null,
-        string? keyVault = null
+        string? keyVault = null,
+        IResourceBuilder<ParameterResource>? jwtSecretKey = null
         )
     {
         _builder = builder;
         _sqlServer = sqlServer;
         _sqlAzureServer = sqlAzureServer;
         _keyVault = keyVault;
+        _jwtSecretKey = jwtSecretKey;
     }
 
     /// <summary>
@@ -83,13 +89,15 @@ public class AspireProjectBuilder
 
         // Get current ports and increment (thread-safe)
         var httpPort = Interlocked.Increment(ref _httpPort);
-        var aspNetCoreUrls = "http://127.0.0.1:" + httpPort;
+        // Avoid explicit loopback binding to prevent conflicts with existing localhost bindings.
+        // Let Kestrel/ASPNETCORE_URLS use localhost to match launch profiles.
+        var aspNetCoreUrls = "http://localhost:" + httpPort;
         //var daprHttpPort = _daprHttpPort++;
         //var daprGrpcPort = _daprGrpcPort++;
         //var metricsPort = _metricsPort++;
 
-        // Add project
-        var project = _builder.AddProject<T>(serviceResourceName);
+        // AppHost owns ports/URLs — do not apply launchSettings applicationUrl (e.g. audit https://7062).
+        var project = _builder.AddProject<T>(serviceResourceName, launchProfileName: null);
 
         var sidecarOptions = new DaprSidecarOptions
         {
@@ -104,14 +112,22 @@ public class AspireProjectBuilder
         // Note: Aspire uses its own integrated Dapr runtime version (currently 1.15.x)
         // The Dapr CLI installation in DevContainer does not affect the sidecar version
         // Scheduler and Placement connection errors are harmless warnings (not used)
+        if (_jwtSecretKey is null)
+        {
+            throw new InvalidOperationException(
+                "JWT secret parameter is required. Pass jwtSecretKey to CreateProjectBuilder.");
+        }
+
         project = project
             .WithDaprSidecar(CreateSidecarMapping(sidecarOptions, pubSub, stateStore))
-            .WithEnvironment("Jwt__SecretKey", _builder.Configuration["Jwt:SecretKey"])
+            .WithEnvironment("Jwt__SecretKey", _jwtSecretKey)
             .WithEnvironment("Jwt__Issuer", _builder.Configuration["Jwt:Issuer"])
             .WithEnvironment("Jwt__Audience", _builder.Configuration["Jwt:Audience"])
             .WithEnvironment("ASPNETCORE_URLS", aspNetCoreUrls)
-            .WithEnvironment("DOTNET_LAUNCH_PROFILE", string.Empty)
-            .WithEnvironment("FRONTEND_ORIGIN", origin)
+            .WithEnvironment("ASPNETCORE_ENVIRONMENT", "Development")
+            .WithEnvironment("DOTNET_ENVIRONMENT", "Development")
+            .WithEnvironment("ALLOWED_ORIGINS", origin)
+            .WithExternalHttpEndpoints()
             // OpenTelemetry configuration for Serilog
             .WithEnvironment("OTEL_SERVICE_NAME", serviceName)
             .WithEnvironment("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317")
@@ -162,10 +178,11 @@ public class AspireProjectBuilder
 
     // Optionally reset counters
     /// <summary>Resets the port counters to the specified values.</summary>
-    /// <param name="httpPort">The starting HTTP port.</param>
-    /// <param name="daprHttpPort">The starting Dapr HTTP port.</param>
-    /// <param name="daprGrpcPort">The starting Dapr gRPC port.</param>
-    /// <param name="metricsPort">The starting metrics port.</param>
+    /// Reset counters.
+    /// <param name="httpPort">The http Port.</param>
+    /// <param name="daprHttpPort">The dapr Http Port.</param>
+    /// <param name="daprGrpcPort">The dapr Grpc Port.</param>
+    /// <param name="metricsPort">The metrics Port.</param>
     public void ResetCounters(
         int httpPort = 6001,
         int daprHttpPort = 3501,
@@ -187,19 +204,21 @@ public class AspireProjectBuilder
 public static class AspireProjectBuilderExtensions
 {
     /// <summary>
-    /// Create Project Builder. Creates an AspireProjectBuilder instance with the specified resources and Key Vault reference.
+    /// Creates a project builder.
     /// </summary>
-    /// <param name="builder"></param>
-    /// <param name="sqlServer"></param>
-    /// <param name="sqlAzure"></param>
-    /// <param name="keyVault"></param>
-    /// <returns></returns>
+    /// <param name="builder">The aspire app builder.</param>
+    /// <param name="sqlServer">The SQL Server resource.</param>
+    /// <param name="sqlAzure">The SQL Azure resource.</param>
+    /// <param name="keyVault">The Key Vault name.</param>
+    /// <param name="jwtSecretKey">The JWT Secret Key resource.</param>
+    /// <returns>The project builder.</returns>
     public static AspireProjectBuilder CreateProjectBuilder(
         this IDistributedApplicationBuilder builder,
         IResourceBuilder<SqlServerServerResource>? sqlServer = null,
         IResourceBuilder<AzureSqlServerResource>? sqlAzure = null,
-        string? keyVault = null)
+        string? keyVault = null,
+        IResourceBuilder<ParameterResource>? jwtSecretKey = null)
     {
-        return new AspireProjectBuilder(builder, sqlServer, sqlAzure, keyVault);
+        return new AspireProjectBuilder(builder, sqlServer, sqlAzure, keyVault, jwtSecretKey);
     }
 }

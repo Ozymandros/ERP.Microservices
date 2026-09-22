@@ -10,6 +10,7 @@ namespace MyApp.Inventory.Infrastructure.Data.Configurations;
 public class WarehouseStockConfiguration : IEntityTypeConfiguration<WarehouseStock>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<WarehouseStock> builder)
     {
         builder.ToTable("WarehouseStocks");

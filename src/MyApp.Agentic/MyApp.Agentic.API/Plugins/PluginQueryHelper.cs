@@ -9,13 +9,13 @@ namespace MyApp.Agentic.API.Plugins;
 internal static class PluginQueryHelper
 {
     /// <summary>
-    /// Invokes an ERP microservice search endpoint and returns the JSON-serialized response.
+    /// Search asynchronously.
     /// </summary>
-    /// <param name="serviceInvoker">Dapr-backed service invoker used for inter-service calls.</param>
-    /// <param name="serviceName">Target microservice app id (for example <c>inventory-service</c>).</param>
-    /// <param name="searchEndpointPath">Relative search path (for example <c>api/inventory/products/search</c>).</param>
-    /// <param name="queryJson">Plain search term or JSON <see cref="ParseQueryParameters"/> input.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <param name="serviceInvoker">The service Invoker.</param>
+    /// <param name="serviceName">The service Name.</param>
+    /// <param name="searchEndpointPath">The search Endpoint Path.</param>
+    /// <param name="queryJson">The query Json.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>JSON string containing the search result payload.</returns>
     public static async Task<string> SearchAsync(
         IServiceInvoker serviceInvoker,
@@ -36,13 +36,11 @@ internal static class PluginQueryHelper
     }
 
     /// <summary>
-    /// Builds query-string parameters for ERP <c>/search</c> endpoints from JSON or a plain search term.
+    /// Parse query parameters.
     /// </summary>
-    /// <param name="args">
-    /// Plain text search term, or JSON containing <c>searchTerm</c>, <c>searchFields</c>, <c>filters</c>,
-    /// <c>name</c>, <c>description</c>, pagination, and sorting properties.
-    /// </param>
+    /// <param name="args">The args.</param>
     /// <returns>Query parameters ready to append to a GET search request.</returns>
+    /// <c>name</c>, <c>description</c>, pagination, and sorting properties.
     public static Dictionary<string, string?> ParseQueryParameters(string? args)
     {
         var queryParams = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
@@ -103,10 +101,10 @@ internal static class PluginQueryHelper
     }
 
     /// <summary>
-    /// Resolves a scalar tool argument from either a plain string or a JSON object supplied by the LLM.
+    /// Resolve scalar argument.
     /// </summary>
-    /// <param name="args">Raw tool argument text.</param>
-    /// <param name="jsonPropertyName">Preferred JSON property name when <paramref name="args"/> is an object.</param>
+    /// <param name="args">The args.</param>
+    /// <param name="jsonPropertyName">The json Property Name.</param>
     /// <returns>Resolved scalar value suitable for route parameters or exact lookups.</returns>
     public static string ResolveScalarArgument(string? args, string jsonPropertyName = "name")
     {

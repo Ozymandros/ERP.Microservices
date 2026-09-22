@@ -4,8 +4,10 @@ using Xunit;
 
 namespace MyApp.Orders.Application.Tests.Domain;
 
+/// <summary>Unit tests for the <see cref="MyApp.Orders.Domain.Entities.OrderLine"/> entity.</summary>
 public class OrderLineEntityTests
 {
+    /// <summary>Verifies that IsFulfilled is true when PickedQuantity equals Quantity.</summary>
     [Fact]
     public void IsFulfilled_WhenPickedQuantityEqualsQuantity_ShouldBeTrue()
     {
@@ -24,6 +26,7 @@ public class OrderLineEntityTests
         orderLine.PickedQuantity.Should().Be(orderLine.Quantity);
     }
 
+    /// <summary>Verifies that IsFulfilled is false when PickedQuantity is less than Quantity.</summary>
     [Fact]
     public void IsFulfilled_WhenPickedQuantityLessThanQuantity_ShouldBeFalse()
     {
@@ -41,6 +44,7 @@ public class OrderLineEntityTests
         orderLine.IsFulfilled.Should().BeFalse();
     }
 
+    /// <summary>Verifies that ReservedQuantity can be set independently of Quantity.</summary>
     [Fact]
     public void ReservedQuantity_CanBeSetIndependently()
     {
@@ -56,6 +60,7 @@ public class OrderLineEntityTests
         orderLine.Quantity.Should().Be(10);
     }
 
+    /// <summary>Verifies that ReservedStockId can be set when stock is reserved.</summary>
     [Fact]
     public void ReservedStockId_CanBeSetWhenReserved()
     {
@@ -72,6 +77,7 @@ public class OrderLineEntityTests
         orderLine.ReservedQuantity.Should().Be(5);
     }
 
+    /// <summary>Verifies that ReservedStockId is null when stock is not reserved.</summary>
     [Fact]
     public void ReservedStockId_CanBeNullWhenNotReserved()
     {

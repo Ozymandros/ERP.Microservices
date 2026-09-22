@@ -48,8 +48,7 @@ RUN apt-get update && \
     groupadd -r appuser && \
     useradd -r -g appuser appuser
 
-COPY --from=publish /app/publish .
-RUN chown -R appuser:appuser /app
+COPY --chown=appuser:appuser --from=publish /app/publish .
 
 USER appuser
 

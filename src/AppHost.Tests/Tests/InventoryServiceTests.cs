@@ -5,6 +5,9 @@ using Aspire.Hosting;
 
 namespace MyApp.Tests.Integration;
 
+/// <summary>
+/// Integration tests for the Inventory service, verifying product CRUD operations through the API gateway.
+/// </summary>
 public class InventoryServiceTests
 {
     private async Task<DistributedApplication> CreateAndStartAppAsync()
@@ -39,6 +42,9 @@ public class InventoryServiceTests
         public string? RefreshToken { get; set; }
     }
 
+    /// <summary>
+    /// Verifies that retrieving the product list with a valid Bearer token returns an OK response.
+    /// </summary>
     [Fact]
     public async Task GetProducts_WithValidToken_ReturnsSuccessStatusCode()
     {
@@ -59,6 +65,9 @@ public class InventoryServiceTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that creating a product with valid data returns a Created response and includes the generated identifier in the response body.
+    /// </summary>
     [Fact]
     public async Task CreateProduct_WithValidData_ReturnsCreatedStatusCode()
     {
@@ -92,6 +101,9 @@ public class InventoryServiceTests
         Assert.Equal(product.SKU, createdProduct.SKU);
     }
 
+    /// <summary>
+    /// Verifies that retrieving a product by its identifier returns an OK response with the correct product data.
+    /// </summary>
     [Fact]
     public async Task GetProductById_WithValidId_ReturnsProduct()
     {
@@ -129,6 +141,9 @@ public class InventoryServiceTests
         Assert.Equal(newProduct.SKU, product?.SKU);
     }
 
+    /// <summary>
+    /// Verifies that updating an existing product with valid data returns an OK response and that the changes are persisted.
+    /// </summary>
     [Fact]
     public async Task UpdateProduct_WithValidData_ReturnsSuccessStatusCode()
     {
@@ -180,6 +195,9 @@ public class InventoryServiceTests
         Assert.Equal(updateData.UnitPrice, updatedProduct?.UnitPrice);
     }
 
+    /// <summary>
+    /// Verifies that deleting a product by its identifier returns a No Content response and that the product is no longer retrievable.
+    /// </summary>
     [Fact]
     public async Task DeleteProduct_WithValidId_ReturnsNoContentStatusCode()
     {

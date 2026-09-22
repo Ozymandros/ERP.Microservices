@@ -10,6 +10,7 @@ namespace MyApp.Orders.Infrastructure.Data.Configurations
     public class ReservedStockConfiguration : IEntityTypeConfiguration<ReservedStock>
     {
         /// <summary>Configure.</summary>
+        /// <param name="builder">The builder.</param>
         public void Configure(EntityTypeBuilder<ReservedStock> builder)
         {
             builder.ToTable("ReservedStocks");

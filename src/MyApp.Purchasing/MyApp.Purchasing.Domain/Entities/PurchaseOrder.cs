@@ -14,8 +14,9 @@ public enum PurchaseOrderStatus
 }
 
 /// <summary>
-/// Provides Purchase Order functionality.
+/// Purchase order.
 /// </summary>
+/// <param name="id">The id.</param>
 public class PurchaseOrder(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>Gets or sets Order Number.</summary>

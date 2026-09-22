@@ -6,12 +6,22 @@ using MyApp.Shared.Domain.Permissions;
 
 namespace MyApp.Agentic.API.Controllers;
 
+/// <summary>
+/// Ai providers controller.
+/// </summary>
+/// <param name="providerService">The provider Service.</param>
+/// <returns>The result of the operation.</returns>
 [ApiController]
 [Authorize]
 [Route("api/agentic/providers")]
 public class AIProvidersController(
     IAIProviderService providerService) : ControllerBase
 {
+    /// <summary>
+    /// Gets all items.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpGet]
     [HasPermission("Agentic", "Read")]
     [ProducesResponseType(typeof(IEnumerable<AIProviderDto>), StatusCodes.Status200OK)]
@@ -21,6 +31,12 @@ public class AIProvidersController(
         return Ok(providers);
     }
 
+    /// <summary>
+    /// Gets an item by its unique identifier.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpGet("{id:guid}")]
     [HasPermission("Agentic", "Read")]
     [ProducesResponseType(typeof(AIProviderDto), StatusCodes.Status200OK)]
@@ -33,6 +49,12 @@ public class AIProvidersController(
             : Ok(provider);
     }
 
+    /// <summary>
+    /// Creates a new item.
+    /// </summary>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpPost]
     [HasPermission("Agentic", "Create")]
     [ProducesResponseType(typeof(AIProviderDto), StatusCodes.Status201Created)]
@@ -42,6 +64,13 @@ public class AIProvidersController(
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
+    /// <summary>
+    /// Updates an existing item.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpPut("{id:guid}")]
     [HasPermission("Agentic", "Update")]
     [ProducesResponseType(typeof(AIProviderDto), StatusCodes.Status200OK)]
@@ -59,6 +88,12 @@ public class AIProvidersController(
         }
     }
 
+    /// <summary>
+    /// Deletes an item.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpDelete("{id:guid}")]
     [HasPermission("Agentic", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

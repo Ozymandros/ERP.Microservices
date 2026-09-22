@@ -8,6 +8,7 @@ namespace MyApp.Orders.Infrastructure.Data.Configurations
     public class OrderLineConfiguration : IEntityTypeConfiguration<OrderLine>
     {
         /// <summary>Configures the OrderLine entity mapping.</summary>
+        /// <param name="builder">The builder.</param>
         public void Configure(EntityTypeBuilder<OrderLine> builder)
         {
             builder.ToTable("OrderLines");

@@ -17,11 +17,11 @@ public sealed class ProviderBackedMemoryEmbeddingGenerator : IMemoryEmbeddingGen
     private readonly ILogger<ProviderBackedMemoryEmbeddingGenerator> _logger;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ProviderBackedMemoryEmbeddingGenerator"/> class.
+    /// Initializes a new instance of the ProviderBackedMemoryEmbeddingGenerator class.
     /// </summary>
-    /// <param name="httpClientFactory">HTTP client factory for provider embedding requests.</param>
-    /// <param name="fallbackGenerator">Deterministic fallback embedding generator.</param>
-    /// <param name="logger">Structured logger.</param>
+    /// <param name="httpClientFactory">The http Client Factory.</param>
+    /// <param name="fallbackGenerator">The fallback Generator.</param>
+    /// <param name="logger">The logger.</param>
     public ProviderBackedMemoryEmbeddingGenerator(
         IHttpClientFactory httpClientFactory,
         DeterministicTextEmbeddingGenerator fallbackGenerator,
@@ -35,6 +35,12 @@ public sealed class ProviderBackedMemoryEmbeddingGenerator : IMemoryEmbeddingGen
     /// <inheritdoc />
     public int VectorSize => _fallbackGenerator.VectorSize;
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="provider">The provider.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public async Task<float[]> GenerateEmbeddingAsync(
         string text,

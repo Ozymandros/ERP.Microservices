@@ -3,9 +3,11 @@ using Microsoft.Extensions.Logging;
 using MyApp.Crm.Application.Contracts.DTOs;
 using MyApp.Crm.Application.Contracts.Services;
 using MyApp.Crm.Domain.Opportunities;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 using MyApp.Sales.Application.Contracts.DTOs;
@@ -15,7 +17,7 @@ namespace MyApp.Crm.Application.Services;
 /// <summary>
 /// Provides Opportunity Service functionality.
 /// </summary>
-public class OpportunityService : IOpportunityService
+public class OpportunityService : AppServiceBase, IOpportunityService
 {
     private const string QuoteNumberPrefix = "Q-CRM";
     private const int QuoteNumberIdSuffixLength = 8;
@@ -23,24 +25,33 @@ public class OpportunityService : IOpportunityService
     private readonly IOpportunityRepository _repository;
     private readonly IMapper _mapper;
     private readonly ILogger<OpportunityService> _logger;
-    private readonly IEventPublisher _eventPublisher;
     private readonly IServiceInvoker _serviceInvoker;
 
+    /// <summary>Initializes a new instance of the OpportunityService class.</summary>
+    /// Initializes a new instance of the OpportunityService class.
+    /// <param name="repository">The repository.</param>
+    /// <param name="mapper">The mapper.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="serviceInvoker">The service Invoker.</param>
     public OpportunityService(
         IOpportunityRepository repository,
         IMapper mapper,
         ILogger<OpportunityService> logger,
+        IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher,
         IServiceInvoker serviceInvoker)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Crm)
     {
         _repository = repository;
         _mapper = mapper;
-        _logger = logger;
-        _eventPublisher = eventPublisher;
-        _serviceInvoker = serviceInvoker;
+        _logger = logger;        _serviceInvoker = serviceInvoker;
     }
 
     /// <summary>Get By Id Async.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<OpportunityDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -48,6 +59,7 @@ public class OpportunityService : IOpportunityService
     }
 
     /// <summary>List Async.</summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<IEnumerable<OpportunityDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         var list = await _repository.ListAsync();
@@ -55,6 +67,8 @@ public class OpportunityService : IOpportunityService
     }
 
     /// <summary>Query Async.</summary>
+    /// <param name="spec">The spec.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<PaginatedResult<OpportunityDto>> QueryAsync(ISpecification<Opportunity> spec, CancellationToken cancellationToken = default)
     {
         var result = await _repository.QueryAsync(spec);
@@ -63,15 +77,18 @@ public class OpportunityService : IOpportunityService
     }
 
     /// <summary>Create Async.</summary>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<OpportunityDto> CreateAsync(CreateOpportunityDto dto, CancellationToken cancellationToken = default)
     {
         var entity = new Opportunity(Guid.NewGuid(), dto.CustomerId, dto.Name, dto.OwnerUsername, dto.LeadId);
         await _repository.AddAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         try
         {
             var @event = new CrmOpportunityCreatedEvent(entity.Id, entity.CustomerId, entity.Name, entity.OwnerUsername);
-            await _eventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityCreated, @event, cancellationToken);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityCreated, @event, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -82,6 +99,9 @@ public class OpportunityService : IOpportunityService
     }
 
     /// <summary>Update Forecast Async.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<OpportunityDto> UpdateForecastAsync(Guid id, UpdateOpportunityForecastDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -89,11 +109,15 @@ public class OpportunityService : IOpportunityService
 
         entity.UpdateForecast(dto.Probability, dto.ExpectedAmount, dto.ExpectedCloseDate);
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         return _mapper.Map<OpportunityDto>(entity);
     }
 
     /// <summary>Move Stage Async.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<OpportunityDto> MoveStageAsync(Guid id, MoveOpportunityStageDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -105,11 +129,12 @@ public class OpportunityService : IOpportunityService
         var oldStage = entity.Stage;
         entity.MoveToStage(newStage);
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         try
         {
             var @event = new CrmOpportunityStageChangedEvent(entity.Id, oldStage.ToString(), entity.Stage.ToString());
-            await _eventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityStageChanged, @event, cancellationToken);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityStageChanged, @event, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -120,6 +145,9 @@ public class OpportunityService : IOpportunityService
     }
 
     /// <summary>Mark Won Async.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="request">The request.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<OpportunityDto> MarkWonAsync(Guid id, MarkOpportunityWonRequest request, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -165,11 +193,12 @@ public class OpportunityService : IOpportunityService
         }
 
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         try
         {
             var @event = new CrmOpportunityWonEvent(entity.Id, entity.CustomerId);
-            await _eventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityWon, @event, cancellationToken);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityWon, @event, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -180,6 +209,9 @@ public class OpportunityService : IOpportunityService
     }
 
     /// <summary>Add Line Async.</summary>
+    /// <param name="opportunityId">The opportunity Id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<OpportunityLineDto> AddLineAsync(Guid opportunityId, CreateOpportunityLineDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(opportunityId);
@@ -195,10 +227,15 @@ public class OpportunityService : IOpportunityService
             dto.Sku);
 
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
         return _mapper.Map<OpportunityLineDto>(line);
     }
 
     /// <summary>Update Line Async.</summary>
+    /// <param name="opportunityId">The opportunity Id.</param>
+    /// <param name="lineId">The line Id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<OpportunityLineDto> UpdateLineAsync(Guid opportunityId, Guid lineId, UpdateOpportunityLineDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(opportunityId);
@@ -206,12 +243,16 @@ public class OpportunityService : IOpportunityService
 
         entity.UpdateLine(lineId, dto.Description, dto.Quantity, dto.UnitPrice, dto.DiscountPercent, dto.ProductId, dto.Sku);
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         var updated = entity.Lines.First(l => l.Id == lineId);
         return _mapper.Map<OpportunityLineDto>(updated);
     }
 
     /// <summary>Remove Line Async.</summary>
+    /// <param name="opportunityId">The opportunity Id.</param>
+    /// <param name="lineId">The line Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task RemoveLineAsync(Guid opportunityId, Guid lineId, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(opportunityId);
@@ -219,9 +260,14 @@ public class OpportunityService : IOpportunityService
 
         entity.RemoveLine(lineId);
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>Get Forecast Summary Async.</summary>
+    /// <param name="ownerUsername">The owner Username.</param>
+    /// <param name="fromExpectedCloseDate">The from Expected Close Date.</param>
+    /// <param name="toExpectedCloseDate">The to Expected Close Date.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<ForecastSummaryDto> GetForecastSummaryAsync(
         string ownerUsername,
         DateOnly? fromExpectedCloseDate,
@@ -291,6 +337,9 @@ public class OpportunityService : IOpportunityService
     }
 
     /// <summary>Mark Lost Async.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<OpportunityDto> MarkLostAsync(Guid id, MarkOpportunityLostDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -298,11 +347,12 @@ public class OpportunityService : IOpportunityService
 
         entity.MarkLost(dto.Reason);
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         try
         {
             var @event = new CrmOpportunityLostEvent(entity.Id, entity.CustomerId, dto.Reason);
-            await _eventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityLost, @event, cancellationToken);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.CrmOpportunityLost, @event, cancellationToken);
         }
         catch (Exception ex)
         {

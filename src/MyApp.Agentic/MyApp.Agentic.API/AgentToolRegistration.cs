@@ -9,10 +9,10 @@ namespace MyApp.Agentic.API;
 public static class AgentToolRegistration
 {
     /// <summary>
-    /// Registers all ERP read and write tools exposed to agentic chat and agent runtimes.
+    /// Register erp tools.
     /// </summary>
-    /// <param name="services">Root service provider used to resolve plugin implementations.</param>
-    /// <param name="registry">Agent tool registry that stores tool metadata and handlers.</param>
+    /// <param name="services">The services.</param>
+    /// <param name="registry">The registry.</param>
     public static void RegisterErpTools(IServiceProvider services, IAgentToolRegistry registry)
     {
         var billing = services.GetRequiredService<BillingPlugin>();

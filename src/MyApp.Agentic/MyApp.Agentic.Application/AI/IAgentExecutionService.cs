@@ -50,10 +50,10 @@ public class ToolDefinition
     public ToolDefinition() { }
 
     /// <summary>
-    /// Initializes a new <see cref="ToolDefinition"/> with name and endpoint.
+    /// Initializes a new instance of the ToolDefinition class.
     /// </summary>
-    /// <param name="name">Tool name.</param>
-    /// <param name="endpoint">Optional endpoint hint.</param>
+    /// <param name="name">The name.</param>
+    /// <param name="endpoint">The endpoint.</param>
     public ToolDefinition(string name, string endpoint)
     {
         Name = name;
@@ -61,11 +61,11 @@ public class ToolDefinition
     }
 
     /// <summary>
-    /// Initializes a new <see cref="ToolDefinition"/> with name, endpoint, and verb.
+    /// Initializes a new instance of the ToolDefinition class.
     /// </summary>
-    /// <param name="name">Tool name.</param>
-    /// <param name="endpoint">Optional endpoint hint.</param>
-    /// <param name="verb">HTTP verb classification.</param>
+    /// <param name="name">The name.</param>
+    /// <param name="endpoint">The endpoint.</param>
+    /// <param name="verb">The verb.</param>
     public ToolDefinition(string name, string endpoint, ToolHttpVerb verb)
     {
         Name = name;
@@ -108,12 +108,12 @@ public class AgentExecutionContext
 }
 
 /// <summary>
-/// Result returned after an agent execution completes.
+/// Agent execution result.
 /// </summary>
-/// <param name="Content">Assistant text content.</param>
-/// <param name="ToolCalls">Tool calls executed during the turn, if any.</param>
-/// <param name="FinishReason">Provider finish reason or internal termination reason.</param>
-/// <param name="Metadata">Optional execution metadata.</param>
+/// <param name="Content">The content.</param>
+/// <param name="ToolCalls">The tool Calls.</param>
+/// <param name="FinishReason">The finish Reason.</param>
+/// <param name="Metadata">The metadata.</param>
 public record AgentExecutionResult(
     string Content,
     List<ToolCallResult>? ToolCalls = null,

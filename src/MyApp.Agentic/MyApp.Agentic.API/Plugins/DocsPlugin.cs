@@ -14,11 +14,11 @@ public class DocsPlugin
     private readonly string _docsBaseUrl;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DocsPlugin"/> class.
+    /// Initializes a new instance of the DocsPlugin class.
     /// </summary>
-    /// <param name="httpClientFactory">HTTP client factory for documentation requests.</param>
-    /// <param name="logger">Structured logger.</param>
-    /// <param name="configuration">Application configuration containing <c>Docs:BaseUrl</c>.</param>
+    /// <param name="httpClientFactory">The http Client Factory.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="configuration">The configuration.</param>
     public DocsPlugin(IHttpClientFactory httpClientFactory, ILogger<DocsPlugin> logger, IConfiguration configuration)
     {
         _httpClient = httpClientFactory.CreateClient("DocsPlugin");
@@ -30,7 +30,7 @@ public class DocsPlugin
     /// <summary>
     /// Searches published ERP documentation by keyword.
     /// </summary>
-    /// <param name="query">Keyword or phrase to search for.</param>
+    /// <param name="query">The query.</param>
     /// <returns>JSON list of matching documentation entries, or a not-found/error payload.</returns>
     [Description("Search documentation by keyword")]
     public async Task<string> SearchAsync(string query)
@@ -93,7 +93,7 @@ public class DocsPlugin
     /// <summary>
     /// Retrieves summary metadata for a documentation topic.
     /// </summary>
-    /// <param name="topic">Topic name such as <c>agentic</c>, <c>api</c>, or <c>architecture</c>.</param>
+    /// <param name="topic">The topic.</param>
     /// <returns>JSON topic summary with URL and title, or an error payload.</returns>
     [Description("Get documentation for a specific topic")]
     public async Task<string> GetTopicAsync(string topic)
@@ -156,7 +156,7 @@ public class DocsPlugin
     /// <summary>
     /// Retrieves API reference namespaces or classes from the documentation index.
     /// </summary>
-    /// <param name="namespaceOrClass">Optional namespace or class filter. When omitted, returns namespace list.</param>
+    /// <param name="namespaceOrClass">The namespace Or Class.</param>
     /// <returns>JSON API reference index data.</returns>
     [Description("Get API reference documentation")]
     public async Task<string> GetApiReferenceAsync(string? namespaceOrClass = null)

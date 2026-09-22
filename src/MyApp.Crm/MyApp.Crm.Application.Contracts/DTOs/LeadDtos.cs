@@ -1,8 +1,19 @@
 namespace MyApp.Crm.Application.Contracts.DTOs;
 
 /// <summary>
-/// Represents the Lead Dto data record.
+/// Lead dto.
 /// </summary>
+/// <param name="Id">The id.</param>
+/// <param name="Title">The title.</param>
+/// <param name="Source">The source.</param>
+/// <param name="ContactName">The contact Name.</param>
+/// <param name="ContactEmail">The contact Email.</param>
+/// <param name="ContactPhone">The contact Phone.</param>
+/// <param name="CustomerId">The customer Id.</param>
+/// <param name="Status">The status.</param>
+/// <param name="OwnerUsername">The owner Username.</param>
+/// <param name="CreatedAt">The created At.</param>
+/// <param name="UpdatedAt">The updated At.</param>
 public sealed record LeadDto(
     Guid Id,
     string Title,
@@ -18,8 +29,14 @@ public sealed record LeadDto(
 );
 
 /// <summary>
-/// Represents the Create Lead Dto data record.
+/// Creates a lead dto.
 /// </summary>
+/// <param name="Title">The title.</param>
+/// <param name="OwnerUsername">The owner Username.</param>
+/// <param name="Source">The source.</param>
+/// <param name="ContactName">The contact Name.</param>
+/// <param name="ContactEmail">The contact Email.</param>
+/// <param name="ContactPhone">The contact Phone.</param>
 public sealed record CreateLeadDto(
     string Title,
     string OwnerUsername,
@@ -30,8 +47,13 @@ public sealed record CreateLeadDto(
 );
 
 /// <summary>
-/// Represents the Update Lead Dto data record.
+/// Updates the lead dto.
 /// </summary>
+/// <param name="Title">The title.</param>
+/// <param name="Source">The source.</param>
+/// <param name="ContactName">The contact Name.</param>
+/// <param name="ContactEmail">The contact Email.</param>
+/// <param name="ContactPhone">The contact Phone.</param>
 public sealed record UpdateLeadDto(
     string Title,
     string? Source,
@@ -41,8 +63,9 @@ public sealed record UpdateLeadDto(
 );
 
 /// <summary>
-/// Represents the Qualify Lead Dto data record.
+/// Qualify lead dto.
 /// </summary>
+/// <param name="CustomerId">The customer Id.</param>
 public sealed record QualifyLeadDto(
     Guid CustomerId
 );

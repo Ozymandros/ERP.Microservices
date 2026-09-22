@@ -24,6 +24,9 @@ public class InvoicesController : ControllerBase
     private readonly ILogger<InvoicesController> _logger;
 
     /// <summary>Initialises a new instance of <see cref="InvoicesController"/>.</summary>
+    /// <param name="invoiceService">The invoice Service.</param>
+    /// <param name="cacheService">The cache Service.</param>
+    /// <param name="logger">The logger.</param>
     public InvoicesController(
         IInvoiceService invoiceService,
         ICacheService cacheService,
@@ -39,6 +42,7 @@ public class InvoicesController : ControllerBase
     /// <summary>
     /// Returns all open (Issued / Sent) invoices.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet]
     [HasPermission("Billing", "Read")]
     [ProducesResponseType(typeof(IEnumerable<InvoiceDto>), StatusCodes.Status200OK)]
@@ -63,6 +67,8 @@ public class InvoicesController : ControllerBase
     /// <summary>
     /// Returns a single invoice by its unique identifier.
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet("{id:guid}")]
     [HasPermission("Billing", "Read")]
     [ProducesResponseType(typeof(InvoiceDto), StatusCodes.Status200OK)]
@@ -92,6 +98,8 @@ public class InvoicesController : ControllerBase
     /// <summary>
     /// Get invoice by Invoice Number - Requires Billing.Read permission
     /// </summary>
+    /// <param name="invoiceNumber">The invoice Number.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet("number/{invoiceNumber}")]
     [HasPermission("Billing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -129,6 +137,8 @@ public class InvoicesController : ControllerBase
     /// <summary>
     /// Returns all invoices belonging to the specified customer.
     /// </summary>
+    /// <param name="customerId">The customer Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet("customer/{customerId:guid}")]
     [HasPermission("Billing", "Read")]
     [ProducesResponseType(typeof(IEnumerable<InvoiceDto>), StatusCodes.Status200OK)]
@@ -154,6 +164,8 @@ public class InvoicesController : ControllerBase
     /// <summary>
     /// Returns all invoices linked to the specified order.
     /// </summary>
+    /// <param name="orderId">The order Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet("order/{orderId:guid}")]
     [HasPermission("Billing", "Read")]
     [ProducesResponseType(typeof(IEnumerable<InvoiceDto>), StatusCodes.Status200OK)]
@@ -179,6 +191,8 @@ public class InvoicesController : ControllerBase
     /// <summary>
     /// Searches invoices with filter, sort and pagination.
     /// </summary>
+    /// <param name="query">The query.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet("search")]
     [HasPermission("Billing", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<InvoiceDto>), StatusCodes.Status200OK)]
@@ -197,7 +211,7 @@ public class InvoicesController : ControllerBase
             var spec = new InvoiceQuerySpec(query);
             var result = await _invoiceService.QueryInvoicesAsync(spec, cancellationToken);
 
-            _logger.LogInformation("Searched invoices with query: {@Query}", query);
+            _logger.LogInformation("Searched invoices");
             return Ok(result);
         }
         catch (ArgumentException ex)
@@ -217,6 +231,7 @@ public class InvoicesController : ControllerBase
     /// <summary>
     /// Exports all open invoices as an Excel workbook (.xlsx).
     /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet("export-xlsx")]
     [HasPermission("Billing", "Read")]
     [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
@@ -241,6 +256,7 @@ public class InvoicesController : ControllerBase
     /// <summary>
     /// Exports all open invoices as a PDF document.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet("export-pdf")]
     [HasPermission("Billing", "Read")]
     [Produces("application/pdf")]
@@ -267,6 +283,8 @@ public class InvoicesController : ControllerBase
     /// <summary>
     /// Creates a new invoice in Draft status.
     /// </summary>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpPost]
     [HasPermission("Billing", "Create")]
     [ProducesResponseType(typeof(InvoiceDto), StatusCodes.Status201Created)]
@@ -299,6 +317,9 @@ public class InvoicesController : ControllerBase
     /// <summary>
     /// Issues a draft invoice — assigns an invoice number and sets the due date.
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="request">The request.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpPost("{id:guid}/issue")]
     [HasPermission("Billing", "Update")]
     [ProducesResponseType(typeof(InvoiceDto), StatusCodes.Status200OK)]
@@ -336,6 +357,9 @@ public class InvoicesController : ControllerBase
     /// <summary>
     /// Records a payment against an invoice.
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpPost("{id:guid}/payments")]
     [HasPermission("Billing", "Update")]
     [ProducesResponseType(typeof(InvoiceDto), StatusCodes.Status200OK)]
@@ -375,6 +399,9 @@ public class InvoicesController : ControllerBase
     /// <summary>
     /// Cancels an invoice. Paid invoices cannot be cancelled.
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="request">The request.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpPost("{id:guid}/cancel")]
     [HasPermission("Billing", "Update")]
     [ProducesResponseType(typeof(InvoiceDto), StatusCodes.Status200OK)]
@@ -412,6 +439,9 @@ public class InvoicesController : ControllerBase
     /// <summary>
     /// Creates a credit note against an existing invoice.
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpPost("{id:guid}/credit-notes")]
     [HasPermission("Billing", "Create")]
     [ProducesResponseType(typeof(CreditNoteDto), StatusCodes.Status201Created)]

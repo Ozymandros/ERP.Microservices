@@ -1,6 +1,6 @@
 
 
-using Microsoft.AspNetCore.Authorization;
+using MyApp.Auth.API.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
@@ -10,6 +10,7 @@ using MyApp.Auth.Domain.Specifications;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
+using MyApp.Shared.Domain.Security;
 using System;
 
 
@@ -18,24 +19,35 @@ namespace MyApp.Auth.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[AuthorizeJwt]
 [Produces("application/json")]
 public class RolesController : ControllerBase
 {
     private readonly ICacheService _cacheService;
     private readonly IRoleService _roleService;
     private readonly IPermissionService _permissionService;
+    private readonly ILogSanitizer _logSanitizer;
     private readonly ILogger<RolesController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the RolesController class.
+    /// </summary>
+    /// <param name="roleService">The role Service.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="cacheService">The cache Service.</param>
+    /// <param name="permissionService">The permission Service.</param>
+    /// <param name="logSanitizer">The log Sanitizer.</param>
     public RolesController(IRoleService roleService,
         ILogger<RolesController> logger,
         ICacheService cacheService,
-        IPermissionService permissionService)
+        IPermissionService permissionService,
+        ILogSanitizer logSanitizer)
     {
         _roleService = roleService;
         _logger = logger;
         _cacheService = cacheService;
         _permissionService = permissionService;
+        _logSanitizer = logSanitizer;
     }
 
     /// <summary>
@@ -87,6 +99,7 @@ public class RolesController : ControllerBase
     /// <summary>
     /// Get all roles (optionally paginated and filtered)
     /// </summary>
+    /// <param name="query">The query.</param>
     [HttpGet]
     [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(IEnumerable<RoleDto>), StatusCodes.Status200OK)]
@@ -128,6 +141,8 @@ public class RolesController : ControllerBase
     /// <summary>
     /// Get all roles with pagination
     /// </summary>
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
     [HttpGet("paginated")]
     [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<RoleDto>), StatusCodes.Status200OK)]
@@ -149,6 +164,7 @@ public class RolesController : ControllerBase
     /// <summary>
     /// Search roles with advanced filtering, sorting, and pagination
     /// </summary>
+    /// <param name="query">The query.</param>
     /// <remarks>
     /// Supported filters: name, description
     /// Supported sort fields: id, name, createdAt
@@ -185,6 +201,7 @@ public class RolesController : ControllerBase
     /// <summary>
     /// Get role by ID
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpGet("{id}")]
     [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(RoleDto), StatusCodes.Status200OK)]
@@ -224,6 +241,7 @@ public class RolesController : ControllerBase
     /// <summary>
     /// Get role by name
     /// </summary>
+    /// <param name="name">The name.</param>
     [HttpGet("name/{name}")]
     [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(RoleDto), StatusCodes.Status200OK)]
@@ -252,6 +270,7 @@ public class RolesController : ControllerBase
     /// <summary>
     /// Create new role
     /// </summary>
+    /// <param name="createRoleDto">The create Role Dto.</param>
     [HttpPost]
     [HasPermission("Roles", "Create")]
     [ProducesResponseType(typeof(RoleDto), StatusCodes.Status201Created)]
@@ -287,6 +306,8 @@ public class RolesController : ControllerBase
     /// <summary>
     /// Update role
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="updateRoleDto">The update Role Dto.</param>
     [HttpPut("{id}")]
     [HasPermission("Roles", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -323,6 +344,7 @@ public class RolesController : ControllerBase
     /// <summary>
     /// Delete role
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpDelete("{id}")]
     [HasPermission("Roles", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -356,6 +378,7 @@ public class RolesController : ControllerBase
     /// <summary>
     /// Get users in role
     /// </summary>
+    /// <param name="name">The name.</param>
     [HttpGet("{name}/users")]
     [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
@@ -374,6 +397,12 @@ public class RolesController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Adds a permission to role.
+    /// </summary>
+    /// <param name="roleId">The role Id.</param>
+    /// <param name="permissionId">The permission Id.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpPost("{roleId}/permissions")]
     [HasPermission("Roles", "Update")]
     public async Task<IActionResult> AddPermissionToRole(Guid roleId, Guid permissionId)
@@ -396,7 +425,14 @@ public class RolesController : ControllerBase
             var result = await _roleService.AddPermissionToRole(createDto);
             if (result is false)
             {
-                _logger.LogWarning("Failed to create role permission: {@Permission}", new { RoleName = role.Name, Module = permission.Module, Action = permission.Action });
+                _logger.LogWarning(
+                    "Failed to create role permission: {@Permission}",
+                    new
+                    {
+                        RoleName = _logSanitizer.Sanitize(role.Name),
+                        Module = _logSanitizer.Sanitize(permission.Module),
+                        Action = _logSanitizer.Sanitize(permission.Action)
+                    });
                 return Conflict(new { message = "Role already exists" });
             }
 
@@ -419,7 +455,14 @@ public class RolesController : ControllerBase
                 await _cacheService.RemoveStateAsync(userRolesCacheKey);
             }
 
-            _logger.LogInformation("Role permission created: {@Permission}", new { RoleName = role.Name, Module = permission.Module, Action = permission.Action });
+            _logger.LogInformation(
+                "Role permission created: {@Permission}",
+                new
+                {
+                    RoleName = _logSanitizer.Sanitize(role.Name),
+                    Module = _logSanitizer.Sanitize(permission.Module),
+                    Action = _logSanitizer.Sanitize(permission.Action)
+                });
             return NoContent();
 
         }
@@ -433,8 +476,8 @@ public class RolesController : ControllerBase
     /// <summary>
     /// Remove a permission from a role
     /// </summary>
-    /// <param name="roleId">The ID of the role</param>
-    /// <param name="permissionId">The ID of the permission to remove</param>
+    /// <param name="roleId">The role Id.</param>
+    /// <param name="permissionId">The permission Id.</param>
     /// <returns>204 No Content if successful, 404 if role/permission not found, 500 on error</returns>
     [HttpDelete("{roleId}/permissions/{permissionId}")]
     [HasPermission("Roles", "Delete")]
@@ -503,6 +546,11 @@ public class RolesController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Gets the role permissions.
+    /// </summary>
+    /// <param name="roleId">The role Id.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpGet("{roleId}/permissions")]
     [HasPermission("Roles", "Read")]
     public async Task<IActionResult> GetRolePermissions(Guid roleId)
@@ -537,6 +585,8 @@ public class RolesController : ControllerBase
     /// <summary>
     /// Add multiple permissions to a role
     /// </summary>
+    /// <param name="roleId">The role Id.</param>
+    /// <param name="permissionIds">The permission Ids.</param>
     [HttpPost("{roleId}/permissions/bulk")]
     [HasPermission("Roles", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -568,6 +618,8 @@ public class RolesController : ControllerBase
     /// <summary>
     /// Remove multiple permissions from a role
     /// </summary>
+    /// <param name="roleId">The role Id.</param>
+    /// <param name="permissionIds">The permission Ids.</param>
     [HttpDelete("{roleId}/permissions/bulk")]
     [HasPermission("Roles", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

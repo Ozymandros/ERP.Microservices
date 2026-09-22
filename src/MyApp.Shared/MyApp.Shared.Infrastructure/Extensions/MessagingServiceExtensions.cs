@@ -16,10 +16,10 @@ namespace MyApp.Shared.Infrastructure.Extensions;
 public static class MessagingServiceExtensions
 {
     /// <summary>
-    /// Adds microservice messaging services (event publishing and service invocation)
+    /// Adds a microservice messaging.
     /// </summary>
-    /// <param name="services">The service collection</param>
-    /// <param name="configure">Optional configuration action</param>
+    /// <param name="services">The services.</param>
+    /// <param name="configure">The configure.</param>
     /// <returns>The service collection for chaining</returns>
     public static IServiceCollection AddMicroserviceMessaging(
         this IServiceCollection services,
@@ -98,10 +98,10 @@ public static class MessagingServiceExtensions
     }
 
     /// <summary>
-    /// Adds event publishing service only
+    /// Adds an event publisher.
     /// </summary>
-    /// <param name="services">The service collection</param>
-    /// <param name="configure">Optional configuration action</param>
+    /// <param name="services">The services.</param>
+    /// <param name="configure">The configure.</param>
     /// <returns>The service collection for chaining</returns>
     public static IServiceCollection AddEventPublisher(
         this IServiceCollection services,
@@ -141,10 +141,10 @@ public static class MessagingServiceExtensions
     }
 
     /// <summary>
-    /// Adds service invocation service only
+    /// Adds a service invoker.
     /// </summary>
-    /// <param name="services">The service collection</param>
-    /// <param name="enableLogging">Whether to enable logging</param>
+    /// <param name="services">The services.</param>
+    /// <param name="enableLogging">The enable Logging.</param>
     /// <returns>The service collection for chaining</returns>
     public static IServiceCollection AddServiceInvoker(
         this IServiceCollection services,

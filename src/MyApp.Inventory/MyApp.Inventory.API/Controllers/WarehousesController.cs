@@ -11,6 +11,7 @@ using MyApp.Shared.Infrastructure.Export;
 using MyApp.Shared.Infrastructure.Extensions;
 namespace MyApp.Inventory.API.Controllers;
 
+/// <summary>API controller for warehouse management operations in the Inventory service.</summary>
 [ApiController]
 [Authorize]
 [Route("api/inventory/warehouses")]
@@ -20,7 +21,11 @@ public class WarehousesController : ControllerBase
     private readonly ICacheService _cacheService;
     private readonly ILogger<WarehousesController> _logger;
 
-
+    /// <summary>Initialises a new instance of <see cref="WarehousesController"/>.</summary>
+    /// Initializes a new instance of the WarehousesController class.
+    /// <param name="warehouseService">The warehouse Service.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="cacheService">The cache Service.</param>
     public WarehousesController(IWarehouseService warehouseService, ILogger<WarehousesController> logger, ICacheService cacheService)
     {
         _warehouseService = warehouseService;
@@ -75,6 +80,7 @@ public class WarehousesController : ControllerBase
     /// <summary>
     /// Get all warehouses (optionally paginated and filtered)
     /// </summary>
+    /// <param name="query">The query.</param>
     [HttpGet]
     [HasPermission("Inventory", "Read")]
     [ProducesResponseType(typeof(IEnumerable<WarehouseDto>), StatusCodes.Status200OK)]
@@ -109,6 +115,8 @@ public class WarehousesController : ControllerBase
     /// <summary>
     /// Get all warehouses with pagination - Requires Inventory.Read permission
     /// </summary>
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
     [HttpGet("paginated")]
     [HasPermission("Inventory", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<WarehouseDto>), StatusCodes.Status200OK)]
@@ -130,6 +138,7 @@ public class WarehousesController : ControllerBase
     /// <summary>
     /// Search warehouses with advanced filtering, sorting, and pagination - Requires Inventory.Read permission
     /// </summary>
+    /// <param name="query">The query.</param>
     /// <remarks>
     /// Supported filters: name, location, city, country, isActive
     /// Supported sort fields: id, name, location, city, country, createdAt
@@ -146,7 +155,7 @@ public class WarehousesController : ControllerBase
             query.Validate();
             var spec = new WarehouseQuerySpec(query);
             var result = await _warehouseService.QueryWarehousesAsync(spec);
-            _logger.LogInformation("Searched warehouses with query: {@Query}", query);
+            _logger.LogInformation("Searched warehouses");
             return Ok(result);
         }
         catch (ArgumentException ex)
@@ -164,6 +173,7 @@ public class WarehousesController : ControllerBase
     /// <summary>
     /// Get warehouse by ID - Requires Inventory.Read permission
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpGet("{id}")]
     [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -183,6 +193,7 @@ public class WarehousesController : ControllerBase
     /// <summary>
     /// Get warehouse by Name - Requires Inventory.Read permission
     /// </summary>
+    /// <param name="name">The name.</param>
     [HttpGet("name/{name}")]
     [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -222,6 +233,7 @@ public class WarehousesController : ControllerBase
     /// <summary>
     /// Create a new warehouse - Requires Inventory.Create permission
     /// </summary>
+    /// <param name="dto">The dto.</param>
     [HttpPost]
     [HasPermission("Inventory", "Create")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -250,6 +262,8 @@ public class WarehousesController : ControllerBase
     /// <summary>
     /// Update an existing warehouse - Requires Inventory.Update permission
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
     [HttpPut("{id}")]
     [HasPermission("Inventory", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -284,6 +298,7 @@ public class WarehousesController : ControllerBase
     /// <summary>
     /// Delete a warehouse - Requires Inventory.Delete permission
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpDelete("{id}")]
     [HasPermission("Inventory", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

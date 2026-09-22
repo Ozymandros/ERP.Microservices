@@ -9,10 +9,19 @@ namespace MyApp.Purchasing.Domain.Specifications;
 /// </summary>
 public class SupplierQuerySpec : BaseSpecification<Supplier>
 {
+    /// <summary>
+    /// Initializes a new instance of the SupplierQuerySpec class.
+    /// </summary>
+    /// <param name="query">The query.</param>
     public SupplierQuerySpec(QuerySpec query) : base(query)
     {
     }
 
+    /// <summary>
+    /// Applies query filters to the specification.
+    /// </summary>
+    /// <param name="query">The query.</param>
+    /// <returns>The result of the operation.</returns>
     public override IQueryable<Supplier> ApplyFilters(IQueryable<Supplier> query)
     {
         // Apply supplier-specific filters

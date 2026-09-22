@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: barrierModel
+    data:
+      # Instance method on the concrete sanitizer
+      - ["MyApp.Shared.Domain.Security", "LogSanitizer", true, "Sanitize", "(System.String)", "", "ReturnValue", "log-forging", "manual"]
+      # Interface used via DI
+      - ["MyApp.Shared.Domain.Security", "ILogSanitizer", true, "Sanitize", "(System.String)", "", "ReturnValue", "log-forging", "manual"]

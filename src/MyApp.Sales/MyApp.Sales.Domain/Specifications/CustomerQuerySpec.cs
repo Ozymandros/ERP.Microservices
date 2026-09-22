@@ -9,10 +9,17 @@ namespace MyApp.Sales.Domain.Specifications;
 /// </summary>
 public class CustomerQuerySpec : BaseSpecification<Customer>
 {
+    /// <summary>Initializes a new <see cref="CustomerQuerySpec"/> with the given query parameters.</summary>
+    /// Initializes a new instance of the CustomerQuerySpec class.
+    /// <param name="query">The query.</param>
     public CustomerQuerySpec(QuerySpec query) : base(query)
     {
     }
 
+    /// <summary>Applies customer-specific filters (name, email, phone, address) and search term to the query.</summary>
+    /// Applies query filters to the specification.
+    /// <param name="query">The query.</param>
+    /// <returns>The filtered queryable.</returns>
     public override IQueryable<Customer> ApplyFilters(IQueryable<Customer> query)
     {
         // Apply customer-specific filters

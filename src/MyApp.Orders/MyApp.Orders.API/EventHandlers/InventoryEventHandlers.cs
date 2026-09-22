@@ -15,6 +15,10 @@ public class InventoryEventHandlers : ControllerBase
     private readonly IReservedStockRepository _reservedStockRepository;
     private readonly ILogger<InventoryEventHandlers> _logger;
 
+    /// <summary>Initializes a new instance of the <see cref="InventoryEventHandlers"/> class.</summary>
+    /// Initializes a new instance of the InventoryEventHandlers class.
+    /// <param name="reservedStockRepository">The reserved Stock Repository.</param>
+    /// <param name="logger">The logger.</param>
     public InventoryEventHandlers(
         IReservedStockRepository reservedStockRepository,
         ILogger<InventoryEventHandlers> logger)
@@ -26,6 +30,8 @@ public class InventoryEventHandlers : ControllerBase
     /// <summary>
     /// Handles StockReservedEvent - confirms reservation was created in Inventory
     /// </summary>
+    /// <param name="event">The event.</param>
+    /// <returns>An OK result after processing the event.</returns>
     [Topic("pubsub", "inventory.stock.reserved")]
     [HttpPost("stock-reserved")]
     public async Task<IActionResult> OnStockReservedAsync(StockReservedEvent @event)
@@ -70,6 +76,8 @@ public class InventoryEventHandlers : ControllerBase
     /// <summary>
     /// Handles StockReleasedEvent - marks reservation as released
     /// </summary>
+    /// <param name="event">The event.</param>
+    /// <returns>An OK result after processing the event.</returns>
     [Topic("pubsub", "inventory.stock.released")]
     [HttpPost("stock-released")]
     public async Task<IActionResult> OnStockReleasedAsync(StockReleasedEvent @event)
@@ -104,6 +112,8 @@ public class InventoryEventHandlers : ControllerBase
     /// <summary>
     /// Handles LowStockAlertEvent - logs the alert
     /// </summary>
+    /// <param name="event">The event.</param>
+    /// <returns>An OK result after processing the event.</returns>
     [Topic("pubsub", "inventory.stock.low-stock-alert")]
     [HttpPost("low-stock-alert")]
     public IActionResult OnLowStockAlertAsync(LowStockAlertEvent @event)

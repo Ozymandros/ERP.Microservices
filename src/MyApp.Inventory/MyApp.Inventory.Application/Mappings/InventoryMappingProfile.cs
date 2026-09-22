@@ -9,6 +9,7 @@ namespace MyApp.Inventory.Application.Mappings;
 /// </summary>
 public class InventoryMappingProfile : Profile
 {
+    /// <summary>Initialises a new instance of <see cref="InventoryMappingProfile"/> and registers all inventory entity-to-DTO mappings.</summary>
     public InventoryMappingProfile()
     {
         // Product mappings

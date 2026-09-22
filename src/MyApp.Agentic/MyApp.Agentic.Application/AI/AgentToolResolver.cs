@@ -23,14 +23,18 @@ public sealed class AgentToolResolver : IAgentToolResolver
     private readonly IAgentToolRegistry _registry;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AgentToolResolver"/> class.
+    /// Initializes a new instance of the AgentToolResolver class.
     /// </summary>
-    /// <param name="registry">Registry containing all ERP tool metadata and handlers.</param>
+    /// <param name="registry">The registry.</param>
     public AgentToolResolver(IAgentToolRegistry registry)
     {
         _registry = registry;
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="agent">The agent.</param>
     /// <inheritdoc />
     public IReadOnlyList<ToolDefinition> ResolveTools(Agent agent)
     {

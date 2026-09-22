@@ -5,6 +5,7 @@ namespace MyApp.Shared.Domain.DTOs
     /// <summary>
     /// Base DTO class for all data transfer objects with a primary key identifier.
     /// </summary>
+    /// <param name="Id">The id.</param>
     public abstract record BaseDto<T>(T Id) : IDto<T>
     where T : IComparable, IComparable<T>, IEquatable<T>, IFormattable, IParsable<T>
     {

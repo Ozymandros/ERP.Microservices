@@ -12,6 +12,7 @@ namespace MyApp.Crm.Application.Mapping;
 /// </summary>
 public class CrmMappingProfile : Profile
 {
+    /// <summary>Initializes a new instance of the CrmMappingProfile and configures all CRM entity-to-DTO mappings.</summary>
     public CrmMappingProfile()
     {
         CreateMap<Account, AccountDto>();

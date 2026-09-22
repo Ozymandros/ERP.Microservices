@@ -10,6 +10,7 @@ namespace MyApp.Inventory.Infrastructure.Data.Configurations;
 public class InventoryTransactionConfiguration : IEntityTypeConfiguration<InventoryTransaction>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<InventoryTransaction> builder)
     {
         builder.HasKey(x => x.Id);

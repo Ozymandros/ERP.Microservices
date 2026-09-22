@@ -26,8 +26,12 @@ public class InsufficientStockException : Exception
     public int AvailableQuantity { get; }
 
     /// <summary>
-    /// Initializes a new instance of the InsufficientStockException class with product and warehouse details.
+    /// Initializes a new instance of the InsufficientStockException class.
     /// </summary>
+    /// <param name="productId">The product Id.</param>
+    /// <param name="warehouseId">The warehouse Id.</param>
+    /// <param name="requestedQuantity">The requested Quantity.</param>
+    /// <param name="availableQuantity">The available Quantity.</param>
     public InsufficientStockException(
         Guid productId,
         Guid warehouseId,
@@ -42,15 +46,18 @@ public class InsufficientStockException : Exception
     }
 
     /// <summary>
-    /// Initializes a new instance of the InsufficientStockException class with a message.
+    /// Initializes a new instance of the InsufficientStockException class.
     /// </summary>
+    /// <param name="message">The message.</param>
     public InsufficientStockException(string message) : base(message)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the InsufficientStockException class with a message and inner exception.
+    /// Initializes a new instance of the InsufficientStockException class.
     /// </summary>
+    /// <param name="message">The message.</param>
+    /// <param name="innerException">The inner Exception.</param>
     public InsufficientStockException(string message, Exception innerException)
         : base(message, innerException)
     {

@@ -161,6 +161,7 @@ public class CreditNoteRepositoryTests
             "Test");
 
         await _repository.AddAsync(cn);
+        await _context.SaveChangesAsync();
 
         var stored = await _context.CreditNotes.FindAsync(cn.Id);
         stored!.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
@@ -205,6 +206,7 @@ public class CreditNoteRepositoryTests
         var cn = AddCreditNote(inv.Id);
 
         await _repository.DeleteAsync(cn);
+        await _context.SaveChangesAsync();
 
         var stored = await _context.CreditNotes.FindAsync(cn.Id);
         stored.Should().BeNull();

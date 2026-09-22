@@ -10,6 +10,7 @@ namespace MyApp.Inventory.Infrastructure.Data.Configurations;
 public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<Product> builder)
     {
         builder.HasKey(x => x.Id);

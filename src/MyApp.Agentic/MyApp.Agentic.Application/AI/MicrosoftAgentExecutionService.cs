@@ -15,11 +15,11 @@ public class MicrosoftAgentExecutionService : IAgentExecutionService
     private readonly ILogger<MicrosoftAgentExecutionService> _logger;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="MicrosoftAgentExecutionService"/> class.
+    /// Initializes a new instance of the MicrosoftAgentExecutionService class.
     /// </summary>
-    /// <param name="runtimeFactory">Factory that creates provider-specific chat clients.</param>
-    /// <param name="toolExecutor">Executor for registered ERP tools.</param>
-    /// <param name="logger">Structured logger.</param>
+    /// <param name="runtimeFactory">The runtime Factory.</param>
+    /// <param name="toolExecutor">The tool Executor.</param>
+    /// <param name="logger">The logger.</param>
     public MicrosoftAgentExecutionService(
         IAgentRuntimeFactory runtimeFactory,
         IAgentToolExecutor toolExecutor,
@@ -30,6 +30,12 @@ public class MicrosoftAgentExecutionService : IAgentExecutionService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="userMessage">The user Message.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public async Task<AgentExecutionResult> ExecuteAsync(AgentExecutionContext context, string userMessage, CancellationToken cancellationToken = default)
     {

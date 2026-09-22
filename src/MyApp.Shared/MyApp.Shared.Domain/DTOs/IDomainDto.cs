@@ -6,9 +6,6 @@ namespace MyApp.Shared.Domain.DTOs
     /// <typeparam name="T">The type of the DTO identifier.</typeparam>
     public interface IDto<T> where T : IComparable, IComparable<T>, IEquatable<T>, IFormattable, IParsable<T>
     {
-        /// <summary>
-        /// Gets the unique identifier for the DTO.
-        /// </summary>
         T Id { get; init; }
     }
 }

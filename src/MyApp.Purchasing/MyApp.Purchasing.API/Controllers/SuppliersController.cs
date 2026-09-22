@@ -20,6 +20,12 @@ public class SuppliersController : ControllerBase
     private readonly ICacheService _cacheService;
     private readonly ILogger<SuppliersController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the SuppliersController class.
+    /// </summary>
+    /// <param name="supplierService">The supplier Service.</param>
+    /// <param name="cacheService">The cache Service.</param>
+    /// <param name="logger">The logger.</param>
     public SuppliersController(ISupplierService supplierService, ICacheService cacheService, ILogger<SuppliersController> logger)
     {
         _supplierService = supplierService;
@@ -76,6 +82,7 @@ public class SuppliersController : ControllerBase
     /// <summary>
     /// Get all suppliers (optionally paginated and filtered)
     /// </summary>
+    /// <param name="query">The query.</param>
     [HttpGet]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(typeof(IEnumerable<SupplierDto>), StatusCodes.Status200OK)]
@@ -116,6 +123,7 @@ public class SuppliersController : ControllerBase
     /// <summary>
     /// Get supplier by ID - Requires Purchasing.Read permission
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpGet("{id}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -153,17 +161,22 @@ public class SuppliersController : ControllerBase
     /// <summary>
     /// Get supplier by email - Requires Purchasing.Read permission
     /// </summary>
+    /// <param name="email">The email.</param>
     [HttpGet("email/{email}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<SupplierDto>> GetSupplierByEmail(string email)
     {
-        _logger.LogInformation("Retrieving supplier with email: {@Email}", new { Email = email });
+        _logger.LogInformation(
+            "Retrieving supplier with email: {@Email}",
+            new { Email = new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(email) });
         var supplier = await _supplierService.GetSupplierByEmailAsync(email);
         if (supplier == null)
         {
-            _logger.LogWarning("Supplier with email {@Email} not found", new { Email = email });
+            _logger.LogWarning(
+                "Supplier with email {@Email} not found",
+                new { Email = new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(email) });
             return NotFound();
         }
         return Ok(supplier);
@@ -172,6 +185,7 @@ public class SuppliersController : ControllerBase
     /// <summary>
     /// Get supplier by Name - Requires Purchasing.Read permission
     /// </summary>
+    /// <param name="name">The name.</param>
     [HttpGet("name/{name}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -200,6 +214,7 @@ public class SuppliersController : ControllerBase
     /// <summary>
     /// Search suppliers by name - Requires Purchasing.Read permission
     /// </summary>
+    /// <param name="name">The name.</param>
     [HttpGet("search/{name}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -213,6 +228,7 @@ public class SuppliersController : ControllerBase
     /// <summary>
     /// Search suppliers with advanced filtering, sorting, and pagination - Requires Purchasing.Read permission
     /// </summary>
+    /// <param name="query">The query.</param>
     /// <remarks>
     /// Supported filters: name, email, country, city, isActive
     /// Supported sort fields: id, name, email, city, country, createdAt
@@ -229,7 +245,7 @@ public class SuppliersController : ControllerBase
             query.Validate();
             var spec = new SupplierQuerySpec(query);
             var result = await _supplierService.QuerySuppliersAsync(spec);
-            _logger.LogInformation("Searched suppliers with query: {@Query}", query);
+            _logger.LogInformation("Searched suppliers");
             return Ok(result);
         }
         catch (ArgumentException ex)
@@ -247,6 +263,7 @@ public class SuppliersController : ControllerBase
     /// <summary>
     /// Create a new supplier - Requires Purchasing.Create permission
     /// </summary>
+    /// <param name="dto">The dto.</param>
     [HttpPost]
     [HasPermission("Purchasing", "Create")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -276,6 +293,8 @@ public class SuppliersController : ControllerBase
     /// <summary>
     /// Update an existing supplier - Requires Purchasing.Update permission
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
     [HttpPut("{id}")]
     [HasPermission("Purchasing", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -313,6 +332,7 @@ public class SuppliersController : ControllerBase
     /// <summary>
     /// Delete a supplier - Requires Purchasing.Delete permission
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpDelete("{id}")]
     [HasPermission("Purchasing", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

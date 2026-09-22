@@ -11,7 +11,7 @@ namespace MyApp.Billing.Application.Mapping;
 public class BillingMappingProfile : Profile
 {
     /// <summary>
-    /// Billing Mapping Profile constructor. Configures the mappings between domain entities and DTOs, including custom mappings for status properties.
+    /// Initializes a new instance of the BillingMappingProfile class.
     /// </summary>
     public BillingMappingProfile()
     {

@@ -4,6 +4,7 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Crm.Domain.Activities;
 
 /// <summary>Represents an activity such as a task, call, meeting, or email.</summary>
+/// <param name="id">The id.</param>
 public class Activity(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>Gets the activity subject or description.</summary>
@@ -32,6 +33,14 @@ public class Activity(Guid id) : AuditableEntity<Guid>(id)
     public List<Note> Notes { get; private set; } = new();
 
     /// <summary>Initializes a new instance of the Activity class.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="subject">The subject.</param>
+    /// <param name="type">The type.</param>
+    /// <param name="dueAt">The due At.</param>
+    /// <param name="assignedToUsername">The assigned To Username.</param>
+    /// <param name="leadId">The lead Id.</param>
+    /// <param name="opportunityId">The opportunity Id.</param>
+    /// <param name="customerId">The customer Id.</param>
     public Activity(
         Guid id,
         string subject,
@@ -51,6 +60,7 @@ public class Activity(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Reschedules the activity to a new due date.</summary>
+    /// <param name="dueAt">The due At.</param>
     public void Reschedule(DateTimeOffset dueAt)
     {
         EnsureOpen();
@@ -58,6 +68,7 @@ public class Activity(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Updates the activity subject.</summary>
+    /// <param name="subject">The subject.</param>
     public void UpdateSubject(string subject)
     {
         EnsureOpen();
@@ -65,6 +76,7 @@ public class Activity(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Completes the activity with an optional note.</summary>
+    /// <param name="note">The note.</param>
     public void Complete(string? note = null)
     {
         EnsureOpen();
@@ -77,6 +89,7 @@ public class Activity(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Cancels the activity with a reason note.</summary>
+    /// <param name="reasonNote">The reason Note.</param>
     public void Cancel(string reasonNote)
     {
         EnsureOpen();
@@ -85,12 +98,16 @@ public class Activity(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Reassigns the activity to a different user.</summary>
+    /// <param name="assignedToUsername">The assigned To Username.</param>
     public void Reassign(string assignedToUsername)
     {
         AssignedToUsername = NormalizeRequired(assignedToUsername, nameof(assignedToUsername));
     }
 
     /// <summary>Links the activity to a lead, opportunity, or customer.</summary>
+    /// <param name="leadId">The lead Id.</param>
+    /// <param name="opportunityId">The opportunity Id.</param>
+    /// <param name="customerId">The customer Id.</param>
     public void LinkTo(Guid? leadId, Guid? opportunityId, Guid? customerId)
     {
         // Exactly one parent link is required to keep navigation/querying predictable.

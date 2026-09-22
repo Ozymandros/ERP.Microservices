@@ -6,26 +6,37 @@ using MyApp.Shared.Infrastructure.Repositories;
 namespace MyApp.Auth.Infrastructure.Data.Repositories;
 
 /// <summary>
-/// Provides Refresh Token Repository functionality.
+/// Implements data access operations for <see cref="RefreshToken"/> entities using Entity Framework Core.
 /// </summary>
 public class RefreshTokenRepository : Repository<RefreshToken, Guid>, IRefreshTokenRepository
 {
     private readonly AuthDbContext _context;
 
-    /// <summary>base.</summary>
+    /// <summary>
+    /// Initializes a new instance of the RefreshTokenRepository class.
+    /// </summary>
+    /// <param name="context">The context.</param>
     public RefreshTokenRepository(AuthDbContext context) : base(context)
     {
         _context = context;
     }
 
-    /// <summary>Get By Token Async.</summary>
+    /// <summary>
+    /// Gets the token asynchronously.
+    /// </summary>
+    /// <param name="token">The token.</param>
+    /// <returns>The matching <see cref="RefreshToken"/>, or <c>null</c> if not found.</returns>
     public async Task<RefreshToken?> GetByTokenAsync(string token)
     {
         return await _context.RefreshTokens
             .FirstOrDefaultAsync(rt => rt.Token == token);
     }
 
-    /// <summary>Get By User Id Async.</summary>
+    /// <summary>
+    /// Gets the user id asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <returns>A collection of <see cref="RefreshToken"/> entities for the user.</returns>
     public async Task<IEnumerable<RefreshToken>> GetByUserIdAsync(Guid userId)
     {
         return await _context.RefreshTokens
@@ -33,7 +44,12 @@ public class RefreshTokenRepository : Repository<RefreshToken, Guid>, IRefreshTo
             .ToListAsync();
     }
 
-    /// <summary>Get Valid Refresh Token Async.</summary>
+    /// <summary>
+    /// Gets the valid refresh token asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <param name="token">The token.</param>
+    /// <returns>The valid <see cref="RefreshToken"/> if found; otherwise, <c>null</c>.</returns>
     public async Task<RefreshToken?> GetValidRefreshTokenAsync(Guid userId, string token)
     {
         return await _context.RefreshTokens
@@ -43,26 +59,34 @@ public class RefreshTokenRepository : Repository<RefreshToken, Guid>, IRefreshTo
                 && rt.ExpiresAt > DateTime.UtcNow);
     }
 
-    /// <summary>Create Async.</summary>
-    public async Task<RefreshToken> CreateAsync(RefreshToken refreshToken)
+    /// <summary>
+    /// Creates a new item asynchronously.
+    /// </summary>
+    /// <param name="refreshToken">The refresh Token.</param>
+    /// <returns>The added <see cref="RefreshToken"/>.</returns>
+    public Task<RefreshToken> CreateAsync(RefreshToken refreshToken)
     {
         _context.RefreshTokens.Add(refreshToken);
-        await _context.SaveChangesAsync();
-        return refreshToken;
+        return Task.FromResult(refreshToken);
     }
 
-    /// <summary>Revoke Async.</summary>
+    /// <summary>
+    /// Revoke asynchronously.
+    /// </summary>
+    /// <param name="tokenId">The token Id.</param>
     public async Task RevokeAsync(Guid tokenId)
     {
         var token = await _context.RefreshTokens.FindAsync(tokenId);
         if (token != null)
         {
             token.IsRevoked = true;
-            await _context.SaveChangesAsync();
         }
     }
 
-    /// <summary>Revoke User Tokens Async.</summary>
+    /// <summary>
+    /// Revoke user tokens asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
     public async Task RevokeUserTokensAsync(Guid userId)
     {
         var tokens = await _context.RefreshTokens
@@ -73,7 +97,5 @@ public class RefreshTokenRepository : Repository<RefreshToken, Guid>, IRefreshTo
         {
             token.IsRevoked = true;
         }
-
-        await _context.SaveChangesAsync();
     }
 }

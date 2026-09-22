@@ -271,6 +271,7 @@ public class SalesOrderRepositoryTests
 
         // Act
         await _repository.DeleteAsync(order.Id);
+        await _context.SaveChangesAsync();
         var deletedOrder = await _context.SalesOrders.FindAsync(order.Id);
 
         // Assert

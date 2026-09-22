@@ -9,6 +9,7 @@ namespace MyApp.Crm.Infrastructure.Data.Configurations;
 public class LeadConfiguration : IEntityTypeConfiguration<Lead>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<Lead> builder)
     {
         builder.ToTable("Leads");

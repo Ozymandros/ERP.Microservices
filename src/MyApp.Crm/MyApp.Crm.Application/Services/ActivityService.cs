@@ -3,9 +3,11 @@ using Microsoft.Extensions.Logging;
 using MyApp.Crm.Application.Contracts.DTOs;
 using MyApp.Crm.Application.Contracts.Services;
 using MyApp.Crm.Domain.Activities;
+using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -14,26 +16,34 @@ namespace MyApp.Crm.Application.Services;
 /// <summary>
 /// Provides Activity Service functionality.
 /// </summary>
-public class ActivityService : IActivityService
+public class ActivityService : AppServiceBase, IActivityService
 {
     private readonly IActivityRepository _repository;
     private readonly IMapper _mapper;
     private readonly ILogger<ActivityService> _logger;
-    private readonly IEventPublisher _eventPublisher;
 
+    /// <summary>Initializes a new instance of the ActivityService class.</summary>
+    /// Initializes a new instance of the ActivityService class.
+    /// <param name="repository">The repository.</param>
+    /// <param name="mapper">The mapper.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
     public ActivityService(
         IActivityRepository repository,
         IMapper mapper,
         ILogger<ActivityService> logger,
+        IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Crm)
     {
         _repository = repository;
         _mapper = mapper;
-        _logger = logger;
-        _eventPublisher = eventPublisher;
-    }
+        _logger = logger;    }
 
     /// <summary>Get By Id Async.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<ActivityDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -41,6 +51,7 @@ public class ActivityService : IActivityService
     }
 
     /// <summary>List Async.</summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<IEnumerable<ActivityDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         var list = await _repository.ListAsync();
@@ -48,6 +59,8 @@ public class ActivityService : IActivityService
     }
 
     /// <summary>Query Async.</summary>
+    /// <param name="spec">The spec.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<PaginatedResult<ActivityDto>> QueryAsync(ISpecification<Activity> spec, CancellationToken cancellationToken = default)
     {
         var result = await _repository.QueryAsync(spec);
@@ -56,6 +69,8 @@ public class ActivityService : IActivityService
     }
 
     /// <summary>Create Async.</summary>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<ActivityDto> CreateAsync(CreateActivityDto dto, CancellationToken cancellationToken = default)
     {
         if (!Enum.TryParse<ActivityType>(dto.Type, ignoreCase: true, out var type))
@@ -72,6 +87,7 @@ public class ActivityService : IActivityService
             dto.CustomerId);
 
         await _repository.AddAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         try
         {
@@ -81,7 +97,7 @@ public class ActivityService : IActivityService
                 entity.Subject,
                 entity.DueAt,
                 entity.AssignedToUsername);
-            await _eventPublisher.PublishAsync(MessagingConstants.Topics.CrmActivityCreated, @event, cancellationToken);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.CrmActivityCreated, @event, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -92,6 +108,9 @@ public class ActivityService : IActivityService
     }
 
     /// <summary>Complete Async.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<ActivityDto> CompleteAsync(Guid id, CompleteActivityDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -99,11 +118,12 @@ public class ActivityService : IActivityService
 
         entity.Complete(dto.Note);
         await _repository.UpdateAsync(entity);
+        await SaveChangesAsync(cancellationToken);
 
         try
         {
             var @event = new CrmActivityCompletedEvent(entity.Id, entity.CompletedAt ?? DateTimeOffset.UtcNow);
-            await _eventPublisher.PublishAsync(MessagingConstants.Topics.CrmActivityCompleted, @event, cancellationToken);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.CrmActivityCompleted, @event, cancellationToken);
         }
         catch (Exception ex)
         {

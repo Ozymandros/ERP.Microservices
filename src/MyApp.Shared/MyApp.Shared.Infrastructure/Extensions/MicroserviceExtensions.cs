@@ -8,8 +8,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Permissions;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.OpenApi;
+using MyApp.Shared.Infrastructure.Repositories;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -23,7 +25,7 @@ namespace MyApp.Shared.Infrastructure.Extensions;
 public static class MicroserviceExtensions
 {
     /// <summary>
-    /// Adds default microservice services to the service collection.
+    /// Adds a service defaults.
     /// Configures: Dapr, OpenTelemetry, Controllers, OpenAPI, Authentication, Database, Health Checks, CORS, AutoMapper.
     /// 
     /// Note: Redis cache must be configured separately before calling this method:
@@ -32,6 +34,8 @@ public static class MicroserviceExtensions
     /// This is because AddRedisDistributedCache requires the Aspire Redis resource reference,
     /// which is only available in the AppHost project context.
     /// </summary>
+    /// <param name="builder">The builder.</param>
+    /// <param name="options">The options.</param>
     public static WebApplicationBuilder AddServiceDefaults(
         this WebApplicationBuilder builder,
         MicroserviceConfigurationOptions? options = null)
@@ -84,7 +88,7 @@ public static class MicroserviceExtensions
                     schema.Type = Microsoft.OpenApi.JsonSchemaType.String;
                     schema.Format = "date-time";
                     schema.Default = null;
-                    schema.Example = null;
+                    schema.Examples = null;
                 }
                 return Task.CompletedTask;
             });
@@ -162,20 +166,20 @@ public static class MicroserviceExtensions
             builder.Services.AddAutoMapper(cfg => { }, options.AutoMapperAssembly);
         }
 
-        // 11. CORS (always configured with defaults)
-        var origins = builder.Configuration["FRONTEND_ORIGIN"]?.Split(';') ?? new[] { "http://localhost:3000" };
-        builder.Services.AddCors(corsOptions =>
-        {
-            corsOptions.AddPolicy("AllowFrontend", policy =>
-            {
-                policy.WithOrigins(origins)
-                      .AllowAnyMethod()
-                      .AllowAnyHeader()
-                      .AllowCredentials();
-            });
-        });
+        // 11. CORS: any origin in dev; localhost-only in production
+        builder.Services.AddAllowFrontendCors(builder.Configuration, builder.Environment);
 
-        // 12. Service-specific dependencies
+        // 12. Unit of work (per service DbContext); override in ConfigureServiceDependencies if needed
+        if (options.DbContextType != null)
+        {
+            builder.Services.AddScoped<IUnitOfWork>(sp =>
+            {
+                var dbContext = (DbContext)sp.GetRequiredService(options.DbContextType);
+                return new EfUnitOfWork(dbContext);
+            });
+        }
+
+        // 13. Service-specific dependencies
         options.ConfigureServiceDependencies?.Invoke(builder.Services);
 
         // Store options in DI for UseServiceDefaults to reuse (avoids passing options twice)
@@ -199,13 +203,15 @@ public static class MicroserviceExtensions
     }
 
     /// <summary>
-    /// Applies default microservice middleware pipeline.
+    /// Use service defaults.
     /// Configures: Database migrations, OpenAPI, Scalar docs (dev), HTTPS redirect, Routing, CORS,
     /// Authentication, Authorization, Controllers, Health checks, Dapr pub/sub subscriptions.
     /// 
     /// If options are not provided, automatically reuses options from AddServiceDefaults via DI.
     /// This means you can call: app.UseServiceDefaults(); without passing options again.
     /// </summary>
+    /// <param name="app">The app.</param>
+    /// <param name="options">The options.</param>
     public static WebApplication UseServiceDefaults(
         this WebApplication app,
         MicroserviceConfigurationOptions? options = null)
@@ -249,11 +255,16 @@ public static class MicroserviceExtensions
             app.MapScalarApiReference();
         }
 
-        // HTTPS redirection
-        app.UseHttpsRedirection();
+        // Dapr invokes over HTTP; HTTPS redirection breaks sidecar calls in local dev.
+        if (!app.Environment.IsDevelopment())
+            app.UseHttpsRedirection();
 
         // Routing
         app.UseRouting();
+
+        // Dapr pub/sub delivers CloudEvents; unwrap before model binding on [Topic] handlers.
+        if (options.EnableDapr)
+            app.UseCloudEvents();
 
         // CORS
         app.UseCors("AllowFrontend");
@@ -268,18 +279,13 @@ public static class MicroserviceExtensions
         // Controllers
         app.MapControllers();
 
+        // Registers /dapr/subscribe and wires [Topic] endpoints to the Dapr sidecar
+        if (options.EnableDapr)
+            app.MapSubscribeHandler();
+
         // Health checks
         if (options.EnableHealthChecks)
-        {
             app.UseCustomHealthChecks();
-        }
-
-        // Dapr pub/sub subscriptions (automatically configured if Dapr is enabled)
-        // This replaces the need to manually call app.MapSubscribeHandler() in Program.cs
-        if (options.EnableDapr)
-        {
-            app.MapSubscribeHandler();
-        }
 
         return app;
     }

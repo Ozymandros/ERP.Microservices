@@ -7,6 +7,24 @@ namespace MyApp.Shared.Infrastructure.Extensions;
 
 public static class SecurityServiceExtensions
 {
+    /// <summary>
+    /// Adds a log sanitizer.
+    /// </summary>
+    /// <param name="services">The services.</param>
+    /// <returns>The service collection for chaining.</returns>
+    public static IServiceCollection AddLogSanitizer(this IServiceCollection services)
+    {
+        services.AddSingleton<ILogSanitizer, LogSanitizer>();
+        return services;
+    }
+
+    /// <summary>
+    /// Adds a secret crypto.
+    /// </summary>
+    /// <param name="services">The services.</param>
+    /// <param name="configuration">The configuration.</param>
+    /// <param name="sectionName">The section Name.</param>
+    /// <returns>The service collection for chaining.</returns>
     public static IServiceCollection AddSecretCrypto(
         this IServiceCollection services,
         IConfiguration configuration,

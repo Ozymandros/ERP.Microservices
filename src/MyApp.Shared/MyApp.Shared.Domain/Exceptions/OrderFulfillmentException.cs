@@ -11,8 +11,10 @@ public class OrderFulfillmentException : Exception
     public Guid OrderId { get; }
 
     /// <summary>
-    /// Initializes a new instance of the OrderFulfillmentException class with order and message.
+    /// Initializes a new instance of the OrderFulfillmentException class.
     /// </summary>
+    /// <param name="orderId">The order Id.</param>
+    /// <param name="message">The message.</param>
     public OrderFulfillmentException(Guid orderId, string message)
         : base($"Order {orderId} cannot be fulfilled: {message}")
     {
@@ -20,15 +22,18 @@ public class OrderFulfillmentException : Exception
     }
 
     /// <summary>
-    /// Initializes a new instance of the OrderFulfillmentException class with a message.
+    /// Initializes a new instance of the OrderFulfillmentException class.
     /// </summary>
+    /// <param name="message">The message.</param>
     public OrderFulfillmentException(string message) : base(message)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the OrderFulfillmentException class with a message and inner exception.
+    /// Initializes a new instance of the OrderFulfillmentException class.
     /// </summary>
+    /// <param name="message">The message.</param>
+    /// <param name="innerException">The inner Exception.</param>
     public OrderFulfillmentException(string message, Exception innerException)
         : base(message, innerException)
     {

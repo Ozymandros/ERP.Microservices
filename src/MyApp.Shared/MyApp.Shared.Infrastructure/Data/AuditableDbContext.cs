@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using MyApp.Shared.Domain.Entities;
 
@@ -12,58 +11,95 @@ namespace MyApp.Shared.Infrastructure.Data;
 public class AuditableDbContext : DbContext
 {
     /// <summary>base.</summary>
+    /// <param name="options">The options.</param>
     public AuditableDbContext(DbContextOptions options) : base(options)
     {
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <inheritdoc />
+    public override int SaveChanges()
+    {
+        ApplyAuditInformation();
+        return base.SaveChanges();
+    }
+
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="acceptAllChangesOnSuccess">The accept All Changes On Success.</param>
+    /// <inheritdoc />
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        ApplyAuditInformation();
+        return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
     /// <summary>Save Changes Async.</summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        ApplyAuditInformation();
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void ApplyAuditInformation()
     {
         var entries = ChangeTracker.Entries()
             .Where(e => e.Entity is IAuditableEntity &&
-                       (e.State == EntityState.Added || e.State == EntityState.Modified));
+                        (e.State == EntityState.Added || e.State == EntityState.Modified));
 
         foreach (var entry in entries)
-            if (entry.Entity is IAuditableEntity)
+        {
+            if (entry.Entity is not IAuditableEntity entity)
             {
-                var entity = (IAuditableEntity)entry.Entity;
-                // Resolve current user name from common ambient contexts:
-                // 1. Try IHttpContextAccessor from the DbContext service provider (if available)
-                // 2. Fall back to Thread.CurrentPrincipal
-                // 3. Final fallback to SystemUser
-                string currentUser = "SystemUser";
-                try
-                {
-                    var httpContextAccessor = this.GetService<IHttpContextAccessor>();
-                    var name = httpContextAccessor?.HttpContext?.User?.Identity?.Name;
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        currentUser = name;
-                    }
-                    else if (Thread.CurrentPrincipal?.Identity?.IsAuthenticated == true &&
-                             !string.IsNullOrEmpty(Thread.CurrentPrincipal.Identity.Name))
-                    {
-                        currentUser = Thread.CurrentPrincipal.Identity.Name;
-                    }
-                }
-                catch
-                {
-                    // If resolving IHttpContextAccessor fails for any reason, keep the default SystemUser
-                }
-                if (entry.State == EntityState.Added)
-                {
-                    entity.CreatedAt = DateTime.UtcNow;
-                    entity.CreatedBy = currentUser;
-                }
-                else
-                {
-                    Entry(entity).Property(p => p.CreatedAt).IsModified = false;
-                    Entry(entity).Property(p => p.CreatedBy).IsModified = false;
-                }
-                entity.UpdatedAt = DateTime.UtcNow;
-                entity.UpdatedBy = currentUser;
+                continue;
             }
 
-        return await base.SaveChangesAsync(cancellationToken);
+            var currentUser = ResolveCurrentUser();
+
+            if (entry.State == EntityState.Added)
+            {
+                entity.CreatedAt = DateTime.UtcNow;
+                entity.CreatedBy = currentUser;
+            }
+            else
+            {
+                Entry(entity).Property(p => p.CreatedAt).IsModified = false;
+                Entry(entity).Property(p => p.CreatedBy).IsModified = false;
+            }
+
+            entity.UpdatedAt = DateTime.UtcNow;
+            entity.UpdatedBy = currentUser;
+        }
+    }
+
+    private string ResolveCurrentUser()
+    {
+        const string defaultUser = "SystemUser";
+
+        try
+        {
+            var httpContextAccessor = this.GetService<IHttpContextAccessor>();
+            var name = httpContextAccessor?.HttpContext?.User?.Identity?.Name;
+            if (!string.IsNullOrEmpty(name))
+            {
+                return name;
+            }
+
+            if (Thread.CurrentPrincipal?.Identity?.IsAuthenticated == true &&
+                !string.IsNullOrEmpty(Thread.CurrentPrincipal.Identity.Name))
+            {
+                return Thread.CurrentPrincipal.Identity.Name;
+            }
+        }
+        catch
+        {
+            // If resolving IHttpContextAccessor fails for any reason, keep the default SystemUser
+        }
+
+        return defaultUser;
     }
 }
