@@ -9,7 +9,7 @@ on:
       bootstrap_oidc:
         description: "Bootstrap GitHub OIDC provider"
         required: true
-        default: true
+        default: false
         type: boolean
       profile:
         description: "OpenTofu tfvars profile"
@@ -45,6 +45,11 @@ on:
         required: false
         type: string
         default: "true"
+      bootstrap_oidc:
+        description: "Bootstrap GitHub OIDC provider"
+        required: true
+        default: false
+        type: boolean
     outputs:
       deploy_role_arn:
         description: "IAM role ARN for GitHub Actions OIDC"
