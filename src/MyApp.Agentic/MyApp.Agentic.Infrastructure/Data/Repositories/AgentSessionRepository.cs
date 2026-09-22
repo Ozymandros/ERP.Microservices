@@ -4,6 +4,7 @@ using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Agentic.Infrastructure.Data.Repositories;
 
+/// <summary>EF Core repository for <see cref="AgentSession"/> entities, with helpers for retrieving active and user-scoped sessions.</summary>
 public class AgentSessionRepository : Repository<AgentSession, Guid>, IAgentSessionRepository
 {
     private readonly AgenticSqlDbContext _context;

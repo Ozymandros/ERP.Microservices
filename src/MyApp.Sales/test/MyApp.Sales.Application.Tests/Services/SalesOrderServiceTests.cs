@@ -21,6 +21,7 @@ using Xunit;
 
 namespace MyApp.Sales.Application.Tests.Services;
 
+/// <summary>Unit tests for <see cref="SalesOrderService"/>.</summary>
 public class SalesOrderServiceTests
 {
     private readonly Mock<ISalesOrderRepository> _mockOrderRepository;
@@ -32,6 +33,7 @@ public class SalesOrderServiceTests
     private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly SalesOrderService _salesOrderService;
 
+    /// <summary>Initializes a new <see cref="SalesOrderServiceTests"/> with fresh mocks and a <see cref="SalesOrderService"/> instance.</summary>
     public SalesOrderServiceTests()
     {
         _mockOrderRepository = new Mock<ISalesOrderRepository>();

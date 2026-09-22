@@ -10,6 +10,7 @@ namespace MyApp.Shared.Infrastructure.Extensions;
 /// </summary>
 public static class CorsExtensions
 {
+    /// <summary>The name of the CORS policy that allows frontend origins to call the API.</summary>
     public const string AllowFrontendPolicyName = "AllowFrontend";
 
     /// <summary>Primary config key — any browser/client origin allowed to call the API.</summary>

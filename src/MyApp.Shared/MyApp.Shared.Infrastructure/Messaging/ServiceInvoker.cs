@@ -52,6 +52,16 @@ public class ServiceInvoker : IServiceInvoker
         _httpContextAccessor = httpContextAccessor;
     }
 
+    /// <summary>Invokes a method on a remote Dapr-enabled service with a typed request and response.</summary>
+    /// <typeparam name="TRequest">The type of the request payload.</typeparam>
+    /// <typeparam name="TResponse">The expected response type.</typeparam>
+    /// <param name="serviceName">The Dapr app-ID of the target service.</param>
+    /// <param name="methodPath">The relative path of the method to invoke.</param>
+    /// <param name="httpMethod">The HTTP method to use.</param>
+    /// <param name="request">The request payload to send.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>The deserialized response from the target service.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="serviceName"/> or <paramref name="methodPath"/> is null or empty.</exception>
     public async Task<TResponse> InvokeAsync<TRequest, TResponse>(
         string serviceName,
         string methodPath,
@@ -106,6 +116,14 @@ public class ServiceInvoker : IServiceInvoker
         }
     }
 
+    /// <summary>Sends a GET request to the specified service method with a typed request and response.</summary>
+    /// <typeparam name="TRequest">The type of the request payload.</typeparam>
+    /// <typeparam name="TResponse">The expected response type.</typeparam>
+    /// <param name="serviceName">The Dapr app-ID of the target service.</param>
+    /// <param name="methodPath">The relative path of the method to invoke.</param>
+    /// <param name="request">The request payload to send.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>The deserialized response from the target service.</returns>
     public async Task<TResponse> GetAsync<TRequest, TResponse>(
         string serviceName,
         string methodPath,
@@ -113,6 +131,14 @@ public class ServiceInvoker : IServiceInvoker
         CancellationToken cancellationToken = default) => await InvokeAsync<TRequest, TResponse>(
             serviceName, methodPath, HttpMethod.Get, request, cancellationToken);
 
+    /// <summary>Invokes a method on a remote Dapr-enabled service with no request body, returning a typed response.</summary>
+    /// <typeparam name="TResponse">The expected response type.</typeparam>
+    /// <param name="serviceName">The Dapr app-ID of the target service.</param>
+    /// <param name="methodPath">The relative path of the method to invoke.</param>
+    /// <param name="httpMethod">The HTTP method to use.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>The deserialized response from the target service.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="serviceName"/> or <paramref name="methodPath"/> is null or empty.</exception>
     public async Task<TResponse> InvokeAsync<TResponse>(
         string serviceName,
         string methodPath,
@@ -280,6 +306,12 @@ public class ServiceInvoker : IServiceInvoker
         return request;
     }
 
+    /// <summary>Invokes a Dapr service using a pre-built <see cref="HttpRequestMessage"/>, forwarding the caller's Bearer token if present.</summary>
+    /// <typeparam name="TResponse">The expected response type.</typeparam>
+    /// <param name="request">The pre-built HTTP request message targeting the Dapr sidecar.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>The deserialized response from the target service.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is null.</exception>
     public async Task<TResponse> InvokeAsync<TResponse>(
         HttpRequestMessage request,
         CancellationToken cancellationToken = default)

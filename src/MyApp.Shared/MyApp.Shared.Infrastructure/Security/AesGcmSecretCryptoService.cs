@@ -4,6 +4,7 @@ using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Shared.Infrastructure.Security;
 
+/// <summary>Implements AES-GCM authenticated encryption for secret values, using a 256-bit master key configured via <see cref="SecretCryptoOptions"/>.</summary>
 public class AesGcmSecretCryptoService : ISecretCryptoService
 {
     private const byte Version = 1;

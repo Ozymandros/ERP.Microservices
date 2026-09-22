@@ -7,11 +7,13 @@ using Xunit;
 
 namespace MyApp.Billing.Infrastructure.Tests.Repositories;
 
+/// <summary>Integration tests for <see cref="PaymentRepository"/> using an in-memory database.</summary>
 public class PaymentRepositoryTests
 {
     private readonly BillingDbContext _context;
     private readonly PaymentRepository _repository;
 
+    /// <summary>Initializes a fresh in-memory database context and repository for each test.</summary>
     public PaymentRepositoryTests()
     {
         _context = TestDbContextFactory.Create();

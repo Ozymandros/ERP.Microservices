@@ -33,6 +33,13 @@ public class EventPublisher : IEventPublisher
         _options = options.Value;
     }
 
+    /// <summary>Publishes the given event data to the specified Dapr pub/sub topic.</summary>
+    /// <typeparam name="TEvent">The type of the event payload.</typeparam>
+    /// <param name="topic">The kebab-case topic name to publish to.</param>
+    /// <param name="eventData">The event payload to publish.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="topic"/> is null or empty.</exception>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="eventData"/> is null.</exception>
     public async Task PublishAsync<TEvent>(string topic, TEvent eventData, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(topic))

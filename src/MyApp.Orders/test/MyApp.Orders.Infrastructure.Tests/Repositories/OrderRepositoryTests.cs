@@ -11,11 +11,13 @@ using Xunit;
 
 namespace MyApp.Orders.Tests.Repositories;
 
+/// <summary>Integration tests for <see cref="MyApp.Orders.Infrastructure.Repositories.OrderRepository"/> using an in-memory database.</summary>
 public class OrderRepositoryTests
 {
     private readonly OrdersDbContext _context;
     private readonly OrderRepository _repository;
 
+    /// <summary>Initializes a new instance of the <see cref="OrderRepositoryTests"/> class, setting up the in-memory context and repository.</summary>
     public OrderRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -23,6 +25,9 @@ public class OrderRepositoryTests
         TestDbContextFactory.SeedTestData(_context);
     }
 
+    /// <summary>Creates and persists a test order with the specified order number.</summary>
+    /// <param name="orderNumber">The order number to assign to the new order.</param>
+    /// <returns>The persisted <see cref="Order"/> entity.</returns>
     private Order CreateTestOrder(string orderNumber = "ORD-001")
     {
         var order = new Order(Guid.NewGuid())
@@ -41,6 +46,7 @@ public class OrderRepositoryTests
 
     #region GetByIdAsync Tests
 
+    /// <summary>Verifies that GetByIdAsync returns the correct order when a valid ID is supplied.</summary>
     [Fact]
     public async Task GetByIdAsync_WithValidId_ReturnsOrder()
     {
@@ -56,6 +62,7 @@ public class OrderRepositoryTests
         Assert.Equal("ORD-001", result.OrderNumber);
     }
 
+    /// <summary>Verifies that GetByIdAsync returns null when the ID does not exist in the database.</summary>
     [Fact]
     public async Task GetByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -69,6 +76,7 @@ public class OrderRepositoryTests
         Assert.Null(result);
     }
 
+    /// <summary>Verifies that GetByIdAsync eagerly loads the order's lines navigation property.</summary>
     [Fact]
     public async Task GetByIdAsync_IncludesOrderLines()
     {
@@ -96,6 +104,7 @@ public class OrderRepositoryTests
 
     #region ListAsync Tests
 
+    /// <summary>Verifies that GetAllAsync returns all persisted orders.</summary>
     [Fact]
     public async Task ListAsync_ReturnsAllOrders()
     {
@@ -112,6 +121,7 @@ public class OrderRepositoryTests
         Assert.True(result.Count() >= 3);
     }
 
+    /// <summary>Verifies that GetAllAsync returns an empty collection when no orders exist.</summary>
     [Fact]
     public async Task ListAsync_ReturnsEmptyList_WhenNoOrders()
     {
@@ -131,6 +141,7 @@ public class OrderRepositoryTests
 
     #region AddAsync Tests
 
+    /// <summary>Verifies that AddAsync persists a new order to the database.</summary>
     [Fact]
     public async Task AddAsync_WithValidOrder_CreatesOrder()
     {
@@ -158,6 +169,7 @@ public class OrderRepositoryTests
 
     #region UpdateAsync Tests
 
+    /// <summary>Verifies that UpdateAsync persists the updated order properties to the database.</summary>
     [Fact]
     public async Task UpdateAsync_WithExistingOrder_UpdatesOrderData()
     {
@@ -180,6 +192,7 @@ public class OrderRepositoryTests
 
     #region DeleteAsync Tests
 
+    /// <summary>Verifies that DeleteAsync removes the order from the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithValidId_DeletesOrder()
     {
@@ -195,6 +208,7 @@ public class OrderRepositoryTests
         Assert.Null(result);
     }
 
+    /// <summary>Verifies that DeleteAsync does not throw when the order is not found.</summary>
     [Fact]
     public async Task DeleteAsync_WithNonExistentId_DoesNotThrowException()
     {
@@ -214,6 +228,7 @@ public class OrderRepositoryTests
 
     #region QueryAsync Tests
 
+    /// <summary>Verifies that QueryAsync filters results by search term.</summary>
     [Fact]
     public async Task QueryAsync_WithSearchTerm_ShouldFilterResults()
     {
@@ -233,6 +248,7 @@ public class OrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.OrderNumber.Contains("SEARCH-ORD", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that QueryAsync filters results by OrderNumber.</summary>
     [Fact]
     public async Task QueryAsync_WithOrderNumberFilter_ShouldFilterResults()
     {
@@ -253,6 +269,7 @@ public class OrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.OrderNumber.Contains("FILTER-ORD", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that QueryAsync filters results by order Status.</summary>
     [Fact]
     public async Task QueryAsync_WithStatusFilter_ShouldFilterResults()
     {
@@ -273,6 +290,7 @@ public class OrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.Status == OrderStatus.Approved);
     }
 
+    /// <summary>Verifies that QueryAsync filters results by order Type.</summary>
     [Fact]
     public async Task QueryAsync_WithTypeFilter_ShouldFilterResults()
     {
@@ -293,6 +311,7 @@ public class OrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.Type == OrderType.Inbound);
     }
 
+    /// <summary>Verifies that QueryAsync filters results by SourceId.</summary>
     [Fact]
     public async Task QueryAsync_WithSourceIdFilter_ShouldFilterResults()
     {
@@ -314,6 +333,7 @@ public class OrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.SourceId == sourceId);
     }
 
+    /// <summary>Verifies that QueryAsync returns the correct page when pagination parameters are specified.</summary>
     [Fact]
     public async Task QueryAsync_WithPagination_ShouldReturnCorrectPage()
     {
@@ -336,6 +356,7 @@ public class OrderRepositoryTests
         result.TotalCount.Should().BeGreaterThanOrEqualTo(4);
     }
 
+    /// <summary>Verifies that QueryAsync returns results in ascending order when sorted by OrderNumber.</summary>
     [Fact]
     public async Task QueryAsync_WithSorting_ShouldReturnSortedResults()
     {
@@ -356,6 +377,7 @@ public class OrderRepositoryTests
         orderNumbers.Should().BeEquivalentTo(sortedOrderNumbers);
     }
 
+    /// <summary>Verifies that QueryAsync returns results in descending order when SortDesc is true.</summary>
     [Fact]
     public async Task QueryAsync_WithDescendingSort_ShouldReturnDescendingSortedResults()
     {

@@ -15,6 +15,7 @@ using Xunit;
 
 namespace MyApp.Billing.API.Tests.Controllers;
 
+/// <summary>Unit tests for <see cref="InvoicesController"/> covering invoice retrieval, creation, issuance, payment, cancellation, and credit note creation endpoints.</summary>
 public class InvoicesControllerTests
 {
     private readonly Mock<IInvoiceService> _invoiceService;
@@ -22,6 +23,7 @@ public class InvoicesControllerTests
     private readonly Mock<ILogger<InvoicesController>> _logger;
     private readonly InvoicesController _sut;
 
+    /// <summary>Initializes mocks and constructs the <see cref="InvoicesController"/> system under test.</summary>
     public InvoicesControllerTests()
     {
         _invoiceService = new Mock<IInvoiceService>();

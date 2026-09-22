@@ -7,6 +7,7 @@ using Xunit;
 
 namespace MyApp.Sales.Application.Tests.Specifications;
 
+/// <summary>Unit tests for <see cref="SalesOrderQuerySpec"/> filtering, sorting, and search behaviour.</summary>
 public class SalesOrderQuerySpecTests
 {
     private static IQueryable<SalesOrder> CreateTestData()

@@ -4,6 +4,7 @@ using MyApp.Agentic.Domain.Sessions;
 
 namespace MyApp.Agentic.Infrastructure.Data.Configurations;
 
+/// <summary>EF Core entity type configuration for <see cref="AgentSession"/>, mapping to the <c>AgentSessions</c> table.</summary>
 public class AgentSessionConfiguration : IEntityTypeConfiguration<AgentSession>
 {
     /// <summary>

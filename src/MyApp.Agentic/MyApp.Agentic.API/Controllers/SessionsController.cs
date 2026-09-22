@@ -7,6 +7,7 @@ using MyApp.Shared.Domain.Permissions;
 
 namespace MyApp.Agentic.API.Controllers;
 
+/// <summary>API controller for managing persistent agent conversation sessions and their messages.</summary>
 [ApiController]
 [Authorize]
 [Route("api/agentic/sessions")]

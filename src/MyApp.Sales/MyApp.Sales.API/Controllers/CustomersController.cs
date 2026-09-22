@@ -15,7 +15,7 @@ namespace MyApp.Sales.API.Controllers
     [ApiController]
     [Authorize]
     [Route("api/sales/customers")]
-
+    /// <summary>Provides API endpoints for managing Sales customers, including CRUD operations and export.</summary>
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _customerService;

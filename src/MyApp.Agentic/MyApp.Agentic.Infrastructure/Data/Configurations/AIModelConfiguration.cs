@@ -4,6 +4,7 @@ using MyApp.Agentic.Domain.AIModels;
 
 namespace MyApp.Agentic.Infrastructure.Data.Configurations;
 
+/// <summary>EF Core entity type configuration for <see cref="AIModel"/>, mapping to the <c>AIModels</c> table.</summary>
 public class AIModelConfiguration : IEntityTypeConfiguration<AIModel>
 {
     /// <summary>

@@ -5,6 +5,7 @@ namespace MyApp.Agentic.Infrastructure.Memory;
 /// </summary>
 public interface IMemoryEmbeddingGenerator
 {
+    /// <summary>Gets the dimensionality of the embedding vectors produced by this generator.</summary>
     int VectorSize { get; }
 
     /// <summary>

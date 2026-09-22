@@ -4,6 +4,7 @@ using Xunit;
 
 namespace MyApp.Billing.Domain.Tests.Entities;
 
+/// <summary>Unit tests for the <see cref="Invoice"/> domain entity covering construction, line management, issuance, payment recording, and cancellation.</summary>
 public class InvoiceTests
 {
     [Fact]

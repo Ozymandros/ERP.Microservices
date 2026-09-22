@@ -10,6 +10,7 @@ using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Agentic.Application.Services;
 
+/// <summary>Application service for managing AI provider configurations, including encrypted API key handling.</summary>
 public class AIProviderService : AppServiceBase, IAIProviderService
 {
     private readonly IAIProviderRepository providerRepository;

@@ -12,6 +12,7 @@ using Xunit;
 
 namespace MyApp.Billing.API.Tests.Controllers;
 
+/// <summary>Unit tests for <see cref="CreditNotesController"/> covering credit note retrieval and listing endpoints.</summary>
 public class CreditNotesControllerTests
 {
     private readonly Mock<ICreditNoteRepository> _creditNoteRepo;
@@ -19,6 +20,7 @@ public class CreditNotesControllerTests
     private readonly Mock<ILogger<CreditNotesController>> _logger;
     private readonly CreditNotesController _sut;
 
+    /// <summary>Initializes mocks and constructs the <see cref="CreditNotesController"/> system under test.</summary>
     public CreditNotesControllerTests()
     {
         _creditNoteRepo = new Mock<ICreditNoteRepository>();

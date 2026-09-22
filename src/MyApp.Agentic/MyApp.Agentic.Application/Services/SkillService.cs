@@ -8,6 +8,7 @@ using MyApp.Shared.Domain.Repositories;
 
 namespace MyApp.Agentic.Application.Services;
 
+/// <summary>In-memory skill registry that loads <see cref="SkillDefinition"/> instances at startup and implements <see cref="ISkillService"/>.</summary>
 public class SkillService : AppServiceBase, ISkillService
 {
     private readonly Dictionary<string, SkillDefinition> _skills = new();
@@ -124,6 +125,7 @@ public class SkillService : AppServiceBase, ISkillService
     }
 }
 
+/// <summary>Options class that collects skill loader actions to be applied to a <see cref="SkillService"/> during DI configuration.</summary>
 public class AgentSkillOptions
 {
     private readonly List<Action<SkillService>> _skillLoaders = new();

@@ -8,11 +8,13 @@ using Xunit;
 
 namespace MyApp.Billing.Infrastructure.Tests.Repositories;
 
+/// <summary>Integration tests for <see cref="InvoiceRepository"/> using an in-memory database.</summary>
 public class InvoiceRepositoryTests
 {
     private readonly BillingDbContext _context;
     private readonly InvoiceRepository _repository;
 
+    /// <summary>Initializes a fresh in-memory database context and repository for each test.</summary>
     public InvoiceRepositoryTests()
     {
         _context = TestDbContextFactory.Create();

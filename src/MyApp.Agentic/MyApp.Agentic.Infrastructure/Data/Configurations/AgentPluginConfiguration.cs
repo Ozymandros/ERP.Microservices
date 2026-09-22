@@ -4,6 +4,7 @@ using MyApp.Agentic.Domain.Agents;
 
 namespace MyApp.Agentic.Infrastructure.Data.Configurations;
 
+/// <summary>EF Core entity type configuration for <see cref="AgentPlugin"/>, mapping to the <c>AgentPlugins</c> table.</summary>
 public class AgentPluginConfiguration : IEntityTypeConfiguration<AgentPlugin>
 {
     /// <summary>

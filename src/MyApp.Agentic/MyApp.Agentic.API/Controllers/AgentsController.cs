@@ -6,6 +6,7 @@ using MyApp.Shared.Domain.Permissions;
 
 namespace MyApp.Agentic.API.Controllers;
 
+/// <summary>API controller for managing AI agents (CRUD operations).</summary>
 [ApiController]
 [Authorize]
 [Route("api/agentic/agents")]

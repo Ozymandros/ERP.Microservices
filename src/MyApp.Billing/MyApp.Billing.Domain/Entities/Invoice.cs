@@ -204,10 +204,16 @@ public class Invoice : AuditableEntity<Guid>
 /// </summary>
 public enum InvoiceStatus
 {
+    /// <summary>The invoice has been created but not yet issued to the customer.</summary>
     Draft,
+    /// <summary>The invoice has been issued and is awaiting payment.</summary>
     Issued,
+    /// <summary>The invoice has been sent to the customer.</summary>
     Sent,
+    /// <summary>The invoice has been fully paid.</summary>
     Paid,
+    /// <summary>The invoice has been cancelled and is no longer valid.</summary>
     Cancelled,
+    /// <summary>The invoice has been written off as uncollectable.</summary>
     WrittenOff
 }

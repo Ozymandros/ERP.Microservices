@@ -135,7 +135,7 @@ jobs:
 
   bootstrap-aws:
     name: Bootstrap AWS OIDC + infra
-    if: ${{ github.event.inputs.bootstrap_oidc == true || github.event.inputs.bootstrap_oidc == 'true' }}
+    # if: ${{ github.event.inputs.bootstrap_oidc == true || github.event.inputs.bootstrap_oidc == 'true' }}
     uses: ./.github/workflows/bootstrap-aws-infrastructure.yml
     secrets: inherit
     with:

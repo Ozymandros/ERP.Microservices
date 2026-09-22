@@ -9,6 +9,8 @@ namespace MyApp.Sales.Tests.Helpers;
 /// </summary>
 public static class TestDbContextFactory
 {
+    /// <summary>Creates a new in-memory <see cref="SalesDbContext"/> with a unique database name for isolated testing.</summary>
+    /// <returns>A new <see cref="SalesDbContext"/> backed by an in-memory database.</returns>
     public static SalesDbContext CreateInMemoryContext()
     {
         var options = new DbContextOptionsBuilder<SalesDbContext>()
@@ -20,6 +22,8 @@ public static class TestDbContextFactory
         return context;
     }
 
+    /// <summary>Seeds the given <see cref="SalesDbContext"/> with a standard set of test customers for repository tests.</summary>
+    /// <param name="context">The database context to seed.</param>
     public static void SeedTestData(SalesDbContext context)
     {
         // Clear existing data

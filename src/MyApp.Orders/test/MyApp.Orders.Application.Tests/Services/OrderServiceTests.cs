@@ -19,6 +19,7 @@ using Xunit;
 
 namespace MyApp.Orders.Application.Tests.Services;
 
+/// <summary>Unit tests for <see cref="MyApp.Orders.Application.Services.OrderService"/>.</summary>
 public class OrderServiceTests
 {
     private readonly Mock<IOrderRepository> _mockOrderRepository;
@@ -31,6 +32,7 @@ public class OrderServiceTests
     private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly OrderService _orderService;
 
+    /// <summary>Initializes a new instance of the <see cref="OrderServiceTests"/> class, setting up mocks and the service under test.</summary>
     public OrderServiceTests()
     {
         _mockOrderRepository = new Mock<IOrderRepository>();
@@ -57,6 +59,7 @@ public class OrderServiceTests
 
     #region CreateAsync Tests
 
+    /// <summary>Verifies that CreateAsync with a valid DTO calls AddAsync on the repository.</summary>
     [Fact]
     public async Task CreateAsync_WithValidDto_CallsAddAsyncOnRepository()
     {
@@ -114,6 +117,7 @@ public class OrderServiceTests
         _mockMapper.Verify(m => m.Map<OrderDto>(It.IsAny<Order>()), Times.Once);
     }
 
+    /// <summary>Verifies that CreateAsync sets the new order's status to Draft.</summary>
     [Fact]
     public async Task CreateAsync_SetsOrderStatusToDraft()
     {
@@ -165,6 +169,7 @@ public class OrderServiceTests
 
     #region CreateOrderWithReservationAsync Tests
 
+    /// <summary>Verifies that CreateOrderWithReservationAsync reserves stock and creates an order when the DTO is valid.</summary>
     [Fact]
     public async Task CreateOrderWithReservationAsync_WithValidDto_ReservesStockAndCreatesOrder()
     {
@@ -238,6 +243,7 @@ public class OrderServiceTests
 
     #region GetByIdAsync Tests
 
+    /// <summary>Verifies that GetByIdAsync returns the correct OrderDto when the order exists.</summary>
     [Fact]
     public async Task GetByIdAsync_WithExistingId_ReturnsOrderDto()
     {
@@ -280,6 +286,7 @@ public class OrderServiceTests
 
     #region ListAsync Tests
 
+    /// <summary>Verifies that ListAsync returns all orders as a list of OrderDtos.</summary>
     [Fact]
     public async Task ListAsync_WithExistingOrders_ReturnsListOfOrderDto()
     {
@@ -304,6 +311,7 @@ public class OrderServiceTests
         _mockOrderRepository.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
+    /// <summary>Verifies that ListAsync returns an empty list when no orders exist.</summary>
     [Fact]
     public async Task ListAsync_WithNoOrders_ReturnsEmptyList()
     {
@@ -323,6 +331,7 @@ public class OrderServiceTests
 
     #region UpdateAsync Tests
 
+    /// <summary>Verifies that UpdateAsync updates the order's properties when the order exists.</summary>
     [Fact]
     public async Task UpdateAsync_WithExistingOrder_UpdatesOrderProperties()
     {
@@ -367,6 +376,7 @@ public class OrderServiceTests
         )), Times.Once);
     }
 
+    /// <summary>Verifies that UpdateAsync does nothing when the order does not exist.</summary>
     [Fact]
     public async Task UpdateAsync_WithNonExistentOrder_DoesNothing()
     {
@@ -393,6 +403,7 @@ public class OrderServiceTests
 
     #region CreateOrderWithReservationAsync Tests - Additional Scenarios
 
+    /// <summary>Verifies that CreateOrderWithReservationAsync throws InvalidOperationException when the DTO has no lines.</summary>
     [Fact]
     public async Task CreateOrderWithReservationAsync_WithEmptyLines_ThrowsInvalidOperationException()
     {
@@ -414,6 +425,7 @@ public class OrderServiceTests
             .WithMessage("*at least one line*");
     }
 
+    /// <summary>Verifies that CreateOrderWithReservationAsync throws OrderFulfillmentException and rolls back when stock reservation fails.</summary>
     [Fact]
     public async Task CreateOrderWithReservationAsync_WhenStockReservationFails_RollsBackOrder()
     {
@@ -479,6 +491,7 @@ public class OrderServiceTests
         _mockOrderRepository.Verify(r => r.AddAsync(It.IsAny<Order>()), Times.Once);
     }
 
+    /// <summary>Verifies that CreateOrderWithReservationAsync reserves stock for every line when multiple lines are provided.</summary>
     [Fact]
     public async Task CreateOrderWithReservationAsync_WithMultipleLines_ReservesStockForAllLines()
     {
@@ -560,6 +573,7 @@ public class OrderServiceTests
 
     #region DeleteAsync Tests
 
+    /// <summary>Verifies that DeleteAsync calls the repository's delete method with the correct order ID.</summary>
     [Fact]
     public async Task DeleteAsync_CallsRepositoryDeleteWithCorrectId()
     {
@@ -580,6 +594,7 @@ public class OrderServiceTests
 
     #region FulfillOrderAsync Tests
 
+    /// <summary>Verifies that FulfillOrderAsync marks the order completed and fulfils all reservations for a valid outbound order.</summary>
     [Fact]
     public async Task FulfillOrderAsync_WithValidOutboundOrder_FulfillsOrderAndReservations()
     {
@@ -639,6 +654,7 @@ public class OrderServiceTests
         _mockEventPublisher.Verify(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>()), Times.Once);
     }
 
+    /// <summary>Verifies that FulfillOrderAsync throws InvalidOperationException when the order does not exist.</summary>
     [Fact]
     public async Task FulfillOrderAsync_WithNonExistentOrder_ThrowsInvalidOperationException()
     {
@@ -660,6 +676,7 @@ public class OrderServiceTests
             .WithMessage($"*Order {orderId} not found*");
     }
 
+    /// <summary>Verifies that FulfillOrderAsync throws OrderFulfillmentException when trying to fulfil an already-completed order.</summary>
     [Fact]
     public async Task FulfillOrderAsync_WithCompletedOrder_ThrowsOrderFulfillmentException()
     {
@@ -685,6 +702,7 @@ public class OrderServiceTests
             .WithMessage($"*cannot be fulfilled*");
     }
 
+    /// <summary>Verifies that FulfillOrderAsync throws OrderFulfillmentException when an outbound order has no stock reservations.</summary>
     [Fact]
     public async Task FulfillOrderAsync_WithOutboundOrderAndNoReservations_ThrowsOrderFulfillmentException()
     {
@@ -712,6 +730,7 @@ public class OrderServiceTests
             .WithMessage("*No stock reservations found*");
     }
 
+    /// <summary>Verifies that FulfillOrderAsync throws OrderFulfillmentException when a reservation is not in Reserved status.</summary>
     [Fact]
     public async Task FulfillOrderAsync_WithNonReservedReservation_ThrowsOrderFulfillmentException()
     {
@@ -751,6 +770,7 @@ public class OrderServiceTests
 
     #region CancelOrderAsync Tests
 
+    /// <summary>Verifies that CancelOrderAsync cancels the order and releases all reservations when the order is valid.</summary>
     [Fact]
     public async Task CancelOrderAsync_WithValidOrder_CancelsOrderAndReleasesReservations()
     {
@@ -805,6 +825,7 @@ public class OrderServiceTests
         _mockEventPublisher.Verify(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>()), Times.Once);
     }
 
+    /// <summary>Verifies that CancelOrderAsync throws InvalidOperationException when the order does not exist.</summary>
     [Fact]
     public async Task CancelOrderAsync_WithNonExistentOrder_ThrowsInvalidOperationException()
     {
@@ -826,6 +847,7 @@ public class OrderServiceTests
             .WithMessage($"*Order {orderId} not found*");
     }
 
+    /// <summary>Verifies that CancelOrderAsync throws InvalidOperationException when the order is already completed.</summary>
     [Fact]
     public async Task CancelOrderAsync_WithCompletedOrder_ThrowsInvalidOperationException()
     {
@@ -851,6 +873,7 @@ public class OrderServiceTests
             .WithMessage($"*Cannot cancel completed order*");
     }
 
+    /// <summary>Verifies that CancelOrderAsync still cancels the order even when the inventory reservation release call fails.</summary>
     [Fact]
     public async Task CancelOrderAsync_WhenReservationReleaseFails_StillCancelsOrder()
     {
@@ -898,6 +921,7 @@ public class OrderServiceTests
 
     #region QueryOrdersAsync Tests
 
+    /// <summary>Verifies that QueryOrdersAsync returns a paginated result when a valid specification is provided.</summary>
     [Fact]
     public async Task QueryOrdersAsync_WithValidSpecification_ReturnsPaginatedResult()
     {
@@ -930,6 +954,7 @@ public class OrderServiceTests
 
     #region Edge Cases and Boundary Values
 
+    /// <summary>Verifies that CreateAsync succeeds when a line item has the maximum possible quantity.</summary>
     [Fact]
     public async Task CreateAsync_WithMaximumQuantity_CreatesOrder()
     {
@@ -961,6 +986,7 @@ public class OrderServiceTests
         result.Should().NotBeNull();
     }
 
+    /// <summary>Verifies that CreateAsync generates an order number when an empty string is supplied.</summary>
     [Fact]
     public async Task CreateAsync_WithEmptyOrderNumber_CreatesOrder()
     {
@@ -993,6 +1019,7 @@ public class OrderServiceTests
         result.OrderNumber.Should().NotBeNullOrEmpty(); // Order number is generated by service
     }
 
+    /// <summary>Verifies that UpdateAsync does not call the repository when the order is not found (null lines edge case).</summary>
     [Fact]
     public async Task UpdateAsync_WithNullLines_DoesNotUpdate()
     {
@@ -1015,6 +1042,7 @@ public class OrderServiceTests
         _mockOrderRepository.Verify(r => r.UpdateAsync(It.IsAny<Order>()), Times.Never);
     }
 
+    /// <summary>Verifies that FulfillOrderAsync succeeds when an empty tracking number is provided.</summary>
     [Fact]
     public async Task FulfillOrderAsync_WithEmptyTrackingNumber_FulfillsSuccessfully()
     {

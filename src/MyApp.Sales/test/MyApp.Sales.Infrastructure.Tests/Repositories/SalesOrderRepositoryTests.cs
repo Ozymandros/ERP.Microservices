@@ -11,11 +11,13 @@ using Xunit;
 
 namespace MyApp.Sales.Tests.Repositories;
 
+/// <summary>Integration tests for <see cref="SalesOrderRepository"/> using an in-memory database.</summary>
 public class SalesOrderRepositoryTests
 {
     private readonly SalesDbContext _context;
     private readonly SalesOrderRepository _repository;
 
+    /// <summary>Initializes a new <see cref="SalesOrderRepositoryTests"/> with a seeded in-memory database context.</summary>
     public SalesOrderRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();

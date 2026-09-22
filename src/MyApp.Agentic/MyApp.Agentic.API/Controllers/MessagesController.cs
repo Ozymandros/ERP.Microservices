@@ -7,6 +7,7 @@ using MyApp.Shared.Domain.Permissions;
 
 namespace MyApp.Agentic.API.Controllers;
 
+/// <summary>API controller for processing single-turn agent messages outside of a persistent session.</summary>
 [ApiController]
 [Authorize]
 [Route("api/agentic/messages")]

@@ -4,6 +4,7 @@ using Xunit;
 
 namespace MyApp.Sales.Application.Tests.Domain;
 
+/// <summary>Unit tests for <see cref="SalesOrderLine"/> entity behaviour.</summary>
 public class SalesOrderLineEntityTests
 {
     [Fact]

@@ -14,6 +14,7 @@ namespace MyApp.Sales.API.Controllers
     [ApiController]
     [Authorize]
     [Route("api/sales/orders")]
+    /// <summary>Provides API endpoints for managing sales orders, including CRUD, quote workflows, and export.</summary>
     public class SalesOrdersController : ControllerBase
     {
         private readonly ISalesOrderService _salesOrderService;

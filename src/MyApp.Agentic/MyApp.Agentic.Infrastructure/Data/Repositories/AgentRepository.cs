@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 
 namespace MyApp.Agentic.Infrastructure.Data.Repositories;
 
+/// <summary>EF Core repository for <see cref="Agent"/> entities, eagerly loading the model, provider, and plugin navigation properties.</summary>
 public class AgentRepository : Repository<Agent, Guid>, IAgentRepository
 {
     private readonly AgenticSqlDbContext _context;

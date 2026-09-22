@@ -15,6 +15,7 @@ using Xunit;
 
 namespace MyApp.Billing.Application.Tests.Services;
 
+/// <summary>Unit tests for <see cref="InvoiceService"/> covering invoice creation, issuance, payment recording, cancellation, and credit note creation.</summary>
 public class InvoiceServiceTests
 {
     private readonly Mock<IInvoiceRepository> _invoiceRepo;
@@ -24,6 +25,7 @@ public class InvoiceServiceTests
     private readonly Mock<IEventPublisher> _eventPublisher;
     private readonly InvoiceService _sut;
 
+    /// <summary>Initializes mocks and constructs the <see cref="InvoiceService"/> system under test.</summary>
     public InvoiceServiceTests()
     {
         _invoiceRepo = new Mock<IInvoiceRepository>();

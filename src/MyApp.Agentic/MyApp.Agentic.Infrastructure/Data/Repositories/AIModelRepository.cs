@@ -4,6 +4,7 @@ using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Agentic.Infrastructure.Data.Repositories;
 
+/// <summary>EF Core repository for <see cref="AIModel"/> entities, eagerly loading the parent <see cref="Domain.AIProviders.AIProvider"/>.</summary>
 public class AIModelRepository : Repository<AIModel, Guid>, IAIModelRepository
 {
     private readonly AgenticSqlDbContext _context;

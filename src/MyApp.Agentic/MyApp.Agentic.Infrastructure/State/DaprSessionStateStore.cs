@@ -3,20 +3,45 @@ using Microsoft.Extensions.Logging;
 
 namespace MyApp.Agentic.Infrastructure.State;
 
+/// <summary>Provides persistent storage for agent conversation state keyed by agent and user identifiers.</summary>
 public interface ISessionStateStore
 {
+    /// <summary>Retrieves the conversation session for the specified agent–user pair.</summary>
+    /// <param name="agentId">Agent identifier.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The session state, or <see langword="null"/> if no session exists or retrieval fails.</returns>
     Task<SessionState?> GetSessionAsync(Guid agentId, string userId, CancellationToken cancellationToken = default);
+
+    /// <summary>Persists the full session state document.</summary>
+    /// <param name="session">Session state to save.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     Task SaveSessionAsync(SessionState session, CancellationToken cancellationToken = default);
+
+    /// <summary>Appends a message to the session, creating the session if it does not yet exist.</summary>
+    /// <param name="agentId">Agent identifier.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="message">Message to append.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     Task AppendMessageAsync(Guid agentId, string userId, ConversationMessage message, CancellationToken cancellationToken = default);
+
+    /// <summary>Removes the session state for the specified agent–user pair.</summary>
+    /// <param name="agentId">Agent identifier.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     Task DeleteSessionAsync(Guid agentId, string userId, CancellationToken cancellationToken = default);
 }
 
+/// <summary>Dapr state-store backed implementation of <see cref="ISessionStateStore"/>.</summary>
 public class DaprSessionStateStore : ISessionStateStore
 {
     private readonly DaprClient _daprClient;
     private readonly ILogger<DaprSessionStateStore> _logger;
     private const string StateStoreName = "statestore";
 
+    /// <summary>Initializes a new instance of the <see cref="DaprSessionStateStore"/> class.</summary>
+    /// <param name="daprClient">Dapr client used for state-store operations.</param>
+    /// <param name="logger">Structured logger.</param>
     public DaprSessionStateStore(DaprClient daprClient, ILogger<DaprSessionStateStore> logger)
     {
         _daprClient = daprClient;
@@ -25,6 +50,7 @@ public class DaprSessionStateStore : ISessionStateStore
 
     private static string GetStateKey(Guid agentId, string userId) => $"agent-session:{agentId}:{userId}";
 
+    /// <inheritdoc />
     public async Task<SessionState?> GetSessionAsync(Guid agentId, string userId, CancellationToken cancellationToken = default)
     {
         try
@@ -40,6 +66,7 @@ public class DaprSessionStateStore : ISessionStateStore
         }
     }
 
+    /// <inheritdoc />
     public async Task SaveSessionAsync(SessionState session, CancellationToken cancellationToken = default)
     {
         try
@@ -56,6 +83,7 @@ public class DaprSessionStateStore : ISessionStateStore
         }
     }
 
+    /// <inheritdoc />
     public async Task AppendMessageAsync(Guid agentId, string userId, ConversationMessage message, CancellationToken cancellationToken = default)
     {
         var session = await GetSessionAsync(agentId, userId, cancellationToken);
@@ -74,6 +102,7 @@ public class DaprSessionStateStore : ISessionStateStore
         await SaveSessionAsync(session, cancellationToken);
     }
 
+    /// <inheritdoc />
     public async Task DeleteSessionAsync(Guid agentId, string userId, CancellationToken cancellationToken = default)
     {
         try
