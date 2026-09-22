@@ -3,8 +3,9 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Inventory.Domain.Entities;
 
 /// <summary>
-/// Provides Product functionality.
+/// Product.
 /// </summary>
+/// <param name="id">The id.</param>
 public class Product(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>Gets or sets S K U.</summary>

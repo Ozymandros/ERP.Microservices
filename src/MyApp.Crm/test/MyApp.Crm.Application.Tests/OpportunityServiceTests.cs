@@ -11,8 +11,10 @@ using MyApp.Sales.Application.Contracts.DTOs;
 
 namespace MyApp.Crm.Application.Tests;
 
+/// <summary>Tests for the OpportunityService application service.</summary>
 public class OpportunityServiceTests
 {
+    /// <summary>Verifies that when marking an opportunity as won with ConvertToQuote set to true and no explicit quote lines, the opportunity's own lines are used.</summary>
     [Fact]
     public async Task MarkWonAsync_WhenConvertToQuoteAndQuoteLinesEmpty_UsesOpportunityLines()
     {

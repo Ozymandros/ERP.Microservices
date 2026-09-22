@@ -12,12 +12,14 @@ using Xunit;
 
 namespace MyApp.Audit.API.Tests.Controllers;
 
+/// <summary>Unit tests for <see cref="EntityChangesController"/>.</summary>
 public class EntityChangesControllerTests
 {
     private readonly Mock<IEntityChangeService> _service = new();
     private readonly Mock<ILogger<EntityChangesController>> _logger = new();
     private readonly EntityChangesController _sut;
 
+    /// <summary>Initializes mocks and constructs the system under test.</summary>
     public EntityChangesControllerTests()
     {
         _sut = new EntityChangesController(_service.Object, _logger.Object)

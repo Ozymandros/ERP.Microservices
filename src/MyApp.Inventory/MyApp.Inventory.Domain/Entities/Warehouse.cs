@@ -3,8 +3,9 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Inventory.Domain.Entities;
 
 /// <summary>
-/// Provides Warehouse functionality.
+/// Warehouse.
 /// </summary>
+/// <param name="id">The id.</param>
 public class Warehouse(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>Gets or sets Name.</summary>

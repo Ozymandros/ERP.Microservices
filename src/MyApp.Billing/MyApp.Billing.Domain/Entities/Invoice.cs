@@ -7,6 +7,13 @@ namespace MyApp.Billing.Domain.Entities;
 /// </summary>
 public class Invoice : AuditableEntity<Guid>
 {
+    /// <summary>
+    /// Initializes a new instance of the Invoice class.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="invoiceNumber">The invoice Number.</param>
+    /// <param name="customerId">The customer Id.</param>
+    /// <param name="currency">The currency.</param>
     public Invoice(Guid id, string invoiceNumber, Guid customerId, string currency) : base(id)
     {
         // Keep materialization/read paths resilient (legacy data may contain empty values).
@@ -20,33 +27,53 @@ public class Invoice : AuditableEntity<Guid>
     }
 
     // Basic info
+    /// <summary>Gets the human-readable invoice number assigned at creation or issuance.</summary>
     public string InvoiceNumber { get; private set; }
+    /// <summary>Gets the identifier of the customer associated with this invoice.</summary>
     public Guid CustomerId { get; private set; }
+    /// <summary>Gets the identifier of the order that originated this invoice, if applicable.</summary>
     public Guid? OrderId { get; private set; }
+    /// <summary>Gets the ISO 4217 currency code for this invoice (e.g. <c>"USD"</c>).</summary>
     public string Currency { get; private set; }
+    /// <summary>Gets the current lifecycle status of the invoice.</summary>
     public InvoiceStatus Status { get; private set; }
 
     // Dates
+    /// <summary>Gets the date the invoice was issued, or <see langword="null"/> if still in draft.</summary>
     public DateTime? IssueDate { get; private set; }
+    /// <summary>Gets the payment due date, calculated from <see cref="IssueDate"/> plus <see cref="PaymentTermsDays"/>.</summary>
     public DateTime? DueDate { get; private set; }
 
     // Totals
+    /// <summary>Gets the total net amount (excluding tax) calculated from all invoice lines.</summary>
     public decimal TotalNet { get; private set; }
+    /// <summary>Gets the total tax amount calculated from all invoice lines.</summary>
     public decimal TotalTax { get; private set; }
+    /// <summary>Gets the total gross amount (including tax) calculated from all invoice lines.</summary>
     public decimal TotalGross { get; private set; }
+    /// <summary>Gets the remaining unpaid amount after all completed payments and credit notes.</summary>
     public decimal OutstandingAmount { get; private set; }
 
     // Payment terms
+    /// <summary>Gets the number of days from the issue date until payment is due.</summary>
     public int PaymentTermsDays { get; private set; } = 30;
 
     // Navigation
+    /// <summary>Gets the collection of line items on this invoice.</summary>
     public List<InvoiceLine> Lines { get; private set; }
+    /// <summary>Gets the collection of payments recorded against this invoice.</summary>
     public List<Payment> Payments { get; private set; }
+    /// <summary>Gets the collection of credit notes issued against this invoice.</summary>
     public List<CreditNote> CreditNotes { get; private set; } = new();
 
     /// <summary>
-    /// Adds a line to the invoice (only allowed in Draft status)
+    /// Adds a line.
     /// </summary>
+    /// <param name="description">The description.</param>
+    /// <param name="quantity">The quantity.</param>
+    /// <param name="unitPrice">The unit Price.</param>
+    /// <param name="taxRate">The tax Rate.</param>
+    /// <param name="discount">The discount.</param>
     public void AddLine(string description, int quantity, decimal unitPrice, decimal taxRate, decimal discount = 0)
     {
         if (Status != InvoiceStatus.Draft)
@@ -58,8 +85,11 @@ public class Invoice : AuditableEntity<Guid>
     }
 
     /// <summary>
-    /// Issues the invoice - locks lines and assigns invoice number
+    /// Issue sue.
     /// </summary>
+    /// <param name="invoiceNumber">The invoice Number.</param>
+    /// <param name="issueDate">The issue Date.</param>
+    /// <param name="paymentTermsDays">The payment Terms Days.</param>
     public void Issue(string invoiceNumber, DateTime issueDate, int paymentTermsDays)
     {
         if (Status != InvoiceStatus.Draft)
@@ -79,8 +109,12 @@ public class Invoice : AuditableEntity<Guid>
     }
 
     /// <summary>
-    /// Records a payment against the invoice
+    /// Record payment.
     /// </summary>
+    /// <param name="amount">The amount.</param>
+    /// <param name="method">The method.</param>
+    /// <param name="paidAt">The paid At.</param>
+    /// <param name="externalPaymentId">The external Payment Id.</param>
     public void RecordPayment(decimal amount, string method, DateTime paidAt, string? externalPaymentId = null)
     {
         if (Status == InvoiceStatus.Cancelled)
@@ -95,7 +129,7 @@ public class Invoice : AuditableEntity<Guid>
     }
 
     /// <summary>
-    /// Marks invoice as paid if outstanding is zero
+    /// Mark as paid.
     /// </summary>
     public void MarkAsPaid()
     {
@@ -106,7 +140,7 @@ public class Invoice : AuditableEntity<Guid>
     }
 
     /// <summary>
-    /// Cancels the invoice
+    /// Cancel.
     /// </summary>
     public void Cancel()
     {
@@ -117,8 +151,10 @@ public class Invoice : AuditableEntity<Guid>
     }
 
     /// <summary>
-    /// Creates a credit note for this invoice
+    /// Creates a credit note.
     /// </summary>
+    /// <param name="lines">The lines.</param>
+    /// <param name="reason">The reason.</param>
     public CreditNote CreateCreditNote(List<CreditNoteLineData> lines, string reason)
     {
         if (Status == InvoiceStatus.Draft)

@@ -6,40 +6,49 @@ namespace MyApp.Shared.Domain.BusinessRules;
 public static class OrderInvariants
 {
     /// <summary>
-    /// Determines whether an order has at least one line item.
+    /// Determines whether order lines.
     /// </summary>
+    /// <param name="lineCount">The line Count.</param>
     public static bool HasOrderLines(int lineCount)
     {
         return lineCount > 0;
     }
 
     /// <summary>
-    /// Determines whether a quantity is valid (greater than zero).
+    /// Determines whether quantity valid.
     /// </summary>
+    /// <param name="quantity">The quantity.</param>
     public static bool IsQuantityValid(int quantity)
     {
         return quantity > 0;
     }
 
     /// <summary>
-    /// Determines whether a unit price is valid (non-negative).
+    /// Determines whether price valid.
     /// </summary>
+    /// <param name="price">The price.</param>
     public static bool IsPriceValid(decimal price)
     {
         return price >= 0;
     }
 
     /// <summary>
-    /// Determines whether a line total correctly equals quantity times unit price.
+    /// Determines whether line total correct.
     /// </summary>
+    /// <param name="quantity">The quantity.</param>
+    /// <param name="unitPrice">The unit Price.</param>
+    /// <param name="lineTotal">The line Total.</param>
     public static bool IsLineTotalCorrect(int quantity, decimal unitPrice, decimal lineTotal)
     {
         return Math.Abs(lineTotal - (quantity * unitPrice)) < 0.01m; // Allow for rounding
     }
 
     /// <summary>
-    /// Validates an order line item against all invariants.
+    /// Validate order line.
     /// </summary>
+    /// <param name="quantity">The quantity.</param>
+    /// <param name="unitPrice">The unit Price.</param>
+    /// <param name="lineTotal">The line Total.</param>
     public static void ValidateOrderLine(int quantity, decimal unitPrice, decimal lineTotal)
     {
         if (!IsQuantityValid(quantity))
@@ -53,8 +62,11 @@ public static class OrderInvariants
     }
 
     /// <summary>
-    /// Validates an entire order against all invariants.
+    /// Validate order.
     /// </summary>
+    /// <param name="lineCount">The line Count.</param>
+    /// <param name="totalAmount">The total Amount.</param>
+    /// <param name="calculatedTotal">The calculated Total.</param>
     public static void ValidateOrder(int lineCount, decimal totalAmount, decimal calculatedTotal)
     {
         if (!HasOrderLines(lineCount))

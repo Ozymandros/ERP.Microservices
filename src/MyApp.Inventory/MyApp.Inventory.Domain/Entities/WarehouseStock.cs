@@ -3,8 +3,9 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Inventory.Domain.Entities;
 
 /// <summary>
-/// Provides Warehouse Stock functionality.
+/// Warehouse stock.
 /// </summary>
+/// <param name="id">The id.</param>
 public class WarehouseStock(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>Gets or sets Product Id.</summary>
@@ -25,5 +26,6 @@ public class WarehouseStock(Guid id) : AuditableEntity<Guid>(id)
     public Warehouse? Warehouse { get; set; }
 
     // Computed property
+    /// <summary>Gets the total quantity of items including both available and reserved stock.</summary>
     public int TotalQuantity => AvailableQuantity + ReservedQuantity;
 }

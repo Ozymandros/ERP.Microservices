@@ -8,8 +8,11 @@ using Xunit;
 
 namespace MyApp.Orders.Application.Tests.Specifications;
 
+/// <summary>Unit tests for <see cref="MyApp.Orders.Domain.Specifications.OrderQuerySpec"/>.</summary>
 public class OrderQuerySpecTests
 {
+    /// <summary>Creates a test data set of orders for use in filter tests.</summary>
+    /// <returns>An in-memory queryable collection of test orders.</returns>
     private static IQueryable<Order> CreateTestData()
     {
         var sourceId1 = Guid.NewGuid();
@@ -26,6 +29,7 @@ public class OrderQuerySpecTests
         }.AsQueryable();
     }
 
+    /// <summary>Verifies that filtering by OrderNumber returns only the matching orders.</summary>
     [Fact]
     public void ApplyFilters_WithOrderNumberFilter_ReturnsFilteredOrders()
     {
@@ -40,6 +44,7 @@ public class OrderQuerySpecTests
         result.First().OrderNumber.Should().Be("ORD-001");
     }
 
+    /// <summary>Verifies that filtering by Status returns only orders with that status.</summary>
     [Fact]
     public void ApplyFilters_WithStatusFilter_ReturnsFilteredOrders()
     {
@@ -54,6 +59,7 @@ public class OrderQuerySpecTests
         result.All(o => o.Status == OrderStatus.Draft).Should().BeTrue();
     }
 
+    /// <summary>Verifies that filtering by Type returns only orders of that type.</summary>
     [Fact]
     public void ApplyFilters_WithTypeFilter_ReturnsFilteredOrders()
     {
@@ -68,6 +74,7 @@ public class OrderQuerySpecTests
         result.All(o => o.Type == OrderType.Inbound).Should().BeTrue();
     }
 
+    /// <summary>Verifies that filtering by SourceId returns only orders with that source.</summary>
     [Fact]
     public void ApplyFilters_WithSourceIdFilter_ReturnsFilteredOrders()
     {
@@ -83,6 +90,7 @@ public class OrderQuerySpecTests
         result.All(o => o.SourceId == sourceId).Should().BeTrue();
     }
 
+    /// <summary>Verifies that a search term filters orders by order number.</summary>
     [Fact]
     public void ApplyFilters_WithSearchTerm_ReturnsMatchingOrders()
     {
@@ -95,6 +103,7 @@ public class OrderQuerySpecTests
         result.Should().HaveCount(1);
     }
 
+    /// <summary>Verifies that sorting by OrderNumber returns orders in ascending order.</summary>
     [Fact]
     public void Apply_WithSortByOrderNumber_SortsCorrectly()
     {

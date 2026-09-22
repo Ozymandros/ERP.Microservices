@@ -1,5 +1,9 @@
 namespace MyApp.Tests.Integration
 {
+    /// <summary>
+    /// Placeholder integration test class for the Aspire application host.
+    /// Uncomment and update the example test to verify that the application root endpoint returns a successful HTTP status code.
+    /// </summary>
     public class IntegrationTest1
     {
         // Instructions:

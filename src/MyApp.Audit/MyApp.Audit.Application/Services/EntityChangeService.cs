@@ -35,6 +35,15 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
     /// </remarks>
     protected override bool DisableAuditPublishing => true;
 
+    /// <summary>
+    /// Initializes a new instance of the EntityChangeService class.
+    /// </summary>
+    /// <param name="repository">The repository.</param>
+    /// <param name="mapper">The mapper.</param>
+    /// <param name="cache">The cache.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="logger">The logger.</param>
     public EntityChangeService(
         IEntityChangeRepository repository,
         IMapper mapper,
@@ -50,6 +59,12 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Gets an item by its unique identifier asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>The matching <see cref="EntityChangeDto"/>, or <see langword="null"/> if not found.</returns>
     public async Task<EntityChangeDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var cacheKey = $"audit:entity-change:{id}";
@@ -69,6 +84,13 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
         return dto;
     }
 
+    /// <summary>
+    /// Gets the entity asynchronously.
+    /// </summary>
+    /// <param name="entityName">The entity Name.</param>
+    /// <param name="entityId">The entity Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A read-only list of entity change records for the specified entity.</returns>
     public async Task<IReadOnlyList<EntityChangeDto>> GetByEntityAsync(
         string entityName,
         Guid entityId,
@@ -85,6 +107,12 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
         return dtos;
     }
 
+    /// <summary>
+    /// Query asynchronously.
+    /// </summary>
+    /// <param name="spec">The spec.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A paginated result containing the matching entity change records as DTOs.</returns>
     public async Task<PaginatedResult<EntityChangeDto>> QueryAsync(
         ISpecification<EntityChange> spec,
         CancellationToken cancellationToken = default)
@@ -114,6 +142,12 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
         return dto with { PropertyChanges = derived };
     }
 
+    /// <summary>
+    /// Record asynchronously.
+    /// </summary>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>The persisted <see cref="EntityChangeDto"/> including assigned identifiers and property changes.</returns>
     public async Task<EntityChangeDto> RecordAsync(CreateEntityChangeDto dto, CancellationToken cancellationToken = default)
     {
         var changeId = Guid.NewGuid();
@@ -154,6 +188,11 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
         return EnrichUpdatedPropertyChanges(_mapper.Map<EntityChangeDto>(saved), saved);
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="event">The event.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public async Task RecordFromEventAsync(
         EntityChangesSavedEvent @event,

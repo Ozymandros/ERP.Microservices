@@ -2,8 +2,10 @@ using MyApp.Crm.Domain.Activities;
 
 namespace MyApp.Crm.Domain.Tests;
 
+/// <summary>Tests for domain invariants enforced by the Activity entity.</summary>
 public class ActivityInvariantsTests
 {
+    /// <summary>Verifies that an activity must be linked to exactly one parent entity (lead, opportunity, or customer).</summary>
     [Fact]
     public void Activity_MustHaveExactlyOneParent()
     {

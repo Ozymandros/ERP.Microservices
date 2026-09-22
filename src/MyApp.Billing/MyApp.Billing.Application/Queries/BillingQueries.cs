@@ -3,21 +3,24 @@ using MyApp.Billing.Domain.Entities;
 namespace MyApp.Billing.Application.Queries;
 
 /// <summary>
-/// Query to get an invoice by ID
+/// Gets the invoice by id query.
 /// </summary>
+/// <param name="InvoiceId">The invoice Id.</param>
 public record GetInvoiceByIdQuery(Guid InvoiceId);
 
 /// <summary>
-/// Query to get invoices for a customer
+/// Gets the invoices by customer id query.
 /// </summary>
+/// <param name="CustomerId">The customer Id.</param>
 public record GetInvoicesByCustomerIdQuery(Guid CustomerId);
 
 /// <summary>
-/// Query to get open invoices
+/// Gets the open invoices query.
 /// </summary>
 public record GetOpenInvoicesQuery();
 
 /// <summary>
-/// Query to get invoices by order ID
+/// Gets the invoices by order id query.
 /// </summary>
+/// <param name="OrderId">The order Id.</param>
 public record GetInvoicesByOrderIdQuery(Guid OrderId);

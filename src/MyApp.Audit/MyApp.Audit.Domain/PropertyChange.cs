@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace MyApp.Audit.Domain;
 
 /// <summary>
-/// Represents a change to a single property within an audited entity.
+/// Property change.
 /// Tracks the original and new values of a property when an entity is modified.
 /// </summary>
-/// <param name="id">The unique identifier for the property change record.</param>
+/// <param name="id">The id.</param>
 public class PropertyChange(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>

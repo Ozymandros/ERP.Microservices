@@ -7,10 +7,15 @@ namespace MyApp.Crm.Domain.Accounts;
 public sealed class AccountQuerySpec : BaseSpecification<Account>
 {
     /// <summary>Initializes a new instance of the AccountQuerySpec class.</summary>
+    /// <param name="query">The query.</param>
     public AccountQuerySpec(QuerySpec query) : base(query)
     {
     }
 
+    /// <summary>Applies filter criteria and search term from the query specification to the account queryable.</summary>
+    /// Applies query filters to the specification.
+    /// <param name="queryable">The queryable.</param>
+    /// <returns>The filtered queryable with all matching conditions applied.</returns>
     public override IQueryable<Account> ApplyFilters(IQueryable<Account> queryable)
     {
         if (Query.Filters is { Count: > 0 })

@@ -207,9 +207,9 @@ public static class PermissionConstants
     }
 
     /// <summary>
-    /// Gets all permissions for a specific module.
+    /// Gets the module permissions.
     /// </summary>
-    /// <param name="module">The module to get permissions for</param>
+    /// <param name="module">The module.</param>
     /// <returns>Array of all permission strings for that module</returns>
     public static string[] GetModulePermissions(ModuleEnum module)
     {
@@ -229,7 +229,7 @@ public static class PermissionConstants
     }
 
     /// <summary>
-    /// Gets all permissions across all modules.
+    /// Gets all permissions.
     /// </summary>
     /// <returns>Array of all permission strings</returns>
     public static string[] GetAllPermissions()
@@ -245,18 +245,18 @@ public static class PermissionConstants
     }
 
     /// <summary>
-    /// Creates a permission string from module and action enums.
+    /// Creates a new item.
     /// </summary>
-    /// <param name="module">The module</param>
-    /// <param name="action">The action</param>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
     /// <returns>Permission string in format "Module.Action"</returns>
     public static string Create(ModuleEnum module, ActionEnum action)
         => $"{module}.{action}";
 
     /// <summary>
-    /// Gets the module name from a permission string.
+    /// Gets the module.
     /// </summary>
-    /// <param name="permission">Permission string (e.g., "Inventory.Read")</param>
+    /// <param name="permission">The permission.</param>
     /// <returns>The module name, or null if invalid</returns>
     public static string? GetModule(string permission)
     {
@@ -265,9 +265,9 @@ public static class PermissionConstants
     }
 
     /// <summary>
-    /// Gets the action name from a permission string.
+    /// Gets the action.
     /// </summary>
-    /// <param name="permission">Permission string (e.g., "Inventory.Read")</param>
+    /// <param name="permission">The permission.</param>
     /// <returns>The action name, or null if invalid</returns>
     public static string? GetAction(string permission)
     {

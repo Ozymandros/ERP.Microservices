@@ -7,6 +7,10 @@ public static class JwtSecretResolver
 {
     public const string EnvironmentVariableName = "Jwt__SecretKey";
 
+    /// <summary>
+    /// Gets the required secret key.
+    /// </summary>
+    /// <returns>The resulting string.</returns>
     public static string GetRequiredSecretKey()
     {
         var secretKey = Environment.GetEnvironmentVariable(EnvironmentVariableName);

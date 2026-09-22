@@ -21,6 +21,9 @@ public class CreditNotesController : ControllerBase
     private readonly ILogger<CreditNotesController> _logger;
 
     /// <summary>Initialises a new instance of <see cref="CreditNotesController"/>.</summary>
+    /// <param name="creditNoteRepository">The credit Note Repository.</param>
+    /// <param name="cacheService">The cache Service.</param>
+    /// <param name="logger">The logger.</param>
     public CreditNotesController(
         ICreditNoteRepository creditNoteRepository,
         ICacheService cacheService,
@@ -36,6 +39,8 @@ public class CreditNotesController : ControllerBase
     /// This action is also used as the redirect target when a new credit note is created
     /// via <c>POST /api/invoices/{id}/credit-notes</c>.
     /// </summary>
+    /// <param name="invoiceId">The invoice Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet("invoice/{invoiceId:guid}")]
     [HasPermission("Billing", "Read")]
     [ProducesResponseType(typeof(IEnumerable<CreditNoteDto>), StatusCodes.Status200OK)]

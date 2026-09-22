@@ -11,6 +11,7 @@ using MyApp.Shared.Infrastructure.Export;
 
 namespace MyApp.Inventory.API.Controllers
 {
+    /// <summary>API controller for inventory transaction operations in the Inventory service.</summary>
     [ApiController]
     [Authorize]
     [Route("api/inventory/transactions")]
@@ -20,6 +21,11 @@ namespace MyApp.Inventory.API.Controllers
         private readonly ICacheService _cacheService;
         private readonly ILogger<InventoryTransactionsController> _logger;
 
+        /// <summary>Initialises a new instance of <see cref="InventoryTransactionsController"/>.</summary>
+        /// Initializes a new instance of the InventoryTransactionsController class.
+        /// <param name="transactionService">The transaction Service.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="cacheService">The cache Service.</param>
         public InventoryTransactionsController(IInventoryTransactionService transactionService, ILogger<InventoryTransactionsController> logger, ICacheService cacheService)
         {
             _transactionService = transactionService;
@@ -71,6 +77,9 @@ namespace MyApp.Inventory.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all inventory transactions
+        /// </summary>
         [HttpGet]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -81,6 +90,11 @@ namespace MyApp.Inventory.API.Controllers
             return Ok(transactions);
         }
 
+        /// <summary>
+        /// Get all inventory transactions with pagination - Requires Inventory.Read permission
+        /// </summary>
+        /// <param name="pageNumber">The page Number.</param>
+        /// <param name="pageSize">The page Size.</param>
         [HttpGet("paginated")]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(typeof(PaginatedResult<InventoryTransactionDto>), StatusCodes.Status200OK)]
@@ -99,6 +113,10 @@ namespace MyApp.Inventory.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Search inventory transactions with advanced filtering, sorting, and pagination - Requires Inventory.Read permission
+        /// </summary>
+        /// <param name="query">The query.</param>
         [HttpGet("search")]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(typeof(PaginatedResult<InventoryTransactionDto>), StatusCodes.Status200OK)]
@@ -125,6 +143,10 @@ namespace MyApp.Inventory.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Get transaction by ID - Requires Inventory.Read permission
+        /// </summary>
+        /// <param name="id">The id.</param>
         [HttpGet("{id}")]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -144,6 +166,7 @@ namespace MyApp.Inventory.API.Controllers
         /// <summary>
         /// Get transaction by Reference Number - Requires Inventory.Read permission
         /// </summary>
+        /// <param name="referenceNumber">The reference Number.</param>
         [HttpGet("reference/{referenceNumber}")]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -180,6 +203,10 @@ namespace MyApp.Inventory.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Get transactions by product ID - Requires Inventory.Read permission
+        /// </summary>
+        /// <param name="productId">The product Id.</param>
         [HttpGet("product/{productId}")]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -190,6 +217,10 @@ namespace MyApp.Inventory.API.Controllers
             return Ok(transactions);
         }
 
+        /// <summary>
+        /// Get transactions by warehouse ID - Requires Inventory.Read permission
+        /// </summary>
+        /// <param name="warehouseId">The warehouse Id.</param>
         [HttpGet("warehouse/{warehouseId}")]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -200,6 +231,10 @@ namespace MyApp.Inventory.API.Controllers
             return Ok(transactions);
         }
 
+        /// <summary>
+        /// Get transactions by type - Requires Inventory.Read permission
+        /// </summary>
+        /// <param name="type">The type.</param>
         [HttpGet("type/{type}")]
         [HasPermission("Inventory", "Read")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -216,6 +251,10 @@ namespace MyApp.Inventory.API.Controllers
             return Ok(transactions);
         }
 
+        /// <summary>
+        /// Create a new inventory transaction - Requires Inventory.Create permission
+        /// </summary>
+        /// <param name="dto">The dto.</param>
         [HttpPost]
         [HasPermission("Inventory", "Create")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -246,6 +285,11 @@ namespace MyApp.Inventory.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Update an existing inventory transaction - Requires Inventory.Update permission
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="dto">The dto.</param>
         [HttpPut("{id}")]
         [HasPermission("Inventory", "Update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -276,6 +320,10 @@ namespace MyApp.Inventory.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete an inventory transaction - Requires Inventory.Delete permission
+        /// </summary>
+        /// <param name="id">The id.</param>
         [HttpDelete("{id}")]
         [HasPermission("Inventory", "Delete")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

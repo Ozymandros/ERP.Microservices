@@ -9,10 +9,19 @@ namespace MyApp.Auth.Domain.Specifications;
 /// </summary>
 public class RoleQuerySpec : BaseSpecification<ApplicationRole>
 {
+    /// <summary>
+    /// Initializes a new instance of the RoleQuerySpec class.
+    /// </summary>
+    /// <param name="query">The query.</param>
     public RoleQuerySpec(QuerySpec query) : base(query)
     {
     }
 
+    /// <summary>
+    /// Applies query filters to the specification.
+    /// </summary>
+    /// <param name="query">The query.</param>
+    /// <returns>The filtered queryable source.</returns>
     public override IQueryable<ApplicationRole> ApplyFilters(IQueryable<ApplicationRole> query)
     {
         // Apply role-specific filters (case-insensitive key matching)

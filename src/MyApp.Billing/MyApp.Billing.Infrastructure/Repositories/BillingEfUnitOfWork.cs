@@ -14,14 +14,19 @@ public sealed class BillingEfUnitOfWork : EfUnitOfWork
     private readonly BillingDbContext _context;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="BillingEfUnitOfWork"/> class.
+    /// Initializes a new instance of the BillingEfUnitOfWork class.
     /// </summary>
+    /// <param name="context">The context.</param>
     public BillingEfUnitOfWork(BillingDbContext context)
         : base(context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public override async Task<IReadOnlyCollection<EntityEntryDto>> CommitAsync(
         CancellationToken cancellationToken = default)

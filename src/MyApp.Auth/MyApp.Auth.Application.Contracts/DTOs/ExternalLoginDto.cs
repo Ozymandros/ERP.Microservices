@@ -4,8 +4,13 @@ using MyApp.Shared.Domain.DTOs;
 namespace MyApp.Auth.Application.Contracts.DTOs;
 
 /// <summary>
-/// Data transfer object for external authentication login information.
+/// External login dto.
 /// </summary>
+/// <param name="Provider">The provider.</param>
+/// <param name="ExternalId">The external Id.</param>
+/// <param name="Email">The email.</param>
+/// <param name="FirstName">The first Name.</param>
+/// <param name="LastName">The last Name.</param>
 public record ExternalLoginDto(
     string Provider,
     string ExternalId,
@@ -15,16 +20,20 @@ public record ExternalLoginDto(
 );
 
 /// <summary>
-/// Data transfer object for refresh token requests.
+/// Refresh token dto.
 /// </summary>
+/// <param name="AccessToken">The access Token.</param>
+/// <param name="RefreshToken">The refresh Token.</param>
 public record RefreshTokenDto(
     string AccessToken,
     string RefreshToken
 );
 
 /// <summary>
-/// Data transfer object for creating a new role.
+/// Creates a role dto.
 /// </summary>
+/// <param name="Name">The name.</param>
+/// <param name="Description">The description.</param>
 public record CreateRoleDto(
     [Required(ErrorMessage = "Role name is required")]
     [StringLength(256, MinimumLength = 1, ErrorMessage = "Role name must be between 1 and 256 characters")]
@@ -34,8 +43,9 @@ public record CreateRoleDto(
 );
 
 /// <summary>
-/// Data transfer object for representing a role with audit information.
+/// Role dto.
 /// </summary>
+/// <param name="Id">The id.</param>
 public record RoleDto(Guid Id) : AuditableGuidDto(Id)
 {
     /// <summary>
@@ -50,8 +60,12 @@ public record RoleDto(Guid Id) : AuditableGuidDto(Id)
 }
 
 /// <summary>
-/// Data transfer object for updating user information.
+/// Updates the user dto.
 /// </summary>
+/// <param name="Email">The email.</param>
+/// <param name="FirstName">The first Name.</param>
+/// <param name="LastName">The last Name.</param>
+/// <param name="PhoneNumber">The phone Number.</param>
 public record UpdateUserDto(
     [EmailAddress(ErrorMessage = "Invalid email address")]
     string? Email = null,

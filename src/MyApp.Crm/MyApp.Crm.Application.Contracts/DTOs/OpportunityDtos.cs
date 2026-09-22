@@ -1,8 +1,21 @@
 namespace MyApp.Crm.Application.Contracts.DTOs;
 
 /// <summary>
-/// Represents the Opportunity Dto data record.
+/// Opportunity dto.
 /// </summary>
+/// <param name="Id">The id.</param>
+/// <param name="CustomerId">The customer Id.</param>
+/// <param name="LeadId">The lead Id.</param>
+/// <param name="Name">The name.</param>
+/// <param name="Stage">The stage.</param>
+/// <param name="Probability">The probability.</param>
+/// <param name="ExpectedAmount">The expected Amount.</param>
+/// <param name="ExpectedCloseDate">The expected Close Date.</param>
+/// <param name="ConvertedSalesQuoteId">The converted Sales Quote Id.</param>
+/// <param name="ConvertedSalesQuoteNumber">The converted Sales Quote Number.</param>
+/// <param name="OwnerUsername">The owner Username.</param>
+/// <param name="CreatedAt">The created At.</param>
+/// <param name="UpdatedAt">The updated At.</param>
 public sealed record OpportunityDto(
     Guid Id,
     Guid CustomerId,
@@ -20,8 +33,12 @@ public sealed record OpportunityDto(
 );
 
 /// <summary>
-/// Represents the Create Opportunity Dto data record.
+/// Creates an opportunity dto.
 /// </summary>
+/// <param name="CustomerId">The customer Id.</param>
+/// <param name="Name">The name.</param>
+/// <param name="OwnerUsername">The owner Username.</param>
+/// <param name="LeadId">The lead Id.</param>
 public sealed record CreateOpportunityDto(
     Guid CustomerId,
     string Name,
@@ -30,8 +47,11 @@ public sealed record CreateOpportunityDto(
 );
 
 /// <summary>
-/// Represents the Update Opportunity Forecast Dto data record.
+/// Updates the opportunity forecast dto.
 /// </summary>
+/// <param name="Probability">The probability.</param>
+/// <param name="ExpectedAmount">The expected Amount.</param>
+/// <param name="ExpectedCloseDate">The expected Close Date.</param>
 public sealed record UpdateOpportunityForecastDto(
     decimal Probability,
     decimal? ExpectedAmount,
@@ -39,15 +59,17 @@ public sealed record UpdateOpportunityForecastDto(
 );
 
 /// <summary>
-/// Represents the Move Opportunity Stage Dto data record.
+/// Move opportunity stage dto.
 /// </summary>
+/// <param name="Stage">The stage.</param>
 public sealed record MoveOpportunityStageDto(
     string Stage
 );
 
 /// <summary>
-/// Represents the Mark Opportunity Lost Dto data record.
+/// Mark opportunity lost dto.
 /// </summary>
+/// <param name="Reason">The reason.</param>
 public sealed record MarkOpportunityLostDto(
     string Reason
 );

@@ -6,6 +6,7 @@ using Xunit;
 
 namespace MyApp.Audit.Application.Tests.Mapping;
 
+/// <summary>Unit tests for <see cref="SnapshotPropertyChangeDeriver"/>.</summary>
 public class SnapshotPropertyChangeDeriverTests
 {
     [Fact]
@@ -30,6 +31,7 @@ public class SnapshotPropertyChangeDeriverTests
     }
 }
 
+/// <summary>Unit tests verifying property-change derivation for Updated events in <see cref="EntityChangeEventMapper"/>.</summary>
 public class EntityChangeEventMapperUpdatedTests
 {
     [Fact]

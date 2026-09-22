@@ -4,11 +4,10 @@ using MyApp.Sales.Domain.Entities;
 
 namespace MyApp.Sales.Application.Mapping
 {
-    /// <summary>
-    /// Provides Sales Order Mapping Profile functionality.
-    /// </summary>
+    /// <summary>Provides Sales Order Mapping Profile functionality.</summary>
     public class SalesOrderMappingProfile : Profile
     {
+        /// <summary>Initializes a new <see cref="SalesOrderMappingProfile"/> and registers all Sales entity-to-DTO mappings.</summary>
         public SalesOrderMappingProfile()
         {
             CreateMap<SalesOrder, SalesOrderDto>()

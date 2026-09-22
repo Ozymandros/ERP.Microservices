@@ -3,8 +3,14 @@ using System.ComponentModel.DataAnnotations;
 namespace MyApp.Auth.Application.Contracts.DTOs;
 
 /// <summary>
-/// Data transfer object for user registration information.
+/// Register dto.
 /// </summary>
+/// <param name="Email">The email.</param>
+/// <param name="Username">The username.</param>
+/// <param name="Password">The password.</param>
+/// <param name="PasswordConfirm">The password Confirm.</param>
+/// <param name="FirstName">The first Name.</param>
+/// <param name="LastName">The last Name.</param>
 public record RegisterDto(
     [Required(ErrorMessage = "Email is required")]
     [EmailAddress(ErrorMessage = "Invalid email address")]

@@ -9,6 +9,9 @@ namespace MyApp.Auth.API.Authorization;
 /// </summary>
 public sealed class AuthorizeJwtAttribute : AuthorizeAttribute
 {
+    /// <summary>
+    /// Initializes a new instance of the AuthorizeJwtAttribute class.
+    /// </summary>
     public AuthorizeJwtAttribute()
     {
         AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme;

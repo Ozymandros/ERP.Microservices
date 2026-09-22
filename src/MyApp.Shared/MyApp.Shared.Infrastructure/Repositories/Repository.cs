@@ -53,18 +53,31 @@ public abstract class Repository<TEntity, TKey> : DbContextRepositoryBase, IRepo
     {
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="id">The id.</param>
     /// <inheritdoc />
     public virtual async Task<TEntity?> GetByIdAsync(TKey id)
     {
         return await DbSet.FindAsync(id);
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
     /// <inheritdoc />
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         return await Queryable.ToListAsync();
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
+    /// <param name="includes">The includes.</param>
     /// <inheritdoc />
     public virtual async Task<PaginatedResult<TEntity>> GetAllPaginatedAsync(
         int pageNumber,
@@ -91,6 +104,10 @@ public abstract class Repository<TEntity, TKey> : DbContextRepositoryBase, IRepo
         return new PaginatedResult<TEntity>(items, paginationParams.PageNumber, paginationParams.PageSize, totalCount);
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="spec">The spec.</param>
     /// <inheritdoc />
     public virtual async Task<PaginatedResult<TEntity>> QueryAsync(ISpecification<TEntity> spec)
     {
@@ -116,6 +133,10 @@ public abstract class Repository<TEntity, TKey> : DbContextRepositoryBase, IRepo
         return new PaginatedResult<TEntity>(items, pageNumber, pageSize, totalCount);
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="entity">The entity.</param>
     /// <inheritdoc />
     public virtual async Task<TEntity> AddAsync(TEntity entity)
     {
@@ -123,6 +144,10 @@ public abstract class Repository<TEntity, TKey> : DbContextRepositoryBase, IRepo
         return entity;
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="entity">The entity.</param>
     /// <inheritdoc />
     public virtual Task<TEntity> UpdateAsync(TEntity entity)
     {
@@ -130,6 +155,10 @@ public abstract class Repository<TEntity, TKey> : DbContextRepositoryBase, IRepo
         return Task.FromResult(entity);
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="entity">The entity.</param>
     /// <inheritdoc />
     public virtual Task DeleteAsync(TEntity entity)
     {

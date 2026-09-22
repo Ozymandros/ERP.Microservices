@@ -13,29 +13,47 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
 {
     private readonly OrdersDbContext _db;
 
+    /// <summary>Initializes a new instance of the <see cref="OrderRepository"/> class.</summary>
+    /// Initializes a new instance of the OrderRepository class.
+    /// <param name="db">The db.</param>
     public OrderRepository(OrdersDbContext db) : base(db)
     {
         _db = db;
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="id">The id.</param>
     /// <inheritdoc />
     public override async Task<Order?> GetByIdAsync(Guid id)
     {
         return await _db.Orders.Include(o => o.Lines).FirstOrDefaultAsync(o => o.Id == id);
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="orderNumber">The order Number.</param>
     /// <inheritdoc />
     public async Task<Order?> GetByOrderNumberAsync(string orderNumber)
     {
         return await _db.Orders.Include(o => o.Lines).FirstOrDefaultAsync(o => o.OrderNumber == orderNumber);
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
     /// <inheritdoc />
     public override async Task<IEnumerable<Order>> GetAllAsync()
     {
         return await _db.Orders.Include(o => o.Lines).ToListAsync();
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="spec">The spec.</param>
     /// <inheritdoc />
     public override async Task<PaginatedResult<Order>> QueryAsync(ISpecification<Order> spec)
     {

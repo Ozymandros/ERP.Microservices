@@ -22,9 +22,10 @@ public enum InventoryReservationStatus
 }
 
 /// <summary>
-/// Tracks stock reservations made by the Inventory service so they can be looked up
+/// Inventory reservation.
 /// and reversed by reservationId when a release is requested.
 /// </summary>
+/// <param name="id">The id.</param>
 public class InventoryReservation(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>

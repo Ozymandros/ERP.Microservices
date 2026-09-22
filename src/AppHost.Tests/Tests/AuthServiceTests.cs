@@ -7,8 +7,14 @@ using System.Net.Http.Json;
 
 namespace MyApp.Tests.Integration;
 
+/// <summary>
+/// Integration tests for the Auth service, verifying login, registration, token refresh, external login, and logout endpoints through the API gateway.
+/// </summary>
 public class AuthIntegrationTests
 {
+    /// <summary>
+    /// Verifies that submitting invalid credentials to the login endpoint returns an Unauthorized response.
+    /// </summary>
     [Fact]
     public async Task Login_WithInvalidCredentials_ReturnsUnauthorized()
     {
@@ -35,6 +41,9 @@ public class AuthIntegrationTests
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that registering a new user and then logging in with valid credentials returns an OK response.
+    /// </summary>
     [Fact]
     public async Task Login_WithValidCredentials_ReturnsOk()
     {
@@ -76,6 +85,9 @@ public class AuthIntegrationTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that a second attempt to log in with invalid credentials also returns an Unauthorized response.
+    /// </summary>
     [Fact]
     public async Task Login_WithInvalidCredentials_ReturnsUnauthorized_SecondCase()
     {
@@ -102,6 +114,9 @@ public class AuthIntegrationTests
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that submitting an empty login model returns a Bad Request response.
+    /// </summary>
     [Fact]
     public async Task Login_WithInvalidModel_ReturnsBadRequest()
     {
@@ -128,6 +143,9 @@ public class AuthIntegrationTests
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that registering a new user with valid data returns a Created response.
+    /// </summary>
     [Fact]
     public async Task Register_WithValidData_ReturnsCreated()
     {
@@ -158,6 +176,9 @@ public class AuthIntegrationTests
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that attempting to register with an already-used email address returns a Conflict response.
+    /// </summary>
     [Fact]
     public async Task Register_WithExistingEmail_ReturnsConflict()
     {
@@ -197,6 +218,9 @@ public class AuthIntegrationTests
         Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that submitting a registration model with an invalid email, weak password, and mismatched confirmation returns a Bad Request response.
+    /// </summary>
     [Fact]
     public async Task Register_WithInvalidModel_ReturnsBadRequest()
     {
@@ -227,6 +251,9 @@ public class AuthIntegrationTests
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that presenting a valid refresh token obtained after login returns an OK response with new tokens.
+    /// </summary>
     [Fact]
     public async Task RefreshToken_WithValidToken_ReturnsOk()
     {
@@ -277,6 +304,9 @@ public class AuthIntegrationTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that presenting an invalid refresh token returns an Unauthorized response.
+    /// </summary>
     [Fact]
     public async Task RefreshToken_WithInvalidToken_ReturnsUnauthorized()
     {
@@ -299,6 +329,9 @@ public class AuthIntegrationTests
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that submitting an empty refresh token model returns a Bad Request response.
+    /// </summary>
     [Fact]
     public async Task RefreshToken_WithInvalidModel_ReturnsBadRequest()
     {
@@ -325,6 +358,9 @@ public class AuthIntegrationTests
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that initiating an external login with a valid provider returns an OK response.
+    /// </summary>
     [Fact]
     public async Task ExternalLogin_WithValidProvider_ReturnsRedirect()
     {
@@ -348,6 +384,9 @@ public class AuthIntegrationTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that initiating an external login with an unrecognized provider name returns a Bad Request response.
+    /// </summary>
     [Fact]
     public async Task ExternalLogin_WithInvalidProvider_ReturnsBadRequest()
     {
@@ -370,6 +409,9 @@ public class AuthIntegrationTests
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that hitting the external login callback endpoint without prior authentication returns a Bad Request response.
+    /// </summary>
     [Fact]
     public async Task ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest()
     {
@@ -411,6 +453,9 @@ public class AuthIntegrationTests
     //    Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     //}
 
+    /// <summary>
+    /// Verifies that logging out with a valid Bearer token returns a No Content response.
+    /// </summary>
     [Fact]
     public async Task Logout_WithValidToken_ReturnsNoContent()
     {

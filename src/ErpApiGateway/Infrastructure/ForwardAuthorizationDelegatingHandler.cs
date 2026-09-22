@@ -7,6 +7,10 @@ public sealed class ForwardAuthorizationDelegatingHandler : DelegatingHandler
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    /// <summary>
+    /// Initializes a new instance of the ForwardAuthorizationDelegatingHandler class.
+    /// </summary>
+    /// <param name="httpContextAccessor">The http Context Accessor.</param>
     public ForwardAuthorizationDelegatingHandler(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;

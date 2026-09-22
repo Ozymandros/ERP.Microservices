@@ -21,6 +21,14 @@ public class ServiceInvoker : IServiceInvoker
     private readonly JsonSerializerOptions _jsonOptions;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    /// <summary>
+    /// Initializes a new instance of the ServiceInvoker class.
+    /// </summary>
+    /// <param name="daprClient">The dapr Client.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="jsonOptions">The json Options.</param>
+    /// <param name="httpContextAccessor">The http Context Accessor.</param>
+    /// <param name="enableLogging">The enable Logging.</param>
     public ServiceInvoker(
         DaprClient daprClient,
         ILogger<ServiceInvoker> logger,
@@ -157,6 +165,13 @@ public class ServiceInvoker : IServiceInvoker
         }
     }
 
+    /// <summary>
+    /// Invoke asynchronously.
+    /// </summary>
+    /// <param name="serviceName">The service Name.</param>
+    /// <param name="methodPath">The method Path.</param>
+    /// <param name="httpMethod">The http Method.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task InvokeAsync(
         string serviceName,
         string methodPath,
@@ -207,6 +222,15 @@ public class ServiceInvoker : IServiceInvoker
         }
     }
 
+    /// <summary>
+    /// Creates a request.
+    /// </summary>
+    /// <param name="serviceName">The service Name.</param>
+    /// <param name="methodPath">The method Path.</param>
+    /// <param name="httpMethod">The http Method.</param>
+    /// <param name="requestBody">The request Body.</param>
+    /// <param name="queryParams">The query Params.</param>
+    /// <returns>The result of the operation.</returns>
     public HttpRequestMessage CreateRequest(
         string serviceName,
         string methodPath,

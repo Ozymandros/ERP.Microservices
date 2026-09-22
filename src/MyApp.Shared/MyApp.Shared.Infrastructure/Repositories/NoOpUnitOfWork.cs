@@ -7,6 +7,10 @@ namespace MyApp.Shared.Infrastructure.Repositories;
 /// </summary>
 public sealed class NoOpUnitOfWork : IUnitOfWork
 {
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public Task<IReadOnlyCollection<EntityEntryDto>> CommitAsync(CancellationToken cancellationToken = default)
         => Task.FromResult<IReadOnlyCollection<EntityEntryDto>>(Array.Empty<EntityEntryDto>());

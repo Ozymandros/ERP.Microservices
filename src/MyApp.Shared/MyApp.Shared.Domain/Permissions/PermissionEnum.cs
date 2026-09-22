@@ -92,15 +92,15 @@ public class PermissionEnum
     public required ActionEnum Action { get; set; }
 
     /// <summary>
-    /// Converts the permission to its string representation in the format "Module.Action".
+    /// To string.
     /// </summary>
     /// <returns>A string like "Inventory.Read"</returns>
     public override string ToString() => $"{Module}.{Action}";
 
     /// <summary>
-    /// Parses a permission string (format: "Module.Action") into a PermissionEnum.
+    /// Parse.
     /// </summary>
-    /// <param name="permissionString">The permission string to parse (e.g., "Inventory.Read")</param>
+    /// <param name="permissionString">The permission String.</param>
     /// <returns>A PermissionEnum instance, or null if parsing fails</returns>
     /// <example>
     /// var permission = PermissionEnum.Parse("Inventory.Read");
@@ -124,10 +124,10 @@ public class PermissionEnum
     }
 
     /// <summary>
-    /// Tries to parse a permission string into a PermissionEnum.
+    /// Try parse.
     /// </summary>
-    /// <param name="permissionString">The permission string to parse</param>
-    /// <param name="permission">The parsed permission, or null if parsing fails</param>
+    /// <param name="permissionString">The permission String.</param>
+    /// <param name="permission">The permission.</param>
     /// <returns>True if parsing succeeded, false otherwise</returns>
     public static bool TryParse(string permissionString, out PermissionEnum? permission)
     {

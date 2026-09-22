@@ -19,6 +19,11 @@ public class EntityChangesController : ControllerBase
     private readonly IEntityChangeService _service;
     private readonly ILogger<EntityChangesController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the EntityChangesController class.
+    /// </summary>
+    /// <param name="service">The service.</param>
+    /// <param name="logger">The logger.</param>
     public EntityChangesController(IEntityChangeService service, ILogger<EntityChangesController> logger)
     {
         _service = service;
@@ -26,6 +31,8 @@ public class EntityChangesController : ControllerBase
     }
 
     /// <summary>Returns paginated entity changes when query parameters are supplied.</summary>
+    /// <param name="query">The query.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet]
     [HasPermission("Audit", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<EntityChangeDto>), StatusCodes.Status200OK)]
@@ -52,6 +59,8 @@ public class EntityChangesController : ControllerBase
     }
 
     /// <summary>Returns a single audit record by its identifier.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet("{id:guid}")]
     [HasPermission("Audit", "Read")]
     [ProducesResponseType(typeof(EntityChangeDto), StatusCodes.Status200OK)]
@@ -66,6 +75,9 @@ public class EntityChangesController : ControllerBase
     }
 
     /// <summary>Returns all audit records for a specific business entity instance.</summary>
+    /// <param name="entityName">The entity Name.</param>
+    /// <param name="entityId">The entity Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet("by-entity/{entityName}/{entityId:guid}")]
     [HasPermission("Audit", "Read")]
     [ProducesResponseType(typeof(IReadOnlyList<EntityChangeDto>), StatusCodes.Status200OK)]
@@ -79,6 +91,8 @@ public class EntityChangesController : ControllerBase
     }
 
     /// <summary>Records a new append-only audit entry.</summary>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpPost]
     [HasPermission("Audit", "Create")]
     [ProducesResponseType(typeof(EntityChangeDto), StatusCodes.Status201Created)]

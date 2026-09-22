@@ -1,8 +1,12 @@
 namespace MyApp.Crm.Application.Contracts.DTOs;
 
 /// <summary>
-/// Represents the Forecast By Stage Dto data record.
+/// Forecast by stage dto.
 /// </summary>
+/// <param name="Stage">The stage.</param>
+/// <param name="Count">The count.</param>
+/// <param name="SumExpectedAmount">The sum Expected Amount.</param>
+/// <param name="WeightedAmount">The weighted Amount.</param>
 public sealed record ForecastByStageDto(
     string Stage,
     int Count,
@@ -11,8 +15,15 @@ public sealed record ForecastByStageDto(
 );
 
 /// <summary>
-/// Represents the Forecast Summary Dto data record.
+/// Forecast summary dto.
 /// </summary>
+/// <param name="OwnerUsername">The owner Username.</param>
+/// <param name="FromExpectedCloseDate">The from Expected Close Date.</param>
+/// <param name="ToExpectedCloseDate">The to Expected Close Date.</param>
+/// <param name="TotalCount">The total Count.</param>
+/// <param name="TotalExpectedAmount">The total Expected Amount.</param>
+/// <param name="TotalWeightedAmount">The total Weighted Amount.</param>
+/// <param name="ByStage">The by Stage.</param>
 public sealed record ForecastSummaryDto(
     string OwnerUsername,
     DateOnly? FromExpectedCloseDate,

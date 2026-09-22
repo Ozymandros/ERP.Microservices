@@ -1,12 +1,12 @@
 namespace MyApp.Agentic.Application.AI;
 
 /// <summary>
-/// Metadata describing a registered ERP tool exposed to the agent runtime.
+/// Registered agent tool.
 /// </summary>
-/// <param name="Name">Canonical tool name used by the LLM and tool executor.</param>
-/// <param name="Description">Human-readable description shown to the model.</param>
-/// <param name="Verb">HTTP verb classification used for bot-type filtering.</param>
-/// <param name="Endpoint">Optional endpoint hint. Reserved for future routing metadata.</param>
+/// <param name="Name">The name.</param>
+/// <param name="Description">The description.</param>
+/// <param name="Verb">The verb.</param>
+/// <param name="Endpoint">The endpoint.</param>
 public sealed record RegisteredAgentTool(
     string Name,
     string Description,

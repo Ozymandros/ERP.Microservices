@@ -3,6 +3,7 @@ using MyApp.Shared.Domain.DTOs;
 namespace MyApp.Orders.Application.Contracts.Dtos
 {
     /// <summary>Data transfer object for Order.</summary>
+    /// <param name="Id">The id.</param>
     public record OrderDto(Guid Id) : AuditableGuidDto(Id)
     {
         /// <summary>Gets the date the order was created.</summary>

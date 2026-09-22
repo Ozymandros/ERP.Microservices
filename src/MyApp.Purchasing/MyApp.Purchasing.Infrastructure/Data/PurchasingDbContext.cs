@@ -11,6 +11,7 @@ namespace MyApp.Purchasing.Infrastructure.Data;
 public class PurchasingDbContext : AuditableDbContext
 {
     /// <summary>base.</summary>
+    /// <param name="options">The options.</param>
     public PurchasingDbContext(DbContextOptions<PurchasingDbContext> options) : base(options)
     {
     }

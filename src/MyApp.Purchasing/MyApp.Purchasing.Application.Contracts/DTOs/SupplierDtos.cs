@@ -6,8 +6,9 @@ using System.ComponentModel.DataAnnotations;
 namespace MyApp.Purchasing.Application.Contracts.DTOs;
 
 /// <summary>
-/// Represents the Supplier Dto data record.
+/// Supplier dto.
 /// </summary>
+/// <param name="Id">The id.</param>
 public record SupplierDto(Guid Id) : AuditableGuidDto(Id)
 {
     /// <summary>Gets or sets Name.</summary>
@@ -23,8 +24,13 @@ public record SupplierDto(Guid Id) : AuditableGuidDto(Id)
 }
 
 /// <summary>
-/// Represents the Create Update Supplier Dto data record.
+/// Creates an update supplier dto.
 /// </summary>
+/// <param name="Name">The name.</param>
+/// <param name="ContactName">The contact Name.</param>
+/// <param name="Email">The email.</param>
+/// <param name="PhoneNumber">The phone Number.</param>
+/// <param name="Address">The address.</param>
 public record CreateUpdateSupplierDto(
     [Required(ErrorMessage = "Name is required")]
     [StringLength(255, MinimumLength = 1)]

@@ -3,6 +3,7 @@ namespace MyApp.Shared.Domain.DTOs
     /// <summary>
     /// Base DTO class for auditable entities that tracks creation and modification metadata.
     /// </summary>
+    /// <param name="Id">The id.</param>
     public abstract record AuditableDto<T>(T Id) : BaseDto<T>(Id), IAuditableDto<T>
         where T : IComparable, IComparable<T>, IEquatable<T>, IFormattable, IParsable<T>
     {

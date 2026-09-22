@@ -10,6 +10,12 @@ namespace MyApp.Shared.Infrastructure.OpenApi;
 /// </summary>
 public sealed class DateTimeSchemaTransformer : IOpenApiSchemaTransformer
 {
+    /// <summary>
+    /// Transform asynchronously.
+    /// </summary>
+    /// <param name="schema">The schema.</param>
+    /// <param name="context">The context.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public Task TransformAsync(OpenApiSchema schema, OpenApiSchemaTransformerContext context, CancellationToken cancellationToken)
     {
         if (schema == null) return Task.CompletedTask;

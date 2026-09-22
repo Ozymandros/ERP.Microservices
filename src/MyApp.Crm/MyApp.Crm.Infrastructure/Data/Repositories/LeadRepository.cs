@@ -12,12 +12,14 @@ public class LeadRepository : Repository<Lead, Guid>, ILeadRepository
     private readonly CrmDbContext _context;
 
     /// <summary>base.</summary>
+    /// <param name="context">The context.</param>
     public LeadRepository(CrmDbContext context) : base(context)
     {
         _context = context;
     }
 
     /// <summary>Get By Id Async.</summary>
+    /// <param name="id">The id.</param>
     public override async Task<Lead?> GetByIdAsync(Guid id)
     {
         return await _context.Leads
@@ -27,6 +29,8 @@ public class LeadRepository : Repository<Lead, Guid>, ILeadRepository
     }
 
     /// <summary>Get By Id For Update Async.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<Lead?> GetByIdForUpdateAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Leads.FirstOrDefaultAsync(l => l.Id == id, cancellationToken);

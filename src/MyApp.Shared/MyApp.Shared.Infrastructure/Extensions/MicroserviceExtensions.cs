@@ -25,7 +25,7 @@ namespace MyApp.Shared.Infrastructure.Extensions;
 public static class MicroserviceExtensions
 {
     /// <summary>
-    /// Adds default microservice services to the service collection.
+    /// Adds a service defaults.
     /// Configures: Dapr, OpenTelemetry, Controllers, OpenAPI, Authentication, Database, Health Checks, CORS, AutoMapper.
     /// 
     /// Note: Redis cache must be configured separately before calling this method:
@@ -34,6 +34,8 @@ public static class MicroserviceExtensions
     /// This is because AddRedisDistributedCache requires the Aspire Redis resource reference,
     /// which is only available in the AppHost project context.
     /// </summary>
+    /// <param name="builder">The builder.</param>
+    /// <param name="options">The options.</param>
     public static WebApplicationBuilder AddServiceDefaults(
         this WebApplicationBuilder builder,
         MicroserviceConfigurationOptions? options = null)
@@ -201,13 +203,15 @@ public static class MicroserviceExtensions
     }
 
     /// <summary>
-    /// Applies default microservice middleware pipeline.
+    /// Use service defaults.
     /// Configures: Database migrations, OpenAPI, Scalar docs (dev), HTTPS redirect, Routing, CORS,
     /// Authentication, Authorization, Controllers, Health checks, Dapr pub/sub subscriptions.
     /// 
     /// If options are not provided, automatically reuses options from AddServiceDefaults via DI.
     /// This means you can call: app.UseServiceDefaults(); without passing options again.
     /// </summary>
+    /// <param name="app">The app.</param>
+    /// <param name="options">The options.</param>
     public static WebApplication UseServiceDefaults(
         this WebApplication app,
         MicroserviceConfigurationOptions? options = null)

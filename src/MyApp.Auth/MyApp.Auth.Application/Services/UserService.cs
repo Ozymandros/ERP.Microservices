@@ -17,6 +17,9 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Auth.Application.Services;
 
+/// <summary>
+/// Provides operations for managing user accounts and their associated roles and permissions.
+/// </summary>
 public class UserService : AppServiceBase, IUserService
 {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -29,6 +32,20 @@ public class UserService : AppServiceBase, IUserService
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogSanitizer _logSanitizer;
 
+    /// <summary>
+    /// Initializes a new instance of the UserService class.
+    /// </summary>
+    /// <param name="userManager">The user Manager.</param>
+    /// <param name="roleManager">The role Manager.</param>
+    /// <param name="userRepository">The user Repository.</param>
+    /// <param name="roleRepository">The role Repository.</param>
+    /// <param name="mapper">The mapper.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="httpContextAccessor">The http Context Accessor.</param>
+    /// <param name="permissionRepository">The permission Repository.</param>
+    /// <param name="logSanitizer">The log Sanitizer.</param>
     public UserService(
         UserManager<ApplicationUser> userManager,
         RoleManager<ApplicationRole> roleManager,
@@ -56,9 +73,9 @@ public class UserService : AppServiceBase, IUserService
 
 
     /// <summary>
-    /// Get current user
+    /// Gets the current user asynchronously.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The <see cref="UserDto"/> for the current user, or <c>null</c> if no authenticated user is found.</returns>
     public async Task<UserDto?> GetCurrentUserAsync()
     {
         if (_httpContextAccessor.HttpContext == null)
@@ -112,6 +129,11 @@ public class UserService : AppServiceBase, IUserService
         };
     }
 
+    /// <summary>
+    /// Retrieves a user by their unique identifier, including their roles and permissions.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <returns>The <see cref="UserDto"/> if found; otherwise, <c>null</c>.</returns>
     public async Task<UserDto?> GetUserByIdAsync(Guid userId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -185,18 +207,33 @@ public class UserService : AppServiceBase, IUserService
         };
     }
 
+    /// <summary>
+    /// Retrieves a user by their email address.
+    /// </summary>
+    /// <param name="email">The email.</param>
+    /// <returns>The <see cref="UserDto"/> if found; otherwise, <c>null</c>.</returns>
     public async Task<UserDto?> GetUserByEmailAsync(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
         return user == null ? null : _mapper.Map<UserDto>(user);
     }
 
+    /// <summary>
+    /// Gets all users.
+    /// </summary>
+    /// <returns>A collection of all <see cref="UserDto"/> objects.</returns>
     public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
     {
         var users = await _userRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<UserDto>>(users);
     }
 
+    /// <summary>
+    /// Gets a paginated list of all users.
+    /// </summary>
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
+    /// <returns>A paginated result containing <see cref="UserDto"/> objects for the requested page.</returns>
     public async Task<PaginatedResult<UserDto>> GetAllUsersPaginatedAsync(int pageNumber, int pageSize)
     {
         var paginatedUsers = await _userRepository.GetAllPaginatedAsync(pageNumber, pageSize);
@@ -204,6 +241,12 @@ public class UserService : AppServiceBase, IUserService
         return new PaginatedResult<UserDto>(userDtos, paginatedUsers.PageNumber, paginatedUsers.PageSize, paginatedUsers.TotalCount);
     }
 
+    /// <summary>
+    /// Updates the user asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <param name="updateUserDto">The update User Dto.</param>
+    /// <returns><c>true</c> if the update succeeded; otherwise, <c>false</c>.</returns>
     public async Task<bool> UpdateUserAsync(Guid userId, UpdateUserDto updateUserDto)
     {
         var user = await GetUserOrLogAsync(userId);
@@ -247,6 +290,11 @@ public class UserService : AppServiceBase, IUserService
         return true;
     }
 
+    /// <summary>
+    /// Retrieves a user by ID, logging a warning if the user is not found.
+    /// </summary>
+    /// <param name="userId">The unique identifier of the user.</param>
+    /// <returns>The <see cref="ApplicationUser"/> if found; otherwise, <c>null</c>.</returns>
     private async Task<ApplicationUser?> GetUserOrLogAsync(Guid userId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -258,6 +306,12 @@ public class UserService : AppServiceBase, IUserService
         return user;
     }
 
+    /// <summary>
+    /// Determines whether the given email is already in use by a different user.
+    /// </summary>
+    /// <param name="user">The current user being updated.</param>
+    /// <param name="email">The email address to check.</param>
+    /// <returns><c>true</c> if the email is in use by another user; otherwise, <c>false</c>.</returns>
     private async Task<bool> EmailInUseAsync(ApplicationUser user, string? email)
     {
         if (string.IsNullOrWhiteSpace(email) || email == user.Email)
@@ -269,6 +323,13 @@ public class UserService : AppServiceBase, IUserService
         return existingUser != null && existingUser.Id != user.Id;
     }
 
+    /// <summary>
+    /// Updates the email and username of a user if the new email differs from the current one.
+    /// </summary>
+    /// <param name="user">The user to update.</param>
+    /// <param name="email">The new email address, or <c>null</c> to skip the update.</param>
+    /// <param name="userId">The unique identifier of the user, used for logging.</param>
+    /// <returns>A tuple indicating whether the operation succeeded and whether any change was made.</returns>
     private async Task<(bool Success, bool Changed)> UpdateEmailAndUsernameAsync(
         ApplicationUser user,
         string? email,
@@ -296,6 +357,13 @@ public class UserService : AppServiceBase, IUserService
         return (true, true);
     }
 
+    /// <summary>
+    /// Updates the phone number of a user if the new value differs from the current one.
+    /// </summary>
+    /// <param name="user">The user to update.</param>
+    /// <param name="phoneNumber">The new phone number, or <c>null</c> to skip the update.</param>
+    /// <param name="userId">The unique identifier of the user, used for logging.</param>
+    /// <returns>A tuple indicating whether the operation succeeded and whether any change was made.</returns>
     private async Task<(bool Success, bool Changed)> UpdatePhoneNumberAsync(
         ApplicationUser user,
         string? phoneNumber,
@@ -316,6 +384,12 @@ public class UserService : AppServiceBase, IUserService
         return (true, true);
     }
 
+    /// <summary>
+    /// Applies first name and last name changes to the user entity if the values differ.
+    /// </summary>
+    /// <param name="user">The user entity to update.</param>
+    /// <param name="updateUserDto">The DTO containing the new profile values.</param>
+    /// <returns><c>true</c> if any profile field was changed; otherwise, <c>false</c>.</returns>
     private static bool ApplyProfileChanges(ApplicationUser user, UpdateUserDto updateUserDto)
     {
         var profileChanged = false;
@@ -335,6 +409,12 @@ public class UserService : AppServiceBase, IUserService
         return profileChanged;
     }
 
+    /// <summary>
+    /// Persists profile field changes for the user by calling the Identity user manager update.
+    /// </summary>
+    /// <param name="user">The user entity with updated fields.</param>
+    /// <param name="userId">The unique identifier of the user, used for logging.</param>
+    /// <returns><c>true</c> if the save succeeded; otherwise, <c>false</c>.</returns>
     private async Task<bool> SaveProfileAsync(ApplicationUser user, Guid userId)
     {
         user.UpdatedAt = DateTime.UtcNow;
@@ -348,6 +428,13 @@ public class UserService : AppServiceBase, IUserService
         return true;
     }
 
+    /// <summary>
+    /// Change password asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <param name="currentPassword">The current Password.</param>
+    /// <param name="newPassword">The new Password.</param>
+    /// <returns><c>true</c> if the password was changed successfully; otherwise, <c>false</c>.</returns>
     public async Task<bool> ChangePasswordAsync(Guid userId, string currentPassword, string newPassword)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -367,6 +454,11 @@ public class UserService : AppServiceBase, IUserService
         return true;
     }
 
+    /// <summary>
+    /// Deletes the user asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <returns><c>true</c> if deletion succeeded; otherwise, <c>false</c>.</returns>
     public async Task<bool> DeleteUserAsync(Guid userId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -386,6 +478,12 @@ public class UserService : AppServiceBase, IUserService
         return true;
     }
 
+    /// <summary>
+    /// Assign role asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <param name="roleName">The role Name.</param>
+    /// <returns><c>true</c> if the role was assigned successfully; otherwise, <c>false</c>.</returns>
     public async Task<bool> AssignRoleAsync(Guid userId, string roleName)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -414,6 +512,12 @@ public class UserService : AppServiceBase, IUserService
         return true;
     }
 
+    /// <summary>
+    /// Removes the role asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <param name="roleName">The role Name.</param>
+    /// <returns><c>true</c> if the role was removed successfully; otherwise, <c>false</c>.</returns>
     public async Task<bool> RemoveRoleAsync(Guid userId, string roleName)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -433,6 +537,11 @@ public class UserService : AppServiceBase, IUserService
         return true;
     }
 
+    /// <summary>
+    /// Gets the user roles asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <returns>A collection of <see cref="RoleDto"/> objects representing the user's roles, or an empty collection if the user is not found.</returns>
     public async Task<IEnumerable<RoleDto>> GetUserRolesAsync(Guid userId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -457,6 +566,13 @@ public class UserService : AppServiceBase, IUserService
         return roles;
     }
 
+    /// <summary>
+    /// Create a new user
+    /// </summary>
+    /// <param name="user">The user to create</param>
+    /// <returns>The created user or null if the user creation failed</returns>
+    /// <exception cref="ArgumentNullException">If the user is null</exception>
+    /// <exception cref="Exception">If the user creation failed</exception>
     public async Task<UserDto?> CreateUserAsync(CreateUserDto user)
     {
         ArgumentNullException.ThrowIfNull(user);
@@ -474,8 +590,10 @@ public class UserService : AppServiceBase, IUserService
     }
 
     /// <summary>
-    /// Query users with filtering, sorting, and pagination
+    /// Query users asynchronously.
     /// </summary>
+    /// <param name="spec">The spec.</param>
+    /// <returns>A paginated result containing matched <see cref="UserDto"/> objects.</returns>
     public async Task<PaginatedResult<UserDto>> QueryUsersAsync(ISpecification<ApplicationUser> spec)
     {
         try

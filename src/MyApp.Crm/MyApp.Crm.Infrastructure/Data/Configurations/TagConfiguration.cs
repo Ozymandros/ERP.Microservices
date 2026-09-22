@@ -10,6 +10,7 @@ namespace MyApp.Crm.Infrastructure.Data.Configurations;
 public class TagConfiguration : IEntityTypeConfiguration<Tag>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<Tag> builder)
     {
         builder.ToTable("Tags");

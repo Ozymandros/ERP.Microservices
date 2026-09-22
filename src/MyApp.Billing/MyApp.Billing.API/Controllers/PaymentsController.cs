@@ -20,6 +20,9 @@ public class PaymentsController : ControllerBase
     private readonly ILogger<PaymentsController> _logger;
 
     /// <summary>Initialises a new instance of <see cref="PaymentsController"/>.</summary>
+    /// <param name="paymentRepository">The payment Repository.</param>
+    /// <param name="cacheService">The cache Service.</param>
+    /// <param name="logger">The logger.</param>
     public PaymentsController(
         IPaymentRepository paymentRepository,
         ICacheService cacheService,
@@ -33,6 +36,8 @@ public class PaymentsController : ControllerBase
     /// <summary>
     /// Returns all payments recorded against the specified invoice.
     /// </summary>
+    /// <param name="invoiceId">The invoice Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet("invoice/{invoiceId:guid}")]
     [HasPermission("Billing", "Read")]
     [ProducesResponseType(typeof(IEnumerable<PaymentDto>), StatusCodes.Status200OK)]
@@ -70,6 +75,8 @@ public class PaymentsController : ControllerBase
     /// <summary>
     /// Get payment by External Payment ID - Requires Billing.Read permission
     /// </summary>
+    /// <param name="externalPaymentId">The external Payment Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [HttpGet("external/{externalPaymentId}")]
     [HasPermission("Billing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]

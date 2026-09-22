@@ -7,6 +7,11 @@ namespace MyApp.Shared.Domain.Authentication;
 /// </summary>
 public static class BearerTokenHelper
 {
+    /// <summary>
+    /// Extracts token.
+    /// </summary>
+    /// <param name="authorizationHeader">The authorization Header.</param>
+    /// <returns>The result if found; otherwise, <c>null</c>.</returns>
     public static string? ExtractToken(StringValues authorizationHeader)
     {
         if (authorizationHeader.Count == 0)

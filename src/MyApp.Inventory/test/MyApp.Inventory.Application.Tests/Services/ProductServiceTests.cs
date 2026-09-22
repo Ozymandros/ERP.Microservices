@@ -15,6 +15,7 @@ using Xunit;
 
 namespace MyApp.Inventory.Application.Tests.Services;
 
+/// <summary>Unit tests for <see cref="ProductService"/>.</summary>
 public class ProductServiceTests
 {
     private readonly Mock<IProductRepository> _mockProductRepository;
@@ -24,6 +25,7 @@ public class ProductServiceTests
     private readonly Mock<ILogger<ProductService>> _mockLogger;
     private readonly ProductService _productService;
 
+    /// <summary>Initialises mocks and the system-under-test before each test.</summary>
     public ProductServiceTests()
     {
         _mockProductRepository = new Mock<IProductRepository>();

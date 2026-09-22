@@ -6,6 +6,9 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Auth.Application.Contracts
 {
+    /// <summary>
+    /// Defines operations for managing permissions and checking user access rights.
+    /// </summary>
     public interface IPermissionService
     {
         /// <summary>

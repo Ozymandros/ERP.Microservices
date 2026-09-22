@@ -25,6 +25,17 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     private readonly ILogger<PurchaseOrderService> _logger;
     private readonly IServiceInvoker _serviceInvoker;
 
+    /// <summary>
+    /// Initializes a new instance of the PurchaseOrderService class.
+    /// </summary>
+    /// <param name="purchaseOrderRepository">The purchase Order Repository.</param>
+    /// <param name="lineRepository">The line Repository.</param>
+    /// <param name="supplierRepository">The supplier Repository.</param>
+    /// <param name="mapper">The mapper.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="serviceInvoker">The service Invoker.</param>
     public PurchaseOrderService(
         IPurchaseOrderRepository purchaseOrderRepository,
         IPurchaseOrderLineRepository lineRepository,
@@ -43,36 +54,65 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
         _logger = logger;        _serviceInvoker = serviceInvoker;
     }
 
+    /// <summary>
+    /// Gets the purchase order by id asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<PurchaseOrderDto?> GetPurchaseOrderByIdAsync(Guid id)
     {
         var order = await _purchaseOrderRepository.GetWithLinesAsync(id);
         return order == null ? null : _mapper.Map<PurchaseOrderDto>(order);
     }
 
+    /// <summary>
+    /// Gets the purchase order by order number asynchronously.
+    /// </summary>
+    /// <param name="orderNumber">The order Number.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<PurchaseOrderDto?> GetPurchaseOrderByOrderNumberAsync(string orderNumber)
     {
         var order = await _purchaseOrderRepository.GetByOrderNumberAsync(orderNumber);
         return order == null ? null : _mapper.Map<PurchaseOrderDto>(order);
     }
 
+    /// <summary>
+    /// Gets all purchase orders asynchronously.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<IEnumerable<PurchaseOrderDto>> GetAllPurchaseOrdersAsync()
     {
         var orders = await _purchaseOrderRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<PurchaseOrderDto>>(orders);
     }
 
+    /// <summary>
+    /// Gets the purchase orders by supplier asynchronously.
+    /// </summary>
+    /// <param name="supplierId">The supplier Id.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersBySupplierAsync(Guid supplierId)
     {
         var orders = await _purchaseOrderRepository.GetBySuppliersIdAsync(supplierId);
         return _mapper.Map<IEnumerable<PurchaseOrderDto>>(orders);
     }
 
+    /// <summary>
+    /// Gets the purchase orders by status asynchronously.
+    /// </summary>
+    /// <param name="status">The status.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersByStatusAsync(PurchaseOrderStatus status)
     {
         var orders = await _purchaseOrderRepository.GetByStatusAsync(status);
         return _mapper.Map<IEnumerable<PurchaseOrderDto>>(orders);
     }
 
+    /// <summary>
+    /// Creates a purchase order asynchronously.
+    /// </summary>
+    /// <param name="dto">The dto.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<PurchaseOrderDto> CreatePurchaseOrderAsync(CreateUpdatePurchaseOrderDto dto)
     {
         // Validate supplier exists
@@ -107,6 +147,12 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
         return $"PO-{now:yyyyMMddHHmmss}-{count}-{random}";
     }
 
+    /// <summary>
+    /// Updates the purchase order asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<PurchaseOrderDto> UpdatePurchaseOrderAsync(Guid id, CreateUpdatePurchaseOrderDto dto)
     {
         var order = await _purchaseOrderRepository.GetWithLinesAsync(id);
@@ -139,6 +185,12 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
         return _mapper.Map<PurchaseOrderDto>(updatedOrder);
     }
 
+    /// <summary>
+    /// Updates the purchase order status asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="status">The status.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<PurchaseOrderDto> UpdatePurchaseOrderStatusAsync(Guid id, PurchaseOrderStatus status)
     {
         var order = await _purchaseOrderRepository.GetWithLinesAsync(id);
@@ -154,6 +206,10 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
         return _mapper.Map<PurchaseOrderDto>(updatedOrder);
     }
 
+    /// <summary>
+    /// Deletes the purchase order asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
     public async Task DeletePurchaseOrderAsync(Guid id)
     {
         var order = await _purchaseOrderRepository.GetByIdAsync(id);
@@ -167,8 +223,9 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     }
 
     /// <summary>
-    /// Query purchase orders with filtering, sorting, and pagination
+    /// Query purchase orders asynchronously.
     /// </summary>
+    /// <param name="spec">The spec.</param>
     public async Task<PaginatedResult<PurchaseOrderDto>> QueryPurchaseOrdersAsync(ISpecification<PurchaseOrder> spec)
     {
         var result = await _purchaseOrderRepository.QueryAsync(spec);
@@ -176,6 +233,11 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
         return new PaginatedResult<PurchaseOrderDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }
 
+    /// <summary>
+    /// Approves the purchase order asynchronously.
+    /// </summary>
+    /// <param name="dto">The dto.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<PurchaseOrderDto> ApprovePurchaseOrderAsync(ApprovePurchaseOrderDto dto)
     {
         _logger.LogInformation("Approving purchase order: PurchaseOrderId={PurchaseOrderId}", dto.PurchaseOrderId);
@@ -217,6 +279,11 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
         return _mapper.Map<PurchaseOrderDto>(order);
     }
 
+    /// <summary>
+    /// Receives the purchase order asynchronously.
+    /// </summary>
+    /// <param name="dto">The dto.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<PurchaseOrderDto> ReceivePurchaseOrderAsync(ReceivePurchaseOrderDto dto)
     {
         _logger.LogInformation(

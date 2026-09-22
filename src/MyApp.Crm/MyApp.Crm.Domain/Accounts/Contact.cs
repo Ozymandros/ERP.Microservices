@@ -3,6 +3,7 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Crm.Domain.Accounts;
 
 /// <summary>Represents a contact associated with a customer account.</summary>
+/// <param name="id">The id.</param>
 public sealed class Contact(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>Gets the account ID this contact belongs to.</summary>
@@ -23,6 +24,13 @@ public sealed class Contact(Guid id) : AuditableEntity<Guid>(id)
     public bool IsActive { get; private set; } = true;
 
     /// <summary>Initializes a new instance of the Contact class.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="accountId">The account Id.</param>
+    /// <param name="fullName">The full Name.</param>
+    /// <param name="email">The email.</param>
+    /// <param name="phone">The phone.</param>
+    /// <param name="title">The title.</param>
+    /// <param name="isPrimary">The is Primary.</param>
     public Contact(
         Guid id,
         Guid accountId,
@@ -43,6 +51,10 @@ public sealed class Contact(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Updates the contact's information.</summary>
+    /// <param name="fullName">The full Name.</param>
+    /// <param name="email">The email.</param>
+    /// <param name="phone">The phone.</param>
+    /// <param name="title">The title.</param>
     public void Update(
         string fullName,
         string? email,
@@ -56,6 +68,7 @@ public sealed class Contact(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Sets whether this contact is the primary contact.</summary>
+    /// <param name="isPrimary">The is Primary.</param>
     public void SetPrimary(bool isPrimary)
     {
         IsPrimary = isPrimary;

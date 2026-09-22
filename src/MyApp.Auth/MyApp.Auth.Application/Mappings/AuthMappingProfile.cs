@@ -10,7 +10,7 @@ namespace MyApp.Auth.Application.Mappings;
 public class AuthMappingProfile : Profile
 {
     /// <summary>
-    /// Initializes a new instance of the AuthMappingProfile with all authentication entity mappings.
+    /// Initializes a new instance of the AuthMappingProfile class.
     /// </summary>
     public AuthMappingProfile()
     {
@@ -42,6 +42,13 @@ public class AuthMappingProfile : Profile
         // UpdatePermissionDto: Not mapped via AutoMapper (PermissionService updates manually)
     }
 
+    /// <summary>
+    /// Creates a new <see cref="Permission"/> entity with a new GUID and the specified module, action, and description.
+    /// </summary>
+    /// <param name="module">The module name for the permission.</param>
+    /// <param name="action">The action name for the permission.</param>
+    /// <param name="description">An optional description for the permission.</param>
+    /// <returns>A new <see cref="Permission"/> instance.</returns>
     private static Permission CreatePermission(string module, string action, string? description)
     {
         var permission = new Permission(Guid.NewGuid())

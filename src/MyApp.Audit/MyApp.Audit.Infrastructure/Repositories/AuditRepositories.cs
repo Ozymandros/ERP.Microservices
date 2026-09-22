@@ -12,11 +12,21 @@ public class EntityChangeRepository : Repository<EntityChange, Guid>, IEntityCha
 {
     private readonly AuditSqlDbContext _context;
 
+    /// <summary>
+    /// Initializes a new instance of the EntityChangeRepository class.
+    /// </summary>
+    /// <param name="context">The context.</param>
     public EntityChangeRepository(AuditSqlDbContext context) : base(context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Gets the id with properties asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>The matching <see cref="EntityChange"/> with property changes included, or <see langword="null"/> if not found.</returns>
     public async Task<EntityChange?> GetByIdWithPropertiesAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.EntityChanges
@@ -25,6 +35,14 @@ public class EntityChangeRepository : Repository<EntityChange, Guid>, IEntityCha
             .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
     }
 
+    /// <summary>
+    /// Gets the entity asynchronously.
+    /// with property changes eagerly loaded.
+    /// </summary>
+    /// <param name="entityName">The entity Name.</param>
+    /// <param name="entityId">The entity Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A list of entity change records for the specified entity.</returns>
     public async Task<List<EntityChange>> GetByEntityAsync(
         string entityName,
         Guid entityId,
@@ -38,6 +56,13 @@ public class EntityChangeRepository : Repository<EntityChange, Guid>, IEntityCha
             .ToListAsync(cancellationToken);
     }
 
+    /// <summary>
+    /// Query asynchronously.
+    /// filters and pagination while eagerly loading property changes.
+    /// </summary>
+    /// <param name="spec">The spec.</param>
+    /// <returns>A paginated result containing the matching entity change records.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="spec"/> is <see langword="null"/>.</exception>
     public override async Task<PaginatedResult<EntityChange>> QueryAsync(ISpecification<EntityChange> spec)
     {
         ArgumentNullException.ThrowIfNull(spec);

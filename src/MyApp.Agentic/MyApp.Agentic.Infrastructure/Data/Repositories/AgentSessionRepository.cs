@@ -8,11 +8,20 @@ public class AgentSessionRepository : Repository<AgentSession, Guid>, IAgentSess
 {
     private readonly AgenticSqlDbContext _context;
 
+    /// <summary>
+    /// Initializes a new instance of the AgentSessionRepository class.
+    /// </summary>
+    /// <param name="context">The context.</param>
     public AgentSessionRepository(AgenticSqlDbContext context) : base(context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Gets an item by its unique identifier asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public override async Task<AgentSession?> GetByIdAsync(Guid id)
     {
         return await _context.AgentSessions
@@ -20,6 +29,13 @@ public class AgentSessionRepository : Repository<AgentSession, Guid>, IAgentSess
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 
+    /// <summary>
+    /// Gets the active session asynchronously.
+    /// </summary>
+    /// <param name="agentId">The agent Id.</param>
+    /// <param name="userId">The user Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<AgentSession?> GetActiveSessionAsync(Guid agentId, string userId, CancellationToken cancellationToken = default)
     {
         return await _context.AgentSessions
@@ -28,6 +44,12 @@ public class AgentSessionRepository : Repository<AgentSession, Guid>, IAgentSess
             .FirstOrDefaultAsync(cancellationToken);
     }
 
+    /// <summary>
+    /// Gets the id with agent asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<AgentSession?> GetByIdWithAgentAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.AgentSessions
@@ -39,6 +61,12 @@ public class AgentSessionRepository : Repository<AgentSession, Guid>, IAgentSess
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
 
+    /// <summary>
+    /// Gets the user id asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<IEnumerable<AgentSession>> GetByUserIdAsync(string userId, CancellationToken cancellationToken = default)
     {
         return await _context.AgentSessions

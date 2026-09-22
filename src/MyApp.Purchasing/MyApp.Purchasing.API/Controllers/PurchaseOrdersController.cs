@@ -23,6 +23,12 @@ public class PurchaseOrdersController : ControllerBase
     private readonly ICacheService _cacheService;
     private readonly ILogger<PurchaseOrdersController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the PurchaseOrdersController class.
+    /// </summary>
+    /// <param name="purchaseOrderService">The purchase Order Service.</param>
+    /// <param name="cacheService">The cache Service.</param>
+    /// <param name="logger">The logger.</param>
     public PurchaseOrdersController(IPurchaseOrderService purchaseOrderService, ICacheService cacheService, ILogger<PurchaseOrdersController> logger)
     {
         _purchaseOrderService = purchaseOrderService;
@@ -79,6 +85,7 @@ public class PurchaseOrdersController : ControllerBase
     /// <summary>
     /// Get all purchase orders (optionally paginated and filtered)
     /// </summary>
+    /// <param name="query">The query.</param>
     [HttpGet]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(typeof(IEnumerable<PurchaseOrderDto>), StatusCodes.Status200OK)]
@@ -121,6 +128,7 @@ public class PurchaseOrdersController : ControllerBase
     /// <summary>
     /// Get purchase order by ID - Requires Purchasing.Read permission
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpGet("{id}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -160,6 +168,7 @@ public class PurchaseOrdersController : ControllerBase
     /// <summary>
     /// Get purchase order by Order Number - Requires Purchasing.Read permission
     /// </summary>
+    /// <param name="orderNumber">The order Number.</param>
     [HttpGet("code/{orderNumber}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -199,6 +208,7 @@ public class PurchaseOrdersController : ControllerBase
     /// <summary>
     /// Search purchase orders with advanced filtering, sorting, and pagination - Requires Purchasing.Read permission
     /// </summary>
+    /// <param name="query">The query.</param>
     /// <remarks>
     /// Supported filters: orderNumber, supplierId, status, minTotal, maxTotal
     /// Supported sort fields: id, orderNumber, status, totalAmount, createdAt, orderDate
@@ -233,6 +243,7 @@ public class PurchaseOrdersController : ControllerBase
     /// <summary>
     /// Get purchase orders by supplier - Requires Purchasing.Read permission
     /// </summary>
+    /// <param name="supplierId">The supplier Id.</param>
     [HttpGet("supplier/{supplierId}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -246,6 +257,7 @@ public class PurchaseOrdersController : ControllerBase
     /// <summary>
     /// Get purchase orders by status - Requires Purchasing.Read permission
     /// </summary>
+    /// <param name="status">The status.</param>
     [HttpGet("status/{status}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -266,6 +278,7 @@ public class PurchaseOrdersController : ControllerBase
     /// <summary>
     /// Create a new purchase order - Requires Purchasing.Create permission
     /// </summary>
+    /// <param name="dto">The dto.</param>
     [HttpPost]
     [HasPermission("Purchasing", "Create")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -296,6 +309,8 @@ public class PurchaseOrdersController : ControllerBase
     /// <summary>
     /// Update an existing purchase order - Requires Purchasing.Update permission
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
     [HttpPut("{id}")]
     [HasPermission("Purchasing", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -328,6 +343,8 @@ public class PurchaseOrdersController : ControllerBase
     /// <summary>
     /// Update purchase order status - Requires Purchasing.Update permission
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="status">The status.</param>
     [HttpPatch("{id}/status/{status}")]
     [HasPermission("Purchasing", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -357,6 +374,7 @@ public class PurchaseOrdersController : ControllerBase
     /// <summary>
     /// Delete a purchase order - Requires Purchasing.Delete permission
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpDelete("{id}")]
     [HasPermission("Purchasing", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -383,6 +401,8 @@ public class PurchaseOrdersController : ControllerBase
     /// <summary>
     /// Approve a purchase order - Requires Purchasing.Update permission
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
     [HttpPost("{id}/approve")]
     [HasPermission("Purchasing", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -420,6 +440,8 @@ public class PurchaseOrdersController : ControllerBase
     /// <summary>
     /// Receive a purchase order - Requires Purchasing.Update permission
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
     [HttpPost("{id}/receive")]
     [HasPermission("Purchasing", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]

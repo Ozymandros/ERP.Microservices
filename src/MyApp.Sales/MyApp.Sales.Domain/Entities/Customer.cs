@@ -3,8 +3,9 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Sales.Domain.Entities
 {
     /// <summary>
-    /// Provides Customer functionality.
+    /// Customer.
     /// </summary>
+    /// <param name="id">The id.</param>
     public class Customer(Guid id) : AuditableEntity<Guid>(id)
     {
         /// <summary>Gets or sets Name.</summary>

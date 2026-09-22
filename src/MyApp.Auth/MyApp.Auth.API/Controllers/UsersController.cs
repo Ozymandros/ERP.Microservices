@@ -22,6 +22,12 @@ public partial class UsersController : ControllerBase
     private readonly IUserService _userService;
     private readonly ILogger<UsersController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the UsersController class.
+    /// </summary>
+    /// <param name="userService">The user Service.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="cacheService">The cache Service.</param>
     public UsersController(IUserService userService, ILogger<UsersController> logger, ICacheService cacheService)
     {
         _userService = userService;
@@ -32,6 +38,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Get all users (optionally paginated and filtered)
     /// </summary>
+    /// <param name="query">The query.</param>
     [HttpGet]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
@@ -117,6 +124,8 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Get all users with pagination
     /// </summary>
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
     [HttpGet("paginated")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
@@ -138,6 +147,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Search users with advanced filtering, sorting, and pagination
     /// </summary>
+    /// <param name="query">The query.</param>
     /// <remarks>
     /// Supported filters: isActive, email, userName, isExternalLogin
     /// Supported sort fields: createdAt, email, userName, firstName, lastName
@@ -174,7 +184,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Create a new user
     /// </summary>
-    /// <param name="user">User to create</param>
+    /// <param name="user">The user.</param>
     /// <returns>Created user</returns>
     [HttpPost("create")]
     [HasPermission("Users", "Create")]
@@ -228,6 +238,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Get user by ID
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpGet("{id}")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
@@ -266,6 +277,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Get user by email
     /// </summary>
+    /// <param name="email">The email.</param>
     [HttpGet("email/{email}")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
@@ -294,6 +306,8 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Update user
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="updateUserDto">The update User Dto.</param>
     [HttpPut("{id}")]
     [HasPermission("Users", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -330,6 +344,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Delete user
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpDelete("{id}")]
     [HasPermission("Users", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -363,6 +378,8 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Assign role to user
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="roleName">The role Name.</param>
     [HttpPost("{id}/roles/{roleName}")]
     [HasPermission("Users", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -397,6 +414,8 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Remove role from user
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="roleName">The role Name.</param>
     [HttpDelete("{id}/roles/{roleName}")]
     [HasPermission("Users", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -431,6 +450,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Get user roles
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpGet("{id}/roles")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(IEnumerable<RoleDto>), StatusCodes.Status200OK)]

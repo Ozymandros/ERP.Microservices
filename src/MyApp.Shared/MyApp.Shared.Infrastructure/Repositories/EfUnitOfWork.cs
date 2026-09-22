@@ -11,14 +11,18 @@ public class EfUnitOfWork : IUnitOfWork
     private readonly DbContext _dbContext;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="EfUnitOfWork"/> class.
+    /// Initializes a new instance of the EfUnitOfWork class.
     /// </summary>
-    /// <param name="dbContext">The service database context for this request scope.</param>
+    /// <param name="dbContext">The db Context.</param>
     public EfUnitOfWork(DbContext dbContext)
     {
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public virtual Task<IReadOnlyCollection<EntityEntryDto>> CommitAsync(
         CancellationToken cancellationToken = default)

@@ -9,6 +9,9 @@ using MyApp.Shared.Infrastructure.Export;
 
 namespace MyApp.Auth.API.Controllers;
 
+/// <summary>
+/// Handles authentication operations including login, registration, token refresh, external login, and logout.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 [Produces("application/json")]
@@ -17,6 +20,11 @@ public class AuthController : ControllerBase
     private readonly IAuthService _authService;
     private readonly ILogger<AuthController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the AuthController class.
+    /// </summary>
+    /// <param name="authService">The auth Service.</param>
+    /// <param name="logger">The logger.</param>
     public AuthController(IAuthService authService, ILogger<AuthController> logger)
     {
         _authService = authService;
@@ -24,8 +32,10 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Login with email and password
+    /// Authenticates a user with email and password and returns JWT tokens.
     /// </summary>
+    /// <param name="loginDto">The login Dto.</param>
+    /// <returns>A <see cref="TokenResponseDto"/> on success, or an error response.</returns>
     [HttpPost("login")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(TokenResponseDto), StatusCodes.Status200OK)]
@@ -57,8 +67,10 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Register a new user
+    /// Registers a new user account and returns JWT tokens.
     /// </summary>
+    /// <param name="registerDto">The register Dto.</param>
+    /// <returns>A <see cref="TokenResponseDto"/> on success, or an error response.</returns>
     [HttpPost("register")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(TokenResponseDto), StatusCodes.Status201Created)]
@@ -88,6 +100,10 @@ public class AuthController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Handles OPTIONS pre-flight requests for the refresh endpoint to support CORS.
+    /// </summary>
+    /// <returns>A 204 No Content response.</returns>
     [HttpOptions("refresh")]
     [AllowAnonymous]
     public IActionResult HandleRefreshOptions()
@@ -98,8 +114,10 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Refresh access token using refresh token
+    /// Issues new JWT tokens using a valid refresh token.
     /// </summary>
+    /// <param name="refreshTokenDto">The refresh Token Dto.</param>
+    /// <returns>A new <see cref="TokenResponseDto"/> on success, or an error response.</returns>
     [HttpPost("refresh")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(TokenResponseDto), StatusCodes.Status200OK)]
@@ -132,8 +150,10 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Initiate external login (Google, Microsoft, Apple, GitHub)
+    /// Initiates an external OAuth login by redirecting to the specified provider.
     /// </summary>
+    /// <param name="provider">The provider.</param>
+    /// <returns>A redirect challenge to the provider's login page, or a 400 response for invalid providers.</returns>
     [HttpGet("external-login/{provider}")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status302Found)]
@@ -153,8 +173,11 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Handle external login callback
+    /// Handles the OAuth callback from an external provider, authenticating or creating the user, and returning JWT tokens.
     /// </summary>
+    /// <param name="provider">The provider.</param>
+    /// <param name="returnUrl">The return Url.</param>
+    /// <returns>A <see cref="TokenResponseDto"/> on success, or an error response.</returns>
     [HttpGet("external-callback")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(TokenResponseDto), StatusCodes.Status200OK)]
@@ -197,8 +220,9 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Logout user
+    /// Logs out the currently authenticated user by revoking all their refresh tokens.
     /// </summary>
+    /// <returns>204 No Content on success, or 401 if the user is not authenticated.</returns>
     [HttpPost("logout")]
     [AuthorizeJwt]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

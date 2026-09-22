@@ -24,8 +24,10 @@ namespace MyApp.Shared.Infrastructure.Extensions;
 public static class JwtAuthenticationExtensions
 {
     /// <summary>
-    /// Adds JWT Bearer authentication using Jwt__SecretKey (env), Jwt:Issuer, and Jwt:Audience from configuration.
+    /// Adds a jwt authentication.
     /// </summary>
+    /// <param name="services">The services.</param>
+    /// <param name="configuration">The configuration.</param>
     public static IServiceCollection AddJwtAuthentication(
         this IServiceCollection services,
         IConfiguration configuration)

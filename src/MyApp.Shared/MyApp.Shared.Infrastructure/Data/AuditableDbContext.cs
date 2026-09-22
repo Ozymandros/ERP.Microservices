@@ -11,10 +11,14 @@ namespace MyApp.Shared.Infrastructure.Data;
 public class AuditableDbContext : DbContext
 {
     /// <summary>base.</summary>
+    /// <param name="options">The options.</param>
     public AuditableDbContext(DbContextOptions options) : base(options)
     {
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
     /// <inheritdoc />
     public override int SaveChanges()
     {
@@ -22,6 +26,10 @@ public class AuditableDbContext : DbContext
         return base.SaveChanges();
     }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="acceptAllChangesOnSuccess">The accept All Changes On Success.</param>
     /// <inheritdoc />
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
@@ -30,6 +38,7 @@ public class AuditableDbContext : DbContext
     }
 
     /// <summary>Save Changes Async.</summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         ApplyAuditInformation();

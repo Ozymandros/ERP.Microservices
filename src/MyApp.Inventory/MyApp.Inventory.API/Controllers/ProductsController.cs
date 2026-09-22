@@ -12,6 +12,7 @@ using MyApp.Shared.Infrastructure.Export;
 using MyApp.Shared.Infrastructure.Extensions;
 namespace MyApp.Inventory.API.Controllers;
 
+/// <summary>API controller for product management operations in the Inventory service.</summary>
 [ApiController]
 [Authorize]
 [Route("api/inventory/products")]
@@ -21,6 +22,11 @@ public class ProductsController : ControllerBase
     private readonly ICacheService _cacheService;
     private readonly ILogger<ProductsController> _logger;
 
+    /// <summary>Initialises a new instance of <see cref="ProductsController"/>.</summary>
+    /// Initializes a new instance of the ProductsController class.
+    /// <param name="productService">The product Service.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="cacheService">The cache Service.</param>
     public ProductsController(IProductService productService, ILogger<ProductsController> logger, ICacheService cacheService)
     {
         _productService = productService;
@@ -77,6 +83,7 @@ public class ProductsController : ControllerBase
     /// <summary>
     /// Get all products (optionally paginated and filtered)
     /// </summary>
+    /// <param name="query">The query.</param>
     [HttpGet]
     [HasPermission("Inventory", "Read")]
     [ProducesResponseType(typeof(IEnumerable<ProductDto>), StatusCodes.Status200OK)]
@@ -119,6 +126,8 @@ public class ProductsController : ControllerBase
     /// <summary>
     /// Get all products with pagination - Requires Inventory.Read permission
     /// </summary>
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
     [HttpGet("paginated")]
     [HasPermission("Inventory", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<ProductDto>), StatusCodes.Status200OK)]
@@ -140,6 +149,7 @@ public class ProductsController : ControllerBase
     /// <summary>
     /// Search products with advanced filtering, sorting, and pagination - Requires Inventory.Read permission
     /// </summary>
+    /// <param name="query">The query.</param>
     /// <remarks>
     /// Supported filters: sku, name, category, isActive, minPrice, maxPrice
     /// Supported sort fields: id, sku, name, unitPrice, stock, createdAt
@@ -174,6 +184,7 @@ public class ProductsController : ControllerBase
     /// <summary>
     /// Get product by ID - Requires Inventory.Read permission
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpGet("{id}")]
     [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -213,6 +224,7 @@ public class ProductsController : ControllerBase
     /// <summary>
     /// Get product by SKU - Requires Inventory.Read permission
     /// </summary>
+    /// <param name="sku">The sku.</param>
     [HttpGet("sku/{sku}")]
     [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -252,6 +264,7 @@ public class ProductsController : ControllerBase
     /// <summary>
     /// Get product by Name - Requires Inventory.Read permission
     /// </summary>
+    /// <param name="name">The name.</param>
     [HttpGet("name/{name}")]
     [HasPermission("Inventory", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -321,6 +334,7 @@ public class ProductsController : ControllerBase
     /// <summary>
     /// Create a new product - Requires Inventory.Create permission
     /// </summary>
+    /// <param name="dto">The dto.</param>
     [HttpPost]
     [HasPermission("Inventory", "Create")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -352,6 +366,8 @@ public class ProductsController : ControllerBase
     /// <summary>
     /// Update a product - Requires Inventory.Update permission
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
     [HttpPut("{id}")]
     [HasPermission("Inventory", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -391,6 +407,7 @@ public class ProductsController : ControllerBase
     /// <summary>
     /// Delete a product - Requires Inventory.Delete permission
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpDelete("{id}")]
     [HasPermission("Inventory", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

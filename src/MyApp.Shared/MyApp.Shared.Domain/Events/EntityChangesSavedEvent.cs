@@ -1,17 +1,23 @@
 namespace MyApp.Shared.Domain.Events;
 
 /// <summary>
-/// Published after a microservice commits entity changes. Consumed only by the Audit module.
+/// Entity changes saved event.
 /// </summary>
-/// <param name="SourceService">Dapr app-id of the service that produced the changes.</param>
-/// <param name="Changes">Entity change payloads captured at commit time.</param>
+/// <param name="SourceService">The source Service.</param>
+/// <param name="Changes">The changes.</param>
 public sealed record EntityChangesSavedEvent(
     string SourceService,
     IReadOnlyList<EntityChangePayload> Changes);
 
 /// <summary>
-/// One entity change within <see cref="EntityChangesSavedEvent"/>.
+/// Entity change payload.
 /// </summary>
+/// <param name="EntityName">The entity Name.</param>
+/// <param name="EntityId">The entity Id.</param>
+/// <param name="State">The state.</param>
+/// <param name="Properties">The properties.</param>
+/// <param name="OriginalValue">The original Value.</param>
+/// <param name="NewValue">The new Value.</param>
 public sealed record EntityChangePayload(
     string EntityName,
     object? EntityId,
@@ -21,8 +27,11 @@ public sealed record EntityChangePayload(
     string? NewValue = null);
 
 /// <summary>
-/// A single property change within <see cref="EntityChangePayload"/>.
+/// Property change payload.
 /// </summary>
+/// <param name="PropertyName">The property Name.</param>
+/// <param name="OldValue">The old Value.</param>
+/// <param name="NewValue">The new Value.</param>
 public sealed record PropertyChangePayload(
     string PropertyName,
     object? OldValue,

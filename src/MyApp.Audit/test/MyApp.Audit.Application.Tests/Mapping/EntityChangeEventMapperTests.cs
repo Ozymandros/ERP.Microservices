@@ -6,6 +6,7 @@ using MyApp.Shared.Domain.Events;
 
 namespace MyApp.Audit.Application.Tests.Mapping;
 
+/// <summary>Unit tests for <see cref="EntityChangeEventMapper"/>.</summary>
 public class EntityChangeEventMapperTests
 {
     [Fact]

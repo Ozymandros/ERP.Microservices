@@ -14,6 +14,11 @@ public class PermissionChecker : IPermissionChecker
     private readonly IServiceInvoker _serviceInvoker;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    /// <summary>
+    /// Initializes a new instance of the PermissionChecker class.
+    /// </summary>
+    /// <param name="serviceInvoker">The service Invoker.</param>
+    /// <param name="httpContextAccessor">The http Context Accessor.</param>
     public PermissionChecker(IServiceInvoker serviceInvoker, IHttpContextAccessor httpContextAccessor)
     {
         ArgumentNullException.ThrowIfNull(serviceInvoker);
@@ -23,6 +28,13 @@ public class PermissionChecker : IPermissionChecker
         _httpContextAccessor = httpContextAccessor;
     }
 
+    /// <summary>
+    /// Determines whether permission asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains <c>true</c> if successful; otherwise, <c>false</c>.</returns>
     public async Task<bool> HasPermissionAsync(Guid userId, string module, string action)
     {
         var query = new Dictionary<string, string?>
@@ -54,6 +66,12 @@ public class PermissionChecker : IPermissionChecker
         }
     }
 
+    /// <summary>
+    /// Determines whether permission asynchronously.
+    /// </summary>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains <c>true</c> if successful; otherwise, <c>false</c>.</returns>
     public async Task<bool> HasPermissionAsync(string module, string action)
     {
         if (string.IsNullOrEmpty(module))

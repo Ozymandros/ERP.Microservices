@@ -30,8 +30,18 @@ public class AuthService : AppServiceBase, IAuthService
     private readonly ILogger<AuthService> _logger;
 
     /// <summary>
-    /// Initializes a new instance of the AuthService with required dependencies.
+    /// Initializes a new instance of the AuthService class.
     /// </summary>
+    /// <param name="userManager">The user Manager.</param>
+    /// <param name="jwtTokenProvider">The jwt Token Provider.</param>
+    /// <param name="refreshTokenRepository">The refresh Token Repository.</param>
+    /// <param name="userRepository">The user Repository.</param>
+    /// <param name="roleRepository">The role Repository.</param>
+    /// <param name="permissionRepository">The permission Repository.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="logSanitizer">The log Sanitizer.</param>
+    /// <param name="logger">The logger.</param>
     public AuthService(
         UserManager<ApplicationUser> userManager,
         IJwtTokenProvider jwtTokenProvider,
@@ -56,8 +66,10 @@ public class AuthService : AppServiceBase, IAuthService
     }
 
     /// <summary>
-    /// Authenticates a user with email and password credentials.
+    /// Login asynchronously.
     /// </summary>
+    /// <param name="loginDto">The login Dto.</param>
+    /// <returns>A <see cref="TokenResponseDto"/> with tokens on success, or <c>null</c> if authentication fails.</returns>
     public async Task<TokenResponseDto?> LoginAsync(LoginDto loginDto)
     {
         var user = await _userManager.FindByEmailAsync(loginDto.Email);
@@ -82,8 +94,10 @@ public class AuthService : AppServiceBase, IAuthService
     }
 
     /// <summary>
-    /// Registers a new user account and returns authentication tokens.
+    /// Register asynchronously.
     /// </summary>
+    /// <param name="registerDto">The register Dto.</param>
+    /// <returns>A <see cref="TokenResponseDto"/> with tokens on success, or <c>null</c> if registration fails.</returns>
     public async Task<TokenResponseDto?> RegisterAsync(RegisterDto registerDto)
     {
         var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
@@ -121,8 +135,10 @@ public class AuthService : AppServiceBase, IAuthService
     }
 
     /// <summary>
-    /// Generates new authentication tokens using a valid refresh token.
+    /// Refresh token asynchronously.
     /// </summary>
+    /// <param name="refreshTokenDto">The refresh Token Dto.</param>
+    /// <returns>A new <see cref="TokenResponseDto"/> with fresh tokens, or <c>null</c> if the refresh token is invalid or expired.</returns>
     public async Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
     {
         var principal = _jwtTokenProvider.GetPrincipalFromExpiredToken(refreshTokenDto.AccessToken);
@@ -157,8 +173,10 @@ public class AuthService : AppServiceBase, IAuthService
     }
 
     /// <summary>
-    /// Authenticates a user through an external authentication provider.
+    /// External login asynchronously.
     /// </summary>
+    /// <param name="externalLoginDto">The external Login Dto.</param>
+    /// <returns>A <see cref="TokenResponseDto"/> with tokens on success, or <c>null</c> if user creation fails.</returns>
     public async Task<TokenResponseDto?> ExternalLoginAsync(ExternalLoginDto externalLoginDto)
     {
         // Try to find existing user with external provider
@@ -196,6 +214,10 @@ public class AuthService : AppServiceBase, IAuthService
         return await GenerateTokenResponseAsync(user);
     }
 
+    /// <summary>
+    /// Logout asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
     public async Task LogoutAsync(Guid userId)
     {
         await _refreshTokenRepository.RevokeUserTokensAsync(userId);
@@ -203,6 +225,11 @@ public class AuthService : AppServiceBase, IAuthService
         _logger.LogInformation("User logged out: {UserId}", userId);
     }
 
+    /// <summary>
+    /// Generates an access token and refresh token for the specified user, including roles and permissions claims.
+    /// </summary>
+    /// <param name="user">The user for whom to generate the token response.</param>
+    /// <returns>A <see cref="TokenResponseDto"/> containing access token, refresh token, and user information.</returns>
     private async Task<TokenResponseDto> GenerateTokenResponseAsync(ApplicationUser user)
     {
         var roles = await _userManager.GetRolesAsync(user);

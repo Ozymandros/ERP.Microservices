@@ -10,6 +10,12 @@ public static class GatewayUrlResolver
 {
     private const string PublicBaseUrlKey = "Gateway:PublicBaseUrl";
 
+    /// <summary>
+    /// Gets the public base url.
+    /// </summary>
+    /// <param name="httpContext">The http Context.</param>
+    /// <param name="configuration">The configuration.</param>
+    /// <returns>The resolved public base URL with any trailing slash removed.</returns>
     public static string GetPublicBaseUrl(HttpContext httpContext, IConfiguration configuration)
     {
         var configured = configuration[PublicBaseUrlKey];

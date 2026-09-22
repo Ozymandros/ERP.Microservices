@@ -11,11 +11,13 @@ namespace MyApp.Inventory.Infrastructure.Data.Repositories;
 public class ProductRepository : Repository<Product, Guid>, IProductRepository
 {
     /// <summary>base.</summary>
+    /// <param name="dbContext">The db Context.</param>
     public ProductRepository(InventoryDbContext dbContext) : base(dbContext)
     {
     }
 
     /// <summary>Get By Sku Async.</summary>
+    /// <param name="sku">The sku.</param>
     public async Task<Product?> GetBySkuAsync(string sku)
     {
         return await DbContext.Set<Product>()
@@ -23,6 +25,7 @@ public class ProductRepository : Repository<Product, Guid>, IProductRepository
     }
 
     /// <summary>Get By Name Async.</summary>
+    /// <param name="name">The name.</param>
     public async Task<Product?> GetByNameAsync(string name)
     {
         return await DbContext.Set<Product>()

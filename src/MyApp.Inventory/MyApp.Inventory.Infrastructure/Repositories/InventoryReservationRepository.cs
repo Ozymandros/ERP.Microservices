@@ -12,11 +12,13 @@ namespace MyApp.Inventory.Infrastructure.Repositories;
 public class InventoryReservationRepository : Repository<InventoryReservation, Guid>, IInventoryReservationRepository
 {
     /// <summary>base.</summary>
+    /// <param name="context">The context.</param>
     public InventoryReservationRepository(InventoryDbContext context) : base(context)
     {
     }
 
     /// <summary>Get Active By Order Id Async.</summary>
+    /// <param name="orderId">The order Id.</param>
     public async Task<List<InventoryReservation>> GetActiveByOrderIdAsync(Guid orderId)
     {
         return await DbContext.Set<InventoryReservation>()

@@ -9,6 +9,9 @@ namespace MyApp.Purchasing.Application.Mappings;
 /// </summary>
 public class PurchasingMappingProfile : Profile
 {
+    /// <summary>
+    /// Initializes a new instance of the PurchasingMappingProfile class.
+    /// </summary>
     public PurchasingMappingProfile()
     {
         // Supplier mappings

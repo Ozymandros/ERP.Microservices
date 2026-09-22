@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace MyApp.Orders.Application.Contracts.Dtos
 {
     /// <summary>Data transfer object for OrderLine.</summary>
+    /// <param name="Id">The id.</param>
     public record OrderLineDto(Guid Id) : AuditableDto<Guid>(Id)
     {
         /// <summary>Gets the product ID.</summary>

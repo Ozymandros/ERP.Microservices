@@ -11,11 +11,13 @@ namespace MyApp.Inventory.Infrastructure.Data.Repositories;
 public class WarehouseRepository : Repository<Warehouse, Guid>, IWarehouseRepository
 {
     /// <summary>base.</summary>
+    /// <param name="dbContext">The db Context.</param>
     public WarehouseRepository(InventoryDbContext dbContext) : base(dbContext)
     {
     }
 
     /// <summary>Get By Name Async.</summary>
+    /// <param name="name">The name.</param>
     public async Task<Warehouse?> GetByNameAsync(string name)
     {
         return await DbContext.Set<Warehouse>()

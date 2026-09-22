@@ -27,8 +27,10 @@ public class HasPermissionAttribute : Attribute, IAsyncAuthorizationFilter
     private readonly string _action;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="HasPermissionAttribute"/> class.
+    /// Initializes a new instance of the HasPermissionAttribute class.
     /// </summary>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
     public HasPermissionAttribute(string module, string action)
 
     {
@@ -42,8 +44,9 @@ public class HasPermissionAttribute : Attribute, IAsyncAuthorizationFilter
 
 
     /// <summary>
-    /// Asynchronously checks if the user has permission for the specified module and action.
+    /// On authorization asynchronously.
     /// </summary>
+    /// <param name="context">The context.</param>
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
 
     {

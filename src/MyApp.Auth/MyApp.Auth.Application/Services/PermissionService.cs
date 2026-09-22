@@ -16,6 +16,9 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Auth.Application.Services;
 
+/// <summary>
+/// Provides operations for managing permissions and checking user access rights.
+/// </summary>
 public class PermissionService : AppServiceBase, IPermissionService
 {
     private readonly IPermissionRepository _permissionRepository;
@@ -24,6 +27,16 @@ public class PermissionService : AppServiceBase, IPermissionService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly ILogSanitizer _logSanitizer;
 
+    /// <summary>
+    /// Initializes a new instance of the PermissionService class.
+    /// </summary>
+    /// <param name="userManager">The user Manager.</param>
+    /// <param name="permissionRepository">The permission Repository.</param>
+    /// <param name="mapper">The mapper.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="logSanitizer">The log Sanitizer.</param>
+    /// <param name="logger">The logger.</param>
     public PermissionService(UserManager<ApplicationUser> userManager,
         IPermissionRepository permissionRepository,
         IMapper mapper,
@@ -40,6 +53,13 @@ public class PermissionService : AppServiceBase, IPermissionService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Determines whether permission asynchronously.
+    /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <returns><c>true</c> if the user has the permission; otherwise, <c>false</c>.</returns>
     public async Task<bool> HasPermissionAsync(Guid userId, string module, string action)
     {
         try
@@ -54,6 +74,13 @@ public class PermissionService : AppServiceBase, IPermissionService
         }
     }
 
+    /// <summary>
+    /// Determines whether permission asynchronously.
+    /// </summary>
+    /// <param name="username">The username.</param>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <returns><c>true</c> if the user has the permission; otherwise, <c>false</c>.</returns>
     public async Task<bool> HasPermissionAsync(string? username, string module, string action)
     {
         if (string.IsNullOrWhiteSpace(username))
@@ -92,12 +119,22 @@ public class PermissionService : AppServiceBase, IPermissionService
         return false;
     }
 
+    /// <summary>
+    /// Gets all permissions asynchronously.
+    /// </summary>
+    /// <returns>A collection of all <see cref="PermissionDto"/> objects.</returns>
     public async Task<IEnumerable<PermissionDto>> GetAllPermissionsAsync()
     {
         var entities = await _permissionRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<PermissionDto>>(entities);
     }
 
+    /// <summary>
+    /// Gets all permissions paginated asynchronously.
+    /// </summary>
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
+    /// <returns>A paginated result containing <see cref="PermissionDto"/> objects for the requested page.</returns>
     public async Task<PaginatedResult<PermissionDto>> GetAllPermissionsPaginatedAsync(int pageNumber, int pageSize)
     {
         var paginatedPermissions = await _permissionRepository.GetAllPaginatedAsync(pageNumber, pageSize);
@@ -105,12 +142,23 @@ public class PermissionService : AppServiceBase, IPermissionService
         return new PaginatedResult<PermissionDto>(permissionDtos, paginatedPermissions.PageNumber, paginatedPermissions.PageSize, paginatedPermissions.TotalCount);
     }
 
+    /// <summary>
+    /// Gets the permission by id asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <returns>The <see cref="PermissionDto"/> if found; otherwise, <c>null</c>.</returns>
     public async Task<PermissionDto?> GetPermissionByIdAsync(Guid id)
     {
         var entity = await _permissionRepository.GetByIdAsync(id);
         return entity == null ? null : _mapper.Map<PermissionDto>(entity);
     }
 
+    /// <summary>
+    /// Gets the permission by module action asynchronously.
+    /// </summary>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <returns>The matching <see cref="PermissionDto"/> if found; otherwise, <c>null</c>.</returns>
     public async Task<PermissionDto?> GetPermissionByModuleActionAsync(string module, string action)
     {
         var entities = await _permissionRepository.GetByUserName("", module, action); // Not ideal, but repository offers specific methods
@@ -118,6 +166,11 @@ public class PermissionService : AppServiceBase, IPermissionService
         return match == null ? null : _mapper.Map<PermissionDto>(match);
     }
 
+    /// <summary>
+    /// Creates a permission asynchronously.
+    /// </summary>
+    /// <param name="createPermissionDto">The create Permission Dto.</param>
+    /// <returns>The created <see cref="PermissionDto"/> on success, or <c>null</c> if a duplicate exists or creation fails.</returns>
     public async Task<PermissionDto?> CreatePermissionAsync(MyApp.Auth.Application.Contracts.DTOs.CreatePermissionDto createPermissionDto)
     {
         try
@@ -160,6 +213,12 @@ public class PermissionService : AppServiceBase, IPermissionService
         }
     }
 
+    /// <summary>
+    /// Updates the permission asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="updatePermissionDto">The update Permission Dto.</param>
+    /// <returns><c>true</c> if the update succeeded; otherwise, <c>false</c>.</returns>
     public async Task<bool> UpdatePermissionAsync(Guid id, MyApp.Auth.Application.Contracts.DTOs.UpdatePermissionDto updatePermissionDto)
     {
         try
@@ -186,6 +245,11 @@ public class PermissionService : AppServiceBase, IPermissionService
         }
     }
 
+    /// <summary>
+    /// Deletes the permission asynchronously.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <returns><c>true</c> if deletion succeeded; otherwise, <c>false</c>.</returns>
     public async Task<bool> DeletePermissionAsync(Guid id)
     {
         try
@@ -209,8 +273,10 @@ public class PermissionService : AppServiceBase, IPermissionService
     }
 
     /// <summary>
-    /// Query permissions with filtering, sorting, and pagination
+    /// Query permissions asynchronously.
     /// </summary>
+    /// <param name="spec">The spec.</param>
+    /// <returns>A paginated result containing matched <see cref="PermissionDto"/> objects.</returns>
     public async Task<PaginatedResult<PermissionDto>> QueryPermissionsAsync(ISpecification<Permission> spec)
     {
         try

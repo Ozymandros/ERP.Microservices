@@ -14,12 +14,22 @@ public class AgentsController : ControllerBase
     private readonly IAgentService _agentService;
     private readonly ILogger<AgentsController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the AgentsController class.
+    /// </summary>
+    /// <param name="agentService">The agent Service.</param>
+    /// <param name="logger">The logger.</param>
     public AgentsController(IAgentService agentService, ILogger<AgentsController> logger)
     {
         _agentService = agentService;
         _logger = logger;
     }
 
+    /// <summary>
+    /// Gets all items.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpGet]
     [HasPermission("Agentic", "Read")]
     [ProducesResponseType(typeof(IEnumerable<AgentListDto>), StatusCodes.Status200OK)]
@@ -37,6 +47,12 @@ public class AgentsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Gets an item by its unique identifier.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpGet("{id:guid}")]
     [HasPermission("Agentic", "Read")]
     [ProducesResponseType(typeof(AgentDto), StatusCodes.Status200OK)]
@@ -47,6 +63,12 @@ public class AgentsController : ControllerBase
         return agent is null ? NotFound(new { message = $"Agent with ID {id} not found." }) : Ok(agent);
     }
 
+    /// <summary>
+    /// Creates a new item.
+    /// </summary>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpPost]
     [HasPermission("Agentic", "Create")]
     [ProducesResponseType(typeof(AgentDto), StatusCodes.Status201Created)]
@@ -58,6 +80,13 @@ public class AgentsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
+    /// <summary>
+    /// Updates an existing item.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpPut("{id:guid}")]
     [HasPermission("Agentic", "Update")]
     [ProducesResponseType(typeof(AgentDto), StatusCodes.Status200OK)]
@@ -75,6 +104,12 @@ public class AgentsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Deletes an item.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpDelete("{id:guid}")]
     [HasPermission("Agentic", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

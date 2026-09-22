@@ -13,6 +13,10 @@ public class InventoryEventHandlers : ControllerBase
 {
     private readonly ILogger<InventoryEventHandlers> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the InventoryEventHandlers class.
+    /// </summary>
+    /// <param name="logger">The logger.</param>
     public InventoryEventHandlers(ILogger<InventoryEventHandlers> logger)
     {
         _logger = logger;
@@ -21,6 +25,7 @@ public class InventoryEventHandlers : ControllerBase
     /// <summary>
     /// Handles LowStockAlertEvent - could trigger automatic PO creation
     /// </summary>
+    /// <param name="event">The event.</param>
     [Topic("pubsub", "inventory.stock.low-stock-alert")]
     [HttpPost("low-stock-alert")]
     public async Task<IActionResult> OnLowStockAlertAsync(LowStockAlertEvent @event)
@@ -46,6 +51,7 @@ public class InventoryEventHandlers : ControllerBase
     /// <summary>
     /// Handles StockUpdatedEvent - tracks inventory levels
     /// </summary>
+    /// <param name="event">The event.</param>
     [Topic("pubsub", "inventory.stock.updated")]
     [HttpPost("stock-updated")]
     public IActionResult OnStockUpdatedAsync(StockUpdatedEvent @event)

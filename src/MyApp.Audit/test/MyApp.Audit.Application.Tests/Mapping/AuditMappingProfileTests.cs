@@ -6,6 +6,7 @@ using Xunit;
 
 namespace MyApp.Audit.Application.Tests.Mapping;
 
+/// <summary>Unit tests for <see cref="AuditMappingProfile"/> AutoMapper configuration.</summary>
 public class AuditMappingProfileTests
 {
     private readonly IMapper _mapper = MapperTestHelper.CreateMapper();

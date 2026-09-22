@@ -4,8 +4,9 @@ using MyApp.Shared.Domain.DTOs;
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
 /// <summary>
-/// Represents the Warehouse Stock Dto data record.
+/// Warehouse stock dto.
 /// </summary>
+/// <param name="Id">The id.</param>
 public record WarehouseStockDto(Guid Id) : AuditableGuidDto(Id)
 {
     /// <summary>Gets or sets Product Id.</summary>
@@ -20,6 +21,7 @@ public record WarehouseStockDto(Guid Id) : AuditableGuidDto(Id)
     public int ReservedQuantity { get; init; }
     /// <summary>Gets or sets On Order Quantity.</summary>
     public int OnOrderQuantity { get; init; }
+    /// <summary>Gets the total quantity of items including both available and reserved stock.</summary>
     public int TotalQuantity => AvailableQuantity + ReservedQuantity;
 }
 
@@ -104,8 +106,9 @@ public record StockAvailabilityDto
 }
 
 /// <summary>
-/// Represents the Reservation Dto data record.
+/// Reservation dto.
 /// </summary>
+/// <param name="Id">The id.</param>
 public record ReservationDto(Guid Id) : AuditableGuidDto(Id)
 {
     /// <summary>Gets or sets Product Id.</summary>

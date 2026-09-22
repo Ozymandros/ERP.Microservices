@@ -43,8 +43,9 @@ public abstract class BaseSpecification<T> : ISpecification<T> where T : class
     }
 
     /// <summary>
-    /// Apply the specification to a queryable.
+    /// Apply.
     /// </summary>
+    /// <param name="query">The query.</param>
     public virtual IQueryable<T> Apply(IQueryable<T> query)
     {
         query = ApplyFilters(query);
@@ -52,9 +53,10 @@ public abstract class BaseSpecification<T> : ISpecification<T> where T : class
     }
 
     /// <summary>
-    /// Apply ONLY filters to a queryable.
+    /// Applies query filters to the specification.
     /// Derived classes MUST override this to add entity-specific filters.
     /// </summary>
+    /// <param name="query">The query.</param>
     public virtual IQueryable<T> ApplyFilters(IQueryable<T> query)
     {
         return query; // Default: no filters

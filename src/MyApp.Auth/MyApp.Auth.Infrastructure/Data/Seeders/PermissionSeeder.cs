@@ -12,10 +12,10 @@ namespace MyApp.Auth.Infrastructure.Data.Seeders;
 public static class PermissionSeeder
 {
     /// <summary>
-    /// Seeds all default permissions to the database.
+    /// Seed permissions asynchronously.
     /// Should be called during application startup or migration execution.
     /// </summary>
-    /// <param name="context">The Auth database context</param>
+    /// <param name="context">The context.</param>
     /// <returns>A task representing the asynchronous operation</returns>
     public static async Task SeedPermissionsAsync(AuthDbContext context)
     {

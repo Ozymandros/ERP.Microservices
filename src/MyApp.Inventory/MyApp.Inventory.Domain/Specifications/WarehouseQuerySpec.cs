@@ -9,10 +9,17 @@ namespace MyApp.Inventory.Domain.Specifications;
 /// </summary>
 public class WarehouseQuerySpec : BaseSpecification<Warehouse>
 {
+    /// <summary>Initialises a new instance of <see cref="WarehouseQuerySpec"/> with the supplied query parameters.</summary>
+    /// Initializes a new instance of the WarehouseQuerySpec class.
+    /// <param name="query">The query.</param>
     public WarehouseQuerySpec(QuerySpec query) : base(query)
     {
     }
 
+    /// <summary>Applies warehouse-specific filters (name, location) and the search term to the query.</summary>
+    /// Applies query filters to the specification.
+    /// <param name="query">The query.</param>
+    /// <returns>The filtered <see cref="IQueryable{Warehouse}"/>.</returns>
     public override IQueryable<Warehouse> ApplyFilters(IQueryable<Warehouse> query)
     {
         // Apply warehouse-specific filters

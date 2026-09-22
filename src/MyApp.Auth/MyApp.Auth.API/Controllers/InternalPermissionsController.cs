@@ -31,6 +31,12 @@ public class InternalPermissionsController : ControllerBase
     private readonly ILogSanitizer _logSanitizer;
     private readonly ILogger<InternalPermissionsController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the InternalPermissionsController class.
+    /// </summary>
+    /// <param name="permissionService">The permission Service.</param>
+    /// <param name="logSanitizer">The log Sanitizer.</param>
+    /// <param name="logger">The logger.</param>
     public InternalPermissionsController(
         IPermissionService permissionService,
         ILogSanitizer logSanitizer,
@@ -42,8 +48,12 @@ public class InternalPermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Check permission for a user id (invoked by other microservices via Dapr).
+    /// Checks whether the specified user has a permission for the given module and action. Invoked by trusted microservices via Dapr.
     /// </summary>
+    /// <param name="userId">The user Id.</param>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <returns><c>true</c> if the user has the permission; otherwise, <c>false</c>.</returns>
     [HttpGet("check")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -82,6 +92,10 @@ public class InternalPermissionsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Determines whether the current request originated from a trusted Dapr microservice caller.
+    /// </summary>
+    /// <returns><c>true</c> if the caller's app-id is in the trusted list; otherwise, <c>false</c>.</returns>
     private bool IsTrustedDaprCaller()
     {
         if (!Request.Headers.TryGetValue("dapr-caller-app-id", out var caller))

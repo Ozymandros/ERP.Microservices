@@ -6,32 +6,40 @@ namespace MyApp.Shared.Domain.BusinessRules;
 public static class StockInvariants
 {
     /// <summary>
-    /// Determines whether sufficient stock is available for a requested quantity.
+    /// Determines whether stock sufficient.
     /// </summary>
+    /// <param name="availableQuantity">The available Quantity.</param>
+    /// <param name="requestedQuantity">The requested Quantity.</param>
     public static bool IsStockSufficient(int availableQuantity, int requestedQuantity)
     {
         return availableQuantity >= requestedQuantity;
     }
 
     /// <summary>
-    /// Determines whether a quantity is non-negative.
+    /// Determines whether quantity non negative.
     /// </summary>
+    /// <param name="quantity">The quantity.</param>
     public static bool IsQuantityNonNegative(int quantity)
     {
         return quantity >= 0;
     }
 
     /// <summary>
-    /// Determines whether a reserved quantity is valid relative to available quantity.
+    /// Determines whether reserved quantity valid.
     /// </summary>
+    /// <param name="availableQuantity">The available Quantity.</param>
+    /// <param name="reservedQuantity">The reserved Quantity.</param>
     public static bool IsReservedQuantityValid(int availableQuantity, int reservedQuantity)
     {
         return reservedQuantity >= 0 && reservedQuantity <= availableQuantity;
     }
 
     /// <summary>
-    /// Validates all stock quantities against invariants.
+    /// Validate stock.
     /// </summary>
+    /// <param name="availableQuantity">The available Quantity.</param>
+    /// <param name="reservedQuantity">The reserved Quantity.</param>
+    /// <param name="onOrderQuantity">The on Order Quantity.</param>
     public static void ValidateStock(int availableQuantity, int reservedQuantity, int onOrderQuantity)
     {
         if (availableQuantity < 0)
@@ -45,8 +53,10 @@ public static class StockInvariants
     }
 
     /// <summary>
-    /// Determines whether stock can be reserved for a given quantity.
+    /// Can reserve stock.
     /// </summary>
+    /// <param name="availableQuantity">The available Quantity.</param>
+    /// <param name="quantityToReserve">The quantity To Reserve.</param>
     public static bool CanReserveStock(int availableQuantity, int quantityToReserve)
     {
         return availableQuantity >= quantityToReserve && quantityToReserve > 0;

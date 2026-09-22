@@ -7,8 +7,18 @@ namespace MyApp.Audit.Domain.Specifications;
 /// <summary>Specification for querying entity changes with filtering, sorting, and pagination.</summary>
 public class EntityChangeQuerySpec : BaseSpecification<EntityChange>
 {
+    /// <summary>
+    /// Initializes a new instance of the EntityChangeQuerySpec class.
+    /// </summary>
+    /// <param name="query">The query.</param>
     public EntityChangeQuerySpec(QuerySpec query) : base(query) { }
 
+    /// <summary>
+    /// Applies query filters to the specification.
+    /// Supports filtering by entity name, entity ID, change type, creation date range, and creator.
+    /// </summary>
+    /// <param name="query">The query.</param>
+    /// <returns>The filtered queryable.</returns>
     public override IQueryable<EntityChange> ApplyFilters(IQueryable<EntityChange> query)
     {
         if (Query.Filters?.TryGetValue(nameof(EntityChange.EntityName), out var entityNameFilter) == true
@@ -61,6 +71,11 @@ public class EntityChangeQuerySpec : BaseSpecification<EntityChange>
         return query;
     }
 
+    /// <summary>
+    /// Apply.
+    /// </summary>
+    /// <param name="query">The query.</param>
+    /// <returns>The queryable representing the current page of matching entity changes.</returns>
     public override IQueryable<EntityChange> Apply(IQueryable<EntityChange> query)
     {
         query = ApplyFilters(query);

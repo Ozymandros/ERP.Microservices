@@ -45,10 +45,20 @@ public class PaginatedResult<T>
     /// </summary>
     public bool HasNextPage => PageNumber < TotalPages;
 
+    /// <summary>
+    /// Initializes a new instance of the PaginatedResult class.
+    /// </summary>
     public PaginatedResult()
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the PaginatedResult class.
+    /// </summary>
+    /// <param name="items">The items.</param>
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
+    /// <param name="totalCount">The total Count.</param>
     public PaginatedResult(IEnumerable<T> items, int pageNumber, int pageSize, int totalCount)
     {
         Items = items;

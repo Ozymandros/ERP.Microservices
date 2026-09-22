@@ -6,8 +6,13 @@ using System.ComponentModel.DataAnnotations;
 namespace MyApp.Auth.Application.Contracts.DTOs;
 
 /// <summary>
-/// Data transfer object for authentication token response containing access and refresh tokens.
+/// Token response dto.
 /// </summary>
+/// <param name="AccessToken">The access Token.</param>
+/// <param name="RefreshToken">The refresh Token.</param>
+/// <param name="ExpiresIn">The expires In.</param>
+/// <param name="TokenType">The token Type.</param>
+/// <param name="User">The user.</param>
 public record TokenResponseDto(
     string AccessToken,
     string RefreshToken,
@@ -17,8 +22,9 @@ public record TokenResponseDto(
 );
 
 /// <summary>
-/// Data transfer object for creating a new user with audit information.
+/// Creates an user dto.
 /// </summary>
+/// <param name="Id">The id.</param>
 public record CreateUserDto(Guid Id) : AuditableGuidDto(Id)
 {
     /// <summary>
@@ -55,8 +61,9 @@ public record CreateUserDto(Guid Id) : AuditableGuidDto(Id)
 }
 
 /// <summary>
-/// Data transfer object for representing a user with roles, permissions, and audit information.
+/// User dto.
 /// </summary>
+/// <param name="Id">The id.</param>
 public record UserDto(Guid Id) : AuditableGuidDto(Id)
 {
     /// <summary>

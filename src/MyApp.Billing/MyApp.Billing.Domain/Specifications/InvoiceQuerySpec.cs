@@ -9,8 +9,18 @@ namespace MyApp.Billing.Domain.Specifications;
 /// </summary>
 public class InvoiceQuerySpec : BaseSpecification<Invoice>
 {
+    /// <summary>
+    /// Initializes a new instance of the InvoiceQuerySpec class.
+    /// </summary>
+    /// <param name="query">The query.</param>
     public InvoiceQuerySpec(QuerySpec query) : base(query) { }
 
+    /// <summary>
+    /// Applies query filters to the specification.
+    /// order, currency, status, date ranges, and amount ranges.
+    /// </summary>
+    /// <param name="query">The query.</param>
+    /// <returns>The filtered <see cref="IQueryable{Invoice}"/>.</returns>
     public override IQueryable<Invoice> ApplyFilters(IQueryable<Invoice> query)
     {
         if (Query.Filters?.TryGetValue(nameof(Invoice.InvoiceNumber), out var invoiceNumberFilter) == true

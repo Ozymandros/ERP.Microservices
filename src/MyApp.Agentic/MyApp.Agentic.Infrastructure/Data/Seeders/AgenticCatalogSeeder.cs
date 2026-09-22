@@ -5,8 +5,17 @@ using MyApp.Agentic.Domain.Agents;
 
 namespace MyApp.Agentic.Infrastructure.Data.Seeders;
 
+/// <summary>
+/// Agentic catalog seeder.
+/// </summary>
+/// <param name="dbContext">The db Context.</param>
+/// <returns>The result of the operation.</returns>
 public class AgenticCatalogSeeder(AgenticSqlDbContext dbContext)
 {
+    /// <summary>
+    /// Seed asynchronously.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task SeedAsync(CancellationToken cancellationToken = default)
     {
         var providers = BuildProviders();

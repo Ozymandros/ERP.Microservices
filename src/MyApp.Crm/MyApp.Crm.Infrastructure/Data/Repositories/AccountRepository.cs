@@ -12,12 +12,14 @@ public sealed class AccountRepository : Repository<Account, Guid>, IAccountRepos
     private readonly CrmDbContext _context;
 
     /// <summary>base.</summary>
+    /// <param name="context">The context.</param>
     public AccountRepository(CrmDbContext context) : base(context)
     {
         _context = context;
     }
 
     /// <summary>Get By Id Async.</summary>
+    /// <param name="id">The id.</param>
     public override async Task<Account?> GetByIdAsync(Guid id)
     {
         return await _context.Accounts
@@ -26,6 +28,8 @@ public sealed class AccountRepository : Repository<Account, Guid>, IAccountRepos
     }
 
     /// <summary>Get By Customer Id Async.</summary>
+    /// <param name="customerId">The customer Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<Account?> GetByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default)
     {
         return await _context.Accounts
@@ -34,6 +38,8 @@ public sealed class AccountRepository : Repository<Account, Guid>, IAccountRepos
     }
 
     /// <summary>Get By Tax Id Async.</summary>
+    /// <param name="taxId">The tax Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<Account?> GetByTaxIdAsync(string taxId, CancellationToken cancellationToken = default)
     {
         return await _context.Accounts
@@ -42,6 +48,7 @@ public sealed class AccountRepository : Repository<Account, Guid>, IAccountRepos
     }
 
     /// <summary>List Async.</summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<IEnumerable<Account>> ListAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Accounts

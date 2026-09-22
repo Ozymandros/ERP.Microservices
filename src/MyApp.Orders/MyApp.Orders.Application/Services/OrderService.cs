@@ -28,7 +28,16 @@ namespace MyApp.Orders.Application.Services
         private readonly ILogger<OrderService> _logger;
         private readonly IServiceInvoker _serviceInvoker;
 
-        /// <summary>Initializes a new instance of the OrderService class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="OrderService"/> class.</summary>
+        /// Initializes a new instance of the OrderService class.
+        /// <param name="orders">The orders.</param>
+        /// <param name="lines">The lines.</param>
+        /// <param name="reservedStockRepository">The reserved Stock Repository.</param>
+        /// <param name="mapper">The mapper.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="unitOfWork">The unit Of Work.</param>
+        /// <param name="eventPublisher">The event Publisher.</param>
+        /// <param name="serviceInvoker">The service Invoker.</param>
         public OrderService(
             IOrderRepository orders,
             IOrderLineRepository lines,
@@ -48,6 +57,9 @@ namespace MyApp.Orders.Application.Services
             _serviceInvoker = serviceInvoker;        }
 
         /// <summary>Creates a new order.</summary>
+        /// Creates a new item asynchronously.
+        /// <param name="dto">The dto.</param>
+        /// <returns>The created order DTO.</returns>
         public async Task<OrderDto> CreateAsync(CreateUpdateOrderDto dto)
         {
             var entity = _mapper.Map<Order>(dto);
@@ -81,6 +93,8 @@ namespace MyApp.Orders.Application.Services
         }
 
         /// <summary>Deletes an order by ID.</summary>
+        /// Deletes an item asynchronously.
+        /// <param name="id">The id.</param>
         public async Task DeleteAsync(Guid id)
         {
             var entity = await _orders.GetByIdAsync(id);
@@ -92,6 +106,9 @@ namespace MyApp.Orders.Application.Services
         }
 
         /// <summary>Retrieves an order by ID.</summary>
+        /// Gets an item by its unique identifier asynchronously.
+        /// <param name="id">The id.</param>
+        /// <returns>The order DTO corresponding to the specified ID.</returns>
         public async Task<OrderDto> GetByIdAsync(Guid id)
         {
             var entity = await _orders.GetByIdAsync(id);
@@ -99,6 +116,9 @@ namespace MyApp.Orders.Application.Services
         }
 
         /// <summary>Retrieves an order by order number.</summary>
+        /// Gets the order number asynchronously.
+        /// <param name="orderNumber">The order Number.</param>
+        /// <returns>The matching order DTO, or null if not found.</returns>
         public async Task<OrderDto?> GetByOrderNumberAsync(string orderNumber)
         {
             var entity = await _orders.GetByOrderNumberAsync(orderNumber);
@@ -106,6 +126,7 @@ namespace MyApp.Orders.Application.Services
         }
 
         /// <summary>Retrieves all orders.</summary>
+        /// Lists items asynchronously.
         public async Task<IEnumerable<OrderDto>> ListAsync()
         {
             var list = await _orders.GetAllAsync();
@@ -113,6 +134,9 @@ namespace MyApp.Orders.Application.Services
         }
 
         /// <summary>Updates an existing order.</summary>
+        /// Updates an existing item asynchronously.
+        /// <param name="id">The id.</param>
+        /// <param name="dto">The dto.</param>
         public async Task UpdateAsync(Guid id, CreateUpdateOrderDto dto)
         {
             var existing = await _orders.GetByIdAsync(id);
@@ -143,6 +167,11 @@ namespace MyApp.Orders.Application.Services
         }
 
         /// <summary>Creates an order with stock reservation.</summary>
+        /// Creates an order with reservation asynchronously.
+        /// <param name="dto">The dto.</param>
+        /// <returns>The created order DTO with reservation details.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the order has no lines.</exception>
+        /// <exception cref="MyApp.Shared.Domain.Exceptions.OrderFulfillmentException">Thrown when stock reservation fails for any line.</exception>
         public async Task<OrderDto> CreateOrderWithReservationAsync(CreateOrderWithReservationDto dto)
         {
             _logger.LogInformation(
@@ -281,6 +310,11 @@ namespace MyApp.Orders.Application.Services
         }
 
         /// <summary>Fulfills an order and its associated reservations.</summary>
+        /// Fulfill order asynchronously.
+        /// <param name="dto">The dto.</param>
+        /// <returns>The fulfilled order DTO.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the order is not found.</exception>
+        /// <exception cref="MyApp.Shared.Domain.Exceptions.OrderFulfillmentException">Thrown when the order cannot be fulfilled in its current state or reservations are invalid.</exception>
         public async Task<OrderDto> FulfillOrderAsync(FulfillOrderDto dto)
         {
             _logger.LogInformation("Fulfilling order: OrderId={OrderId}", dto.OrderId);
@@ -362,6 +396,9 @@ namespace MyApp.Orders.Application.Services
         }
 
         /// <summary>Cancels an order and releases its stock reservations.</summary>
+        /// Cancel order asynchronously.
+        /// <param name="dto">The dto.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the order is not found or is already completed.</exception>
         public async Task CancelOrderAsync(CancelOrderDto dto)
         {
             _logger.LogInformation(
@@ -432,6 +469,9 @@ namespace MyApp.Orders.Application.Services
         }
 
         /// <summary>Queries orders based on a specification with pagination.</summary>
+        /// Query orders asynchronously.
+        /// <param name="spec">The spec.</param>
+        /// <returns>A paginated result of order DTOs matching the specification.</returns>
         public async Task<PaginatedResult<OrderDto>> QueryOrdersAsync(ISpecification<Order> spec)
         {
             var result = await _orders.QueryAsync(spec);

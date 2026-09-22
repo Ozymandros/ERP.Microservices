@@ -3,8 +3,19 @@ using System.ComponentModel.DataAnnotations;
 namespace MyApp.Crm.Application.Contracts.DTOs;
 
 /// <summary>
-/// Represents the Opportunity Line Dto data record.
+/// Opportunity line dto.
 /// </summary>
+/// <param name="Id">The id.</param>
+/// <param name="OpportunityId">The opportunity Id.</param>
+/// <param name="ProductId">The product Id.</param>
+/// <param name="Sku">The sku.</param>
+/// <param name="Description">The description.</param>
+/// <param name="Quantity">The quantity.</param>
+/// <param name="UnitPrice">The unit Price.</param>
+/// <param name="DiscountPercent">The discount Percent.</param>
+/// <param name="LineTotal">The line Total.</param>
+/// <param name="CreatedAt">The created At.</param>
+/// <param name="UpdatedAt">The updated At.</param>
 public sealed record OpportunityLineDto(
     Guid Id,
     Guid OpportunityId,
@@ -20,8 +31,14 @@ public sealed record OpportunityLineDto(
 );
 
 /// <summary>
-/// Represents the Create Opportunity Line Dto data record.
+/// Creates an opportunity line dto.
 /// </summary>
+/// <param name="Description">The description.</param>
+/// <param name="Quantity">The quantity.</param>
+/// <param name="UnitPrice">The unit Price.</param>
+/// <param name="DiscountPercent">The discount Percent.</param>
+/// <param name="ProductId">The product Id.</param>
+/// <param name="Sku">The sku.</param>
 public sealed record CreateOpportunityLineDto(
     [Required, StringLength(500, MinimumLength = 1)] string Description,
     [Range(0.0001, double.MaxValue)] decimal Quantity,
@@ -32,8 +49,14 @@ public sealed record CreateOpportunityLineDto(
 );
 
 /// <summary>
-/// Represents the Update Opportunity Line Dto data record.
+/// Updates the opportunity line dto.
 /// </summary>
+/// <param name="Description">The description.</param>
+/// <param name="Quantity">The quantity.</param>
+/// <param name="UnitPrice">The unit Price.</param>
+/// <param name="DiscountPercent">The discount Percent.</param>
+/// <param name="ProductId">The product Id.</param>
+/// <param name="Sku">The sku.</param>
 public sealed record UpdateOpportunityLineDto(
     [Required, StringLength(500, MinimumLength = 1)] string Description,
     [Range(0.0001, double.MaxValue)] decimal Quantity,

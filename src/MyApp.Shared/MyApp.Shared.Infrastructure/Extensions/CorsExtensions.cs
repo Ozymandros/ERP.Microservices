@@ -18,6 +18,13 @@ public static class CorsExtensions
     /// <summary>Legacy key; still read if <see cref="AllowedOriginsKey"/> is unset.</summary>
     public const string LegacyFrontendOriginKey = "FRONTEND_ORIGIN";
 
+    /// <summary>
+    /// Adds an allow frontend cors.
+    /// </summary>
+    /// <param name="services">The services.</param>
+    /// <param name="configuration">The configuration.</param>
+    /// <param name="environment">The environment.</param>
+    /// <returns>The service collection for chaining.</returns>
     public static IServiceCollection AddAllowFrontendCors(
         this IServiceCollection services,
         IConfiguration configuration,

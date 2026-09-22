@@ -13,8 +13,10 @@ namespace MyApp.Agentic.API;
 public static class AgentSkillExtensions
 {
     /// <summary>
-    /// Registers <see cref="SkillService"/> and loads skills via the supplied configuration callback.
+    /// Adds an agent skills.
     /// </summary>
+    /// <param name="services">The services.</param>
+    /// <param name="configure">The configure.</param>
     public static IServiceCollection AddAgentSkills(
         this IServiceCollection services,
         Action<AgentSkillOptions> configure)

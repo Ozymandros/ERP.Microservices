@@ -21,6 +21,12 @@ public class OrderEventHandlers : ControllerBase
     private readonly ILogger<OrderEventHandlers> _logger;
     private readonly IEventPublisher _eventPublisher;
 
+    /// <summary>Initialises a new instance of <see cref="OrderEventHandlers"/>.</summary>
+    /// Initializes a new instance of the OrderEventHandlers class.
+    /// <param name="warehouseStockRepository">The warehouse Stock Repository.</param>
+    /// <param name="transactionRepository">The transaction Repository.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
     public OrderEventHandlers(
         IWarehouseStockRepository warehouseStockRepository,
         IInventoryTransactionRepository transactionRepository,
@@ -36,6 +42,7 @@ public class OrderEventHandlers : ControllerBase
     /// <summary>
     /// Handles OrderCreatedEvent - For Inbound orders, update OnOrderQuantity
     /// </summary>
+    /// <param name="event">The event.</param>
     [Topic(MessagingConstants.PubSubName, MessagingConstants.Topics.OrderCreated)]
     [HttpPost("order-created")]
     public async Task<IActionResult> OnOrderCreatedAsync(OrderCreatedEvent @event)
@@ -89,6 +96,7 @@ public class OrderEventHandlers : ControllerBase
     /// <summary>
     /// Handles OrderFulfilledEvent - The source of truth for physical stock movements
     /// </summary>
+    /// <param name="event">The event.</param>
     [Topic(MessagingConstants.PubSubName, MessagingConstants.Topics.OrderFulfilled)]
     [HttpPost("order-fulfilled")]
     public async Task<IActionResult> OnOrderFulfilledAsync(OrderFulfilledEvent @event)

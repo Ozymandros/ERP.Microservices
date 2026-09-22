@@ -4,8 +4,9 @@ using System.ComponentModel.DataAnnotations;
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
 /// <summary>
-/// Represents the Warehouse Dto data record.
+/// Warehouse dto.
 /// </summary>
+/// <param name="Id">The id.</param>
 public record WarehouseDto(Guid Id) : AuditableGuidDto(Id)
 {
     /// <summary>Gets or sets Name.</summary>
@@ -15,8 +16,10 @@ public record WarehouseDto(Guid Id) : AuditableGuidDto(Id)
 }
 
 /// <summary>
-/// Represents the Create Update Warehouse Dto data record.
+/// Creates an update warehouse dto.
 /// </summary>
+/// <param name="Name">The name.</param>
+/// <param name="Location">The location.</param>
 public record CreateUpdateWarehouseDto(
     [Required(ErrorMessage = "Name is required")]
     [StringLength(255, MinimumLength = 1)]

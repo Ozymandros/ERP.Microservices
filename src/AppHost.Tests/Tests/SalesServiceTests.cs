@@ -3,11 +3,17 @@ using System.Net.Http.Json;
 
 namespace MyApp.Tests.Integration;
 
+/// <summary>
+/// Integration tests for the Sales service, verifying sales order and customer operations through the API gateway.
+/// </summary>
 public class SalesServiceTests : IAsyncLifetime
 {
     private DistributedApplication? _app;
     private HttpClient? _client;
 
+    /// <summary>
+    /// Starts the distributed application and waits for all required services to become healthy before tests run.
+    /// </summary>
     public async Task InitializeAsync()
     {
         _app = await CreateAndStartAppAsync();
@@ -52,6 +58,9 @@ public class SalesServiceTests : IAsyncLifetime
         throw new TimeoutException($"Service {serviceName} did not become healthy in time");
     }
 
+    /// <summary>
+    /// Stops and disposes the distributed application after all tests in the class have finished.
+    /// </summary>
     public async Task DisposeAsync()
     {
         if (_app != null)
@@ -108,6 +117,9 @@ public class SalesServiceTests : IAsyncLifetime
         throw new Exception("Failed to login as Admin after multiple attempts. Seeder might not have run.");
     }
 
+    /// <summary>
+    /// Verifies that retrieving the sales orders list with a valid Bearer token returns an OK response.
+    /// </summary>
     [Fact]
     public async Task GetSalesOrders_WithValidToken_ReturnsSuccessStatusCode()
     {
@@ -131,6 +143,9 @@ public class SalesServiceTests : IAsyncLifetime
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies the full sales order creation flow — creating a customer and product first, then placing a sales order — and confirms a Created response with a generated identifier.
+    /// </summary>
     [Fact]
     public async Task CreateSalesOrder_WithValidData_ReturnsCreatedStatusCode()
     {
@@ -239,6 +254,9 @@ public class SalesServiceTests : IAsyncLifetime
         Console.WriteLine("Test Finished Successfully.");
     }
 
+    /// <summary>
+    /// Verifies that retrieving the customers list with a valid Bearer token returns an OK response.
+    /// </summary>
     [Fact]
     public async Task GetCustomers_WithValidToken_ReturnsSuccessStatusCode()
     {
@@ -262,6 +280,9 @@ public class SalesServiceTests : IAsyncLifetime
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
+    /// <summary>
+    /// Verifies that creating a customer with valid data returns a Created response and that the email address is reflected in the response body.
+    /// </summary>
     [Fact]
     public async Task CreateCustomer_WithValidData_ReturnsCreatedStatusCode()
     {

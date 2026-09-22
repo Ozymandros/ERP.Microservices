@@ -9,6 +9,7 @@ namespace MyApp.Audit.Application.Mapping;
 public static class EntityChangeEventMapper
 {
     /// <summary>Maps a single payload to <see cref="CreateEntityChangeDto"/>.</summary>
+    /// <param name="payload">The payload.</param>
     public static CreateEntityChangeDto? ToCreateDto(EntityChangePayload payload)
     {
         var entityId = ResolveEntityId(payload.EntityId);

@@ -7,10 +7,15 @@ namespace MyApp.Crm.Domain.Leads;
 public class LeadQuerySpec : BaseSpecification<Lead>
 {
     /// <summary>Initializes a new instance of the LeadQuerySpec class.</summary>
+    /// <param name="query">The query.</param>
     public LeadQuerySpec(QuerySpec query) : base(query)
     {
     }
 
+    /// <summary>Applies filter criteria and search term from the query specification to the lead queryable.</summary>
+    /// Applies query filters to the specification.
+    /// <param name="query">The query.</param>
+    /// <returns>The filtered queryable with all matching conditions applied.</returns>
     public override IQueryable<Lead> ApplyFilters(IQueryable<Lead> query)
     {
         if (Query.Filters?.TryGetValue(nameof(Lead.Title), out var title) == true && !string.IsNullOrWhiteSpace(title))

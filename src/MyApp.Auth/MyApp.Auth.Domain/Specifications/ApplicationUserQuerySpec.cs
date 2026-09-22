@@ -36,13 +36,19 @@ namespace MyApp.Auth.Domain.Specifications;
 /// </summary>
 public class ApplicationUserQuerySpec : BaseSpecification<ApplicationUser>
 {
+    /// <summary>
+    /// Initializes a new instance of the ApplicationUserQuerySpec class.
+    /// </summary>
+    /// <param name="query">The query.</param>
     public ApplicationUserQuerySpec(QuerySpec query) : base(query)
     {
     }
 
     /// <summary>
-    /// Apply user-specific filters.
+    /// Applies query filters to the specification.
     /// </summary>
+    /// <param name="query">The query.</param>
+    /// <returns>The filtered queryable source.</returns>
     public override IQueryable<ApplicationUser> ApplyFilters(IQueryable<ApplicationUser> query)
     {
         // Apply filters based on the Filters dictionary (case-insensitive key matching)

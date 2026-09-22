@@ -14,6 +14,12 @@ public sealed class DeterministicTextEmbeddingGenerator : IMemoryEmbeddingGenera
     /// <inheritdoc />
     public int VectorSize => DefaultVectorSize;
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="provider">The provider.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public Task<float[]> GenerateEmbeddingAsync(
         string text,

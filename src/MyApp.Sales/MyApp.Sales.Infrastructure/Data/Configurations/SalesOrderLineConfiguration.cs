@@ -10,6 +10,7 @@ namespace MyApp.Sales.Infrastructure.Data.Configurations
     public class SalesOrderLineConfiguration : IEntityTypeConfiguration<SalesOrderLine>
     {
         /// <summary>Configure.</summary>
+        /// <param name="builder">The builder.</param>
         public void Configure(EntityTypeBuilder<SalesOrderLine> builder)
         {
             builder.ToTable("SalesOrderLines");

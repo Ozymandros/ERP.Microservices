@@ -14,12 +14,14 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         private readonly SalesDbContext _context;
 
         /// <summary>base.</summary>
+        /// <param name="context">The context.</param>
         public SalesOrderRepository(SalesDbContext context) : base(context)
         {
             _context = context;
         }
 
         /// <summary>Get By Id Async.</summary>
+        /// <param name="id">The id.</param>
         public override async Task<SalesOrder?> GetByIdAsync(Guid id)
         {
             return await _context.SalesOrders
@@ -44,6 +46,8 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         }
 
         /// <summary>Get All Paginated Async.</summary>
+        /// <param name="pageNumber">The page Number.</param>
+        /// <param name="pageSize">The page Size.</param>
         public async Task<PaginatedResult<SalesOrder>> GetAllPaginatedAsync(int pageNumber, int pageSize)
         {
 #pragma warning disable CS8603 // Customer navigation is loaded via Include; null-forgiving would break EF translation
@@ -52,6 +56,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         }
 
         /// <summary>Delete Async.</summary>
+        /// <param name="id">The id.</param>
         public async Task DeleteAsync(Guid id)
         {
             var order = await _context.SalesOrders.FindAsync(id);
@@ -61,6 +66,11 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
             }
         }
 
+        /// <summary>
+        /// Gets the order number asynchronously.
+        /// </summary>
+        /// <param name="orderNumber">The order Number.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
         public async Task<SalesOrder?> GetByOrderNumberAsync(string orderNumber)
         {
             return await _context.SalesOrders

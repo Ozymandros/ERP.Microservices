@@ -3,6 +3,7 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Orders.Domain.Entities
 {
     /// <summary>Represents an operational order for transferring stock between warehouses or customers.</summary>
+    /// <param name="id">The id.</param>
     public class Order(Guid id) : AuditableEntity<Guid>(id)
     {
         /// <summary>Gets or sets the unique order number.</summary>

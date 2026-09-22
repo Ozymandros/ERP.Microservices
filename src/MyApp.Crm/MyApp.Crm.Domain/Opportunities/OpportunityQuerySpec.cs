@@ -9,11 +9,13 @@ namespace MyApp.Crm.Domain.Opportunities;
 public class OpportunityQuerySpec : BaseSpecification<Opportunity>
 {
     /// <summary>base.</summary>
+    /// <param name="query">The query.</param>
     public OpportunityQuerySpec(QuerySpec query) : base(query)
     {
     }
 
     /// <summary>Apply Filters.</summary>
+    /// <param name="query">The query.</param>
     public override IQueryable<Opportunity> ApplyFilters(IQueryable<Opportunity> query)
     {
         if (Query.Filters?.TryGetValue(nameof(Opportunity.CustomerId), out var customerId) == true &&

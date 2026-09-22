@@ -12,11 +12,14 @@ namespace MyApp.Inventory.Infrastructure.Repositories;
 public class WarehouseStockRepository : Repository<WarehouseStock, Guid>, IWarehouseStockRepository
 {
     /// <summary>base.</summary>
+    /// <param name="context">The context.</param>
     public WarehouseStockRepository(InventoryDbContext context) : base(context)
     {
     }
 
     /// <summary>Get By Product And Warehouse Async.</summary>
+    /// <param name="productId">The product Id.</param>
+    /// <param name="warehouseId">The warehouse Id.</param>
     public async Task<WarehouseStock?> GetByProductAndWarehouseAsync(Guid productId, Guid warehouseId)
     {
         return await DbContext.Set<WarehouseStock>()
@@ -26,6 +29,7 @@ public class WarehouseStockRepository : Repository<WarehouseStock, Guid>, IWareh
     }
 
     /// <summary>Get By Product Id Async.</summary>
+    /// <param name="productId">The product Id.</param>
     public async Task<List<WarehouseStock>> GetByProductIdAsync(Guid productId)
     {
         return await DbContext.Set<WarehouseStock>()
@@ -36,6 +40,7 @@ public class WarehouseStockRepository : Repository<WarehouseStock, Guid>, IWareh
     }
 
     /// <summary>Get By Warehouse Id Async.</summary>
+    /// <param name="warehouseId">The warehouse Id.</param>
     public async Task<List<WarehouseStock>> GetByWarehouseIdAsync(Guid warehouseId)
     {
         return await DbContext.Set<WarehouseStock>()
@@ -46,6 +51,7 @@ public class WarehouseStockRepository : Repository<WarehouseStock, Guid>, IWareh
     }
 
     /// <summary>Get Low Stock Async.</summary>
+    /// <param name="reorderLevel">The reorder Level.</param>
     public async Task<List<WarehouseStock>> GetLowStockAsync(int? reorderLevel = null)
     {
         var query = DbContext.Set<WarehouseStock>()

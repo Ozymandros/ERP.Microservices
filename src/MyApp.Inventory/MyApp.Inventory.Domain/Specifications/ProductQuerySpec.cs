@@ -12,10 +12,17 @@ public class ProductQuerySpec : BaseSpecification<Product>
     private const string MinPriceFilterKey = $"{nameof(Product.UnitPrice)}Min";
     private const string MaxPriceFilterKey = $"{nameof(Product.UnitPrice)}Max";
 
+    /// <summary>Initialises a new instance of <see cref="ProductQuerySpec"/> with the supplied query parameters.</summary>
+    /// Initializes a new instance of the ProductQuerySpec class.
+    /// <param name="query">The query.</param>
     public ProductQuerySpec(QuerySpec query) : base(query)
     {
     }
 
+    /// <summary>Applies product-specific filters (SKU, name, price range) and the search term to the query.</summary>
+    /// Applies query filters to the specification.
+    /// <param name="query">The query.</param>
+    /// <returns>The filtered <see cref="IQueryable{Product}"/>.</returns>
     public override IQueryable<Product> ApplyFilters(IQueryable<Product> query)
     {
         // Apply product-specific filters

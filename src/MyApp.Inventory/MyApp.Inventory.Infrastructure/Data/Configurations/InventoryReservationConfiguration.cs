@@ -10,6 +10,7 @@ namespace MyApp.Inventory.Infrastructure.Data.Configurations;
 public class InventoryReservationConfiguration : IEntityTypeConfiguration<InventoryReservation>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<InventoryReservation> builder)
     {
         builder.HasKey(x => x.Id);

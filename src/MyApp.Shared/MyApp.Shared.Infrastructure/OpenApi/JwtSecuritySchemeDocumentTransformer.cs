@@ -9,6 +9,12 @@ namespace MyApp.Shared.Infrastructure.OpenApi;
 /// </summary>
 public sealed class JwtSecuritySchemeDocumentTransformer : IOpenApiDocumentTransformer
 {
+    /// <summary>
+    /// Transform asynchronously.
+    /// </summary>
+    /// <param name="document">The document.</param>
+    /// <param name="context">The context.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
     {
         // Ensure the Components dictionary exists

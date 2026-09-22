@@ -28,6 +28,14 @@ public class PermissionsController : ControllerBase
     private readonly ILogSanitizer _logSanitizer;
     private readonly ILogger<PermissionsController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the PermissionsController class.
+    /// </summary>
+    /// <param name="permissionService">The permission Service.</param>
+    /// <param name="cacheService">The cache Service.</param>
+    /// <param name="jwtTokenProvider">The jwt Token Provider.</param>
+    /// <param name="logSanitizer">The log Sanitizer.</param>
+    /// <param name="logger">The logger.</param>
     public PermissionsController(
         IPermissionService permissionService,
         ICacheService cacheService,
@@ -91,6 +99,7 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Get all permissions (optionally paginated and filtered)
     /// </summary>
+    /// <param name="query">The query.</param>
     [HttpGet]
     [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(IEnumerable<PermissionDto>), StatusCodes.Status200OK)]
@@ -135,6 +144,8 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Get all permissions with pagination
     /// </summary>
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
     [HttpGet("paginated")]
     [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<PermissionDto>), StatusCodes.Status200OK)]
@@ -156,6 +167,7 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Search permissions with advanced filtering, sorting, and pagination
     /// </summary>
+    /// <param name="query">The query.</param>
     /// <remarks>
     /// Supported filters: resource, action, description
     /// Supported sort fields: id, resource, action, createdAt
@@ -192,6 +204,7 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Get permission by ID
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpGet("{id}")]
     [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(PermissionDto), StatusCodes.Status200OK)]
@@ -232,6 +245,8 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Get permission by module and action
     /// </summary>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
     [HttpGet("module-action")]
     [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(PermissionDto), StatusCodes.Status200OK)]
@@ -273,6 +288,9 @@ public class PermissionsController : ControllerBase
     /// Check if a user has a specific permission (used by other services via Dapr).
     /// Allows anonymous so the Bearer token can be validated in-action for service-to-service calls.
     /// </summary>
+    /// <param name="module">The module.</param>
+    /// <param name="action">The action.</param>
+    /// <param name="userId">The user Id.</param>
     [HttpGet("check")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
@@ -354,6 +372,7 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Create a new permission
     /// </summary>
+    /// <param name="createPermissionDto">The create Permission Dto.</param>
     [HttpPost]
     [HasPermission("Permissions", "Create")]
     [ProducesResponseType(typeof(PermissionDto), StatusCodes.Status201Created)]
@@ -389,6 +408,8 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Update an existing permission
     /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="updatePermissionDto">The update Permission Dto.</param>
     [HttpPut("{id}")]
     [HasPermission("Permissions", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -426,6 +447,7 @@ public class PermissionsController : ControllerBase
     /// <summary>
     /// Delete a permission
     /// </summary>
+    /// <param name="id">The id.</param>
     [HttpDelete("{id}")]
     [HasPermission("Permissions", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

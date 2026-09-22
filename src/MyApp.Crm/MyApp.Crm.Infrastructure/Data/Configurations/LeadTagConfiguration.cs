@@ -11,6 +11,7 @@ namespace MyApp.Crm.Infrastructure.Data.Configurations;
 public class LeadTagConfiguration : IEntityTypeConfiguration<LeadTag>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<LeadTag> builder)
     {
         builder.ToTable("LeadTags");

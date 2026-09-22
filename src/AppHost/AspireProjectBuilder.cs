@@ -21,13 +21,13 @@ public class AspireProjectBuilder
     private readonly IResourceBuilder<ParameterResource>? _jwtSecretKey;
 
     /// <summary>
-    /// Aspire Project Builder constructor. Initializes the builder with optional SQL Server and Azure SQL Server resources, and an optional Key Vault reference.
+    /// Initializes a new instance of the AspireProjectBuilder class.
     /// </summary>
-    /// <param name="builder"></param>
-    /// <param name="sqlServer"></param>
-    /// <param name="sqlAzureServer"></param>
-    /// <param name="keyVault"></param>
-    /// <param name="jwtSecretKey"></param>
+    /// <param name="builder">The builder.</param>
+    /// <param name="sqlServer">The sql Server.</param>
+    /// <param name="sqlAzureServer">The sql Azure Server.</param>
+    /// <param name="keyVault">The key Vault.</param>
+    /// <param name="jwtSecretKey">The jwt Secret Key.</param>
     public AspireProjectBuilder(
         IDistributedApplicationBuilder builder,
         IResourceBuilder<SqlServerServerResource>? sqlServer = null,
@@ -178,10 +178,11 @@ public class AspireProjectBuilder
 
     // Optionally reset counters
     /// <summary>Resets the port counters to the specified values.</summary>
-    /// <param name="httpPort">The starting HTTP port.</param>
-    /// <param name="daprHttpPort">The starting Dapr HTTP port.</param>
-    /// <param name="daprGrpcPort">The starting Dapr gRPC port.</param>
-    /// <param name="metricsPort">The starting metrics port.</param>
+    /// Reset counters.
+    /// <param name="httpPort">The http Port.</param>
+    /// <param name="daprHttpPort">The dapr Http Port.</param>
+    /// <param name="daprGrpcPort">The dapr Grpc Port.</param>
+    /// <param name="metricsPort">The metrics Port.</param>
     public void ResetCounters(
         int httpPort = 6001,
         int daprHttpPort = 3501,
@@ -203,13 +204,13 @@ public class AspireProjectBuilder
 public static class AspireProjectBuilderExtensions
 {
     /// <summary>
-    /// Create Project Builder. Creates an AspireProjectBuilder instance with the specified resources and Key Vault reference.
+    /// Creates a project builder.
     /// </summary>
-    /// <param name="builder"></param>
-    /// <param name="sqlServer"></param>
-    /// <param name="sqlAzure"></param>
-    /// <param name="keyVault"></param>
-    /// <param name="jwtSecretKey"></param>
+    /// <param name="builder">The builder.</param>
+    /// <param name="sqlServer">The sql Server.</param>
+    /// <param name="sqlAzure">The sql Azure.</param>
+    /// <param name="keyVault">The key Vault.</param>
+    /// <param name="jwtSecretKey">The jwt Secret Key.</param>
     /// <returns></returns>
     public static AspireProjectBuilder CreateProjectBuilder(
         this IDistributedApplicationBuilder builder,

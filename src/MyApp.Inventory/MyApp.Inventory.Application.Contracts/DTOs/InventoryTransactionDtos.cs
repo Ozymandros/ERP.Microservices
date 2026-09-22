@@ -4,8 +4,17 @@ using System.ComponentModel.DataAnnotations;
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
 /// <summary>
-/// Represents the Inventory Transaction Dto data record.
+/// Inventory transaction dto.
 /// </summary>
+/// <param name="Id">The id.</param>
+/// <param name="ProductId">The product Id.</param>
+/// <param name="WarehouseId">The warehouse Id.</param>
+/// <param name="QuantityChange">The quantity Change.</param>
+/// <param name="TransactionType">The transaction Type.</param>
+/// <param name="TransactionDate">The transaction Date.</param>
+/// <param name="Product">The product.</param>
+/// <param name="Warehouse">The warehouse.</param>
+/// <param name="ReferenceNumber">The reference Number.</param>
 public record InventoryTransactionDto(
     Guid Id,
     Guid ProductId,
@@ -19,8 +28,13 @@ public record InventoryTransactionDto(
 );
 
 /// <summary>
-/// Represents the Create Update Inventory Transaction Dto data record.
+/// Creates an update inventory transaction dto.
 /// </summary>
+/// <param name="ProductId">The product Id.</param>
+/// <param name="WarehouseId">The warehouse Id.</param>
+/// <param name="QuantityChange">The quantity Change.</param>
+/// <param name="TransactionType">The transaction Type.</param>
+/// <param name="TransactionDate">The transaction Date.</param>
 public record CreateUpdateInventoryTransactionDto(
     [Required(ErrorMessage = "ProductId is required")]
     Guid ProductId,

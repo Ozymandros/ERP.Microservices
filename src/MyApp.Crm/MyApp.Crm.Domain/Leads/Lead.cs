@@ -5,6 +5,7 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Crm.Domain.Leads;
 
 /// <summary>Represents a sales lead in the CRM system.</summary>
+/// <param name="id">The id.</param>
 public class Lead(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>Gets the lead title or subject.</summary>
@@ -34,6 +35,10 @@ public class Lead(Guid id) : AuditableEntity<Guid>(id)
     public List<LeadTag> Tags { get; private set; } = new();
 
     /// <summary>Initializes a new instance of the Lead class.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="title">The title.</param>
+    /// <param name="ownerUsername">The owner Username.</param>
+    /// <param name="source">The source.</param>
     public Lead(Guid id, string title, string ownerUsername, string? source = null) : this(id)
     {
         Title = NormalizeRequired(title, nameof(title));
@@ -43,6 +48,11 @@ public class Lead(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Updates the lead's contact and other details.</summary>
+    /// <param name="title">The title.</param>
+    /// <param name="source">The source.</param>
+    /// <param name="contactName">The contact Name.</param>
+    /// <param name="contactEmail">The contact Email.</param>
+    /// <param name="contactPhone">The contact Phone.</param>
     public void UpdateDetails(
         string title,
         string? source,
@@ -59,12 +69,14 @@ public class Lead(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Assigns the lead to a new owner.</summary>
+    /// <param name="ownerUsername">The owner Username.</param>
     public void AssignTo(string ownerUsername)
     {
         OwnerUsername = NormalizeRequired(ownerUsername, nameof(ownerUsername));
     }
 
     /// <summary>Disqualifies the lead with a reason note.</summary>
+    /// <param name="reasonNote">The reason Note.</param>
     public void Disqualify(string reasonNote)
     {
         EnsureMutable();
@@ -73,6 +85,7 @@ public class Lead(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Qualifies the lead and associates it with a customer.</summary>
+    /// <param name="customerId">The customer Id.</param>
     public void Qualify(Guid customerId)
     {
         if (customerId == Guid.Empty) throw new ArgumentException("CustomerId is required.", nameof(customerId));

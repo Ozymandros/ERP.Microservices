@@ -10,6 +10,7 @@ namespace MyApp.Crm.Infrastructure.Data.Configurations;
 public class ActivityConfiguration : IEntityTypeConfiguration<Activity>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<Activity> builder)
     {
         builder.ToTable("Activities");

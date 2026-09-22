@@ -20,6 +20,12 @@ namespace MyApp.Sales.API.Controllers
         private readonly ICacheService _cacheService;
         private readonly ILogger<SalesOrdersController> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of the SalesOrdersController class.
+        /// </summary>
+        /// <param name="salesOrderService">The sales Order Service.</param>
+        /// <param name="cacheService">The cache Service.</param>
+        /// <param name="logger">The logger.</param>
         public SalesOrdersController(ISalesOrderService salesOrderService, ICacheService cacheService, ILogger<SalesOrdersController> logger)
         {
             _salesOrderService = salesOrderService;
@@ -76,6 +82,7 @@ namespace MyApp.Sales.API.Controllers
         /// <summary>
         /// Get all sales orders (paginated, filterable)
         /// </summary>
+        /// <param name="query">The query.</param>
         [HttpGet]
         [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(PaginatedResult<SalesOrderDto>), StatusCodes.Status200OK)]
@@ -110,6 +117,7 @@ namespace MyApp.Sales.API.Controllers
         /// <summary>
         /// Search sales orders (advanced query)
         /// </summary>
+        /// <param name="query">The query.</param>
         [HttpGet("search")]
         [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(PaginatedResult<SalesOrderDto>), StatusCodes.Status200OK)]
@@ -143,6 +151,7 @@ namespace MyApp.Sales.API.Controllers
         /// <summary>
         /// Create a new sales order - Requires Sales.Create permission
         /// </summary>
+        /// <param name="dto">The dto.</param>
         [HttpPost]
         [HasPermission("Sales", "Create")]
         [ProducesResponseType(typeof(SalesOrderDto), 201)]
@@ -169,6 +178,7 @@ namespace MyApp.Sales.API.Controllers
     /// <summary>
     /// Get a sales order by Order Number - Requires Sales.Read permission
     /// </summary>
+    /// <param name="orderNumber">The order Number.</param>
     [HttpGet("code/{orderNumber}")]
     [HasPermission("Sales", "Read")]
     [ProducesResponseType(typeof(SalesOrderDto), 200)]
@@ -203,6 +213,7 @@ namespace MyApp.Sales.API.Controllers
     /// <summary>
     /// Get a specific customer by ID - Requires Sales.Read permission
         /// </summary>
+    /// <param name="id">The id.</param>
         [HttpGet("{id}")]
         [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(SalesOrderDto), 200)]
@@ -237,6 +248,8 @@ namespace MyApp.Sales.API.Controllers
         /// <summary>
         /// Update an existing sales order - Requires Sales.Update permission
         /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="dto">The dto.</param>
         [HttpPut("{id}")]
         [HasPermission("Sales", "Update")]
         [ProducesResponseType(typeof(SalesOrderDto), 200)]
@@ -266,6 +279,7 @@ namespace MyApp.Sales.API.Controllers
         /// <summary>
         /// Delete a sales order - Requires Sales.Delete permission
         /// </summary>
+        /// <param name="id">The id.</param>
         [HttpDelete("{id}")]
         [HasPermission("Sales", "Delete")]
         [ProducesResponseType(204)]
@@ -291,6 +305,7 @@ namespace MyApp.Sales.API.Controllers
         /// <summary>
         /// Create a quote with stock availability validation - Requires Sales.Create permission
         /// </summary>
+        /// <param name="dto">The dto.</param>
         [HttpPost("quotes")]
         [HasPermission("Sales", "Create")]
         [ProducesResponseType(typeof(SalesOrderDto), 201)]
@@ -316,6 +331,8 @@ namespace MyApp.Sales.API.Controllers
         /// <summary>
         /// Confirm a quote and convert to fulfillment order - Requires Sales.Update permission
         /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="dto">The dto.</param>
         [HttpPost("quotes/{id}/confirm")]
         [HasPermission("Sales", "Update")]
         [ProducesResponseType(typeof(SalesOrderDto), 200)]
@@ -355,6 +372,7 @@ namespace MyApp.Sales.API.Controllers
         /// <summary>
         /// Check stock availability for quote items - Requires Sales.Read permission
         /// </summary>
+        /// <param name="lines">The lines.</param>
         [HttpPost("quotes/check-availability")]
         [HasPermission("Sales", "Read")]
         [ProducesResponseType(typeof(List<StockAvailabilityCheckDto>), 200)]

@@ -15,6 +15,11 @@ public class EntityChangesEventHandler : ControllerBase
     private readonly IEntityChangeService _entityChangeService;
     private readonly ILogger<EntityChangesEventHandler> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the EntityChangesEventHandler class.
+    /// </summary>
+    /// <param name="entityChangeService">The entity Change Service.</param>
+    /// <param name="logger">The logger.</param>
     public EntityChangesEventHandler(
         IEntityChangeService entityChangeService,
         ILogger<EntityChangesEventHandler> logger)
@@ -24,6 +29,8 @@ public class EntityChangesEventHandler : ControllerBase
     }
 
     /// <summary>Ingests committed entity changes from a producer service.</summary>
+    /// <param name="event">The event.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     [Topic(MessagingConstants.PubSubName, MessagingConstants.Topics.AuditEntityChangesSaved)]
     [HttpPost("entity-changes-saved")]
     public async Task<IActionResult> OnEntityChangesSaved(

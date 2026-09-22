@@ -9,9 +9,9 @@ namespace MyApp.Auth.API.Seeders;
 public static class AdminUserSeeder
 {
     /// <summary>
-    /// Seed Admin User. Creates an admin user if it doesn't exist.
+    /// Seed asynchronously.
     /// </summary>
-    /// <param name="userManager"></param>
+    /// <param name="userManager">The user Manager.</param>
     /// <returns></returns>
     public static async Task SeedAsync(UserManager<ApplicationUser> userManager)
     {

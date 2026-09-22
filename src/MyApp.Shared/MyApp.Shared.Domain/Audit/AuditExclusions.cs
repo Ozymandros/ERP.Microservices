@@ -34,8 +34,9 @@ public static class AuditExclusions
         };
 
     /// <summary>
-    /// Returns <see langword="true"/> when the CLR entity type name must not be published to the audit topic.
+    /// Determines whether excluded.
     /// </summary>
+    /// <param name="entityName">The entity Name.</param>
     public static bool IsExcluded(string? entityName)
         => !string.IsNullOrWhiteSpace(entityName) && ExcludedEntityNames.Contains(entityName);
 

@@ -10,6 +10,7 @@ namespace MyApp.Crm.Infrastructure.Data.Configurations;
 public class NoteConfiguration : IEntityTypeConfiguration<Note>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<Note> builder)
     {
         builder.ToTable("Notes");

@@ -15,11 +15,13 @@ public static class QuerySpecExtensions
     };
 
     /// <summary>
-    /// Extract filters from HTTP query parameters and populate the Filters dictionary.
+    /// Bind filters from query.
     /// Supports formats like: ?filters[name]=value&amp;filters[description]=text
     /// or: ?name=value&amp;description=text (direct filter parameters)
     /// Keys are normalized to match property names (case-insensitive matching).
     /// </summary>
+    /// <param name="query">The query.</param>
+    /// <param name="request">The request.</param>
     public static QuerySpec BindFiltersFromQuery(this QuerySpec query, IEnumerable<KeyValuePair<string, StringValues>> request)
     {
         // Ensure Filters dictionary exists with case-insensitive comparer
@@ -76,9 +78,10 @@ public static class QuerySpecExtensions
     }
 
     /// <summary>
-    /// Convert HTTP query parameters into a QuerySpec object.
+    /// To query spec.
     /// Supports binding from [FromQuery] in ASP.NET Core controllers.
     /// </summary>
+    /// <param name="query">The query.</param>
     public static QuerySpec ToQuerySpec(this QuerySpec query)
     {
         query.Validate();
@@ -86,9 +89,12 @@ public static class QuerySpecExtensions
     }
 
     /// <summary>
-    /// Merge additional filters into the query spec.
+    /// With filter.
     /// Useful for applying controller-level or security-based filters.
     /// </summary>
+    /// <param name="spec">The spec.</param>
+    /// <param name="key">The key.</param>
+    /// <param name="value">The value.</param>
     public static QuerySpec WithFilter(this QuerySpec spec, string key, string value)
     {
         if (spec.Filters == null)
@@ -110,8 +116,11 @@ public static class QuerySpecExtensions
     }
 
     /// <summary>
-    /// Set default sorting if not already specified.
+    /// With default sorting.
     /// </summary>
+    /// <param name="spec">The spec.</param>
+    /// <param name="sortBy">The sort By.</param>
+    /// <param name="descending">The descending.</param>
     public static QuerySpec WithDefaultSorting(this QuerySpec spec, string sortBy, bool descending = false)
     {
         if (string.IsNullOrEmpty(spec.SortBy))
@@ -123,8 +132,10 @@ public static class QuerySpecExtensions
     }
 
     /// <summary>
-    /// Constrain the maximum page size for security/performance.
+    /// With max page size.
     /// </summary>
+    /// <param name="spec">The spec.</param>
+    /// <param name="maxSize">The max Size.</param>
     public static QuerySpec WithMaxPageSize(this QuerySpec spec, int maxSize)
     {
         if (spec.PageSize > maxSize)

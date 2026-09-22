@@ -4,11 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace MyApp.Audit.Domain;
 
 /// <summary>
-/// Represents a recorded change to a domain entity within the audit trail.
+/// Entity change.
 /// Captures the entity's identity, the type of operation performed, and the full
 /// before/after state as serialized JSON. Individual property-level differences
 /// are tracked through the <see cref="PropertyChanges"/> collection.
 /// </summary>
+/// <param name="id">The id.</param>
 public class EntityChange(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>

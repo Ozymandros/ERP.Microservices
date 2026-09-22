@@ -26,6 +26,16 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
     private readonly IMapper _mapper;
     private readonly ILogger<WarehouseStockService> _logger;
 
+    /// <summary>Initialises a new instance of <see cref="WarehouseStockService"/>.</summary>
+    /// Initializes a new instance of the WarehouseStockService class.
+    /// <param name="warehouseStockRepository">The warehouse Stock Repository.</param>
+    /// <param name="productRepository">The product Repository.</param>
+    /// <param name="transactionRepository">The transaction Repository.</param>
+    /// <param name="reservationRepository">The reservation Repository.</param>
+    /// <param name="mapper">The mapper.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="logger">The logger.</param>
     public WarehouseStockService(
         IWarehouseStockRepository warehouseStockRepository,
         IProductRepository productRepository,
@@ -45,6 +55,8 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
         _logger = logger;    }
 
     /// <summary>Get By Product And Warehouse Async.</summary>
+    /// <param name="productId">The product Id.</param>
+    /// <param name="warehouseId">The warehouse Id.</param>
     public async Task<WarehouseStockDto?> GetByProductAndWarehouseAsync(Guid productId, Guid warehouseId)
     {
         var stock = await _warehouseStockRepository.GetByProductAndWarehouseAsync(productId, warehouseId);
@@ -52,6 +64,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
     }
 
     /// <summary>Get By Product Id Async.</summary>
+    /// <param name="productId">The product Id.</param>
     public async Task<List<WarehouseStockDto>> GetByProductIdAsync(Guid productId)
     {
         var stocks = await _warehouseStockRepository.GetByProductIdAsync(productId);
@@ -59,6 +72,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
     }
 
     /// <summary>Get By Warehouse Id Async.</summary>
+    /// <param name="warehouseId">The warehouse Id.</param>
     public async Task<List<WarehouseStockDto>> GetByWarehouseIdAsync(Guid warehouseId)
     {
         var stocks = await _warehouseStockRepository.GetByWarehouseIdAsync(warehouseId);
@@ -66,6 +80,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
     }
 
     /// <summary>Get Product Availability Async.</summary>
+    /// <param name="productId">The product Id.</param>
     public async Task<StockAvailabilityDto?> GetProductAvailabilityAsync(Guid productId)
     {
         var product = await _productRepository.GetByIdAsync(productId);
@@ -89,6 +104,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
     }
 
     /// <summary>Reserve Stock Async.</summary>
+    /// <param name="dto">The dto.</param>
     public async Task<ReservationDto> ReserveStockAsync(ReserveStockDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
@@ -169,6 +185,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
     }
 
     /// <summary>Release Reservation Async.</summary>
+    /// <param name="reservationId">The reservation Id.</param>
     public async Task ReleaseReservationAsync(Guid reservationId)
     {
         _logger.LogInformation("Releasing reservation: ReservationId={ReservationId}", reservationId);
@@ -236,6 +253,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
     }
 
     /// <summary>Transfer Stock Async.</summary>
+    /// <param name="dto">The dto.</param>
     public async Task TransferStockAsync(StockTransferDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
@@ -327,6 +345,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
     }
 
     /// <summary>Adjust Stock Async.</summary>
+    /// <param name="dto">The dto.</param>
     public async Task AdjustStockAsync(StockAdjustmentDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);

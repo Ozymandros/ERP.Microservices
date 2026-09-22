@@ -5,13 +5,23 @@ using MyApp.Shared.Infrastructure.Data;
 
 namespace MyApp.Audit.Infrastructure;
 
+/// <summary>
+/// Entity Framework Core database context for the Audit service,
+/// providing access to entity change and property change records.
+/// </summary>
 public class AuditSqlDbContext : AuditableDbContext
 {
+    /// <summary>
+    /// Initializes a new instance of the AuditSqlDbContext class.
+    /// </summary>
+    /// <param name="options">The options.</param>
     public AuditSqlDbContext(DbContextOptions<AuditSqlDbContext> options) : base(options)
     {
     }
 
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for entity change audit records.</summary>
     public DbSet<EntityChange> EntityChanges => Set<EntityChange>();
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for property-level change records.</summary>
     public DbSet<PropertyChange> PropertyChanges => Set<PropertyChange>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -77,8 +87,16 @@ public class AuditSqlDbContext : AuditableDbContext
     }
 }
 
+/// <summary>
+/// Provides <see cref="AuditSqlDbContext"/> creation for design-time EF Core tooling (migrations).
+/// </summary>
 public class AuditSqlDbContextFactory : IDesignTimeDbContextFactory<AuditSqlDbContext>
 {
+    /// <summary>
+    /// Creates a db context.
+    /// used by EF Core design-time tools such as migrations.
+    /// </summary>
+    /// <returns>A configured <see cref="AuditSqlDbContext"/> instance.</returns>
     public AuditSqlDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<AuditSqlDbContext>();

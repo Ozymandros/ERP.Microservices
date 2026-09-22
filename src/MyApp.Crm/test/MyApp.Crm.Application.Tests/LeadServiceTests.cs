@@ -11,8 +11,10 @@ using MyApp.Shared.Domain.Repositories;
 
 namespace MyApp.Crm.Application.Tests;
 
+/// <summary>Tests for the LeadService application service.</summary>
 public class LeadServiceTests
 {
+    /// <summary>Verifies that creating a lead publishes a CrmLeadCreatedEvent.</summary>
     [Fact]
     public async Task CreateAsync_PublishesLeadCreatedEvent()
     {

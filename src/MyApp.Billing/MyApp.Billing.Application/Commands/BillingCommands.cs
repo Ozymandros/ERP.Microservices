@@ -3,8 +3,13 @@ using MyApp.Billing.Domain.Entities;
 namespace MyApp.Billing.Application.Commands;
 
 /// <summary>
-/// Command to create an invoice from order data
+/// Creates an invoice command.
 /// </summary>
+/// <param name="CustomerId">The customer Id.</param>
+/// <param name="OrderId">The order Id.</param>
+/// <param name="Currency">The currency.</param>
+/// <param name="Lines">The lines.</param>
+/// <param name="PaymentTermsDays">The payment Terms Days.</param>
 public record CreateInvoiceCommand(
     Guid CustomerId,
     Guid? OrderId,
@@ -14,8 +19,13 @@ public record CreateInvoiceCommand(
 );
 
 /// <summary>
-/// Command to create an invoice line
+/// Creates an invoice line command.
 /// </summary>
+/// <param name="Description">The description.</param>
+/// <param name="Quantity">The quantity.</param>
+/// <param name="UnitPrice">The unit Price.</param>
+/// <param name="TaxRate">The tax Rate.</param>
+/// <param name="Discount">The discount.</param>
 public record CreateInvoiceLineCommand(
     string Description,
     int Quantity,
@@ -25,8 +35,11 @@ public record CreateInvoiceLineCommand(
 );
 
 /// <summary>
-/// Command to issue an invoice
+/// Issue sue invoice command.
 /// </summary>
+/// <param name="InvoiceId">The invoice Id.</param>
+/// <param name="InvoiceNumber">The invoice Number.</param>
+/// <param name="IssueDate">The issue Date.</param>
 public record IssueInvoiceCommand(
     Guid InvoiceId,
     string InvoiceNumber,
@@ -34,8 +47,13 @@ public record IssueInvoiceCommand(
 );
 
 /// <summary>
-/// Command to record a payment
+/// Record payment command.
 /// </summary>
+/// <param name="InvoiceId">The invoice Id.</param>
+/// <param name="Amount">The amount.</param>
+/// <param name="Method">The method.</param>
+/// <param name="PaidAt">The paid At.</param>
+/// <param name="ExternalPaymentId">The external Payment Id.</param>
 public record RecordPaymentCommand(
     Guid InvoiceId,
     decimal Amount,
@@ -45,16 +63,21 @@ public record RecordPaymentCommand(
 );
 
 /// <summary>
-/// Command to cancel an invoice
+/// Cancel invoice command.
 /// </summary>
+/// <param name="InvoiceId">The invoice Id.</param>
+/// <param name="Reason">The reason.</param>
 public record CancelInvoiceCommand(
     Guid InvoiceId,
     string Reason
 );
 
 /// <summary>
-/// Command to create a credit note
+/// Creates a credit note command.
 /// </summary>
+/// <param name="InvoiceId">The invoice Id.</param>
+/// <param name="Lines">The lines.</param>
+/// <param name="Reason">The reason.</param>
 public record CreateCreditNoteCommand(
     Guid InvoiceId,
     List<CreditNoteLineData> Lines,

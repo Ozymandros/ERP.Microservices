@@ -11,15 +11,20 @@ namespace MyApp.Sales.Infrastructure.Data;
 public class SalesDbContext : AuditableDbContext
 {
     /// <summary>base.</summary>
+    /// <param name="options">The options.</param>
     public SalesDbContext(DbContextOptions<SalesDbContext> options) : base(options)
     {
     }
 
     /// <summary>Set.</summary>
     public DbSet<SalesOrder> SalesOrders => Set<SalesOrder>();
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for sales order lines.</summary>
     public DbSet<SalesOrderLine> SalesOrderLines => Set<SalesOrderLine>();
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for customers.</summary>
     public DbSet<Customer> Customers => Set<Customer>();
 
+    /// <summary>Applies entity type configurations for <see cref="SalesOrder"/>, <see cref="SalesOrderLine"/>, and <see cref="Customer"/>.</summary>
+    /// <param name="modelBuilder">The model builder used to configure the EF Core model.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new Configurations.SalesOrderConfiguration());

@@ -9,10 +9,19 @@ namespace MyApp.Auth.Domain.Specifications;
 /// </summary>
 public class PermissionQuerySpec : BaseSpecification<Permission>
 {
+    /// <summary>
+    /// Initializes a new instance of the PermissionQuerySpec class.
+    /// </summary>
+    /// <param name="query">The query.</param>
     public PermissionQuerySpec(QuerySpec query) : base(query)
     {
     }
 
+    /// <summary>
+    /// Applies query filters to the specification.
+    /// </summary>
+    /// <param name="query">The query.</param>
+    /// <returns>The filtered queryable source.</returns>
     public override IQueryable<Permission> ApplyFilters(IQueryable<Permission> query)
     {
         // Apply permission-specific filters (case-insensitive key matching)

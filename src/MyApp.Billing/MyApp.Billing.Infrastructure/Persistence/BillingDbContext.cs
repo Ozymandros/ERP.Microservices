@@ -10,22 +10,40 @@ namespace MyApp.Billing.Infrastructure.Persistence;
 /// </summary>
 public class BillingDbContext : AuditableDbContext
 {
+    /// <summary>
+    /// Initializes a new instance of the BillingDbContext class.
+    /// </summary>
+    /// <param name="options">The options.</param>
     public BillingDbContext(DbContextOptions<BillingDbContext> options) : base(options)
     {
     }
 
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for invoice aggregate roots.</summary>
     public DbSet<Invoice> Invoices => Set<Invoice>();
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for invoice line items.</summary>
     public DbSet<InvoiceLine> InvoiceLines => Set<InvoiceLine>();
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for invoice payments.</summary>
     public DbSet<Payment> Payments => Set<Payment>();
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for credit notes.</summary>
     public DbSet<CreditNote> CreditNotes => Set<CreditNote>();
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for credit note line items.</summary>
     public DbSet<CreditNoteLine> CreditNoteLines => Set<CreditNoteLine>();
 
+    /// <summary>
+    /// Save changes.
+    /// </summary>
+    /// <returns>The number of state entries written to the database.</returns>
     public override int SaveChanges()
     {
         RegisterNewAggregateEntries();
         return base.SaveChanges();
     }
 
+    /// <summary>
+    /// Save changes asynchronously.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>The number of state entries written to the database.</returns>
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         RegisterNewAggregateEntries();

@@ -15,6 +15,8 @@ public static class SnapshotPropertyChangeDeriver
     };
 
     /// <summary>Builds create DTOs from before/after entity JSON snapshots.</summary>
+    /// <param name="originalJson">The original Json.</param>
+    /// <param name="newJson">The new Json.</param>
     public static List<CreatePropertyChangeDto> DeriveCreateDtos(string? originalJson, string? newJson)
     {
         return Derive(originalJson, newJson)
@@ -28,6 +30,8 @@ public static class SnapshotPropertyChangeDeriver
     }
 
     /// <summary>Builds read DTOs from before/after entity JSON snapshots.</summary>
+    /// <param name="originalJson">The original Json.</param>
+    /// <param name="newJson">The new Json.</param>
     public static List<PropertyChangeDto> DeriveReadDtos(string? originalJson, string? newJson)
     {
         return Derive(originalJson, newJson)

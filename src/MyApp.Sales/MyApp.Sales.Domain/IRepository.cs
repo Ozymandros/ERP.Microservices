@@ -11,6 +11,11 @@ namespace MyApp.Sales.Domain;
 public interface IRepository<TEntity, TKey> : MyApp.Shared.Domain.Repositories.IRepository<TEntity, TKey>
     where TEntity : class
 {
+    /// <summary>Returns all entities as an enumerable sequence.</summary>
+    /// <returns>All entities of type <typeparamref name="TEntity"/>.</returns>
     Task<IEnumerable<TEntity>> ListAsync();
+
+    /// <summary>Deletes the entity with the given primary key.</summary>
+    /// <param name="id">The primary key of the entity to delete.</param>
     Task DeleteAsync(TKey id);
 }

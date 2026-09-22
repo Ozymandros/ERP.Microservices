@@ -22,6 +22,13 @@ public class LeadService : AppServiceBase, ILeadService
     private readonly IMapper _mapper;
     private readonly ILogger<LeadService> _logger;
 
+    /// <summary>Initializes a new instance of the LeadService class.</summary>
+    /// Initializes a new instance of the LeadService class.
+    /// <param name="leadRepository">The lead Repository.</param>
+    /// <param name="mapper">The mapper.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
     public LeadService(
         ILeadRepository leadRepository,
         IMapper mapper,
@@ -35,6 +42,8 @@ public class LeadService : AppServiceBase, ILeadService
         _logger = logger;    }
 
     /// <summary>Get By Id Async.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<LeadDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var lead = await _leadRepository.GetByIdAsync(id);
@@ -42,6 +51,7 @@ public class LeadService : AppServiceBase, ILeadService
     }
 
     /// <summary>List Async.</summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<IEnumerable<LeadDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         var leads = await _leadRepository.ListAsync();
@@ -49,6 +59,9 @@ public class LeadService : AppServiceBase, ILeadService
     }
 
     /// <summary>List Paginated Async.</summary>
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<PaginatedResult<LeadDto>> ListPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
         var result = await _leadRepository.GetAllPaginatedAsync(pageNumber, pageSize);
@@ -57,6 +70,8 @@ public class LeadService : AppServiceBase, ILeadService
     }
 
     /// <summary>Query Async.</summary>
+    /// <param name="spec">The spec.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<PaginatedResult<LeadDto>> QueryAsync(ISpecification<Lead> spec, CancellationToken cancellationToken = default)
     {
         var result = await _leadRepository.QueryAsync(spec);
@@ -65,6 +80,8 @@ public class LeadService : AppServiceBase, ILeadService
     }
 
     /// <summary>Create Async.</summary>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<LeadDto> CreateAsync(CreateLeadDto dto, CancellationToken cancellationToken = default)
     {
         var lead = new Lead(
@@ -92,6 +109,9 @@ public class LeadService : AppServiceBase, ILeadService
     }
 
     /// <summary>Update Async.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<LeadDto> UpdateAsync(Guid id, UpdateLeadDto dto, CancellationToken cancellationToken = default)
     {
         var lead = await _leadRepository.GetByIdForUpdateAsync(id, cancellationToken);
@@ -115,6 +135,9 @@ public class LeadService : AppServiceBase, ILeadService
     }
 
     /// <summary>Qualify Async.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task QualifyAsync(Guid id, QualifyLeadDto dto, CancellationToken cancellationToken = default)
     {
         var lead = await _leadRepository.GetByIdForUpdateAsync(id, cancellationToken);
@@ -138,6 +161,8 @@ public class LeadService : AppServiceBase, ILeadService
     }
 
     /// <summary>Delete Async.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var lead = await _leadRepository.GetByIdForUpdateAsync(id, cancellationToken);

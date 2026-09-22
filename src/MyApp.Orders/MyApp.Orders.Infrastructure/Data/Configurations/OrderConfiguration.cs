@@ -8,6 +8,7 @@ namespace MyApp.Orders.Infrastructure.Data.Configurations
     public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
         /// <summary>Configures the Order entity mapping.</summary>
+        /// <param name="builder">The builder.</param>
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.ToTable("Orders");

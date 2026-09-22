@@ -9,12 +9,13 @@ namespace MyApp.Auth.Domain.Entities;
 public class ApplicationRole : IdentityRole<Guid>, IAuditableEntity<Guid>
 {
     /// <summary>
-    /// Initializes a new instance of ApplicationRole with the specified role name.
+    /// Initializes a new instance of the ApplicationRole class.
     /// </summary>
+    /// <param name="roleName">The role Name.</param>
     public ApplicationRole(string roleName) : base(roleName) { }
 
     /// <summary>
-    /// Initializes a new instance of ApplicationRole with a new GUID identifier.
+    /// Initializes a new instance of the ApplicationRole class.
     /// </summary>
     public ApplicationRole() : base() { }
 

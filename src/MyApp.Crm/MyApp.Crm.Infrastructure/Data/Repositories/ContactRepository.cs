@@ -12,12 +12,15 @@ public sealed class ContactRepository : Repository<Contact, Guid>, IContactRepos
     private readonly CrmDbContext _context;
 
     /// <summary>base.</summary>
+    /// <param name="context">The context.</param>
     public ContactRepository(CrmDbContext context) : base(context)
     {
         _context = context;
     }
 
     /// <summary>List By Account Async.</summary>
+    /// <param name="accountId">The account Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<IEnumerable<Contact>> ListByAccountAsync(Guid accountId, CancellationToken cancellationToken = default)
     {
         return await _context.Contacts

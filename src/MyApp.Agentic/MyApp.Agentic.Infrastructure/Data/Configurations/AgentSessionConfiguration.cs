@@ -6,6 +6,10 @@ namespace MyApp.Agentic.Infrastructure.Data.Configurations;
 
 public class AgentSessionConfiguration : IEntityTypeConfiguration<AgentSession>
 {
+    /// <summary>
+    /// Configures the entity type mapping.
+    /// </summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<AgentSession> builder)
     {
         builder.ToTable("AgentSessions");

@@ -20,6 +20,8 @@ namespace MyApp.Inventory.API.Controllers
         private readonly ILogger<StockOperationsController> _logger;
 
         /// <summary>I Logger.</summary>
+        /// <param name="warehouseStockService">The warehouse Stock Service.</param>
+        /// <param name="logger">The logger.</param>
         public StockOperationsController(IWarehouseStockService warehouseStockService, ILogger<StockOperationsController> logger)
         {
             _warehouseStockService = warehouseStockService;
@@ -27,6 +29,7 @@ namespace MyApp.Inventory.API.Controllers
         }
 
         /// <summary>Reserve Stock.</summary>
+        /// <param name="dto">The dto.</param>
         [HttpPost("reserve")]
         [HasPermission("Inventory", "Update")]
         [ProducesResponseType(typeof(ReservationDto), StatusCodes.Status201Created)]
@@ -60,6 +63,7 @@ namespace MyApp.Inventory.API.Controllers
         }
 
         /// <summary>Release Reservation.</summary>
+        /// <param name="reservationId">The reservation Id.</param>
         [HttpDelete("reservations/{reservationId}")]
         [HasPermission("Inventory", "Update")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -78,6 +82,7 @@ namespace MyApp.Inventory.API.Controllers
             }
         }
         /// <summary>Adjust Stock.</summary>
+        /// <param name="dto">The dto.</param>
         [HttpPost("adjust")]
         [HasPermission("Inventory", "Update")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

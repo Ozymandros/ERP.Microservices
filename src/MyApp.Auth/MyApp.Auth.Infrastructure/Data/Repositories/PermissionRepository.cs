@@ -5,18 +5,28 @@ using MyApp.Shared.Infrastructure.Repositories;
 
 namespace MyApp.Auth.Infrastructure.Data.Repositories
 {
+    /// <summary>
+    /// Implements data access operations for <see cref="Permission"/> entities using Entity Framework Core.
+    /// </summary>
     public class PermissionRepository : Repository<Permission, Guid>, IPermissionRepository
     {
         private readonly AuthDbContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the PermissionRepository class.
+        /// </summary>
+        /// <param name="context">The context.</param>
         public PermissionRepository(AuthDbContext context) : base(context)
         {
             _context = context;
         }
 
         /// <summary>
-        /// Gets permissions assigned to a specific role by module and action.
+        /// Gets the role name.
         /// </summary>
+        /// <param name="roleName">The role Name.</param>
+        /// <param name="module">The module.</param>
+        /// <param name="action">The action.</param>
         public async Task<IEnumerable<Permission>> GetByRoleName(string roleName, string module, string action)
         {
             if (string.IsNullOrWhiteSpace(roleName) || string.IsNullOrWhiteSpace(module) || string.IsNullOrWhiteSpace(action))
@@ -38,8 +48,11 @@ namespace MyApp.Auth.Infrastructure.Data.Repositories
         }
 
         /// <summary>
-        /// Gets permissions assigned directly to a specific user by module and action.
+        /// Gets the user name.
         /// </summary>
+        /// <param name="userName">The user Name.</param>
+        /// <param name="module">The module.</param>
+        /// <param name="action">The action.</param>
         public async Task<IEnumerable<Permission>> GetByUserName(string userName, string module, string action)
         {
             if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(module) || string.IsNullOrWhiteSpace(action))
@@ -60,8 +73,9 @@ namespace MyApp.Auth.Infrastructure.Data.Repositories
         }
 
         /// <summary>
-        /// Gets permissions assigned directly to a specific user and role by UserId.
+        /// Gets all permissions by user id.
         /// </summary>
+        /// <param name="userId">The user Id.</param>
         public async Task<IEnumerable<Permission>> GetAllPermissionsByUserId(Guid userId)
         {
             var userPermissions = await _context.Set<UserPermission>()

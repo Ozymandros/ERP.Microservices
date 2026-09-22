@@ -11,8 +11,15 @@ namespace MyApp.Orders.Domain.Specifications;
 /// </summary>
 public class OrderQuerySpec : BaseSpecification<Order>
 {
+    /// <summary>Initializes a new instance of the <see cref="OrderQuerySpec"/> class with the specified query parameters.</summary>
+    /// Initializes a new instance of the OrderQuerySpec class.
+    /// <param name="query">The query.</param>
     public OrderQuerySpec(QuerySpec query) : base(query) { }
 
+    /// <summary>Applies order-specific filters to the provided query.</summary>
+    /// Applies query filters to the specification.
+    /// <param name="query">The query.</param>
+    /// <returns>The filtered queryable with all applicable predicates applied.</returns>
     public override IQueryable<Order> ApplyFilters(IQueryable<Order> query)
     {
         // Filter by OrderNumber

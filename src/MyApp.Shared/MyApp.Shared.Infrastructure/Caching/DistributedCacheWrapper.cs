@@ -15,8 +15,9 @@ public class DistributedCacheWrapper : ICacheService
     private readonly IDistributedCache _distributedCache;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="DistributedCacheWrapper"/> with the provided distributed cache.
+    /// Initializes a new instance of the DistributedCacheWrapper class.
     /// </summary>
+    /// <param name="distributedCache">The distributed Cache.</param>
     public DistributedCacheWrapper(IDistributedCache distributedCache)
     {
         ArgumentNullException.ThrowIfNull(distributedCache);
@@ -73,6 +74,7 @@ public class DistributedCacheWrapper : ICacheService
     }
 
     /// <summary>Removes the cached value associated with the specified key.</summary>
+    /// <param name="key">The key.</param>
     public Task RemoveStateAsync(string key)
     {
         // Simple delegation to base Redis functionality

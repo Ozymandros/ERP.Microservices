@@ -15,8 +15,9 @@ namespace MyApp.Billing.Infrastructure.Repositories;
 public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
 {
     /// <summary>
-    /// Retrieves an invoice by its identifier with related lines and payments loaded.
+    /// Gets an item by its unique identifier asynchronously.
     /// </summary>
+    /// <param name="id">The id.</param>
     public override async Task<Invoice?> GetByIdAsync(Guid id)
     {
         return await _context.Invoices
@@ -28,16 +29,19 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
     private readonly BillingDbContext _context;
 
     /// <summary>
-    /// Initializes a new instance of the InvoiceRepository with the provided database context.
+    /// Initializes a new instance of the InvoiceRepository class.
     /// </summary>
+    /// <param name="context">The context.</param>
     public InvoiceRepository(BillingDbContext context) : base(context)
     {
         _context = context;
     }
 
     /// <summary>
-    /// Retrieves an invoice by its invoice number.
+    /// Gets the invoice number asynchronously.
     /// </summary>
+    /// <param name="invoiceNumber">The invoice Number.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<Invoice?> GetByInvoiceNumberAsync(string invoiceNumber, CancellationToken cancellationToken = default)
     {
         return await _context.Invoices
@@ -46,8 +50,10 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
     }
 
     /// <summary>
-    /// Retrieves all invoices for a specific customer, ordered by creation date descending.
+    /// Gets the customer id asynchronously.
     /// </summary>
+    /// <param name="customerId">The customer Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<List<Invoice>> GetByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default)
     {
         return await _context.Invoices
@@ -58,8 +64,9 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
     }
 
     /// <summary>
-    /// Retrieves all outstanding invoices (issued or sent status), ordered by due date.
+    /// Gets the open invoices asynchronously.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<List<Invoice>> GetOpenInvoicesAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Invoices
@@ -70,8 +77,10 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
     }
 
     /// <summary>
-    /// Retrieves all invoices associated with a specific order.
+    /// Gets the invoices by order id asynchronously.
     /// </summary>
+    /// <param name="orderId">The order Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<List<Invoice>> GetInvoicesByOrderIdAsync(Guid orderId, CancellationToken cancellationToken = default)
     {
         return await _context.Invoices
@@ -81,8 +90,9 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
     }
 
     /// <summary>
-    /// Queries invoices using specification with lines included.
+    /// Query asynchronously.
     /// </summary>
+    /// <param name="spec">The spec.</param>
     public override async Task<PaginatedResult<Invoice>> QueryAsync(ISpecification<Invoice> spec)
     {
         ArgumentNullException.ThrowIfNull(spec);
@@ -119,16 +129,19 @@ public class CreditNoteRepository : Repository<CreditNote, Guid>, ICreditNoteRep
     private readonly BillingDbContext _context;
 
     /// <summary>
-    /// Initializes a new instance of the CreditNoteRepository with the provided database context.
+    /// Initializes a new instance of the CreditNoteRepository class.
     /// </summary>
+    /// <param name="context">The context.</param>
     public CreditNoteRepository(BillingDbContext context) : base(context)
     {
         _context = context;
     }
 
     /// <summary>
-    /// Retrieves all credit notes associated with a specific invoice.
+    /// Gets the invoice id asynchronously.
     /// </summary>
+    /// <param name="invoiceId">The invoice Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<List<CreditNote>> GetByInvoiceIdAsync(Guid invoiceId, CancellationToken cancellationToken = default)
     {
         return await _context.CreditNotes
@@ -146,16 +159,19 @@ public class PaymentRepository : Repository<Payment, Guid>, IPaymentRepository
     private readonly BillingDbContext _context;
 
     /// <summary>
-    /// Initializes a new instance of the PaymentRepository with the provided database context.
+    /// Initializes a new instance of the PaymentRepository class.
     /// </summary>
+    /// <param name="context">The context.</param>
     public PaymentRepository(BillingDbContext context) : base(context)
     {
         _context = context;
     }
 
     /// <summary>
-    /// Retrieves all payments associated with a specific invoice, ordered by payment date descending.
+    /// Gets the invoice id asynchronously.
     /// </summary>
+    /// <param name="invoiceId">The invoice Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<List<Payment>> GetByInvoiceIdAsync(Guid invoiceId, CancellationToken cancellationToken = default)
     {
         return await _context.Payments
@@ -164,6 +180,12 @@ public class PaymentRepository : Repository<Payment, Guid>, IPaymentRepository
             .ToListAsync(cancellationToken);
     }
 
+    /// <summary>
+    /// Gets the external payment id asynchronously.
+    /// </summary>
+    /// <param name="externalPaymentId">The external Payment Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<Payment?> GetByExternalPaymentIdAsync(string externalPaymentId, CancellationToken cancellationToken = default)
     {
         return await _context.Payments

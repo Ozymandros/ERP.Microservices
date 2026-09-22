@@ -8,8 +8,11 @@ namespace MyApp.Shared.Domain.Validators;
 public static class OrderValidators
 {
     /// <summary>
-    /// Validates an order line item.
+    /// Validate order line.
     /// </summary>
+    /// <param name="quantity">The quantity.</param>
+    /// <param name="unitPrice">The unit Price.</param>
+    /// <param name="lineTotal">The line Total.</param>
     public static ValidationResult? ValidateOrderLine(int quantity, decimal unitPrice, decimal lineTotal)
     {
         if (quantity <= 0)
@@ -25,8 +28,11 @@ public static class OrderValidators
     }
 
     /// <summary>
-    /// Validates an entire order.
+    /// Validate order.
     /// </summary>
+    /// <param name="lineCount">The line Count.</param>
+    /// <param name="totalAmount">The total Amount.</param>
+    /// <param name="calculatedTotal">The calculated Total.</param>
     public static ValidationResult? ValidateOrder(int lineCount, decimal totalAmount, decimal calculatedTotal)
     {
         if (lineCount == 0)

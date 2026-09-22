@@ -19,6 +19,7 @@ using Xunit;
 
 namespace MyApp.Audit.Application.Tests.Services;
 
+/// <summary>Unit tests for <see cref="EntityChangeService"/>.</summary>
 public class EntityChangeServiceTests
 {
     private readonly Mock<IEntityChangeRepository> _repository = new();
@@ -29,6 +30,7 @@ public class EntityChangeServiceTests
     private readonly IMapper _mapper;
     private readonly EntityChangeService _sut;
 
+    /// <summary>Initializes mocks and constructs the system under test.</summary>
     public EntityChangeServiceTests()
     {
         _mapper = MapperTestHelper.CreateMapper();

@@ -12,12 +12,14 @@ public class OpportunityRepository : Repository<Opportunity, Guid>, IOpportunity
     private readonly CrmDbContext _context;
 
     /// <summary>base.</summary>
+    /// <param name="context">The context.</param>
     public OpportunityRepository(CrmDbContext context) : base(context)
     {
         _context = context;
     }
 
     /// <summary>Get By Id Async.</summary>
+    /// <param name="id">The id.</param>
     public override async Task<Opportunity?> GetByIdAsync(Guid id)
     {
         return await _context.Opportunities
@@ -34,6 +36,10 @@ public class OpportunityRepository : Repository<Opportunity, Guid>, IOpportunity
     }
 
     /// <summary>List For Forecast Async.</summary>
+    /// <param name="ownerUsername">The owner Username.</param>
+    /// <param name="fromExpectedCloseDate">The from Expected Close Date.</param>
+    /// <param name="toExpectedCloseDate">The to Expected Close Date.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<List<Opportunity>> ListForForecastAsync(
         string ownerUsername,
         DateOnly? fromExpectedCloseDate,

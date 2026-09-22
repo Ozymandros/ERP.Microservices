@@ -15,12 +15,23 @@ public class MessagesController : ControllerBase
     private readonly IAgentService _agentService;
     private readonly ILogger<MessagesController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the MessagesController class.
+    /// </summary>
+    /// <param name="agentService">The agent Service.</param>
+    /// <param name="logger">The logger.</param>
     public MessagesController(IAgentService agentService, ILogger<MessagesController> logger)
     {
         _agentService = agentService;
         _logger = logger;
     }
 
+    /// <summary>
+    /// Processes the message.
+    /// </summary>
+    /// <param name="request">The request.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpPost]
     [HasPermission("Agentic", "Execute")]
     [ProducesResponseType(typeof(ProcessAgentMessageResponse), StatusCodes.Status200OK)]

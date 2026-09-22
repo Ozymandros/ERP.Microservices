@@ -44,23 +44,23 @@ public class AgentService : AppServiceBase, IAgentService
     private readonly ILogger<AgentService> _logger;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AgentService"/> class.
+    /// Initializes a new instance of the AgentService class.
     /// </summary>
-    /// <param name="agentRepository">Repository for agent aggregate persistence.</param>
-    /// <param name="providerRepository">Repository for AI provider metadata.</param>
-    /// <param name="modelRepository">Repository for AI model metadata.</param>
-    /// <param name="sessionRepository">Repository for persisted agent sessions.</param>
-    /// <param name="memoryRepository">Repository for vectorized conversational memories.</param>
-    /// <param name="secretCryptoService">Service used to decrypt provider API keys for runtime execution.</param>
-    /// <param name="sessionStateStore">Transient/operational store for conversation state.</param>
-    /// <param name="embeddingService">Service used to generate embeddings for RAG and memory.</param>
-    /// <param name="agentExecutionService">Service that executes prompts against the configured model/provider.</param>
-    /// <param name="toolResolver">Resolves ERP plugin tools available to an agent at runtime.</param>
-    /// <param name="unitOfWork">Unit of work for transactional persistence.</param>
-    /// <param name="eventPublisher">Publisher for domain integration events.</param>
-    /// <param name="serviceInvoker">Cross-service invoker for validating external dependencies (for example auth users).</param>
-    /// <param name="mapper">Object mapper dependency.</param>
-    /// <param name="logger">Structured logger for diagnostics and operational tracing.</param>
+    /// <param name="agentRepository">The agent Repository.</param>
+    /// <param name="providerRepository">The provider Repository.</param>
+    /// <param name="modelRepository">The model Repository.</param>
+    /// <param name="sessionRepository">The session Repository.</param>
+    /// <param name="memoryRepository">The memory Repository.</param>
+    /// <param name="secretCryptoService">The secret Crypto Service.</param>
+    /// <param name="sessionStateStore">The session State Store.</param>
+    /// <param name="embeddingService">The embedding Service.</param>
+    /// <param name="agentExecutionService">The agent Execution Service.</param>
+    /// <param name="toolResolver">The tool Resolver.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="serviceInvoker">The service Invoker.</param>
+    /// <param name="mapper">The mapper.</param>
+    /// <param name="logger">The logger.</param>
     public AgentService(
         IAgentRepository agentRepository,
         IAIProviderRepository providerRepository,
@@ -95,10 +95,10 @@ public class AgentService : AppServiceBase, IAgentService
     }
 
     /// <summary>
-    /// Gets a single agent by identifier.
+    /// Gets an item by its unique identifier asynchronously.
     /// </summary>
-    /// <param name="id">Agent identifier.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The mapped <see cref="AgentDto"/> when found; otherwise <see langword="null"/>.</returns>
     public async Task<AgentDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -107,9 +107,9 @@ public class AgentService : AppServiceBase, IAgentService
     }
 
     /// <summary>
-    /// Lists all agents.
+    /// Lists items asynchronously.
     /// </summary>
-    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A collection of lightweight agent list DTOs.</returns>
     public async Task<IEnumerable<AgentListDto>> ListAsync(CancellationToken cancellationToken = default)
     {
@@ -118,12 +118,10 @@ public class AgentService : AppServiceBase, IAgentService
     }
 
     /// <summary>
-    /// Lists agents visible to a given owner context.
+    /// Lists by owner asynchronously.
     /// </summary>
-    /// <param name="ownerUserId">
-    /// Owner user identifier. When null/empty, all agents are returned; otherwise owned and shared (owner null) agents are returned.
-    /// </param>
-    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <param name="ownerUserId">The owner User Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>Filtered collection of <see cref="AgentListDto"/>.</returns>
     public async Task<IEnumerable<AgentListDto>> ListByOwnerAsync(string? ownerUserId, CancellationToken cancellationToken = default)
     {
@@ -135,10 +133,10 @@ public class AgentService : AppServiceBase, IAgentService
     }
 
     /// <summary>
-    /// Creates a new agent after validating provider/model consistency and optional owner existence.
+    /// Creates a new item asynchronously.
     /// </summary>
-    /// <param name="dto">Agent creation payload.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The created agent as <see cref="AgentDto"/>.</returns>
     /// <exception cref="ArgumentException">Thrown when required identifiers are invalid.</exception>
     /// <exception cref="InvalidOperationException">Thrown when provider/model/user validation fails.</exception>
@@ -175,11 +173,11 @@ public class AgentService : AppServiceBase, IAgentService
     }
 
     /// <summary>
-    /// Updates an existing agent configuration.
+    /// Updates an existing item asynchronously.
     /// </summary>
-    /// <param name="id">Agent identifier.</param>
-    /// <param name="dto">Update payload.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The updated agent as <see cref="AgentDto"/>.</returns>
     /// <exception cref="InvalidOperationException">Thrown when the agent, provider, or model is invalid/not found.</exception>
     public async Task<AgentDto> UpdateAsync(Guid id, UpdateAgentDto dto, CancellationToken cancellationToken = default)
@@ -211,10 +209,10 @@ public class AgentService : AppServiceBase, IAgentService
     }
 
     /// <summary>
-    /// Deletes an agent when it exists. No-op if the agent is not found.
+    /// Deletes an item asynchronously.
     /// </summary>
-    /// <param name="id">Agent identifier.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var agent = await _agentRepository.GetByIdAsync(id);
@@ -224,12 +222,12 @@ public class AgentService : AppServiceBase, IAgentService
     }
 
     /// <summary>
-    /// Processes a direct agent message (agent-scoped session state path), executes AI response generation,
+    /// Processes the message asynchronously.
     /// appends conversation state, and optionally stores vector memories.
     /// </summary>
-    /// <param name="request">Message request and runtime options.</param>
-    /// <param name="authenticatedUserId">Authenticated user identifier.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <param name="request">The request.</param>
+    /// <param name="authenticatedUserId">The authenticated User Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>Response containing session information and assistant output.</returns>
     /// <exception cref="InvalidOperationException">Thrown when agent/provider/configuration prerequisites are invalid.</exception>
     /// <exception cref="UnauthorizedAccessException">Thrown when user access to the agent is not allowed.</exception>
@@ -346,11 +344,11 @@ public class AgentService : AppServiceBase, IAgentService
     }
 
     /// <summary>
-    /// Starts a persisted chat session for an agent and user.
+    /// Start session asynchronously.
     /// </summary>
-    /// <param name="request">Session start request.</param>
-    /// <param name="authenticatedUserId">Authenticated user identifier.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <param name="request">The request.</param>
+    /// <param name="authenticatedUserId">The authenticated User Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The created session descriptor.</returns>
     /// <exception cref="InvalidOperationException">Thrown when request data or agent state is invalid.</exception>
     /// <exception cref="UnauthorizedAccessException">Thrown when user access to the agent is not allowed.</exception>
@@ -395,13 +393,13 @@ public class AgentService : AppServiceBase, IAgentService
     }
 
     /// <summary>
-    /// Sends a message to an existing session, executes the agent with optional tool definitions,
+    /// Sends the message asynchronously.
     /// persists activity timestamps, and optionally writes vector memories.
     /// </summary>
-    /// <param name="sessionId">Session identifier.</param>
-    /// <param name="request">Message request and runtime options.</param>
-    /// <param name="authenticatedUserId">Authenticated user identifier.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <param name="sessionId">The session Id.</param>
+    /// <param name="request">The request.</param>
+    /// <param name="authenticatedUserId">The authenticated User Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>Assistant response payload associated with the session.</returns>
     /// <exception cref="InvalidOperationException">Thrown when session or agent state is invalid.</exception>
     /// <exception cref="UnauthorizedAccessException">Thrown when the session/agent is not owned or accessible by the user.</exception>
@@ -523,11 +521,11 @@ public class AgentService : AppServiceBase, IAgentService
     }
 
     /// <summary>
-    /// Gets full session details, including message history from session state storage.
+    /// Gets the session asynchronously.
     /// </summary>
-    /// <param name="sessionId">Session identifier.</param>
-    /// <param name="authenticatedUserId">Authenticated user identifier.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <param name="sessionId">The session Id.</param>
+    /// <param name="authenticatedUserId">The authenticated User Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The session details when found; otherwise <see langword="null"/>.</returns>
     /// <exception cref="UnauthorizedAccessException">Thrown when user does not own the session.</exception>
     public async Task<SessionDetailsResponse?> GetSessionAsync(
@@ -557,10 +555,10 @@ public class AgentService : AppServiceBase, IAgentService
     }
 
     /// <summary>
-    /// Lists sessions for the authenticated user and enriches each with message count from state storage.
+    /// Lists sessions asynchronously.
     /// </summary>
-    /// <param name="authenticatedUserId">Authenticated user identifier.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <param name="authenticatedUserId">The authenticated User Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>User session list items with summary metadata.</returns>
     public async Task<IEnumerable<SessionListItemDto>> ListSessionsAsync(
         string authenticatedUserId,
@@ -589,11 +587,11 @@ public class AgentService : AppServiceBase, IAgentService
     }
 
     /// <summary>
-    /// Marks an active session as completed.
+    /// Ends the session asynchronously.
     /// </summary>
-    /// <param name="sessionId">Session identifier.</param>
-    /// <param name="authenticatedUserId">Authenticated user identifier.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <param name="sessionId">The session Id.</param>
+    /// <param name="authenticatedUserId">The authenticated User Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <exception cref="InvalidOperationException">Thrown when session is not found.</exception>
     /// <exception cref="UnauthorizedAccessException">Thrown when user does not own the session.</exception>
     public async Task EndSessionAsync(

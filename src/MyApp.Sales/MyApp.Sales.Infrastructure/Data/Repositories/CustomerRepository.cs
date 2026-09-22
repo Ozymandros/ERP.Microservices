@@ -15,12 +15,14 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         private readonly SalesDbContext _context;
 
         /// <summary>base.</summary>
+        /// <param name="context">The context.</param>
         public CustomerRepository(SalesDbContext context) : base(context)
         {
             _context = context;
         }
 
         /// <summary>Get By Id Async.</summary>
+        /// <param name="id">The id.</param>
         public override async Task<Customer?> GetByIdAsync(Guid id)
         {
             return await _context.Customers
@@ -43,6 +45,9 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         }
 
         /// <summary>Get All Paginated Async.</summary>
+        /// <param name="pageNumber">The page Number.</param>
+        /// <param name="pageSize">The page Size.</param>
+        /// <param name="includes">The includes.</param>
         public override async Task<PaginatedResult<Customer>> GetAllPaginatedAsync(int pageNumber, int pageSize, IEnumerable<Expression<Func<Customer, object>>>? includes = null)
         {
             var paginationParams = new PaginationParams(pageNumber, pageSize);
@@ -64,6 +69,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         }
 
         /// <summary>Delete Async.</summary>
+        /// <param name="id">The id.</param>
         public async Task DeleteAsync(Guid id)
         {
             var customer = await _context.Customers.FindAsync(id);
@@ -73,6 +79,11 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
             }
         }
 
+        /// <summary>
+        /// Gets the name asynchronously.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
         public async Task<Customer?> GetByNameAsync(string name)
         {
             return await _context.Customers
@@ -80,6 +91,11 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
                 .FirstOrDefaultAsync(c => c.Name == name);
         }
 
+        /// <summary>
+        /// Gets the email asynchronously.
+        /// </summary>
+        /// <param name="email">The email.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
         public async Task<Customer?> GetByEmailAsync(string email)
         {
             return await _context.Customers

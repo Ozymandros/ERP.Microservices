@@ -10,6 +10,7 @@ namespace MyApp.Crm.Infrastructure.Data.Configurations;
 public class OpportunityConfiguration : IEntityTypeConfiguration<Opportunity>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<Opportunity> builder)
     {
         builder.ToTable("Opportunities");

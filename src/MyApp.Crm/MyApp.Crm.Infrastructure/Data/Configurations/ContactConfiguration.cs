@@ -10,6 +10,7 @@ namespace MyApp.Crm.Infrastructure.Data.Configurations;
 public sealed class ContactConfiguration : IEntityTypeConfiguration<Contact>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<Contact> builder)
     {
         builder.ToTable("Contacts");

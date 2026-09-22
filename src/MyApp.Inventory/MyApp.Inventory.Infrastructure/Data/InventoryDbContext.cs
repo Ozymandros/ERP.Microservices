@@ -11,6 +11,7 @@ namespace MyApp.Inventory.Infrastructure.Data;
 public class InventoryDbContext : AuditableDbContext
 {
     /// <summary>base.</summary>
+    /// <param name="options">The options.</param>
     public InventoryDbContext(DbContextOptions<InventoryDbContext> options) : base(options)
     {
     }

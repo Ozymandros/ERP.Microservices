@@ -3,6 +3,7 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Crm.Domain.Accounts;
 
 /// <summary>Represents a customer account in the CRM system.</summary>
+/// <param name="id">The id.</param>
 public sealed class Account(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>Gets the customer ID associated with this account.</summary>
@@ -26,6 +27,10 @@ public sealed class Account(Guid id) : AuditableEntity<Guid>(id)
     public List<Contact> Contacts { get; private set; } = new();
 
     /// <summary>Initializes a new instance of the Account class.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="customerId">The customer Id.</param>
+    /// <param name="name">The name.</param>
+    /// <param name="ownerUsername">The owner Username.</param>
     public Account(
         Guid id,
         Guid customerId,
@@ -41,6 +46,11 @@ public sealed class Account(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Updates account details from a sales snapshot.</summary>
+    /// <param name="name">The name.</param>
+    /// <param name="taxId">The tax Id.</param>
+    /// <param name="billingAddress">The billing Address.</param>
+    /// <param name="shippingAddress">The shipping Address.</param>
+    /// <param name="syncedAt">The synced At.</param>
     public void UpsertFromSalesSnapshot(
         string name,
         string? taxId,
@@ -57,12 +67,19 @@ public sealed class Account(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Sets the owner of the account.</summary>
+    /// <param name="ownerUsername">The owner Username.</param>
     public void SetOwner(string ownerUsername)
     {
         OwnerUsername = NormalizeRequired(ownerUsername, nameof(ownerUsername));
     }
 
     /// <summary>Adds a contact to this account.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="fullName">The full Name.</param>
+    /// <param name="email">The email.</param>
+    /// <param name="phone">The phone.</param>
+    /// <param name="title">The title.</param>
+    /// <param name="isPrimary">The is Primary.</param>
     public Contact AddContact(
         Guid id,
         string fullName,
@@ -90,6 +107,7 @@ public sealed class Account(Guid id) : AuditableEntity<Guid>(id)
     }
 
     /// <summary>Sets a contact as the primary contact for this account.</summary>
+    /// <param name="contactId">The contact Id.</param>
     public void SetPrimaryContact(Guid contactId)
     {
         var contact = Contacts.FirstOrDefault(c => c.Id == contactId)

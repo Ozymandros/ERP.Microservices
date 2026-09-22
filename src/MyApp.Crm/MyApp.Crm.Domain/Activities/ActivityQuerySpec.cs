@@ -7,10 +7,15 @@ namespace MyApp.Crm.Domain.Activities;
 public class ActivityQuerySpec : BaseSpecification<Activity>
 {
     /// <summary>Initializes a new instance of the ActivityQuerySpec class.</summary>
+    /// <param name="query">The query.</param>
     public ActivityQuerySpec(QuerySpec query) : base(query)
     {
     }
 
+    /// <summary>Applies filter criteria and search term from the query specification to the activity queryable.</summary>
+    /// Applies query filters to the specification.
+    /// <param name="query">The query.</param>
+    /// <returns>The filtered queryable with all matching conditions applied.</returns>
     public override IQueryable<Activity> ApplyFilters(IQueryable<Activity> query)
     {
         if (Query.Filters?.TryGetValue(nameof(Activity.AssignedToUsername), out var assigned) == true && !string.IsNullOrWhiteSpace(assigned))

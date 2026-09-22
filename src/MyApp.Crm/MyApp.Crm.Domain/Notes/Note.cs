@@ -3,8 +3,9 @@ using MyApp.Shared.Domain.Entities;
 namespace MyApp.Crm.Domain.Notes;
 
 /// <summary>
-/// Provides Note functionality.
+/// Note.
 /// </summary>
+/// <param name="id">The id.</param>
 public class Note(Guid id) : AuditableEntity<Guid>(id)
 {
     /// <summary>Gets or sets Body.</summary>
@@ -17,6 +18,12 @@ public class Note(Guid id) : AuditableEntity<Guid>(id)
     /// <summary>Gets or sets Activity Id.</summary>
     public Guid? ActivityId { get; private set; }
 
+    /// <summary>Creates a note associated with a lead.</summary>
+    /// For lead.
+    /// <param name="id">The id.</param>
+    /// <param name="body">The body.</param>
+    /// <param name="leadId">The lead Id.</param>
+    /// <returns>A new <see cref="Note"/> linked to the specified lead.</returns>
     public static Note ForLead(Guid id, string body, Guid leadId) => new(id)
     {
         Body = NormalizeBody(body),
@@ -24,6 +31,9 @@ public class Note(Guid id) : AuditableEntity<Guid>(id)
     };
 
     /// <summary>For Opportunity.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="body">The body.</param>
+    /// <param name="opportunityId">The opportunity Id.</param>
     public static Note ForOpportunity(Guid id, string body, Guid opportunityId) => new(id)
     {
         Body = NormalizeBody(body),
@@ -31,6 +41,9 @@ public class Note(Guid id) : AuditableEntity<Guid>(id)
     };
 
     /// <summary>For Activity.</summary>
+    /// <param name="id">The id.</param>
+    /// <param name="body">The body.</param>
+    /// <param name="activityId">The activity Id.</param>
     public static Note ForActivity(Guid id, string body, Guid activityId) => new(id)
     {
         Body = NormalizeBody(body),
@@ -38,6 +51,7 @@ public class Note(Guid id) : AuditableEntity<Guid>(id)
     };
 
     /// <summary>Update Body.</summary>
+    /// <param name="body">The body.</param>
     public void UpdateBody(string body) => Body = NormalizeBody(body);
 
     private static string NormalizeBody(string body)

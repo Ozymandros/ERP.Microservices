@@ -16,9 +16,9 @@ public class InventoryPlugin
     private readonly IServiceInvoker _serviceInvoker;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="InventoryPlugin"/> with the required service invoker.
+    /// Initializes a new instance of the InventoryPlugin class.
     /// </summary>
-    /// <param name="serviceInvoker">The inter-service HTTP invoker used to call the Inventory service.</param>
+    /// <param name="serviceInvoker">The service Invoker.</param>
     public InventoryPlugin(IServiceInvoker serviceInvoker)
     {
         _serviceInvoker = serviceInvoker;
@@ -41,7 +41,7 @@ public class InventoryPlugin
     /// <summary>
     /// Creates a new inventory warehouse-stock record from the supplied JSON payload.
     /// </summary>
-    /// <param name="payloadJson">JSON-serialized warehouse-stock creation request.</param>
+    /// <param name="payloadJson">The payload Json.</param>
     /// <returns>JSON representation of the newly created inventory record.</returns>
     [Description("Create inventory resource")]
     public async Task<string> CreateAsync(string payloadJson)
@@ -60,7 +60,7 @@ public class InventoryPlugin
     /// <summary>
     /// Retrieves an inventory warehouse-stock record by its unique identifier.
     /// </summary>
-    /// <param name="id">The unique identifier of the inventory record.</param>
+    /// <param name="id">The id.</param>
     /// <returns>JSON representation of the inventory record, or an error description if not found.</returns>
     [Description("Get inventory resource by id")]
     public async Task<string> GetByIdAsync(string id)
@@ -77,7 +77,7 @@ public class InventoryPlugin
     /// <summary>
     /// Updates an existing inventory warehouse-stock record with the values in the JSON payload.
     /// </summary>
-    /// <param name="payloadJson">JSON-serialized update request, including the record identifier.</param>
+    /// <param name="payloadJson">The payload Json.</param>
     /// <returns>JSON representation of the updated inventory record.</returns>
     [Description("Update inventory resource")]
     public async Task<string> UpdateAsync(string payloadJson)
@@ -96,7 +96,7 @@ public class InventoryPlugin
     /// <summary>
     /// Permanently deletes an inventory record by its unique identifier.
     /// </summary>
-    /// <param name="id">The unique identifier of the inventory record to delete.</param>
+    /// <param name="id">The id.</param>
     /// <returns>A confirmation message indicating the record was deleted.</returns>
     [Description("Delete inventory resource by id")]
     public async Task<string> DeleteAsync(string id)
@@ -113,7 +113,7 @@ public class InventoryPlugin
     /// <summary>
     /// Gets a product by its name.
     /// </summary>
-    /// <param name="name">Product name, or JSON such as <c>{"name":"Alpha Bolt"}</c>.</param>
+    /// <param name="name">The name.</param>
     /// <returns>JSON representation of the product, or an error description if not found.</returns>
     [Description("Get product by name")]
     public async Task<string> GetProductByNameAsync(string name)
@@ -131,7 +131,7 @@ public class InventoryPlugin
     /// <summary>
     /// Gets a warehouse by its name.
     /// </summary>
-    /// <param name="name">The warehouse name.</param>
+    /// <param name="name">The name.</param>
     /// <returns>JSON representation of the warehouse, or an error description if not found.</returns>
     [Description("Get warehouse by name")]
     public async Task<string> GetWarehouseByNameAsync(string name)
@@ -148,7 +148,7 @@ public class InventoryPlugin
     /// <summary>
     /// Gets an inventory transaction by its reference number.
     /// </summary>
-    /// <param name="referenceNumber">The transaction reference number.</param>
+    /// <param name="referenceNumber">The reference Number.</param>
     /// <returns>JSON representation of the transaction, or an error description if not found.</returns>
     [Description("Get inventory transaction by reference number")]
     public async Task<string> GetTransactionByReferenceNumberAsync(string referenceNumber)
@@ -165,7 +165,7 @@ public class InventoryPlugin
     /// <summary>
     /// Gets a product by its SKU.
     /// </summary>
-    /// <param name="sku">Product SKU, or JSON such as <c>{"sku":"ABC-123"}</c>.</param>
+    /// <param name="sku">The sku.</param>
     /// <returns>JSON representation of the product, or an error description if not found.</returns>
     [Description("Get product by SKU")]
     public async Task<string> GetProductBySkuAsync(string sku)
@@ -183,7 +183,7 @@ public class InventoryPlugin
     /// <summary>
     /// Searches ERP products using the Inventory service <c>/search</c> endpoint.
     /// </summary>
-    /// <param name="queryJson">Search term or JSON query specification for products.</param>
+    /// <param name="queryJson">The query Json.</param>
     /// <returns>JSON paginated search result for matching products.</returns>
     [Description("Search ERP products by term, name, description, SKU, or filters")]
     public Task<string> SearchProductsAsync(string queryJson) =>
@@ -192,7 +192,7 @@ public class InventoryPlugin
     /// <summary>
     /// Searches ERP warehouses using the Inventory service <c>/search</c> endpoint.
     /// </summary>
-    /// <param name="queryJson">Search term or JSON query specification for warehouses.</param>
+    /// <param name="queryJson">The query Json.</param>
     /// <returns>JSON paginated search result for matching warehouses.</returns>
     [Description("Search ERP warehouses by term, name, or filters")]
     public Task<string> SearchWarehousesAsync(string queryJson) =>
@@ -201,7 +201,7 @@ public class InventoryPlugin
     /// <summary>
     /// Searches ERP inventory transactions using the Inventory service <c>/search</c> endpoint.
     /// </summary>
-    /// <param name="queryJson">Search term or JSON query specification for transactions.</param>
+    /// <param name="queryJson">The query Json.</param>
     /// <returns>JSON paginated search result for matching inventory transactions.</returns>
     [Description("Search ERP inventory transactions by term or filters")]
     public Task<string> SearchInventoryTransactionsAsync(string queryJson) =>
@@ -210,7 +210,7 @@ public class InventoryPlugin
     /// <summary>
     /// Lists ERP products that are below their configured low-stock threshold.
     /// </summary>
-    /// <param name="unused">Ignored. Present only to satisfy the tool invocation signature.</param>
+    /// <param name="unused">The unused.</param>
     /// <returns>JSON collection of low-stock products.</returns>
     [Description("List ERP products with low stock levels")]
     public async Task<string> GetLowStockProductsAsync(string unused = "")

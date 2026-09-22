@@ -8,6 +8,7 @@ using Xunit;
 
 namespace MyApp.Audit.Infrastructure.Tests.Repositories;
 
+/// <summary>Integration tests for <see cref="EntityChangeRepository"/> using an in-memory database.</summary>
 public class EntityChangeRepositoryTests
 {
     [Fact]

@@ -26,9 +26,9 @@ public static class ErpAgentSystemPrompt
         """;
 
     /// <summary>
-    /// Composes the final system prompt from the ERP baseline and optional agent-specific instructions.
+    /// Compose.
     /// </summary>
-    /// <param name="agentInstructions">Custom instructions configured on the agent, if any.</param>
+    /// <param name="agentInstructions">The agent Instructions.</param>
     /// <returns>System prompt text sent to the model.</returns>
     public static string Compose(string? agentInstructions)
     {

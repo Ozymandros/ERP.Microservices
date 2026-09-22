@@ -4,8 +4,9 @@ using System.ComponentModel.DataAnnotations;
 namespace MyApp.Inventory.Application.Contracts.DTOs;
 
 /// <summary>
-/// Represents the Product Dto data record.
+/// Product dto.
 /// </summary>
+/// <param name="Id">The id.</param>
 public record ProductDto(Guid Id) : AuditableGuidDto(Id)
 {
     /// <summary>Gets or sets S K U.</summary>
@@ -23,8 +24,14 @@ public record ProductDto(Guid Id) : AuditableGuidDto(Id)
 }
 
 /// <summary>
-/// Represents the Create Update Product Dto data record.
+/// Creates an update product dto.
 /// </summary>
+/// <param name="SKU">The sKU.</param>
+/// <param name="Name">The name.</param>
+/// <param name="Description">The description.</param>
+/// <param name="UnitPrice">The unit Price.</param>
+/// <param name="QuantityInStock">The quantity In Stock.</param>
+/// <param name="ReorderLevel">The reorder Level.</param>
 public record CreateUpdateProductDto(
     [Required(ErrorMessage = "SKU is required")]
     [StringLength(64, MinimumLength = 1)]

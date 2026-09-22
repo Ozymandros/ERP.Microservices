@@ -10,6 +10,7 @@ namespace MyApp.Crm.Infrastructure.Data.Configurations;
 public sealed class AccountConfiguration : IEntityTypeConfiguration<Account>
 {
     /// <summary>Configure.</summary>
+    /// <param name="builder">The builder.</param>
     public void Configure(EntityTypeBuilder<Account> builder)
     {
         builder.ToTable("Accounts");
