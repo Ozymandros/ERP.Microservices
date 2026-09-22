@@ -206,12 +206,12 @@ public static class AspireProjectBuilderExtensions
     /// <summary>
     /// Creates a project builder.
     /// </summary>
-    /// <param name="builder">The builder.</param>
-    /// <param name="sqlServer">The sql Server.</param>
-    /// <param name="sqlAzure">The sql Azure.</param>
-    /// <param name="keyVault">The key Vault.</param>
-    /// <param name="jwtSecretKey">The jwt Secret Key.</param>
-    /// <returns></returns>
+    /// <param name="builder">The aspire app builder.</param>
+    /// <param name="sqlServer">The SQL Server resource.</param>
+    /// <param name="sqlAzure">The SQL Azure resource.</param>
+    /// <param name="keyVault">The Key Vault name.</param>
+    /// <param name="jwtSecretKey">The JWT Secret Key resource.</param>
+    /// <returns>The project builder.</returns>
     public static AspireProjectBuilder CreateProjectBuilder(
         this IDistributedApplicationBuilder builder,
         IResourceBuilder<SqlServerServerResource>? sqlServer = null,
