@@ -12,6 +12,7 @@ using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Security;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Audit.Application.Services;
@@ -143,8 +144,8 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
 
         _logger.LogInformation(
             "Recorded {ChangeType} audit for {EntityType} {EntityId}",
-            dto.ChangeType,
-            dto.EntityName,
+            new LogSanitizer().Sanitize(dto.ChangeType.ToString()),
+            new LogSanitizer().Sanitize(dto.EntityName),
             dto.EntityId);
 
         var saved = await _repository.GetByIdWithPropertiesAsync(changeId, cancellationToken)
@@ -165,9 +166,9 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
             {
                 _logger.LogDebug(
                     "Skipping audit ingest for {EntityName} {State} from {SourceService}",
-                    payload.EntityName,
-                    payload.State,
-                    @event.SourceService);
+                    new LogSanitizer().Sanitize(payload.EntityName),
+                    new LogSanitizer().Sanitize(payload.State),
+                    new LogSanitizer().Sanitize(@event.SourceService));
                 continue;
             }
 

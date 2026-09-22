@@ -229,7 +229,7 @@ public class SuppliersController : ControllerBase
             query.Validate();
             var spec = new SupplierQuerySpec(query);
             var result = await _supplierService.QuerySuppliersAsync(spec);
-            _logger.LogInformation("Searched suppliers with query: {@Query}", query);
+            _logger.LogInformation("Searched suppliers");
             return Ok(result);
         }
         catch (ArgumentException ex)

@@ -703,7 +703,7 @@ public class AgentService : AppServiceBase, IAgentService
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to validate user {UserId} via auth-service", userId);
+            _logger.LogWarning(ex, "Failed to validate user {UserId} via auth-service", new LogSanitizer().Sanitize(userId));
             throw new InvalidOperationException($"User {userId} could not be validated against auth-service.", ex);
         }
     }

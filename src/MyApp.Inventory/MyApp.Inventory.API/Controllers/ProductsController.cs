@@ -156,7 +156,7 @@ public class ProductsController : ControllerBase
             query.Validate();
             var spec = new ProductQuerySpec(query);
             var result = await _productService.QueryProductsAsync(spec);
-            _logger.LogInformation("Searched products with query: {@Query}", query);
+            _logger.LogInformation("Searched products");
             return Ok(result);
         }
         catch (ArgumentException ex)

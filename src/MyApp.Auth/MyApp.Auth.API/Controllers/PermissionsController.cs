@@ -10,6 +10,7 @@ using System.Security.Claims;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
+using MyApp.Shared.Domain.Security;
 using MyApp.Shared.Infrastructure.Export;
 using MyApp.Shared.Infrastructure.Extensions;
 
@@ -24,17 +25,20 @@ public class PermissionsController : ControllerBase
     private readonly IPermissionService _permissionService;
     private readonly ICacheService _cacheService;
     private readonly IJwtTokenProvider _jwtTokenProvider;
+    private readonly ILogSanitizer _logSanitizer;
     private readonly ILogger<PermissionsController> _logger;
 
     public PermissionsController(
         IPermissionService permissionService,
         ICacheService cacheService,
         IJwtTokenProvider jwtTokenProvider,
+        ILogSanitizer logSanitizer,
         ILogger<PermissionsController> logger)
     {
         _permissionService = permissionService;
         _cacheService = cacheService;
         _jwtTokenProvider = jwtTokenProvider;
+        _logSanitizer = logSanitizer;
         _logger = logger;
     }
 
@@ -316,8 +320,8 @@ public class PermissionsController : ControllerBase
         {
             _logger.LogWarning(
                 "Permission check userId mismatch: query {QueryUserId} vs token {TokenUserId}",
-                queryUserId,
-                tokenUserId);
+                _logSanitizer.Sanitize(queryUserId.Value.ToString()),
+                _logSanitizer.Sanitize(tokenUserId.Value.ToString()));
             return null;
         }
 

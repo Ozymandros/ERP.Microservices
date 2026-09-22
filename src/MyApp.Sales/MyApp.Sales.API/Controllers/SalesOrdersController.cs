@@ -125,7 +125,7 @@ namespace MyApp.Sales.API.Controllers
                 query.Validate();
                 var spec = new SalesOrderQuerySpec(query);
                 var result = await _salesOrderService.QuerySalesOrdersAsync(spec);
-                _logger.LogInformation("Searched sales orders with query: {@Query}", query);
+                _logger.LogInformation("Searched sales orders");
                 return Ok(result);
             }
             catch (ArgumentException ex)

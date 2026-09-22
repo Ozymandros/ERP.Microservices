@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Security;
 
 namespace MyApp.Auth.API.Controllers;
 
@@ -27,13 +28,16 @@ public class InternalPermissionsController : ControllerBase
     };
 
     private readonly IPermissionService _permissionService;
+    private readonly ILogSanitizer _logSanitizer;
     private readonly ILogger<InternalPermissionsController> _logger;
 
     public InternalPermissionsController(
         IPermissionService permissionService,
+        ILogSanitizer logSanitizer,
         ILogger<InternalPermissionsController> logger)
     {
         _permissionService = permissionService;
+        _logSanitizer = logSanitizer;
         _logger = logger;
     }
 
@@ -56,7 +60,8 @@ public class InternalPermissionsController : ControllerBase
         {
             _logger.LogWarning(
                 "Rejected internal permission check from untrusted caller {Caller}",
-                Request.Headers.TryGetValue("dapr-caller-app-id", out var c) ? c.ToString() : "(missing)");
+                _logSanitizer.Sanitize(
+                    Request.Headers.TryGetValue("dapr-caller-app-id", out var c) ? c.ToString() : "(missing)"));
             return Unauthorized();
         }
 
@@ -67,7 +72,12 @@ public class InternalPermissionsController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Internal permission check failed for {UserId} {Module} {Action}", userId, module, action);
+            _logger.LogError(
+                ex,
+                "Internal permission check failed for {UserId} {Module} {Action}",
+                userId,
+                _logSanitizer.Sanitize(module),
+                _logSanitizer.Sanitize(action));
             return StatusCode(500, new { message = "An error occurred checking the permission" });
         }
     }

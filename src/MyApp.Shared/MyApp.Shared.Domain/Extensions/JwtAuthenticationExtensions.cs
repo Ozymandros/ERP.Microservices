@@ -148,7 +148,7 @@ public static class JwtAuthenticationExtensions
 
                             "JWT authentication failed for {Path}",
 
-                            context.Request.Path);
+                            new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(context.Request.Path.Value));
 
 
 

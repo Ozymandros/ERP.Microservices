@@ -52,7 +52,7 @@ public class InventoryEventHandlers : ControllerBase
     {
         _logger.LogInformation(
             "Received StockUpdatedEvent: ProductId={ProductId}, Change={Change}, Type={Type}",
-            @event.ProductId, @event.QuantityChange, @event.TransactionType);
+            @event.ProductId, @event.QuantityChange, new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(@event.TransactionType));
 
         // Purchasing service could use this to:
         // - Track consumption rates

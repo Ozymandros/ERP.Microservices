@@ -215,7 +215,7 @@ public class PurchaseOrdersController : ControllerBase
             query.Validate();
             var spec = new PurchaseOrderQuerySpec(query);
             var result = await _purchaseOrderService.QueryPurchaseOrdersAsync(spec);
-            _logger.LogInformation("Searched purchase orders with query: {@Query}", query);
+            _logger.LogInformation("Searched purchase orders");
             return Ok(result);
         }
         catch (ArgumentException ex)

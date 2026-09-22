@@ -197,7 +197,7 @@ public class InvoicesController : ControllerBase
             var spec = new InvoiceQuerySpec(query);
             var result = await _invoiceService.QueryInvoicesAsync(spec, cancellationToken);
 
-            _logger.LogInformation("Searched invoices with query: {@Query}", query);
+            _logger.LogInformation("Searched invoices");
             return Ok(result);
         }
         catch (ArgumentException ex)

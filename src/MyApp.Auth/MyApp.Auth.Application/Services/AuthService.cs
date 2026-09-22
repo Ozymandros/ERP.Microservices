@@ -212,16 +212,16 @@ public class AuthService : AppServiceBase, IAuthService
         var roleNames = userRoles.Select(r => r.Name).ToList();
         bool isAdmin = userRoles.Any(r => r.Name != null && r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
 
-        _logger.LogInformation("User {UserId} ({Email}) has roles: {Roles}, IsAdmin: {IsAdmin}",
-            user.Id, user.Email, string.Join(", ", roleNames), isAdmin);
+        _logger.LogInformation("User {UserId} has roles: {Roles}, IsAdmin: {IsAdmin}",
+            user.Id, string.Join(", ", roleNames), isAdmin);
 
         List<Permission> permissions;
         if (isAdmin)
         {
             var allPermissions = await _permissionRepository.GetAllAsync();
             permissions = allPermissions.ToList();
-            _logger.LogInformation("Admin user {UserId} ({Email}) - returning all {Count} permissions",
-                user.Id, user.Email, permissions.Count);
+            _logger.LogInformation("Admin user {UserId} - returning all {Count} permissions",
+                user.Id, permissions.Count);
         }
         else
         {
@@ -231,7 +231,7 @@ public class AuthService : AppServiceBase, IAuthService
                 var rolePermissions = await _roleRepository.GetPermissionsForRoleAsync(role.Id);
                 permissions.AddRange(rolePermissions);
                 _logger.LogInformation("Role {RoleName} ({RoleId}) has {Count} permissions",
-                    role.Name, role.Id, rolePermissions.Count());
+                    _logSanitizer.Sanitize(role.Name), role.Id, rolePermissions.Count());
             }
 
             var allUserPermissions = await _permissionRepository.GetAllPermissionsByUserId(user.Id);
@@ -240,8 +240,8 @@ public class AuthService : AppServiceBase, IAuthService
             permissions.AddRange(directUserPermissions);
 
             var distinctPermissions = permissions.DistinctBy(p => p.Id).ToList();
-            _logger.LogInformation("User {UserId} ({Email}) - {DirectCount} direct permissions, {RoleCount} role permissions, {TotalCount} total distinct permissions",
-                user.Id, user.Email, directUserPermissions.Count(),
+            _logger.LogInformation("User {UserId} - {DirectCount} direct permissions, {RoleCount} role permissions, {TotalCount} total distinct permissions",
+                user.Id, directUserPermissions.Count(),
                 permissions.Count - directUserPermissions.Count(),
                 distinctPermissions.Count);
 

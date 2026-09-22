@@ -170,7 +170,7 @@ namespace MyApp.Sales.Application.Services
         {
             _logger.LogInformation(
                 "Creating quote: OrderNumber={OrderNumber}, CustomerId={CustomerId}",
-                dto.OrderNumber, dto.CustomerId);
+                new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(dto.OrderNumber), dto.CustomerId);
 
             // Validate customer exists
             var customer = await _customerRepository.GetByIdAsync(dto.CustomerId);

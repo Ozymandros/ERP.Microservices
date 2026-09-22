@@ -146,7 +146,7 @@ public class WarehousesController : ControllerBase
             query.Validate();
             var spec = new WarehouseQuerySpec(query);
             var result = await _warehouseService.QueryWarehousesAsync(spec);
-            _logger.LogInformation("Searched warehouses with query: {@Query}", query);
+            _logger.LogInformation("Searched warehouses");
             return Ok(result);
         }
         catch (ArgumentException ex)

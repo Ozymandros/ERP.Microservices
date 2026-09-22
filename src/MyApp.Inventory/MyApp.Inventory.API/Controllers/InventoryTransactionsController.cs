@@ -110,7 +110,7 @@ namespace MyApp.Inventory.API.Controllers
                 query.Validate();
                 var spec = new InventoryTransactionQuerySpec(query);
                 var result = await _transactionService.QueryTransactionsAsync(spec);
-                _logger.LogInformation("Searched transactions with query: {@Query}", query);
+                _logger.LogInformation("Searched transactions");
                 return Ok(result);
             }
             catch (ArgumentException ex)

@@ -236,7 +236,7 @@ namespace MyApp.Sales.API.Controllers
                 query.Validate();
                 var spec = new CustomerQuerySpec(query);
                 var result = await _customerService.QueryCustomersAsync(spec);
-                _logger.LogInformation("Searched customers with query: {@Query}", query);
+                _logger.LogInformation("Searched customers");
                 return Ok(result);
             }
             catch (ArgumentException ex)

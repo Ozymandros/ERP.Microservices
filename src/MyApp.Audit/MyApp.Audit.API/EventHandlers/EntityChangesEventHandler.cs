@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Audit.Application.Contracts.Services;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
+using MyApp.Shared.Domain.Security;
+
 namespace MyApp.Audit.API.EventHandlers;
 
 /// <summary>Sole subscriber for entity-change audit events from producer microservices.</summary>
@@ -28,9 +30,10 @@ public class EntityChangesEventHandler : ControllerBase
         EntityChangesSavedEvent @event,
         CancellationToken cancellationToken)
     {
+        var logSanitizer = new LogSanitizer();
         _logger.LogInformation(
             "Received EntityChangesSavedEvent from {SourceService} with {ChangeCount} changes",
-            @event.SourceService,
+            logSanitizer.Sanitize(@event.SourceService),
             @event.Changes.Count);
 
         if (@event.Changes.Count == 0)
@@ -41,7 +44,7 @@ public class EntityChangesEventHandler : ControllerBase
         _logger.LogInformation(
             "Ingested {ChangeCount} entity changes from {SourceService}",
             @event.Changes.Count,
-            @event.SourceService);
+            logSanitizer.Sanitize(@event.SourceService));
 
         return Ok();
     }

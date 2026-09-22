@@ -97,7 +97,7 @@ builder.Services
                     context.Exception,
                     "JWT bearer authentication failed for {Method} {Path}",
                     context.Request.Method,
-                    context.Request.Path);
+                    new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(context.Request.Path.Value));
                 return Task.CompletedTask;
             },
         };

@@ -42,7 +42,7 @@ public class OrderEventHandlers : ControllerBase
     {
         _logger.LogInformation(
             "Received OrderCreatedEvent: OrderId={OrderId}, Type={Type}",
-            @event.OrderId, @event.OrderType);
+            @event.OrderId, new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(@event.OrderType));
 
         if (@event.OrderType != OrderTypes.Inbound || !@event.WarehouseId.HasValue)
         {
@@ -95,7 +95,7 @@ public class OrderEventHandlers : ControllerBase
     {
         _logger.LogInformation(
             "Received OrderFulfilledEvent: OrderId={OrderId}, Type={Type}, WarehouseId={WarehouseId}",
-            @event.OrderId, @event.OrderType, @event.WarehouseId);
+            @event.OrderId, new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(@event.OrderType), @event.WarehouseId);
 
         try
         {

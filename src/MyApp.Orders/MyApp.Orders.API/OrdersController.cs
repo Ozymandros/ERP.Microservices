@@ -349,7 +349,7 @@ namespace MyApp.Orders.API
                 query.Validate();
                 var spec = new OrderQuerySpec(query);
                 var result = await _orderService.QueryOrdersAsync(spec);
-                _logger.LogInformation("Searched orders with query: {@Query}", query);
+                _logger.LogInformation("Searched orders");
                 return Ok(result);
             }
             catch (ArgumentException ex)
