@@ -182,6 +182,7 @@ jobs:
         run: |
           set -euo pipefail
           AWS_DEPLOY_ROLE_ARN="$BOOTSTRAP_ROLE"
+          echo "AWS_DEPLOY_ROLE_ARN=$AWS_DEPLOY_ROLE_ARN"
           if [[ -z "$AWS_DEPLOY_ROLE_ARN" ]]; then
             AWS_DEPLOY_ROLE_ARN="${{ vars.AWS_DEPLOY_ROLE_ARN }}"
           fi
