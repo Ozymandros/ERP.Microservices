@@ -16,6 +16,7 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Purchasing.Application.Services;
 
+/// <summary>Application service that implements purchase order business workflows including approval and receiving.</summary>
 public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
 {
     private readonly IPurchaseOrderRepository _purchaseOrderRepository;
@@ -222,10 +223,9 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
         await SaveChangesAsync();
     }
 
-    /// <summary>
-    /// Query purchase orders asynchronously.
-    /// </summary>
-    /// <param name="spec">The spec.</param>
+    /// <summary>Returns a paginated, filtered and sorted collection of purchase orders.</summary>
+    /// <param name="spec">The specification that defines filtering, sorting, and paging.</param>
+    /// <returns>A paginated result containing matching purchase order DTOs.</returns>
     public async Task<PaginatedResult<PurchaseOrderDto>> QueryPurchaseOrdersAsync(ISpecification<PurchaseOrder> spec)
     {
         var result = await _purchaseOrderRepository.QueryAsync(spec);

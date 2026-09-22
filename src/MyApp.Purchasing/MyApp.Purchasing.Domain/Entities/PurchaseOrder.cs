@@ -7,9 +7,13 @@ namespace MyApp.Purchasing.Domain.Entities;
 /// </summary>
 public enum PurchaseOrderStatus
 {
+    /// <summary>The purchase order has been created but not yet approved.</summary>
     Draft,
+    /// <summary>The purchase order has been reviewed and approved for fulfilment.</summary>
     Approved,
+    /// <summary>The ordered goods have been received from the supplier.</summary>
     Received,
+    /// <summary>The purchase order has been cancelled.</summary>
     Cancelled
 }
 

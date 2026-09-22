@@ -4,15 +4,15 @@ using MyApp.Auth.Domain.Entities;
 namespace MyApp.Auth.API.Seeders;
 
 /// <summary>
-/// Provides Role Seeder functionality.
+/// Seeds the default application roles on application startup.
 /// </summary>
 public static class RoleSeeder
 {
     /// <summary>
-    /// Seed asynchronously.
+    /// Seeds the default roles (Admin, User, Manager), creating any that do not already exist.
     /// </summary>
-    /// <param name="roleManager">The role Manager.</param>
-    /// <returns></returns>
+    /// <param name="roleManager">The ASP.NET Core Identity role manager used to create and query roles.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous seed operation.</returns>
     public static async Task SeedAsync(RoleManager<ApplicationRole> roleManager)
     {
         var roles = new[] { "Admin", "User", "Manager" };

@@ -15,6 +15,7 @@ using Xunit;
 
 namespace MyApp.Inventory.Application.Tests.Services;
 
+/// <summary>Unit tests for <see cref="WarehouseStockService"/>.</summary>
 public class WarehouseStockServiceTests : BaseServiceTest
 {
     private readonly Mock<IWarehouseStockRepository> _mockWarehouseStockRepository;
@@ -26,6 +27,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
     private readonly Mock<IEventPublisher> _mockEventPublisher;
     private readonly WarehouseStockService _service;
 
+    /// <summary>Initialises mocks and the system-under-test before each test.</summary>
     public WarehouseStockServiceTests()
     {
         _mockWarehouseStockRepository = new Mock<IWarehouseStockRepository>();
@@ -51,6 +53,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
 
     #region GetByProductAndWarehouseAsync Tests
 
+    /// <summary>Verifies that GetByProductAndWarehouseAsync returns a mapped DTO when stock exists for the product/warehouse combination.</summary>
     [Fact]
     public async Task GetByProductAndWarehouseAsync_WithExistingStock_ReturnsWarehouseStockDto()
     {
@@ -88,6 +91,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         _mockWarehouseStockRepository.Verify(r => r.GetByProductAndWarehouseAsync(productId, warehouseId), Times.Once);
     }
 
+    /// <summary>Verifies that GetByProductAndWarehouseAsync returns null when no stock record exists for the product/warehouse combination.</summary>
     [Fact]
     public async Task GetByProductAndWarehouseAsync_WithNonExistentStock_ReturnsNull()
     {
@@ -111,6 +115,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
 
     #region GetByProductIdAsync Tests
 
+    /// <summary>Verifies that GetByProductIdAsync returns all stock records for the specified product.</summary>
     [Fact]
     public async Task GetByProductIdAsync_WithExistingStocks_ReturnsListOfWarehouseStockDto()
     {
@@ -138,6 +143,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         _mockWarehouseStockRepository.Verify(r => r.GetByProductIdAsync(productId), Times.Once);
     }
 
+    /// <summary>Verifies that GetByProductIdAsync returns an empty list when no stock exists for the product.</summary>
     [Fact]
     public async Task GetByProductIdAsync_WithNoStocks_ReturnsEmptyList()
     {
@@ -163,6 +169,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
 
     #region GetByWarehouseIdAsync Tests
 
+    /// <summary>Verifies that GetByWarehouseIdAsync returns all stock records for the specified warehouse.</summary>
     [Fact]
     public async Task GetByWarehouseIdAsync_WithExistingStocks_ReturnsListOfWarehouseStockDto()
     {
@@ -194,6 +201,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
 
     #region GetProductAvailabilityAsync Tests
 
+    /// <summary>Verifies that GetProductAvailabilityAsync returns aggregated availability totals across all warehouses when the product exists.</summary>
     [Fact]
     public async Task GetProductAvailabilityAsync_WithExistingProduct_ReturnsStockAvailabilityDto()
     {
@@ -225,6 +233,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         result.WarehouseStocks.Should().HaveCount(2);
     }
 
+    /// <summary>Verifies that GetProductAvailabilityAsync returns null when the product does not exist.</summary>
     [Fact]
     public async Task GetProductAvailabilityAsync_WithNonExistentProduct_ReturnsNull()
     {
@@ -246,6 +255,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
 
     #region ReserveStockAsync Tests
 
+    /// <summary>Verifies that ReserveStockAsync decrements available quantity, increments reserved quantity, and returns a reservation DTO.</summary>
     [Fact]
     public async Task ReserveStockAsync_WithValidDto_ReservesStockAndReturnsReservationDto()
     {
@@ -298,6 +308,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         _mockEventPublisher.Verify(e => e.PublishAsync("inventory.stock.reserved", It.IsAny<object>()), Times.Once);
     }
 
+    /// <summary>Verifies that ReserveStockAsync throws <see cref="ArgumentNullException"/> when the DTO is null.</summary>
     [Fact]
     public async Task ReserveStockAsync_WithNullDto_ThrowsArgumentNullException()
     {
@@ -308,6 +319,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         await act.Should().ThrowAsync<ArgumentNullException>();
     }
 
+    /// <summary>Verifies that ReserveStockAsync throws <see cref="InvalidOperationException"/> when no stock record exists for the product/warehouse combination.</summary>
     [Fact]
     public async Task ReserveStockAsync_WithNonExistentStock_ThrowsInvalidOperationException()
     {
@@ -335,6 +347,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
             .WithMessage($"*No stock record found*");
     }
 
+    /// <summary>Verifies that ReserveStockAsync throws InsufficientStockException when the requested quantity exceeds available stock.</summary>
     [Fact]
     public async Task ReserveStockAsync_WithInsufficientStock_ThrowsInsufficientStockException()
     {
@@ -370,6 +383,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
             .Where(e => e.ProductId == productId && e.WarehouseId == warehouseId && e.RequestedQuantity == 20 && e.AvailableQuantity == 10);
     }
 
+    /// <summary>Verifies that ReserveStockAsync still returns a reservation when event publishing fails, and logs the error.</summary>
     [Fact]
     public async Task ReserveStockAsync_WhenEventPublishingFails_StillReturnsReservation()
     {
@@ -424,6 +438,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
 
     #region ReleaseReservationAsync Tests
 
+    /// <summary>Verifies that ReleaseReservationAsync releases the reservation, restores available stock, and publishes a release event.</summary>
     [Fact]
     public async Task ReleaseReservationAsync_WithValidReservationId_PublishesEvent()
     {
@@ -467,6 +482,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         VerifyLoggerCalledAtLeast(_mockLogger, LogLevel.Information, 1);
     }
 
+    /// <summary>Verifies that ReleaseReservationAsync logs an error when event publishing fails but still completes the release.</summary>
     [Fact]
     public async Task ReleaseReservationAsync_WhenEventPublishingFails_LogsError()
     {
@@ -520,6 +536,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
 
     #region TransferStockAsync Tests
 
+    /// <summary>Verifies that TransferStockAsync decrements source stock, creates destination stock, records two transactions, and publishes a transfer event.</summary>
     [Fact]
     public async Task TransferStockAsync_WithValidDto_TransfersStockBetweenWarehouses()
     {
@@ -577,6 +594,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         _mockEventPublisher.Verify(e => e.PublishAsync("inventory.stock.transferred", It.IsAny<object>()), Times.Once);
     }
 
+    /// <summary>Verifies that TransferStockAsync updates an existing destination stock record rather than creating a new one.</summary>
     [Fact]
     public async Task TransferStockAsync_WithExistingDestinationStock_UpdatesDestinationStock()
     {
@@ -632,6 +650,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
             s.WarehouseId == toWarehouseId && s.AvailableQuantity == 80)), Times.Once);
     }
 
+    /// <summary>Verifies that TransferStockAsync throws <see cref="ArgumentNullException"/> when the DTO is null.</summary>
     [Fact]
     public async Task TransferStockAsync_WithNullDto_ThrowsArgumentNullException()
     {
@@ -642,6 +661,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         await act.Should().ThrowAsync<ArgumentNullException>();
     }
 
+    /// <summary>Verifies that TransferStockAsync throws StockTransferException when the source warehouse has insufficient stock.</summary>
     [Fact]
     public async Task TransferStockAsync_WithInsufficientStock_ThrowsStockTransferException()
     {
@@ -682,6 +702,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
 
     #region AdjustStockAsync Tests
 
+    /// <summary>Verifies that AdjustStockAsync updates the available quantity, records an adjustment transaction, and publishes an event.</summary>
     [Fact]
     public async Task AdjustStockAsync_WithValidDto_AdjustsStockAndCreatesTransaction()
     {
@@ -730,6 +751,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         _mockEventPublisher.Verify(e => e.PublishAsync("inventory.stock.adjusted", It.IsAny<object>()), Times.Once);
     }
 
+    /// <summary>Verifies that AdjustStockAsync throws <see cref="ArgumentNullException"/> when the DTO is null.</summary>
     [Fact]
     public async Task AdjustStockAsync_WithNullDto_ThrowsArgumentNullException()
     {
@@ -740,6 +762,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         await act.Should().ThrowAsync<ArgumentNullException>();
     }
 
+    /// <summary>Verifies that AdjustStockAsync throws <see cref="InvalidOperationException"/> when no stock record exists for the product/warehouse combination.</summary>
     [Fact]
     public async Task AdjustStockAsync_WithNonExistentStock_ThrowsInvalidOperationException()
     {
@@ -768,6 +791,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
             .WithMessage($"*No stock record found*");
     }
 
+    /// <summary>Verifies that AdjustStockAsync throws <see cref="InvalidOperationException"/> when the adjustment would result in negative stock.</summary>
     [Fact]
     public async Task AdjustStockAsync_WithAdjustmentResultingInNegativeStock_ThrowsInvalidOperationException()
     {
@@ -806,6 +830,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
 
     #region GetLowStockAsync Tests
 
+    /// <summary>Verifies that GetLowStockAsync returns all warehouse stock records that are below the reorder level.</summary>
     [Fact]
     public async Task GetLowStockAsync_ReturnsListOfLowStockWarehouseStockDto()
     {
@@ -836,6 +861,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
 
     #region GetAllWarehouseStocksAsync Tests
 
+    /// <summary>Verifies that GetAllWarehouseStocksAsync returns all warehouse stock records.</summary>
     [Fact]
     public async Task GetAllWarehouseStocksAsync_ReturnsListOfAllWarehouseStockDto()
     {
@@ -866,6 +892,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
 
     #region Edge Cases and Boundary Values
 
+    /// <summary>Verifies that AdjustStockAsync handles a very large quantity adjustment without overflow errors.</summary>
     [Fact]
     public async Task AdjustStockAsync_WithMaximumQuantity_AdjustsSuccessfully()
     {
@@ -898,6 +925,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         _mockWarehouseStockRepository.Verify(r => r.UpdateAsync(It.IsAny<WarehouseStock>()), Times.Once);
     }
 
+    /// <summary>Verifies that ReserveStockAsync throws an exception when the requested reservation quantity is zero.</summary>
     [Fact]
     public async Task ReserveStockAsync_WithZeroQuantity_ThrowsException()
     {

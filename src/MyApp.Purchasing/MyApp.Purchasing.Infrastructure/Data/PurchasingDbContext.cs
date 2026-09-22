@@ -23,6 +23,8 @@ public class PurchasingDbContext : AuditableDbContext
     /// <summary>Gets or sets Purchase Order Lines.</summary>
     public DbSet<PurchaseOrderLine> PurchaseOrderLines { get; set; }
 
+    /// <summary>Applies entity configurations from the current assembly when the model is being created.</summary>
+    /// <param name="modelBuilder">The model builder used to construct the EF Core model.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

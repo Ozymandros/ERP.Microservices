@@ -13,6 +13,7 @@ using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Purchasing.Application.Services;
 
+/// <summary>Application service that implements supplier management operations.</summary>
 public class SupplierService : AppServiceBase, ISupplierService
 {
     private readonly ISupplierRepository _supplierRepository;
@@ -161,10 +162,9 @@ public class SupplierService : AppServiceBase, ISupplierService
         await SaveChangesAsync();
     }
 
-    /// <summary>
-    /// Query suppliers asynchronously.
-    /// </summary>
-    /// <param name="spec">The spec.</param>
+    /// <summary>Returns a paginated, filtered and sorted collection of suppliers.</summary>
+    /// <param name="spec">The specification that defines filtering, sorting, and paging.</param>
+    /// <returns>A paginated result containing matching supplier DTOs.</returns>
     public async Task<PaginatedResult<SupplierDto>> QuerySuppliersAsync(ISpecification<Supplier> spec)
     {
         var result = await _supplierRepository.QueryAsync(spec);

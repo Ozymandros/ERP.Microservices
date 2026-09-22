@@ -14,6 +14,7 @@ using MyApp.Shared.Infrastructure.Export;
 using MyApp.Shared.Infrastructure.Extensions;
 namespace MyApp.Purchasing.API.Controllers;
 
+/// <summary>API controller for managing purchase orders including creation, approval, and receiving workflows.</summary>
 [ApiController]
 [Authorize]
 [Route("api/purchasing/orders")]
@@ -36,9 +37,8 @@ public class PurchaseOrdersController : ControllerBase
         _logger = logger;
     }
 
-    /// <summary>
-    /// Export all purchase orders as XLSX
-    /// </summary>
+    /// <summary>Exports all purchase orders as an XLSX file.</summary>
+    /// <returns>An XLSX file containing all purchase orders.</returns>
     [HttpGet("export-xlsx")]
     [HasPermission("Purchasing", "Read")]
     [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
@@ -59,9 +59,8 @@ public class PurchaseOrdersController : ControllerBase
         }
     }
 
-    /// <summary>
-    /// Export all purchase orders as PDF
-    /// </summary>
+    /// <summary>Exports all purchase orders as a PDF file.</summary>
+    /// <returns>A PDF file containing all purchase orders.</returns>
     [HttpGet("export-pdf")]
     [HasPermission("Purchasing", "Read")]
     [Produces("application/pdf")]
@@ -82,10 +81,9 @@ public class PurchaseOrdersController : ControllerBase
         }
     }
 
-    /// <summary>
-    /// Get all purchase orders (optionally paginated and filtered)
-    /// </summary>
-    /// <param name="query">The query.</param>
+    /// <summary>Retrieves all purchase orders, or a filtered/paginated result when query parameters are present.</summary>
+    /// <param name="query">Optional query parameters for filtering, sorting, and paging.</param>
+    /// <returns>A list or paginated collection of purchase order DTOs.</returns>
     [HttpGet]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(typeof(IEnumerable<PurchaseOrderDto>), StatusCodes.Status200OK)]
@@ -125,10 +123,9 @@ public class PurchaseOrdersController : ControllerBase
         }
     }
 
-    /// <summary>
-    /// Get purchase order by ID - Requires Purchasing.Read permission
-    /// </summary>
-    /// <param name="id">The id.</param>
+    /// <summary>Retrieves a purchase order by its unique identifier.</summary>
+    /// <param name="id">The unique identifier of the purchase order.</param>
+    /// <returns>The purchase order DTO, or 404 if not found.</returns>
     [HttpGet("{id}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -165,10 +162,9 @@ public class PurchaseOrdersController : ControllerBase
         }
     }
 
-    /// <summary>
-    /// Get purchase order by Order Number - Requires Purchasing.Read permission
-    /// </summary>
-    /// <param name="orderNumber">The order Number.</param>
+    /// <summary>Retrieves a purchase order by its order number.</summary>
+    /// <param name="orderNumber">The order number to look up.</param>
+    /// <returns>The purchase order DTO, or 404 if not found.</returns>
     [HttpGet("code/{orderNumber}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -205,10 +201,9 @@ public class PurchaseOrdersController : ControllerBase
         }
     }
 
-    /// <summary>
-    /// Search purchase orders with advanced filtering, sorting, and pagination - Requires Purchasing.Read permission
-    /// </summary>
-    /// <param name="query">The query.</param>
+    /// <summary>Searches purchase orders with advanced filtering, sorting, and pagination.</summary>
+    /// <param name="query">Query parameters for filtering, sorting, and paging.</param>
+    /// <returns>A paginated result of matching purchase order DTOs.</returns>
     /// <remarks>
     /// Supported filters: orderNumber, supplierId, status, minTotal, maxTotal
     /// Supported sort fields: id, orderNumber, status, totalAmount, createdAt, orderDate
@@ -240,10 +235,9 @@ public class PurchaseOrdersController : ControllerBase
         }
     }
 
-    /// <summary>
-    /// Get purchase orders by supplier - Requires Purchasing.Read permission
-    /// </summary>
-    /// <param name="supplierId">The supplier Id.</param>
+    /// <summary>Retrieves all purchase orders for a specific supplier.</summary>
+    /// <param name="supplierId">The unique identifier of the supplier.</param>
+    /// <returns>A collection of purchase order DTOs for the supplier.</returns>
     [HttpGet("supplier/{supplierId}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -254,10 +248,9 @@ public class PurchaseOrdersController : ControllerBase
         return Ok(orders);
     }
 
-    /// <summary>
-    /// Get purchase orders by status - Requires Purchasing.Read permission
-    /// </summary>
-    /// <param name="status">The status.</param>
+    /// <summary>Retrieves all purchase orders with the specified status.</summary>
+    /// <param name="status">The status string to filter by (Draft, Approved, Received, Cancelled).</param>
+    /// <returns>A collection of purchase order DTOs with the given status.</returns>
     [HttpGet("status/{status}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -275,10 +268,9 @@ public class PurchaseOrdersController : ControllerBase
         return Ok(orders);
     }
 
-    /// <summary>
-    /// Create a new purchase order - Requires Purchasing.Create permission
-    /// </summary>
-    /// <param name="dto">The dto.</param>
+    /// <summary>Creates a new purchase order.</summary>
+    /// <param name="dto">The data for the new purchase order.</param>
+    /// <returns>The created purchase order DTO with a 201 Created response.</returns>
     [HttpPost]
     [HasPermission("Purchasing", "Create")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -306,11 +298,10 @@ public class PurchaseOrdersController : ControllerBase
         }
     }
 
-    /// <summary>
-    /// Update an existing purchase order - Requires Purchasing.Update permission
-    /// </summary>
-    /// <param name="id">The id.</param>
-    /// <param name="dto">The dto.</param>
+    /// <summary>Updates an existing purchase order.</summary>
+    /// <param name="id">The unique identifier of the purchase order to update.</param>
+    /// <param name="dto">The updated data.</param>
+    /// <returns>The updated purchase order DTO.</returns>
     [HttpPut("{id}")]
     [HasPermission("Purchasing", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -340,11 +331,10 @@ public class PurchaseOrdersController : ControllerBase
         }
     }
 
-    /// <summary>
-    /// Update purchase order status - Requires Purchasing.Update permission
-    /// </summary>
-    /// <param name="id">The id.</param>
-    /// <param name="status">The status.</param>
+    /// <summary>Updates the status of a purchase order.</summary>
+    /// <param name="id">The unique identifier of the purchase order.</param>
+    /// <param name="status">The new status string (Draft, Approved, Received, Cancelled).</param>
+    /// <returns>The updated purchase order DTO.</returns>
     [HttpPatch("{id}/status/{status}")]
     [HasPermission("Purchasing", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -371,10 +361,9 @@ public class PurchaseOrdersController : ControllerBase
         }
     }
 
-    /// <summary>
-    /// Delete a purchase order - Requires Purchasing.Delete permission
-    /// </summary>
-    /// <param name="id">The id.</param>
+    /// <summary>Deletes a purchase order by its unique identifier.</summary>
+    /// <param name="id">The unique identifier of the purchase order to delete.</param>
+    /// <returns>204 No Content on success, or 404 if not found.</returns>
     [HttpDelete("{id}")]
     [HasPermission("Purchasing", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -398,11 +387,10 @@ public class PurchaseOrdersController : ControllerBase
         }
     }
 
-    /// <summary>
-    /// Approve a purchase order - Requires Purchasing.Update permission
-    /// </summary>
-    /// <param name="id">The id.</param>
-    /// <param name="dto">The dto.</param>
+    /// <summary>Approves a purchase order for processing.</summary>
+    /// <param name="id">The unique identifier of the purchase order to approve.</param>
+    /// <param name="dto">The approval details.</param>
+    /// <returns>The approved purchase order DTO.</returns>
     [HttpPost("{id}/approve")]
     [HasPermission("Purchasing", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -437,11 +425,10 @@ public class PurchaseOrdersController : ControllerBase
         }
     }
 
-    /// <summary>
-    /// Receive a purchase order - Requires Purchasing.Update permission
-    /// </summary>
-    /// <param name="id">The id.</param>
-    /// <param name="dto">The dto.</param>
+    /// <summary>Records the receipt of goods for a purchase order and creates an inbound operational order.</summary>
+    /// <param name="id">The unique identifier of the purchase order to receive.</param>
+    /// <param name="dto">The receiving details including warehouse and per-line quantities.</param>
+    /// <returns>The updated purchase order DTO reflecting received status.</returns>
     [HttpPost("{id}/receive")]
     [HasPermission("Purchasing", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]

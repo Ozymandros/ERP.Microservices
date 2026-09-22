@@ -4,15 +4,15 @@ using MyApp.Auth.Domain.Entities;
 namespace MyApp.Auth.API.Seeders;
 
 /// <summary>
-/// Provides Admin User Seeder functionality.
+/// Seeds the default administrator user account on application startup.
 /// </summary>
 public static class AdminUserSeeder
 {
     /// <summary>
-    /// Seed asynchronously.
+    /// Seeds the default admin user, creating it if it does not exist or assigning the Admin role if it is missing.
     /// </summary>
-    /// <param name="userManager">The user Manager.</param>
-    /// <returns></returns>
+    /// <param name="userManager">The ASP.NET Core Identity user manager used to create and query users.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous seed operation.</returns>
     public static async Task SeedAsync(UserManager<ApplicationUser> userManager)
     {
         var adminEmail = "admin@myapp.local";

@@ -47,7 +47,6 @@ public class AIModelService : AppServiceBase, IAIModelService
     }
 
     /// <summary>Returns all AI models belonging to the specified provider.</summary>
-    /// <summary>Returns all AI models belonging to the specified provider.</summary>
     /// <param name="providerId">Provider identifier to filter by.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>AI model DTOs for the given provider.</returns>
@@ -62,7 +61,6 @@ public class AIModelService : AppServiceBase, IAIModelService
     }
 
     /// <summary>Retrieves a single AI model by its identifier.</summary>
-    /// Gets an item by its unique identifier asynchronously.
     /// <param name="id">The id.</param>
     /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The model DTO, or <see langword="null"/> if not found.</returns>
@@ -73,7 +71,6 @@ public class AIModelService : AppServiceBase, IAIModelService
     }
 
     /// <summary>Creates a new AI model, inheriting unspecified parameters from the parent provider.</summary>
-    /// Creates a new item asynchronously.
     /// <param name="dto">The dto.</param>
     /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The created model DTO.</returns>
@@ -106,7 +103,6 @@ public class AIModelService : AppServiceBase, IAIModelService
     }
 
     /// <summary>Updates an existing AI model.</summary>
-    /// Updates an existing item asynchronously.
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
     /// <param name="cancellationToken">The cancellation Token.</param>
@@ -142,11 +138,6 @@ public class AIModelService : AppServiceBase, IAIModelService
         return MapToDto(persisted);
     }
 
-    /// <summary>
-    /// Deletes an item asynchronously.
-    /// </summary>
-    /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <summary>Deletes the AI model with the specified identifier. Does nothing if the model does not exist.</summary>
     /// <param name="id">Model identifier.</param>
     /// <param name="cancellationToken">Cancellation token.</param>

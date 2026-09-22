@@ -11,6 +11,7 @@ using MyApp.Shared.Infrastructure.Export;
 using MyApp.Shared.Infrastructure.Extensions;
 namespace MyApp.Purchasing.API.Controllers;
 
+/// <summary>API controller for managing suppliers.</summary>
 [ApiController]
 [Authorize]
 [Route("api/purchasing/suppliers")]

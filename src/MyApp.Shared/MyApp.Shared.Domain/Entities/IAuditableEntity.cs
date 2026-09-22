@@ -16,12 +16,16 @@ namespace MyApp.Shared.Domain.Entities
     /// </summary>
     public interface IAuditableEntity
     {
+        /// <summary>Gets or sets the timestamp when the entity was created.</summary>
         DateTime CreatedAt { get; set; }
 
+        /// <summary>Gets or sets the username of the user who created the entity.</summary>
         string CreatedBy { get; set; }
 
+        /// <summary>Gets or sets the timestamp when the entity was last modified, or <see langword="null"/> if never modified.</summary>
         DateTime? UpdatedAt { get; set; }
 
+        /// <summary>Gets or sets the username of the user who last modified the entity, or <see langword="null"/> if never modified.</summary>
         string? UpdatedBy { get; set; }
     }
 }

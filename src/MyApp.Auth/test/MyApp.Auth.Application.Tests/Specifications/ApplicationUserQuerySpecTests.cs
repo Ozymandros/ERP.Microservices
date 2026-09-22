@@ -7,6 +7,9 @@ using Xunit;
 
 namespace MyApp.Auth.Application.Tests.Specifications;
 
+/// <summary>
+/// Unit tests for <see cref="ApplicationUserQuerySpec"/> filter and sort behaviour.
+/// </summary>
 public class ApplicationUserQuerySpecTests
 {
     private static IQueryable<ApplicationUser> CreateTestData()
@@ -20,6 +23,9 @@ public class ApplicationUserQuerySpecTests
         }.AsQueryable();
     }
 
+    /// <summary>
+    /// Verifies that filtering by IsActive returns only active users.
+    /// </summary>
     [Fact]
     public void ApplyFilters_WithIsActiveFilter_ReturnsFilteredUsers()
     {
@@ -34,6 +40,9 @@ public class ApplicationUserQuerySpecTests
         result.All(u => u.IsActive).Should().BeTrue();
     }
 
+    /// <summary>
+    /// Verifies that filtering by email returns only users whose email contains the filter value.
+    /// </summary>
     [Fact]
     public void ApplyFilters_WithEmailFilter_ReturnsFilteredUsers()
     {
@@ -48,6 +57,9 @@ public class ApplicationUserQuerySpecTests
         result.First().Email.Should().Contain("user1");
     }
 
+    /// <summary>
+    /// Verifies that filtering by username returns only users whose username contains the filter value.
+    /// </summary>
     [Fact]
     public void ApplyFilters_WithUserNameFilter_ReturnsFilteredUsers()
     {
@@ -62,6 +74,9 @@ public class ApplicationUserQuerySpecTests
         result.First().UserName.Should().Contain("admin");
     }
 
+    /// <summary>
+    /// Verifies that filtering by IsExternalLogin returns only external-login users.
+    /// </summary>
     [Fact]
     public void ApplyFilters_WithIsExternalLoginFilter_ReturnsFilteredUsers()
     {
@@ -76,6 +91,9 @@ public class ApplicationUserQuerySpecTests
         result.First().IsExternalLogin.Should().BeTrue();
     }
 
+    /// <summary>
+    /// Verifies that a search term matching a user's first or last name returns those users.
+    /// </summary>
     [Fact]
     public void ApplyFilters_WithSearchTermInFirstName_ReturnsMatchingUsers()
     {
@@ -88,6 +106,9 @@ public class ApplicationUserQuerySpecTests
         result.Should().HaveCount(2); // John Doe and Bob Johnson
     }
 
+    /// <summary>
+    /// Verifies that a search term matching a user's email returns that user.
+    /// </summary>
     [Fact]
     public void ApplyFilters_WithSearchTermInEmail_ReturnsMatchingUsers()
     {
@@ -100,6 +121,9 @@ public class ApplicationUserQuerySpecTests
         result.Should().HaveCount(1);
     }
 
+    /// <summary>
+    /// Verifies that sorting by email in ascending order produces the correct sort order.
+    /// </summary>
     [Fact]
     public void Apply_WithSortByEmail_SortsCorrectly()
     {

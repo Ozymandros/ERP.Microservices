@@ -10,7 +10,10 @@ namespace MyApp.Shared.Infrastructure.Export
     /// </summary>
     public static class XlsxExportExtensions
     {
-        /// <summary>Export To Xlsx.</summary>
+        /// <summary>Exports a collection of items to an XLSX spreadsheet byte array, with a header row derived from public property names.</summary>
+        /// <typeparam name="T">The type of items to export; each public property becomes a column.</typeparam>
+        /// <param name="items">The collection of items to serialize into the spreadsheet.</param>
+        /// <returns>A byte array containing the generated XLSX file.</returns>
         public static byte[] ExportToXlsx<T>(this IEnumerable<T> items)
         {
             var itemList = items.ToList();

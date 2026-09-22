@@ -75,6 +75,15 @@ permissions:
   packages: write
 
 jobs:
+  debug-bootstrap:
+    name: Debug bootstrap_oidc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show raw input
+        run: |
+          echo "bootstrap_oidc (raw) = '${{ github.event.inputs.bootstrap_oidc }}'"
+          python -c 'v = """${{ github.event.inputs.bootstrap_oidc }}"""; print(type(v).__name__, repr(v))'
+
   prepare:
     name: Prepare deployment context
     runs-on: ubuntu-latest
@@ -135,7 +144,7 @@ jobs:
 
   bootstrap-aws:
     name: Bootstrap AWS OIDC + infra
-    # if: ${{ github.event.inputs.bootstrap_oidc == true || github.event.inputs.bootstrap_oidc == 'true' }}
+    if: ${{ github.event.inputs.bootstrap_oidc == true || github.event.inputs.bootstrap_oidc == 'true' }}
     uses: ./.github/workflows/bootstrap-aws-infrastructure.yml
     secrets: inherit
     with:

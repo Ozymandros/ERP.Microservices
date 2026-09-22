@@ -7,6 +7,9 @@ using Xunit;
 
 namespace MyApp.Auth.Application.Tests.Specifications;
 
+/// <summary>
+/// Unit tests for <see cref="PermissionQuerySpec"/> filter and sort behaviour.
+/// </summary>
 public class PermissionQuerySpecTests
 {
     private static IQueryable<Permission> CreateTestData()
@@ -21,6 +24,9 @@ public class PermissionQuerySpecTests
         }.AsQueryable();
     }
 
+    /// <summary>
+    /// Verifies that filtering by module returns only permissions belonging to that module.
+    /// </summary>
     [Fact]
     public void ApplyFilters_WithModuleFilter_ReturnsFilteredPermissions()
     {
@@ -35,6 +41,9 @@ public class PermissionQuerySpecTests
         result.All(p => p.Module == "Orders").Should().BeTrue();
     }
 
+    /// <summary>
+    /// Verifies that filtering by action returns only permissions with that action.
+    /// </summary>
     [Fact]
     public void ApplyFilters_WithActionFilter_ReturnsFilteredPermissions()
     {
@@ -49,6 +58,9 @@ public class PermissionQuerySpecTests
         result.All(p => p.Action == "Create").Should().BeTrue();
     }
 
+    /// <summary>
+    /// Verifies that filtering by description returns permissions whose description contains the filter value.
+    /// </summary>
     [Fact]
     public void ApplyFilters_WithDescriptionFilter_ReturnsFilteredPermissions()
     {
@@ -62,6 +74,9 @@ public class PermissionQuerySpecTests
         result.Should().HaveCount(3); // Orders Create, Orders Read, Sales Create
     }
 
+    /// <summary>
+    /// Verifies that a search term matches permissions by module, action, or description.
+    /// </summary>
     [Fact]
     public void ApplyFilters_WithSearchTerm_ReturnsMatchingPermissions()
     {
@@ -74,6 +89,9 @@ public class PermissionQuerySpecTests
         result.Should().HaveCount(3);
     }
 
+    /// <summary>
+    /// Verifies that combining multiple filters returns only permissions that satisfy all conditions.
+    /// </summary>
     [Fact]
     public void ApplyFilters_WithMultipleFilters_ReturnsIntersection()
     {
@@ -89,6 +107,9 @@ public class PermissionQuerySpecTests
         result.First().Action.Should().Be("Create");
     }
 
+    /// <summary>
+    /// Verifies that sorting by module in ascending order produces the correct sort order.
+    /// </summary>
     [Fact]
     public void Apply_WithSortByModule_SortsCorrectly()
     {

@@ -7,6 +7,9 @@ using Xunit;
 
 namespace MyApp.Auth.Application.Tests.Specifications;
 
+/// <summary>
+/// Unit tests for <see cref="RoleQuerySpec"/> filter and sort behaviour.
+/// </summary>
 public class RoleQuerySpecTests
 {
     private static IQueryable<ApplicationRole> CreateTestData()
@@ -20,6 +23,9 @@ public class RoleQuerySpecTests
         }.AsQueryable();
     }
 
+    /// <summary>
+    /// Verifies that filtering by name returns only roles whose name contains the filter value.
+    /// </summary>
     [Fact]
     public void ApplyFilters_WithNameFilter_ReturnsFilteredRoles()
     {
@@ -34,6 +40,9 @@ public class RoleQuerySpecTests
         result.First().Name.Should().Contain("Admin");
     }
 
+    /// <summary>
+    /// Verifies that filtering by description returns roles whose description contains the filter value.
+    /// </summary>
     [Fact]
     public void ApplyFilters_WithDescriptionFilter_ReturnsFilteredRoles()
     {
@@ -47,6 +56,9 @@ public class RoleQuerySpecTests
         result.Should().HaveCount(2); // User and Guest roles
     }
 
+    /// <summary>
+    /// Verifies that a search term matching role names or descriptions returns the correct roles.
+    /// </summary>
     [Fact]
     public void ApplyFilters_WithSearchTerm_ReturnsMatchingRoles()
     {
