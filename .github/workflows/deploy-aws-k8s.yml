@@ -63,7 +63,7 @@ on:
       bootstrap_oidc:
         description: "First-time: run Bootstrap AWS Infrastructure (needs AWS_BOOTSTRAP_* secrets)"
         required: false
-        default: false
+        default: true
         type: boolean
 
 concurrency:
@@ -142,6 +142,7 @@ jobs:
       profile: ${{ github.event.inputs.profile }}
       aws_region: ${{ github.event.inputs.aws_region }}
       auto_approve: "true"
+      bootstrap_oidc: ${{ github.event.inputs.bootstrap_oidc }}
 
   deploy-k8s:
     name: Deploy AWS EKS (${{ github.event.inputs.profile }})

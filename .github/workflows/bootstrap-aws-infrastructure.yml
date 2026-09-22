@@ -6,6 +6,11 @@ name: Bootstrap AWS Infrastructure (OIDC)
 on:
   workflow_dispatch:
     inputs:
+      bootstrap_oidc:
+        description: "Bootstrap GitHub OIDC provider"
+        required: true
+        default: true
+        type: boolean
       profile:
         description: "OpenTofu tfvars profile"
         required: true
