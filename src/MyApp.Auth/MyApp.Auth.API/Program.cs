@@ -43,6 +43,8 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
 
+        services.AddLogSanitizer();
+
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRoleService, RoleService>();

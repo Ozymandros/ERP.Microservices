@@ -13,6 +13,7 @@ using MyApp.Auth.Domain.Repositories;
 using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Repositories;
+using MyApp.Shared.Domain.Security;
 using System.Security.Claims;
 using Xunit;
 
@@ -28,6 +29,7 @@ public class UserServiceTests : BaseServiceTest
     private readonly Mock<IPermissionRepository> _mockPermissionRepository;
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
     private readonly Mock<IEventPublisher> _mockEventPublisher;
+    private readonly Mock<ILogSanitizer> _mockLogSanitizer;
     private readonly Mock<ILogger<UserService>> _mockLogger;
     private readonly UserService _userService;
 
@@ -41,6 +43,10 @@ public class UserServiceTests : BaseServiceTest
         _mockPermissionRepository = new Mock<IPermissionRepository>();
         _mockUnitOfWork = new Mock<IUnitOfWork>();
         _mockEventPublisher = new Mock<IEventPublisher>();
+        _mockLogSanitizer = new Mock<ILogSanitizer>();
+        _mockLogSanitizer
+            .Setup(s => s.Sanitize(It.IsAny<string?>()))
+            .Returns((string? value) => value ?? string.Empty);
         _mockLogger = CreateMockLogger<UserService>();
         _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<EntityEntryDto>());
@@ -55,7 +61,8 @@ public class UserServiceTests : BaseServiceTest
             _mockEventPublisher.Object,
             _mockLogger.Object,
             _mockHttpContextAccessor.Object,
-            _mockPermissionRepository.Object);
+            _mockPermissionRepository.Object,
+            _mockLogSanitizer.Object);
     }
 
     #region GetUserByIdAsync

@@ -12,6 +12,7 @@ using MyApp.Auth.Infrastructure.Services;
 using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Repositories;
+using MyApp.Shared.Domain.Security;
 using System.Security.Claims;
 using Xunit;
 
@@ -24,6 +25,7 @@ public class AuthServiceTests : BaseServiceTest
     private readonly Mock<IRefreshTokenRepository> _mockRefreshTokenRepository;
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
     private readonly Mock<IEventPublisher> _mockEventPublisher;
+    private readonly Mock<ILogSanitizer> _mockLogSanitizer;
     private readonly Mock<ILogger<AuthService>> _mockLogger;
     private readonly AuthService _authService;
     private readonly Mock<IMapper> _mockMapper;
@@ -39,6 +41,10 @@ public class AuthServiceTests : BaseServiceTest
         _mockRefreshTokenRepository = new Mock<IRefreshTokenRepository>();
         _mockUnitOfWork = new Mock<IUnitOfWork>();
         _mockEventPublisher = new Mock<IEventPublisher>();
+        _mockLogSanitizer = new Mock<ILogSanitizer>();
+        _mockLogSanitizer
+            .Setup(s => s.Sanitize(It.IsAny<string?>()))
+            .Returns((string? value) => value ?? string.Empty);
         _mockLogger = CreateMockLogger<AuthService>();
         _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<EntityEntryDto>());
@@ -57,6 +63,7 @@ public class AuthServiceTests : BaseServiceTest
             _mockPermissionRepository.Object,
             _mockUnitOfWork.Object,
             _mockEventPublisher.Object,
+            _mockLogSanitizer.Object,
             _mockLogger.Object);
     }
 

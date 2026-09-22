@@ -8,6 +8,7 @@ using MyApp.Auth.Domain.Repositories;
 using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Entities;
+using MyApp.Shared.Domain.Security;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
@@ -21,18 +22,21 @@ public class PermissionService : AppServiceBase, IPermissionService
     private readonly IMapper _mapper;
     private readonly ILogger<PermissionService> _logger;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ILogSanitizer _logSanitizer;
 
     public PermissionService(UserManager<ApplicationUser> userManager,
         IPermissionRepository permissionRepository,
         IMapper mapper,
         IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher,
+        ILogSanitizer logSanitizer,
         ILogger<PermissionService> logger)
         : base(unitOfWork, eventPublisher, logger, ServiceNames.Auth)
     {
         _userManager = userManager;
         _permissionRepository = permissionRepository;
         _mapper = mapper;
+        _logSanitizer = logSanitizer;
         _logger = logger;
     }
 
@@ -121,7 +125,13 @@ public class PermissionService : AppServiceBase, IPermissionService
             var existing = await _permissionRepository.GetAllAsync();
             if (existing.Any(p => p.Module == createPermissionDto.Module && p.Action == createPermissionDto.Action))
             {
-                _logger.LogWarning("Permission already exists: {Module}:{Action}", createPermissionDto.Module, createPermissionDto.Action);
+                _logger.LogWarning(
+                    "Permission already exists: {@Permission}",
+                    new
+                    {
+                        Module = _logSanitizer.Sanitize(createPermissionDto.Module),
+                        Action = _logSanitizer.Sanitize(createPermissionDto.Action)
+                    });
                 return null;
             }
 
@@ -138,7 +148,14 @@ public class PermissionService : AppServiceBase, IPermissionService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating permission {Module}:{Action}", createPermissionDto.Module, createPermissionDto.Action);
+            _logger.LogError(
+                ex,
+                "Error creating permission {@Permission}",
+                new
+                {
+                    Module = _logSanitizer.Sanitize(createPermissionDto.Module),
+                    Action = _logSanitizer.Sanitize(createPermissionDto.Action)
+                });
             return null;
         }
     }

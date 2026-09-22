@@ -9,6 +9,7 @@ using MyApp.Auth.Domain.Repositories;
 using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Entities;
+using MyApp.Shared.Domain.Security;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
@@ -26,6 +27,7 @@ public class UserService : AppServiceBase, IUserService
     private readonly IMapper _mapper;
     private readonly ILogger<UserService> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ILogSanitizer _logSanitizer;
 
     public UserService(
         UserManager<ApplicationUser> userManager,
@@ -37,7 +39,8 @@ public class UserService : AppServiceBase, IUserService
         IEventPublisher eventPublisher,
         ILogger<UserService> logger,
         IHttpContextAccessor httpContextAccessor,
-        IPermissionRepository permissionRepository)
+        IPermissionRepository permissionRepository,
+        ILogSanitizer logSanitizer)
         : base(unitOfWork, eventPublisher, logger, ServiceNames.Auth)
     {
         _userManager = userManager;
@@ -48,6 +51,7 @@ public class UserService : AppServiceBase, IUserService
         _logger = logger;
         _httpContextAccessor = httpContextAccessor;
         _permissionRepository = permissionRepository;
+        _logSanitizer = logSanitizer;
     }
 
 
@@ -212,7 +216,9 @@ public class UserService : AppServiceBase, IUserService
 
         if (await EmailInUseAsync(user, updateUserDto.Email))
         {
-            _logger.LogWarning("Email already in use: {Email}", updateUserDto.Email);
+            _logger.LogWarning(
+                "Email already in use: {@User}",
+                new { Email = _logSanitizer.Sanitize(updateUserDto.Email) });
             return false;
         }
 
@@ -392,7 +398,9 @@ public class UserService : AppServiceBase, IUserService
         var roleExists = await _roleManager.RoleExistsAsync(roleName);
         if (!roleExists)
         {
-            _logger.LogWarning("Role not found: {RoleName}", roleName);
+            _logger.LogWarning(
+                "Role not found: {@Role}",
+                new { RoleName = _logSanitizer.Sanitize(roleName) });
             return false;
         }
 

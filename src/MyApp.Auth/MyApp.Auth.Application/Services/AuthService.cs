@@ -10,6 +10,7 @@ using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Permissions;
+using MyApp.Shared.Domain.Security;
 using System.Security.Claims;
 
 namespace MyApp.Auth.Application.Services;
@@ -25,6 +26,7 @@ public class AuthService : AppServiceBase, IAuthService
     private readonly IUserRepository _userRepository;
     private readonly IRoleRepository _roleRepository;
     private readonly IPermissionRepository _permissionRepository;
+    private readonly ILogSanitizer _logSanitizer;
     private readonly ILogger<AuthService> _logger;
 
     /// <summary>
@@ -39,6 +41,7 @@ public class AuthService : AppServiceBase, IAuthService
         IPermissionRepository permissionRepository,
         IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher,
+        ILogSanitizer logSanitizer,
         ILogger<AuthService> logger)
         : base(unitOfWork, eventPublisher, logger, ServiceNames.Auth)
     {
@@ -48,6 +51,7 @@ public class AuthService : AppServiceBase, IAuthService
         _userRepository = userRepository;
         _roleRepository = roleRepository;
         _permissionRepository = permissionRepository;
+        _logSanitizer = logSanitizer;
         _logger = logger;
     }
 
@@ -59,14 +63,18 @@ public class AuthService : AppServiceBase, IAuthService
         var user = await _userManager.FindByEmailAsync(loginDto.Email);
         if (user == null || user.IsExternalLogin)
         {
-            _logger.LogWarning("Login attempt failed for email: {Email}", loginDto.Email);
+            _logger.LogWarning(
+                "Login attempt failed for email: {@Login}",
+                new { Email = _logSanitizer.Sanitize(loginDto.Email) });
             return null;
         }
 
         var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
         if (!result)
         {
-            _logger.LogWarning("Invalid password for user: {Email}", loginDto.Email);
+            _logger.LogWarning(
+                "Invalid password for user: {@Login}",
+                new { Email = _logSanitizer.Sanitize(loginDto.Email) });
             return null;
         }
 
@@ -81,7 +89,9 @@ public class AuthService : AppServiceBase, IAuthService
         var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
         if (existingUser != null)
         {
-            _logger.LogWarning("Registration attempt with existing email: {Email}", registerDto.Email);
+            _logger.LogWarning(
+                "Registration attempt with existing email: {@Registration}",
+                new { Email = _logSanitizer.Sanitize(registerDto.Email) });
             return null;
         }
 
@@ -98,7 +108,9 @@ public class AuthService : AppServiceBase, IAuthService
         var result = await _userManager.CreateAsync(user, registerDto.Password);
         if (!result.Succeeded)
         {
-            _logger.LogWarning("Registration failed for user: {Email}", registerDto.Email);
+            _logger.LogWarning(
+                "Registration failed for user: {@Registration}",
+                new { Email = _logSanitizer.Sanitize(registerDto.Email) });
             return null;
         }
 
@@ -171,7 +183,9 @@ public class AuthService : AppServiceBase, IAuthService
             var result = await _userManager.CreateAsync(user);
             if (!result.Succeeded)
             {
-                _logger.LogWarning("Failed to create user for external provider: {Provider}", externalLoginDto.Provider);
+                _logger.LogWarning(
+                    "Failed to create user for external provider: {@ExternalLogin}",
+                    new { Provider = _logSanitizer.Sanitize(externalLoginDto.Provider) });
                 return null;
             }
 

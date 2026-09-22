@@ -86,7 +86,7 @@ public static class MicroserviceExtensions
                     schema.Type = Microsoft.OpenApi.JsonSchemaType.String;
                     schema.Format = "date-time";
                     schema.Default = null;
-                    schema.Example = null;
+                    schema.Examples = null;
                 }
                 return Task.CompletedTask;
             });

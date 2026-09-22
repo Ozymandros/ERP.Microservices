@@ -7,6 +7,12 @@ namespace MyApp.Shared.Infrastructure.Extensions;
 
 public static class SecurityServiceExtensions
 {
+    public static IServiceCollection AddLogSanitizer(this IServiceCollection services)
+    {
+        services.AddSingleton<ILogSanitizer, LogSanitizer>();
+        return services;
+    }
+
     public static IServiceCollection AddSecretCrypto(
         this IServiceCollection services,
         IConfiguration configuration,

@@ -1,4 +1,4 @@
-# AGENTS.md
+# CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -122,7 +122,3 @@ The gateway (`src/ErpApiGateway`) uses **Ocelot** (not YARP, despite what the ro
 ## Editing existing agent-instruction files
 
 This repo has several overlapping AI-agent instruction files: `.cursor/rules/*.mdc`, `.agent/rules/RULES.md` (Antigravity), `.github/copilot-instructions.md`, and `AGENTS.md`. `docs/AGENT_INSTRUCTIONS_AUDIT_REPORT.md` documents known drift between them (e.g. `.cursor/rules/00-context-architecture.mdc` and `project-rules.mdc` still describe Orders as sales-order processing, which contradicts the bounded-context rule above — treat `.agent/rules/RULES.md` as the more accurate/current source when they disagree). If asked to update agent instructions, keep them consistent with each other rather than editing just one.
-
-## Imported Claude Cowork project instructions
-
-DotNet 10.0 aspire micro-services backend solution with hexagonal architecture and DI
