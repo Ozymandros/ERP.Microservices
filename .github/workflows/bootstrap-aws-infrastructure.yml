@@ -4,34 +4,6 @@ name: Bootstrap AWS Infrastructure (OIDC)
 # Creates GitHub OIDC provider, deploy role, EKS, etc. Then set AWS_DEPLOY_ROLE_ARN and remove bootstrap secrets.
 
 on:
-  workflow_dispatch:
-    inputs:
-      bootstrap_oidc:
-        description: "Bootstrap GitHub OIDC provider"
-        required: true
-        default: false
-        type: boolean
-      profile:
-        description: "OpenTofu tfvars profile"
-        required: true
-        default: dev
-        type: choice
-        options:
-          - dev
-          - prod
-      aws_region:
-        description: "Optional override for var.aws_region"
-        required: false
-        default: ""
-        type: string
-      auto_approve:
-        description: "Run tofu apply -auto-approve"
-        required: true
-        default: "true"
-        type: choice
-        options:
-          - "true"
-          - "false"
   workflow_call:
     inputs:
       profile:
