@@ -67,11 +67,6 @@ jobs:
           SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
           SONAR_ORG: ${{ secrets.SONAR_ORG }}
         run: |
-        echo "GITHUB_TOKEN=$GITHUB_TOKEN"
-        echo "SONAR_PROJECT_KEY=$SONAR_PROJECT_KEY"
-        echo "SONAR_ORG=$SONAR_ORG"
-        echo "SONAR_TOKEN=$SONAR_TOKEN"
-        
           dotnet sonarscanner begin \
             /k:"$SONAR_PROJECT_KEY" \
             /o:"$SONAR_ORG" \
