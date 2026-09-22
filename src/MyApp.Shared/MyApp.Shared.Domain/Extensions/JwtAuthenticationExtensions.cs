@@ -144,13 +144,17 @@ public static class JwtAuthenticationExtensions
 
                             ?.CreateLogger("JwtBearer");
 
+                        var sanitizer = new MyApp.Shared.Domain.Security.LogSanitizer();
+
                         logger?.LogWarning(
 
                             context.Exception,
 
-                            "JWT authentication failed for {Path}",
+                            "JWT authentication failed for {Method} {Path}",
 
-                            new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(context.Request.Path.Value));
+                            sanitizer.Sanitize(context.Request.Method),
+
+                            sanitizer.Sanitize(context.Request.Path.Value));
 
 
 

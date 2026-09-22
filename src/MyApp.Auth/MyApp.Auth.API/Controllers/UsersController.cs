@@ -7,6 +7,7 @@ using MyApp.Auth.Domain.Specifications;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
+using MyApp.Shared.Domain.Security;
 
 using MyApp.Shared.Infrastructure.Export;
 
@@ -20,6 +21,7 @@ public partial class UsersController : ControllerBase
 {
     private readonly ICacheService _cacheService;
     private readonly IUserService _userService;
+    private readonly ILogSanitizer _logSanitizer;
     private readonly ILogger<UsersController> _logger;
 
     /// <summary>
@@ -28,11 +30,17 @@ public partial class UsersController : ControllerBase
     /// <param name="userService">The user Service.</param>
     /// <param name="logger">The logger.</param>
     /// <param name="cacheService">The cache Service.</param>
-    public UsersController(IUserService userService, ILogger<UsersController> logger, ICacheService cacheService)
+    /// <param name="logSanitizer">The log Sanitizer.</param>
+    public UsersController(
+        IUserService userService,
+        ILogger<UsersController> logger,
+        ICacheService cacheService,
+        ILogSanitizer logSanitizer)
     {
         _userService = userService;
         _logger = logger;
         _cacheService = cacheService;
+        _logSanitizer = logSanitizer;
     }
 
     /// <summary>
@@ -290,7 +298,9 @@ public partial class UsersController : ControllerBase
             var user = await _userService.GetUserByEmailAsync(email);
             if (user == null)
             {
-                _logger.LogWarning("User with email {@User} not found", new { Email = email });
+                _logger.LogWarning(
+                    "User with email {@User} not found",
+                    new { Email = _logSanitizer.Sanitize(email) });
                 return NotFound(new { message = "User not found" });
             }
 
@@ -298,7 +308,10 @@ public partial class UsersController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving user by email: {@User}", new { Email = email });
+            _logger.LogError(
+                ex,
+                "Error retrieving user by email: {@User}",
+                new { Email = _logSanitizer.Sanitize(email) });
             return StatusCode(500, new { message = "An error occurred retrieving the user" });
         }
     }

@@ -4,6 +4,7 @@ using MyApp.Auth.API.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Application.Contracts.Services;
+using MyApp.Shared.Domain.Security;
 
 using MyApp.Shared.Infrastructure.Export;
 
@@ -18,16 +19,22 @@ namespace MyApp.Auth.API.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
+    private readonly ILogSanitizer _logSanitizer;
     private readonly ILogger<AuthController> _logger;
 
     /// <summary>
     /// Initializes a new instance of the AuthController class.
     /// </summary>
     /// <param name="authService">The auth Service.</param>
+    /// <param name="logSanitizer">The log Sanitizer.</param>
     /// <param name="logger">The logger.</param>
-    public AuthController(IAuthService authService, ILogger<AuthController> logger)
+    public AuthController(
+        IAuthService authService,
+        ILogSanitizer logSanitizer,
+        ILogger<AuthController> logger)
     {
         _authService = authService;
+        _logSanitizer = logSanitizer;
         _logger = logger;
     }
 
@@ -51,17 +58,24 @@ public class AuthController : ControllerBase
             var result = await _authService.LoginAsync(loginDto);
             if (result == null)
             {
-                _logger.LogWarning("Login failed for user: {@User}", new { Email = loginDto.Email });
+                _logger.LogWarning(
+                    "Login failed for user: {@User}",
+                    new { Email = _logSanitizer.Sanitize(loginDto.Email) });
                 return Unauthorized(new { message = "Invalid email or password" });
             }
 
-            _logger.LogInformation("User logged in: {@User}", new { Email = loginDto.Email });
+            _logger.LogInformation(
+                "User logged in: {@User}",
+                new { Email = _logSanitizer.Sanitize(loginDto.Email) });
 
             return Ok(result);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Login error for user: {@User}", new { Email = loginDto.Email });
+            _logger.LogError(
+                ex,
+                "Login error for user: {@User}",
+                new { Email = _logSanitizer.Sanitize(loginDto.Email) });
             return StatusCode(500, new { message = "An error occurred during login" });
         }
     }
@@ -86,16 +100,23 @@ public class AuthController : ControllerBase
             var result = await _authService.RegisterAsync(registerDto);
             if (result == null)
             {
-                _logger.LogWarning("Registration failed for user: {@User}", new { Email = registerDto.Email });
+                _logger.LogWarning(
+                    "Registration failed for user: {@User}",
+                    new { Email = _logSanitizer.Sanitize(registerDto.Email) });
                 return Conflict(new { message = "Email already exists" });
             }
 
-            _logger.LogInformation("User registered: {@User}", new { Email = registerDto.Email });
+            _logger.LogInformation(
+                "User registered: {@User}",
+                new { Email = _logSanitizer.Sanitize(registerDto.Email) });
             return CreatedAtAction(nameof(Register), result);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Registration error for user: {@User}", new { Email = registerDto.Email });
+            _logger.LogError(
+                ex,
+                "Registration error for user: {@User}",
+                new { Email = _logSanitizer.Sanitize(registerDto.Email) });
             return StatusCode(500, new { message = "An error occurred during registration" });
         }
     }

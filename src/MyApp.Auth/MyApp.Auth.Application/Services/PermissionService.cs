@@ -113,7 +113,10 @@ public class PermissionService : AppServiceBase, IPermissionService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error checking permission for username {Username}", username);
+            _logger.LogError(
+                ex,
+                "Error checking permission for username {Username}",
+                _logSanitizer.Sanitize(username));
         }
 
         return false;

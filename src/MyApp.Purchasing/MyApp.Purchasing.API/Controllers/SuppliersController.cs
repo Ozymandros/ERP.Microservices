@@ -168,11 +168,15 @@ public class SuppliersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<SupplierDto>> GetSupplierByEmail(string email)
     {
-        _logger.LogInformation("Retrieving supplier with email: {@Email}", new { Email = email });
+        _logger.LogInformation(
+            "Retrieving supplier with email: {@Email}",
+            new { Email = new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(email) });
         var supplier = await _supplierService.GetSupplierByEmailAsync(email);
         if (supplier == null)
         {
-            _logger.LogWarning("Supplier with email {@Email} not found", new { Email = email });
+            _logger.LogWarning(
+                "Supplier with email {@Email} not found",
+                new { Email = new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(email) });
             return NotFound();
         }
         return Ok(supplier);

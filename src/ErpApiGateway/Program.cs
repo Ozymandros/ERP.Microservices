@@ -93,11 +93,12 @@ builder.Services
             OnAuthenticationFailed = context =>
             {
                 var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+                var sanitizer = new MyApp.Shared.Domain.Security.LogSanitizer();
                 logger.LogWarning(
                     context.Exception,
                     "JWT bearer authentication failed for {Method} {Path}",
-                    context.Request.Method,
-                    new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(context.Request.Path.Value));
+                    sanitizer.Sanitize(context.Request.Method),
+                    sanitizer.Sanitize(context.Request.Path.Value));
                 return Task.CompletedTask;
             },
         };

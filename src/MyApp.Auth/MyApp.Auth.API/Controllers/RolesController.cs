@@ -10,6 +10,7 @@ using MyApp.Auth.Domain.Specifications;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
+using MyApp.Shared.Domain.Security;
 using System;
 
 
@@ -25,6 +26,7 @@ public class RolesController : ControllerBase
     private readonly ICacheService _cacheService;
     private readonly IRoleService _roleService;
     private readonly IPermissionService _permissionService;
+    private readonly ILogSanitizer _logSanitizer;
     private readonly ILogger<RolesController> _logger;
 
     /// <summary>
@@ -34,15 +36,18 @@ public class RolesController : ControllerBase
     /// <param name="logger">The logger.</param>
     /// <param name="cacheService">The cache Service.</param>
     /// <param name="permissionService">The permission Service.</param>
+    /// <param name="logSanitizer">The log Sanitizer.</param>
     public RolesController(IRoleService roleService,
         ILogger<RolesController> logger,
         ICacheService cacheService,
-        IPermissionService permissionService)
+        IPermissionService permissionService,
+        ILogSanitizer logSanitizer)
     {
         _roleService = roleService;
         _logger = logger;
         _cacheService = cacheService;
         _permissionService = permissionService;
+        _logSanitizer = logSanitizer;
     }
 
     /// <summary>
@@ -420,7 +425,14 @@ public class RolesController : ControllerBase
             var result = await _roleService.AddPermissionToRole(createDto);
             if (result is false)
             {
-                _logger.LogWarning("Failed to create role permission: {@Permission}", new { RoleName = role.Name, Module = permission.Module, Action = permission.Action });
+                _logger.LogWarning(
+                    "Failed to create role permission: {@Permission}",
+                    new
+                    {
+                        RoleName = _logSanitizer.Sanitize(role.Name),
+                        Module = _logSanitizer.Sanitize(permission.Module),
+                        Action = _logSanitizer.Sanitize(permission.Action)
+                    });
                 return Conflict(new { message = "Role already exists" });
             }
 
@@ -443,7 +455,14 @@ public class RolesController : ControllerBase
                 await _cacheService.RemoveStateAsync(userRolesCacheKey);
             }
 
-            _logger.LogInformation("Role permission created: {@Permission}", new { RoleName = role.Name, Module = permission.Module, Action = permission.Action });
+            _logger.LogInformation(
+                "Role permission created: {@Permission}",
+                new
+                {
+                    RoleName = _logSanitizer.Sanitize(role.Name),
+                    Module = _logSanitizer.Sanitize(permission.Module),
+                    Action = _logSanitizer.Sanitize(permission.Action)
+                });
             return NoContent();
 
         }

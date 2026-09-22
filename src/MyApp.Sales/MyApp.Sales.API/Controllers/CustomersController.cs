@@ -221,7 +221,10 @@ namespace MyApp.Sales.API.Controllers
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving customer {@Email}", new { Email = email });
+            _logger.LogError(
+                ex,
+                "Error retrieving customer {@Email}",
+                new { Email = new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(email) });
             var customer = await _customerService.GetCustomerByEmailAsync(email);
             return customer == null ? NotFound(new { message = $"Customer with email '{email}' not found." }) : Ok(customer);
         }

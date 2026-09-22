@@ -261,25 +261,34 @@ public class PermissionsController : ControllerBase
 
             if (permission is not null)
             {
-                _logger.LogInformation("Retrieved permission by module/action {@Permission} from cache", new { Module = module, Action = action });
+                _logger.LogInformation(
+                    "Retrieved permission by module/action {@Permission} from cache",
+                    new { Module = _logSanitizer.Sanitize(module), Action = _logSanitizer.Sanitize(action) });
                 return Ok(permission);
             }
 
             permission = await _permissionService.GetPermissionByModuleActionAsync(module, action);
             if (permission is null)
             {
-                _logger.LogWarning("Permission with module/action {@Permission} not found", new { Module = module, Action = action });
+                _logger.LogWarning(
+                    "Permission with module/action {@Permission} not found",
+                    new { Module = _logSanitizer.Sanitize(module), Action = _logSanitizer.Sanitize(action) });
                 return NotFound(new { message = "Permission not found" });
             }
 
             await _cacheService.SaveStateAsync(cacheKey, permission);
-            _logger.LogInformation("Retrieved permission by module/action {@Permission} from database and cached", new { Module = module, Action = action });
+            _logger.LogInformation(
+                "Retrieved permission by module/action {@Permission} from database and cached",
+                new { Module = _logSanitizer.Sanitize(module), Action = _logSanitizer.Sanitize(action) });
 
             return Ok(permission);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving permission by module/action: {@Permission}", new { Module = module, Action = action });
+            _logger.LogError(
+                ex,
+                "Error retrieving permission by module/action: {@Permission}",
+                new { Module = _logSanitizer.Sanitize(module), Action = _logSanitizer.Sanitize(action) });
             return StatusCode(500, new { message = "An error occurred retrieving the permission" });
         }
     }
@@ -315,7 +324,12 @@ public class PermissionsController : ControllerBase
             _logger.LogError(
                 ex,
                 "Error checking permission: {@Permission}",
-                new { UserId = effectiveUserId, Module = module, Action = action });
+                new
+                {
+                    UserId = effectiveUserId,
+                    Module = _logSanitizer.Sanitize(module),
+                    Action = _logSanitizer.Sanitize(action)
+                });
             return StatusCode(500, new { message = "An error occurred checking the permission" });
         }
     }
@@ -389,18 +403,37 @@ public class PermissionsController : ControllerBase
             var result = await _permissionService.CreatePermissionAsync(createPermissionDto);
             if (result == null)
             {
-                _logger.LogWarning("Failed to create permission: {@Permission}", new { Module = createPermissionDto.Module, Action = createPermissionDto.Action });
+                _logger.LogWarning(
+                    "Failed to create permission: {@Permission}",
+                    new
+                    {
+                        Module = _logSanitizer.Sanitize(createPermissionDto.Module),
+                        Action = _logSanitizer.Sanitize(createPermissionDto.Action)
+                    });
                 return Conflict(new { message = "Permission already exists" });
             }
 
             await _cacheService.RemoveStateAsync("all_permissions");
-            _logger.LogInformation("Permission created: {@Permission}", new { Module = createPermissionDto.Module, Action = createPermissionDto.Action });
+            _logger.LogInformation(
+                "Permission created: {@Permission}",
+                new
+                {
+                    Module = _logSanitizer.Sanitize(createPermissionDto.Module),
+                    Action = _logSanitizer.Sanitize(createPermissionDto.Action)
+                });
 
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating permission: {@Permission}", new { Module = createPermissionDto.Module, Action = createPermissionDto.Action });
+            _logger.LogError(
+                ex,
+                "Error creating permission: {@Permission}",
+                new
+                {
+                    Module = _logSanitizer.Sanitize(createPermissionDto.Module),
+                    Action = _logSanitizer.Sanitize(createPermissionDto.Action)
+                });
             return StatusCode(500, new { message = "An error occurred creating the permission" });
         }
     }
