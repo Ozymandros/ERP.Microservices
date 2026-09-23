@@ -127,7 +127,7 @@ jobs:
           if [[ -z "$AWS_REGION" ]]; then
             AWS_REGION="$(read_tfvar aws_region "$TFVARS_PATH" "eu-west-1")"
           fi
-          STATE_BUCKET="${VAR_STATE_BUCKET:-myapp-tfstate-${PROFILE}}"
+          STATE_BUCKET="${VAR_STATE_BUCKET:-}"
           LOCK_TABLE="${VAR_LOCK_TABLE:-myapp-tf-locks}"
           STATE_KEY="aws/${PROFILE}/eks/terraform.tfstate"
           ENABLE_OIDC="true"
@@ -153,37 +153,57 @@ jobs:
           aws-region: ${{ steps.tfvars.outputs.aws_region }}
 
       - name: Ensure OpenTofu state backend
+        id: backend
         shell: bash
         env:
           AWS_REGION: ${{ steps.tfvars.outputs.aws_region }}
           STATE_BUCKET: ${{ steps.tfvars.outputs.state_bucket }}
           LOCK_TABLE: ${{ steps.tfvars.outputs.lock_table }}
+          PROFILE: ${{ steps.tfvars.outputs.profile }}
         run: |
           set -euo pipefail
-          echo "State bucket=${STATE_BUCKET} lock_table=${LOCK_TABLE} region=${AWS_REGION}"
+          ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
+          # S3 names are global — default includes account id. Override with AWS_TF_STATE_BUCKET.
+          if [[ -z "$STATE_BUCKET" ]]; then
+            STATE_BUCKET="myapp-tfstate-${PROFILE}-${ACCOUNT_ID}"
+          fi
+          echo "state_bucket=${STATE_BUCKET}" >> "$GITHUB_OUTPUT"
+          echo "State bucket=${STATE_BUCKET} lock_table=${LOCK_TABLE} region=${AWS_REGION} account=${ACCOUNT_ID}"
 
           if aws s3api head-bucket --bucket "$STATE_BUCKET" 2>/dev/null; then
             echo "S3 bucket already exists."
           else
             echo "Creating S3 bucket ${STATE_BUCKET}..."
+            set +e
             if [[ "$AWS_REGION" == "us-east-1" ]]; then
-              aws s3api create-bucket --bucket "$STATE_BUCKET"
+              CREATE_OUT="$(aws s3api create-bucket --bucket "$STATE_BUCKET" 2>&1)"
             else
-              aws s3api create-bucket \
+              CREATE_OUT="$(aws s3api create-bucket \
                 --bucket "$STATE_BUCKET" \
-                --create-bucket-configuration "LocationConstraint=${AWS_REGION}"
+                --create-bucket-configuration "LocationConstraint=${AWS_REGION}" 2>&1)"
             fi
-            aws s3api put-bucket-versioning \
-              --bucket "$STATE_BUCKET" \
-              --versioning-configuration Status=Enabled
-            aws s3api put-bucket-encryption \
-              --bucket "$STATE_BUCKET" \
-              --server-side-encryption-configuration \
-              '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
-            aws s3api put-public-access-block \
-              --bucket "$STATE_BUCKET" \
-              --public-access-block-configuration \
-              BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true
+            CREATE_RC=$?
+            set -e
+            if [[ $CREATE_RC -ne 0 ]]; then
+              if echo "$CREATE_OUT" | grep -q 'BucketAlreadyOwnedByYou'; then
+                echo "Bucket already owned by this account."
+              else
+                echo "$CREATE_OUT" >&2
+                exit "$CREATE_RC"
+              fi
+            else
+              aws s3api put-bucket-versioning \
+                --bucket "$STATE_BUCKET" \
+                --versioning-configuration Status=Enabled
+              aws s3api put-bucket-encryption \
+                --bucket "$STATE_BUCKET" \
+                --server-side-encryption-configuration \
+                '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
+              aws s3api put-public-access-block \
+                --bucket "$STATE_BUCKET" \
+                --public-access-block-configuration \
+                BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true
+            fi
           fi
 
           if aws dynamodb describe-table --table-name "$LOCK_TABLE" >/dev/null 2>&1; then
@@ -227,7 +247,7 @@ jobs:
           AWS_REGION_VAR: ${{ steps.tfvars.outputs.aws_region_var }}
           AUTO_APPROVE: ${{ inputs.auto_approve }}
           AWS_REGION: ${{ steps.tfvars.outputs.aws_region }}
-          STATE_BUCKET: ${{ steps.tfvars.outputs.state_bucket }}
+          STATE_BUCKET: ${{ steps.backend.outputs.state_bucket }}
           LOCK_TABLE: ${{ steps.tfvars.outputs.lock_table }}
           STATE_KEY: ${{ steps.tfvars.outputs.state_key }}
           ENABLE_OIDC: ${{ steps.tfvars.outputs.enable_oidc }}
@@ -280,7 +300,7 @@ jobs:
         shell: bash
         env:
           ENABLE_OIDC: ${{ steps.tfvars.outputs.enable_oidc }}
-          STATE_BUCKET: ${{ steps.tfvars.outputs.state_bucket }}
+          STATE_BUCKET: ${{ steps.backend.outputs.state_bucket }}
           STATE_KEY: ${{ steps.tfvars.outputs.state_key }}
           LOCK_TABLE: ${{ steps.tfvars.outputs.lock_table }}
         run: |

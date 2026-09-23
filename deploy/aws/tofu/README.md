@@ -19,7 +19,7 @@ Bootstrap and local applies use an **S3 backend** (+ DynamoDB locks) so re-runs 
 
 | Setting | Default | Override |
 |---------|---------|----------|
-| State bucket | `myapp-tfstate-{profile}` | Actions var `AWS_TF_STATE_BUCKET` or `-StateBucket` |
+| State bucket | `myapp-tfstate-{profile}-{accountId}` | Actions var `AWS_TF_STATE_BUCKET` or `-StateBucket` |
 | Lock table | `myapp-tf-locks` | Actions var `AWS_TF_LOCK_TABLE` or `-LockTable` |
 | State key | `aws/{profile}/eks/terraform.tfstate` | (fixed by convention) |
 
@@ -57,7 +57,7 @@ Or manually:
 cd deploy/aws/tofu
 copy environments\dev\terraform.tfvars.example terraform.tfvars
 # Ensure S3 bucket + DynamoDB lock table exist, then:
-tofu init -backend-config="bucket=myapp-tfstate-dev" `
+tofu init -backend-config="bucket=myapp-tfstate-dev-ACCOUNT_ID" `
   -backend-config="key=aws/dev/eks/terraform.tfstate" `
   -backend-config="region=eu-west-1" `
   -backend-config="dynamodb_table=myapp-tf-locks" `
@@ -67,6 +67,7 @@ tofu validate -var-file=environments/dev/terraform.tfvars.example
 tofu plan -var-file=environments/dev/terraform.tfvars.example
 ```
 
+Default bucket name includes the AWS account id so it is globally unique. Override with `AWS_TF_STATE_BUCKET` / `-StateBucket` if you prefer a fixed name.
 ## GitHub Actions
 
 Run `.github/workflows/bootstrap-aws-infrastructure.yml` (or the script above) with admin AWS credentials. Re-running the same profile is **idempotent**. That creates/updates the GitHub OIDC provider and deploy role.

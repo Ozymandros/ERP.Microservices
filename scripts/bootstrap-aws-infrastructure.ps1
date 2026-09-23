@@ -44,8 +44,13 @@ function Read-TfVar {
 if (-not $AwsRegion) {
     $AwsRegion = Read-TfVar -Name 'aws_region' -File $tfvars -Default 'eu-west-1'
 }
+$AccountId = (aws sts get-caller-identity --query Account --output text).Trim()
+if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($AccountId)) {
+    throw 'Failed to resolve AWS account id (aws sts get-caller-identity).'
+}
 if (-not $StateBucket) {
-    $StateBucket = "myapp-tfstate-$Profile"
+    # S3 bucket names are global — include account id for uniqueness.
+    $StateBucket = "myapp-tfstate-$Profile-$AccountId"
 }
 if (-not $LockTable) {
     $LockTable = 'myapp-tf-locks'
@@ -65,20 +70,30 @@ try {
 }
 if (-not $bucketExists) {
     Write-Host "Creating S3 bucket $StateBucket..." -ForegroundColor Yellow
+    $createOk = $true
     if ($AwsRegion -eq 'us-east-1') {
-        aws s3api create-bucket --bucket $StateBucket | Out-Null
+        $createOut = aws s3api create-bucket --bucket $StateBucket 2>&1 | Out-String
     } else {
-        aws s3api create-bucket --bucket $StateBucket `
-            --create-bucket-configuration "LocationConstraint=$AwsRegion" | Out-Null
+        $createOut = aws s3api create-bucket --bucket $StateBucket `
+            --create-bucket-configuration "LocationConstraint=$AwsRegion" 2>&1 | Out-String
     }
-    if ($LASTEXITCODE -ne 0) { throw "Failed to create bucket $StateBucket" }
-    aws s3api put-bucket-versioning --bucket $StateBucket `
-        --versioning-configuration Status=Enabled | Out-Null
-    aws s3api put-bucket-encryption --bucket $StateBucket `
-        --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}' | Out-Null
-    aws s3api put-public-access-block --bucket $StateBucket `
-        --public-access-block-configuration `
-        'BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true' | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        if ($createOut -match 'BucketAlreadyOwnedByYou') {
+            Write-Host "Bucket already owned by this account." -ForegroundColor Cyan
+            $createOk = $false
+        } else {
+            throw "Failed to create bucket $StateBucket`n$createOut"
+        }
+    }
+    if ($createOk) {
+        aws s3api put-bucket-versioning --bucket $StateBucket `
+            --versioning-configuration Status=Enabled | Out-Null
+        aws s3api put-bucket-encryption --bucket $StateBucket `
+            --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}' | Out-Null
+        aws s3api put-public-access-block --bucket $StateBucket `
+            --public-access-block-configuration `
+            'BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true' | Out-Null
+    }
 }
 
 # Ensure DynamoDB lock table

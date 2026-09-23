@@ -2,13 +2,13 @@
 # from bootstrap-aws-infrastructure.yml / scripts/bootstrap-aws-infrastructure.ps1.
 #
 # Defaults used by CI/scripts:
-#   bucket         = myapp-tfstate-dev   (or AWS_TF_STATE_BUCKET / -StateBucket)
+#   bucket         = myapp-tfstate-dev-ACCOUNT_ID   (or AWS_TF_STATE_BUCKET / -StateBucket)
 #   key            = aws/dev/eks/terraform.tfstate
 #   dynamodb_table = myapp-tf-locks      (or AWS_TF_LOCK_TABLE / -LockTable)
 #
 terraform {
   backend "s3" {
-    bucket         = "myapp-tfstate-dev"
+    bucket         = "myapp-tfstate-dev-ACCOUNT_ID"
     key            = "aws/dev/eks/terraform.tfstate"
     region         = "eu-west-1"
     dynamodb_table = "myapp-tf-locks"

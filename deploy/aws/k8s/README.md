@@ -23,7 +23,7 @@ Scale up later via `deploy/aws/tofu` variables (`node_max_size`, `enable_nat_gat
 | Region | `tofu output aws_region` (or tfvars / default `eu-west-1`) |
 | Deploy role ARN | Repository variable `AWS_DEPLOY_ROLE_ARN` (from `tofu output` after bootstrap apply) |
 
-Bootstrap state lives in S3 (`myapp-tfstate-{profile}` by default, override with Actions vars `AWS_TF_STATE_BUCKET` / `AWS_TF_LOCK_TABLE`). Re-running **Bootstrap AWS Infrastructure (OIDC)** with the same profile is idempotent.
+Bootstrap state lives in S3 (`myapp-tfstate-{profile}-{accountId}` by default, override with Actions vars `AWS_TF_STATE_BUCKET` / `AWS_TF_LOCK_TABLE`). Re-running **Bootstrap AWS Infrastructure (OIDC)** with the same profile is idempotent.
 
 ### Bootstrap (first time — or re-run safely)
 
@@ -59,7 +59,7 @@ Re-running bootstrap with the same profile **converges** (remote state). An exis
 cd deploy/aws/tofu
 copy environments\dev\terraform.tfvars.example terraform.tfvars
 # After bucket + lock table exist (script creates them):
-tofu init -backend-config="bucket=myapp-tfstate-dev" `
+tofu init -backend-config="bucket=myapp-tfstate-dev-ACCOUNT_ID" `
   -backend-config="key=aws/dev/eks/terraform.tfstate" `
   -backend-config="region=eu-west-1" `
   -backend-config="dynamodb_table=myapp-tf-locks" `
