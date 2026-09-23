@@ -17,18 +17,18 @@ module "vpc" {
 module "eks" {
   source = "./modules/eks"
 
-  name_prefix          = local.name_prefix
-  kubernetes_version   = var.kubernetes_version
-  vpc_id               = module.vpc.vpc_id
-  cluster_subnet_ids   = local.cluster_subnet_ids
-  node_subnet_ids      = local.node_subnet_ids
-  node_instance_types  = var.node_instance_types
-  node_capacity_type   = var.node_capacity_type
-  node_desired_size    = var.node_desired_size
-  node_min_size        = var.node_min_size
-  node_max_size        = var.node_max_size
-  public_access_cidrs  = var.eks_public_access_cidrs
-  tags                 = local.base_tags
+  name_prefix         = local.name_prefix
+  kubernetes_version  = var.kubernetes_version
+  vpc_id              = module.vpc.vpc_id
+  cluster_subnet_ids  = local.cluster_subnet_ids
+  node_subnet_ids     = local.node_subnet_ids
+  node_instance_types = var.node_instance_types
+  node_capacity_type  = var.node_capacity_type
+  node_desired_size   = var.node_desired_size
+  node_min_size       = var.node_min_size
+  node_max_size       = var.node_max_size
+  public_access_cidrs = var.eks_public_access_cidrs
+  tags                = local.base_tags
 }
 
 resource "aws_s3_bucket" "sql_backups" {
