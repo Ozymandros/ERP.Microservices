@@ -60,11 +60,6 @@ on:
         required: false
         default: ""
         type: string
-      bootstrap_oidc:
-        description: "First-time: run Bootstrap AWS Infrastructure (needs AWS_BOOTSTRAP_* secrets)"
-        required: false
-        default: true
-        type: boolean
 
 concurrency:
   group: aws-k8s-${{ github.ref }}-${{ github.event.inputs.profile }}
@@ -75,15 +70,6 @@ permissions:
   packages: write
 
 jobs:
-  debug-bootstrap:
-    name: Debug bootstrap_oidc
-    runs-on: ubuntu-latest
-    steps:
-      - name: Show raw input
-        run: |
-          echo "bootstrap_oidc (raw) = '${{ github.event.inputs.bootstrap_oidc }}'"
-          python -c 'v = """${{ github.event.inputs.bootstrap_oidc }}"""; print(type(v).__name__, repr(v))'
-
   bootstrap-aws:
     name: Bootstrap AWS OIDC + infra
     permissions:
@@ -95,7 +81,6 @@ jobs:
       profile: ${{ github.event.inputs.profile }}
       aws_region: ${{ github.event.inputs.aws_region }}
       auto_approve: "true"
-      bootstrap_oidc: ${{ github.event.inputs.bootstrap_oidc }}
 
   prepare:
     name: Prepare deployment context
@@ -267,7 +252,7 @@ jobs:
         run: |
           echo "::error::GitHub OIDC provider missing or role ARN wrong for this AWS account."
           echo "1. Add secrets AWS_BOOTSTRAP_ACCESS_KEY_ID + AWS_BOOTSTRAP_SECRET_ACCESS_KEY (admin IAM user)."
-          echo "2. Run 'Bootstrap AWS Infrastructure (OIDC)' OR re-run this workflow with bootstrap_oidc=true."
+          echo "2. Run 'Bootstrap AWS Infrastructure (OIDC)'."
           echo "3. Set variable AWS_DEPLOY_ROLE_ARN from the workflow summary output."
           echo "4. Delete bootstrap secrets, re-run deploy."
 

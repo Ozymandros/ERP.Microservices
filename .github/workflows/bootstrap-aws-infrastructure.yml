@@ -28,11 +28,6 @@ on:
         options:
           - "true"
           - "false"
-      bootstrap_oidc:
-        description: "Create/update GitHub Actions OIDC deploy role (enable_github_actions_deploy)"
-        required: false
-        default: true
-        type: boolean
   workflow_call:
     inputs:
       profile:
@@ -46,11 +41,6 @@ on:
         required: false
         type: string
         default: "true"
-      bootstrap_oidc:
-        description: "Create/update GitHub Actions OIDC deploy role"
-        required: false
-        default: false
-        type: boolean
     outputs:
       deploy_role_arn:
         description: "IAM role ARN for GitHub Actions OIDC"
@@ -106,7 +96,6 @@ jobs:
           PROFILE: ${{ inputs.profile }}
           INPUT_AWS_REGION: ${{ inputs.aws_region }}
           # Do not use || here — boolean false would be treated as unset.
-          BOOTSTRAP_OIDC: ${{ inputs.bootstrap_oidc }}
           VAR_STATE_BUCKET: ${{ vars.AWS_TF_STATE_BUCKET }}
           VAR_LOCK_TABLE: ${{ vars.AWS_TF_LOCK_TABLE }}
         run: |
@@ -143,8 +132,6 @@ jobs:
           LOCK_TABLE="${VAR_LOCK_TABLE:-myapp-tf-locks}"
           STATE_KEY="aws/${PROFILE}/eks/terraform.tfstate"
           ENABLE_OIDC="true"
-          case "${BOOTSTRAP_OIDC}" in
-            false|False|FALSE|0) ENABLE_OIDC="false" ;;
           esac
           {
             echo "tfvars_file=$TFVARS_FILE"
