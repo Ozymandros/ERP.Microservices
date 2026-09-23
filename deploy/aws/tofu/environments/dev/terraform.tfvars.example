@@ -11,8 +11,9 @@ private_subnet_cidrs = ["10.70.11.0/24", "10.70.12.0/24"]
 enable_nat_gateway = false
 
 kubernetes_version  = "1.31"
-node_instance_types = ["t3.xlarge"]
-node_capacity_type  = "SPOT"
+# Free Tier–eligible (account restricted); too small for full ERP+SQL — scale up when billing allows.
+node_instance_types = ["t3.micro"]
+node_capacity_type  = "ON_DEMAND"
 node_desired_size   = 1
 node_min_size       = 1
 node_max_size       = 2

@@ -2,7 +2,7 @@
 
 Scaffold for VPC, EKS managed node group, EBS CSI addon, and optional IRSA/S3.
 
-**Default variable values target a cheap non-prod lab** (1× Spot node, no NAT, no backup bucket).
+**Default variable values target a Free Tier–constrained lab** (1× On-Demand `t3.micro`, no NAT, no backup bucket). Scale instance type when billing allows.
 
 ## Modules
 
@@ -34,9 +34,9 @@ Stacks created **before** remote state was enabled are orphaned from OpenTofu’
 | Variable | Cheap dev | Scale up |
 |----------|-----------|----------|
 | `enable_nat_gateway` | `false` | `true` (private nodes) |
-| `node_capacity_type` | `SPOT` | `ON_DEMAND` |
+| `node_capacity_type` | `ON_DEMAND` (Free Tier) | `SPOT` when billing allows |
 | `node_desired_size` | `1` | `2+` |
-| `node_instance_types` | `["t3.xlarge"]` | `["m6i.large"]` etc. |
+| `node_instance_types` | `["t3.micro"]` (Free Tier) | `["t3.xlarge"]` / `["m6i.large"]` for ERP+SQL |
 | `create_backup_bucket` | `false` | `true` + prod k8s overlay |
 | `enable_external_secrets_irsa` | `false` | `true` + prod k8s overlay |
 
