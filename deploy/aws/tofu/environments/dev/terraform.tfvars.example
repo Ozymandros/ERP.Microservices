@@ -10,7 +10,7 @@ private_subnet_cidrs = ["10.70.11.0/24", "10.70.12.0/24"]
 # ~$32/mo saved: nodes run in public subnets with public IPs.
 enable_nat_gateway = false
 
-kubernetes_version  = "1.30"
+kubernetes_version  = "1.32"
 node_instance_types = ["t3.xlarge"]
 node_capacity_type  = "SPOT"
 node_desired_size   = 1
