@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Specifications;
 using MyApp.Inventory.Infrastructure.Data;
@@ -10,11 +9,13 @@ using Xunit;
 
 namespace MyApp.Inventory.Tests.Repositories;
 
+/// <summary>Integration tests for <see cref="ProductRepository"/> using an in-memory EF Core database.</summary>
 public class ProductRepositoryTests
 {
     private readonly InventoryDbContext _context;
     private readonly ProductRepository _repository;
 
+    /// <summary>Initialises the in-memory database context and repository before each test.</summary>
     public ProductRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -22,6 +23,15 @@ public class ProductRepositoryTests
         TestDbContextFactory.SeedTestData(_context);
     }
 
+/// <summary>
+/// Creates a test product with the given SKU, name, quantity in stock, reorder level, and unit price.
+/// </summary>
+/// <param name="sku"></param>
+/// <param name="name"></param>
+/// <param name="quantityInStock"></param>
+/// <param name="reorderLevel"></param>
+/// <param name="unitPrice"></param>
+/// <returns>The created test product.</returns> 
     private Product CreateTestProduct(string sku = "TEST-001", string name = "Test Product", int quantityInStock = 100, int reorderLevel = 10, decimal unitPrice = 25.00m)
     {
         var product = new Product(Guid.NewGuid())
@@ -40,6 +50,7 @@ public class ProductRepositoryTests
 
     #region GetByIdAsync Tests
 
+    /// <summary>Verifies that GetByIdAsync returns the product when a valid ID is provided.</summary>
     [Fact]
     public async Task GetByIdAsync_WithValidId_ReturnsProduct()
     {
@@ -56,6 +67,7 @@ public class ProductRepositoryTests
         Assert.Equal("Product 1", result.Name);
     }
 
+    /// <summary>Verifies that GetByIdAsync returns null when the product ID does not exist in the database.</summary>
     [Fact]
     public async Task GetByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -73,6 +85,7 @@ public class ProductRepositoryTests
 
     #region GetBySkuAsync Tests
 
+    /// <summary>Verifies that GetBySkuAsync returns the product when a matching SKU exists.</summary>
     [Fact]
     public async Task GetBySkuAsync_WithValidSku_ReturnsProduct()
     {
@@ -88,6 +101,7 @@ public class ProductRepositoryTests
         Assert.Equal("Unique Product", result.Name);
     }
 
+    /// <summary>Verifies that GetBySkuAsync returns null when no product with the given SKU exists.</summary>
     [Fact]
     public async Task GetBySkuAsync_WithNonExistentSku_ReturnsNull()
     {
@@ -102,6 +116,7 @@ public class ProductRepositoryTests
 
     #region GetLowStockProductsAsync Tests
 
+    /// <summary>Verifies that GetLowStockProductsAsync returns only products whose quantity in stock is below their reorder level.</summary>
     [Fact]
     public async Task GetLowStockProductsAsync_ReturnsProductsBelowReorderLevel()
     {
@@ -119,6 +134,7 @@ public class ProductRepositoryTests
         Assert.All(result, p => Assert.True(p.QuantityInStock < p.ReorderLevel));
     }
 
+    /// <summary>Verifies that GetLowStockProductsAsync returns an empty collection when all products have sufficient stock.</summary>
     [Fact]
     public async Task GetLowStockProductsAsync_ReturnsEmpty_WhenNoLowStockProducts()
     {
@@ -138,6 +154,7 @@ public class ProductRepositoryTests
 
     #region AddAsync Tests
 
+    /// <summary>Verifies that AddAsync persists a new product to the database.</summary>
     [Fact]
     public async Task AddAsync_WithValidProduct_CreatesProduct()
     {
@@ -166,6 +183,7 @@ public class ProductRepositoryTests
 
     #region UpdateAsync Tests
 
+    /// <summary>Verifies that UpdateAsync saves modified product fields to the database.</summary>
     [Fact]
     public async Task UpdateAsync_WithExistingProduct_UpdatesProductData()
     {
@@ -188,6 +206,7 @@ public class ProductRepositoryTests
 
     #region DeleteAsync Tests
 
+    /// <summary>Verifies that DeleteAsync removes the product from the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithValidId_DeletesProduct()
     {
@@ -207,6 +226,7 @@ public class ProductRepositoryTests
 
     #region GetAllAsync Tests
 
+    /// <summary>Verifies that GetAllAsync returns all products currently in the database.</summary>
     [Fact]
     public async Task GetAllAsync_ReturnsAllProducts()
     {
@@ -227,6 +247,7 @@ public class ProductRepositoryTests
 
     #region GetAllPaginatedAsync Tests
 
+    /// <summary>Verifies that GetAllPaginatedAsync returns a correctly sized and numbered page of products.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -248,6 +269,7 @@ public class ProductRepositoryTests
         result.TotalCount.Should().BeGreaterThanOrEqualTo(3);
     }
 
+    /// <summary>Verifies that GetAllPaginatedAsync returns items from the second page.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithSecondPage_ReturnsCorrectPage()
     {
@@ -271,6 +293,7 @@ public class ProductRepositoryTests
 
     #region QueryAsync Tests
 
+    /// <summary>Verifies that QueryAsync filters products by a search term applied to name and SKU fields.</summary>
     [Fact]
     public async Task QueryAsync_WithSearchTerm_ShouldFilterResults()
     {
@@ -291,6 +314,7 @@ public class ProductRepositoryTests
                                            p.SKU.Contains("Widget", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that QueryAsync filters products by a SKU filter and returns only matching results.</summary>
     [Fact]
     public async Task QueryAsync_WithSkuFilter_ShouldFilterResults()
     {
@@ -311,6 +335,7 @@ public class ProductRepositoryTests
         result.Items.Should().OnlyContain(p => p.SKU.Contains("FILTER-SKU", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that QueryAsync filters products by a name filter and returns only matching results.</summary>
     [Fact]
     public async Task QueryAsync_WithNameFilter_ShouldFilterResults()
     {
@@ -331,6 +356,7 @@ public class ProductRepositoryTests
         result.Items.Should().OnlyContain(p => p.Name.Contains("Widget", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that QueryAsync filters products by a unit price range and returns only products within the range.</summary>
     [Fact]
     public async Task QueryAsync_WithPriceRangeFilter_ShouldFilterResults()
     {
@@ -354,6 +380,7 @@ public class ProductRepositoryTests
         result.Items.Should().OnlyContain(p => p.UnitPrice >= 20m && p.UnitPrice <= 75m);
     }
 
+    /// <summary>Verifies that QueryAsync returns the correct page of results when pagination is specified.</summary>
     [Fact]
     public async Task QueryAsync_WithPagination_ShouldReturnCorrectPage()
     {
@@ -376,6 +403,7 @@ public class ProductRepositoryTests
         result.TotalCount.Should().BeGreaterThanOrEqualTo(4);
     }
 
+    /// <summary>Verifies that QueryAsync returns products sorted in ascending order when a sort field is specified.</summary>
     [Fact]
     public async Task QueryAsync_WithSorting_ShouldReturnSortedResults()
     {
@@ -396,6 +424,7 @@ public class ProductRepositoryTests
         names.Should().BeEquivalentTo(sortedNames);
     }
 
+    /// <summary>Verifies that QueryAsync returns products sorted in descending order when SortDesc is true.</summary>
     [Fact]
     public async Task QueryAsync_WithDescendingSort_ShouldReturnDescendingSortedResults()
     {

@@ -90,6 +90,7 @@ public class SalesOrderRepositoryTests
 
     #region GetByIdAsync Tests
 
+    /// <summary>Verifies that GetByIdAsync returns the sales order with Customer and Lines navigation properties eagerly loaded.</summary>
     [Fact]
     public async Task GetByIdAsync_WithValidId_ReturnsSalesOrderWithIncludes()
     {
@@ -108,6 +109,7 @@ public class SalesOrderRepositoryTests
         result.Lines.Should().NotBeNull();
     }
 
+    /// <summary>Verifies that GetByIdAsync returns null when no sales order exists with the given identifier.</summary>
     [Fact]
     public async Task GetByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -125,6 +127,7 @@ public class SalesOrderRepositoryTests
 
     #region ListAsync Tests
 
+    /// <summary>Verifies that ListAsync returns all sales orders present in the database.</summary>
     [Fact]
     public async Task ListAsync_ReturnsAllSalesOrders()
     {
@@ -145,6 +148,7 @@ public class SalesOrderRepositoryTests
 
     #region GetAllAsync Tests
 
+    /// <summary>Verifies that GetAllAsync returns the complete set of sales orders from the database.</summary>
     [Fact]
     public async Task GetAllAsync_ReturnsAllSalesOrders()
     {
@@ -164,6 +168,7 @@ public class SalesOrderRepositoryTests
 
     #region GetAllPaginatedAsync Tests
 
+    /// <summary>Verifies that GetAllPaginatedAsync returns the correct page slice with accurate pagination metadata.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -186,6 +191,7 @@ public class SalesOrderRepositoryTests
         result.TotalCount.Should().BeGreaterThanOrEqualTo(5);
     }
 
+    /// <summary>Verifies that GetAllPaginatedAsync returns items from the second page when page number 2 is requested.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithSecondPage_ReturnsCorrectPage()
     {
@@ -210,6 +216,7 @@ public class SalesOrderRepositoryTests
 
     #region AddAsync Tests
 
+    /// <summary>Verifies that AddAsync persists a new sales order and makes it retrievable from the database.</summary>
     [Fact]
     public async Task AddAsync_WithValidSalesOrder_CreatesSalesOrder()
     {
@@ -240,6 +247,7 @@ public class SalesOrderRepositoryTests
 
     #region UpdateAsync Tests
 
+    /// <summary>Verifies that UpdateAsync saves changed sales order properties (status, total amount) to the database.</summary>
     [Fact]
     public async Task UpdateAsync_WithExistingSalesOrder_UpdatesSalesOrderData()
     {
@@ -264,6 +272,7 @@ public class SalesOrderRepositoryTests
 
     #region DeleteAsync Tests
 
+    /// <summary>Verifies that DeleteAsync removes the sales order record from the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithValidId_DeletesSalesOrder()
     {
@@ -280,6 +289,7 @@ public class SalesOrderRepositoryTests
         deletedOrder.Should().BeNull();
     }
 
+    /// <summary>Verifies that DeleteAsync does not throw when called with an identifier that does not exist in the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithNonExistentId_DoesNotThrowException()
     {
@@ -295,6 +305,7 @@ public class SalesOrderRepositoryTests
 
     #region QueryAsync Tests
 
+    /// <summary>Verifies that QueryAsync filters sales orders to those whose order number contains the free-text search term.</summary>
     [Fact]
     public async Task QueryAsync_WithSearchTerm_ShouldFilterResults()
     {
@@ -315,6 +326,7 @@ public class SalesOrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.OrderNumber.Contains("SEARCH-ORD", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that QueryAsync filters sales orders to only those whose order number contains the supplied filter value.</summary>
     [Fact]
     public async Task QueryAsync_WithOrderNumberFilter_ShouldFilterResults()
     {
@@ -336,6 +348,7 @@ public class SalesOrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.OrderNumber.Contains("FILTER-ORD", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that QueryAsync returns only orders belonging to the specified customer identifier.</summary>
     [Fact]
     public async Task QueryAsync_WithCustomerIdFilter_ShouldFilterResults()
     {
@@ -356,6 +369,7 @@ public class SalesOrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.CustomerId == customer1.Id);
     }
 
+    /// <summary>Verifies that QueryAsync returns only orders matching the specified status value.</summary>
     [Fact]
     public async Task QueryAsync_WithStatusFilter_ShouldFilterResults()
     {
@@ -375,6 +389,7 @@ public class SalesOrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.Status == SalesOrderStatus.Confirmed);
     }
 
+    /// <summary>Verifies that QueryAsync returns only orders within the TotalAmountMin and TotalAmountMax range filters.</summary>
     [Fact]
     public async Task QueryAsync_WithTotalAmountRangeFilter_ShouldFilterResults()
     {
@@ -405,6 +420,7 @@ public class SalesOrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.TotalAmount >= 100m && o.TotalAmount <= 200m);
     }
 
+    /// <summary>Verifies that QueryAsync returns the correct page number and page size when pagination parameters are supplied.</summary>
     [Fact]
     public async Task QueryAsync_WithPagination_ShouldReturnCorrectPage()
     {
@@ -428,6 +444,7 @@ public class SalesOrderRepositoryTests
         result.TotalCount.Should().BeGreaterThanOrEqualTo(6);
     }
 
+    /// <summary>Verifies that QueryAsync returns sales orders in ascending alphabetical order when sorted by order number.</summary>
     [Fact]
     public async Task QueryAsync_WithSorting_ShouldReturnSortedResults()
     {

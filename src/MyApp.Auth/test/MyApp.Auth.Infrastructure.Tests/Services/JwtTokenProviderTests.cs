@@ -11,6 +11,9 @@ using Xunit;
 
 namespace MyApp.Auth.Tests.Services;
 
+/// <summary>
+/// Unit tests for Jwt Token Provider.
+/// </summary>
 public class JwtTokenProviderTests : IDisposable
 {
     private readonly Mock<IConfiguration> _configurationMock;
@@ -21,6 +24,10 @@ public class JwtTokenProviderTests : IDisposable
     private const int TestAccessTokenExpirationMinutes = 15;
     private readonly string? _previousSecretKey;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="JwtTokenProviderTests"/> class, sets up the test JWT secret
+    /// in the environment, and constructs the <see cref="JwtTokenProvider"/> under test.
+    /// </summary>
     public JwtTokenProviderTests()
     {
         _previousSecretKey = Environment.GetEnvironmentVariable(JwtSecretResolver.EnvironmentVariableName);
@@ -31,6 +38,9 @@ public class JwtTokenProviderTests : IDisposable
         _tokenProvider = new JwtTokenProvider(_configurationMock.Object);
     }
 
+    /// <summary>
+    /// Restores the JWT secret environment variable to its value before the test ran.
+    /// </summary>
     public void Dispose()
     {
         Environment.SetEnvironmentVariable(JwtSecretResolver.EnvironmentVariableName, _previousSecretKey);
@@ -45,6 +55,9 @@ public class JwtTokenProviderTests : IDisposable
 
     #region GenerateAccessTokenAsync Tests
 
+    /// <summary>
+    /// Verifies that with valid user results in returns valid token when Generate Access Token Async is called.
+    /// </summary>
     [Fact]
     public async Task GenerateAccessTokenAsync_WithValidUser_ReturnsValidToken()
     {
@@ -67,6 +80,9 @@ public class JwtTokenProviderTests : IDisposable
         Assert.IsType<string>(token);
     }
 
+    /// <summary>
+    /// Verifies that generated token is valid jwt results in can be decoded when Generate Access Token Async is called.
+    /// </summary>
     [Fact]
     public async Task GenerateAccessTokenAsync_GeneratedTokenIsValidJwt_CanBeDecoded()
     {
@@ -91,6 +107,9 @@ public class JwtTokenProviderTests : IDisposable
         Assert.Equal(_testAudience, jsonToken.Audiences.First());
     }
 
+    /// <summary>
+    /// Verifies that Generate Access Token Async token contains correct claims.
+    /// </summary>
     [Fact]
     public async Task GenerateAccessTokenAsync_TokenContainsCorrectClaims()
     {
@@ -124,6 +143,9 @@ public class JwtTokenProviderTests : IDisposable
         Assert.Contains(jsonToken.Claims, c => c.Type == "LastName" && c.Value == lastName);
     }
 
+    /// <summary>
+    /// Verifies that Generate Access Token Async token expiration is correct.
+    /// </summary>
     [Fact]
     public async Task GenerateAccessTokenAsync_TokenExpirationIsCorrect()
     {
@@ -151,6 +173,9 @@ public class JwtTokenProviderTests : IDisposable
         Assert.True(Math.Abs((actualExpiration - expectedExpiration).TotalSeconds) < 1);
     }
 
+    /// <summary>
+    /// Verifies that with null email results in still generates valid token when Generate Access Token Async is called.
+    /// </summary>
     [Fact]
     public async Task GenerateAccessTokenAsync_WithNullEmail_StillGeneratesValidToken()
     {
@@ -174,6 +199,9 @@ public class JwtTokenProviderTests : IDisposable
 
     #region GenerateRefreshToken Tests
 
+    /// <summary>
+    /// Verifies that Generate Refresh Token returns non empty string.
+    /// </summary>
     [Fact]
     public void GenerateRefreshToken_ReturnsNonEmptyString()
     {
@@ -185,6 +213,9 @@ public class JwtTokenProviderTests : IDisposable
         Assert.NotEmpty(refreshToken);
     }
 
+    /// <summary>
+    /// Verifies that Generate Refresh Token returns base64encoded string.
+    /// </summary>
     [Fact]
     public void GenerateRefreshToken_ReturnsBase64EncodedString()
     {
@@ -204,6 +235,9 @@ public class JwtTokenProviderTests : IDisposable
         }
     }
 
+    /// <summary>
+    /// Verifies that Generate Refresh Token generates different tokens each time.
+    /// </summary>
     [Fact]
     public void GenerateRefreshToken_GeneratesDifferentTokensEachTime()
     {
@@ -215,6 +249,9 @@ public class JwtTokenProviderTests : IDisposable
         Assert.NotEqual(token1, token2);
     }
 
+    /// <summary>
+    /// Verifies that Generate Refresh Token token is of expected length.
+    /// </summary>
     [Fact]
     public void GenerateRefreshToken_TokenIsOfExpectedLength()
     {
@@ -230,6 +267,9 @@ public class JwtTokenProviderTests : IDisposable
 
     #region GetPrincipalFromExpiredToken Tests
 
+    /// <summary>
+    /// Verifies that with valid expired token results in returns claims principal when Get Principal From Expired Token is called.
+    /// </summary>
     [Fact]
     public async Task GetPrincipalFromExpiredToken_WithValidExpiredToken_ReturnsClaimsPrincipal()
     {
@@ -252,6 +292,9 @@ public class JwtTokenProviderTests : IDisposable
         Assert.IsType<ClaimsPrincipal>(principal);
     }
 
+    /// <summary>
+    /// Verifies that with valid token results in contains user claims when Get Principal From Expired Token is called.
+    /// </summary>
     [Fact]
     public async Task GetPrincipalFromExpiredToken_WithValidToken_ContainsUserClaims()
     {
@@ -277,6 +320,9 @@ public class JwtTokenProviderTests : IDisposable
         Assert.Contains(principal.Claims, c => c.Type == ClaimTypes.Name && c.Value == "testuser");
     }
 
+    /// <summary>
+    /// Verifies that with invalid token results in returns null when Get Principal From Expired Token is called.
+    /// </summary>
     [Fact]
     public void GetPrincipalFromExpiredToken_WithInvalidToken_ReturnsNull()
     {
@@ -290,6 +336,9 @@ public class JwtTokenProviderTests : IDisposable
         Assert.Null(principal);
     }
 
+    /// <summary>
+    /// Verifies that with malformed token results in returns null when Get Principal From Expired Token is called.
+    /// </summary>
     [Fact]
     public void GetPrincipalFromExpiredToken_WithMalformedToken_ReturnsNull()
     {
@@ -303,6 +352,9 @@ public class JwtTokenProviderTests : IDisposable
         Assert.Null(principal);
     }
 
+    /// <summary>
+    /// Verifies that with wrong signing algorithm results in returns null when Get Principal From Expired Token is called.
+    /// </summary>
     [Fact]
     public void GetPrincipalFromExpiredToken_WithWrongSigningAlgorithm_ReturnsNull()
     {
@@ -332,6 +384,9 @@ public class JwtTokenProviderTests : IDisposable
 
     #region Configuration Tests
 
+    /// <summary>
+    /// Verifies that with missing secret key results in throws invalid operation exception when Constructor is called.
+    /// </summary>
     [Fact]
     public void Constructor_WithMissingSecretKey_ThrowsInvalidOperationException()
     {
@@ -355,6 +410,9 @@ public class JwtTokenProviderTests : IDisposable
         }
     }
 
+    /// <summary>
+    /// Verifies that with missing issuer results in throws argument null exception when Constructor is called.
+    /// </summary>
     [Fact]
     public void Constructor_WithMissingIssuer_ThrowsArgumentNullException()
     {
@@ -368,6 +426,9 @@ public class JwtTokenProviderTests : IDisposable
         Assert.Contains("Jwt:Issuer", ex.Message);
     }
 
+    /// <summary>
+    /// Verifies that with missing audience results in throws argument null exception when Constructor is called.
+    /// </summary>
     [Fact]
     public void Constructor_WithMissingAudience_ThrowsArgumentNullException()
     {

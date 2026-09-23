@@ -7,11 +7,17 @@ using Xunit;
 
 namespace MyApp.Auth.Tests.Repositories;
 
+/// <summary>
+/// Unit tests for User Repository.
+/// </summary>
 public class UserRepositoryTests
 {
     private readonly AuthDbContext _context;
     private readonly UserRepository _repository;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserRepositoryTests"/> class and seeds the in-memory database with test users.
+    /// </summary>
     public UserRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -38,6 +44,9 @@ public class UserRepositoryTests
 
     #region GetByEmailAsync Tests
 
+    /// <summary>
+    /// Verifies that with valid email results in returns user when Get By Email Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByEmailAsync_WithValidEmail_ReturnsUser()
     {
@@ -53,6 +62,9 @@ public class UserRepositoryTests
         Assert.Equal("john@example.com", result.Email);
     }
 
+    /// <summary>
+    /// Verifies that with non existent email results in returns null when Get By Email Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByEmailAsync_WithNonExistentEmail_ReturnsNull()
     {
@@ -63,6 +75,9 @@ public class UserRepositoryTests
         Assert.Null(result);
     }
 
+    /// <summary>
+    /// Verifies that with different casing results in returns null when Get By Email Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByEmailAsync_WithDifferentCasing_ReturnsNull()
     {
@@ -77,6 +92,9 @@ public class UserRepositoryTests
         Assert.Null(result);
     }
 
+    /// <summary>
+    /// Verifies that Get By Email Async includes refresh tokens.
+    /// </summary>
     [Fact]
     public async Task GetByEmailAsync_IncludesRefreshTokens()
     {
@@ -107,6 +125,9 @@ public class UserRepositoryTests
 
     #region GetByExternalIdAsync Tests
 
+    /// <summary>
+    /// Verifies that with valid external provider results in returns user when Get By External Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByExternalIdAsync_WithValidExternalProvider_ReturnsUser()
     {
@@ -132,6 +153,9 @@ public class UserRepositoryTests
         Assert.Equal("google-123456", result.ExternalId);
     }
 
+    /// <summary>
+    /// Verifies that with non existent id results in returns null when Get By External Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByExternalIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -142,6 +166,9 @@ public class UserRepositoryTests
         Assert.Null(result);
     }
 
+    /// <summary>
+    /// Verifies that with different provider results in returns null when Get By External Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByExternalIdAsync_WithDifferentProvider_ReturnsNull()
     {
@@ -168,6 +195,9 @@ public class UserRepositoryTests
 
     #region GetByRoleAsync Tests
 
+    /// <summary>
+    /// Verifies that with valid role name results in returns users in role when Get By Role Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByRoleAsync_WithValidRoleName_ReturnsUsersInRole()
     {
@@ -196,6 +226,9 @@ public class UserRepositoryTests
         Assert.DoesNotContain(result, u => u.Id == user3.Id);
     }
 
+    /// <summary>
+    /// Verifies that with non existent role results in returns empty list when Get By Role Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByRoleAsync_WithNonExistentRole_ReturnsEmptyList()
     {
@@ -207,6 +240,9 @@ public class UserRepositoryTests
         Assert.Empty(result);
     }
 
+    /// <summary>
+    /// Verifies that with no users in role results in returns empty list when Get By Role Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByRoleAsync_WithNoUsersInRole_ReturnsEmptyList()
     {
@@ -222,6 +258,9 @@ public class UserRepositoryTests
 
     #region EmailExistsAsync Tests
 
+    /// <summary>
+    /// Verifies that with existing email results in returns true when Email Exists Async is called.
+    /// </summary>
     [Fact]
     public async Task EmailExistsAsync_WithExistingEmail_ReturnsTrue()
     {
@@ -235,6 +274,9 @@ public class UserRepositoryTests
         Assert.True(result);
     }
 
+    /// <summary>
+    /// Verifies that with non existent email results in returns false when Email Exists Async is called.
+    /// </summary>
     [Fact]
     public async Task EmailExistsAsync_WithNonExistentEmail_ReturnsFalse()
     {
@@ -245,6 +287,9 @@ public class UserRepositoryTests
         Assert.False(result);
     }
 
+    /// <summary>
+    /// Verifies that Email Exists Async is case sensitive.
+    /// </summary>
     [Fact]
     public async Task EmailExistsAsync_IsCaseSensitive()
     {
@@ -259,6 +304,9 @@ public class UserRepositoryTests
         Assert.False(result);
     }
 
+    /// <summary>
+    /// Verifies that with empty string results in returns false when Email Exists Async is called.
+    /// </summary>
     [Fact]
     public async Task EmailExistsAsync_WithEmptyString_ReturnsFalse()
     {
@@ -273,6 +321,9 @@ public class UserRepositoryTests
 
     #region Add Tests
 
+    /// <summary>
+    /// Verifies that with valid user results in creates user when Add Async is called.
+    /// </summary>
     [Fact]
     public async Task AddAsync_WithValidUser_CreatesUser()
     {
@@ -298,6 +349,9 @@ public class UserRepositoryTests
 
     #region Update Tests
 
+    /// <summary>
+    /// Verifies that with existing user results in updates user data when Update Async is called.
+    /// </summary>
     [Fact]
     public async Task UpdateAsync_WithExistingUser_UpdatesUserData()
     {
@@ -320,6 +374,9 @@ public class UserRepositoryTests
 
     #region Delete Tests
 
+    /// <summary>
+    /// Verifies that with valid user id results in deletes user when Delete Async is called.
+    /// </summary>
     [Fact]
     public async Task DeleteAsync_WithValidUserId_DeletesUser()
     {
@@ -339,6 +396,9 @@ public class UserRepositoryTests
 
     #region GetAll Tests
 
+    /// <summary>
+    /// Verifies that Get All Async returns all users.
+    /// </summary>
     [Fact]
     public async Task GetAllAsync_ReturnsAllUsers()
     {

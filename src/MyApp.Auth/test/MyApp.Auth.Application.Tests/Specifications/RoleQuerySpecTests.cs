@@ -71,6 +71,9 @@ public class RoleQuerySpecTests
         result.Should().HaveCount(4); // All roles contain "role" in description
     }
 
+    /// <summary>
+    /// Verifies that sorting by name in ascending order produces the correct sort order.
+    /// </summary>
     [Fact]
     public void Apply_WithSortByName_SortsCorrectly()
     {

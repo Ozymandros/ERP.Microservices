@@ -15,6 +15,7 @@ using Xunit;
 
 namespace MyApp.Purchasing.Application.Tests.Services;
 
+/// <summary>Unit tests for <see cref="SupplierService"/>.</summary>
 public class SupplierServiceTests
 {
     private readonly Mock<ISupplierRepository> _mockSupplierRepository;
@@ -24,6 +25,7 @@ public class SupplierServiceTests
     private readonly Mock<ILogger<SupplierService>> _mockLogger;
     private readonly SupplierService _supplierService;
 
+    /// <summary>Initializes a new instance of the <see cref="SupplierServiceTests"/> class, setting up mocks and the service under test.</summary>
     public SupplierServiceTests()
     {
         _mockSupplierRepository = new Mock<ISupplierRepository>();
@@ -42,6 +44,7 @@ public class SupplierServiceTests
             _mockLogger.Object);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.GetSupplierByIdAsync"/> returns the supplier DTO when the ID exists.</summary>
     [Fact]
     public async Task GetSupplierByIdAsync_WithExistingId_ReturnsSupplierDto()
     {
@@ -69,6 +72,7 @@ public class SupplierServiceTests
         _mockSupplierRepository.Verify(r => r.GetByIdAsync(supplierId), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.GetSupplierByIdAsync"/> returns null when the ID does not exist.</summary>
     [Fact]
     public async Task GetSupplierByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -83,6 +87,7 @@ public class SupplierServiceTests
         Assert.Null(result);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.GetSupplierByEmailAsync"/> returns the supplier DTO when the email exists.</summary>
     [Fact]
     public async Task GetSupplierByEmailAsync_WithExistingEmail_ReturnsSupplierDto()
     {
@@ -110,6 +115,7 @@ public class SupplierServiceTests
         _mockSupplierRepository.Verify(r => r.GetByEmailAsync(email), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.GetSupplierByEmailAsync"/> returns null when the email does not exist.</summary>
     [Fact]
     public async Task GetSupplierByEmailAsync_WithNonExistentEmail_ReturnsNull()
     {
@@ -124,6 +130,7 @@ public class SupplierServiceTests
         Assert.Null(result);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.GetSupplierByNameAsync"/> returns the first matching supplier DTO when the name exists.</summary>
     [Fact]
     public async Task GetSupplierByNameAsync_WithExistingName_ReturnsSupplierDto()
     {
@@ -151,6 +158,7 @@ public class SupplierServiceTests
         _mockSupplierRepository.Verify(r => r.GetByNameAsync(name), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.GetSupplierByNameAsync"/> returns null when no supplier matches the name.</summary>
     [Fact]
     public async Task GetSupplierByNameAsync_WithNonExistentName_ReturnsNull()
     {
@@ -165,6 +173,7 @@ public class SupplierServiceTests
         Assert.Null(result);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.GetSuppliersByNameAsync"/> returns all suppliers whose names match the search term.</summary>
     [Fact]
     public async Task GetSuppliersByNameAsync_ReturnsMatchingSuppliers()
     {
@@ -199,6 +208,7 @@ public class SupplierServiceTests
         Assert.Equal(2, result.Count());
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.GetAllSuppliersAsync"/> returns all suppliers from the repository.</summary>
     [Fact]
     public async Task GetAllSuppliersAsync_ReturnsAllSuppliers()
     {
@@ -233,6 +243,7 @@ public class SupplierServiceTests
         _mockSupplierRepository.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.CreateSupplierAsync"/> creates and returns the supplier DTO when the email is unique.</summary>
     [Fact]
     public async Task CreateSupplierAsync_WithUniqueEmail_CreatesSupplier()
     {
@@ -263,6 +274,7 @@ public class SupplierServiceTests
         _mockSupplierRepository.Verify(r => r.AddAsync(supplier), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.CreateSupplierAsync"/> throws <see cref="InvalidOperationException"/> when the email already exists.</summary>
     [Fact]
     public async Task CreateSupplierAsync_WithDuplicateEmail_ThrowsInvalidOperationException()
     {
@@ -280,6 +292,7 @@ public class SupplierServiceTests
         _mockSupplierRepository.Verify(r => r.AddAsync(It.IsAny<Supplier>()), Times.Never);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.UpdateSupplierAsync"/> updates and returns the supplier DTO when the supplier exists.</summary>
     [Fact]
     public async Task UpdateSupplierAsync_WithExistingSupplier_UpdatesSuccessfully()
     {
@@ -311,6 +324,7 @@ public class SupplierServiceTests
         _mockSupplierRepository.Verify(r => r.UpdateAsync(existingSupplier), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.UpdateSupplierAsync"/> throws <see cref="KeyNotFoundException"/> when the supplier does not exist.</summary>
     [Fact]
     public async Task UpdateSupplierAsync_WithNonExistentSupplier_ThrowsKeyNotFoundException()
     {
@@ -328,6 +342,7 @@ public class SupplierServiceTests
         _mockSupplierRepository.Verify(r => r.UpdateAsync(It.IsAny<Supplier>()), Times.Never);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.UpdateSupplierAsync"/> throws <see cref="InvalidOperationException"/> when the new email is already used by another supplier.</summary>
     [Fact]
     public async Task UpdateSupplierAsync_WithDuplicateEmail_ThrowsInvalidOperationException()
     {
@@ -348,6 +363,7 @@ public class SupplierServiceTests
         _mockSupplierRepository.Verify(r => r.UpdateAsync(It.IsAny<Supplier>()), Times.Never);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.DeleteSupplierAsync"/> removes the supplier when it exists.</summary>
     [Fact]
     public async Task DeleteSupplierAsync_WithExistingSupplier_DeletesSupplier()
     {
@@ -364,6 +380,7 @@ public class SupplierServiceTests
         _mockSupplierRepository.Verify(r => r.DeleteAsync(supplier), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.DeleteSupplierAsync"/> throws <see cref="KeyNotFoundException"/> when the supplier does not exist.</summary>
     [Fact]
     public async Task DeleteSupplierAsync_WithNonExistentSupplier_ThrowsKeyNotFoundException()
     {
@@ -381,6 +398,7 @@ public class SupplierServiceTests
 
     #region QuerySuppliersAsync Tests
 
+    /// <summary>Verifies that <see cref="SupplierService.QuerySuppliersAsync"/> returns filtered supplier DTOs matching the search term.</summary>
     [Fact]
     public async Task QuerySuppliersAsync_WithSearchTerm_ReturnsFilteredResults()
     {
@@ -413,6 +431,7 @@ public class SupplierServiceTests
         _mockSupplierRepository.Verify(r => r.QueryAsync(spec), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.QuerySuppliersAsync"/> returns a correctly paginated result with the expected page metadata.</summary>
     [Fact]
     public async Task QuerySuppliersAsync_WithPagination_ReturnsPaginatedResult()
     {
@@ -446,6 +465,7 @@ public class SupplierServiceTests
 
     #region Edge Cases and Error Scenarios
 
+    /// <summary>Verifies that <see cref="SupplierService.CreateSupplierAsync"/> processes a supplier with an empty email when no existing supplier has that email.</summary>
     [Fact]
     public async Task CreateSupplierAsync_WithEmptyEmail_ThrowsException()
     {
@@ -468,6 +488,7 @@ public class SupplierServiceTests
         result.Should().NotBeNull();
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.UpdateSupplierAsync"/> skips the duplicate-email check and updates successfully when the email is unchanged.</summary>
     [Fact]
     public async Task UpdateSupplierAsync_WithSameEmail_UpdatesSuccessfully()
     {
@@ -493,6 +514,7 @@ public class SupplierServiceTests
         _mockSupplierRepository.Verify(r => r.GetByEmailAsync(It.IsAny<string>()), Times.Never);
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.GetAllSuppliersAsync"/> returns an empty collection when the repository contains no suppliers.</summary>
     [Fact]
     public async Task GetAllSuppliersAsync_WithEmptyRepository_ReturnsEmptyList()
     {
@@ -508,6 +530,7 @@ public class SupplierServiceTests
         result.Should().BeEmpty();
     }
 
+    /// <summary>Verifies that <see cref="SupplierService.GetSupplierByIdAsync"/> returns null when an empty GUID is provided.</summary>
     [Fact]
     public async Task GetSupplierByIdAsync_WithEmptyGuid_ReturnsNull()
     {

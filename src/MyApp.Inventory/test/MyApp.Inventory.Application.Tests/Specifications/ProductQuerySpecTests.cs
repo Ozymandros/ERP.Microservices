@@ -7,6 +7,7 @@ using Xunit;
 
 namespace MyApp.Inventory.Application.Tests.Specifications;
 
+/// <summary>Unit tests for <see cref="ProductQuerySpec"/> filtering, searching, sorting, and pagination behaviour.</summary>
 public class ProductQuerySpecTests
 {
     private static IQueryable<Product> CreateTestData()
@@ -23,6 +24,7 @@ public class ProductQuerySpecTests
 
     #region Filter Tests
 
+    /// <summary>Verifies that ApplyFilters returns only products whose SKU contains the specified filter value.</summary>
     [Fact]
     public void ApplyFilters_WithSkuFilter_ReturnsFilteredProducts()
     {
@@ -40,6 +42,7 @@ public class ProductQuerySpecTests
         result.All(p => p.SKU.Contains("PROD")).Should().BeTrue();
     }
 
+    /// <summary>Verifies that ApplyFilters returns only products whose name contains the specified filter value.</summary>
     [Fact]
     public void ApplyFilters_WithNameFilter_ReturnsFilteredProducts()
     {
@@ -57,6 +60,7 @@ public class ProductQuerySpecTests
         result.All(p => p.Name.Contains("Product")).Should().BeTrue();
     }
 
+    /// <summary>Verifies that ApplyFilters returns only products with a unit price greater than or equal to the minimum price filter.</summary>
     [Fact]
     public void ApplyFilters_WithMinPriceFilter_ReturnsFilteredProducts()
     {
@@ -74,6 +78,7 @@ public class ProductQuerySpecTests
         result.All(p => p.UnitPrice >= 15m).Should().BeTrue();
     }
 
+    /// <summary>Verifies that ApplyFilters returns only products with a unit price less than or equal to the maximum price filter.</summary>
     [Fact]
     public void ApplyFilters_WithMaxPriceFilter_ReturnsFilteredProducts()
     {
@@ -91,6 +96,7 @@ public class ProductQuerySpecTests
         result.All(p => p.UnitPrice <= 15m).Should().BeTrue();
     }
 
+    /// <summary>Verifies that ApplyFilters returns only products whose unit price falls within the specified min and max price range.</summary>
     [Fact]
     public void ApplyFilters_WithPriceRange_ReturnsFilteredProducts()
     {
@@ -108,6 +114,7 @@ public class ProductQuerySpecTests
         result.All(p => p.UnitPrice >= 10m && p.UnitPrice <= 20m).Should().BeTrue();
     }
 
+    /// <summary>Verifies that ApplyFilters applies multiple filters simultaneously and returns only products matching all criteria.</summary>
     [Fact]
     public void ApplyFilters_WithMultipleFilters_ReturnsFilteredProducts()
     {
@@ -129,6 +136,7 @@ public class ProductQuerySpecTests
 
     #region Search Tests
 
+    /// <summary>Verifies that ApplyFilters returns products whose SKU matches the search term.</summary>
     [Fact]
     public void ApplyFilters_WithSearchTermInSku_ReturnsMatchingProducts()
     {
@@ -147,6 +155,7 @@ public class ProductQuerySpecTests
         result.All(p => p.SKU.ToLower().Contains("prod") || p.Name.ToLower().Contains("prod") || (p.Description != null && p.Description.ToLower().Contains("prod"))).Should().BeTrue();
     }
 
+    /// <summary>Verifies that ApplyFilters returns products whose name matches the search term.</summary>
     [Fact]
     public void ApplyFilters_WithSearchTermInName_ReturnsMatchingProducts()
     {
@@ -162,6 +171,7 @@ public class ProductQuerySpecTests
         result.Should().HaveCount(2);
     }
 
+    /// <summary>Verifies that ApplyFilters returns products whose description matches the search term.</summary>
     [Fact]
     public void ApplyFilters_WithSearchTermInDescription_ReturnsMatchingProducts()
     {
@@ -178,6 +188,7 @@ public class ProductQuerySpecTests
         result.First().Description.Should().Contain("First");
     }
 
+    /// <summary>Verifies that ApplyFilters returns all products when the search term is empty.</summary>
     [Fact]
     public void ApplyFilters_WithEmptySearchTerm_ReturnsAllProducts()
     {
@@ -193,6 +204,7 @@ public class ProductQuerySpecTests
         result.Should().HaveCount(5);
     }
 
+    /// <summary>Verifies that ApplyFilters performs case-insensitive search matching across SKU, name, and description.</summary>
     [Fact]
     public void ApplyFilters_WithCaseInsensitiveSearch_ReturnsMatchingProducts()
     {
@@ -212,6 +224,7 @@ public class ProductQuerySpecTests
 
     #region Combined Filter and Search Tests
 
+    /// <summary>Verifies that ApplyFilters combines search term and filter criteria, returning only products that satisfy both.</summary>
     [Fact]
     public void ApplyFilters_WithFilterAndSearch_ReturnsIntersection()
     {
@@ -233,6 +246,7 @@ public class ProductQuerySpecTests
 
     #region Sorting Tests
 
+    /// <summary>Verifies that Apply sorts products by name in ascending order when SortBy is set to "Name" and SortDesc is false.</summary>
     [Fact]
     public void Apply_WithSortByNameAscending_SortsCorrectly()
     {
@@ -248,6 +262,7 @@ public class ProductQuerySpecTests
         result.Should().BeInAscendingOrder(p => p.Name);
     }
 
+    /// <summary>Verifies that Apply sorts products by unit price in descending order when SortBy is "UnitPrice" and SortDesc is true.</summary>
     [Fact]
     public void Apply_WithSortByPriceDescending_SortsCorrectly()
     {
@@ -267,6 +282,7 @@ public class ProductQuerySpecTests
 
     #region Pagination Tests
 
+    /// <summary>Verifies that Apply returns a page of results no larger than the specified page size.</summary>
     [Fact]
     public void Apply_WithPagination_ReturnsPaginatedResults()
     {
@@ -282,6 +298,7 @@ public class ProductQuerySpecTests
         result.Should().HaveCountLessThanOrEqualTo(2);
     }
 
+    /// <summary>Verifies that Apply returns items from the second page when the page number is set to 2.</summary>
     [Fact]
     public void Apply_WithSecondPage_ReturnsCorrectPage()
     {

@@ -58,6 +58,7 @@ public class SalesOrderServiceTests
 
     #region GetSalesOrderByIdAsync Tests
 
+    /// <summary>Verifies that GetSalesOrderByIdAsync returns the mapped SalesOrderDto when the order exists.</summary>
     [Fact]
     public async Task GetSalesOrderByIdAsync_WithExistingId_ReturnsSalesOrderDto()
     {
@@ -87,6 +88,7 @@ public class SalesOrderServiceTests
         _mockOrderRepository.Verify(r => r.GetByIdAsync(orderId), Times.Once);
     }
 
+    /// <summary>Verifies that GetSalesOrderByIdAsync returns null when no order exists with the given identifier.</summary>
     [Fact]
     public async Task GetSalesOrderByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -107,6 +109,7 @@ public class SalesOrderServiceTests
 
     #region GetSalesOrderByOrderNumberAsync Tests
 
+    /// <summary>Verifies that GetSalesOrderByOrderNumberAsync returns the mapped SalesOrderDto when the order number exists.</summary>
     [Fact]
     public async Task GetSalesOrderByOrderNumberAsync_WithExistingNumber_ReturnsSalesOrderDto()
     {
@@ -132,6 +135,7 @@ public class SalesOrderServiceTests
         _mockOrderRepository.Verify(r => r.GetByOrderNumberAsync(orderNumber), Times.Once);
     }
 
+    /// <summary>Verifies that GetSalesOrderByOrderNumberAsync returns null when no order exists with the given order number.</summary>
     [Fact]
     public async Task GetSalesOrderByOrderNumberAsync_WithNonExistentNumber_ReturnsNull()
     {
@@ -151,6 +155,7 @@ public class SalesOrderServiceTests
 
     #region ListSalesOrdersAsync Tests
 
+    /// <summary>Verifies that ListSalesOrdersAsync returns all sales orders mapped to their DTOs.</summary>
     [Fact]
     public async Task ListSalesOrdersAsync_ReturnsAllOrders()
     {
@@ -204,6 +209,7 @@ public class SalesOrderServiceTests
 
     #region CreateSalesOrderAsync Tests
 
+    /// <summary>Verifies that CreateSalesOrderAsync creates and persists a sales order when the specified customer exists.</summary>
     [Fact]
     public async Task CreateSalesOrderAsync_WithValidCustomer_CreatesOrder()
     {
@@ -261,6 +267,7 @@ public class SalesOrderServiceTests
         )), Times.Once);
     }
 
+    /// <summary>Verifies that CreateSalesOrderAsync throws KeyNotFoundException when the specified customer does not exist.</summary>
     [Fact]
     public async Task CreateSalesOrderAsync_WithNonExistentCustomer_ThrowsInvalidOperationException()
     {
@@ -279,6 +286,7 @@ public class SalesOrderServiceTests
         _mockOrderRepository.Verify(r => r.AddAsync(It.IsAny<SalesOrder>()), Times.Never);
     }
 
+    /// <summary>Verifies that CreateSalesOrderAsync correctly computes TotalAmount as the sum of each line's Quantity multiplied by UnitPrice.</summary>
     [Fact]
     public async Task CreateSalesOrderAsync_CalculatesTotalFromLines()
     {
@@ -323,6 +331,7 @@ public class SalesOrderServiceTests
         )), Times.Once);
     }
 
+    /// <summary>Verifies that CreateSalesOrderAsync sets OrderDate to the current UTC time when a default date is supplied.</summary>
     [Fact]
     public async Task CreateSalesOrderAsync_UsesUtcNowIfOrderDateIsDefault()
     {
@@ -357,6 +366,7 @@ public class SalesOrderServiceTests
         )), Times.Once);
     }
 
+    /// <summary>Verifies that CreateSalesOrderAsync generates a non-empty order number server-side with the expected "SO-" prefix.</summary>
     [Fact]
     public async Task CreateSalesOrderAsync_GeneratesOrderNumberServerSide()
     {
@@ -395,6 +405,7 @@ public class SalesOrderServiceTests
 
     #region UpdateSalesOrderAsync Tests
 
+    /// <summary>Verifies that UpdateSalesOrderAsync applies the update DTO to an existing order and persists the changes.</summary>
     [Fact]
     public async Task UpdateSalesOrderAsync_WithExistingOrder_UpdatesSuccessfully()
     {
@@ -449,6 +460,7 @@ public class SalesOrderServiceTests
         _mockOrderRepository.Verify(r => r.UpdateAsync(existingOrder), Times.Once);
     }
 
+    /// <summary>Verifies that UpdateSalesOrderAsync throws InvalidOperationException when no order exists with the given identifier.</summary>
     [Fact]
     public async Task UpdateSalesOrderAsync_WithNonExistentOrder_ThrowsInvalidOperationException()
     {
@@ -467,6 +479,7 @@ public class SalesOrderServiceTests
         _mockOrderRepository.Verify(r => r.UpdateAsync(It.IsAny<SalesOrder>()), Times.Never);
     }
 
+    /// <summary>Verifies that UpdateSalesOrderAsync validates the new customer against the repository when the CustomerId changes.</summary>
     [Fact]
     public async Task UpdateSalesOrderAsync_WithChangedCustomer_ValidatesNewCustomer()
     {
@@ -496,6 +509,7 @@ public class SalesOrderServiceTests
         _mockOrderRepository.Verify(r => r.UpdateAsync(existingOrder), Times.Once);
     }
 
+    /// <summary>Verifies that UpdateSalesOrderAsync throws InvalidOperationException when the new CustomerId does not exist.</summary>
     [Fact]
     public async Task UpdateSalesOrderAsync_WithChangedCustomerNotFound_ThrowsInvalidOperationException()
     {
@@ -528,6 +542,7 @@ public class SalesOrderServiceTests
 
     #region DeleteSalesOrderAsync Tests
 
+    /// <summary>Verifies that DeleteSalesOrderAsync delegates to the repository's DeleteAsync with the correct order identifier.</summary>
     [Fact]
     public async Task DeleteSalesOrderAsync_CallsRepositoryDeleteWithCorrectId()
     {
@@ -545,6 +560,7 @@ public class SalesOrderServiceTests
 
     #region ListSalesOrdersPaginatedAsync Tests
 
+    /// <summary>Verifies that ListSalesOrdersPaginatedAsync returns a correctly populated paginated result with the requested page and page size.</summary>
     [Fact]
     public async Task ListSalesOrdersPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -576,6 +592,7 @@ public class SalesOrderServiceTests
 
     #region QuerySalesOrdersAsync Tests
 
+    /// <summary>Verifies that QuerySalesOrdersAsync passes the specification to the repository and returns the mapped paginated result.</summary>
     [Fact]
     public async Task QuerySalesOrdersAsync_WithValidSpecification_ReturnsPaginatedResult()
     {
@@ -609,6 +626,7 @@ public class SalesOrderServiceTests
 
     #region CreateQuoteAsync Tests
 
+    /// <summary>Verifies that CreateQuoteAsync creates a draft quote with correct totals, expiry date, and publishes the SalesOrderCreated event.</summary>
     [Fact]
     public async Task CreateQuoteAsync_WithValidDto_CreatesQuote()
     {
@@ -662,6 +680,7 @@ public class SalesOrderServiceTests
         _mockEventPublisher.Verify(e => e.PublishAsync(MessagingConstants.Topics.SalesOrderCreated, It.IsAny<SalesOrderCreatedEvent>(), default), Times.Once);
     }
 
+    /// <summary>Verifies that CreateQuoteAsync throws InvalidOperationException when the specified customer does not exist.</summary>
     [Fact]
     public async Task CreateQuoteAsync_WithNonExistentCustomer_ThrowsInvalidOperationException()
     {
@@ -686,6 +705,7 @@ public class SalesOrderServiceTests
         _mockOrderRepository.Verify(r => r.AddAsync(It.IsAny<SalesOrder>()), Times.Never);
     }
 
+    /// <summary>Verifies that CreateQuoteAsync still creates the quote and persists it even when stock is insufficient, rather than blocking the operation.</summary>
     [Fact]
     public async Task CreateQuoteAsync_WithInsufficientStock_StillCreatesQuoteButLogsWarning()
     {
@@ -735,6 +755,7 @@ public class SalesOrderServiceTests
 
     #region ConfirmQuoteAsync Tests - Additional Scenarios
 
+    /// <summary>Verifies that ConfirmQuoteAsync transitions the quote to Confirmed status, links the fulfillment order, and publishes the SalesOrderConfirmed event.</summary>
     [Fact]
     public async Task ConfirmQuoteAsync_WithValidQuote_CreatesFulfillmentOrderAndUpdatesStatus()
     {
@@ -797,6 +818,7 @@ public class SalesOrderServiceTests
         _mockEventPublisher.Verify(e => e.PublishAsync(MessagingConstants.Topics.SalesOrderConfirmed, It.IsAny<SalesOrderConfirmedEvent>(), default), Times.Once);
     }
 
+    /// <summary>Verifies that ConfirmQuoteAsync throws InvalidOperationException when the quote's expiry date has passed.</summary>
     [Fact]
     public async Task ConfirmQuoteAsync_WithExpiredQuote_ThrowsInvalidOperationException()
     {
@@ -816,6 +838,7 @@ public class SalesOrderServiceTests
         await Assert.ThrowsAsync<InvalidOperationException>(() => _salesOrderService.ConfirmQuoteAsync(dto));
     }
 
+    /// <summary>Verifies that ConfirmQuoteAsync throws InvalidOperationException when there is insufficient stock to fulfil the quote lines.</summary>
     [Fact]
     public async Task ConfirmQuoteAsync_WithInsufficientStock_ThrowsInvalidOperationException()
     {
@@ -854,6 +877,7 @@ public class SalesOrderServiceTests
         Assert.Contains("Insufficient stock", ex.Message);
     }
 
+    /// <summary>Verifies that ConfirmQuoteAsync throws InvalidOperationException when no quote exists with the given identifier.</summary>
     [Fact]
     public async Task ConfirmQuoteAsync_WithNonExistentQuote_ThrowsInvalidOperationException()
     {
@@ -871,6 +895,7 @@ public class SalesOrderServiceTests
             .WithMessage($"*Quote {quoteId} not found*");
     }
 
+    /// <summary>Verifies that ConfirmQuoteAsync throws InvalidOperationException when the found record is a regular order rather than a quote.</summary>
     [Fact]
     public async Task ConfirmQuoteAsync_WithNonQuoteOrder_ThrowsInvalidOperationException()
     {
@@ -893,6 +918,7 @@ public class SalesOrderServiceTests
             .WithMessage($"*is not a quote*");
     }
 
+    /// <summary>Verifies that ConfirmQuoteAsync throws InvalidOperationException when the quote is not in Draft status.</summary>
     [Fact]
     public async Task ConfirmQuoteAsync_WithNonDraftStatus_ThrowsInvalidOperationException()
     {
@@ -916,6 +942,7 @@ public class SalesOrderServiceTests
             .WithMessage($"*cannot be confirmed*");
     }
 
+    /// <summary>Verifies that ConfirmQuoteAsync throws InvalidOperationException when the downstream Orders service call fails to create the fulfilment order.</summary>
     [Fact]
     public async Task ConfirmQuoteAsync_WhenFulfillmentOrderCreationFails_ThrowsInvalidOperationException()
     {
@@ -961,6 +988,7 @@ public class SalesOrderServiceTests
 
     #region CheckStockAvailabilityAsync Tests
 
+    /// <summary>Verifies that CheckStockAvailabilityAsync returns an available status when the inventory service reports sufficient stock.</summary>
     [Fact]
     public async Task CheckStockAvailabilityAsync_WithAvailableStock_ReturnsAvailableStatus()
     {
@@ -1001,6 +1029,7 @@ public class SalesOrderServiceTests
         result[0].WarehouseStock.Should().HaveCount(1);
     }
 
+    /// <summary>Verifies that CheckStockAvailabilityAsync returns an unavailable status when the inventory service reports less stock than requested.</summary>
     [Fact]
     public async Task CheckStockAvailabilityAsync_WithInsufficientStock_ReturnsUnavailableStatus()
     {
@@ -1036,6 +1065,7 @@ public class SalesOrderServiceTests
         result[0].RequestedQuantity.Should().Be(10);
     }
 
+    /// <summary>Verifies that CheckStockAvailabilityAsync queries the inventory service for each product line and returns individual availability statuses.</summary>
     [Fact]
     public async Task CheckStockAvailabilityAsync_WithMultipleProducts_ChecksAllProducts()
     {
@@ -1081,6 +1111,7 @@ public class SalesOrderServiceTests
         result[1].IsAvailable.Should().BeFalse();
     }
 
+    /// <summary>Verifies that CheckStockAvailabilityAsync returns an unavailable status with zero quantity when the inventory service call throws an exception.</summary>
     [Fact]
     public async Task CheckStockAvailabilityAsync_WhenStockCheckFails_ReturnsUnavailable()
     {
@@ -1113,6 +1144,7 @@ public class SalesOrderServiceTests
 
     #region Edge Cases and Boundary Values
 
+    /// <summary>Verifies that CreateSalesOrderAsync handles a line with the maximum decimal unit price without overflow.</summary>
     [Fact]
     public async Task CreateSalesOrderAsync_WithMaximumTotalAmount_CreatesOrder()
     {
@@ -1150,6 +1182,7 @@ public class SalesOrderServiceTests
         result.Should().NotBeNull();
     }
 
+    /// <summary>Verifies that CreateSalesOrderAsync creates a valid order even when all line quantities and unit prices are zero.</summary>
     [Fact]
     public async Task CreateSalesOrderAsync_WithZeroTotalAmount_CreatesOrder()
     {
@@ -1186,6 +1219,7 @@ public class SalesOrderServiceTests
         result.Should().NotBeNull();
     }
 
+    /// <summary>Verifies that ConfirmQuoteAsync throws an exception for an expired quote (edge-case duplicate covering boundary behaviour).</summary>
     [Fact]
     public async Task ConfirmQuoteAsync_WithExpiredQuote_ThrowsException()
     {

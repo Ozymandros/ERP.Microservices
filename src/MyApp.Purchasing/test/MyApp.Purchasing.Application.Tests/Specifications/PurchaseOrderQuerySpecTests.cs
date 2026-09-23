@@ -7,8 +7,11 @@ using Xunit;
 
 namespace MyApp.Purchasing.Application.Tests.Specifications;
 
+/// <summary>Unit tests for the <see cref="MyApp.Purchasing.Domain.Specifications.PurchaseOrderQuerySpec"/> specification.</summary>
 public class PurchaseOrderQuerySpecTests
 {
+    /// <summary>Creates a fixed set of <see cref="MyApp.Purchasing.Domain.Entities.PurchaseOrder"/> instances for use in tests.</summary>
+    /// <returns>An <see cref="IQueryable{T}"/> containing the test purchase orders.</returns>
     private static IQueryable<PurchaseOrder> CreateTestData()
     {
         var supplierId1 = Guid.NewGuid();
@@ -23,6 +26,7 @@ public class PurchaseOrderQuerySpecTests
         }.AsQueryable();
     }
 
+    /// <summary>Verifies that filtering by order number returns only orders matching that number.</summary>
     [Fact]
     public void ApplyFilters_WithOrderNumberFilter_ReturnsFilteredOrders()
     {
@@ -37,6 +41,7 @@ public class PurchaseOrderQuerySpecTests
         result.First().OrderNumber.Should().Be("PO-001");
     }
 
+    /// <summary>Verifies that filtering by supplier ID returns only orders for that supplier.</summary>
     [Fact]
     public void ApplyFilters_WithSupplierIdFilter_ReturnsFilteredOrders()
     {
@@ -52,6 +57,7 @@ public class PurchaseOrderQuerySpecTests
         result.All(o => o.SupplierId == supplierId).Should().BeTrue();
     }
 
+    /// <summary>Verifies that filtering by status returns only orders in that status.</summary>
     [Fact]
     public void ApplyFilters_WithStatusFilter_ReturnsFilteredOrders()
     {
@@ -66,6 +72,7 @@ public class PurchaseOrderQuerySpecTests
         result.All(o => o.Status == PurchaseOrderStatus.Draft).Should().BeTrue();
     }
 
+    /// <summary>Verifies that filtering by minimum total amount returns only orders at or above that amount.</summary>
     [Fact]
     public void ApplyFilters_WithMinTotalFilter_ReturnsFilteredOrders()
     {
@@ -80,6 +87,7 @@ public class PurchaseOrderQuerySpecTests
         result.All(o => o.TotalAmount >= 600m).Should().BeTrue();
     }
 
+    /// <summary>Verifies that a free-text search term filters orders by order number.</summary>
     [Fact]
     public void ApplyFilters_WithSearchTerm_ReturnsMatchingOrders()
     {
@@ -92,6 +100,7 @@ public class PurchaseOrderQuerySpecTests
         result.Should().HaveCount(1);
     }
 
+    /// <summary>Verifies that sorting by TotalAmount returns orders in ascending order.</summary>
     [Fact]
     public void Apply_WithSortByTotalAmount_SortsCorrectly()
     {

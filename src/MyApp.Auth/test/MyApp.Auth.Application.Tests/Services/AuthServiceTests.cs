@@ -18,6 +18,9 @@ using Xunit;
 
 namespace MyApp.Auth.Application.Tests.Services;
 
+/// <summary>
+/// Unit tests for Auth Service.
+/// </summary>
 public class AuthServiceTests : BaseServiceTest
 {
     private readonly Mock<UserManager<ApplicationUser>> _mockUserManager;
@@ -34,6 +37,9 @@ public class AuthServiceTests : BaseServiceTest
     private readonly Mock<IPermissionRepository> _mockPermissionRepository;
     private readonly Mock<SignInManager<ApplicationUser>> _mockSignInManager;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AuthServiceTests"/> class, setting up mocks and the <see cref="AuthService"/> under test.
+    /// </summary>
     public AuthServiceTests()
     {
         _mockUserManager = CreateMockUserManager();
@@ -69,6 +75,9 @@ public class AuthServiceTests : BaseServiceTest
 
     #region LoginAsync
 
+    /// <summary>
+    /// Verifies that valid credentials results in returns token response when Login Async is called.
+    /// </summary>
     [Fact]
     public async Task LoginAsync_ValidCredentials_ReturnsTokenResponse()
     {
@@ -128,6 +137,9 @@ public class AuthServiceTests : BaseServiceTest
         _mockUserManager.Verify(x => x.CheckPasswordAsync(user, loginDto.Password), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that invalid credentials results in throws unauthorized access exception when Login Async is called.
+    /// </summary>
     [Fact]
     public async Task LoginAsync_InvalidCredentials_ThrowsUnauthorizedAccessException()
     {
@@ -146,6 +158,9 @@ public class AuthServiceTests : BaseServiceTest
         _mockSignInManager.Verify(x => x.CheckPasswordSignInAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Never);
     }
 
+    /// <summary>
+    /// Verifies that with invalid password results in should return null when Login Async is called.
+    /// </summary>
     [Fact]
     public async Task LoginAsync_WithInvalidPassword_ShouldReturnNull()
     {
@@ -180,6 +195,9 @@ public class AuthServiceTests : BaseServiceTest
         VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.Once());
     }
 
+    /// <summary>
+    /// Verifies that with locked out user results in should return null and log warning when Login Async is called.
+    /// </summary>
     [Fact]
     public async Task LoginAsync_WithLockedOutUser_ShouldReturnNullAndLogWarning()
     {
@@ -217,6 +235,9 @@ public class AuthServiceTests : BaseServiceTest
 
     #region RegisterAsync
 
+    /// <summary>
+    /// Verifies that with valid data results in should return token response when Register Async is called.
+    /// </summary>
     [Fact]
     public async Task RegisterAsync_WithValidData_ShouldReturnTokenResponse()
     {
@@ -274,6 +295,9 @@ public class AuthServiceTests : BaseServiceTest
             u.LastName == registerDto.LastName), registerDto.Password), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with existing email results in should return null when Register Async is called.
+    /// </summary>
     [Fact]
     public async Task RegisterAsync_WithExistingEmail_ShouldReturnNull()
     {
@@ -301,6 +325,9 @@ public class AuthServiceTests : BaseServiceTest
 
     #region RefreshTokenAsync
 
+    /// <summary>
+    /// Verifies that with valid token results in should return new token response when Refresh Token Async is called.
+    /// </summary>
     [Fact]
     public async Task RefreshTokenAsync_WithValidToken_ShouldReturnNewTokenResponse()
     {
@@ -379,6 +406,9 @@ public class AuthServiceTests : BaseServiceTest
         result.Should().NotBeNull();
     }
 
+    /// <summary>
+    /// Verifies that with invalid principal results in should return null when Refresh Token Async is called.
+    /// </summary>
     [Fact]
     public async Task RefreshTokenAsync_WithInvalidPrincipal_ShouldReturnNull()
     {
@@ -397,6 +427,9 @@ public class AuthServiceTests : BaseServiceTest
         VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.Once());
     }
 
+    /// <summary>
+    /// Verifies that with missing user id claim results in should return null when Refresh Token Async is called.
+    /// </summary>
     [Fact]
     public async Task RefreshTokenAsync_WithMissingUserIdClaim_ShouldReturnNull()
     {
@@ -416,6 +449,9 @@ public class AuthServiceTests : BaseServiceTest
         VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.AtLeastOnce());
     }
 
+    /// <summary>
+    /// Verifies that with invalid user id claim results in should return null when Refresh Token Async is called.
+    /// </summary>
     [Fact]
     public async Task RefreshTokenAsync_WithInvalidUserIdClaim_ShouldReturnNull()
     {
@@ -438,6 +474,9 @@ public class AuthServiceTests : BaseServiceTest
         VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.AtLeastOnce());
     }
 
+    /// <summary>
+    /// Verifies that with invalid refresh token results in should return null when Refresh Token Async is called.
+    /// </summary>
     [Fact]
     public async Task RefreshTokenAsync_WithInvalidRefreshToken_ShouldReturnNull()
     {
@@ -465,6 +504,9 @@ public class AuthServiceTests : BaseServiceTest
         VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.AtLeastOnce());
     }
 
+    /// <summary>
+    /// Verifies that with user not found results in should return null when Refresh Token Async is called.
+    /// </summary>
     [Fact]
     public async Task RefreshTokenAsync_WithUserNotFound_ShouldReturnNull()
     {
@@ -505,6 +547,9 @@ public class AuthServiceTests : BaseServiceTest
         VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.AtLeastOnce());
     }
 
+    /// <summary>
+    /// Verifies that with expired token results in should return null when Refresh Token Async is called.
+    /// </summary>
     [Fact]
     public async Task RefreshTokenAsync_WithExpiredToken_ShouldReturnNull()
     {
@@ -531,6 +576,9 @@ public class AuthServiceTests : BaseServiceTest
 
     #region LogoutAsync
 
+    /// <summary>
+    /// Verifies that with valid refresh token results in should revoke token when Logout Async is called.
+    /// </summary>
     [Fact]
     public async Task LogoutAsync_WithValidRefreshToken_ShouldRevokeToken()
     {
@@ -548,6 +596,9 @@ public class AuthServiceTests : BaseServiceTest
         _mockRefreshTokenRepository.Verify(x => x.RevokeUserTokensAsync(userId), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with repository exception results in should log error when Logout Async is called.
+    /// </summary>
     [Fact]
     public async Task LogoutAsync_WithRepositoryException_ShouldLogError()
     {
@@ -577,6 +628,9 @@ public class AuthServiceTests : BaseServiceTest
 
     #region ExternalLoginAsync
 
+    /// <summary>
+    /// Verifies that with valid external user results in should return token response when External Login Async is called.
+    /// </summary>
     [Fact]
     public async Task ExternalLoginAsync_WithValidExternalUser_ShouldReturnTokenResponse()
     {
@@ -632,6 +686,9 @@ public class AuthServiceTests : BaseServiceTest
         result.Should().NotBeNull();
     }
 
+    /// <summary>
+    /// Verifies that with new external user results in should create user and return token response when External Login Async is called.
+    /// </summary>
     [Fact]
     public async Task ExternalLoginAsync_WithNewExternalUser_ShouldCreateUserAndReturnTokenResponse()
     {
@@ -687,6 +744,9 @@ public class AuthServiceTests : BaseServiceTest
         _mockUserManager.Verify(x => x.AddToRoleAsync(It.IsAny<ApplicationUser>(), "User"), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with failed user creation results in should return null when External Login Async is called.
+    /// </summary>
     [Fact]
     public async Task ExternalLoginAsync_WithFailedUserCreation_ShouldReturnNull()
     {
@@ -714,6 +774,9 @@ public class AuthServiceTests : BaseServiceTest
         VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.Once());
     }
 
+    /// <summary>
+    /// Verifies that with failed user creation results in should return null when Register Async is called.
+    /// </summary>
     [Fact]
     public async Task RegisterAsync_WithFailedUserCreation_ShouldReturnNull()
     {
@@ -741,6 +804,9 @@ public class AuthServiceTests : BaseServiceTest
         VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.Once());
     }
 
+    /// <summary>
+    /// Verifies that with external login user results in should return null when Login Async is called.
+    /// </summary>
     [Fact]
     public async Task LoginAsync_WithExternalLoginUser_ShouldReturnNull()
     {
@@ -771,6 +837,9 @@ public class AuthServiceTests : BaseServiceTest
 
     #region GenerateTokenResponseAsync Tests (via public methods)
 
+    /// <summary>
+    /// Verifies that with admin user results in should return all permissions when Login Async is called.
+    /// </summary>
     [Fact]
     public async Task LoginAsync_WithAdminUser_ShouldReturnAllPermissions()
     {
@@ -840,6 +909,9 @@ public class AuthServiceTests : BaseServiceTest
         _mockPermissionRepository.Verify(x => x.GetAllAsync(), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with non admin user results in should return role permissions when Login Async is called.
+    /// </summary>
     [Fact]
     public async Task LoginAsync_WithNonAdminUser_ShouldReturnRolePermissions()
     {

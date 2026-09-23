@@ -18,6 +18,7 @@ using Xunit;
 
 namespace MyApp.Purchasing.Application.Tests.Services;
 
+/// <summary>Unit tests for <see cref="PurchaseOrderService"/>.</summary>
 public class PurchaseOrderServiceTests
 {
     private readonly Mock<IPurchaseOrderRepository> _mockPurchaseOrderRepository;
@@ -30,6 +31,7 @@ public class PurchaseOrderServiceTests
     private readonly Mock<IServiceInvoker> _mockServiceInvoker;
     private readonly PurchaseOrderService _purchaseOrderService;
 
+    /// <summary>Initializes a new instance of the <see cref="PurchaseOrderServiceTests"/> class, setting up mocks and the service under test.</summary>
     public PurchaseOrderServiceTests()
     {
         _mockPurchaseOrderRepository = new Mock<IPurchaseOrderRepository>();
@@ -54,6 +56,7 @@ public class PurchaseOrderServiceTests
             _mockServiceInvoker.Object);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.GetPurchaseOrderByIdAsync"/> returns the purchase order DTO when the ID exists.</summary>
     [Fact]
     public async Task GetPurchaseOrderByIdAsync_WithExistingId_ReturnsOrderDto()
     {
@@ -73,6 +76,7 @@ public class PurchaseOrderServiceTests
         Assert.Equal("PO-001", result.OrderNumber);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.GetPurchaseOrderByIdAsync"/> returns null when the ID does not exist.</summary>
     [Fact]
     public async Task GetPurchaseOrderByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -87,6 +91,7 @@ public class PurchaseOrderServiceTests
         Assert.Null(result);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.GetPurchaseOrderByOrderNumberAsync"/> returns the DTO when the order number exists.</summary>
     [Fact]
     public async Task GetPurchaseOrderByOrderNumberAsync_WithExistingOrderNumber_ReturnsOrderDto()
     {
@@ -107,6 +112,7 @@ public class PurchaseOrderServiceTests
         _mockPurchaseOrderRepository.Verify(r => r.GetByOrderNumberAsync(orderNumber), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.GetPurchaseOrderByOrderNumberAsync"/> returns null when the order number does not exist.</summary>
     [Fact]
     public async Task GetPurchaseOrderByOrderNumberAsync_WithNonExistentNumber_ReturnsNull()
     {
@@ -121,6 +127,7 @@ public class PurchaseOrderServiceTests
         Assert.Null(result);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.GetAllPurchaseOrdersAsync"/> returns all purchase orders from the repository.</summary>
     [Fact]
     public async Task GetAllPurchaseOrdersAsync_ReturnsAllOrders()
     {
@@ -146,6 +153,7 @@ public class PurchaseOrderServiceTests
         Assert.Equal(2, result.Count());
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.GetPurchaseOrdersBySupplierAsync"/> returns all orders for the given supplier.</summary>
     [Fact]
     public async Task GetPurchaseOrdersBySupplierAsync_ReturnsSupplierOrders()
     {
@@ -170,6 +178,7 @@ public class PurchaseOrderServiceTests
         Assert.Single(result);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.GetPurchaseOrdersByStatusAsync"/> returns only orders in the specified status.</summary>
     [Fact]
     public async Task GetPurchaseOrdersByStatusAsync_ReturnsOrdersWithStatus()
     {
@@ -194,6 +203,7 @@ public class PurchaseOrderServiceTests
         Assert.Single(result);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.CreatePurchaseOrderAsync"/> creates the order and calculates the total amount from its lines.</summary>
     [Fact]
     public async Task CreatePurchaseOrderAsync_WithValidSupplier_CreatesOrder()
     {
@@ -230,6 +240,7 @@ public class PurchaseOrderServiceTests
         _mockPurchaseOrderRepository.Verify(r => r.AddAsync(order), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.CreatePurchaseOrderAsync"/> does not set a total amount when the order has no lines.</summary>
     [Fact]
     public async Task CreatePurchaseOrderAsync_WithEmptyLines_DoesNotCalculateTotal()
     {
@@ -264,6 +275,7 @@ public class PurchaseOrderServiceTests
         _mockPurchaseOrderRepository.Verify(r => r.AddAsync(order), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.CreatePurchaseOrderAsync"/> throws <see cref="KeyNotFoundException"/> when the supplier does not exist.</summary>
     [Fact]
     public async Task CreatePurchaseOrderAsync_WithNonExistentSupplier_ThrowsKeyNotFoundException()
     {
@@ -281,6 +293,7 @@ public class PurchaseOrderServiceTests
         _mockPurchaseOrderRepository.Verify(r => r.AddAsync(It.IsAny<PurchaseOrder>()), Times.Never);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.UpdatePurchaseOrderAsync"/> updates the order and recalculates the total amount from its lines.</summary>
     [Fact]
     public async Task UpdatePurchaseOrderAsync_WithExistingOrder_UpdatesSuccessfully()
     {
@@ -317,6 +330,7 @@ public class PurchaseOrderServiceTests
         _mockPurchaseOrderRepository.Verify(r => r.UpdateAsync(order), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.UpdatePurchaseOrderAsync"/> does not recalculate the total when the order has no lines.</summary>
     [Fact]
     public async Task UpdatePurchaseOrderAsync_WithEmptyLines_DoesNotRecalculateTotal()
     {
@@ -350,6 +364,7 @@ public class PurchaseOrderServiceTests
         _mockPurchaseOrderRepository.Verify(r => r.UpdateAsync(order), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.UpdatePurchaseOrderAsync"/> throws <see cref="KeyNotFoundException"/> when the order does not exist.</summary>
     [Fact]
     public async Task UpdatePurchaseOrderAsync_WithNonExistentOrder_ThrowsKeyNotFoundException()
     {
@@ -367,6 +382,7 @@ public class PurchaseOrderServiceTests
         _mockPurchaseOrderRepository.Verify(r => r.UpdateAsync(It.IsAny<PurchaseOrder>()), Times.Never);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.UpdatePurchaseOrderAsync"/> validates the new supplier when the supplier ID changes.</summary>
     [Fact]
     public async Task UpdatePurchaseOrderAsync_WithChangedSupplier_ValidatesNewSupplier()
     {
@@ -399,6 +415,7 @@ public class PurchaseOrderServiceTests
         _mockSupplierRepository.Verify(r => r.GetByIdAsync(newSupplierId), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.UpdatePurchaseOrderStatusAsync"/> updates the status of the order when it exists.</summary>
     [Fact]
     public async Task UpdatePurchaseOrderStatusAsync_WithExistingOrder_UpdatesStatus()
     {
@@ -422,6 +439,7 @@ public class PurchaseOrderServiceTests
         _mockPurchaseOrderRepository.Verify(r => r.UpdateAsync(order), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.UpdatePurchaseOrderStatusAsync"/> throws <see cref="KeyNotFoundException"/> when the order does not exist.</summary>
     [Fact]
     public async Task UpdatePurchaseOrderStatusAsync_WithNonExistentOrder_ThrowsKeyNotFoundException()
     {
@@ -438,6 +456,7 @@ public class PurchaseOrderServiceTests
         Assert.Contains("not found", exception.Message);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.DeletePurchaseOrderAsync"/> removes the order when it exists.</summary>
     [Fact]
     public async Task DeletePurchaseOrderAsync_WithExistingOrder_DeletesOrder()
     {
@@ -454,6 +473,7 @@ public class PurchaseOrderServiceTests
         _mockPurchaseOrderRepository.Verify(r => r.DeleteAsync(order), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.DeletePurchaseOrderAsync"/> throws <see cref="KeyNotFoundException"/> when the order does not exist.</summary>
     [Fact]
     public async Task DeletePurchaseOrderAsync_WithNonExistentOrder_ThrowsKeyNotFoundException()
     {
@@ -471,6 +491,7 @@ public class PurchaseOrderServiceTests
 
     #region ReceivePurchaseOrderAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.ReceivePurchaseOrderAsync"/> creates and fulfills an inbound order via the Orders service and publishes a line-received event.</summary>
     [Fact]
     public async Task ReceivePurchaseOrderAsync_WithValidPO_CreatesAndFulfillsInboundOrder()
     {
@@ -538,6 +559,7 @@ public class PurchaseOrderServiceTests
         _mockEventPublisher.Verify(e => e.PublishAsync(MessagingConstants.Topics.PurchasingLineReceived, It.IsAny<PurchaseOrderLineReceivedEvent>(), default), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.ReceivePurchaseOrderAsync"/> throws <see cref="KeyNotFoundException"/> when the purchase order does not exist.</summary>
     [Fact]
     public async Task ReceivePurchaseOrderAsync_WithNonExistentPO_ThrowsKeyNotFoundException()
     {
@@ -553,6 +575,7 @@ public class PurchaseOrderServiceTests
 
     #region QueryPurchaseOrdersAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.QueryPurchaseOrdersAsync"/> returns a correctly paginated result for the given specification.</summary>
     [Fact]
     public async Task QueryPurchaseOrdersAsync_WithValidSpecification_ReturnsPaginatedResult()
     {
@@ -586,6 +609,7 @@ public class PurchaseOrderServiceTests
 
     #region ApprovePurchaseOrderAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.ApprovePurchaseOrderAsync"/> sets the status to Approved and publishes an approval event.</summary>
     [Fact]
     public async Task ApprovePurchaseOrderAsync_WithValidDraftOrder_ApprovesOrderAndPublishesEvent()
     {
@@ -623,6 +647,7 @@ public class PurchaseOrderServiceTests
         _mockEventPublisher.Verify(e => e.PublishAsync(MessagingConstants.Topics.PurchasingOrderApproved, It.IsAny<PurchaseOrderApprovedEvent>(), default), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.ApprovePurchaseOrderAsync"/> throws <see cref="KeyNotFoundException"/> when the order does not exist.</summary>
     [Fact]
     public async Task ApprovePurchaseOrderAsync_WithNonExistentOrder_ThrowsKeyNotFoundException()
     {
@@ -640,6 +665,7 @@ public class PurchaseOrderServiceTests
             .WithMessage($"*Purchase order with ID '{poId}' not found*");
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.ApprovePurchaseOrderAsync"/> throws <see cref="InvalidOperationException"/> when the order is not in Draft status.</summary>
     [Fact]
     public async Task ApprovePurchaseOrderAsync_WithNonDraftStatus_ThrowsInvalidOperationException()
     {
@@ -661,6 +687,7 @@ public class PurchaseOrderServiceTests
             .WithMessage($"*cannot be approved*");
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.ApprovePurchaseOrderAsync"/> still approves the order even when event publishing fails.</summary>
     [Fact]
     public async Task ApprovePurchaseOrderAsync_WhenEventPublishingFails_StillApprovesOrder()
     {
@@ -693,6 +720,7 @@ public class PurchaseOrderServiceTests
 
     #region ReceivePurchaseOrderAsync Tests - Additional Scenarios
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.ReceivePurchaseOrderAsync"/> throws <see cref="InvalidOperationException"/> when the order is not in Approved status.</summary>
     [Fact]
     public async Task ReceivePurchaseOrderAsync_WithNonApprovedStatus_ThrowsInvalidOperationException()
     {
@@ -721,6 +749,7 @@ public class PurchaseOrderServiceTests
             .WithMessage($"*cannot be received*");
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.ReceivePurchaseOrderAsync"/> logs a warning and continues when a received line ID does not match any order line.</summary>
     [Fact]
     public async Task ReceivePurchaseOrderAsync_WithNonExistentLine_LogsWarningAndContinues()
     {
@@ -759,6 +788,7 @@ public class PurchaseOrderServiceTests
         _mockPurchaseOrderRepository.Verify(r => r.UpdateAsync(It.IsAny<PurchaseOrder>()), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.ReceivePurchaseOrderAsync"/> sets the order status to Received and publishes an order-received event when all lines are fully received.</summary>
     [Fact]
     public async Task ReceivePurchaseOrderAsync_WhenAllLinesFullyReceived_UpdatesStatusToReceived()
     {
@@ -820,6 +850,7 @@ public class PurchaseOrderServiceTests
         _mockEventPublisher.Verify(e => e.PublishAsync("purchasing.order.received", It.IsAny<PurchaseOrderReceivedEvent>(), default), Times.Once);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.ReceivePurchaseOrderAsync"/> re-throws when the inbound order creation call to the Orders service fails.</summary>
     [Fact]
     public async Task ReceivePurchaseOrderAsync_WhenOrderCreationFails_ThrowsException()
     {
@@ -867,6 +898,7 @@ public class PurchaseOrderServiceTests
 
     #endregion
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.CreatePurchaseOrderAsync"/> generates a non-empty order number with the expected "PO-" prefix.</summary>
     [Fact]
     public async Task CreatePurchaseOrderAsync_GeneratesOrderNumberServerSide()
     {
@@ -895,6 +927,7 @@ public class PurchaseOrderServiceTests
 
     #region Edge Cases and Boundary Values
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.CreatePurchaseOrderAsync"/> successfully creates an order when the line unit price is very large.</summary>
     [Fact]
     public async Task CreatePurchaseOrderAsync_WithMaximumTotalAmount_CreatesOrder()
     {
@@ -928,6 +961,7 @@ public class PurchaseOrderServiceTests
         result.Should().NotBeNull();
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderService.ReceivePurchaseOrderAsync"/> accumulates the received quantity even when it exceeds the ordered quantity.</summary>
     [Fact]
     public async Task ReceivePurchaseOrderAsync_WithOverReceipt_UpdatesReceivedQuantity()
     {

@@ -9,11 +9,17 @@ using Xunit;
 
 namespace MyApp.Auth.Tests.Repositories;
 
+/// <summary>
+/// Unit tests for Permission Query Spec.
+/// </summary>
 public class PermissionQuerySpecTests
 {
     private readonly AuthDbContext _context;
     private readonly PermissionRepository _repository;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PermissionQuerySpecTests"/> class and seeds the in-memory database.
+    /// </summary>
     public PermissionQuerySpecTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -34,6 +40,9 @@ public class PermissionQuerySpecTests
         _context.SaveChanges();
     }
 
+    /// <summary>
+    /// Verifies that with search term results in should filter results when Query Async is called.
+    /// </summary>
     [Fact]
     public async Task QueryAsync_WithSearchTerm_ShouldFilterResults()
     {
@@ -50,6 +59,9 @@ public class PermissionQuerySpecTests
         Assert.All(result.Items, p => Assert.Contains("Users", p.Module));
     }
 
+    /// <summary>
+    /// Verifies that with field filter results in should filter results when Query Async is called.
+    /// </summary>
     [Fact]
     public async Task QueryAsync_WithFieldFilter_ShouldFilterResults()
     {
@@ -67,6 +79,9 @@ public class PermissionQuerySpecTests
         Assert.All(result.Items, p => Assert.Equal("Roles", p.Module));
     }
 
+    /// <summary>
+    /// Verifies that with pagination results in should return correct page when Query Async is called.
+    /// </summary>
     [Fact]
     public async Task QueryAsync_WithPagination_ShouldReturnCorrectPage()
     {
@@ -84,6 +99,9 @@ public class PermissionQuerySpecTests
         Assert.Equal(2, result.PageNumber);
     }
 
+    /// <summary>
+    /// Verifies that with sorting results in should return sorted results when Query Async is called.
+    /// </summary>
     [Fact]
     public async Task QueryAsync_WithSorting_ShouldReturnSortedResults()
     {

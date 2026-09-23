@@ -40,6 +40,7 @@ public class CustomerRepositoryTests
 
     #region GetByIdAsync Tests
 
+    /// <summary>Verifies that GetByIdAsync returns the customer with matching properties when the identifier exists.</summary>
     [Fact]
     public async Task GetByIdAsync_WithValidId_ReturnsCustomer()
     {
@@ -56,6 +57,7 @@ public class CustomerRepositoryTests
         Assert.Equal("john@example.com", result.Email);
     }
 
+    /// <summary>Verifies that GetByIdAsync returns null when no customer exists with the given identifier.</summary>
     [Fact]
     public async Task GetByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -69,6 +71,7 @@ public class CustomerRepositoryTests
         Assert.Null(result);
     }
 
+    /// <summary>Verifies that GetByIdAsync eagerly loads the customer's related Orders navigation collection.</summary>
     [Fact]
     public async Task GetByIdAsync_IncludesOrders()
     {
@@ -96,6 +99,7 @@ public class CustomerRepositoryTests
 
     #region ListAsync Tests
 
+    /// <summary>Verifies that ListAsync returns all customers present in the database.</summary>
     [Fact]
     public async Task ListAsync_ReturnsAllCustomers()
     {
@@ -112,6 +116,7 @@ public class CustomerRepositoryTests
         Assert.True(result.Count() >= 3);
     }
 
+    /// <summary>Verifies that ListAsync returns an empty collection when no customers exist in the database.</summary>
     [Fact]
     public async Task ListAsync_ReturnsEmptyList_WhenNoCustomers()
     {
@@ -131,6 +136,7 @@ public class CustomerRepositoryTests
 
     #region AddAsync Tests
 
+    /// <summary>Verifies that AddAsync persists a new customer and makes it retrievable from the database.</summary>
     [Fact]
     public async Task AddAsync_WithValidCustomer_CreatesCustomer()
     {
@@ -157,6 +163,7 @@ public class CustomerRepositoryTests
 
     #region UpdateAsync Tests
 
+    /// <summary>Verifies that UpdateAsync saves changed customer properties to the database.</summary>
     [Fact]
     public async Task UpdateAsync_WithExistingCustomer_UpdatesCustomerData()
     {
@@ -179,6 +186,7 @@ public class CustomerRepositoryTests
 
     #region DeleteAsync Tests
 
+    /// <summary>Verifies that DeleteAsync removes the customer record from the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithValidId_DeletesCustomer()
     {
@@ -194,6 +202,7 @@ public class CustomerRepositoryTests
         Assert.Null(result);
     }
 
+    /// <summary>Verifies that DeleteAsync does not throw when called with an identifier that does not exist in the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithNonExistentId_DoesNotThrowException()
     {
@@ -208,6 +217,7 @@ public class CustomerRepositoryTests
 
     #region GetAllPaginatedAsync Tests
 
+    /// <summary>Verifies that GetAllPaginatedAsync returns the correct page slice with accurate pagination metadata.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -233,6 +243,7 @@ public class CustomerRepositoryTests
 
     #region QueryAsync Tests
 
+    /// <summary>Verifies that QueryAsync filters customers by the free-text search term across name and email.</summary>
     [Fact]
     public async Task QueryAsync_WithSearchTerm_ShouldFilterResults()
     {
@@ -253,6 +264,7 @@ public class CustomerRepositoryTests
                                            c.Email.Contains("Widget", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that QueryAsync filters customers to only those whose name contains the supplied filter value.</summary>
     [Fact]
     public async Task QueryAsync_WithNameFilter_ShouldFilterResults()
     {
@@ -272,6 +284,7 @@ public class CustomerRepositoryTests
         result.Items.Should().OnlyContain(c => c.Name.Contains("Filter", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that QueryAsync filters customers to only those whose email contains the supplied filter value.</summary>
     [Fact]
     public async Task QueryAsync_WithEmailFilter_ShouldFilterResults()
     {
@@ -291,6 +304,7 @@ public class CustomerRepositoryTests
         result.Items.Should().OnlyContain(c => c.Email.Contains("filter", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that QueryAsync returns the correct page number and page size when pagination parameters are supplied.</summary>
     [Fact]
     public async Task QueryAsync_WithPagination_ShouldReturnCorrectPage()
     {
@@ -313,6 +327,7 @@ public class CustomerRepositoryTests
         result.TotalCount.Should().BeGreaterThanOrEqualTo(4);
     }
 
+    /// <summary>Verifies that QueryAsync returns customers in ascending alphabetical order when sorted by name.</summary>
     [Fact]
     public async Task QueryAsync_WithSorting_ShouldReturnSortedResults()
     {

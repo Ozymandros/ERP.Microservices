@@ -10,11 +10,13 @@ using Xunit;
 
 namespace MyApp.Purchasing.Tests.Repositories;
 
+/// <summary>Integration tests for <see cref="SupplierRepository"/> using an in-memory database.</summary>
 public class SupplierRepositoryTests
 {
     private readonly PurchasingDbContext _context;
     private readonly SupplierRepository _repository;
 
+    /// <summary>Initializes a new instance of the <see cref="SupplierRepositoryTests"/> class, creating a fresh in-memory context and seeding test data.</summary>
     public SupplierRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -22,6 +24,10 @@ public class SupplierRepositoryTests
         TestDbContextFactory.SeedTestData(_context);
     }
 
+    /// <summary>Creates and persists a <see cref="Supplier"/> with the given name and email for use in a test.</summary>
+    /// <param name="name">The supplier name.</param>
+    /// <param name="email">The supplier email address.</param>
+    /// <returns>The persisted <see cref="Supplier"/> entity.</returns>
     private Supplier CreateTestSupplier(string name = "Test Supplier", string email = "test@supplier.com")
     {
         var supplier = new Supplier(Guid.NewGuid())
@@ -39,6 +45,7 @@ public class SupplierRepositoryTests
 
     #region GetByIdAsync Tests
 
+    /// <summary>Verifies that <see cref="SupplierRepository.GetByIdAsync"/> returns the supplier when a valid ID is provided.</summary>
     [Fact]
     public async Task GetByIdAsync_WithValidId_ReturnsSupplier()
     {
@@ -55,6 +62,7 @@ public class SupplierRepositoryTests
         Assert.Equal("abc@supplier.com", result.Email);
     }
 
+    /// <summary>Verifies that <see cref="SupplierRepository.GetByIdAsync"/> returns null when the ID does not exist.</summary>
     [Fact]
     public async Task GetByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -72,6 +80,7 @@ public class SupplierRepositoryTests
 
     #region GetByEmailAsync Tests
 
+    /// <summary>Verifies that <see cref="SupplierRepository.GetByEmailAsync"/> returns the supplier when the email exists.</summary>
     [Fact]
     public async Task GetByEmailAsync_WithValidEmail_ReturnsSupplier()
     {
@@ -87,6 +96,7 @@ public class SupplierRepositoryTests
         Assert.Equal("XYZ Suppliers", result.Name);
     }
 
+    /// <summary>Verifies that <see cref="SupplierRepository.GetByEmailAsync"/> returns null when the email does not exist.</summary>
     [Fact]
     public async Task GetByEmailAsync_WithNonExistentEmail_ReturnsNull()
     {
@@ -101,6 +111,7 @@ public class SupplierRepositoryTests
 
     #region GetByNameAsync Tests
 
+    /// <summary>Verifies that <see cref="SupplierRepository.GetByNameAsync"/> returns all suppliers whose names contain the search term.</summary>
     [Fact]
     public async Task GetByNameAsync_WithPartialName_ReturnsMatchingSuppliers()
     {
@@ -118,6 +129,7 @@ public class SupplierRepositoryTests
         Assert.All(result, s => Assert.Contains("Global", s.Name));
     }
 
+    /// <summary>Verifies that <see cref="SupplierRepository.GetByNameAsync"/> returns an empty collection when no supplier names match.</summary>
     [Fact]
     public async Task GetByNameAsync_WithNoMatches_ReturnsEmpty()
     {
@@ -136,6 +148,7 @@ public class SupplierRepositoryTests
 
     #region AddAsync Tests
 
+    /// <summary>Verifies that <see cref="SupplierRepository.AddAsync"/> persists a new supplier to the database.</summary>
     [Fact]
     public async Task AddAsync_WithValidSupplier_CreatesSupplier()
     {
@@ -163,6 +176,7 @@ public class SupplierRepositoryTests
 
     #region UpdateAsync Tests
 
+    /// <summary>Verifies that <see cref="SupplierRepository.UpdateAsync"/> persists changes to an existing supplier.</summary>
     [Fact]
     public async Task UpdateAsync_WithExistingSupplier_UpdatesSupplierData()
     {
@@ -185,6 +199,7 @@ public class SupplierRepositoryTests
 
     #region DeleteAsync Tests
 
+    /// <summary>Verifies that <see cref="SupplierRepository.DeleteAsync"/> removes the supplier from the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithValidId_DeletesSupplier()
     {
@@ -204,6 +219,7 @@ public class SupplierRepositoryTests
 
     #region GetAllAsync Tests
 
+    /// <summary>Verifies that <see cref="SupplierRepository.GetAllAsync"/> returns all suppliers in the database.</summary>
     [Fact]
     public async Task GetAllAsync_ReturnsAllSuppliers()
     {
@@ -224,6 +240,7 @@ public class SupplierRepositoryTests
 
     #region GetAllPaginatedAsync Tests
 
+    /// <summary>Verifies that <see cref="SupplierRepository.GetAllPaginatedAsync"/> returns the correct page of suppliers with accurate pagination metadata.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -249,6 +266,7 @@ public class SupplierRepositoryTests
 
     #region QueryAsync Tests
 
+    /// <summary>Verifies that <see cref="SupplierRepository.QueryAsync"/> filters suppliers by the free-text search term.</summary>
     [Fact]
     public async Task QueryAsync_WithSearchTerm_ShouldFilterResults()
     {
@@ -269,6 +287,7 @@ public class SupplierRepositoryTests
                                           s.Email.Contains("Widget", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that <see cref="SupplierRepository.QueryAsync"/> filters suppliers by the name filter.</summary>
     [Fact]
     public async Task QueryAsync_WithNameFilter_ShouldFilterResults()
     {
@@ -288,6 +307,7 @@ public class SupplierRepositoryTests
         result.Items.Should().OnlyContain(s => s.Name.Contains("Filter", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that <see cref="SupplierRepository.QueryAsync"/> filters suppliers by the email filter.</summary>
     [Fact]
     public async Task QueryAsync_WithEmailFilter_ShouldFilterResults()
     {
@@ -307,6 +327,7 @@ public class SupplierRepositoryTests
         result.Items.Should().OnlyContain(s => s.Email.Contains("filter", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that <see cref="SupplierRepository.QueryAsync"/> filters suppliers by the contact name filter.</summary>
     [Fact]
     public async Task QueryAsync_WithContactNameFilter_ShouldFilterResults()
     {
@@ -328,6 +349,7 @@ public class SupplierRepositoryTests
         result.Items.Should().OnlyContain(s => s.ContactName.Contains("Filter", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that <see cref="SupplierRepository.QueryAsync"/> returns the correct page of results when pagination is specified.</summary>
     [Fact]
     public async Task QueryAsync_WithPagination_ShouldReturnCorrectPage()
     {
@@ -350,6 +372,7 @@ public class SupplierRepositoryTests
         result.TotalCount.Should().BeGreaterThanOrEqualTo(4);
     }
 
+    /// <summary>Verifies that <see cref="SupplierRepository.QueryAsync"/> returns suppliers sorted in ascending order when a sort field is specified.</summary>
     [Fact]
     public async Task QueryAsync_WithSorting_ShouldReturnSortedResults()
     {

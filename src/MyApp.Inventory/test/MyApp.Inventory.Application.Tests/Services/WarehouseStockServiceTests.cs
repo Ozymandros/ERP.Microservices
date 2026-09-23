@@ -943,6 +943,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         await act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    /// <summary>Verifies that TransferStockAsync throws <see cref="StockTransferException"/> when source and target warehouse are the same.</summary>
     [Fact]
     public async Task TransferStockAsync_WithSameSourceAndTarget_ThrowsStockTransferException()
     {
@@ -966,6 +967,7 @@ public class WarehouseStockServiceTests : BaseServiceTest
         await act.Should().ThrowAsync<StockTransferException>();
     }
 
+    /// <summary>Verifies that GetByProductAndWarehouseAsync returns null when empty GUIDs are provided for product and warehouse.</summary>
     [Fact]
     public async Task GetByProductAndWarehouseAsync_WithEmptyGuids_ReturnsNull()
     {

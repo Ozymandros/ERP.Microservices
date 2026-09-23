@@ -19,6 +19,9 @@ using Xunit;
 
 namespace MyApp.Auth.Application.Tests.Services;
 
+/// <summary>
+/// Unit tests for User Service.
+/// </summary>
 public class UserServiceTests : BaseServiceTest
 {
     private readonly Mock<IUserRepository> _mockUserRepository;
@@ -33,6 +36,9 @@ public class UserServiceTests : BaseServiceTest
     private readonly Mock<ILogger<UserService>> _mockLogger;
     private readonly UserService _userService;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserServiceTests"/> class, setting up mocks and the <see cref="UserService"/> under test.
+    /// </summary>
     public UserServiceTests()
     {
         _mockUserRepository = new Mock<IUserRepository>();
@@ -67,6 +73,9 @@ public class UserServiceTests : BaseServiceTest
 
     #region GetUserByIdAsync
 
+    /// <summary>
+    /// Verifies that with valid id results in should return mapped user when Get User By Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetUserByIdAsync_WithValidId_ShouldReturnMappedUser()
     {
@@ -91,6 +100,9 @@ public class UserServiceTests : BaseServiceTest
         result.Should().BeEquivalentTo(userDto);
     }
 
+    /// <summary>
+    /// Verifies that with invalid id results in should return null when Get User By Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetUserByIdAsync_WithInvalidId_ShouldReturnNull()
     {
@@ -109,6 +121,9 @@ public class UserServiceTests : BaseServiceTest
         MockMapper.Verify(x => x.Map<UserDto>(It.IsAny<ApplicationUser>()), Times.Never);
     }
 
+    /// <summary>
+    /// Verifies that with repository exception results in should throw exception when Get User By Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetUserByIdAsync_WithRepositoryException_ShouldThrowException()
     {
@@ -128,6 +143,9 @@ public class UserServiceTests : BaseServiceTest
 
     #region GetUserByEmailAsync
 
+    /// <summary>
+    /// Verifies that with valid email results in should return mapped user when Get User By Email Async is called.
+    /// </summary>
     [Fact]
     public async Task GetUserByEmailAsync_WithValidEmail_ShouldReturnMappedUser()
     {
@@ -152,6 +170,9 @@ public class UserServiceTests : BaseServiceTest
         result.Should().BeEquivalentTo(userDto);
     }
 
+    /// <summary>
+    /// Verifies that with invalid email results in should return null when Get User By Email Async is called.
+    /// </summary>
     [Fact]
     public async Task GetUserByEmailAsync_WithInvalidEmail_ShouldReturnNull()
     {
@@ -174,6 +195,9 @@ public class UserServiceTests : BaseServiceTest
 
     #region GetAllUsersAsync
 
+    /// <summary>
+    /// Verifies that Get All Users Async should return mapped users.
+    /// </summary>
     [Fact]
     public async Task GetAllUsersAsync_ShouldReturnMappedUsers()
     {
@@ -207,6 +231,9 @@ public class UserServiceTests : BaseServiceTest
         result.Should().BeEquivalentTo(userDtos);
     }
 
+    /// <summary>
+    /// Verifies that with repository exception results in should throw exception when Get All Users Async is called.
+    /// </summary>
     [Fact]
     public async Task GetAllUsersAsync_WithRepositoryException_ShouldThrowException()
     {
@@ -225,6 +252,9 @@ public class UserServiceTests : BaseServiceTest
 
     #region UpdateUserAsync
 
+    /// <summary>
+    /// Verifies that with valid id and dto results in should update and return true when Update User Async is called.
+    /// </summary>
     [Fact]
     public async Task UpdateUserAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
     {
@@ -269,6 +299,9 @@ public class UserServiceTests : BaseServiceTest
         _mockUserManager.Verify(x => x.UpdateAsync(existingUser), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with invalid id results in should return false and log warning when Update User Async is called.
+    /// </summary>
     [Fact]
     public async Task UpdateUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
     {
@@ -297,6 +330,9 @@ public class UserServiceTests : BaseServiceTest
 
     #region ChangePasswordAsync
 
+    /// <summary>
+    /// Verifies that with valid credentials results in should return true when Change Password Async is called.
+    /// </summary>
     [Fact]
     public async Task ChangePasswordAsync_WithValidCredentials_ShouldReturnTrue()
     {
@@ -323,6 +359,9 @@ public class UserServiceTests : BaseServiceTest
         _mockUserManager.Verify(x => x.ChangePasswordAsync(user, currentPassword, newPassword), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with invalid current password results in should return false and log warning when Change Password Async is called.
+    /// </summary>
     [Fact]
     public async Task ChangePasswordAsync_WithInvalidCurrentPassword_ShouldReturnFalseAndLogWarning()
     {
@@ -358,6 +397,9 @@ public class UserServiceTests : BaseServiceTest
 
     #region DeleteUserAsync
 
+    /// <summary>
+    /// Verifies that with valid id results in should delete and return true when Delete User Async is called.
+    /// </summary>
     [Fact]
     public async Task DeleteUserAsync_WithValidId_ShouldDeleteAndReturnTrue()
     {
@@ -381,6 +423,9 @@ public class UserServiceTests : BaseServiceTest
         _mockUserManager.Verify(x => x.DeleteAsync(user), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with invalid id results in should return false and log warning when Delete User Async is called.
+    /// </summary>
     [Fact]
     public async Task DeleteUserAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
     {
@@ -404,6 +449,9 @@ public class UserServiceTests : BaseServiceTest
 
     #region AssignRoleAsync
 
+    /// <summary>
+    /// Verifies that with valid user and role results in should return true when Assign Role Async is called.
+    /// </summary>
     [Fact]
     public async Task AssignRoleAsync_WithValidUserAndRole_ShouldReturnTrue()
     {
@@ -433,6 +481,9 @@ public class UserServiceTests : BaseServiceTest
         _mockUserManager.Verify(x => x.AddToRoleAsync(user, roleName), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with invalid role results in should return false and log warning when Assign Role Async is called.
+    /// </summary>
     [Fact]
     public async Task AssignRoleAsync_WithInvalidRole_ShouldReturnFalseAndLogWarning()
     {
@@ -467,6 +518,9 @@ public class UserServiceTests : BaseServiceTest
 
     #region RemoveRoleAsync
 
+    /// <summary>
+    /// Verifies that with valid user and role results in should return true when Remove Role Async is called.
+    /// </summary>
     [Fact]
     public async Task RemoveRoleAsync_WithValidUserAndRole_ShouldReturnTrue()
     {
@@ -496,6 +550,9 @@ public class UserServiceTests : BaseServiceTest
 
     #region GetUserRolesAsync
 
+    /// <summary>
+    /// Verifies that with valid user id results in should return user roles when Get User Roles Async is called.
+    /// </summary>
     [Fact]
     public async Task GetUserRolesAsync_WithValidUserId_ShouldReturnUserRoles()
     {
@@ -538,6 +595,9 @@ public class UserServiceTests : BaseServiceTest
         result.Should().HaveCount(2);
     }
 
+    /// <summary>
+    /// Verifies that with invalid user id results in should return empty list and log warning when Get User Roles Async is called.
+    /// </summary>
     [Fact]
     public async Task GetUserRolesAsync_WithInvalidUserId_ShouldReturnEmptyListAndLogWarning()
     {
@@ -562,6 +622,9 @@ public class UserServiceTests : BaseServiceTest
 
     #region GetCurrentUserAsync
 
+    /// <summary>
+    /// Verifies that with valid claims principal results in should return mapped user when Get Current User Async is called.
+    /// </summary>
     [Fact]
     public async Task GetCurrentUserAsync_WithValidClaimsPrincipal_ShouldReturnMappedUser()
     {
@@ -624,6 +687,9 @@ public class UserServiceTests : BaseServiceTest
         result.Should().BeEquivalentTo(userDto);
     }
 
+    /// <summary>
+    /// Verifies that with invalid claims principal results in should return null when Get Current User Async is called.
+    /// </summary>
     [Fact]
     public async Task GetCurrentUserAsync_WithInvalidClaimsPrincipal_ShouldReturnNull()
     {

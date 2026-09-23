@@ -46,6 +46,7 @@ public class CustomerServiceTests
 
     #region GetCustomerByIdAsync Tests
 
+    /// <summary>Verifies that GetCustomerByIdAsync returns the mapped CustomerDto when the customer exists.</summary>
     [Fact]
     public async Task GetCustomerByIdAsync_WithExistingId_ReturnsCustomerDto()
     {
@@ -80,6 +81,7 @@ public class CustomerServiceTests
         _mockMapper.Verify(m => m.Map<CustomerDto>(customer), Times.Once);
     }
 
+    /// <summary>Verifies that GetCustomerByIdAsync returns null when no customer matches the given ID.</summary>
     [Fact]
     public async Task GetCustomerByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -100,6 +102,7 @@ public class CustomerServiceTests
 
     #region GetCustomerByNameAsync Tests
 
+    /// <summary>Verifies that GetCustomerByNameAsync returns the mapped CustomerDto when the name matches an existing customer.</summary>
     [Fact]
     public async Task GetCustomerByNameAsync_WithExistingName_ReturnsCustomerDto()
     {
@@ -126,6 +129,7 @@ public class CustomerServiceTests
         _mockCustomerRepository.Verify(r => r.GetByNameAsync(name), Times.Once);
     }
 
+    /// <summary>Verifies that GetCustomerByNameAsync returns null when no customer matches the given name.</summary>
     [Fact]
     public async Task GetCustomerByNameAsync_WithNonExistentName_ReturnsNull()
     {
@@ -145,6 +149,7 @@ public class CustomerServiceTests
 
     #region GetCustomerByEmailAsync Tests
 
+    /// <summary>Verifies that GetCustomerByEmailAsync returns the mapped CustomerDto when the email matches an existing customer.</summary>
     [Fact]
     public async Task GetCustomerByEmailAsync_WithExistingEmail_ReturnsCustomerDto()
     {
@@ -171,6 +176,7 @@ public class CustomerServiceTests
         _mockCustomerRepository.Verify(r => r.GetByEmailAsync(email), Times.Once);
     }
 
+    /// <summary>Verifies that GetCustomerByEmailAsync returns null when no customer matches the given email.</summary>
     [Fact]
     public async Task GetCustomerByEmailAsync_WithNonExistentEmail_ReturnsNull()
     {
@@ -190,6 +196,7 @@ public class CustomerServiceTests
 
     #region ListCustomersAsync Tests
 
+    /// <summary>Verifies that ListCustomersAsync returns all mapped customer DTOs from the repository.</summary>
     [Fact]
     public async Task ListCustomersAsync_ReturnsAllCustomers()
     {
@@ -234,6 +241,7 @@ public class CustomerServiceTests
         _mockMapper.Verify(m => m.Map<IEnumerable<CustomerDto>>(customers), Times.Once);
     }
 
+    /// <summary>Verifies that ListCustomersAsync returns an empty collection when the repository contains no customers.</summary>
     [Fact]
     public async Task ListCustomersAsync_WithEmptyRepository_ReturnsEmptyList()
     {
@@ -256,6 +264,7 @@ public class CustomerServiceTests
 
     #region CreateCustomerAsync Tests
 
+    /// <summary>Verifies that CreateCustomerAsync maps the DTO to an entity, persists it, and returns the mapped result.</summary>
     [Fact]
     public async Task CreateCustomerAsync_WithValidDto_CreatesCustomer()
     {
@@ -298,6 +307,7 @@ public class CustomerServiceTests
         _mockMapper.Verify(m => m.Map<Customer>(dto), Times.Once);
     }
 
+    /// <summary>Verifies that CreateCustomerAsync assigns a non-empty Guid to the new customer entity.</summary>
     [Fact]
     public async Task CreateCustomerAsync_AssignsNewGuid()
     {
@@ -333,6 +343,7 @@ public class CustomerServiceTests
 
     #region UpdateCustomerAsync Tests
 
+    /// <summary>Verifies that UpdateCustomerAsync maps the update DTO onto the existing entity and returns the updated result.</summary>
     [Fact]
     public async Task UpdateCustomerAsync_WithExistingCustomer_UpdatesSuccessfully()
     {
@@ -380,6 +391,7 @@ public class CustomerServiceTests
         _mockMapper.Verify(m => m.Map(updateDto, existingCustomer), Times.Once);
     }
 
+    /// <summary>Verifies that UpdateCustomerAsync throws InvalidOperationException when the specified customer does not exist.</summary>
     [Fact]
     public async Task UpdateCustomerAsync_WithNonExistentCustomer_ThrowsInvalidOperationException()
     {
@@ -408,6 +420,7 @@ public class CustomerServiceTests
 
     #region DeleteCustomerAsync Tests
 
+    /// <summary>Verifies that DeleteCustomerAsync delegates deletion to the repository with the correct customer ID.</summary>
     [Fact]
     public async Task DeleteCustomerAsync_CallsRepositoryDeleteWithCorrectId()
     {
@@ -425,6 +438,7 @@ public class CustomerServiceTests
 
     #region ListCustomersPaginatedAsync Tests
 
+    /// <summary>Verifies that ListCustomersPaginatedAsync returns the correct page, size, and total count for a valid pagination request.</summary>
     [Fact]
     public async Task ListCustomersPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -464,6 +478,7 @@ public class CustomerServiceTests
         _mockCustomerRepository.Verify(r => r.GetAllPaginatedAsync(1, 2), Times.Once);
     }
 
+    /// <summary>Verifies that ListCustomersPaginatedAsync returns an empty paginated result when no customers exist.</summary>
     [Fact]
     public async Task ListCustomersPaginatedAsync_WithEmptyResult_ReturnsEmptyPaginatedResult()
     {
@@ -491,6 +506,7 @@ public class CustomerServiceTests
 
     #region QueryCustomersAsync Tests
 
+    /// <summary>Verifies that QueryCustomersAsync returns filtered results matching the search term in the specification.</summary>
     [Fact]
     public async Task QueryCustomersAsync_WithSearchTerm_ReturnsFilteredResults()
     {
@@ -527,6 +543,7 @@ public class CustomerServiceTests
 
     #region Edge Cases and Error Scenarios
 
+    /// <summary>Verifies that CreateCustomerAsync succeeds when the customer name is empty (validation is handled at the API layer).</summary>
     [Fact]
     public async Task CreateCustomerAsync_WithEmptyName_CreatesCustomer()
     {
@@ -552,6 +569,7 @@ public class CustomerServiceTests
         result.Name.Should().Be("");
     }
 
+    /// <summary>Verifies that CreateCustomerAsync succeeds when the customer email is empty (validation is handled at the API layer).</summary>
     [Fact]
     public async Task CreateCustomerAsync_WithEmptyEmail_CreatesCustomer()
     {
@@ -577,6 +595,7 @@ public class CustomerServiceTests
         result.Email.Should().Be("");
     }
 
+    /// <summary>Verifies that UpdateCustomerAsync succeeds when the updated name is empty.</summary>
     [Fact]
     public async Task UpdateCustomerAsync_WithEmptyName_UpdatesSuccessfully()
     {
@@ -598,6 +617,7 @@ public class CustomerServiceTests
         result.Name.Should().Be("");
     }
 
+    /// <summary>Verifies that GetCustomerByIdAsync returns null when called with an empty Guid.</summary>
     [Fact]
     public async Task GetCustomerByIdAsync_WithEmptyGuid_ReturnsNull()
     {
@@ -612,6 +632,7 @@ public class CustomerServiceTests
         result.Should().BeNull();
     }
 
+    /// <summary>Verifies that QueryCustomersAsync returns a correctly paged result with accurate total count.</summary>
     [Fact]
     public async Task QueryCustomersAsync_WithPagination_ReturnsPaginatedResult()
     {

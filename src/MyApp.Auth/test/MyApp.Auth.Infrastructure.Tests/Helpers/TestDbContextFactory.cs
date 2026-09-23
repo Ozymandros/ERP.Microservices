@@ -10,6 +10,10 @@ namespace MyApp.Auth.Tests.Helpers;
 /// </summary>
 public static class TestDbContextFactory
 {
+    /// <summary>
+    /// Creates a new <see cref="AuthDbContext"/> backed by a unique in-memory database and ensures the schema is created.
+    /// </summary>
+    /// <returns>A ready-to-use <see cref="AuthDbContext"/> instance.</returns>
     public static AuthDbContext CreateInMemoryContext()
     {
         var options = new DbContextOptionsBuilder<AuthDbContext>()
@@ -21,6 +25,11 @@ public static class TestDbContextFactory
         return context;
     }
 
+    /// <summary>
+    /// Seeds the provided context with default Admin and User roles for integration tests.
+    /// Clears any previously existing users and roles before seeding.
+    /// </summary>
+    /// <param name="context">The <see cref="AuthDbContext"/> to seed.</param>
     public static void SeedTestData(AuthDbContext context)
     {
         // Clear existing data

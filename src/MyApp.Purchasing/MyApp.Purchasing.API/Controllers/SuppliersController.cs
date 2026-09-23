@@ -37,6 +37,7 @@ public class SuppliersController : ControllerBase
     /// <summary>
     /// Export all suppliers as XLSX
     /// </summary>
+    /// <returns>A file result containing the supplier list as an XLSX spreadsheet, or a 500 status on error.</returns>
     [HttpGet("export-xlsx")]
     [HasPermission("Purchasing", "Read")]
     [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
@@ -60,6 +61,7 @@ public class SuppliersController : ControllerBase
     /// <summary>
     /// Export all suppliers as PDF
     /// </summary>
+    /// <returns>A file result containing the supplier list as a PDF document, or a 500 status on error.</returns>
     [HttpGet("export-pdf")]
     [HasPermission("Purchasing", "Read")]
     [Produces("application/pdf")]
@@ -84,6 +86,7 @@ public class SuppliersController : ControllerBase
     /// Get all suppliers (optionally paginated and filtered)
     /// </summary>
     /// <param name="query">The query.</param>
+    /// <returns>A paginated result when query parameters are provided, or the full list of supplier DTOs.</returns>
     [HttpGet]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(typeof(IEnumerable<SupplierDto>), StatusCodes.Status200OK)]
@@ -125,6 +128,7 @@ public class SuppliersController : ControllerBase
     /// Get supplier by ID - Requires Purchasing.Read permission
     /// </summary>
     /// <param name="id">The id.</param>
+    /// <returns>The supplier DTO if found, or 404 Not Found.</returns>
     [HttpGet("{id}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -163,6 +167,7 @@ public class SuppliersController : ControllerBase
     /// Get supplier by email - Requires Purchasing.Read permission
     /// </summary>
     /// <param name="email">The email.</param>
+    /// <returns>The supplier DTO if found, or 404 Not Found.</returns>
     [HttpGet("email/{email}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -187,6 +192,7 @@ public class SuppliersController : ControllerBase
     /// Get supplier by Name - Requires Purchasing.Read permission
     /// </summary>
     /// <param name="name">The name.</param>
+    /// <returns>The supplier DTO if found, or 404 Not Found.</returns>
     [HttpGet("name/{name}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -216,6 +222,7 @@ public class SuppliersController : ControllerBase
     /// Search suppliers by name - Requires Purchasing.Read permission
     /// </summary>
     /// <param name="name">The name.</param>
+    /// <returns>A collection of supplier DTOs whose names contain the given search term.</returns>
     [HttpGet("search/{name}")]
     [HasPermission("Purchasing", "Read")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -230,6 +237,7 @@ public class SuppliersController : ControllerBase
     /// Search suppliers with advanced filtering, sorting, and pagination - Requires Purchasing.Read permission
     /// </summary>
     /// <param name="query">The query.</param>
+    /// <returns>A paginated result containing supplier DTOs that match the query specification.</returns>
     /// <remarks>
     /// Supported filters: name, email, country, city, isActive
     /// Supported sort fields: id, name, email, city, country, createdAt
@@ -265,6 +273,7 @@ public class SuppliersController : ControllerBase
     /// Create a new supplier - Requires Purchasing.Create permission
     /// </summary>
     /// <param name="dto">The dto.</param>
+    /// <returns>The created supplier DTO with a 201 status, 409 Conflict if the email is already in use, or 400 Bad Request on validation failure.</returns>
     [HttpPost]
     [HasPermission("Purchasing", "Create")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -296,6 +305,7 @@ public class SuppliersController : ControllerBase
     /// </summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
+    /// <returns>The updated supplier DTO, 404 Not Found if the supplier does not exist, 409 Conflict if the email is already taken, or 400 Bad Request on validation failure.</returns>
     [HttpPut("{id}")]
     [HasPermission("Purchasing", "Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -334,6 +344,7 @@ public class SuppliersController : ControllerBase
     /// Delete a supplier - Requires Purchasing.Delete permission
     /// </summary>
     /// <param name="id">The id.</param>
+    /// <returns>204 No Content on success, or 404 Not Found if the supplier does not exist.</returns>
     [HttpDelete("{id}")]
     [HasPermission("Purchasing", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

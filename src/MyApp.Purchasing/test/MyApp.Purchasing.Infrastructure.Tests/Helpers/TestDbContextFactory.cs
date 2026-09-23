@@ -9,6 +9,8 @@ namespace MyApp.Purchasing.Tests.Helpers;
 /// </summary>
 public static class TestDbContextFactory
 {
+    /// <summary>Creates a new <see cref="PurchasingDbContext"/> backed by a uniquely named in-memory database.</summary>
+    /// <returns>A <see cref="PurchasingDbContext"/> instance ready for use in tests.</returns>
     public static PurchasingDbContext CreateInMemoryContext()
     {
         var options = new DbContextOptionsBuilder<PurchasingDbContext>()
@@ -20,6 +22,8 @@ public static class TestDbContextFactory
         return context;
     }
 
+    /// <summary>Seeds the given <see cref="PurchasingDbContext"/> with a set of test suppliers, clearing any pre-existing data first.</summary>
+    /// <param name="context">The database context to seed.</param>
     public static void SeedTestData(PurchasingDbContext context)
     {
         // Clear existing data

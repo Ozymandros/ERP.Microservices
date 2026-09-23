@@ -7,11 +7,17 @@ using Xunit;
 
 namespace MyApp.Auth.Tests.Repositories;
 
+/// <summary>
+/// Unit tests for Permission Repository.
+/// </summary>
 public class PermissionRepositoryTests
 {
     private readonly AuthDbContext _context;
     private readonly PermissionRepository _repository;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PermissionRepositoryTests"/> class and seeds the in-memory database with test data.
+    /// </summary>
     public PermissionRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -62,6 +68,9 @@ public class PermissionRepositoryTests
 
     #region GetByRoleName Tests
 
+    /// <summary>
+    /// Verifies that with valid role and permission results in returns permissions when Get By Role Name is called.
+    /// </summary>
     [Fact]
     public async Task GetByRoleName_WithValidRoleAndPermission_ReturnsPermissions()
     {
@@ -87,6 +96,9 @@ public class PermissionRepositoryTests
         Assert.Contains(result, p => p.Module == "Inventory" && p.Action == "Read");
     }
 
+    /// <summary>
+    /// Verifies that with non existent role results in returns empty list when Get By Role Name is called.
+    /// </summary>
     [Fact]
     public async Task GetByRoleName_WithNonExistentRole_ReturnsEmptyList()
     {
@@ -98,6 +110,9 @@ public class PermissionRepositoryTests
         Assert.Empty(result);
     }
 
+    /// <summary>
+    /// Verifies that with mismatched module or action results in returns empty list when Get By Role Name is called.
+    /// </summary>
     [Fact]
     public async Task GetByRoleName_WithMismatchedModuleOrAction_ReturnsEmptyList()
     {
@@ -122,6 +137,9 @@ public class PermissionRepositoryTests
         Assert.Empty(result);
     }
 
+    /// <summary>
+    /// Verifies that with null parameters results in returns empty list when Get By Role Name is called.
+    /// </summary>
     [Fact]
     public async Task GetByRoleName_WithNullParameters_ReturnsEmptyList()
     {
@@ -136,6 +154,9 @@ public class PermissionRepositoryTests
         Assert.Empty(result3);
     }
 
+    /// <summary>
+    /// Verifies that with empty string parameters results in returns empty list when Get By Role Name is called.
+    /// </summary>
     [Fact]
     public async Task GetByRoleName_WithEmptyStringParameters_ReturnsEmptyList()
     {
@@ -150,6 +171,9 @@ public class PermissionRepositoryTests
         Assert.Empty(result3);
     }
 
+    /// <summary>
+    /// Verifies that with multiple permissions for role results in returns correct permissions when Get By Role Name is called.
+    /// </summary>
     [Fact]
     public async Task GetByRoleName_WithMultiplePermissionsForRole_ReturnsCorrectPermissions()
     {
@@ -178,6 +202,9 @@ public class PermissionRepositoryTests
 
     #region GetByUserName Tests
 
+    /// <summary>
+    /// Verifies that with valid user and permission results in returns permissions when Get By User Name is called.
+    /// </summary>
     [Fact]
     public async Task GetByUserName_WithValidUserAndPermission_ReturnsPermissions()
     {
@@ -203,6 +230,9 @@ public class PermissionRepositoryTests
         Assert.Contains(result, p => p.Module == "Orders" && p.Action == "Create");
     }
 
+    /// <summary>
+    /// Verifies that with non existent user results in returns empty list when Get By User Name is called.
+    /// </summary>
     [Fact]
     public async Task GetByUserName_WithNonExistentUser_ReturnsEmptyList()
     {
@@ -214,6 +244,9 @@ public class PermissionRepositoryTests
         Assert.Empty(result);
     }
 
+    /// <summary>
+    /// Verifies that with mismatched module or action results in returns empty list when Get By User Name is called.
+    /// </summary>
     [Fact]
     public async Task GetByUserName_WithMismatchedModuleOrAction_ReturnsEmptyList()
     {
@@ -238,6 +271,9 @@ public class PermissionRepositoryTests
         Assert.Empty(result);
     }
 
+    /// <summary>
+    /// Verifies that with null parameters results in returns empty list when Get By User Name is called.
+    /// </summary>
     [Fact]
     public async Task GetByUserName_WithNullParameters_ReturnsEmptyList()
     {
@@ -252,6 +288,9 @@ public class PermissionRepositoryTests
         Assert.Empty(result3);
     }
 
+    /// <summary>
+    /// Verifies that with empty string parameters results in returns empty list when Get By User Name is called.
+    /// </summary>
     [Fact]
     public async Task GetByUserName_WithEmptyStringParameters_ReturnsEmptyList()
     {
@@ -266,6 +305,9 @@ public class PermissionRepositoryTests
         Assert.Empty(result3);
     }
 
+    /// <summary>
+    /// Verifies that with multiple permissions for user results in returns correct permission when Get By User Name is called.
+    /// </summary>
     [Fact]
     public async Task GetByUserName_WithMultiplePermissionsForUser_ReturnsCorrectPermission()
     {
@@ -290,6 +332,9 @@ public class PermissionRepositoryTests
         Assert.Contains(result, p => p.Module == "Inventory" && p.Action == "Delete");
     }
 
+    /// <summary>
+    /// Verifies that with different casings results in returns empty list when Get By User Name is called.
+    /// </summary>
     [Fact]
     public async Task GetByUserName_WithDifferentCasings_ReturnsEmptyList()
     {
@@ -318,6 +363,9 @@ public class PermissionRepositoryTests
 
     #region Base Repository Tests (GetById, GetAll, Add, Update, Delete)
 
+    /// <summary>
+    /// Verifies that with valid permission id results in returns permission when Get By Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByIdAsync_WithValidPermissionId_ReturnsPermission()
     {
@@ -334,6 +382,9 @@ public class PermissionRepositoryTests
         Assert.Equal("TestAction", result.Action);
     }
 
+    /// <summary>
+    /// Verifies that Get All Async returns all permissions.
+    /// </summary>
     [Fact]
     public async Task GetAllAsync_ReturnsAllPermissions()
     {
@@ -350,6 +401,9 @@ public class PermissionRepositoryTests
         Assert.True(result.Count() >= 3);
     }
 
+    /// <summary>
+    /// Verifies that with new permission results in creates permission when Add Async is called.
+    /// </summary>
     [Fact]
     public async Task AddAsync_WithNewPermission_CreatesPermission()
     {
@@ -370,6 +424,9 @@ public class PermissionRepositoryTests
         Assert.Equal("NewModule", result.Module);
     }
 
+    /// <summary>
+    /// Verifies that with existing permission results in updates permission when Update Async is called.
+    /// </summary>
     [Fact]
     public async Task UpdateAsync_WithExistingPermission_UpdatesPermission()
     {
@@ -386,6 +443,9 @@ public class PermissionRepositoryTests
         Assert.Equal("Updated description", result.Description);
     }
 
+    /// <summary>
+    /// Verifies that with valid permission id results in deletes permission when Delete Async is called.
+    /// </summary>
     [Fact]
     public async Task DeleteAsync_WithValidPermissionId_DeletesPermission()
     {

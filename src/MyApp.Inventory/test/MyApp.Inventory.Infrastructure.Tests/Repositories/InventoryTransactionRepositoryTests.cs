@@ -11,11 +11,13 @@ using Xunit;
 
 namespace MyApp.Inventory.Tests.Repositories;
 
+/// <summary>Integration tests for <see cref="InventoryTransactionRepository"/> using an in-memory EF Core database.</summary>
 public class InventoryTransactionRepositoryTests
 {
     private readonly InventoryDbContext _context;
     private readonly InventoryTransactionRepository _repository;
 
+    /// <summary>Initialises the in-memory database context and repository, and seeds base transaction data before each test.</summary>
     public InventoryTransactionRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -108,6 +110,7 @@ public class InventoryTransactionRepositoryTests
 
     #region GetByIdAsync Tests
 
+    /// <summary>Verifies that GetByIdAsync returns the transaction when a valid ID is provided.</summary>
     [Fact]
     public async Task GetByIdAsync_WithValidId_ReturnsInventoryTransaction()
     {
@@ -125,6 +128,7 @@ public class InventoryTransactionRepositoryTests
         result.QuantityChange.Should().Be(75);
     }
 
+    /// <summary>Verifies that GetByIdAsync returns null when no transaction with the given ID exists.</summary>
     [Fact]
     public async Task GetByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -142,6 +146,7 @@ public class InventoryTransactionRepositoryTests
 
     #region GetAllAsync Tests
 
+    /// <summary>Verifies that GetAllAsync returns all inventory transactions currently in the database.</summary>
     [Fact]
     public async Task GetAllAsync_ReturnsAllTransactions()
     {
@@ -157,6 +162,7 @@ public class InventoryTransactionRepositoryTests
 
     #region GetAllPaginatedAsync Tests
 
+    /// <summary>Verifies that GetAllPaginatedAsync returns a correctly sized and numbered page of transactions.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -179,6 +185,7 @@ public class InventoryTransactionRepositoryTests
 
     #region GetByProductIdAsync Tests
 
+    /// <summary>Verifies that GetByProductIdAsync returns all transactions associated with the specified product, including navigation properties.</summary>
     [Fact]
     public async Task GetByProductIdAsync_WithExistingTransactions_ReturnsAllTransactionsForProduct()
     {
@@ -199,6 +206,7 @@ public class InventoryTransactionRepositoryTests
         result.All(t => t.Warehouse != null).Should().BeTrue();
     }
 
+    /// <summary>Verifies that GetByProductIdAsync returns an empty list when no transactions exist for the given product ID.</summary>
     [Fact]
     public async Task GetByProductIdAsync_WithNoTransactions_ReturnsEmptyList()
     {
@@ -217,6 +225,7 @@ public class InventoryTransactionRepositoryTests
 
     #region GetByWarehouseIdAsync Tests
 
+    /// <summary>Verifies that GetByWarehouseIdAsync returns all transactions associated with the specified warehouse, including navigation properties.</summary>
     [Fact]
     public async Task GetByWarehouseIdAsync_WithExistingTransactions_ReturnsAllTransactionsForWarehouse()
     {
@@ -238,6 +247,7 @@ public class InventoryTransactionRepositoryTests
         result.All(t => t.Warehouse != null).Should().BeTrue();
     }
 
+    /// <summary>Verifies that GetByWarehouseIdAsync returns an empty list when no transactions exist for the given warehouse ID.</summary>
     [Fact]
     public async Task GetByWarehouseIdAsync_WithNoTransactions_ReturnsEmptyList()
     {
@@ -256,6 +266,7 @@ public class InventoryTransactionRepositoryTests
 
     #region GetByTransactionTypeAsync Tests
 
+    /// <summary>Verifies that GetByTransactionTypeAsync returns only transactions matching the specified transaction type.</summary>
     [Fact]
     public async Task GetByTransactionTypeAsync_WithExistingTransactions_ReturnsTransactionsOfType()
     {
@@ -276,6 +287,7 @@ public class InventoryTransactionRepositoryTests
         result.All(t => t.Warehouse != null).Should().BeTrue();
     }
 
+    /// <summary>Verifies that GetByTransactionTypeAsync returns an empty list when no transactions of the requested type exist.</summary>
     [Fact]
     public async Task GetByTransactionTypeAsync_WithNoTransactionsOfType_ReturnsEmptyList()
     {
@@ -301,6 +313,7 @@ public class InventoryTransactionRepositoryTests
 
     #region AddAsync Tests
 
+    /// <summary>Verifies that AddAsync persists a new inventory transaction to the database.</summary>
     [Fact]
     public async Task AddAsync_WithValidTransaction_CreatesTransaction()
     {
@@ -332,6 +345,7 @@ public class InventoryTransactionRepositoryTests
 
     #region UpdateAsync Tests
 
+    /// <summary>Verifies that UpdateAsync saves modified transaction fields to the database.</summary>
     [Fact]
     public async Task UpdateAsync_WithExistingTransaction_UpdatesTransactionData()
     {
@@ -357,6 +371,7 @@ public class InventoryTransactionRepositoryTests
 
     #region DeleteAsync Tests
 
+    /// <summary>Verifies that DeleteAsync removes the inventory transaction from the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithValidTransaction_DeletesTransaction()
     {
@@ -378,6 +393,7 @@ public class InventoryTransactionRepositoryTests
 
     #region QueryAsync Tests
 
+    /// <summary>Verifies that QueryAsync filters transactions by transaction type and returns only matching results.</summary>
     [Fact]
     public async Task QueryAsync_WithTransactionTypeFilter_ShouldFilterResults()
     {
@@ -398,6 +414,7 @@ public class InventoryTransactionRepositoryTests
         result.Items.Should().OnlyContain(t => t.TransactionType == TransactionType.Inbound);
     }
 
+    /// <summary>Verifies that QueryAsync filters transactions by product ID and returns only matching results.</summary>
     [Fact]
     public async Task QueryAsync_WithProductIdFilter_ShouldFilterResults()
     {
@@ -417,6 +434,7 @@ public class InventoryTransactionRepositoryTests
         result.Items.Should().OnlyContain(t => t.ProductId == product.Id);
     }
 
+    /// <summary>Verifies that QueryAsync filters transactions by warehouse ID and returns only matching results.</summary>
     [Fact]
     public async Task QueryAsync_WithWarehouseIdFilter_ShouldFilterResults()
     {
@@ -436,6 +454,7 @@ public class InventoryTransactionRepositoryTests
         result.Items.Should().OnlyContain(t => t.WarehouseId == warehouse.Id);
     }
 
+    /// <summary>Verifies that QueryAsync filters transactions by quantity change range and returns only results within the range.</summary>
     [Fact]
     public async Task QueryAsync_WithQuantityRangeFilter_ShouldFilterResults()
     {
@@ -461,6 +480,7 @@ public class InventoryTransactionRepositoryTests
         result.Items.Should().OnlyContain(t => t.QuantityChange >= 20 && t.QuantityChange <= 50);
     }
 
+    /// <summary>Verifies that QueryAsync returns the correct page of results when pagination is specified.</summary>
     [Fact]
     public async Task QueryAsync_WithPagination_ShouldReturnCorrectPage()
     {
@@ -485,6 +505,7 @@ public class InventoryTransactionRepositoryTests
         result.TotalCount.Should().BeGreaterThanOrEqualTo(7);
     }
 
+    /// <summary>Verifies that QueryAsync returns transactions sorted by quantity change in ascending order.</summary>
     [Fact]
     public async Task QueryAsync_WithSorting_ShouldReturnSortedResults()
     {

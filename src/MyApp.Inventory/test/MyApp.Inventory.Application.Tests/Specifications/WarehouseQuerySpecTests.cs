@@ -7,6 +7,7 @@ using Xunit;
 
 namespace MyApp.Inventory.Application.Tests.Specifications;
 
+/// <summary>Unit tests for <see cref="WarehouseQuerySpec"/> filtering, searching, sorting, and pagination behaviour.</summary>
 public class WarehouseQuerySpecTests
 {
     private static IQueryable<Warehouse> CreateTestData()
@@ -20,6 +21,7 @@ public class WarehouseQuerySpecTests
         }.AsQueryable();
     }
 
+    /// <summary>Verifies that ApplyFilters returns only warehouses whose name contains the specified filter value.</summary>
     [Fact]
     public void ApplyFilters_WithNameFilter_ReturnsFilteredWarehouses()
     {
@@ -34,6 +36,7 @@ public class WarehouseQuerySpecTests
         result.First().Name.Should().Contain("Main");
     }
 
+    /// <summary>Verifies that ApplyFilters returns only warehouses whose location contains the specified filter value.</summary>
     [Fact]
     public void ApplyFilters_WithLocationFilter_ReturnsFilteredWarehouses()
     {
@@ -48,6 +51,7 @@ public class WarehouseQuerySpecTests
         result.First().Location.Should().Contain("York");
     }
 
+    /// <summary>Verifies that ApplyFilters returns warehouses whose name or location matches the search term.</summary>
     [Fact]
     public void ApplyFilters_WithSearchTerm_ReturnsMatchingWarehouses()
     {
@@ -60,6 +64,7 @@ public class WarehouseQuerySpecTests
         result.Should().HaveCount(2);
     }
 
+    /// <summary>Verifies that ApplyFilters returns all warehouses when the search term is empty.</summary>
     [Fact]
     public void ApplyFilters_WithEmptySearchTerm_ReturnsAllWarehouses()
     {
@@ -72,6 +77,7 @@ public class WarehouseQuerySpecTests
         result.Should().HaveCount(4);
     }
 
+    /// <summary>Verifies that Apply sorts warehouses by name in ascending order.</summary>
     [Fact]
     public void Apply_WithSortByName_SortsCorrectly()
     {
@@ -84,6 +90,7 @@ public class WarehouseQuerySpecTests
         result.Should().BeInAscendingOrder(w => w.Name);
     }
 
+    /// <summary>Verifies that Apply returns a page of results no larger than the specified page size.</summary>
     [Fact]
     public void Apply_WithPagination_ReturnsPaginatedResults()
     {
