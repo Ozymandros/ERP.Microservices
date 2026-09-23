@@ -95,7 +95,6 @@ jobs:
         env:
           PROFILE: ${{ inputs.profile }}
           INPUT_AWS_REGION: ${{ inputs.aws_region }}
-          # Do not use || here — boolean false would be treated as unset.
           VAR_STATE_BUCKET: ${{ vars.AWS_TF_STATE_BUCKET }}
           VAR_LOCK_TABLE: ${{ vars.AWS_TF_LOCK_TABLE }}
         run: |
@@ -132,7 +131,6 @@ jobs:
           LOCK_TABLE="${VAR_LOCK_TABLE:-myapp-tf-locks}"
           STATE_KEY="aws/${PROFILE}/eks/terraform.tfstate"
           ENABLE_OIDC="true"
-          esac
           {
             echo "tfvars_file=$TFVARS_FILE"
             echo "aws_region=$AWS_REGION"
