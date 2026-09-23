@@ -84,6 +84,19 @@ jobs:
           echo "bootstrap_oidc (raw) = '${{ github.event.inputs.bootstrap_oidc }}'"
           python -c 'v = """${{ github.event.inputs.bootstrap_oidc }}"""; print(type(v).__name__, repr(v))'
 
+  bootstrap-aws:
+    name: Bootstrap AWS OIDC + infra
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/bootstrap-aws-infrastructure.yml
+    secrets: inherit
+    with:
+      profile: ${{ github.event.inputs.profile }}
+      aws_region: ${{ github.event.inputs.aws_region }}
+      auto_approve: "true"
+      bootstrap_oidc: ${{ github.event.inputs.bootstrap_oidc }}
+
   prepare:
     name: Prepare deployment context
     runs-on: ubuntu-latest
@@ -141,20 +154,6 @@ jobs:
       image_tag: ${{ needs.prepare.outputs.image_tag }}
       do_push: ${{ needs.prepare.outputs.do_push == 'true' }}
       platform: linux/amd64
-
-  bootstrap-aws:
-    name: Bootstrap AWS OIDC + infra
-    if: ${{ github.event.inputs.bootstrap_oidc == true || github.event.inputs.bootstrap_oidc == 'true' }}
-    permissions:
-      contents: read
-      packages: write
-    uses: ./.github/workflows/bootstrap-aws-infrastructure.yml
-    secrets: inherit
-    with:
-      profile: ${{ github.event.inputs.profile }}
-      aws_region: ${{ github.event.inputs.aws_region }}
-      auto_approve: "true"
-      bootstrap_oidc: ${{ github.event.inputs.bootstrap_oidc }}
 
   deploy-k8s:
     name: Deploy AWS EKS (${{ github.event.inputs.profile }})

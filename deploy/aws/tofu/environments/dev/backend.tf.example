@@ -1,7 +1,15 @@
+# Example full backend block (optional). Prefer empty backend.tf + -backend-config
+# from bootstrap-aws-infrastructure.yml / scripts/bootstrap-aws-infrastructure.ps1.
+#
+# Defaults used by CI/scripts:
+#   bucket         = myapp-tfstate-dev   (or AWS_TF_STATE_BUCKET / -StateBucket)
+#   key            = aws/dev/eks/terraform.tfstate
+#   dynamodb_table = myapp-tf-locks      (or AWS_TF_LOCK_TABLE / -LockTable)
+#
 terraform {
   backend "s3" {
     bucket         = "myapp-tfstate-dev"
-    key            = "aws/eks/terraform.tfstate"
+    key            = "aws/dev/eks/terraform.tfstate"
     region         = "eu-west-1"
     dynamodb_table = "myapp-tf-locks"
     encrypt        = true
