@@ -338,17 +338,31 @@ jobs:
           TOFU_AWS_REGION_VAR: ${{ env.TOFU_AWS_REGION_VAR }}
         run: |
           set -euo pipefail
+
           VAR_ARGS=(-var-file="$TOFU_VAR_FILE")
           if [[ -n "${TOFU_AWS_REGION_VAR:-}" ]]; then
             VAR_ARGS+=("$TOFU_AWS_REGION_VAR")
           fi
+
           tofu fmt -check -recursive
           tofu init -input=false
           tofu validate "${VAR_ARGS[@]}"
+
+          # capture exit code correctly
           tofu plan -detailed-exitcode "${VAR_ARGS[@]}"
+          exit_code=$?
+
           echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
-          if [[ "$exit_code" == "0" ]]; then
+
+          if [[ "$exit_code" == "2" ]]; then
+            echo "Changes detected → checking for cluster replacement"
+            if tofu plan "${VAR_ARGS[@]}" | grep -qE "aws_eks_cluster\.this.*(replace|-/\+|create after destroy)"; then
+              echo "Cluster replacement detected → destroying NodeGroup"
+              tofu destroy -target=aws_eks_node_group.this -auto-approve "${VAR_ARGS[@]}"
+            fi
             tofu apply -auto-approve "${VAR_ARGS[@]}"
+          elif [[ "$exit_code" == "0" ]]; then
+            echo "No changes → nothing to do"
           else
             echo "::error::Tofu plan failed with exit code $exit_code"
             exit 1
