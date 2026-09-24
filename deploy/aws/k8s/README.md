@@ -9,7 +9,7 @@ Thin AWS-specific patches on top of `deploy/k8s/`.
 | `overlays/dev` | **Default — cheap lab / CI** | gp3 PVC (20Gi), reduced SQL CPU/RAM. No S3 backup, no ESO, no IRSA. Use manual Kubernetes secrets. |
 | `overlays/prod` | Staging or when you need backups + Secrets Manager | Let's Encrypt overlay + backup CronJob + ESO + IRSA service accounts |
 
-**Estimated infra baseline (dev tofu defaults):** 1× On-Demand `t3.micro` node (Free Tier–eligible; too small for full ERP+SQL), no NAT gateway, no S3 backup bucket — EKS control plane still billed; scale `node_instance_types` to `t3.xlarge`+ when the account allows paid sizes.
+**Estimated infra baseline (dev tofu defaults):** 1× On-Demand `t3.small` node, no NAT gateway, no S3 backup bucket — EKS control plane still billed; scale `node_instance_types` to `t3.xlarge`+ when the account allows paid sizes.
 
 Scale up later via `deploy/aws/tofu` variables (`node_max_size`, `enable_nat_gateway`, `create_backup_bucket`, etc.) without changing the generic `deploy/k8s/` layer.
 

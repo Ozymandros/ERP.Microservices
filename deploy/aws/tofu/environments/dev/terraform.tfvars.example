@@ -12,7 +12,7 @@ enable_nat_gateway = false
 
 kubernetes_version  = "1.31"
 # Free Tier–eligible (account restricted); too small for full ERP+SQL — scale up when billing allows.
-node_instance_types = ["t3.micro"]
+node_instance_types = ["t3.small"]
 node_capacity_type  = "ON_DEMAND"
 node_desired_size   = 1
 node_min_size       = 1

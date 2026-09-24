@@ -53,9 +53,9 @@ variable "kubernetes_version" {
 }
 
 variable "node_instance_types" {
-  description = "EKS managed node group instance types. Default t3.micro for Free Tier; use t3.xlarge+ for real ERP+SQL workloads."
+  description = "EKS managed node group instance types. Default t3.small for Free Tier; use t3.xlarge+ for real ERP+SQL workloads."
   type        = list(string)
-  default     = ["t3.micro"]
+  default     = ["t3.small"]
 }
 
 variable "node_capacity_type" {
