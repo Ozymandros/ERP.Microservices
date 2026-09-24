@@ -345,7 +345,14 @@ jobs:
           tofu fmt -check -recursive
           tofu init -input=false
           tofu validate "${VAR_ARGS[@]}"
-          tofu apply -auto-approve "${VAR_ARGS[@]}"
+          tofu plan -detailed-exitcode "${VAR_ARGS[@]}"
+          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
+          if [[ "$exit_code" == "0" ]]; then
+            tofu apply -auto-approve "${VAR_ARGS[@]}"
+          else
+            echo "::error::Tofu plan failed with exit code $exit_code"
+            exit 1
+          fi
 
       - name: Refresh AWS settings from OpenTofu outputs
         if: ${{ github.event.inputs.infra_step == 'apply' }}
