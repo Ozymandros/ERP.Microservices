@@ -348,25 +348,20 @@ jobs:
           tofu init -input=false
           tofu validate "${VAR_ARGS[@]}"
 
-          # capture exit code correctly
-          tofu plan -detailed-exitcode "${VAR_ARGS[@]}"
-          exit_code=$?
+          # PLAN
+          PLAN_OUTPUT=$(tofu plan "${VAR_ARGS[@]}")
+          echo "$PLAN_OUTPUT"
 
-          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
-
-          if [[ "$exit_code" == "2" ]]; then
-            echo "Changes detected → checking for cluster replacement"
-            if tofu plan "${VAR_ARGS[@]}" | grep -qE "aws_eks_cluster\.this.*(replace|-/\+|create after destroy)"; then
-              echo "Cluster replacement detected → destroying NodeGroup"
-              tofu destroy -target=aws_eks_node_group.this -auto-approve "${VAR_ARGS[@]}"
-            fi
-            tofu apply -auto-approve "${VAR_ARGS[@]}"
-          elif [[ "$exit_code" == "0" ]]; then
-            echo "No changes → nothing to do"
+          # DETECT CLUSTER REPLACE
+          if echo "$PLAN_OUTPUT" | grep -qE "aws_eks_cluster\.this.*(replace|-/\+|create after destroy)"; then
+            echo "Cluster replacement detected → destroying NodeGroups first"
+            tofu destroy -target=aws_eks_node_group.this -auto-approve "${VAR_ARGS[@]}"
           else
-            echo "::error::Tofu plan failed with exit code $exit_code"
-            exit 1
+            echo "Cluster does not need replacement"
           fi
+
+          # APPLY FINAL
+          tofu apply -auto-approve "${VAR_ARGS[@]}"
 
       - name: Refresh AWS settings from OpenTofu outputs
         if: ${{ github.event.inputs.infra_step == 'apply' }}
