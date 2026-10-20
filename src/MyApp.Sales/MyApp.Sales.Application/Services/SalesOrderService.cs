@@ -460,5 +460,161 @@ namespace MyApp.Sales.Application.Services
 
             return results;
         }
+
+        /// <inheritdoc />
+        public async Task<SalesOrderCacheInvalidationDto?> MarkShippedFromFulfillmentAsync(
+            OrderFulfilledEvent @event,
+            CancellationToken cancellationToken = default)
+        {
+            if (!string.Equals(@event.OrderType, OrderTypes.Outbound, StringComparison.OrdinalIgnoreCase)
+                || !@event.ExternalOrderId.HasValue)
+            {
+                return null;
+            }
+
+            var salesOrder = await _orderRepository.GetByIdAsync(@event.ExternalOrderId.Value);
+            if (salesOrder is null)
+            {
+                _logger.LogWarning("Sales order {SalesOrderId} not found for fulfillment event", @event.ExternalOrderId);
+                return null;
+            }
+
+            if (salesOrder.Status is SalesOrderStatus.Shipped or SalesOrderStatus.Invoiced or SalesOrderStatus.Cancelled)
+            {
+                return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+            }
+
+            if (salesOrder.Status != SalesOrderStatus.Confirmed)
+            {
+                _logger.LogWarning(
+                    "Skipping ship status for sales order {SalesOrderId}; status is {Status}",
+                    salesOrder.Id,
+                    salesOrder.Status);
+                return null;
+            }
+
+            salesOrder.Status = SalesOrderStatus.Shipped;
+            await _orderRepository.UpdateAsync(salesOrder);
+            await SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Sales order {SalesOrderId} marked Shipped from order {OrderId}", salesOrder.Id, @event.OrderId);
+            return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+        }
+
+        /// <inheritdoc />
+        public async Task<SalesOrderCacheInvalidationDto?> MarkCancelledFromOrderAsync(
+            OrderCancelledEvent @event,
+            CancellationToken cancellationToken = default)
+        {
+            if (!@event.ExternalOrderId.HasValue)
+                return null;
+
+            var salesOrder = await _orderRepository.GetByIdAsync(@event.ExternalOrderId.Value);
+            if (salesOrder is null)
+                return null;
+
+            if (salesOrder.Status is SalesOrderStatus.Cancelled or SalesOrderStatus.Invoiced)
+                return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+
+            if (salesOrder.Status is not (SalesOrderStatus.Confirmed or SalesOrderStatus.Shipped))
+                return null;
+
+            salesOrder.Status = SalesOrderStatus.Cancelled;
+            await _orderRepository.UpdateAsync(salesOrder);
+            await SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Sales order {SalesOrderId} cancelled from operational order {OrderId}", salesOrder.Id, @event.OrderId);
+            return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+        }
+
+        /// <inheritdoc />
+        public async Task<SalesOrderCacheInvalidationDto?> MarkInvoicedFromBillingAsync(
+            InvoiceIssuedEvent @event,
+            CancellationToken cancellationToken = default)
+        {
+            if (!@event.OrderId.HasValue)
+                return null;
+
+            var salesOrder = await _orderRepository.GetByIdAsync(@event.OrderId.Value);
+            if (salesOrder is null)
+                return null;
+
+            if (salesOrder.Status == SalesOrderStatus.Invoiced)
+                return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+
+            if (salesOrder.Status is not (SalesOrderStatus.Confirmed or SalesOrderStatus.Shipped))
+            {
+                _logger.LogWarning(
+                    "Cannot mark sales order {SalesOrderId} Invoiced from status {Status}",
+                    salesOrder.Id,
+                    salesOrder.Status);
+                return null;
+            }
+
+            salesOrder.Status = SalesOrderStatus.Invoiced;
+            await _orderRepository.UpdateAsync(salesOrder);
+            await SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Sales order {SalesOrderId} marked Invoiced", salesOrder.Id);
+            return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+        }
+
+        /// <inheritdoc />
+        public async Task<SalesOrderDto> CreateReturnAsync(
+            Guid salesOrderId,
+            CreateSalesReturnDto dto,
+            CancellationToken cancellationToken = default)
+        {
+            var salesOrder = await _orderRepository.GetByIdAsync(salesOrderId)
+                ?? throw new InvalidOperationException($"Sales order {salesOrderId} not found");
+
+            if (salesOrder.Status is not (SalesOrderStatus.Invoiced or SalesOrderStatus.Shipped))
+                throw new InvalidOperationException($"Returns require Invoiced or Shipped status; current: {salesOrder.Status}");
+
+            if (salesOrder.ReturnOrderId.HasValue)
+                throw new InvalidOperationException($"Return already initiated for sales order {salesOrderId}");
+
+            foreach (var returnLine in dto.Lines)
+            {
+                var original = salesOrder.Lines.FirstOrDefault(l => l.ProductId == returnLine.ProductId)
+                    ?? throw new InvalidOperationException($"Product {returnLine.ProductId} not on sales order");
+                if (returnLine.Quantity > original.Quantity)
+                    throw new InvalidOperationException($"Return quantity exceeds original for product {returnLine.ProductId}");
+            }
+
+            var createOrderRequest = new CreateUpdateOrderDto
+            {
+                OrderNumber = $"{salesOrder.OrderNumber}-RET",
+                Type = OrderType.Return,
+                SourceId = salesOrder.CustomerId,
+                TargetId = dto.WarehouseId,
+                ExternalOrderId = salesOrderId,
+                WarehouseId = dto.WarehouseId,
+                OrderDate = DateTime.UtcNow,
+                Lines = dto.Lines.Select(l => new CreateOrderLineDto
+                {
+                    ProductId = l.ProductId,
+                    Quantity = l.Quantity
+                }).ToList()
+            };
+
+            var returnOrder = await _serviceInvoker.InvokeAsync<CreateUpdateOrderDto, OrderDto>(
+                ServiceNames.Orders,
+                ApiEndpoints.Orders.Base,
+                HttpMethod.Post,
+                createOrderRequest,
+                cancellationToken);
+
+            salesOrder.ReturnOrderId = returnOrder.Id;
+            await _orderRepository.UpdateAsync(salesOrder);
+            await SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation(
+                "Return order {ReturnOrderId} created for sales order {SalesOrderId}",
+                returnOrder.Id,
+                salesOrderId);
+
+            return _mapper.Map<SalesOrderDto>(salesOrder);
+        }
     }
 }

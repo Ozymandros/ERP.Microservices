@@ -2,10 +2,11 @@ using Microsoft.Extensions.Logging;
 using MyApp.Billing.Application.Contracts.DTOs;
 using MyApp.Billing.Application.Contracts.Services;
 using MyApp.Billing.Domain.Entities;
-using MyApp.Billing.Domain.Events;
 using MyApp.Billing.Domain.Repositories;
+using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Exceptions;
@@ -21,6 +22,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
 {
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly ICreditNoteRepository _creditNoteRepository;
+    private readonly IServiceInvoker _serviceInvoker;
     private readonly ILogger<InvoiceService> _logger;
 
     /// <summary>
@@ -34,6 +36,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     public InvoiceService(
         IInvoiceRepository invoiceRepository,
         ICreditNoteRepository creditNoteRepository,
+        IServiceInvoker serviceInvoker,
         ILogger<InvoiceService> logger,
         IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher)
@@ -41,7 +44,9 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     {
         _invoiceRepository = invoiceRepository;
         _creditNoteRepository = creditNoteRepository;
-        _logger = logger;    }
+        _serviceInvoker = serviceInvoker;
+        _logger = logger;
+    }
 
     /// <summary>
     /// Creates an invoice asynchronously.
@@ -64,11 +69,14 @@ public class InvoiceService : AppServiceBase, IInvoiceService
             invoice.AddLine(line.Description, line.Quantity, line.UnitPrice, line.TaxRate, line.Discount);
         }
 
+        if (dto.OrderId.HasValue)
+            invoice.LinkToSalesOrder(dto.OrderId.Value);
+
         await _invoiceRepository.AddAsync(invoice);
         await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await EventPublisher.PublishAsync("billing.invoice.created", new InvoiceCreatedEvent(
+        await EventPublisher.PublishAsync(MessagingConstants.Topics.BillingInvoiceCreated, new InvoiceCreatedEvent(
             invoice.Id,
             invoice.CustomerId,
             invoice.OrderId,
@@ -104,7 +112,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await EventPublisher.PublishAsync("billing.invoice.issued", new InvoiceIssuedEvent(
+        await EventPublisher.PublishAsync(MessagingConstants.Topics.BillingInvoiceIssued, new InvoiceIssuedEvent(
             invoice.Id,
             invoice.InvoiceNumber,
             invoice.CustomerId,
@@ -133,7 +141,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await EventPublisher.PublishAsync("billing.invoice.paid", new InvoicePaidEvent(
+        await EventPublisher.PublishAsync(MessagingConstants.Topics.BillingInvoicePaid, new InvoicePaidEvent(
             invoice.Id,
             invoice.OrderId,
             invoice.CustomerId,
@@ -162,7 +170,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await EventPublisher.PublishAsync("billing.invoice.cancelled", new InvoiceCancelledEvent(
+        await EventPublisher.PublishAsync(MessagingConstants.Topics.BillingInvoiceCancelled, new InvoiceCancelledEvent(
             invoice.Id,
             invoice.InvoiceNumber,
             reason
@@ -195,7 +203,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await EventPublisher.PublishAsync("billing.creditnote.issued", new CreditNoteIssuedEvent(
+        await EventPublisher.PublishAsync(MessagingConstants.Topics.BillingCreditNoteIssued, new CreditNoteIssuedEvent(
             creditNote.Id,
             creditNote.OriginalInvoiceId,
             $"CN-{creditNote.Id.ToString()[..8]}",
@@ -270,6 +278,104 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         var result = await _invoiceRepository.QueryAsync(spec);
         var invoices = result.Items.Select(MapToDto).ToList();
         return new PaginatedResult<InvoiceDto>(invoices, result.PageNumber, result.PageSize, result.TotalCount);
+    }
+
+    /// <inheritdoc />
+    public async Task<InvoiceDto?> CreateAndIssueFromFulfillmentAsync(
+        OrderFulfilledEvent @event,
+        CancellationToken cancellationToken = default)
+    {
+        if (!string.Equals(@event.OrderType, OrderTypes.Outbound, StringComparison.OrdinalIgnoreCase)
+            || !@event.ExternalOrderId.HasValue)
+        {
+            return null;
+        }
+
+        var salesOrderId = @event.ExternalOrderId.Value;
+        var existing = await _invoiceRepository.GetInvoicesByOrderIdAsync(salesOrderId, cancellationToken);
+        if (existing.Any(i => i.Status is InvoiceStatus.Issued or InvoiceStatus.Paid or InvoiceStatus.Sent))
+        {
+            _logger.LogInformation("Invoice already exists for sales order {SalesOrderId}", salesOrderId);
+            return existing.Select(MapToDto).First();
+        }
+
+        var salesOrder = await _serviceInvoker.InvokeAsync<SalesOrderDto>(
+            ServiceNames.Sales,
+            $"{ApiEndpoints.Sales.Base}/{salesOrderId}",
+            HttpMethod.Get,
+            cancellationToken);
+
+        if (salesOrder.Lines.Count == 0)
+        {
+            _logger.LogWarning("Sales order {SalesOrderId} has no lines; skipping invoice", salesOrderId);
+            return null;
+        }
+
+        var draftNumber = $"DRAFT-{salesOrderId:N}"[..20];
+        var createDto = new CreateInvoiceDto(
+            draftNumber,
+            salesOrder.CustomerId,
+            salesOrderId,
+            "USD",
+            salesOrder.Lines.Select(l => new CreateInvoiceLineDto(
+                $"Product {l.ProductId}",
+                l.Quantity,
+                l.UnitPrice,
+                0m,
+                0m)).ToList());
+
+        var created = await CreateInvoiceAsync(createDto, cancellationToken);
+        var issueNumber = $"INV-{salesOrder.OrderNumber}-{DateTime.UtcNow:yyyyMMdd}";
+        return await IssueInvoiceAsync(created.Id, issueNumber, DateTime.UtcNow, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task<CreditNoteDto?> CreateCreditNoteFromReturnFulfillmentAsync(
+        OrderFulfilledEvent @event,
+        CancellationToken cancellationToken = default)
+    {
+        if (!string.Equals(@event.OrderType, OrderTypes.Return, StringComparison.OrdinalIgnoreCase)
+            || !@event.ExternalOrderId.HasValue)
+        {
+            return null;
+        }
+
+        var salesOrderId = @event.ExternalOrderId.Value;
+        var invoices = await _invoiceRepository.GetInvoicesByOrderIdAsync(salesOrderId, cancellationToken);
+        var invoice = invoices.FirstOrDefault(i => i.Status is InvoiceStatus.Issued or InvoiceStatus.Paid or InvoiceStatus.Sent);
+        if (invoice is null)
+        {
+            _logger.LogWarning("No issued invoice for return on sales order {SalesOrderId}", salesOrderId);
+            return null;
+        }
+
+        var salesOrder = await _serviceInvoker.InvokeAsync<SalesOrderDto>(
+            ServiceNames.Sales,
+            $"{ApiEndpoints.Sales.Base}/{salesOrderId}",
+            HttpMethod.Get,
+            cancellationToken);
+
+        var creditLines = new List<CreditNoteLineDto>();
+        foreach (var eventLine in @event.Lines)
+        {
+            var salesLine = salesOrder.Lines.FirstOrDefault(l => l.ProductId == eventLine.ProductId);
+            if (salesLine is null)
+                continue;
+
+            creditLines.Add(new CreditNoteLineDto(
+                $"Return Product {eventLine.ProductId}",
+                eventLine.Quantity,
+                salesLine.UnitPrice,
+                0m,
+                0m));
+        }
+
+        if (creditLines.Count == 0)
+            return null;
+
+        return await CreateCreditNoteAsync(
+            new CreateCreditNoteDto(invoice.Id, creditLines, "Sales return fulfilled"),
+            cancellationToken);
     }
 
     private InvoiceDto MapToDto(Invoice invoice)

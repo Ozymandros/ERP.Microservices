@@ -121,6 +121,32 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
     }
 }
 
+/// <summary>Repository for supplier invoices.</summary>
+public class SupplierInvoiceRepository : Repository<SupplierInvoice, Guid>, ISupplierInvoiceRepository
+{
+    private readonly BillingDbContext _context;
+
+    public SupplierInvoiceRepository(BillingDbContext context) : base(context)
+    {
+        _context = context;
+    }
+
+    public override async Task<SupplierInvoice?> GetByIdAsync(Guid id)
+    {
+        return await _context.SupplierInvoices
+            .Include(i => i.Lines)
+            .FirstOrDefaultAsync(i => i.Id == id);
+    }
+
+    public async Task<List<SupplierInvoice>> GetByPurchaseOrderIdAsync(Guid purchaseOrderId, CancellationToken cancellationToken = default)
+    {
+        return await _context.SupplierInvoices
+            .Include(i => i.Lines)
+            .Where(i => i.PurchaseOrderId == purchaseOrderId)
+            .ToListAsync(cancellationToken);
+    }
+}
+
 /// <summary>
 /// Repository for managing credit note entities in the database.
 /// </summary>

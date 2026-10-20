@@ -35,6 +35,7 @@ public record OrderCreatedEvent(
 /// <param name="WarehouseId">The warehouse Id.</param>
 /// <param name="FulfilledDate">The fulfilled Date.</param>
 /// <param name="TrackingNumber">The tracking Number.</param>
+/// <param name="ExternalOrderId">Commercial document id (e.g. sales order id).</param>
 /// <param name="Lines">The lines.</param>
 public record OrderFulfilledEvent(
     Guid OrderId,
@@ -43,6 +44,7 @@ public record OrderFulfilledEvent(
     Guid WarehouseId,
     DateTime FulfilledDate,
     string? TrackingNumber,
+    Guid? ExternalOrderId,
     List<OrderLineEvent> Lines
 );
 
@@ -51,9 +53,11 @@ public record OrderFulfilledEvent(
 /// </summary>
 /// <param name="OrderId">The order Id.</param>
 /// <param name="Reason">The reason.</param>
+/// <param name="ExternalOrderId">Commercial document id when linked.</param>
 public record OrderCancelledEvent(
     Guid OrderId,
-    string Reason
+    string Reason,
+    Guid? ExternalOrderId
 );
 
 /// <summary>

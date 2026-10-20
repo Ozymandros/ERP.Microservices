@@ -8,6 +8,7 @@ using MyApp.Billing.Domain.Repositories;
 using MyApp.Billing.Domain.Specifications;
 using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Exceptions;
+using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Repositories;
@@ -23,6 +24,7 @@ public class InvoiceServiceTests
     private readonly Mock<ILogger<InvoiceService>> _logger;
     private readonly Mock<IUnitOfWork> _unitOfWork;
     private readonly Mock<IEventPublisher> _eventPublisher;
+    private readonly Mock<IServiceInvoker> _serviceInvoker;
     private readonly InvoiceService _sut;
 
     /// <summary>Initializes mocks and constructs the <see cref="InvoiceService"/> system under test.</summary>
@@ -33,6 +35,7 @@ public class InvoiceServiceTests
         _logger = new Mock<ILogger<InvoiceService>>();
         _unitOfWork = new Mock<IUnitOfWork>();
         _eventPublisher = new Mock<IEventPublisher>();
+        _serviceInvoker = new Mock<IServiceInvoker>();
 
         _unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<EntityEntryDto>());
@@ -40,6 +43,7 @@ public class InvoiceServiceTests
         _sut = new InvoiceService(
             _invoiceRepo.Object,
             _creditNoteRepo.Object,
+            _serviceInvoker.Object,
             _logger.Object,
             _unitOfWork.Object,
             _eventPublisher.Object);
@@ -118,7 +122,7 @@ public class InvoiceServiceTests
 
         // Assert
         _eventPublisher.Verify(e => e.PublishAsync(
-            "billing.invoice.created",
+            MessagingConstants.Topics.BillingInvoiceCreated,
             It.IsAny<object>(),
             It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -146,6 +150,7 @@ public class InvoiceServiceTests
 
         // Assert
         result.Currency.Should().Be("EUR");
+        result.OrderId.Should().Be(orderId);
     }
 
     [Fact]
@@ -222,7 +227,7 @@ public class InvoiceServiceTests
 
         // Assert
         _eventPublisher.Verify(e => e.PublishAsync(
-            "billing.invoice.issued",
+            MessagingConstants.Topics.BillingInvoiceIssued,
             It.IsAny<object>(),
             It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -342,7 +347,7 @@ public class InvoiceServiceTests
 
         // Assert
         _eventPublisher.Verify(e => e.PublishAsync(
-            "billing.invoice.paid",
+            MessagingConstants.Topics.BillingInvoicePaid,
             It.IsAny<object>(),
             It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -412,7 +417,7 @@ public class InvoiceServiceTests
 
         // Assert
         _eventPublisher.Verify(e => e.PublishAsync(
-            "billing.invoice.cancelled",
+            MessagingConstants.Topics.BillingInvoiceCancelled,
             It.IsAny<object>(),
             It.IsAny<CancellationToken>()), Times.Once);
     }

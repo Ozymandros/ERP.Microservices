@@ -1,5 +1,6 @@
 using MyApp.Billing.Application.Contracts.DTOs;
 using MyApp.Billing.Domain.Entities;
+using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -77,4 +78,10 @@ public interface IInvoiceService
     /// <param name="cancellationToken">A token to observe for cancellation requests.</param>
     /// <returns>A paginated result set of <see cref="InvoiceDto"/> items.</returns>
     Task<PaginatedResult<InvoiceDto>> QueryInvoicesAsync(ISpecification<Invoice> spec, CancellationToken cancellationToken = default);
+
+    /// <summary>Creates and issues a customer invoice from an outbound order fulfillment event.</summary>
+    Task<InvoiceDto?> CreateAndIssueFromFulfillmentAsync(OrderFulfilledEvent @event, CancellationToken cancellationToken = default);
+
+    /// <summary>Creates a credit note when a return operational order is fulfilled.</summary>
+    Task<CreditNoteDto?> CreateCreditNoteFromReturnFulfillmentAsync(OrderFulfilledEvent @event, CancellationToken cancellationToken = default);
 }

@@ -26,7 +26,18 @@ public record PurchaseOrderDto
     public SupplierDto? Supplier { get; init; }
     /// <summary>Gets the collection of order lines.</summary>
     public List<PurchaseOrderLineDto> Lines { get; init; } = new();
+    /// <summary>Gets the 3-way match status.</summary>
+    public PurchaseOrderMatchStatus MatchStatus { get; init; }
+    /// <summary>Gets when match was last evaluated.</summary>
+    public DateTime? MatchedAt { get; init; }
 }
+
+/// <summary>Result of a 3-way match operation.</summary>
+public record PurchaseOrderMatchResultDto(
+    Guid PurchaseOrderId,
+    PurchaseOrderMatchStatus MatchStatus,
+    DateTime MatchedAt,
+    string Summary);
 
 /// <summary>Read DTO representing a single line within a purchase order.</summary>
 public record PurchaseOrderLineDto

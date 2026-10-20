@@ -28,6 +28,10 @@ public class BillingDbContext : AuditableDbContext
     public DbSet<CreditNote> CreditNotes => Set<CreditNote>();
     /// <summary>Gets the <see cref="DbSet{TEntity}"/> for credit note line items.</summary>
     public DbSet<CreditNoteLine> CreditNoteLines => Set<CreditNoteLine>();
+    /// <summary>Gets supplier (AP) invoices.</summary>
+    public DbSet<SupplierInvoice> SupplierInvoices => Set<SupplierInvoice>();
+    /// <summary>Gets supplier invoice lines.</summary>
+    public DbSet<SupplierInvoiceLine> SupplierInvoiceLines => Set<SupplierInvoiceLine>();
 
     /// <summary>
     /// Save changes.
@@ -212,6 +216,28 @@ public class BillingDbContext : AuditableDbContext
             entity.Property(e => e.LineGross).HasColumnType("decimal(18,2)");
 
             entity.HasIndex(e => e.CreditNoteId);
+        });
+
+        modelBuilder.Entity<SupplierInvoice>(entity =>
+        {
+            entity.ToTable("SupplierInvoices");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.InvoiceNumber).HasMaxLength(50).IsRequired();
+            entity.Property(e => e.Currency).HasMaxLength(3).IsRequired();
+            entity.HasIndex(e => e.PurchaseOrderId);
+            entity.HasIndex(e => e.SupplierId);
+            entity.HasMany(e => e.Lines)
+                .WithOne(l => l.SupplierInvoice)
+                .HasForeignKey(l => l.SupplierInvoiceId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<SupplierInvoiceLine>(entity =>
+        {
+            entity.ToTable("SupplierInvoiceLines");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.UnitPrice).HasColumnType("decimal(18,2)");
+            entity.HasIndex(e => e.SupplierInvoiceId);
         });
     }
 }

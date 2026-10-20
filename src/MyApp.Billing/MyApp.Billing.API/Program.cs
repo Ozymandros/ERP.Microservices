@@ -23,12 +23,14 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
         services.AddScoped<IInvoiceRepository, InvoiceRepository>();
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<ICreditNoteRepository, CreditNoteRepository>();
+        services.AddScoped<ISupplierInvoiceRepository, SupplierInvoiceRepository>();
 
         services.AddScoped<IUnitOfWork>(sp =>
             new BillingEfUnitOfWork(sp.GetRequiredService<BillingDbContext>()));
 
         // Register application services
         services.AddScoped<IInvoiceService, InvoiceService>();
+        services.AddScoped<ISupplierInvoiceService, SupplierInvoiceService>();
     }
 });
 

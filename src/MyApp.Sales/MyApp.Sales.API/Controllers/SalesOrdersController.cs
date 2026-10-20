@@ -371,6 +371,29 @@ namespace MyApp.Sales.API.Controllers
         }
 
         /// <summary>
+        /// Initiate a return for an invoiced or shipped sales order.
+        /// </summary>
+        [HttpPost("{id:guid}/returns")]
+        [HasPermission("Sales", "Update")]
+        [ProducesResponseType(typeof(SalesOrderDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateReturn(Guid id, [FromBody] CreateSalesReturnDto dto, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var result = await _salesOrderService.CreateReturnAsync(id, dto, cancellationToken);
+                await _cacheService.RemoveStateAsync($"SalesOrder-{id}");
+                await _cacheService.RemoveStateAsync($"SalesOrder-Code-{result.OrderNumber}");
+                await _cacheService.RemoveStateAsync("all_sales_orders");
+                return Ok(result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+        /// <summary>
         /// Check stock availability for quote items - Requires Sales.Read permission
         /// </summary>
         /// <param name="lines">The lines.</param>

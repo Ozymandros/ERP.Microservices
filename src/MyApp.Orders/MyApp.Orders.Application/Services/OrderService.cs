@@ -376,6 +376,7 @@ namespace MyApp.Orders.Application.Services
                 dto.WarehouseId,
                 order.FulfilledDate.Value,
                 dto.TrackingNumber,
+                order.ExternalOrderId,
                 order.Lines.Select(l => new OrderLineEvent(l.ProductId, l.Quantity)).ToList()
             );
 
@@ -450,7 +451,8 @@ namespace MyApp.Orders.Application.Services
             // Publish OrderCancelledEvent
             var orderCancelledEvent = new OrderCancelledEvent(
                 order.Id,
-                dto.Reason ?? string.Empty
+                dto.Reason ?? string.Empty,
+                order.ExternalOrderId
             );
 
             try

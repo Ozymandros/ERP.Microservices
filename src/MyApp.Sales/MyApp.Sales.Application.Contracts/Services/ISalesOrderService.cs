@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Domain.Entities;
+using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -67,5 +68,17 @@ public interface ISalesOrderService
     /// <param name="lines">The line items to check, each containing a product identifier and requested quantity.</param>
     /// <returns>A list of <see cref="StockAvailabilityCheckDto"/> with per-product availability results.</returns>
     Task<List<StockAvailabilityCheckDto>> CheckStockAvailabilityAsync(List<CreateUpdateSalesOrderLineDto> lines);
+
+    /// <summary>Marks a sales order as shipped when its outbound operational order is fulfilled.</summary>
+    Task<SalesOrderCacheInvalidationDto?> MarkShippedFromFulfillmentAsync(OrderFulfilledEvent @event, CancellationToken cancellationToken = default);
+
+    /// <summary>Marks a linked sales order as cancelled when its operational order is cancelled.</summary>
+    Task<SalesOrderCacheInvalidationDto?> MarkCancelledFromOrderAsync(OrderCancelledEvent @event, CancellationToken cancellationToken = default);
+
+    /// <summary>Marks a sales order as invoiced when billing issues an invoice for it.</summary>
+    Task<SalesOrderCacheInvalidationDto?> MarkInvoicedFromBillingAsync(InvoiceIssuedEvent @event, CancellationToken cancellationToken = default);
+
+    /// <summary>Creates an operational return order linked to an invoiced sales order.</summary>
+    Task<SalesOrderDto> CreateReturnAsync(Guid salesOrderId, CreateSalesReturnDto dto, CancellationToken cancellationToken = default);
 }
 }
