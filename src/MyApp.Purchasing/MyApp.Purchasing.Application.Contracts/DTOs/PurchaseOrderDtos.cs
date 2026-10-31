@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using MyApp.Purchasing.Domain.Entities;
+using MyApp.Shared.Domain.DTOs.Examples;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Purchasing.Application.Contracts.DTOs;
 
@@ -54,6 +53,11 @@ public record PurchaseOrderLineDto
     public decimal UnitPrice { get; init; }
     /// <summary>Gets the total cost for this line (Quantity * UnitPrice).</summary>
     public decimal LineTotal { get; init; }
+
+    /// <summary>
+    /// Gets or sets the product details.
+    /// </summary>
+    public ProductDto? Product { get; init; }
 }
 
 /// <summary>DTO used to create or update a purchase order.</summary>

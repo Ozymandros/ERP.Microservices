@@ -41,7 +41,7 @@ public class OrderEventHandlers : ControllerBase
         {
             var invoice = await _invoiceService.CreateAndIssueFromFulfillmentAsync(@event, cancellationToken);
             if (invoice is not null)
-                await InvalidateInvoiceCacheAsync(invoice, cancellationToken);
+                await InvalidateInvoiceCacheAsync(invoice);
         }
         else if (string.Equals(@event.OrderType, OrderTypes.Return, StringComparison.OrdinalIgnoreCase))
         {
