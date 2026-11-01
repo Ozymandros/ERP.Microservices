@@ -17,7 +17,7 @@ namespace MyApp.Sales.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.1")
+                .HasAnnotation("ProductVersion", "10.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -98,6 +98,9 @@ namespace MyApp.Sales.Infrastructure.Migrations
 
                     b.Property<DateTime?>("QuoteExpiryDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ReturnOrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");

@@ -53,6 +53,13 @@ public interface IPaymentRepository : IRepository<Payment, Guid>
 /// <summary>
 /// Repository interface for CreditNote entity
 /// </summary>
+/// <summary>Repository for supplier (AP) invoices.</summary>
+public interface ISupplierInvoiceRepository : IRepository<SupplierInvoice, Guid>
+{
+    /// <summary>Gets supplier invoices for a purchase order.</summary>
+    Task<List<SupplierInvoice>> GetByPurchaseOrderIdAsync(Guid purchaseOrderId, CancellationToken cancellationToken = default);
+}
+
 public interface ICreditNoteRepository : IRepository<CreditNote, Guid>
 {
     /// <summary>Retrieves all credit notes issued against a specific invoice.</summary>

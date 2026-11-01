@@ -63,4 +63,7 @@ public interface IPurchaseOrderService
     /// <param name="dto">The receiving details including warehouse, received date, and per-line quantities.</param>
     /// <returns>The received purchase order DTO.</returns>
     Task<PurchaseOrderDto> ReceivePurchaseOrderAsync(ReceivePurchaseOrderDto dto);
+
+    /// <summary>Runs 3-way match (ordered vs received vs supplier billed) for a purchase order.</summary>
+    Task<PurchaseOrderMatchResultDto> MatchPurchaseOrderAsync(Guid purchaseOrderId, CancellationToken cancellationToken = default);
 }

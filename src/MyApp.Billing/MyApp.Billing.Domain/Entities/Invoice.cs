@@ -66,6 +66,16 @@ public class Invoice : AuditableEntity<Guid>
     /// <summary>Gets the collection of credit notes issued against this invoice.</summary>
     public List<CreditNote> CreditNotes { get; private set; } = new();
 
+    /// <summary>Links this invoice to the originating sales order.</summary>
+    /// <param name="salesOrderId">The sales order identifier.</param>
+    public void LinkToSalesOrder(Guid salesOrderId)
+    {
+        if (Status != InvoiceStatus.Draft)
+            throw new InvalidOperationException("Cannot change order link after invoice is issued.");
+
+        OrderId = salesOrderId;
+    }
+
     /// <summary>
     /// Adds a line.
     /// </summary>

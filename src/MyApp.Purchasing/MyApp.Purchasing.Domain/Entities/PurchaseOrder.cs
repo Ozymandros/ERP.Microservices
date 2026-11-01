@@ -5,6 +5,19 @@ namespace MyApp.Purchasing.Domain.Entities;
 /// <summary>
 /// Defines the Purchase Order Status enumeration values.
 /// </summary>
+/// <summary>3-way match outcome for a purchase order.</summary>
+public enum PurchaseOrderMatchStatus
+{
+    /// <summary>Not yet matched or no supplier invoice.</summary>
+    Unmatched,
+    /// <summary>Partial alignment between ordered, received, and billed quantities.</summary>
+    Partial,
+    /// <summary>All lines align within tolerance.</summary>
+    Matched,
+    /// <summary>Billed quantity exceeds received for at least one line.</summary>
+    Overbilled
+}
+
 public enum PurchaseOrderStatus
 {
     /// <summary>The purchase order has been created but not yet approved.</summary>
@@ -43,6 +56,11 @@ public class PurchaseOrder(Guid id) : AuditableEntity<Guid>(id)
     public DateTime? ReceivedDate { get; set; }
     /// <summary>Gets or sets Is Received.</summary>
     public bool IsReceived { get; set; }
+
+    /// <summary>Gets or sets 3-way match status.</summary>
+    public PurchaseOrderMatchStatus MatchStatus { get; set; } = PurchaseOrderMatchStatus.Unmatched;
+    /// <summary>Gets or sets when match was last evaluated.</summary>
+    public DateTime? MatchedAt { get; set; }
 
     // Navigation
     /// <summary>Gets or sets Supplier.</summary>

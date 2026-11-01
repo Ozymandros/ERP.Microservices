@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using MyApp.Purchasing.Domain.Entities;
+using MyApp.Shared.Domain.DTOs.Examples;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Purchasing.Application.Contracts.DTOs;
 
@@ -26,7 +25,18 @@ public record PurchaseOrderDto
     public SupplierDto? Supplier { get; init; }
     /// <summary>Gets the collection of order lines.</summary>
     public List<PurchaseOrderLineDto> Lines { get; init; } = new();
+    /// <summary>Gets the 3-way match status.</summary>
+    public PurchaseOrderMatchStatus MatchStatus { get; init; }
+    /// <summary>Gets when match was last evaluated.</summary>
+    public DateTime? MatchedAt { get; init; }
 }
+
+/// <summary>Result of a 3-way match operation.</summary>
+public record PurchaseOrderMatchResultDto(
+    Guid PurchaseOrderId,
+    PurchaseOrderMatchStatus MatchStatus,
+    DateTime MatchedAt,
+    string Summary);
 
 /// <summary>Read DTO representing a single line within a purchase order.</summary>
 public record PurchaseOrderLineDto
@@ -43,6 +53,11 @@ public record PurchaseOrderLineDto
     public decimal UnitPrice { get; init; }
     /// <summary>Gets the total cost for this line (Quantity * UnitPrice).</summary>
     public decimal LineTotal { get; init; }
+
+    /// <summary>
+    /// Gets or sets the product details.
+    /// </summary>
+    public ProductDto? Product { get; init; }
 }
 
 /// <summary>DTO used to create or update a purchase order.</summary>

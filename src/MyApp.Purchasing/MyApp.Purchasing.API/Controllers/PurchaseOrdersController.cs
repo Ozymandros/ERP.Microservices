@@ -464,4 +464,24 @@ public class PurchaseOrdersController : ControllerBase
             return BadRequest(new { error = ex.Message });
         }
     }
+
+    /// <summary>Runs 3-way match for a purchase order (ordered vs received vs supplier billed).</summary>
+    [HttpPost("{id:guid}/match")]
+    [HasPermission("Purchasing", "Update")]
+    [ProducesResponseType(typeof(PurchaseOrderMatchResultDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PurchaseOrderMatchResultDto>> MatchPurchaseOrder(Guid id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await _purchaseOrderService.MatchPurchaseOrderAsync(id, cancellationToken);
+            await _cacheService.RemoveStateAsync("PurchaseOrder-" + id);
+            await _cacheService.RemoveStateAsync("all_purchase_orders");
+            return Ok(result);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
 }

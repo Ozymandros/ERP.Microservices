@@ -77,6 +77,16 @@ public static class ApiEndpoints
         public const string Quotes = "api/sales/orders/quotes";
     }
 
+    /// <summary>Billing service endpoints.</summary>
+    public static class Billing
+    {
+        /// <summary>Gets the base endpoint for customer invoices API.</summary>
+        public const string Invoices = "api/billing/invoices";
+
+        /// <summary>Gets the base endpoint for supplier invoices API.</summary>
+        public const string SupplierInvoices = "api/billing/supplier-invoices";
+    }
+
     /// <summary>Audit service endpoints.</summary>
     public static class Audit
     {
@@ -113,6 +123,27 @@ public static class MessagingConstants
 
         /// <summary>Gets the topic name for purchasing line received events.</summary>
         public const string PurchasingLineReceived = "purchasing.line.received";
+
+        /// <summary>Gets the topic name for purchasing order received events.</summary>
+        public const string PurchasingOrderReceived = "purchasing.order.received";
+
+        /// <summary>Gets the topic name for purchasing order matched (3-way) events.</summary>
+        public const string PurchasingOrderMatched = "purchasing.order.matched";
+
+        /// <summary>Gets the topic name for billing invoice created events.</summary>
+        public const string BillingInvoiceCreated = "billing.invoice.created";
+
+        /// <summary>Gets the topic name for billing invoice issued events.</summary>
+        public const string BillingInvoiceIssued = "billing.invoice.issued";
+
+        /// <summary>Gets the topic name for billing invoice paid events.</summary>
+        public const string BillingInvoicePaid = "billing.invoice.paid";
+
+        /// <summary>Gets the topic name for billing invoice cancelled events.</summary>
+        public const string BillingInvoiceCancelled = "billing.invoice.cancelled";
+
+        /// <summary>Gets the topic name for billing credit note issued events.</summary>
+        public const string BillingCreditNoteIssued = "billing.creditnote.issued";
 
         /// <summary>Gets the topic name for order created events.</summary>
         public const string OrderCreated = "orders.order.created";
@@ -174,4 +205,7 @@ public static class OrderTypes
 
     /// <summary>Gets the order type for inter-warehouse transfers.</summary>
     public const string Transfer = "Transfer";
+
+    /// <summary>Gets the order type for customer returns.</summary>
+    public const string Return = "Return";
 }

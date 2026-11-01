@@ -17,7 +17,7 @@ namespace MyApp.Purchasing.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.1")
+                .HasAnnotation("ProductVersion", "10.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -40,6 +40,12 @@ namespace MyApp.Purchasing.Infrastructure.Migrations
 
                     b.Property<bool>("IsReceived")
                         .HasColumnType("bit");
+
+                    b.Property<int>("MatchStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("MatchedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
@@ -73,7 +79,7 @@ namespace MyApp.Purchasing.Infrastructure.Migrations
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("PurchaseOrders");
+                    b.ToTable("PurchaseOrders", (string)null);
                 });
 
             modelBuilder.Entity("MyApp.Purchasing.Domain.Entities.PurchaseOrderLine", b =>
@@ -111,7 +117,7 @@ namespace MyApp.Purchasing.Infrastructure.Migrations
 
                     b.HasIndex("PurchaseOrderId");
 
-                    b.ToTable("PurchaseOrderLines");
+                    b.ToTable("PurchaseOrderLines", (string)null);
                 });
 
             modelBuilder.Entity("MyApp.Purchasing.Domain.Entities.Supplier", b =>
@@ -163,7 +169,7 @@ namespace MyApp.Purchasing.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Suppliers");
+                    b.ToTable("Suppliers", (string)null);
                 });
 
             modelBuilder.Entity("MyApp.Purchasing.Domain.Entities.PurchaseOrder", b =>

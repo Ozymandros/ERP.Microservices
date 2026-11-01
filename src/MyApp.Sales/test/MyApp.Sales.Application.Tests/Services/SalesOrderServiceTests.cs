@@ -1238,5 +1238,35 @@ public class SalesOrderServiceTests
         await Assert.ThrowsAsync<InvalidOperationException>(() => _salesOrderService.ConfirmQuoteAsync(dto));
     }
 
+    [Fact]
+    public async Task MarkShippedFromFulfillmentAsync_OutboundWithExternalOrderId_SetsShippedStatus()
+    {
+        var salesOrderId = Guid.NewGuid();
+        var order = new SalesOrder(salesOrderId)
+        {
+            OrderNumber = "SO-100",
+            Status = SalesOrderStatus.Confirmed
+        };
+
+        _mockOrderRepository.Setup(r => r.GetByIdAsync(salesOrderId)).ReturnsAsync(order);
+
+        var result = await _salesOrderService.MarkShippedFromFulfillmentAsync(
+            new OrderFulfilledEvent(
+                Guid.NewGuid(),
+                "ORD-1",
+                OrderTypes.Outbound,
+                Guid.NewGuid(),
+                DateTime.UtcNow,
+                null,
+                salesOrderId,
+                []),
+            CancellationToken.None);
+
+        result.Should().NotBeNull();
+        result!.SalesOrderId.Should().Be(salesOrderId);
+        order.Status.Should().Be(SalesOrderStatus.Shipped);
+        _mockOrderRepository.Verify(r => r.UpdateAsync(order), Times.Once);
+    }
+
     #endregion
 }

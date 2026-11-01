@@ -88,13 +88,11 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            var httpRequest = CreateRequest(serviceName, methodPath, httpMethod, request);
+            ApplyCallerAuthorization(httpRequest);
+
 #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
-            var response = await _daprClient.InvokeMethodAsync<TRequest, TResponse>(
-                httpMethod,
-                serviceName,
-                methodPath,
-                request,
-                cancellationToken);
+            var response = await _daprClient.InvokeMethodAsync<TResponse>(httpRequest, cancellationToken);
 #pragma warning restore CS0618
 
             if (_enableLogging)
@@ -164,12 +162,11 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            var httpRequest = CreateRequest(serviceName, methodPath, httpMethod);
+            ApplyCallerAuthorization(httpRequest);
+
 #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
-            var response = await _daprClient.InvokeMethodAsync<TResponse>(
-                httpMethod,
-                serviceName,
-                methodPath,
-                cancellationToken);
+            var response = await _daprClient.InvokeMethodAsync<TResponse>(httpRequest, cancellationToken);
 #pragma warning restore CS0618
 
             if (_enableLogging)
@@ -223,12 +220,11 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            var httpRequest = CreateRequest(serviceName, methodPath, httpMethod);
+            ApplyCallerAuthorization(httpRequest);
+
 #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
-            await _daprClient.InvokeMethodAsync(
-                httpMethod,
-                serviceName,
-                methodPath,
-                cancellationToken);
+            await _daprClient.InvokeMethodAsync(httpRequest, cancellationToken);
 #pragma warning restore CS0618
 
             if (_enableLogging)
@@ -272,27 +268,23 @@ public class ServiceInvoker : IServiceInvoker
 
         ArgumentNullException.ThrowIfNull(httpMethod);
 
-        HttpRequestMessage request;
-
         // 1. Gestionar Query Parameters
         string finalPath = methodPath;
         if (queryParams != null && queryParams.Count > 0)
         {
-            // Your key/value validation loop is correct
             finalPath = QueryHelpers.AddQueryString(methodPath, queryParams);
         }
 
         // 2. Create the base request to Dapr
         // IMPORTANT: Do not pass the 'requestBody' here yet so we keep full control
-        request = _daprClient.CreateInvokeMethodRequest(httpMethod, serviceName, finalPath);
+        var request = _daprClient.CreateInvokeMethodRequest(httpMethod, serviceName, finalPath);
 
         // 3. Handle the body (ONLY if it is not GET)
         if (requestBody != null)
         {
             if (httpMethod == HttpMethod.Get)
             {
-                // Optional: You can throw an exception or simply ignore it and log a warning
-                _logger.LogWarning("Intent de passar un body en una petici� GET al servei {Service}. El body ser� ignorat.", serviceName);
+                _logger.LogWarning("Intent de passar un body en una petició GET al servei {Service}. El body serà ignorat.", serviceName);
             }
             else
             {
@@ -300,8 +292,6 @@ public class ServiceInvoker : IServiceInvoker
                 request.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
             }
         }
-
-        // ... (Logging final igual)
 
         return request;
     }
@@ -329,20 +319,15 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
-            {
-                var token = BearerTokenHelper.ExtractToken(authHeader);
-                if (!string.IsNullOrWhiteSpace(token))
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            }
+            ApplyCallerAuthorization(request);
 
 #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
             var response = await _daprClient.InvokeMethodAsync<TResponse>(request, cancellationToken);
+#pragma warning restore CS0618
 
             if (_enableLogging)
             {
                 _logger.LogTrace("Successfully invoked service with custom request");
-#pragma warning restore CS0618
             }
 
             return response;
@@ -355,5 +340,18 @@ public class ServiceInvoker : IServiceInvoker
                 new { Method = request.Method?.ToString(), RequestUri = request.RequestUri?.ToString() });
             throw;
         }
+    }
+
+    /// <summary>
+    /// Copies the inbound request's Bearer token onto the outbound Dapr invoke request when present.
+    /// </summary>
+    private void ApplyCallerAuthorization(HttpRequestMessage request)
+    {
+        if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is not true)
+            return;
+
+        var token = BearerTokenHelper.ExtractToken(authHeader);
+        if (!string.IsNullOrWhiteSpace(token))
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
 }

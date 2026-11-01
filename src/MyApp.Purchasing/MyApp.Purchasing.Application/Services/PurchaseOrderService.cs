@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using MyApp.Billing.Application.Contracts.DTOs;
 using MyApp.Orders.Application.Contracts.Dtos;
 using MyApp.Orders.Domain;
 using MyApp.Purchasing.Application.Contracts.DTOs;
@@ -424,5 +425,75 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
             order.Id, order.Status);
 
         return _mapper.Map<PurchaseOrderDto>(order);
+    }
+
+    /// <inheritdoc />
+    public async Task<PurchaseOrderMatchResultDto> MatchPurchaseOrderAsync(
+        Guid purchaseOrderId,
+        CancellationToken cancellationToken = default)
+    {
+        var order = await _purchaseOrderRepository.GetWithLinesAsync(purchaseOrderId)
+            ?? throw new InvalidOperationException($"Purchase order {purchaseOrderId} not found");
+
+        var supplierInvoices = await _serviceInvoker.InvokeAsync<List<SupplierInvoiceDto>>(
+            ServiceNames.Billing,
+            $"{ApiEndpoints.Billing.SupplierInvoices}/by-purchase-order/{purchaseOrderId}",
+            HttpMethod.Get,
+            cancellationToken);
+
+        if (supplierInvoices.Count == 0)
+        {
+            order.MatchStatus = PurchaseOrderMatchStatus.Unmatched;
+            order.MatchedAt = DateTime.UtcNow;
+            await _purchaseOrderRepository.UpdateAsync(order);
+            await SaveChangesAsync(cancellationToken);
+            return new PurchaseOrderMatchResultDto(
+                purchaseOrderId,
+                order.MatchStatus,
+                order.MatchedAt.Value,
+                "No supplier invoices found for purchase order.");
+        }
+
+        var billedByProduct = supplierInvoices
+            .SelectMany(i => i.Lines)
+            .GroupBy(l => l.ProductId)
+            .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
+
+        var hasOverbill = false;
+        var hasPartial = false;
+        var allMatched = true;
+
+        foreach (var line in order.Lines)
+        {
+            billedByProduct.TryGetValue(line.ProductId, out var billedQty);
+            if (billedQty > line.ReceivedQuantity)
+                hasOverbill = true;
+            if (billedQty != line.Quantity || line.ReceivedQuantity != line.Quantity || billedQty != line.ReceivedQuantity)
+            {
+                hasPartial = true;
+                allMatched = false;
+            }
+        }
+
+        order.MatchStatus = hasOverbill
+            ? PurchaseOrderMatchStatus.Overbilled
+            : allMatched && !hasPartial
+                ? PurchaseOrderMatchStatus.Matched
+                : PurchaseOrderMatchStatus.Partial;
+
+        order.MatchedAt = DateTime.UtcNow;
+        await _purchaseOrderRepository.UpdateAsync(order);
+        await SaveChangesAsync(cancellationToken);
+
+        if (order.MatchStatus == PurchaseOrderMatchStatus.Matched)
+        {
+            await EventPublisher.PublishAsync(
+                MessagingConstants.Topics.PurchasingOrderMatched,
+                new PurchaseOrderMatchedEvent(order.Id, order.MatchStatus.ToString(), order.MatchedAt.Value),
+                cancellationToken);
+        }
+
+        var summary = $"MatchStatus={order.MatchStatus}; lines={order.Lines.Count}; supplierInvoices={supplierInvoices.Count}";
+        return new PurchaseOrderMatchResultDto(purchaseOrderId, order.MatchStatus, order.MatchedAt.Value, summary);
     }
 }
