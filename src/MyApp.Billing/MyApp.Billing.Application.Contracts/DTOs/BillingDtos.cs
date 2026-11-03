@@ -9,13 +9,17 @@ namespace MyApp.Billing.Application.Contracts.DTOs;
 /// <param name="Currency">The currency code.</param>
 /// <param name="Lines">The invoice line items.</param>
 /// <param name="PaymentTermsDays">The payment terms in days.</param>
+/// <param name="SourceType">Optional originating document type (e.g. "Project"); null = Sales.</param>
+/// <param name="SourceId">Optional originating document identifier.</param>
 public record CreateInvoiceDto(
     string InvoiceNumber, // Now required, not nullable
     Guid CustomerId,
     Guid? OrderId,
     string Currency,
     List<CreateInvoiceLineDto> Lines,
-    int PaymentTermsDays = 30
+    int PaymentTermsDays = 30,
+    string? SourceType = null,
+    Guid? SourceId = null
 );
 
 /// <summary>
@@ -28,7 +32,7 @@ public record CreateInvoiceDto(
 /// <param name="Discount">The discount.</param>
 public record CreateInvoiceLineDto(
     string Description,
-    int Quantity,
+    decimal Quantity,
     decimal UnitPrice,
     decimal TaxRate,
     decimal Discount = 0
@@ -108,6 +112,8 @@ public record CreditNoteLineDto(
 /// <param name="Lines">The lines.</param>
 /// <param name="CreatedAt">The created At.</param>
 /// <param name="UpdatedAt">The updated At.</param>
+/// <param name="SourceType">The originating document type; null = Sales.</param>
+/// <param name="SourceId">The originating document identifier.</param>
 public record InvoiceDto(
     Guid Id,
     string InvoiceNumber,
@@ -123,7 +129,9 @@ public record InvoiceDto(
     decimal OutstandingAmount,
     List<InvoiceLineDto> Lines,
     DateTime CreatedAt,
-    DateTime UpdatedAt
+    DateTime UpdatedAt,
+    string? SourceType = null,
+    Guid? SourceId = null
 );
 
 /// <summary>
@@ -141,7 +149,7 @@ public record InvoiceDto(
 public record InvoiceLineDto(
     Guid Id,
     string Description,
-    int Quantity,
+    decimal Quantity,
     decimal UnitPrice,
     decimal Discount,
     decimal TaxRate,

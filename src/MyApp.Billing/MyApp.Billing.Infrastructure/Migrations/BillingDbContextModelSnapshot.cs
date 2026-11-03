@@ -17,7 +17,7 @@ namespace MyApp.Billing.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.8")
+                .HasAnnotation("ProductVersion", "10.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -166,6 +166,13 @@ namespace MyApp.Billing.Infrastructure.Migrations
                     b.Property<int>("PaymentTermsDays")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("SourceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SourceType")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -196,6 +203,8 @@ namespace MyApp.Billing.Infrastructure.Migrations
                     b.HasIndex("OrderId");
 
                     b.HasIndex("Status");
+
+                    b.HasIndex("SourceType", "SourceId");
 
                     b.ToTable("Invoices", (string)null);
                 });
@@ -233,8 +242,8 @@ namespace MyApp.Billing.Infrastructure.Migrations
                     b.Property<decimal>("LineTax")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("TaxRate")
                         .HasColumnType("decimal(18,2)");

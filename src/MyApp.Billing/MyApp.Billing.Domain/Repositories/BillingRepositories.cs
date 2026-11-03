@@ -30,6 +30,12 @@ public interface IInvoiceRepository : IRepository<Invoice, Guid>
     /// <param name="cancellationToken">A token to observe for cancellation requests.</param>
     /// <returns>A list of invoices associated with the specified order.</returns>
     Task<List<Invoice>> GetInvoicesByOrderIdAsync(Guid orderId, CancellationToken cancellationToken = default);
+
+    /// <summary>Gets invoices linked to a non-sales source document (e.g. a project invoice request).</summary>
+    /// <param name="sourceType">The source type.</param>
+    /// <param name="sourceId">The source document identifier.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task<List<Invoice>> GetBySourceAsync(string sourceType, Guid sourceId, CancellationToken cancellationToken = default);
 }
 
 /// <summary>

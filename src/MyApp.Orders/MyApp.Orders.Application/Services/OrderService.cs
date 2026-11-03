@@ -148,6 +148,7 @@ namespace MyApp.Orders.Application.Services
             existing.SourceId = dto.SourceId;
             existing.TargetId = dto.TargetId;
             existing.ExternalOrderId = dto.ExternalOrderId;
+            existing.ExternalOrderSource = dto.ExternalOrderSource;
 
             // Simple handling: replace lines
             existing.Lines.Clear();
@@ -192,6 +193,7 @@ namespace MyApp.Orders.Application.Services
                 SourceId = dto.SourceId,
                 TargetId = dto.TargetId,
                 ExternalOrderId = dto.ExternalOrderId,
+                ExternalOrderSource = dto.ExternalOrderSource,
                 OrderDate = dto.OrderDate,
                 Status = OrderStatus.Draft,
                 WarehouseId = dto.WarehouseId,
@@ -377,7 +379,8 @@ namespace MyApp.Orders.Application.Services
                 order.FulfilledDate.Value,
                 dto.TrackingNumber,
                 order.ExternalOrderId,
-                order.Lines.Select(l => new OrderLineEvent(l.ProductId, l.Quantity)).ToList()
+                order.Lines.Select(l => new OrderLineEvent(l.ProductId, l.Quantity)).ToList(),
+                order.ExternalOrderSource
             );
 
             try
@@ -452,7 +455,8 @@ namespace MyApp.Orders.Application.Services
             var orderCancelledEvent = new OrderCancelledEvent(
                 order.Id,
                 dto.Reason ?? string.Empty,
-                order.ExternalOrderId
+                order.ExternalOrderId,
+                order.ExternalOrderSource
             );
 
             try

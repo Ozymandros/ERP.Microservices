@@ -121,6 +121,7 @@ var sqlDatabaseNames = {
   orders: toLower('${namePrefix}-orders-db')
   purchasing: toLower('${namePrefix}-purchasing-db')
   sales: toLower('${namePrefix}-sales-db')
+  projects: toLower('${namePrefix}-projects-db')
 }
 
 @description('Array of all database names - used for batch database creation')
@@ -132,6 +133,7 @@ var sqlDatabaseList = [
   sqlDatabaseNames.orders
   sqlDatabaseNames.purchasing
   sqlDatabaseNames.sales
+  sqlDatabaseNames.projects
 ]
 
 // ============================================================================
@@ -206,6 +208,7 @@ module keyVault 'core/security/keyvault-secrets.bicep' = {
     ordersDbName: sqlDatabaseNames.orders
     purchasingDbName: sqlDatabaseNames.purchasing
     salesDbName: sqlDatabaseNames.sales
+    projectsDbName: sqlDatabaseNames.projects
     applicationInsightsConnectionString: resources.outputs.AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING
   }
 }
@@ -307,6 +310,31 @@ module billingServiceModule 'services/billing-service.bicep' = {
 
 module crmServiceModule 'services/crm-service.bicep' = {
   name: 'crm-service-deployment'
+  scope: rg
+  params: {
+    location: location
+    tags: tags
+    containerAppsEnvironmentId: resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
+    containerRegistryEndpoint: ghcrRegistryEndpoint
+    logAnalyticsWorkspaceId: resources.outputs.AZURE_LOG_ANALYTICS_WORKSPACE_ID
+    jwtSecretKey: jwtSecretKey
+    jwtIssuer: jwtIssuer
+    jwtAudience: jwtAudience
+    frontendOrigin: frontendOrigin
+    aspnetcoreEnvironment: aspnetcoreEnvironment
+    imageTag: imageTag
+    managedIdentityPrincipalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
+    appConfigEndpoint: appConfiguration.outputs.appConfigEndpoint
+    namePrefix: namePrefix
+    envSlug: envSlug
+    userAssignedIdentityId: resources.outputs.AZURE_USER_ASSIGNED_IDENTITY_ID
+    ghcrUsername: ghcrUsername
+    ghcrPat: ghcrPat
+  }
+}
+
+module projectsServiceModule 'services/projects-service.bicep' = {
+  name: 'projects-service-deployment'
   scope: rg
   params: {
     location: location
@@ -527,6 +555,7 @@ output INVENTORY_SERVICE_FQDN string = inventoryServiceModule.outputs.fqdn
 output ORDERS_SERVICE_FQDN string = ordersServiceModule.outputs.fqdn
 output PURCHASING_SERVICE_FQDN string = purchasingServiceModule.outputs.fqdn
 output SALES_SERVICE_FQDN string = salesServiceModule.outputs.fqdn
+output PROJECTS_SERVICE_FQDN string = projectsServiceModule.outputs.fqdn
 output API_GATEWAY_FQDN string = apiGatewayModule.outputs.fqdn
 output API_GATEWAY_URI string = apiGatewayModule.outputs.uri
 output ASPIRE_DASHBOARD_FQDN string = aspireDashboardModule.outputs.fqdn

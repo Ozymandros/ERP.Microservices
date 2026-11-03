@@ -28,6 +28,9 @@ namespace MyApp.Orders.Application.Contracts.Dtos
         public Guid? TargetId { get; init; }
         /// <summary>Gets or sets External Order Id.</summary>
         public Guid? ExternalOrderId { get; init; }
+        /// <summary>Gets or sets the source of the external order id ("Sales", "Project"); null = Sales.</summary>
+        [MaxLength(32)]
+        public string? ExternalOrderSource { get; init; }
 
         /// <summary>Gets or sets Warehouse Id.</summary>
         public Guid? WarehouseId { get; init; }

@@ -117,6 +117,7 @@ resource daprStateStore 'Microsoft.App/managedEnvironments/daprComponents@2024-0
       'orders-service'
       'purchasing-service'
       'sales-service'
+      'projects-service'
     ]
   }
 }
@@ -158,6 +159,7 @@ resource daprPubSub 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01
       'orders-service'
       'purchasing-service'
       'sales-service'
+      'projects-service'
     ]
   }
 }

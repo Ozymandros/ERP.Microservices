@@ -8,15 +8,22 @@ namespace MyApp.Shared.Domain.Events;
 /// <param name="OrderId">The sales order Id when applicable.</param>
 /// <param name="Currency">The currency.</param>
 /// <param name="TotalGross">The total Gross.</param>
+/// <param name="SourceType">Originating document type (see <c>DocumentSources</c>); null = Sales.</param>
+/// <param name="SourceId">Originating document id.</param>
 public record InvoiceCreatedEvent(
     Guid InvoiceId,
     Guid CustomerId,
     Guid? OrderId,
     string Currency,
-    decimal TotalGross
+    decimal TotalGross,
+    string? SourceType = null,
+    Guid? SourceId = null
 );
 
 /// <summary>Raised when a draft invoice is officially issued to a customer.</summary>
+/// <param name="SourceType">Originating document type (see <c>DocumentSources</c>); null = Sales.</param>
+/// <param name="SourceId">Originating document id (e.g. project invoice request id).</param>
+/// <param name="Currency">ISO 4217 currency of the invoice.</param>
 public record InvoiceIssuedEvent(
     Guid InvoiceId,
     string InvoiceNumber,
@@ -25,7 +32,10 @@ public record InvoiceIssuedEvent(
     decimal TotalNet,
     decimal TotalTax,
     decimal TotalGross,
-    DateTime DueDate
+    DateTime DueDate,
+    string? SourceType = null,
+    Guid? SourceId = null,
+    string? Currency = null
 );
 
 /// <summary>Raised when payment is recorded against an invoice.</summary>
@@ -39,10 +49,14 @@ public record InvoicePaidEvent(
 );
 
 /// <summary>Raised when an invoice is cancelled.</summary>
+/// <param name="SourceType">Originating document type (see <c>DocumentSources</c>); null = Sales.</param>
+/// <param name="SourceId">Originating document id.</param>
 public record InvoiceCancelledEvent(
     Guid InvoiceId,
     string InvoiceNumber,
-    string Reason
+    string Reason,
+    string? SourceType = null,
+    Guid? SourceId = null
 );
 
 /// <summary>Raised when a payment is successfully recorded against an invoice.</summary>

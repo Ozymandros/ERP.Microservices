@@ -84,4 +84,13 @@ public interface IInvoiceService
 
     /// <summary>Creates a credit note when a return operational order is fulfilled.</summary>
     Task<CreditNoteDto?> CreateCreditNoteFromReturnFulfillmentAsync(OrderFulfilledEvent @event, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Creates a customer invoice from a project invoice request (pub/sub, idempotent per request id).
+    /// The invoice is left in Draft unless <paramref name="autoIssue"/> is <see langword="true"/>.
+    /// </summary>
+    /// <param name="event">The project invoice request.</param>
+    /// <param name="autoIssue">Whether to issue the invoice immediately.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task<InvoiceDto?> CreateFromProjectRequestAsync(ProjectInvoiceRequestedEvent @event, bool autoIssue, CancellationToken cancellationToken = default);
 }

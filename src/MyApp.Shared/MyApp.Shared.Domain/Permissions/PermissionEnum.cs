@@ -34,7 +34,10 @@ public enum ModuleEnum
     Agentic = 9,
 
     /// <summary>Audit module - manages entity change audit trail</summary>
-    Audit = 10
+    Audit = 10,
+
+    /// <summary>Projects module - manages projects, tasks, planning lines and resources</summary>
+    Projects = 11
 }
 
 /// <summary>

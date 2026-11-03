@@ -62,6 +62,9 @@ param purchasingDbName string
 @description('Database name for the Sales service')
 param salesDbName string
 
+@description('Database name for the Projects service')
+param projectsDbName string
+
 // ============================================================================
 // Application Secrets Parameters
 // ============================================================================
@@ -214,6 +217,14 @@ resource kvSqlSecretSales 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   }
 }
 
+resource kvSqlSecretProjects 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
+  parent: keyVault
+  name: 'sql-connection-projectsdb'
+  properties: {
+    value: 'Server=${sqlFqdn};Database=${projectsDbName};User Id=sqladmin;Password=${sqlAdminPassword};TrustServerCertificate=True;'
+  }
+}
+
 // Deployment script to wait for RBAC propagation to Azure AD
 // This prevents Container Apps from starting before permissions are fully available
 resource rbacPropagationWait 'Microsoft.Resources/deploymentScripts@2023-08-01' = {
@@ -252,3 +263,4 @@ output sqlInventorySecretName string = kvSqlSecretInventory.name
 output sqlOrdersSecretName string = kvSqlSecretOrders.name
 output sqlPurchasingSecretName string = kvSqlSecretPurchasing.name
 output sqlSalesSecretName string = kvSqlSecretSales.name
+output sqlProjectsSecretName string = kvSqlSecretProjects.name
