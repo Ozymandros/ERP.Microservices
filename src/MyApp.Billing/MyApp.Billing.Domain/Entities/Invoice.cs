@@ -33,6 +33,13 @@ public class Invoice : AuditableEntity<Guid>
     public Guid CustomerId { get; private set; }
     /// <summary>Gets the identifier of the order that originated this invoice, if applicable.</summary>
     public Guid? OrderId { get; private set; }
+    /// <summary>
+    /// Gets the type of the originating document (e.g. <c>"Sales"</c>, <c>"Project"</c>).
+    /// <see langword="null"/> means Sales (legacy invoices linked through <see cref="OrderId"/>).
+    /// </summary>
+    public string? SourceType { get; private set; }
+    /// <summary>Gets the identifier of the originating document for non-sales sources (e.g. project invoice request id).</summary>
+    public Guid? SourceId { get; private set; }
     /// <summary>Gets the ISO 4217 currency code for this invoice (e.g. <c>"USD"</c>).</summary>
     public string Currency { get; private set; }
     /// <summary>Gets the current lifecycle status of the invoice.</summary>
@@ -76,6 +83,24 @@ public class Invoice : AuditableEntity<Guid>
         OrderId = salesOrderId;
     }
 
+    /// <summary>Links this invoice to an originating document of any source (Sales, Project, ...).</summary>
+    /// <param name="sourceType">The source type.</param>
+    /// <param name="sourceId">The source document identifier.</param>
+    public void LinkToSource(string sourceType, Guid sourceId)
+    {
+        if (Status != InvoiceStatus.Draft)
+            throw new InvalidOperationException("Cannot change source link after invoice is issued.");
+
+        if (string.IsNullOrWhiteSpace(sourceType))
+            throw new ArgumentException("SourceType is required.", nameof(sourceType));
+
+        if (sourceId == Guid.Empty)
+            throw new ArgumentException("SourceId is required.", nameof(sourceId));
+
+        SourceType = sourceType;
+        SourceId = sourceId;
+    }
+
     /// <summary>
     /// Adds a line.
     /// </summary>
@@ -84,7 +109,7 @@ public class Invoice : AuditableEntity<Guid>
     /// <param name="unitPrice">The unit Price.</param>
     /// <param name="taxRate">The tax Rate.</param>
     /// <param name="discount">The discount.</param>
-    public void AddLine(string description, int quantity, decimal unitPrice, decimal taxRate, decimal discount = 0)
+    public void AddLine(string description, decimal quantity, decimal unitPrice, decimal taxRate, decimal discount = 0)
     {
         if (Status != InvoiceStatus.Draft)
             throw new InvalidOperationException("Cannot modify lines after invoice is issued.");

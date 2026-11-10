@@ -246,6 +246,15 @@ resource sqlSalesDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues
   }
 }
 
+resource sqlProjectsDbRef 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  parent: appConfig
+  name: 'ConnectionStrings:ProjectsDb'
+  properties: {
+    value: '{"uri":"${keyVaultUri}/secrets/sql-connection-projectsdb"}'
+    contentType: 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
+  }
+}
+
 // ============================================================================
 // Application Insights Connection String - Key Vault Reference
 // ============================================================================

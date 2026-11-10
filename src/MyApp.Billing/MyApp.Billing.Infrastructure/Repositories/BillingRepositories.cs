@@ -89,6 +89,15 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
             .ToListAsync(cancellationToken);
     }
 
+    /// <inheritdoc />
+    public async Task<List<Invoice>> GetBySourceAsync(string sourceType, Guid sourceId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Invoices
+            .Include(i => i.Lines)
+            .Where(i => i.SourceType == sourceType && i.SourceId == sourceId)
+            .ToListAsync(cancellationToken);
+    }
+
     /// <summary>
     /// Query asynchronously.
     /// </summary>

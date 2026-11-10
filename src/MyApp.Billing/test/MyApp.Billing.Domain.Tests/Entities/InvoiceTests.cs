@@ -177,4 +177,43 @@ public class InvoiceTests
         invoice.TotalTax.Should().Be(20m);
         invoice.TotalGross.Should().Be(320m);
     }
+
+    [Fact]
+    public void AddLine_WithDecimalQuantity_CalculatesTotals()
+    {
+        var invoice = new Invoice(Guid.NewGuid(), "INV-DEC-1", Guid.NewGuid(), "EUR");
+
+        invoice.AddLine("Consulting hours", 7.5m, 80m, 21m); // Net: 600, Tax: 126
+
+        invoice.Lines[0].Quantity.Should().Be(7.5m);
+        invoice.TotalNet.Should().Be(600m);
+        invoice.TotalTax.Should().Be(126m);
+        invoice.TotalGross.Should().Be(726m);
+    }
+
+    [Fact]
+    public void LinkToSource_OnDraft_SetsSourceFields()
+    {
+        var invoice = new Invoice(Guid.NewGuid(), "INV-SRC-1", Guid.NewGuid(), "EUR");
+        var requestId = Guid.NewGuid();
+
+        invoice.LinkToSource("Project", requestId);
+
+        invoice.SourceType.Should().Be("Project");
+        invoice.SourceId.Should().Be(requestId);
+        invoice.OrderId.Should().BeNull();
+    }
+
+    [Fact]
+    public void LinkToSource_AfterIssue_Throws()
+    {
+        var invoice = new Invoice(Guid.NewGuid(), "INV-SRC-2", Guid.NewGuid(), "EUR");
+        invoice.AddLine("Line", 1m, 10m, 0m);
+        invoice.Issue("INV-SRC-2", DateTime.UtcNow, 30);
+
+        var act = () => invoice.LinkToSource("Project", Guid.NewGuid());
+
+        act.Should().Throw<InvalidOperationException>();
+    }
 }
+

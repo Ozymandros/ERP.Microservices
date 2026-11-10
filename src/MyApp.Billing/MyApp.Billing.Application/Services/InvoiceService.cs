@@ -72,6 +72,9 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         if (dto.OrderId.HasValue)
             invoice.LinkToSalesOrder(dto.OrderId.Value);
 
+        if (!string.IsNullOrWhiteSpace(dto.SourceType) && dto.SourceId.HasValue)
+            invoice.LinkToSource(dto.SourceType, dto.SourceId.Value);
+
         await _invoiceRepository.AddAsync(invoice);
         await SaveChangesAsync(cancellationToken);
 
@@ -81,7 +84,9 @@ public class InvoiceService : AppServiceBase, IInvoiceService
             invoice.CustomerId,
             invoice.OrderId,
             invoice.Currency,
-            invoice.TotalGross
+            invoice.TotalGross,
+            invoice.SourceType,
+            invoice.SourceId
         ), cancellationToken);
 
         return MapToDto(invoice);
@@ -120,7 +125,10 @@ public class InvoiceService : AppServiceBase, IInvoiceService
             invoice.TotalNet,
             invoice.TotalTax,
             invoice.TotalGross,
-            invoice.DueDate!.Value
+            invoice.DueDate!.Value,
+            invoice.SourceType,
+            invoice.SourceId,
+            invoice.Currency
         ), cancellationToken);
 
         return MapToDto(invoice);
@@ -173,7 +181,9 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         await EventPublisher.PublishAsync(MessagingConstants.Topics.BillingInvoiceCancelled, new InvoiceCancelledEvent(
             invoice.Id,
             invoice.InvoiceNumber,
-            reason
+            reason,
+            invoice.SourceType,
+            invoice.SourceId
         ), cancellationToken);
 
         return MapToDto(invoice);
@@ -281,6 +291,59 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     }
 
     /// <inheritdoc />
+    public async Task<InvoiceDto?> CreateFromProjectRequestAsync(
+        ProjectInvoiceRequestedEvent @event,
+        bool autoIssue,
+        CancellationToken cancellationToken = default)
+    {
+        if (@event.Lines.Count == 0)
+        {
+            _logger.LogWarning("Project invoice request {RequestId} has no lines; skipping", @event.RequestId);
+            return null;
+        }
+
+        // Idempotency: pub/sub is at-least-once, so a redelivered request must not create a second invoice.
+        var existing = await _invoiceRepository.GetBySourceAsync(DocumentSources.Project, @event.RequestId, cancellationToken);
+        var current = existing.FirstOrDefault(i => i.Status != InvoiceStatus.Cancelled);
+        if (current is not null)
+        {
+            _logger.LogInformation(
+                "Invoice {InvoiceId} already exists for project invoice request {RequestId}",
+                current.Id, @event.RequestId);
+            return MapToDto(current);
+        }
+
+        var draftNumber = $"DRAFT-{@event.RequestId:N}"[..20];
+        var createDto = new CreateInvoiceDto(
+            draftNumber,
+            @event.CustomerId,
+            null,
+            string.IsNullOrWhiteSpace(@event.Currency) ? "USD" : @event.Currency.ToUpperInvariant(),
+            @event.Lines.Select(l => new CreateInvoiceLineDto(
+                l.Description,
+                l.Quantity,
+                l.UnitPrice,
+                l.TaxRate,
+                l.Discount)).ToList(),
+            SourceType: DocumentSources.Project,
+            SourceId: @event.RequestId);
+
+        var created = await CreateInvoiceAsync(createDto, cancellationToken);
+
+        _logger.LogInformation(
+            "Created {Status} invoice {InvoiceId} for project {ProjectNumber} (request {RequestId})",
+            autoIssue ? "auto-issued" : "draft", created.Id, @event.ProjectNumber, @event.RequestId);
+
+        if (!autoIssue)
+            return created;
+
+        var issueNumber = $"INV-{@event.ProjectNumber}-{DateTime.UtcNow:yyyyMMddHHmmss}";
+        if (issueNumber.Length > 50)
+            issueNumber = issueNumber[..50];
+        return await IssueInvoiceAsync(created.Id, issueNumber, DateTime.UtcNow, cancellationToken);
+    }
+
+    /// <inheritdoc />
     public async Task<InvoiceDto?> CreateAndIssueFromFulfillmentAsync(
         OrderFulfilledEvent @event,
         CancellationToken cancellationToken = default)
@@ -288,6 +351,16 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         if (!string.Equals(@event.OrderType, OrderTypes.Outbound, StringComparison.OrdinalIgnoreCase)
             || !@event.ExternalOrderId.HasValue)
         {
+            return null;
+        }
+
+        // Only sales-originated movements are invoiced here. Project consumption orders are
+        // invoiced through projects.invoice.requested (see CreateFromProjectRequestAsync).
+        if (!DocumentSources.IsSales(@event.ExternalOrderSource))
+        {
+            _logger.LogInformation(
+                "Skipping auto-invoice for order {OrderId}: external source {Source} is not Sales",
+                @event.OrderId, @event.ExternalOrderSource);
             return null;
         }
 
@@ -337,6 +410,14 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         if (!string.Equals(@event.OrderType, OrderTypes.Return, StringComparison.OrdinalIgnoreCase)
             || !@event.ExternalOrderId.HasValue)
         {
+            return null;
+        }
+
+        if (!DocumentSources.IsSales(@event.ExternalOrderSource))
+        {
+            _logger.LogInformation(
+                "Skipping credit note for return order {OrderId}: external source {Source} is not Sales",
+                @event.OrderId, @event.ExternalOrderSource);
             return null;
         }
 
@@ -405,7 +486,9 @@ public class InvoiceService : AppServiceBase, IInvoiceService
                 l.LineGross
             )).ToList(),
             invoice.CreatedAt,
-            invoice.UpdatedAt ?? invoice.CreatedAt
+            invoice.UpdatedAt ?? invoice.CreatedAt,
+            invoice.SourceType,
+            invoice.SourceId
         );
     }
 

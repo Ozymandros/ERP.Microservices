@@ -130,6 +130,9 @@ public class BillingDbContext : AuditableDbContext
             entity.HasIndex(e => e.OrderId);
             entity.HasIndex(e => e.Status);
 
+            entity.Property(e => e.SourceType).HasMaxLength(32);
+            entity.HasIndex(e => new { e.SourceType, e.SourceId });
+
             // Navigation configurations
             entity.HasMany(e => e.Lines)
                 .WithOne(l => l.Invoice)
@@ -154,6 +157,7 @@ public class BillingDbContext : AuditableDbContext
             entity.HasKey(e => e.Id);
 
             entity.Property(e => e.Description).HasMaxLength(500).IsRequired();
+            entity.Property(e => e.Quantity).HasColumnType("decimal(18,4)").IsRequired();
             entity.Property(e => e.UnitPrice).HasColumnType("decimal(18,2)").IsRequired();
             entity.Property(e => e.LineNet).HasColumnType("decimal(18,2)");
             entity.Property(e => e.LineTax).HasColumnType("decimal(18,2)");

@@ -106,6 +106,10 @@ var agenticService = projectBuilder.AddWebProject<Projects.MyApp_Agentic_API>(re
 var auditService = projectBuilder.AddWebProject<Projects.MyApp_Audit_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore, hasDatabase: true);
 // Creates: audit-service (no DB), ports 6009, 3509, 45009, 9099
 
+// Registered last so the ports of the existing services do not shift.
+var projectsService = projectBuilder.AddWebProject<Projects.MyApp_Projects_API>(redis, origin, isDeployment, applicationInsights, pubSub, stateStore);
+// Creates: ProjectsDB, projects-service, ports 6010, 3510, 45010, 9100
+
 // Local Development: Reverse Proxy (YARP)
 // Alternative: YARP (without /Scalar service)
 /*var gateway = builder.AddYarp("gateway")

@@ -120,6 +120,28 @@ public static class PermissionConstants
         public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
     }
 
+    /// <summary>Projects module permissions</summary>
+    public static class Projects
+    {
+        /// <summary>Permission to read/view Projects data.</summary>
+        public const string Read = "Projects.Read";
+        /// <summary>Permission to create new Projects records.</summary>
+        public const string Create = "Projects.Create";
+        /// <summary>Permission to update existing Projects records.</summary>
+        public const string Update = "Projects.Update";
+        /// <summary>Permission to delete Projects records.</summary>
+        public const string Delete = "Projects.Delete";
+        /// <summary>Permission to execute Projects operations (post usage, request invoices, status changes).</summary>
+        public const string Execute = "Projects.Execute";
+        /// <summary>Permission to export Projects data.</summary>
+        public const string Export = "Projects.Export";
+        /// <summary>Permission to import Projects data.</summary>
+        public const string Import = "Projects.Import";
+
+        /// <summary>All Projects permissions</summary>
+        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+    }
+
     /// <summary>CRM module permissions</summary>
     public static class CRM
     {
@@ -314,6 +336,7 @@ public static class PermissionConstants
             ModuleEnum.Auth => Auth.All,
             ModuleEnum.Agentic => Agentic.All,
             ModuleEnum.Audit => Audit.All,
+            ModuleEnum.Projects => Projects.All,
             _ => Array.Empty<string>()
         };
     }

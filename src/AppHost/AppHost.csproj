@@ -42,5 +42,6 @@
 		<ProjectReference Include="..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" IsAspireProjectResource="false" />
 		<ProjectReference Include="..\MyApp.Crm\MyApp.Crm.API\MyApp.Crm.API.csproj" />
 		<ProjectReference Include="..\MyApp.Agentic\MyApp.Agentic.API\MyApp.Agentic.API.csproj" />
+		<ProjectReference Include="..\MyApp.Projects\MyApp.Projects.API\MyApp.Projects.API.csproj" />
 	</ItemGroup>
 </Project>

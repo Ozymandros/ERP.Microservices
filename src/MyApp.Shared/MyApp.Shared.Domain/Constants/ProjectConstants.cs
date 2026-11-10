@@ -34,6 +34,9 @@ public static class ServiceNames
 
     /// <summary>Gets the identifier for the Agentic service.</summary>
     public const string Agentic = "agentic-service";
+
+    /// <summary>Gets the identifier for the Projects service.</summary>
+    public const string Projects = "projects-service";
 }
 
 /// <summary>
@@ -65,6 +68,9 @@ public static class ApiEndpoints
 
         /// <summary>Gets the endpoint for managing stock reservations.</summary>
         public const string Reservations = "api/inventory/stock-operations/reservations";
+
+        /// <summary>Gets the base endpoint for products API.</summary>
+        public const string Products = "api/inventory/products";
     }
 
     /// <summary>Sales service endpoints.</summary>
@@ -75,6 +81,9 @@ public static class ApiEndpoints
 
         /// <summary>Gets the endpoint for sales quotes.</summary>
         public const string Quotes = "api/sales/orders/quotes";
+
+        /// <summary>Gets the base endpoint for customers API.</summary>
+        public const string Customers = "api/sales/customers";
     }
 
     /// <summary>Billing service endpoints.</summary>
@@ -85,6 +94,13 @@ public static class ApiEndpoints
 
         /// <summary>Gets the base endpoint for supplier invoices API.</summary>
         public const string SupplierInvoices = "api/billing/supplier-invoices";
+    }
+
+    /// <summary>Projects service endpoints.</summary>
+    public static class Projects
+    {
+        /// <summary>Gets the base endpoint for projects API.</summary>
+        public const string Base = "api/projects";
     }
 
     /// <summary>Audit service endpoints.</summary>
@@ -187,6 +203,15 @@ public static class MessagingConstants
         /// <summary>Gets the topic name for CRM activity completed events.</summary>
         public const string CrmActivityCompleted = "crm.activity.completed";
 
+        /// <summary>Gets the topic name for project created events.</summary>
+        public const string ProjectCreated = "projects.project.created";
+
+        /// <summary>Gets the topic name for project status changed events.</summary>
+        public const string ProjectStatusChanged = "projects.project.status-changed";
+
+        /// <summary>Gets the topic name for project invoice requested events (consumed by Billing).</summary>
+        public const string ProjectInvoiceRequested = "projects.invoice.requested";
+
         /// <summary>Gets the topic name for entity-change audit events after a service DB commit.</summary>
         public const string AuditEntityChangesSaved = "audit.entity-changes.saved";
     }
@@ -208,4 +233,27 @@ public static class OrderTypes
 
     /// <summary>Gets the order type for customer returns.</summary>
     public const string Return = "Return";
+}
+
+/// <summary>
+/// Identifies the commercial/project document that caused an operational order or an invoice.
+/// A <see langword="null"/> or empty value means <see cref="Sales"/> (legacy behaviour).
+/// </summary>
+public static class DocumentSources
+{
+    /// <summary>Gets the source value for sales documents.</summary>
+    public const string Sales = "Sales";
+
+    /// <summary>Gets the source value for project documents.</summary>
+    public const string Project = "Project";
+
+    /// <summary>Returns <see langword="true"/> when the source denotes a sales document (null/empty = Sales).</summary>
+    /// <param name="source">The source value.</param>
+    public static bool IsSales(string? source) =>
+        string.IsNullOrWhiteSpace(source) || string.Equals(source, Sales, StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>Returns <see langword="true"/> when the source denotes a project.</summary>
+    /// <param name="source">The source value.</param>
+    public static bool IsProject(string? source) =>
+        string.Equals(source, Project, StringComparison.OrdinalIgnoreCase);
 }
