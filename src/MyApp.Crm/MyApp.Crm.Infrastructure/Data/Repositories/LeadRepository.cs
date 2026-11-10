@@ -20,7 +20,8 @@ public class LeadRepository : Repository<Lead, Guid>, ILeadRepository
 
     /// <summary>Get By Id Async.</summary>
     /// <param name="id">The id.</param>
-    public override async Task<Lead?> GetByIdAsync(Guid id)
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public override async Task<Lead?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Leads
             .Include(l => l.Notes)
@@ -37,11 +38,12 @@ public class LeadRepository : Repository<Lead, Guid>, ILeadRepository
     }
 
     /// <summary>List Async.</summary>
-    public async Task<IEnumerable<Lead>> ListAsync()
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public async Task<IEnumerable<Lead>> ListAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Leads
             .AsNoTracking()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }
 

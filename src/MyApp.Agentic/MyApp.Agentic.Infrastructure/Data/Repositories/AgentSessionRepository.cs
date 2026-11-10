@@ -22,12 +22,13 @@ public class AgentSessionRepository : Repository<AgentSession, Guid>, IAgentSess
     /// Gets an item by its unique identifier asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
-    public override async Task<AgentSession?> GetByIdAsync(Guid id)
+    public override async Task<AgentSession?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _context.AgentSessions
             .Include(s => s.Agent)
-            .FirstOrDefaultAsync(s => s.Id == id);
+            .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
 
     /// <summary>

@@ -20,11 +20,12 @@ public sealed class AccountRepository : Repository<Account, Guid>, IAccountRepos
 
     /// <summary>Get By Id Async.</summary>
     /// <param name="id">The id.</param>
-    public override async Task<Account?> GetByIdAsync(Guid id)
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public override async Task<Account?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Accounts
             .Include(a => a.Contacts)
-            .FirstOrDefaultAsync(a => a.Id == id);
+            .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
     }
 
     /// <summary>Get By Customer Id Async.</summary>

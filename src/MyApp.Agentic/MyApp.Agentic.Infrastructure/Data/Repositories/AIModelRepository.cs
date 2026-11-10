@@ -22,8 +22,9 @@ public class AIModelRepository : Repository<AIModel, Guid>, IAIModelRepository
     /// Gets an item by its unique identifier asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
-    public override async Task<AIModel?> GetByIdAsync(Guid id)
+    public override async Task<AIModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.AIModels
             .Include(m => m.Provider)
@@ -33,14 +34,15 @@ public class AIModelRepository : Repository<AIModel, Guid>, IAIModelRepository
     /// <summary>
     /// Gets all items asynchronously.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
-    public override async Task<IEnumerable<AIModel>> GetAllAsync()
+    public override async Task<IEnumerable<AIModel>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await _context.AIModels
             .Include(m => m.Provider)
             .OrderBy(m => m.Provider!.Name)
             .ThenBy(m => m.CommercialName)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     /// <summary>

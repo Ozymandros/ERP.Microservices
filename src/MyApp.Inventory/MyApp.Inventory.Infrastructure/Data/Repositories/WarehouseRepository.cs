@@ -18,9 +18,10 @@ public class WarehouseRepository : Repository<Warehouse, Guid>, IWarehouseReposi
 
     /// <summary>Get By Name Async.</summary>
     /// <param name="name">The name.</param>
-    public async Task<Warehouse?> GetByNameAsync(string name)
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public async Task<Warehouse?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<Warehouse>()
-            .FirstOrDefaultAsync(x => x.Name == name);
+            .FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
     }
 }

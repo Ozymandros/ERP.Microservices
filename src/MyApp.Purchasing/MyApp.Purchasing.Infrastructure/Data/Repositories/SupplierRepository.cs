@@ -18,18 +18,18 @@ public class SupplierRepository : Repository<Supplier, Guid>, ISupplierRepositor
 
     /// <summary>Get By Email Async.</summary>
     /// <param name="email">The email.</param>
-    public async Task<Supplier?> GetByEmailAsync(string email)
+    public async Task<Supplier?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<Supplier>()
-            .FirstOrDefaultAsync(x => x.Email == email);
+            .FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
     }
 
     /// <summary>Get By Name Async.</summary>
     /// <param name="name">The name.</param>
-    public async Task<IEnumerable<Supplier>> GetByNameAsync(string name)
+    public async Task<IEnumerable<Supplier>> GetByNameAsync(string name, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<Supplier>()
             .Where(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }

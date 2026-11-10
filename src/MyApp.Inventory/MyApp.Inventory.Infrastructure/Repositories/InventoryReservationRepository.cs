@@ -19,7 +19,8 @@ public class InventoryReservationRepository : Repository<InventoryReservation, G
 
     /// <summary>Get Active By Order Id Async.</summary>
     /// <param name="orderId">The order Id.</param>
-    public async Task<List<InventoryReservation>> GetActiveByOrderIdAsync(Guid orderId)
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public async Task<List<InventoryReservation>> GetActiveByOrderIdAsync(Guid orderId, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<InventoryReservation>()
             .Where(r => r.OrderId == orderId && r.Status == InventoryReservationStatus.Reserved)
@@ -27,7 +28,8 @@ public class InventoryReservationRepository : Repository<InventoryReservation, G
     }
 
     /// <summary>Get Expired Async.</summary>
-    public async Task<List<InventoryReservation>> GetExpiredAsync()
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public async Task<List<InventoryReservation>> GetExpiredAsync(CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<InventoryReservation>()
             .Where(r => r.Status == InventoryReservationStatus.Reserved && r.ReservedUntil < DateTime.UtcNow)

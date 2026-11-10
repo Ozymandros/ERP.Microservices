@@ -13,7 +13,8 @@ public interface IRepository<TEntity, TKey> : MyApp.Shared.Domain.Repositories.I
 {
     /// <summary>Returns all entities as an enumerable sequence.</summary>
     /// <returns>All entities of type <typeparamref name="TEntity"/>.</returns>
-    Task<IEnumerable<TEntity>> ListAsync();
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    Task<IEnumerable<TEntity>> ListAsync(CancellationToken cancellationToken = default);
 
     /// <summary>Deletes the entity with the given primary key.</summary>
     /// <param name="id">The primary key of the entity to delete.</param>

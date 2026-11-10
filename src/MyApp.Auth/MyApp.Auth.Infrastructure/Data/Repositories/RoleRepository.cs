@@ -26,11 +26,11 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     /// </summary>
     /// <param name="name">The name.</param>
     /// <returns>The matching <see cref="ApplicationRole"/>, or <c>null</c> if not found.</returns>
-    public async Task<ApplicationRole?> GetByNameAsync(string name)
+    public async Task<ApplicationRole?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
     {
         return await _context.Roles
             .Include(r => r.RoleClaims)
-            .FirstOrDefaultAsync(r => r.Name == name);
+            .FirstOrDefaultAsync(r => r.Name == name, cancellationToken);
     }
 
     /// <summary>
@@ -38,9 +38,9 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     /// </summary>
     /// <param name="name">The name.</param>
     /// <returns><c>true</c> if a role with the name exists; otherwise, <c>false</c>.</returns>
-    public async Task<bool> NameExistsAsync(string name)
+    public async Task<bool> NameExistsAsync(string name, CancellationToken cancellationToken = default)
     {
-        return await _context.Roles.AnyAsync(r => r.Name == name);
+        return await _context.Roles.AnyAsync(r => r.Name == name, cancellationToken);
     }
 
     /// <summary>
@@ -48,14 +48,14 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     /// </summary>
     /// <param name="userId">The user Id.</param>
     /// <returns>A collection of <see cref="ApplicationRole"/> entities for the user.</returns>
-    public async Task<IEnumerable<ApplicationRole>> GetRolesByUserIdAsync(Guid userId)
+    public async Task<IEnumerable<ApplicationRole>> GetRolesByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         // Query directly from UserRoles join table to get only roles assigned to this user
         var roleIds = await _context.UserRoles.AsNoTracking()
             .Where(ur => ur.UserId == userId)
             .Select(ur => ur.RoleId)
             .Distinct()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         if (!roleIds.Any())
         {
@@ -65,7 +65,7 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
         return await this.Queryable
             .Where(r => roleIds.Contains(r.Id))
             .Include(r => r.RoleClaims)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     /// <summary>
@@ -73,12 +73,12 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     /// </summary>
     /// <param name="roleId">The role Id.</param>
     /// <returns>A collection of <see cref="Permission"/> entities assigned to the role.</returns>
-    public async Task<IEnumerable<Permission>> GetPermissionsForRoleAsync(Guid roleId)
+    public async Task<IEnumerable<Permission>> GetPermissionsForRoleAsync(Guid roleId, CancellationToken cancellationToken = default)
     {
         var permissions = await this.Queryable
             .Where(r => r.Id == roleId)
             .SelectMany(r => r.RolePermissions.Select(rp => rp.Permission)) // Traverse through the join table to the Permission
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return permissions;
     }
@@ -89,10 +89,10 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     /// <param name="roleId">The role Id.</param>
     /// <param name="permissionId">The permission Id.</param>
     /// <returns><c>true</c> if the role has the permission; otherwise, <c>false</c>.</returns>
-    public async Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId)
+    public async Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId, CancellationToken cancellationToken = default)
     {
         return await _context.RolePermissions.AsNoTracking()
-            .AnyAsync(rp => rp.RoleId == roleId && rp.PermissionId == permissionId);
+            .AnyAsync(rp => rp.RoleId == roleId && rp.PermissionId == permissionId, cancellationToken);
     }
 
     /// <summary>
@@ -101,10 +101,10 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     /// <param name="roleId">The role Id.</param>
     /// <param name="permissionId">The permission Id.</param>
     /// <returns><c>true</c> if the permission was removed; <c>false</c> if the association was not found.</returns>
-    public async Task<bool> RemovePermissionFromRoleAsync(Guid roleId, Guid permissionId)
+    public async Task<bool> RemovePermissionFromRoleAsync(Guid roleId, Guid permissionId, CancellationToken cancellationToken = default)
     {
         var rolePermission = await _context.RolePermissions
-            .FirstOrDefaultAsync(rp => rp.RoleId == roleId && rp.PermissionId == permissionId);
+            .FirstOrDefaultAsync(rp => rp.RoleId == roleId && rp.PermissionId == permissionId, cancellationToken);
 
         if (rolePermission == null)
         {
@@ -113,7 +113,7 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
 
         _context.RolePermissions.Remove(rolePermission);
 
-        var role = await _context.Roles.FindAsync(roleId);
+        var role = await _context.Roles.FindAsync([roleId], cancellationToken);
         if (role != null)
         {
             role.UpdatedAt = DateTime.UtcNow;

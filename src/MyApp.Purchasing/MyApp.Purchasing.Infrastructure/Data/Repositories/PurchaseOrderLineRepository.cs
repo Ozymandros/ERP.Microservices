@@ -18,10 +18,12 @@ public class PurchaseOrderLineRepository : Repository<PurchaseOrderLine, Guid>, 
 
     /// <summary>Get By Purchase Order Id Async.</summary>
     /// <param name="purchaseOrderId">The purchase Order Id.</param>
-    public async Task<IEnumerable<PurchaseOrderLine>> GetByPurchaseOrderIdAsync(Guid purchaseOrderId)
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public async Task<IEnumerable<PurchaseOrderLine>> GetByPurchaseOrderIdAsync(Guid purchaseOrderId, CancellationToken cancellationToken = default
+)
     {
         return await DbContext.Set<PurchaseOrderLine>()
             .Where(x => x.PurchaseOrderId == purchaseOrderId)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }

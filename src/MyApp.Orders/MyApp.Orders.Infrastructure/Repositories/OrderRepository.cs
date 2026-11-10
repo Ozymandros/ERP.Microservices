@@ -25,8 +25,9 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
     /// Performs the operation.
     /// </summary>
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
-    public override async Task<Order?> GetByIdAsync(Guid id)
+    public override async Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _db.Orders.Include(o => o.Lines).FirstOrDefaultAsync(o => o.Id == id);
     }
@@ -35,8 +36,9 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
     /// Performs the operation.
     /// </summary>
     /// <param name="orderNumber">The order Number.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
-    public async Task<Order?> GetByOrderNumberAsync(string orderNumber)
+    public async Task<Order?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default)
     {
         return await _db.Orders.Include(o => o.Lines).FirstOrDefaultAsync(o => o.OrderNumber == orderNumber);
     }
@@ -44,10 +46,11 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
     /// <summary>
     /// Performs the operation.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
-    public override async Task<IEnumerable<Order>> GetAllAsync()
+    public override async Task<IEnumerable<Order>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _db.Orders.Include(o => o.Lines).ToListAsync();
+        return await _db.Orders.Include(o => o.Lines).ToListAsync(cancellationToken);
     }
 
     /// <summary>
@@ -55,14 +58,14 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
     /// </summary>
     /// <param name="spec">The spec.</param>
     /// <inheritdoc />
-    public override async Task<PaginatedResult<Order>> QueryAsync(ISpecification<Order> spec)
+    public override async Task<PaginatedResult<Order>> QueryAsync(ISpecification<Order> spec, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(spec);
 
         var baseQuery = _db.Orders.Include(o => o.Lines).AsQueryable();
         var totalCount = await baseQuery.CountAsync();
         var paginatedQuery = spec.Apply(baseQuery);
-        var items = await paginatedQuery.ToListAsync();
+        var items = await paginatedQuery.ToListAsync(cancellationToken);
         return new PaginatedResult<Order>(
             items,
             (spec as BaseSpecification<Order>)?.Query.Page ?? 1,
