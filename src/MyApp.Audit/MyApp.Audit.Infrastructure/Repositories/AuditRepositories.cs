@@ -62,8 +62,9 @@ public class EntityChangeRepository : Repository<EntityChange, Guid>, IEntityCha
     /// </summary>
     /// <param name="spec">The spec.</param>
     /// <returns>A paginated result containing the matching entity change records.</returns>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="spec"/> is <see langword="null"/>.</exception>
-    public override async Task<PaginatedResult<EntityChange>> QueryAsync(ISpecification<EntityChange> spec)
+    public override async Task<PaginatedResult<EntityChange>> QueryAsync(ISpecification<EntityChange> spec, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(spec);
 
@@ -73,10 +74,10 @@ public class EntityChangeRepository : Repository<EntityChange, Guid>, IEntityCha
             .AsQueryable();
 
         var filteredQuery = spec.ApplyFilters(baseQuery);
-        var totalCount = await filteredQuery.CountAsync();
+        var totalCount = await filteredQuery.CountAsync(cancellationToken);
 
         var finalQuery = spec.Apply(baseQuery);
-        var items = await finalQuery.ToListAsync();
+        var items = await finalQuery.ToListAsync(cancellationToken);
 
         int pageNumber = 1;
         int pageSize = items.Count;

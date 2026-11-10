@@ -10,12 +10,14 @@ namespace MyApp.Sales.Domain
     {
         /// <summary>Returns the customer with the specified name, or <see langword="null"/> if not found.</summary>
         /// <param name="name">The exact customer name to search for.</param>
+        /// <param name="cancellationToken">The cancellation Token.</param>
         /// <returns>The matching <see cref="Customer"/>, or <see langword="null"/>.</returns>
-        Task<Customer?> GetByNameAsync(string name);
+        Task<Customer?> GetByNameAsync(string name, CancellationToken cancellationToken = default);
 
         /// <summary>Returns the customer with the specified email address, or <see langword="null"/> if not found.</summary>
         /// <param name="email">The exact email address to search for.</param>
+        /// <param name="cancellationToken">The cancellation Token.</param>
         /// <returns>The matching <see cref="Customer"/>, or <see langword="null"/>.</returns>
-        Task<Customer?> GetByEmailAsync(string email);
+        Task<Customer?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
     }
 }

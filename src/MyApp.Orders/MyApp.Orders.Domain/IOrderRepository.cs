@@ -7,5 +7,7 @@ namespace MyApp.Orders.Domain;
 public interface IOrderRepository : IRepository<Order, Guid>
 {
     /// <summary>Retrieves an order by its order number.</summary>
-    Task<Order?> GetByOrderNumberAsync(string orderNumber);
+    /// <param name="orderNumber">The order number.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    Task<Order?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default);
 }

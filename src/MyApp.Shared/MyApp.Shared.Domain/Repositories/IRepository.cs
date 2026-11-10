@@ -14,19 +14,20 @@ public interface IRepository<TEntity, TKey>
     where TEntity : class
 {
     /// <summary>Gets an entity by primary key.</summary>
-    Task<TEntity?> GetByIdAsync(TKey id);
+    Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken = default);
 
     /// <summary>Gets all entities (no tracking).</summary>
-    Task<IEnumerable<TEntity>> GetAllAsync();
+    Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
 
     /// <summary>Gets a paginated list of entities.</summary>
     Task<PaginatedResult<TEntity>> GetAllPaginatedAsync(
         int pageNumber,
         int pageSize,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null);
+        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        CancellationToken cancellationToken = default);
 
     /// <summary>Query entities using a specification for filtering, sorting, and pagination.</summary>
-    Task<PaginatedResult<TEntity>> QueryAsync(ISpecification<TEntity> spec);
+    Task<PaginatedResult<TEntity>> QueryAsync(ISpecification<TEntity> spec, CancellationToken cancellationToken = default);
 
     /// <summary>Stages an entity for insert (does not commit).</summary>
     Task<TEntity> AddAsync(TEntity entity);

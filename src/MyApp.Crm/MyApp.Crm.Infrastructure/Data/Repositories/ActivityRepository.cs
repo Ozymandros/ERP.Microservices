@@ -20,17 +20,18 @@ public class ActivityRepository : Repository<Activity, Guid>, IActivityRepositor
 
     /// <summary>Get By Id Async.</summary>
     /// <param name="id">The id.</param>
-    public override async Task<Activity?> GetByIdAsync(Guid id)
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public override async Task<Activity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Activities
             .Include(a => a.Notes)
-            .FirstOrDefaultAsync(a => a.Id == id);
+            .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
     }
 
     /// <summary>List Async.</summary>
-    public async Task<IEnumerable<Activity>> ListAsync()
+    public async Task<IEnumerable<Activity>> ListAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.Activities.AsNoTracking().ToListAsync();
+        return await _context.Activities.AsNoTracking().ToListAsync(cancellationToken);
     }
 }
 

@@ -58,18 +58,18 @@ public abstract class Repository<TEntity, TKey> : DbContextRepositoryBase, IRepo
     /// </summary>
     /// <param name="id">The id.</param>
     /// <inheritdoc />
-    public virtual async Task<TEntity?> GetByIdAsync(TKey id)
+    public virtual async Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken = default)
     {
-        return await DbSet.FindAsync(id);
+        return await DbSet.FindAsync([id], cancellationToken);
     }
 
     /// <summary>
     /// Performs the operation.
     /// </summary>
     /// <inheritdoc />
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await Queryable.ToListAsync();
+        return await Queryable.ToListAsync(cancellationToken);
     }
 
     /// <summary>
@@ -82,7 +82,8 @@ public abstract class Repository<TEntity, TKey> : DbContextRepositoryBase, IRepo
     public virtual async Task<PaginatedResult<TEntity>> GetAllPaginatedAsync(
         int pageNumber,
         int pageSize,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null)
+        IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
+        CancellationToken cancellationToken = default)
     {
         var paginationParams = new PaginationParams(pageNumber, pageSize);
         IQueryable<TEntity> query = DbContext.Set<TEntity>().AsNoTracking();
@@ -95,11 +96,11 @@ public abstract class Repository<TEntity, TKey> : DbContextRepositoryBase, IRepo
             }
         }
 
-        var totalCount = await query.CountAsync();
+        var totalCount = await query.CountAsync(cancellationToken);
         var items = await query
             .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
             .Take(paginationParams.PageSize)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return new PaginatedResult<TEntity>(items, paginationParams.PageNumber, paginationParams.PageSize, totalCount);
     }
@@ -109,17 +110,17 @@ public abstract class Repository<TEntity, TKey> : DbContextRepositoryBase, IRepo
     /// </summary>
     /// <param name="spec">The spec.</param>
     /// <inheritdoc />
-    public virtual async Task<PaginatedResult<TEntity>> QueryAsync(ISpecification<TEntity> spec)
+    public virtual async Task<PaginatedResult<TEntity>> QueryAsync(ISpecification<TEntity> spec, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(spec);
 
         var baseQuery = DbContext.Set<TEntity>().AsNoTracking().AsQueryable();
 
         var filteredQuery = spec.ApplyFilters(baseQuery);
-        var totalCount = await filteredQuery.CountAsync();
+        var totalCount = await filteredQuery.CountAsync(cancellationToken);
 
         var finalQuery = spec.Apply(baseQuery);
-        var items = await finalQuery.ToListAsync();
+        var items = await finalQuery.ToListAsync(cancellationToken);
 
         int pageNumber = 1;
         int pageSize = items.Count;

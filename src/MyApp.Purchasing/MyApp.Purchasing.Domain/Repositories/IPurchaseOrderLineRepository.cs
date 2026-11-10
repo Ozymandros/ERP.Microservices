@@ -11,5 +11,5 @@ public interface IPurchaseOrderLineRepository : IRepository<PurchaseOrderLine, G
     /// <summary>Returns all lines belonging to the specified purchase order.</summary>
     /// <param name="purchaseOrderId">The unique identifier of the purchase order.</param>
     /// <returns>A collection of order lines for the purchase order.</returns>
-    Task<IEnumerable<PurchaseOrderLine>> GetByPurchaseOrderIdAsync(Guid purchaseOrderId);
+    Task<IEnumerable<PurchaseOrderLine>> GetByPurchaseOrderIdAsync(Guid purchaseOrderId, CancellationToken cancellationToken = default);
 }

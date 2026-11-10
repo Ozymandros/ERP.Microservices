@@ -20,39 +20,43 @@ public class WarehouseStockRepository : Repository<WarehouseStock, Guid>, IWareh
     /// <summary>Get By Product And Warehouse Async.</summary>
     /// <param name="productId">The product Id.</param>
     /// <param name="warehouseId">The warehouse Id.</param>
-    public async Task<WarehouseStock?> GetByProductAndWarehouseAsync(Guid productId, Guid warehouseId)
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public async Task<WarehouseStock?> GetByProductAndWarehouseAsync(Guid productId, Guid warehouseId, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<WarehouseStock>()
             .Include(ws => ws.Product)
             .Include(ws => ws.Warehouse)
-            .FirstOrDefaultAsync(ws => ws.ProductId == productId && ws.WarehouseId == warehouseId);
+            .FirstOrDefaultAsync(ws => ws.ProductId == productId && ws.WarehouseId == warehouseId, cancellationToken);
     }
 
     /// <summary>Get By Product Id Async.</summary>
     /// <param name="productId">The product Id.</param>
-    public async Task<List<WarehouseStock>> GetByProductIdAsync(Guid productId)
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public async Task<List<WarehouseStock>> GetByProductIdAsync(Guid productId, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<WarehouseStock>()
             .Include(ws => ws.Product)
             .Include(ws => ws.Warehouse)
             .Where(ws => ws.ProductId == productId)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     /// <summary>Get By Warehouse Id Async.</summary>
     /// <param name="warehouseId">The warehouse Id.</param>
-    public async Task<List<WarehouseStock>> GetByWarehouseIdAsync(Guid warehouseId)
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public async Task<List<WarehouseStock>> GetByWarehouseIdAsync(Guid warehouseId, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<WarehouseStock>()
             .Include(ws => ws.Product)
             .Include(ws => ws.Warehouse)
             .Where(ws => ws.WarehouseId == warehouseId)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     /// <summary>Get Low Stock Async.</summary>
     /// <param name="reorderLevel">The reorder Level.</param>
-    public async Task<List<WarehouseStock>> GetLowStockAsync(int? reorderLevel = null)
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public async Task<List<WarehouseStock>> GetLowStockAsync(int? reorderLevel = null, CancellationToken cancellationToken = default)
     {
         var query = DbContext.Set<WarehouseStock>()
             .Include(ws => ws.Product)
@@ -68,6 +72,6 @@ public class WarehouseStockRepository : Repository<WarehouseStock, Guid>, IWareh
             query = query.Where(ws => ws.Product != null && ws.AvailableQuantity <= ws.Product.ReorderLevel);
         }
 
-        return await query.ToListAsync();
+        return await query.ToListAsync(cancellationToken);
     }
 }

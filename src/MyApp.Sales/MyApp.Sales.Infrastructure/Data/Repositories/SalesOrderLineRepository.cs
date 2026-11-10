@@ -21,15 +21,17 @@ public class SalesOrderLineRepository : Repository<SalesOrderLine, Guid>, ISales
 
     /// <summary>Get By Id Async.</summary>
     /// <param name="id">The id.</param>
-    public override async Task<SalesOrderLine?> GetByIdAsync(Guid id)
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public override async Task<SalesOrderLine?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.SalesOrderLines.FirstOrDefaultAsync(l => l.Id == id);
+        return await _context.SalesOrderLines.FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
     }
 
     /// <summary>List Async.</summary>
-    public async Task<IEnumerable<SalesOrderLine>> ListAsync()
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public async Task<IEnumerable<SalesOrderLine>> ListAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.SalesOrderLines.ToListAsync();
+        return await _context.SalesOrderLines.ToListAsync(cancellationToken);
     }
 
     /// <summary>Delete Async.</summary>

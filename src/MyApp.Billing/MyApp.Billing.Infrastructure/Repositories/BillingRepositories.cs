@@ -18,12 +18,13 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
     /// Gets an item by its unique identifier asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
-    public override async Task<Invoice?> GetByIdAsync(Guid id)
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public override async Task<Invoice?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Invoices
             .Include(i => i.Lines)
             .Include(i => i.Payments)
-            .FirstOrDefaultAsync(i => i.Id == id);
+            .FirstOrDefaultAsync(i => i.Id == id, cancellationToken);
     }
 
     private readonly BillingDbContext _context;
@@ -100,9 +101,13 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
 
     /// <summary>
     /// Query asynchronously.
+    /// filters and pagination while eagerly loading property changes.
     /// </summary>
     /// <param name="spec">The spec.</param>
-    public override async Task<PaginatedResult<Invoice>> QueryAsync(ISpecification<Invoice> spec)
+    /// <returns>A paginated result containing the matching entity change records.</returns>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="spec"/> is <see langword="null"/>.</exception>
+    public override async Task<PaginatedResult<Invoice>> QueryAsync(ISpecification<Invoice> spec, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(spec);
 
@@ -112,10 +117,10 @@ public class InvoiceRepository : Repository<Invoice, Guid>, IInvoiceRepository
             .AsQueryable();
 
         var filteredQuery = spec.ApplyFilters(baseQuery);
-        var totalCount = await filteredQuery.CountAsync();
+        var totalCount = await filteredQuery.CountAsync(cancellationToken);
 
         var finalQuery = spec.Apply(baseQuery);
-        var items = await finalQuery.ToListAsync();
+        var items = await finalQuery.ToListAsync(cancellationToken);
 
         var pageNumber = 1;
         var pageSize = items.Count;
@@ -140,7 +145,13 @@ public class SupplierInvoiceRepository : Repository<SupplierInvoice, Guid>, ISup
         _context = context;
     }
 
-    public override async Task<SupplierInvoice?> GetByIdAsync(Guid id)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public override async Task<SupplierInvoice?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.SupplierInvoices
             .Include(i => i.Lines)

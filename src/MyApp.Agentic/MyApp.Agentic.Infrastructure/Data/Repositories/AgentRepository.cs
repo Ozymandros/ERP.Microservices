@@ -25,7 +25,7 @@ public class AgentRepository : Repository<Agent, Guid>, IAgentRepository
     /// </summary>
     /// <param name="id">The id.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
-    public override async Task<Agent?> GetByIdAsync(Guid id)
+    public override async Task<Agent?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Agents
             .Include(a => a.Model)
@@ -77,10 +77,11 @@ public class AgentRepository : Repository<Agent, Guid>, IAgentRepository
     /// <summary>
     /// Gets all items asynchronously.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
-    public override  async Task<IEnumerable<Agent>> GetAllAsync()
+    public override  async Task<IEnumerable<Agent>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await DbContext.Set<Agent>().Include(x => x.Model).ToListAsync();
+        return await DbContext.Set<Agent>().Include(x => x.Model).ToListAsync(cancellationToken);
     }
 
     /// <summary>
@@ -89,9 +90,10 @@ public class AgentRepository : Repository<Agent, Guid>, IAgentRepository
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
     /// <param name="includes">The includes.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
-    public override Task<PaginatedResult<Agent>> GetAllPaginatedAsync(int pageNumber, int pageSize, IEnumerable<Expression<Func<Agent, object>>>? includes = null)
+    public override Task<PaginatedResult<Agent>> GetAllPaginatedAsync(int pageNumber, int pageSize, IEnumerable<Expression<Func<Agent, object>>>? includes = null, CancellationToken cancellationToken = default)
     {
-        return base.GetAllPaginatedAsync(pageNumber, pageSize, includes);
+        return base.GetAllPaginatedAsync(pageNumber, pageSize, includes, cancellationToken);
     }
 }

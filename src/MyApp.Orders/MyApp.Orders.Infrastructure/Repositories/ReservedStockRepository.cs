@@ -22,24 +22,26 @@ public class ReservedStockRepository : Repository<ReservedStock, Guid>, IReserve
     /// <summary>
     /// Performs the operation.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
-    public async Task<List<ReservedStock>> GetExpiredReservationsAsync()
+    public async Task<List<ReservedStock>> GetExpiredReservationsAsync(CancellationToken cancellationToken = default)
     {
         return await _db.ReservedStocks
             .Where(r => r.Status == ReservationStatus.Reserved && r.ReservedUntil < DateTime.UtcNow)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     /// <summary>
     /// Performs the operation.
     /// </summary>
     /// <param name="orderId">The order Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
-    public async Task<List<ReservedStock>> GetByOrderIdAsync(Guid orderId)
+    public async Task<List<ReservedStock>> GetByOrderIdAsync(Guid orderId, CancellationToken cancellationToken = default)
     {
         return await _db.ReservedStocks
             .Where(r => r.OrderId == orderId)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     /// <summary>
@@ -47,9 +49,9 @@ public class ReservedStockRepository : Repository<ReservedStock, Guid>, IReserve
     /// </summary>
     /// <param name="id">The id.</param>
     /// <inheritdoc />
-    public async Task<ReservedStock?> GetByIdWithDetailsAsync(Guid id)
+    public async Task<ReservedStock?> GetByIdWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _db.ReservedStocks
-            .FirstOrDefaultAsync(r => r.Id == id);
+            .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
     }
 }

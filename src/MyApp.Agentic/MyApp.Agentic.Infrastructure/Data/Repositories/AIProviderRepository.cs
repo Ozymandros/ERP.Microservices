@@ -22,11 +22,12 @@ public class AIProviderRepository : Repository<AIProvider, Guid>, IAIProviderRep
     /// Gets an item by its unique identifier asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
-    public override async Task<AIProvider?> GetByIdAsync(Guid id)
+    public override async Task<AIProvider?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.AIProviders
             .Include(p => p.Models)
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 }

@@ -8,7 +8,8 @@ namespace MyApp.Crm.Domain.Opportunities;
 public interface IOpportunityRepository : IRepository<Opportunity, Guid>
 {
     /// <summary>Gets all opportunities.</summary>
-    Task<IEnumerable<Opportunity>> ListAsync();
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    Task<IEnumerable<Opportunity>> ListAsync(CancellationToken cancellationToken = default);
 
     /// <summary>Gets opportunities for a given owner filtered by expected close date range for forecast calculations.</summary>
     /// <param name="ownerUsername">The username of the opportunity owner to filter by.</param>

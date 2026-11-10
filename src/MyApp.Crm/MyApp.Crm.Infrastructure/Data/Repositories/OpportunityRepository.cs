@@ -20,7 +20,9 @@ public class OpportunityRepository : Repository<Opportunity, Guid>, IOpportunity
 
     /// <summary>Get By Id Async.</summary>
     /// <param name="id">The id.</param>
-    public override async Task<Opportunity?> GetByIdAsync(Guid id)
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>The <see cref="Opportunity"/>The Opportunity entity</returns>
+    public override async Task<Opportunity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Opportunities
             .Include(o => o.Lines)
@@ -30,7 +32,8 @@ public class OpportunityRepository : Repository<Opportunity, Guid>, IOpportunity
     }
 
     /// <summary>List Async.</summary>
-    public async Task<IEnumerable<Opportunity>> ListAsync()
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    public async Task<IEnumerable<Opportunity>> ListAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Opportunities.AsNoTracking().ToListAsync();
     }
