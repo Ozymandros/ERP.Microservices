@@ -3,9 +3,9 @@ using MyApp.Sales.Domain.Entities;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
-namespace MyApp.Sales.Application.Contracts.Services;;
-{
-    /// <summary>Defines the contract for customer management operations within the Sales service.</summary>
+namespace MyApp.Sales.Application.Contracts.Services;
+
+/// <summary>Defines the contract for customer management operations within the Sales service.</summary>
 public interface ICustomerService
 {
     /// <summary>Returns the customer with the given identifier, or <see langword="null"/> if not found.</summary>
@@ -58,5 +58,4 @@ public interface ICustomerService
     /// <summary>Deletes the customer with the given identifier.</summary>
     /// <param name="id">The unique identifier of the customer to delete.</param>
     Task DeleteCustomerAsync(Guid id);
-}
 }
