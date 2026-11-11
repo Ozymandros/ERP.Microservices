@@ -61,9 +61,9 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     /// </summary>
     /// <param name="id">The id.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
-    public async Task<PurchaseOrderDto?> GetPurchaseOrderByIdAsync(Guid id)
+    public async Task<PurchaseOrderDto?> GetPurchaseOrderByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var order = await _purchaseOrderRepository.GetWithLinesAsync(id);
+        var order = await _purchaseOrderRepository.GetWithLinesAsync(id, cancellationToken);
         return order == null ? null : _mapper.Map<PurchaseOrderDto>(order);
     }
 
@@ -72,9 +72,9 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     /// </summary>
     /// <param name="orderNumber">The order Number.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
-    public async Task<PurchaseOrderDto?> GetPurchaseOrderByOrderNumberAsync(string orderNumber)
+    public async Task<PurchaseOrderDto?> GetPurchaseOrderByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default)
     {
-        var order = await _purchaseOrderRepository.GetByOrderNumberAsync(orderNumber);
+        var order = await _purchaseOrderRepository.GetByOrderNumberAsync(orderNumber, cancellationToken);
         return order == null ? null : _mapper.Map<PurchaseOrderDto>(order);
     }
 
@@ -82,9 +82,9 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     /// Gets all purchase orders asynchronously.
     /// </summary>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
-    public async Task<IEnumerable<PurchaseOrderDto>> GetAllPurchaseOrdersAsync()
+    public async Task<IEnumerable<PurchaseOrderDto>> GetAllPurchaseOrdersAsync(CancellationToken cancellationToken = default)
     {
-        var orders = await _purchaseOrderRepository.GetAllAsync();
+        var orders = await _purchaseOrderRepository.GetAllAsync(cancellationToken);
         return _mapper.Map<IEnumerable<PurchaseOrderDto>>(orders);
     }
 
@@ -93,9 +93,9 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     /// </summary>
     /// <param name="supplierId">The supplier Id.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
-    public async Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersBySupplierAsync(Guid supplierId)
+    public async Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersBySupplierAsync(Guid supplierId, CancellationToken cancellationToken = default)
     {
-        var orders = await _purchaseOrderRepository.GetBySuppliersIdAsync(supplierId);
+        var orders = await _purchaseOrderRepository.GetBySuppliersIdAsync(supplierId, cancellationToken);
         return _mapper.Map<IEnumerable<PurchaseOrderDto>>(orders);
     }
 
@@ -104,9 +104,9 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     /// </summary>
     /// <param name="status">The status.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
-    public async Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersByStatusAsync(PurchaseOrderStatus status)
+    public async Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersByStatusAsync(PurchaseOrderStatus status, CancellationToken cancellationToken = default)
     {
-        var orders = await _purchaseOrderRepository.GetByStatusAsync(status);
+        var orders = await _purchaseOrderRepository.GetByStatusAsync(status, cancellationToken);
         return _mapper.Map<IEnumerable<PurchaseOrderDto>>(orders);
     }
 
@@ -227,9 +227,9 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     /// <summary>Returns a paginated, filtered and sorted collection of purchase orders.</summary>
     /// <param name="spec">The specification that defines filtering, sorting, and paging.</param>
     /// <returns>A paginated result containing matching purchase order DTOs.</returns>
-    public async Task<PaginatedResult<PurchaseOrderDto>> QueryPurchaseOrdersAsync(ISpecification<PurchaseOrder> spec)
+    public async Task<PaginatedResult<PurchaseOrderDto>> QueryPurchaseOrdersAsync(ISpecification<PurchaseOrder> spec, CancellationToken cancellationToken = default)
     {
-        var result = await _purchaseOrderRepository.QueryAsync(spec);
+        var result = await _purchaseOrderRepository.QueryAsync(spec, cancellationToken);
         var dtos = result.Items.Select(po => _mapper.Map<PurchaseOrderDto>(po)).ToList();
         return new PaginatedResult<PurchaseOrderDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }

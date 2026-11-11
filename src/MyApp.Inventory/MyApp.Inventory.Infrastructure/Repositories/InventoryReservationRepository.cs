@@ -24,7 +24,7 @@ public class InventoryReservationRepository : Repository<InventoryReservation, G
     {
         return await DbContext.Set<InventoryReservation>()
             .Where(r => r.OrderId == orderId && r.Status == InventoryReservationStatus.Reserved)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     /// <summary>Get Expired Async.</summary>
@@ -33,6 +33,6 @@ public class InventoryReservationRepository : Repository<InventoryReservation, G
     {
         return await DbContext.Set<InventoryReservation>()
             .Where(r => r.Status == InventoryReservationStatus.Reserved && r.ReservedUntil < DateTime.UtcNow)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }

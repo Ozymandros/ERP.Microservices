@@ -16,27 +16,27 @@ public interface IWarehouseService
     /// <summary>Retrieves a warehouse by its unique identifier.</summary>
     /// <param name="id">The unique identifier of the warehouse.</param>
     /// <returns>The matching <see cref="WarehouseDto"/>, or <c>null</c> if not found.</returns>
-    Task<WarehouseDto?> GetWarehouseByIdAsync(Guid id);
+    Task<WarehouseDto?> GetWarehouseByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves a warehouse by its name.</summary>
     /// <param name="name">The warehouse name to search for.</param>
     /// <returns>The matching <see cref="WarehouseDto"/>, or <c>null</c> if not found.</returns>
-    Task<WarehouseDto?> GetWarehouseByNameAsync(string name);
+    Task<WarehouseDto?> GetWarehouseByNameAsync(string name, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves all warehouses.</summary>
     /// <returns>A collection of all <see cref="WarehouseDto"/> records.</returns>
-    Task<IEnumerable<WarehouseDto>> GetAllWarehousesAsync();
+    Task<IEnumerable<WarehouseDto>> GetAllWarehousesAsync(CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves a paginated list of all warehouses.</summary>
     /// <param name="pageNumber">The one-based page number to return.</param>
     /// <param name="pageSize">The number of items per page.</param>
     /// <returns>A <see cref="PaginatedResult{WarehouseDto}"/> for the requested page.</returns>
-    Task<PaginatedResult<WarehouseDto>> GetAllWarehousesPaginatedAsync(int pageNumber, int pageSize);
+    Task<PaginatedResult<WarehouseDto>> GetAllWarehousesPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 
     /// <summary>Queries warehouses using a specification that encapsulates filtering, sorting and pagination.</summary>
     /// <param name="spec">The specification to apply.</param>
     /// <returns>A <see cref="PaginatedResult{WarehouseDto}"/> matching the specification.</returns>
-    Task<PaginatedResult<WarehouseDto>> QueryWarehousesAsync(ISpecification<Warehouse> spec);
+    Task<PaginatedResult<WarehouseDto>> QueryWarehousesAsync(ISpecification<Warehouse> spec, CancellationToken cancellationToken = default);
 
     /// <summary>Creates a new warehouse from the supplied data.</summary>
     /// <param name="dto">The data used to create the warehouse.</param>

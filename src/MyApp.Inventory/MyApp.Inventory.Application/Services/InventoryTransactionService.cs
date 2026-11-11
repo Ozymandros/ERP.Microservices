@@ -46,9 +46,9 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
     /// Gets the transaction by id asynchronously.
     /// <param name="id">The id.</param>
     /// <returns>The matching <see cref="InventoryTransactionDto"/>, or <c>null</c> if not found.</returns>
-    public async Task<InventoryTransactionDto?> GetTransactionByIdAsync(Guid id)
+    public async Task<InventoryTransactionDto?> GetTransactionByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var transaction = await _transactionRepository.GetByIdAsync(id);
+        var transaction = await _transactionRepository.GetByIdAsync(id, cancellationToken);
         return transaction == null ? null : _mapper.Map<InventoryTransactionDto>(transaction);
     }
 
@@ -56,9 +56,9 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
     /// Gets the transaction by reference number asynchronously.
     /// <param name="referenceNumber">The reference Number.</param>
     /// <returns>The matching <see cref="InventoryTransactionDto"/>, or <c>null</c> if not found.</returns>
-    public async Task<InventoryTransactionDto?> GetTransactionByReferenceNumberAsync(string referenceNumber)
+    public async Task<InventoryTransactionDto?> GetTransactionByReferenceNumberAsync(string referenceNumber, CancellationToken cancellationToken = default)
     {
-        var transaction = await _transactionRepository.GetByReferenceNumberAsync(referenceNumber);
+        var transaction = await _transactionRepository.GetByReferenceNumberAsync(referenceNumber, cancellationToken);
         return transaction == null ? null : _mapper.Map<InventoryTransactionDto>(transaction);
     }
 
@@ -66,9 +66,9 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
     /// Gets the transactions by product id asynchronously.
     /// <param name="productId">The product Id.</param>
     /// <returns>A collection of matching <see cref="InventoryTransactionDto"/> records.</returns>
-    public async Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByProductIdAsync(Guid productId)
+    public async Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByProductIdAsync(Guid productId, CancellationToken cancellationToken = default)
     {
-        var transactions = await _transactionRepository.GetByProductIdAsync(productId);
+        var transactions = await _transactionRepository.GetByProductIdAsync(productId, cancellationToken);
         return _mapper.Map<IEnumerable<InventoryTransactionDto>>(transactions);
     }
 
@@ -76,9 +76,9 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
     /// Gets the transactions by warehouse id asynchronously.
     /// <param name="warehouseId">The warehouse Id.</param>
     /// <returns>A collection of matching <see cref="InventoryTransactionDto"/> records.</returns>
-    public async Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByWarehouseIdAsync(Guid warehouseId)
+    public async Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByWarehouseIdAsync(Guid warehouseId, CancellationToken cancellationToken = default)
     {
-        var transactions = await _transactionRepository.GetByWarehouseIdAsync(warehouseId);
+        var transactions = await _transactionRepository.GetByWarehouseIdAsync(warehouseId, cancellationToken);
         return _mapper.Map<IEnumerable<InventoryTransactionDto>>(transactions);
     }
 
@@ -86,17 +86,17 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
     /// Gets the transactions by type asynchronously.
     /// <param name="transactionType">The transaction Type.</param>
     /// <returns>A collection of matching <see cref="InventoryTransactionDto"/> records.</returns>
-    public async Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByTypeAsync(TransactionType transactionType)
+    public async Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByTypeAsync(TransactionType transactionType, CancellationToken cancellationToken = default)
     {
-        var transactions = await _transactionRepository.GetByTransactionTypeAsync(transactionType);
+        var transactions = await _transactionRepository.GetByTransactionTypeAsync(transactionType, cancellationToken);
         return _mapper.Map<IEnumerable<InventoryTransactionDto>>(transactions);
     }
 
     /// <summary>Retrieves all inventory transactions.</summary>
     /// Gets all transactions asynchronously.
-    public async Task<IEnumerable<InventoryTransactionDto>> GetAllTransactionsAsync()
+    public async Task<IEnumerable<InventoryTransactionDto>> GetAllTransactionsAsync(CancellationToken cancellationToken = default)
     {
-        var transactions = await _transactionRepository.GetAllAsync();
+        var transactions = await _transactionRepository.GetAllAsync(cancellationToken);
         return _mapper.Map<IEnumerable<InventoryTransactionDto>>(transactions);
     }
 
@@ -105,9 +105,9 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
     /// <returns>A <see cref="PaginatedResult{InventoryTransactionDto}"/> for the requested page.</returns>
-    public async Task<PaginatedResult<InventoryTransactionDto>> GetAllTransactionsPaginatedAsync(int pageNumber, int pageSize)
+    public async Task<PaginatedResult<InventoryTransactionDto>> GetAllTransactionsPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
-        var paginatedTransactions = await _transactionRepository.GetAllPaginatedAsync(pageNumber, pageSize);
+        var paginatedTransactions = await _transactionRepository.GetAllPaginatedAsync(pageNumber, pageSize, cancellationToken: cancellationToken);
         var transactionDtos = _mapper.Map<IEnumerable<InventoryTransactionDto>>(paginatedTransactions.Items);
         return new PaginatedResult<InventoryTransactionDto>(transactionDtos, paginatedTransactions.PageNumber, paginatedTransactions.PageSize, paginatedTransactions.TotalCount);
     }
@@ -220,9 +220,9 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
     /// Query transactions asynchronously.
     /// <param name="spec">The spec.</param>
     /// <returns>A <see cref="PaginatedResult{InventoryTransactionDto}"/> matching the specification.</returns>
-    public async Task<PaginatedResult<InventoryTransactionDto>> QueryTransactionsAsync(ISpecification<InventoryTransaction> spec)
+    public async Task<PaginatedResult<InventoryTransactionDto>> QueryTransactionsAsync(ISpecification<InventoryTransaction> spec, CancellationToken cancellationToken = default)
     {
-        var result = await _transactionRepository.QueryAsync(spec);
+        var result = await _transactionRepository.QueryAsync(spec, cancellationToken);
         var dtos = result.Items.Select(t => _mapper.Map<InventoryTransactionDto>(t)).ToList();
         return new PaginatedResult<InventoryTransactionDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }

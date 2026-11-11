@@ -29,7 +29,7 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
     /// <inheritdoc />
     public override async Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _db.Orders.Include(o => o.Lines).FirstOrDefaultAsync(o => o.Id == id);
+        return await _db.Orders.Include(o => o.Lines).FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
     /// <inheritdoc />
     public async Task<Order?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default)
     {
-        return await _db.Orders.Include(o => o.Lines).FirstOrDefaultAsync(o => o.OrderNumber == orderNumber);
+        return await _db.Orders.Include(o => o.Lines).FirstOrDefaultAsync(o => o.OrderNumber == orderNumber, cancellationToken);
     }
 
     /// <summary>
@@ -57,13 +57,14 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
     /// Performs the operation.
     /// </summary>
     /// <param name="spec">The spec.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public override async Task<PaginatedResult<Order>> QueryAsync(ISpecification<Order> spec, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(spec);
 
         var baseQuery = _db.Orders.Include(o => o.Lines).AsQueryable();
-        var totalCount = await baseQuery.CountAsync();
+        var totalCount = await baseQuery.CountAsync(cancellationToken);
         var paginatedQuery = spec.Apply(baseQuery);
         var items = await paginatedQuery.ToListAsync(cancellationToken);
         return new PaginatedResult<Order>(

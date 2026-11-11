@@ -26,7 +26,7 @@ public class LeadRepository : Repository<Lead, Guid>, ILeadRepository
         return await _context.Leads
             .Include(l => l.Notes)
             .Include(l => l.Tags).ThenInclude(t => t.Tag)
-            .FirstOrDefaultAsync(l => l.Id == id);
+            .FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
     }
 
     /// <summary>Get By Id For Update Async.</summary>

@@ -59,12 +59,13 @@ public class PermissionService : AppServiceBase, IPermissionService
     /// <param name="userId">The user Id.</param>
     /// <param name="module">The module.</param>
     /// <param name="action">The action.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns><c>true</c> if the user has the permission; otherwise, <c>false</c>.</returns>
-    public async Task<bool> HasPermissionAsync(Guid userId, string module, string action)
+    public async Task<bool> HasPermissionAsync(Guid userId, string module, string action, CancellationToken cancellationToken = default)
     {
         try
         {
-            var permissions = await _permissionRepository.GetAllPermissionsByUserId(userId);
+            var permissions = await _permissionRepository.GetAllPermissionsByUserId(userId, cancellationToken);
             return permissions.Any(p => p.Module == module && p.Action == action);
         }
         catch (Exception ex)
@@ -80,8 +81,9 @@ public class PermissionService : AppServiceBase, IPermissionService
     /// <param name="username">The username.</param>
     /// <param name="module">The module.</param>
     /// <param name="action">The action.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns><c>true</c> if the user has the permission; otherwise, <c>false</c>.</returns>
-    public async Task<bool> HasPermissionAsync(string? username, string module, string action)
+    public async Task<bool> HasPermissionAsync(string? username, string module, string action, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(username))
             return false;
@@ -94,7 +96,7 @@ public class PermissionService : AppServiceBase, IPermissionService
                 return false;
             }
 
-            var userPermissions = await _permissionRepository.GetByUserName(username, module, action);
+            var userPermissions = await _permissionRepository.GetByUserName(username, module, action, cancellationToken);
             if (userPermissions.Any())
                 return true;
 
@@ -105,7 +107,7 @@ public class PermissionService : AppServiceBase, IPermissionService
 
             foreach (var roleName in roles)
             {
-                var rolePermissions = await _permissionRepository.GetByRoleName(roleName, module, action);
+                var rolePermissions = await _permissionRepository.GetByRoleName(roleName, module, action, cancellationToken);
                 if (rolePermissions.Any())
                     return true;
             }
@@ -126,9 +128,9 @@ public class PermissionService : AppServiceBase, IPermissionService
     /// Gets all permissions asynchronously.
     /// </summary>
     /// <returns>A collection of all <see cref="PermissionDto"/> objects.</returns>
-    public async Task<IEnumerable<PermissionDto>> GetAllPermissionsAsync()
+    public async Task<IEnumerable<PermissionDto>> GetAllPermissionsAsync(CancellationToken cancellationToken = default)
     {
-        var entities = await _permissionRepository.GetAllAsync();
+        var entities = await _permissionRepository.GetAllAsync(cancellationToken);
         return _mapper.Map<IEnumerable<PermissionDto>>(entities);
     }
 
@@ -137,10 +139,11 @@ public class PermissionService : AppServiceBase, IPermissionService
     /// </summary>
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A paginated result containing <see cref="PermissionDto"/> objects for the requested page.</returns>
-    public async Task<PaginatedResult<PermissionDto>> GetAllPermissionsPaginatedAsync(int pageNumber, int pageSize)
+    public async Task<PaginatedResult<PermissionDto>> GetAllPermissionsPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
-        var paginatedPermissions = await _permissionRepository.GetAllPaginatedAsync(pageNumber, pageSize);
+        var paginatedPermissions = await _permissionRepository.GetAllPaginatedAsync(pageNumber, pageSize, cancellationToken: cancellationToken);
         var permissionDtos = _mapper.Map<IEnumerable<PermissionDto>>(paginatedPermissions.Items);
         return new PaginatedResult<PermissionDto>(permissionDtos, paginatedPermissions.PageNumber, paginatedPermissions.PageSize, paginatedPermissions.TotalCount);
     }
@@ -149,10 +152,11 @@ public class PermissionService : AppServiceBase, IPermissionService
     /// Gets the permission by id asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The <see cref="PermissionDto"/> if found; otherwise, <c>null</c>.</returns>
-    public async Task<PermissionDto?> GetPermissionByIdAsync(Guid id)
+    public async Task<PermissionDto?> GetPermissionByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await _permissionRepository.GetByIdAsync(id);
+        var entity = await _permissionRepository.GetByIdAsync(id, cancellationToken);
         return entity == null ? null : _mapper.Map<PermissionDto>(entity);
     }
 
@@ -161,10 +165,11 @@ public class PermissionService : AppServiceBase, IPermissionService
     /// </summary>
     /// <param name="module">The module.</param>
     /// <param name="action">The action.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The matching <see cref="PermissionDto"/> if found; otherwise, <c>null</c>.</returns>
-    public async Task<PermissionDto?> GetPermissionByModuleActionAsync(string module, string action)
+    public async Task<PermissionDto?> GetPermissionByModuleActionAsync(string module, string action, CancellationToken cancellationToken = default)
     {
-        var entities = await _permissionRepository.GetByUserName("", module, action); // Not ideal, but repository offers specific methods
+        var entities = await _permissionRepository.GetByUserName("", module, action, cancellationToken); // Not ideal, but repository offers specific methods
         var match = entities?.FirstOrDefault(e => e.Module == module && e.Action == action);
         return match == null ? null : _mapper.Map<PermissionDto>(match);
     }
@@ -279,12 +284,13 @@ public class PermissionService : AppServiceBase, IPermissionService
     /// Query permissions asynchronously.
     /// </summary>
     /// <param name="spec">The spec.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A paginated result containing matched <see cref="PermissionDto"/> objects.</returns>
-    public async Task<PaginatedResult<PermissionDto>> QueryPermissionsAsync(ISpecification<Permission> spec)
+    public async Task<PaginatedResult<PermissionDto>> QueryPermissionsAsync(ISpecification<Permission> spec, CancellationToken cancellationToken = default)
     {
         try
         {
-            var result = await _permissionRepository.QueryAsync(spec);
+            var result = await _permissionRepository.QueryAsync(spec, cancellationToken);
 
             var dtos = result.Items.Select(p => new PermissionDto(p.Id)
             {

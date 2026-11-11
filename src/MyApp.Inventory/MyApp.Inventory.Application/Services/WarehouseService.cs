@@ -42,9 +42,9 @@ public class WarehouseService : AppServiceBase, IWarehouseService
     /// Gets the warehouse by id asynchronously.
     /// <param name="id">The id.</param>
     /// <returns>The matching <see cref="WarehouseDto"/>, or <c>null</c> if not found.</returns>
-    public async Task<WarehouseDto?> GetWarehouseByIdAsync(Guid id)
+    public async Task<WarehouseDto?> GetWarehouseByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var warehouse = await _warehouseRepository.GetByIdAsync(id);
+        var warehouse = await _warehouseRepository.GetByIdAsync(id, cancellationToken);
         return warehouse == null ? null : _mapper.Map<WarehouseDto>(warehouse);
     }
 
@@ -52,17 +52,17 @@ public class WarehouseService : AppServiceBase, IWarehouseService
     /// Gets the warehouse by name asynchronously.
     /// <param name="name">The name.</param>
     /// <returns>The matching <see cref="WarehouseDto"/>, or <c>null</c> if not found.</returns>
-    public async Task<WarehouseDto?> GetWarehouseByNameAsync(string name)
+    public async Task<WarehouseDto?> GetWarehouseByNameAsync(string name, CancellationToken cancellationToken = default)
     {
-        var warehouse = await _warehouseRepository.GetByNameAsync(name);
+        var warehouse = await _warehouseRepository.GetByNameAsync(name, cancellationToken);
         return warehouse == null ? null : _mapper.Map<WarehouseDto>(warehouse);
     }
 
     /// <summary>Retrieves all warehouses.</summary>
     /// Gets all warehouses asynchronously.
-    public async Task<IEnumerable<WarehouseDto>> GetAllWarehousesAsync()
+    public async Task<IEnumerable<WarehouseDto>> GetAllWarehousesAsync(CancellationToken cancellationToken = default)
     {
-        var warehouses = await _warehouseRepository.GetAllAsync();
+        var warehouses = await _warehouseRepository.GetAllAsync(cancellationToken);
         return _mapper.Map<IEnumerable<WarehouseDto>>(warehouses);
     }
 
@@ -71,9 +71,9 @@ public class WarehouseService : AppServiceBase, IWarehouseService
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
     /// <returns>A <see cref="PaginatedResult{WarehouseDto}"/> for the requested page.</returns>
-    public async Task<PaginatedResult<WarehouseDto>> GetAllWarehousesPaginatedAsync(int pageNumber, int pageSize)
+    public async Task<PaginatedResult<WarehouseDto>> GetAllWarehousesPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
-        var paginatedWarehouses = await _warehouseRepository.GetAllPaginatedAsync(pageNumber, pageSize);
+        var paginatedWarehouses = await _warehouseRepository.GetAllPaginatedAsync(pageNumber, pageSize, cancellationToken: cancellationToken);
         var warehouseDtos = _mapper.Map<IEnumerable<WarehouseDto>>(paginatedWarehouses.Items);
         return new PaginatedResult<WarehouseDto>(warehouseDtos, paginatedWarehouses.PageNumber, paginatedWarehouses.PageSize, paginatedWarehouses.TotalCount);
     }
@@ -151,9 +151,9 @@ public class WarehouseService : AppServiceBase, IWarehouseService
     /// Query warehouses asynchronously.
     /// <param name="spec">The spec.</param>
     /// <returns>A <see cref="PaginatedResult{WarehouseDto}"/> matching the specification.</returns>
-    public async Task<PaginatedResult<WarehouseDto>> QueryWarehousesAsync(ISpecification<Warehouse> spec)
+    public async Task<PaginatedResult<WarehouseDto>> QueryWarehousesAsync(ISpecification<Warehouse> spec, CancellationToken cancellationToken = default)
     {
-        var result = await _warehouseRepository.QueryAsync(spec);
+        var result = await _warehouseRepository.QueryAsync(spec, cancellationToken);
         var dtos = result.Items.Select(w => _mapper.Map<WarehouseDto>(w)).ToList();
         return new PaginatedResult<WarehouseDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }

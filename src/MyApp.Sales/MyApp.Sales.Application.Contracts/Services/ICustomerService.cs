@@ -1,45 +1,48 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Domain.Entities;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
-namespace MyApp.Sales.Application.Contracts.Services
-{
-    /// <summary>Defines the contract for customer management operations within the Sales service.</summary>
+namespace MyApp.Sales.Application.Contracts.Services;
+
+/// <summary>Defines the contract for customer management operations within the Sales service.</summary>
 public interface ICustomerService
 {
     /// <summary>Returns the customer with the given identifier, or <see langword="null"/> if not found.</summary>
     /// <param name="id">The unique identifier of the customer.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The matching <see cref="CustomerDto"/>, or <see langword="null"/>.</returns>
-    Task<CustomerDto?> GetCustomerByIdAsync(Guid id);
+    Task<CustomerDto?> GetCustomerByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>Returns the customer with the given name, or <see langword="null"/> if not found.</summary>
     /// <param name="name">The exact customer name to search for.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The matching <see cref="CustomerDto"/>, or <see langword="null"/>.</returns>
-    Task<CustomerDto?> GetCustomerByNameAsync(string name);
+    Task<CustomerDto?> GetCustomerByNameAsync(string name, CancellationToken cancellationToken = default);
 
     /// <summary>Returns the customer with the given email address, or <see langword="null"/> if not found.</summary>
     /// <param name="email">The exact email address to search for.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The matching <see cref="CustomerDto"/>, or <see langword="null"/>.</returns>
-    Task<CustomerDto?> GetCustomerByEmailAsync(string email);
+    Task<CustomerDto?> GetCustomerByEmailAsync(string email, CancellationToken cancellationToken = default);
 
     /// <summary>Returns all customers as an enumerable sequence.</summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>All <see cref="CustomerDto"/> records.</returns>
-    Task<IEnumerable<CustomerDto>> ListCustomersAsync();
+    Task<IEnumerable<CustomerDto>> ListCustomersAsync(CancellationToken cancellationToken = default);
 
     /// <summary>Returns a paginated list of customers.</summary>
     /// <param name="pageNumber">The 1-based page number.</param>
     /// <param name="pageSize">The number of items per page.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A <see cref="PaginatedResult{T}"/> containing the requested page of customers.</returns>
-    Task<PaginatedResult<CustomerDto>> ListCustomersPaginatedAsync(int pageNumber, int pageSize);
+    Task<PaginatedResult<CustomerDto>> ListCustomersPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 
     /// <summary>Returns a paginated list of customers that satisfy the given specification.</summary>
     /// <param name="spec">The specification defining filtering, sorting, and pagination criteria.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A <see cref="PaginatedResult{T}"/> containing matching customers.</returns>
-    Task<PaginatedResult<CustomerDto>> QueryCustomersAsync(ISpecification<Customer> spec);
+    Task<PaginatedResult<CustomerDto>> QueryCustomersAsync(ISpecification<Customer> spec, CancellationToken cancellationToken = default);
 
     /// <summary>Creates a new customer from the given data.</summary>
     /// <param name="dto">The customer data to create.</param>
@@ -55,5 +58,4 @@ public interface ICustomerService
     /// <summary>Deletes the customer with the given identifier.</summary>
     /// <param name="id">The unique identifier of the customer to delete.</param>
     Task DeleteCustomerAsync(Guid id);
-}
 }

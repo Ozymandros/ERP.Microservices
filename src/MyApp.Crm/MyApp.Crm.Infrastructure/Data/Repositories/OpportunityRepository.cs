@@ -28,14 +28,14 @@ public class OpportunityRepository : Repository<Opportunity, Guid>, IOpportunity
             .Include(o => o.Lines)
             .Include(o => o.Notes)
             .Include(o => o.Tags).ThenInclude(t => t.Tag)
-            .FirstOrDefaultAsync(o => o.Id == id);
+            .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
     }
 
     /// <summary>List Async.</summary>
     /// <param name="cancellationToken">The cancellation Token.</param>
     public async Task<IEnumerable<Opportunity>> ListAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.Opportunities.AsNoTracking().ToListAsync();
+        return await _context.Opportunities.AsNoTracking().ToListAsync(cancellationToken);
     }
 
     /// <summary>List For Forecast Async.</summary>
