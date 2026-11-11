@@ -132,6 +132,7 @@ public class UserService : AppServiceBase, IUserService
     /// Retrieves a user by their unique identifier, including their roles and permissions.
     /// </summary>
     /// <param name="userId">The user Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The <see cref="UserDto"/> if found; otherwise, <c>null</c>.</returns>
     public async Task<UserDto?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
@@ -210,6 +211,7 @@ public class UserService : AppServiceBase, IUserService
     /// Retrieves a user by their email address.
     /// </summary>
     /// <param name="email">The email.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The <see cref="UserDto"/> if found; otherwise, <c>null</c>.</returns>
     public async Task<UserDto?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
@@ -232,6 +234,7 @@ public class UserService : AppServiceBase, IUserService
     /// </summary>
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A paginated result containing <see cref="UserDto"/> objects for the requested page.</returns>
     public async Task<PaginatedResult<UserDto>> GetAllUsersPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
@@ -540,6 +543,7 @@ public class UserService : AppServiceBase, IUserService
     /// Gets the user roles asynchronously.
     /// </summary>
     /// <param name="userId">The user Id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A collection of <see cref="RoleDto"/> objects representing the user's roles, or an empty collection if the user is not found.</returns>
     public async Task<IEnumerable<RoleDto>> GetUserRolesAsync(Guid userId, CancellationToken cancellationToken = default)
     {
@@ -592,6 +596,7 @@ public class UserService : AppServiceBase, IUserService
     /// Query users asynchronously.
     /// </summary>
     /// <param name="spec">The spec.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A paginated result containing matched <see cref="UserDto"/> objects.</returns>
     public async Task<PaginatedResult<UserDto>> QueryUsersAsync(ISpecification<ApplicationUser> spec, CancellationToken cancellationToken = default)
     {

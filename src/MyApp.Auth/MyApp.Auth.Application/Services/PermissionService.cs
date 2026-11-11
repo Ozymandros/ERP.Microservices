@@ -59,6 +59,7 @@ public class PermissionService : AppServiceBase, IPermissionService
     /// <param name="userId">The user Id.</param>
     /// <param name="module">The module.</param>
     /// <param name="action">The action.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns><c>true</c> if the user has the permission; otherwise, <c>false</c>.</returns>
     public async Task<bool> HasPermissionAsync(Guid userId, string module, string action, CancellationToken cancellationToken = default)
     {
@@ -80,6 +81,7 @@ public class PermissionService : AppServiceBase, IPermissionService
     /// <param name="username">The username.</param>
     /// <param name="module">The module.</param>
     /// <param name="action">The action.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns><c>true</c> if the user has the permission; otherwise, <c>false</c>.</returns>
     public async Task<bool> HasPermissionAsync(string? username, string module, string action, CancellationToken cancellationToken = default)
     {
@@ -137,6 +139,7 @@ public class PermissionService : AppServiceBase, IPermissionService
     /// </summary>
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A paginated result containing <see cref="PermissionDto"/> objects for the requested page.</returns>
     public async Task<PaginatedResult<PermissionDto>> GetAllPermissionsPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
@@ -149,6 +152,7 @@ public class PermissionService : AppServiceBase, IPermissionService
     /// Gets the permission by id asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The <see cref="PermissionDto"/> if found; otherwise, <c>null</c>.</returns>
     public async Task<PermissionDto?> GetPermissionByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -161,6 +165,7 @@ public class PermissionService : AppServiceBase, IPermissionService
     /// </summary>
     /// <param name="module">The module.</param>
     /// <param name="action">The action.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The matching <see cref="PermissionDto"/> if found; otherwise, <c>null</c>.</returns>
     public async Task<PermissionDto?> GetPermissionByModuleActionAsync(string module, string action, CancellationToken cancellationToken = default)
     {
@@ -279,6 +284,7 @@ public class PermissionService : AppServiceBase, IPermissionService
     /// Query permissions asynchronously.
     /// </summary>
     /// <param name="spec">The spec.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A paginated result containing matched <see cref="PermissionDto"/> objects.</returns>
     public async Task<PaginatedResult<PermissionDto>> QueryPermissionsAsync(ISpecification<Permission> spec, CancellationToken cancellationToken = default)
     {
