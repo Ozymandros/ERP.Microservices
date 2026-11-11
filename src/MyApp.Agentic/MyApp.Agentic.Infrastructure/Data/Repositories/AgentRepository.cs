@@ -24,6 +24,7 @@ public class AgentRepository : Repository<Agent, Guid>, IAgentRepository
     /// Gets an item by its unique identifier asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public override async Task<Agent?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -31,7 +32,7 @@ public class AgentRepository : Repository<Agent, Guid>, IAgentRepository
             .Include(a => a.Model)
                 .ThenInclude(m => m!.Provider)
             .Include(a => a.Plugins)
-            .FirstOrDefaultAsync(a => a.Id == id);
+            .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
     }
 
     /// <summary>

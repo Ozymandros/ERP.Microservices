@@ -28,7 +28,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
             return await _context.SalesOrders
                 .Include(o => o.Lines)
                 .Include(o => o.Customer)
-                .FirstOrDefaultAsync(o => o.Id == id);
+            .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
         }
 
         /// <summary>List Async.</summary>
@@ -38,7 +38,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
             return await _context.SalesOrders
                 .Include(o => o.Lines)
                 .Include(o => o.Customer)
-                .ToListAsync();
+            .ToListAsync(cancellationToken);
         }
 
         /// <summary>Get All Async.</summary>
@@ -81,7 +81,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
             return await _context.SalesOrders
                 .Include(o => o.Lines)
                 .Include(o => o.Customer)
-                .FirstOrDefaultAsync(o => o.OrderNumber == orderNumber);
+            .FirstOrDefaultAsync(o => o.OrderNumber == orderNumber, cancellationToken);
         }
     }
 }

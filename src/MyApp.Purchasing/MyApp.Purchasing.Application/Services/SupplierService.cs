@@ -44,9 +44,9 @@ public class SupplierService : AppServiceBase, ISupplierService
     /// </summary>
     /// <param name="id">The id.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
-    public async Task<SupplierDto?> GetSupplierByIdAsync(Guid id)
+    public async Task<SupplierDto?> GetSupplierByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var supplier = await _supplierRepository.GetByIdAsync(id);
+        var supplier = await _supplierRepository.GetByIdAsync(id, cancellationToken);
         return supplier == null ? null : _mapper.Map<SupplierDto>(supplier);
     }
 
@@ -55,9 +55,9 @@ public class SupplierService : AppServiceBase, ISupplierService
     /// </summary>
     /// <param name="email">The email.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
-    public async Task<SupplierDto?> GetSupplierByEmailAsync(string email)
+    public async Task<SupplierDto?> GetSupplierByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
-        var supplier = await _supplierRepository.GetByEmailAsync(email);
+        var supplier = await _supplierRepository.GetByEmailAsync(email, cancellationToken);
         return supplier == null ? null : _mapper.Map<SupplierDto>(supplier);
     }
 
@@ -66,9 +66,9 @@ public class SupplierService : AppServiceBase, ISupplierService
     /// </summary>
     /// <param name="name">The name.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
-    public async Task<SupplierDto?> GetSupplierByNameAsync(string name)
+    public async Task<SupplierDto?> GetSupplierByNameAsync(string name, CancellationToken cancellationToken = default)
     {
-        var suppliers = await _supplierRepository.GetByNameAsync(name);
+        var suppliers = await _supplierRepository.GetByNameAsync(name, cancellationToken);
         var supplier = suppliers.FirstOrDefault();
         return supplier == null ? null : _mapper.Map<SupplierDto>(supplier);
     }
@@ -78,9 +78,9 @@ public class SupplierService : AppServiceBase, ISupplierService
     /// </summary>
     /// <param name="name">The name.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
-    public async Task<IEnumerable<SupplierDto>> GetSuppliersByNameAsync(string name)
+    public async Task<IEnumerable<SupplierDto>> GetSuppliersByNameAsync(string name, CancellationToken cancellationToken = default)
     {
-        var suppliers = await _supplierRepository.GetByNameAsync(name);
+        var suppliers = await _supplierRepository.GetByNameAsync(name, cancellationToken);
         return _mapper.Map<IEnumerable<SupplierDto>>(suppliers);
     }
 
@@ -88,9 +88,9 @@ public class SupplierService : AppServiceBase, ISupplierService
     /// Gets all suppliers asynchronously.
     /// </summary>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
-    public async Task<IEnumerable<SupplierDto>> GetAllSuppliersAsync()
+    public async Task<IEnumerable<SupplierDto>> GetAllSuppliersAsync(CancellationToken cancellationToken = default)
     {
-        var suppliers = await _supplierRepository.GetAllAsync();
+        var suppliers = await _supplierRepository.GetAllAsync(cancellationToken);
         return _mapper.Map<IEnumerable<SupplierDto>>(suppliers);
     }
 
@@ -165,9 +165,9 @@ public class SupplierService : AppServiceBase, ISupplierService
     /// <summary>Returns a paginated, filtered and sorted collection of suppliers.</summary>
     /// <param name="spec">The specification that defines filtering, sorting, and paging.</param>
     /// <returns>A paginated result containing matching supplier DTOs.</returns>
-    public async Task<PaginatedResult<SupplierDto>> QuerySuppliersAsync(ISpecification<Supplier> spec)
+    public async Task<PaginatedResult<SupplierDto>> QuerySuppliersAsync(ISpecification<Supplier> spec, CancellationToken cancellationToken = default)
     {
-        var result = await _supplierRepository.QueryAsync(spec);
+        var result = await _supplierRepository.QueryAsync(spec, cancellationToken);
         var dtos = result.Items.Select(s => _mapper.Map<SupplierDto>(s)).ToList();
         return new PaginatedResult<SupplierDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }

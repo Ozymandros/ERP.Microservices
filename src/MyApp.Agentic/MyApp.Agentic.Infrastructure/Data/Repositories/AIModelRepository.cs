@@ -28,7 +28,7 @@ public class AIModelRepository : Repository<AIModel, Guid>, IAIModelRepository
     {
         return await _context.AIModels
             .Include(m => m.Provider)
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(m => m.Id == id, cancellationToken);
     }
 
     /// <summary>

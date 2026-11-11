@@ -61,8 +61,9 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// </summary>
     /// <param name="roleId">The role Id.</param>
     /// <returns>The <see cref="RoleDto"/> if found; otherwise, <c>null</c>.</returns>
-    public async Task<RoleDto?> GetRoleByIdAsync(Guid roleId)
+    public async Task<RoleDto?> GetRoleByIdAsync(Guid roleId, CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         var role = await _roleManager.FindByIdAsync(roleId.ToString());
         return role == null ? null : _mapper.Map<RoleDto>(role);
     }
@@ -72,8 +73,9 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// </summary>
     /// <param name="name">The name.</param>
     /// <returns>The <see cref="RoleDto"/> if found; otherwise, <c>null</c>.</returns>
-    public async Task<RoleDto?> GetRoleByNameAsync(string name)
+    public async Task<RoleDto?> GetRoleByNameAsync(string name, CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         var role = await _roleManager.FindByNameAsync(name);
         return role == null ? null : _mapper.Map<RoleDto>(role);
     }
@@ -82,9 +84,9 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// Gets all roles asynchronously.
     /// </summary>
     /// <returns>A collection of all <see cref="RoleDto"/> objects.</returns>
-    public async Task<IEnumerable<RoleDto>> GetAllRolesAsync()
+    public async Task<IEnumerable<RoleDto>> GetAllRolesAsync(CancellationToken cancellationToken = default)
     {
-        var roles = await _roleRepository.GetAllAsync();
+        var roles = await _roleRepository.GetAllAsync(cancellationToken);
         return _mapper.Map<IEnumerable<RoleDto>>(roles);
     }
 
@@ -94,9 +96,9 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
     /// <returns>A paginated result containing <see cref="RoleDto"/> objects for the requested page.</returns>
-    public async Task<PaginatedResult<RoleDto>> GetAllRolesPaginatedAsync(int pageNumber, int pageSize)
+    public async Task<PaginatedResult<RoleDto>> GetAllRolesPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
-        var paginatedRoles = await _roleRepository.GetAllPaginatedAsync(pageNumber, pageSize);
+        var paginatedRoles = await _roleRepository.GetAllPaginatedAsync(pageNumber, pageSize, cancellationToken: cancellationToken);
         var roleDtos = _mapper.Map<IEnumerable<RoleDto>>(paginatedRoles.Items);
         return new PaginatedResult<RoleDto>(roleDtos, paginatedRoles.PageNumber, paginatedRoles.PageSize, paginatedRoles.TotalCount);
     }
@@ -182,9 +184,9 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// </summary>
     /// <param name="roleName">The role Name.</param>
     /// <returns>A collection of <see cref="UserDto"/> objects for users in the role.</returns>
-    public async Task<IEnumerable<UserDto>> GetUsersInRoleAsync(string roleName)
+    public async Task<IEnumerable<UserDto>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken = default)
     {
-        var users = await _userRepository.GetByRoleAsync(roleName);
+        var users = await _userRepository.GetByRoleAsync(roleName, cancellationToken);
         return _mapper.Map<IEnumerable<UserDto>>(users);
     }
 
@@ -263,9 +265,9 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// <param name="roleId">The role Id.</param>
     /// <param name="permissionId">The permission Id.</param>
     /// <returns><c>true</c> if the role has the permission; otherwise, <c>false</c>.</returns>
-    public async Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId)
+    public async Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId, CancellationToken cancellationToken = default)
     {
-        return await _roleRepository.HasPermissionAsync(roleId, permissionId);
+        return await _roleRepository.HasPermissionAsync(roleId, permissionId, cancellationToken);
     }
 
     /// <summary>
@@ -273,9 +275,9 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// </summary>
     /// <param name="roleId">The role Id.</param>
     /// <returns>A collection of <see cref="PermissionDto"/> objects assigned to the role.</returns>
-    public async Task<IEnumerable<PermissionDto>> GetPermissionsForRoleAsync(Guid roleId)
+    public async Task<IEnumerable<PermissionDto>> GetPermissionsForRoleAsync(Guid roleId, CancellationToken cancellationToken = default)
     {
-        IEnumerable<Permission> permissions = await _roleRepository.GetPermissionsForRoleAsync(roleId);
+        IEnumerable<Permission> permissions = await _roleRepository.GetPermissionsForRoleAsync(roleId, cancellationToken);
         return _mapper.Map<IEnumerable<PermissionDto>>(permissions);
     }
 
@@ -371,11 +373,11 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// </summary>
     /// <param name="spec">The spec.</param>
     /// <returns>A paginated result containing matched <see cref="RoleDto"/> objects.</returns>
-    public async Task<PaginatedResult<RoleDto>> QueryRolesAsync(ISpecification<ApplicationRole> spec)
+    public async Task<PaginatedResult<RoleDto>> QueryRolesAsync(ISpecification<ApplicationRole> spec, CancellationToken cancellationToken = default)
     {
         try
         {
-            var result = await _roleRepository.QueryAsync(spec);
+            var result = await _roleRepository.QueryAsync(spec, cancellationToken);
 
             var dtos = result.Items.Select(r => new RoleDto(r.Id)
             {

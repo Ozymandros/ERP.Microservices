@@ -8,11 +8,10 @@ using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;
 using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
-using MyApp.Shared.Domain.Entities;
-using MyApp.Shared.Domain.Security;
 using MyApp.Shared.Domain.Messaging;
-using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Repositories;
+using MyApp.Shared.Domain.Security;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Auth.Application.Services;
@@ -76,7 +75,7 @@ public class UserService : AppServiceBase, IUserService
     /// Gets the current user asynchronously.
     /// </summary>
     /// <returns>The <see cref="UserDto"/> for the current user, or <c>null</c> if no authenticated user is found.</returns>
-    public async Task<UserDto?> GetCurrentUserAsync()
+    public async Task<UserDto?> GetCurrentUserAsync(CancellationToken cancellationToken = default)
     {
         if (_httpContextAccessor.HttpContext == null)
         {
@@ -92,7 +91,7 @@ public class UserService : AppServiceBase, IUserService
 
         var baseUserDto = _mapper.Map<UserDto>(user);
 
-        var roles = await GetUserRolesAsync(user.Id);
+        var roles = await GetUserRolesAsync(user.Id, cancellationToken);
         var mappedRoles = _mapper.Map<List<RoleDto?>>(roles);
 
         List<PermissionDto?> permissions;
@@ -100,12 +99,12 @@ public class UserService : AppServiceBase, IUserService
 
         if (isAdmin)
         {
-            var allPermissions = await _permissionRepository.GetAllAsync();
+            var allPermissions = await _permissionRepository.GetAllAsync(cancellationToken);
             permissions = _mapper.Map<List<PermissionDto?>>(allPermissions);
         }
         else
         {
-            var userPermissions = await _permissionRepository.GetAllPermissionsByUserId(user.Id);
+            var userPermissions = await _permissionRepository.GetAllPermissionsByUserId(user.Id, cancellationToken);
             permissions = _mapper.Map<List<PermissionDto?>>(userPermissions);
         }
 
@@ -134,7 +133,7 @@ public class UserService : AppServiceBase, IUserService
     /// </summary>
     /// <param name="userId">The user Id.</param>
     /// <returns>The <see cref="UserDto"/> if found; otherwise, <c>null</c>.</returns>
-    public async Task<UserDto?> GetUserByIdAsync(Guid userId)
+    public async Task<UserDto?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
@@ -145,7 +144,7 @@ public class UserService : AppServiceBase, IUserService
         var baseUserDto = _mapper.Map<UserDto>(user);
 
         // Get user roles
-        var userRoles = await _roleRepository.GetRolesByUserIdAsync(user.Id);
+        var userRoles = await _roleRepository.GetRolesByUserIdAsync(user.Id, cancellationToken);
         bool isAdmin = userRoles.Any(r => r.Name != null && r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
 
         // Get permissions based on admin status
@@ -153,7 +152,7 @@ public class UserService : AppServiceBase, IUserService
         if (isAdmin)
         {
             // Admin users have all permissions
-            var allPermissions = await _permissionRepository.GetAllAsync();
+            var allPermissions = await _permissionRepository.GetAllAsync(cancellationToken);
             permissions = allPermissions.ToList();
         }
         else
@@ -162,12 +161,12 @@ public class UserService : AppServiceBase, IUserService
             permissions = new List<Permission>();
             foreach (var role in userRoles)
             {
-                var rolePermissions = await _roleRepository.GetPermissionsForRoleAsync(role.Id);
+                var rolePermissions = await _roleRepository.GetPermissionsForRoleAsync(role.Id, cancellationToken);
                 permissions.AddRange(rolePermissions);
             }
 
             // Also get direct user permissions
-            var userPermissions = await _permissionRepository.GetAllPermissionsByUserId(user.Id);
+            var userPermissions = await _permissionRepository.GetAllPermissionsByUserId(user.Id, cancellationToken);
             permissions.AddRange(userPermissions);
         }
 
@@ -212,7 +211,7 @@ public class UserService : AppServiceBase, IUserService
     /// </summary>
     /// <param name="email">The email.</param>
     /// <returns>The <see cref="UserDto"/> if found; otherwise, <c>null</c>.</returns>
-    public async Task<UserDto?> GetUserByEmailAsync(string email)
+    public async Task<UserDto?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByEmailAsync(email);
         return user == null ? null : _mapper.Map<UserDto>(user);
@@ -222,9 +221,9 @@ public class UserService : AppServiceBase, IUserService
     /// Gets all users.
     /// </summary>
     /// <returns>A collection of all <see cref="UserDto"/> objects.</returns>
-    public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
+    public async Task<IEnumerable<UserDto>> GetAllUsersAsync(CancellationToken cancellationToken = default)
     {
-        var users = await _userRepository.GetAllAsync();
+        var users = await _userRepository.GetAllAsync(cancellationToken);
         return _mapper.Map<IEnumerable<UserDto>>(users);
     }
 
@@ -234,9 +233,9 @@ public class UserService : AppServiceBase, IUserService
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
     /// <returns>A paginated result containing <see cref="UserDto"/> objects for the requested page.</returns>
-    public async Task<PaginatedResult<UserDto>> GetAllUsersPaginatedAsync(int pageNumber, int pageSize)
+    public async Task<PaginatedResult<UserDto>> GetAllUsersPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
-        var paginatedUsers = await _userRepository.GetAllPaginatedAsync(pageNumber, pageSize);
+        var paginatedUsers = await _userRepository.GetAllPaginatedAsync(pageNumber, pageSize, cancellationToken: cancellationToken);
         var userDtos = _mapper.Map<IEnumerable<UserDto>>(paginatedUsers.Items);
         return new PaginatedResult<UserDto>(userDtos, paginatedUsers.PageNumber, paginatedUsers.PageSize, paginatedUsers.TotalCount);
     }
@@ -542,7 +541,7 @@ public class UserService : AppServiceBase, IUserService
     /// </summary>
     /// <param name="userId">The user Id.</param>
     /// <returns>A collection of <see cref="RoleDto"/> objects representing the user's roles, or an empty collection if the user is not found.</returns>
-    public async Task<IEnumerable<RoleDto>> GetUserRolesAsync(Guid userId)
+    public async Task<IEnumerable<RoleDto>> GetUserRolesAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
@@ -594,11 +593,11 @@ public class UserService : AppServiceBase, IUserService
     /// </summary>
     /// <param name="spec">The spec.</param>
     /// <returns>A paginated result containing matched <see cref="UserDto"/> objects.</returns>
-    public async Task<PaginatedResult<UserDto>> QueryUsersAsync(ISpecification<ApplicationUser> spec)
+    public async Task<PaginatedResult<UserDto>> QueryUsersAsync(ISpecification<ApplicationUser> spec, CancellationToken cancellationToken = default)
     {
         try
         {
-            var result = await _userRepository.QueryAsync(spec);
+            var result = await _userRepository.QueryAsync(spec, cancellationToken);
 
             var dtos = result.Items.Select(u => new UserDto(u.Id)
             {

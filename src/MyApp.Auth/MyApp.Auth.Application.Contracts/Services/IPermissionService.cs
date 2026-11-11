@@ -14,37 +14,37 @@ namespace MyApp.Auth.Application.Contracts
         /// <summary>
         /// Check if a user has a specific permission
         /// </summary>
-        Task<bool> HasPermissionAsync(Guid userId, string module, string action);
+        Task<bool> HasPermissionAsync(Guid userId, string module, string action, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Check if a user has a specific permission by username
         /// </summary>
-        Task<bool> HasPermissionAsync(string? username, string module, string action);
+        Task<bool> HasPermissionAsync(string? username, string module, string action, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get all permissions
         /// </summary>
-        Task<IEnumerable<PermissionDto>> GetAllPermissionsAsync();
+        Task<IEnumerable<PermissionDto>> GetAllPermissionsAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get all permissions with pagination
         /// </summary>
-        Task<PaginatedResult<PermissionDto>> GetAllPermissionsPaginatedAsync(int pageNumber, int pageSize);
+        Task<PaginatedResult<PermissionDto>> GetAllPermissionsPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Query permissions with filtering, sorting, and pagination
         /// </summary>
-        Task<PaginatedResult<PermissionDto>> QueryPermissionsAsync(ISpecification<Permission> spec);
+        Task<PaginatedResult<PermissionDto>> QueryPermissionsAsync(ISpecification<Permission> spec, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get permission by ID
         /// </summary>
-        Task<PermissionDto?> GetPermissionByIdAsync(Guid id);
+        Task<PermissionDto?> GetPermissionByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get permission by module and action
         /// </summary>
-        Task<PermissionDto?> GetPermissionByModuleActionAsync(string module, string action);
+        Task<PermissionDto?> GetPermissionByModuleActionAsync(string module, string action, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Create a new permission

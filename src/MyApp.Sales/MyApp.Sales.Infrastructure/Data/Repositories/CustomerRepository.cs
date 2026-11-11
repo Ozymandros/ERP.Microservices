@@ -1,4 +1,3 @@
-using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
@@ -64,7 +63,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
                     query = query.Include(includeExpression);
                 }
 
-            var totalCount = await query.CountAsync();
+            var totalCount = await query.CountAsync(cancellationToken);
             var items = await query
                 .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
                 .Take(paginationParams.PageSize)

@@ -109,9 +109,9 @@ namespace MyApp.Orders.Application.Services
         /// Gets an item by its unique identifier asynchronously.
         /// <param name="id">The id.</param>
         /// <returns>The order DTO corresponding to the specified ID.</returns>
-        public async Task<OrderDto> GetByIdAsync(Guid id)
+        public async Task<OrderDto> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var entity = await _orders.GetByIdAsync(id);
+            var entity = await _orders.GetByIdAsync(id, cancellationToken);
             return _mapper.Map<OrderDto>(entity!);
         }
 
@@ -119,17 +119,17 @@ namespace MyApp.Orders.Application.Services
         /// Gets the order number asynchronously.
         /// <param name="orderNumber">The order Number.</param>
         /// <returns>The matching order DTO, or null if not found.</returns>
-        public async Task<OrderDto?> GetByOrderNumberAsync(string orderNumber)
+        public async Task<OrderDto?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default)
         {
-            var entity = await _orders.GetByOrderNumberAsync(orderNumber);
+            var entity = await _orders.GetByOrderNumberAsync(orderNumber, cancellationToken);
             return entity == null ? null : _mapper.Map<OrderDto>(entity);
         }
 
         /// <summary>Retrieves all orders.</summary>
         /// Lists items asynchronously.
-        public async Task<IEnumerable<OrderDto>> ListAsync()
+        public async Task<IEnumerable<OrderDto>> ListAsync(CancellationToken cancellationToken = default)
         {
-            var list = await _orders.GetAllAsync();
+            var list = await _orders.GetAllAsync(cancellationToken);
             return list.Select(o => _mapper.Map<OrderDto>(o));
         }
 
@@ -478,9 +478,11 @@ namespace MyApp.Orders.Application.Services
         /// Query orders asynchronously.
         /// <param name="spec">The spec.</param>
         /// <returns>A paginated result of order DTOs matching the specification.</returns>
-        public async Task<PaginatedResult<OrderDto>> QueryOrdersAsync(ISpecification<Order> spec)
+        public async Task<PaginatedResult<OrderDto>> QueryOrdersAsync(
+            ISpecification<Order> spec,
+            CancellationToken cancellationToken = default)
         {
-            var result = await _orders.QueryAsync(spec);
+            var result = await _orders.QueryAsync(spec, cancellationToken);
             return new PaginatedResult<OrderDto>(
                 result.Items.Select(o => _mapper.Map<OrderDto>(o)),
                 result.PageNumber,

@@ -16,16 +16,16 @@ public interface IOrderService
     /// <summary>Retrieves an order by its unique identifier.</summary>
     /// <param name="id">The unique identifier of the order.</param>
     /// <returns>The order DTO corresponding to the specified ID.</returns>
-    Task<OrderDto> GetByIdAsync(Guid id);
+    Task<OrderDto> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves an order by its order number.</summary>
     /// <param name="orderNumber">The order number to search for.</param>
     /// <returns>The matching order DTO, or null if not found.</returns>
-    Task<OrderDto?> GetByOrderNumberAsync(string orderNumber);
+    Task<OrderDto?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves all orders.</summary>
     /// <returns>A collection of all order DTOs.</returns>
-    Task<IEnumerable<OrderDto>> ListAsync();
+    Task<IEnumerable<OrderDto>> ListAsync(CancellationToken cancellationToken = default);
 
     /// <summary>Creates a new operational order.</summary>
     /// <param name="dto">The data for the new order.</param>
@@ -66,6 +66,6 @@ public interface IOrderService
         /// <summary>Queries orders based on a specification with filtering, sorting, and pagination.</summary>
         /// <param name="spec">The specification to apply for filtering, sorting, and pagination.</param>
         /// <returns>A paginated result of order DTOs matching the specification.</returns>
-        Task<PaginatedResult<OrderDto>> QueryOrdersAsync(ISpecification<Order> spec);
+        Task<PaginatedResult<OrderDto>> QueryOrdersAsync(ISpecification<Order> spec, CancellationToken cancellationToken = default);
     }
 }

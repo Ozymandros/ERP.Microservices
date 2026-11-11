@@ -48,6 +48,7 @@ public class ReservedStockRepository : Repository<ReservedStock, Guid>, IReserve
     /// Performs the operation.
     /// </summary>
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public async Task<ReservedStock?> GetByIdWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
     {

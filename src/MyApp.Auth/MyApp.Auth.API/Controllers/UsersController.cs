@@ -50,6 +50,7 @@ public partial class UsersController : ControllerBase
     /// Gets all users, or executes a filtered/paginated query when query parameters are present.
     /// </summary>
     /// <param name="query">Optional query specification for filtering, sorting, and pagination.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A list of <see cref="UserDto"/> objects, or a paginated result when query parameters are provided.</returns>
     [HttpGet]
     [HasPermission("Users", "Read")]
@@ -57,7 +58,7 @@ public partial class UsersController : ControllerBase
     [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult> GetAll([FromQuery] QuerySpec query)
+    public async Task<ActionResult> GetAll([FromQuery] QuerySpec query, CancellationToken cancellationToken)
     {
         try
         {
@@ -67,7 +68,7 @@ public partial class UsersController : ControllerBase
                 query.BindFiltersFromQuery(Request.Query);
                 query.Validate();
                 var spec = new ApplicationUserQuerySpec(query);
-                var result = await _userService.QueryUsersAsync(spec);
+                var result = await _userService.QueryUsersAsync(spec, cancellationToken);
                 return Ok(result);
             }
 
@@ -77,7 +78,7 @@ public partial class UsersController : ControllerBase
                 return Ok(users);
             }
 
-            users = await _userService.GetAllUsersAsync();
+            users = await _userService.GetAllUsersAsync(cancellationToken);
             return Ok(users);
         }
         catch (Exception ex)
@@ -90,17 +91,18 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Exports all users as an XLSX spreadsheet file.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>An XLSX file containing all users.</returns>
     [HttpGet("export-xlsx")]
     [HasPermission("Users", "Read")]
     [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
     [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
-    public async Task<IActionResult> ExportToXlsx()
+    public async Task<IActionResult> ExportToXlsx(CancellationToken cancellationToken)
     {
         try
         {
             var users = await _cacheService.GetStateAsync<IEnumerable<UserDto>>("all_users")
-                        ?? await _userService.GetAllUsersAsync();
+                        ?? await _userService.GetAllUsersAsync(cancellationToken);
             var bytes = users.ExportToXlsx();
             return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Users.xlsx");
         }
@@ -114,17 +116,18 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Exports all users as a PDF file.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A PDF file containing all users.</returns>
     [HttpGet("export-pdf")]
     [HasPermission("Users", "Read")]
     [Produces("application/pdf")]
     [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
-    public async Task<IActionResult> ExportToPdf()
+    public async Task<IActionResult> ExportToPdf(CancellationToken cancellationToken)
     {
         try
         {
             var users = await _cacheService.GetStateAsync<IEnumerable<UserDto>>("all_users")
-                ?? await _userService.GetAllUsersAsync();
+                ?? await _userService.GetAllUsersAsync(cancellationToken);
             var bytes = users.ExportToPdf();
             return File(bytes, "application/pdf", "Users.pdf");
         }
@@ -140,16 +143,17 @@ public partial class UsersController : ControllerBase
     /// </summary>
     /// <param name="pageNumber">The 1-based page number to retrieve (default: 1).</param>
     /// <param name="pageSize">The number of items per page (default: 10).</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A paginated result containing users for the requested page.</returns>
     [HttpGet("paginated")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<PaginatedResult<UserDto>>> GetAllPaginated([FromQuery(Name = "page")] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    public async Task<ActionResult<PaginatedResult<UserDto>>> GetAllPaginated([FromQuery(Name = "page")] int pageNumber = 1, [FromQuery] int pageSize = 10, CancellationToken cancellationToken = default)
     {
         try
         {
-            var result = await _userService.GetAllUsersPaginatedAsync(pageNumber, pageSize);
+            var result = await _userService.GetAllUsersPaginatedAsync(pageNumber, pageSize, cancellationToken);
             return Ok(result);
         }
         catch (Exception ex)
@@ -163,6 +167,7 @@ public partial class UsersController : ControllerBase
     /// Searches users with advanced filtering, sorting, and pagination.
     /// </summary>
     /// <param name="query">The query specification containing filter, sort, and pagination parameters.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A paginated result containing users matching the query criteria.</returns>
     /// <remarks>
     /// Supported filters: isActive, email, userName, isExternalLogin
@@ -173,7 +178,7 @@ public partial class UsersController : ControllerBase
     [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<PaginatedResult<UserDto>>> Search([FromQuery] QuerySpec query)
+    public async Task<ActionResult<PaginatedResult<UserDto>>> Search([FromQuery] QuerySpec query, CancellationToken cancellationToken)
     {
         try
         {
@@ -182,7 +187,7 @@ public partial class UsersController : ControllerBase
 
             query.Validate();
             var spec = new ApplicationUserQuerySpec(query);
-            var result = await _userService.QueryUsersAsync(spec);
+            var result = await _userService.QueryUsersAsync(spec, cancellationToken);
             return Ok(result);
         }
         catch (ArgumentException ex)
@@ -201,6 +206,7 @@ public partial class UsersController : ControllerBase
     /// Creates a new user account.
     /// </summary>
     /// <param name="user">The data transfer object containing user creation details.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The created <see cref="UserDto"/>, or 400 if creation failed.</returns>
     [HttpPost("create")]
     [HasPermission("Users", "Create")]
@@ -228,15 +234,16 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Gets the profile of the currently authenticated user.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The <see cref="UserDto"/> for the current user, or 404 if the identity cannot be resolved.</returns>
     [HttpGet("me")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<UserDto>> GetCurrentUser()
+    public async Task<ActionResult<UserDto>> GetCurrentUser(CancellationToken cancellationToken)
     {
         try
         {
-            var user = await _userService.GetCurrentUserAsync();
+            var user = await _userService.GetCurrentUserAsync(cancellationToken);
             if (user == null)
             {
                 _logger.LogWarning("Current user not found");
@@ -256,13 +263,14 @@ public partial class UsersController : ControllerBase
     /// Gets a user by their unique identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the user to retrieve.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The <see cref="UserDto"/> for the specified user, or 404 if not found.</returns>
     [HttpGet("{id}")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<UserDto>> GetById(Guid id)
+    public async Task<ActionResult<UserDto>> GetById(Guid id, CancellationToken cancellationToken)
     {
         try
         {
@@ -275,7 +283,7 @@ public partial class UsersController : ControllerBase
             }
 
             // 2. The data is NOT in cache, fetch it from the DB
-            user = await _userService.GetUserByIdAsync(id);
+            user = await _userService.GetUserByIdAsync(id, cancellationToken);
             if (user is null)
             {
                 return NotFound();
@@ -296,17 +304,18 @@ public partial class UsersController : ControllerBase
     /// Gets a user by their email address.
     /// </summary>
     /// <param name="email">The email address of the user to retrieve.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The <see cref="UserDto"/> for the specified user, or 404 if not found.</returns>
     [HttpGet("email/{email}")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<UserDto>> GetByEmail(string email)
+    public async Task<ActionResult<UserDto>> GetByEmail(string email, CancellationToken cancellationToken)
     {
         try
         {
-            var user = await _userService.GetUserByEmailAsync(email);
+            var user = await _userService.GetUserByEmailAsync(email, cancellationToken);
             if (user == null)
             {
                 _logger.LogWarning(
@@ -479,13 +488,14 @@ public partial class UsersController : ControllerBase
     /// Gets all roles assigned to the specified user.
     /// </summary>
     /// <param name="id">The unique identifier of the user whose roles to retrieve.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A collection of <see cref="RoleDto"/> objects assigned to the user.</returns>
     [HttpGet("{id}/roles")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(IEnumerable<RoleDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<IEnumerable<RoleDto>>> GetRoles(Guid id)
+    public async Task<ActionResult<IEnumerable<RoleDto>>> GetRoles(Guid id, CancellationToken cancellationToken)
     {
         try
         {
@@ -498,7 +508,7 @@ public partial class UsersController : ControllerBase
             }
 
             // 2. The data is NOT in cache, fetch it from the DB
-            roles = await _userService.GetUserRolesAsync(id);
+            roles = await _userService.GetUserRolesAsync(id, cancellationToken);
             await _cacheService.SaveStateAsync(cacheKey, roles);
 
             return Ok(roles);

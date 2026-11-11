@@ -11,610 +11,613 @@ using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
-using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Specifications;
 
-namespace MyApp.Sales.Application.Services
+namespace MyApp.Sales.Application.Services;
+
+/// <summary>Implements sales order management and commercial workflow operations, including CRUD, quote creation, and quote confirmation via the Orders service.</summary>
+public class SalesOrderService : AppServiceBase, ISalesOrderService
 {
-    /// <summary>Implements sales order management and commercial workflow operations, including CRUD, quote creation, and quote confirmation via the Orders service.</summary>
-    public class SalesOrderService : AppServiceBase, ISalesOrderService
+    private readonly ISalesOrderRepository _orderRepository;
+    private readonly ICustomerRepository _customerRepository;
+    private readonly IMapper _mapper;
+    private readonly ILogger<SalesOrderService> _logger;
+    private readonly IServiceInvoker _serviceInvoker;
+
+    /// <summary>Initializes a new <see cref="SalesOrderService"/> with the required dependencies.</summary>
+    /// Initializes a new instance of the SalesOrderService class.
+    /// <param name="orderRepository">The order Repository.</param>
+    /// <param name="customerRepository">The customer Repository.</param>
+    /// <param name="mapper">The mapper.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="unitOfWork">The unit Of Work.</param>
+    /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="serviceInvoker">The service Invoker.</param>
+    public SalesOrderService(
+        ISalesOrderRepository orderRepository,
+        ICustomerRepository customerRepository,
+        IMapper mapper,
+        ILogger<SalesOrderService> logger,
+        IUnitOfWork unitOfWork,
+        IEventPublisher eventPublisher,
+        IServiceInvoker serviceInvoker)
+        : base(unitOfWork, eventPublisher, logger, ServiceNames.Sales)
     {
-        private readonly ISalesOrderRepository _orderRepository;
-        private readonly ICustomerRepository _customerRepository;
-        private readonly IMapper _mapper;
-        private readonly ILogger<SalesOrderService> _logger;
-        private readonly IServiceInvoker _serviceInvoker;
+        _orderRepository = orderRepository;
+        _customerRepository = customerRepository;
+        _mapper = mapper;
+        _logger = logger; _serviceInvoker = serviceInvoker;
+    }
 
-        /// <summary>Initializes a new <see cref="SalesOrderService"/> with the required dependencies.</summary>
-        /// Initializes a new instance of the SalesOrderService class.
-        /// <param name="orderRepository">The order Repository.</param>
-        /// <param name="customerRepository">The customer Repository.</param>
-        /// <param name="mapper">The mapper.</param>
-        /// <param name="logger">The logger.</param>
-        /// <param name="unitOfWork">The unit Of Work.</param>
-        /// <param name="eventPublisher">The event Publisher.</param>
-        /// <param name="serviceInvoker">The service Invoker.</param>
-        public SalesOrderService(
-            ISalesOrderRepository orderRepository,
-            ICustomerRepository customerRepository,
-            IMapper mapper,
-            ILogger<SalesOrderService> logger,
-            IUnitOfWork unitOfWork,
-            IEventPublisher eventPublisher,
-            IServiceInvoker serviceInvoker)
-            : base(unitOfWork, eventPublisher, logger, ServiceNames.Sales)
+    /// <summary>Returns the sales order with the given identifier, or <see langword="null"/> if not found.</summary>
+    /// Gets the sales order by id asynchronously.
+    /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>The matching <see cref="SalesOrderDto"/>, or <see langword="null"/>.</returns>
+    public async Task<SalesOrderDto?> GetSalesOrderByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var order = await _orderRepository.GetByIdAsync(id, cancellationToken);
+        return order != null ? _mapper.Map<SalesOrderDto>(order) : null;
+    }
+
+    /// <summary>Returns the sales order with the given order number, or <see langword="null"/> if not found.</summary>
+    /// Gets the sales order by order number asynchronously.
+    /// <param name="orderNumber">The order Number.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>The matching <see cref="SalesOrderDto"/>, or <see langword="null"/>.</returns>
+    public async Task<SalesOrderDto?> GetSalesOrderByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default)
+    {
+        var order = await _orderRepository.GetByOrderNumberAsync(orderNumber, cancellationToken);
+        return order != null ? _mapper.Map<SalesOrderDto>(order) : null;
+    }
+
+    /// <summary>Returns all sales orders as an enumerable sequence.</summary>
+    /// Lists sales orders asynchronously.
+    public async Task<IEnumerable<SalesOrderDto>> ListSalesOrdersAsync(CancellationToken cancellationToken = default)
+    {
+        var orders = await _orderRepository.ListAsync(cancellationToken);
+        return _mapper.Map<IEnumerable<SalesOrderDto>>(orders);
+    }
+
+    /// <summary>Returns a paginated list of sales orders.</summary>
+    /// Lists sales orders paginated asynchronously.
+    /// <param name="pageNumber">The page Number.</param>
+    /// <param name="pageSize">The page Size.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A <see cref="PaginatedResult{T}"/> containing the requested page of sales orders.</returns>
+    public async Task<PaginatedResult<SalesOrderDto>> ListSalesOrdersPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
+    {
+        var paginatedOrders = await _orderRepository.GetAllPaginatedAsync(pageNumber, pageSize, cancellationToken: cancellationToken);
+        var orderDtos = _mapper.Map<IEnumerable<SalesOrderDto>>(paginatedOrders.Items);
+        return new PaginatedResult<SalesOrderDto>(orderDtos, paginatedOrders.PageNumber, paginatedOrders.PageSize, paginatedOrders.TotalCount);
+    }
+
+    /// <summary>Creates a new sales order, validates customer existence, computes line totals, and persists the order.</summary>
+    /// Creates a sales order asynchronously.
+    /// <param name="dto">The dto.</param>
+    /// <returns>The created <see cref="SalesOrderDto"/>.</returns>
+    /// <exception cref="KeyNotFoundException">Thrown when the customer specified by <paramref name="dto"/> does not exist.</exception>
+    public async Task<SalesOrderDto> CreateSalesOrderAsync(CreateUpdateSalesOrderDto dto)
+    {
+        // Validate customer exists
+        var customer = await _customerRepository.GetByIdAsync(dto.CustomerId);
+        if (customer == null)
         {
-            _orderRepository = orderRepository;
-            _customerRepository = customerRepository;
-            _mapper = mapper;
-            _logger = logger;            _serviceInvoker = serviceInvoker;
+            throw new KeyNotFoundException($"Customer with ID '{dto.CustomerId}' not found.");
         }
 
-        /// <summary>Returns the sales order with the given identifier, or <see langword="null"/> if not found.</summary>
-        /// Gets the sales order by id asynchronously.
-        /// <param name="id">The id.</param>
-        /// <returns>The matching <see cref="SalesOrderDto"/>, or <see langword="null"/>.</returns>
-        public async Task<SalesOrderDto?> GetSalesOrderByIdAsync(Guid id)
+        var order = _mapper.Map<SalesOrder>(dto);
+        order.Id = Guid.NewGuid();
+        order.OrderNumber = await GenerateOrderNumberAsync();
+        order.OrderDate = dto.OrderDate == default ? DateTime.UtcNow : dto.OrderDate;
+
+        // Calculate total from lines if provided
+        if (dto.Lines.Any())
         {
-            var order = await _orderRepository.GetByIdAsync(id);
-            return order != null ? _mapper.Map<SalesOrderDto>(order) : null;
-        }
-
-        /// <summary>Returns the sales order with the given order number, or <see langword="null"/> if not found.</summary>
-        /// Gets the sales order by order number asynchronously.
-        /// <param name="orderNumber">The order Number.</param>
-        /// <returns>The matching <see cref="SalesOrderDto"/>, or <see langword="null"/>.</returns>
-        public async Task<SalesOrderDto?> GetSalesOrderByOrderNumberAsync(string orderNumber)
-        {
-            var order = await _orderRepository.GetByOrderNumberAsync(orderNumber);
-            return order != null ? _mapper.Map<SalesOrderDto>(order) : null;
-        }
-
-        /// <summary>Returns all sales orders as an enumerable sequence.</summary>
-        /// Lists sales orders asynchronously.
-        public async Task<IEnumerable<SalesOrderDto>> ListSalesOrdersAsync()
-        {
-            var orders = await _orderRepository.ListAsync();
-            return _mapper.Map<IEnumerable<SalesOrderDto>>(orders);
-        }
-
-        /// <summary>Returns a paginated list of sales orders.</summary>
-        /// Lists sales orders paginated asynchronously.
-        /// <param name="pageNumber">The page Number.</param>
-        /// <param name="pageSize">The page Size.</param>
-        /// <returns>A <see cref="PaginatedResult{T}"/> containing the requested page of sales orders.</returns>
-        public async Task<PaginatedResult<SalesOrderDto>> ListSalesOrdersPaginatedAsync(int pageNumber, int pageSize)
-        {
-            var paginatedOrders = await _orderRepository.GetAllPaginatedAsync(pageNumber, pageSize);
-            var orderDtos = _mapper.Map<IEnumerable<SalesOrderDto>>(paginatedOrders.Items);
-            return new PaginatedResult<SalesOrderDto>(orderDtos, paginatedOrders.PageNumber, paginatedOrders.PageSize, paginatedOrders.TotalCount);
-        }
-
-        /// <summary>Creates a new sales order, validates customer existence, computes line totals, and persists the order.</summary>
-        /// Creates a sales order asynchronously.
-        /// <param name="dto">The dto.</param>
-        /// <returns>The created <see cref="SalesOrderDto"/>.</returns>
-        /// <exception cref="KeyNotFoundException">Thrown when the customer specified by <paramref name="dto"/> does not exist.</exception>
-        public async Task<SalesOrderDto> CreateSalesOrderAsync(CreateUpdateSalesOrderDto dto)
-        {
-            // Validate customer exists
-            var customer = await _customerRepository.GetByIdAsync(dto.CustomerId);
-            if (customer == null)
-            {
-                throw new KeyNotFoundException($"Customer with ID '{dto.CustomerId}' not found.");
-            }
-
-            var order = _mapper.Map<SalesOrder>(dto);
-            order.Id = Guid.NewGuid();
-            order.OrderNumber = await GenerateOrderNumberAsync();
-            order.OrderDate = dto.OrderDate == default ? DateTime.UtcNow : dto.OrderDate;
-
-            // Calculate total from lines if provided
-            if (dto.Lines.Any())
-            {
-                var lines = new List<SalesOrderLine>();
-                foreach (var lineDto in dto.Lines)
-                {
-                    var line = _mapper.Map<SalesOrderLine>(lineDto);
-                    line.Id = Guid.NewGuid();
-                    line.SalesOrderId = order.Id;
-                    line.LineTotal = line.Quantity * line.UnitPrice;
-                    lines.Add(line);
-                }
-                order.Lines = lines;
-                order.TotalAmount = lines.Sum(l => l.LineTotal);
-            }
-
-            var createdOrder = await _orderRepository.AddAsync(order);
-            await SaveChangesAsync();
-            return _mapper.Map<SalesOrderDto>(createdOrder);
-        }
-
-        /// <summary>Generates a unique order number using timestamp, sequential count, and a random suffix.</summary>
-        /// <returns>A unique order number string in the format <c>SO-{timestamp}-{count}-{random}</c>.</returns>
-        private async Task<string> GenerateOrderNumberAsync()
-        {
-            // Example: Use a timestamp and a random suffix for uniqueness (replace with a DB sequence or other logic as needed)
-            var now = DateTime.UtcNow;
-            var random = Guid.NewGuid().ToString()[..8];
-            var count = (await _orderRepository.GetAllAsync()).Count() + 1; // Not perfect for concurrency, but placeholder
-            return $"SO-{now:yyyyMMddHHmmss}-{count}-{random}";
-        }
-
-        /// <summary>Updates the sales order with the given identifier, recalculates line totals if lines are provided, and persists the changes.</summary>
-        /// Updates the sales order asynchronously.
-        /// <param name="id">The id.</param>
-        /// <param name="dto">The dto.</param>
-        /// <returns>The updated <see cref="SalesOrderDto"/>.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when the order or the referenced customer does not exist.</exception>
-        public async Task<SalesOrderDto> UpdateSalesOrderAsync(Guid id, CreateUpdateSalesOrderDto dto)
-        {
-            var order = await _orderRepository.GetByIdAsync(id);
-            if (order == null)
-                throw new InvalidOperationException($"Order with ID {id} not found.");
-
-            // Validate customer exists if changed
-            if (order.CustomerId != dto.CustomerId)
-            {
-                var customer = await _customerRepository.GetByIdAsync(dto.CustomerId);
-                if (customer == null)
-                    throw new InvalidOperationException($"Customer with ID {dto.CustomerId} not found.");
-            }
-
-            // Update basic properties
-            // Remove assignment from DTO, generate server-side
-            // order.OrderNumber = dto.OrderNumber;
-            order.CustomerId = dto.CustomerId;
-            order.Status = (SalesOrderStatus)dto.Status;
-
-            // Recalculate lines and total if provided
-            if (dto.Lines.Any())
-            {
-                order.Lines.Clear();
-                foreach (var lineDto in dto.Lines)
-                {
-                    var line = _mapper.Map<SalesOrderLine>(lineDto);
-                    line.Id = Guid.NewGuid();
-                    line.SalesOrderId = order.Id;
-                    line.LineTotal = line.Quantity * line.UnitPrice;
-                    order.Lines.Add(line);
-                }
-                order.TotalAmount = order.Lines.Sum(l => l.LineTotal);
-            }
-
-            await _orderRepository.UpdateAsync(order);
-            await SaveChangesAsync();
-            return _mapper.Map<SalesOrderDto>(order);
-        }
-
-        /// <summary>Deletes the sales order with the given identifier.</summary>
-        /// Deletes the sales order asynchronously.
-        /// <param name="id">The id.</param>
-        public async Task DeleteSalesOrderAsync(Guid id)
-        {
-            await _orderRepository.DeleteAsync(id);
-            await SaveChangesAsync();
-        }
-
-        /// <summary>Returns a paginated list of sales orders that satisfy the given specification.</summary>
-        /// Query sales orders asynchronously.
-        /// <param name="spec">The spec.</param>
-        /// <returns>A <see cref="PaginatedResult{T}"/> containing matching sales orders.</returns>
-        public async Task<PaginatedResult<SalesOrderDto>> QuerySalesOrdersAsync(ISpecification<SalesOrder> spec)
-        {
-            var result = await _orderRepository.QueryAsync(spec);
-            var dtos = result.Items.Select(so => _mapper.Map<SalesOrderDto>(so)).ToList();
-            return new PaginatedResult<SalesOrderDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
-        }
-
-        /// <summary>Creates a quote with stock availability validation and publishes a <c>SalesOrderCreatedEvent</c>.</summary>
-        /// Creates a quote asynchronously.
-        /// <param name="dto">The dto.</param>
-        /// <returns>The created quote as a <see cref="SalesOrderDto"/> with <c>IsQuote</c> set to <see langword="true"/>.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when the customer specified by <paramref name="dto"/> does not exist.</exception>
-        public async Task<SalesOrderDto> CreateQuoteAsync(CreateQuoteDto dto)
-        {
-            _logger.LogInformation(
-                "Creating quote: OrderNumber={OrderNumber}, CustomerId={CustomerId}",
-                new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(dto.OrderNumber), dto.CustomerId);
-
-            // Validate customer exists
-            var customer = await _customerRepository.GetByIdAsync(dto.CustomerId);
-            if (customer == null)
-                throw new InvalidOperationException($"Customer with ID {dto.CustomerId} not found");
-
-            // Check stock availability for all lines
-            var stockChecks = await CheckStockAvailabilityAsync(dto.Lines);
-            var unavailableItems = stockChecks.Where(s => !s.IsAvailable).ToList();
-
-            if (unavailableItems.Any())
-            {
-                _logger.LogWarning(
-                    "Quote creation - some items have insufficient stock: {UnavailableCount} items",
-                    unavailableItems.Count);
-                // Continue with quote creation but log the warning
-            }
-
-            // Create sales order as quote
-            var quote = new SalesOrder(Guid.NewGuid())
-            {
-                OrderNumber = dto.OrderNumber,
-                CustomerId = dto.CustomerId,
-                OrderDate = dto.OrderDate == default ? DateTime.UtcNow : dto.OrderDate,
-                Status = SalesOrderStatus.Draft,
-                IsQuote = true,
-                QuoteExpiryDate = DateTime.UtcNow.AddDays(dto.ValidityDays)
-            };
-
-            // Create order lines
+            var lines = new List<SalesOrderLine>();
             foreach (var lineDto in dto.Lines)
             {
-                var line = new SalesOrderLine(Guid.NewGuid())
-                {
-                    SalesOrderId = quote.Id,
-                    ProductId = lineDto.ProductId,
-                    Quantity = lineDto.Quantity,
-                    UnitPrice = lineDto.UnitPrice,
-                    LineTotal = lineDto.Quantity * lineDto.UnitPrice
-                };
-                quote.Lines.Add(line);
+                var line = _mapper.Map<SalesOrderLine>(lineDto);
+                line.Id = Guid.NewGuid();
+                line.SalesOrderId = order.Id;
+                line.LineTotal = line.Quantity * line.UnitPrice;
+                lines.Add(line);
             }
-
-            quote.TotalAmount = quote.Lines.Sum(l => l.LineTotal);
-
-            await _orderRepository.AddAsync(quote);
-            await SaveChangesAsync();
-
-            // Publish SalesOrderCreatedEvent
-            var salesOrderCreatedEvent = new SalesOrderCreatedEvent(
-                quote.Id,
-                quote.CustomerId,
-                quote.OrderNumber,
-                quote.IsQuote,
-                quote.TotalAmount
-            );
-
-            try
-            {
-                await EventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderCreated, salesOrderCreatedEvent);
-                _logger.LogInformation("Published SalesOrderCreatedEvent for Quote {QuoteId}", quote.Id);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to publish SalesOrderCreatedEvent for Quote {QuoteId}", quote.Id);
-            }
-
-            _logger.LogInformation(
-                "Quote created successfully: QuoteId={QuoteId}, ExpiresAt={ExpiresAt}",
-                quote.Id, quote.QuoteExpiryDate);
-
-            return _mapper.Map<SalesOrderDto>(quote);
+            order.Lines = lines;
+            order.TotalAmount = lines.Sum(l => l.LineTotal);
         }
 
-        /// <summary>Confirms a quote by re-validating stock, creating a fulfillment order via the Orders service, and publishing a <c>SalesOrderConfirmedEvent</c>.</summary>
-        /// Confirm quote asynchronously.
-        /// <param name="dto">The dto.</param>
-        /// <returns>The confirmed <see cref="SalesOrderDto"/> linked to the created fulfillment order.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when the quote does not exist, is not in Draft status, has expired, has insufficient stock, or the fulfillment order creation fails.</exception>
-        public async Task<SalesOrderDto> ConfirmQuoteAsync(ConfirmQuoteDto dto)
+        var createdOrder = await _orderRepository.AddAsync(order);
+        await SaveChangesAsync();
+        return _mapper.Map<SalesOrderDto>(createdOrder);
+    }
+
+    /// <summary>Generates a unique order number using timestamp, sequential count, and a random suffix.</summary>
+    /// <returns>A unique order number string in the format <c>SO-{timestamp}-{count}-{random}</c>.</returns>
+    private async Task<string> GenerateOrderNumberAsync()
+    {
+        // Example: Use a timestamp and a random suffix for uniqueness (replace with a DB sequence or other logic as needed)
+        var now = DateTime.UtcNow;
+        var random = Guid.NewGuid().ToString()[..8];
+        var count = (await _orderRepository.GetAllAsync()).Count() + 1; // Not perfect for concurrency, but placeholder
+        return $"SO-{now:yyyyMMddHHmmss}-{count}-{random}";
+    }
+
+    /// <summary>Updates the sales order with the given identifier, recalculates line totals if lines are provided, and persists the changes.</summary>
+    /// Updates the sales order asynchronously.
+    /// <param name="id">The id.</param>
+    /// <param name="dto">The dto.</param>
+    /// <returns>The updated <see cref="SalesOrderDto"/>.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when the order or the referenced customer does not exist.</exception>
+    public async Task<SalesOrderDto> UpdateSalesOrderAsync(Guid id, CreateUpdateSalesOrderDto dto)
+    {
+        var order = await _orderRepository.GetByIdAsync(id);
+        if (order == null)
+            throw new InvalidOperationException($"Order with ID {id} not found.");
+
+        // Validate customer exists if changed
+        if (order.CustomerId != dto.CustomerId)
         {
-            _logger.LogInformation("Confirming quote: QuoteId={QuoteId}", dto.QuoteId);
-
-            var quote = await _orderRepository.GetByIdAsync(dto.QuoteId);
-            if (quote == null)
-            {
-                throw new InvalidOperationException($"Quote {dto.QuoteId} not found");
-            }
-
-            if (!quote.IsQuote)
-            {
-                throw new InvalidOperationException($"Sales Order {dto.QuoteId} is not a quote");
-            }
-
-            if (quote.Status != SalesOrderStatus.Draft)
-            {
-                throw new InvalidOperationException($"Quote cannot be confirmed. Current status: {quote.Status}");
-            }
-
-            // Check if quote has expired
-            if (quote.QuoteExpiryDate.HasValue && DateTime.UtcNow > quote.QuoteExpiryDate.Value)
-            {
-                throw new InvalidOperationException($"Quote has expired on {quote.QuoteExpiryDate.Value}");
-            }
-
-            // Check stock availability again before confirming
-            var stockChecks = await CheckStockAvailabilityAsync(
-                quote.Lines.Select(l => new CreateUpdateSalesOrderLineDto(l.ProductId, l.Quantity, l.UnitPrice)).ToList()
-            );
-
-            var unavailableItems = stockChecks.Where(s => !s.IsAvailable).ToList();
-            if (unavailableItems.Any())
-            {
-                var itemsList = string.Join(", ", unavailableItems.Select(i => $"Product {i.ProductId}: requested {i.RequestedQuantity}, available {i.AvailableQuantity}"));
-                throw new InvalidOperationException($"Insufficient stock for items: {itemsList}");
-            }
-
-            // Create fulfillment order via Orders service
-            try
-            {
-                var createOrderRequest = new CreateOrderWithReservationDto
-                {
-                    OrderNumber = $"{quote.OrderNumber}-ORD",
-                    Type = OrderType.Outbound,
-                    SourceId = dto.WarehouseId,  // Shipping from warehouse
-                    TargetId = quote.CustomerId, // Shipping to customer
-                    ExternalOrderId = quote.Id,  // Link to SalesOrder
-                    WarehouseId = dto.WarehouseId,
-                    OrderDate = DateTime.UtcNow,
-                    DestinationAddress = dto.ShippingAddress,
-                    Lines = quote.Lines.Select(l => new CreateOrderLineDto
-                    {
-                        ProductId = l.ProductId,
-                        Quantity = l.Quantity
-                    }).ToList()
-                };
-
-                var fulfillmentOrder = await _serviceInvoker.InvokeAsync<CreateOrderWithReservationDto, OrderDto>(
-                    ServiceNames.Orders,
-                    ApiEndpoints.Orders.WithReservation,
-                    HttpMethod.Post,
-                    createOrderRequest);
-
-                // Update quote
-                quote.Status = SalesOrderStatus.Confirmed;
-                quote.ConvertedToOrderId = fulfillmentOrder.Id;
-                await _orderRepository.UpdateAsync(quote);
-                await SaveChangesAsync();
-
-                // Publish SalesOrderConfirmedEvent
-                var salesOrderConfirmedEvent = new SalesOrderConfirmedEvent(
-                    quote.Id,
-                    quote.ConvertedToOrderId.Value,
-                    DateTime.UtcNow
-                );
-
-                try
-                {
-                    await EventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderConfirmed, salesOrderConfirmedEvent);
-                    _logger.LogInformation(
-                        "Published SalesOrderConfirmedEvent for Quote {QuoteId}, Order {OrderId}",
-                        quote.Id, quote.ConvertedToOrderId);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to publish SalesOrderConfirmedEvent for Quote {QuoteId}", quote.Id);
-                }
-
-                _logger.LogInformation(
-                    "Quote confirmed successfully: QuoteId={QuoteId}, OrderId={OrderId}",
-                    quote.Id, quote.ConvertedToOrderId);
-
-                return _mapper.Map<SalesOrderDto>(quote);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to create fulfillment order for Quote {QuoteId}", dto.QuoteId);
-                throw new InvalidOperationException($"Failed to create fulfillment order: {ex.Message}", ex);
-            }
+            var customer = await _customerRepository.GetByIdAsync(dto.CustomerId);
+            if (customer == null)
+                throw new InvalidOperationException($"Customer with ID {dto.CustomerId} not found.");
         }
 
-        /// <summary>Checks stock availability for the specified line items by calling the Inventory service for each product.</summary>
-        /// Check stock availability asynchronously.
-        /// <param name="lines">The lines.</param>
-        /// <returns>A list of <see cref="StockAvailabilityCheckDto"/> with per-product availability results.</returns>
-        public async Task<List<StockAvailabilityCheckDto>> CheckStockAvailabilityAsync(List<CreateUpdateSalesOrderLineDto> lines)
+        // Update basic properties
+        // Remove assignment from DTO, generate server-side
+        // order.OrderNumber = dto.OrderNumber;
+        order.CustomerId = dto.CustomerId;
+        order.Status = (SalesOrderStatus)dto.Status;
+
+        // Recalculate lines and total if provided
+        if (dto.Lines.Any())
         {
-            _logger.LogInformation("Checking stock availability for {LineCount} items", lines.Count);
-
-            var results = new List<StockAvailabilityCheckDto>();
-
-            foreach (var line in lines)
+            order.Lines.Clear();
+            foreach (var lineDto in dto.Lines)
             {
-                try
-                {
-                    // Call Inventory service to check availability
-                    var availability = await _serviceInvoker.InvokeAsync<StockAvailabilityDto>(
-                        ServiceNames.Inventory,
-                        $"{ApiEndpoints.Inventory.Availability}/{line.ProductId}",
-                        HttpMethod.Get);
-
-                    var totalAvailable = availability.TotalAvailable;
-                    var warehouseStocks = availability.WarehouseStocks
-                        .Select(ws => new WarehouseAvailabilityDto
-                        {
-                            WarehouseId = ws.WarehouseId,
-                            WarehouseName = ws.WarehouseName ?? "Unknown",
-                            AvailableQuantity = ws.AvailableQuantity
-                        })
-                        .ToList();
-
-                    results.Add(new StockAvailabilityCheckDto
-                    {
-                        ProductId = line.ProductId,
-                        RequestedQuantity = line.Quantity,
-                        AvailableQuantity = totalAvailable,
-                        IsAvailable = totalAvailable >= line.Quantity,
-                        WarehouseStock = warehouseStocks
-                    });
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to check stock for Product {ProductId}", line.ProductId);
-
-                    // Return unavailable if check fails
-                    results.Add(new StockAvailabilityCheckDto
-                    {
-                        ProductId = line.ProductId,
-                        RequestedQuantity = line.Quantity,
-                        AvailableQuantity = 0,
-                        IsAvailable = false,
-                        WarehouseStock = new List<WarehouseAvailabilityDto>()
-                    });
-                }
+                var line = _mapper.Map<SalesOrderLine>(lineDto);
+                line.Id = Guid.NewGuid();
+                line.SalesOrderId = order.Id;
+                line.LineTotal = line.Quantity * line.UnitPrice;
+                order.Lines.Add(line);
             }
-
-            _logger.LogInformation(
-                "Stock availability check complete: {AvailableCount}/{TotalCount} items available",
-                results.Count(r => r.IsAvailable), results.Count);
-
-            return results;
+            order.TotalAmount = order.Lines.Sum(l => l.LineTotal);
         }
 
-        /// <inheritdoc />
-        public async Task<SalesOrderCacheInvalidationDto?> MarkShippedFromFulfillmentAsync(
-            OrderFulfilledEvent @event,
-            CancellationToken cancellationToken = default)
+        await _orderRepository.UpdateAsync(order);
+        await SaveChangesAsync();
+        return _mapper.Map<SalesOrderDto>(order);
+    }
+
+    /// <summary>Deletes the sales order with the given identifier.</summary>
+    /// Deletes the sales order asynchronously.
+    /// <param name="id">The id.</param>
+    public async Task DeleteSalesOrderAsync(Guid id)
+    {
+        await _orderRepository.DeleteAsync(id);
+        await SaveChangesAsync();
+    }
+
+    /// <summary>Returns a paginated list of sales orders that satisfy the given specification.</summary>
+    /// Query sales orders asynchronously.
+    /// <param name="spec">The spec.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <returns>A <see cref="PaginatedResult{T}"/> containing matching sales orders.</returns>
+    public async Task<PaginatedResult<SalesOrderDto>> QuerySalesOrdersAsync(ISpecification<SalesOrder> spec, CancellationToken cancellationToken = default)
+    {
+        var result = await _orderRepository.QueryAsync(spec, cancellationToken);
+        var dtos = result.Items.Select(so => _mapper.Map<SalesOrderDto>(so)).ToList();
+        return new PaginatedResult<SalesOrderDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
+    }
+
+    /// <summary>Creates a quote with stock availability validation and publishes a <c>SalesOrderCreatedEvent</c>.</summary>
+    /// Creates a quote asynchronously.
+    /// <param name="dto">The dto.</param>
+    /// <returns>The created quote as a <see cref="SalesOrderDto"/> with <c>IsQuote</c> set to <see langword="true"/>.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when the customer specified by <paramref name="dto"/> does not exist.</exception>
+    public async Task<SalesOrderDto> CreateQuoteAsync(CreateQuoteDto dto)
+    {
+        _logger.LogInformation(
+            "Creating quote: OrderNumber={OrderNumber}, CustomerId={CustomerId}",
+            new MyApp.Shared.Domain.Security.LogSanitizer().Sanitize(dto.OrderNumber), dto.CustomerId);
+
+        // Validate customer exists
+        var customer = await _customerRepository.GetByIdAsync(dto.CustomerId);
+        if (customer == null)
+            throw new InvalidOperationException($"Customer with ID {dto.CustomerId} not found");
+
+        // Check stock availability for all lines
+        var stockChecks = await CheckStockAvailabilityAsync(dto.Lines);
+        var unavailableItems = stockChecks.Where(s => !s.IsAvailable).ToList();
+
+        if (unavailableItems.Any())
         {
-            if (!string.Equals(@event.OrderType, OrderTypes.Outbound, StringComparison.OrdinalIgnoreCase)
-                || !@event.ExternalOrderId.HasValue)
-            {
-                return null;
-            }
-
-            var salesOrder = await _orderRepository.GetByIdAsync(@event.ExternalOrderId.Value);
-            if (salesOrder is null)
-            {
-                _logger.LogWarning("Sales order {SalesOrderId} not found for fulfillment event", @event.ExternalOrderId);
-                return null;
-            }
-
-            if (salesOrder.Status is SalesOrderStatus.Shipped or SalesOrderStatus.Invoiced or SalesOrderStatus.Cancelled)
-            {
-                return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
-            }
-
-            if (salesOrder.Status != SalesOrderStatus.Confirmed)
-            {
-                _logger.LogWarning(
-                    "Skipping ship status for sales order {SalesOrderId}; status is {Status}",
-                    salesOrder.Id,
-                    salesOrder.Status);
-                return null;
-            }
-
-            salesOrder.Status = SalesOrderStatus.Shipped;
-            await _orderRepository.UpdateAsync(salesOrder);
-            await SaveChangesAsync(cancellationToken);
-
-            _logger.LogInformation("Sales order {SalesOrderId} marked Shipped from order {OrderId}", salesOrder.Id, @event.OrderId);
-            return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+            _logger.LogWarning(
+                "Quote creation - some items have insufficient stock: {UnavailableCount} items",
+                unavailableItems.Count);
+            // Continue with quote creation but log the warning
         }
 
-        /// <inheritdoc />
-        public async Task<SalesOrderCacheInvalidationDto?> MarkCancelledFromOrderAsync(
-            OrderCancelledEvent @event,
-            CancellationToken cancellationToken = default)
+        // Create sales order as quote
+        var quote = new SalesOrder(Guid.NewGuid())
         {
-            if (!@event.ExternalOrderId.HasValue)
-                return null;
+            OrderNumber = dto.OrderNumber,
+            CustomerId = dto.CustomerId,
+            OrderDate = dto.OrderDate == default ? DateTime.UtcNow : dto.OrderDate,
+            Status = SalesOrderStatus.Draft,
+            IsQuote = true,
+            QuoteExpiryDate = DateTime.UtcNow.AddDays(dto.ValidityDays)
+        };
 
-            var salesOrder = await _orderRepository.GetByIdAsync(@event.ExternalOrderId.Value);
-            if (salesOrder is null)
-                return null;
-
-            if (salesOrder.Status is SalesOrderStatus.Cancelled or SalesOrderStatus.Invoiced)
-                return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
-
-            if (salesOrder.Status is not (SalesOrderStatus.Confirmed or SalesOrderStatus.Shipped))
-                return null;
-
-            salesOrder.Status = SalesOrderStatus.Cancelled;
-            await _orderRepository.UpdateAsync(salesOrder);
-            await SaveChangesAsync(cancellationToken);
-
-            _logger.LogInformation("Sales order {SalesOrderId} cancelled from operational order {OrderId}", salesOrder.Id, @event.OrderId);
-            return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+        // Create order lines
+        foreach (var lineDto in dto.Lines)
+        {
+            var line = new SalesOrderLine(Guid.NewGuid())
+            {
+                SalesOrderId = quote.Id,
+                ProductId = lineDto.ProductId,
+                Quantity = lineDto.Quantity,
+                UnitPrice = lineDto.UnitPrice,
+                LineTotal = lineDto.Quantity * lineDto.UnitPrice
+            };
+            quote.Lines.Add(line);
         }
 
-        /// <inheritdoc />
-        public async Task<SalesOrderCacheInvalidationDto?> MarkInvoicedFromBillingAsync(
-            InvoiceIssuedEvent @event,
-            CancellationToken cancellationToken = default)
+        quote.TotalAmount = quote.Lines.Sum(l => l.LineTotal);
+
+        await _orderRepository.AddAsync(quote);
+        await SaveChangesAsync();
+
+        // Publish SalesOrderCreatedEvent
+        var salesOrderCreatedEvent = new SalesOrderCreatedEvent(
+            quote.Id,
+            quote.CustomerId,
+            quote.OrderNumber,
+            quote.IsQuote,
+            quote.TotalAmount
+        );
+
+        try
         {
-            if (!@event.OrderId.HasValue)
-                return null;
-
-            var salesOrder = await _orderRepository.GetByIdAsync(@event.OrderId.Value);
-            if (salesOrder is null)
-                return null;
-
-            if (salesOrder.Status == SalesOrderStatus.Invoiced)
-                return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
-
-            if (salesOrder.Status is not (SalesOrderStatus.Confirmed or SalesOrderStatus.Shipped))
-            {
-                _logger.LogWarning(
-                    "Cannot mark sales order {SalesOrderId} Invoiced from status {Status}",
-                    salesOrder.Id,
-                    salesOrder.Status);
-                return null;
-            }
-
-            salesOrder.Status = SalesOrderStatus.Invoiced;
-            await _orderRepository.UpdateAsync(salesOrder);
-            await SaveChangesAsync(cancellationToken);
-
-            _logger.LogInformation("Sales order {SalesOrderId} marked Invoiced", salesOrder.Id);
-            return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+            await EventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderCreated, salesOrderCreatedEvent);
+            _logger.LogInformation("Published SalesOrderCreatedEvent for Quote {QuoteId}", quote.Id);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to publish SalesOrderCreatedEvent for Quote {QuoteId}", quote.Id);
         }
 
-        /// <inheritdoc />
-        public async Task<SalesOrderDto> CreateReturnAsync(
-            Guid salesOrderId,
-            CreateSalesReturnDto dto,
-            CancellationToken cancellationToken = default)
+        _logger.LogInformation(
+            "Quote created successfully: QuoteId={QuoteId}, ExpiresAt={ExpiresAt}",
+            quote.Id, quote.QuoteExpiryDate);
+
+        return _mapper.Map<SalesOrderDto>(quote);
+    }
+
+    /// <summary>Confirms a quote by re-validating stock, creating a fulfillment order via the Orders service, and publishing a <c>SalesOrderConfirmedEvent</c>.</summary>
+    /// Confirm quote asynchronously.
+    /// <param name="dto">The dto.</param>
+    /// <returns>The confirmed <see cref="SalesOrderDto"/> linked to the created fulfillment order.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when the quote does not exist, is not in Draft status, has expired, has insufficient stock, or the fulfillment order creation fails.</exception>
+    public async Task<SalesOrderDto> ConfirmQuoteAsync(ConfirmQuoteDto dto)
+    {
+        _logger.LogInformation("Confirming quote: QuoteId={QuoteId}", dto.QuoteId);
+
+        var quote = await _orderRepository.GetByIdAsync(dto.QuoteId);
+        if (quote == null)
         {
-            var salesOrder = await _orderRepository.GetByIdAsync(salesOrderId)
-                ?? throw new InvalidOperationException($"Sales order {salesOrderId} not found");
+            throw new InvalidOperationException($"Quote {dto.QuoteId} not found");
+        }
 
-            if (salesOrder.Status is not (SalesOrderStatus.Invoiced or SalesOrderStatus.Shipped))
-                throw new InvalidOperationException($"Returns require Invoiced or Shipped status; current: {salesOrder.Status}");
+        if (!quote.IsQuote)
+        {
+            throw new InvalidOperationException($"Sales Order {dto.QuoteId} is not a quote");
+        }
 
-            if (salesOrder.ReturnOrderId.HasValue)
-                throw new InvalidOperationException($"Return already initiated for sales order {salesOrderId}");
+        if (quote.Status != SalesOrderStatus.Draft)
+        {
+            throw new InvalidOperationException($"Quote cannot be confirmed. Current status: {quote.Status}");
+        }
 
-            foreach (var returnLine in dto.Lines)
+        // Check if quote has expired
+        if (quote.QuoteExpiryDate.HasValue && DateTime.UtcNow > quote.QuoteExpiryDate.Value)
+        {
+            throw new InvalidOperationException($"Quote has expired on {quote.QuoteExpiryDate.Value}");
+        }
+
+        // Check stock availability again before confirming
+        var stockChecks = await CheckStockAvailabilityAsync(
+            quote.Lines.Select(l => new CreateUpdateSalesOrderLineDto(l.ProductId, l.Quantity, l.UnitPrice)).ToList()
+        );
+
+        var unavailableItems = stockChecks.Where(s => !s.IsAvailable).ToList();
+        if (unavailableItems.Any())
+        {
+            var itemsList = string.Join(", ", unavailableItems.Select(i => $"Product {i.ProductId}: requested {i.RequestedQuantity}, available {i.AvailableQuantity}"));
+            throw new InvalidOperationException($"Insufficient stock for items: {itemsList}");
+        }
+
+        // Create fulfillment order via Orders service
+        try
+        {
+            var createOrderRequest = new CreateOrderWithReservationDto
             {
-                var original = salesOrder.Lines.FirstOrDefault(l => l.ProductId == returnLine.ProductId)
-                    ?? throw new InvalidOperationException($"Product {returnLine.ProductId} not on sales order");
-                if (returnLine.Quantity > original.Quantity)
-                    throw new InvalidOperationException($"Return quantity exceeds original for product {returnLine.ProductId}");
-            }
-
-            var createOrderRequest = new CreateUpdateOrderDto
-            {
-                OrderNumber = $"{salesOrder.OrderNumber}-RET",
-                Type = OrderType.Return,
-                SourceId = salesOrder.CustomerId,
-                TargetId = dto.WarehouseId,
-                ExternalOrderId = salesOrderId,
+                OrderNumber = $"{quote.OrderNumber}-ORD",
+                Type = OrderType.Outbound,
+                SourceId = dto.WarehouseId,  // Shipping from warehouse
+                TargetId = quote.CustomerId, // Shipping to customer
+                ExternalOrderId = quote.Id,  // Link to SalesOrder
                 WarehouseId = dto.WarehouseId,
                 OrderDate = DateTime.UtcNow,
-                Lines = dto.Lines.Select(l => new CreateOrderLineDto
+                DestinationAddress = dto.ShippingAddress,
+                Lines = quote.Lines.Select(l => new CreateOrderLineDto
                 {
                     ProductId = l.ProductId,
                     Quantity = l.Quantity
                 }).ToList()
             };
 
-            var returnOrder = await _serviceInvoker.InvokeAsync<CreateUpdateOrderDto, OrderDto>(
+            var fulfillmentOrder = await _serviceInvoker.InvokeAsync<CreateOrderWithReservationDto, OrderDto>(
                 ServiceNames.Orders,
-                ApiEndpoints.Orders.Base,
+                ApiEndpoints.Orders.WithReservation,
                 HttpMethod.Post,
-                createOrderRequest,
-                cancellationToken);
+                createOrderRequest);
 
-            salesOrder.ReturnOrderId = returnOrder.Id;
-            await _orderRepository.UpdateAsync(salesOrder);
-            await SaveChangesAsync(cancellationToken);
+            // Update quote
+            quote.Status = SalesOrderStatus.Confirmed;
+            quote.ConvertedToOrderId = fulfillmentOrder.Id;
+            await _orderRepository.UpdateAsync(quote);
+            await SaveChangesAsync();
+
+            // Publish SalesOrderConfirmedEvent
+            var salesOrderConfirmedEvent = new SalesOrderConfirmedEvent(
+                quote.Id,
+                quote.ConvertedToOrderId.Value,
+                DateTime.UtcNow
+            );
+
+            try
+            {
+                await EventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderConfirmed, salesOrderConfirmedEvent);
+                _logger.LogInformation(
+                    "Published SalesOrderConfirmedEvent for Quote {QuoteId}, Order {OrderId}",
+                    quote.Id, quote.ConvertedToOrderId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to publish SalesOrderConfirmedEvent for Quote {QuoteId}", quote.Id);
+            }
 
             _logger.LogInformation(
-                "Return order {ReturnOrderId} created for sales order {SalesOrderId}",
-                returnOrder.Id,
-                salesOrderId);
+                "Quote confirmed successfully: QuoteId={QuoteId}, OrderId={OrderId}",
+                quote.Id, quote.ConvertedToOrderId);
 
-            return _mapper.Map<SalesOrderDto>(salesOrder);
+            return _mapper.Map<SalesOrderDto>(quote);
         }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to create fulfillment order for Quote {QuoteId}", dto.QuoteId);
+            throw new InvalidOperationException($"Failed to create fulfillment order: {ex.Message}", ex);
+        }
+    }
+
+    /// <summary>Checks stock availability for the specified line items by calling the Inventory service for each product.</summary>
+    /// Check stock availability asynchronously.
+    /// <param name="lines">The lines.</param>
+    /// <returns>A list of <see cref="StockAvailabilityCheckDto"/> with per-product availability results.</returns>
+    public async Task<List<StockAvailabilityCheckDto>> CheckStockAvailabilityAsync(List<CreateUpdateSalesOrderLineDto> lines)
+    {
+        _logger.LogInformation("Checking stock availability for {LineCount} items", lines.Count);
+
+        var results = new List<StockAvailabilityCheckDto>();
+
+        foreach (var line in lines)
+        {
+            try
+            {
+                // Call Inventory service to check availability
+                var availability = await _serviceInvoker.InvokeAsync<StockAvailabilityDto>(
+                    ServiceNames.Inventory,
+                    $"{ApiEndpoints.Inventory.Availability}/{line.ProductId}",
+                    HttpMethod.Get);
+
+                var totalAvailable = availability.TotalAvailable;
+                var warehouseStocks = availability.WarehouseStocks
+                    .Select(ws => new WarehouseAvailabilityDto
+                    {
+                        WarehouseId = ws.WarehouseId,
+                        WarehouseName = ws.WarehouseName ?? "Unknown",
+                        AvailableQuantity = ws.AvailableQuantity
+                    })
+                    .ToList();
+
+                results.Add(new StockAvailabilityCheckDto
+                {
+                    ProductId = line.ProductId,
+                    RequestedQuantity = line.Quantity,
+                    AvailableQuantity = totalAvailable,
+                    IsAvailable = totalAvailable >= line.Quantity,
+                    WarehouseStock = warehouseStocks
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to check stock for Product {ProductId}", line.ProductId);
+
+                // Return unavailable if check fails
+                results.Add(new StockAvailabilityCheckDto
+                {
+                    ProductId = line.ProductId,
+                    RequestedQuantity = line.Quantity,
+                    AvailableQuantity = 0,
+                    IsAvailable = false,
+                    WarehouseStock = new List<WarehouseAvailabilityDto>()
+                });
+            }
+        }
+
+        _logger.LogInformation(
+            "Stock availability check complete: {AvailableCount}/{TotalCount} items available",
+            results.Count(r => r.IsAvailable), results.Count);
+
+        return results;
+    }
+
+    /// <inheritdoc />
+    public async Task<SalesOrderCacheInvalidationDto?> MarkShippedFromFulfillmentAsync(
+        OrderFulfilledEvent @event,
+        CancellationToken cancellationToken = default)
+    {
+        if (!string.Equals(@event.OrderType, OrderTypes.Outbound, StringComparison.OrdinalIgnoreCase)
+            || !@event.ExternalOrderId.HasValue)
+        {
+            return null;
+        }
+
+        var salesOrder = await _orderRepository.GetByIdAsync(@event.ExternalOrderId.Value);
+        if (salesOrder is null)
+        {
+            _logger.LogWarning("Sales order {SalesOrderId} not found for fulfillment event", @event.ExternalOrderId);
+            return null;
+        }
+
+        if (salesOrder.Status is SalesOrderStatus.Shipped or SalesOrderStatus.Invoiced or SalesOrderStatus.Cancelled)
+        {
+            return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+        }
+
+        if (salesOrder.Status != SalesOrderStatus.Confirmed)
+        {
+            _logger.LogWarning(
+                "Skipping ship status for sales order {SalesOrderId}; status is {Status}",
+                salesOrder.Id,
+                salesOrder.Status);
+            return null;
+        }
+
+        salesOrder.Status = SalesOrderStatus.Shipped;
+        await _orderRepository.UpdateAsync(salesOrder);
+        await SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Sales order {SalesOrderId} marked Shipped from order {OrderId}", salesOrder.Id, @event.OrderId);
+        return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+    }
+
+    /// <inheritdoc />
+    public async Task<SalesOrderCacheInvalidationDto?> MarkCancelledFromOrderAsync(
+        OrderCancelledEvent @event,
+        CancellationToken cancellationToken = default)
+    {
+        if (!@event.ExternalOrderId.HasValue)
+            return null;
+
+        var salesOrder = await _orderRepository.GetByIdAsync(@event.ExternalOrderId.Value);
+        if (salesOrder is null)
+            return null;
+
+        if (salesOrder.Status is SalesOrderStatus.Cancelled or SalesOrderStatus.Invoiced)
+            return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+
+        if (salesOrder.Status is not (SalesOrderStatus.Confirmed or SalesOrderStatus.Shipped))
+            return null;
+
+        salesOrder.Status = SalesOrderStatus.Cancelled;
+        await _orderRepository.UpdateAsync(salesOrder);
+        await SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Sales order {SalesOrderId} cancelled from operational order {OrderId}", salesOrder.Id, @event.OrderId);
+        return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+    }
+
+    /// <inheritdoc />
+    public async Task<SalesOrderCacheInvalidationDto?> MarkInvoicedFromBillingAsync(
+        InvoiceIssuedEvent @event,
+        CancellationToken cancellationToken = default)
+    {
+        if (!@event.OrderId.HasValue)
+            return null;
+
+        var salesOrder = await _orderRepository.GetByIdAsync(@event.OrderId.Value);
+        if (salesOrder is null)
+            return null;
+
+        if (salesOrder.Status == SalesOrderStatus.Invoiced)
+            return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+
+        if (salesOrder.Status is not (SalesOrderStatus.Confirmed or SalesOrderStatus.Shipped))
+        {
+            _logger.LogWarning(
+                "Cannot mark sales order {SalesOrderId} Invoiced from status {Status}",
+                salesOrder.Id,
+                salesOrder.Status);
+            return null;
+        }
+
+        salesOrder.Status = SalesOrderStatus.Invoiced;
+        await _orderRepository.UpdateAsync(salesOrder);
+        await SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Sales order {SalesOrderId} marked Invoiced", salesOrder.Id);
+        return new SalesOrderCacheInvalidationDto(salesOrder.Id, salesOrder.OrderNumber);
+    }
+
+    /// <inheritdoc />
+    public async Task<SalesOrderDto> CreateReturnAsync(
+        Guid salesOrderId,
+        CreateSalesReturnDto dto,
+        CancellationToken cancellationToken = default)
+    {
+        var salesOrder = await _orderRepository.GetByIdAsync(salesOrderId)
+            ?? throw new InvalidOperationException($"Sales order {salesOrderId} not found");
+
+        if (salesOrder.Status is not (SalesOrderStatus.Invoiced or SalesOrderStatus.Shipped))
+            throw new InvalidOperationException($"Returns require Invoiced or Shipped status; current: {salesOrder.Status}");
+
+        if (salesOrder.ReturnOrderId.HasValue)
+            throw new InvalidOperationException($"Return already initiated for sales order {salesOrderId}");
+
+        foreach (var returnLine in dto.Lines)
+        {
+            var original = salesOrder.Lines.FirstOrDefault(l => l.ProductId == returnLine.ProductId)
+                ?? throw new InvalidOperationException($"Product {returnLine.ProductId} not on sales order");
+            if (returnLine.Quantity > original.Quantity)
+                throw new InvalidOperationException($"Return quantity exceeds original for product {returnLine.ProductId}");
+        }
+
+        var createOrderRequest = new CreateUpdateOrderDto
+        {
+            OrderNumber = $"{salesOrder.OrderNumber}-RET",
+            Type = OrderType.Return,
+            SourceId = salesOrder.CustomerId,
+            TargetId = dto.WarehouseId,
+            ExternalOrderId = salesOrderId,
+            WarehouseId = dto.WarehouseId,
+            OrderDate = DateTime.UtcNow,
+            Lines = dto.Lines.Select(l => new CreateOrderLineDto
+            {
+                ProductId = l.ProductId,
+                Quantity = l.Quantity
+            }).ToList()
+        };
+
+        var returnOrder = await _serviceInvoker.InvokeAsync<CreateUpdateOrderDto, OrderDto>(
+            ServiceNames.Orders,
+            ApiEndpoints.Orders.Base,
+            HttpMethod.Post,
+            createOrderRequest,
+            cancellationToken);
+
+        salesOrder.ReturnOrderId = returnOrder.Id;
+        await _orderRepository.UpdateAsync(salesOrder);
+        await SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation(
+            "Return order {ReturnOrderId} created for sales order {SalesOrderId}",
+            returnOrder.Id,
+            salesOrderId);
+
+        return _mapper.Map<SalesOrderDto>(salesOrder);
     }
 }

@@ -42,9 +42,9 @@ public class ProductService : AppServiceBase, IProductService
     /// Gets the product by id asynchronously.
     /// <param name="id">The id.</param>
     /// <returns>The matching <see cref="ProductDto"/>, or <c>null</c> if not found.</returns>
-    public async Task<ProductDto?> GetProductByIdAsync(Guid id)
+    public async Task<ProductDto?> GetProductByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var product = await _productRepository.GetByIdAsync(id);
+        var product = await _productRepository.GetByIdAsync(id, cancellationToken);
         return product == null ? null : _mapper.Map<ProductDto>(product);
     }
 
@@ -52,9 +52,9 @@ public class ProductService : AppServiceBase, IProductService
     /// Gets the product by sku asynchronously.
     /// <param name="sku">The sku.</param>
     /// <returns>The matching <see cref="ProductDto"/>, or <c>null</c> if not found.</returns>
-    public async Task<ProductDto?> GetProductBySkuAsync(string sku)
+    public async Task<ProductDto?> GetProductBySkuAsync(string sku, CancellationToken cancellationToken = default)
     {
-        var product = await _productRepository.GetBySkuAsync(sku);
+        var product = await _productRepository.GetBySkuAsync(sku, cancellationToken);
         return product == null ? null : _mapper.Map<ProductDto>(product);
     }
 
@@ -62,17 +62,17 @@ public class ProductService : AppServiceBase, IProductService
     /// Gets the product by name asynchronously.
     /// <param name="name">The name.</param>
     /// <returns>The matching <see cref="ProductDto"/>, or <c>null</c> if not found.</returns>
-    public async Task<ProductDto?> GetProductByNameAsync(string name)
+    public async Task<ProductDto?> GetProductByNameAsync(string name, CancellationToken cancellationToken = default)
     {
-        var product = await _productRepository.GetByNameAsync(name);
+        var product = await _productRepository.GetByNameAsync(name, cancellationToken);
         return product == null ? null : _mapper.Map<ProductDto>(product);
     }
 
     /// <summary>Retrieves all products in the inventory.</summary>
     /// Gets all products asynchronously.
-    public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
+    public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(CancellationToken cancellationToken = default)
     {
-        var products = await _productRepository.GetAllAsync();
+        var products = await _productRepository.GetAllAsync(cancellationToken);
         return _mapper.Map<IEnumerable<ProductDto>>(products);
     }
 
@@ -81,18 +81,18 @@ public class ProductService : AppServiceBase, IProductService
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
     /// <returns>A <see cref="PaginatedResult{ProductDto}"/> for the requested page.</returns>
-    public async Task<PaginatedResult<ProductDto>> GetAllProductsPaginatedAsync(int pageNumber, int pageSize)
+    public async Task<PaginatedResult<ProductDto>> GetAllProductsPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
-        var paginatedProducts = await _productRepository.GetAllPaginatedAsync(pageNumber, pageSize);
+        var paginatedProducts = await _productRepository.GetAllPaginatedAsync(pageNumber, pageSize, cancellationToken: cancellationToken);
         var productDtos = _mapper.Map<IEnumerable<ProductDto>>(paginatedProducts.Items);
         return new PaginatedResult<ProductDto>(productDtos, paginatedProducts.PageNumber, paginatedProducts.PageSize, paginatedProducts.TotalCount);
     }
 
     /// <summary>Retrieves all products whose stock level is below their configured reorder level.</summary>
     /// Gets the low stock products asynchronously.
-    public async Task<IEnumerable<ProductDto>> GetLowStockProductsAsync()
+    public async Task<IEnumerable<ProductDto>> GetLowStockProductsAsync(CancellationToken cancellationToken = default)
     {
-        var products = await _productRepository.GetLowStockProductsAsync();
+        var products = await _productRepository.GetLowStockProductsAsync(cancellationToken: cancellationToken);
         return _mapper.Map<IEnumerable<ProductDto>>(products);
     }
 
@@ -169,9 +169,9 @@ public class ProductService : AppServiceBase, IProductService
     /// Query products asynchronously.
     /// <param name="spec">The spec.</param>
     /// <returns>A <see cref="PaginatedResult{ProductDto}"/> matching the specification.</returns>
-    public async Task<PaginatedResult<ProductDto>> QueryProductsAsync(ISpecification<Product> spec)
+    public async Task<PaginatedResult<ProductDto>> QueryProductsAsync(ISpecification<Product> spec, CancellationToken cancellationToken = default)
     {
-        var result = await _productRepository.QueryAsync(spec);
+        var result = await _productRepository.QueryAsync(spec, cancellationToken);
         var dtos = result.Items.Select(p => _mapper.Map<ProductDto>(p)).ToList();
         return new PaginatedResult<ProductDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }

@@ -1,42 +1,44 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Domain.Entities;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
-namespace MyApp.Sales.Application.Contracts.Services
-{
+namespace MyApp.Sales.Application.Contracts.Services;
+
 /// <summary>Defines the contract for sales order management and commercial workflow operations.</summary>
 public interface ISalesOrderService
 {
     // Basic CRUD operations
     /// <summary>Returns the sales order with the given identifier, or <see langword="null"/> if not found.</summary>
     /// <param name="id">The unique identifier of the sales order.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The matching <see cref="SalesOrderDto"/>, or <see langword="null"/>.</returns>
-    Task<SalesOrderDto?> GetSalesOrderByIdAsync(Guid id);
+    Task<SalesOrderDto?> GetSalesOrderByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>Returns the sales order with the given order number, or <see langword="null"/> if not found.</summary>
     /// <param name="orderNumber">The order number to search for.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The matching <see cref="SalesOrderDto"/>, or <see langword="null"/>.</returns>
-    Task<SalesOrderDto?> GetSalesOrderByOrderNumberAsync(string orderNumber);
+    Task<SalesOrderDto?> GetSalesOrderByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default);
 
     /// <summary>Returns all sales orders as an enumerable sequence.</summary>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>All <see cref="SalesOrderDto"/> records.</returns>
-    Task<IEnumerable<SalesOrderDto>> ListSalesOrdersAsync();
+    Task<IEnumerable<SalesOrderDto>> ListSalesOrdersAsync(CancellationToken cancellationToken = default);
 
     /// <summary>Returns a paginated list of sales orders.</summary>
     /// <param name="pageNumber">The 1-based page number.</param>
     /// <param name="pageSize">The number of items per page.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A <see cref="PaginatedResult{T}"/> containing the requested page of sales orders.</returns>
-    Task<PaginatedResult<SalesOrderDto>> ListSalesOrdersPaginatedAsync(int pageNumber, int pageSize);
+    Task<PaginatedResult<SalesOrderDto>> ListSalesOrdersPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 
     /// <summary>Returns a paginated list of sales orders that satisfy the given specification.</summary>
     /// <param name="spec">The specification defining filtering, sorting, and pagination criteria.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>A <see cref="PaginatedResult{T}"/> containing matching sales orders.</returns>
-    Task<PaginatedResult<SalesOrderDto>> QuerySalesOrdersAsync(ISpecification<SalesOrder> spec);
+    Task<PaginatedResult<SalesOrderDto>> QuerySalesOrdersAsync(ISpecification<SalesOrder> spec, CancellationToken cancellationToken = default);
 
     /// <summary>Creates a new sales order from the given data.</summary>
     /// <param name="dto">The sales order data to create.</param>
@@ -80,5 +82,4 @@ public interface ISalesOrderService
 
     /// <summary>Creates an operational return order linked to an invoiced sales order.</summary>
     Task<SalesOrderDto> CreateReturnAsync(Guid salesOrderId, CreateSalesReturnDto dto, CancellationToken cancellationToken = default);
-}
 }
