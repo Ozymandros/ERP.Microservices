@@ -128,9 +128,9 @@ public class AspireProjectBuilder
             .WithEnvironment("DOTNET_ENVIRONMENT", "Development")
             .WithEnvironment("ALLOWED_ORIGINS", origin)
             .WithExternalHttpEndpoints()
-            // OpenTelemetry configuration for Serilog
+            // Let Aspire inject OTEL_EXPORTER_OTLP_ENDPOINT to the dashboard OTLP port.
+            // Hardcoding localhost:4317 overrides that and leaves Metrics/Logs empty.
             .WithEnvironment("OTEL_SERVICE_NAME", serviceName)
-            .WithEnvironment("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317")
             .PublishAsDockerFile();
 
         var database = hasDatabase ? _sqlServer?.AddDatabase(dbName) : null;
