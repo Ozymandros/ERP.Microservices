@@ -11,8 +11,8 @@ using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
-using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Specifications;
 
 namespace MyApp.Purchasing.Application.Services;
@@ -53,7 +53,7 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
         _lineRepository = lineRepository;
         _supplierRepository = supplierRepository;
         _mapper = mapper;
-        _logger = logger;        _serviceInvoker = serviceInvoker;
+        _logger = logger; _serviceInvoker = serviceInvoker;
     }
 
     /// <summary>

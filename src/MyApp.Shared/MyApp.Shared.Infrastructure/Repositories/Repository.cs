@@ -57,6 +57,7 @@ public abstract class Repository<TEntity, TKey> : DbContextRepositoryBase, IRepo
     /// Performs the operation.
     /// </summary>
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public virtual async Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken = default)
     {
@@ -78,6 +79,7 @@ public abstract class Repository<TEntity, TKey> : DbContextRepositoryBase, IRepo
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
     /// <param name="includes">The includes.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public virtual async Task<PaginatedResult<TEntity>> GetAllPaginatedAsync(
         int pageNumber,
@@ -109,6 +111,7 @@ public abstract class Repository<TEntity, TKey> : DbContextRepositoryBase, IRepo
     /// Performs the operation.
     /// </summary>
     /// <param name="spec">The spec.</param>
+    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public virtual async Task<PaginatedResult<TEntity>> QueryAsync(ISpecification<TEntity> spec, CancellationToken cancellationToken = default)
     {

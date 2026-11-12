@@ -1,6 +1,3 @@
-using MyApp.Inventory.Domain.Entities;
-using MyApp.Shared.Domain.DTOs.Examples;
-
 namespace MyApp.Purchasing.Domain.Entities;
 
 /// <summary>

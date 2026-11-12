@@ -82,7 +82,6 @@ public class BillingDbContext : AuditableDbContext
 
         foreach (var creditNoteEntry in ChangeTracker.Entries<CreditNote>()
                      .Where(e => e.State is EntityState.Modified or EntityState.Unchanged))
-        {
             foreach (var line in creditNoteEntry.Entity.Lines)
             {
                 var alreadyStored = CreditNoteLines.AsNoTracking().Any(l => l.Id == line.Id);
@@ -91,7 +90,6 @@ public class BillingDbContext : AuditableDbContext
                     Entry(line).State = EntityState.Added;
                 }
             }
-        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
