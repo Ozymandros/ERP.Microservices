@@ -438,6 +438,8 @@ function Show-AccessInfo {
 
   Aspire dashboard UI:
     kubectl port-forward -n myapp-platform svc/aspire-dashboard 18888:18888
+    kubectl port-forward -n myapp-platform svc/aspire-dashboard 4317:4317
+    kubectl port-forward -n myapp-platform svc/aspire-dashboard 4318:4318
     http://localhost:18888/
 
 "@ -ForegroundColor Yellow
