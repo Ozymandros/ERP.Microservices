@@ -19,7 +19,7 @@ public class InventoryReservationRepository : Repository<InventoryReservation, G
 
     /// <summary>Get Active By Order Id Async.</summary>
     /// <param name="orderId">The order Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<List<InventoryReservation>> GetActiveByOrderIdAsync(Guid orderId, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<InventoryReservation>()
@@ -28,7 +28,7 @@ public class InventoryReservationRepository : Repository<InventoryReservation, G
     }
 
     /// <summary>Get Expired Async.</summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<List<InventoryReservation>> GetExpiredAsync(CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<InventoryReservation>()

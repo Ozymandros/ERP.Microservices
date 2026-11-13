@@ -22,7 +22,7 @@ public class AIProviderRepository : Repository<AIProvider, Guid>, IAIProviderRep
     /// Gets an item by its unique identifier asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public override async Task<AIProvider?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {

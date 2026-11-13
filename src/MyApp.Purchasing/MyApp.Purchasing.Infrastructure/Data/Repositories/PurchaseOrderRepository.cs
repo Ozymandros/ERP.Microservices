@@ -18,7 +18,7 @@ public class PurchaseOrderRepository : Repository<PurchaseOrder, Guid>, IPurchas
 
     /// <summary>Get By Suppliers Id Async.</summary>
     /// <param name="supplierId">The supplier Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<IEnumerable<PurchaseOrder>> GetBySuppliersIdAsync(Guid supplierId, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<PurchaseOrder>()
@@ -29,7 +29,7 @@ public class PurchaseOrderRepository : Repository<PurchaseOrder, Guid>, IPurchas
 
     /// <summary>Get By Status Async.</summary>
     /// <param name="status">The status.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<IEnumerable<PurchaseOrder>> GetByStatusAsync(PurchaseOrderStatus status, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<PurchaseOrder>()
@@ -40,7 +40,7 @@ public class PurchaseOrderRepository : Repository<PurchaseOrder, Guid>, IPurchas
 
     /// <summary>Get With Lines Async.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<PurchaseOrder?> GetWithLinesAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<PurchaseOrder>()
@@ -53,7 +53,7 @@ public class PurchaseOrderRepository : Repository<PurchaseOrder, Guid>, IPurchas
     /// Gets the order number asynchronously.
     /// </summary>
     /// <param name="orderNumber">The order Number.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<PurchaseOrder?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default)
     {

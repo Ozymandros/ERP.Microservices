@@ -15,26 +15,31 @@ public interface IInventoryTransactionService
 {
     /// <summary>Retrieves an inventory transaction by its unique identifier.</summary>
     /// <param name="id">The unique identifier of the transaction.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The matching <see cref="InventoryTransactionDto"/>, or <c>null</c> if not found.</returns>
     Task<InventoryTransactionDto?> GetTransactionByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves an inventory transaction by its external reference number.</summary>
     /// <param name="referenceNumber">The reference number to search for.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The matching <see cref="InventoryTransactionDto"/>, or <c>null</c> if not found.</returns>
     Task<InventoryTransactionDto?> GetTransactionByReferenceNumberAsync(string referenceNumber, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves all inventory transactions for a specific product.</summary>
     /// <param name="productId">The unique identifier of the product.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A collection of matching <see cref="InventoryTransactionDto"/> records.</returns>
     Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByProductIdAsync(Guid productId, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves all inventory transactions for a specific warehouse.</summary>
     /// <param name="warehouseId">The unique identifier of the warehouse.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A collection of matching <see cref="InventoryTransactionDto"/> records.</returns>
     Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByWarehouseIdAsync(Guid warehouseId, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves all inventory transactions of a given transaction type.</summary>
     /// <param name="transactionType">The type of transactions to retrieve.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A collection of matching <see cref="InventoryTransactionDto"/> records.</returns>
     Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByTypeAsync(TransactionType transactionType, CancellationToken cancellationToken = default);
 
@@ -45,11 +50,13 @@ public interface IInventoryTransactionService
     /// <summary>Retrieves a paginated list of all inventory transactions.</summary>
     /// <param name="pageNumber">The one-based page number to return.</param>
     /// <param name="pageSize">The number of items per page.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A <see cref="PaginatedResult{InventoryTransactionDto}"/> for the requested page.</returns>
     Task<PaginatedResult<InventoryTransactionDto>> GetAllTransactionsPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 
     /// <summary>Queries inventory transactions using a specification that encapsulates filtering, sorting and pagination.</summary>
     /// <param name="spec">The specification to apply.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A <see cref="PaginatedResult{InventoryTransactionDto}"/> matching the specification.</returns>
     Task<PaginatedResult<InventoryTransactionDto>> QueryTransactionsAsync(ISpecification<InventoryTransaction> spec, CancellationToken cancellationToken = default);
 

@@ -1,4 +1,4 @@
-﻿using MyApp.Shared.Domain.DTOs;
+using MyApp.Shared.Domain.DTOs;
 
 namespace MyApp.Auth.Application.Contracts.DTOs;
 

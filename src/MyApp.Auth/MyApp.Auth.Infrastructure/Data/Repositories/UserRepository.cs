@@ -25,6 +25,7 @@ public class UserRepository : Repository<ApplicationUser, Guid>, IUserRepository
     /// Gets the email asynchronously.
     /// </summary>
     /// <param name="email">The email.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="ApplicationUser"/>, or <c>null</c> if not found.</returns>
     public async Task<ApplicationUser?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
@@ -39,6 +40,7 @@ public class UserRepository : Repository<ApplicationUser, Guid>, IUserRepository
     /// </summary>
     /// <param name="externalProvider">The external Provider.</param>
     /// <param name="externalId">The external Id.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="ApplicationUser"/>, or <c>null</c> if not found.</returns>
     public async Task<ApplicationUser?> GetByExternalIdAsync(string externalProvider, string externalId, CancellationToken cancellationToken = default)
     {
@@ -51,6 +53,7 @@ public class UserRepository : Repository<ApplicationUser, Guid>, IUserRepository
     /// Gets the role asynchronously.
     /// </summary>
     /// <param name="roleName">The role Name.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of <see cref="ApplicationUser"/> entities in the role.</returns>
     public async Task<IEnumerable<ApplicationUser>> GetByRoleAsync(string roleName, CancellationToken cancellationToken = default)
     {
@@ -68,6 +71,7 @@ public class UserRepository : Repository<ApplicationUser, Guid>, IUserRepository
     /// Email exists asynchronously.
     /// </summary>
     /// <param name="email">The email.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns><c>true</c> if a user with the email exists; otherwise, <c>false</c>.</returns>
     public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default)
     {

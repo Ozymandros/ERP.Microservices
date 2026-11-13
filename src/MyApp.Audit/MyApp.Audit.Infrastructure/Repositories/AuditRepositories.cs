@@ -25,7 +25,7 @@ public class EntityChangeRepository : Repository<EntityChange, Guid>, IEntityCha
     /// Gets the id with properties asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="EntityChange"/> with property changes included, or <see langword="null"/> if not found.</returns>
     public async Task<EntityChange?> GetByIdWithPropertiesAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -41,7 +41,7 @@ public class EntityChangeRepository : Repository<EntityChange, Guid>, IEntityCha
     /// </summary>
     /// <param name="entityName">The entity Name.</param>
     /// <param name="entityId">The entity Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A list of entity change records for the specified entity.</returns>
     public async Task<List<EntityChange>> GetByEntityAsync(
         string entityName,
@@ -62,7 +62,7 @@ public class EntityChangeRepository : Repository<EntityChange, Guid>, IEntityCha
     /// </summary>
     /// <param name="spec">The spec.</param>
     /// <returns>A paginated result containing the matching entity change records.</returns>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="spec"/> is <see langword="null"/>.</exception>
     public override async Task<PaginatedResult<EntityChange>> QueryAsync(ISpecification<EntityChange> spec, CancellationToken cancellationToken = default)
     {

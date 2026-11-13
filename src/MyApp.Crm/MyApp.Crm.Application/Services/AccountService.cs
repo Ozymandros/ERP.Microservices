@@ -42,7 +42,7 @@ public sealed class AccountService : AppServiceBase, IAccountService
 
     /// <summary>Get By Id Async.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<AccountDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -51,7 +51,7 @@ public sealed class AccountService : AppServiceBase, IAccountService
 
     /// <summary>Get By Customer Id Async.</summary>
     /// <param name="customerId">The customer Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
 public async Task<AccountDto?> GetByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByCustomerIdAsync(customerId, cancellationToken);
@@ -61,7 +61,7 @@ public async Task<AccountDto?> GetByCustomerIdAsync(Guid customerId, Cancellatio
     /// <summary>Gets an account by its tax identification number.</summary>
     /// Gets the tax id asynchronously.
     /// <param name="taxId">The tax Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The account DTO, or null if not found.</returns>
     public async Task<AccountDto?> GetByTaxIdAsync(string taxId, CancellationToken cancellationToken = default)
     {
@@ -71,7 +71,7 @@ public async Task<AccountDto?> GetByCustomerIdAsync(Guid customerId, Cancellatio
 
     /// <summary>Gets all accounts.</summary>
     /// Lists items asynchronously.
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of all account DTOs.</returns>
     public async Task<IEnumerable<AccountDto>> ListAsync(CancellationToken cancellationToken = default)
     {
@@ -81,7 +81,7 @@ public async Task<AccountDto?> GetByCustomerIdAsync(Guid customerId, Cancellatio
 
     /// <summary>Query Async.</summary>
     /// <param name="query">The query.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<PaginatedResult<AccountDto>> QueryAsync(QuerySpec query, CancellationToken cancellationToken = default)
     {
         var spec = new AccountQuerySpec(query);
@@ -92,7 +92,7 @@ public async Task<AccountDto?> GetByCustomerIdAsync(Guid customerId, Cancellatio
 
     /// <summary>Upsert From Sales Async.</summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<AccountDto> UpsertFromSalesAsync(UpsertAccountDto dto, CancellationToken cancellationToken = default)
     {
         if (dto.CustomerId == Guid.Empty) throw new ArgumentException("CustomerId is required.", nameof(dto.CustomerId));
@@ -119,7 +119,7 @@ public async Task<AccountDto?> GetByCustomerIdAsync(Guid customerId, Cancellatio
     /// <summary>Update Owner Async.</summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<AccountDto> UpdateOwnerAsync(Guid id, UpdateAccountOwnerDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);

@@ -98,7 +98,7 @@ public class MemoryRepository : DbContextRepositoryBase, IMemoryRepository
     /// Performs the operation.
     /// </summary>
     /// <param name="sessionId">The session Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <inheritdoc />
     public async Task<IReadOnlyList<AgentMemory>> GetMessagesAsync(Guid sessionId, CancellationToken cancellationToken = default)
     {
@@ -114,7 +114,7 @@ public class MemoryRepository : DbContextRepositoryBase, IMemoryRepository
     /// </summary>
     /// <param name="sessionId">The session Id.</param>
     /// <param name="count">The count.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <inheritdoc />
     public async Task<IEnumerable<AgentMemory>> GetRecentMemoriesAsync(Guid sessionId, int count, CancellationToken cancellationToken = default)
     {
@@ -136,7 +136,7 @@ public class MemoryRepository : DbContextRepositoryBase, IMemoryRepository
     /// <param name="query">The query.</param>
     /// <param name="embeddingProvider">The embedding Provider.</param>
     /// <param name="topK">The top K.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <inheritdoc />
     public async Task<IEnumerable<AgentMemory>> SearchSimilarAsync(
         Guid sessionId,
@@ -218,7 +218,7 @@ public class MemoryRepository : DbContextRepositoryBase, IMemoryRepository
     /// <param name="memory">The memory.</param>
     /// <param name="embeddingProvider">The embedding Provider.</param>
     /// <param name="generateEmbedding">The generate Embedding.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <inheritdoc />
     public Task AddMemoryAsync(
         AgentMemory memory,
@@ -235,7 +235,7 @@ public class MemoryRepository : DbContextRepositoryBase, IMemoryRepository
     /// <param name="memories">The memories.</param>
     /// <param name="embeddingProvider">The embedding Provider.</param>
     /// <param name="generateEmbeddings">The generate Embeddings.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <inheritdoc />
     public async Task AddMemoriesAsync(
         IEnumerable<AgentMemory> memories,

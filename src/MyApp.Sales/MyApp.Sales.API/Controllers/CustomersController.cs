@@ -36,7 +36,7 @@ public class CustomersController : ControllerBase
 
     /// <summary>
     /// Export all customers as XLSX
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// </summary>
     [HttpGet("export-xlsx")]
     [HasPermission("Sales", "Read")]
@@ -60,7 +60,7 @@ public class CustomersController : ControllerBase
 
     /// <summary>
     /// Export all customers as PDF
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// </summary>
     [HttpGet("export-pdf")]
     [HasPermission("Sales", "Read")]
@@ -86,7 +86,7 @@ public class CustomersController : ControllerBase
     /// Get all customers (optionally paginated and filtered)
     /// </summary>
     /// <param name="query">The query.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet]
     [HasPermission("Sales", "Read")]
     [ProducesResponseType(typeof(IEnumerable<CustomerDto>), 200)]
@@ -128,7 +128,7 @@ public class CustomersController : ControllerBase
     /// Get a specific customer by ID - Requires Sales.Read permission
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet("{id}")]
     [HasPermission("Sales", "Read")]
     [ProducesResponseType(typeof(CustomerDto), 200)]
@@ -164,7 +164,7 @@ public class CustomersController : ControllerBase
     /// Get a specific customer by Name - Requires Sales.Read permission
     /// </summary>
     /// <param name="name">The name.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet("name/{name}")]
     [HasPermission("Sales", "Read")]
     [ProducesResponseType(typeof(CustomerDto), 200)]
@@ -200,7 +200,7 @@ public class CustomersController : ControllerBase
     /// Get a specific customer by Email - Requires Sales.Read permission
     /// </summary>
     /// <param name="email">The email.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet("email/{email}")]
     [HasPermission("Sales", "Read")]
     [ProducesResponseType(typeof(CustomerDto), 200)]
@@ -239,7 +239,7 @@ public class CustomersController : ControllerBase
     /// Search customers with advanced filtering, sorting, and pagination - Requires Sales.Read permission
     /// </summary>
     /// <param name="query">The query.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <remarks>
     /// Supported filters: name, email, country, city, isActive
     /// Supported sort fields: id, name, email, city, country, createdAt

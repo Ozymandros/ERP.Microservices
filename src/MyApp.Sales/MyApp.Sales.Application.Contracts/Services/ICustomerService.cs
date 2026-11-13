@@ -10,37 +10,37 @@ public interface ICustomerService
 {
     /// <summary>Returns the customer with the given identifier, or <see langword="null"/> if not found.</summary>
     /// <param name="id">The unique identifier of the customer.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="CustomerDto"/>, or <see langword="null"/>.</returns>
     Task<CustomerDto?> GetCustomerByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>Returns the customer with the given name, or <see langword="null"/> if not found.</summary>
     /// <param name="name">The exact customer name to search for.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="CustomerDto"/>, or <see langword="null"/>.</returns>
     Task<CustomerDto?> GetCustomerByNameAsync(string name, CancellationToken cancellationToken = default);
 
     /// <summary>Returns the customer with the given email address, or <see langword="null"/> if not found.</summary>
     /// <param name="email">The exact email address to search for.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="CustomerDto"/>, or <see langword="null"/>.</returns>
     Task<CustomerDto?> GetCustomerByEmailAsync(string email, CancellationToken cancellationToken = default);
 
     /// <summary>Returns all customers as an enumerable sequence.</summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>All <see cref="CustomerDto"/> records.</returns>
     Task<IEnumerable<CustomerDto>> ListCustomersAsync(CancellationToken cancellationToken = default);
 
     /// <summary>Returns a paginated list of customers.</summary>
     /// <param name="pageNumber">The 1-based page number.</param>
     /// <param name="pageSize">The number of items per page.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A <see cref="PaginatedResult{T}"/> containing the requested page of customers.</returns>
     Task<PaginatedResult<CustomerDto>> ListCustomersPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 
     /// <summary>Returns a paginated list of customers that satisfy the given specification.</summary>
     /// <param name="spec">The specification defining filtering, sorting, and pagination criteria.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A <see cref="PaginatedResult{T}"/> containing matching customers.</returns>
     Task<PaginatedResult<CustomerDto>> QueryCustomersAsync(ISpecification<Customer> spec, CancellationToken cancellationToken = default);
 

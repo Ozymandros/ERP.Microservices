@@ -21,7 +21,7 @@ public class DefaultAgentToolExecutor : IAgentToolExecutor
     /// </summary>
     /// <param name="toolName">The tool Name.</param>
     /// <param name="arguments">The arguments.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <inheritdoc />
     public async Task<string> ExecuteAsync(string toolName, string arguments, CancellationToken cancellationToken = default)
     {

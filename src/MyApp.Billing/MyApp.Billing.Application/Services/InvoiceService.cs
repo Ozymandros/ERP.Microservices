@@ -30,6 +30,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// </summary>
     /// <param name="invoiceRepository">The invoice Repository.</param>
     /// <param name="creditNoteRepository">The credit Note Repository.</param>
+    /// <param name="serviceInvoker">The Dapr service invoker for cross-service calls.</param>
     /// <param name="logger">The logger.</param>
     /// <param name="unitOfWork">The unit Of Work.</param>
     /// <param name="eventPublisher">The event Publisher.</param>
@@ -52,7 +53,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Creates an invoice asynchronously.
     /// </summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<InvoiceDto> CreateInvoiceAsync(CreateInvoiceDto dto, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(dto.InvoiceNumber))
@@ -98,7 +99,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// <param name="invoiceId">The invoice Id.</param>
     /// <param name="invoiceNumber">The invoice Number.</param>
     /// <param name="issueDate">The issue Date.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<InvoiceDto> IssueInvoiceAsync(Guid invoiceId, string invoiceNumber, DateTime issueDate, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(invoiceNumber))
@@ -138,7 +139,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Record payment asynchronously.
     /// </summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<InvoiceDto> RecordPaymentAsync(RecordPaymentDto dto, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(dto.InvoiceId)
@@ -166,7 +167,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// </summary>
     /// <param name="invoiceId">The invoice Id.</param>
     /// <param name="reason">The reason.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<InvoiceDto> CancelInvoiceAsync(Guid invoiceId, string reason, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(invoiceId)
@@ -193,7 +194,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Creates a credit note asynchronously.
     /// </summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<CreditNoteDto> CreateCreditNoteAsync(CreateCreditNoteDto dto, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(dto.InvoiceId)
@@ -228,7 +229,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Gets the invoice by id asynchronously.
     /// </summary>
     /// <param name="invoiceId">The invoice Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<InvoiceDto?> GetInvoiceByIdAsync(Guid invoiceId, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(invoiceId);
@@ -239,7 +240,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Gets the invoice by invoice number asynchronously.
     /// </summary>
     /// <param name="invoiceNumber">The invoice Number.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<InvoiceDto?> GetInvoiceByInvoiceNumberAsync(string invoiceNumber, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByInvoiceNumberAsync(invoiceNumber, cancellationToken);
@@ -250,7 +251,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Gets the invoices by customer id asynchronously.
     /// </summary>
     /// <param name="customerId">The customer Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<List<InvoiceDto>> GetInvoicesByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default)
     {
         var invoices = await _invoiceRepository.GetByCustomerIdAsync(customerId, cancellationToken);
@@ -260,7 +261,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// <summary>
     /// Gets the open invoices asynchronously.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<List<InvoiceDto>> GetOpenInvoicesAsync(CancellationToken cancellationToken = default)
     {
         var invoices = await _invoiceRepository.GetOpenInvoicesAsync(cancellationToken);
@@ -271,7 +272,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Gets the invoices by order id asynchronously.
     /// </summary>
     /// <param name="orderId">The order Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<List<InvoiceDto>> GetInvoicesByOrderIdAsync(Guid orderId, CancellationToken cancellationToken = default)
     {
         var invoices = await _invoiceRepository.GetInvoicesByOrderIdAsync(orderId, cancellationToken);
@@ -282,7 +283,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Query invoices asynchronously.
     /// </summary>
     /// <param name="spec">The spec.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<PaginatedResult<InvoiceDto>> QueryInvoicesAsync(ISpecification<Invoice> spec, CancellationToken cancellationToken = default)
     {
         var result = await _invoiceRepository.QueryAsync(spec);

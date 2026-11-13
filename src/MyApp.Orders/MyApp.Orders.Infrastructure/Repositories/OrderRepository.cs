@@ -25,7 +25,7 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
     /// Performs the operation.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <inheritdoc />
     public override async Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -36,7 +36,7 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
     /// Performs the operation.
     /// </summary>
     /// <param name="orderNumber">The order Number.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <inheritdoc />
     public async Task<Order?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default)
     {
@@ -46,7 +46,7 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
     /// <summary>
     /// Performs the operation.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <inheritdoc />
     public override async Task<IEnumerable<Order>> GetAllAsync(CancellationToken cancellationToken = default)
     {
@@ -57,7 +57,7 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
     /// Performs the operation.
     /// </summary>
     /// <param name="spec">The spec.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <inheritdoc />
     public override async Task<PaginatedResult<Order>> QueryAsync(ISpecification<Order> spec, CancellationToken cancellationToken = default)
     {

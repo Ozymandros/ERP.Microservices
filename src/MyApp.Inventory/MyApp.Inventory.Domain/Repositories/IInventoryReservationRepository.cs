@@ -10,6 +10,7 @@ public interface IInventoryReservationRepository : IRepository<InventoryReservat
 {
     /// <summary>Retrieves all active (not yet released or expired) reservations for a given order.</summary>
     /// <param name="orderId">The unique identifier of the order.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A list of active <see cref="InventoryReservation"/> entities for the given order.</returns>
     Task<List<InventoryReservation>> GetActiveByOrderIdAsync(Guid orderId, CancellationToken cancellationToken = default);
 

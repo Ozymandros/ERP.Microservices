@@ -35,7 +35,7 @@ public class MicrosoftAgentExecutionService : IAgentExecutionService
     /// </summary>
     /// <param name="context">The context.</param>
     /// <param name="userMessage">The user Message.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <inheritdoc />
     public async Task<AgentExecutionResult> ExecuteAsync(AgentExecutionContext context, string userMessage, CancellationToken cancellationToken = default)
     {

@@ -39,7 +39,7 @@ public class AIProviderService : AppServiceBase, IAIProviderService
     /// <summary>
     /// Lists items asynchronously.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<IEnumerable<AIProviderDto>> ListAsync(CancellationToken cancellationToken = default)
     {
@@ -53,7 +53,7 @@ public class AIProviderService : AppServiceBase, IAIProviderService
     /// Gets an item by its unique identifier asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<AIProviderDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -65,7 +65,7 @@ public class AIProviderService : AppServiceBase, IAIProviderService
     /// Creates a new item asynchronously.
     /// </summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<AIProviderDto> CreateAsync(CreateAIProviderDto dto, CancellationToken cancellationToken = default)
     {
@@ -97,7 +97,7 @@ public class AIProviderService : AppServiceBase, IAIProviderService
     /// </summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<AIProviderDto> UpdateAsync(Guid id, UpdateAIProviderDto dto, CancellationToken cancellationToken = default)
     {
@@ -136,7 +136,7 @@ public class AIProviderService : AppServiceBase, IAIProviderService
     /// Deletes an item asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var provider = await providerRepository.GetByIdAsync(id);

@@ -18,7 +18,7 @@ public interface IEntityChangeRepository : IRepository<EntityChange, Guid>
     /// </summary>
     /// <param name="entityName">The name of the entity type (e.g. <c>"Product"</c>).</param>
     /// <param name="entityId">The unique identifier of the entity instance.</param>
-    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A list of entity change records for the specified entity.</returns>
     Task<List<EntityChange>> GetByEntityAsync(
         string entityName,

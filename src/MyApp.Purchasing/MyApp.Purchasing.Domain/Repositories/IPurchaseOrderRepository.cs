@@ -10,22 +10,22 @@ public interface IPurchaseOrderRepository : IRepository<PurchaseOrder, Guid>
 {
     /// <summary>Returns all purchase orders placed with the specified supplier.</summary>
     /// <param name="supplierId">The unique identifier of the supplier.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of purchase orders for the supplier.</returns>
     Task<IEnumerable<PurchaseOrder>> GetBySuppliersIdAsync(Guid supplierId, CancellationToken cancellationToken = default);
     /// <summary>Returns all purchase orders with the specified status.</summary>
     /// <param name="status">The status to filter by.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of purchase orders matching the status.</returns>
     Task<IEnumerable<PurchaseOrder>> GetByStatusAsync(PurchaseOrderStatus status, CancellationToken cancellationToken = default);
     /// <summary>Returns a purchase order including its lines for the specified ID.</summary>
     /// <param name="id">The unique identifier of the purchase order.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The purchase order with lines loaded, or <c>null</c> if not found.</returns>
     Task<PurchaseOrder?> GetWithLinesAsync(Guid id, CancellationToken cancellationToken = default);
     /// <summary>Returns the purchase order with the specified order number.</summary>
     /// <param name="orderNumber">The order number to look up.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching purchase order, or <c>null</c> if not found.</returns>
     Task<PurchaseOrder?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default);
 }

@@ -25,6 +25,7 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     /// Gets the name asynchronously.
     /// </summary>
     /// <param name="name">The name.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="ApplicationRole"/>, or <c>null</c> if not found.</returns>
     public async Task<ApplicationRole?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
     {
@@ -37,6 +38,7 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     /// Name exists asynchronously.
     /// </summary>
     /// <param name="name">The name.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns><c>true</c> if a role with the name exists; otherwise, <c>false</c>.</returns>
     public async Task<bool> NameExistsAsync(string name, CancellationToken cancellationToken = default)
     {
@@ -47,6 +49,7 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     /// Gets the roles by user id asynchronously.
     /// </summary>
     /// <param name="userId">The user Id.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of <see cref="ApplicationRole"/> entities for the user.</returns>
     public async Task<IEnumerable<ApplicationRole>> GetRolesByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
@@ -72,6 +75,7 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     /// Gets the permissions for role asynchronously.
     /// </summary>
     /// <param name="roleId">The role Id.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of <see cref="Permission"/> entities assigned to the role.</returns>
     public async Task<IEnumerable<Permission>> GetPermissionsForRoleAsync(Guid roleId, CancellationToken cancellationToken = default)
     {
@@ -88,6 +92,7 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     /// </summary>
     /// <param name="roleId">The role Id.</param>
     /// <param name="permissionId">The permission Id.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns><c>true</c> if the role has the permission; otherwise, <c>false</c>.</returns>
     public async Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId, CancellationToken cancellationToken = default)
     {
@@ -100,6 +105,7 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
     /// </summary>
     /// <param name="roleId">The role Id.</param>
     /// <param name="permissionId">The permission Id.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns><c>true</c> if the permission was removed; <c>false</c> if the association was not found.</returns>
     public async Task<bool> RemovePermissionFromRoleAsync(Guid roleId, Guid permissionId, CancellationToken cancellationToken = default)
     {

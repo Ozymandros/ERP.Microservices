@@ -14,7 +14,7 @@ public sealed class JwtSecuritySchemeDocumentTransformer : IOpenApiDocumentTrans
     /// </summary>
     /// <param name="document">The document.</param>
     /// <param name="context">The context.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
     {
         // Ensure the Components dictionary exists

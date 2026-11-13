@@ -1,4 +1,4 @@
-﻿namespace MyApp.Shared.Domain.Caching;
+namespace MyApp.Shared.Domain.Caching;
 
 /// <summary>
 /// Provides caching service abstraction for distributed cache operations.

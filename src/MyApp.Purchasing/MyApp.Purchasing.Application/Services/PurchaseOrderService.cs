@@ -60,6 +60,7 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     /// Gets the purchase order by id asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<PurchaseOrderDto?> GetPurchaseOrderByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -71,6 +72,7 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     /// Gets the purchase order by order number asynchronously.
     /// </summary>
     /// <param name="orderNumber">The order Number.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<PurchaseOrderDto?> GetPurchaseOrderByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default)
     {
@@ -92,6 +94,7 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     /// Gets the purchase orders by supplier asynchronously.
     /// </summary>
     /// <param name="supplierId">The supplier Id.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersBySupplierAsync(Guid supplierId, CancellationToken cancellationToken = default)
     {
@@ -103,6 +106,7 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     /// Gets the purchase orders by status asynchronously.
     /// </summary>
     /// <param name="status">The status.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersByStatusAsync(PurchaseOrderStatus status, CancellationToken cancellationToken = default)
     {
@@ -226,6 +230,7 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
 
     /// <summary>Returns a paginated, filtered and sorted collection of purchase orders.</summary>
     /// <param name="spec">The specification that defines filtering, sorting, and paging.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A paginated result containing matching purchase order DTOs.</returns>
     public async Task<PaginatedResult<PurchaseOrderDto>> QueryPurchaseOrdersAsync(ISpecification<PurchaseOrder> spec, CancellationToken cancellationToken = default)
     {

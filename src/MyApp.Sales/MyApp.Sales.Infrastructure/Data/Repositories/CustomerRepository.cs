@@ -23,7 +23,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
 
         /// <summary>Get By Id Async.</summary>
         /// <param name="id">The id.</param>
-        /// <param name="cancellationToken">The cancellation Token.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         public override async Task<Customer?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Customers
@@ -32,7 +32,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         }
 
         /// <summary>List Async.</summary>
-        /// <param name="cancellationToken">The cancellation Token.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         public async Task<IEnumerable<Customer>> ListAsync(CancellationToken cancellationToken = default)
         {
             return await _context.Customers
@@ -41,7 +41,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         }
 
         /// <summary>Get All Async.</summary>
-        /// <param name="cancellationToken">The cancellation Token.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         public override async Task<IEnumerable<Customer>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await ListAsync(cancellationToken);
@@ -51,7 +51,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         /// <param name="pageNumber">The page Number.</param>
         /// <param name="pageSize">The page Size.</param>
         /// <param name="includes">The includes.</param>
-        /// <param name="cancellationToken">The cancellation Token.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         public override async Task<PaginatedResult<Customer>> GetAllPaginatedAsync(int pageNumber, int pageSize, IEnumerable<Expression<Func<Customer, object>>>? includes = null, CancellationToken cancellationToken = default)
         {
             var paginationParams = new PaginationParams(pageNumber, pageSize);
@@ -87,7 +87,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         /// Gets the name asynchronously.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <param name="cancellationToken">The cancellation Token.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
         public async Task<Customer?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
         {
@@ -100,7 +100,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         /// Gets the email asynchronously.
         /// </summary>
         /// <param name="email">The email.</param>
-        /// <param name="cancellationToken">The cancellation Token.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
         public async Task<Customer?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
         {

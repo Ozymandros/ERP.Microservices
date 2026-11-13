@@ -50,7 +50,7 @@ public partial class UsersController : ControllerBase
     /// Gets all users, or executes a filtered/paginated query when query parameters are present.
     /// </summary>
     /// <param name="query">Optional query specification for filtering, sorting, and pagination.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A list of <see cref="UserDto"/> objects, or a paginated result when query parameters are provided.</returns>
     [HttpGet]
     [HasPermission("Users", "Read")]
@@ -91,7 +91,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Exports all users as an XLSX spreadsheet file.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>An XLSX file containing all users.</returns>
     [HttpGet("export-xlsx")]
     [HasPermission("Users", "Read")]
@@ -116,7 +116,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Exports all users as a PDF file.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A PDF file containing all users.</returns>
     [HttpGet("export-pdf")]
     [HasPermission("Users", "Read")]
@@ -143,7 +143,7 @@ public partial class UsersController : ControllerBase
     /// </summary>
     /// <param name="pageNumber">The 1-based page number to retrieve (default: 1).</param>
     /// <param name="pageSize">The number of items per page (default: 10).</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A paginated result containing users for the requested page.</returns>
     [HttpGet("paginated")]
     [HasPermission("Users", "Read")]
@@ -167,7 +167,7 @@ public partial class UsersController : ControllerBase
     /// Searches users with advanced filtering, sorting, and pagination.
     /// </summary>
     /// <param name="query">The query specification containing filter, sort, and pagination parameters.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A paginated result containing users matching the query criteria.</returns>
     /// <remarks>
     /// Supported filters: isActive, email, userName, isExternalLogin
@@ -206,7 +206,6 @@ public partial class UsersController : ControllerBase
     /// Creates a new user account.
     /// </summary>
     /// <param name="user">The data transfer object containing user creation details.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <returns>The created <see cref="UserDto"/>, or 400 if creation failed.</returns>
     [HttpPost("create")]
     [HasPermission("Users", "Create")]
@@ -234,7 +233,7 @@ public partial class UsersController : ControllerBase
     /// <summary>
     /// Gets the profile of the currently authenticated user.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The <see cref="UserDto"/> for the current user, or 404 if the identity cannot be resolved.</returns>
     [HttpGet("me")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
@@ -263,7 +262,7 @@ public partial class UsersController : ControllerBase
     /// Gets a user by their unique identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the user to retrieve.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The <see cref="UserDto"/> for the specified user, or 404 if not found.</returns>
     [HttpGet("{id}")]
     [HasPermission("Users", "Read")]
@@ -304,7 +303,7 @@ public partial class UsersController : ControllerBase
     /// Gets a user by their email address.
     /// </summary>
     /// <param name="email">The email address of the user to retrieve.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The <see cref="UserDto"/> for the specified user, or 404 if not found.</returns>
     [HttpGet("email/{email}")]
     [HasPermission("Users", "Read")]
@@ -488,7 +487,7 @@ public partial class UsersController : ControllerBase
     /// Gets all roles assigned to the specified user.
     /// </summary>
     /// <param name="id">The unique identifier of the user whose roles to retrieve.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of <see cref="RoleDto"/> objects assigned to the user.</returns>
     [HttpGet("{id}/roles")]
     [HasPermission("Users", "Read")]

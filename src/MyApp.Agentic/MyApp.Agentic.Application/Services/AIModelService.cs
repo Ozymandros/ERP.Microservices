@@ -62,7 +62,7 @@ public class AIModelService : AppServiceBase, IAIModelService
 
     /// <summary>Retrieves a single AI model by its identifier.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The model DTO, or <see langword="null"/> if not found.</returns>
     public async Task<AIModelDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -72,7 +72,7 @@ public class AIModelService : AppServiceBase, IAIModelService
 
     /// <summary>Creates a new AI model, inheriting unspecified parameters from the parent provider.</summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The created model DTO.</returns>
     /// <exception cref="InvalidOperationException">Thrown when the referenced provider does not exist.</exception>
     public async Task<AIModelDto> CreateAsync(CreateAIModelDto dto, CancellationToken cancellationToken = default)
@@ -105,7 +105,7 @@ public class AIModelService : AppServiceBase, IAIModelService
     /// <summary>Updates an existing AI model.</summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The updated model DTO.</returns>
     /// <exception cref="InvalidOperationException">Thrown when the model or referenced provider does not exist.</exception>
     public async Task<AIModelDto> UpdateAsync(Guid id, UpdateAIModelDto dto, CancellationToken cancellationToken = default)

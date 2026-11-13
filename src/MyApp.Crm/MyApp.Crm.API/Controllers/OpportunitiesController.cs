@@ -33,7 +33,7 @@ public class OpportunitiesController : ControllerBase
     /// <param name="ownerUsername">The owner Username.</param>
     /// <param name="fromExpectedCloseDate">The from Expected Close Date.</param>
     /// <param name="toExpectedCloseDate">The to Expected Close Date.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet("forecast")]
     [HasPermission("CRM", "Read")]
     public async Task<IActionResult> GetForecast(
@@ -62,7 +62,7 @@ public class OpportunitiesController : ControllerBase
 
     /// <summary>Get All.</summary>
     /// <param name="query">The query.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet]
     [HasPermission("CRM", "Read")]
     [ProducesResponseType(typeof(IEnumerable<OpportunityDto>), StatusCodes.Status200OK)]
@@ -92,7 +92,7 @@ public class OpportunitiesController : ControllerBase
 
     /// <summary>Get By Id.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet("{id:guid}")]
     [HasPermission("CRM", "Read")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
@@ -103,7 +103,7 @@ public class OpportunitiesController : ControllerBase
 
     /// <summary>Create.</summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpPost]
     [HasPermission("CRM", "Create")]
     public async Task<IActionResult> Create([FromBody] CreateOpportunityDto dto, CancellationToken cancellationToken)
@@ -115,7 +115,7 @@ public class OpportunitiesController : ControllerBase
     /// <summary>Update Forecast.</summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpPut("{id:guid}/forecast")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> UpdateForecast(Guid id, [FromBody] UpdateOpportunityForecastDto dto, CancellationToken cancellationToken)
@@ -139,7 +139,7 @@ public class OpportunitiesController : ControllerBase
     /// <summary>Move Stage.</summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpPost("{id:guid}/move-stage")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> MoveStage(Guid id, [FromBody] MoveOpportunityStageDto dto, CancellationToken cancellationToken)
@@ -162,7 +162,7 @@ public class OpportunitiesController : ControllerBase
     /// <summary>Mark Won.</summary>
     /// <param name="id">The id.</param>
     /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpPost("{id:guid}/mark-won")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> MarkWon(Guid id, [FromBody] MarkOpportunityWonRequest request, CancellationToken cancellationToken)
@@ -190,7 +190,7 @@ public class OpportunitiesController : ControllerBase
     /// <summary>Mark Lost.</summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpPost("{id:guid}/mark-lost")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> MarkLost(Guid id, [FromBody] MarkOpportunityLostDto dto, CancellationToken cancellationToken)
@@ -213,7 +213,7 @@ public class OpportunitiesController : ControllerBase
     /// <summary>Add Line.</summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpPost("{id:guid}/lines")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> AddLine(Guid id, [FromBody] CreateOpportunityLineDto dto, CancellationToken cancellationToken)
@@ -242,7 +242,7 @@ public class OpportunitiesController : ControllerBase
     /// <param name="id">The id.</param>
     /// <param name="lineId">The line Id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpPut("{id:guid}/lines/{lineId:guid}")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> UpdateLine(Guid id, Guid lineId, [FromBody] UpdateOpportunityLineDto dto, CancellationToken cancellationToken)
@@ -270,7 +270,7 @@ public class OpportunitiesController : ControllerBase
     /// <summary>Remove Line.</summary>
     /// <param name="id">The id.</param>
     /// <param name="lineId">The line Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpDelete("{id:guid}/lines/{lineId:guid}")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> RemoveLine(Guid id, Guid lineId, CancellationToken cancellationToken)

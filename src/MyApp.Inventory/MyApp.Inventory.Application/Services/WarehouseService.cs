@@ -41,6 +41,7 @@ public class WarehouseService : AppServiceBase, IWarehouseService
     /// <summary>Retrieves a warehouse by its unique identifier.</summary>
     /// Gets the warehouse by id asynchronously.
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The matching <see cref="WarehouseDto"/>, or <c>null</c> if not found.</returns>
     public async Task<WarehouseDto?> GetWarehouseByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -51,6 +52,7 @@ public class WarehouseService : AppServiceBase, IWarehouseService
     /// <summary>Retrieves a warehouse by its name.</summary>
     /// Gets the warehouse by name asynchronously.
     /// <param name="name">The name.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The matching <see cref="WarehouseDto"/>, or <c>null</c> if not found.</returns>
     public async Task<WarehouseDto?> GetWarehouseByNameAsync(string name, CancellationToken cancellationToken = default)
     {
@@ -70,6 +72,7 @@ public class WarehouseService : AppServiceBase, IWarehouseService
     /// Gets all warehouses paginated asynchronously.
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A <see cref="PaginatedResult{WarehouseDto}"/> for the requested page.</returns>
     public async Task<PaginatedResult<WarehouseDto>> GetAllWarehousesPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
@@ -150,6 +153,7 @@ public class WarehouseService : AppServiceBase, IWarehouseService
     /// <summary>Queries warehouses using a specification that encapsulates filtering, sorting and pagination.</summary>
     /// Query warehouses asynchronously.
     /// <param name="spec">The spec.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A <see cref="PaginatedResult{WarehouseDto}"/> matching the specification.</returns>
     public async Task<PaginatedResult<WarehouseDto>> QueryWarehousesAsync(ISpecification<Warehouse> spec, CancellationToken cancellationToken = default)
     {

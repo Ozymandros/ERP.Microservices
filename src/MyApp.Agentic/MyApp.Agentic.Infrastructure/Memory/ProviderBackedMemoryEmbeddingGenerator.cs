@@ -40,7 +40,7 @@ public sealed class ProviderBackedMemoryEmbeddingGenerator : IMemoryEmbeddingGen
     /// </summary>
     /// <param name="text">The text.</param>
     /// <param name="provider">The provider.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <inheritdoc />
     public async Task<float[]> GenerateEmbeddingAsync(
         string text,

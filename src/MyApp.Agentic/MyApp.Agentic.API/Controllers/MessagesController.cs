@@ -31,7 +31,7 @@ public class MessagesController : ControllerBase
     /// Processes the message.
     /// </summary>
     /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpPost]
     [HasPermission("Agentic", "Execute")]

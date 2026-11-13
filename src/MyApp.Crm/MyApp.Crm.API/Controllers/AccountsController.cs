@@ -30,7 +30,7 @@ public sealed class AccountsController : ControllerBase
 
     /// <summary>Get All.</summary>
     /// <param name="query">The query.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet]
     [HasPermission("CRM", "Read")]
     [ProducesResponseType(typeof(IEnumerable<AccountDto>), StatusCodes.Status200OK)]
@@ -59,7 +59,7 @@ public sealed class AccountsController : ControllerBase
 
     /// <summary>Get By Tax Id.</summary>
     /// <param name="taxId">The tax Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet("taxid/{taxId}")]
     [HasPermission("CRM", "Read")]
     public async Task<IActionResult> GetByTaxId(string taxId, CancellationToken cancellationToken)
@@ -70,7 +70,7 @@ public sealed class AccountsController : ControllerBase
 
     /// <summary>Get By Customer Id.</summary>
     /// <param name="customerId">The customer Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet("customer/{customerId:guid}")]
     [HasPermission("CRM", "Read")]
     public async Task<IActionResult> GetByCustomerId(Guid customerId, CancellationToken cancellationToken)
@@ -82,7 +82,7 @@ public sealed class AccountsController : ControllerBase
     /// <summary>Update Owner.</summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpPut("{id:guid}/owner")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> UpdateOwner(Guid id, [FromBody] UpdateAccountOwnerDto dto, CancellationToken cancellationToken)

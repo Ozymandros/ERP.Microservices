@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using MyApp.Shared.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 

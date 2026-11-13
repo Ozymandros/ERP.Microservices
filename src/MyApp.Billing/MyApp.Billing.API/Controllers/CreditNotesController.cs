@@ -40,7 +40,7 @@ public class CreditNotesController : ControllerBase
     /// via <c>POST /api/invoices/{id}/credit-notes</c>.
     /// </summary>
     /// <param name="invoiceId">The invoice Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet("invoice/{invoiceId:guid}")]
     [HasPermission("Billing", "Read")]
     [ProducesResponseType(typeof(IEnumerable<CreditNoteDto>), StatusCodes.Status200OK)]

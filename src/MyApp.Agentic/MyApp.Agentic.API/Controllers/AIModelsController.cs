@@ -20,7 +20,7 @@ public class AIModelsController(
     /// <summary>
     /// Gets all items.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpGet]
     [HasPermission("Agentic", "Read")]
@@ -35,7 +35,7 @@ public class AIModelsController(
     /// Gets the provider.
     /// </summary>
     /// <param name="providerId">The provider Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpGet("by-provider/{providerId:guid}")]
     [HasPermission("Agentic", "Read")]
@@ -58,7 +58,7 @@ public class AIModelsController(
     /// Gets an item by its unique identifier.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpGet("{id:guid}")]
     [HasPermission("Agentic", "Read")]
@@ -76,7 +76,7 @@ public class AIModelsController(
     /// Creates a new item.
     /// </summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpPost]
     [HasPermission("Agentic", "Create")]
@@ -104,7 +104,7 @@ public class AIModelsController(
     /// </summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpPut("{id:guid}")]
     [HasPermission("Agentic", "Update")]
@@ -132,7 +132,7 @@ public class AIModelsController(
     /// Deletes an item.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpDelete("{id:guid}")]
     [HasPermission("Agentic", "Delete")]

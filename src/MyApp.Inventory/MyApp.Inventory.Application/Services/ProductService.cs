@@ -41,6 +41,7 @@ public class ProductService : AppServiceBase, IProductService
     /// <summary>Retrieves a product by its unique identifier.</summary>
     /// Gets the product by id asynchronously.
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The matching <see cref="ProductDto"/>, or <c>null</c> if not found.</returns>
     public async Task<ProductDto?> GetProductByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -51,6 +52,7 @@ public class ProductService : AppServiceBase, IProductService
     /// <summary>Retrieves a product by its SKU.</summary>
     /// Gets the product by sku asynchronously.
     /// <param name="sku">The sku.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The matching <see cref="ProductDto"/>, or <c>null</c> if not found.</returns>
     public async Task<ProductDto?> GetProductBySkuAsync(string sku, CancellationToken cancellationToken = default)
     {
@@ -61,6 +63,7 @@ public class ProductService : AppServiceBase, IProductService
     /// <summary>Retrieves a product by its name.</summary>
     /// Gets the product by name asynchronously.
     /// <param name="name">The name.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The matching <see cref="ProductDto"/>, or <c>null</c> if not found.</returns>
     public async Task<ProductDto?> GetProductByNameAsync(string name, CancellationToken cancellationToken = default)
     {
@@ -80,6 +83,7 @@ public class ProductService : AppServiceBase, IProductService
     /// Gets all products paginated asynchronously.
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A <see cref="PaginatedResult{ProductDto}"/> for the requested page.</returns>
     public async Task<PaginatedResult<ProductDto>> GetAllProductsPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
@@ -168,6 +172,7 @@ public class ProductService : AppServiceBase, IProductService
     /// <summary>Queries products using a specification that encapsulates filtering, sorting and pagination.</summary>
     /// Query products asynchronously.
     /// <param name="spec">The spec.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A <see cref="PaginatedResult{ProductDto}"/> matching the specification.</returns>
     public async Task<PaginatedResult<ProductDto>> QueryProductsAsync(ISpecification<Product> spec, CancellationToken cancellationToken = default)
     {

@@ -20,7 +20,7 @@ public class ActivityRepository : Repository<Activity, Guid>, IActivityRepositor
 
     /// <summary>Get By Id Async.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public override async Task<Activity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Activities

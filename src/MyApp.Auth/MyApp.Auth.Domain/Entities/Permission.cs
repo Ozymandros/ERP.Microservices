@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using MyApp.Shared.Domain.Entities;
 
 namespace MyApp.Auth.Domain.Entities;

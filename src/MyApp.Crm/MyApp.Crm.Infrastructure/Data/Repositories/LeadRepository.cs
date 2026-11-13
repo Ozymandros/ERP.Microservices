@@ -20,7 +20,7 @@ public class LeadRepository : Repository<Lead, Guid>, ILeadRepository
 
     /// <summary>Get By Id Async.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public override async Task<Lead?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Leads
@@ -31,14 +31,14 @@ public class LeadRepository : Repository<Lead, Guid>, ILeadRepository
 
     /// <summary>Get By Id For Update Async.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<Lead?> GetByIdForUpdateAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Leads.FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
     }
 
     /// <summary>List Async.</summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<IEnumerable<Lead>> ListAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Leads

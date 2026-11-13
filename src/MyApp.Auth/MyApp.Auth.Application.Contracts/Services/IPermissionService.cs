@@ -1,4 +1,4 @@
-﻿using MyApp.Auth.Application.Contracts.DTOs;
+using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Shared.Domain.Entities;
 using MyApp.Shared.Domain.Pagination;

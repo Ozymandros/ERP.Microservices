@@ -91,6 +91,6 @@ public interface IInvoiceService
     /// </summary>
     /// <param name="event">The project invoice request.</param>
     /// <param name="autoIssue">Whether to issue the invoice immediately.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     Task<InvoiceDto?> CreateFromProjectRequestAsync(ProjectInvoiceRequestedEvent @event, bool autoIssue, CancellationToken cancellationToken = default);
 }

@@ -36,7 +36,7 @@ public class SalesOrdersController : ControllerBase
 
     /// <summary>
     /// Export all sales orders as XLSX
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// </summary>
     [HttpGet("export-xlsx")]
     [HasPermission("Sales", "Read")]
@@ -60,7 +60,7 @@ public class SalesOrdersController : ControllerBase
 
     /// <summary>
     /// Export all sales orders as PDF
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// </summary>
     [HttpGet("export-pdf")]
     [HasPermission("Sales", "Read")]
@@ -86,7 +86,7 @@ public class SalesOrdersController : ControllerBase
     /// Get all sales orders (paginated, filterable)
     /// </summary>
     /// <param name="query">The query.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet]
     [HasPermission("Sales", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<SalesOrderDto>), StatusCodes.Status200OK)]
@@ -122,7 +122,7 @@ public class SalesOrdersController : ControllerBase
     /// Search sales orders (advanced query)
     /// </summary>
     /// <param name="query">The query.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet("search")]
     [HasPermission("Sales", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<SalesOrderDto>), StatusCodes.Status200OK)]
@@ -184,7 +184,7 @@ public class SalesOrdersController : ControllerBase
     /// Get a sales order by Order Number - Requires Sales.Read permission
     /// </summary>
     /// <param name="orderNumber">The order Number.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet("code/{orderNumber}")]
     [HasPermission("Sales", "Read")]
     [ProducesResponseType(typeof(SalesOrderDto), 200)]
@@ -220,7 +220,7 @@ public class SalesOrdersController : ControllerBase
     /// Get a specific customer by ID - Requires Sales.Read permission
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet("{id}")]
     [HasPermission("Sales", "Read")]
     [ProducesResponseType(typeof(SalesOrderDto), 200)]

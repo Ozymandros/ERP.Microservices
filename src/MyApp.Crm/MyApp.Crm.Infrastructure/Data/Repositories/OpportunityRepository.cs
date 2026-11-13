@@ -20,7 +20,7 @@ public class OpportunityRepository : Repository<Opportunity, Guid>, IOpportunity
 
     /// <summary>Get By Id Async.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The <see cref="Opportunity"/>The Opportunity entity</returns>
     public override async Task<Opportunity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -32,7 +32,7 @@ public class OpportunityRepository : Repository<Opportunity, Guid>, IOpportunity
     }
 
     /// <summary>List Async.</summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<IEnumerable<Opportunity>> ListAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Opportunities.AsNoTracking().ToListAsync(cancellationToken);
@@ -42,7 +42,7 @@ public class OpportunityRepository : Repository<Opportunity, Guid>, IOpportunity
     /// <param name="ownerUsername">The owner Username.</param>
     /// <param name="fromExpectedCloseDate">The from Expected Close Date.</param>
     /// <param name="toExpectedCloseDate">The to Expected Close Date.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<List<Opportunity>> ListForForecastAsync(
         string ownerUsername,
         DateOnly? fromExpectedCloseDate,

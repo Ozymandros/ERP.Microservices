@@ -10,11 +10,13 @@ public interface IProductRepository : IRepository<Product, Guid>
 {
     /// <summary>Retrieves a product by its SKU.</summary>
     /// <param name="sku">The stock-keeping unit identifier to search for.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="Product"/>, or <c>null</c> if not found.</returns>
     Task<Product?> GetBySkuAsync(string sku, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves a product by its name.</summary>
     /// <param name="name">The product name to search for.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="Product"/>, or <c>null</c> if not found.</returns>
     Task<Product?> GetByNameAsync(string name, CancellationToken cancellationToken = default);
 
