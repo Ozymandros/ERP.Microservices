@@ -1,4 +1,4 @@
-﻿namespace MyApp.Audit.Domain
+namespace MyApp.Audit.Domain
 {
     /// <summary>
     /// Represents the type of change applied to a domain entity during an audited operation.

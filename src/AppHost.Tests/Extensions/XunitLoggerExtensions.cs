@@ -1,4 +1,4 @@
-﻿//using Microsoft.Extensions.Logging;
+//using Microsoft.Extensions.Logging;
 //using Xunit.Abstractions;
 
 //public static class XunitLoggerExtensions

@@ -10,21 +10,25 @@ public interface IWarehouseStockService
     /// <summary>Retrieves the stock record for a specific product in a specific warehouse.</summary>
     /// <param name="productId">The unique identifier of the product.</param>
     /// <param name="warehouseId">The unique identifier of the warehouse.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="WarehouseStockDto"/>, or <c>null</c> if not found.</returns>
     Task<WarehouseStockDto?> GetByProductAndWarehouseAsync(Guid productId, Guid warehouseId, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves all warehouse stock records for a given product across all warehouses.</summary>
     /// <param name="productId">The unique identifier of the product.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A list of <see cref="WarehouseStockDto"/> records for the product.</returns>
     Task<List<WarehouseStockDto>> GetByProductIdAsync(Guid productId, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves all stock records held in a specific warehouse.</summary>
     /// <param name="warehouseId">The unique identifier of the warehouse.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A list of <see cref="WarehouseStockDto"/> records for the warehouse.</returns>
     Task<List<WarehouseStockDto>> GetByWarehouseIdAsync(Guid warehouseId, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves the aggregated stock availability for a product across all warehouses.</summary>
     /// <param name="productId">The unique identifier of the product.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A <see cref="StockAvailabilityDto"/> summarising availability, or <c>null</c> if the product is not found.</returns>
     Task<StockAvailabilityDto?> GetProductAvailabilityAsync(Guid productId, CancellationToken cancellationToken = default);
 

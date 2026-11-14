@@ -46,7 +46,7 @@ public sealed class ContactService : AppServiceBase, IContactService
 
     /// <summary>Get By Id Async.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<ContactDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity = await _contactRepository.GetByIdAsync(id);
@@ -55,7 +55,7 @@ public sealed class ContactService : AppServiceBase, IContactService
 
     /// <summary>List By Account Async.</summary>
     /// <param name="accountId">The account Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<IEnumerable<ContactDto>> ListByAccountAsync(Guid accountId, CancellationToken cancellationToken = default)
     {
         var list = await _contactRepository.ListByAccountAsync(accountId, cancellationToken);
@@ -64,7 +64,7 @@ public sealed class ContactService : AppServiceBase, IContactService
 
     /// <summary>Query Async.</summary>
     /// <param name="query">The query.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<PaginatedResult<ContactDto>> QueryAsync(QuerySpec query, CancellationToken cancellationToken = default)
     {
         var spec = new ContactQuerySpec(query);
@@ -75,7 +75,7 @@ public sealed class ContactService : AppServiceBase, IContactService
 
     /// <summary>Create Async.</summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<ContactDto> CreateAsync(CreateContactDto dto, CancellationToken cancellationToken = default)
     {
         var account = await _accountRepository.GetByIdAsync(dto.AccountId);
@@ -99,7 +99,7 @@ public sealed class ContactService : AppServiceBase, IContactService
     /// <summary>Update Async.</summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<ContactDto> UpdateAsync(Guid id, UpdateContactDto dto, CancellationToken cancellationToken = default)
     {
         var contact = await _contactRepository.GetByIdAsync(id);
@@ -115,7 +115,7 @@ public sealed class ContactService : AppServiceBase, IContactService
     /// <summary>Set Primary Async.</summary>
     /// <param name="accountId">The account Id.</param>
     /// <param name="contactId">The contact Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task SetPrimaryAsync(Guid accountId, Guid contactId, CancellationToken cancellationToken = default)
     {
         var account = await _accountRepository.GetByIdAsync(accountId);
@@ -128,7 +128,7 @@ public sealed class ContactService : AppServiceBase, IContactService
 
     /// <summary>Deactivate Async.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task DeactivateAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var contact = await _contactRepository.GetByIdAsync(id);

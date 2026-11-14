@@ -20,7 +20,7 @@ public class WarehouseStockRepository : Repository<WarehouseStock, Guid>, IWareh
     /// <summary>Get By Product And Warehouse Async.</summary>
     /// <param name="productId">The product Id.</param>
     /// <param name="warehouseId">The warehouse Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<WarehouseStock?> GetByProductAndWarehouseAsync(Guid productId, Guid warehouseId, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<WarehouseStock>()
@@ -31,7 +31,7 @@ public class WarehouseStockRepository : Repository<WarehouseStock, Guid>, IWareh
 
     /// <summary>Get By Product Id Async.</summary>
     /// <param name="productId">The product Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<List<WarehouseStock>> GetByProductIdAsync(Guid productId, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<WarehouseStock>()
@@ -43,7 +43,7 @@ public class WarehouseStockRepository : Repository<WarehouseStock, Guid>, IWareh
 
     /// <summary>Get By Warehouse Id Async.</summary>
     /// <param name="warehouseId">The warehouse Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<List<WarehouseStock>> GetByWarehouseIdAsync(Guid warehouseId, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<WarehouseStock>()
@@ -55,7 +55,7 @@ public class WarehouseStockRepository : Repository<WarehouseStock, Guid>, IWareh
 
     /// <summary>Get Low Stock Async.</summary>
     /// <param name="reorderLevel">The reorder Level.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<List<WarehouseStock>> GetLowStockAsync(int? reorderLevel = null, CancellationToken cancellationToken = default)
     {
         var query = DbContext.Set<WarehouseStock>()

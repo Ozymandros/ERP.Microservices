@@ -45,6 +45,7 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
     /// <summary>Retrieves an inventory transaction by its unique identifier.</summary>
     /// Gets the transaction by id asynchronously.
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The matching <see cref="InventoryTransactionDto"/>, or <c>null</c> if not found.</returns>
     public async Task<InventoryTransactionDto?> GetTransactionByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -55,6 +56,7 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
     /// <summary>Retrieves an inventory transaction by its external reference number.</summary>
     /// Gets the transaction by reference number asynchronously.
     /// <param name="referenceNumber">The reference Number.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The matching <see cref="InventoryTransactionDto"/>, or <c>null</c> if not found.</returns>
     public async Task<InventoryTransactionDto?> GetTransactionByReferenceNumberAsync(string referenceNumber, CancellationToken cancellationToken = default)
     {
@@ -65,6 +67,7 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
     /// <summary>Retrieves all inventory transactions for a specific product.</summary>
     /// Gets the transactions by product id asynchronously.
     /// <param name="productId">The product Id.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A collection of matching <see cref="InventoryTransactionDto"/> records.</returns>
     public async Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByProductIdAsync(Guid productId, CancellationToken cancellationToken = default)
     {
@@ -75,6 +78,7 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
     /// <summary>Retrieves all inventory transactions for a specific warehouse.</summary>
     /// Gets the transactions by warehouse id asynchronously.
     /// <param name="warehouseId">The warehouse Id.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A collection of matching <see cref="InventoryTransactionDto"/> records.</returns>
     public async Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByWarehouseIdAsync(Guid warehouseId, CancellationToken cancellationToken = default)
     {
@@ -85,6 +89,7 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
     /// <summary>Retrieves all inventory transactions of a given transaction type.</summary>
     /// Gets the transactions by type asynchronously.
     /// <param name="transactionType">The transaction Type.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A collection of matching <see cref="InventoryTransactionDto"/> records.</returns>
     public async Task<IEnumerable<InventoryTransactionDto>> GetTransactionsByTypeAsync(TransactionType transactionType, CancellationToken cancellationToken = default)
     {
@@ -104,6 +109,7 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
     /// Gets all transactions paginated asynchronously.
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A <see cref="PaginatedResult{InventoryTransactionDto}"/> for the requested page.</returns>
     public async Task<PaginatedResult<InventoryTransactionDto>> GetAllTransactionsPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
@@ -219,6 +225,7 @@ public class InventoryTransactionService : AppServiceBase, IInventoryTransaction
     /// <summary>Queries inventory transactions using a specification that encapsulates filtering, sorting and pagination.</summary>
     /// Query transactions asynchronously.
     /// <param name="spec">The spec.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A <see cref="PaginatedResult{InventoryTransactionDto}"/> matching the specification.</returns>
     public async Task<PaginatedResult<InventoryTransactionDto>> QueryTransactionsAsync(ISpecification<InventoryTransaction> spec, CancellationToken cancellationToken = default)
     {

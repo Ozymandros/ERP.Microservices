@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using MyApp.Auth.Domain.Entities;
 
 namespace MyApp.Auth.API.Seeders;

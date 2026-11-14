@@ -18,6 +18,7 @@ public class ProductRepository : Repository<Product, Guid>, IProductRepository
 
     /// <summary>Get By Sku Async.</summary>
     /// <param name="sku">The sku.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<Product?> GetBySkuAsync(string sku, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<Product>()
@@ -26,6 +27,7 @@ public class ProductRepository : Repository<Product, Guid>, IProductRepository
 
     /// <summary>Get By Name Async.</summary>
     /// <param name="name">The name.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<Product?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<Product>()

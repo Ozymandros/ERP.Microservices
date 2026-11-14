@@ -44,7 +44,7 @@ public class CustomerService : AppServiceBase, ICustomerService
     /// <summary>Returns the customer with the given identifier, or <see langword="null"/> if not found.</summary>
     /// Gets the customer by id asynchronously.
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="CustomerDto"/>, or <see langword="null"/>.</returns>
     public async Task<CustomerDto?> GetCustomerByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -55,7 +55,7 @@ public class CustomerService : AppServiceBase, ICustomerService
     /// <summary>Returns the customer with the given name, or <see langword="null"/> if not found.</summary>
     /// Gets the customer by name asynchronously.
     /// <param name="name">The name.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="CustomerDto"/>, or <see langword="null"/>.</returns>
     public async Task<CustomerDto?> GetCustomerByNameAsync(string name, CancellationToken cancellationToken = default)
     {
@@ -66,7 +66,7 @@ public class CustomerService : AppServiceBase, ICustomerService
     /// <summary>Returns the customer with the given email address, or <see langword="null"/> if not found.</summary>
     /// Gets the customer by email asynchronously.
     /// <param name="email">The email.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="CustomerDto"/>, or <see langword="null"/>.</returns>
     public async Task<CustomerDto?> GetCustomerByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
@@ -75,7 +75,7 @@ public class CustomerService : AppServiceBase, ICustomerService
     }
 
     /// <summary>Returns all customers as an enumerable sequence.</summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// Lists customers asynchronously.
     public async Task<IEnumerable<CustomerDto>> ListCustomersAsync(CancellationToken cancellationToken = default)
     {
@@ -87,7 +87,7 @@ public class CustomerService : AppServiceBase, ICustomerService
     /// Lists customers paginated asynchronously.
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A <see cref="PaginatedResult{T}"/> containing the requested page of customers.</returns>
     public async Task<PaginatedResult<CustomerDto>> ListCustomersPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
@@ -160,7 +160,7 @@ public class CustomerService : AppServiceBase, ICustomerService
     /// <summary>Returns a paginated list of customers that satisfy the given specification.</summary>
     /// Query customers asynchronously.
     /// <param name="spec">The spec.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A <see cref="PaginatedResult{T}"/> containing matching customers.</returns>
     public async Task<PaginatedResult<CustomerDto>> QueryCustomersAsync(ISpecification<Customer> spec, CancellationToken cancellationToken = default)
     {

@@ -14,25 +14,31 @@ public interface IPurchaseOrderService
     // Basic CRUD operations
     /// <summary>Retrieves a purchase order by its unique identifier.</summary>
     /// <param name="id">The unique identifier of the purchase order.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The purchase order DTO, or <c>null</c> if not found.</returns>
     Task<PurchaseOrderDto?> GetPurchaseOrderByIdAsync(Guid id, CancellationToken cancellationToken = default);
     /// <summary>Retrieves a purchase order by its order number.</summary>
     /// <param name="orderNumber">The order number to look up.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The purchase order DTO, or <c>null</c> if not found.</returns>
     Task<PurchaseOrderDto?> GetPurchaseOrderByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default);
     /// <summary>Retrieves all purchase orders.</summary>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of all purchase order DTOs.</returns>
     Task<IEnumerable<PurchaseOrderDto>> GetAllPurchaseOrdersAsync(CancellationToken cancellationToken = default);
     /// <summary>Retrieves all purchase orders for the specified supplier.</summary>
     /// <param name="supplierId">The unique identifier of the supplier.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of purchase order DTOs for the supplier.</returns>
     Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersBySupplierAsync(Guid supplierId, CancellationToken cancellationToken = default);
     /// <summary>Retrieves all purchase orders with the specified status.</summary>
     /// <param name="status">The status to filter by.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of purchase order DTOs with the given status.</returns>
     Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersByStatusAsync(PurchaseOrderStatus status, CancellationToken cancellationToken = default);
     /// <summary>Retrieves a paginated, filtered and sorted collection of purchase orders.</summary>
     /// <param name="spec">The specification that defines filtering, sorting, and paging.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A paginated result containing matching purchase order DTOs.</returns>
     Task<PaginatedResult<PurchaseOrderDto>> QueryPurchaseOrdersAsync(ISpecification<PurchaseOrder> spec, CancellationToken cancellationToken = default);
     /// <summary>Creates a new purchase order.</summary>
@@ -65,5 +71,7 @@ public interface IPurchaseOrderService
     Task<PurchaseOrderDto> ReceivePurchaseOrderAsync(ReceivePurchaseOrderDto dto);
 
     /// <summary>Runs 3-way match (ordered vs received vs supplier billed) for a purchase order.</summary>
+    /// <param name="purchaseOrderId">The purchase order Id.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     Task<PurchaseOrderMatchResultDto> MatchPurchaseOrderAsync(Guid purchaseOrderId, CancellationToken cancellationToken = default);
 }

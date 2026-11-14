@@ -63,7 +63,7 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
     /// Gets an item by its unique identifier asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="EntityChangeDto"/>, or <see langword="null"/> if not found.</returns>
     public async Task<EntityChangeDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -89,7 +89,7 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
     /// </summary>
     /// <param name="entityName">The entity Name.</param>
     /// <param name="entityId">The entity Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A read-only list of entity change records for the specified entity.</returns>
     public async Task<IReadOnlyList<EntityChangeDto>> GetByEntityAsync(
         string entityName,
@@ -111,7 +111,7 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
     /// Query asynchronously.
     /// </summary>
     /// <param name="spec">The spec.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A paginated result containing the matching entity change records as DTOs.</returns>
     public async Task<PaginatedResult<EntityChangeDto>> QueryAsync(
         ISpecification<EntityChange> spec,
@@ -146,7 +146,7 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
     /// Record asynchronously.
     /// </summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The persisted <see cref="EntityChangeDto"/> including assigned identifiers and property changes.</returns>
     public async Task<EntityChangeDto> RecordAsync(CreateEntityChangeDto dto, CancellationToken cancellationToken = default)
     {
@@ -192,7 +192,7 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
     /// Performs the operation.
     /// </summary>
     /// <param name="event">The event.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <inheritdoc />
     public async Task RecordFromEventAsync(
         EntityChangesSavedEvent @event,

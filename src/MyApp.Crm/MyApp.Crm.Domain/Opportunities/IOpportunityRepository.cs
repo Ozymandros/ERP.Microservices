@@ -8,14 +8,14 @@ namespace MyApp.Crm.Domain.Opportunities;
 public interface IOpportunityRepository : IRepository<Opportunity, Guid>
 {
     /// <summary>Gets all opportunities.</summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     Task<IEnumerable<Opportunity>> ListAsync(CancellationToken cancellationToken = default);
 
     /// <summary>Gets opportunities for a given owner filtered by expected close date range for forecast calculations.</summary>
     /// <param name="ownerUsername">The username of the opportunity owner to filter by.</param>
     /// <param name="fromExpectedCloseDate">The start of the expected close date range, or null for no lower bound.</param>
     /// <param name="toExpectedCloseDate">The end of the expected close date range, or null for no upper bound.</param>
-    /// <param name="cancellationToken">A cancellation token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A list of matching opportunities.</returns>
     Task<List<Opportunity>> ListForForecastAsync(
         string ownerUsername,

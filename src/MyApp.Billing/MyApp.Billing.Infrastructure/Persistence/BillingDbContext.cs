@@ -46,7 +46,7 @@ public class BillingDbContext : AuditableDbContext
     /// <summary>
     /// Save changes asynchronously.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The number of state entries written to the database.</returns>
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -82,7 +82,6 @@ public class BillingDbContext : AuditableDbContext
 
         foreach (var creditNoteEntry in ChangeTracker.Entries<CreditNote>()
                      .Where(e => e.State is EntityState.Modified or EntityState.Unchanged))
-        {
             foreach (var line in creditNoteEntry.Entity.Lines)
             {
                 var alreadyStored = CreditNoteLines.AsNoTracking().Any(l => l.Id == line.Id);
@@ -91,7 +90,6 @@ public class BillingDbContext : AuditableDbContext
                     Entry(line).State = EntityState.Added;
                 }
             }
-        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

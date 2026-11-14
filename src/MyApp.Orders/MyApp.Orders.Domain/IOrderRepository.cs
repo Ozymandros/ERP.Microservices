@@ -8,6 +8,6 @@ public interface IOrderRepository : IRepository<Order, Guid>
 {
     /// <summary>Retrieves an order by its order number.</summary>
     /// <param name="orderNumber">The order number.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     Task<Order?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default);
 }

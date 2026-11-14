@@ -43,6 +43,7 @@ public class SupplierService : AppServiceBase, ISupplierService
     /// Gets the supplier by id asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<SupplierDto?> GetSupplierByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -54,6 +55,7 @@ public class SupplierService : AppServiceBase, ISupplierService
     /// Gets the supplier by email asynchronously.
     /// </summary>
     /// <param name="email">The email.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<SupplierDto?> GetSupplierByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
@@ -65,6 +67,7 @@ public class SupplierService : AppServiceBase, ISupplierService
     /// Gets the supplier by name asynchronously.
     /// </summary>
     /// <param name="name">The name.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<SupplierDto?> GetSupplierByNameAsync(string name, CancellationToken cancellationToken = default)
     {
@@ -77,6 +80,7 @@ public class SupplierService : AppServiceBase, ISupplierService
     /// Gets the suppliers by name asynchronously.
     /// </summary>
     /// <param name="name">The name.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<IEnumerable<SupplierDto>> GetSuppliersByNameAsync(string name, CancellationToken cancellationToken = default)
     {
@@ -164,6 +168,7 @@ public class SupplierService : AppServiceBase, ISupplierService
 
     /// <summary>Returns a paginated, filtered and sorted collection of suppliers.</summary>
     /// <param name="spec">The specification that defines filtering, sorting, and paging.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A paginated result containing matching supplier DTOs.</returns>
     public async Task<PaginatedResult<SupplierDto>> QuerySuppliersAsync(ISpecification<Supplier> spec, CancellationToken cancellationToken = default)
     {

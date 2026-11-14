@@ -22,7 +22,7 @@ public class AgentSessionRepository : Repository<AgentSession, Guid>, IAgentSess
     /// Gets an item by its unique identifier asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public override async Task<AgentSession?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
@@ -36,7 +36,7 @@ public class AgentSessionRepository : Repository<AgentSession, Guid>, IAgentSess
     /// </summary>
     /// <param name="agentId">The agent Id.</param>
     /// <param name="userId">The user Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<AgentSession?> GetActiveSessionAsync(Guid agentId, string userId, CancellationToken cancellationToken = default)
     {
@@ -50,7 +50,7 @@ public class AgentSessionRepository : Repository<AgentSession, Guid>, IAgentSess
     /// Gets the id with agent asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<AgentSession?> GetByIdWithAgentAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -67,7 +67,7 @@ public class AgentSessionRepository : Repository<AgentSession, Guid>, IAgentSess
     /// Gets the user id asynchronously.
     /// </summary>
     /// <param name="userId">The user Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<IEnumerable<AgentSession>> GetByUserIdAsync(string userId, CancellationToken cancellationToken = default)
     {

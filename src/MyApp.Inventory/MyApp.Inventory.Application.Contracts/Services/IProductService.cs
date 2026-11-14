@@ -15,16 +15,19 @@ public interface IProductService
 {
     /// <summary>Retrieves a product by its unique identifier.</summary>
     /// <param name="id">The unique identifier of the product.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="ProductDto"/>, or <c>null</c> if not found.</returns>
     Task<ProductDto?> GetProductByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves a product by its SKU.</summary>
     /// <param name="sku">The stock-keeping unit identifier to search for.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="ProductDto"/>, or <c>null</c> if not found.</returns>
     Task<ProductDto?> GetProductBySkuAsync(string sku, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves a product by its name.</summary>
     /// <param name="name">The product name to search for.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="ProductDto"/>, or <c>null</c> if not found.</returns>
     Task<ProductDto?> GetProductByNameAsync(string name, CancellationToken cancellationToken = default);
 
@@ -35,11 +38,13 @@ public interface IProductService
     /// <summary>Retrieves a paginated list of all products.</summary>
     /// <param name="pageNumber">The one-based page number to return.</param>
     /// <param name="pageSize">The number of items per page.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A <see cref="PaginatedResult{ProductDto}"/> for the requested page.</returns>
     Task<PaginatedResult<ProductDto>> GetAllProductsPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 
     /// <summary>Queries products using a specification that encapsulates filtering, sorting and pagination.</summary>
     /// <param name="spec">The specification to apply.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A <see cref="PaginatedResult{ProductDto}"/> matching the specification.</returns>
     Task<PaginatedResult<ProductDto>> QueryProductsAsync(ISpecification<Product> spec, CancellationToken cancellationToken = default);
 

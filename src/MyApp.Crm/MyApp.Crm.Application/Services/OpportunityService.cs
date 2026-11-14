@@ -51,7 +51,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
 
     /// <summary>Get By Id Async.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -59,7 +59,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     }
 
     /// <summary>List Async.</summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<IEnumerable<OpportunityDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         var list = await _repository.ListAsync();
@@ -68,7 +68,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
 
     /// <summary>Query Async.</summary>
     /// <param name="spec">The spec.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<PaginatedResult<OpportunityDto>> QueryAsync(ISpecification<Opportunity> spec, CancellationToken cancellationToken = default)
     {
         var result = await _repository.QueryAsync(spec);
@@ -78,7 +78,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
 
     /// <summary>Create Async.</summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityDto> CreateAsync(CreateOpportunityDto dto, CancellationToken cancellationToken = default)
     {
         var entity = new Opportunity(Guid.NewGuid(), dto.CustomerId, dto.Name, dto.OwnerUsername, dto.LeadId);
@@ -101,7 +101,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <summary>Update Forecast Async.</summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityDto> UpdateForecastAsync(Guid id, UpdateOpportunityForecastDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -117,7 +117,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <summary>Move Stage Async.</summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityDto> MoveStageAsync(Guid id, MoveOpportunityStageDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -147,7 +147,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <summary>Mark Won Async.</summary>
     /// <param name="id">The id.</param>
     /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityDto> MarkWonAsync(Guid id, MarkOpportunityWonRequest request, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
@@ -211,7 +211,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <summary>Add Line Async.</summary>
     /// <param name="opportunityId">The opportunity Id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityLineDto> AddLineAsync(Guid opportunityId, CreateOpportunityLineDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(opportunityId);
@@ -235,7 +235,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <param name="opportunityId">The opportunity Id.</param>
     /// <param name="lineId">The line Id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityLineDto> UpdateLineAsync(Guid opportunityId, Guid lineId, UpdateOpportunityLineDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(opportunityId);
@@ -252,7 +252,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <summary>Remove Line Async.</summary>
     /// <param name="opportunityId">The opportunity Id.</param>
     /// <param name="lineId">The line Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task RemoveLineAsync(Guid opportunityId, Guid lineId, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(opportunityId);
@@ -267,7 +267,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <param name="ownerUsername">The owner Username.</param>
     /// <param name="fromExpectedCloseDate">The from Expected Close Date.</param>
     /// <param name="toExpectedCloseDate">The to Expected Close Date.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<ForecastSummaryDto> GetForecastSummaryAsync(
         string ownerUsername,
         DateOnly? fromExpectedCloseDate,
@@ -339,7 +339,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <summary>Mark Lost Async.</summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityDto> MarkLostAsync(Guid id, MarkOpportunityLostDto dto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);

@@ -7,7 +7,6 @@ namespace MyApp.Auth.Infrastructure.Data.Repositories
 {
     /// <summary>
     /// Implements data access operations for <see cref="Permission"/> entities using Entity Framework Core.
-    /// <param name="cancellationToken">The cancellation Token.</param>
     /// </summary>
     public class PermissionRepository : Repository<Permission, Guid>, IPermissionRepository
     {
@@ -28,7 +27,7 @@ namespace MyApp.Auth.Infrastructure.Data.Repositories
         /// <param name="roleName">The role Name.</param>
         /// <param name="module">The module.</param>
         /// <param name="action">The action.</param>
-        /// <param name="cancellationToken">The cancellation Token.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         public async Task<IEnumerable<Permission>> GetByRoleName(string roleName, string module, string action, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(roleName) || string.IsNullOrWhiteSpace(module) || string.IsNullOrWhiteSpace(action))
@@ -55,7 +54,7 @@ namespace MyApp.Auth.Infrastructure.Data.Repositories
         /// <param name="userName">The user Name.</param>
         /// <param name="module">The module.</param>
         /// <param name="action">The action.</param>
-        /// <param name="cancellationToken">The cancellation Token.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         public async Task<IEnumerable<Permission>> GetByUserName(string userName, string module, string action, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(module) || string.IsNullOrWhiteSpace(action))
@@ -79,7 +78,7 @@ namespace MyApp.Auth.Infrastructure.Data.Repositories
         /// Gets all permissions by user id.
         /// </summary>
         /// <param name="userId">The user Id.</param>
-        /// <param name="cancellationToken">The cancellation Token.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         public async Task<IEnumerable<Permission>> GetAllPermissionsByUserId(Guid userId, CancellationToken cancellationToken = default)
         {
             var userPermissions = await _context.Set<UserPermission>()

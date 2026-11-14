@@ -22,7 +22,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
 
         /// <summary>Get By Id Async.</summary>
         /// <param name="id">The id.</param>
-        /// <param name="cancellationToken">The cancellation Token.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         public override async Task<SalesOrder?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.SalesOrders
@@ -32,7 +32,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         }
 
         /// <summary>List Async.</summary>
-        /// <param name="cancellationToken">The cancellation Token.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         public async Task<IEnumerable<SalesOrder>> ListAsync(CancellationToken cancellationToken = default)
         {
             return await _context.SalesOrders
@@ -42,7 +42,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         }
 
         /// <summary>Get All Async.</summary>
-        /// <param name="cancellationToken">The cancellation Token.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         public override async Task<IEnumerable<SalesOrder>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await ListAsync();
@@ -51,7 +51,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         /// <summary>Get All Paginated Async.</summary>
         /// <param name="pageNumber">The page Number.</param>
         /// <param name="pageSize">The page Size.</param>
-        /// <param name="cancellationToken">The cancellation Token.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         public async Task<PaginatedResult<SalesOrder>> GetAllPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
         {
 #pragma warning disable CS8603 // Customer navigation is loaded via Include; null-forgiving would break EF translation
@@ -74,7 +74,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         /// Gets the order number asynchronously.
         /// </summary>
         /// <param name="orderNumber">The order Number.</param>
-        /// <param name="cancellationToken">The cancellation Token.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
         public async Task<SalesOrder?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default)
         {

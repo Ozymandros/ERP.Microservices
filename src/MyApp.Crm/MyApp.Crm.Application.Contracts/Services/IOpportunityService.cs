@@ -86,7 +86,7 @@ public interface IOpportunityService
     /// <param name="ownerUsername">The username of the opportunity owner.</param>
     /// <param name="fromExpectedCloseDate">The start of the expected close date range, or null for no lower bound.</param>
     /// <param name="toExpectedCloseDate">The end of the expected close date range, or null for no upper bound.</param>
-    /// <param name="cancellationToken">A cancellation token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A forecast summary DTO with totals and breakdown by stage.</returns>
     Task<ForecastSummaryDto> GetForecastSummaryAsync(
         string ownerUsername,

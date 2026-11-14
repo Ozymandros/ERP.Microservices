@@ -21,6 +21,14 @@ public record InvoiceCreatedEvent(
 );
 
 /// <summary>Raised when a draft invoice is officially issued to a customer.</summary>
+/// <param name="InvoiceId">The invoice Id.</param>
+/// <param name="InvoiceNumber">The invoice Number.</param>
+/// <param name="CustomerId">The customer Id.</param>
+/// <param name="OrderId">The sales order Id when applicable.</param>
+/// <param name="TotalNet">The total Net.</param>
+/// <param name="TotalTax">The total Tax.</param>
+/// <param name="TotalGross">The total Gross.</param>
+/// <param name="DueDate">The due Date.</param>
 /// <param name="SourceType">Originating document type (see <c>DocumentSources</c>); null = Sales.</param>
 /// <param name="SourceId">Originating document id (e.g. project invoice request id).</param>
 /// <param name="Currency">ISO 4217 currency of the invoice.</param>
@@ -49,6 +57,9 @@ public record InvoicePaidEvent(
 );
 
 /// <summary>Raised when an invoice is cancelled.</summary>
+/// <param name="InvoiceId">The invoice Id.</param>
+/// <param name="InvoiceNumber">The invoice Number.</param>
+/// <param name="Reason">The cancellation reason.</param>
 /// <param name="SourceType">Originating document type (see <c>DocumentSources</c>); null = Sales.</param>
 /// <param name="SourceId">Originating document id.</param>
 public record InvoiceCancelledEvent(

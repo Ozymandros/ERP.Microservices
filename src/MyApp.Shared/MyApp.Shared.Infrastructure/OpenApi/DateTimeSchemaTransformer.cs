@@ -15,7 +15,7 @@ public sealed class DateTimeSchemaTransformer : IOpenApiSchemaTransformer
     /// </summary>
     /// <param name="schema">The schema.</param>
     /// <param name="context">The context.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public Task TransformAsync(OpenApiSchema schema, OpenApiSchemaTransformerContext context, CancellationToken cancellationToken)
     {
         if (schema == null) return Task.CompletedTask;

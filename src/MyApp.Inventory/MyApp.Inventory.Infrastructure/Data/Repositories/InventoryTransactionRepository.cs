@@ -18,6 +18,7 @@ public class InventoryTransactionRepository : Repository<InventoryTransaction, G
 
     /// <summary>Get By Product Id Async.</summary>
     /// <param name="productId">The product Id.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IEnumerable<InventoryTransaction>> GetByProductIdAsync(Guid productId, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<InventoryTransaction>()
@@ -29,6 +30,7 @@ public class InventoryTransactionRepository : Repository<InventoryTransaction, G
 
     /// <summary>Get By Warehouse Id Async.</summary>
     /// <param name="warehouseId">The warehouse Id.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IEnumerable<InventoryTransaction>> GetByWarehouseIdAsync(Guid warehouseId, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<InventoryTransaction>()
@@ -40,6 +42,7 @@ public class InventoryTransactionRepository : Repository<InventoryTransaction, G
 
     /// <summary>Get By Transaction Type Async.</summary>
     /// <param name="transactionType">The transaction Type.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IEnumerable<InventoryTransaction>> GetByTransactionTypeAsync(TransactionType transactionType, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<InventoryTransaction>()
@@ -52,6 +55,7 @@ public class InventoryTransactionRepository : Repository<InventoryTransaction, G
     /// <summary>Retrieves an inventory transaction by its external reference number.</summary>
     /// Gets the reference number asynchronously.
     /// <param name="referenceNumber">The reference Number.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The matching <see cref="InventoryTransaction"/>, or <c>null</c> if not found.</returns>
     public async Task<InventoryTransaction?> GetByReferenceNumberAsync(string referenceNumber, CancellationToken cancellationToken = default)
     {

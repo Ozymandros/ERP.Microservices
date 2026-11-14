@@ -18,7 +18,7 @@ public class PurchaseOrderLineRepository : Repository<PurchaseOrderLine, Guid>, 
 
     /// <summary>Get By Purchase Order Id Async.</summary>
     /// <param name="purchaseOrderId">The purchase Order Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<IEnumerable<PurchaseOrderLine>> GetByPurchaseOrderIdAsync(Guid purchaseOrderId, CancellationToken cancellationToken = default
 )
     {

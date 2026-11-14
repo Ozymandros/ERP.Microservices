@@ -15,11 +15,13 @@ public interface IOrderService
     // Basic CRUD operations
     /// <summary>Retrieves an order by its unique identifier.</summary>
     /// <param name="id">The unique identifier of the order.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The order DTO corresponding to the specified ID.</returns>
     Task<OrderDto> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves an order by its order number.</summary>
     /// <param name="orderNumber">The order number to search for.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching order DTO, or null if not found.</returns>
     Task<OrderDto?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default);
 
@@ -65,6 +67,7 @@ public interface IOrderService
         // Queries with specifications
         /// <summary>Queries orders based on a specification with filtering, sorting, and pagination.</summary>
         /// <param name="spec">The specification to apply for filtering, sorting, and pagination.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A paginated result of order DTOs matching the specification.</returns>
         Task<PaginatedResult<OrderDto>> QueryOrdersAsync(ISpecification<Order> spec, CancellationToken cancellationToken = default);
     }

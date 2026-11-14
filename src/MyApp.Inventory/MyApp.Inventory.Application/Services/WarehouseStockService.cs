@@ -57,6 +57,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
     /// <summary>Get By Product And Warehouse Async.</summary>
     /// <param name="productId">The product Id.</param>
     /// <param name="warehouseId">The warehouse Id.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<WarehouseStockDto?> GetByProductAndWarehouseAsync(Guid productId, Guid warehouseId, CancellationToken cancellationToken = default)
     {
         var stock = await _warehouseStockRepository.GetByProductAndWarehouseAsync(productId, warehouseId, cancellationToken);
@@ -65,6 +66,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
 
     /// <summary>Get By Product Id Async.</summary>
     /// <param name="productId">The product Id.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<List<WarehouseStockDto>> GetByProductIdAsync(Guid productId, CancellationToken cancellationToken = default)
     {
         var stocks = await _warehouseStockRepository.GetByProductIdAsync(productId, cancellationToken);
@@ -73,6 +75,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
 
     /// <summary>Get By Warehouse Id Async.</summary>
     /// <param name="warehouseId">The warehouse Id.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<List<WarehouseStockDto>> GetByWarehouseIdAsync(Guid warehouseId, CancellationToken cancellationToken = default)
     {
         var stocks = await _warehouseStockRepository.GetByWarehouseIdAsync(warehouseId, cancellationToken);
@@ -81,6 +84,7 @@ public class WarehouseStockService : AppServiceBase, IWarehouseStockService
 
     /// <summary>Get Product Availability Async.</summary>
     /// <param name="productId">The product Id.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<StockAvailabilityDto?> GetProductAvailabilityAsync(Guid productId, CancellationToken cancellationToken = default)
     {
         var product = await _productRepository.GetByIdAsync(productId, cancellationToken);

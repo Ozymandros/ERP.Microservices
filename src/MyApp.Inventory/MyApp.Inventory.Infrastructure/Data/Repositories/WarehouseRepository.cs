@@ -18,7 +18,7 @@ public class WarehouseRepository : Repository<Warehouse, Guid>, IWarehouseReposi
 
     /// <summary>Get By Name Async.</summary>
     /// <param name="name">The name.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<Warehouse?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<Warehouse>()

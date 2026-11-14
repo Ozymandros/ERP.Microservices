@@ -298,6 +298,24 @@ function Wait-AppDeployments {
     }
 }
 
+function Wait-AspireDashboard {
+    Write-Title "Wait for Aspire dashboard (myapp-platform)"
+    $deadline = (Get-Date).AddSeconds([Math]::Min($AppReadyTimeoutSec, 300))
+    while ((Get-Date) -lt $deadline) {
+        $ready = Invoke-KubectlQuiet -KubectlArgs @(
+            'get', 'deploy', 'aspire-dashboard', '-n', 'myapp-platform',
+            '-o', 'jsonpath={.status.readyReplicas}'
+        )
+        if ($ready -eq '1') {
+            Write-Ok 'aspire-dashboard ready'
+            return
+        }
+        Write-Host "  aspire-dashboard ready=$ready/1 ..." -ForegroundColor DarkGray
+        Start-Sleep -Seconds 5
+    }
+    Write-Warn2 'aspire-dashboard not ready yet; OTEL may buffer until it is'
+}
+
 function Start-GatewayPortForward {
     param([int] $LocalPort = 8080)
 
@@ -335,8 +353,51 @@ function Start-GatewayPortForward {
     return $false
 }
 
+function Start-AspireDashboardPortForward {
+    param([int] $LocalPort = 18888)
+
+    $listening = Get-NetTCPConnection -LocalPort $LocalPort -State Listen -ErrorAction SilentlyContinue
+    if ($listening) {
+        Write-Ok "localhost:$LocalPort already listening (Aspire dashboard port-forward may be running)"
+        return $true
+    }
+
+    $svc = Invoke-KubectlQuiet -KubectlArgs @(
+        'get', 'svc', 'aspire-dashboard', '-n', 'myapp-platform', '-o', 'name'
+    )
+    if (-not $svc) {
+        Write-Warn2 'aspire-dashboard Service not found in myapp-platform; skip UI port-forward'
+        return $false
+    }
+
+    Write-Host "  Starting kubectl port-forward svc/aspire-dashboard ${LocalPort}:18888 ..." -ForegroundColor Yellow
+    $logDir = Join-Path $env:TEMP 'myapp-aspire-dashboard-portforward'
+    New-Item -ItemType Directory -Force -Path $logDir | Out-Null
+    $stdoutLog = Join-Path $logDir 'stdout.log'
+    $stderrLog = Join-Path $logDir 'stderr.log'
+    Start-Process -FilePath kubectl -ArgumentList @(
+        'port-forward', '-n', 'myapp-platform', 'svc/aspire-dashboard', "${LocalPort}:18888"
+    ) -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog | Out-Null
+
+    $deadline = (Get-Date).AddSeconds(15)
+    while ((Get-Date) -lt $deadline) {
+        Start-Sleep -Milliseconds 500
+        $ready = Get-NetTCPConnection -LocalPort $LocalPort -State Listen -ErrorAction SilentlyContinue
+        if ($ready) {
+            Write-Ok "Aspire dashboard reachable at http://localhost:${LocalPort}/"
+            return $true
+        }
+    }
+
+    Write-Warn2 "Aspire dashboard port-forward started; if UI fails, wait a few seconds or check $logDir"
+    return $false
+}
+
 function Show-AccessInfo {
-    param([bool] $PortForwardActive = $false)
+    param(
+        [bool] $PortForwardActive = $false,
+        [bool] $AspireDashboardPortForwardActive = $false
+    )
 
     Write-Title 'Stage-test access'
     $ip = minikube -p $MinikubeProfile ip 2>$null
@@ -364,16 +425,32 @@ function Show-AccessInfo {
 "@ -ForegroundColor Yellow
     }
 
+    if ($AspireDashboardPortForwardActive) {
+        Write-Host @"
+
+  Aspire dashboard UI (port-forward running):
+    http://localhost:18888/
+
+"@ -ForegroundColor Green
+    }
+    else {
+        Write-Host @"
+
+  Aspire dashboard UI:
+    kubectl port-forward -n myapp-platform svc/aspire-dashboard 18888:18888
+    kubectl port-forward -n myapp-platform svc/aspire-dashboard 4317:4317
+    kubectl port-forward -n myapp-platform svc/aspire-dashboard 4318:4318
+    http://localhost:18888/
+
+"@ -ForegroundColor Yellow
+    }
+
     Write-Host @"
 
   Gateway via ingress (HTTPS, self-signed cert):
     1. Add to hosts file:  $ip    gateway.local
     2. In another terminal: minikube tunnel -p $MinikubeProfile
     3. Open: https://gateway.local/health
-
-  Aspire dashboard UI:
-    kubectl port-forward -n myapp-platform svc/aspire-dashboard 18888:18888
-    http://localhost:18888
 
   Useful commands:
     kubectl get pods -n myapp-apps
@@ -501,14 +578,20 @@ if (-not $SkipApply) {
 
     if (-not $SkipWait) {
         Wait-BootstrapJob
+        Wait-AspireDashboard
         Wait-AppDeployments -Names $appDeployments
     }
 }
 
 $portForwardActive = $false
+$aspireDashboardPortForwardActive = $false
 if (-not $SkipApply -and -not $NoPortForward) {
+    Write-Title 'Port-forwards'
     $portForwardActive = [bool](Start-GatewayPortForward)
+    $aspireDashboardPortForwardActive = [bool](Start-AspireDashboardPortForward)
 }
 
-Show-AccessInfo -PortForwardActive $portForwardActive
+Show-AccessInfo `
+    -PortForwardActive $portForwardActive `
+    -AspireDashboardPortForwardActive $aspireDashboardPortForwardActive
 Write-Ok 'Stage-test deploy finished'

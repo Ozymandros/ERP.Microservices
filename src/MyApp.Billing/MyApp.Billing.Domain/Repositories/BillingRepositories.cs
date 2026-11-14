@@ -34,7 +34,7 @@ public interface IInvoiceRepository : IRepository<Invoice, Guid>
     /// <summary>Gets invoices linked to a non-sales source document (e.g. a project invoice request).</summary>
     /// <param name="sourceType">The source type.</param>
     /// <param name="sourceId">The source document identifier.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     Task<List<Invoice>> GetBySourceAsync(string sourceType, Guid sourceId, CancellationToken cancellationToken = default);
 }
 

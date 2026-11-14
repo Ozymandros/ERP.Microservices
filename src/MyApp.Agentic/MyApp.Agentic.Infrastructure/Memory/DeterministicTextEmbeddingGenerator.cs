@@ -19,7 +19,7 @@ public sealed class DeterministicTextEmbeddingGenerator : IMemoryEmbeddingGenera
     /// </summary>
     /// <param name="text">The text.</param>
     /// <param name="provider">The provider.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <inheritdoc />
     public Task<float[]> GenerateEmbeddingAsync(
         string text,

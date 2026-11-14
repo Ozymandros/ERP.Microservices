@@ -18,6 +18,7 @@ public class SupplierRepository : Repository<Supplier, Guid>, ISupplierRepositor
 
     /// <summary>Get By Email Async.</summary>
     /// <param name="email">The email.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<Supplier?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<Supplier>()
@@ -26,6 +27,7 @@ public class SupplierRepository : Repository<Supplier, Guid>, ISupplierRepositor
 
     /// <summary>Get By Name Async.</summary>
     /// <param name="name">The name.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<IEnumerable<Supplier>> GetByNameAsync(string name, CancellationToken cancellationToken = default)
     {
         return await DbContext.Set<Supplier>()

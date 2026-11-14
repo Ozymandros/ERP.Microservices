@@ -22,7 +22,7 @@ public class ReservedStockRepository : Repository<ReservedStock, Guid>, IReserve
     /// <summary>
     /// Performs the operation.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <inheritdoc />
     public async Task<List<ReservedStock>> GetExpiredReservationsAsync(CancellationToken cancellationToken = default)
     {
@@ -35,7 +35,7 @@ public class ReservedStockRepository : Repository<ReservedStock, Guid>, IReserve
     /// Performs the operation.
     /// </summary>
     /// <param name="orderId">The order Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <inheritdoc />
     public async Task<List<ReservedStock>> GetByOrderIdAsync(Guid orderId, CancellationToken cancellationToken = default)
     {
@@ -48,7 +48,7 @@ public class ReservedStockRepository : Repository<ReservedStock, Guid>, IReserve
     /// Performs the operation.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <inheritdoc />
     public async Task<ReservedStock?> GetByIdWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
     {

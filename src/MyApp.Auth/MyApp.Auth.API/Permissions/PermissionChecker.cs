@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Auth.Domain.Repositories;

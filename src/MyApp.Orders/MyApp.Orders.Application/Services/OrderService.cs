@@ -108,6 +108,7 @@ namespace MyApp.Orders.Application.Services
         /// <summary>Retrieves an order by ID.</summary>
         /// Gets an item by its unique identifier asynchronously.
         /// <param name="id">The id.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The order DTO corresponding to the specified ID.</returns>
         public async Task<OrderDto> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
@@ -118,6 +119,7 @@ namespace MyApp.Orders.Application.Services
         /// <summary>Retrieves an order by order number.</summary>
         /// Gets the order number asynchronously.
         /// <param name="orderNumber">The order Number.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The matching order DTO, or null if not found.</returns>
         public async Task<OrderDto?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default)
         {
@@ -477,6 +479,7 @@ namespace MyApp.Orders.Application.Services
         /// <summary>Queries orders based on a specification with pagination.</summary>
         /// Query orders asynchronously.
         /// <param name="spec">The spec.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A paginated result of order DTOs matching the specification.</returns>
         public async Task<PaginatedResult<OrderDto>> QueryOrdersAsync(
             ISpecification<Order> spec,

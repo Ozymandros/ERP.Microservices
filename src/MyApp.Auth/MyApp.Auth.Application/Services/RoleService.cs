@@ -60,7 +60,7 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// Gets the role by id asynchronously.
     /// </summary>
     /// <param name="roleId">The role Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The <see cref="RoleDto"/> if found; otherwise, <c>null</c>.</returns>
     public async Task<RoleDto?> GetRoleByIdAsync(Guid roleId, CancellationToken cancellationToken = default)
     {
@@ -73,7 +73,7 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// Gets the role by name asynchronously.
     /// </summary>
     /// <param name="name">The name.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The <see cref="RoleDto"/> if found; otherwise, <c>null</c>.</returns>
     public async Task<RoleDto?> GetRoleByNameAsync(string name, CancellationToken cancellationToken = default)
     {
@@ -97,7 +97,7 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// </summary>
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A paginated result containing <see cref="RoleDto"/> objects for the requested page.</returns>
     public async Task<PaginatedResult<RoleDto>> GetAllRolesPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
@@ -186,7 +186,7 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// Gets the users in role asynchronously.
     /// </summary>
     /// <param name="roleName">The role Name.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of <see cref="UserDto"/> objects for users in the role.</returns>
     public async Task<IEnumerable<UserDto>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken = default)
     {
@@ -268,7 +268,7 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// </summary>
     /// <param name="roleId">The role Id.</param>
     /// <param name="permissionId">The permission Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns><c>true</c> if the role has the permission; otherwise, <c>false</c>.</returns>
     public async Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId, CancellationToken cancellationToken = default)
     {
@@ -279,7 +279,7 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// Gets the permissions for role asynchronously.
     /// </summary>
     /// <param name="roleId">The role Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of <see cref="PermissionDto"/> objects assigned to the role.</returns>
     public async Task<IEnumerable<PermissionDto>> GetPermissionsForRoleAsync(Guid roleId, CancellationToken cancellationToken = default)
     {
@@ -378,7 +378,7 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     /// Query roles asynchronously.
     /// </summary>
     /// <param name="spec">The spec.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A paginated result containing matched <see cref="RoleDto"/> objects.</returns>
     public async Task<PaginatedResult<RoleDto>> QueryRolesAsync(ISpecification<ApplicationRole> spec, CancellationToken cancellationToken = default)
     {

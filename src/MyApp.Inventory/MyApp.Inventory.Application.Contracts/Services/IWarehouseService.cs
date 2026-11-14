@@ -15,11 +15,13 @@ public interface IWarehouseService
 {
     /// <summary>Retrieves a warehouse by its unique identifier.</summary>
     /// <param name="id">The unique identifier of the warehouse.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="WarehouseDto"/>, or <c>null</c> if not found.</returns>
     Task<WarehouseDto?> GetWarehouseByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>Retrieves a warehouse by its name.</summary>
     /// <param name="name">The warehouse name to search for.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="WarehouseDto"/>, or <c>null</c> if not found.</returns>
     Task<WarehouseDto?> GetWarehouseByNameAsync(string name, CancellationToken cancellationToken = default);
 
@@ -30,11 +32,13 @@ public interface IWarehouseService
     /// <summary>Retrieves a paginated list of all warehouses.</summary>
     /// <param name="pageNumber">The one-based page number to return.</param>
     /// <param name="pageSize">The number of items per page.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A <see cref="PaginatedResult{WarehouseDto}"/> for the requested page.</returns>
     Task<PaginatedResult<WarehouseDto>> GetAllWarehousesPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 
     /// <summary>Queries warehouses using a specification that encapsulates filtering, sorting and pagination.</summary>
     /// <param name="spec">The specification to apply.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A <see cref="PaginatedResult{WarehouseDto}"/> matching the specification.</returns>
     Task<PaginatedResult<WarehouseDto>> QueryWarehousesAsync(ISpecification<Warehouse> spec, CancellationToken cancellationToken = default);
 

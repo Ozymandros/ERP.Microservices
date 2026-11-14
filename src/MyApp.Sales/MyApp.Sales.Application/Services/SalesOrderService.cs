@@ -54,7 +54,7 @@ public class SalesOrderService : AppServiceBase, ISalesOrderService
     /// <summary>Returns the sales order with the given identifier, or <see langword="null"/> if not found.</summary>
     /// Gets the sales order by id asynchronously.
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="SalesOrderDto"/>, or <see langword="null"/>.</returns>
     public async Task<SalesOrderDto?> GetSalesOrderByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -65,7 +65,7 @@ public class SalesOrderService : AppServiceBase, ISalesOrderService
     /// <summary>Returns the sales order with the given order number, or <see langword="null"/> if not found.</summary>
     /// Gets the sales order by order number asynchronously.
     /// <param name="orderNumber">The order Number.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="SalesOrderDto"/>, or <see langword="null"/>.</returns>
     public async Task<SalesOrderDto?> GetSalesOrderByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default)
     {
@@ -85,7 +85,7 @@ public class SalesOrderService : AppServiceBase, ISalesOrderService
     /// Lists sales orders paginated asynchronously.
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A <see cref="PaginatedResult{T}"/> containing the requested page of sales orders.</returns>
     public async Task<PaginatedResult<SalesOrderDto>> ListSalesOrdersPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
@@ -203,7 +203,7 @@ public class SalesOrderService : AppServiceBase, ISalesOrderService
     /// <summary>Returns a paginated list of sales orders that satisfy the given specification.</summary>
     /// Query sales orders asynchronously.
     /// <param name="spec">The spec.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A <see cref="PaginatedResult{T}"/> containing matching sales orders.</returns>
     public async Task<PaginatedResult<SalesOrderDto>> QuerySalesOrdersAsync(ISpecification<SalesOrder> spec, CancellationToken cancellationToken = default)
     {

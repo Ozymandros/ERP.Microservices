@@ -21,7 +21,7 @@ public static class EntityChangeSnapshot
     /// Commit asynchronously.
     /// </summary>
     /// <param name="dbContext">The db Context.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public static async Task<IReadOnlyCollection<EntityEntryDto>> CommitAsync(
         DbContext dbContext,
         CancellationToken cancellationToken = default)

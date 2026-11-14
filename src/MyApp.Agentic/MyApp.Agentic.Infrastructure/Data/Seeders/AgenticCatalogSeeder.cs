@@ -15,7 +15,7 @@ public class AgenticCatalogSeeder(AgenticSqlDbContext dbContext)
     /// <summary>
     /// Seed asynchronously.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task SeedAsync(CancellationToken cancellationToken = default)
     {
         var providers = BuildProviders();

@@ -25,6 +25,7 @@ public class RefreshTokenRepository : Repository<RefreshToken, Guid>, IRefreshTo
     /// Gets the token asynchronously.
     /// </summary>
     /// <param name="token">The token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="RefreshToken"/>, or <c>null</c> if not found.</returns>
     public async Task<RefreshToken?> GetByTokenAsync(string token, CancellationToken cancellationToken = default)
     {
@@ -36,6 +37,7 @@ public class RefreshTokenRepository : Repository<RefreshToken, Guid>, IRefreshTo
     /// Gets the user id asynchronously.
     /// </summary>
     /// <param name="userId">The user Id.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of <see cref="RefreshToken"/> entities for the user.</returns>
     public async Task<IEnumerable<RefreshToken>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
@@ -49,6 +51,7 @@ public class RefreshTokenRepository : Repository<RefreshToken, Guid>, IRefreshTo
     /// </summary>
     /// <param name="userId">The user Id.</param>
     /// <param name="token">The token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The valid <see cref="RefreshToken"/> if found; otherwise, <c>null</c>.</returns>
     public async Task<RefreshToken?> GetValidRefreshTokenAsync(Guid userId, string token, CancellationToken cancellationToken = default)
     {
@@ -74,6 +77,7 @@ public class RefreshTokenRepository : Repository<RefreshToken, Guid>, IRefreshTo
     /// Revoke asynchronously.
     /// </summary>
     /// <param name="tokenId">The token Id.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task RevokeAsync(Guid tokenId, CancellationToken cancellationToken = default)
     {
         var token = await _context.RefreshTokens.FindAsync([tokenId], cancellationToken);
@@ -87,6 +91,7 @@ public class RefreshTokenRepository : Repository<RefreshToken, Guid>, IRefreshTo
     /// Revoke user tokens asynchronously.
     /// </summary>
     /// <param name="userId">The user Id.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task RevokeUserTokensAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         var tokens = await _context.RefreshTokens
