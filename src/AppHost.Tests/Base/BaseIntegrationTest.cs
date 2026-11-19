@@ -21,7 +21,7 @@
 
 //    protected virtual async Task InitializeAsync()
 //    {
-//        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+//        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
 
 //        // Configure resilience and logging
 //        appHost.Services.ConfigureHttpClientDefaults(builder =>

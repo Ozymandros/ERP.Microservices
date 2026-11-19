@@ -36,6 +36,8 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     /// <param name="logger">The logger.</param>
     /// <param name="unitOfWork">The unit Of Work.</param>
     /// <param name="eventPublisher">The event Publisher.</param>
+    /// <param name="receivePurchaseOrder">The receive Purchase Order use case.</param>
+    /// <param name="matchPurchaseOrder">The match Purchase Order use case.</param>
     public PurchaseOrderService(
         IPurchaseOrderRepository purchaseOrderRepository,
         IPurchaseOrderLineRepository lineRepository,
@@ -290,6 +292,7 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     /// Receives the purchase order asynchronously.
     /// </summary>
     /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public Task<PurchaseOrderDto> ReceivePurchaseOrderAsync(
         ReceivePurchaseOrderDto dto,
