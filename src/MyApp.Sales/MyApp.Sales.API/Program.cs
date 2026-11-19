@@ -1,3 +1,6 @@
+using MyApp.Sales.Application.Contracts.Ports;
+using MyApp.Sales.Application.DependencyInjection;
+using MyApp.Sales.Infrastructure.Adapters;
 using MyApp.Sales.Infrastructure.Data;
 using MyApp.Shared.Infrastructure.Extensions;
 
@@ -25,6 +28,10 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
             MyApp.Sales.Infrastructure.Data.Repositories.SalesOrderRepository>();
         services.AddScoped<MyApp.Sales.Domain.ICustomerRepository,
             MyApp.Sales.Infrastructure.Data.Repositories.CustomerRepository>();
+
+        services.AddScoped<IOrdersFulfillmentPort, OrdersFulfillmentAdapter>();
+        services.AddScoped<IInventoryAvailabilityPort, InventoryAvailabilityAdapter>();
+        services.AddSalesApplication();
 
         // Register Sales-specific services
         services.AddScoped<MyApp.Sales.Application.Contracts.Services.ISalesOrderService,

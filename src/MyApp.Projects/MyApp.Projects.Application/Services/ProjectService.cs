@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using MyApp.Projects.Application.Contracts;
 using MyApp.Projects.Application.Contracts.DTOs;
 using MyApp.Projects.Application.Contracts.Services;
-using MyApp.Projects.Application.Integration;
+using MyApp.Projects.Application.Contracts.Ports;
 using MyApp.Projects.Domain.Entities;
 using MyApp.Projects.Domain.Repositories;
 using MyApp.Projects.Domain.Services;
@@ -26,7 +26,7 @@ public class ProjectService : AppServiceBase, IProjectService
     private readonly IProjectPlanningLineRepository _planningLines;
     private readonly IProjectLedgerEntryRepository _ledger;
     private readonly ICurrencyService _currencyService;
-    private readonly ISalesCustomerClient _customers;
+    private readonly ISalesCustomerLookupPort _customers;
     private readonly ProjectsSettings _settings;
     private readonly IMapper _mapper;
     private readonly ILogger<ProjectService> _logger;
@@ -38,7 +38,7 @@ public class ProjectService : AppServiceBase, IProjectService
         IProjectPlanningLineRepository planningLines,
         IProjectLedgerEntryRepository ledger,
         ICurrencyService currencyService,
-        ISalesCustomerClient customers,
+        ISalesCustomerLookupPort customers,
         ProjectsSettings settings,
         IMapper mapper,
         IUnitOfWork unitOfWork,

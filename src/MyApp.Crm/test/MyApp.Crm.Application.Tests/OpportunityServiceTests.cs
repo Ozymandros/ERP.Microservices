@@ -7,7 +7,7 @@ using MyApp.Crm.Domain.Opportunities;
 using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Repositories;
-using MyApp.Sales.Application.Contracts.DTOs;
+using MyApp.Crm.Application.Contracts.Ports;
 
 namespace MyApp.Crm.Application.Tests;
 
@@ -41,31 +41,28 @@ public class OpportunityServiceTests
         unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<EntityEntryDto>());
 
-        var invoker = new Mock<IServiceInvoker>();
-        invoker.Setup(i => i.InvokeAsync<CreateQuoteDto, SalesOrderDto>(
-                It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<HttpMethod>(),
-                It.Is<CreateQuoteDto>(r => r.Lines.Count == 1
+        var salesQuotes = new Mock<ISalesQuoteCreationPort>();
+        salesQuotes.Setup(i => i.CreateQuoteAsync(
+                It.Is<CreateSalesQuoteRequest>(r => r.Lines.Count == 1
                                           && r.Lines[0].ProductId == productId
                                           && r.Lines[0].Quantity == 2
                                           && r.Lines[0].UnitPrice == 10m),
                 It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new SalesOrderDto(Guid.NewGuid()) { OrderNumber = "Q-1" });
+            .ReturnsAsync(new SalesQuoteSnapshot(Guid.NewGuid(), "Q-1"));
 
-        var svc = new OpportunityService(repo.Object, mapper.Object, logger.Object, unitOfWork.Object, publisher.Object, invoker.Object);
+        var svc = new OpportunityService(repo.Object, mapper.Object, logger.Object, unitOfWork.Object, publisher.Object, salesQuotes.Object);
 
         var request = new MarkOpportunityWonRequest(
             Note: null,
             ConvertToQuote: true,
             Quote: new ConvertOpportunityToQuoteDto(
                 ValidityDays: 30,
-                Lines: new List<CreateUpdateSalesOrderLineDto>(),
+                Lines: new List<CrmQuoteLineDto>(),
                 OrderDate: null));
 
         await svc.MarkWonAsync(oppId, request);
 
-        invoker.VerifyAll();
+        salesQuotes.VerifyAll();
     }
 }
 

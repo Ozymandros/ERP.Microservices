@@ -1,10 +1,8 @@
 using AutoMapper;
 using Microsoft.Extensions.Logging;
-using MyApp.Inventory.Application.Contracts.DTOs;
-using MyApp.Orders.Application.Contracts.Dtos;
-using MyApp.Orders.Domain;
 using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Sales.Application.Contracts.Services;
+using MyApp.Sales.Application.UseCases.SalesOrders;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
 using MyApp.Shared.Application;
@@ -24,31 +22,29 @@ public class SalesOrderService : AppServiceBase, ISalesOrderService
     private readonly ICustomerRepository _customerRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<SalesOrderService> _logger;
-    private readonly IServiceInvoker _serviceInvoker;
+    private readonly CheckStockAvailabilityUseCase _checkStock;
+    private readonly ConfirmQuoteUseCase _confirmQuote;
+    private readonly CreateReturnUseCase _createReturn;
 
-    /// <summary>Initializes a new <see cref="SalesOrderService"/> with the required dependencies.</summary>
-    /// Initializes a new instance of the SalesOrderService class.
-    /// <param name="orderRepository">The order Repository.</param>
-    /// <param name="customerRepository">The customer Repository.</param>
-    /// <param name="mapper">The mapper.</param>
-    /// <param name="logger">The logger.</param>
-    /// <param name="unitOfWork">The unit Of Work.</param>
-    /// <param name="eventPublisher">The event Publisher.</param>
-    /// <param name="serviceInvoker">The service Invoker.</param>
-    public SalesOrderService(
+  public SalesOrderService(
         ISalesOrderRepository orderRepository,
         ICustomerRepository customerRepository,
         IMapper mapper,
         ILogger<SalesOrderService> logger,
         IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher,
-        IServiceInvoker serviceInvoker)
+        CheckStockAvailabilityUseCase checkStock,
+        ConfirmQuoteUseCase confirmQuote,
+        CreateReturnUseCase createReturn)
         : base(unitOfWork, eventPublisher, logger, ServiceNames.Sales)
     {
         _orderRepository = orderRepository;
         _customerRepository = customerRepository;
         _mapper = mapper;
-        _logger = logger; _serviceInvoker = serviceInvoker;
+        _logger = logger;
+        _checkStock = checkStock;
+        _confirmQuote = confirmQuote;
+        _createReturn = createReturn;
     }
 
     /// <summary>Returns the sales order with the given identifier, or <see langword="null"/> if not found.</summary>
@@ -229,7 +225,7 @@ public class SalesOrderService : AppServiceBase, ISalesOrderService
             throw new InvalidOperationException($"Customer with ID {dto.CustomerId} not found");
 
         // Check stock availability for all lines
-        var stockChecks = await CheckStockAvailabilityAsync(dto.Lines);
+        var stockChecks = await _checkStock.ExecuteAsync(dto.Lines);
         var unavailableItems = stockChecks.Where(s => !s.IsAvailable).ToList();
 
         if (unavailableItems.Any())
@@ -301,169 +297,11 @@ public class SalesOrderService : AppServiceBase, ISalesOrderService
     /// <param name="dto">The dto.</param>
     /// <returns>The confirmed <see cref="SalesOrderDto"/> linked to the created fulfillment order.</returns>
     /// <exception cref="InvalidOperationException">Thrown when the quote does not exist, is not in Draft status, has expired, has insufficient stock, or the fulfillment order creation fails.</exception>
-    public async Task<SalesOrderDto> ConfirmQuoteAsync(ConfirmQuoteDto dto)
-    {
-        _logger.LogInformation("Confirming quote: QuoteId={QuoteId}", dto.QuoteId);
+    public Task<SalesOrderDto> ConfirmQuoteAsync(ConfirmQuoteDto dto) =>
+        _confirmQuote.ExecuteAsync(dto);
 
-        var quote = await _orderRepository.GetByIdAsync(dto.QuoteId);
-        if (quote == null)
-        {
-            throw new InvalidOperationException($"Quote {dto.QuoteId} not found");
-        }
-
-        if (!quote.IsQuote)
-        {
-            throw new InvalidOperationException($"Sales Order {dto.QuoteId} is not a quote");
-        }
-
-        if (quote.Status != SalesOrderStatus.Draft)
-        {
-            throw new InvalidOperationException($"Quote cannot be confirmed. Current status: {quote.Status}");
-        }
-
-        // Check if quote has expired
-        if (quote.QuoteExpiryDate.HasValue && DateTime.UtcNow > quote.QuoteExpiryDate.Value)
-        {
-            throw new InvalidOperationException($"Quote has expired on {quote.QuoteExpiryDate.Value}");
-        }
-
-        // Check stock availability again before confirming
-        var stockChecks = await CheckStockAvailabilityAsync(
-            quote.Lines.Select(l => new CreateUpdateSalesOrderLineDto(l.ProductId, l.Quantity, l.UnitPrice)).ToList()
-        );
-
-        var unavailableItems = stockChecks.Where(s => !s.IsAvailable).ToList();
-        if (unavailableItems.Any())
-        {
-            var itemsList = string.Join(", ", unavailableItems.Select(i => $"Product {i.ProductId}: requested {i.RequestedQuantity}, available {i.AvailableQuantity}"));
-            throw new InvalidOperationException($"Insufficient stock for items: {itemsList}");
-        }
-
-        // Create fulfillment order via Orders service
-        try
-        {
-            var createOrderRequest = new CreateOrderWithReservationDto
-            {
-                OrderNumber = $"{quote.OrderNumber}-ORD",
-                Type = OrderType.Outbound,
-                SourceId = dto.WarehouseId,  // Shipping from warehouse
-                TargetId = quote.CustomerId, // Shipping to customer
-                ExternalOrderId = quote.Id,  // Link to SalesOrder
-                WarehouseId = dto.WarehouseId,
-                OrderDate = DateTime.UtcNow,
-                DestinationAddress = dto.ShippingAddress,
-                Lines = quote.Lines.Select(l => new CreateOrderLineDto
-                {
-                    ProductId = l.ProductId,
-                    Quantity = l.Quantity
-                }).ToList()
-            };
-
-            var fulfillmentOrder = await _serviceInvoker.InvokeAsync<CreateOrderWithReservationDto, OrderDto>(
-                ServiceNames.Orders,
-                ApiEndpoints.Orders.WithReservation,
-                HttpMethod.Post,
-                createOrderRequest);
-
-            // Update quote
-            quote.Status = SalesOrderStatus.Confirmed;
-            quote.ConvertedToOrderId = fulfillmentOrder.Id;
-            await _orderRepository.UpdateAsync(quote);
-            await SaveChangesAsync();
-
-            // Publish SalesOrderConfirmedEvent
-            var salesOrderConfirmedEvent = new SalesOrderConfirmedEvent(
-                quote.Id,
-                quote.ConvertedToOrderId.Value,
-                DateTime.UtcNow
-            );
-
-            try
-            {
-                await EventPublisher.PublishAsync(MessagingConstants.Topics.SalesOrderConfirmed, salesOrderConfirmedEvent);
-                _logger.LogInformation(
-                    "Published SalesOrderConfirmedEvent for Quote {QuoteId}, Order {OrderId}",
-                    quote.Id, quote.ConvertedToOrderId);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to publish SalesOrderConfirmedEvent for Quote {QuoteId}", quote.Id);
-            }
-
-            _logger.LogInformation(
-                "Quote confirmed successfully: QuoteId={QuoteId}, OrderId={OrderId}",
-                quote.Id, quote.ConvertedToOrderId);
-
-            return _mapper.Map<SalesOrderDto>(quote);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to create fulfillment order for Quote {QuoteId}", dto.QuoteId);
-            throw new InvalidOperationException($"Failed to create fulfillment order: {ex.Message}", ex);
-        }
-    }
-
-    /// <summary>Checks stock availability for the specified line items by calling the Inventory service for each product.</summary>
-    /// Check stock availability asynchronously.
-    /// <param name="lines">The lines.</param>
-    /// <returns>A list of <see cref="StockAvailabilityCheckDto"/> with per-product availability results.</returns>
-    public async Task<List<StockAvailabilityCheckDto>> CheckStockAvailabilityAsync(List<CreateUpdateSalesOrderLineDto> lines)
-    {
-        _logger.LogInformation("Checking stock availability for {LineCount} items", lines.Count);
-
-        var results = new List<StockAvailabilityCheckDto>();
-
-        foreach (var line in lines)
-        {
-            try
-            {
-                // Call Inventory service to check availability
-                var availability = await _serviceInvoker.InvokeAsync<StockAvailabilityDto>(
-                    ServiceNames.Inventory,
-                    $"{ApiEndpoints.Inventory.Availability}/{line.ProductId}",
-                    HttpMethod.Get);
-
-                var totalAvailable = availability.TotalAvailable;
-                var warehouseStocks = availability.WarehouseStocks
-                    .Select(ws => new WarehouseAvailabilityDto
-                    {
-                        WarehouseId = ws.WarehouseId,
-                        WarehouseName = ws.WarehouseName ?? "Unknown",
-                        AvailableQuantity = ws.AvailableQuantity
-                    })
-                    .ToList();
-
-                results.Add(new StockAvailabilityCheckDto
-                {
-                    ProductId = line.ProductId,
-                    RequestedQuantity = line.Quantity,
-                    AvailableQuantity = totalAvailable,
-                    IsAvailable = totalAvailable >= line.Quantity,
-                    WarehouseStock = warehouseStocks
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to check stock for Product {ProductId}", line.ProductId);
-
-                // Return unavailable if check fails
-                results.Add(new StockAvailabilityCheckDto
-                {
-                    ProductId = line.ProductId,
-                    RequestedQuantity = line.Quantity,
-                    AvailableQuantity = 0,
-                    IsAvailable = false,
-                    WarehouseStock = new List<WarehouseAvailabilityDto>()
-                });
-            }
-        }
-
-        _logger.LogInformation(
-            "Stock availability check complete: {AvailableCount}/{TotalCount} items available",
-            results.Count(r => r.IsAvailable), results.Count);
-
-        return results;
-    }
+    public Task<List<StockAvailabilityCheckDto>> CheckStockAvailabilityAsync(List<CreateUpdateSalesOrderLineDto> lines) =>
+        _checkStock.ExecuteAsync(lines);
 
     /// <inheritdoc />
     public async Task<SalesOrderCacheInvalidationDto?> MarkShippedFromFulfillmentAsync(
@@ -564,60 +402,9 @@ public class SalesOrderService : AppServiceBase, ISalesOrderService
     }
 
     /// <inheritdoc />
-    public async Task<SalesOrderDto> CreateReturnAsync(
+    public Task<SalesOrderDto> CreateReturnAsync(
         Guid salesOrderId,
         CreateSalesReturnDto dto,
-        CancellationToken cancellationToken = default)
-    {
-        var salesOrder = await _orderRepository.GetByIdAsync(salesOrderId)
-            ?? throw new InvalidOperationException($"Sales order {salesOrderId} not found");
-
-        if (salesOrder.Status is not (SalesOrderStatus.Invoiced or SalesOrderStatus.Shipped))
-            throw new InvalidOperationException($"Returns require Invoiced or Shipped status; current: {salesOrder.Status}");
-
-        if (salesOrder.ReturnOrderId.HasValue)
-            throw new InvalidOperationException($"Return already initiated for sales order {salesOrderId}");
-
-        foreach (var returnLine in dto.Lines)
-        {
-            var original = salesOrder.Lines.FirstOrDefault(l => l.ProductId == returnLine.ProductId)
-                ?? throw new InvalidOperationException($"Product {returnLine.ProductId} not on sales order");
-            if (returnLine.Quantity > original.Quantity)
-                throw new InvalidOperationException($"Return quantity exceeds original for product {returnLine.ProductId}");
-        }
-
-        var createOrderRequest = new CreateUpdateOrderDto
-        {
-            OrderNumber = $"{salesOrder.OrderNumber}-RET",
-            Type = OrderType.Return,
-            SourceId = salesOrder.CustomerId,
-            TargetId = dto.WarehouseId,
-            ExternalOrderId = salesOrderId,
-            WarehouseId = dto.WarehouseId,
-            OrderDate = DateTime.UtcNow,
-            Lines = dto.Lines.Select(l => new CreateOrderLineDto
-            {
-                ProductId = l.ProductId,
-                Quantity = l.Quantity
-            }).ToList()
-        };
-
-        var returnOrder = await _serviceInvoker.InvokeAsync<CreateUpdateOrderDto, OrderDto>(
-            ServiceNames.Orders,
-            ApiEndpoints.Orders.Base,
-            HttpMethod.Post,
-            createOrderRequest,
-            cancellationToken);
-
-        salesOrder.ReturnOrderId = returnOrder.Id;
-        await _orderRepository.UpdateAsync(salesOrder);
-        await SaveChangesAsync(cancellationToken);
-
-        _logger.LogInformation(
-            "Return order {ReturnOrderId} created for sales order {SalesOrderId}",
-            returnOrder.Id,
-            salesOrderId);
-
-        return _mapper.Map<SalesOrderDto>(salesOrder);
-    }
+        CancellationToken cancellationToken = default) =>
+        _createReturn.ExecuteAsync(salesOrderId, dto, cancellationToken);
 }

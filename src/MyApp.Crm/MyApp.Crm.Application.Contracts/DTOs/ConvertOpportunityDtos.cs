@@ -1,14 +1,12 @@
-using MyApp.Sales.Application.Contracts.DTOs;
-
 namespace MyApp.Crm.Application.Contracts.DTOs;
 
+/// <summary>CRM-owned quote line for opportunity conversion.</summary>
+public sealed record CrmQuoteLineDto(Guid ProductId, int Quantity, decimal UnitPrice);
+
 /// <summary>Data transfer object for converting an opportunity to a sales quote.</summary>
-/// <param name="ValidityDays">The validity Days.</param>
-/// <param name="Lines">The lines.</param>
-/// <param name="OrderDate">The order Date.</param>
 public sealed record ConvertOpportunityToQuoteDto(
     int ValidityDays,
-    List<CreateUpdateSalesOrderLineDto> Lines,
+    List<CrmQuoteLineDto> Lines,
     DateTime? OrderDate
 );
 

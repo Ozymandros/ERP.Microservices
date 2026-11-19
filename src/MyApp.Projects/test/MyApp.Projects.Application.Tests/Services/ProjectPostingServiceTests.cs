@@ -2,12 +2,13 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
-using MyApp.Orders.Application.Contracts.Dtos;
-using MyApp.Orders.Domain;
+using Microsoft.Extensions.Logging.Abstractions;
 using MyApp.Projects.Application.Contracts.DTOs;
+using MyApp.Projects.Application.Contracts.Ports;
 using MyApp.Projects.Application.Contracts.Services;
-using MyApp.Projects.Application.Integration;
+using MyApp.Projects.Application.Internals;
 using MyApp.Projects.Application.Services;
+using MyApp.Projects.Application.UseCases.Posting;
 using MyApp.Projects.Domain.Entities;
 using MyApp.Projects.Domain.Repositories;
 using MyApp.Shared.Domain.Constants;
@@ -29,7 +30,7 @@ public class ProjectPostingServiceTests
     private readonly Mock<IProjectConsumptionOrderRepository> _consumptionOrders = new();
     private readonly Mock<IResourceRepository> _resources = new();
     private readonly Mock<ICurrencyService> _currency = new();
-    private readonly Mock<IOrdersClient> _orders = new();
+    private readonly Mock<IOrdersCreationPort> _orders = new();
     private readonly Mock<IMapper> _mapper = new();
     private readonly Mock<IUnitOfWork> _unitOfWork = new();
     private readonly Mock<IEventPublisher> _publisher = new();
@@ -61,9 +62,15 @@ public class ProjectPostingServiceTests
         _currency.Setup(c => c.GetRateAsync("USD", It.IsAny<DateTime>(), It.IsAny<CancellationToken>())).ReturnsAsync(0.9m);
         _unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Array.Empty<EntityEntryDto>());
 
+        var boundary = new ProjectsTransactionBoundary(
+            _unitOfWork.Object, _publisher.Object, NullLogger<ProjectsTransactionBoundary>.Instance);
+        var createItemConsumption = new CreateItemConsumptionUseCase(
+            _projects.Object, _lines.Object, _consumptionOrders.Object, _orders.Object, _mapper.Object,
+            boundary, NullLogger<CreateItemConsumptionUseCase>.Instance);
+
         _sut = new ProjectPostingService(
             _projects.Object, _tasks.Object, _lines.Object, _ledger.Object, _invoiceRequests.Object,
-            _consumptionOrders.Object, _resources.Object, _currency.Object, _orders.Object, _mapper.Object,
+            _consumptionOrders.Object, _resources.Object, _currency.Object, createItemConsumption, _mapper.Object,
             _unitOfWork.Object, _publisher.Object, Mock.Of<ILogger<ProjectPostingService>>());
     }
 
@@ -277,10 +284,10 @@ public class ProjectPostingServiceTests
         var warehouseId = Guid.NewGuid();
         _lines.Setup(r => r.GetByIdsAsync(It.IsAny<IEnumerable<Guid>>(), It.IsAny<CancellationToken>()))
               .ReturnsAsync(new List<ProjectPlanningLine> { line });
-        CreateOrderWithReservationDto? sent = null;
-        _orders.Setup(o => o.CreateOrderWithReservationAsync(It.IsAny<CreateOrderWithReservationDto>(), It.IsAny<CancellationToken>()))
-               .Callback<CreateOrderWithReservationDto, CancellationToken>((dto, _) => sent = dto)
-               .ReturnsAsync(new OrderDto(Guid.NewGuid()) { OrderNumber = "ORD-1" });
+        CreateProjectOrderWithReservationRequest? sent = null;
+        _orders.Setup(o => o.CreateWithReservationAsync(It.IsAny<CreateProjectOrderWithReservationRequest>(), It.IsAny<CancellationToken>()))
+               .Callback<CreateProjectOrderWithReservationRequest, CancellationToken>((dto, _) => sent = dto)
+               .ReturnsAsync(new ProjectOrderSnapshot(Guid.NewGuid(), "ORD-1"));
         _consumptionOrders.Setup(r => r.AddAsync(It.IsAny<ProjectConsumptionOrder>())).Returns<ProjectConsumptionOrder>(c => Task.FromResult(c));
 
         await _sut.CreateItemConsumptionAsync(_project.Id, new CreateItemConsumptionDto
@@ -289,7 +296,9 @@ public class ProjectPostingServiceTests
             Lines = new List<ItemConsumptionLineDto> { new() { PlanningLineId = line.Id, Quantity = 6 } }
         });
 
-        sent!.Type.Should().Be(OrderType.Outbound);
+        sent!.OrderType.Should().Be(OrderTypes.Outbound);
+        sent.SourceId.Should().BeNull();
+        sent.TargetId.Should().BeNull();
         sent.ExternalOrderId.Should().Be(_project.Id);
         sent.ExternalOrderSource.Should().Be(DocumentSources.Project);
         sent.WarehouseId.Should().Be(warehouseId);

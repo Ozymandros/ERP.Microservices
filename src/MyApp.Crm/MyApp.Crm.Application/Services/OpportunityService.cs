@@ -10,7 +10,7 @@ using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
-using MyApp.Sales.Application.Contracts.DTOs;
+using MyApp.Crm.Application.Contracts.Ports;
 
 namespace MyApp.Crm.Application.Services;
 
@@ -25,7 +25,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     private readonly IOpportunityRepository _repository;
     private readonly IMapper _mapper;
     private readonly ILogger<OpportunityService> _logger;
-    private readonly IServiceInvoker _serviceInvoker;
+    private readonly ISalesQuoteCreationPort _salesQuotes;
 
     /// <summary>Initializes a new instance of the OpportunityService class.</summary>
     /// Initializes a new instance of the OpportunityService class.
@@ -34,19 +34,20 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <param name="logger">The logger.</param>
     /// <param name="unitOfWork">The unit Of Work.</param>
     /// <param name="eventPublisher">The event Publisher.</param>
-    /// <param name="serviceInvoker">The service Invoker.</param>
+    /// <param name="salesQuotes">The sales quotes.</param>
     public OpportunityService(
         IOpportunityRepository repository,
         IMapper mapper,
         ILogger<OpportunityService> logger,
         IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher,
-        IServiceInvoker serviceInvoker)
+        ISalesQuoteCreationPort salesQuotes)
         : base(unitOfWork, eventPublisher, logger, ServiceNames.Crm)
     {
         _repository = repository;
         _mapper = mapper;
-        _logger = logger;        _serviceInvoker = serviceInvoker;
+        _logger = logger;
+        _salesQuotes = salesQuotes;
     }
 
     /// <summary>Get By Id Async.</summary>
@@ -174,18 +175,13 @@ public class OpportunityService : AppServiceBase, IOpportunityService
                     lines = BuildQuoteLinesFromOpportunity(entity);
                 }
 
-                var salesRequest = new CreateQuoteDto(
-                    OrderNumber: orderNumber,
-                    CustomerId: entity.CustomerId,
-                    OrderDate: request.Quote.OrderDate ?? DateTime.UtcNow,
-                    ValidityDays: request.Quote.ValidityDays,
-                    Lines: lines);
-
-                var salesQuote = await _serviceInvoker.InvokeAsync<CreateQuoteDto, SalesOrderDto>(
-                    ServiceNames.Sales,
-                    ApiEndpoints.Sales.Quotes,
-                    HttpMethod.Post,
-                    salesRequest,
+                var salesQuote = await _salesQuotes.CreateQuoteAsync(
+                    new CreateSalesQuoteRequest(
+                        orderNumber,
+                        entity.CustomerId,
+                        request.Quote.OrderDate ?? DateTime.UtcNow,
+                        request.Quote.ValidityDays,
+                        lines.Select(l => new CrmQuoteLineRequest(l.ProductId, l.Quantity, l.UnitPrice)).ToList()),
                     cancellationToken);
 
                 entity.SetConvertedQuote(salesQuote.Id, salesQuote.OrderNumber);
@@ -310,12 +306,12 @@ public class OpportunityService : AppServiceBase, IOpportunityService
         return $"{QuoteNumberPrefix}-{now:yyyyMMddHHmmss}-{suffix}";
     }
 
-    private static List<CreateUpdateSalesOrderLineDto> BuildQuoteLinesFromOpportunity(Opportunity entity)
+    private static List<CrmQuoteLineDto> BuildQuoteLinesFromOpportunity(Opportunity entity)
     {
         if (entity.Lines.Count == 0)
             throw new ArgumentException("Quote lines are required. Either provide Quote.Lines or add opportunity lines before conversion.");
 
-        var lines = new List<CreateUpdateSalesOrderLineDto>(entity.Lines.Count);
+        var lines = new List<CrmQuoteLineDto>(entity.Lines.Count);
         foreach (var l in entity.Lines)
         {
             if (!l.ProductId.HasValue)
@@ -327,10 +323,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
             if (l.Quantity > int.MaxValue)
                 throw new ArgumentOutOfRangeException(nameof(entity), "Opportunity line quantity is too large to convert.");
 
-            lines.Add(new CreateUpdateSalesOrderLineDto(
-                ProductId: l.ProductId.Value,
-                Quantity: (int)l.Quantity,
-                UnitPrice: l.UnitPrice));
+            lines.Add(new CrmQuoteLineDto(l.ProductId.Value, (int)l.Quantity, l.UnitPrice));
         }
 
         return lines;

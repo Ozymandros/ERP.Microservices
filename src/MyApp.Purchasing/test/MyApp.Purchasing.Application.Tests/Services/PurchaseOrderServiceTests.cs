@@ -1,10 +1,13 @@
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
-using MyApp.Orders.Application.Contracts.Dtos;
 using MyApp.Purchasing.Application.Contracts.DTOs;
+using MyApp.Purchasing.Application.Contracts.Ports;
+using MyApp.Purchasing.Application.Internals;
 using MyApp.Purchasing.Application.Services;
+using MyApp.Purchasing.Application.UseCases.PurchaseOrders;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
 using MyApp.Shared.Domain.Constants;
@@ -28,7 +31,8 @@ public class PurchaseOrderServiceTests
     private readonly Mock<ILogger<PurchaseOrderService>> _mockLogger;
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
     private readonly Mock<IEventPublisher> _mockEventPublisher;
-    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
+    private readonly Mock<IOrdersOperationalPort> _mockOrdersOperational;
+    private readonly Mock<ISupplierInvoiceQueryPort> _mockSupplierInvoices;
     private readonly PurchaseOrderService _purchaseOrderService;
 
     /// <summary>Initializes a new instance of the <see cref="PurchaseOrderServiceTests"/> class, setting up mocks and the service under test.</summary>
@@ -41,9 +45,26 @@ public class PurchaseOrderServiceTests
         _mockLogger = new Mock<ILogger<PurchaseOrderService>>();
         _mockUnitOfWork = new Mock<IUnitOfWork>();
         _mockEventPublisher = new Mock<IEventPublisher>();
-        _mockServiceInvoker = new Mock<IServiceInvoker>();
+        _mockOrdersOperational = new Mock<IOrdersOperationalPort>();
+        _mockSupplierInvoices = new Mock<ISupplierInvoiceQueryPort>();
         _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<EntityEntryDto>());
+
+        var boundary = new PurchasingTransactionBoundary(
+            _mockUnitOfWork.Object,
+            _mockEventPublisher.Object,
+            NullLogger<PurchasingTransactionBoundary>.Instance);
+        var receivePurchaseOrder = new ReceivePurchaseOrderUseCase(
+            _mockPurchaseOrderRepository.Object,
+            _mockOrdersOperational.Object,
+            _mockMapper.Object,
+            boundary,
+            NullLogger<ReceivePurchaseOrderUseCase>.Instance);
+        var matchPurchaseOrder = new MatchPurchaseOrderUseCase(
+            _mockPurchaseOrderRepository.Object,
+            _mockSupplierInvoices.Object,
+            boundary,
+            NullLogger<MatchPurchaseOrderUseCase>.Instance);
 
         _purchaseOrderService = new PurchaseOrderService(
             _mockPurchaseOrderRepository.Object,
@@ -53,7 +74,8 @@ public class PurchaseOrderServiceTests
             _mockLogger.Object,
             _mockUnitOfWork.Object,
             _mockEventPublisher.Object,
-            _mockServiceInvoker.Object);
+            receivePurchaseOrder,
+            matchPurchaseOrder);
     }
 
     /// <summary>Verifies that <see cref="PurchaseOrderService.GetPurchaseOrderByIdAsync"/> returns the purchase order DTO when the ID exists.</summary>
@@ -526,24 +548,13 @@ public class PurchaseOrderServiceTests
 
         _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(po);
 
-        var fulfillmentOrderResponse = new OrderDto(Guid.NewGuid());
-
-        _mockServiceInvoker.Setup(s => s.InvokeAsync<CreateUpdateOrderDto, OrderDto>(
-            ServiceNames.Orders,
-            ApiEndpoints.Orders.Base,
-            HttpMethod.Post,
-            It.IsAny<CreateUpdateOrderDto>(),
-            default))
-            .ReturnsAsync(fulfillmentOrderResponse);
-
-        // Mock Order fulfillment
-        _mockServiceInvoker.Setup(s => s.InvokeAsync<FulfillOrderDto, OrderDto>(
-            ServiceNames.Orders,
-            It.Is<string>(path => path.EndsWith("/fulfill")),
-            HttpMethod.Post,
-            It.IsAny<FulfillOrderDto>(),
-            default))
-            .ReturnsAsync(new OrderDto(Guid.NewGuid()));
+        var fulfillmentOrderId = Guid.NewGuid();
+        _mockOrdersOperational
+            .Setup(p => p.CreateInboundOrderAsync(It.IsAny<CreateInboundOrderRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new OperationalOrderSnapshot(fulfillmentOrderId, "INB-1"));
+        _mockOrdersOperational
+            .Setup(p => p.FulfillInboundOrderAsync(It.IsAny<FulfillInboundOrderRequest>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
 
         _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(po)).Returns(new PurchaseOrderDto());
 
@@ -554,8 +565,8 @@ public class PurchaseOrderServiceTests
         Assert.NotNull(result);
         Assert.Equal(5, po.Lines.First().ReceivedQuantity);
 
-        _mockServiceInvoker.Verify(s => s.InvokeAsync<CreateUpdateOrderDto, OrderDto>(ServiceNames.Orders, ApiEndpoints.Orders.Base, HttpMethod.Post, It.IsAny<CreateUpdateOrderDto>(), default), Times.Once);
-        _mockServiceInvoker.Verify(s => s.InvokeAsync<FulfillOrderDto, OrderDto>(ServiceNames.Orders, It.Is<string>(path => path.EndsWith("/fulfill")), HttpMethod.Post, It.IsAny<FulfillOrderDto>(), default), Times.Once);
+        _mockOrdersOperational.Verify(p => p.CreateInboundOrderAsync(It.IsAny<CreateInboundOrderRequest>(), It.IsAny<CancellationToken>()), Times.Once);
+        _mockOrdersOperational.Verify(p => p.FulfillInboundOrderAsync(It.IsAny<FulfillInboundOrderRequest>(), It.IsAny<CancellationToken>()), Times.Once);
         _mockEventPublisher.Verify(e => e.PublishAsync(MessagingConstants.Topics.PurchasingLineReceived, It.IsAny<PurchaseOrderLineReceivedEvent>(), default), Times.Once);
     }
 
@@ -816,24 +827,13 @@ public class PurchaseOrderServiceTests
             }
         };
 
-        var fulfillmentOrder = new OrderDto(Guid.NewGuid());
         _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(order);
-        _mockServiceInvoker
-            .Setup(s => s.InvokeAsync<CreateUpdateOrderDto, OrderDto>(
-                ServiceNames.Orders,
-                ApiEndpoints.Orders.Base,
-                HttpMethod.Post,
-                It.IsAny<CreateUpdateOrderDto>(),
-                default))
-            .ReturnsAsync(fulfillmentOrder);
-        _mockServiceInvoker
-            .Setup(s => s.InvokeAsync<FulfillOrderDto, OrderDto>(
-                ServiceNames.Orders,
-                It.IsAny<string>(),
-                HttpMethod.Post,
-                It.IsAny<FulfillOrderDto>(),
-                default))
-            .ReturnsAsync(new OrderDto(Guid.NewGuid()));
+        _mockOrdersOperational
+            .Setup(p => p.CreateInboundOrderAsync(It.IsAny<CreateInboundOrderRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new OperationalOrderSnapshot(Guid.NewGuid(), "INB-1"));
+        _mockOrdersOperational
+            .Setup(p => p.FulfillInboundOrderAsync(It.IsAny<FulfillInboundOrderRequest>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
         _mockEventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), default)).Returns(Task.CompletedTask);
         _mockPurchaseOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<PurchaseOrder>())).ReturnsAsync((PurchaseOrder po) => po);
         _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(It.IsAny<PurchaseOrder>()))
@@ -879,13 +879,8 @@ public class PurchaseOrderServiceTests
         };
 
         _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(order);
-        _mockServiceInvoker
-            .Setup(s => s.InvokeAsync<CreateUpdateOrderDto, OrderDto>(
-                ServiceNames.Orders,
-                ApiEndpoints.Orders.Base,
-                HttpMethod.Post,
-                It.IsAny<CreateUpdateOrderDto>(),
-                default))
+        _mockOrdersOperational
+            .Setup(p => p.CreateInboundOrderAsync(It.IsAny<CreateInboundOrderRequest>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("Order creation failed"));
 
         // Act
@@ -989,8 +984,12 @@ public class PurchaseOrderServiceTests
 
         _mockPurchaseOrderRepository.Setup(r => r.GetWithLinesAsync(poId)).ReturnsAsync(po);
         _mockPurchaseOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<PurchaseOrder>())).ReturnsAsync((PurchaseOrder p) => p);
-        _mockServiceInvoker.Setup(s => s.InvokeAsync<CreateUpdateOrderDto, OrderDto>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpMethod>(), It.IsAny<CreateUpdateOrderDto>(), default)).ReturnsAsync(new OrderDto(Guid.NewGuid()));
-        _mockServiceInvoker.Setup(s => s.InvokeAsync<FulfillOrderDto, OrderDto>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpMethod>(), It.IsAny<FulfillOrderDto>(), default)).ReturnsAsync(new OrderDto(Guid.NewGuid()));
+        _mockOrdersOperational
+            .Setup(p => p.CreateInboundOrderAsync(It.IsAny<CreateInboundOrderRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new OperationalOrderSnapshot(Guid.NewGuid(), "INB-1"));
+        _mockOrdersOperational
+            .Setup(p => p.FulfillInboundOrderAsync(It.IsAny<FulfillInboundOrderRequest>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
         _mockMapper.Setup(m => m.Map<PurchaseOrderDto>(It.IsAny<PurchaseOrder>())).Returns((PurchaseOrder p) => new PurchaseOrderDto { Id = p.Id, OrderNumber = p.OrderNumber });
 
         // Act

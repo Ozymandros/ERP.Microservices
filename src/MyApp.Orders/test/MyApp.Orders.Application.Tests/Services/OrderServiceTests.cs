@@ -1,9 +1,13 @@
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using MyApp.Orders.Application.Contracts.Dtos;
+using MyApp.Orders.Application.Contracts.Ports;
+using MyApp.Orders.Application.Internals;
 using MyApp.Orders.Application.Services;
+using MyApp.Orders.Application.UseCases.Orders;
 using MyApp.Orders.Domain;
 using MyApp.Orders.Domain.Entities;
 using MyApp.Orders.Domain.Repositories;
@@ -11,7 +15,6 @@ using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Constants;
-using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 using MyApp.Shared.Domain.Exceptions;
@@ -29,7 +32,7 @@ public class OrderServiceTests
     private readonly Mock<ILogger<OrderService>> _mockLogger;
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
     private readonly Mock<IEventPublisher> _mockEventPublisher;
-    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
+    private readonly Mock<IInventoryStockPort> _mockInventoryStock;
     private readonly OrderService _orderService;
 
     /// <summary>Initializes a new instance of the <see cref="OrderServiceTests"/> class, setting up mocks and the service under test.</summary>
@@ -41,20 +44,49 @@ public class OrderServiceTests
         _mockMapper = new Mock<IMapper>();
         _mockLogger = new Mock<ILogger<OrderService>>();
         _mockEventPublisher = new Mock<IEventPublisher>();
-        _mockServiceInvoker = new Mock<IServiceInvoker>();
+        _mockInventoryStock = new Mock<IInventoryStockPort>();
         _mockUnitOfWork = new Mock<IUnitOfWork>();
         _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<EntityEntryDto>());
+        _mockOrderRepository.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync([]);
+
+        var boundary = new OrdersTransactionBoundary(
+            _mockUnitOfWork.Object,
+            _mockEventPublisher.Object,
+            NullLogger<OrdersTransactionBoundary>.Instance);
+        var cancelOrder = new CancelOrderUseCase(
+            _mockOrderRepository.Object,
+            _mockReservedStockRepository.Object,
+            _mockInventoryStock.Object,
+            boundary,
+            NullLogger<CancelOrderUseCase>.Instance);
+        var createOrder = new CreateOrderUseCase(_mockOrderRepository.Object, _mockMapper.Object, boundary);
+        var updateOrder = new UpdateOrderUseCase(_mockOrderRepository.Object, boundary);
+        var deleteOrder = new DeleteOrderUseCase(_mockOrderRepository.Object, boundary);
+        var fulfillOrder = new FulfillOrderUseCase(
+            _mockOrderRepository.Object,
+            _mockReservedStockRepository.Object,
+            _mockMapper.Object,
+            boundary,
+            NullLogger<FulfillOrderUseCase>.Instance);
+        var createWithReservation = new CreateOrderWithReservationUseCase(
+            _mockOrderRepository.Object,
+            _mockReservedStockRepository.Object,
+            _mockInventoryStock.Object,
+            cancelOrder,
+            _mockMapper.Object,
+            boundary,
+            NullLogger<CreateOrderWithReservationUseCase>.Instance);
 
         _orderService = new OrderService(
             _mockOrderRepository.Object,
-            _mockOrderLineRepository.Object,
-            _mockReservedStockRepository.Object,
             _mockMapper.Object,
-            _mockLogger.Object,
-            _mockUnitOfWork.Object,
-            _mockEventPublisher.Object,
-            _mockServiceInvoker.Object);
+            createOrder,
+            updateOrder,
+            deleteOrder,
+            createWithReservation,
+            fulfillOrder,
+            cancelOrder);
     }
 
     #region CreateAsync Tests
@@ -204,22 +236,15 @@ public class OrderServiceTests
         };
 
         var reservationId = Guid.NewGuid();
-        var reservationResponse = new ReservationDto(reservationId)
-        {
-            ProductId = productId,
-            WarehouseId = warehouseId,
-            Quantity = 5,
-            ReservedUntil = DateTime.UtcNow.AddDays(1),
-            Status = "Reserved"
-        };
+        var reservationResponse = new StockReservationSnapshot(reservationId, DateTime.UtcNow.AddDays(1));
 
-        _mockServiceInvoker.Setup(s => s.InvokeAsync<ReserveStockDto, ReservationDto>(
-            ServiceNames.Inventory,
-            ApiEndpoints.Inventory.ReserveStock,
-            HttpMethod.Post,
-            It.IsAny<ReserveStockDto>(),
-            It.IsAny<CancellationToken>()))
+        _mockInventoryStock
+            .Setup(s => s.ReserveAsync(It.IsAny<ReserveStockRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(reservationResponse);
+        _mockOrderRepository.Setup(r => r.AddAsync(It.IsAny<Order>())).ReturnsAsync((Order o) => o);
+        _mockOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<Order>())).ReturnsAsync((Order o) => o);
+        _mockReservedStockRepository.Setup(r => r.AddAsync(It.IsAny<ReservedStock>())).ReturnsAsync((ReservedStock rs) => rs);
+        _mockEventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
         _mockMapper.Setup(m => m.Map<OrderDto>(It.IsAny<Order>())).Returns(new OrderDto(Guid.NewGuid()));
 
@@ -228,12 +253,7 @@ public class OrderServiceTests
 
         // Assert
         Assert.NotNull(result);
-        _mockServiceInvoker.Verify(s => s.InvokeAsync<ReserveStockDto, ReservationDto>(
-            ServiceNames.Inventory,
-            ApiEndpoints.Inventory.ReserveStock,
-            HttpMethod.Post,
-            It.IsAny<ReserveStockDto>(),
-            It.IsAny<CancellationToken>()), Times.Once);
+        _mockInventoryStock.Verify(s => s.ReserveAsync(It.IsAny<ReserveStockRequest>(), It.IsAny<CancellationToken>()), Times.Once);
 
         _mockReservedStockRepository.Verify(r => r.AddAsync(It.IsAny<ReservedStock>()), Times.Once);
         _mockOrderRepository.Verify(r => r.AddAsync(It.IsAny<Order>()), Times.Once);
@@ -462,22 +482,14 @@ public class OrderServiceTests
         _mockOrderRepository
             .Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(() => order);
-        _mockServiceInvoker
-            .Setup(s => s.InvokeAsync<ReserveStockDto, ReservationDto>(
-                ServiceNames.Inventory,
-                ApiEndpoints.Inventory.ReserveStock,
-                HttpMethod.Post,
-                It.IsAny<ReserveStockDto>(),
-                It.IsAny<CancellationToken>()))
+        _mockInventoryStock
+            .Setup(s => s.ReserveAsync(It.IsAny<ReserveStockRequest>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("Stock reservation failed"));
         _mockReservedStockRepository
             .Setup(r => r.GetByOrderIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(new List<ReservedStock>());
-        _mockServiceInvoker
-            .Setup(s => s.InvokeAsync(
-                ServiceNames.Inventory,
-                It.IsAny<string>(),
-                HttpMethod.Delete))
+        _mockInventoryStock
+            .Setup(s => s.ReleaseReservationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
         _mockOrderRepository
             .Setup(r => r.UpdateAsync(It.IsAny<Order>()))
@@ -512,30 +524,11 @@ public class OrderServiceTests
             }
         };
 
-        var reservation1 = new ReservationDto(Guid.NewGuid())
-        {
-            ProductId = productId1,
-            WarehouseId = warehouseId,
-            Quantity = 5,
-            ReservedUntil = DateTime.UtcNow.AddDays(1),
-            Status = "Reserved"
-        };
-        var reservation2 = new ReservationDto(Guid.NewGuid())
-        {
-            ProductId = productId2,
-            WarehouseId = warehouseId,
-            Quantity = 10,
-            ReservedUntil = DateTime.UtcNow.AddDays(1),
-            Status = "Reserved"
-        };
+        var reservation1 = new StockReservationSnapshot(Guid.NewGuid(), DateTime.UtcNow.AddDays(1));
+        var reservation2 = new StockReservationSnapshot(Guid.NewGuid(), DateTime.UtcNow.AddDays(1));
 
-        _mockServiceInvoker
-            .SetupSequence(s => s.InvokeAsync<ReserveStockDto, ReservationDto>(
-                ServiceNames.Inventory,
-                ApiEndpoints.Inventory.ReserveStock,
-                HttpMethod.Post,
-                It.IsAny<ReserveStockDto>(),
-                It.IsAny<CancellationToken>()))
+        _mockInventoryStock
+            .SetupSequence(s => s.ReserveAsync(It.IsAny<ReserveStockRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(reservation1)
             .ReturnsAsync(reservation2);
 
@@ -560,12 +553,7 @@ public class OrderServiceTests
 
         // Assert
         result.Should().NotBeNull();
-        _mockServiceInvoker.Verify(s => s.InvokeAsync<ReserveStockDto, ReservationDto>(
-            ServiceNames.Inventory,
-            ApiEndpoints.Inventory.ReserveStock,
-            HttpMethod.Post,
-            It.IsAny<ReserveStockDto>(),
-            It.IsAny<CancellationToken>()), Times.Exactly(2));
+        _mockInventoryStock.Verify(s => s.ReserveAsync(It.IsAny<ReserveStockRequest>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
         _mockReservedStockRepository.Verify(r => r.AddAsync(It.IsAny<ReservedStock>()), Times.Exactly(2));
     }
 
@@ -798,15 +786,12 @@ public class OrderServiceTests
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
         _mockReservedStockRepository.Setup(r => r.GetByOrderIdAsync(orderId)).ReturnsAsync(reservations);
-        _mockServiceInvoker
-            .Setup(s => s.InvokeAsync(
-                ServiceNames.Inventory,
-                It.IsAny<string>(),
-                HttpMethod.Delete))
+        _mockInventoryStock
+            .Setup(s => s.ReleaseReservationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
         _mockReservedStockRepository.Setup(r => r.UpdateAsync(It.IsAny<ReservedStock>())).ReturnsAsync((ReservedStock rs) => rs);
         _mockOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<Order>())).ReturnsAsync((Order o) => o);
-        _mockEventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>())).Returns(Task.CompletedTask);
+        _mockEventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
         // Act
         await _orderService.CancelOrderAsync(dto);
@@ -818,11 +803,8 @@ public class OrderServiceTests
         _mockReservedStockRepository.Verify(r => r.UpdateAsync(It.Is<ReservedStock>(rs =>
             rs.Status == ReservationStatus.Cancelled
         )), Times.Once);
-        _mockServiceInvoker.Verify(s => s.InvokeAsync(
-            ServiceNames.Inventory,
-            It.IsAny<string>(),
-            HttpMethod.Delete), Times.Once);
-        _mockEventPublisher.Verify(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>()), Times.Once);
+        _mockInventoryStock.Verify(s => s.ReleaseReservationAsync(reservationId, It.IsAny<CancellationToken>()), Times.Once);
+        _mockEventPublisher.Verify(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     /// <summary>Verifies that CancelOrderAsync throws InvalidOperationException when the order does not exist.</summary>
@@ -899,14 +881,11 @@ public class OrderServiceTests
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
         _mockReservedStockRepository.Setup(r => r.GetByOrderIdAsync(orderId)).ReturnsAsync(reservations);
-        _mockServiceInvoker
-            .Setup(s => s.InvokeAsync(
-                ServiceNames.Inventory,
-                It.IsAny<string>(),
-                HttpMethod.Delete))
+        _mockInventoryStock
+            .Setup(s => s.ReleaseReservationAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("Release failed"));
         _mockOrderRepository.Setup(r => r.UpdateAsync(It.IsAny<Order>())).ReturnsAsync((Order o) => o);
-        _mockEventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>())).Returns(Task.CompletedTask);
+        _mockEventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
         // Act
         await _orderService.CancelOrderAsync(dto);
