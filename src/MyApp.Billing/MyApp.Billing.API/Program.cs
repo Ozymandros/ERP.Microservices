@@ -1,6 +1,9 @@
+using MyApp.Billing.Application.Contracts.Ports;
 using MyApp.Billing.Application.Contracts.Services;
+using MyApp.Billing.Application.DependencyInjection;
 using MyApp.Billing.Application.Mapping;
 using MyApp.Billing.Application.Services;
+using MyApp.Billing.Infrastructure.Adapters;
 using MyApp.Billing.Domain.Repositories;
 using MyApp.Billing.Infrastructure.Persistence;
 using MyApp.Billing.Infrastructure.Repositories;
@@ -28,7 +31,9 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
         services.AddScoped<IUnitOfWork>(sp =>
             new BillingEfUnitOfWork(sp.GetRequiredService<BillingDbContext>()));
 
-        // Register application services
+        services.AddScoped<ISalesOrderLookupPort, SalesOrderLookupAdapter>();
+        services.AddBillingApplication();
+
         services.AddScoped<IInvoiceService, InvoiceService>();
         services.AddScoped<ISupplierInvoiceService, SupplierInvoiceService>();
     }

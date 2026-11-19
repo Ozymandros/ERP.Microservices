@@ -11,7 +11,7 @@ public class InvoiceTests
     public void Constructor_CreatesInvoiceWithDraftStatus()
     {
         // Arrange & Act
-        var invoice = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var invoice = new Invoice(Guid.NewGuid(), "INV-TEST", Guid.NewGuid(), "USD");
 
         // Assert
         invoice.Status.Should().Be(InvoiceStatus.Draft);
@@ -24,7 +24,7 @@ public class InvoiceTests
     public void AddLine_WhenDraft_AddsLineAndRecalculatesTotals()
     {
         // Arrange
-        var invoice = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var invoice = new Invoice(Guid.NewGuid(), "INV-TEST", Guid.NewGuid(), "USD");
 
         // Act
         invoice.AddLine("Test Item", 2, 100m, 10m, 10m);
@@ -41,7 +41,8 @@ public class InvoiceTests
     public void AddLine_WhenIssued_ThrowsInvalidOperationException()
     {
         // Arrange
-        var invoice = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var invoice = new Invoice(Guid.NewGuid(), "INV-TEST", Guid.NewGuid(), "USD");
+        invoice.AddLine("Test Item", 1, 50m, 10m);
         invoice.Issue("INV-001", DateTime.UtcNow, 30);
 
         // Act & Assert
@@ -53,7 +54,7 @@ public class InvoiceTests
     public void Issue_WithValidData_SetsStatusToIssued()
     {
         // Arrange
-        var invoice = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var invoice = new Invoice(Guid.NewGuid(), "INV-TEST", Guid.NewGuid(), "USD");
         invoice.AddLine("Test Item", 1, 100m, 10m);
         var issueDate = DateTime.UtcNow;
 
@@ -71,7 +72,7 @@ public class InvoiceTests
     public void Issue_WithoutLines_ThrowsInvalidOperationException()
     {
         // Arrange
-        var invoice = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var invoice = new Invoice(Guid.NewGuid(), "INV-TEST", Guid.NewGuid(), "USD");
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => 
@@ -82,7 +83,7 @@ public class InvoiceTests
     public void RecordPayment_ValidPayment_ReducesOutstandingAmount()
     {
         // Arrange
-        var invoice = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var invoice = new Invoice(Guid.NewGuid(), "INV-TEST", Guid.NewGuid(), "USD");
         invoice.AddLine("Test Item", 1, 100m, 0m);
         invoice.Issue("INV-001", DateTime.UtcNow, 30);
         var initialOutstanding = invoice.OutstandingAmount;
@@ -99,7 +100,7 @@ public class InvoiceTests
     public void RecordPayment_FullPayment_SetsStatusToPaid()
     {
         // Arrange
-        var invoice = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var invoice = new Invoice(Guid.NewGuid(), "INV-TEST", Guid.NewGuid(), "USD");
         invoice.AddLine("Test Item", 1, 100m, 0m);
         invoice.Issue("INV-001", DateTime.UtcNow, 30);
 
@@ -115,7 +116,7 @@ public class InvoiceTests
     public void MarkAsPaid_WhenOutstandingGreaterThanZero_ThrowsInvalidOperationException()
     {
         // Arrange
-        var invoice = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var invoice = new Invoice(Guid.NewGuid(), "INV-TEST", Guid.NewGuid(), "USD");
         invoice.AddLine("Test Item", 1, 100m, 0m);
         invoice.Issue("INV-001", DateTime.UtcNow, 30);
         invoice.RecordPayment(50m, "CreditCard", DateTime.UtcNow);
@@ -128,7 +129,7 @@ public class InvoiceTests
     public void Cancel_WhenPaid_ThrowsInvalidOperationException()
     {
         // Arrange
-        var invoice = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var invoice = new Invoice(Guid.NewGuid(), "INV-TEST", Guid.NewGuid(), "USD");
         invoice.AddLine("Test Item", 1, 100m, 0m);
         invoice.Issue("INV-001", DateTime.UtcNow, 30);
         invoice.RecordPayment(100m, "CreditCard", DateTime.UtcNow);
@@ -141,7 +142,7 @@ public class InvoiceTests
     public void CreateCreditNote_ForIssuedInvoice_CreatesCreditNoteAndAdjustsOutstanding()
     {
         // Arrange
-        var invoice = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var invoice = new Invoice(Guid.NewGuid(), "INV-TEST", Guid.NewGuid(), "USD");
         invoice.AddLine("Test Item", 2, 100m, 10m);
         invoice.Issue("INV-001", DateTime.UtcNow, 30);
         var initialOutstanding = invoice.OutstandingAmount;
@@ -166,7 +167,7 @@ public class InvoiceTests
     public void RecalculateTotals_AfterMultipleLines_CalculatesCorrectly()
     {
         // Arrange
-        var invoice = new Invoice(Guid.NewGuid(), Guid.NewGuid(), "USD");
+        var invoice = new Invoice(Guid.NewGuid(), "INV-TEST", Guid.NewGuid(), "USD");
 
         // Act
         invoice.AddLine("Item 1", 2, 50m, 10m);   // Net: 100, Tax: 10, Gross: 110

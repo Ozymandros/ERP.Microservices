@@ -1,8 +1,12 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using MyApp.Billing.Application.Contracts.DTOs;
+using MyApp.Billing.Application.Contracts.Ports;
+using MyApp.Billing.Application.Internals;
 using MyApp.Billing.Application.Services;
+using MyApp.Billing.Application.UseCases.Invoices;
 using MyApp.Billing.Domain.Entities;
 using MyApp.Billing.Domain.Repositories;
 using MyApp.Billing.Domain.Specifications;
@@ -25,7 +29,7 @@ public class InvoiceServiceTests
     private readonly Mock<ILogger<InvoiceService>> _logger;
     private readonly Mock<IUnitOfWork> _unitOfWork;
     private readonly Mock<IEventPublisher> _eventPublisher;
-    private readonly Mock<IServiceInvoker> _serviceInvoker;
+    private readonly Mock<ISalesOrderLookupPort> _salesOrderLookup;
     private readonly InvoiceService _sut;
 
     /// <summary>Initializes mocks and constructs the <see cref="InvoiceService"/> system under test.</summary>
@@ -36,18 +40,40 @@ public class InvoiceServiceTests
         _logger = new Mock<ILogger<InvoiceService>>();
         _unitOfWork = new Mock<IUnitOfWork>();
         _eventPublisher = new Mock<IEventPublisher>();
-        _serviceInvoker = new Mock<IServiceInvoker>();
+        _salesOrderLookup = new Mock<ISalesOrderLookupPort>();
 
         _unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<EntityEntryDto>());
 
+        var boundary = new BillingTransactionBoundary(
+            _unitOfWork.Object,
+            _eventPublisher.Object,
+            NullLogger<BillingTransactionBoundary>.Instance);
+
+        var createInvoice = new CreateInvoiceUseCase(_invoiceRepo.Object, boundary);
+        var issueInvoice = new IssueInvoiceUseCase(_invoiceRepo.Object, boundary);
+        var recordPayment = new RecordPaymentUseCase(_invoiceRepo.Object, boundary);
+        var cancelInvoice = new CancelInvoiceUseCase(_invoiceRepo.Object, boundary);
+        var createCreditNote = new CreateCreditNoteUseCase(_invoiceRepo.Object, _creditNoteRepo.Object, boundary);
+        var createFromProject = new CreateFromProjectRequestUseCase(
+            _invoiceRepo.Object, createInvoice, issueInvoice, NullLogger<CreateFromProjectRequestUseCase>.Instance);
+        var createFromFulfillment = new CreateAndIssueFromFulfillmentUseCase(
+            _invoiceRepo.Object, _salesOrderLookup.Object, createInvoice, issueInvoice,
+            NullLogger<CreateAndIssueFromFulfillmentUseCase>.Instance);
+        var createCreditNoteFromReturn = new CreateCreditNoteFromReturnFulfillmentUseCase(
+            _invoiceRepo.Object, _salesOrderLookup.Object, createCreditNote,
+            NullLogger<CreateCreditNoteFromReturnFulfillmentUseCase>.Instance);
+
         _sut = new InvoiceService(
             _invoiceRepo.Object,
-            _creditNoteRepo.Object,
-            _serviceInvoker.Object,
-            _logger.Object,
-            _unitOfWork.Object,
-            _eventPublisher.Object);
+            createInvoice,
+            issueInvoice,
+            recordPayment,
+            cancelInvoice,
+            createCreditNote,
+            createFromProject,
+            createFromFulfillment,
+            createCreditNoteFromReturn);
     }
 
     // ─── helpers ────────────────────────────────────────────────────────────
@@ -806,6 +832,105 @@ public class InvoiceServiceTests
             });
 
     [Fact]
+    public async Task CreateAndIssueFromFulfillmentAsync_SalesOutbound_CreatesAndIssuesInvoice()
+    {
+        var salesOrderId = Guid.NewGuid();
+        var customerId = Guid.NewGuid();
+        var productId = Guid.NewGuid();
+        var lineId = Guid.NewGuid();
+
+        var @event = new OrderFulfilledEvent(
+            Guid.NewGuid(), "ORD-SALES-1", OrderTypes.Outbound, Guid.NewGuid(), DateTime.UtcNow, null,
+            salesOrderId, [new OrderLineEvent(productId, 2)], DocumentSources.Sales);
+
+        var salesOrder = new SalesOrderSnapshot(
+            salesOrderId,
+            "SO-100",
+            customerId,
+            [new SalesOrderLineSnapshot(productId, 2, 50m)]);
+
+        _invoiceRepo.Setup(r => r.GetInvoicesByOrderIdAsync(salesOrderId, It.IsAny<CancellationToken>()))
+                    .ReturnsAsync([]);
+        _invoiceRepo.Setup(r => r.GetByInvoiceNumberAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync((Invoice?)null);
+        _salesOrderLookup
+            .Setup(s => s.GetByIdAsync(salesOrderId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(salesOrder);
+
+        Invoice? persisted = null;
+        _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>()))
+                    .Callback<Invoice>(i => persisted = i)
+                    .Returns<Invoice>(i => Task.FromResult(i));
+        _invoiceRepo.Setup(r => r.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                    .Returns<Guid, CancellationToken>((id, _) =>
+                        Task.FromResult(persisted is not null && persisted.Id == id ? persisted : null));
+        _invoiceRepo.Setup(r => r.UpdateAsync(It.IsAny<Invoice>()))
+                    .Returns<Invoice>(i => Task.FromResult(i));
+        _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
+                       .Returns(Task.CompletedTask);
+
+        var result = await _sut.CreateAndIssueFromFulfillmentAsync(@event);
+
+        result.Should().NotBeNull();
+        result!.CustomerId.Should().Be(customerId);
+        result.OrderId.Should().Be(salesOrderId);
+        result.Status.Should().Be("Issued");
+        result.Lines.Should().HaveCount(1);
+        _salesOrderLookup.Verify(s => s.GetByIdAsync(salesOrderId, It.IsAny<CancellationToken>()), Times.Once);
+        _eventPublisher.Verify(e => e.PublishAsync(
+            MessagingConstants.Topics.BillingInvoiceCreated,
+            It.IsAny<object>(),
+            It.IsAny<CancellationToken>()), Times.Once);
+        _eventPublisher.Verify(e => e.PublishAsync(
+            MessagingConstants.Topics.BillingInvoiceIssued,
+            It.IsAny<object>(),
+            It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task CreateCreditNoteFromReturnFulfillmentAsync_SalesReturn_CreatesCreditNote()
+    {
+        var salesOrderId = Guid.NewGuid();
+        var productId = Guid.NewGuid();
+        var customerId = Guid.NewGuid();
+        var invoice = new Invoice(Guid.NewGuid(), "INV-RET-1", customerId, "USD");
+        invoice.AddLine("Widget", 2, 75m, 0m);
+        invoice.LinkToSalesOrder(salesOrderId);
+        invoice.Issue("INV-RET-1", DateTime.UtcNow, 30);
+
+        var @event = new OrderFulfilledEvent(
+            Guid.NewGuid(), "ORD-RET-1", OrderTypes.Return, Guid.NewGuid(), DateTime.UtcNow, null,
+            salesOrderId, [new OrderLineEvent(productId, 1)], DocumentSources.Sales);
+
+        var salesOrder = new SalesOrderSnapshot(
+            salesOrderId,
+            "SO-RET",
+            customerId,
+            [new SalesOrderLineSnapshot(productId, 2, 75m)]);
+
+        _invoiceRepo.Setup(r => r.GetInvoicesByOrderIdAsync(salesOrderId, It.IsAny<CancellationToken>()))
+                    .ReturnsAsync([invoice]);
+        _invoiceRepo.Setup(r => r.GetByIdAsync(invoice.Id, It.IsAny<CancellationToken>())).ReturnsAsync(invoice);
+        _salesOrderLookup
+            .Setup(s => s.GetByIdAsync(salesOrderId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(salesOrder);
+        _creditNoteRepo.Setup(r => r.AddAsync(It.IsAny<CreditNote>())).Returns<CreditNote>(c => Task.FromResult(c));
+        _eventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
+                       .Returns(Task.CompletedTask);
+
+        var result = await _sut.CreateCreditNoteFromReturnFulfillmentAsync(@event);
+
+        result.Should().NotBeNull();
+        result!.OriginalInvoiceId.Should().Be(invoice.Id);
+        result.TotalGross.Should().BeGreaterThan(0);
+        _creditNoteRepo.Verify(r => r.AddAsync(It.IsAny<CreditNote>()), Times.Once);
+        _eventPublisher.Verify(e => e.PublishAsync(
+            MessagingConstants.Topics.BillingCreditNoteIssued,
+            It.IsAny<object>(),
+            It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
     public async Task CreateAndIssueFromFulfillmentAsync_ProjectSource_IsSkippedWithoutCallingSales()
     {
         var @event = new OrderFulfilledEvent(
@@ -815,7 +940,7 @@ public class InvoiceServiceTests
         var result = await _sut.CreateAndIssueFromFulfillmentAsync(@event);
 
         result.Should().BeNull();
-        _serviceInvoker.VerifyNoOtherCalls();
+        _salesOrderLookup.VerifyNoOtherCalls();
         _invoiceRepo.Verify(r => r.AddAsync(It.IsAny<Invoice>()), Times.Never);
     }
 
