@@ -32,10 +32,14 @@ public class OrderEventHandlers : ControllerBase
     [HttpPost("order-fulfilled")]
     public async Task<IActionResult> OnOrderFulfilledAsync(OrderFulfilledEvent @event, CancellationToken cancellationToken)
     {
+        var sanitizedOrderType = (@event.OrderType ?? string.Empty)
+            .Replace("\r", string.Empty)
+            .Replace("\n", string.Empty);
+
         _logger.LogInformation(
             "Billing received OrderFulfilledEvent OrderId={OrderId} Type={Type}",
             @event.OrderId,
-            @event.OrderType);
+            sanitizedOrderType);
 
         if (string.Equals(@event.OrderType, OrderTypes.Outbound, StringComparison.OrdinalIgnoreCase))
         {
