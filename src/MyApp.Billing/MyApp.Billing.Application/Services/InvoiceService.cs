@@ -359,9 +359,13 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         // invoiced through projects.invoice.requested (see CreateFromProjectRequestAsync).
         if (!DocumentSources.IsSales(@event.ExternalOrderSource))
         {
+            var sanitizedExternalOrderSource = (@event.ExternalOrderSource ?? string.Empty)
+                .Replace("\r", string.Empty)
+                .Replace("\n", string.Empty);
+
             _logger.LogInformation(
                 "Skipping auto-invoice for order {OrderId}: external source {Source} is not Sales",
-                @event.OrderId, @event.ExternalOrderSource);
+                @event.OrderId, sanitizedExternalOrderSource);
             return null;
         }
 
@@ -416,9 +420,13 @@ public class InvoiceService : AppServiceBase, IInvoiceService
 
         if (!DocumentSources.IsSales(@event.ExternalOrderSource))
         {
+            var sanitizedExternalOrderSource = (@event.ExternalOrderSource ?? string.Empty)
+                .Replace("\r", " ")
+                .Replace("\n", " ");
+
             _logger.LogInformation(
                 "Skipping credit note for return order {OrderId}: external source {Source} is not Sales",
-                @event.OrderId, @event.ExternalOrderSource);
+                @event.OrderId, sanitizedExternalOrderSource);
             return null;
         }
 

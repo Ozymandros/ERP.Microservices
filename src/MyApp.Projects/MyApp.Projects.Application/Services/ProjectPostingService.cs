@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using MyApp.Orders.Application.Contracts.Dtos;
@@ -318,8 +319,12 @@ public class ProjectPostingService : AppServiceBase, IProjectPostingService
         consumption.Status = ProjectConsumptionStatus.Fulfilled;
         await SaveChangesAsync(cancellationToken);
 
+        var safeOrderNumber = (@event.OrderNumber ?? string.Empty)
+            .Replace("\r", string.Empty)
+            .Replace("\n", string.Empty);
+
         _logger.LogInformation("Consumption order {OrderNumber} fulfilled; usage posted on project {ProjectNumber}",
-            @event.OrderNumber, project.ProjectNumber);
+            safeOrderNumber, project.ProjectNumber);
         return project.Id;
     }
 
@@ -344,7 +349,11 @@ public class ProjectPostingService : AppServiceBase, IProjectPostingService
         consumption.Status = ProjectConsumptionStatus.Cancelled;
         await SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Consumption order {OrderId} cancelled ({Reason}); quantities released", @event.OrderId, @event.Reason);
+        var sanitizedReason = (@event.Reason ?? string.Empty)
+            .Replace("\r", string.Empty)
+            .Replace("\n", string.Empty);
+
+        _logger.LogInformation("Consumption order {OrderId} cancelled ({Reason}); quantities released", @event.OrderId, sanitizedReason);
         return consumption.ProjectId;
     }
 
@@ -476,6 +485,14 @@ public class ProjectPostingService : AppServiceBase, IProjectPostingService
         return request.ProjectId;
     }
 
+    private static string SanitizeForLog(string? value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return string.Empty;
+
+        return value.Replace("\r", string.Empty).Replace("\n", string.Empty);
+    }
+
     /// <inheritdoc />
     public async Task<Guid?> HandleInvoiceIssuedAsync(InvoiceIssuedEvent @event, CancellationToken cancellationToken = default)
     {
@@ -499,7 +516,7 @@ public class ProjectPostingService : AppServiceBase, IProjectPostingService
         await SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("Invoice {InvoiceNumber} issued for project {ProjectNumber}; sale entries posted",
-            @event.InvoiceNumber, project.ProjectNumber);
+            SanitizeForLog(@event.InvoiceNumber), project.ProjectNumber);
         return project.Id;
     }
 
@@ -530,7 +547,7 @@ public class ProjectPostingService : AppServiceBase, IProjectPostingService
         await SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("Invoice {InvoiceNumber} cancelled; project {ProjectNumber} quantities released",
-            @event.InvoiceNumber, project.ProjectNumber);
+            SanitizeForLog(@event.InvoiceNumber), project.ProjectNumber);
         return project.Id;
     }
 

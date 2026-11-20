@@ -32,9 +32,10 @@ public class OrderEventHandlers : ControllerBase
     [HttpPost("order-fulfilled")]
     public async Task<IActionResult> OnOrderFulfilledAsync(OrderFulfilledEvent @event, CancellationToken cancellationToken)
     {
+        var safeExternalOrderSource = SanitizeForLog(@event.ExternalOrderSource);
         _logger.LogInformation(
             "Projects received OrderFulfilledEvent OrderId={OrderId} Source={Source}",
-            @event.OrderId, @event.ExternalOrderSource);
+            @event.OrderId, safeExternalOrderSource);
 
         var projectId = await _postingService.HandleOrderFulfilledAsync(@event, cancellationToken);
         await InvalidateAsync(projectId);
@@ -49,6 +50,14 @@ public class OrderEventHandlers : ControllerBase
         var projectId = await _postingService.HandleOrderCancelledAsync(@event, cancellationToken);
         await InvalidateAsync(projectId);
         return Ok();
+    }
+
+    private static string SanitizeForLog(string? value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return string.Empty;
+
+        return value.Replace("\r", string.Empty).Replace("\n", string.Empty);
     }
 
     private async Task InvalidateAsync(Guid? projectId)
@@ -92,9 +101,11 @@ public class BillingEventHandlers : ControllerBase
     [HttpPost("invoice-issued")]
     public async Task<IActionResult> OnInvoiceIssuedAsync(InvoiceIssuedEvent @event, CancellationToken cancellationToken)
     {
+        var sanitizedSourceType = SanitizeForLog(@event.SourceType);
+
         _logger.LogInformation(
             "Projects received InvoiceIssuedEvent InvoiceId={InvoiceId} Source={Source}",
-            @event.InvoiceId, @event.SourceType);
+            @event.InvoiceId, sanitizedSourceType);
 
         var projectId = await _postingService.HandleInvoiceIssuedAsync(@event, cancellationToken);
         await InvalidateAsync(projectId);
@@ -109,6 +120,13 @@ public class BillingEventHandlers : ControllerBase
         var projectId = await _postingService.HandleInvoiceCancelledAsync(@event, cancellationToken);
         await InvalidateAsync(projectId);
         return Ok();
+    }
+
+    private static string SanitizeForLog(string? value)
+    {
+        return (value ?? string.Empty)
+            .Replace("\r", string.Empty)
+            .Replace("\n", string.Empty);
     }
 
     private async Task InvalidateAsync(Guid? projectId)
