@@ -2,7 +2,7 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using MyApp.Projects.Application.Contracts.DTOs;
 using MyApp.Projects.Application.Contracts.Services;
-using MyApp.Projects.Application.Integration;
+using MyApp.Projects.Application.Contracts.Ports;
 using MyApp.Projects.Domain.Entities;
 using MyApp.Projects.Domain.Repositories;
 using MyApp.Projects.Domain.Services;
@@ -25,7 +25,7 @@ public class PlanningLineService : AppServiceBase, IPlanningLineService
     private readonly IProjectPlanningLineRepository _lines;
     private readonly IProjectLedgerEntryRepository _ledger;
     private readonly IResourceRepository _resources;
-    private readonly IInventoryProductClient _products;
+    private readonly IInventoryProductLookupPort _products;
     private readonly ICurrencyService _currencyService;
     private readonly IMapper _mapper;
 
@@ -36,7 +36,7 @@ public class PlanningLineService : AppServiceBase, IPlanningLineService
         IProjectPlanningLineRepository lines,
         IProjectLedgerEntryRepository ledger,
         IResourceRepository resources,
-        IInventoryProductClient products,
+        IInventoryProductLookupPort products,
         ICurrencyService currencyService,
         IMapper mapper,
         IUnitOfWork unitOfWork,
@@ -189,7 +189,7 @@ public class PlanningLineService : AppServiceBase, IPlanningLineService
                 line.ProductId = product.Id;
                 line.WarehouseId = dto.WarehouseId;
                 line.UnitOfMeasure ??= "PCS";
-                defaultDescription = string.IsNullOrWhiteSpace(product.Name) ? product.SKU : product.Name;
+                defaultDescription = string.IsNullOrWhiteSpace(product.Name) ? product.Sku : product.Name;
                 defaultPriceLcy = product.UnitPrice;
                 break;
             }

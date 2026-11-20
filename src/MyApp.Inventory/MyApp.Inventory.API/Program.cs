@@ -1,3 +1,4 @@
+using MyApp.Inventory.Application.DependencyInjection;
 using MyApp.Inventory.Infrastructure.Data;
 using MyApp.Shared.Infrastructure.Extensions;
 
@@ -32,6 +33,8 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
             MyApp.Inventory.Infrastructure.Repositories.WarehouseStockRepository>();
         services.AddScoped<MyApp.Inventory.Domain.Repositories.IInventoryReservationRepository,
             MyApp.Inventory.Infrastructure.Repositories.InventoryReservationRepository>();
+
+        services.AddInventoryApplication();
 
         // Register Inventory-specific services
         services.AddScoped<MyApp.Inventory.Application.Contracts.Services.IInventoryTransactionService,

@@ -1,10 +1,8 @@
 using AutoMapper;
 using Microsoft.Extensions.Logging;
-using MyApp.Billing.Application.Contracts.DTOs;
-using MyApp.Orders.Application.Contracts.Dtos;
-using MyApp.Orders.Domain;
 using MyApp.Purchasing.Application.Contracts.DTOs;
 using MyApp.Purchasing.Application.Contracts.Services;
+using MyApp.Purchasing.Application.UseCases.PurchaseOrders;
 using MyApp.Purchasing.Domain.Entities;
 using MyApp.Purchasing.Domain.Repositories;
 using MyApp.Shared.Application;
@@ -25,7 +23,8 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     private readonly ISupplierRepository _supplierRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<PurchaseOrderService> _logger;
-    private readonly IServiceInvoker _serviceInvoker;
+    private readonly ReceivePurchaseOrderUseCase _receivePurchaseOrder;
+    private readonly MatchPurchaseOrderUseCase _matchPurchaseOrder;
 
     /// <summary>
     /// Initializes a new instance of the PurchaseOrderService class.
@@ -37,7 +36,8 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     /// <param name="logger">The logger.</param>
     /// <param name="unitOfWork">The unit Of Work.</param>
     /// <param name="eventPublisher">The event Publisher.</param>
-    /// <param name="serviceInvoker">The service Invoker.</param>
+    /// <param name="receivePurchaseOrder">The receive Purchase Order use case.</param>
+    /// <param name="matchPurchaseOrder">The match Purchase Order use case.</param>
     public PurchaseOrderService(
         IPurchaseOrderRepository purchaseOrderRepository,
         IPurchaseOrderLineRepository lineRepository,
@@ -46,14 +46,17 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
         ILogger<PurchaseOrderService> logger,
         IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher,
-        IServiceInvoker serviceInvoker)
+        ReceivePurchaseOrderUseCase receivePurchaseOrder,
+        MatchPurchaseOrderUseCase matchPurchaseOrder)
         : base(unitOfWork, eventPublisher, logger, ServiceNames.Purchasing)
     {
         _purchaseOrderRepository = purchaseOrderRepository;
         _lineRepository = lineRepository;
         _supplierRepository = supplierRepository;
         _mapper = mapper;
-        _logger = logger; _serviceInvoker = serviceInvoker;
+        _logger = logger;
+        _receivePurchaseOrder = receivePurchaseOrder;
+        _matchPurchaseOrder = matchPurchaseOrder;
     }
 
     /// <summary>
@@ -289,216 +292,16 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
     /// Receives the purchase order asynchronously.
     /// </summary>
     /// <param name="dto">The dto.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
-    public async Task<PurchaseOrderDto> ReceivePurchaseOrderAsync(ReceivePurchaseOrderDto dto)
-    {
-        _logger.LogInformation(
-            "Receiving purchase order: PurchaseOrderId={PurchaseOrderId}, WarehouseId={WarehouseId}",
-            dto.PurchaseOrderId, dto.WarehouseId);
-
-        var order = await _purchaseOrderRepository.GetWithLinesAsync(dto.PurchaseOrderId);
-        if (order == null)
-        {
-            throw new KeyNotFoundException($"Purchase order with ID '{dto.PurchaseOrderId}' not found");
-        }
-
-        if (order.Status != PurchaseOrderStatus.Approved)
-        {
-            throw new InvalidOperationException($"Purchase order cannot be received. Current status: {order.Status}");
-        }
-
-        // Process each received line
-        foreach (var receivedLine in dto.Lines)
-        {
-            var orderLine = order.Lines.FirstOrDefault(l => l.Id == receivedLine.PurchaseOrderLineId);
-            if (orderLine == null)
-            {
-                _logger.LogWarning(
-                    "Purchase order line not found: PurchaseOrderLineId={PurchaseOrderLineId}",
-                    receivedLine.PurchaseOrderLineId);
-                continue;
-            }
-
-            // Update line received quantity
-            orderLine.ReceivedQuantity += receivedLine.ReceivedQuantity;
-            orderLine.IsFullyReceived = orderLine.ReceivedQuantity >= orderLine.Quantity;
-
-            // Call Orders service to create an Inbound Order (Operational)
-            try
-            {
-                var createOrderRequest = new CreateUpdateOrderDto
-                {
-                    OrderNumber = $"{order.OrderNumber}-REC",
-                    Type = OrderType.Inbound,
-                    SourceId = order.SupplierId,  // Origin supplier
-                    TargetId = dto.WarehouseId,   // Destination warehouse
-                    ExternalOrderId = order.Id,   // Link to PurchaseOrder
-                    WarehouseId = dto.WarehouseId,
-                    OrderDate = dto.ReceivedDate,
-                    Lines = new List<CreateOrderLineDto>
-                    {
-                        new CreateOrderLineDto
-                        {
-                            ProductId = orderLine.ProductId,
-                            Quantity = receivedLine.ReceivedQuantity
-                        }
-                    }
-                };
-
-                var fulfillmentOrder = await _serviceInvoker.InvokeAsync<CreateUpdateOrderDto, OrderDto>(
-                    ServiceNames.Orders,
-                    ApiEndpoints.Orders.Base,
-                    HttpMethod.Post,
-                    createOrderRequest);
-
-                _logger.LogInformation(
-                    "Created Inbound Order {OrderId} for Product {ProductId} to Warehouse {WarehouseId}",
-                    fulfillmentOrder.Id, orderLine.ProductId, dto.WarehouseId);
-
-                // Immediately fulfill the order to trigger inventory adjustment
-                var fulfillRequest = new FulfillOrderDto
-                {
-                    OrderId = fulfillmentOrder.Id,
-                    WarehouseId = dto.WarehouseId,
-                    ShippingAddress = null,
-                    TrackingNumber = $"REC-{order.OrderNumber}"
-                };
-
-                await _serviceInvoker.InvokeAsync<FulfillOrderDto, OrderDto>(
-                    ServiceNames.Orders,
-                    $"{ApiEndpoints.Orders.Base}/{fulfillmentOrder.Id}/fulfill",
-                    HttpMethod.Post,
-                    fulfillRequest);
-
-                _logger.LogInformation("Fulfilled Inbound Order {OrderId}", fulfillmentOrder.Id);
-
-                // Publish PurchaseOrderLineReceivedEvent
-                var lineReceivedEvent = new PurchaseOrderLineReceivedEvent(
-                    order.Id,
-                    orderLine.Id,
-                    orderLine.ProductId,
-                    receivedLine.ReceivedQuantity,
-                    dto.WarehouseId
-                );
-
-                await EventPublisher.PublishAsync(MessagingConstants.Topics.PurchasingLineReceived, lineReceivedEvent);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(
-                    ex,
-                    "Failed to create Inbound Order for Product {ProductId} from PO {PurchaseOrderId}",
-                    orderLine.ProductId, order.Id);
-                throw;
-            }
-        }
-
-        // Check if all lines are fully received
-        bool allLinesReceived = order.Lines.All(l => l.IsFullyReceived);
-
-        // Update order
-        order.ReceivedDate = dto.ReceivedDate;
-        order.ReceivingWarehouseId = dto.WarehouseId;
-        order.IsReceived = allLinesReceived;
-        order.Status = allLinesReceived ? PurchaseOrderStatus.Received : PurchaseOrderStatus.Approved;
-
-        await _purchaseOrderRepository.UpdateAsync(order);
-        await SaveChangesAsync();
-
-        // Publish PurchaseOrderReceivedEvent if fully received
-        if (allLinesReceived)
-        {
-            var purchaseOrderReceivedEvent = new PurchaseOrderReceivedEvent(
-                order.Id,
-                dto.WarehouseId,
-                dto.ReceivedDate
-            );
-
-            try
-            {
-                await EventPublisher.PublishAsync("purchasing.order.received", purchaseOrderReceivedEvent);
-                _logger.LogInformation("Published PurchaseOrderReceivedEvent for PO {PurchaseOrderId}", order.Id);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to publish PurchaseOrderReceivedEvent for PO {PurchaseOrderId}", order.Id);
-            }
-        }
-
-        _logger.LogInformation(
-            "Purchase order receiving processed: PurchaseOrderId={PurchaseOrderId}, Status={Status}",
-            order.Id, order.Status);
-
-        return _mapper.Map<PurchaseOrderDto>(order);
-    }
+    public Task<PurchaseOrderDto> ReceivePurchaseOrderAsync(
+        ReceivePurchaseOrderDto dto,
+        CancellationToken cancellationToken = default) =>
+        _receivePurchaseOrder.ExecuteAsync(dto, cancellationToken);
 
     /// <inheritdoc />
-    public async Task<PurchaseOrderMatchResultDto> MatchPurchaseOrderAsync(
+    public Task<PurchaseOrderMatchResultDto> MatchPurchaseOrderAsync(
         Guid purchaseOrderId,
-        CancellationToken cancellationToken = default)
-    {
-        var order = await _purchaseOrderRepository.GetWithLinesAsync(purchaseOrderId)
-            ?? throw new InvalidOperationException($"Purchase order {purchaseOrderId} not found");
-
-        var supplierInvoices = await _serviceInvoker.InvokeAsync<List<SupplierInvoiceDto>>(
-            ServiceNames.Billing,
-            $"{ApiEndpoints.Billing.SupplierInvoices}/by-purchase-order/{purchaseOrderId}",
-            HttpMethod.Get,
-            cancellationToken);
-
-        if (supplierInvoices.Count == 0)
-        {
-            order.MatchStatus = PurchaseOrderMatchStatus.Unmatched;
-            order.MatchedAt = DateTime.UtcNow;
-            await _purchaseOrderRepository.UpdateAsync(order);
-            await SaveChangesAsync(cancellationToken);
-            return new PurchaseOrderMatchResultDto(
-                purchaseOrderId,
-                order.MatchStatus,
-                order.MatchedAt.Value,
-                "No supplier invoices found for purchase order.");
-        }
-
-        var billedByProduct = supplierInvoices
-            .SelectMany(i => i.Lines)
-            .GroupBy(l => l.ProductId)
-            .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
-
-        var hasOverbill = false;
-        var hasPartial = false;
-        var allMatched = true;
-
-        foreach (var line in order.Lines)
-        {
-            billedByProduct.TryGetValue(line.ProductId, out var billedQty);
-            if (billedQty > line.ReceivedQuantity)
-                hasOverbill = true;
-            if (billedQty != line.Quantity || line.ReceivedQuantity != line.Quantity || billedQty != line.ReceivedQuantity)
-            {
-                hasPartial = true;
-                allMatched = false;
-            }
-        }
-
-        order.MatchStatus = hasOverbill
-            ? PurchaseOrderMatchStatus.Overbilled
-            : allMatched && !hasPartial
-                ? PurchaseOrderMatchStatus.Matched
-                : PurchaseOrderMatchStatus.Partial;
-
-        order.MatchedAt = DateTime.UtcNow;
-        await _purchaseOrderRepository.UpdateAsync(order);
-        await SaveChangesAsync(cancellationToken);
-
-        if (order.MatchStatus == PurchaseOrderMatchStatus.Matched)
-        {
-            await EventPublisher.PublishAsync(
-                MessagingConstants.Topics.PurchasingOrderMatched,
-                new PurchaseOrderMatchedEvent(order.Id, order.MatchStatus.ToString(), order.MatchedAt.Value),
-                cancellationToken);
-        }
-
-        var summary = $"MatchStatus={order.MatchStatus}; lines={order.Lines.Count}; supplierInvoices={supplierInvoices.Count}";
-        return new PurchaseOrderMatchResultDto(purchaseOrderId, order.MatchStatus, order.MatchedAt.Value, summary);
-    }
+        CancellationToken cancellationToken = default) =>
+        _matchPurchaseOrder.ExecuteAsync(purchaseOrderId, cancellationToken);
 }

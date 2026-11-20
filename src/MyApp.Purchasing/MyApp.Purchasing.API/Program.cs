@@ -1,5 +1,8 @@
+using MyApp.Purchasing.Application.Contracts.Ports;
 using MyApp.Purchasing.Application.Contracts.Services;
+using MyApp.Purchasing.Application.DependencyInjection;
 using MyApp.Purchasing.Application.Services;
+using MyApp.Purchasing.Infrastructure.Adapters;
 using MyApp.Purchasing.Domain.Repositories;
 using MyApp.Purchasing.Infrastructure.Data;
 using MyApp.Purchasing.Infrastructure.Data.Repositories;
@@ -27,6 +30,10 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
         services.AddScoped<IPurchaseOrderLineRepository, PurchaseOrderLineRepository>();
+
+        services.AddScoped<IOrdersOperationalPort, OrdersOperationalAdapter>();
+        services.AddScoped<ISupplierInvoiceQueryPort, SupplierInvoiceQueryAdapter>();
+        services.AddPurchasingApplication();
 
         // Register Purchasing-specific services
         services.AddScoped<ISupplierService, SupplierService>();

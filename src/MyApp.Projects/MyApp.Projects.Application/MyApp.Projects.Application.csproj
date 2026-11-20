@@ -11,12 +11,11 @@
     <ProjectReference Include="..\MyApp.Projects.Application.Contracts\MyApp.Projects.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Application\MyApp.Shared.Application.csproj" />
-    <!-- Cross-service Application.Contracts (compile-time DTO references only; calls go through Dapr) -->
-    <ProjectReference Include="..\..\MyApp.Sales\MyApp.Sales.Application.Contracts\MyApp.Sales.Application.Contracts.csproj" />
-    <ProjectReference Include="..\..\MyApp.Inventory\MyApp.Inventory.Application.Contracts\MyApp.Inventory.Application.Contracts.csproj" />
-    <ProjectReference Include="..\..\MyApp.Orders\MyApp.Orders.Application.Contracts\MyApp.Orders.Application.Contracts.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="16.2.0" />
+    <PackageReference Include="AutoMapper" Version="17.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="System.Security.Cryptography.Pkcs" Version="11.0.0" />
   </ItemGroup>
 </Project>

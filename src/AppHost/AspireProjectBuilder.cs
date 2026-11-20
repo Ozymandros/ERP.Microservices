@@ -1,4 +1,5 @@
 using Aspire.Hosting.Azure;
+using Aspire.Hosting.Dotnet;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 
 namespace AppHost;
@@ -56,7 +57,7 @@ public class AspireProjectBuilder
     /// <param name="hasDatabase"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public IResourceBuilder<ProjectResource> AddWebProject<T>(
+    public IResourceBuilder<DotnetProjectResource> AddDotNetApiProject<T>(
         IResourceBuilder<RedisResource>? redis = null,
         string? origin = null,
         bool isDeployment = false,
@@ -97,7 +98,7 @@ public class AspireProjectBuilder
         //var metricsPort = _metricsPort++;
 
         // AppHost owns ports/URLs — do not apply launchSettings applicationUrl (e.g. audit https://7062).
-        var project = _builder.AddProject<T>(serviceResourceName, launchProfileName: null);
+        var project = _builder.AddDotnetProject(serviceResourceName, new T().ProjectPath, options => options.ExcludeLaunchProfile = true);
 
         var sidecarOptions = new DaprSidecarOptions
         {

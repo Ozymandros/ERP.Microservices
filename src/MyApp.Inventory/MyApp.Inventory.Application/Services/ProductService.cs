@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using MyApp.Inventory.Application.Contracts.DTOs;
 using MyApp.Inventory.Application.Contracts.Services;
+using MyApp.Inventory.Application.UseCases.Products;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Shared.Application;
@@ -18,6 +19,9 @@ public class ProductService : AppServiceBase, IProductService
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
+    private readonly CreateProductUseCase _createProduct;
+    private readonly UpdateProductUseCase _updateProduct;
+    private readonly DeleteProductUseCase _deleteProduct;
 
     /// <summary>Initialises a new instance of <see cref="ProductService"/>.</summary>
     /// Initializes a new instance of the ProductService class.
@@ -26,16 +30,25 @@ public class ProductService : AppServiceBase, IProductService
     /// <param name="unitOfWork">The unit Of Work.</param>
     /// <param name="eventPublisher">The event Publisher.</param>
     /// <param name="logger">The logger.</param>
+    /// <param name="createProduct">The create Product.</param>
+    /// <param name="updateProduct">The update Product.</param>
+    /// <param name="deleteProduct">The delete Product.</param>
     public ProductService(
         IProductRepository productRepository,
         IMapper mapper,
         IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher,
-        ILogger<ProductService> logger)
+        ILogger<ProductService> logger,
+        CreateProductUseCase createProduct,
+        UpdateProductUseCase updateProduct,
+        DeleteProductUseCase deleteProduct)
         : base(unitOfWork, eventPublisher, logger, ServiceNames.Inventory)
     {
         _productRepository = productRepository;
         _mapper = mapper;
+        _createProduct = createProduct;
+        _updateProduct = updateProduct;
+        _deleteProduct = deleteProduct;
     }
 
     /// <summary>Retrieves a product by its unique identifier.</summary>
@@ -105,21 +118,8 @@ public class ProductService : AppServiceBase, IProductService
     /// <param name="dto">The dto.</param>
     /// <returns>The newly created <see cref="ProductDto"/>.</returns>
     /// <exception cref="InvalidOperationException">Thrown when a product with the same SKU already exists.</exception>
-    public async Task<ProductDto> CreateProductAsync(CreateUpdateProductDto dto)
-    {
-        // Check if product with same SKU already exists
-        var existingProduct = await _productRepository.GetBySkuAsync(dto.SKU);
-        if (existingProduct != null)
-        {
-            throw new InvalidOperationException($"Product with SKU '{dto.SKU}' already exists.");
-        }
-
-        var product = _mapper.Map<Product>(dto);
-        var createdProduct = await _productRepository.AddAsync(product);
-        await SaveChangesAsync();
-
-        return _mapper.Map<ProductDto>(createdProduct);
-    }
+    public Task<ProductDto> CreateProductAsync(CreateUpdateProductDto dto) =>
+        _createProduct.ExecuteAsync(dto);
 
     /// <summary>Updates an existing product with the supplied data.</summary>
     /// Updates the product asynchronously.
@@ -128,46 +128,14 @@ public class ProductService : AppServiceBase, IProductService
     /// <returns>The updated <see cref="ProductDto"/>.</returns>
     /// <exception cref="KeyNotFoundException">Thrown when no product with the given identifier is found.</exception>
     /// <exception cref="InvalidOperationException">Thrown when the new SKU is already in use by another product.</exception>
-    public async Task<ProductDto> UpdateProductAsync(Guid id, CreateUpdateProductDto dto)
-    {
-        var product = await _productRepository.GetByIdAsync(id);
-        if (product == null)
-        {
-            throw new KeyNotFoundException($"Product with ID '{id}' not found.");
-        }
-
-        // Check if new SKU is already used by another product
-        if (product.SKU != dto.SKU)
-        {
-            var existingProduct = await _productRepository.GetBySkuAsync(dto.SKU);
-            if (existingProduct != null)
-            {
-                throw new InvalidOperationException($"Product with SKU '{dto.SKU}' already exists.");
-            }
-        }
-
-        _mapper.Map(dto, product);
-        var updatedProduct = await _productRepository.UpdateAsync(product);
-        await SaveChangesAsync();
-
-        return _mapper.Map<ProductDto>(updatedProduct);
-    }
+    public Task<ProductDto> UpdateProductAsync(Guid id, CreateUpdateProductDto dto) =>
+        _updateProduct.ExecuteAsync(id, dto);
 
     /// <summary>Deletes the product with the specified identifier.</summary>
     /// Deletes the product asynchronously.
     /// <param name="id">The id.</param>
     /// <exception cref="KeyNotFoundException">Thrown when no product with the given identifier is found.</exception>
-    public async Task DeleteProductAsync(Guid id)
-    {
-        var product = await _productRepository.GetByIdAsync(id);
-        if (product == null)
-        {
-            throw new KeyNotFoundException($"Product with ID '{id}' not found.");
-        }
-
-        await _productRepository.DeleteAsync(product);
-        await SaveChangesAsync();
-    }
+    public Task DeleteProductAsync(Guid id) => _deleteProduct.ExecuteAsync(id);
 
     /// <summary>Queries products using a specification that encapsulates filtering, sorting and pagination.</summary>
     /// Query products asynchronously.

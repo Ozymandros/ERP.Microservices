@@ -1,3 +1,6 @@
+using MyApp.Orders.Application.Contracts.Ports;
+using MyApp.Orders.Application.DependencyInjection;
+using MyApp.Orders.Infrastructure.Adapters;
 using MyApp.Orders.Infrastructure.Data;
 using MyApp.Shared.Infrastructure.Extensions;
 
@@ -26,7 +29,8 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
         services.AddScoped<MyApp.Orders.Domain.Repositories.IReservedStockRepository,
             MyApp.Orders.Infrastructure.Repositories.ReservedStockRepository>();
 
-        // Register Orders-specific services
+        services.AddScoped<IInventoryStockPort, InventoryStockAdapter>();
+        services.AddOrdersApplication();
         services.AddScoped<MyApp.Orders.Application.Contracts.IOrderService,
             MyApp.Orders.Application.Services.OrderService>();
 

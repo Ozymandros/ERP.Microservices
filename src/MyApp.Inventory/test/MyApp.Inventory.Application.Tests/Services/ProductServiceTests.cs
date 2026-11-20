@@ -3,7 +3,10 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MyApp.Inventory.Application.Contracts.DTOs;
+using Microsoft.Extensions.Logging.Abstractions;
+using MyApp.Inventory.Application.Internals;
 using MyApp.Inventory.Application.Services;
+using MyApp.Inventory.Application.UseCases.Products;
 using MyApp.Inventory.Domain.Entities;
 using MyApp.Inventory.Domain.Repositories;
 using MyApp.Inventory.Domain.Specifications;
@@ -36,12 +39,23 @@ public class ProductServiceTests
         _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<EntityEntryDto>());
 
+        var boundary = new InventoryTransactionBoundary(
+            _mockUnitOfWork.Object,
+            _mockEventPublisher.Object,
+            NullLogger<InventoryTransactionBoundary>.Instance);
+        var createProduct = new CreateProductUseCase(_mockProductRepository.Object, _mockMapper.Object, boundary);
+        var updateProduct = new UpdateProductUseCase(_mockProductRepository.Object, _mockMapper.Object, boundary);
+        var deleteProduct = new DeleteProductUseCase(_mockProductRepository.Object, boundary);
+
         _productService = new ProductService(
             _mockProductRepository.Object,
             _mockMapper.Object,
             _mockUnitOfWork.Object,
             _mockEventPublisher.Object,
-            _mockLogger.Object);
+            _mockLogger.Object,
+            createProduct,
+            updateProduct,
+            deleteProduct);
     }
 
     #region GetProductByIdAsync Tests

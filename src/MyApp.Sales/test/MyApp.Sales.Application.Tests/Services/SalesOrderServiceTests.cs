@@ -3,8 +3,12 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Microsoft.Extensions.Logging.Abstractions;
 using MyApp.Sales.Application.Contracts.DTOs;
+using MyApp.Sales.Application.Contracts.Ports;
+using MyApp.Sales.Application.Internals;
 using MyApp.Sales.Application.Services;
+using MyApp.Sales.Application.UseCases.SalesOrders;
 using MyApp.Sales.Domain;
 using MyApp.Sales.Domain.Entities;
 using MyApp.Shared.Domain.DTOs;
@@ -12,9 +16,6 @@ using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Constants;
-using MyApp.Inventory.Application.Contracts.DTOs;
-using MyApp.Orders.Application.Contracts.Dtos;
-using MyApp.Orders.Domain;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 using Xunit;
@@ -30,7 +31,8 @@ public class SalesOrderServiceTests
     private readonly Mock<ILogger<SalesOrderService>> _mockLogger;
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
     private readonly Mock<IEventPublisher> _mockEventPublisher;
-    private readonly Mock<IServiceInvoker> _mockServiceInvoker;
+    private readonly Mock<IInventoryAvailabilityPort> _mockInventoryPort;
+    private readonly Mock<IOrdersFulfillmentPort> _mockOrdersFulfillmentPort;
     private readonly SalesOrderService _salesOrderService;
 
     /// <summary>Initializes a new <see cref="SalesOrderServiceTests"/> with fresh mocks and a <see cref="SalesOrderService"/> instance.</summary>
@@ -42,9 +44,31 @@ public class SalesOrderServiceTests
         _mockLogger = new Mock<ILogger<SalesOrderService>>();
         _mockUnitOfWork = new Mock<IUnitOfWork>();
         _mockEventPublisher = new Mock<IEventPublisher>();
-        _mockServiceInvoker = new Mock<IServiceInvoker>();
+        _mockInventoryPort = new Mock<IInventoryAvailabilityPort>();
+        _mockOrdersFulfillmentPort = new Mock<IOrdersFulfillmentPort>();
         _mockUnitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<EntityEntryDto>());
+
+        var boundary = new SalesTransactionBoundary(
+            _mockUnitOfWork.Object,
+            _mockEventPublisher.Object,
+            NullLogger<SalesTransactionBoundary>.Instance);
+        var checkStock = new CheckStockAvailabilityUseCase(
+            _mockInventoryPort.Object,
+            NullLogger<CheckStockAvailabilityUseCase>.Instance);
+        var confirmQuote = new ConfirmQuoteUseCase(
+            _mockOrderRepository.Object,
+            _mockOrdersFulfillmentPort.Object,
+            checkStock,
+            _mockMapper.Object,
+            boundary,
+            NullLogger<ConfirmQuoteUseCase>.Instance);
+        var createReturn = new CreateReturnUseCase(
+            _mockOrderRepository.Object,
+            _mockOrdersFulfillmentPort.Object,
+            _mockMapper.Object,
+            boundary,
+            NullLogger<CreateReturnUseCase>.Instance);
 
         _salesOrderService = new SalesOrderService(
             _mockOrderRepository.Object,
@@ -53,7 +77,23 @@ public class SalesOrderServiceTests
             _mockLogger.Object,
             _mockUnitOfWork.Object,
             _mockEventPublisher.Object,
-            _mockServiceInvoker.Object);
+            checkStock,
+            confirmQuote,
+            createReturn);
+    }
+
+    private void MockProductAvailability(Guid productId, int totalAvailable)
+    {
+        _mockInventoryPort
+            .Setup(p => p.GetByProductIdAsync(productId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ProductAvailabilitySnapshot(productId, totalAvailable, []));
+    }
+
+    private void MockAnyProductAvailability(int totalAvailable)
+    {
+        _mockInventoryPort
+            .Setup(p => p.GetByProductIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((Guid pid, CancellationToken _) => new ProductAvailabilitySnapshot(pid, totalAvailable, []));
     }
 
     #region GetSalesOrderByIdAsync Tests
@@ -645,20 +685,8 @@ public class SalesOrderServiceTests
             }
         );
 
-        var stockResponse = new StockAvailabilityDto
-        {
-            ProductId = productId,
-            TotalAvailable = 10,
-            WarehouseStocks = new List<WarehouseStockDto>()
-        };
-
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
-        _mockServiceInvoker
-            .Setup(s => s.InvokeAsync<StockAvailabilityDto>(
-                ServiceNames.Inventory,
-                It.Is<string>(path => path.Contains($"/{productId}", StringComparison.OrdinalIgnoreCase)),
-                HttpMethod.Get))
-            .ReturnsAsync(stockResponse);
+        MockProductAvailability(productId, 10);
         _mockOrderRepository.Setup(r => r.AddAsync(It.IsAny<SalesOrder>())).ReturnsAsync((SalesOrder so) => so);
         _mockEventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), default)).Returns(Task.CompletedTask);
         _mockMapper.Setup(m => m.Map<SalesOrderDto>(It.IsAny<SalesOrder>()))
@@ -724,20 +752,8 @@ public class SalesOrderServiceTests
             }
         );
 
-        var stockResponse = new StockAvailabilityDto
-        {
-            ProductId = productId,
-            TotalAvailable = 5, // Less than requested
-            WarehouseStocks = new List<WarehouseStockDto>()
-        };
-
         _mockCustomerRepository.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
-        _mockServiceInvoker
-            .Setup(s => s.InvokeAsync<StockAvailabilityDto>(
-                ServiceNames.Inventory,
-                It.IsAny<string>(),
-                HttpMethod.Get))
-            .ReturnsAsync(stockResponse);
+        MockProductAvailability(productId, 5);
         _mockOrderRepository.Setup(r => r.AddAsync(It.IsAny<SalesOrder>())).ReturnsAsync((SalesOrder so) => so);
         _mockEventPublisher.Setup(e => e.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), default)).Returns(Task.CompletedTask);
         _mockMapper.Setup(m => m.Map<SalesOrderDto>(It.IsAny<SalesOrder>()))
@@ -780,29 +796,11 @@ public class SalesOrderServiceTests
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(quoteId)).ReturnsAsync(quote);
 
-        // Mock stock check
-        var stockResponse = new StockAvailabilityDto
-        {
-            TotalAvailable = 10,
-            WarehouseStocks = new List<WarehouseStockDto>()
-        };
-
-        _mockServiceInvoker.Setup(s => s.InvokeAsync<StockAvailabilityDto>(
-            ServiceNames.Inventory,
-            It.Is<string>(path => path.StartsWith(ApiEndpoints.Inventory.Availability + "/")),
-            HttpMethod.Get,
-            default))
-            .ReturnsAsync(stockResponse);
-
-        var fulfillmentOrderResponse = new OrderDto(Guid.NewGuid());
-
-        _mockServiceInvoker.Setup(s => s.InvokeAsync<CreateOrderWithReservationDto, OrderDto>(
-            ServiceNames.Orders,
-            ApiEndpoints.Orders.WithReservation,
-            HttpMethod.Post,
-            It.IsAny<CreateOrderWithReservationDto>(),
-            default))
-            .ReturnsAsync(fulfillmentOrderResponse);
+        MockAnyProductAvailability(10);
+        var fulfillmentOrderId = Guid.NewGuid();
+        _mockOrdersFulfillmentPort
+            .Setup(p => p.CreateWithReservationAsync(It.IsAny<CreateFulfillmentOrderRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new OperationalOrderSnapshot(fulfillmentOrderId, "ORD-001"));
 
         _mockMapper.Setup(m => m.Map<SalesOrderDto>(quote)).Returns(new SalesOrderDto(quoteId));
 
@@ -858,19 +856,7 @@ public class SalesOrderServiceTests
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(quoteId)).ReturnsAsync(quote);
 
-        // Mock stock check - return 0 available
-        var stockResponse = new StockAvailabilityDto
-        {
-            TotalAvailable = 0,
-            WarehouseStocks = new List<WarehouseStockDto>()
-        };
-
-        _mockServiceInvoker.Setup(s => s.InvokeAsync<StockAvailabilityDto>(
-            ServiceNames.Inventory,
-            It.IsAny<string>(),
-            HttpMethod.Get,
-            default))
-            .ReturnsAsync(stockResponse);
+        MockAnyProductAvailability(0);
 
         // Act & Assert
         var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => _salesOrderService.ConfirmQuoteAsync(dto));
@@ -961,19 +947,9 @@ public class SalesOrderServiceTests
         var dto = new ConfirmQuoteDto { QuoteId = quoteId, WarehouseId = Guid.NewGuid() };
 
         _mockOrderRepository.Setup(r => r.GetByIdAsync(quoteId)).ReturnsAsync(quote);
-        _mockServiceInvoker
-            .Setup(s => s.InvokeAsync<StockAvailabilityDto>(
-                ServiceNames.Inventory,
-                It.IsAny<string>(),
-                HttpMethod.Get))
-            .ReturnsAsync(new StockAvailabilityDto { TotalAvailable = 10, WarehouseStocks = new List<WarehouseStockDto>() });
-        _mockServiceInvoker
-            .Setup(s => s.InvokeAsync<CreateOrderWithReservationDto, OrderDto>(
-                ServiceNames.Orders,
-                ApiEndpoints.Orders.WithReservation,
-                HttpMethod.Post,
-                It.IsAny<CreateOrderWithReservationDto>(),
-                default))
+        MockAnyProductAvailability(10);
+        _mockOrdersFulfillmentPort
+            .Setup(p => p.CreateWithReservationAsync(It.IsAny<CreateFulfillmentOrderRequest>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("Order creation failed"));
 
         // Act
@@ -999,22 +975,13 @@ public class SalesOrderServiceTests
             new CreateUpdateSalesOrderLineDto(productId, 5, 10.00m)
         };
 
-        var stockResponse = new StockAvailabilityDto
-        {
-            ProductId = productId,
-            TotalAvailable = 10,
-            WarehouseStocks = new List<WarehouseStockDto>
-            {
-                new WarehouseStockDto(Guid.NewGuid()) { ProductId = productId, WarehouseId = Guid.NewGuid(), AvailableQuantity = 10 }
-            }
-        };
-
-        _mockServiceInvoker
-            .Setup(s => s.InvokeAsync<StockAvailabilityDto>(
-                ServiceNames.Inventory,
-                It.Is<string>(path => path.Contains($"/{productId}", StringComparison.OrdinalIgnoreCase)),
-                HttpMethod.Get))
-            .ReturnsAsync(stockResponse);
+        var warehouseId = Guid.NewGuid();
+        _mockInventoryPort
+            .Setup(p => p.GetByProductIdAsync(productId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ProductAvailabilitySnapshot(
+                productId,
+                10,
+                [new WarehouseAvailabilitySnapshot(warehouseId, "Main", 10)]));
 
         // Act
         var result = await _salesOrderService.CheckStockAvailabilityAsync(lines);
@@ -1040,19 +1007,7 @@ public class SalesOrderServiceTests
             new CreateUpdateSalesOrderLineDto(productId, 10, 10.00m)
         };
 
-        var stockResponse = new StockAvailabilityDto
-        {
-            ProductId = productId,
-            TotalAvailable = 5,
-            WarehouseStocks = new List<WarehouseStockDto>()
-        };
-
-        _mockServiceInvoker
-            .Setup(s => s.InvokeAsync<StockAvailabilityDto>(
-                ServiceNames.Inventory,
-                It.Is<string>(path => path.Contains($"/{productId}", StringComparison.OrdinalIgnoreCase)),
-                HttpMethod.Get))
-            .ReturnsAsync(stockResponse);
+        MockProductAvailability(productId, 5);
 
         // Act
         var result = await _salesOrderService.CheckStockAvailabilityAsync(lines);
@@ -1078,26 +1033,8 @@ public class SalesOrderServiceTests
             new CreateUpdateSalesOrderLineDto(productId2, 3, 20.00m)
         };
 
-        var stockResponse1 = new StockAvailabilityDto
-        {
-            ProductId = productId1,
-            TotalAvailable = 10,
-            WarehouseStocks = new List<WarehouseStockDto>()
-        };
-        var stockResponse2 = new StockAvailabilityDto
-        {
-            ProductId = productId2,
-            TotalAvailable = 2,
-            WarehouseStocks = new List<WarehouseStockDto>()
-        };
-
-        _mockServiceInvoker
-            .SetupSequence(s => s.InvokeAsync<StockAvailabilityDto>(
-                ServiceNames.Inventory,
-                It.IsAny<string>(),
-                HttpMethod.Get))
-            .ReturnsAsync(stockResponse1)
-            .ReturnsAsync(stockResponse2);
+        MockProductAvailability(productId1, 10);
+        MockProductAvailability(productId2, 2);
 
         // Act
         var result = await _salesOrderService.CheckStockAvailabilityAsync(lines);
@@ -1122,11 +1059,8 @@ public class SalesOrderServiceTests
             new CreateUpdateSalesOrderLineDto(productId, 5, 10.00m)
         };
 
-        _mockServiceInvoker
-            .Setup(s => s.InvokeAsync<StockAvailabilityDto>(
-                ServiceNames.Inventory,
-                It.IsAny<string>(),
-                HttpMethod.Get))
+        _mockInventoryPort
+            .Setup(p => p.GetByProductIdAsync(productId, It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("Service unavailable"));
 
         // Act
