@@ -154,17 +154,15 @@ var gateway = builder.AddDotnetProject("gateway", new Projects.ErpApiGateway().P
     .WithEnvironment("Jwt__SecretKey", jwtSecretKey)
     .WithEnvironment("Jwt__Issuer", jwtIssuer)
     .WithEnvironment("Jwt__Audience", jwtAudience)
-    .WithEnvironment("OCELOT_ENVIRONMENT", "Development");
+    .WithEnvironment("ASPNETCORE_ENVIRONMENT", isDeployment ? "Production" : "Development")
+    .WithEnvironment("DOTNET_ENVIRONMENT", isDeployment ? "Production" : "Development")
+    .WithEnvironment("OCELOT_ENVIRONMENT", isDeployment ? "Production" : "Development")
+    .WithEnvironment("ALLOWED_ORIGINS", origin);
 
 var codespaceGatewayBaseUrl = GetCodespacesForwardedGatewayUrl(5000);
 if (!string.IsNullOrWhiteSpace(codespaceGatewayBaseUrl))
 {
     gateway = gateway.WithEnvironment("Ocelot__GlobalConfiguration__BaseUrl", codespaceGatewayBaseUrl);
-}
-
-if (isDeployment)
-{
-    gateway.WithEnvironment("OCELOT_ENVIRONMENT", "Production");
 }
 
 if (applicationInsights is not null)
