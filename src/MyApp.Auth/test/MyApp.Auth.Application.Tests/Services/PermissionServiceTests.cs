@@ -17,6 +17,9 @@ using Xunit;
 
 namespace MyApp.Auth.Application.Tests.Services;
 
+/// <summary>
+/// Unit tests for Permission Service.
+/// </summary>
 public class PermissionServiceTests : BaseServiceTest
 {
     private readonly Mock<IPermissionRepository> _mockPermissionRepository;
@@ -27,6 +30,9 @@ public class PermissionServiceTests : BaseServiceTest
     private readonly Mock<ILogger<PermissionService>> _mockLogger;
     private readonly PermissionService _permissionService;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PermissionServiceTests"/> class, setting up mocks and the <see cref="PermissionService"/> under test.
+    /// </summary>
     public PermissionServiceTests()
     {
         _mockPermissionRepository = new Mock<IPermissionRepository>();
@@ -52,6 +58,9 @@ public class PermissionServiceTests : BaseServiceTest
 
     #region HasPermissionAsync(Guid userId, string module, string action)
 
+    /// <summary>
+    /// Verifies that with valid user id module and action results in should return true when Has Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task HasPermissionAsync_WithValidUserIdModuleAndAction_ShouldReturnTrue()
     {
@@ -76,6 +85,9 @@ public class PermissionServiceTests : BaseServiceTest
         _mockPermissionRepository.Verify(x => x.GetAllPermissionsByUserId(userId), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with invalid user id module and action results in should return false when Has Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task HasPermissionAsync_WithInvalidUserIdModuleAndAction_ShouldReturnFalse()
     {
@@ -99,6 +111,9 @@ public class PermissionServiceTests : BaseServiceTest
         result.Should().BeFalse();
     }
 
+    /// <summary>
+    /// Verifies that with repository exception results in should return false and log error when Has Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task HasPermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
     {
@@ -124,6 +139,9 @@ public class PermissionServiceTests : BaseServiceTest
 
     #region HasPermissionAsync(string? username, string module, string action)
 
+    /// <summary>
+    /// Verifies that with valid username module and action results in should return true when Has Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task HasPermissionAsync_WithValidUsernameModuleAndAction_ShouldReturnTrue()
     {
@@ -153,6 +171,9 @@ public class PermissionServiceTests : BaseServiceTest
         _mockPermissionRepository.Verify(x => x.GetByUserName(username, module, action), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with null username results in should return false when Has Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task HasPermissionAsync_WithNullUsername_ShouldReturnFalse()
     {
@@ -169,6 +190,9 @@ public class PermissionServiceTests : BaseServiceTest
         _mockPermissionRepository.Verify(x => x.GetByUserName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
     }
 
+    /// <summary>
+    /// Verifies that with empty username results in should return false when Has Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task HasPermissionAsync_WithEmptyUsername_ShouldReturnFalse()
     {
@@ -185,6 +209,9 @@ public class PermissionServiceTests : BaseServiceTest
         _mockPermissionRepository.Verify(x => x.GetByUserName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
     }
 
+    /// <summary>
+    /// Verifies that with username but no user permissions results in should check role permissions when Has Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task HasPermissionAsync_WithUsernameButNoUserPermissions_ShouldCheckRolePermissions()
     {
@@ -227,6 +254,9 @@ public class PermissionServiceTests : BaseServiceTest
 
     #region GetAllPermissionsAsync
 
+    /// <summary>
+    /// Verifies that Get All Permissions Async should return mapped permissions.
+    /// </summary>
     [Fact]
     public async Task GetAllPermissionsAsync_ShouldReturnMappedPermissions()
     {
@@ -264,6 +294,9 @@ public class PermissionServiceTests : BaseServiceTest
 
     #region GetPermissionByIdAsync
 
+    /// <summary>
+    /// Verifies that with valid id results in should return mapped permission when Get Permission By Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetPermissionByIdAsync_WithValidId_ShouldReturnMappedPermission()
     {
@@ -288,6 +321,9 @@ public class PermissionServiceTests : BaseServiceTest
         result.Should().BeEquivalentTo(permissionDto);
     }
 
+    /// <summary>
+    /// Verifies that with invalid id results in should return null when Get Permission By Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetPermissionByIdAsync_WithInvalidId_ShouldReturnNull()
     {
@@ -310,6 +346,9 @@ public class PermissionServiceTests : BaseServiceTest
 
     #region GetPermissionByModuleActionAsync
 
+    /// <summary>
+    /// Verifies that with valid module and action results in should return mapped permission when Get Permission By Module Action Async is called.
+    /// </summary>
     [Fact]
     public async Task GetPermissionByModuleActionAsync_WithValidModuleAndAction_ShouldReturnMappedPermission()
     {
@@ -335,6 +374,9 @@ public class PermissionServiceTests : BaseServiceTest
         result.Should().BeEquivalentTo(permissionDto);
     }
 
+    /// <summary>
+    /// Verifies that with invalid module and action results in should return null when Get Permission By Module Action Async is called.
+    /// </summary>
     [Fact]
     public async Task GetPermissionByModuleActionAsync_WithInvalidModuleAndAction_ShouldReturnNull()
     {
@@ -354,6 +396,9 @@ public class PermissionServiceTests : BaseServiceTest
         MockMapper.Verify(x => x.Map<PermissionDto>(It.IsAny<Permission>()), Times.Never);
     }
 
+    /// <summary>
+    /// Verifies that with repository exception results in should throw exception when Get Permission By Module Action Async is called.
+    /// </summary>
     [Fact]
     public async Task GetPermissionByModuleActionAsync_WithRepositoryException_ShouldThrowException()
     {
@@ -374,6 +419,9 @@ public class PermissionServiceTests : BaseServiceTest
 
     #region CreatePermissionAsync
 
+    /// <summary>
+    /// Verifies that with valid dto results in should create and return mapped permission when Create Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task CreatePermissionAsync_WithValidDto_ShouldCreateAndReturnMappedPermission()
     {
@@ -413,6 +461,9 @@ public class PermissionServiceTests : BaseServiceTest
             p.Description == createDto.Description)), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with duplicate module and action results in should return null and log warning when Create Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task CreatePermissionAsync_WithDuplicateModuleAndAction_ShouldReturnNullAndLogWarning()
     {
@@ -440,6 +491,9 @@ public class PermissionServiceTests : BaseServiceTest
         VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.Once());
     }
 
+    /// <summary>
+    /// Verifies that with repository exception results in should return null and log error when Create Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task CreatePermissionAsync_WithRepositoryException_ShouldReturnNullAndLogError()
     {
@@ -463,6 +517,9 @@ public class PermissionServiceTests : BaseServiceTest
 
     #region UpdatePermissionAsync
 
+    /// <summary>
+    /// Verifies that with valid id and dto results in should update and return true when Update Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task UpdatePermissionAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
     {
@@ -491,6 +548,9 @@ public class PermissionServiceTests : BaseServiceTest
         _mockPermissionRepository.Verify(x => x.UpdateAsync(existingPermission), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with invalid id results in should return false and log warning when Update Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task UpdatePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
     {
@@ -511,6 +571,9 @@ public class PermissionServiceTests : BaseServiceTest
         VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.Once());
     }
 
+    /// <summary>
+    /// Verifies that with repository exception results in should return false and log error when Update Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task UpdatePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
     {
@@ -536,6 +599,9 @@ public class PermissionServiceTests : BaseServiceTest
 
     #region DeletePermissionAsync
 
+    /// <summary>
+    /// Verifies that with valid id results in should delete and return true when Delete Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task DeletePermissionAsync_WithValidId_ShouldDeleteAndReturnTrue()
     {
@@ -559,6 +625,9 @@ public class PermissionServiceTests : BaseServiceTest
         _mockPermissionRepository.Verify(x => x.DeleteAsync(permission), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with invalid id results in should return false and log warning when Delete Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task DeletePermissionAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
     {
@@ -578,6 +647,9 @@ public class PermissionServiceTests : BaseServiceTest
         VerifyLoggerCalled(_mockLogger, LogLevel.Warning, Times.Once());
     }
 
+    /// <summary>
+    /// Verifies that with repository exception results in should return false and log error when Delete Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task DeletePermissionAsync_WithRepositoryException_ShouldReturnFalseAndLogError()
     {

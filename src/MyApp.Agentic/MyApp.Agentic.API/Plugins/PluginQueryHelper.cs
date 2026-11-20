@@ -15,7 +15,7 @@ internal static class PluginQueryHelper
     /// <param name="serviceName">The service Name.</param>
     /// <param name="searchEndpointPath">The search Endpoint Path.</param>
     /// <param name="queryJson">The query Json.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>JSON string containing the search result payload.</returns>
     public static async Task<string> SearchAsync(
         IServiceInvoker serviceInvoker,

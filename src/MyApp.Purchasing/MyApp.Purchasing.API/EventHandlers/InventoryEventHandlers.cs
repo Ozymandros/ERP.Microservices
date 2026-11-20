@@ -26,6 +26,7 @@ public class InventoryEventHandlers : ControllerBase
     /// Handles LowStockAlertEvent - could trigger automatic PO creation
     /// </summary>
     /// <param name="event">The event.</param>
+    /// <returns>200 OK to acknowledge receipt of the event.</returns>
     [Topic("pubsub", "inventory.stock.low-stock-alert")]
     [HttpPost("low-stock-alert")]
     public async Task<IActionResult> OnLowStockAlertAsync(LowStockAlertEvent @event)
@@ -52,6 +53,7 @@ public class InventoryEventHandlers : ControllerBase
     /// Handles StockUpdatedEvent - tracks inventory levels
     /// </summary>
     /// <param name="event">The event.</param>
+    /// <returns>200 OK to acknowledge receipt of the event.</returns>
     [Topic("pubsub", "inventory.stock.updated")]
     [HttpPost("stock-updated")]
     public IActionResult OnStockUpdatedAsync(StockUpdatedEvent @event)

@@ -46,6 +46,7 @@ public class ProductServiceTests
 
     #region GetProductByIdAsync Tests
 
+    /// <summary>Verifies that GetProductByIdAsync returns a mapped DTO when the product exists.</summary>
     [Fact]
     public async Task GetProductByIdAsync_WithExistingId_ReturnsProductDto()
     {
@@ -70,6 +71,7 @@ public class ProductServiceTests
         _mockProductRepository.Verify(r => r.GetByIdAsync(productId), Times.Once);
     }
 
+    /// <summary>Verifies that GetProductByIdAsync returns null when no product exists with the given ID.</summary>
     [Fact]
     public async Task GetProductByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -89,6 +91,7 @@ public class ProductServiceTests
 
     #region GetProductBySkuAsync Tests
 
+    /// <summary>Verifies that GetProductBySkuAsync returns a mapped DTO when the SKU exists.</summary>
     [Fact]
     public async Task GetProductBySkuAsync_WithExistingSku_ReturnsProductDto()
     {
@@ -113,6 +116,7 @@ public class ProductServiceTests
         _mockProductRepository.Verify(r => r.GetBySkuAsync(sku), Times.Once);
     }
 
+    /// <summary>Verifies that GetProductBySkuAsync returns null when no product matches the SKU.</summary>
     [Fact]
     public async Task GetProductBySkuAsync_WithNonExistentSku_ReturnsNull()
     {
@@ -132,6 +136,7 @@ public class ProductServiceTests
 
     #region GetProductByNameAsync Tests
 
+    /// <summary>Verifies that GetProductByNameAsync returns a mapped DTO when the name exists.</summary>
     [Fact]
     public async Task GetProductByNameAsync_WithExistingName_ReturnsProductDto()
     {
@@ -156,6 +161,7 @@ public class ProductServiceTests
         _mockProductRepository.Verify(r => r.GetByNameAsync(name), Times.Once);
     }
 
+    /// <summary>Verifies that GetProductByNameAsync returns null when no product matches the name.</summary>
     [Fact]
     public async Task GetProductByNameAsync_WithNonExistentName_ReturnsNull()
     {
@@ -175,6 +181,7 @@ public class ProductServiceTests
 
     #region GetAllProductsAsync Tests
 
+    /// <summary>Verifies that GetAllProductsAsync returns all products from the repository.</summary>
     [Fact]
     public async Task GetAllProductsAsync_ReturnsAllProducts()
     {
@@ -216,6 +223,7 @@ public class ProductServiceTests
 
     #region GetLowStockProductsAsync Tests
 
+    /// <summary>Verifies that GetLowStockProductsAsync returns all products below their reorder level.</summary>
     [Fact]
     public async Task GetLowStockProductsAsync_ReturnsLowStockProducts()
     {
@@ -249,6 +257,7 @@ public class ProductServiceTests
 
     #region CreateProductAsync Tests
 
+    /// <summary>Verifies that CreateProductAsync creates a new product when the SKU is unique.</summary>
     [Fact]
     public async Task CreateProductAsync_WithUniqueSku_CreatesProduct()
     {
@@ -277,6 +286,7 @@ public class ProductServiceTests
         _mockProductRepository.Verify(r => r.AddAsync(product), Times.Once);
     }
 
+    /// <summary>Verifies that CreateProductAsync throws <see cref="InvalidOperationException"/> when the SKU already exists.</summary>
     [Fact]
     public async Task CreateProductAsync_WithDuplicateSku_ThrowsInvalidOperationException()
     {
@@ -298,6 +308,7 @@ public class ProductServiceTests
 
     #region UpdateProductAsync Tests
 
+    /// <summary>Verifies that UpdateProductAsync updates an existing product and returns the mapped DTO.</summary>
     [Fact]
     public async Task UpdateProductAsync_WithExistingProduct_UpdatesSuccessfully()
     {
@@ -326,6 +337,7 @@ public class ProductServiceTests
         _mockProductRepository.Verify(r => r.UpdateAsync(existingProduct), Times.Once);
     }
 
+    /// <summary>Verifies that UpdateProductAsync throws <see cref="KeyNotFoundException"/> when the product does not exist.</summary>
     [Fact]
     public async Task UpdateProductAsync_WithNonExistentProduct_ThrowsKeyNotFoundException()
     {
@@ -344,6 +356,7 @@ public class ProductServiceTests
         _mockProductRepository.Verify(r => r.UpdateAsync(It.IsAny<Product>()), Times.Never);
     }
 
+    /// <summary>Verifies that UpdateProductAsync throws <see cref="InvalidOperationException"/> when the new SKU conflicts with an existing product.</summary>
     [Fact]
     public async Task UpdateProductAsync_WithDuplicateSku_ThrowsInvalidOperationException()
     {
@@ -368,6 +381,7 @@ public class ProductServiceTests
 
     #region DeleteProductAsync Tests
 
+    /// <summary>Verifies that DeleteProductAsync removes the product from the repository.</summary>
     [Fact]
     public async Task DeleteProductAsync_WithExistingProduct_DeletesProduct()
     {
@@ -385,6 +399,7 @@ public class ProductServiceTests
         _mockProductRepository.Verify(r => r.DeleteAsync(product), Times.Once);
     }
 
+    /// <summary>Verifies that DeleteProductAsync throws <see cref="KeyNotFoundException"/> when the product does not exist.</summary>
     [Fact]
     public async Task DeleteProductAsync_WithNonExistentProduct_ThrowsKeyNotFoundException()
     {
@@ -404,6 +419,7 @@ public class ProductServiceTests
 
     #region GetAllProductsPaginatedAsync Tests
 
+    /// <summary>Verifies that GetAllProductsPaginatedAsync returns a correctly paged result.</summary>
     [Fact]
     public async Task GetAllProductsPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -443,6 +459,7 @@ public class ProductServiceTests
         _mockProductRepository.Verify(r => r.GetAllPaginatedAsync(1, 2), Times.Once);
     }
 
+    /// <summary>Verifies that GetAllProductsPaginatedAsync returns the correct second page.</summary>
     [Fact]
     public async Task GetAllProductsPaginatedAsync_WithSecondPage_ReturnsCorrectPage()
     {
@@ -477,6 +494,7 @@ public class ProductServiceTests
         _mockProductRepository.Verify(r => r.GetAllPaginatedAsync(2, 2), Times.Once);
     }
 
+    /// <summary>Verifies that GetAllProductsPaginatedAsync returns an empty paginated result when no products exist.</summary>
     [Fact]
     public async Task GetAllProductsPaginatedAsync_WithEmptyResult_ReturnsEmptyPaginatedResult()
     {
@@ -504,6 +522,7 @@ public class ProductServiceTests
 
     #region QueryProductsAsync Tests
 
+    /// <summary>Verifies that QueryProductsAsync returns filtered results when a search term is provided.</summary>
     [Fact]
     public async Task QueryProductsAsync_WithSearchTerm_ReturnsFilteredResults()
     {
@@ -536,6 +555,7 @@ public class ProductServiceTests
         _mockProductRepository.Verify(r => r.QueryAsync(spec), Times.Once);
     }
 
+    /// <summary>Verifies that QueryProductsAsync returns filtered results when price range filters are applied.</summary>
     [Fact]
     public async Task QueryProductsAsync_WithFilters_ReturnsFilteredResults()
     {
@@ -572,6 +592,7 @@ public class ProductServiceTests
 
     #region Edge Cases and Error Scenarios
 
+    /// <summary>Verifies that CreateProductAsync creates a product even when the SKU is empty.</summary>
     [Fact]
     public async Task CreateProductAsync_WithEmptySku_CreatesProduct()
     {
@@ -593,6 +614,7 @@ public class ProductServiceTests
         result.SKU.Should().Be("");
     }
 
+    /// <summary>Verifies that CreateProductAsync creates a product when the SKU consists of whitespace.</summary>
     [Fact]
     public async Task CreateProductAsync_WithWhitespaceSku_CreatesProduct()
     {
@@ -614,6 +636,7 @@ public class ProductServiceTests
         result.SKU.Should().Be("   ");
     }
 
+    /// <summary>Verifies that CreateProductAsync creates a product when the SKU contains special characters.</summary>
     [Fact]
     public async Task CreateProductAsync_WithSpecialCharactersInSku_CreatesProduct()
     {
@@ -636,6 +659,7 @@ public class ProductServiceTests
         result.SKU.Should().Be(sku);
     }
 
+    /// <summary>Verifies that CreateProductAsync creates a product when the SKU is very long.</summary>
     [Fact]
     public async Task CreateProductAsync_WithVeryLongSku_CreatesProduct()
     {
@@ -658,6 +682,7 @@ public class ProductServiceTests
         result.SKU.Should().Be(longSku);
     }
 
+    /// <summary>Verifies that UpdateProductAsync does not check for SKU conflicts when the SKU is unchanged.</summary>
     [Fact]
     public async Task UpdateProductAsync_WithSameSku_UpdatesSuccessfully()
     {
@@ -683,6 +708,7 @@ public class ProductServiceTests
         _mockProductRepository.Verify(r => r.GetBySkuAsync(It.IsAny<string>()), Times.Never);
     }
 
+    /// <summary>Verifies that UpdateProductAsync updates the product even when the new name is empty.</summary>
     [Fact]
     public async Task UpdateProductAsync_WithEmptyName_UpdatesSuccessfully()
     {
@@ -706,6 +732,7 @@ public class ProductServiceTests
         result.Name.Should().Be("");
     }
 
+    /// <summary>Verifies that GetProductBySkuAsync delegates case-insensitive matching to the repository.</summary>
     [Fact]
     public async Task GetProductBySkuAsync_WithCaseInsensitiveSku_ReturnsProduct()
     {
@@ -725,6 +752,7 @@ public class ProductServiceTests
         _mockProductRepository.Verify(r => r.GetBySkuAsync(sku), Times.Once);
     }
 
+    /// <summary>Verifies that GetProductBySkuAsync returns null when given an empty SKU.</summary>
     [Fact]
     public async Task GetProductBySkuAsync_WithEmptySku_ReturnsNull()
     {
@@ -740,6 +768,7 @@ public class ProductServiceTests
         result.Should().BeNull();
     }
 
+    /// <summary>Verifies that GetAllProductsAsync returns an empty list when no products exist.</summary>
     [Fact]
     public async Task GetAllProductsAsync_WithEmptyRepository_ReturnsEmptyList()
     {
@@ -755,6 +784,7 @@ public class ProductServiceTests
         result.Should().BeEmpty();
     }
 
+    /// <summary>Verifies that GetLowStockProductsAsync returns an empty list when all products are above their reorder level.</summary>
     [Fact]
     public async Task GetLowStockProductsAsync_WithNoLowStockProducts_ReturnsEmptyList()
     {
@@ -770,6 +800,7 @@ public class ProductServiceTests
         result.Should().BeEmpty();
     }
 
+    /// <summary>Verifies that DeleteProductAsync deletes the product regardless of associated data.</summary>
     [Fact]
     public async Task DeleteProductAsync_WithProductHavingDependencies_DeletesProduct()
     {
@@ -787,6 +818,7 @@ public class ProductServiceTests
         _mockProductRepository.Verify(r => r.DeleteAsync(product), Times.Once);
     }
 
+    /// <summary>Verifies that CreateProductAsync propagates exceptions thrown by the repository.</summary>
     [Fact]
     public async Task CreateProductAsync_WhenRepositoryThrowsException_PropagatesException()
     {
@@ -802,6 +834,7 @@ public class ProductServiceTests
         await Assert.ThrowsAsync<Exception>(() => _productService.CreateProductAsync(dto));
     }
 
+    /// <summary>Verifies that UpdateProductAsync propagates exceptions thrown by the mapper.</summary>
     [Fact]
     public async Task UpdateProductAsync_WhenMapperThrowsException_PropagatesException()
     {
@@ -817,6 +850,7 @@ public class ProductServiceTests
         await Assert.ThrowsAsync<Exception>(() => _productService.UpdateProductAsync(productId, updateDto));
     }
 
+    /// <summary>Verifies that QueryProductsAsync returns correctly paginated results.</summary>
     [Fact]
     public async Task QueryProductsAsync_WithPagination_ReturnsPaginatedResult()
     {

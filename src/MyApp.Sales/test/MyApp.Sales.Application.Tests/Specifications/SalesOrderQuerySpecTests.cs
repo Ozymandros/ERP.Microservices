@@ -7,6 +7,7 @@ using Xunit;
 
 namespace MyApp.Sales.Application.Tests.Specifications;
 
+/// <summary>Unit tests for <see cref="SalesOrderQuerySpec"/> filtering, sorting, and search behaviour.</summary>
 public class SalesOrderQuerySpecTests
 {
     private static IQueryable<SalesOrder> CreateTestData()
@@ -23,6 +24,7 @@ public class SalesOrderQuerySpecTests
         }.AsQueryable();
     }
 
+    /// <summary>Verifies that ApplyFilters returns only orders whose order number contains the supplied filter value.</summary>
     [Fact]
     public void ApplyFilters_WithOrderNumberFilter_ReturnsFilteredOrders()
     {
@@ -37,6 +39,7 @@ public class SalesOrderQuerySpecTests
         result.First().OrderNumber.Should().Be("SO-001");
     }
 
+    /// <summary>Verifies that ApplyFilters returns only orders belonging to the specified customer identifier.</summary>
     [Fact]
     public void ApplyFilters_WithCustomerIdFilter_ReturnsFilteredOrders()
     {
@@ -52,6 +55,7 @@ public class SalesOrderQuerySpecTests
         result.All(o => o.CustomerId == customerId).Should().BeTrue();
     }
 
+    /// <summary>Verifies that ApplyFilters returns only orders matching the specified status value.</summary>
     [Fact]
     public void ApplyFilters_WithStatusFilter_ReturnsFilteredOrders()
     {
@@ -66,6 +70,7 @@ public class SalesOrderQuerySpecTests
         result.All(o => o.Status == SalesOrderStatus.Draft).Should().BeTrue();
     }
 
+    /// <summary>Verifies that ApplyFilters returns only orders whose TotalAmount is greater than or equal to the TotalAmountMin filter.</summary>
     [Fact]
     public void ApplyFilters_WithMinTotalFilter_ReturnsFilteredOrders()
     {
@@ -80,6 +85,7 @@ public class SalesOrderQuerySpecTests
         result.All(o => o.TotalAmount >= 150m).Should().BeTrue();
     }
 
+    /// <summary>Verifies that ApplyFilters matches orders by order number when a free-text search term is supplied.</summary>
     [Fact]
     public void ApplyFilters_WithSearchTerm_ReturnsMatchingOrders()
     {
@@ -93,6 +99,7 @@ public class SalesOrderQuerySpecTests
         result.First().OrderNumber.Should().Contain("QUOTE");
     }
 
+    /// <summary>Verifies that Apply sorts orders in descending order by TotalAmount when SortBy is "TotalAmount" and SortDesc is true.</summary>
     [Fact]
     public void Apply_WithSortByTotalAmount_SortsCorrectly()
     {

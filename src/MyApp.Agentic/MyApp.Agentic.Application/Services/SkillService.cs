@@ -8,6 +8,7 @@ using MyApp.Shared.Domain.Repositories;
 
 namespace MyApp.Agentic.Application.Services;
 
+/// <summary>In-memory skill registry that loads <see cref="SkillDefinition"/> instances at startup and implements <see cref="ISkillService"/>.</summary>
 public class SkillService : AppServiceBase, ISkillService
 {
     private readonly Dictionary<string, SkillDefinition> _skills = new();
@@ -52,7 +53,7 @@ public class SkillService : AppServiceBase, ISkillService
     /// Gets the skill instructions asynchronously.
     /// </summary>
     /// <param name="skillName">The skill Name.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public Task<string> GetSkillInstructionsAsync(string skillName, CancellationToken cancellationToken = default)
     {
@@ -68,7 +69,7 @@ public class SkillService : AppServiceBase, ISkillService
     /// <summary>
     /// Gets the active skills asynchronously.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public Task<IEnumerable<SkillDefinition>> GetActiveSkillsAsync(CancellationToken cancellationToken = default)
     {
@@ -80,7 +81,7 @@ public class SkillService : AppServiceBase, ISkillService
     /// Gets the skill by name asynchronously.
     /// </summary>
     /// <param name="name">The name.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public Task<SkillDefinition?> GetSkillByNameAsync(string name, CancellationToken cancellationToken = default)
     {
@@ -92,7 +93,7 @@ public class SkillService : AppServiceBase, ISkillService
     /// Gets the required tools for skill asynchronously.
     /// </summary>
     /// <param name="skillName">The skill Name.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public Task<IEnumerable<string>> GetRequiredToolsForSkillAsync(string skillName, CancellationToken cancellationToken = default)
     {
@@ -124,6 +125,7 @@ public class SkillService : AppServiceBase, ISkillService
     }
 }
 
+/// <summary>Options class that collects skill loader actions to be applied to a <see cref="SkillService"/> during DI configuration.</summary>
 public class AgentSkillOptions
 {
     private readonly List<Action<SkillService>> _skillLoaders = new();

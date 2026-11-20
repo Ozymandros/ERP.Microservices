@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A .NET 10 (C# 13) ERP system built as independent microservices, orchestrated locally with .NET Aspire and deployed to Azure Container Apps. Services communicate through Dapr (HTTP invocation + pub/sub) and are fronted by an Ocelot API gateway. Each service owns its own SQL Server database — never access another service's database or DbContext directly.
 
-**Microservices** (defined in `src/AppHost/Program.cs`): Auth, Billing, Crm, Inventory, Orders, Purchasing, Sales, Agentic, Audit — each gets a `{Service}DB` SQL Server database. Note: `Program.cs` comments claim Agentic and Audit have "no DB", but both are registered with `hasDatabase: true`; this is a known inconsistency in the source, not settled fact — verify against `AspireProjectBuilder.cs` if it matters for your task.
+**Microservices** (defined in `src/AppHost/Program.cs`): Auth, Billing, Crm, Inventory, Orders, Purchasing, Sales, Agentic, Audit, Projects — each gets a `{Service}DB` SQL Server database. Note: `Program.cs` comments claim Agentic and Audit have "no DB", but both are registered with `hasDatabase: true`; this is a known inconsistency in the source, not settled fact — verify against `AspireProjectBuilder.cs` if it matters for your task.
 
 Data flow: `Client → API Gateway (Ocelot) → Microservice → Dapr Sidecar → Database/Redis/Other Services`.
 
@@ -84,8 +84,9 @@ Operational and commercial concerns must never mix. This has been a recurring so
 | `MyApp.Inventory` | Core | ❌ NO | ❌ NO | ✅ YES (UnitPrice) | Stock management |
 | `MyApp.Auth` | Infrastructure | N/A | N/A | ❌ NO | AuthN/AuthZ |
 | `MyApp.Billing` | Commercial | ✅ YES | ✅ YES | ✅ YES | Invoicing/payments |
+| `MyApp.Projects` | Commercial / project control | ✅ YES (bill-to) | ❌ NO | ✅ YES (multi-currency) | Projects, task tree, planning lines, resources, project ledger (Business Central "Projects", no WIP) |
 
-`Orders` tracks *where a shipment is*, not *who paid what*. It uses `OrderType` (Transfer/Inbound/Outbound/Return), `SourceId`/`TargetId` (warehouses), and `ExternalOrderId` to link back to the `SalesOrder`/`PurchaseOrder` that caused the movement. It must never gain `CustomerId`, `SupplierId`, `TotalAmount`, `UnitPrice`, `LineTotal`, or other pricing/commercial fields — those belong in Sales, Purchasing, or Billing. Before adding a field anywhere, ask: is this about physical movement (Orders), selling (Sales), buying (Purchasing), stock levels (Inventory), invoicing (Billing), or users/permissions (Auth)?
+`Orders` tracks *where a shipment is*, not *who paid what*. It uses `OrderType` (Transfer/Inbound/Outbound/Return), `SourceId`/`TargetId` (warehouses), and `ExternalOrderId` to link back to the `SalesOrder`/`PurchaseOrder` that caused the movement. It must never gain `CustomerId`, `SupplierId`, `TotalAmount`, `UnitPrice`, `LineTotal`, or other pricing/commercial fields — those belong in Sales, Purchasing, or Billing. `Projects` never moves stock or creates invoices itself: item consumption is an Outbound order in Orders (`ExternalOrderId` = project id, `ExternalOrderSource` = `"Project"`), and invoicing is a `projects.invoice.requested` event that Billing turns into a Draft invoice (`SourceType` = `"Project"`, auto-issue only with `Billing:ProjectInvoices:AutoIssue=true`). Consumers of `orders.order.fulfilled` / `billing.invoice.*` must check the source (`DocumentSources.IsSales/IsProject`) before treating `ExternalOrderId` / `OrderId` as a sales order. Before adding a field anywhere, ask: is this about physical movement (Orders), selling (Sales), buying (Purchasing), stock levels (Inventory), invoicing (Billing), or users/permissions (Auth)?
 
 ### Service communication (Dapr)
 

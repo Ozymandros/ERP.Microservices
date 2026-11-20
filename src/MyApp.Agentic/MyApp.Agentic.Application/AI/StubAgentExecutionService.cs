@@ -28,7 +28,7 @@ public class StubAgentExecutionService : IAgentExecutionService
     /// </summary>
     /// <param name="context">The context.</param>
     /// <param name="userMessage">The user Message.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A composed textual response that echoes the user message and includes selected execution details
     /// (for example model configuration, sampled memories, and available tool names).

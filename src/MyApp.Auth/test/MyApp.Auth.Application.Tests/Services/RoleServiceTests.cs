@@ -17,6 +17,9 @@ using Xunit;
 
 namespace MyApp.Auth.Application.Tests.Services;
 
+/// <summary>
+/// Unit tests for Role Service.
+/// </summary>
 public class RoleServiceTests : BaseServiceTest
 {
     private readonly Mock<IRoleRepository> _mockRoleRepository;
@@ -28,6 +31,9 @@ public class RoleServiceTests : BaseServiceTest
     private readonly Mock<ILogger<RoleService>> _mockLogger;
     private readonly RoleService _roleService;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RoleServiceTests"/> class, setting up mocks and the <see cref="RoleService"/> under test.
+    /// </summary>
     public RoleServiceTests()
     {
         _mockRoleRepository = new Mock<IRoleRepository>();
@@ -53,6 +59,9 @@ public class RoleServiceTests : BaseServiceTest
 
     #region GetAllRolesAsync
 
+    /// <summary>
+    /// Verifies that Get All Roles Async should return mapped roles.
+    /// </summary>
     [Fact]
     public async Task GetAllRolesAsync_ShouldReturnMappedRoles()
     {
@@ -86,6 +95,9 @@ public class RoleServiceTests : BaseServiceTest
         result.Should().BeEquivalentTo(roleDtos);
     }
 
+    /// <summary>
+    /// Verifies that with repository exception results in should throw exception when Get All Roles Async is called.
+    /// </summary>
     [Fact]
     public async Task GetAllRolesAsync_WithRepositoryException_ShouldThrowException()
     {
@@ -104,6 +116,9 @@ public class RoleServiceTests : BaseServiceTest
 
     #region GetRoleByIdAsync
 
+    /// <summary>
+    /// Verifies that with valid id results in should return mapped role when Get Role By Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetRoleByIdAsync_WithValidId_ShouldReturnMappedRole()
     {
@@ -128,6 +143,9 @@ public class RoleServiceTests : BaseServiceTest
         result.Should().BeEquivalentTo(roleDto);
     }
 
+    /// <summary>
+    /// Verifies that with invalid id results in should return null when Get Role By Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetRoleByIdAsync_WithInvalidId_ShouldReturnNull()
     {
@@ -150,6 +168,9 @@ public class RoleServiceTests : BaseServiceTest
 
     #region CreateRoleAsync
 
+    /// <summary>
+    /// Verifies that with valid dto results in should create and return mapped role when Create Role Async is called.
+    /// </summary>
     [Fact]
     public async Task CreateRoleAsync_WithValidDto_ShouldCreateAndReturnMappedRole()
     {
@@ -190,6 +211,9 @@ public class RoleServiceTests : BaseServiceTest
         _mockUnitOfWork.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with duplicate name results in should return null and log warning when Create Role Async is called.
+    /// </summary>
     [Fact]
     public async Task CreateRoleAsync_WithDuplicateName_ShouldReturnNullAndLogWarning()
     {
@@ -212,6 +236,9 @@ public class RoleServiceTests : BaseServiceTest
 
     #region UpdateRoleAsync
 
+    /// <summary>
+    /// Verifies that with valid id and dto results in should update and return true when Update Role Async is called.
+    /// </summary>
     [Fact]
     public async Task UpdateRoleAsync_WithValidIdAndDto_ShouldUpdateAndReturnTrue()
     {
@@ -240,6 +267,9 @@ public class RoleServiceTests : BaseServiceTest
         _mockUnitOfWork.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with invalid id results in should return false and log warning when Update Role Async is called.
+    /// </summary>
     [Fact]
     public async Task UpdateRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
     {
@@ -264,6 +294,9 @@ public class RoleServiceTests : BaseServiceTest
 
     #region DeleteRoleAsync
 
+    /// <summary>
+    /// Verifies that with valid id results in should delete and return true when Delete Role Async is called.
+    /// </summary>
     [Fact]
     public async Task DeleteRoleAsync_WithValidId_ShouldDeleteAndReturnTrue()
     {
@@ -288,6 +321,9 @@ public class RoleServiceTests : BaseServiceTest
         _mockUnitOfWork.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with invalid id results in should return false and log warning when Delete Role Async is called.
+    /// </summary>
     [Fact]
     public async Task DeleteRoleAsync_WithInvalidId_ShouldReturnFalseAndLogWarning()
     {
@@ -311,6 +347,9 @@ public class RoleServiceTests : BaseServiceTest
 
     #region AddPermissionToRole
 
+    /// <summary>
+    /// Verifies that with valid ids results in should add permission and return true when Add Permission To Role is called.
+    /// </summary>
     [Fact]
     public async Task AddPermissionToRole_WithValidIds_ShouldAddPermissionAndReturnTrue()
     {
@@ -344,6 +383,9 @@ public class RoleServiceTests : BaseServiceTest
 
     #region RemovePermissionFromRoleAsync
 
+    /// <summary>
+    /// Verifies that with valid ids results in should remove permission and return true when Remove Permission From Role Async is called.
+    /// </summary>
     [Fact]
     public async Task RemovePermissionFromRoleAsync_WithValidIds_ShouldRemovePermissionAndReturnTrue()
     {
@@ -365,6 +407,9 @@ public class RoleServiceTests : BaseServiceTest
         _mockRoleRepository.Verify(x => x.RemovePermissionFromRoleAsync(roleId, permissionId), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with role not found results in should return false when Remove Permission From Role Async is called.
+    /// </summary>
     [Fact]
     public async Task RemovePermissionFromRoleAsync_WithRoleNotFound_ShouldReturnFalse()
     {
@@ -382,6 +427,9 @@ public class RoleServiceTests : BaseServiceTest
         result.Should().BeFalse();
     }
 
+    /// <summary>
+    /// Verifies that with permission not assigned results in should return false when Remove Permission From Role Async is called.
+    /// </summary>
     [Fact]
     public async Task RemovePermissionFromRoleAsync_WithPermissionNotAssigned_ShouldReturnFalse()
     {
@@ -406,6 +454,9 @@ public class RoleServiceTests : BaseServiceTest
 
     #region HasPermissionAsync
 
+    /// <summary>
+    /// Verifies that with valid role and permission results in should return true when Has Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task HasPermissionAsync_WithValidRoleAndPermission_ShouldReturnTrue()
     {
@@ -423,6 +474,9 @@ public class RoleServiceTests : BaseServiceTest
         _mockRoleRepository.Verify(x => x.HasPermissionAsync(roleId, permissionId), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with invalid role or permission results in should return false when Has Permission Async is called.
+    /// </summary>
     [Fact]
     public async Task HasPermissionAsync_WithInvalidRoleOrPermission_ShouldReturnFalse()
     {
@@ -444,6 +498,9 @@ public class RoleServiceTests : BaseServiceTest
 
     #region GetPermissionsForRoleAsync
 
+    /// <summary>
+    /// Verifies that with valid role id results in should return mapped permissions when Get Permissions For Role Async is called.
+    /// </summary>
     [Fact]
     public async Task GetPermissionsForRoleAsync_WithValidRoleId_ShouldReturnMappedPermissions()
     {
@@ -478,6 +535,9 @@ public class RoleServiceTests : BaseServiceTest
         result.Should().BeEquivalentTo(permissionDtos);
     }
 
+    /// <summary>
+    /// Verifies that with repository exception results in should throw exception when Get Permissions For Role Async is called.
+    /// </summary>
     [Fact]
     public async Task GetPermissionsForRoleAsync_WithRepositoryException_ShouldThrowException()
     {
@@ -497,6 +557,9 @@ public class RoleServiceTests : BaseServiceTest
 
     #region Bulk AddPermissionsToRole
 
+    /// <summary>
+    /// Verifies that with valid ids results in should add permissions and return true when Add Permissions To Role is called.
+    /// </summary>
     [Fact]
     public async Task AddPermissionsToRole_WithValidIds_ShouldAddPermissionsAndReturnTrue()
     {
@@ -521,6 +584,9 @@ public class RoleServiceTests : BaseServiceTest
         _mockUnitOfWork.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with role not found results in should return false when Add Permissions To Role is called.
+    /// </summary>
     [Fact]
     public async Task AddPermissionsToRole_WithRoleNotFound_ShouldReturnFalse()
     {
@@ -538,6 +604,9 @@ public class RoleServiceTests : BaseServiceTest
         result.Should().BeFalse();
     }
 
+    /// <summary>
+    /// Verifies that with duplicate permissions results in should skip duplicates when Add Permissions To Role is called.
+    /// </summary>
     [Fact]
     public async Task AddPermissionsToRole_WithDuplicatePermissions_ShouldSkipDuplicates()
     {
@@ -563,6 +632,9 @@ public class RoleServiceTests : BaseServiceTest
         role.RolePermissions.Should().HaveCount(1); // Only one new permission added
     }
 
+    /// <summary>
+    /// Verifies that with all duplicates results in should return false when Add Permissions To Role is called.
+    /// </summary>
     [Fact]
     public async Task AddPermissionsToRole_WithAllDuplicates_ShouldReturnFalse()
     {
@@ -588,6 +660,9 @@ public class RoleServiceTests : BaseServiceTest
 
     #region Bulk RemovePermissionsFromRole
 
+    /// <summary>
+    /// Verifies that with valid ids results in should remove permissions and return true when Remove Permissions From Role Async is called.
+    /// </summary>
     [Fact]
     public async Task RemovePermissionsFromRoleAsync_WithValidIds_ShouldRemovePermissionsAndReturnTrue()
     {
@@ -610,6 +685,9 @@ public class RoleServiceTests : BaseServiceTest
         _mockUnitOfWork.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
+    /// <summary>
+    /// Verifies that with role not found results in should return false when Remove Permissions From Role Async is called.
+    /// </summary>
     [Fact]
     public async Task RemovePermissionsFromRoleAsync_WithRoleNotFound_ShouldReturnFalse()
     {
@@ -627,6 +705,9 @@ public class RoleServiceTests : BaseServiceTest
         result.Should().BeFalse();
     }
 
+    /// <summary>
+    /// Verifies that with some not found results in should remove only existing when Remove Permissions From Role Async is called.
+    /// </summary>
     [Fact]
     public async Task RemovePermissionsFromRoleAsync_WithSomeNotFound_ShouldRemoveOnlyExisting()
     {
@@ -652,6 +733,9 @@ public class RoleServiceTests : BaseServiceTest
         _mockRoleRepository.Verify(x => x.RemovePermissionFromRoleAsync(roleId, permissionId2), Times.Never);
     }
 
+    /// <summary>
+    /// Verifies that with all not found results in should return false when Remove Permissions From Role Async is called.
+    /// </summary>
     [Fact]
     public async Task RemovePermissionsFromRoleAsync_WithAllNotFound_ShouldReturnFalse()
     {

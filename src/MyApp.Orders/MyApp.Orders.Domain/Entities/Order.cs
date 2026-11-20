@@ -26,6 +26,11 @@ namespace MyApp.Orders.Domain.Entities
         // External Reference (link to SalesOrder or PurchaseOrder)
         /// <summary>Gets or sets the external order ID (e.g., SalesOrder or PurchaseOrder ID).</summary>
         public Guid? ExternalOrderId { get; set; }
+        /// <summary>
+        /// Gets or sets the source of <see cref="ExternalOrderId"/> ("Sales", "Project", ...).
+        /// Null means Sales (legacy behaviour). Purely a reference discriminator — no commercial data.
+        /// </summary>
+        public string? ExternalOrderSource { get; set; }
 
         // Fulfillment fields
         /// <summary>Gets or sets the warehouse ID associated with the order.</summary>

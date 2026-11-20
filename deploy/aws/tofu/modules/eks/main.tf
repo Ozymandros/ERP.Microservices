@@ -22,8 +22,8 @@ resource "aws_iam_role" "cluster" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
       Principal = { Service = "eks.amazonaws.com" }
     }]
   })
@@ -41,12 +41,19 @@ resource "aws_eks_cluster" "this" {
   role_arn = aws_iam_role.cluster.arn
   version  = var.kubernetes_version
 
+  access_config {
+    authentication_mode = "API_AND_CONFIG_MAP"
+  }
+
   vpc_config {
     subnet_ids              = var.cluster_subnet_ids
     endpoint_private_access = true
     endpoint_public_access  = length(var.public_access_cidrs) > 0
     public_access_cidrs     = length(var.public_access_cidrs) > 0 ? var.public_access_cidrs : null
   }
+
+  # Ensure IAM policy is attached before the control plane is created.
+  depends_on = [aws_iam_role_policy_attachment.cluster_policy]
 
   tags = var.tags
 }
@@ -67,8 +74,8 @@ resource "aws_iam_role" "node" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
       Principal = { Service = "ec2.amazonaws.com" }
     }]
   })
@@ -98,6 +105,7 @@ resource "aws_eks_node_group" "this" {
   subnet_ids      = var.node_subnet_ids
   instance_types  = var.node_instance_types
   capacity_type   = var.node_capacity_type
+  ami_type        = "AL2023_x86_64_STANDARD"
 
   scaling_config {
     desired_size = var.node_desired_size
@@ -105,14 +113,14 @@ resource "aws_eks_node_group" "this" {
     max_size     = var.node_max_size
   }
 
-  tags = var.tags
-}
+  # IAM attachments must exist before instances launch or the NG can fail/race.
+  depends_on = [
+    aws_iam_role_policy_attachment.node_worker,
+    aws_iam_role_policy_attachment.node_cni,
+    aws_iam_role_policy_attachment.node_ecr,
+  ]
 
-resource "aws_eks_addon" "ebs_csi" {
-  cluster_name             = aws_eks_cluster.this.name
-  addon_name               = "aws-ebs-csi-driver"
-  service_account_role_arn = aws_iam_role.ebs_csi.arn
-  tags                     = var.tags
+  tags = var.tags
 }
 
 # IRSA role for the EBS CSI driver's controller service account.
@@ -150,4 +158,28 @@ resource "aws_iam_role" "ebs_csi" {
 resource "aws_iam_role_policy_attachment" "ebs_csi_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
   role       = aws_iam_role.ebs_csi.name
+}
+
+resource "aws_eks_addon" "ebs_csi" {
+  cluster_name             = aws_eks_cluster.this.name
+  addon_name               = "aws-ebs-csi-driver"
+  service_account_role_arn = aws_iam_role.ebs_csi.arn
+  # Avoid conflicts if a prior failed install left partial resources.
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "OVERWRITE"
+
+  # CSI controller pods need Ready worker nodes; creating the addon in parallel
+  # with a failing/empty node group leaves it DEGRADED until tofu times out.
+  depends_on = [
+    aws_eks_node_group.this,
+    aws_iam_role_policy_attachment.ebs_csi_policy,
+  ]
+
+  timeouts {
+    create = "30m"
+    update = "30m"
+    delete = "20m"
+  }
+
+  tags = var.tags
 }

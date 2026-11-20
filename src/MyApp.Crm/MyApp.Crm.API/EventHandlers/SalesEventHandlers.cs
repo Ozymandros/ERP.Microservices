@@ -29,7 +29,7 @@ public class SalesEventHandlers : ControllerBase
 
     /// <summary>On Sales Customer Created.</summary>
     /// <param name="event">The event.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [Topic(MessagingConstants.PubSubName, MessagingConstants.Topics.SalesCustomerCreated)]
     [HttpPost("customer-created")]
     public async Task<IActionResult> OnSalesCustomerCreated(SalesCustomerCreatedEvent @event, CancellationToken cancellationToken)
@@ -50,7 +50,7 @@ public class SalesEventHandlers : ControllerBase
 
     /// <summary>On Sales Customer Updated.</summary>
     /// <param name="event">The event.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [Topic(MessagingConstants.PubSubName, MessagingConstants.Topics.SalesCustomerUpdated)]
     [HttpPost("customer-updated")]
     public async Task<IActionResult> OnSalesCustomerUpdated(SalesCustomerUpdatedEvent @event, CancellationToken cancellationToken)

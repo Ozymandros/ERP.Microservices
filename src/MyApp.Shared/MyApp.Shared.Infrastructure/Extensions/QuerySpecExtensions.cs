@@ -149,9 +149,12 @@ public static class QuerySpecExtensions
 /// </summary>
 public static class PaginatedResponseExtensions
 {
-    /// <summary>
-    /// Format a paginated result for response, including metadata for frontend pagination controls.
-    /// </summary>
+    /// <summary>Formats a paginated result into an anonymous response object that includes the item list and pagination metadata for frontend controls.</summary>
+    /// <typeparam name="T">The type of items in the paginated result.</typeparam>
+    /// <param name="result">The paginated result containing the items and total count.</param>
+    /// <param name="page">The current page number (1-based).</param>
+    /// <param name="pageSize">The number of items per page.</param>
+    /// <returns>An anonymous object with <c>items</c> and a <c>pagination</c> metadata block.</returns>
     public static object ToPaginatedResponse<T>(
         this PaginatedResult<T> result,
         int page,

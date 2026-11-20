@@ -6,7 +6,7 @@ namespace MyApp.Crm.Domain.Leads;
 public interface ILeadRepository : IRepository<Lead, Guid>
 {
     /// <summary>Gets all leads.</summary>
-    Task<IEnumerable<Lead>> ListAsync();
+    Task<IEnumerable<Lead>> ListAsync(CancellationToken cancellationToken = default);
 
     /// <summary>Lead only (no Includes). Use before update/delete/qualify so base Repository.Update works reliably.</summary>
     Task<Lead?> GetByIdForUpdateAsync(Guid id, CancellationToken cancellationToken = default);

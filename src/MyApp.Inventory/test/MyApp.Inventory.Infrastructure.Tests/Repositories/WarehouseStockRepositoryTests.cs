@@ -12,11 +12,13 @@ using Xunit;
 
 namespace MyApp.Inventory.Tests.Repositories;
 
+/// <summary>Integration tests for <see cref="WarehouseStockRepository"/> using an in-memory EF Core database.</summary>
 public class WarehouseStockRepositoryTests
 {
     private readonly InventoryDbContext _context;
     private readonly WarehouseStockRepository _repository;
 
+    /// <summary>Initialises the in-memory database context and repository, and seeds base stock data before each test.</summary>
     public WarehouseStockRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -107,6 +109,7 @@ public class WarehouseStockRepositoryTests
 
     #region GetByIdAsync Tests
 
+    /// <summary>Verifies that GetByIdAsync returns the warehouse stock record when a valid ID is provided.</summary>
     [Fact]
     public async Task GetByIdAsync_WithValidId_ReturnsWarehouseStock()
     {
@@ -124,6 +127,7 @@ public class WarehouseStockRepositoryTests
         result.AvailableQuantity.Should().Be(75);
     }
 
+    /// <summary>Verifies that GetByIdAsync returns null when no stock record with the given ID exists.</summary>
     [Fact]
     public async Task GetByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -141,6 +145,7 @@ public class WarehouseStockRepositoryTests
 
     #region GetAllAsync Tests
 
+    /// <summary>Verifies that GetAllAsync returns all warehouse stock records currently in the database.</summary>
     [Fact]
     public async Task GetAllAsync_ReturnsAllWarehouseStocks()
     {
@@ -156,6 +161,7 @@ public class WarehouseStockRepositoryTests
 
     #region GetAllPaginatedAsync Tests
 
+    /// <summary>Verifies that GetAllPaginatedAsync returns a correctly sized and numbered page of stock records.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -174,6 +180,7 @@ public class WarehouseStockRepositoryTests
         result.TotalCount.Should().BeGreaterThanOrEqualTo(3);
     }
 
+    /// <summary>Verifies that GetAllPaginatedAsync returns items from the second page when requested.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithSecondPage_ReturnsCorrectPage()
     {
@@ -194,6 +201,7 @@ public class WarehouseStockRepositoryTests
 
     #region GetByProductAndWarehouseAsync Tests
 
+    /// <summary>Verifies that GetByProductAndWarehouseAsync returns the stock record with navigation properties when a matching combination exists.</summary>
     [Fact]
     public async Task GetByProductAndWarehouseAsync_WithExistingStock_ReturnsWarehouseStock()
     {
@@ -236,6 +244,7 @@ public class WarehouseStockRepositoryTests
         result.Warehouse.Should().NotBeNull();
     }
 
+    /// <summary>Verifies that GetByProductAndWarehouseAsync returns null when no stock record exists for the given product and warehouse combination.</summary>
     [Fact]
     public async Task GetByProductAndWarehouseAsync_WithNonExistentStock_ReturnsNull()
     {
@@ -254,6 +263,7 @@ public class WarehouseStockRepositoryTests
 
     #region GetByProductIdAsync Tests
 
+    /// <summary>Verifies that GetByProductIdAsync returns all stock records for the specified product, including navigation properties.</summary>
     [Fact]
     public async Task GetByProductIdAsync_WithExistingStocks_ReturnsAllStocksForProduct()
     {
@@ -274,6 +284,7 @@ public class WarehouseStockRepositoryTests
         result.All(s => s.Product != null).Should().BeTrue();
     }
 
+    /// <summary>Verifies that GetByProductIdAsync returns an empty list when no stock records exist for the given product ID.</summary>
     [Fact]
     public async Task GetByProductIdAsync_WithNoStocks_ReturnsEmptyList()
     {
@@ -292,6 +303,7 @@ public class WarehouseStockRepositoryTests
 
     #region GetByWarehouseIdAsync Tests
 
+    /// <summary>Verifies that GetByWarehouseIdAsync returns all stock records for the specified warehouse, including navigation properties.</summary>
     [Fact]
     public async Task GetByWarehouseIdAsync_WithExistingStocks_ReturnsAllStocksForWarehouse()
     {
@@ -312,6 +324,7 @@ public class WarehouseStockRepositoryTests
         result.All(s => s.Warehouse != null).Should().BeTrue();
     }
 
+    /// <summary>Verifies that GetByWarehouseIdAsync returns an empty list when no stock records exist for the given warehouse ID.</summary>
     [Fact]
     public async Task GetByWarehouseIdAsync_WithNoStocks_ReturnsEmptyList()
     {
@@ -330,6 +343,7 @@ public class WarehouseStockRepositoryTests
 
     #region GetLowStockAsync Tests
 
+    /// <summary>Verifies that GetLowStockAsync returns stock records where available quantity is at or below each product's reorder level.</summary>
     [Fact]
     public async Task GetLowStockAsync_WithDefaultReorderLevel_ReturnsLowStockItems()
     {
@@ -341,6 +355,7 @@ public class WarehouseStockRepositoryTests
         result.Should().Contain(s => s.AvailableQuantity <= s.Product!.ReorderLevel);
     }
 
+    /// <summary>Verifies that GetLowStockAsync returns only stock records with available quantity at or below the custom reorder level.</summary>
     [Fact]
     public async Task GetLowStockAsync_WithCustomReorderLevel_ReturnsItemsBelowLevel()
     {
@@ -355,6 +370,7 @@ public class WarehouseStockRepositoryTests
         result.All(s => s.AvailableQuantity <= customReorderLevel).Should().BeTrue();
     }
 
+    /// <summary>Verifies that GetLowStockAsync returns a greater number of items when a high reorder level threshold is specified.</summary>
     [Fact]
     public async Task GetLowStockAsync_WithHighReorderLevel_ReturnsMoreItems()
     {
@@ -373,6 +389,7 @@ public class WarehouseStockRepositoryTests
 
     #region AddAsync Tests
 
+    /// <summary>Verifies that AddAsync persists a new warehouse stock record to the database.</summary>
     [Fact]
     public async Task AddAsync_WithValidWarehouseStock_CreatesStock()
     {
@@ -403,6 +420,7 @@ public class WarehouseStockRepositoryTests
 
     #region UpdateAsync Tests
 
+    /// <summary>Verifies that UpdateAsync saves modified stock quantity fields to the database.</summary>
     [Fact]
     public async Task UpdateAsync_WithExistingStock_UpdatesStockData()
     {
@@ -428,6 +446,7 @@ public class WarehouseStockRepositoryTests
 
     #region DeleteAsync Tests
 
+    /// <summary>Verifies that DeleteAsync removes the warehouse stock record from the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithValidStock_DeletesStock()
     {

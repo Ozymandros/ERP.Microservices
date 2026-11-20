@@ -1,12 +1,13 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Agentic.Application.Contracts.DTOs;
 using MyApp.Agentic.Application.Contracts.Services;
 using MyApp.Shared.Domain.Permissions;
+using System.Security.Claims;
 
 namespace MyApp.Agentic.API.Controllers;
 
+/// <summary>API controller for processing single-turn agent messages outside of a persistent session.</summary>
 [ApiController]
 [Authorize]
 [Route("api/agentic/messages")]
@@ -30,7 +31,7 @@ public class MessagesController : ControllerBase
     /// Processes the message.
     /// </summary>
     /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpPost]
     [HasPermission("Agentic", "Execute")]

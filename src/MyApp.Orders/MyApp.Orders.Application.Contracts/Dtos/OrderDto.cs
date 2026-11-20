@@ -24,6 +24,8 @@ namespace MyApp.Orders.Application.Contracts.Dtos
         // External Reference
         /// <summary>Gets the external order ID.</summary>
         public Guid? ExternalOrderId { get; init; }
+        /// <summary>Gets the source of the external order id ("Sales", "Project"); null = Sales.</summary>
+        public string? ExternalOrderSource { get; init; }
 
         /// <summary>Gets the collection of order line DTOs.</summary>
         public List<OrderLineDto> Lines { get; init; } = new();

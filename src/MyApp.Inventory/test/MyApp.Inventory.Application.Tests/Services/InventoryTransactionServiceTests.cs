@@ -15,6 +15,7 @@ using Xunit;
 
 namespace MyApp.Inventory.Application.Tests.Services;
 
+/// <summary>Unit tests for <see cref="InventoryTransactionService"/>.</summary>
 public class InventoryTransactionServiceTests
 {
     private readonly Mock<IInventoryTransactionRepository> _mockTransactionRepository;
@@ -25,6 +26,7 @@ public class InventoryTransactionServiceTests
     private readonly Mock<ILogger<InventoryTransactionService>> _mockLogger;
     private readonly InventoryTransactionService _transactionService;
 
+    /// <summary>Initialises mocks and the system-under-test before each test.</summary>
     public InventoryTransactionServiceTests()
     {
         _mockTransactionRepository = new Mock<IInventoryTransactionRepository>();
@@ -45,6 +47,7 @@ public class InventoryTransactionServiceTests
             _mockLogger.Object);
     }
 
+    /// <summary>Verifies that GetTransactionByIdAsync returns a mapped DTO when the transaction exists.</summary>
     [Fact]
     public async Task GetTransactionByIdAsync_WithExistingId_ReturnsTransactionDto()
     {
@@ -64,6 +67,7 @@ public class InventoryTransactionServiceTests
         Assert.Equal(transactionId, result.Id);
     }
 
+    /// <summary>Verifies that GetTransactionByIdAsync returns null when no transaction exists with the given ID.</summary>
     [Fact]
     public async Task GetTransactionByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -80,6 +84,7 @@ public class InventoryTransactionServiceTests
 
     #region GetTransactionByReferenceNumberAsync Tests
 
+    /// <summary>Verifies that GetTransactionByReferenceNumberAsync returns a mapped DTO when the reference number exists.</summary>
     [Fact]
     public async Task GetTransactionByReferenceNumberAsync_WithExistingReference_ReturnsTransactionDto()
     {
@@ -109,6 +114,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.GetByReferenceNumberAsync(referenceNumber), Times.Once);
     }
 
+    /// <summary>Verifies that GetTransactionByReferenceNumberAsync returns null when no transaction matches the reference number.</summary>
     [Fact]
     public async Task GetTransactionByReferenceNumberAsync_WithNonExistentReference_ReturnsNull()
     {
@@ -126,6 +132,7 @@ public class InventoryTransactionServiceTests
 
     #endregion
 
+    /// <summary>Verifies that GetTransactionsByProductIdAsync returns all transactions for the specified product.</summary>
     [Fact]
     public async Task GetTransactionsByProductIdAsync_ReturnsTransactionsForProduct()
     {
@@ -151,6 +158,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.GetByProductIdAsync(productId), Times.Once);
     }
 
+    /// <summary>Verifies that GetTransactionsByWarehouseIdAsync returns all transactions for the specified warehouse.</summary>
     [Fact]
     public async Task GetTransactionsByWarehouseIdAsync_ReturnsTransactionsForWarehouse()
     {
@@ -176,6 +184,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.GetByWarehouseIdAsync(warehouseId), Times.Once);
     }
 
+    /// <summary>Verifies that GetTransactionsByTypeAsync returns all transactions of the specified type.</summary>
     [Fact]
     public async Task GetTransactionsByTypeAsync_ReturnsTransactionsOfType()
     {
@@ -201,6 +210,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.GetByTransactionTypeAsync(transactionType), Times.Once);
     }
 
+    /// <summary>Verifies that GetAllTransactionsAsync returns all transactions from the repository.</summary>
     [Fact]
     public async Task GetAllTransactionsAsync_ReturnsAllTransactions()
     {
@@ -227,6 +237,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
+    /// <summary>Verifies that CreateTransactionAsync creates the transaction and updates the product stock level.</summary>
     [Fact]
     public async Task CreateTransactionAsync_WithValidData_CreatesTransactionAndUpdatesStock()
     {
@@ -254,6 +265,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.AddAsync(transaction), Times.Once);
     }
 
+    /// <summary>Verifies that CreateTransactionAsync throws <see cref="KeyNotFoundException"/> when the product does not exist.</summary>
     [Fact]
     public async Task CreateTransactionAsync_WithNonExistentProduct_ThrowsKeyNotFoundException()
     {
@@ -271,6 +283,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.AddAsync(It.IsAny<InventoryTransaction>()), Times.Never);
     }
 
+    /// <summary>Verifies that CreateTransactionAsync throws <see cref="InvalidOperationException"/> when stock is insufficient for an outbound transaction.</summary>
     [Fact]
     public async Task CreateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException()
     {
@@ -292,6 +305,7 @@ public class InventoryTransactionServiceTests
         _mockProductRepository.Verify(r => r.UpdateAsync(It.IsAny<Product>()), Times.Never);
     }
 
+    /// <summary>Verifies that UpdateTransactionAsync reverses the old quantity change and applies the new one to the product stock.</summary>
     [Fact]
     public async Task UpdateTransactionAsync_WithValidData_UpdatesTransactionAndStock()
     {
@@ -324,6 +338,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.UpdateAsync(existingTransaction), Times.Once);
     }
 
+    /// <summary>Verifies that UpdateTransactionAsync throws <see cref="KeyNotFoundException"/> when the transaction does not exist.</summary>
     [Fact]
     public async Task UpdateTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException()
     {
@@ -341,6 +356,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.UpdateAsync(It.IsAny<InventoryTransaction>()), Times.Never);
     }
 
+    /// <summary>Verifies that UpdateTransactionAsync throws <see cref="InvalidOperationException"/> when the new quantity change would result in insufficient stock.</summary>
     [Fact]
     public async Task UpdateTransactionAsync_WithInsufficientStock_ThrowsInvalidOperationException()
     {
@@ -366,6 +382,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.UpdateAsync(It.IsAny<InventoryTransaction>()), Times.Never);
     }
 
+    /// <summary>Verifies that DeleteTransactionAsync removes the transaction and reverses its stock impact.</summary>
     [Fact]
     public async Task DeleteTransactionAsync_WithExistingTransaction_DeletesAndReversesStock()
     {
@@ -391,6 +408,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.DeleteAsync(transaction), Times.Once);
     }
 
+    /// <summary>Verifies that DeleteTransactionAsync throws <see cref="KeyNotFoundException"/> when the transaction does not exist.</summary>
     [Fact]
     public async Task DeleteTransactionAsync_WithNonExistentTransaction_ThrowsKeyNotFoundException()
     {
@@ -406,6 +424,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.DeleteAsync(It.IsAny<InventoryTransaction>()), Times.Never);
     }
 
+    /// <summary>Verifies that DeleteTransactionAsync deletes the transaction even when the associated product no longer exists.</summary>
     [Fact]
     public async Task DeleteTransactionAsync_WithNonExistentProduct_StillDeletesTransaction()
     {
@@ -431,6 +450,7 @@ public class InventoryTransactionServiceTests
 
     #region GetAllTransactionsPaginatedAsync Tests
 
+    /// <summary>Verifies that GetAllTransactionsPaginatedAsync returns a correctly paged result.</summary>
     [Fact]
     public async Task GetAllTransactionsPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -470,6 +490,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.GetAllPaginatedAsync(1, 2), Times.Once);
     }
 
+    /// <summary>Verifies that GetAllTransactionsPaginatedAsync returns an empty paginated result when no transactions exist.</summary>
     [Fact]
     public async Task GetAllTransactionsPaginatedAsync_WithEmptyResult_ReturnsEmptyPaginatedResult()
     {
@@ -497,6 +518,7 @@ public class InventoryTransactionServiceTests
 
     #region QueryTransactionsAsync Tests
 
+    /// <summary>Verifies that QueryTransactionsAsync returns filtered results when a search term is provided.</summary>
     [Fact]
     public async Task QueryTransactionsAsync_WithSearchTerm_ReturnsFilteredResults()
     {
@@ -529,6 +551,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.QueryAsync(spec), Times.Once);
     }
 
+    /// <summary>Verifies that QueryTransactionsAsync returns filtered results when a transaction type filter is applied.</summary>
     [Fact]
     public async Task QueryTransactionsAsync_WithTypeFilter_ReturnsFilteredResults()
     {
@@ -560,6 +583,7 @@ public class InventoryTransactionServiceTests
 
     #region Transaction Type Tests
 
+    /// <summary>Verifies that CreateTransactionAsync creates an adjustment transaction and applies the quantity change.</summary>
     [Fact]
     public async Task CreateTransactionAsync_WithAdjustmentType_CreatesTransaction()
     {
@@ -586,6 +610,7 @@ public class InventoryTransactionServiceTests
         Assert.Equal(125, product.QuantityInStock); // 100 + 25
     }
 
+    /// <summary>Verifies that GetTransactionsByTypeAsync returns only adjustment transactions when the Adjustment type is requested.</summary>
     [Fact]
     public async Task GetTransactionsByTypeAsync_WithAdjustmentType_ReturnsAdjustmentTransactions()
     {
@@ -615,6 +640,7 @@ public class InventoryTransactionServiceTests
 
     #region Edge Cases and Error Scenarios
 
+    /// <summary>Verifies that CreateTransactionAsync creates a transaction with zero quantity change without altering stock.</summary>
     [Fact]
     public async Task CreateTransactionAsync_WithZeroQuantityChange_CreatesTransaction()
     {
@@ -640,6 +666,7 @@ public class InventoryTransactionServiceTests
         Assert.Equal(100, product.QuantityInStock); // Unchanged
     }
 
+    /// <summary>Verifies that CreateTransactionAsync handles a very large quantity change without overflow errors.</summary>
     [Fact]
     public async Task CreateTransactionAsync_WithLargeQuantityChange_CreatesTransaction()
     {
@@ -666,6 +693,7 @@ public class InventoryTransactionServiceTests
         Assert.Equal(100 + largeQuantity, product.QuantityInStock);
     }
 
+    /// <summary>Verifies that UpdateTransactionAsync correctly reverses the old quantity and applies a zero new quantity.</summary>
     [Fact]
     public async Task UpdateTransactionAsync_WithZeroQuantityChange_UpdatesSuccessfully()
     {
@@ -696,6 +724,7 @@ public class InventoryTransactionServiceTests
         Assert.Equal(90, product.QuantityInStock); // 100 - 10 (reverse old) + 0 (apply new)
     }
 
+    /// <summary>Verifies that CreateTransactionAsync propagates exceptions thrown when updating the product stock.</summary>
     [Fact]
     public async Task CreateTransactionAsync_WhenProductUpdateFails_DoesNotCreateTransaction()
     {
@@ -716,6 +745,7 @@ public class InventoryTransactionServiceTests
         await Assert.ThrowsAsync<Exception>(() => _transactionService.CreateTransactionAsync(dto));
     }
 
+    /// <summary>Verifies that GetAllTransactionsAsync returns an empty list when no transactions exist.</summary>
     [Fact]
     public async Task GetAllTransactionsAsync_WithEmptyRepository_ReturnsEmptyList()
     {
@@ -731,6 +761,7 @@ public class InventoryTransactionServiceTests
         result.Should().BeEmpty();
     }
 
+    /// <summary>Verifies that GetTransactionsByProductIdAsync returns an empty list when no transactions exist for the product.</summary>
     [Fact]
     public async Task GetTransactionsByProductIdAsync_WithNoTransactions_ReturnsEmptyList()
     {
@@ -747,6 +778,7 @@ public class InventoryTransactionServiceTests
         result.Should().BeEmpty();
     }
 
+    /// <summary>Verifies that GetTransactionsByWarehouseIdAsync returns an empty list when no transactions exist for the warehouse.</summary>
     [Fact]
     public async Task GetTransactionsByWarehouseIdAsync_WithNoTransactions_ReturnsEmptyList()
     {
@@ -763,6 +795,7 @@ public class InventoryTransactionServiceTests
         result.Should().BeEmpty();
     }
 
+    /// <summary>Verifies that GetTransactionsByTypeAsync returns an empty list when no transactions of the specified type exist.</summary>
     [Fact]
     public async Task GetTransactionsByTypeAsync_WithNoTransactions_ReturnsEmptyList()
     {
@@ -778,6 +811,7 @@ public class InventoryTransactionServiceTests
         result.Should().BeEmpty();
     }
 
+    /// <summary>Verifies that UpdateTransactionAsync throws <see cref="KeyNotFoundException"/> when the product associated with the transaction no longer exists.</summary>
     [Fact]
     public async Task UpdateTransactionAsync_WhenProductNotFound_ThrowsKeyNotFoundException()
     {
@@ -801,6 +835,7 @@ public class InventoryTransactionServiceTests
         Assert.Contains("not found", exception.Message);
     }
 
+    /// <summary>Verifies that DeleteTransactionAsync deletes a transaction that had zero quantity change without altering stock.</summary>
     [Fact]
     public async Task DeleteTransactionAsync_WithZeroQuantityChange_DeletesSuccessfully()
     {
@@ -825,6 +860,7 @@ public class InventoryTransactionServiceTests
         _mockTransactionRepository.Verify(r => r.DeleteAsync(transaction), Times.Once);
     }
 
+    /// <summary>Verifies that QueryTransactionsAsync returns correctly paginated results.</summary>
     [Fact]
     public async Task QueryTransactionsAsync_WithPagination_ReturnsPaginatedResult()
     {

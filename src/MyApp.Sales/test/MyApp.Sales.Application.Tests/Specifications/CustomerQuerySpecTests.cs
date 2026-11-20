@@ -7,6 +7,7 @@ using Xunit;
 
 namespace MyApp.Sales.Application.Tests.Specifications;
 
+/// <summary>Unit tests for <see cref="CustomerQuerySpec"/> filtering, sorting, and search behaviour.</summary>
 public class CustomerQuerySpecTests
 {
     private static IQueryable<Customer> CreateTestData()
@@ -19,6 +20,7 @@ public class CustomerQuerySpecTests
         }.AsQueryable();
     }
 
+    /// <summary>Verifies that ApplyFilters returns only customers whose name contains the supplied filter value.</summary>
     [Fact]
     public void ApplyFilters_WithNameFilter_ReturnsFilteredCustomers()
     {
@@ -32,6 +34,7 @@ public class CustomerQuerySpecTests
         result.Should().HaveCount(2);
     }
 
+    /// <summary>Verifies that ApplyFilters returns only customers whose email contains the supplied filter value.</summary>
     [Fact]
     public void ApplyFilters_WithEmailFilter_ReturnsFilteredCustomers()
     {
@@ -46,6 +49,7 @@ public class CustomerQuerySpecTests
         result.First().Email.Should().Contain("one");
     }
 
+    /// <summary>Verifies that ApplyFilters matches customers by name or email when a free-text search term is supplied.</summary>
     [Fact]
     public void ApplyFilters_WithSearchTerm_ReturnsMatchingCustomers()
     {
@@ -58,6 +62,7 @@ public class CustomerQuerySpecTests
         result.Should().HaveCount(2);
     }
 
+    /// <summary>Verifies that Apply sorts customers in ascending order by name when SortBy is set to "Name".</summary>
     [Fact]
     public void Apply_WithSortByName_SortsCorrectly()
     {

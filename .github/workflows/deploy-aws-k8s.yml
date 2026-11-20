@@ -60,11 +60,6 @@ on:
         required: false
         default: ""
         type: string
-      bootstrap_oidc:
-        description: "First-time: run Bootstrap AWS Infrastructure (needs AWS_BOOTSTRAP_* secrets)"
-        required: false
-        default: false
-        type: boolean
 
 concurrency:
   group: aws-k8s-${{ github.ref }}-${{ github.event.inputs.profile }}
@@ -75,6 +70,18 @@ permissions:
   packages: write
 
 jobs:
+  bootstrap-aws:
+    name: Bootstrap AWS OIDC + infra
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/bootstrap-aws-infrastructure.yml
+    secrets: inherit
+    with:
+      profile: ${{ github.event.inputs.profile }}
+      aws_region: ${{ github.event.inputs.aws_region }}
+      auto_approve: "true"
+
   prepare:
     name: Prepare deployment context
     runs-on: ubuntu-latest
@@ -132,16 +139,6 @@ jobs:
       image_tag: ${{ needs.prepare.outputs.image_tag }}
       do_push: ${{ needs.prepare.outputs.do_push == 'true' }}
       platform: linux/amd64
-
-  bootstrap-aws:
-    name: Bootstrap AWS OIDC + infra
-    if: ${{ github.event.inputs.bootstrap_oidc == true }}
-    uses: ./.github/workflows/bootstrap-aws-infrastructure.yml
-    secrets: inherit
-    with:
-      profile: ${{ github.event.inputs.profile }}
-      aws_region: ${{ github.event.inputs.aws_region }}
-      auto_approve: "true"
 
   deploy-k8s:
     name: Deploy AWS EKS (${{ github.event.inputs.profile }})
@@ -255,7 +252,7 @@ jobs:
         run: |
           echo "::error::GitHub OIDC provider missing or role ARN wrong for this AWS account."
           echo "1. Add secrets AWS_BOOTSTRAP_ACCESS_KEY_ID + AWS_BOOTSTRAP_SECRET_ACCESS_KEY (admin IAM user)."
-          echo "2. Run 'Bootstrap AWS Infrastructure (OIDC)' OR re-run this workflow with bootstrap_oidc=true."
+          echo "2. Run 'Bootstrap AWS Infrastructure (OIDC)'."
           echo "3. Set variable AWS_DEPLOY_ROLE_ARN from the workflow summary output."
           echo "4. Delete bootstrap secrets, re-run deploy."
 
@@ -341,13 +338,29 @@ jobs:
           TOFU_AWS_REGION_VAR: ${{ env.TOFU_AWS_REGION_VAR }}
         run: |
           set -euo pipefail
+
           VAR_ARGS=(-var-file="$TOFU_VAR_FILE")
           if [[ -n "${TOFU_AWS_REGION_VAR:-}" ]]; then
             VAR_ARGS+=("$TOFU_AWS_REGION_VAR")
           fi
+
           tofu fmt -check -recursive
           tofu init -input=false
           tofu validate "${VAR_ARGS[@]}"
+
+          # PLAN
+          PLAN_OUTPUT=$(tofu plan "${VAR_ARGS[@]}")
+          echo "$PLAN_OUTPUT"
+
+          # DETECT CLUSTER REPLACE
+          if echo "$PLAN_OUTPUT" | grep -qE "aws_eks_cluster\.this.*(replace|-/\+|create after destroy)"; then
+            echo "Cluster replacement detected → destroying NodeGroups first"
+            tofu destroy -target=aws_eks_node_group.this -auto-approve "${VAR_ARGS[@]}"
+          else
+            echo "Cluster does not need replacement"
+          fi
+
+          # APPLY FINAL
           tofu apply -auto-approve "${VAR_ARGS[@]}"
 
       - name: Refresh AWS settings from OpenTofu outputs

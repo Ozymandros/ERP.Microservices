@@ -29,7 +29,27 @@ namespace MyApp.Sales.Application.Contracts.DTOs
         public DateTime? QuoteExpiryDate { get; init; }
         /// <summary>Gets the identifier of the fulfillment order created when this quote was confirmed, or <see langword="null"/> if not yet confirmed.</summary>
         public Guid? ConvertedToOrderId { get; init; }
+        /// <summary>Gets the operational return order id when a return was initiated.</summary>
+        public Guid? ReturnOrderId { get; init; }
     }
+
+    /// <summary>Data required to initiate a sales return (operational return order).</summary>
+    public record CreateSalesReturnDto
+    {
+        /// <summary>Warehouse receiving returned goods.</summary>
+        [Required]
+        public Guid WarehouseId { get; init; }
+
+        /// <summary>Lines to return (quantity must not exceed original sales lines).</summary>
+        [Required]
+        [MinLength(1)]
+        public List<CreateSalesReturnLineDto> Lines { get; init; } = [];
+    }
+
+    /// <summary>A single line on a sales return request.</summary>
+    public record CreateSalesReturnLineDto(
+        [Required] Guid ProductId,
+        [Range(1, int.MaxValue)] int Quantity);
 
     /// <summary>Represents a single line item within a sales order, containing product, quantity, and pricing information.</summary>
     /// <param name="Id">The id.</param>
@@ -201,6 +221,9 @@ namespace MyApp.Sales.Application.Contracts.DTOs
         /// <summary>Gets the per-warehouse availability breakdown.</summary>
         public List<WarehouseAvailabilityDto> WarehouseStock { get; init; } = new();
     }
+
+    /// <summary>Cache keys to invalidate after a sales order mutation from an integration event.</summary>
+    public record SalesOrderCacheInvalidationDto(Guid SalesOrderId, string OrderNumber);
 
     /// <summary>Represents the available stock quantity for a product at a specific warehouse.</summary>
     public record WarehouseAvailabilityDto

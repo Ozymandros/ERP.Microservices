@@ -18,7 +18,7 @@ public class StubEmbeddingService : IEmbeddingService
     /// <summary>Returns the trimmed input text as a stub embedding without calling an external service.</summary>
     /// Generate embedding asynchronously.
     /// <param name="text">The text.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>Trimmed input text.</returns>
     public Task<string> GenerateEmbeddingAsync(string text, CancellationToken cancellationToken = default)
     {

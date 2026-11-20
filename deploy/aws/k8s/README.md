@@ -9,7 +9,7 @@ Thin AWS-specific patches on top of `deploy/k8s/`.
 | `overlays/dev` | **Default — cheap lab / CI** | gp3 PVC (20Gi), reduced SQL CPU/RAM. No S3 backup, no ESO, no IRSA. Use manual Kubernetes secrets. |
 | `overlays/prod` | Staging or when you need backups + Secrets Manager | Let's Encrypt overlay + backup CronJob + ESO + IRSA service accounts |
 
-**Estimated infra baseline (dev tofu defaults):** 1× Spot `t3.xlarge` node, no NAT gateway, no S3 backup bucket — control plane (~$73/mo) + one Spot node (~$45–90/mo region-dependent) + small EBS volumes.
+**Estimated infra baseline (dev tofu defaults):** 1× On-Demand `t3.small` node, no NAT gateway, no S3 backup bucket — EKS control plane still billed; scale `node_instance_types` to `t3.xlarge`+ when the account allows paid sizes.
 
 Scale up later via `deploy/aws/tofu` variables (`node_max_size`, `enable_nat_gateway`, `create_backup_bucket`, etc.) without changing the generic `deploy/k8s/` layer.
 
@@ -21,9 +21,11 @@ Scale up later via `deploy/aws/tofu` variables (`node_max_size`, `enable_nat_gat
 |---------|----------------|
 | Cluster | `tofu output eks_cluster_name` (or `planned_eks_cluster_name` / tfvars naming) |
 | Region | `tofu output aws_region` (or tfvars / default `eu-west-1`) |
-| Deploy role ARN | Repository variable `AWS_DEPLOY_ROLE_ARN` (from `tofu output` after first apply) |
+| Deploy role ARN | Repository variable `AWS_DEPLOY_ROLE_ARN` (from `tofu output` after bootstrap apply) |
 
-### Bootstrap (first time — fixes OIDC error)
+Bootstrap state lives in S3 (`myapp-tfstate-{profile}-{accountId}` by default, override with Actions vars `AWS_TF_STATE_BUCKET` / `AWS_TF_LOCK_TABLE`). Re-running **Bootstrap AWS Infrastructure (OIDC)** with the same profile is idempotent.
+
+### Bootstrap (first time — or re-run safely)
 
 **CI error:** `No OpenIDConnect provider found in your account for https://token.actions.githubusercontent.com`
 
@@ -35,12 +37,14 @@ GitHub Actions cannot create the OIDC provider without admin AWS access. Pick **
    - `AWS_BOOTSTRAP_ACCESS_KEY_ID`
    - `AWS_BOOTSTRAP_SECRET_ACCESS_KEY`
    - (optional) `AWS_BOOTSTRAP_SESSION_TOKEN`
-2. Run workflow **Bootstrap AWS Infrastructure (OIDC)** (`.github/workflows/bootstrap-aws-infrastructure.yml`), profile `dev`.
+2. Run workflow **Bootstrap AWS Infrastructure (OIDC)** (`.github/workflows/bootstrap-aws-infrastructure.yml`), profile `dev` (or `prod` with a matching tfvars file).
 3. Copy `AWS_DEPLOY_ROLE_ARN` from the job **summary** into **Repository variables**.
-4. Delete the bootstrap secrets.
+4. Delete the bootstrap secrets when finished.
 5. Re-run **Deploy AWS Kubernetes Stack** (`infra_step=skip` is fine).
 
-Or run **Deploy AWS Kubernetes Stack** with **`bootstrap_oidc=true`** once (same secrets required); it runs bootstrap then deploy in one go.
+Or run **Deploy AWS Kubernetes Stack** with **`bootstrap_oidc=true`** (same secrets required); it runs bootstrap then deploy in one go.
+
+Re-running bootstrap with the same profile **converges** (remote state). An existing GitHub OIDC provider is auto-adopted. Infra created before remote state existed needs import or destroy/recreate.
 
 #### Option B — Local script
 
@@ -54,7 +58,13 @@ Or run **Deploy AWS Kubernetes Stack** with **`bootstrap_oidc=true`** once (same
 ```powershell
 cd deploy/aws/tofu
 copy environments\dev\terraform.tfvars.example terraform.tfvars
-tofu init && tofu apply
+# After bucket + lock table exist (script creates them):
+tofu init -backend-config="bucket=myapp-tfstate-dev-ACCOUNT_ID" `
+  -backend-config="key=aws/dev/eks/terraform.tfstate" `
+  -backend-config="region=eu-west-1" `
+  -backend-config="dynamodb_table=myapp-tf-locks" `
+  -backend-config="encrypt=true"
+tofu apply -var-file=environments/dev/terraform.tfvars.example
 tofu output -raw github_actions_deploy_role_arn   # → AWS_DEPLOY_ROLE_ARN
 ```
 
@@ -64,9 +74,10 @@ Verify: `aws iam list-open-id-connect-providers` includes `token.actions.githubu
 |-------|-----|
 | `AWS_DEPLOY_ROLE_ARN` set before `tofu apply` | Bootstrap (A/B/C), then update the variable |
 | Role ARN from another AWS account | Use output from the target account |
-| Provider already exists | Set `github_oidc_provider_arn` in `terraform.tfvars` |
+| Provider already exists | Bootstrap auto-adopts; or set `github_oidc_provider_arn` in tfvars |
+| `EntityAlreadyExists` on re-run with empty state | Use remote state (bootstrap workflow/script); orphans need import |
 
-If the GitHub OIDC provider already exists in your account, set `github_oidc_provider_arn` in `terraform.tfvars` instead of creating a duplicate.
+If the GitHub OIDC provider already exists in your account, bootstrap detects it; you can still set `github_oidc_provider_arn` in `terraform.tfvars` manually.
 
 ## Cheap dev checklist
 

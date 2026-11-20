@@ -95,6 +95,7 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
         services.AddScoped<AuthPlugin>();
         services.AddScoped<CrmPlugin>();
         services.AddScoped<DocsPlugin>();
+        services.AddScoped<ProjectsPlugin>();
 
         services.AddScoped<IAgentService, AgentService>();
         services.AddScoped<IAIProviderService, AIProviderService>();

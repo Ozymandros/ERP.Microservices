@@ -53,3 +53,10 @@ public record PurchaseOrderLineReceivedEvent(
     int ReceivedQuantity,
     Guid WarehouseId
 );
+
+/// <summary>Raised when a purchase order completes 3-way match.</summary>
+public record PurchaseOrderMatchedEvent(
+    Guid PurchaseOrderId,
+    string MatchStatus,
+    DateTime MatchedAt
+);

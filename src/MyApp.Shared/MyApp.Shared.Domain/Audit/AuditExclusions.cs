@@ -33,16 +33,17 @@ public static class AuditExclusions
             PropertyChange
         };
 
-    /// <summary>
-    /// Determines whether excluded.
-    /// </summary>
-    /// <param name="entityName">The entity Name.</param>
+    /// <summary>Determines whether the given entity name is excluded from audit publishing.</summary>
+    /// <param name="entityName">The entity type name to check.</param>
+    /// <returns><see langword="true"/> if the entity is excluded; otherwise, <see langword="false"/>.</returns>
     public static bool IsExcluded(string? entityName)
         => !string.IsNullOrWhiteSpace(entityName) && ExcludedEntityNames.Contains(entityName);
 
-    /// <summary>
-    /// Filters commit snapshots, removing excluded entity types from audit payloads.
-    /// </summary>
+    /// <summary>Filters a collection of change snapshots by removing entries whose entity type is excluded from audit publishing.</summary>
+    /// <typeparam name="T">The type of the change snapshot.</typeparam>
+    /// <param name="changes">The collection of change snapshots to filter.</param>
+    /// <param name="entityNameSelector">A function that extracts the entity type name from a snapshot.</param>
+    /// <returns>A read-only collection containing only the non-excluded change snapshots.</returns>
     public static IReadOnlyCollection<T> FilterForAudit<T>(IReadOnlyCollection<T> changes, Func<T, string> entityNameSelector)
     {
         if (changes.Count == 0)

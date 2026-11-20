@@ -4,6 +4,7 @@ using MyApp.Agentic.Domain.Agents;
 
 namespace MyApp.Agentic.Infrastructure.Data.Configurations;
 
+/// <summary>EF Core entity type configuration for <see cref="Agent"/>, mapping to the <c>Agents</c> table.</summary>
 public class AgentConfiguration : IEntityTypeConfiguration<Agent>
 {
     /// <summary>

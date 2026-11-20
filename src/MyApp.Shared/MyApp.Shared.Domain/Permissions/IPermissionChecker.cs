@@ -1,4 +1,4 @@
-﻿namespace MyApp.Shared.Domain.Permissions;
+namespace MyApp.Shared.Domain.Permissions;
 
 /// <summary>
 /// Provides permission checking functionality for module and action combinations.

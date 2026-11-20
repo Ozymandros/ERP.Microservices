@@ -1,4 +1,3 @@
-using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +11,7 @@ using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Infrastructure.Caching;
 using MyApp.Shared.Infrastructure.OpenApi;
 using MyApp.Shared.Infrastructure.Repositories;
+using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -55,9 +55,15 @@ public static class MicroserviceExtensions
             builder.Services.AddMicroserviceMessaging();
         }
 
-        // 2. OpenTelemetry
+        // 2. OpenTelemetry (traces, metrics, structured logs → OTLP / Aspire dashboard)
         if (options.EnableOpenTelemetry)
         {
+            builder.Logging.AddOpenTelemetry(logging =>
+            {
+                logging.IncludeFormattedMessage = true;
+                logging.IncludeScopes = true;
+            });
+
             builder.Services.AddOpenTelemetry()
                 .ConfigureResource(resource => resource.AddService(serviceName))
                 .WithTracing(tracing => tracing
@@ -67,6 +73,8 @@ public static class MicroserviceExtensions
                 .WithMetrics(metrics => metrics
                     .AddAspNetCoreInstrumentation()
                     .AddRuntimeInstrumentation()
+                    .AddOtlpExporter())
+                .WithLogging(logging => logging
                     .AddOtlpExporter());
         }
 

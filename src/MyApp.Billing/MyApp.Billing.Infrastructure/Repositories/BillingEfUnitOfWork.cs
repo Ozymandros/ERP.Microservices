@@ -26,7 +26,6 @@ public sealed class BillingEfUnitOfWork : EfUnitOfWork
     /// <summary>
     /// Performs the operation.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public override async Task<IReadOnlyCollection<EntityEntryDto>> CommitAsync(
         CancellationToken cancellationToken = default)

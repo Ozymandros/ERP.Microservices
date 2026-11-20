@@ -98,7 +98,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// Gets an item by its unique identifier asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The mapped <see cref="AgentDto"/> when found; otherwise <see langword="null"/>.</returns>
     public async Task<AgentDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -109,7 +109,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// <summary>
     /// Lists items asynchronously.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of lightweight agent list DTOs.</returns>
     public async Task<IEnumerable<AgentListDto>> ListAsync(CancellationToken cancellationToken = default)
     {
@@ -121,7 +121,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// Lists by owner asynchronously.
     /// </summary>
     /// <param name="ownerUserId">The owner User Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>Filtered collection of <see cref="AgentListDto"/>.</returns>
     public async Task<IEnumerable<AgentListDto>> ListByOwnerAsync(string? ownerUserId, CancellationToken cancellationToken = default)
     {
@@ -136,7 +136,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// Creates a new item asynchronously.
     /// </summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The created agent as <see cref="AgentDto"/>.</returns>
     /// <exception cref="ArgumentException">Thrown when required identifiers are invalid.</exception>
     /// <exception cref="InvalidOperationException">Thrown when provider/model/user validation fails.</exception>
@@ -177,7 +177,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// </summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The updated agent as <see cref="AgentDto"/>.</returns>
     /// <exception cref="InvalidOperationException">Thrown when the agent, provider, or model is invalid/not found.</exception>
     public async Task<AgentDto> UpdateAsync(Guid id, UpdateAgentDto dto, CancellationToken cancellationToken = default)
@@ -212,7 +212,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// Deletes an item asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var agent = await _agentRepository.GetByIdAsync(id);
@@ -227,7 +227,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// </summary>
     /// <param name="request">The request.</param>
     /// <param name="authenticatedUserId">The authenticated User Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>Response containing session information and assistant output.</returns>
     /// <exception cref="InvalidOperationException">Thrown when agent/provider/configuration prerequisites are invalid.</exception>
     /// <exception cref="UnauthorizedAccessException">Thrown when user access to the agent is not allowed.</exception>
@@ -348,7 +348,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// </summary>
     /// <param name="request">The request.</param>
     /// <param name="authenticatedUserId">The authenticated User Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The created session descriptor.</returns>
     /// <exception cref="InvalidOperationException">Thrown when request data or agent state is invalid.</exception>
     /// <exception cref="UnauthorizedAccessException">Thrown when user access to the agent is not allowed.</exception>
@@ -399,7 +399,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// <param name="sessionId">The session Id.</param>
     /// <param name="request">The request.</param>
     /// <param name="authenticatedUserId">The authenticated User Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>Assistant response payload associated with the session.</returns>
     /// <exception cref="InvalidOperationException">Thrown when session or agent state is invalid.</exception>
     /// <exception cref="UnauthorizedAccessException">Thrown when the session/agent is not owned or accessible by the user.</exception>
@@ -525,7 +525,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// </summary>
     /// <param name="sessionId">The session Id.</param>
     /// <param name="authenticatedUserId">The authenticated User Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The session details when found; otherwise <see langword="null"/>.</returns>
     /// <exception cref="UnauthorizedAccessException">Thrown when user does not own the session.</exception>
     public async Task<SessionDetailsResponse?> GetSessionAsync(
@@ -558,7 +558,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// Lists sessions asynchronously.
     /// </summary>
     /// <param name="authenticatedUserId">The authenticated User Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>User session list items with summary metadata.</returns>
     public async Task<IEnumerable<SessionListItemDto>> ListSessionsAsync(
         string authenticatedUserId,
@@ -591,7 +591,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// </summary>
     /// <param name="sessionId">The session Id.</param>
     /// <param name="authenticatedUserId">The authenticated User Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <exception cref="InvalidOperationException">Thrown when session is not found.</exception>
     /// <exception cref="UnauthorizedAccessException">Thrown when user does not own the session.</exception>
     public async Task EndSessionAsync(

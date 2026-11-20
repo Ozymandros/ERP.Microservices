@@ -9,11 +9,13 @@ using Xunit;
 
 namespace MyApp.Orders.Tests.Repositories;
 
+/// <summary>Integration tests for <see cref="MyApp.Orders.Infrastructure.Repositories.OrderLineRepository"/> using an in-memory database.</summary>
 public class OrderLineRepositoryTests
 {
     private readonly OrdersDbContext _context;
     private readonly OrderLineRepository _repository;
 
+    /// <summary>Initializes a new instance of the <see cref="OrderLineRepositoryTests"/> class, setting up the in-memory context, repository, and seed data.</summary>
     public OrderLineRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -21,6 +23,7 @@ public class OrderLineRepositoryTests
         SeedTestData();
     }
 
+    /// <summary>Seeds the in-memory database with representative orders and order lines for testing.</summary>
     private void SeedTestData()
     {
         // Clear existing data
@@ -81,6 +84,14 @@ public class OrderLineRepositoryTests
         _context.SaveChanges();
     }
 
+    /// <summary>Creates and persists a test order line associated with the specified order.</summary>
+    /// <param name="orderId">The ID of the parent order.</param>
+    /// <param name="productId">The product ID; a new GUID is generated when not specified.</param>
+    /// <param name="quantity">The required quantity.</param>
+    /// <param name="pickedQuantity">The quantity already picked.</param>
+    /// <param name="reservedQuantity">The quantity currently reserved.</param>
+    /// <param name="isFulfilled">Whether the line is marked as fulfilled.</param>
+    /// <returns>The persisted <see cref="OrderLine"/> entity.</returns>
     private OrderLine CreateTestOrderLine(Guid orderId, Guid? productId = null, int quantity = 10, int pickedQuantity = 0, int reservedQuantity = 0, bool isFulfilled = false)
     {
         var line = new OrderLine(Guid.NewGuid())
@@ -100,6 +111,7 @@ public class OrderLineRepositoryTests
 
     #region GetByIdAsync Tests
 
+    /// <summary>Verifies that GetByIdAsync returns the correct order line when the ID exists.</summary>
     [Fact]
     public async Task GetByIdAsync_WithValidId_ReturnsOrderLine()
     {
@@ -119,6 +131,7 @@ public class OrderLineRepositoryTests
         result.ReservedQuantity.Should().Be(10);
     }
 
+    /// <summary>Verifies that GetByIdAsync returns null when the ID does not exist.</summary>
     [Fact]
     public async Task GetByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -136,6 +149,7 @@ public class OrderLineRepositoryTests
 
     #region ListAsync Tests
 
+    /// <summary>Verifies that GetAllAsync returns all persisted order lines.</summary>
     [Fact]
     public async Task ListAsync_ReturnsAllOrderLines()
     {
@@ -156,6 +170,7 @@ public class OrderLineRepositoryTests
 
     #region AddAsync Tests
 
+    /// <summary>Verifies that AddAsync persists a new order line with all fields correctly stored.</summary>
     [Fact]
     public async Task AddAsync_WithValidOrderLine_CreatesOrderLine()
     {
@@ -190,6 +205,7 @@ public class OrderLineRepositoryTests
 
     #region UpdateAsync Tests
 
+    /// <summary>Verifies that UpdateAsync persists all changed fields of an existing order line.</summary>
     [Fact]
     public async Task UpdateAsync_WithExistingOrderLine_UpdatesOrderLineData()
     {
@@ -214,6 +230,7 @@ public class OrderLineRepositoryTests
         updatedLine.IsFulfilled.Should().BeTrue();
     }
 
+    /// <summary>Verifies that UpdateAsync correctly stores the fulfilled state and picked quantity.</summary>
     [Fact]
     public async Task UpdateAsync_WithFulfillment_UpdatesIsFulfilled()
     {
@@ -237,6 +254,7 @@ public class OrderLineRepositoryTests
 
     #region DeleteAsync Tests
 
+    /// <summary>Verifies that DeleteAsync removes the order line from the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithValidId_DeletesOrderLine()
     {
@@ -253,6 +271,7 @@ public class OrderLineRepositoryTests
         deletedLine.Should().BeNull();
     }
 
+    /// <summary>Verifies that DeleteAsync does not throw when the line is not found.</summary>
     [Fact]
     public async Task DeleteAsync_WithNonExistentId_DoesNotThrowException()
     {
@@ -269,6 +288,7 @@ public class OrderLineRepositoryTests
 
     #region Edge Cases
 
+    /// <summary>Verifies that AddAsync successfully persists an order line with a zero quantity.</summary>
     [Fact]
     public async Task AddAsync_WithZeroQuantity_CreatesOrderLine()
     {
@@ -293,6 +313,7 @@ public class OrderLineRepositoryTests
         savedLine!.Quantity.Should().Be(0);
     }
 
+    /// <summary>Verifies that AddAsync persists the ReservedStockId and reserved quantity when a reservation is present.</summary>
     [Fact]
     public async Task AddAsync_WithReservedStockId_CreatesOrderLineWithReservation()
     {
@@ -320,6 +341,7 @@ public class OrderLineRepositoryTests
         savedLine.ReservedQuantity.Should().Be(10);
     }
 
+    /// <summary>Verifies that UpdateAsync accepts a PickedQuantity that exceeds the ordered quantity (over-pick scenario).</summary>
     [Fact]
     public async Task UpdateAsync_WithPickedQuantityExceedingQuantity_UpdatesSuccessfully()
     {
@@ -337,6 +359,7 @@ public class OrderLineRepositoryTests
         updatedLine!.PickedQuantity.Should().Be(15);
     }
 
+    /// <summary>Verifies that UpdateAsync accepts a ReservedQuantity that exceeds the ordered quantity.</summary>
     [Fact]
     public async Task UpdateAsync_WithReservedQuantityExceedingQuantity_UpdatesSuccessfully()
     {
@@ -354,6 +377,7 @@ public class OrderLineRepositoryTests
         updatedLine!.ReservedQuantity.Should().Be(15);
     }
 
+    /// <summary>Verifies that UpdateAsync successfully clears the ReservedStockId by setting it to null.</summary>
     [Fact]
     public async Task UpdateAsync_WithNullReservedStockId_UpdatesSuccessfully()
     {
@@ -378,6 +402,7 @@ public class OrderLineRepositoryTests
         updatedLine.ReservedQuantity.Should().Be(0);
     }
 
+    /// <summary>Verifies that GetAllAsync returns both fulfilled and unfulfilled lines.</summary>
     [Fact]
     public async Task ListAsync_WithFulfilledAndUnfulfilledLines_ReturnsAllLines()
     {

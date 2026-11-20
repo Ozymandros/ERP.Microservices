@@ -7,6 +7,7 @@ using Xunit;
 
 namespace MyApp.Inventory.Application.Tests.Specifications;
 
+/// <summary>Unit tests for <see cref="InventoryTransactionQuerySpec"/> filtering and sorting behaviour.</summary>
 public class InventoryTransactionQuerySpecTests
 {
     private static IQueryable<InventoryTransaction> CreateTestData()
@@ -25,6 +26,7 @@ public class InventoryTransactionQuerySpecTests
         }.AsQueryable();
     }
 
+    /// <summary>Verifies that ApplyFilters returns only transactions matching the specified transaction type.</summary>
     [Fact]
     public void ApplyFilters_WithTransactionTypeFilter_ReturnsFilteredTransactions()
     {
@@ -39,6 +41,7 @@ public class InventoryTransactionQuerySpecTests
         result.All(t => t.TransactionType == TransactionType.Inbound).Should().BeTrue();
     }
 
+    /// <summary>Verifies that ApplyFilters returns only transactions for the specified product ID.</summary>
     [Fact]
     public void ApplyFilters_WithProductIdFilter_ReturnsFilteredTransactions()
     {
@@ -54,6 +57,7 @@ public class InventoryTransactionQuerySpecTests
         result.All(t => t.ProductId == productId).Should().BeTrue();
     }
 
+    /// <summary>Verifies that ApplyFilters returns only transactions for the specified warehouse ID.</summary>
     [Fact]
     public void ApplyFilters_WithWarehouseIdFilter_ReturnsFilteredTransactions()
     {
@@ -69,6 +73,7 @@ public class InventoryTransactionQuerySpecTests
         result.All(t => t.WarehouseId == warehouseId).Should().BeTrue();
     }
 
+    /// <summary>Verifies that ApplyFilters returns only transactions with a quantity change greater than or equal to the minimum value.</summary>
     [Fact]
     public void ApplyFilters_WithMinQuantityFilter_ReturnsFilteredTransactions()
     {
@@ -83,6 +88,7 @@ public class InventoryTransactionQuerySpecTests
         result.All(t => t.QuantityChange >= 10).Should().BeTrue();
     }
 
+    /// <summary>Verifies that ApplyFilters returns only transactions with a quantity change less than or equal to the maximum value.</summary>
     [Fact]
     public void ApplyFilters_WithMaxQuantityFilter_ReturnsFilteredTransactions()
     {
@@ -97,6 +103,7 @@ public class InventoryTransactionQuerySpecTests
         result.All(t => t.QuantityChange <= 15).Should().BeTrue();
     }
 
+    /// <summary>Verifies that Apply sorts transactions by quantity change in descending order.</summary>
     [Fact]
     public void Apply_WithSortByQuantity_SortsCorrectly()
     {

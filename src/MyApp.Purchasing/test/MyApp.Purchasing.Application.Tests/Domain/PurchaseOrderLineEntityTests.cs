@@ -4,8 +4,10 @@ using Xunit;
 
 namespace MyApp.Purchasing.Application.Tests.Domain;
 
+/// <summary>Unit tests for the <see cref="MyApp.Purchasing.Domain.Entities.PurchaseOrderLine"/> entity.</summary>
 public class PurchaseOrderLineEntityTests
 {
+    /// <summary>Verifies that <see cref="MyApp.Purchasing.Domain.Entities.PurchaseOrderLine.IsFullyReceived"/> is true when the received quantity equals the ordered quantity.</summary>
     [Fact]
     public void IsFullyReceived_WhenReceivedQuantityEqualsQuantity_ShouldBeTrue()
     {
@@ -24,6 +26,7 @@ public class PurchaseOrderLineEntityTests
         line.ReceivedQuantity.Should().Be(line.Quantity);
     }
 
+    /// <summary>Verifies that <see cref="MyApp.Purchasing.Domain.Entities.PurchaseOrderLine.IsFullyReceived"/> is false when the received quantity is less than the ordered quantity.</summary>
     [Fact]
     public void IsFullyReceived_WhenReceivedQuantityLessThanQuantity_ShouldBeFalse()
     {
@@ -41,6 +44,7 @@ public class PurchaseOrderLineEntityTests
         line.IsFullyReceived.Should().BeFalse();
     }
 
+    /// <summary>Verifies that <see cref="MyApp.Purchasing.Domain.Entities.PurchaseOrderLine.IsFullyReceived"/> can be set to true even when the received quantity exceeds the ordered quantity.</summary>
     [Fact]
     public void IsFullyReceived_WhenReceivedQuantityExceedsQuantity_CanBeTrue()
     {
@@ -59,6 +63,7 @@ public class PurchaseOrderLineEntityTests
         line.ReceivedQuantity.Should().BeGreaterThan(line.Quantity);
     }
 
+    /// <summary>Verifies that <see cref="MyApp.Purchasing.Domain.Entities.PurchaseOrderLine.LineTotal"/> equals the product of quantity and unit price.</summary>
     [Fact]
     public void LineTotal_ShouldEqualQuantityTimesUnitPrice()
     {

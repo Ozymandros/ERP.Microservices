@@ -80,7 +80,7 @@ variable "private_subnet_cidr" {
 variable "kubernetes_version" {
   description = "OKE Kubernetes version."
   type        = string
-  default     = "v1.30.1"
+  default     = "v1.31"
 }
 
 variable "node_pool_size" {

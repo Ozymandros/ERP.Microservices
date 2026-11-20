@@ -1,4 +1,4 @@
-﻿//namespace MyApp.Shared.Infrastructure.Extensions;
+//namespace MyApp.Shared.Infrastructure.Extensions;
 
 //using Microsoft.EntityFrameworkCore.Migrations;
 //using Microsoft.EntityFrameworkCore.Migrations.Operations;

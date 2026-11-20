@@ -67,6 +67,14 @@ public static class AgentToolRegistration
         Register(registry, "update_purchasing_record", "Update a purchasing record in the ERP purchasing service.", ToolHttpVerb.Put, purchasing.UpdateAsync);
         Register(registry, "delete_purchasing_record", "Delete a purchasing record by id in the ERP purchasing service.", ToolHttpVerb.Delete, purchasing.DeleteAsync);
 
+        var projects = services.GetRequiredService<ProjectsPlugin>();
+        Register(registry, "get_project", "Get a project by id from the ERP projects service.", ToolHttpVerb.Get, projects.GetByIdAsync);
+        Register(registry, "get_project_by_number", "Get a project by project number from the ERP projects service.", ToolHttpVerb.Get, projects.GetByNumberAsync);
+        Register(registry, "search_projects", "Search ERP projects by keyword, project number, status, customer, or filters.", ToolHttpVerb.Get, projects.SearchProjectsAsync);
+        Register(registry, "create_project", "Create a project in the ERP projects service.", ToolHttpVerb.Post, projects.CreateAsync);
+        Register(registry, "update_project", "Update a project in the ERP projects service. Payload must include id.", ToolHttpVerb.Put, projects.UpdateAsync);
+        Register(registry, "delete_project", "Delete a project by id in the ERP projects service.", ToolHttpVerb.Delete, projects.DeleteAsync);
+
         var crm = services.GetRequiredService<CrmPlugin>();
         Register(registry, "get_crm_record", "Get a CRM record by id from the ERP CRM service.", ToolHttpVerb.Get, crm.GetByIdAsync);
         Register(registry, "get_crm_account_by_tax_id", "Get a CRM account by tax id from the ERP CRM service.", ToolHttpVerb.Get, crm.GetAccountByTaxIdAsync);
@@ -84,6 +92,7 @@ public static class AgentToolRegistration
         Register(registry, "get_docs_topic", "Get ERP documentation content for a topic.", ToolHttpVerb.Get, docs.GetTopicAsync);
         Register(registry, "get_docs_api_reference", "Get ERP API reference documentation.", ToolHttpVerb.Get, args => docs.GetApiReferenceAsync(args));
         Register(registry, "get_docs_sections", "List available ERP documentation sections.", ToolHttpVerb.Get, _ => docs.GetSectionsAsync());
+
     }
 
     /// <summary>

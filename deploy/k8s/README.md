@@ -6,10 +6,10 @@ Portable workloads for the ERP microservices stack. No cloud provider assumption
 
 ```text
 base/
-  platform/   namespaces, Redis
+  platform/   namespaces, Redis, Aspire dashboard (OTLP)
   dapr/       Dapr config and Redis-backed components
   sql/        SQL Server StatefulSet, bootstrap job (no backup)
-  apps/       microservices, gateway, Aspire dashboard
+  apps/       microservices, gateway
 overlays/
   dev/        self-signed gateway TLS
   prod/       Let's Encrypt ClusterIssuers + ingress host patch

@@ -1,4 +1,4 @@
-﻿using MyApp.Shared.Domain.Entities;
+using MyApp.Shared.Domain.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyApp.Audit.Domain;

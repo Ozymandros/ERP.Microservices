@@ -8,5 +8,9 @@ namespace MyApp.Purchasing.Domain.Repositories;
 /// </summary>
 public interface IPurchaseOrderLineRepository : IRepository<PurchaseOrderLine, Guid>
 {
-    Task<IEnumerable<PurchaseOrderLine>> GetByPurchaseOrderIdAsync(Guid purchaseOrderId);
+    /// <summary>Returns all lines belonging to the specified purchase order.</summary>
+    /// <param name="purchaseOrderId">The unique identifier of the purchase order.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A collection of order lines for the purchase order.</returns>
+    Task<IEnumerable<PurchaseOrderLine>> GetByPurchaseOrderIdAsync(Guid purchaseOrderId, CancellationToken cancellationToken = default);
 }

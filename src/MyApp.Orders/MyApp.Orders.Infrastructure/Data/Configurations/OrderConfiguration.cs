@@ -22,6 +22,7 @@ namespace MyApp.Orders.Infrastructure.Data.Configurations
             builder.Property(x => x.SourceId);
             builder.Property(x => x.TargetId);
             builder.Property(x => x.ExternalOrderId);
+            builder.Property(x => x.ExternalOrderSource).HasMaxLength(32);
 
             // Fulfillment fields
             builder.Property(x => x.WarehouseId);

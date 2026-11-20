@@ -193,7 +193,7 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
     /// <summary>
     /// Save changes asynchronously.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The number of state entries written to the database.</returns>
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

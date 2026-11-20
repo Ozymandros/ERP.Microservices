@@ -12,15 +12,15 @@ public interface IPermissionRepository : IRepository<Permission, Guid>
     /// <summary>
     /// Retrieves all permissions assigned to a specific user, either directly or through roles.
     /// </summary>
-    Task<IEnumerable<Permission>> GetAllPermissionsByUserId(Guid userId);
+    Task<IEnumerable<Permission>> GetAllPermissionsByUserId(Guid userId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves permissions for a specific role by module and action.
     /// </summary>
-    Task<IEnumerable<Permission>> GetByRoleName(string roleName, string module, string action);
+    Task<IEnumerable<Permission>> GetByRoleName(string roleName, string module, string action, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves permissions for a specific user by module and action.
     /// </summary>
-    Task<IEnumerable<Permission>> GetByUserName(string userName, string module, string action);
+    Task<IEnumerable<Permission>> GetByUserName(string userName, string module, string action, CancellationToken cancellationToken = default);
 }

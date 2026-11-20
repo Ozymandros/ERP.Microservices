@@ -5,8 +5,10 @@ using QuestPDF.Infrastructure;
 
 namespace MyApp.Shared.Infrastructure.Export
 {
+    /// <summary>Provides extension methods for exporting collections to PDF documents using QuestPDF.</summary>
     public static class PdfExportExtensions
     {
+        /// <summary>Initializes the <see cref="PdfExportExtensions"/> class and configures the QuestPDF Community license.</summary>
         static PdfExportExtensions()
         {
             // Configure QuestPDF license for Community use

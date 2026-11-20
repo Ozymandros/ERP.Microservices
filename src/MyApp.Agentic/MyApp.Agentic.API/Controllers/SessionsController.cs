@@ -7,6 +7,7 @@ using MyApp.Shared.Domain.Permissions;
 
 namespace MyApp.Agentic.API.Controllers;
 
+/// <summary>API controller for managing persistent agent conversation sessions and their messages.</summary>
 [ApiController]
 [Authorize]
 [Route("api/agentic/sessions")]
@@ -30,7 +31,7 @@ public class SessionsController : ControllerBase
     /// Creates a session.
     /// </summary>
     /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpPost]
     [HasPermission("Agentic", "Execute")]
@@ -63,7 +64,7 @@ public class SessionsController : ControllerBase
     /// <summary>
     /// Lists sessions.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpGet]
     [HasPermission("Agentic", "Read")]
@@ -88,7 +89,7 @@ public class SessionsController : ControllerBase
     /// Gets the session.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpGet("{id:guid}")]
     [HasPermission("Agentic", "Read")]
@@ -114,7 +115,7 @@ public class SessionsController : ControllerBase
     /// Gets the session messages.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpGet("{id:guid}/messages")]
     [HasPermission("Agentic", "Read")]
@@ -141,7 +142,7 @@ public class SessionsController : ControllerBase
     /// </summary>
     /// <param name="id">The id.</param>
     /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpPost("{id:guid}/messages")]
     [HasPermission("Agentic", "Execute")]
@@ -175,7 +176,7 @@ public class SessionsController : ControllerBase
     /// Ends the session.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     [HttpDelete("{id:guid}")]
     [HasPermission("Agentic", "Execute")]

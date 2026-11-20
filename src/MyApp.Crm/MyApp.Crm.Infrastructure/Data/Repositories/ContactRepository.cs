@@ -20,7 +20,7 @@ public sealed class ContactRepository : Repository<Contact, Guid>, IContactRepos
 
     /// <summary>List By Account Async.</summary>
     /// <param name="accountId">The account Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<IEnumerable<Contact>> ListByAccountAsync(Guid accountId, CancellationToken cancellationToken = default)
     {
         return await _context.Contacts

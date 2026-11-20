@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="16.1.1" />
+    <PackageReference Include="AutoMapper" Version="16.2.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyApp.Audit.Domain\MyApp.Audit.Domain.csproj" />

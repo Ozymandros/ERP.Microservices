@@ -22,7 +22,6 @@ public class EfUnitOfWork : IUnitOfWork
     /// <summary>
     /// Performs the operation.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
     /// <inheritdoc />
     public virtual Task<IReadOnlyCollection<EntityEntryDto>> CommitAsync(
         CancellationToken cancellationToken = default)

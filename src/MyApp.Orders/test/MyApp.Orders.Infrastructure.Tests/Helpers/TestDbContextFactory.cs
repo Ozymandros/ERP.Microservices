@@ -9,6 +9,8 @@ namespace MyApp.Orders.Tests.Helpers;
 /// </summary>
 public static class TestDbContextFactory
 {
+    /// <summary>Creates a new in-memory <see cref="OrdersDbContext"/> instance with a unique database name.</summary>
+    /// <returns>A freshly created and ensured <see cref="OrdersDbContext"/> backed by an in-memory database.</returns>
     public static OrdersDbContext CreateInMemoryContext()
     {
         var options = new DbContextOptionsBuilder<OrdersDbContext>()
@@ -20,6 +22,8 @@ public static class TestDbContextFactory
         return context;
     }
 
+    /// <summary>Seeds the provided context with baseline test data, clearing any existing orders and lines first.</summary>
+    /// <param name="context">The database context to seed.</param>
     public static void SeedTestData(OrdersDbContext context)
     {
         // Clear existing data

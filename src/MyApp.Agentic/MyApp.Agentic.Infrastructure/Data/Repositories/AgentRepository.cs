@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 
 namespace MyApp.Agentic.Infrastructure.Data.Repositories;
 
+/// <summary>EF Core repository for <see cref="Agent"/> entities, eagerly loading the model, provider, and plugin navigation properties.</summary>
 public class AgentRepository : Repository<Agent, Guid>, IAgentRepository
 {
     private readonly AgenticSqlDbContext _context;
@@ -23,14 +24,15 @@ public class AgentRepository : Repository<Agent, Guid>, IAgentRepository
     /// Gets an item by its unique identifier asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
-    public override async Task<Agent?> GetByIdAsync(Guid id)
+    public override async Task<Agent?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Agents
             .Include(a => a.Model)
                 .ThenInclude(m => m!.Provider)
             .Include(a => a.Plugins)
-            .FirstOrDefaultAsync(a => a.Id == id);
+            .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
     }
 
     /// <summary>
@@ -62,7 +64,7 @@ public class AgentRepository : Repository<Agent, Guid>, IAgentRepository
     /// Gets the id with details asynchronously.
     /// </summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<Agent?> GetByIdWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -76,10 +78,11 @@ public class AgentRepository : Repository<Agent, Guid>, IAgentRepository
     /// <summary>
     /// Gets all items asynchronously.
     /// </summary>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
-    public override  async Task<IEnumerable<Agent>> GetAllAsync()
+    public override  async Task<IEnumerable<Agent>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await DbContext.Set<Agent>().Include(x => x.Model).ToListAsync();
+        return await DbContext.Set<Agent>().Include(x => x.Model).ToListAsync(cancellationToken);
     }
 
     /// <summary>
@@ -88,9 +91,10 @@ public class AgentRepository : Repository<Agent, Guid>, IAgentRepository
     /// <param name="pageNumber">The page Number.</param>
     /// <param name="pageSize">The page Size.</param>
     /// <param name="includes">The includes.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
-    public override Task<PaginatedResult<Agent>> GetAllPaginatedAsync(int pageNumber, int pageSize, IEnumerable<Expression<Func<Agent, object>>>? includes = null)
+    public override Task<PaginatedResult<Agent>> GetAllPaginatedAsync(int pageNumber, int pageSize, IEnumerable<Expression<Func<Agent, object>>>? includes = null, CancellationToken cancellationToken = default)
     {
-        return base.GetAllPaginatedAsync(pageNumber, pageSize, includes);
+        return base.GetAllPaginatedAsync(pageNumber, pageSize, includes, cancellationToken);
     }
 }

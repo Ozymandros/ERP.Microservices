@@ -12,7 +12,6 @@ resources:
   - purchasing-service.yaml
   - sales-service.yaml
   - gateway.yaml
-  - aspire-dashboard.yaml
 
 generatorOptions:
   disableNameSuffixHash: true

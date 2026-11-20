@@ -16,7 +16,7 @@ public class InvoiceLine : AuditableEntity<Guid>
     /// <param name="unitPrice">The unit Price.</param>
     /// <param name="taxRate">The tax Rate.</param>
     /// <param name="discount">The discount.</param>
-    public InvoiceLine(Guid invoiceId, string description, int quantity, decimal unitPrice, decimal taxRate, decimal discount = 0)
+    public InvoiceLine(Guid invoiceId, string description, decimal quantity, decimal unitPrice, decimal taxRate, decimal discount = 0)
         : base(Guid.NewGuid())
     {
         InvoiceId = invoiceId;
@@ -36,8 +36,8 @@ public class InvoiceLine : AuditableEntity<Guid>
     public Guid InvoiceId { get; private set; }
     /// <summary>Gets the human-readable description of the product or service on this line.</summary>
     public string Description { get; private set; }
-    /// <summary>Gets the number of units on this line.</summary>
-    public int Quantity { get; private set; }
+    /// <summary>Gets the quantity on this line (decimal to support fractional units such as hours).</summary>
+    public decimal Quantity { get; private set; }
     /// <summary>Gets the price per unit before tax and discounts.</summary>
     public decimal UnitPrice { get; private set; }
     /// <summary>Gets the flat monetary discount applied to the net amount.</summary>

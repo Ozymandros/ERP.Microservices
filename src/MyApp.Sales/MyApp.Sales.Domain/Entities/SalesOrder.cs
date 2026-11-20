@@ -22,6 +22,8 @@ namespace MyApp.Sales.Domain.Entities
         // Quote and conversion tracking
         /// <summary>Gets or sets Converted To Order Id.</summary>
         public Guid? ConvertedToOrderId { get; set; }
+        /// <summary>Gets or sets the operational return order id when a return was initiated.</summary>
+        public Guid? ReturnOrderId { get; set; }
         /// <summary>Gets or sets Is Quote.</summary>
         public bool IsQuote { get; set; }
         /// <summary>Gets or sets Quote Expiry Date.</summary>

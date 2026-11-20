@@ -15,6 +15,7 @@ using Xunit;
 
 namespace MyApp.Inventory.Application.Tests.Services;
 
+/// <summary>Unit tests for <see cref="WarehouseService"/>.</summary>
 public class WarehouseServiceTests
 {
     private readonly Mock<IWarehouseRepository> _mockWarehouseRepository;
@@ -24,6 +25,7 @@ public class WarehouseServiceTests
     private readonly Mock<ILogger<WarehouseService>> _mockLogger;
     private readonly WarehouseService _warehouseService;
 
+    /// <summary>Initialises mocks and the system-under-test before each test.</summary>
     public WarehouseServiceTests()
     {
         _mockWarehouseRepository = new Mock<IWarehouseRepository>();
@@ -42,6 +44,7 @@ public class WarehouseServiceTests
             _mockLogger.Object);
     }
 
+    /// <summary>Verifies that GetWarehouseByIdAsync returns a mapped DTO when the warehouse exists.</summary>
     [Fact]
     public async Task GetWarehouseByIdAsync_WithExistingId_ReturnsWarehouseDto()
     {
@@ -66,6 +69,7 @@ public class WarehouseServiceTests
         _mockWarehouseRepository.Verify(r => r.GetByIdAsync(warehouseId), Times.Once);
     }
 
+    /// <summary>Verifies that GetWarehouseByIdAsync returns null when no warehouse exists with the given ID.</summary>
     [Fact]
     public async Task GetWarehouseByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -82,6 +86,7 @@ public class WarehouseServiceTests
 
     #region GetWarehouseByNameAsync Tests
 
+    /// <summary>Verifies that GetWarehouseByNameAsync returns a mapped DTO when the name exists.</summary>
     [Fact]
     public async Task GetWarehouseByNameAsync_WithExistingName_ReturnsWarehouseDto()
     {
@@ -106,6 +111,7 @@ public class WarehouseServiceTests
         _mockWarehouseRepository.Verify(r => r.GetByNameAsync(name), Times.Once);
     }
 
+    /// <summary>Verifies that GetWarehouseByNameAsync returns null when no warehouse matches the name.</summary>
     [Fact]
     public async Task GetWarehouseByNameAsync_WithNonExistentName_ReturnsNull()
     {
@@ -123,6 +129,7 @@ public class WarehouseServiceTests
 
     #endregion
 
+    /// <summary>Verifies that GetAllWarehousesAsync returns all warehouses from the repository.</summary>
     [Fact]
     public async Task GetAllWarehousesAsync_ReturnsAllWarehouses()
     {
@@ -158,6 +165,7 @@ public class WarehouseServiceTests
         _mockWarehouseRepository.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
+    /// <summary>Verifies that CreateWarehouseAsync creates a new warehouse when the name is unique.</summary>
     [Fact]
     public async Task CreateWarehouseAsync_WithUniqueName_CreatesWarehouse()
     {
@@ -185,6 +193,7 @@ public class WarehouseServiceTests
         _mockWarehouseRepository.Verify(r => r.AddAsync(warehouse), Times.Once);
     }
 
+    /// <summary>Verifies that CreateWarehouseAsync throws <see cref="InvalidOperationException"/> when the name already exists.</summary>
     [Fact]
     public async Task CreateWarehouseAsync_WithDuplicateName_ThrowsInvalidOperationException()
     {
@@ -202,6 +211,7 @@ public class WarehouseServiceTests
         _mockWarehouseRepository.Verify(r => r.AddAsync(It.IsAny<Warehouse>()), Times.Never);
     }
 
+    /// <summary>Verifies that UpdateWarehouseAsync updates an existing warehouse and returns the mapped DTO.</summary>
     [Fact]
     public async Task UpdateWarehouseAsync_WithExistingWarehouse_UpdatesSuccessfully()
     {
@@ -229,6 +239,7 @@ public class WarehouseServiceTests
         _mockWarehouseRepository.Verify(r => r.UpdateAsync(existingWarehouse), Times.Once);
     }
 
+    /// <summary>Verifies that UpdateWarehouseAsync throws <see cref="KeyNotFoundException"/> when the warehouse does not exist.</summary>
     [Fact]
     public async Task UpdateWarehouseAsync_WithNonExistentWarehouse_ThrowsKeyNotFoundException()
     {
@@ -246,6 +257,7 @@ public class WarehouseServiceTests
         _mockWarehouseRepository.Verify(r => r.UpdateAsync(It.IsAny<Warehouse>()), Times.Never);
     }
 
+    /// <summary>Verifies that UpdateWarehouseAsync throws <see cref="InvalidOperationException"/> when the new name conflicts with an existing warehouse.</summary>
     [Fact]
     public async Task UpdateWarehouseAsync_WithDuplicateName_ThrowsInvalidOperationException()
     {
@@ -266,6 +278,7 @@ public class WarehouseServiceTests
         _mockWarehouseRepository.Verify(r => r.UpdateAsync(It.IsAny<Warehouse>()), Times.Never);
     }
 
+    /// <summary>Verifies that DeleteWarehouseAsync removes the warehouse from the repository.</summary>
     [Fact]
     public async Task DeleteWarehouseAsync_WithExistingWarehouse_DeletesWarehouse()
     {
@@ -282,6 +295,7 @@ public class WarehouseServiceTests
         _mockWarehouseRepository.Verify(r => r.DeleteAsync(warehouse), Times.Once);
     }
 
+    /// <summary>Verifies that DeleteWarehouseAsync throws <see cref="KeyNotFoundException"/> when the warehouse does not exist.</summary>
     [Fact]
     public async Task DeleteWarehouseAsync_WithNonExistentWarehouse_ThrowsKeyNotFoundException()
     {
@@ -299,6 +313,7 @@ public class WarehouseServiceTests
 
     #region GetAllWarehousesPaginatedAsync Tests
 
+    /// <summary>Verifies that GetAllWarehousesPaginatedAsync returns a correctly paged result.</summary>
     [Fact]
     public async Task GetAllWarehousesPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -338,6 +353,7 @@ public class WarehouseServiceTests
         _mockWarehouseRepository.Verify(r => r.GetAllPaginatedAsync(1, 2), Times.Once);
     }
 
+    /// <summary>Verifies that GetAllWarehousesPaginatedAsync returns an empty paginated result when no warehouses exist.</summary>
     [Fact]
     public async Task GetAllWarehousesPaginatedAsync_WithEmptyResult_ReturnsEmptyPaginatedResult()
     {
@@ -365,6 +381,7 @@ public class WarehouseServiceTests
 
     #region QueryWarehousesAsync Tests
 
+    /// <summary>Verifies that QueryWarehousesAsync returns filtered results when a search term is provided.</summary>
     [Fact]
     public async Task QueryWarehousesAsync_WithSearchTerm_ReturnsFilteredResults()
     {
@@ -397,6 +414,7 @@ public class WarehouseServiceTests
         _mockWarehouseRepository.Verify(r => r.QueryAsync(spec), Times.Once);
     }
 
+    /// <summary>Verifies that QueryWarehousesAsync returns filtered results when location filters are applied.</summary>
     [Fact]
     public async Task QueryWarehousesAsync_WithFilters_ReturnsFilteredResults()
     {
@@ -428,6 +446,7 @@ public class WarehouseServiceTests
 
     #region Edge Cases and Error Scenarios
 
+    /// <summary>Verifies that CreateWarehouseAsync creates a warehouse even when the name is empty.</summary>
     [Fact]
     public async Task CreateWarehouseAsync_WithEmptyName_CreatesWarehouse()
     {
@@ -449,6 +468,7 @@ public class WarehouseServiceTests
         result.Name.Should().Be("");
     }
 
+    /// <summary>Verifies that CreateWarehouseAsync creates a warehouse when the name contains special characters.</summary>
     [Fact]
     public async Task CreateWarehouseAsync_WithSpecialCharactersInName_CreatesWarehouse()
     {
@@ -471,6 +491,7 @@ public class WarehouseServiceTests
         result.Name.Should().Be(name);
     }
 
+    /// <summary>Verifies that CreateWarehouseAsync creates a warehouse when the name is very long.</summary>
     [Fact]
     public async Task CreateWarehouseAsync_WithVeryLongName_CreatesWarehouse()
     {
@@ -493,6 +514,7 @@ public class WarehouseServiceTests
         result.Name.Should().Be(longName);
     }
 
+    /// <summary>Verifies that UpdateWarehouseAsync does not check for name conflicts when the name is unchanged.</summary>
     [Fact]
     public async Task UpdateWarehouseAsync_WithSameName_UpdatesSuccessfully()
     {
@@ -518,6 +540,7 @@ public class WarehouseServiceTests
         _mockWarehouseRepository.Verify(r => r.GetByNameAsync(It.IsAny<string>()), Times.Never);
     }
 
+    /// <summary>Verifies that GetAllWarehousesAsync returns an empty list when no warehouses exist.</summary>
     [Fact]
     public async Task GetAllWarehousesAsync_WithEmptyRepository_ReturnsEmptyList()
     {
@@ -533,6 +556,7 @@ public class WarehouseServiceTests
         result.Should().BeEmpty();
     }
 
+    /// <summary>Verifies that CreateWarehouseAsync propagates exceptions thrown by the repository.</summary>
     [Fact]
     public async Task CreateWarehouseAsync_WhenRepositoryThrowsException_PropagatesException()
     {
@@ -548,6 +572,7 @@ public class WarehouseServiceTests
         await Assert.ThrowsAsync<Exception>(() => _warehouseService.CreateWarehouseAsync(dto));
     }
 
+    /// <summary>Verifies that UpdateWarehouseAsync propagates exceptions thrown by the mapper.</summary>
     [Fact]
     public async Task UpdateWarehouseAsync_WhenMapperThrowsException_PropagatesException()
     {
@@ -563,6 +588,7 @@ public class WarehouseServiceTests
         await Assert.ThrowsAsync<Exception>(() => _warehouseService.UpdateWarehouseAsync(warehouseId, updateDto));
     }
 
+    /// <summary>Verifies that QueryWarehousesAsync returns correctly paginated results.</summary>
     [Fact]
     public async Task QueryWarehousesAsync_WithPagination_ReturnsPaginatedResult()
     {
@@ -592,6 +618,7 @@ public class WarehouseServiceTests
         result.TotalCount.Should().Be(10);
     }
 
+    /// <summary>Verifies that GetWarehouseByIdAsync returns null when given an empty GUID.</summary>
     [Fact]
     public async Task GetWarehouseByIdAsync_WithEmptyGuid_ReturnsNull()
     {
@@ -606,6 +633,7 @@ public class WarehouseServiceTests
         result.Should().BeNull();
     }
 
+    /// <summary>Verifies that DeleteWarehouseAsync propagates exceptions thrown by the repository.</summary>
     [Fact]
     public async Task DeleteWarehouseAsync_WhenRepositoryThrowsException_PropagatesException()
     {

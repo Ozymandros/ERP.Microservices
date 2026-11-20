@@ -1,4 +1,4 @@
-﻿namespace MyApp.Auth.API.Tests;
+namespace MyApp.Auth.API.Tests;
 
 public class UnitTest1
 {

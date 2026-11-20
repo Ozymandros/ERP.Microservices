@@ -6,6 +6,6 @@ namespace MyApp.Crm.Domain.Activities;
 public interface IActivityRepository : IRepository<Activity, Guid>
 {
     /// <summary>Gets all activities.</summary>
-    Task<IEnumerable<Activity>> ListAsync();
+    Task<IEnumerable<Activity>> ListAsync(CancellationToken cancellationToken = default);
 }
 

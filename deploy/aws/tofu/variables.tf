@@ -49,19 +49,19 @@ variable "enable_nat_gateway" {
 variable "kubernetes_version" {
   description = "EKS Kubernetes version."
   type        = string
-  default     = "1.30"
+  default     = "1.31"
 }
 
 variable "node_instance_types" {
-  description = "EKS managed node group instance types. t3.xlarge fits SQL + dev stack on one node."
+  description = "EKS managed node group instance types. Default t3.small for Free Tier; use t3.xlarge+ for real ERP+SQL workloads."
   type        = list(string)
-  default     = ["t3.xlarge"]
+  default     = ["t3.small"]
 }
 
 variable "node_capacity_type" {
-  description = "ON_DEMAND or SPOT (Spot is cheaper for non-prod)."
+  description = "ON_DEMAND or SPOT (Spot is cheaper for non-prod; Free Tier accounts often require ON_DEMAND)."
   type        = string
-  default     = "SPOT"
+  default     = "ON_DEMAND"
 
   validation {
     condition     = contains(["ON_DEMAND", "SPOT"], var.node_capacity_type)

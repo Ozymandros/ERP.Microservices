@@ -4,6 +4,7 @@ using MyApp.Agentic.Domain.AIProviders;
 
 namespace MyApp.Agentic.Infrastructure.Data.Configurations;
 
+/// <summary>EF Core entity type configuration for <see cref="AIProvider"/>, mapping to the <c>AIProviders</c> table.</summary>
 public class AIProviderConfiguration : IEntityTypeConfiguration<AIProvider>
 {
     /// <summary>

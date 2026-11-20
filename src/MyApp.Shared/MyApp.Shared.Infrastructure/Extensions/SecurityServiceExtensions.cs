@@ -5,6 +5,7 @@ using MyApp.Shared.Infrastructure.Security;
 
 namespace MyApp.Shared.Infrastructure.Extensions;
 
+/// <summary>Provides extension methods for registering security services such as log sanitization and secret encryption.</summary>
 public static class SecurityServiceExtensions
 {
     /// <summary>

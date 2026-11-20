@@ -246,6 +246,41 @@ public class ServiceInvokerTests
                 HttpMethod.Get));
     }
 
+    [Fact]
+    public async Task InvokeAsync_WithResponseOnly_ForwardsCallerAuthorizationHeader()
+    {
+        // Arrange
+        const string token = "test-jwt-token";
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Headers.Authorization = $"Bearer {token}";
+        _mockHttpContextAccessor.Setup(a => a.HttpContext).Returns(httpContext);
+
+        HttpRequestMessage? capturedRequest = null;
+        var daprRequest = new HttpRequestMessage(HttpMethod.Get, "http://test");
+        _mockDaprClient
+            .Setup(c => c.CreateInvokeMethodRequest(HttpMethod.Get, "billing-service", "api/billing/supplier-invoices/by-purchase-order/1"))
+            .Returns(daprRequest);
+
+        _mockDaprClient
+#pragma warning disable CS0618
+            .Setup(c => c.InvokeMethodAsync<TestResponse>(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
+#pragma warning restore CS0618
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+            .ReturnsAsync(new TestResponse { Result = "ok" });
+
+        // Act
+        await _serviceInvoker.InvokeAsync<TestResponse>(
+            "billing-service",
+            "api/billing/supplier-invoices/by-purchase-order/1",
+            HttpMethod.Get);
+
+        // Assert
+        capturedRequest.Should().NotBeNull();
+        capturedRequest!.Headers.Authorization.Should().NotBeNull();
+        capturedRequest.Headers.Authorization!.Scheme.Should().Be("Bearer");
+        capturedRequest.Headers.Authorization.Parameter.Should().Be(token);
+    }
+
     #endregion
 
     #region InvokeAsync (void) Tests
@@ -518,6 +553,31 @@ public class ServiceInvokerTests
         // Assert
         result.Should().NotBeNull();
         result.Result.Should().Be("Success");
+    }
+
+    [Fact]
+    public async Task InvokeAsync_WithHttpRequestMessage_ForwardsCallerAuthorizationHeader()
+    {
+        // Arrange
+        const string token = "caller-token";
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Headers.Authorization = $"Bearer {token}";
+        _mockHttpContextAccessor.Setup(a => a.HttpContext).Returns(httpContext);
+
+        var request = new HttpRequestMessage(HttpMethod.Get, "http://test");
+        _mockDaprClient
+#pragma warning disable CS0618
+            .Setup(c => c.InvokeMethodAsync<TestResponse>(request, It.IsAny<CancellationToken>()))
+#pragma warning restore CS0618
+            .ReturnsAsync(new TestResponse { Result = "ok" });
+
+        // Act
+        await _serviceInvoker.InvokeAsync<TestResponse>(request);
+
+        // Assert
+        request.Headers.Authorization.Should().NotBeNull();
+        request.Headers.Authorization!.Scheme.Should().Be("Bearer");
+        request.Headers.Authorization.Parameter.Should().Be(token);
     }
 
     [Fact]

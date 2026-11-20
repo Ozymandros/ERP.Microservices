@@ -10,6 +10,7 @@ using MyApp.Shared.Infrastructure.Data;
 
 namespace MyApp.Agentic.Infrastructure.Data;
 
+/// <summary>Entity Framework Core database context for the Agentic microservice, covering AI providers, models, agents, sessions, and memory.</summary>
 public class AgenticSqlDbContext : AuditableDbContext
 {
     /// <summary>
@@ -20,11 +21,17 @@ public class AgenticSqlDbContext : AuditableDbContext
     {
     }
 
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for AI providers.</summary>
     public DbSet<AIProvider> AIProviders => Set<AIProvider>();
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for AI models.</summary>
     public DbSet<AIModel> AIModels => Set<AIModel>();
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for agents.</summary>
     public DbSet<Agent> Agents => Set<Agent>();
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for agent plugins.</summary>
     public DbSet<AgentPlugin> AgentPlugins => Set<AgentPlugin>();
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for agent sessions.</summary>
     public DbSet<AgentSession> AgentSessions => Set<AgentSession>();
+    /// <summary>Gets the <see cref="DbSet{TEntity}"/> for agent memory entries.</summary>
     public DbSet<AgentMemory> AgentMemories => Set<AgentMemory>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -73,6 +80,7 @@ public class AgenticSqlDbContext : AuditableDbContext
     }
 }
 
+/// <summary>Design-time factory that creates a local-SQL-Server-backed <see cref="AgenticSqlDbContext"/> for EF Core tooling (migrations, scaffolding).</summary>
 public class AgenticSqlDbContextFactory : IDesignTimeDbContextFactory<AgenticSqlDbContext>
 {
     /// <summary>

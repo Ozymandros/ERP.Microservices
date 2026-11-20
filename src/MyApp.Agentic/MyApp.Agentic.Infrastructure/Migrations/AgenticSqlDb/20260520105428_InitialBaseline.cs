@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Data.SqlTypes;
 using Microsoft.EntityFrameworkCore.Migrations;
 

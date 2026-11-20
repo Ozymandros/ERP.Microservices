@@ -28,7 +28,7 @@ public record CreateInvoiceCommand(
 /// <param name="Discount">The discount.</param>
 public record CreateInvoiceLineCommand(
     string Description,
-    int Quantity,
+    decimal Quantity,
     decimal UnitPrice,
     decimal TaxRate,
     decimal Discount = 0

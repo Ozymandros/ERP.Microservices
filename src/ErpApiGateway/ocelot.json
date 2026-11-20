@@ -247,6 +247,41 @@
       "DownstreamPathTemplate": "/openapi/v1.json",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
+        { "Host": "projects-service", "Port": 8080 }
+      ],
+      "UpstreamPathTemplate": "/projects/openapi/v1.json",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/scalar/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "projects-service", "Port": 8080 }
+      ],
+      "UpstreamPathTemplate": "/projects/scalar/{everything}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Priority": 100,
+      "RateLimitOptions": { "EnableRateLimiting": false }
+    },
+    {
+      "DownstreamPathTemplate": "/api/projects/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "projects-service", "Port": 8080 }
+      ],
+      "UpstreamPathTemplate": "/projects/api/projects/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS" ],
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" },
+      "RateLimitOptions": { "EnableRateLimiting": false, "Period": "1m", "Limit": 100 },
+      "Priority": 1
+    },
+
+    {
+      "DownstreamPathTemplate": "/openapi/v1.json",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
         { "Host": "sales-service", "Port": 8080 }
       ],
       "UpstreamPathTemplate": "/sales/openapi/v1.json",

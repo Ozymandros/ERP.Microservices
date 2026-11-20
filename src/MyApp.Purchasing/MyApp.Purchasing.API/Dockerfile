@@ -26,14 +26,16 @@ COPY ["src/MyApp.Purchasing/MyApp.Purchasing.API/MyApp.Purchasing.API.csproj", "
 # Cross-service Application.Contracts (compile-time DTO references only)
 COPY ["src/MyApp.Orders/MyApp.Orders.Domain/MyApp.Orders.Domain.csproj", "MyApp.Orders/MyApp.Orders.Domain/"]
 COPY ["src/MyApp.Orders/MyApp.Orders.Application.Contracts/MyApp.Orders.Application.Contracts.csproj", "MyApp.Orders/MyApp.Orders.Application.Contracts/"]
+COPY ["src/MyApp.Billing/MyApp.Billing.Domain/MyApp.Billing.Domain.csproj", "MyApp.Billing/MyApp.Billing.Domain/"]
+COPY ["src/MyApp.Billing/MyApp.Billing.Application.Contracts/MyApp.Billing.Application.Contracts.csproj", "MyApp.Billing/MyApp.Billing.Application.Contracts/"]
 
 # Restore dependencies
 RUN dotnet restore "MyApp.Purchasing/MyApp.Purchasing.API/MyApp.Purchasing.API.csproj"
 
 # Copy only needed source files (not everything from context)
 COPY src/MyApp.Shared/ MyApp.Shared/
-COPY src/MyApp.Orders/MyApp.Orders.Domain/ MyApp.Orders/MyApp.Orders.Domain/
-COPY src/MyApp.Orders/MyApp.Orders.Application.Contracts/ MyApp.Orders/MyApp.Orders.Application.Contracts/
+COPY src/MyApp.Orders/ MyApp.Orders/
+COPY src/MyApp.Billing/ MyApp.Billing/
 COPY src/MyApp.Purchasing/ MyApp.Purchasing/
 
 # Build the project

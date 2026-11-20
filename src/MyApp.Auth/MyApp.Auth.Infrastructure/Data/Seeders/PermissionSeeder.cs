@@ -19,14 +19,25 @@ public static class PermissionSeeder
     /// <returns>A task representing the asynchronous operation</returns>
     public static async Task SeedPermissionsAsync(AuthDbContext context)
     {
-        // Check if permissions already exist to avoid duplicate seeding
-        if (await context.Permissions.AnyAsync())
+        // Idempotent: only insert permissions that do not exist yet, so modules added
+        // after the first seeding (e.g. Projects) are picked up on existing databases.
+        var existing = (await context.Permissions
+                .AsNoTracking()
+                .Select(p => new { p.Module, p.Action })
+                .ToListAsync())
+            .Select(p => $"{p.Module}.{p.Action}")
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        var missing = GetDefaultPermissions()
+            .Where(p => !existing.Contains($"{p.Module}.{p.Action}"))
+            .ToList();
+
+        if (missing.Count == 0)
         {
             return;
         }
 
-        var permissions = GetDefaultPermissions();
-        await context.Permissions.AddRangeAsync(permissions);
+        await context.Permissions.AddRangeAsync(missing);
         await context.SaveChangesAsync();
     }
 
@@ -51,6 +62,7 @@ public static class PermissionSeeder
         AddModulePermissions(permissions, "Permissions", PermissionConstants.Permissions.All);
         AddModulePermissions(permissions, "Agentic", PermissionConstants.Agentic.All);
         AddModulePermissions(permissions, "Audit", PermissionConstants.Audit.All);
+        AddModulePermissions(permissions, "Projects", PermissionConstants.Projects.All);
 
         return permissions;
     }

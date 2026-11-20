@@ -22,25 +22,28 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
 
         /// <summary>Get By Id Async.</summary>
         /// <param name="id">The id.</param>
-        public override async Task<SalesOrder?> GetByIdAsync(Guid id)
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        public override async Task<SalesOrder?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.SalesOrders
                 .Include(o => o.Lines)
                 .Include(o => o.Customer)
-                .FirstOrDefaultAsync(o => o.Id == id);
+            .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
         }
 
         /// <summary>List Async.</summary>
-        public async Task<IEnumerable<SalesOrder>> ListAsync()
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        public async Task<IEnumerable<SalesOrder>> ListAsync(CancellationToken cancellationToken = default)
         {
             return await _context.SalesOrders
                 .Include(o => o.Lines)
                 .Include(o => o.Customer)
-                .ToListAsync();
+            .ToListAsync(cancellationToken);
         }
 
         /// <summary>Get All Async.</summary>
-        public override async Task<IEnumerable<SalesOrder>> GetAllAsync()
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        public override async Task<IEnumerable<SalesOrder>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await ListAsync();
         }
@@ -48,7 +51,8 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         /// <summary>Get All Paginated Async.</summary>
         /// <param name="pageNumber">The page Number.</param>
         /// <param name="pageSize">The page Size.</param>
-        public async Task<PaginatedResult<SalesOrder>> GetAllPaginatedAsync(int pageNumber, int pageSize)
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        public async Task<PaginatedResult<SalesOrder>> GetAllPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
         {
 #pragma warning disable CS8603 // Customer navigation is loaded via Include; null-forgiving would break EF translation
             return await base.GetAllPaginatedAsync(pageNumber, pageSize, [o => o.Lines, o => o.Customer]);
@@ -70,13 +74,14 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         /// Gets the order number asynchronously.
         /// </summary>
         /// <param name="orderNumber">The order Number.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
-        public async Task<SalesOrder?> GetByOrderNumberAsync(string orderNumber)
+        public async Task<SalesOrder?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default)
         {
             return await _context.SalesOrders
                 .Include(o => o.Lines)
                 .Include(o => o.Customer)
-                .FirstOrDefaultAsync(o => o.OrderNumber == orderNumber);
+            .FirstOrDefaultAsync(o => o.OrderNumber == orderNumber, cancellationToken);
         }
     }
 }

@@ -11,11 +11,13 @@ using Xunit;
 
 namespace MyApp.Purchasing.Tests.Repositories;
 
+/// <summary>Integration tests for <see cref="PurchaseOrderRepository"/> using an in-memory database.</summary>
 public class PurchaseOrderRepositoryTests
 {
     private readonly PurchasingDbContext _context;
     private readonly PurchaseOrderRepository _repository;
 
+    /// <summary>Initializes a new instance of the <see cref="PurchaseOrderRepositoryTests"/> class, creating a fresh in-memory context and seeding test data.</summary>
     public PurchaseOrderRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -23,6 +25,7 @@ public class PurchaseOrderRepositoryTests
         SeedTestData();
     }
 
+    /// <summary>Seeds the in-memory database with two suppliers and two purchase orders for use across tests.</summary>
     private void SeedTestData()
     {
         // Clear existing data
@@ -66,6 +69,11 @@ public class PurchaseOrderRepositoryTests
         _context.SaveChanges();
     }
 
+    /// <summary>Creates and persists a <see cref="PurchaseOrder"/> with the given parameters for use in a test.</summary>
+    /// <param name="supplierId">The ID of the supplier for the purchase order.</param>
+    /// <param name="orderNumber">The order number to assign.</param>
+    /// <param name="status">The initial status of the purchase order.</param>
+    /// <returns>The persisted <see cref="PurchaseOrder"/> entity.</returns>
     private PurchaseOrder CreateTestPurchaseOrder(Guid supplierId, string orderNumber = "PO-TEST", PurchaseOrderStatus status = PurchaseOrderStatus.Draft)
     {
         var order = new PurchaseOrder(Guid.NewGuid())
@@ -83,6 +91,7 @@ public class PurchaseOrderRepositoryTests
 
     #region GetByIdAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.GetByIdAsync"/> returns the purchase order when a valid ID is provided.</summary>
     [Fact]
     public async Task GetByIdAsync_WithValidId_ReturnsPurchaseOrder()
     {
@@ -99,6 +108,7 @@ public class PurchaseOrderRepositoryTests
         result.OrderNumber.Should().Be("PO-GETBYID");
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.GetByIdAsync"/> returns null when the ID does not exist.</summary>
     [Fact]
     public async Task GetByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -116,6 +126,7 @@ public class PurchaseOrderRepositoryTests
 
     #region GetWithLinesAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.GetWithLinesAsync"/> returns the purchase order with its lines and supplier navigation properties loaded.</summary>
     [Fact]
     public async Task GetWithLinesAsync_WithValidId_ReturnsPurchaseOrderWithIncludes()
     {
@@ -133,6 +144,7 @@ public class PurchaseOrderRepositoryTests
         result.Supplier.Should().NotBeNull();
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.GetWithLinesAsync"/> returns null when the ID does not exist.</summary>
     [Fact]
     public async Task GetWithLinesAsync_WithNonExistentId_ReturnsNull()
     {
@@ -150,6 +162,7 @@ public class PurchaseOrderRepositoryTests
 
     #region GetAllAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.GetAllAsync"/> returns all purchase orders in the database.</summary>
     [Fact]
     public async Task GetAllAsync_ReturnsAllPurchaseOrders()
     {
@@ -169,6 +182,7 @@ public class PurchaseOrderRepositoryTests
 
     #region GetAllPaginatedAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.GetAllPaginatedAsync"/> returns the correct page of purchase orders with accurate pagination metadata.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -195,6 +209,7 @@ public class PurchaseOrderRepositoryTests
 
     #region GetBySuppliersIdAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.GetBySuppliersIdAsync"/> returns all orders belonging to the specified supplier.</summary>
     [Fact]
     public async Task GetBySuppliersIdAsync_WithExistingOrders_ReturnsAllOrdersForSupplier()
     {
@@ -213,6 +228,7 @@ public class PurchaseOrderRepositoryTests
         result.All(o => o.Lines != null).Should().BeTrue();
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.GetBySuppliersIdAsync"/> returns an empty collection when no orders exist for the supplier.</summary>
     [Fact]
     public async Task GetBySuppliersIdAsync_WithNoOrders_ReturnsEmptyList()
     {
@@ -231,6 +247,7 @@ public class PurchaseOrderRepositoryTests
 
     #region GetByStatusAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.GetByStatusAsync"/> returns all orders in the specified status.</summary>
     [Fact]
     public async Task GetByStatusAsync_WithExistingOrders_ReturnsOrdersWithStatus()
     {
@@ -249,6 +266,7 @@ public class PurchaseOrderRepositoryTests
         result.All(o => o.Lines != null).Should().BeTrue();
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.GetByStatusAsync"/> returns an empty collection when no orders exist in the specified status.</summary>
     [Fact]
     public async Task GetByStatusAsync_WithNoOrdersOfStatus_ReturnsEmptyList()
     {
@@ -273,6 +291,7 @@ public class PurchaseOrderRepositoryTests
 
     #region AddAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.AddAsync"/> persists a new purchase order to the database.</summary>
     [Fact]
     public async Task AddAsync_WithValidPurchaseOrder_CreatesPurchaseOrder()
     {
@@ -302,6 +321,7 @@ public class PurchaseOrderRepositoryTests
 
     #region UpdateAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.UpdateAsync"/> persists changes to an existing purchase order.</summary>
     [Fact]
     public async Task UpdateAsync_WithExistingPurchaseOrder_UpdatesPurchaseOrderData()
     {
@@ -326,6 +346,7 @@ public class PurchaseOrderRepositoryTests
 
     #region DeleteAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.DeleteAsync"/> removes the purchase order from the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithValidPurchaseOrder_DeletesPurchaseOrder()
     {
@@ -346,6 +367,7 @@ public class PurchaseOrderRepositoryTests
 
     #region QueryAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.QueryAsync"/> filters purchase orders by the free-text search term.</summary>
     [Fact]
     public async Task QueryAsync_WithSearchTerm_ShouldFilterResults()
     {
@@ -366,6 +388,7 @@ public class PurchaseOrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.OrderNumber.Contains("SEARCH-PO", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.QueryAsync"/> filters purchase orders by the order number filter.</summary>
     [Fact]
     public async Task QueryAsync_WithOrderNumberFilter_ShouldFilterResults()
     {
@@ -387,6 +410,7 @@ public class PurchaseOrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.OrderNumber.Contains("FILTER-PO", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.QueryAsync"/> filters purchase orders by supplier ID.</summary>
     [Fact]
     public async Task QueryAsync_WithSupplierIdFilter_ShouldFilterResults()
     {
@@ -407,6 +431,7 @@ public class PurchaseOrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.SupplierId == supplier1.Id);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.QueryAsync"/> filters purchase orders by status.</summary>
     [Fact]
     public async Task QueryAsync_WithStatusFilter_ShouldFilterResults()
     {
@@ -426,6 +451,7 @@ public class PurchaseOrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.Status == PurchaseOrderStatus.Approved);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.QueryAsync"/> filters purchase orders within the specified minimum and maximum total amount range.</summary>
     [Fact]
     public async Task QueryAsync_WithTotalAmountRangeFilter_ShouldFilterResults()
     {
@@ -456,6 +482,7 @@ public class PurchaseOrderRepositoryTests
         result.Items.Should().OnlyContain(o => o.TotalAmount >= 150m && o.TotalAmount <= 400m);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.QueryAsync"/> returns the correct page of results when pagination is specified.</summary>
     [Fact]
     public async Task QueryAsync_WithPagination_ShouldReturnCorrectPage()
     {
@@ -479,6 +506,7 @@ public class PurchaseOrderRepositoryTests
         result.TotalCount.Should().BeGreaterThanOrEqualTo(6);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderRepository.QueryAsync"/> returns purchase orders sorted in ascending order when a sort field is specified.</summary>
     [Fact]
     public async Task QueryAsync_WithSorting_ShouldReturnSortedResults()
     {

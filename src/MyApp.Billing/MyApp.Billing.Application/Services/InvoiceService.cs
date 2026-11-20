@@ -2,10 +2,11 @@ using Microsoft.Extensions.Logging;
 using MyApp.Billing.Application.Contracts.DTOs;
 using MyApp.Billing.Application.Contracts.Services;
 using MyApp.Billing.Domain.Entities;
-using MyApp.Billing.Domain.Events;
 using MyApp.Billing.Domain.Repositories;
+using MyApp.Sales.Application.Contracts.DTOs;
 using MyApp.Shared.Application;
 using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Repositories;
 using MyApp.Shared.Domain.Exceptions;
@@ -21,6 +22,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
 {
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly ICreditNoteRepository _creditNoteRepository;
+    private readonly IServiceInvoker _serviceInvoker;
     private readonly ILogger<InvoiceService> _logger;
 
     /// <summary>
@@ -28,12 +30,14 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// </summary>
     /// <param name="invoiceRepository">The invoice Repository.</param>
     /// <param name="creditNoteRepository">The credit Note Repository.</param>
+    /// <param name="serviceInvoker">The Dapr service invoker for cross-service calls.</param>
     /// <param name="logger">The logger.</param>
     /// <param name="unitOfWork">The unit Of Work.</param>
     /// <param name="eventPublisher">The event Publisher.</param>
     public InvoiceService(
         IInvoiceRepository invoiceRepository,
         ICreditNoteRepository creditNoteRepository,
+        IServiceInvoker serviceInvoker,
         ILogger<InvoiceService> logger,
         IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher)
@@ -41,13 +45,15 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     {
         _invoiceRepository = invoiceRepository;
         _creditNoteRepository = creditNoteRepository;
-        _logger = logger;    }
+        _serviceInvoker = serviceInvoker;
+        _logger = logger;
+    }
 
     /// <summary>
     /// Creates an invoice asynchronously.
     /// </summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<InvoiceDto> CreateInvoiceAsync(CreateInvoiceDto dto, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(dto.InvoiceNumber))
@@ -64,16 +70,24 @@ public class InvoiceService : AppServiceBase, IInvoiceService
             invoice.AddLine(line.Description, line.Quantity, line.UnitPrice, line.TaxRate, line.Discount);
         }
 
+        if (dto.OrderId.HasValue)
+            invoice.LinkToSalesOrder(dto.OrderId.Value);
+
+        if (!string.IsNullOrWhiteSpace(dto.SourceType) && dto.SourceId.HasValue)
+            invoice.LinkToSource(dto.SourceType, dto.SourceId.Value);
+
         await _invoiceRepository.AddAsync(invoice);
         await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await EventPublisher.PublishAsync("billing.invoice.created", new InvoiceCreatedEvent(
+        await EventPublisher.PublishAsync(MessagingConstants.Topics.BillingInvoiceCreated, new InvoiceCreatedEvent(
             invoice.Id,
             invoice.CustomerId,
             invoice.OrderId,
             invoice.Currency,
-            invoice.TotalGross
+            invoice.TotalGross,
+            invoice.SourceType,
+            invoice.SourceId
         ), cancellationToken);
 
         return MapToDto(invoice);
@@ -85,7 +99,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// <param name="invoiceId">The invoice Id.</param>
     /// <param name="invoiceNumber">The invoice Number.</param>
     /// <param name="issueDate">The issue Date.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<InvoiceDto> IssueInvoiceAsync(Guid invoiceId, string invoiceNumber, DateTime issueDate, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(invoiceNumber))
@@ -104,7 +118,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await EventPublisher.PublishAsync("billing.invoice.issued", new InvoiceIssuedEvent(
+        await EventPublisher.PublishAsync(MessagingConstants.Topics.BillingInvoiceIssued, new InvoiceIssuedEvent(
             invoice.Id,
             invoice.InvoiceNumber,
             invoice.CustomerId,
@@ -112,7 +126,10 @@ public class InvoiceService : AppServiceBase, IInvoiceService
             invoice.TotalNet,
             invoice.TotalTax,
             invoice.TotalGross,
-            invoice.DueDate!.Value
+            invoice.DueDate!.Value,
+            invoice.SourceType,
+            invoice.SourceId,
+            invoice.Currency
         ), cancellationToken);
 
         return MapToDto(invoice);
@@ -122,7 +139,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Record payment asynchronously.
     /// </summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<InvoiceDto> RecordPaymentAsync(RecordPaymentDto dto, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(dto.InvoiceId)
@@ -133,7 +150,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await EventPublisher.PublishAsync("billing.invoice.paid", new InvoicePaidEvent(
+        await EventPublisher.PublishAsync(MessagingConstants.Topics.BillingInvoicePaid, new InvoicePaidEvent(
             invoice.Id,
             invoice.OrderId,
             invoice.CustomerId,
@@ -150,7 +167,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// </summary>
     /// <param name="invoiceId">The invoice Id.</param>
     /// <param name="reason">The reason.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<InvoiceDto> CancelInvoiceAsync(Guid invoiceId, string reason, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(invoiceId)
@@ -162,10 +179,12 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await EventPublisher.PublishAsync("billing.invoice.cancelled", new InvoiceCancelledEvent(
+        await EventPublisher.PublishAsync(MessagingConstants.Topics.BillingInvoiceCancelled, new InvoiceCancelledEvent(
             invoice.Id,
             invoice.InvoiceNumber,
-            reason
+            reason,
+            invoice.SourceType,
+            invoice.SourceId
         ), cancellationToken);
 
         return MapToDto(invoice);
@@ -175,7 +194,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Creates a credit note asynchronously.
     /// </summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<CreditNoteDto> CreateCreditNoteAsync(CreateCreditNoteDto dto, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(dto.InvoiceId)
@@ -195,7 +214,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
         await SaveChangesAsync(cancellationToken);
 
         // Publish domain event
-        await EventPublisher.PublishAsync("billing.creditnote.issued", new CreditNoteIssuedEvent(
+        await EventPublisher.PublishAsync(MessagingConstants.Topics.BillingCreditNoteIssued, new CreditNoteIssuedEvent(
             creditNote.Id,
             creditNote.OriginalInvoiceId,
             $"CN-{creditNote.Id.ToString()[..8]}",
@@ -210,7 +229,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Gets the invoice by id asynchronously.
     /// </summary>
     /// <param name="invoiceId">The invoice Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<InvoiceDto?> GetInvoiceByIdAsync(Guid invoiceId, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(invoiceId);
@@ -221,7 +240,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Gets the invoice by invoice number asynchronously.
     /// </summary>
     /// <param name="invoiceNumber">The invoice Number.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<InvoiceDto?> GetInvoiceByInvoiceNumberAsync(string invoiceNumber, CancellationToken cancellationToken = default)
     {
         var invoice = await _invoiceRepository.GetByInvoiceNumberAsync(invoiceNumber, cancellationToken);
@@ -232,7 +251,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Gets the invoices by customer id asynchronously.
     /// </summary>
     /// <param name="customerId">The customer Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<List<InvoiceDto>> GetInvoicesByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default)
     {
         var invoices = await _invoiceRepository.GetByCustomerIdAsync(customerId, cancellationToken);
@@ -242,7 +261,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// <summary>
     /// Gets the open invoices asynchronously.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<List<InvoiceDto>> GetOpenInvoicesAsync(CancellationToken cancellationToken = default)
     {
         var invoices = await _invoiceRepository.GetOpenInvoicesAsync(cancellationToken);
@@ -253,7 +272,7 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Gets the invoices by order id asynchronously.
     /// </summary>
     /// <param name="orderId">The order Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<List<InvoiceDto>> GetInvoicesByOrderIdAsync(Guid orderId, CancellationToken cancellationToken = default)
     {
         var invoices = await _invoiceRepository.GetInvoicesByOrderIdAsync(orderId, cancellationToken);
@@ -264,12 +283,189 @@ public class InvoiceService : AppServiceBase, IInvoiceService
     /// Query invoices asynchronously.
     /// </summary>
     /// <param name="spec">The spec.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<PaginatedResult<InvoiceDto>> QueryInvoicesAsync(ISpecification<Invoice> spec, CancellationToken cancellationToken = default)
     {
         var result = await _invoiceRepository.QueryAsync(spec);
         var invoices = result.Items.Select(MapToDto).ToList();
         return new PaginatedResult<InvoiceDto>(invoices, result.PageNumber, result.PageSize, result.TotalCount);
+    }
+
+    /// <inheritdoc />
+    public async Task<InvoiceDto?> CreateFromProjectRequestAsync(
+        ProjectInvoiceRequestedEvent @event,
+        bool autoIssue,
+        CancellationToken cancellationToken = default)
+    {
+        if (@event.Lines.Count == 0)
+        {
+            _logger.LogWarning("Project invoice request {RequestId} has no lines; skipping", @event.RequestId);
+            return null;
+        }
+
+        // Idempotency: pub/sub is at-least-once, so a redelivered request must not create a second invoice.
+        var existing = await _invoiceRepository.GetBySourceAsync(DocumentSources.Project, @event.RequestId, cancellationToken);
+        var current = existing.FirstOrDefault(i => i.Status != InvoiceStatus.Cancelled);
+        if (current is not null)
+        {
+            _logger.LogInformation(
+                "Invoice {InvoiceId} already exists for project invoice request {RequestId}",
+                current.Id, @event.RequestId);
+            return MapToDto(current);
+        }
+
+        var draftNumber = $"DRAFT-{@event.RequestId:N}"[..20];
+        var createDto = new CreateInvoiceDto(
+            draftNumber,
+            @event.CustomerId,
+            null,
+            string.IsNullOrWhiteSpace(@event.Currency) ? "USD" : @event.Currency.ToUpperInvariant(),
+            @event.Lines.Select(l => new CreateInvoiceLineDto(
+                l.Description,
+                l.Quantity,
+                l.UnitPrice,
+                l.TaxRate,
+                l.Discount)).ToList(),
+            SourceType: DocumentSources.Project,
+            SourceId: @event.RequestId);
+
+        var created = await CreateInvoiceAsync(createDto, cancellationToken);
+
+        _logger.LogInformation(
+            "Created {Status} invoice {InvoiceId} for project {ProjectNumber} (request {RequestId})",
+            autoIssue ? "auto-issued" : "draft", created.Id, @event.ProjectNumber, @event.RequestId);
+
+        if (!autoIssue)
+            return created;
+
+        var issueNumber = $"INV-{@event.ProjectNumber}-{DateTime.UtcNow:yyyyMMddHHmmss}";
+        if (issueNumber.Length > 50)
+            issueNumber = issueNumber[..50];
+        return await IssueInvoiceAsync(created.Id, issueNumber, DateTime.UtcNow, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task<InvoiceDto?> CreateAndIssueFromFulfillmentAsync(
+        OrderFulfilledEvent @event,
+        CancellationToken cancellationToken = default)
+    {
+        if (!string.Equals(@event.OrderType, OrderTypes.Outbound, StringComparison.OrdinalIgnoreCase)
+            || !@event.ExternalOrderId.HasValue)
+        {
+            return null;
+        }
+
+        // Only sales-originated movements are invoiced here. Project consumption orders are
+        // invoiced through projects.invoice.requested (see CreateFromProjectRequestAsync).
+        if (!DocumentSources.IsSales(@event.ExternalOrderSource))
+        {
+            var sanitizedExternalOrderSource = (@event.ExternalOrderSource ?? string.Empty)
+                .Replace("\r", string.Empty)
+                .Replace("\n", string.Empty);
+
+            _logger.LogInformation(
+                "Skipping auto-invoice for order {OrderId}: external source {Source} is not Sales",
+                @event.OrderId, sanitizedExternalOrderSource);
+            return null;
+        }
+
+        var salesOrderId = @event.ExternalOrderId.Value;
+        var existing = await _invoiceRepository.GetInvoicesByOrderIdAsync(salesOrderId, cancellationToken);
+        if (existing.Any(i => i.Status is InvoiceStatus.Issued or InvoiceStatus.Paid or InvoiceStatus.Sent))
+        {
+            _logger.LogInformation("Invoice already exists for sales order {SalesOrderId}", salesOrderId);
+            return existing.Select(MapToDto).First();
+        }
+
+        var salesOrder = await _serviceInvoker.InvokeAsync<SalesOrderDto>(
+            ServiceNames.Sales,
+            $"{ApiEndpoints.Sales.Base}/{salesOrderId}",
+            HttpMethod.Get,
+            cancellationToken);
+
+        if (salesOrder.Lines.Count == 0)
+        {
+            _logger.LogWarning("Sales order {SalesOrderId} has no lines; skipping invoice", salesOrderId);
+            return null;
+        }
+
+        var draftNumber = $"DRAFT-{salesOrderId:N}"[..20];
+        var createDto = new CreateInvoiceDto(
+            draftNumber,
+            salesOrder.CustomerId,
+            salesOrderId,
+            "USD",
+            salesOrder.Lines.Select(l => new CreateInvoiceLineDto(
+                $"Product {l.ProductId}",
+                l.Quantity,
+                l.UnitPrice,
+                0m,
+                0m)).ToList());
+
+        var created = await CreateInvoiceAsync(createDto, cancellationToken);
+        var issueNumber = $"INV-{salesOrder.OrderNumber}-{DateTime.UtcNow:yyyyMMdd}";
+        return await IssueInvoiceAsync(created.Id, issueNumber, DateTime.UtcNow, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task<CreditNoteDto?> CreateCreditNoteFromReturnFulfillmentAsync(
+        OrderFulfilledEvent @event,
+        CancellationToken cancellationToken = default)
+    {
+        if (!string.Equals(@event.OrderType, OrderTypes.Return, StringComparison.OrdinalIgnoreCase)
+            || !@event.ExternalOrderId.HasValue)
+        {
+            return null;
+        }
+
+        if (!DocumentSources.IsSales(@event.ExternalOrderSource))
+        {
+            var sanitizedExternalOrderSource = (@event.ExternalOrderSource ?? string.Empty)
+                .Replace("\r", " ")
+                .Replace("\n", " ");
+
+            _logger.LogInformation(
+                "Skipping credit note for return order {OrderId}: external source {Source} is not Sales",
+                @event.OrderId, sanitizedExternalOrderSource);
+            return null;
+        }
+
+        var salesOrderId = @event.ExternalOrderId.Value;
+        var invoices = await _invoiceRepository.GetInvoicesByOrderIdAsync(salesOrderId, cancellationToken);
+        var invoice = invoices.FirstOrDefault(i => i.Status is InvoiceStatus.Issued or InvoiceStatus.Paid or InvoiceStatus.Sent);
+        if (invoice is null)
+        {
+            _logger.LogWarning("No issued invoice for return on sales order {SalesOrderId}", salesOrderId);
+            return null;
+        }
+
+        var salesOrder = await _serviceInvoker.InvokeAsync<SalesOrderDto>(
+            ServiceNames.Sales,
+            $"{ApiEndpoints.Sales.Base}/{salesOrderId}",
+            HttpMethod.Get,
+            cancellationToken);
+
+        var creditLines = new List<CreditNoteLineDto>();
+        foreach (var eventLine in @event.Lines)
+        {
+            var salesLine = salesOrder.Lines.FirstOrDefault(l => l.ProductId == eventLine.ProductId);
+            if (salesLine is null)
+                continue;
+
+            creditLines.Add(new CreditNoteLineDto(
+                $"Return Product {eventLine.ProductId}",
+                eventLine.Quantity,
+                salesLine.UnitPrice,
+                0m,
+                0m));
+        }
+
+        if (creditLines.Count == 0)
+            return null;
+
+        return await CreateCreditNoteAsync(
+            new CreateCreditNoteDto(invoice.Id, creditLines, "Sales return fulfilled"),
+            cancellationToken);
     }
 
     private InvoiceDto MapToDto(Invoice invoice)
@@ -299,7 +495,9 @@ public class InvoiceService : AppServiceBase, IInvoiceService
                 l.LineGross
             )).ToList(),
             invoice.CreatedAt,
-            invoice.UpdatedAt ?? invoice.CreatedAt
+            invoice.UpdatedAt ?? invoice.CreatedAt,
+            invoice.SourceType,
+            invoice.SourceId
         );
     }
 

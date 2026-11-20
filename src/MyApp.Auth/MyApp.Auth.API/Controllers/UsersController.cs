@@ -13,6 +13,9 @@ using MyApp.Shared.Infrastructure.Export;
 
 namespace MyApp.Auth.API.Controllers;
 
+/// <summary>
+/// Manages user CRUD operations, role assignments, and user profile queries.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 [AuthorizeJwt]
@@ -25,12 +28,12 @@ public partial class UsersController : ControllerBase
     private readonly ILogger<UsersController> _logger;
 
     /// <summary>
-    /// Initializes a new instance of the UsersController class.
+    /// Initializes a new instance of the <see cref="UsersController"/> class.
     /// </summary>
-    /// <param name="userService">The user Service.</param>
-    /// <param name="logger">The logger.</param>
-    /// <param name="cacheService">The cache Service.</param>
-    /// <param name="logSanitizer">The log Sanitizer.</param>
+    /// <param name="userService">The service used to manage users.</param>
+    /// <param name="logger">The logger for this controller.</param>
+    /// <param name="cacheService">The distributed cache service.</param>
+    /// <param name="logSanitizer">The log sanitizer for masking sensitive values in log output.</param>
     public UsersController(
         IUserService userService,
         ILogger<UsersController> logger,
@@ -44,16 +47,18 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Get all users (optionally paginated and filtered)
+    /// Gets all users, or executes a filtered/paginated query when query parameters are present.
     /// </summary>
-    /// <param name="query">The query.</param>
+    /// <param name="query">Optional query specification for filtering, sorting, and pagination.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A list of <see cref="UserDto"/> objects, or a paginated result when query parameters are provided.</returns>
     [HttpGet]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult> GetAll([FromQuery] QuerySpec query)
+    public async Task<ActionResult> GetAll([FromQuery] QuerySpec query, CancellationToken cancellationToken)
     {
         try
         {
@@ -63,7 +68,7 @@ public partial class UsersController : ControllerBase
                 query.BindFiltersFromQuery(Request.Query);
                 query.Validate();
                 var spec = new ApplicationUserQuerySpec(query);
-                var result = await _userService.QueryUsersAsync(spec);
+                var result = await _userService.QueryUsersAsync(spec, cancellationToken);
                 return Ok(result);
             }
 
@@ -73,7 +78,7 @@ public partial class UsersController : ControllerBase
                 return Ok(users);
             }
 
-            users = await _userService.GetAllUsersAsync();
+            users = await _userService.GetAllUsersAsync(cancellationToken);
             return Ok(users);
         }
         catch (Exception ex)
@@ -84,18 +89,20 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Export all users as XLSX
+    /// Exports all users as an XLSX spreadsheet file.
     /// </summary>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>An XLSX file containing all users.</returns>
     [HttpGet("export-xlsx")]
     [HasPermission("Users", "Read")]
     [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
     [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
-    public async Task<IActionResult> ExportToXlsx()
+    public async Task<IActionResult> ExportToXlsx(CancellationToken cancellationToken)
     {
         try
         {
             var users = await _cacheService.GetStateAsync<IEnumerable<UserDto>>("all_users")
-                        ?? await _userService.GetAllUsersAsync();
+                        ?? await _userService.GetAllUsersAsync(cancellationToken);
             var bytes = users.ExportToXlsx();
             return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Users.xlsx");
         }
@@ -107,18 +114,20 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Export all users as PDF
+    /// Exports all users as a PDF file.
     /// </summary>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A PDF file containing all users.</returns>
     [HttpGet("export-pdf")]
     [HasPermission("Users", "Read")]
     [Produces("application/pdf")]
     [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
-    public async Task<IActionResult> ExportToPdf()
+    public async Task<IActionResult> ExportToPdf(CancellationToken cancellationToken)
     {
         try
         {
             var users = await _cacheService.GetStateAsync<IEnumerable<UserDto>>("all_users")
-                ?? await _userService.GetAllUsersAsync();
+                ?? await _userService.GetAllUsersAsync(cancellationToken);
             var bytes = users.ExportToPdf();
             return File(bytes, "application/pdf", "Users.pdf");
         }
@@ -130,19 +139,21 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Get all users with pagination
+    /// Gets all users with explicit pagination.
     /// </summary>
-    /// <param name="pageNumber">The page Number.</param>
-    /// <param name="pageSize">The page Size.</param>
+    /// <param name="pageNumber">The 1-based page number to retrieve (default: 1).</param>
+    /// <param name="pageSize">The number of items per page (default: 10).</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A paginated result containing users for the requested page.</returns>
     [HttpGet("paginated")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<PaginatedResult<UserDto>>> GetAllPaginated([FromQuery(Name = "page")] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    public async Task<ActionResult<PaginatedResult<UserDto>>> GetAllPaginated([FromQuery(Name = "page")] int pageNumber = 1, [FromQuery] int pageSize = 10, CancellationToken cancellationToken = default)
     {
         try
         {
-            var result = await _userService.GetAllUsersPaginatedAsync(pageNumber, pageSize);
+            var result = await _userService.GetAllUsersPaginatedAsync(pageNumber, pageSize, cancellationToken);
             return Ok(result);
         }
         catch (Exception ex)
@@ -153,9 +164,11 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Search users with advanced filtering, sorting, and pagination
+    /// Searches users with advanced filtering, sorting, and pagination.
     /// </summary>
-    /// <param name="query">The query.</param>
+    /// <param name="query">The query specification containing filter, sort, and pagination parameters.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A paginated result containing users matching the query criteria.</returns>
     /// <remarks>
     /// Supported filters: isActive, email, userName, isExternalLogin
     /// Supported sort fields: createdAt, email, userName, firstName, lastName
@@ -165,7 +178,7 @@ public partial class UsersController : ControllerBase
     [ProducesResponseType(typeof(PaginatedResult<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<PaginatedResult<UserDto>>> Search([FromQuery] QuerySpec query)
+    public async Task<ActionResult<PaginatedResult<UserDto>>> Search([FromQuery] QuerySpec query, CancellationToken cancellationToken)
     {
         try
         {
@@ -174,7 +187,7 @@ public partial class UsersController : ControllerBase
 
             query.Validate();
             var spec = new ApplicationUserQuerySpec(query);
-            var result = await _userService.QueryUsersAsync(spec);
+            var result = await _userService.QueryUsersAsync(spec, cancellationToken);
             return Ok(result);
         }
         catch (ArgumentException ex)
@@ -190,10 +203,10 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new user
+    /// Creates a new user account.
     /// </summary>
-    /// <param name="user">The user.</param>
-    /// <returns>Created user</returns>
+    /// <param name="user">The data transfer object containing user creation details.</param>
+    /// <returns>The created <see cref="UserDto"/>, or 400 if creation failed.</returns>
     [HttpPost("create")]
     [HasPermission("Users", "Create")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status201Created)]
@@ -218,16 +231,18 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Get current user
+    /// Gets the profile of the currently authenticated user.
     /// </summary>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The <see cref="UserDto"/> for the current user, or 404 if the identity cannot be resolved.</returns>
     [HttpGet("me")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<UserDto>> GetCurrentUser()
+    public async Task<ActionResult<UserDto>> GetCurrentUser(CancellationToken cancellationToken)
     {
         try
         {
-            var user = await _userService.GetCurrentUserAsync();
+            var user = await _userService.GetCurrentUserAsync(cancellationToken);
             if (user == null)
             {
                 _logger.LogWarning("Current user not found");
@@ -244,15 +259,17 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Get user by ID
+    /// Gets a user by their unique identifier.
     /// </summary>
-    /// <param name="id">The id.</param>
+    /// <param name="id">The unique identifier of the user to retrieve.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The <see cref="UserDto"/> for the specified user, or 404 if not found.</returns>
     [HttpGet("{id}")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<UserDto>> GetById(Guid id)
+    public async Task<ActionResult<UserDto>> GetById(Guid id, CancellationToken cancellationToken)
     {
         try
         {
@@ -265,7 +282,7 @@ public partial class UsersController : ControllerBase
             }
 
             // 2. The data is NOT in cache, fetch it from the DB
-            user = await _userService.GetUserByIdAsync(id);
+            user = await _userService.GetUserByIdAsync(id, cancellationToken);
             if (user is null)
             {
                 return NotFound();
@@ -283,19 +300,21 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Get user by email
+    /// Gets a user by their email address.
     /// </summary>
-    /// <param name="email">The email.</param>
+    /// <param name="email">The email address of the user to retrieve.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The <see cref="UserDto"/> for the specified user, or 404 if not found.</returns>
     [HttpGet("email/{email}")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<UserDto>> GetByEmail(string email)
+    public async Task<ActionResult<UserDto>> GetByEmail(string email, CancellationToken cancellationToken)
     {
         try
         {
-            var user = await _userService.GetUserByEmailAsync(email);
+            var user = await _userService.GetUserByEmailAsync(email, cancellationToken);
             if (user == null)
             {
                 _logger.LogWarning(
@@ -317,10 +336,11 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Update user
+    /// Updates an existing user's profile information.
     /// </summary>
-    /// <param name="id">The id.</param>
-    /// <param name="updateUserDto">The update User Dto.</param>
+    /// <param name="id">The unique identifier of the user to update.</param>
+    /// <param name="updateUserDto">The data transfer object containing updated user details.</param>
+    /// <returns>204 No Content if the update succeeded, or 404 if the user was not found.</returns>
     [HttpPut("{id}")]
     [HasPermission("Users", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -355,9 +375,10 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Delete user
+    /// Deletes a user by their unique identifier.
     /// </summary>
-    /// <param name="id">The id.</param>
+    /// <param name="id">The unique identifier of the user to delete.</param>
+    /// <returns>204 No Content if the deletion succeeded, or 404 if the user was not found.</returns>
     [HttpDelete("{id}")]
     [HasPermission("Users", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -389,10 +410,11 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Assign role to user
+    /// Assigns a role to a user.
     /// </summary>
-    /// <param name="id">The id.</param>
-    /// <param name="roleName">The role Name.</param>
+    /// <param name="id">The unique identifier of the user to update.</param>
+    /// <param name="roleName">The name of the role to assign to the user.</param>
+    /// <returns>204 No Content if the role was successfully assigned, or 404 if the user or role was not found.</returns>
     [HttpPost("{id}/roles/{roleName}")]
     [HasPermission("Users", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -425,10 +447,11 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Remove role from user
+    /// Removes a role from a user.
     /// </summary>
-    /// <param name="id">The id.</param>
-    /// <param name="roleName">The role Name.</param>
+    /// <param name="id">The unique identifier of the user to update.</param>
+    /// <param name="roleName">The name of the role to remove from the user.</param>
+    /// <returns>204 No Content if the role was successfully removed, or 404 if the user or role was not found.</returns>
     [HttpDelete("{id}/roles/{roleName}")]
     [HasPermission("Users", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -461,15 +484,17 @@ public partial class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Get user roles
+    /// Gets all roles assigned to the specified user.
     /// </summary>
-    /// <param name="id">The id.</param>
+    /// <param name="id">The unique identifier of the user whose roles to retrieve.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A collection of <see cref="RoleDto"/> objects assigned to the user.</returns>
     [HttpGet("{id}/roles")]
     [HasPermission("Users", "Read")]
     [ProducesResponseType(typeof(IEnumerable<RoleDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<IEnumerable<RoleDto>>> GetRoles(Guid id)
+    public async Task<ActionResult<IEnumerable<RoleDto>>> GetRoles(Guid id, CancellationToken cancellationToken)
     {
         try
         {
@@ -482,7 +507,7 @@ public partial class UsersController : ControllerBase
             }
 
             // 2. The data is NOT in cache, fetch it from the DB
-            roles = await _userService.GetUserRolesAsync(id);
+            roles = await _userService.GetUserRolesAsync(id, cancellationToken);
             await _cacheService.SaveStateAsync(cacheKey, roles);
 
             return Ok(roles);

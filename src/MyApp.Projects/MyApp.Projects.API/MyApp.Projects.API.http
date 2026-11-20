@@ -1,0 +1,24 @@
+@host = http://localhost:6010
+@token = <paste a JWT from /api/auth/login>
+
+### List projects
+GET {{host}}/api/projects
+Authorization: Bearer {{token}}
+
+### Create project
+POST {{host}}/api/projects
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "description": "Warehouse automation rollout",
+  "customerId": "00000000-0000-0000-0000-000000000000",
+  "currencyCode": "USD"
+}
+
+### Open the project (enums are numeric in requests: Planning=0, Quote=1, Open=2, Completed=3)
+POST {{host}}/api/projects/{{projectId}}/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "status": 2 }

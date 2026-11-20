@@ -31,7 +31,7 @@ public class LeadsController : ControllerBase
 
     /// <summary>Get All.</summary>
     /// <param name="query">The query.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet]
     [HasPermission("CRM", "Read")]
     [ProducesResponseType(typeof(IEnumerable<LeadDto>), StatusCodes.Status200OK)]
@@ -66,7 +66,7 @@ public class LeadsController : ControllerBase
 
     /// <summary>Get By Id.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet("{id:guid}")]
     [HasPermission("CRM", "Read")]
     [ProducesResponseType(typeof(LeadDto), StatusCodes.Status200OK)]
@@ -79,7 +79,7 @@ public class LeadsController : ControllerBase
 
     /// <summary>Create.</summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpPost]
     [HasPermission("CRM", "Create")]
     [ProducesResponseType(typeof(LeadDto), StatusCodes.Status201Created)]
@@ -94,7 +94,7 @@ public class LeadsController : ControllerBase
     /// <summary>Update.</summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpPut("{id:guid}")]
     [HasPermission("CRM", "Update")]
     [ProducesResponseType(typeof(LeadDto), StatusCodes.Status200OK)]
@@ -115,7 +115,7 @@ public class LeadsController : ControllerBase
     /// <summary>Qualify.</summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpPost("{id:guid}/qualify")]
     [HasPermission("CRM", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -135,7 +135,7 @@ public class LeadsController : ControllerBase
 
     /// <summary>Delete.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpDelete("{id:guid}")]
     [HasPermission("CRM", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

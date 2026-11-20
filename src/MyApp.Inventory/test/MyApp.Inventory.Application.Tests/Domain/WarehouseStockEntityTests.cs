@@ -4,8 +4,10 @@ using Xunit;
 
 namespace MyApp.Inventory.Application.Tests.Domain;
 
+/// <summary>Unit tests for the computed properties of the <see cref="WarehouseStock"/> domain entity.</summary>
 public class WarehouseStockEntityTests
 {
+    /// <summary>Verifies that TotalQuantity returns the sum of available and reserved quantities.</summary>
     [Fact]
     public void TotalQuantity_WithAvailableAndReserved_ReturnsSum()
     {
@@ -23,6 +25,7 @@ public class WarehouseStockEntityTests
         total.Should().Be(125);
     }
 
+    /// <summary>Verifies that TotalQuantity returns zero when both available and reserved quantities are zero.</summary>
     [Fact]
     public void TotalQuantity_WithZeroQuantities_ReturnsZero()
     {
@@ -40,6 +43,7 @@ public class WarehouseStockEntityTests
         total.Should().Be(0);
     }
 
+    /// <summary>Verifies that TotalQuantity equals the available quantity when reserved quantity is zero.</summary>
     [Fact]
     public void TotalQuantity_WithOnlyAvailable_ReturnsAvailableQuantity()
     {
@@ -57,6 +61,7 @@ public class WarehouseStockEntityTests
         total.Should().Be(50);
     }
 
+    /// <summary>Verifies that TotalQuantity equals the reserved quantity when available quantity is zero.</summary>
     [Fact]
     public void TotalQuantity_WithOnlyReserved_ReturnsReservedQuantity()
     {
@@ -74,6 +79,7 @@ public class WarehouseStockEntityTests
         total.Should().Be(30);
     }
 
+    /// <summary>Verifies that TotalQuantity correctly sums large available and reserved quantities without overflow.</summary>
     [Fact]
     public void TotalQuantity_WithLargeQuantities_ReturnsCorrectSum()
     {
@@ -91,6 +97,7 @@ public class WarehouseStockEntityTests
         total.Should().Be(int.MaxValue - 1); // Avoid overflow
     }
 
+    /// <summary>Verifies that TotalQuantity does not include the on-order quantity in its calculation.</summary>
     [Fact]
     public void TotalQuantity_IgnoresOnOrderQuantity()
     {

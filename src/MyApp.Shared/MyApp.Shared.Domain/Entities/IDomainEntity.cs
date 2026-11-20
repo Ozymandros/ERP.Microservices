@@ -1,4 +1,4 @@
-﻿
+
 namespace MyApp.Shared.Domain.Entities
 {
     /// <summary>

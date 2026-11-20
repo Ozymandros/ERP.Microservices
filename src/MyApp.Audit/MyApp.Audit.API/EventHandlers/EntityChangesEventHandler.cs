@@ -30,7 +30,7 @@ public class EntityChangesEventHandler : ControllerBase
 
     /// <summary>Ingests committed entity changes from a producer service.</summary>
     /// <param name="event">The event.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [Topic(MessagingConstants.PubSubName, MessagingConstants.Topics.AuditEntityChangesSaved)]
     [HttpPost("entity-changes-saved")]
     public async Task<IActionResult> OnEntityChangesSaved(

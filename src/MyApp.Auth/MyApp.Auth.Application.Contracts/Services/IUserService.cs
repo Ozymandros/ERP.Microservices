@@ -14,27 +14,27 @@ public interface IUserService
     /// <summary>
     /// Retrieves a user by their unique identifier.
     /// </summary>
-    Task<UserDto?> GetUserByIdAsync(Guid userId);
+    Task<UserDto?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a user by their email address.
     /// </summary>
-    Task<UserDto?> GetUserByEmailAsync(string email);
+    Task<UserDto?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves all available users.
     /// </summary>
-    Task<IEnumerable<UserDto>> GetAllUsersAsync();
+    Task<IEnumerable<UserDto>> GetAllUsersAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves users with pagination support.
     /// </summary>
-    Task<PaginatedResult<UserDto>> GetAllUsersPaginatedAsync(int pageNumber, int pageSize);
+    Task<PaginatedResult<UserDto>> GetAllUsersPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Queries users using a specification pattern.
     /// </summary>
-    Task<PaginatedResult<UserDto>> QueryUsersAsync(ISpecification<ApplicationUser> spec);
+    Task<PaginatedResult<UserDto>> QueryUsersAsync(ISpecification<ApplicationUser> spec, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates an existing user's information.
@@ -64,12 +64,12 @@ public interface IUserService
     /// <summary>
     /// Retrieves all roles assigned to a user.
     /// </summary>
-    Task<IEnumerable<RoleDto>> GetUserRolesAsync(Guid userId);
+    Task<IEnumerable<RoleDto>> GetUserRolesAsync(Guid userId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the current authenticated user.
     /// </summary>
-    Task<UserDto?> GetCurrentUserAsync();
+    Task<UserDto?> GetCurrentUserAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a new user account.

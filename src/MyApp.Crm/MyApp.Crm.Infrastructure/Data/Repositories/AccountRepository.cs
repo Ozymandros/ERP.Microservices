@@ -20,16 +20,17 @@ public sealed class AccountRepository : Repository<Account, Guid>, IAccountRepos
 
     /// <summary>Get By Id Async.</summary>
     /// <param name="id">The id.</param>
-    public override async Task<Account?> GetByIdAsync(Guid id)
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    public override async Task<Account?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Accounts
             .Include(a => a.Contacts)
-            .FirstOrDefaultAsync(a => a.Id == id);
+            .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
     }
 
     /// <summary>Get By Customer Id Async.</summary>
     /// <param name="customerId">The customer Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<Account?> GetByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default)
     {
         return await _context.Accounts
@@ -39,7 +40,7 @@ public sealed class AccountRepository : Repository<Account, Guid>, IAccountRepos
 
     /// <summary>Get By Tax Id Async.</summary>
     /// <param name="taxId">The tax Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<Account?> GetByTaxIdAsync(string taxId, CancellationToken cancellationToken = default)
     {
         return await _context.Accounts
@@ -48,7 +49,7 @@ public sealed class AccountRepository : Repository<Account, Guid>, IAccountRepos
     }
 
     /// <summary>List Async.</summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<IEnumerable<Account>> ListAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Accounts

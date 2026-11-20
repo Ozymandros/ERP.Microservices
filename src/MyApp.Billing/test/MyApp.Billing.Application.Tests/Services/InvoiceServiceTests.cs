@@ -8,6 +8,8 @@ using MyApp.Billing.Domain.Repositories;
 using MyApp.Billing.Domain.Specifications;
 using MyApp.Shared.Domain.DTOs;
 using MyApp.Shared.Domain.Exceptions;
+using MyApp.Shared.Domain.Constants;
+using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Repositories;
@@ -15,6 +17,7 @@ using Xunit;
 
 namespace MyApp.Billing.Application.Tests.Services;
 
+/// <summary>Unit tests for <see cref="InvoiceService"/> covering invoice creation, issuance, payment recording, cancellation, and credit note creation.</summary>
 public class InvoiceServiceTests
 {
     private readonly Mock<IInvoiceRepository> _invoiceRepo;
@@ -22,8 +25,10 @@ public class InvoiceServiceTests
     private readonly Mock<ILogger<InvoiceService>> _logger;
     private readonly Mock<IUnitOfWork> _unitOfWork;
     private readonly Mock<IEventPublisher> _eventPublisher;
+    private readonly Mock<IServiceInvoker> _serviceInvoker;
     private readonly InvoiceService _sut;
 
+    /// <summary>Initializes mocks and constructs the <see cref="InvoiceService"/> system under test.</summary>
     public InvoiceServiceTests()
     {
         _invoiceRepo = new Mock<IInvoiceRepository>();
@@ -31,6 +36,7 @@ public class InvoiceServiceTests
         _logger = new Mock<ILogger<InvoiceService>>();
         _unitOfWork = new Mock<IUnitOfWork>();
         _eventPublisher = new Mock<IEventPublisher>();
+        _serviceInvoker = new Mock<IServiceInvoker>();
 
         _unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<EntityEntryDto>());
@@ -38,6 +44,7 @@ public class InvoiceServiceTests
         _sut = new InvoiceService(
             _invoiceRepo.Object,
             _creditNoteRepo.Object,
+            _serviceInvoker.Object,
             _logger.Object,
             _unitOfWork.Object,
             _eventPublisher.Object);
@@ -116,7 +123,7 @@ public class InvoiceServiceTests
 
         // Assert
         _eventPublisher.Verify(e => e.PublishAsync(
-            "billing.invoice.created",
+            MessagingConstants.Topics.BillingInvoiceCreated,
             It.IsAny<object>(),
             It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -144,6 +151,7 @@ public class InvoiceServiceTests
 
         // Assert
         result.Currency.Should().Be("EUR");
+        result.OrderId.Should().Be(orderId);
     }
 
     [Fact]
@@ -220,7 +228,7 @@ public class InvoiceServiceTests
 
         // Assert
         _eventPublisher.Verify(e => e.PublishAsync(
-            "billing.invoice.issued",
+            MessagingConstants.Topics.BillingInvoiceIssued,
             It.IsAny<object>(),
             It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -340,7 +348,7 @@ public class InvoiceServiceTests
 
         // Assert
         _eventPublisher.Verify(e => e.PublishAsync(
-            "billing.invoice.paid",
+            MessagingConstants.Topics.BillingInvoicePaid,
             It.IsAny<object>(),
             It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -410,7 +418,7 @@ public class InvoiceServiceTests
 
         // Assert
         _eventPublisher.Verify(e => e.PublishAsync(
-            "billing.invoice.cancelled",
+            MessagingConstants.Topics.BillingInvoiceCancelled,
             It.IsAny<object>(),
             It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -782,4 +790,111 @@ public class InvoiceServiceTests
         result.Lines.Should().HaveCount(1);
     }
 
+    // ─── Project integration (source fields, guard, decimal quantities) ─────
+
+    private static ProjectInvoiceRequestedEvent SampleProjectRequest(Guid? requestId = null) =>
+        new(
+            requestId ?? Guid.NewGuid(),
+            Guid.NewGuid(),
+            "PRJ-2026-00001",
+            Guid.NewGuid(),
+            "eur",
+            new List<ProjectInvoiceLineEvent>
+            {
+                new(Guid.NewGuid(), "Consulting hours", 7.5m, 90m, 0m, 21m),
+                new(Guid.NewGuid(), "Travel expenses", 1m, 120m, 0m, 0m)
+            });
+
+    [Fact]
+    public async Task CreateAndIssueFromFulfillmentAsync_ProjectSource_IsSkippedWithoutCallingSales()
+    {
+        var @event = new OrderFulfilledEvent(
+            Guid.NewGuid(), "ORD-1", OrderTypes.Outbound, Guid.NewGuid(), DateTime.UtcNow, null,
+            Guid.NewGuid(), new List<OrderLineEvent> { new(Guid.NewGuid(), 2) }, DocumentSources.Project);
+
+        var result = await _sut.CreateAndIssueFromFulfillmentAsync(@event);
+
+        result.Should().BeNull();
+        _serviceInvoker.VerifyNoOtherCalls();
+        _invoiceRepo.Verify(r => r.AddAsync(It.IsAny<Invoice>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task CreateCreditNoteFromReturnFulfillmentAsync_ProjectSource_IsSkipped()
+    {
+        var @event = new OrderFulfilledEvent(
+            Guid.NewGuid(), "ORD-2", OrderTypes.Return, Guid.NewGuid(), DateTime.UtcNow, null,
+            Guid.NewGuid(), new List<OrderLineEvent> { new(Guid.NewGuid(), 1) }, DocumentSources.Project);
+
+        var result = await _sut.CreateCreditNoteFromReturnFulfillmentAsync(@event);
+
+        result.Should().BeNull();
+        _invoiceRepo.Verify(r => r.GetInvoicesByOrderIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task CreateFromProjectRequestAsync_DefaultsToDraft_WithSourceAndDecimalQuantities()
+    {
+        var request = SampleProjectRequest();
+        _invoiceRepo.Setup(r => r.GetBySourceAsync(DocumentSources.Project, request.RequestId, It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(new List<Invoice>());
+        _invoiceRepo.Setup(r => r.GetByInvoiceNumberAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync((Invoice?)null);
+        Invoice? added = null;
+        _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>()))
+                    .Callback<Invoice>(i => added = i)
+                    .Returns<Invoice>(i => Task.FromResult(i));
+
+        var result = await _sut.CreateFromProjectRequestAsync(request, autoIssue: false);
+
+        result.Should().NotBeNull();
+        result!.Status.Should().Be(InvoiceStatus.Draft.ToString());
+        result.SourceType.Should().Be(DocumentSources.Project);
+        result.SourceId.Should().Be(request.RequestId);
+        result.Currency.Should().Be("EUR");
+        result.OrderId.Should().BeNull();
+        result.Lines.Should().HaveCount(2);
+        result.Lines[0].Quantity.Should().Be(7.5m);
+        result.TotalNet.Should().Be(7.5m * 90m + 120m);
+        added!.SourceType.Should().Be(DocumentSources.Project);
+        _invoiceRepo.Verify(r => r.GetByIdAsync(It.IsAny<Guid>()), Times.Never); // not issued
+    }
+
+    [Fact]
+    public async Task CreateFromProjectRequestAsync_AutoIssue_IssuesInvoice()
+    {
+        var request = SampleProjectRequest();
+        Invoice? added = null;
+        _invoiceRepo.Setup(r => r.GetBySourceAsync(DocumentSources.Project, request.RequestId, It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(new List<Invoice>());
+        _invoiceRepo.Setup(r => r.GetByInvoiceNumberAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync((Invoice?)null);
+        _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>()))
+                    .Callback<Invoice>(i => added = i)
+                    .Returns<Invoice>(i => Task.FromResult(i));
+        _invoiceRepo.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(() => added);
+
+        var result = await _sut.CreateFromProjectRequestAsync(request, autoIssue: true);
+
+        result!.Status.Should().Be(InvoiceStatus.Issued.ToString());
+        result.InvoiceNumber.Should().StartWith("INV-PRJ-2026-00001-");
+        result.SourceId.Should().Be(request.RequestId);
+    }
+
+    [Fact]
+    public async Task CreateFromProjectRequestAsync_ExistingInvoiceForRequest_IsIdempotent()
+    {
+        var request = SampleProjectRequest();
+        var existing = new Invoice(Guid.NewGuid(), "DRAFT-EXISTING", request.CustomerId, "EUR");
+        existing.LinkToSource(DocumentSources.Project, request.RequestId);
+        existing.AddLine("Consulting hours", 7.5m, 90m, 21m);
+        _invoiceRepo.Setup(r => r.GetBySourceAsync(DocumentSources.Project, request.RequestId, It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(new List<Invoice> { existing });
+
+        var result = await _sut.CreateFromProjectRequestAsync(request, autoIssue: false);
+
+        result!.Id.Should().Be(existing.Id);
+        _invoiceRepo.Verify(r => r.AddAsync(It.IsAny<Invoice>()), Times.Never);
+    }
 }
+

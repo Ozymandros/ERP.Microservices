@@ -30,7 +30,7 @@ public sealed class ContactsController : ControllerBase
 
     /// <summary>Get All.</summary>
     /// <param name="query">The query.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet]
     [HasPermission("CRM", "Read")]
     [ProducesResponseType(typeof(IEnumerable<ContactDto>), StatusCodes.Status200OK)]
@@ -58,7 +58,7 @@ public sealed class ContactsController : ControllerBase
 
     /// <summary>Get By Id.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet("{id:guid}")]
     [HasPermission("CRM", "Read")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
@@ -69,7 +69,7 @@ public sealed class ContactsController : ControllerBase
 
     /// <summary>Get By Account.</summary>
     /// <param name="accountId">The account Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpGet("/api/crm/accounts/{accountId:guid}/contacts")]
     [HasPermission("CRM", "Read")]
     public async Task<IActionResult> GetByAccount(Guid accountId, CancellationToken cancellationToken)
@@ -80,7 +80,7 @@ public sealed class ContactsController : ControllerBase
 
     /// <summary>Create.</summary>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpPost]
     [HasPermission("CRM", "Create")]
     public async Task<IActionResult> Create([FromBody] CreateContactDto dto, CancellationToken cancellationToken)
@@ -104,7 +104,7 @@ public sealed class ContactsController : ControllerBase
     /// <summary>Update.</summary>
     /// <param name="id">The id.</param>
     /// <param name="dto">The dto.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpPut("{id:guid}")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateContactDto dto, CancellationToken cancellationToken)
@@ -124,7 +124,7 @@ public sealed class ContactsController : ControllerBase
     /// <summary>Set Primary.</summary>
     /// <param name="accountId">The account Id.</param>
     /// <param name="contactId">The contact Id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpPost("/api/crm/accounts/{accountId:guid}/contacts/{contactId:guid}/set-primary")]
     [HasPermission("CRM", "Update")]
     public async Task<IActionResult> SetPrimary(Guid accountId, Guid contactId, CancellationToken cancellationToken)
@@ -146,7 +146,7 @@ public sealed class ContactsController : ControllerBase
 
     /// <summary>Deactivate.</summary>
     /// <param name="id">The id.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     [HttpDelete("{id:guid}")]
     [HasPermission("CRM", "Delete")]
     public async Task<IActionResult> Deactivate(Guid id, CancellationToken cancellationToken)

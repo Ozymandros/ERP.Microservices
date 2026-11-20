@@ -36,6 +36,8 @@ public abstract class BaseSpecification<T> : ISpecification<T> where T : class
     /// </summary>
     public QuerySpec Query { get; protected set; }
 
+    /// <summary>Initializes a new <see cref="BaseSpecification{T}"/> with the given query parameters.</summary>
+    /// <param name="query">Filtering, sorting, and pagination parameters; uses defaults when <see langword="null"/>.</param>
     protected BaseSpecification(QuerySpec query)
     {
         Query = query ?? new QuerySpec();

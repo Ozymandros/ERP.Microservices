@@ -23,32 +23,36 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
 
         /// <summary>Get By Id Async.</summary>
         /// <param name="id">The id.</param>
-        public override async Task<Customer?> GetByIdAsync(Guid id)
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        public override async Task<Customer?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Customers
                 .Include(c => c.Orders)
-                .FirstOrDefaultAsync(c => c.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
         }
 
         /// <summary>List Async.</summary>
-        public async Task<IEnumerable<Customer>> ListAsync()
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        public async Task<IEnumerable<Customer>> ListAsync(CancellationToken cancellationToken = default)
         {
             return await _context.Customers
                 .Include(c => c.Orders)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
 
         /// <summary>Get All Async.</summary>
-        public override async Task<IEnumerable<Customer>> GetAllAsync()
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        public override async Task<IEnumerable<Customer>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await ListAsync();
+            return await ListAsync(cancellationToken);
         }
 
         /// <summary>Get All Paginated Async.</summary>
         /// <param name="pageNumber">The page Number.</param>
         /// <param name="pageSize">The page Size.</param>
         /// <param name="includes">The includes.</param>
-        public override async Task<PaginatedResult<Customer>> GetAllPaginatedAsync(int pageNumber, int pageSize, IEnumerable<Expression<Func<Customer, object>>>? includes = null)
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        public override async Task<PaginatedResult<Customer>> GetAllPaginatedAsync(int pageNumber, int pageSize, IEnumerable<Expression<Func<Customer, object>>>? includes = null, CancellationToken cancellationToken = default)
         {
             var paginationParams = new PaginationParams(pageNumber, pageSize);
             IQueryable<Customer> query = _context.Customers.Include(c => c.Orders);
@@ -59,11 +63,11 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
                     query = query.Include(includeExpression);
                 }
 
-            var totalCount = await query.CountAsync();
+            var totalCount = await query.CountAsync(cancellationToken);
             var items = await query
                 .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
                 .Take(paginationParams.PageSize)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             return new PaginatedResult<Customer>(items, paginationParams.PageNumber, paginationParams.PageSize, totalCount);
         }
@@ -83,24 +87,26 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         /// Gets the name asynchronously.
         /// </summary>
         /// <param name="name">The name.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
-        public async Task<Customer?> GetByNameAsync(string name)
+        public async Task<Customer?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
         {
             return await _context.Customers
                 .Include(c => c.Orders)
-                .FirstOrDefaultAsync(c => c.Name == name);
+                .FirstOrDefaultAsync(c => c.Name == name, cancellationToken);
         }
 
         /// <summary>
         /// Gets the email asynchronously.
         /// </summary>
         /// <param name="email">The email.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
-        public async Task<Customer?> GetByEmailAsync(string email)
+        public async Task<Customer?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
         {
             return await _context.Customers
                 .Include(c => c.Orders)
-                .FirstOrDefaultAsync(c => c.Email == email);
+                .FirstOrDefaultAsync(c => c.Email == email, cancellationToken);
         }
     }
 }

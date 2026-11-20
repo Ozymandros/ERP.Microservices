@@ -15,27 +15,27 @@ public interface IRoleService
     /// <summary>
     /// Retrieves a role by its unique identifier.
     /// </summary>
-    Task<RoleDto?> GetRoleByIdAsync(Guid roleId);
+    Task<RoleDto?> GetRoleByIdAsync(Guid roleId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a role by its name.
     /// </summary>
-    Task<RoleDto?> GetRoleByNameAsync(string name);
+    Task<RoleDto?> GetRoleByNameAsync(string name, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves all available roles.
     /// </summary>
-    Task<IEnumerable<RoleDto>> GetAllRolesAsync();
+    Task<IEnumerable<RoleDto>> GetAllRolesAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves roles with pagination support.
     /// </summary>
-    Task<PaginatedResult<RoleDto>> GetAllRolesPaginatedAsync(int pageNumber, int pageSize);
+    Task<PaginatedResult<RoleDto>> GetAllRolesPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Queries roles using a specification pattern.
     /// </summary>
-    Task<PaginatedResult<RoleDto>> QueryRolesAsync(ISpecification<ApplicationRole> spec);
+    Task<PaginatedResult<RoleDto>> QueryRolesAsync(ISpecification<ApplicationRole> spec, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a new role.
@@ -55,7 +55,7 @@ public interface IRoleService
     /// <summary>
     /// Retrieves all users assigned to a specific role.
     /// </summary>
-    Task<IEnumerable<UserDto>> GetUsersInRoleAsync(string roleName);
+    Task<IEnumerable<UserDto>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Assigns a permission to a role.
@@ -70,12 +70,12 @@ public interface IRoleService
     /// <summary>
     /// Determines whether a role has a specific permission.
     /// </summary>
-    Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId);
+    Task<bool> HasPermissionAsync(Guid roleId, Guid permissionId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves all permissions assigned to a role.
     /// </summary>
-    Task<IEnumerable<PermissionDto>> GetPermissionsForRoleAsync(Guid roleId);
+    Task<IEnumerable<PermissionDto>> GetPermissionsForRoleAsync(Guid roleId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Assigns multiple permissions to a role in a single operation.

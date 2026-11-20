@@ -37,6 +37,9 @@ spec:
               value: "http://0.0.0.0:18889"
             - name: ASPIRE_DASHBOARD_OTLP_HTTP_ENDPOINT_URL
               value: "http://0.0.0.0:18890"
+            # ClusterIP-only UI (port-forward / internal). OTLP stays ApiKey-protected.
+            - name: DASHBOARD__FRONTEND__AUTHMODE
+              value: "Unsecured"
             - name: DASHBOARD__OTLP__AUTHMODE
               value: "ApiKey"
             - name: DASHBOARD__OTLP__PRIMARYAPIKEY

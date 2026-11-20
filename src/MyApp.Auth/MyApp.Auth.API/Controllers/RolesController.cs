@@ -17,6 +17,9 @@ using System;
 using MyApp.Shared.Infrastructure.Export;
 namespace MyApp.Auth.API.Controllers;
 
+/// <summary>
+/// Manages role CRUD operations, role-permission assignments, and role membership queries.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 [AuthorizeJwt]
@@ -30,13 +33,13 @@ public class RolesController : ControllerBase
     private readonly ILogger<RolesController> _logger;
 
     /// <summary>
-    /// Initializes a new instance of the RolesController class.
+    /// Initializes a new instance of the <see cref="RolesController"/> class.
     /// </summary>
-    /// <param name="roleService">The role Service.</param>
-    /// <param name="logger">The logger.</param>
-    /// <param name="cacheService">The cache Service.</param>
-    /// <param name="permissionService">The permission Service.</param>
-    /// <param name="logSanitizer">The log Sanitizer.</param>
+    /// <param name="roleService">The service used to manage roles.</param>
+    /// <param name="logger">The logger for this controller.</param>
+    /// <param name="cacheService">The distributed cache service.</param>
+    /// <param name="permissionService">The service used to manage permissions.</param>
+    /// <param name="logSanitizer">The log sanitizer for masking sensitive values in log output.</param>
     public RolesController(IRoleService roleService,
         ILogger<RolesController> logger,
         ICacheService cacheService,
@@ -51,8 +54,9 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Export all roles as XLSX
+    /// Exports all roles as an XLSX spreadsheet file.
     /// </summary>
+    /// <returns>An XLSX file containing all roles.</returns>
     [HttpGet("export-xlsx")]
     [HasPermission("Roles", "Read")]
     [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
@@ -74,8 +78,9 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Export all roles as PDF
+    /// Exports all roles as a PDF file.
     /// </summary>
+    /// <returns>A PDF file containing all roles.</returns>
     [HttpGet("export-pdf")]
     [HasPermission("Roles", "Read")]
     [Produces("application/pdf")]
@@ -97,9 +102,10 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Get all roles (optionally paginated and filtered)
+    /// Gets all roles, or executes a filtered/paginated query when query parameters are present.
     /// </summary>
-    /// <param name="query">The query.</param>
+    /// <param name="query">Optional query specification for filtering, sorting, and pagination.</param>
+    /// <returns>A list of <see cref="RoleDto"/> objects, or a paginated result when query parameters are provided.</returns>
     [HttpGet]
     [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(IEnumerable<RoleDto>), StatusCodes.Status200OK)]
@@ -139,10 +145,11 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Get all roles with pagination
+    /// Gets all roles with explicit pagination.
     /// </summary>
-    /// <param name="pageNumber">The page Number.</param>
-    /// <param name="pageSize">The page Size.</param>
+    /// <param name="pageNumber">The 1-based page number to retrieve (default: 1).</param>
+    /// <param name="pageSize">The number of items per page (default: 10).</param>
+    /// <returns>A paginated result containing roles for the requested page.</returns>
     [HttpGet("paginated")]
     [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<RoleDto>), StatusCodes.Status200OK)]
@@ -162,9 +169,10 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Search roles with advanced filtering, sorting, and pagination
+    /// Searches roles with advanced filtering, sorting, and pagination.
     /// </summary>
-    /// <param name="query">The query.</param>
+    /// <param name="query">The query specification containing filter, sort, and pagination parameters.</param>
+    /// <returns>A paginated result containing roles matching the query criteria.</returns>
     /// <remarks>
     /// Supported filters: name, description
     /// Supported sort fields: id, name, createdAt
@@ -199,9 +207,10 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Get role by ID
+    /// Gets a role by its unique identifier.
     /// </summary>
-    /// <param name="id">The id.</param>
+    /// <param name="id">The unique identifier of the role to retrieve.</param>
+    /// <returns>The <see cref="RoleDto"/> for the specified role, or 404 if not found.</returns>
     [HttpGet("{id}")]
     [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(RoleDto), StatusCodes.Status200OK)]
@@ -239,9 +248,10 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Get role by name
+    /// Gets a role by its name.
     /// </summary>
-    /// <param name="name">The name.</param>
+    /// <param name="name">The name of the role to retrieve.</param>
+    /// <returns>The <see cref="RoleDto"/> for the specified role, or 404 if not found.</returns>
     [HttpGet("name/{name}")]
     [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(RoleDto), StatusCodes.Status200OK)]
@@ -268,9 +278,10 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Create new role
+    /// Creates a new role.
     /// </summary>
-    /// <param name="createRoleDto">The create Role Dto.</param>
+    /// <param name="createRoleDto">The data transfer object containing role creation details.</param>
+    /// <returns>The created <see cref="RoleDto"/>, or 409 if the role already exists.</returns>
     [HttpPost]
     [HasPermission("Roles", "Create")]
     [ProducesResponseType(typeof(RoleDto), StatusCodes.Status201Created)]
@@ -304,10 +315,11 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Update role
+    /// Updates an existing role.
     /// </summary>
-    /// <param name="id">The id.</param>
-    /// <param name="updateRoleDto">The update Role Dto.</param>
+    /// <param name="id">The unique identifier of the role to update.</param>
+    /// <param name="updateRoleDto">The data transfer object containing updated role details.</param>
+    /// <returns>204 No Content if the update succeeded, or 404 if the role was not found.</returns>
     [HttpPut("{id}")]
     [HasPermission("Roles", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -342,9 +354,10 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Delete role
+    /// Deletes a role by its unique identifier.
     /// </summary>
-    /// <param name="id">The id.</param>
+    /// <param name="id">The unique identifier of the role to delete.</param>
+    /// <returns>204 No Content if the deletion succeeded, or 404 if the role was not found.</returns>
     [HttpDelete("{id}")]
     [HasPermission("Roles", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -376,9 +389,10 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Get users in role
+    /// Gets all users assigned to the specified role.
     /// </summary>
-    /// <param name="name">The name.</param>
+    /// <param name="name">The name of the role whose members to retrieve.</param>
+    /// <returns>A collection of <see cref="UserDto"/> objects representing users in the role.</returns>
     [HttpGet("{name}/users")]
     [HasPermission("Roles", "Read")]
     [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
@@ -398,11 +412,11 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Adds a permission to role.
+    /// Assigns a single permission to a role.
     /// </summary>
-    /// <param name="roleId">The role Id.</param>
-    /// <param name="permissionId">The permission Id.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
+    /// <param name="roleId">The unique identifier of the role to update.</param>
+    /// <param name="permissionId">The unique identifier of the permission to assign.</param>
+    /// <returns>204 No Content if successful, 404 if the role or permission is not found, or 409 if the assignment already exists.</returns>
     [HttpPost("{roleId}/permissions")]
     [HasPermission("Roles", "Update")]
     public async Task<IActionResult> AddPermissionToRole(Guid roleId, Guid permissionId)
@@ -474,11 +488,11 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Remove a permission from a role
+    /// Removes a permission from a role.
     /// </summary>
-    /// <param name="roleId">The role Id.</param>
-    /// <param name="permissionId">The permission Id.</param>
-    /// <returns>204 No Content if successful, 404 if role/permission not found, 500 on error</returns>
+    /// <param name="roleId">The unique identifier of the role to update.</param>
+    /// <param name="permissionId">The unique identifier of the permission to remove.</param>
+    /// <returns>204 No Content if successful (or the assignment did not exist), 404 if the role is not found, or 500 on failure.</returns>
     [HttpDelete("{roleId}/permissions/{permissionId}")]
     [HasPermission("Roles", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -547,10 +561,10 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Gets the role permissions.
+    /// Gets all permissions assigned to the specified role.
     /// </summary>
-    /// <param name="roleId">The role Id.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
+    /// <param name="roleId">The unique identifier of the role whose permissions to retrieve.</param>
+    /// <returns>A collection of permission DTOs assigned to the role, or 404 if the role is not found.</returns>
     [HttpGet("{roleId}/permissions")]
     [HasPermission("Roles", "Read")]
     public async Task<IActionResult> GetRolePermissions(Guid roleId)
@@ -583,10 +597,11 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Add multiple permissions to a role
+    /// Assigns multiple permissions to a role in a single operation.
     /// </summary>
-    /// <param name="roleId">The role Id.</param>
-    /// <param name="permissionIds">The permission Ids.</param>
+    /// <param name="roleId">The unique identifier of the role to update.</param>
+    /// <param name="permissionIds">The collection of permission identifiers to assign to the role.</param>
+    /// <returns>204 No Content if all permissions were successfully assigned, 400 if no IDs are provided, or 404 if the role is not found.</returns>
     [HttpPost("{roleId}/permissions/bulk")]
     [HasPermission("Roles", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -616,10 +631,11 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
-    /// Remove multiple permissions from a role
+    /// Removes multiple permissions from a role in a single operation.
     /// </summary>
-    /// <param name="roleId">The role Id.</param>
-    /// <param name="permissionIds">The permission Ids.</param>
+    /// <param name="roleId">The unique identifier of the role to update.</param>
+    /// <param name="permissionIds">The collection of permission identifiers to remove from the role.</param>
+    /// <returns>204 No Content if all permissions were successfully removed, 400 if no IDs are provided, or 404 if the role is not found.</returns>
     [HttpDelete("{roleId}/permissions/bulk")]
     [HasPermission("Roles", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

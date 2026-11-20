@@ -11,17 +11,17 @@ public interface IRefreshTokenRepository : IRepository<RefreshToken, Guid>
     /// <summary>
     /// Retrieves a refresh token by its token value.
     /// </summary>
-    Task<RefreshToken?> GetByTokenAsync(string token);
+    Task<RefreshToken?> GetByTokenAsync(string token, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves all refresh tokens for a specific user.
     /// </summary>
-    Task<IEnumerable<RefreshToken>> GetByUserIdAsync(Guid userId);
+    Task<IEnumerable<RefreshToken>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a valid (not revoked and not expired) refresh token for a specific user.
     /// </summary>
-    Task<RefreshToken?> GetValidRefreshTokenAsync(Guid userId, string token);
+    Task<RefreshToken?> GetValidRefreshTokenAsync(Guid userId, string token, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates and persists a new refresh token.
@@ -31,10 +31,10 @@ public interface IRefreshTokenRepository : IRepository<RefreshToken, Guid>
     /// <summary>
     /// Revokes a specific refresh token by marking it as revoked.
     /// </summary>
-    Task RevokeAsync(Guid tokenId);
+    Task RevokeAsync(Guid tokenId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Revokes all refresh tokens for a specific user.
     /// </summary>
-    Task RevokeUserTokensAsync(Guid userId);
+    Task RevokeUserTokensAsync(Guid userId, CancellationToken cancellationToken = default);
 }

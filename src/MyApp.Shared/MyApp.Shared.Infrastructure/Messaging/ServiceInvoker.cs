@@ -52,6 +52,16 @@ public class ServiceInvoker : IServiceInvoker
         _httpContextAccessor = httpContextAccessor;
     }
 
+    /// <summary>Invokes a method on a remote Dapr-enabled service with a typed request and response.</summary>
+    /// <typeparam name="TRequest">The type of the request payload.</typeparam>
+    /// <typeparam name="TResponse">The expected response type.</typeparam>
+    /// <param name="serviceName">The Dapr app-ID of the target service.</param>
+    /// <param name="methodPath">The relative path of the method to invoke.</param>
+    /// <param name="httpMethod">The HTTP method to use.</param>
+    /// <param name="request">The request payload to send.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The deserialized response from the target service.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="serviceName"/> or <paramref name="methodPath"/> is null or empty.</exception>
     public async Task<TResponse> InvokeAsync<TRequest, TResponse>(
         string serviceName,
         string methodPath,
@@ -78,13 +88,11 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            var httpRequest = CreateRequest(serviceName, methodPath, httpMethod, request);
+            ApplyCallerAuthorization(httpRequest);
+
 #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
-            var response = await _daprClient.InvokeMethodAsync<TRequest, TResponse>(
-                httpMethod,
-                serviceName,
-                methodPath,
-                request,
-                cancellationToken);
+            var response = await _daprClient.InvokeMethodAsync<TResponse>(httpRequest, cancellationToken);
 #pragma warning restore CS0618
 
             if (_enableLogging)
@@ -106,6 +114,14 @@ public class ServiceInvoker : IServiceInvoker
         }
     }
 
+    /// <summary>Sends a GET request to the specified service method with a typed request and response.</summary>
+    /// <typeparam name="TRequest">The type of the request payload.</typeparam>
+    /// <typeparam name="TResponse">The expected response type.</typeparam>
+    /// <param name="serviceName">The Dapr app-ID of the target service.</param>
+    /// <param name="methodPath">The relative path of the method to invoke.</param>
+    /// <param name="request">The request payload to send.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The deserialized response from the target service.</returns>
     public async Task<TResponse> GetAsync<TRequest, TResponse>(
         string serviceName,
         string methodPath,
@@ -113,6 +129,14 @@ public class ServiceInvoker : IServiceInvoker
         CancellationToken cancellationToken = default) => await InvokeAsync<TRequest, TResponse>(
             serviceName, methodPath, HttpMethod.Get, request, cancellationToken);
 
+    /// <summary>Invokes a method on a remote Dapr-enabled service with no request body, returning a typed response.</summary>
+    /// <typeparam name="TResponse">The expected response type.</typeparam>
+    /// <param name="serviceName">The Dapr app-ID of the target service.</param>
+    /// <param name="methodPath">The relative path of the method to invoke.</param>
+    /// <param name="httpMethod">The HTTP method to use.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The deserialized response from the target service.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="serviceName"/> or <paramref name="methodPath"/> is null or empty.</exception>
     public async Task<TResponse> InvokeAsync<TResponse>(
         string serviceName,
         string methodPath,
@@ -138,12 +162,11 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            var httpRequest = CreateRequest(serviceName, methodPath, httpMethod);
+            ApplyCallerAuthorization(httpRequest);
+
 #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
-            var response = await _daprClient.InvokeMethodAsync<TResponse>(
-                httpMethod,
-                serviceName,
-                methodPath,
-                cancellationToken);
+            var response = await _daprClient.InvokeMethodAsync<TResponse>(httpRequest, cancellationToken);
 #pragma warning restore CS0618
 
             if (_enableLogging)
@@ -171,7 +194,7 @@ public class ServiceInvoker : IServiceInvoker
     /// <param name="serviceName">The service Name.</param>
     /// <param name="methodPath">The method Path.</param>
     /// <param name="httpMethod">The http Method.</param>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task InvokeAsync(
         string serviceName,
         string methodPath,
@@ -197,12 +220,11 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            var httpRequest = CreateRequest(serviceName, methodPath, httpMethod);
+            ApplyCallerAuthorization(httpRequest);
+
 #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
-            await _daprClient.InvokeMethodAsync(
-                httpMethod,
-                serviceName,
-                methodPath,
-                cancellationToken);
+            await _daprClient.InvokeMethodAsync(httpRequest, cancellationToken);
 #pragma warning restore CS0618
 
             if (_enableLogging)
@@ -246,27 +268,23 @@ public class ServiceInvoker : IServiceInvoker
 
         ArgumentNullException.ThrowIfNull(httpMethod);
 
-        HttpRequestMessage request;
-
         // 1. Gestionar Query Parameters
         string finalPath = methodPath;
         if (queryParams != null && queryParams.Count > 0)
         {
-            // Your key/value validation loop is correct
             finalPath = QueryHelpers.AddQueryString(methodPath, queryParams);
         }
 
         // 2. Create the base request to Dapr
         // IMPORTANT: Do not pass the 'requestBody' here yet so we keep full control
-        request = _daprClient.CreateInvokeMethodRequest(httpMethod, serviceName, finalPath);
+        var request = _daprClient.CreateInvokeMethodRequest(httpMethod, serviceName, finalPath);
 
         // 3. Handle the body (ONLY if it is not GET)
         if (requestBody != null)
         {
             if (httpMethod == HttpMethod.Get)
             {
-                // Optional: You can throw an exception or simply ignore it and log a warning
-                _logger.LogWarning("Intent de passar un body en una petici� GET al servei {Service}. El body ser� ignorat.", serviceName);
+                _logger.LogWarning("Intent de passar un body en una petició GET al servei {Service}. El body serà ignorat.", serviceName);
             }
             else
             {
@@ -275,11 +293,15 @@ public class ServiceInvoker : IServiceInvoker
             }
         }
 
-        // ... (Logging final igual)
-
         return request;
     }
 
+    /// <summary>Invokes a Dapr service using a pre-built <see cref="HttpRequestMessage"/>, forwarding the caller's Bearer token if present.</summary>
+    /// <typeparam name="TResponse">The expected response type.</typeparam>
+    /// <param name="request">The pre-built HTTP request message targeting the Dapr sidecar.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The deserialized response from the target service.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is null.</exception>
     public async Task<TResponse> InvokeAsync<TResponse>(
         HttpRequestMessage request,
         CancellationToken cancellationToken = default)
@@ -297,20 +319,15 @@ public class ServiceInvoker : IServiceInvoker
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is true)
-            {
-                var token = BearerTokenHelper.ExtractToken(authHeader);
-                if (!string.IsNullOrWhiteSpace(token))
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            }
+            ApplyCallerAuthorization(request);
 
 #pragma warning disable CS0618 // Dapr InvokeMethodAsync is obsolete but intentionally used
             var response = await _daprClient.InvokeMethodAsync<TResponse>(request, cancellationToken);
+#pragma warning restore CS0618
 
             if (_enableLogging)
             {
                 _logger.LogTrace("Successfully invoked service with custom request");
-#pragma warning restore CS0618
             }
 
             return response;
@@ -323,5 +340,18 @@ public class ServiceInvoker : IServiceInvoker
                 new { Method = request.Method?.ToString(), RequestUri = request.RequestUri?.ToString() });
             throw;
         }
+    }
+
+    /// <summary>
+    /// Copies the inbound request's Bearer token onto the outbound Dapr invoke request when present.
+    /// </summary>
+    private void ApplyCallerAuthorization(HttpRequestMessage request)
+    {
+        if (_httpContextAccessor.HttpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) is not true)
+            return;
+
+        var token = BearerTokenHelper.ExtractToken(authHeader);
+        if (!string.IsNullOrWhiteSpace(token))
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
 }

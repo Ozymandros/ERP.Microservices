@@ -7,8 +7,11 @@ using Xunit;
 
 namespace MyApp.Purchasing.Application.Tests.Specifications;
 
+/// <summary>Unit tests for the <see cref="MyApp.Purchasing.Domain.Specifications.SupplierQuerySpec"/> specification.</summary>
 public class SupplierQuerySpecTests
 {
+    /// <summary>Creates a fixed set of <see cref="MyApp.Purchasing.Domain.Entities.Supplier"/> instances for use in tests.</summary>
+    /// <returns>An <see cref="IQueryable{T}"/> containing the test suppliers.</returns>
     private static IQueryable<Supplier> CreateTestData()
     {
         return new List<Supplier>
@@ -19,6 +22,7 @@ public class SupplierQuerySpecTests
         }.AsQueryable();
     }
 
+    /// <summary>Verifies that filtering by name returns only suppliers whose names contain the search value.</summary>
     [Fact]
     public void ApplyFilters_WithNameFilter_ReturnsFilteredSuppliers()
     {
@@ -32,6 +36,7 @@ public class SupplierQuerySpecTests
         result.Should().HaveCount(2);
     }
 
+    /// <summary>Verifies that filtering by email returns only suppliers whose email contains the search value.</summary>
     [Fact]
     public void ApplyFilters_WithEmailFilter_ReturnsFilteredSuppliers()
     {
@@ -45,6 +50,7 @@ public class SupplierQuerySpecTests
         result.Should().HaveCount(1);
     }
 
+    /// <summary>Verifies that filtering by contact name returns only suppliers whose contact name contains the search value.</summary>
     [Fact]
     public void ApplyFilters_WithContactNameFilter_ReturnsFilteredSuppliers()
     {
@@ -59,6 +65,7 @@ public class SupplierQuerySpecTests
         result.First().ContactName.Should().Contain("Doe");
     }
 
+    /// <summary>Verifies that a free-text search term matches suppliers across name, email, contact name, phone, and address fields.</summary>
     [Fact]
     public void ApplyFilters_WithSearchTerm_ReturnsMatchingSuppliers()
     {
@@ -77,6 +84,7 @@ public class SupplierQuerySpecTests
                        (s.Address != null && s.Address.ToLower().Contains("supplier"))).Should().BeTrue();
     }
 
+    /// <summary>Verifies that sorting by Name returns suppliers in ascending alphabetical order.</summary>
     [Fact]
     public void Apply_WithSortByName_SortsCorrectly()
     {

@@ -31,7 +31,8 @@ public class PurchasingMappingProfile : Profile
             .ForMember(dest => dest.Lines, opt => opt.MapFrom(src => src.Lines));
 
         // PurchaseOrderLine mappings (PurchaseOrderLine doesn't have primary constructor, ReverseMap is fine)
-        CreateMap<PurchaseOrderLine, PurchaseOrderLineDto>().ReverseMap();
+        CreateMap<PurchaseOrderLine, PurchaseOrderLineDto>()
+            .ReverseMap();
         CreateMap<CreateUpdatePurchaseOrderLineDto, PurchaseOrderLine>();
     }
 }

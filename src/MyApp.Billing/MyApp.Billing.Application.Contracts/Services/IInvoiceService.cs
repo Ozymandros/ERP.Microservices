@@ -1,5 +1,6 @@
 using MyApp.Billing.Application.Contracts.DTOs;
 using MyApp.Billing.Domain.Entities;
+using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Specifications;
 
@@ -77,4 +78,19 @@ public interface IInvoiceService
     /// <param name="cancellationToken">A token to observe for cancellation requests.</param>
     /// <returns>A paginated result set of <see cref="InvoiceDto"/> items.</returns>
     Task<PaginatedResult<InvoiceDto>> QueryInvoicesAsync(ISpecification<Invoice> spec, CancellationToken cancellationToken = default);
+
+    /// <summary>Creates and issues a customer invoice from an outbound order fulfillment event.</summary>
+    Task<InvoiceDto?> CreateAndIssueFromFulfillmentAsync(OrderFulfilledEvent @event, CancellationToken cancellationToken = default);
+
+    /// <summary>Creates a credit note when a return operational order is fulfilled.</summary>
+    Task<CreditNoteDto?> CreateCreditNoteFromReturnFulfillmentAsync(OrderFulfilledEvent @event, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Creates a customer invoice from a project invoice request (pub/sub, idempotent per request id).
+    /// The invoice is left in Draft unless <paramref name="autoIssue"/> is <see langword="true"/>.
+    /// </summary>
+    /// <param name="event">The project invoice request.</param>
+    /// <param name="autoIssue">Whether to issue the invoice immediately.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    Task<InvoiceDto?> CreateFromProjectRequestAsync(ProjectInvoiceRequestedEvent @event, bool autoIssue, CancellationToken cancellationToken = default);
 }

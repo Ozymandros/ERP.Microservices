@@ -9,11 +9,13 @@ using Xunit;
 
 namespace MyApp.Sales.Tests.Repositories;
 
+/// <summary>Integration tests for <see cref="SalesOrderLineRepository"/> using an in-memory database.</summary>
 public class SalesOrderLineRepositoryTests
 {
     private readonly SalesDbContext _context;
     private readonly SalesOrderLineRepository _repository;
 
+    /// <summary>Initializes a new <see cref="SalesOrderLineRepositoryTests"/> with a seeded in-memory database context.</summary>
     public SalesOrderLineRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -119,6 +121,7 @@ public class SalesOrderLineRepositoryTests
 
     #region GetByIdAsync Tests
 
+    /// <summary>Verifies that GetByIdAsync returns the sales order line with correct field values when the identifier exists.</summary>
     [Fact]
     public async Task GetByIdAsync_WithValidId_ReturnsSalesOrderLine()
     {
@@ -138,6 +141,7 @@ public class SalesOrderLineRepositoryTests
         result.LineTotal.Should().Be(112.50m);
     }
 
+    /// <summary>Verifies that GetByIdAsync returns null when no sales order line exists with the given identifier.</summary>
     [Fact]
     public async Task GetByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -155,6 +159,7 @@ public class SalesOrderLineRepositoryTests
 
     #region ListAsync Tests
 
+    /// <summary>Verifies that ListAsync returns all sales order lines present in the database.</summary>
     [Fact]
     public async Task ListAsync_ReturnsAllSalesOrderLines()
     {
@@ -175,6 +180,7 @@ public class SalesOrderLineRepositoryTests
 
     #region GetAllAsync Tests
 
+    /// <summary>Verifies that GetAllAsync returns the complete set of sales order lines from the database.</summary>
     [Fact]
     public async Task GetAllAsync_ReturnsAllSalesOrderLines()
     {
@@ -194,6 +200,7 @@ public class SalesOrderLineRepositoryTests
 
     #region GetAllPaginatedAsync Tests
 
+    /// <summary>Verifies that GetAllPaginatedAsync returns the correct page slice with accurate pagination metadata.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -216,6 +223,7 @@ public class SalesOrderLineRepositoryTests
         result.TotalCount.Should().BeGreaterThanOrEqualTo(6);
     }
 
+    /// <summary>Verifies that GetAllPaginatedAsync returns items from the second page when page number 2 is requested.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithSecondPage_ReturnsCorrectPage()
     {
@@ -240,6 +248,7 @@ public class SalesOrderLineRepositoryTests
 
     #region AddAsync Tests
 
+    /// <summary>Verifies that AddAsync persists a new sales order line and makes it retrievable from the database.</summary>
     [Fact]
     public async Task AddAsync_WithValidSalesOrderLine_CreatesSalesOrderLine()
     {
@@ -274,6 +283,7 @@ public class SalesOrderLineRepositoryTests
 
     #region UpdateAsync Tests
 
+    /// <summary>Verifies that UpdateAsync saves changed line properties (quantity, unit price, line total, product name) to the database.</summary>
     [Fact]
     public async Task UpdateAsync_WithExistingSalesOrderLine_UpdatesSalesOrderLineData()
     {
@@ -302,6 +312,7 @@ public class SalesOrderLineRepositoryTests
 
     #region DeleteAsync Tests
 
+    /// <summary>Verifies that DeleteAsync removes the sales order line record from the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithValidId_DeletesSalesOrderLine()
     {
@@ -318,6 +329,7 @@ public class SalesOrderLineRepositoryTests
         deletedLine.Should().BeNull();
     }
 
+    /// <summary>Verifies that DeleteAsync does not throw when called with an identifier that does not exist in the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithNonExistentId_DoesNotThrowException()
     {
@@ -333,6 +345,7 @@ public class SalesOrderLineRepositoryTests
 
     #region Edge Cases
 
+    /// <summary>Verifies that AddAsync persists a sales order line with a quantity of zero without error.</summary>
     [Fact]
     public async Task AddAsync_WithZeroQuantity_CreatesSalesOrderLine()
     {
@@ -355,6 +368,7 @@ public class SalesOrderLineRepositoryTests
         result.Quantity.Should().Be(0);
     }
 
+    /// <summary>Verifies that AddAsync persists a sales order line with a unit price of zero without error.</summary>
     [Fact]
     public async Task AddAsync_WithZeroUnitPrice_CreatesSalesOrderLine()
     {
@@ -377,6 +391,7 @@ public class SalesOrderLineRepositoryTests
         result.UnitPrice.Should().Be(0m);
     }
 
+    /// <summary>Verifies that UpdateAsync handles a quantity set to int.MaxValue without overflow or persistence failure.</summary>
     [Fact]
     public async Task UpdateAsync_WithLargeQuantity_UpdatesSuccessfully()
     {
@@ -396,6 +411,7 @@ public class SalesOrderLineRepositoryTests
         updatedLine!.Quantity.Should().Be(int.MaxValue);
     }
 
+    /// <summary>Verifies that GetAllPaginatedAsync returns all items when the requested page size exceeds the total record count.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithPageSizeLargerThanTotal_ReturnsAllItems()
     {
@@ -413,6 +429,7 @@ public class SalesOrderLineRepositoryTests
         result.Items.Should().HaveCountLessThanOrEqualTo(result.TotalCount);
     }
 
+    /// <summary>Verifies that GetAllPaginatedAsync returns an empty items list when the requested page number is beyond the last page.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithPageBeyondTotal_ReturnsEmptyPage()
     {

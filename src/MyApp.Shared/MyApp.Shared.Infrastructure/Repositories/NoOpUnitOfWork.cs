@@ -10,7 +10,7 @@ public sealed class NoOpUnitOfWork : IUnitOfWork
     /// <summary>
     /// Performs the operation.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <inheritdoc />
     public Task<IReadOnlyCollection<EntityEntryDto>> CommitAsync(CancellationToken cancellationToken = default)
         => Task.FromResult<IReadOnlyCollection<EntityEntryDto>>(Array.Empty<EntityEntryDto>());

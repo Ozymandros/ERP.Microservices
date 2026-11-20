@@ -25,13 +25,14 @@ public class UserRepository : Repository<ApplicationUser, Guid>, IUserRepository
     /// Gets the email asynchronously.
     /// </summary>
     /// <param name="email">The email.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="ApplicationUser"/>, or <c>null</c> if not found.</returns>
-    public async Task<ApplicationUser?> GetByEmailAsync(string email)
+    public async Task<ApplicationUser?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return await _context.Users
             .Include(u => u.RefreshTokens)
             .Include(u => u.UserRoles)
-            .FirstOrDefaultAsync(u => u.Email == email);
+            .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
     /// <summary>
@@ -39,38 +40,41 @@ public class UserRepository : Repository<ApplicationUser, Guid>, IUserRepository
     /// </summary>
     /// <param name="externalProvider">The external Provider.</param>
     /// <param name="externalId">The external Id.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="ApplicationUser"/>, or <c>null</c> if not found.</returns>
-    public async Task<ApplicationUser?> GetByExternalIdAsync(string externalProvider, string externalId)
+    public async Task<ApplicationUser?> GetByExternalIdAsync(string externalProvider, string externalId, CancellationToken cancellationToken = default)
     {
         return await _context.Users
             .Include(u => u.RefreshTokens)
-            .FirstOrDefaultAsync(u => u.ExternalProvider == externalProvider && u.ExternalId == externalId);
+            .FirstOrDefaultAsync(u => u.ExternalProvider == externalProvider && u.ExternalId == externalId, cancellationToken);
     }
 
     /// <summary>
     /// Gets the role asynchronously.
     /// </summary>
     /// <param name="roleName">The role Name.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A collection of <see cref="ApplicationUser"/> entities in the role.</returns>
-    public async Task<IEnumerable<ApplicationUser>> GetByRoleAsync(string roleName)
+    public async Task<IEnumerable<ApplicationUser>> GetByRoleAsync(string roleName, CancellationToken cancellationToken = default)
     {
-        var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
+        var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == roleName, cancellationToken);
         if (role == null)
             return Enumerable.Empty<ApplicationUser>();
 
         return await _context.Users
             .Include(u => u.UserRoles)
             .Where(u => u.UserRoles.Any(ur => ur.RoleId == role.Id))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     /// <summary>
     /// Email exists asynchronously.
     /// </summary>
     /// <param name="email">The email.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns><c>true</c> if a user with the email exists; otherwise, <c>false</c>.</returns>
-    public async Task<bool> EmailExistsAsync(string email)
+    public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default)
     {
-        return await _context.Users.AnyAsync(u => u.Email == email);
+        return await _context.Users.AnyAsync(u => u.Email == email, cancellationToken);
     }
 }

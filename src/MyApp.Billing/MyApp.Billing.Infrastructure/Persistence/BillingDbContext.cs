@@ -28,6 +28,10 @@ public class BillingDbContext : AuditableDbContext
     public DbSet<CreditNote> CreditNotes => Set<CreditNote>();
     /// <summary>Gets the <see cref="DbSet{TEntity}"/> for credit note line items.</summary>
     public DbSet<CreditNoteLine> CreditNoteLines => Set<CreditNoteLine>();
+    /// <summary>Gets supplier (AP) invoices.</summary>
+    public DbSet<SupplierInvoice> SupplierInvoices => Set<SupplierInvoice>();
+    /// <summary>Gets supplier invoice lines.</summary>
+    public DbSet<SupplierInvoiceLine> SupplierInvoiceLines => Set<SupplierInvoiceLine>();
 
     /// <summary>
     /// Save changes.
@@ -42,7 +46,7 @@ public class BillingDbContext : AuditableDbContext
     /// <summary>
     /// Save changes asynchronously.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation Token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The number of state entries written to the database.</returns>
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -78,7 +82,6 @@ public class BillingDbContext : AuditableDbContext
 
         foreach (var creditNoteEntry in ChangeTracker.Entries<CreditNote>()
                      .Where(e => e.State is EntityState.Modified or EntityState.Unchanged))
-        {
             foreach (var line in creditNoteEntry.Entity.Lines)
             {
                 var alreadyStored = CreditNoteLines.AsNoTracking().Any(l => l.Id == line.Id);
@@ -87,7 +90,6 @@ public class BillingDbContext : AuditableDbContext
                     Entry(line).State = EntityState.Added;
                 }
             }
-        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -126,6 +128,9 @@ public class BillingDbContext : AuditableDbContext
             entity.HasIndex(e => e.OrderId);
             entity.HasIndex(e => e.Status);
 
+            entity.Property(e => e.SourceType).HasMaxLength(32);
+            entity.HasIndex(e => new { e.SourceType, e.SourceId });
+
             // Navigation configurations
             entity.HasMany(e => e.Lines)
                 .WithOne(l => l.Invoice)
@@ -150,6 +155,7 @@ public class BillingDbContext : AuditableDbContext
             entity.HasKey(e => e.Id);
 
             entity.Property(e => e.Description).HasMaxLength(500).IsRequired();
+            entity.Property(e => e.Quantity).HasColumnType("decimal(18,4)").IsRequired();
             entity.Property(e => e.UnitPrice).HasColumnType("decimal(18,2)").IsRequired();
             entity.Property(e => e.LineNet).HasColumnType("decimal(18,2)");
             entity.Property(e => e.LineTax).HasColumnType("decimal(18,2)");
@@ -212,6 +218,28 @@ public class BillingDbContext : AuditableDbContext
             entity.Property(e => e.LineGross).HasColumnType("decimal(18,2)");
 
             entity.HasIndex(e => e.CreditNoteId);
+        });
+
+        modelBuilder.Entity<SupplierInvoice>(entity =>
+        {
+            entity.ToTable("SupplierInvoices");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.InvoiceNumber).HasMaxLength(50).IsRequired();
+            entity.Property(e => e.Currency).HasMaxLength(3).IsRequired();
+            entity.HasIndex(e => e.PurchaseOrderId);
+            entity.HasIndex(e => e.SupplierId);
+            entity.HasMany(e => e.Lines)
+                .WithOne(l => l.SupplierInvoice)
+                .HasForeignKey(l => l.SupplierInvoiceId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<SupplierInvoiceLine>(entity =>
+        {
+            entity.ToTable("SupplierInvoiceLines");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.UnitPrice).HasColumnType("decimal(18,2)");
+            entity.HasIndex(e => e.SupplierInvoiceId);
         });
     }
 }

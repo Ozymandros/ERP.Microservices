@@ -1,4 +1,4 @@
-﻿namespace MyApp.Auth.Application.Contracts
+namespace MyApp.Auth.Application.Contracts
 {
     /// <summary>
     /// Deletes the role permission dto.

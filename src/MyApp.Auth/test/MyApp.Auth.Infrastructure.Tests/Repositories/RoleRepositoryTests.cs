@@ -7,11 +7,17 @@ using Xunit;
 
 namespace MyApp.Auth.Tests.Repositories;
 
+/// <summary>
+/// Unit tests for Role Repository.
+/// </summary>
 public class RoleRepositoryTests
 {
     private readonly AuthDbContext _context;
     private readonly RoleRepository _repository;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RoleRepositoryTests"/> class and seeds the in-memory database with test roles.
+    /// </summary>
     public RoleRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -48,6 +54,9 @@ public class RoleRepositoryTests
 
     #region GetByNameAsync Tests
 
+    /// <summary>
+    /// Verifies that with valid role name results in returns role when Get By Name Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByNameAsync_WithValidRoleName_ReturnsRole()
     {
@@ -63,6 +72,9 @@ public class RoleRepositoryTests
         Assert.Equal("Admin", result.Name);
     }
 
+    /// <summary>
+    /// Verifies that with non existent role results in returns null when Get By Name Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByNameAsync_WithNonExistentRole_ReturnsNull()
     {
@@ -73,6 +85,9 @@ public class RoleRepositoryTests
         Assert.Null(result);
     }
 
+    /// <summary>
+    /// Verifies that Get By Name Async is case sensitive.
+    /// </summary>
     [Fact]
     public async Task GetByNameAsync_IsCaseSensitive()
     {
@@ -88,6 +103,9 @@ public class RoleRepositoryTests
         Assert.Null(result);
     }
 
+    /// <summary>
+    /// Verifies that Get By Name Async includes role claims.
+    /// </summary>
     [Fact]
     public async Task GetByNameAsync_IncludesRoleClaims()
     {
@@ -115,6 +133,9 @@ public class RoleRepositoryTests
 
     #region NameExistsAsync Tests
 
+    /// <summary>
+    /// Verifies that with existing role results in returns true when Name Exists Async is called.
+    /// </summary>
     [Fact]
     public async Task NameExistsAsync_WithExistingRole_ReturnsTrue()
     {
@@ -128,6 +149,9 @@ public class RoleRepositoryTests
         Assert.True(result);
     }
 
+    /// <summary>
+    /// Verifies that with non existent role results in returns false when Name Exists Async is called.
+    /// </summary>
     [Fact]
     public async Task NameExistsAsync_WithNonExistentRole_ReturnsFalse()
     {
@@ -138,6 +162,9 @@ public class RoleRepositoryTests
         Assert.False(result);
     }
 
+    /// <summary>
+    /// Verifies that with empty string results in returns false when Name Exists Async is called.
+    /// </summary>
     [Fact]
     public async Task NameExistsAsync_WithEmptyString_ReturnsFalse()
     {
@@ -148,6 +175,9 @@ public class RoleRepositoryTests
         Assert.False(result);
     }
 
+    /// <summary>
+    /// Verifies that with multiple roles results in checks correctly when Name Exists Async is called.
+    /// </summary>
     [Fact]
     public async Task NameExistsAsync_WithMultipleRoles_ChecksCorrectly()
     {
@@ -173,6 +203,9 @@ public class RoleRepositoryTests
 
     #region GetRolesByUserIdAsync Tests
 
+    /// <summary>
+    /// Verifies that with user in roles results in returns user roles when Get Roles By User Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetRolesByUserIdAsync_WithUserInRoles_ReturnsUserRoles()
     {
@@ -197,6 +230,9 @@ public class RoleRepositoryTests
         Assert.Contains(result, r => r.Name == "Manager");
     }
 
+    /// <summary>
+    /// Verifies that with user not in roles results in returns empty list when Get Roles By User Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetRolesByUserIdAsync_WithUserNotInRoles_ReturnsEmptyList()
     {
@@ -211,6 +247,9 @@ public class RoleRepositoryTests
         Assert.Empty(result);
     }
 
+    /// <summary>
+    /// Verifies that with non existent user id results in returns empty list when Get Roles By User Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetRolesByUserIdAsync_WithNonExistentUserId_ReturnsEmptyList()
     {
@@ -225,6 +264,9 @@ public class RoleRepositoryTests
         Assert.Empty(result);
     }
 
+    /// <summary>
+    /// Verifies that Get Roles By User Id Async includes role claims.
+    /// </summary>
     [Fact]
     public async Task GetRolesByUserIdAsync_IncludesRoleClaims()
     {
@@ -253,6 +295,9 @@ public class RoleRepositoryTests
         Assert.Single(roleWithClaims.RoleClaims);
     }
 
+    /// <summary>
+    /// Verifies that with multiple users results in return only specific user roles when Get Roles By User Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetRolesByUserIdAsync_WithMultipleUsers_ReturnOnlySpecificUserRoles()
     {
@@ -283,6 +328,9 @@ public class RoleRepositoryTests
 
     #region Add Tests
 
+    /// <summary>
+    /// Verifies that with valid role results in creates role when Add Async is called.
+    /// </summary>
     [Fact]
     public async Task AddAsync_WithValidRole_CreatesRole()
     {
@@ -307,6 +355,9 @@ public class RoleRepositoryTests
 
     #region Update Tests
 
+    /// <summary>
+    /// Verifies that with existing role results in updates role data when Update Async is called.
+    /// </summary>
     [Fact]
     public async Task UpdateAsync_WithExistingRole_UpdatesRoleData()
     {
@@ -327,6 +378,9 @@ public class RoleRepositoryTests
 
     #region Delete Tests
 
+    /// <summary>
+    /// Verifies that with valid role id results in deletes role when Delete Async is called.
+    /// </summary>
     [Fact]
     public async Task DeleteAsync_WithValidRoleId_DeletesRole()
     {
@@ -346,6 +400,9 @@ public class RoleRepositoryTests
 
     #region GetAll Tests
 
+    /// <summary>
+    /// Verifies that Get All Async returns all roles.
+    /// </summary>
     [Fact]
     public async Task GetAllAsync_ReturnsAllRoles()
     {

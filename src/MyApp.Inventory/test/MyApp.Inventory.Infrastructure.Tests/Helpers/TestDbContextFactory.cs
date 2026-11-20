@@ -9,6 +9,8 @@ namespace MyApp.Inventory.Tests.Helpers;
 /// </summary>
 public static class TestDbContextFactory
 {
+    /// <summary>Creates a new <see cref="InventoryDbContext"/> backed by an isolated in-memory database with a unique name.</summary>
+    /// <returns>A freshly created <see cref="InventoryDbContext"/> instance ready for use in tests.</returns>
     public static InventoryDbContext CreateInMemoryContext()
     {
         var options = new DbContextOptionsBuilder<InventoryDbContext>()
@@ -20,6 +22,8 @@ public static class TestDbContextFactory
         return context;
     }
 
+    /// <summary>Clears all inventory data from the context and seeds a standard set of test warehouses.</summary>
+    /// <param name="context">The <see cref="InventoryDbContext"/> to seed with test data.</param>
     public static void SeedTestData(InventoryDbContext context)
     {
         // Clear existing data

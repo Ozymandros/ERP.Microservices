@@ -25,6 +25,10 @@ public record CreateOrderWithReservationDto
     /// <summary>Gets or sets the external order ID linking to a SalesOrder or PurchaseOrder.</summary>
     public Guid? ExternalOrderId { get; init; }
 
+    /// <summary>Gets or sets the source of the external order id ("Sales", "Project"); null = Sales.</summary>
+    [MaxLength(32)]
+    public string? ExternalOrderSource { get; init; }
+
     /// <summary>Gets or sets the warehouse ID from which stock is reserved.</summary>
     [Required]
     public Guid WarehouseId { get; init; }

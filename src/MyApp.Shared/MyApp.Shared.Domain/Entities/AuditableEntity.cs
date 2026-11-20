@@ -1,4 +1,4 @@
-﻿namespace MyApp.Shared.Domain.Entities
+namespace MyApp.Shared.Domain.Entities
 {
     /// <summary>
     /// Base class for auditable domain entities that tracks creation and modification metadata.

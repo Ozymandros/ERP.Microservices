@@ -1,0 +1,3 @@
+<Project>
+  <!-- Package version pins that need project-name conditions live in Directory.Build.targets -->
+</Project>

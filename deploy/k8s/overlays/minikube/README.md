@@ -55,9 +55,10 @@ Shortcut (delegates to teardown script):
 
 2. Open gateway (HTTPS, self-signed cert): `https://gateway.local/health`
 
-3. Aspire dashboard UI (port-forward):
+3. Aspire dashboard UI — started automatically by `deploy-minikube-stage.ps1` (unless `-NoPortForward`):
 
    ```powershell
+   # Manual (if needed):
    kubectl port-forward -n myapp-platform svc/aspire-dashboard 18888:18888
    ```
 

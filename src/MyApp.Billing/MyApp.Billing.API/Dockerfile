@@ -23,11 +23,17 @@ COPY ["src/MyApp.Billing/MyApp.Billing.Application/MyApp.Billing.Application.csp
 COPY ["src/MyApp.Billing/MyApp.Billing.Infrastructure/MyApp.Billing.Infrastructure.csproj", "MyApp.Billing/MyApp.Billing.Infrastructure/"]
 COPY ["src/MyApp.Billing/MyApp.Billing.API/MyApp.Billing.API.csproj", "MyApp.Billing/MyApp.Billing.API/"]
 
+# Cross-service Application.Contracts (compile-time DTO references only)
+COPY ["src/MyApp.Sales/MyApp.Sales.Domain/MyApp.Sales.Domain.csproj", "MyApp.Sales/MyApp.Sales.Domain/"]
+COPY ["src/MyApp.Sales/MyApp.Sales.Application.Contracts/MyApp.Sales.Application.Contracts.csproj", "MyApp.Sales/MyApp.Sales.Application.Contracts/"]
+
 # Restore dependencies
 RUN dotnet restore "MyApp.Billing/MyApp.Billing.API/MyApp.Billing.API.csproj"
 
 # Copy only needed source files (not everything from context)
 COPY src/MyApp.Shared/ MyApp.Shared/
+COPY src/MyApp.Sales/MyApp.Sales.Domain/ MyApp.Sales/MyApp.Sales.Domain/
+COPY src/MyApp.Sales/MyApp.Sales.Application.Contracts/ MyApp.Sales/MyApp.Sales.Application.Contracts/
 COPY src/MyApp.Billing/ MyApp.Billing/
 
 # Build the project

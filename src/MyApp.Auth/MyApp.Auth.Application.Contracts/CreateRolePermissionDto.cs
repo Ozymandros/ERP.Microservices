@@ -1,4 +1,4 @@
-﻿namespace MyApp.Auth.Application.Contracts
+namespace MyApp.Auth.Application.Contracts
 {
     /// <summary>
     /// Creates a role permission dto.

@@ -12,6 +12,7 @@ using Xunit;
 
 namespace MyApp.Billing.API.Tests.Controllers;
 
+/// <summary>Unit tests for <see cref="PaymentsController"/> covering payment retrieval and listing endpoints.</summary>
 public class PaymentsControllerTests
 {
     private readonly Mock<IPaymentRepository> _paymentRepo;
@@ -19,6 +20,7 @@ public class PaymentsControllerTests
     private readonly Mock<ILogger<PaymentsController>> _logger;
     private readonly PaymentsController _sut;
 
+    /// <summary>Initializes mocks and constructs the <see cref="PaymentsController"/> system under test.</summary>
     public PaymentsControllerTests()
     {
         _paymentRepo = new Mock<IPaymentRepository>();

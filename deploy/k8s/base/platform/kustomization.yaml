@@ -4,6 +4,8 @@ kind: Kustomization
 resources:
   - namespaces.yaml
   - redis.yaml
+  # Stays in myapp-platform (do not put under base/apps — that kustomization forces namespace: myapp-apps).
+  - aspire-dashboard.yaml
 
 configMapGenerator:
   - name: platform-bootstrap

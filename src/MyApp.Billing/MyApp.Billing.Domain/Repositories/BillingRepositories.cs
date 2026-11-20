@@ -30,6 +30,12 @@ public interface IInvoiceRepository : IRepository<Invoice, Guid>
     /// <param name="cancellationToken">A token to observe for cancellation requests.</param>
     /// <returns>A list of invoices associated with the specified order.</returns>
     Task<List<Invoice>> GetInvoicesByOrderIdAsync(Guid orderId, CancellationToken cancellationToken = default);
+
+    /// <summary>Gets invoices linked to a non-sales source document (e.g. a project invoice request).</summary>
+    /// <param name="sourceType">The source type.</param>
+    /// <param name="sourceId">The source document identifier.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    Task<List<Invoice>> GetBySourceAsync(string sourceType, Guid sourceId, CancellationToken cancellationToken = default);
 }
 
 /// <summary>
@@ -53,6 +59,13 @@ public interface IPaymentRepository : IRepository<Payment, Guid>
 /// <summary>
 /// Repository interface for CreditNote entity
 /// </summary>
+/// <summary>Repository for supplier (AP) invoices.</summary>
+public interface ISupplierInvoiceRepository : IRepository<SupplierInvoice, Guid>
+{
+    /// <summary>Gets supplier invoices for a purchase order.</summary>
+    Task<List<SupplierInvoice>> GetByPurchaseOrderIdAsync(Guid purchaseOrderId, CancellationToken cancellationToken = default);
+}
+
 public interface ICreditNoteRepository : IRepository<CreditNote, Guid>
 {
     /// <summary>Retrieves all credit notes issued against a specific invoice.</summary>

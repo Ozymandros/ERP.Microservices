@@ -6,11 +6,17 @@ using Xunit;
 
 namespace MyApp.Auth.Tests.Repositories;
 
+/// <summary>
+/// Unit tests for Refresh Token Repository.
+/// </summary>
 public class RefreshTokenRepositoryTests
 {
     private readonly AuthDbContext _context;
     private readonly RefreshTokenRepository _repository;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RefreshTokenRepositoryTests"/> class and seeds the in-memory database with test data.
+    /// </summary>
     public RefreshTokenRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -34,6 +40,9 @@ public class RefreshTokenRepositoryTests
 
     #region GetByTokenAsync Tests
 
+    /// <summary>
+    /// Verifies that with valid token results in returns refresh token when Get By Token Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByTokenAsync_WithValidToken_ReturnsRefreshToken()
     {
@@ -60,6 +69,9 @@ public class RefreshTokenRepositoryTests
         Assert.Equal("test-refresh-token-123", result.Token);
     }
 
+    /// <summary>
+    /// Verifies that with non existent token results in returns null when Get By Token Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByTokenAsync_WithNonExistentToken_ReturnsNull()
     {
@@ -70,6 +82,9 @@ public class RefreshTokenRepositoryTests
         Assert.Null(result);
     }
 
+    /// <summary>
+    /// Verifies that with empty token results in returns null when Get By Token Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByTokenAsync_WithEmptyToken_ReturnsNull()
     {
@@ -84,6 +99,9 @@ public class RefreshTokenRepositoryTests
 
     #region GetByUserIdAsync Tests
 
+    /// <summary>
+    /// Verifies that with valid user id results in returns all user tokens when Get By User Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByUserIdAsync_WithValidUserId_ReturnsAllUserTokens()
     {
@@ -120,6 +138,9 @@ public class RefreshTokenRepositoryTests
         Assert.Contains(results, t => t.Token == "token-2");
     }
 
+    /// <summary>
+    /// Verifies that with no tokens results in returns empty list when Get By User Id Async is called.
+    /// </summary>
     [Fact]
     public async Task GetByUserIdAsync_WithNoTokens_ReturnsEmptyList()
     {
@@ -134,6 +155,9 @@ public class RefreshTokenRepositoryTests
         Assert.Empty(results);
     }
 
+    /// <summary>
+    /// Verifies that Get By User Id Async returns both revoked and active tokens.
+    /// </summary>
     [Fact]
     public async Task GetByUserIdAsync_ReturnsBothRevokedAndActiveTokens()
     {
@@ -171,6 +195,9 @@ public class RefreshTokenRepositoryTests
 
     #region GetValidRefreshTokenAsync Tests
 
+    /// <summary>
+    /// Verifies that with valid non revoked token results in returns token when Get Valid Refresh Token Async is called.
+    /// </summary>
     [Fact]
     public async Task GetValidRefreshTokenAsync_WithValidNonRevokedToken_ReturnsToken()
     {
@@ -196,6 +223,9 @@ public class RefreshTokenRepositoryTests
         Assert.Equal(refreshToken.Id, result.Id);
     }
 
+    /// <summary>
+    /// Verifies that with revoked token results in returns null when Get Valid Refresh Token Async is called.
+    /// </summary>
     [Fact]
     public async Task GetValidRefreshTokenAsync_WithRevokedToken_ReturnsNull()
     {
@@ -220,6 +250,9 @@ public class RefreshTokenRepositoryTests
         Assert.Null(result);
     }
 
+    /// <summary>
+    /// Verifies that with expired token results in returns null when Get Valid Refresh Token Async is called.
+    /// </summary>
     [Fact]
     public async Task GetValidRefreshTokenAsync_WithExpiredToken_ReturnsNull()
     {
@@ -244,6 +277,9 @@ public class RefreshTokenRepositoryTests
         Assert.Null(result);
     }
 
+    /// <summary>
+    /// Verifies that with wrong user id results in returns null when Get Valid Refresh Token Async is called.
+    /// </summary>
     [Fact]
     public async Task GetValidRefreshTokenAsync_WithWrongUserId_ReturnsNull()
     {
@@ -273,6 +309,9 @@ public class RefreshTokenRepositoryTests
 
     #region CreateAsync Tests
 
+    /// <summary>
+    /// Verifies that with valid refresh token results in creates and returns token when Create Async is called.
+    /// </summary>
     [Fact]
     public async Task CreateAsync_WithValidRefreshToken_CreatesAndReturnsToken()
     {
@@ -303,6 +342,9 @@ public class RefreshTokenRepositoryTests
 
     #region RevokeAsync Tests
 
+    /// <summary>
+    /// Verifies that with valid token id results in revokes single token when Revoke Async is called.
+    /// </summary>
     [Fact]
     public async Task RevokeAsync_WithValidTokenId_RevokesSingleToken()
     {
@@ -329,6 +371,9 @@ public class RefreshTokenRepositoryTests
         Assert.True(revokedToken.IsRevoked);
     }
 
+    /// <summary>
+    /// Verifies that with non existent token id results in does not throw when Revoke Async is called.
+    /// </summary>
     [Fact]
     public async Task RevokeAsync_WithNonExistentTokenId_DoesNotThrow()
     {
@@ -339,6 +384,9 @@ public class RefreshTokenRepositoryTests
         await _repository.RevokeAsync(nonExistentId); // Should not throw
     }
 
+    /// <summary>
+    /// Verifies that Revoke Async only revokes specific token.
+    /// </summary>
     [Fact]
     public async Task RevokeAsync_OnlyRevokesSpecificToken()
     {
@@ -379,6 +427,9 @@ public class RefreshTokenRepositoryTests
 
     #region RevokeUserTokensAsync Tests
 
+    /// <summary>
+    /// Verifies that with valid user id results in revokes all user tokens when Revoke User Tokens Async is called.
+    /// </summary>
     [Fact]
     public async Task RevokeUserTokensAsync_WithValidUserId_RevokesAllUserTokens()
     {
@@ -413,6 +464,9 @@ public class RefreshTokenRepositoryTests
         Assert.All(allUserTokens, token => Assert.True(token.IsRevoked));
     }
 
+    /// <summary>
+    /// Verifies that Revoke User Tokens Async does not affect other users tokens.
+    /// </summary>
     [Fact]
     public async Task RevokeUserTokensAsync_DoesNotAffectOtherUsersTokens()
     {
@@ -450,6 +504,9 @@ public class RefreshTokenRepositoryTests
         Assert.False(user2ActiveToken?.IsRevoked);
     }
 
+    /// <summary>
+    /// Verifies that with already revoked tokens results in keeps them revoked when Revoke User Tokens Async is called.
+    /// </summary>
     [Fact]
     public async Task RevokeUserTokensAsync_WithAlreadyRevokedTokens_KeepsThemRevoked()
     {

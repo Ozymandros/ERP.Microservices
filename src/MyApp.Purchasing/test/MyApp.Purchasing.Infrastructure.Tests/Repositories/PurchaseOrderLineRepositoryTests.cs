@@ -9,11 +9,13 @@ using Xunit;
 
 namespace MyApp.Purchasing.Tests.Repositories;
 
+/// <summary>Integration tests for <see cref="PurchaseOrderLineRepository"/> using an in-memory database.</summary>
 public class PurchaseOrderLineRepositoryTests
 {
     private readonly PurchasingDbContext _context;
     private readonly PurchaseOrderLineRepository _repository;
 
+    /// <summary>Initializes a new instance of the <see cref="PurchaseOrderLineRepositoryTests"/> class, creating a fresh in-memory context and seeding test data.</summary>
     public PurchaseOrderLineRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -21,6 +23,7 @@ public class PurchaseOrderLineRepositoryTests
         SeedTestData();
     }
 
+    /// <summary>Seeds the in-memory database with suppliers, purchase orders, and purchase order lines for use across tests.</summary>
     private void SeedTestData()
     {
         // Clear existing data
@@ -101,6 +104,13 @@ public class PurchaseOrderLineRepositoryTests
         _context.SaveChanges();
     }
 
+    /// <summary>Creates and persists a <see cref="PurchaseOrderLine"/> with the given parameters for use in a test.</summary>
+    /// <param name="purchaseOrderId">The ID of the owning purchase order.</param>
+    /// <param name="productId">The product ID; a new GUID is generated when null.</param>
+    /// <param name="quantity">The ordered quantity.</param>
+    /// <param name="unitPrice">The unit price.</param>
+    /// <param name="receivedQuantity">The initially received quantity.</param>
+    /// <returns>The persisted <see cref="PurchaseOrderLine"/> entity.</returns>
     private PurchaseOrderLine CreateTestPurchaseOrderLine(Guid purchaseOrderId, Guid? productId = null, int quantity = 10, decimal unitPrice = 5.00m, int receivedQuantity = 0)
     {
         var line = new PurchaseOrderLine
@@ -121,6 +131,7 @@ public class PurchaseOrderLineRepositoryTests
 
     #region GetByIdAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.GetByIdAsync"/> returns the line when a valid ID is provided.</summary>
     [Fact]
     public async Task GetByIdAsync_WithValidId_ReturnsPurchaseOrderLine()
     {
@@ -140,6 +151,7 @@ public class PurchaseOrderLineRepositoryTests
         result.LineTotal.Should().Be(112.50m);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.GetByIdAsync"/> returns null when the ID does not exist.</summary>
     [Fact]
     public async Task GetByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -157,6 +169,7 @@ public class PurchaseOrderLineRepositoryTests
 
     #region GetByPurchaseOrderIdAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.GetByPurchaseOrderIdAsync"/> returns all lines belonging to the specified purchase order.</summary>
     [Fact]
     public async Task GetByPurchaseOrderIdAsync_WithExistingLines_ReturnsAllLinesForOrder()
     {
@@ -174,6 +187,7 @@ public class PurchaseOrderLineRepositoryTests
         result.All(l => l.PurchaseOrderId == order.Id).Should().BeTrue();
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.GetByPurchaseOrderIdAsync"/> returns an empty collection when the purchase order has no lines.</summary>
     [Fact]
     public async Task GetByPurchaseOrderIdAsync_WithNoLines_ReturnsEmptyList()
     {
@@ -197,6 +211,7 @@ public class PurchaseOrderLineRepositoryTests
         result.Should().BeEmpty();
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.GetByPurchaseOrderIdAsync"/> returns only the lines for the specified order when multiple orders exist.</summary>
     [Fact]
     public async Task GetByPurchaseOrderIdAsync_WithMultipleOrders_ReturnsOnlyLinesForSpecifiedOrder()
     {
@@ -219,6 +234,7 @@ public class PurchaseOrderLineRepositoryTests
 
     #region GetAllAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.GetAllAsync"/> returns all purchase order lines in the database.</summary>
     [Fact]
     public async Task GetAllAsync_ReturnsAllPurchaseOrderLines()
     {
@@ -238,6 +254,7 @@ public class PurchaseOrderLineRepositoryTests
 
     #region GetAllPaginatedAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.GetAllPaginatedAsync"/> returns the correct page of lines with accurate pagination metadata.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -264,6 +281,7 @@ public class PurchaseOrderLineRepositoryTests
 
     #region AddAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.AddAsync"/> persists a new purchase order line to the database.</summary>
     [Fact]
     public async Task AddAsync_WithValidPurchaseOrderLine_CreatesPurchaseOrderLine()
     {
@@ -300,6 +318,7 @@ public class PurchaseOrderLineRepositoryTests
 
     #region UpdateAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.UpdateAsync"/> persists changes to an existing purchase order line.</summary>
     [Fact]
     public async Task UpdateAsync_WithExistingPurchaseOrderLine_UpdatesPurchaseOrderLineData()
     {
@@ -326,6 +345,7 @@ public class PurchaseOrderLineRepositoryTests
         updatedLine.IsFullyReceived.Should().BeTrue();
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.UpdateAsync"/> correctly persists a partial receipt update to the received quantity.</summary>
     [Fact]
     public async Task UpdateAsync_WithPartialReceipt_UpdatesReceivedQuantity()
     {
@@ -350,6 +370,7 @@ public class PurchaseOrderLineRepositoryTests
 
     #region DeleteAsync Tests
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.DeleteAsync"/> removes the purchase order line from the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithValidPurchaseOrderLine_DeletesPurchaseOrderLine()
     {
@@ -370,6 +391,7 @@ public class PurchaseOrderLineRepositoryTests
 
     #region Edge Cases
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.GetByPurchaseOrderIdAsync"/> returns lines in all receipt states (fully, partially, and not yet received).</summary>
     [Fact]
     public async Task GetByPurchaseOrderIdAsync_WithFullyReceivedLines_ReturnsAllLines()
     {
@@ -389,6 +411,7 @@ public class PurchaseOrderLineRepositoryTests
         result.Any(l => !l.IsFullyReceived).Should().BeTrue();
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.AddAsync"/> can persist a purchase order line with a zero quantity.</summary>
     [Fact]
     public async Task AddAsync_WithZeroQuantity_CreatesPurchaseOrderLine()
     {
@@ -414,6 +437,7 @@ public class PurchaseOrderLineRepositoryTests
         result.Quantity.Should().Be(0);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.UpdateAsync"/> can persist a received quantity that exceeds the ordered quantity (over-receipt scenario).</summary>
     [Fact]
     public async Task UpdateAsync_WithReceivedQuantityExceedingQuantity_UpdatesSuccessfully()
     {
@@ -433,6 +457,7 @@ public class PurchaseOrderLineRepositoryTests
         updatedLine!.ReceivedQuantity.Should().Be(15);
     }
 
+    /// <summary>Verifies that <see cref="PurchaseOrderLineRepository.GetAllPaginatedAsync"/> returns all items when the requested page size exceeds the total count.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithPageSizeLargerThanTotal_ReturnsAllItems()
     {

@@ -11,11 +11,13 @@ using Xunit;
 
 namespace MyApp.Inventory.Tests.Repositories;
 
+/// <summary>Integration tests for <see cref="WarehouseRepository"/> using an in-memory EF Core database.</summary>
 public class WarehouseRepositoryTests
 {
     private readonly InventoryDbContext _context;
     private readonly WarehouseRepository _repository;
 
+    /// <summary>Initialises the in-memory database context and repository, and seeds base warehouse data before each test.</summary>
     public WarehouseRepositoryTests()
     {
         _context = TestDbContextFactory.CreateInMemoryContext();
@@ -58,6 +60,7 @@ public class WarehouseRepositoryTests
 
     #region GetByIdAsync Tests
 
+    /// <summary>Verifies that GetByIdAsync returns the warehouse when a valid ID is provided.</summary>
     [Fact]
     public async Task GetByIdAsync_WithValidId_ReturnsWarehouse()
     {
@@ -74,6 +77,7 @@ public class WarehouseRepositoryTests
         result.Location.Should().Be("GetById Location");
     }
 
+    /// <summary>Verifies that GetByIdAsync returns null when no warehouse with the given ID exists.</summary>
     [Fact]
     public async Task GetByIdAsync_WithNonExistentId_ReturnsNull()
     {
@@ -91,6 +95,7 @@ public class WarehouseRepositoryTests
 
     #region GetAllAsync Tests
 
+    /// <summary>Verifies that GetAllAsync returns all warehouses currently in the database.</summary>
     [Fact]
     public async Task GetAllAsync_ReturnsAllWarehouses()
     {
@@ -111,6 +116,7 @@ public class WarehouseRepositoryTests
 
     #region GetAllPaginatedAsync Tests
 
+    /// <summary>Verifies that GetAllPaginatedAsync returns a correctly sized and numbered page of warehouses.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithValidPagination_ReturnsPaginatedResult()
     {
@@ -132,6 +138,7 @@ public class WarehouseRepositoryTests
         result.TotalCount.Should().BeGreaterThanOrEqualTo(5);
     }
 
+    /// <summary>Verifies that GetAllPaginatedAsync returns items from the second page when requested.</summary>
     [Fact]
     public async Task GetAllPaginatedAsync_WithSecondPage_ReturnsCorrectPage()
     {
@@ -155,6 +162,7 @@ public class WarehouseRepositoryTests
 
     #region GetByNameAsync Tests
 
+    /// <summary>Verifies that GetByNameAsync returns the warehouse when a matching name exists.</summary>
     [Fact]
     public async Task GetByNameAsync_WithExistingName_ReturnsWarehouse()
     {
@@ -170,6 +178,7 @@ public class WarehouseRepositoryTests
         result.Id.Should().Be(warehouse.Id);
     }
 
+    /// <summary>Verifies that GetByNameAsync returns null when no warehouse with the given name exists.</summary>
     [Fact]
     public async Task GetByNameAsync_WithNonExistentName_ReturnsNull()
     {
@@ -184,6 +193,7 @@ public class WarehouseRepositoryTests
 
     #region AddAsync Tests
 
+    /// <summary>Verifies that AddAsync persists a new warehouse to the database.</summary>
     [Fact]
     public async Task AddAsync_WithValidWarehouse_CreatesWarehouse()
     {
@@ -209,6 +219,7 @@ public class WarehouseRepositoryTests
 
     #region UpdateAsync Tests
 
+    /// <summary>Verifies that UpdateAsync saves modified warehouse fields to the database.</summary>
     [Fact]
     public async Task UpdateAsync_WithExistingWarehouse_UpdatesWarehouseData()
     {
@@ -232,6 +243,7 @@ public class WarehouseRepositoryTests
 
     #region DeleteAsync Tests
 
+    /// <summary>Verifies that DeleteAsync removes the warehouse from the database.</summary>
     [Fact]
     public async Task DeleteAsync_WithValidWarehouse_DeletesWarehouse()
     {
@@ -251,6 +263,7 @@ public class WarehouseRepositoryTests
 
     #region QueryAsync Tests
 
+    /// <summary>Verifies that QueryAsync filters warehouses by a search term applied to name and location fields.</summary>
     [Fact]
     public async Task QueryAsync_WithSearchTerm_ShouldFilterResults()
     {
@@ -271,6 +284,7 @@ public class WarehouseRepositoryTests
                                            w.Location.Contains("Widget", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that QueryAsync filters warehouses by a name filter and returns only matching results.</summary>
     [Fact]
     public async Task QueryAsync_WithNameFilter_ShouldFilterResults()
     {
@@ -290,6 +304,7 @@ public class WarehouseRepositoryTests
         result.Items.Should().OnlyContain(w => w.Name.Contains("Filter", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that QueryAsync filters warehouses by a location filter and returns only matching results.</summary>
     [Fact]
     public async Task QueryAsync_WithLocationFilter_ShouldFilterResults()
     {
@@ -309,6 +324,7 @@ public class WarehouseRepositoryTests
         result.Items.Should().OnlyContain(w => w.Location.Contains("Filter", StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <summary>Verifies that QueryAsync returns the correct page of results when pagination is specified.</summary>
     [Fact]
     public async Task QueryAsync_WithPagination_ShouldReturnCorrectPage()
     {
@@ -331,6 +347,7 @@ public class WarehouseRepositoryTests
         result.TotalCount.Should().BeGreaterThanOrEqualTo(6);
     }
 
+    /// <summary>Verifies that QueryAsync returns warehouses sorted in ascending order when a sort field is specified.</summary>
     [Fact]
     public async Task QueryAsync_WithSorting_ShouldReturnSortedResults()
     {

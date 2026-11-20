@@ -16,6 +16,9 @@ using MyApp.Shared.Infrastructure.Extensions;
 
 namespace MyApp.Auth.API.Controllers;
 
+/// <summary>
+/// Manages permissions — CRUD operations, paginated listing, search, export, and per-user permission checks.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 [AuthorizeJwt]
@@ -51,8 +54,9 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Export all permissions as XLSX
+    /// Exports all permissions as an XLSX spreadsheet file.
     /// </summary>
+    /// <returns>An XLSX file containing all permissions.</returns>
     [HttpGet("export-xlsx")]
     [HasPermission("Permissions", "Read")]
     [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
@@ -74,8 +78,9 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Export all permissions as PDF
+    /// Exports all permissions as a PDF file.
     /// </summary>
+    /// <returns>A PDF file containing all permissions.</returns>
     [HttpGet("export-pdf")]
     [HasPermission("Permissions", "Read")]
     [Produces("application/pdf")]
@@ -97,9 +102,10 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Get all permissions (optionally paginated and filtered)
+    /// Retrieves all permissions. If query parameters are present, applies filtering, sorting, and pagination.
     /// </summary>
-    /// <param name="query">The query.</param>
+    /// <param name="query">Optional query specification for filtering, sorting, and pagination.</param>
+    /// <returns>All permissions as a flat list or as a paginated result when query parameters are provided.</returns>
     [HttpGet]
     [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(IEnumerable<PermissionDto>), StatusCodes.Status200OK)]
@@ -142,10 +148,11 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Get all permissions with pagination
+    /// Retrieves permissions with explicit pagination.
     /// </summary>
-    /// <param name="pageNumber">The page Number.</param>
-    /// <param name="pageSize">The page Size.</param>
+    /// <param name="pageNumber">The one-based page number to retrieve (default: 1).</param>
+    /// <param name="pageSize">The number of permissions per page (default: 10).</param>
+    /// <returns>A paginated result containing <see cref="PermissionDto"/> objects for the requested page.</returns>
     [HttpGet("paginated")]
     [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(PaginatedResult<PermissionDto>), StatusCodes.Status200OK)]
@@ -165,9 +172,10 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Search permissions with advanced filtering, sorting, and pagination
+    /// Searches permissions using advanced filtering, sorting, and pagination via a query specification.
     /// </summary>
-    /// <param name="query">The query.</param>
+    /// <param name="query">The query specification with filters, sort options, and pagination settings.</param>
+    /// <returns>A paginated result containing matching <see cref="PermissionDto"/> objects.</returns>
     /// <remarks>
     /// Supported filters: resource, action, description
     /// Supported sort fields: id, resource, action, createdAt
@@ -202,9 +210,10 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Get permission by ID
+    /// Retrieves a permission by its unique identifier.
     /// </summary>
-    /// <param name="id">The id.</param>
+    /// <param name="id">The unique identifier of the permission.</param>
+    /// <returns>The <see cref="PermissionDto"/> if found, or 404 if not found.</returns>
     [HttpGet("{id}")]
     [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(PermissionDto), StatusCodes.Status200OK)]
@@ -243,10 +252,11 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Get permission by module and action
+    /// Retrieves a permission by its module and action combination.
     /// </summary>
-    /// <param name="module">The module.</param>
-    /// <param name="action">The action.</param>
+    /// <param name="module">The module name to search for.</param>
+    /// <param name="action">The action name to search for.</param>
+    /// <returns>The matching <see cref="PermissionDto"/> if found, or 404 if not found.</returns>
     [HttpGet("module-action")]
     [HasPermission("Permissions", "Read")]
     [ProducesResponseType(typeof(PermissionDto), StatusCodes.Status200OK)]
@@ -294,12 +304,13 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Check if a user has a specific permission (used by other services via Dapr).
-    /// Allows anonymous so the Bearer token can be validated in-action for service-to-service calls.
+    /// Checks whether a user has a specific permission. Used by other services via Dapr.
+    /// Allows anonymous so the Bearer token is validated in-action for service-to-service calls.
     /// </summary>
-    /// <param name="module">The module.</param>
-    /// <param name="action">The action.</param>
-    /// <param name="userId">The user Id.</param>
+    /// <param name="module">The module name to check.</param>
+    /// <param name="action">The action name to check.</param>
+    /// <param name="userId">Optional user ID. If supplied, it must match the token subject.</param>
+    /// <returns><c>true</c> if the resolved user has the permission; otherwise, <c>false</c>.</returns>
     [HttpGet("check")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
@@ -335,9 +346,11 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Resolves the caller's user id from the authenticated principal or Bearer token.
-    /// When <paramref name="queryUserId"/> is supplied (Dapr from Sales), it must match the token subject.
+    /// Resolves the caller's user ID from the authenticated principal or Bearer token.
+    /// When <paramref name="queryUserId"/> is supplied (e.g. from a Dapr caller), it must match the token subject.
     /// </summary>
+    /// <param name="queryUserId">An optional user ID from the query string to validate against the token.</param>
+    /// <returns>The resolved user ID, or <c>null</c> if authentication fails or there is a mismatch.</returns>
     private Guid? ResolveUserIdFromRequest(Guid? queryUserId)
     {
         var principal = User.Identity?.IsAuthenticated == true
@@ -360,6 +373,10 @@ public class PermissionsController : ControllerBase
         return queryUserId ?? tokenUserId;
     }
 
+    /// <summary>
+    /// Attempts to extract and validate a <see cref="ClaimsPrincipal"/> from the Authorization Bearer header of the current request.
+    /// </summary>
+    /// <returns>The validated <see cref="ClaimsPrincipal"/>, or <c>null</c> if no valid token is found.</returns>
     private ClaimsPrincipal? TryGetPrincipalFromBearerHeader()
     {
         if (!Request.Headers.TryGetValue("Authorization", out var authHeader))
@@ -372,6 +389,11 @@ public class PermissionsController : ControllerBase
         return _jwtTokenProvider.ValidateAccessToken(token);
     }
 
+    /// <summary>
+    /// Extracts the user ID from the NameIdentifier or sub claim of the given principal.
+    /// </summary>
+    /// <param name="principal">The claims principal to extract the user ID from.</param>
+    /// <returns>The user ID as a <see cref="Guid"/> if found and parseable; otherwise, <c>null</c>.</returns>
     private static Guid? GetUserIdFromPrincipal(ClaimsPrincipal? principal)
     {
         if (principal is null)
@@ -384,9 +406,10 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new permission
+    /// Creates a new permission.
     /// </summary>
-    /// <param name="createPermissionDto">The create Permission Dto.</param>
+    /// <param name="createPermissionDto">The data for the new permission including module and action.</param>
+    /// <returns>The created <see cref="PermissionDto"/> with its new ID, or 409 if it already exists.</returns>
     [HttpPost]
     [HasPermission("Permissions", "Create")]
     [ProducesResponseType(typeof(PermissionDto), StatusCodes.Status201Created)]
@@ -439,10 +462,11 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Update an existing permission
+    /// Updates an existing permission's module, action, and description.
     /// </summary>
-    /// <param name="id">The id.</param>
-    /// <param name="updatePermissionDto">The update Permission Dto.</param>
+    /// <param name="id">The unique identifier of the permission to update.</param>
+    /// <param name="updatePermissionDto">The updated permission data.</param>
+    /// <returns>204 No Content on success, or 404 if the permission is not found.</returns>
     [HttpPut("{id}")]
     [HasPermission("Permissions", "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -478,9 +502,10 @@ public class PermissionsController : ControllerBase
     }
 
     /// <summary>
-    /// Delete a permission
+    /// Deletes a permission by its unique identifier.
     /// </summary>
-    /// <param name="id">The id.</param>
+    /// <param name="id">The unique identifier of the permission to delete.</param>
+    /// <returns>204 No Content on success, or 404 if the permission is not found.</returns>
     [HttpDelete("{id}")]
     [HasPermission("Permissions", "Delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
