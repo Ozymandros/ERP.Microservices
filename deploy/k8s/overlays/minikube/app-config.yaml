@@ -4,6 +4,6 @@ metadata:
   name: app-config
   namespace: myapp-apps
 data:
-  FRONTEND_ORIGIN: "http://localhost:3000;http://localhost:5000;http://gateway.local"
+  FRONTEND_ORIGIN: "http://localhost:3000;http://localhost:5000;http://localhost:8080;http://gateway.local"
   Jwt__Issuer: "MyApp.Auth"
   Jwt__Audience: "MyApp.All"
