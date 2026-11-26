@@ -1,4 +1,6 @@
+using MyApp.Crm.Application.Contracts.Ports;
 using MyApp.Crm.Application.Mapping;
+using MyApp.Crm.Infrastructure.Adapters;
 using MyApp.Crm.Application.Services;
 using MyApp.Crm.Domain.Accounts;
 using MyApp.Crm.Domain.Activities;
@@ -30,6 +32,7 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
         services.AddScoped<MyApp.Crm.Application.Contracts.Services.ILeadService, LeadService>();
 
         services.AddScoped<IOpportunityRepository, OpportunityRepository>();
+        services.AddScoped<ISalesQuoteCreationPort, SalesQuoteCreationAdapter>();
         services.AddScoped<MyApp.Crm.Application.Contracts.Services.IOpportunityService, OpportunityService>();
 
         services.AddScoped<IActivityRepository, ActivityRepository>();

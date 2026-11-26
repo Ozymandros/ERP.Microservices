@@ -1,11 +1,9 @@
 using System;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
-using MyApp.Orders.Application.Contracts.Dtos;
-using MyApp.Orders.Domain;
 using MyApp.Projects.Application.Contracts.DTOs;
 using MyApp.Projects.Application.Contracts.Services;
-using MyApp.Projects.Application.Integration;
+using MyApp.Projects.Application.UseCases.Posting;
 using MyApp.Projects.Domain.Entities;
 using MyApp.Projects.Domain.Repositories;
 using MyApp.Projects.Domain.Services;
@@ -33,7 +31,7 @@ public class ProjectPostingService : AppServiceBase, IProjectPostingService
     private readonly IProjectConsumptionOrderRepository _consumptionOrders;
     private readonly IResourceRepository _resources;
     private readonly ICurrencyService _currencyService;
-    private readonly IOrdersClient _ordersClient;
+    private readonly CreateItemConsumptionUseCase _createItemConsumption;
     private readonly IMapper _mapper;
     private readonly ILogger<ProjectPostingService> _logger;
 
@@ -47,7 +45,7 @@ public class ProjectPostingService : AppServiceBase, IProjectPostingService
         IProjectConsumptionOrderRepository consumptionOrders,
         IResourceRepository resources,
         ICurrencyService currencyService,
-        IOrdersClient ordersClient,
+        CreateItemConsumptionUseCase createItemConsumption,
         IMapper mapper,
         IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher,
@@ -62,7 +60,7 @@ public class ProjectPostingService : AppServiceBase, IProjectPostingService
         _consumptionOrders = consumptionOrders;
         _resources = resources;
         _currencyService = currencyService;
-        _ordersClient = ordersClient;
+        _createItemConsumption = createItemConsumption;
         _mapper = mapper;
         _logger = logger;
     }
@@ -160,93 +158,8 @@ public class ProjectPostingService : AppServiceBase, IProjectPostingService
     // ───────────────────────────── Item consumption (Orders) ─────────────────────────────
 
     /// <inheritdoc />
-    public async Task<ConsumptionOrderDto> CreateItemConsumptionAsync(Guid projectId, CreateItemConsumptionDto dto, CancellationToken cancellationToken = default)
-    {
-        var project = await GetProjectAsync(projectId);
-        project.EnsureCanPost();
-
-        if (dto.Lines.Count == 0)
-            throw new ArgumentException("At least one line is required.");
-
-        var requested = dto.Lines
-            .GroupBy(l => l.PlanningLineId)
-            .ToDictionary(g => g.Key, g => g.Sum(l => l.Quantity));
-
-        var lines = await _lines.GetByIdsAsync(requested.Keys, cancellationToken);
-        if (lines.Count != requested.Count || lines.Any(l => l.ProjectId != projectId))
-            throw new ArgumentException("One or more planning lines do not belong to this project.");
-
-        foreach (var line in lines)
-        {
-            if (line.Kind != ProjectLineKind.Item || line.ProductId is null)
-                throw new ArgumentException($"Planning line {line.LineNo} is not an item line.");
-            if (line.WarehouseId.HasValue && line.WarehouseId != dto.WarehouseId)
-                throw new ArgumentException($"Planning line {line.LineNo} is planned for a different warehouse.");
-
-            line.ReserveForConsumption(requested[line.Id]);
-        }
-
-        // 1) Create the operational order in Orders (physical movement, reserves stock in Inventory).
-        var orderRequest = new CreateOrderWithReservationDto
-        {
-            OrderNumber = $"{project.ProjectNumber}-CONS",
-            Type = OrderType.Outbound,
-            SourceId = dto.WarehouseId,
-            TargetId = null,
-            ExternalOrderId = project.Id,
-            ExternalOrderSource = DocumentSources.Project,
-            WarehouseId = dto.WarehouseId,
-            OrderDate = DateTime.UtcNow,
-            DestinationAddress = dto.DestinationAddress,
-            Lines = lines.Select(l => new CreateOrderLineDto
-            {
-                ProductId = l.ProductId!.Value,
-                Quantity = requested[l.Id]
-            }).ToList()
-        };
-
-        var order = await _ordersClient.CreateOrderWithReservationAsync(orderRequest, cancellationToken);
-
-        // 2) Track it locally so the fulfilment event can be turned into usage entries.
-        var consumption = new ProjectConsumptionOrder(Guid.NewGuid())
-        {
-            ProjectId = projectId,
-            OrderId = order.Id,
-            OrderNumber = order.OrderNumber,
-            WarehouseId = dto.WarehouseId,
-            Status = ProjectConsumptionStatus.Pending,
-            PostingDate = (dto.PostingDate ?? DateTime.UtcNow).Date
-        };
-        foreach (var line in lines)
-        {
-            consumption.Lines.Add(new ProjectConsumptionOrderLine(Guid.NewGuid())
-            {
-                ConsumptionOrderId = consumption.Id,
-                PlanningLineId = line.Id,
-                ProductId = line.ProductId!.Value,
-                Quantity = requested[line.Id]
-            });
-        }
-
-        try
-        {
-            await _consumptionOrders.AddAsync(consumption);
-            await SaveChangesAsync(cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogCritical(ex,
-                "Order {OrderId} was created in Orders for project {ProjectNumber} but could not be tracked locally; cancel it in Orders",
-                order.Id, project.ProjectNumber);
-            throw;
-        }
-
-        _logger.LogInformation(
-            "Consumption order {OrderNumber} ({OrderId}) created for project {ProjectNumber}",
-            order.OrderNumber, order.Id, project.ProjectNumber);
-
-        return _mapper.Map<ConsumptionOrderDto>(consumption);
-    }
+    public Task<ConsumptionOrderDto> CreateItemConsumptionAsync(Guid projectId, CreateItemConsumptionDto dto, CancellationToken cancellationToken = default) =>
+        _createItemConsumption.ExecuteAsync(projectId, dto, cancellationToken);
 
     /// <inheritdoc />
     public async Task<List<ConsumptionOrderDto>> GetConsumptionOrdersAsync(Guid projectId, CancellationToken cancellationToken = default)

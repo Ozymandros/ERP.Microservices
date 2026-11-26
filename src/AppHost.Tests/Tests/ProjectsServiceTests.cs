@@ -13,7 +13,7 @@ public class ProjectsServiceTests
 {
     private static async Task<DistributedApplication> CreateAndStartAppAsync()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder => clientBuilder.AddStandardResilienceHandler());
 
         var app = await appHost.BuildAsync();

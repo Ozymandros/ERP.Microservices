@@ -18,7 +18,7 @@ public class AuthIntegrationTests
     [Fact]
     public async Task Login_WithInvalidCredentials_ReturnsUnauthorized()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
@@ -47,7 +47,7 @@ public class AuthIntegrationTests
     [Fact]
     public async Task Login_WithValidCredentials_ReturnsOk()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
@@ -91,7 +91,7 @@ public class AuthIntegrationTests
     [Fact]
     public async Task Login_WithInvalidCredentials_ReturnsUnauthorized_SecondCase()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
@@ -120,7 +120,7 @@ public class AuthIntegrationTests
     [Fact]
     public async Task Login_WithInvalidModel_ReturnsBadRequest()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
@@ -149,7 +149,7 @@ public class AuthIntegrationTests
     [Fact]
     public async Task Register_WithValidData_ReturnsCreated()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
@@ -182,7 +182,7 @@ public class AuthIntegrationTests
     [Fact]
     public async Task Register_WithExistingEmail_ReturnsConflict()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
@@ -224,7 +224,7 @@ public class AuthIntegrationTests
     [Fact]
     public async Task Register_WithInvalidModel_ReturnsBadRequest()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
@@ -257,7 +257,7 @@ public class AuthIntegrationTests
     [Fact]
     public async Task RefreshToken_WithValidToken_ReturnsOk()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
@@ -310,7 +310,7 @@ public class AuthIntegrationTests
     [Fact]
     public async Task RefreshToken_WithInvalidToken_ReturnsUnauthorized()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
@@ -335,7 +335,7 @@ public class AuthIntegrationTests
     [Fact]
     public async Task RefreshToken_WithInvalidModel_ReturnsBadRequest()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
@@ -364,7 +364,7 @@ public class AuthIntegrationTests
     [Fact]
     public async Task ExternalLogin_WithValidProvider_ReturnsRedirect()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
@@ -390,7 +390,7 @@ public class AuthIntegrationTests
     [Fact]
     public async Task ExternalLogin_WithInvalidProvider_ReturnsBadRequest()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
@@ -415,7 +415,7 @@ public class AuthIntegrationTests
     [Fact]
     public async Task ExternalLoginCallback_WithoutAuthentication_ReturnsBadRequest()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
@@ -436,7 +436,7 @@ public class AuthIntegrationTests
     //[Fact]
     //public async Task Logout_WithoutAuthorization_ReturnsUnauthorized()
     //{
-    //    var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+    //    var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
     //    appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
     //    {
     //        clientBuilder.AddStandardResilienceHandler();
@@ -459,7 +459,7 @@ public class AuthIntegrationTests
     [Fact]
     public async Task Logout_WithValidToken_ReturnsNoContent()
     {
-        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHost = await DistributedApplicationTestingBuilder.CreateAsync<global::Projects.AppHost>();
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();

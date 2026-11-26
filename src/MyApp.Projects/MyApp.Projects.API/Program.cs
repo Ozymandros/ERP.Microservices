@@ -1,7 +1,9 @@
 using MyApp.Projects.Application.Contracts;
 using MyApp.Projects.Application.Contracts.Services;
-using MyApp.Projects.Application.Integration;
+using MyApp.Projects.Application.Contracts.Ports;
+using MyApp.Projects.Application.DependencyInjection;
 using MyApp.Projects.Application.Mapping;
+using MyApp.Projects.Infrastructure.Adapters;
 using MyApp.Projects.Application.Services;
 using MyApp.Projects.Domain.Repositories;
 using MyApp.Projects.Infrastructure.Data;
@@ -41,10 +43,10 @@ builder.AddServiceDefaults(new MicroserviceConfigurationOptions
         services.AddScoped<IResourceGroupRepository, ResourceGroupRepository>();
         services.AddScoped<ICurrencyRepository, CurrencyRepository>();
 
-        // Dapr service-invocation clients (Sales customers, Inventory products, Orders)
-        services.AddScoped<ISalesCustomerClient, SalesCustomerClient>();
-        services.AddScoped<IInventoryProductClient, InventoryProductClient>();
-        services.AddScoped<IOrdersClient, OrdersClient>();
+        services.AddScoped<ISalesCustomerLookupPort, SalesCustomerLookupAdapter>();
+        services.AddScoped<IInventoryProductLookupPort, InventoryProductLookupAdapter>();
+        services.AddScoped<IOrdersCreationPort, OrdersCreationAdapter>();
+        services.AddProjectsApplication();
 
         // Application services
         services.AddScoped<ICurrencyService, CurrencyService>();

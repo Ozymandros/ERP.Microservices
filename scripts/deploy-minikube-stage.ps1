@@ -32,7 +32,7 @@ param(
     [switch] $NoPortForward,
 
     [string] $MinikubeProfile = 'minikube',
-    [int] $MinikubeMemoryMb = 12288,
+    [int] $MinikubeMemoryMb = 6144,
     [int] $MinikubeCpus = 4,
     [string] $ImageTag = 'minikube-stage',
     [string[]] $Services,

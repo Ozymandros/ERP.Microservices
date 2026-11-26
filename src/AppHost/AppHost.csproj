@@ -1,4 +1,4 @@
-<Project Sdk="Aspire.AppHost.Sdk/13.6.1">
+<Project Sdk="Microsoft.Net.Sdk">
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NoWarn>$(NoWarn);1591</NoWarn>
@@ -16,32 +16,37 @@
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Aspire.Hosting.JavaScript" Version="13.6.1" />
-		<PackageReference Include="Aspire.Hosting.Yarp" Version="13.6.1" />
+		<PackageReference Include="Aspire.Hosting.AppHost" Version="17.0.0" />
+		<PackageReference Include="Aspire.Hosting.Dotnet" Version="17.0.0" />
+		<PackageReference Include="Aspire.Hosting.JavaScript" Version="17.0.0" />
+		<PackageReference Include="Aspire.Hosting.Yarp" Version="17.0.0" />
 		<PackageReference Include="CommunityToolkit.Aspire.Hosting.Dapr" Version="13.0.0" />
-		<PackageReference Include="Dapr.Client" Version="1.18.10" />
-		<PackageReference Include="Aspire.Hosting.Azure.ApplicationInsights" Version="13.6.1" />
-		<PackageReference Include="Aspire.Hosting.SqlServer" Version="13.6.1" />
-		<PackageReference Include="Aspire.Hosting.Azure.OperationalInsights" Version="13.6.1" />
-		<PackageReference Include="Aspire.Hosting.Azure.Sql" Version="13.6.1" />
-		<PackageReference Include="Aspire.Hosting.Redis" Version="13.6.1" />
-		<PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="13.6.1" />
-		<PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.6.1" />
-		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="13.6.1" />
+		<PackageReference Include="Dapr.Client" Version="1.19.1" />
+		<PackageReference Include="Aspire.Hosting.Azure.ApplicationInsights" Version="17.0.0" />
+		<PackageReference Include="Aspire.Hosting.SqlServer" Version="17.0.0" />
+		<PackageReference Include="Aspire.Hosting.Azure.OperationalInsights" Version="17.0.0" />
+		<PackageReference Include="Aspire.Hosting.Azure.Sql" Version="17.0.0" />
+		<PackageReference Include="Aspire.Hosting.Redis" Version="17.0.0" />
+		<PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="17.0.0" />
+		<PackageReference Include="Aspire.Hosting.PostgreSQL" Version="17.0.0" />
+		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="13.6.5" />
 		<PackageReference Include="MessagePack" Version="3.1.12" />
 	</ItemGroup>
     <ItemGroup>
-		<ProjectReference Include="..\MyApp.Audit\MyApp.Audit.API\MyApp.Audit.API.csproj" />
-		<ProjectReference Include="..\MyApp.Auth\MyApp.Auth.API\MyApp.Auth.API.csproj" />
-		<ProjectReference Include="..\MyApp.Sales\MyApp.Sales.API\MyApp.Sales.API.csproj" />
-		<ProjectReference Include="..\MyApp.Billing\MyApp.Billing.API\MyApp.Billing.API.csproj" />
-		<ProjectReference Include="..\MyApp.Inventory\MyApp.Inventory.API\MyApp.Inventory.API.csproj" />
-		<ProjectReference Include="..\MyApp.Orders\MyApp.Orders.API\MyApp.Orders.API.csproj" />
-		<ProjectReference Include="..\MyApp.Purchasing\MyApp.Purchasing.API\MyApp.Purchasing.API.csproj" />
-		<ProjectReference Include="..\ErpApiGateway\ErpApiGateway.csproj" />
+		<ProjectReference Include="..\MyApp.Audit\MyApp.Audit.API\MyApp.Audit.API.csproj" IsAspireProjectResource="true" />
+		<ProjectReference Include="..\MyApp.Auth\MyApp.Auth.API\MyApp.Auth.API.csproj" IsAspireProjectResource="true" />
+		<ProjectReference Include="..\MyApp.Sales\MyApp.Sales.API\MyApp.Sales.API.csproj" IsAspireProjectResource="true" />
+		<ProjectReference Include="..\MyApp.Billing\MyApp.Billing.API\MyApp.Billing.API.csproj" IsAspireProjectResource="true" />
+		<ProjectReference Include="..\MyApp.Inventory\MyApp.Inventory.API\MyApp.Inventory.API.csproj" IsAspireProjectResource="true" />
+		<ProjectReference Include="..\MyApp.Orders\MyApp.Orders.API\MyApp.Orders.API.csproj" IsAspireProjectResource="true" />
+		<ProjectReference Include="..\MyApp.Purchasing\MyApp.Purchasing.API\MyApp.Purchasing.API.csproj" IsAspireProjectResource="true" />
+		<ProjectReference Include="..\ErpApiGateway\ErpApiGateway.csproj" IsAspireProjectResource="true" />
 		<ProjectReference Include="..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" IsAspireProjectResource="false" />
-		<ProjectReference Include="..\MyApp.Crm\MyApp.Crm.API\MyApp.Crm.API.csproj" />
-		<ProjectReference Include="..\MyApp.Agentic\MyApp.Agentic.API\MyApp.Agentic.API.csproj" />
-		<ProjectReference Include="..\MyApp.Projects\MyApp.Projects.API\MyApp.Projects.API.csproj" />
+		<ProjectReference Include="..\MyApp.Crm\MyApp.Crm.API\MyApp.Crm.API.csproj" IsAspireProjectResource="true" />
+		<ProjectReference Include="..\MyApp.Agentic\MyApp.Agentic.API\MyApp.Agentic.API.csproj" IsAspireProjectResource="true" />
+		<ProjectReference Include="..\MyApp.Projects\MyApp.Projects.API\MyApp.Projects.API.csproj" IsAspireProjectResource="true" />
 	</ItemGroup>
+    <ItemGroup>
+      <PackageReference Update="System.Security.Cryptography.Pkcs" Version="11.0.0" />
+    </ItemGroup>
 </Project>

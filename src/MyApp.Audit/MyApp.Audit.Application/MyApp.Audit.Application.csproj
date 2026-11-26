@@ -7,12 +7,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="16.2.0" />
+    <PackageReference Include="AutoMapper" Version="17.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyApp.Audit.Domain\MyApp.Audit.Domain.csproj" />
     <ProjectReference Include="..\MyApp.Audit.Application.Contracts\MyApp.Audit.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Domain\MyApp.Shared.Domain.csproj" />
     <ProjectReference Include="..\..\MyApp.Shared\MyApp.Shared.Application\MyApp.Shared.Application.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="System.Security.Cryptography.Pkcs" Version="11.0.0" />
   </ItemGroup>
 </Project>

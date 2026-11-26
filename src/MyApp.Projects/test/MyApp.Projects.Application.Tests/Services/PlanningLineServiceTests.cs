@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using MyApp.Projects.Application.Contracts.DTOs;
 using MyApp.Projects.Application.Contracts.Services;
-using MyApp.Projects.Application.Integration;
+using MyApp.Projects.Application.Contracts.Ports;
 using MyApp.Projects.Application.Services;
 using MyApp.Projects.Domain.Entities;
 using MyApp.Projects.Domain.Repositories;
@@ -46,7 +46,7 @@ public class PlanningLineServiceTests
 
         _sut = new PlanningLineService(
             _projects.Object, _tasks.Object, _lines.Object, Mock.Of<IProjectLedgerEntryRepository>(), _resources.Object,
-            Mock.Of<IInventoryProductClient>(), _currency.Object, Mock.Of<IMapper>(), _unitOfWork.Object,
+            Mock.Of<IInventoryProductLookupPort>(), _currency.Object, Mock.Of<IMapper>(), _unitOfWork.Object,
             Mock.Of<IEventPublisher>(), Mock.Of<ILogger<PlanningLineService>>());
     }
 
