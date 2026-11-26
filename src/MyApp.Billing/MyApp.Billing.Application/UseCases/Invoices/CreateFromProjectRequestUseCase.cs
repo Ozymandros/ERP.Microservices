@@ -54,9 +54,13 @@ public sealed class CreateFromProjectRequestUseCase(
 
         var created = await createInvoice.ExecuteAsync(createDto, cancellationToken);
 
+        var sanitizedProjectNumber = (@event.ProjectNumber ?? string.Empty)
+            .Replace("\r", string.Empty)
+            .Replace("\n", string.Empty);
+
         logger.LogInformation(
             "Created {Status} invoice {InvoiceId} for project {ProjectNumber} (request {RequestId})",
-            autoIssue ? "auto-issued" : "draft", created.Id, @event.ProjectNumber, @event.RequestId);
+            autoIssue ? "auto-issued" : "draft", created.Id, sanitizedProjectNumber, @event.RequestId);
 
         if (!autoIssue)
             return created;
