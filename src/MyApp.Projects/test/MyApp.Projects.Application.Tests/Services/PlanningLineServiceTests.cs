@@ -37,7 +37,8 @@ public class PlanningLineServiceTests
 
         _projects.Setup(r => r.GetByIdAsync(_project.Id)).ReturnsAsync(_project);
         _tasks.Setup(r => r.GetByProjectAsync(_project.Id, It.IsAny<CancellationToken>())).ReturnsAsync(new List<ProjectTask> { _task });
-        _resources.Setup(r => r.GetByIdAsync(_resource.Id)).ReturnsAsync(_resource);
+        _resources.Setup(r => r.GetByIdAsync(_resource.Id, It.IsAny<CancellationToken>())).ReturnsAsync(_resource);
+        _projects.Setup(r => r.GetByIdAsync(_project.Id, It.IsAny<CancellationToken>())).ReturnsAsync(_project);
         _lines.Setup(r => r.AddAsync(It.IsAny<ProjectPlanningLine>()))
               .Callback<ProjectPlanningLine>(l => _added = l)
               .Returns<ProjectPlanningLine>(l => Task.FromResult(l));
@@ -48,6 +49,31 @@ public class PlanningLineServiceTests
             _projects.Object, _tasks.Object, _lines.Object, Mock.Of<IProjectLedgerEntryRepository>(), _resources.Object,
             Mock.Of<IInventoryProductLookupPort>(), _currency.Object, Mock.Of<IMapper>(), _unitOfWork.Object,
             Mock.Of<IEventPublisher>(), Mock.Of<ILogger<PlanningLineService>>());
+    }
+
+    [Fact]
+    public async Task GetByIdAsync_MatchingProject_ReturnsMappedDto()
+    {
+        var line = new ProjectPlanningLine(Guid.NewGuid())
+        {
+            ProjectId = _project.Id,
+            ProjectTaskId = _task.Id,
+            Description = "Line"
+        };
+        var dto = new PlanningLineDto(line.Id) { Description = "Line" };
+        _lines.Setup(r => r.GetByIdAsync(line.Id, It.IsAny<CancellationToken>())).ReturnsAsync(line);
+        var mapper = new Mock<IMapper>();
+        mapper.Setup(m => m.Map<PlanningLineDto>(line)).Returns(dto);
+
+        var sut = new PlanningLineService(
+            _projects.Object, _tasks.Object, _lines.Object, Mock.Of<IProjectLedgerEntryRepository>(), _resources.Object,
+            Mock.Of<IInventoryProductLookupPort>(), _currency.Object, mapper.Object, _unitOfWork.Object,
+            Mock.Of<IEventPublisher>(), Mock.Of<ILogger<PlanningLineService>>());
+
+        var result = await sut.GetByIdAsync(_project.Id, line.Id);
+
+        result.Should().NotBeNull();
+        result!.Description.Should().Be("Line");
     }
 
     [Fact]

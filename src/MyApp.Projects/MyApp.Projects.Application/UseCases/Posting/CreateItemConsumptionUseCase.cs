@@ -24,7 +24,7 @@ public sealed class CreateItemConsumptionUseCase(
         CreateItemConsumptionDto dto,
         CancellationToken cancellationToken = default)
     {
-        var project = await projects.GetByIdAsync(projectId)
+        var project = await projects.GetByIdAsync(projectId, cancellationToken)
             ?? throw new KeyNotFoundException($"Project {projectId} not found");
         project.EnsureCanPost();
 

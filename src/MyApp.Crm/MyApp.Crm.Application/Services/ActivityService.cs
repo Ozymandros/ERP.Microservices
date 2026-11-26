@@ -46,7 +46,7 @@ public class ActivityService : AppServiceBase, IActivityService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<ActivityDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(id);
+        var entity = await _repository.GetByIdAsync(id, cancellationToken);
         return entity is null ? null : _mapper.Map<ActivityDto>(entity);
     }
 
@@ -113,7 +113,7 @@ public class ActivityService : AppServiceBase, IActivityService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<ActivityDto> CompleteAsync(Guid id, CompleteActivityDto dto, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(id);
+        var entity = await _repository.GetByIdAsync(id, cancellationToken);
         if (entity is null) throw new InvalidOperationException($"Activity with ID {id} not found.");
 
         entity.Complete(dto.Note);

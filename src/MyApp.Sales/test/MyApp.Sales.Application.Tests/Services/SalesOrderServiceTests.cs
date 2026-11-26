@@ -1182,7 +1182,9 @@ public class SalesOrderServiceTests
             Status = SalesOrderStatus.Confirmed
         };
 
-        _mockOrderRepository.Setup(r => r.GetByIdAsync(salesOrderId)).ReturnsAsync(order);
+        _mockOrderRepository
+            .Setup(r => r.GetByIdAsync(salesOrderId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(order);
 
         var result = await _salesOrderService.MarkShippedFromFulfillmentAsync(
             new OrderFulfilledEvent(
@@ -1200,6 +1202,101 @@ public class SalesOrderServiceTests
         result!.SalesOrderId.Should().Be(salesOrderId);
         order.Status.Should().Be(SalesOrderStatus.Shipped);
         _mockOrderRepository.Verify(r => r.UpdateAsync(order), Times.Once);
+    }
+
+    [Fact]
+    public async Task MarkCancelledFromOrderAsync_ConfirmedOrder_SetsCancelled()
+    {
+        var salesOrderId = Guid.NewGuid();
+        var order = new SalesOrder(salesOrderId)
+        {
+            OrderNumber = "SO-200",
+            Status = SalesOrderStatus.Confirmed
+        };
+        _mockOrderRepository
+            .Setup(r => r.GetByIdAsync(salesOrderId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(order);
+
+        var result = await _salesOrderService.MarkCancelledFromOrderAsync(
+            new OrderCancelledEvent(Guid.NewGuid(), "customer request", salesOrderId),
+            CancellationToken.None);
+
+        result.Should().NotBeNull();
+        order.Status.Should().Be(SalesOrderStatus.Cancelled);
+    }
+
+    [Fact]
+    public async Task MarkInvoicedFromBillingAsync_ShippedOrder_SetsInvoiced()
+    {
+        var salesOrderId = Guid.NewGuid();
+        var order = new SalesOrder(salesOrderId)
+        {
+            OrderNumber = "SO-300",
+            Status = SalesOrderStatus.Shipped
+        };
+        _mockOrderRepository
+            .Setup(r => r.GetByIdAsync(salesOrderId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(order);
+
+        var result = await _salesOrderService.MarkInvoicedFromBillingAsync(
+            new InvoiceIssuedEvent(
+                Guid.NewGuid(),
+                "INV-1",
+                Guid.NewGuid(),
+                salesOrderId,
+                10m,
+                2m,
+                12m,
+                DateTime.UtcNow.AddDays(30)),
+            CancellationToken.None);
+
+        result.Should().NotBeNull();
+        order.Status.Should().Be(SalesOrderStatus.Invoiced);
+    }
+
+    [Fact]
+    public async Task CreateReturnAsync_ShippedOrder_CreatesReturnOrder()
+    {
+        var salesOrderId = Guid.NewGuid();
+        var productId = Guid.NewGuid();
+        var warehouseId = Guid.NewGuid();
+        var order = new SalesOrder(salesOrderId)
+        {
+            OrderNumber = "SO-400",
+            Status = SalesOrderStatus.Shipped,
+            Lines =
+            [
+                new SalesOrderLine(Guid.NewGuid())
+                {
+                    SalesOrderId = salesOrderId,
+                    ProductId = productId,
+                    Quantity = 5,
+                    UnitPrice = 10m
+                }
+            ]
+        };
+        var returnOrderId = Guid.NewGuid();
+
+        _mockOrderRepository
+            .Setup(r => r.GetByIdAsync(salesOrderId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(order);
+        _mockOrdersFulfillmentPort
+            .Setup(p => p.CreateOrderAsync(It.IsAny<CreateOperationalOrderRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new OperationalOrderSnapshot(returnOrderId, "SO-400-RET"));
+        _mockMapper
+            .Setup(m => m.Map<SalesOrderDto>(order))
+            .Returns(new SalesOrderDto(salesOrderId) { OrderNumber = "SO-400", ReturnOrderId = returnOrderId });
+
+        var result = await _salesOrderService.CreateReturnAsync(
+            salesOrderId,
+            new CreateSalesReturnDto
+            {
+                WarehouseId = warehouseId,
+                Lines = [new CreateSalesReturnLineDto(productId, 2)]
+            });
+
+        result.ReturnOrderId.Should().Be(returnOrderId);
+        order.ReturnOrderId.Should().Be(returnOrderId);
     }
 
     #endregion

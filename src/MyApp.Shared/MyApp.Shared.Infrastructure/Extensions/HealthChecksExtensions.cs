@@ -18,8 +18,8 @@ public static class HealthChecksExtensions
     public static IServiceCollection AddCustomHealthChecks(this IServiceCollection services, string dbConnectionString)
     {
         services.AddHealthChecks()
-            .AddSqlServer(dbConnectionString, name: "SQL Server", tags: new[] { "db", "sql", "sqlserver" })
-            .AddCheck("self", () => HealthCheckResult.Healthy(), tags: new[] { "api" });
+            .AddSqlServer(dbConnectionString, name: "SQL Server", tags: [ "db", "sql", "sqlserver" ])
+            .AddCheck("self", () => HealthCheckResult.Healthy(), tags: [ "api" ]);
 
         return services;
     }

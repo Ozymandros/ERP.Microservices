@@ -52,4 +52,70 @@ public class SalesOrderLookupAdapterTests
         snapshot.Lines.Should().ContainSingle(l =>
             l.ProductId == productId && l.Quantity == 3 && l.UnitPrice == 12.5m);
     }
+
+    [Fact]
+    public async Task GetByIdAsync_NullOrderNumberAndLines_MapsDefaults()
+    {
+        var salesOrderId = Guid.NewGuid();
+        var invoker = new Mock<IServiceInvoker>();
+        invoker
+            .Setup(i => i.InvokeAsync<SalesOrderWireDto>(
+                ServiceNames.Sales,
+                $"{ApiEndpoints.Sales.Base}/{salesOrderId}",
+                HttpMethod.Get,
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new SalesOrderWireDto
+            {
+                Id = salesOrderId,
+                OrderNumber = null,
+                CustomerId = Guid.NewGuid(),
+                Lines = null
+            });
+
+        var sut = new SalesOrderLookupAdapter(invoker.Object, NullLogger<SalesOrderLookupAdapter>.Instance);
+        var snapshot = await sut.GetByIdAsync(salesOrderId);
+
+        snapshot!.OrderNumber.Should().BeEmpty();
+        snapshot.Lines.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetByIdAsync_NotFound_ReturnsNull()
+    {
+        var salesOrderId = Guid.NewGuid();
+        var invoker = new Mock<IServiceInvoker>();
+        invoker
+            .Setup(i => i.InvokeAsync<SalesOrderWireDto>(
+                ServiceNames.Sales,
+                $"{ApiEndpoints.Sales.Base}/{salesOrderId}",
+                HttpMethod.Get,
+                It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new HttpRequestException("missing", null, System.Net.HttpStatusCode.NotFound));
+
+        var sut = new SalesOrderLookupAdapter(invoker.Object, NullLogger<SalesOrderLookupAdapter>.Instance);
+        var snapshot = await sut.GetByIdAsync(salesOrderId);
+
+        snapshot.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetByIdAsync_NestedNotFound_ReturnsNull()
+    {
+        var salesOrderId = Guid.NewGuid();
+        var invoker = new Mock<IServiceInvoker>();
+        invoker
+            .Setup(i => i.InvokeAsync<SalesOrderWireDto>(
+                ServiceNames.Sales,
+                $"{ApiEndpoints.Sales.Base}/{salesOrderId}",
+                HttpMethod.Get,
+                It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new Exception(
+                "wrap",
+                new HttpRequestException("missing", null, System.Net.HttpStatusCode.NotFound)));
+
+        var sut = new SalesOrderLookupAdapter(invoker.Object, NullLogger<SalesOrderLookupAdapter>.Instance);
+        var snapshot = await sut.GetByIdAsync(salesOrderId);
+
+        snapshot.Should().BeNull();
+    }
 }

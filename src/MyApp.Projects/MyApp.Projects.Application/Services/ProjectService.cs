@@ -64,7 +64,7 @@ public class ProjectService : AppServiceBase, IProjectService
     /// <inheritdoc />
     public async Task<PaginatedResult<ProjectDto>> QueryAsync(ISpecification<Project> spec, CancellationToken cancellationToken = default)
     {
-        var result = await _projects.QueryAsync(spec);
+        var result = await _projects.QueryAsync(spec, cancellationToken);
         return new PaginatedResult<ProjectDto>(
             _mapper.Map<List<ProjectDto>>(result.Items), result.PageNumber, result.PageSize, result.TotalCount);
     }
@@ -72,7 +72,7 @@ public class ProjectService : AppServiceBase, IProjectService
     /// <inheritdoc />
     public async Task<ProjectDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var project = await _projects.GetByIdAsync(id);
+        var project = await _projects.GetByIdAsync(id, cancellationToken);
         return project is null ? null : _mapper.Map<ProjectDto>(project);
     }
 

@@ -751,7 +751,7 @@ public class InvoiceServiceTests
         var invoices = new List<Invoice> { BuildIssuedInvoice(), BuildIssuedInvoice() };
         var spec = new InvoiceQuerySpec(new QuerySpec { Page = 1, PageSize = 10 });
         var paged = new PaginatedResult<Invoice>(invoices, 1, 10, 2);
-        _invoiceRepo.Setup(r => r.QueryAsync(spec)).ReturnsAsync(paged);
+        _invoiceRepo.Setup(r => r.QueryAsync(spec, It.IsAny<CancellationToken>())).ReturnsAsync(paged);
 
         // Act
         var result = await _sut.QueryInvoicesAsync(spec);

@@ -31,7 +31,7 @@ public sealed class FulfillOrderUseCase(
 
         if (order.Type == OrderType.Outbound)
         {
-            var reservations = await reservedStockRepository.GetByOrderIdAsync(dto.OrderId);
+            var reservations = await reservedStockRepository.GetByOrderIdAsync(dto.OrderId, cancellationToken);
             if (reservations.Count == 0)
                 throw new OrderFulfillmentException(dto.OrderId, "No stock reservations found for this outbound order");
 

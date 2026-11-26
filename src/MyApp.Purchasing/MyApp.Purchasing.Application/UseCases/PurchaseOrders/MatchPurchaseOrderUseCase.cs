@@ -19,7 +19,7 @@ public sealed class MatchPurchaseOrderUseCase(
         Guid purchaseOrderId,
         CancellationToken cancellationToken = default)
     {
-        var order = await purchaseOrderRepository.GetWithLinesAsync(purchaseOrderId)
+        var order = await purchaseOrderRepository.GetWithLinesAsync(purchaseOrderId, cancellationToken)
             ?? throw new InvalidOperationException($"Purchase order {purchaseOrderId} not found");
 
         var supplierInvoiceList = await supplierInvoices.GetByPurchaseOrderIdAsync(purchaseOrderId, cancellationToken);

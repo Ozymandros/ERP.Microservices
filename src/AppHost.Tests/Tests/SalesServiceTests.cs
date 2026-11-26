@@ -25,7 +25,7 @@ public class SalesServiceTests : IAsyncLifetime
 
     private async Task WaitForHealthyServicesAsync()
     {
-        var services = new[] { "auth-service", "sales-service" };
+        string[] services = [ "auth-service", "sales-service" ];
 
         foreach (var service in services)
         {

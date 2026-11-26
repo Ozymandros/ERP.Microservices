@@ -314,7 +314,7 @@ public class SalesOrderService : AppServiceBase, ISalesOrderService
             return null;
         }
 
-        var salesOrder = await _orderRepository.GetByIdAsync(@event.ExternalOrderId.Value);
+        var salesOrder = await _orderRepository.GetByIdAsync(@event.ExternalOrderId.Value, cancellationToken);
         if (salesOrder is null)
         {
             _logger.LogWarning("Sales order {SalesOrderId} not found for fulfillment event", @event.ExternalOrderId);
@@ -351,7 +351,7 @@ public class SalesOrderService : AppServiceBase, ISalesOrderService
         if (!@event.ExternalOrderId.HasValue)
             return null;
 
-        var salesOrder = await _orderRepository.GetByIdAsync(@event.ExternalOrderId.Value);
+        var salesOrder = await _orderRepository.GetByIdAsync(@event.ExternalOrderId.Value, cancellationToken);
         if (salesOrder is null)
             return null;
 
@@ -377,7 +377,7 @@ public class SalesOrderService : AppServiceBase, ISalesOrderService
         if (!@event.OrderId.HasValue)
             return null;
 
-        var salesOrder = await _orderRepository.GetByIdAsync(@event.OrderId.Value);
+        var salesOrder = await _orderRepository.GetByIdAsync(@event.OrderId.Value, cancellationToken);
         if (salesOrder is null)
             return null;
 

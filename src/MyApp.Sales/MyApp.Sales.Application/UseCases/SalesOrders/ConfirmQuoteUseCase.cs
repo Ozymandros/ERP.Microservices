@@ -22,7 +22,7 @@ public sealed class ConfirmQuoteUseCase(
     {
         logger.LogInformation("Confirming quote: QuoteId={QuoteId}", dto.QuoteId);
 
-        var quote = await orderRepository.GetByIdAsync(dto.QuoteId)
+        var quote = await orderRepository.GetByIdAsync(dto.QuoteId, cancellationToken)
             ?? throw new InvalidOperationException($"Quote {dto.QuoteId} not found");
 
         if (!quote.IsQuote)
