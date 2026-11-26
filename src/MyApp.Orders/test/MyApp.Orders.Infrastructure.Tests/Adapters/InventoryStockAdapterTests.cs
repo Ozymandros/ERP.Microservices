@@ -30,4 +30,27 @@ public class InventoryStockAdapterTests
 
         result.ReservationId.Should().Be(reservationId);
     }
+
+    [Fact]
+    public async Task ReleaseReservationAsync_InvokesDeleteOnReservationsEndpoint()
+    {
+        var reservationId = Guid.NewGuid();
+        var invoker = new Mock<IServiceInvoker>();
+        invoker
+            .Setup(i => i.InvokeAsync(
+                ServiceNames.Inventory,
+                $"{ApiEndpoints.Inventory.Reservations}/{reservationId}",
+                HttpMethod.Delete,
+                It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        var sut = new InventoryStockAdapter(invoker.Object);
+        await sut.ReleaseReservationAsync(reservationId);
+
+        invoker.Verify(i => i.InvokeAsync(
+            ServiceNames.Inventory,
+            $"{ApiEndpoints.Inventory.Reservations}/{reservationId}",
+            HttpMethod.Delete,
+            It.IsAny<CancellationToken>()), Times.Once);
+    }
 }

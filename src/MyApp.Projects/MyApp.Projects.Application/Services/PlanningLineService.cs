@@ -64,7 +64,7 @@ public class PlanningLineService : AppServiceBase, IPlanningLineService
     /// <inheritdoc />
     public async Task<PlanningLineDto?> GetByIdAsync(Guid projectId, Guid lineId, CancellationToken cancellationToken = default)
     {
-        var line = await _lines.GetByIdAsync(lineId);
+        var line = await _lines.GetByIdAsync(lineId, cancellationToken);
         return line is null || line.ProjectId != projectId ? null : _mapper.Map<PlanningLineDto>(line);
     }
 
@@ -94,7 +94,7 @@ public class PlanningLineService : AppServiceBase, IPlanningLineService
         var project = await GetProjectAsync(projectId);
         project.EnsureCanModify();
 
-        var line = await _lines.GetByIdAsync(lineId);
+        var line = await _lines.GetByIdAsync(lineId, cancellationToken);
         if (line is null || line.ProjectId != projectId)
             throw new NotFoundException(nameof(ProjectPlanningLine), lineId);
 
@@ -123,7 +123,7 @@ public class PlanningLineService : AppServiceBase, IPlanningLineService
         var project = await GetProjectAsync(projectId);
         project.EnsureCanModify();
 
-        var line = await _lines.GetByIdAsync(lineId);
+        var line = await _lines.GetByIdAsync(lineId, cancellationToken);
         if (line is null || line.ProjectId != projectId)
             throw new NotFoundException(nameof(ProjectPlanningLine), lineId);
 
@@ -167,7 +167,7 @@ public class PlanningLineService : AppServiceBase, IPlanningLineService
             {
                 if (dto.ResourceId is null)
                     throw new ArgumentException("ResourceId is required for resource lines.");
-                var resource = await _resources.GetByIdAsync(dto.ResourceId.Value)
+                var resource = await _resources.GetByIdAsync(dto.ResourceId.Value, cancellationToken)
                     ?? throw new ArgumentException($"Resource {dto.ResourceId} does not exist.");
                 if (resource.Blocked)
                     throw new InvalidOperationException($"Resource {resource.ResourceNo} is blocked.");

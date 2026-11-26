@@ -80,7 +80,7 @@ public class InvoiceService(
     /// <inheritdoc />
     public async Task<PaginatedResult<InvoiceDto>> QueryInvoicesAsync(ISpecification<Invoice> spec, CancellationToken cancellationToken = default)
     {
-        var result = await invoiceRepository.QueryAsync(spec);
+        var result = await invoiceRepository.QueryAsync(spec, cancellationToken);
         var invoices = result.Items.Select(BillingInvoiceMapper.ToDto).ToList();
         return new PaginatedResult<InvoiceDto>(invoices, result.PageNumber, result.PageSize, result.TotalCount);
     }

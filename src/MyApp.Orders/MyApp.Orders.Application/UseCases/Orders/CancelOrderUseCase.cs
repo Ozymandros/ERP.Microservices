@@ -28,7 +28,7 @@ public sealed class CancelOrderUseCase(
         if (order.Status == OrderStatus.Completed)
             throw new InvalidOperationException($"Cannot cancel completed order {dto.OrderId}");
 
-        var reservations = await reservedStockRepository.GetByOrderIdAsync(dto.OrderId);
+        var reservations = await reservedStockRepository.GetByOrderIdAsync(dto.OrderId, cancellationToken);
         foreach (var reservation in reservations)
         {
             if (reservation.Status != ReservationStatus.Reserved)

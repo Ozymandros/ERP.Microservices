@@ -55,7 +55,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(id);
+        var entity = await _repository.GetByIdAsync(id, cancellationToken);
         return entity is null ? null : _mapper.Map<OpportunityDto>(entity);
     }
 
@@ -105,7 +105,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityDto> UpdateForecastAsync(Guid id, UpdateOpportunityForecastDto dto, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(id);
+        var entity = await _repository.GetByIdAsync(id, cancellationToken);
         if (entity is null) throw new KeyNotFoundException($"Opportunity with ID {id} not found.");
 
         entity.UpdateForecast(dto.Probability, dto.ExpectedAmount, dto.ExpectedCloseDate);
@@ -121,7 +121,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityDto> MoveStageAsync(Guid id, MoveOpportunityStageDto dto, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(id);
+        var entity = await _repository.GetByIdAsync(id, cancellationToken);
         if (entity is null) throw new KeyNotFoundException($"Opportunity with ID {id} not found.");
 
         if (!Enum.TryParse<OpportunityStage>(dto.Stage, ignoreCase: true, out var newStage))
@@ -151,7 +151,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityDto> MarkWonAsync(Guid id, MarkOpportunityWonRequest request, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(id);
+        var entity = await _repository.GetByIdAsync(id, cancellationToken);
         if (entity is null) throw new KeyNotFoundException($"Opportunity with ID {id} not found.");
 
         // Idempotency: if already won, allow conversion step to be retried safely.
@@ -335,7 +335,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityDto> MarkLostAsync(Guid id, MarkOpportunityLostDto dto, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(id);
+        var entity = await _repository.GetByIdAsync(id, cancellationToken);
         if (entity is null) throw new KeyNotFoundException($"Opportunity with ID {id} not found.");
 
         entity.MarkLost(dto.Reason);

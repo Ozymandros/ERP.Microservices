@@ -21,7 +21,7 @@ public sealed class CreateReturnUseCase(
         CreateSalesReturnDto dto,
         CancellationToken cancellationToken = default)
     {
-        var salesOrder = await orderRepository.GetByIdAsync(salesOrderId)
+        var salesOrder = await orderRepository.GetByIdAsync(salesOrderId, cancellationToken)
             ?? throw new InvalidOperationException($"Sales order {salesOrderId} not found");
 
         if (salesOrder.Status is not (SalesOrderStatus.Invoiced or SalesOrderStatus.Shipped))

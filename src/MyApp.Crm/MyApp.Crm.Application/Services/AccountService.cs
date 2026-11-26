@@ -45,7 +45,7 @@ public sealed class AccountService : AppServiceBase, IAccountService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<AccountDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(id);
+        var entity = await _repository.GetByIdAsync(id, cancellationToken);
         return entity is null ? null : _mapper.Map<AccountDto>(entity);
     }
 
@@ -122,7 +122,7 @@ public async Task<AccountDto?> GetByCustomerIdAsync(Guid customerId, Cancellatio
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<AccountDto> UpdateOwnerAsync(Guid id, UpdateAccountOwnerDto dto, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(id);
+        var entity = await _repository.GetByIdAsync(id, cancellationToken);
         if (entity is null) throw new KeyNotFoundException($"Account with ID {id} not found.");
 
         entity.SetOwner(dto.OwnerUsername);

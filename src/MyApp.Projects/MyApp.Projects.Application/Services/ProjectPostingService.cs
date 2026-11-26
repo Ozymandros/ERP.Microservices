@@ -90,7 +90,7 @@ public class ProjectPostingService : AppServiceBase, IProjectPostingService
         ProjectPlanningLine? line = null;
         if (dto.PlanningLineId.HasValue)
         {
-            line = await _lines.GetByIdAsync(dto.PlanningLineId.Value);
+            line = await _lines.GetByIdAsync(dto.PlanningLineId.Value, cancellationToken);
             if (line is null || line.ProjectId != projectId)
                 throw new ArgumentException($"Planning line {dto.PlanningLineId} does not belong to this project.");
             if (line.ProjectTaskId != dto.ProjectTaskId)
@@ -109,7 +109,7 @@ public class ProjectPostingService : AppServiceBase, IProjectPostingService
         {
             if (resourceId is null)
                 throw new ArgumentException("ResourceId is required for resource usage.");
-            resource = await _resources.GetByIdAsync(resourceId.Value)
+            resource = await _resources.GetByIdAsync(resourceId.Value, cancellationToken)
                 ?? throw new ArgumentException($"Resource {resourceId} does not exist.");
             if (resource.Blocked)
                 throw new InvalidOperationException($"Resource {resource.ResourceNo} is blocked.");
