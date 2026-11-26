@@ -28,9 +28,13 @@ public sealed class CreateAndIssueFromFulfillmentUseCase(
 
         if (!DocumentSources.IsSales(@event.ExternalOrderSource))
         {
+            var sanitizedExternalOrderSource = (@event.ExternalOrderSource ?? string.Empty)
+                .Replace("\r", string.Empty)
+                .Replace("\n", string.Empty);
+
             logger.LogInformation(
                 "Skipping auto-invoice for order {OrderId}: external source {Source} is not Sales",
-                @event.OrderId, @event.ExternalOrderSource);
+                @event.OrderId, sanitizedExternalOrderSource);
             return null;
         }
 
