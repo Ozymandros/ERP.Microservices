@@ -26,7 +26,7 @@ public class OpportunityServiceTests
         opp.AddLine(Guid.NewGuid(), "Line", 2m, 10m, 0m, productId: productId);
 
         var repo = new Mock<IOpportunityRepository>();
-        repo.Setup(r => r.GetByIdAsync(oppId)).ReturnsAsync(opp);
+        repo.Setup(r => r.GetByIdAsync(oppId, It.IsAny<CancellationToken>())).ReturnsAsync(opp);
         repo.Setup(r => r.UpdateAsync(It.IsAny<Opportunity>())).ReturnsAsync((Opportunity o) => o);
 
         var mapper = new Mock<IMapper>();
@@ -64,5 +64,93 @@ public class OpportunityServiceTests
 
         salesQuotes.VerifyAll();
     }
+
+    [Fact]
+    public async Task GetByIdAsync_Existing_ReturnsMappedDto()
+    {
+        var (svc, repo, mapper) = CreateService();
+        var oppId = Guid.NewGuid();
+        var opp = new Opportunity(oppId, Guid.NewGuid(), "Opp", "owner");
+        repo.Setup(r => r.GetByIdAsync(oppId, It.IsAny<CancellationToken>())).ReturnsAsync(opp);
+        mapper.Setup(m => m.Map<OpportunityDto>(opp)).Returns(Map(opp));
+
+        var result = await svc.GetByIdAsync(oppId);
+
+        Assert.NotNull(result);
+        Assert.Equal("Opp", result!.Name);
+    }
+
+    [Fact]
+    public async Task UpdateForecastAsync_Existing_UpdatesProbability()
+    {
+        var (svc, repo, mapper) = CreateService();
+        var oppId = Guid.NewGuid();
+        var opp = new Opportunity(oppId, Guid.NewGuid(), "Opp", "owner");
+        repo.Setup(r => r.GetByIdAsync(oppId, It.IsAny<CancellationToken>())).ReturnsAsync(opp);
+        repo.Setup(r => r.UpdateAsync(opp)).ReturnsAsync(opp);
+        mapper.Setup(m => m.Map<OpportunityDto>(opp)).Returns((Opportunity o) => Map(o));
+
+        var result = await svc.UpdateForecastAsync(
+            oppId,
+            new UpdateOpportunityForecastDto(0.4m, 1000m, DateOnly.FromDateTime(DateTime.UtcNow.AddDays(10))));
+
+        Assert.Equal(0.4m, result.Probability);
+        Assert.Equal(1000m, result.ExpectedAmount);
+    }
+
+    [Fact]
+    public async Task MoveStageAsync_ToQualification_UpdatesStage()
+    {
+        var (svc, repo, mapper) = CreateService();
+        var oppId = Guid.NewGuid();
+        var opp = new Opportunity(oppId, Guid.NewGuid(), "Opp", "owner");
+        repo.Setup(r => r.GetByIdAsync(oppId, It.IsAny<CancellationToken>())).ReturnsAsync(opp);
+        repo.Setup(r => r.UpdateAsync(opp)).ReturnsAsync(opp);
+        mapper.Setup(m => m.Map<OpportunityDto>(opp)).Returns((Opportunity o) => Map(o));
+
+        var result = await svc.MoveStageAsync(oppId, new MoveOpportunityStageDto("Qualification"));
+
+        Assert.Equal(OpportunityStage.Qualification.ToString(), result.Stage);
+    }
+
+    [Fact]
+    public async Task MarkLostAsync_Existing_SetsLostStage()
+    {
+        var (svc, repo, mapper) = CreateService();
+        var oppId = Guid.NewGuid();
+        var opp = new Opportunity(oppId, Guid.NewGuid(), "Opp", "owner");
+        repo.Setup(r => r.GetByIdAsync(oppId, It.IsAny<CancellationToken>())).ReturnsAsync(opp);
+        repo.Setup(r => r.UpdateAsync(opp)).ReturnsAsync(opp);
+        mapper.Setup(m => m.Map<OpportunityDto>(opp)).Returns((Opportunity o) => Map(o));
+
+        var result = await svc.MarkLostAsync(oppId, new MarkOpportunityLostDto("no budget"));
+
+        Assert.Equal(OpportunityStage.Lost.ToString(), result.Stage);
+    }
+
+    private static (OpportunityService Svc, Mock<IOpportunityRepository> Repo, Mock<IMapper> Mapper) CreateService()
+    {
+        var repo = new Mock<IOpportunityRepository>();
+        var mapper = new Mock<IMapper>();
+        var unitOfWork = new Mock<IUnitOfWork>();
+        unitOfWork.Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<EntityEntryDto>());
+        var publisher = new Mock<IEventPublisher>();
+        publisher.Setup(p => p.PublishAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        var svc = new OpportunityService(
+            repo.Object,
+            mapper.Object,
+            Mock.Of<ILogger<OpportunityService>>(),
+            unitOfWork.Object,
+            publisher.Object,
+            Mock.Of<ISalesQuoteCreationPort>());
+        return (svc, repo, mapper);
+    }
+
+    private static OpportunityDto Map(Opportunity o) =>
+        new(o.Id, o.CustomerId, o.LeadId, o.Name, o.Stage.ToString(), o.Probability, o.ExpectedAmount,
+            o.ExpectedCloseDate, o.ConvertedSalesQuoteId, o.ConvertedSalesQuoteNumber, o.OwnerUsername, o.CreatedAt, o.UpdatedAt);
 }
 
