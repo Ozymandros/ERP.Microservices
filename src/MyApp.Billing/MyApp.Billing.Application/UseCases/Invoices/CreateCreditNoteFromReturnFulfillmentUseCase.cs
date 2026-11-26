@@ -26,9 +26,13 @@ public sealed class CreateCreditNoteFromReturnFulfillmentUseCase(
 
         if (!DocumentSources.IsSales(@event.ExternalOrderSource))
         {
+            var sanitizedExternalOrderSource = (@event.ExternalOrderSource ?? string.Empty)
+                .Replace("\r", string.Empty)
+                .Replace("\n", string.Empty);
+
             logger.LogInformation(
                 "Skipping credit note for return order {OrderId}: external source {Source} is not Sales",
-                @event.OrderId, @event.ExternalOrderSource);
+                @event.OrderId, sanitizedExternalOrderSource);
             return null;
         }
 
