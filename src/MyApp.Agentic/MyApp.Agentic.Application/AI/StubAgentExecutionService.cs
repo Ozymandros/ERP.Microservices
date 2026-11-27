@@ -68,12 +68,12 @@ public class StubAgentExecutionService : IAgentExecutionService
             $"This is a stub response. In production, this would call the AI model at {context.BaseUrl} " +
             $"with temperature ({context.Temperature}), max tokens ({context.MaxTokens}) and system prompt.";
 
-        if (context.ContextMemories.Any())
+        if (context.ContextMemories.Count() != 0)
         {
             response += $" [Relevant context: {string.Join(", ", context.ContextMemories.Take(2))}]";
         }
 
-        if (context.Tools.Any())
+        if (context.Tools.Count() != 0)
         {
             response += $" [Available tools: {string.Join(", ", context.Tools.Select(t => t.Name))}]";
         }

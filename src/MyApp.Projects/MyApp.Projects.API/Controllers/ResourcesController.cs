@@ -55,7 +55,7 @@ public class ResourcesController : ProjectsApiControllerBase
     [ProducesResponseType(typeof(PaginatedResult<ResourceDto>), StatusCodes.Status200OK)]
     public Task<IActionResult> GetAll([FromQuery] QuerySpec query) => ExecuteAsync(async () =>
     {
-        if (Request.Query.Any())
+        if (Request.Query.Count != 0)
         {
             query.BindFiltersFromQuery(Request.Query);
             query.Validate();

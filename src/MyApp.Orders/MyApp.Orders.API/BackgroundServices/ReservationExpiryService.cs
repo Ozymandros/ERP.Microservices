@@ -74,7 +74,7 @@ public class ReservationExpiryService : BackgroundService
 
         var expiredReservations = await reservedStockRepository.GetExpiredReservationsAsync();
 
-        if (expiredReservations.Any())
+        if (expiredReservations.Count() != 0)
         {
             _logger.LogWarning("Found {Count} expired reservations", expiredReservations.Count);
 

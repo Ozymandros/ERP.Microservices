@@ -137,7 +137,7 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
         order.Status = (PurchaseOrderStatus)dto.Status;
 
         // Calculate total amount from lines
-        if (order.Lines.Any())
+        if (order.Lines.Count() != 0)
         {
             order.TotalAmount = order.Lines.Sum(l => l.Quantity * l.UnitPrice);
         }
@@ -184,7 +184,7 @@ public class PurchaseOrderService : AppServiceBase, IPurchaseOrderService
         order.Status = (PurchaseOrderStatus)dto.Status;
 
         // Recalculate total amount from lines
-        if (order.Lines.Any())
+        if (order.Lines.Count() != 0)
         {
             order.TotalAmount = order.Lines.Sum(l => l.Quantity * l.UnitPrice);
         }

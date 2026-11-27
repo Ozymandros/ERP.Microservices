@@ -28,7 +28,7 @@ namespace MyApp.Shared.Infrastructure.Export
                 worksheetPart.Worksheet = new Worksheet(sheetData);
 
                 var sheets = spreadsheet.WorkbookPart?.Workbook!.AppendChild(new Sheets());
-                var sheetName = typeof(T).Name.EndsWith("s") ? typeof(T).Name : typeof(T).Name + "s";
+                var sheetName = typeof(T).Name.EndsWith('s') ? typeof(T).Name : typeof(T).Name + 's';
                 var sheet = new Sheet
                 {
                     Id = spreadsheet.WorkbookPart?.GetIdOfPart(worksheetPart),

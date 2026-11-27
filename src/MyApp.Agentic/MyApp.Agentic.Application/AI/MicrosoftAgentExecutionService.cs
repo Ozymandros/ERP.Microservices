@@ -52,7 +52,7 @@ public class MicrosoftAgentExecutionService : IAgentExecutionService
             Temperature = (float)context.Temperature,
             MaxOutputTokens = context.MaxTokens,
             Tools = tools,
-            ToolMode = tools.Any() ? ChatToolMode.Auto : ChatToolMode.None
+            ToolMode = tools.Count() != 0 ? ChatToolMode.Auto : ChatToolMode.None
         };
 
         var toolCallResults = new List<ToolCallResult>();
@@ -70,13 +70,13 @@ public class MicrosoftAgentExecutionService : IAgentExecutionService
             var assistantMessage = response.Messages[0];
             messages.Add(assistantMessage);
 
-            if (assistantMessage.Contents.OfType<TextContent>().Any())
+            if (assistantMessage.Contents.OfType<TextContent>().Count() != 0)
             {
                 finalContent = string.Join("\n", assistantMessage.Contents.OfType<TextContent>().Select(t => t.Text));
             }
 
             var toolCalls = assistantMessage.Contents.OfType<FunctionCallContent>().ToList();
-            if (!toolCalls.Any())
+            if (!toolCalls.Count() != 0)
             {
                 finishReason = response.FinishReason?.ToString();
                 break;
@@ -144,7 +144,7 @@ public class MicrosoftAgentExecutionService : IAgentExecutionService
             }
         }
 
-        if (context.ContextMemories.Any())
+        if (context.ContextMemories.Count() != 0)
         {
             var contextText = "Relevant context information:\n" + string.Join("\n", context.ContextMemories);
             messages.Add(new ChatMessage(ChatRole.System, contextText));

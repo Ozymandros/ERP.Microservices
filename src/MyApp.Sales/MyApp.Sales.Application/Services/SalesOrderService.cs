@@ -110,7 +110,7 @@ public class SalesOrderService : AppServiceBase, ISalesOrderService
         order.OrderDate = dto.OrderDate == default ? DateTime.UtcNow : dto.OrderDate;
 
         // Calculate total from lines if provided
-        if (dto.Lines.Any())
+        if (dto.Lines.Count() != 0)
         {
             var lines = new List<SalesOrderLine>();
             foreach (var lineDto in dto.Lines)
@@ -168,7 +168,7 @@ public class SalesOrderService : AppServiceBase, ISalesOrderService
         order.Status = (SalesOrderStatus)dto.Status;
 
         // Recalculate lines and total if provided
-        if (dto.Lines.Any())
+        if (dto.Lines.Count() != 0)
         {
             order.Lines.Clear();
             foreach (var lineDto in dto.Lines)
@@ -228,7 +228,7 @@ public class SalesOrderService : AppServiceBase, ISalesOrderService
         var stockChecks = await _checkStock.ExecuteAsync(dto.Lines);
         var unavailableItems = stockChecks.Where(s => !s.IsAvailable).ToList();
 
-        if (unavailableItems.Any())
+        if (unavailableItems.Count() != 0)
         {
             _logger.LogWarning(
                 "Quote creation - some items have insufficient stock: {UnavailableCount} items",

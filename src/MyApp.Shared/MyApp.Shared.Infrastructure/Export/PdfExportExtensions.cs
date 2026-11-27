@@ -28,7 +28,7 @@ namespace MyApp.Shared.Infrastructure.Export
             var typeName = typeof(T).Name.EndsWith("Dto")
                 ? typeof(T).Name.Substring(0, typeof(T).Name.Length - 3)
                 : typeof(T).Name;
-            var pluralName = typeName.EndsWith("s") ? typeName : typeName + "s";
+            var pluralName = typeName.EndsWith('s') ? typeName : typeName + 's';
 
             var document = Document.Create(container =>
             {

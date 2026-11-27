@@ -41,7 +41,7 @@ public class EntityChangesController : ControllerBase
     {
         try
         {
-            if (!Request.Query.Any())
+            if (Request.Query.Count == 0)
                 return BadRequest(new { message = "Query parameters are required for listing entity changes." });
 
             query.BindFiltersFromQuery(Request.Query);

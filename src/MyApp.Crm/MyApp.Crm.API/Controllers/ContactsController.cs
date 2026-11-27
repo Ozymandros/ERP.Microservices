@@ -39,7 +39,7 @@ public sealed class ContactsController : ControllerBase
     {
         try
         {
-            if (Request.Query.Any())
+            if (Request.Query.Count != 0)
             {
                 query.BindFiltersFromQuery(Request.Query);
                 query.Validate();

@@ -95,7 +95,7 @@ public class PurchaseOrdersController : ControllerBase
         try
         {
             // If query parameters are provided, perform a search/paginated query
-            if (Request.Query.Any())
+            if (Request.Query.Count != 0)
             {
                 query.BindFiltersFromQuery(Request.Query);
                 query.Validate();
