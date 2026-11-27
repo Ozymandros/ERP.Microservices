@@ -76,7 +76,7 @@ public class MicrosoftAgentExecutionService : IAgentExecutionService
             }
 
             var toolCalls = assistantMessage.Contents.OfType<FunctionCallContent>().ToList();
-            if (!toolCalls.Count() != 0)
+            if (toolCalls.Count == 0)
             {
                 finishReason = response.FinishReason?.ToString();
                 break;

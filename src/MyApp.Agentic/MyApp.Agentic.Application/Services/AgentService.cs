@@ -35,11 +35,9 @@ public class AgentService : AppServiceBase, IAgentService
     private readonly IMemoryRepository _memoryRepository;
     private readonly ISecretCryptoService _secretCryptoService;
     private readonly ISessionStateStore _sessionStateStore;
-    private readonly IEmbeddingService _embeddingService;
     private readonly IAgentExecutionService _agentExecutionService;
     private readonly IAgentToolResolver _toolResolver;
     private readonly IServiceInvoker _serviceInvoker;
-    private readonly IMapper _mapper;
     private readonly ILogger<AgentService> _logger;
 
     /// <summary>
@@ -52,13 +50,11 @@ public class AgentService : AppServiceBase, IAgentService
     /// <param name="memoryRepository">The memory Repository.</param>
     /// <param name="secretCryptoService">The secret Crypto Service.</param>
     /// <param name="sessionStateStore">The session State Store.</param>
-    /// <param name="embeddingService">The embedding Service.</param>
     /// <param name="agentExecutionService">The agent Execution Service.</param>
     /// <param name="toolResolver">The tool Resolver.</param>
     /// <param name="unitOfWork">The unit Of Work.</param>
     /// <param name="eventPublisher">The event Publisher.</param>
     /// <param name="serviceInvoker">The service Invoker.</param>
-    /// <param name="mapper">The mapper.</param>
     /// <param name="logger">The logger.</param>
     public AgentService(
         IAgentRepository agentRepository,
@@ -68,13 +64,11 @@ public class AgentService : AppServiceBase, IAgentService
         IMemoryRepository memoryRepository,
         ISecretCryptoService secretCryptoService,
         ISessionStateStore sessionStateStore,
-        IEmbeddingService embeddingService,
         IAgentExecutionService agentExecutionService,
         IAgentToolResolver toolResolver,
         IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher,
         IServiceInvoker serviceInvoker,
-        IMapper mapper,
         ILogger<AgentService> logger)
         : base(unitOfWork, eventPublisher, logger, ServiceNames.Agentic)
     {
@@ -85,11 +79,9 @@ public class AgentService : AppServiceBase, IAgentService
         _memoryRepository = memoryRepository;
         _secretCryptoService = secretCryptoService;
         _sessionStateStore = sessionStateStore;
-        _embeddingService = embeddingService;
         _agentExecutionService = agentExecutionService;
         _toolResolver = toolResolver;
         _serviceInvoker = serviceInvoker;
-        _mapper = mapper;
         _logger = logger;
     }
 
