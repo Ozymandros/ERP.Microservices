@@ -387,6 +387,7 @@ public class InvoicesController : ControllerBase
         }
         catch (Exception ex) when (ex.Message.Contains("not found", StringComparison.OrdinalIgnoreCase))
         {
+            _logger.LogWarning("Invoice {InvoiceId} not found", id);
             return NotFound(new { message = $"Invoice {id} not found." });
         }
         catch (Exception ex)
@@ -427,6 +428,7 @@ public class InvoicesController : ControllerBase
         }
         catch (Exception ex) when (ex.Message.Contains("not found", StringComparison.OrdinalIgnoreCase))
         {
+            _logger.LogWarning("Invoice {InvoiceId} not found", id);
             return NotFound(new { message = $"Invoice {id} not found." });
         }
         catch (Exception ex)
@@ -473,6 +475,7 @@ public class InvoicesController : ControllerBase
         }
         catch (Exception ex) when (ex.Message.Contains("not found", StringComparison.OrdinalIgnoreCase))
         {
+            _logger.LogWarning("Invoice {InvoiceId} not found", id);
             return NotFound(new { message = $"Invoice {id} not found." });
         }
         catch (Exception ex)

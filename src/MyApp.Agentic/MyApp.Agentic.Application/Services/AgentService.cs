@@ -8,7 +8,6 @@ using MyApp.Agentic.Domain.AIModels;
 using MyApp.Agentic.Domain.AIProviders;
 using MyApp.Agentic.Domain.Memory;
 using MyApp.Agentic.Domain.Sessions;
-using MyApp.Agentic.Domain.Skills;
 using MyApp.Agentic.Infrastructure.Memory;
 using MyApp.Agentic.Infrastructure.State;
 using MyApp.Shared.Application;
@@ -102,7 +101,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// <returns>The mapped <see cref="AgentDto"/> when found; otherwise <see langword="null"/>.</returns>
     public async Task<AgentDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var agent = await _agentRepository.GetByIdAsync(id);
+        var agent = await _agentRepository.GetByIdAsync(id, cancellationToken);
         return agent == null ? null : MapToDto(agent);
     }
 
@@ -113,7 +112,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// <returns>A collection of lightweight agent list DTOs.</returns>
     public async Task<IEnumerable<AgentListDto>> ListAsync(CancellationToken cancellationToken = default)
     {
-        var agents = await _agentRepository.GetAllAsync();
+        var agents = await _agentRepository.GetAllAsync(cancellationToken);
         return agents.Select(MapToListDto);
     }
 
@@ -125,7 +124,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// <returns>Filtered collection of <see cref="AgentListDto"/>.</returns>
     public async Task<IEnumerable<AgentListDto>> ListByOwnerAsync(string? ownerUserId, CancellationToken cancellationToken = default)
     {
-        var agents = await _agentRepository.GetAllAsync();
+        var agents = await _agentRepository.GetAllAsync(cancellationToken);
         var filtered = string.IsNullOrWhiteSpace(ownerUserId)
             ? agents
             : agents.Where(a => a.OwnerUserId == ownerUserId || a.OwnerUserId == null);
@@ -184,7 +183,7 @@ public class AgentService : AppServiceBase, IAgentService
     {
         var model = await ValidateProviderModelAsync(dto.ProviderId, dto.ModelId, cancellationToken);
 
-        var agent = await _agentRepository.GetByIdAsync(id);
+        var agent = await _agentRepository.GetByIdAsync(id, cancellationToken);
         if (agent == null) throw new InvalidOperationException($"Agent with ID {id} not found.");
 
         agent.Update(
@@ -215,7 +214,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var agent = await _agentRepository.GetByIdAsync(id);
+        var agent = await _agentRepository.GetByIdAsync(id, cancellationToken);
         if (agent == null) return;
         await _agentRepository.DeleteAsync(agent);
         await SaveChangesAsync(cancellationToken);
@@ -599,7 +598,7 @@ public class AgentService : AppServiceBase, IAgentService
         string authenticatedUserId,
         CancellationToken cancellationToken = default)
     {
-        var session = await _sessionRepository.GetByIdAsync(sessionId)
+        var session = await _sessionRepository.GetByIdAsync(sessionId, cancellationToken)
             ?? throw new InvalidOperationException($"Session with ID {sessionId} not found.");
 
         if (session.UserId != authenticatedUserId)

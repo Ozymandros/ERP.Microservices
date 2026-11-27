@@ -191,9 +191,9 @@ public class AspireProjectBuilder
         int metricsPort = 9091)
     {
         _httpPort = httpPort;
-        _daprHttpPort = daprHttpPort;
-        _daprGrpcPort = daprGrpcPort;
-        _metricsPort = metricsPort;
+        //_daprHttpPort = daprHttpPort;
+        //_daprGrpcPort = daprGrpcPort;
+        //_metricsPort = metricsPort;
     }
 }
 
