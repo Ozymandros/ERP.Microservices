@@ -393,6 +393,109 @@ function Start-AspireDashboardPortForward {
     return $false
 }
 
+function Ensure-StageDevSecrets {
+    $minikubeDir = Join-Path $RepoRoot 'deploy/k8s/overlays/minikube'
+    $secretsPath = Join-Path $minikubeDir 'stage-dev-secrets.yaml'
+    $examplePath = Join-Path $minikubeDir 'stage-dev-secrets.example.yaml'
+
+    if (Test-Path -LiteralPath $secretsPath) {
+        Write-Ok "Stage secrets present: $secretsPath"
+        return $secretsPath
+    }
+
+    if (-not (Test-Path -LiteralPath $examplePath)) {
+        throw "Missing secrets template: $examplePath"
+    }
+
+    Write-Host '  Generating local stage-dev-secrets.yaml (gitignored)...' -ForegroundColor Yellow
+
+    $redisPwd = 'Redis_' + [guid]::NewGuid().ToString('N')
+    $sqlPwd = 'Sql_' + [guid]::NewGuid().ToString('N')
+    $jwtSecret = 'minikube-jwt-' + [guid]::NewGuid().ToString('N')
+    $otlpKey = 'minikube-otlp-' + [guid]::NewGuid().ToString('N')
+    $otlpHeader = "x-otlp-api-key=$otlpKey"
+    $redisConn = "redis-master.myapp-platform.svc.cluster.local:6379,password=$redisPwd,defaultDatabase=0,abortConnect=false,connectRetry=5,connectTimeout=5000,syncTimeout=5000"
+
+    function New-SqlConnectionString([string] $Database) {
+        return "Server=sqlserver,1433;Database=$Database;User Id=sqladmin;Password=$sqlPwd;TrustServerCertificate=True;Encrypt=False;ConnectRetryCount=10;ConnectRetryInterval=5;"
+    }
+
+    $sqlAuth = New-SqlConnectionString 'AuthDb'
+    $sqlBilling = New-SqlConnectionString 'BillingDb'
+    $sqlInventory = New-SqlConnectionString 'InventoryDb'
+    $sqlOrders = New-SqlConnectionString 'OrdersDb'
+    $sqlPurchasing = New-SqlConnectionString 'PurchasingDb'
+    $sqlSales = New-SqlConnectionString 'SalesDb'
+    $sqlCrm = New-SqlConnectionString 'CrmDb'
+
+    $yaml = @"
+# DEV/STAGE ONLY — auto-generated for local Minikube smoke tests.
+# Gitignored — do not commit. Regenerate by deleting this file and re-running deploy-minikube-stage.ps1
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: redis-secrets
+  namespace: myapp-platform
+type: Opaque
+stringData:
+  redis-password: "$redisPwd"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: redis-secrets
+  namespace: myapp-apps
+type: Opaque
+stringData:
+  redis-password: "$redisPwd"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sql-secrets
+  namespace: myapp-apps
+type: Opaque
+stringData:
+  sa-password: "$sqlPwd"
+  sqladmin-password: "$sqlPwd"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aspire-secrets
+  namespace: myapp-platform
+type: Opaque
+stringData:
+  otlp-key: "$otlpKey"
+  otlp-header: "$otlpHeader"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secrets
+  namespace: myapp-apps
+type: Opaque
+stringData:
+  jwt-secret-key: "$jwtSecret"
+  otlp-api-key: "$otlpKey"
+  otlp-header: "$otlpHeader"
+  redis-connection: "$redisConn"
+  sql-connection-authdb: "$sqlAuth"
+  sql-connection-billingdb: "$sqlBilling"
+  sql-connection-inventorydb: "$sqlInventory"
+  sql-connection-ordersdb: "$sqlOrders"
+  sql-connection-purchasingdb: "$sqlPurchasing"
+  sql-connection-salesdb: "$sqlSales"
+  sql-connection-crmdb: "$sqlCrm"
+"@
+
+    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+    [System.IO.File]::WriteAllText($secretsPath, $yaml, $utf8NoBom)
+    Write-Ok "Generated $secretsPath (not committed to git)"
+    return $secretsPath
+}
+
 function Show-AccessInfo {
     param(
         [bool] $PortForwardActive = $false,
@@ -458,7 +561,7 @@ function Show-AccessInfo {
     dapr list -k
     minikube dashboard
 
-  DEV secrets only - see deploy/k8s/overlays/minikube/stage-dev-secrets.yaml
+  DEV secrets (local, gitignored) - deploy/k8s/overlays/minikube/stage-dev-secrets.yaml
 
 "@ -ForegroundColor Gray
 }
@@ -467,7 +570,7 @@ function Show-AccessInfo {
 
 Write-Host ''
 Write-Host 'ERP Minikube stage-test deploy' -ForegroundColor Cyan
-Write-Host 'NOT FOR PRODUCTION - fixed dev passwords' -ForegroundColor Yellow
+Write-Host 'NOT FOR PRODUCTION - local gitignored stage secrets' -ForegroundColor Yellow
 Write-Host ''
 
 if ($Teardown) {
@@ -531,6 +634,12 @@ if (-not $SkipBuild) {
 }
 
 if (-not $SkipApply) {
+    Write-Title 'Ensure local stage secrets'
+    $secretsFile = Ensure-StageDevSecrets
+    if (-not (Test-Path -LiteralPath $secretsFile)) {
+        throw "Stage secrets file missing: $secretsFile"
+    }
+
     Write-Title 'Validate kustomize overlay'
     kubectl kustomize $overlay | Out-Null
     if ($LASTEXITCODE -ne 0) { throw "kustomize validation failed for $overlay" }
@@ -542,7 +651,6 @@ if (-not $SkipApply) {
     if ($LASTEXITCODE -ne 0) { throw 'namespaces apply failed' }
 
     Write-Title 'Apply stage secrets and config (before Redis/SQL)'
-    $secretsFile = Join-Path $RepoRoot 'deploy/k8s/overlays/minikube/stage-dev-secrets.yaml'
     $configFile = Join-Path $RepoRoot 'deploy/k8s/overlays/minikube/app-config.yaml'
     kubectl apply -f $secretsFile
     if ($LASTEXITCODE -ne 0) { throw 'secrets apply failed' }

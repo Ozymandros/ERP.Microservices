@@ -2,7 +2,7 @@
 
 Non-production local Kubernetes profile for smoke-testing manifests, Dapr, SQL bootstrap, and gateway routing.
 
-**Not for production.** Uses fixed dev passwords in `stage-dev-secrets.yaml`.
+**Not for production.** Stage credentials live only in **`stage-dev-secrets.yaml`** (gitignored). On first deploy, [`deploy-minikube-stage.ps1`](../../../scripts/deploy-minikube-stage.ps1) generates that file with random fixture passwords. Template: [`stage-dev-secrets.example.yaml`](stage-dev-secrets.example.yaml) (placeholders only — safe to commit). Do not commit `stage-dev-secrets.yaml`.
 
 ## Quick start
 
@@ -35,6 +35,17 @@ Shortcut (delegates to teardown script):
 ```powershell
 .\scripts\deploy-minikube-stage.ps1 -Teardown
 ```
+
+## Secrets (local only)
+
+| File | In git? |
+|------|---------|
+| `stage-dev-secrets.example.yaml` | Yes — structure and placeholder values |
+| `stage-dev-secrets.yaml` | **No** — listed in `.gitignore` |
+
+First `.\scripts\deploy-minikube-stage.ps1` run creates `stage-dev-secrets.yaml` with random dev passwords. To rotate: delete that file and deploy again (recreates DB/Redis credentials in the file only — you may need to reset SQL/Redis in the cluster if passwords drift).
+
+Manual `kubectl apply -k` without the script: copy the example and replace every `replace-with-...` value, or run the deploy script once with `-SkipBuild -SkipHelm` after Minikube is up.
 
 ## Prerequisites
 
@@ -70,7 +81,7 @@ Shortcut (delegates to teardown script):
 |------|--------|
 | SQL Server | Lower CPU/RAM via `overlays/minikube/sql` patch (base manifest keeps prod-sized defaults) |
 | Images | `myapp-<service>:minikube-stage` (built into Minikube Docker) |
-| Secrets / ConfigMap | Stage dev values + `app-config` (missing from base `dev` overlay) |
+| Secrets / ConfigMap | Local `stage-dev-secrets.yaml` (generated or copy from `.example.yaml`) + `app-config` |
 | Redis secret | Duplicated in `myapp-platform` and `myapp-apps` (Dapr + Redis pod) |
 
 ## Omitted by design

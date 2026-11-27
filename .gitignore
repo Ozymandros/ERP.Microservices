@@ -27,6 +27,9 @@ target/
 .env.local
 *.env.*
 
+# Local Minikube stage secrets (generated or hand-edited; never commit)
+deploy/k8s/overlays/minikube/stage-dev-secrets.yaml
+
 # Editors
 .vscode/
 .idea/
