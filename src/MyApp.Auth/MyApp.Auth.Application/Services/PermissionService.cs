@@ -97,7 +97,7 @@ public class PermissionService : AppServiceBase, IPermissionService
             }
 
             var userPermissions = await _permissionRepository.GetByUserName(username, module, action, cancellationToken);
-            if (userPermissions.Count() != 0)
+            if (userPermissions.Any())
                 return true;
 
             var roles = await _userManager.GetRolesAsync(user);
@@ -108,7 +108,7 @@ public class PermissionService : AppServiceBase, IPermissionService
             foreach (var roleName in roles)
             {
                 var rolePermissions = await _permissionRepository.GetByRoleName(roleName, module, action, cancellationToken);
-                if (rolePermissions.Count() != 0)
+                if (rolePermissions.Any())
                     return true;
             }
             ;

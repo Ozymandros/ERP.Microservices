@@ -68,7 +68,7 @@ public class LowStockAlertService : BackgroundService
 
         var lowStocks = await warehouseStockService.GetLowStockAsync();
 
-        if (lowStocks.Count() != 0)
+        if (lowStocks.Count > 0)
         {
             _logger.LogWarning("Found {Count} low stock items", lowStocks.Count);
 

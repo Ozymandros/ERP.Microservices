@@ -47,7 +47,7 @@ public class PermissionChecker : IPermissionChecker
         }
 
         var userPermissions = await _permissionRepository.GetByUserName(user.UserName, module, action);
-        if (userPermissions.Count() != 0)
+        if (userPermissions.Any())
             return true;
 
         var roles = await _userManager.GetRolesAsync(user);
@@ -55,7 +55,7 @@ public class PermissionChecker : IPermissionChecker
         foreach (var roleName in roles)
         {
             var rolePermissions = await _permissionRepository.GetByRoleName(roleName, module, action);
-            if (rolePermissions.Count() != 0)
+            if (rolePermissions.Any())
                 return true;
         }
 
@@ -94,7 +94,7 @@ public class PermissionChecker : IPermissionChecker
         }
 
         var userPermissions = await _permissionRepository.GetByUserName(userName, module, action);
-        if (userPermissions.Count() != 0)
+        if (userPermissions.Any())
             return true;
 
         var roles = await _userManager.GetRolesAsync(user);
@@ -105,7 +105,7 @@ public class PermissionChecker : IPermissionChecker
         foreach (var roleName in roles)
         {
             var rolePermissions = await _permissionRepository.GetByRoleName(roleName, module, action);
-            if (rolePermissions.Count() != 0)
+            if (rolePermissions.Any())
                 return true;
         }
 
