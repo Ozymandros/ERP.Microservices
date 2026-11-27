@@ -30,6 +30,8 @@ public class RolesController : ControllerBase
     private readonly ILogSanitizer _logSanitizer;
     private readonly ILogger<RolesController> _logger;
 
+    const string AllRolesCacheKey = "all_roles";
+
     /// <summary>
     /// Initializes a new instance of the <see cref="RolesController"/> class.
     /// </summary>
@@ -65,7 +67,7 @@ public class RolesController : ControllerBase
     {
         try
         {
-            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>("all_roles")
+            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>(AllRolesCacheKey)
                 ?? await _roleService.GetAllRolesAsync();
             var bytes = roles.ExportToXlsx();
             return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Roles.xlsx");
@@ -89,7 +91,7 @@ public class RolesController : ControllerBase
     {
         try
         {
-            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>("all_roles")
+            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>(AllRolesCacheKey)
                 ?? await _roleService.GetAllRolesAsync();
             var bytes = roles.ExportToPdf();
             return File(bytes, "application/pdf", "Roles.pdf");
@@ -126,14 +128,14 @@ public class RolesController : ControllerBase
                 return Ok(result);
             }
 
-            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>("all_roles");
+            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>(AllRolesCacheKey);
             if (roles != null)
             {
                 return Ok(roles);
             }
 
             roles = await _roleService.GetAllRolesAsync();
-            await _cacheService.SaveStateAsync("all_roles", roles);
+            await _cacheService.SaveStateAsync(AllRolesCacheKey, roles);
 
             return Ok(roles);
         }
@@ -302,7 +304,7 @@ public class RolesController : ControllerBase
                 return Conflict(new { message = "Role already exists" });
             }
 
-            await _cacheService.RemoveStateAsync("all_roles");
+            await _cacheService.RemoveStateAsync(AllRolesCacheKey);
 
             _logger.LogInformation("Role created: {@Role}", new { RoleName = createRoleDto.Name });
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
@@ -376,7 +378,7 @@ public class RolesController : ControllerBase
 
             string cacheKey = RoleCacheKey(id);
             await _cacheService.RemoveStateAsync(cacheKey);
-            await _cacheService.RemoveStateAsync("all_roles");
+            await _cacheService.RemoveStateAsync(AllRolesCacheKey);
 
             _logger.LogInformation("Role deleted: {@Role}", new { RoleId = id });
             return NoContent();
@@ -453,7 +455,7 @@ public class RolesController : ControllerBase
             // Invalidate role cache
             string roleCacheKey = RoleCacheKey(roleId);
             await _cacheService.RemoveStateAsync(roleCacheKey);
-            await _cacheService.RemoveStateAsync("all_roles");
+            await _cacheService.RemoveStateAsync(AllRolesCacheKey);
             await _cacheService.RemoveStateAsync("all_permissions");
 
             // Invalidate cache for all users that have this role
@@ -532,7 +534,7 @@ public class RolesController : ControllerBase
             // 4. Invalidate Cache and Return Success (204 No Content)
             string roleCacheKey = RoleCacheKey(roleId);
             await _cacheService.RemoveStateAsync(roleCacheKey);
-            await _cacheService.RemoveStateAsync("all_roles");
+            await _cacheService.RemoveStateAsync(AllRolesCacheKey);
 
             // Invalidate cache for all users that have this role
             if (!string.IsNullOrEmpty(role.Name))
@@ -625,7 +627,7 @@ public class RolesController : ControllerBase
         // Invalidate role cache
         string roleCacheKey = RoleCacheKey(roleId);
         await _cacheService.RemoveStateAsync(roleCacheKey);
-        await _cacheService.RemoveStateAsync("all_roles");
+        await _cacheService.RemoveStateAsync(AllRolesCacheKey);
         await _cacheService.RemoveStateAsync("all_permissions");
         if (_logger.IsEnabled(LogLevel.Information))
         {
@@ -670,7 +672,7 @@ public class RolesController : ControllerBase
         // Invalidate role cache
         string roleCacheKey = RoleCacheKey(roleId);
         await _cacheService.RemoveStateAsync(roleCacheKey);
-        await _cacheService.RemoveStateAsync("all_roles");
+        await _cacheService.RemoveStateAsync(AllRolesCacheKey);
         await _cacheService.RemoveStateAsync("all_permissions");
         if (_logger.IsEnabled(LogLevel.Information))
         {

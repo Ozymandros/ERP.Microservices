@@ -1,8 +1,6 @@
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using MyApp.Orders.Domain;
 using MyApp.Orders.Domain.Entities;
-using MyApp.Orders.Domain.Repositories;
 using MyApp.Orders.Infrastructure.Data;
 using MyApp.Orders.Infrastructure.Repositories;
 using MyApp.Orders.Tests.Helpers;

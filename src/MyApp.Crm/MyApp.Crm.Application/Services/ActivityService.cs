@@ -54,7 +54,7 @@ public class ActivityService : AppServiceBase, IActivityService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<IEnumerable<ActivityDto>> ListAsync(CancellationToken cancellationToken = default)
     {
-        var list = await _repository.ListAsync();
+        var list = await _repository.ListAsync(cancellationToken);
         return _mapper.Map<IEnumerable<ActivityDto>>(list);
     }
 
@@ -63,7 +63,7 @@ public class ActivityService : AppServiceBase, IActivityService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<PaginatedResult<ActivityDto>> QueryAsync(ISpecification<Activity> spec, CancellationToken cancellationToken = default)
     {
-        var result = await _repository.QueryAsync(spec);
+        var result = await _repository.QueryAsync(spec, cancellationToken);
         var dtos = result.Items.Select(a => _mapper.Map<ActivityDto>(a)).ToList();
         return new PaginatedResult<ActivityDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }

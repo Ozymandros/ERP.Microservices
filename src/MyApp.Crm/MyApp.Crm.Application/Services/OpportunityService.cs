@@ -63,7 +63,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<IEnumerable<OpportunityDto>> ListAsync(CancellationToken cancellationToken = default)
     {
-        var list = await _repository.ListAsync();
+        var list = await _repository.ListAsync(cancellationToken);
         return _mapper.Map<IEnumerable<OpportunityDto>>(list);
     }
 
@@ -72,7 +72,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<PaginatedResult<OpportunityDto>> QueryAsync(ISpecification<Opportunity> spec, CancellationToken cancellationToken = default)
     {
-        var result = await _repository.QueryAsync(spec);
+        var result = await _repository.QueryAsync(spec, cancellationToken);
         var dtos = result.Items.Select(o => _mapper.Map<OpportunityDto>(o)).ToList();
         return new PaginatedResult<OpportunityDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }
@@ -251,7 +251,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task RemoveLineAsync(Guid opportunityId, Guid lineId, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(opportunityId);
+        var entity = await _repository.GetByIdAsync(opportunityId, cancellationToken);
         if (entity is null) throw new KeyNotFoundException($"Opportunity with ID {opportunityId} not found.");
 
         entity.RemoveLine(lineId);
