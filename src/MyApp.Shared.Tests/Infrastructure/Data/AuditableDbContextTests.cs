@@ -104,14 +104,14 @@ public class AuditableDbContextTests
     }
 
     [Fact]
-    public async Task SaveChangesAsync_WithNonAuditableEntity_DoesNotThrow()
+    public async Task SaveChangesAsync_WithNoTrackedChanges_DoesNotThrow()
     {
         // Arrange
         var context = CreateContext();
-        var nonAuditableEntity = new { Id = Guid.NewGuid(), Name = "Test" };
 
-        // Act & Assert - Should not throw
-        await context.SaveChangesAsync();
+        // Act & Assert — empty change tracker, no auditable entities touched
+        var act = async () => await context.SaveChangesAsync();
+        await act.Should().NotThrowAsync();
     }
 
     [Fact]

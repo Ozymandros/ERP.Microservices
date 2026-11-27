@@ -381,7 +381,8 @@ public class RefreshTokenRepositoryTests
         var nonExistentId = Guid.NewGuid();
 
         // Act & Assert
-        await _repository.RevokeAsync(nonExistentId); // Should not throw
+        var exception = await Record.ExceptionAsync(() => _repository.RevokeAsync(nonExistentId));
+        Assert.Null(exception);
     }
 
     /// <summary>

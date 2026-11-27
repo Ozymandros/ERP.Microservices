@@ -102,13 +102,11 @@ public class AgentServiceTests
             _mockMemoryRepository.Object,
             _mockSecretCryptoService.Object,
             _mockSessionStateStore.Object,
-            _mockEmbeddingService.Object,
             _mockExecutionService.Object,
             _toolResolver,
             _mockUnitOfWork.Object,
             _mockEventPublisher.Object,
             _mockServiceInvoker.Object,
-            _mockMapper.Object,
             _mockLogger.Object);
     }
 
