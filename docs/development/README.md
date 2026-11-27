@@ -322,7 +322,7 @@ development/
 
 ## Sonar overall coverage
 
-Sonar **overall** coverage on `develop` is tracked in SonarCloud (target ≥ 80%). A local baseline pull from the dashboard requires `SONAR_TOKEN` and `SONAR_PROJECT_KEY` in CI secrets; without those credentials, use the SonarCloud project overview after push or mirror the CI flow in [`.github/workflows/sonarcloud.yml`](../../.github/workflows/sonarcloud.yml). `**/BackgroundServices/**` is excluded from the coverage denominator (hosted service loops).
+Sonar **overall** coverage on `develop` is tracked in SonarCloud (target ≥ 80%). A local baseline pull from the dashboard requires `SONAR_TOKEN` and `SONAR_PROJECT_KEY` in CI secrets; without those credentials, use the SonarCloud project overview after push or mirror the CI flow in [`.github/workflows/sonarcloud.yml`](../../.github/workflows/sonarcloud.yml). Coverage exclusions (denominator only): `**/BackgroundServices/**` (hosted loops), `**/Plugins/**` (Agentic SK/Dapr tool glue; integration tests later).
 
 ### API controller unit tests
 

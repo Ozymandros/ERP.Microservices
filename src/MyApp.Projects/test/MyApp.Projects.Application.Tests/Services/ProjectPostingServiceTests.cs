@@ -467,4 +467,17 @@ public class ProjectPostingServiceTests
         result.Should().BeNull();
         _invoiceRequests.Verify(r => r.GetWithLinesAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
     }
+
+    [Fact]
+    public async Task PostUsageAsync_ExpenseWithoutLine_RequiresDescription()
+    {
+        var act = () => _sut.PostUsageAsync(_project.Id, new PostUsageDto
+        {
+            ProjectTaskId = _task.Id,
+            Kind = ProjectLineKind.Expense,
+            Quantity = 1
+        });
+
+        await act.Should().ThrowAsync<ArgumentException>();
+    }
 }

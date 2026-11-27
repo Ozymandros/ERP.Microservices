@@ -20,9 +20,11 @@
     </PackageReference>
     <PackageReference Include="Moq" Version="4.21.0" />
     <PackageReference Include="FluentAssertions" Version="8.11.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.15" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\MyApp.Projects.Domain\MyApp.Projects.Domain.csproj" />
     <ProjectReference Include="..\..\MyApp.Projects.Infrastructure\MyApp.Projects.Infrastructure.csproj" />
     <ProjectReference Include="..\..\MyApp.Projects.Application.Contracts\MyApp.Projects.Application.Contracts.csproj" />
   </ItemGroup>
