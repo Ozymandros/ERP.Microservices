@@ -55,13 +55,57 @@ public class AccountServiceTests
         _repo.Setup(r => r.GetByIdAsync(id, It.IsAny<CancellationToken>())).ReturnsAsync(account);
         _repo.Setup(r => r.UpdateAsync(account)).ReturnsAsync(account);
         _mapper.Setup(m => m.Map<AccountDto>(account))
-            .Returns((Account a) => new AccountDto(
-                a.Id, a.CustomerId, a.Name, a.TaxId, a.BillingAddress, a.ShippingAddress,
-                a.IsActive, a.OwnerUsername, a.LastSyncedAt, a.CreatedAt, a.UpdatedAt));
+            .Returns((Account a) => Map(a));
 
         var result = await _sut.UpdateOwnerAsync(id, new UpdateAccountOwnerDto("owner1"));
 
         Assert.Equal("owner1", result.OwnerUsername);
         _repo.Verify(r => r.UpdateAsync(account), Times.Once);
     }
+
+    [Fact]
+    public async Task UpsertFromSalesAsync_NewCustomer_AddsAccount()
+    {
+        var customerId = Guid.NewGuid();
+        _repo.Setup(r => r.GetByCustomerIdAsync(customerId, It.IsAny<CancellationToken>())).ReturnsAsync((Account?)null);
+        _repo.Setup(r => r.AddAsync(It.IsAny<Account>())).ReturnsAsync((Account a) => a);
+        _mapper.Setup(m => m.Map<AccountDto>(It.IsAny<Account>())).Returns((Account a) => Map(a));
+
+        var result = await _sut.UpsertFromSalesAsync(new UpsertAccountDto(
+            customerId, "Acme Corp", "TAX-1", "Bill St", "Ship St", DateTimeOffset.UtcNow));
+
+        Assert.Equal("Acme Corp", result.Name);
+        Assert.Equal("TAX-1", result.TaxId);
+        _repo.Verify(r => r.AddAsync(It.Is<Account>(a => a.CustomerId == customerId)), Times.Once);
+        _uow.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task UpsertFromSalesAsync_ExistingCustomer_UpdatesSnapshot()
+    {
+        var customerId = Guid.NewGuid();
+        var account = new Account(Guid.NewGuid(), customerId, "Old Name");
+        _repo.Setup(r => r.GetByCustomerIdAsync(customerId, It.IsAny<CancellationToken>())).ReturnsAsync(account);
+        _repo.Setup(r => r.UpdateAsync(account)).ReturnsAsync(account);
+        _mapper.Setup(m => m.Map<AccountDto>(account)).Returns((Account a) => Map(a));
+
+        var result = await _sut.UpsertFromSalesAsync(new UpsertAccountDto(
+            customerId, "New Name", "TAX-2", "A", "B", DateTimeOffset.UtcNow));
+
+        Assert.Equal("New Name", result.Name);
+        Assert.Equal("TAX-2", result.TaxId);
+        _repo.Verify(r => r.UpdateAsync(account), Times.Once);
+        _repo.Verify(r => r.AddAsync(It.IsAny<Account>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task UpsertFromSalesAsync_EmptyCustomerId_Throws()
+    {
+        await Assert.ThrowsAsync<ArgumentException>(() =>
+            _sut.UpsertFromSalesAsync(new UpsertAccountDto(Guid.Empty, "Acme", null, null, null, null)));
+    }
+
+    private static AccountDto Map(Account a) =>
+        new(a.Id, a.CustomerId, a.Name, a.TaxId, a.BillingAddress, a.ShippingAddress,
+            a.IsActive, a.OwnerUsername, a.LastSyncedAt, a.CreatedAt, a.UpdatedAt);
 }
