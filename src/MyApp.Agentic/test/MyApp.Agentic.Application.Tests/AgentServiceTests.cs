@@ -102,13 +102,11 @@ public class AgentServiceTests
             _mockMemoryRepository.Object,
             _mockSecretCryptoService.Object,
             _mockSessionStateStore.Object,
-            _mockEmbeddingService.Object,
             _mockExecutionService.Object,
             _toolResolver,
             _mockUnitOfWork.Object,
             _mockEventPublisher.Object,
             _mockServiceInvoker.Object,
-            _mockMapper.Object,
             _mockLogger.Object);
     }
 
@@ -167,11 +165,20 @@ public class AgentServiceTests
             CreateTestAgent(Guid.NewGuid())
         };
 
-        _mockAgentRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(agents);
+        _mockAgentRepository.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(agents);
 
         var result = await _service.ListAsync();
 
         Assert.Equal(2, result.Count());
+    }
+
+    [Fact]
+    public async Task ListAsync_PassesCancellationTokenToRepository()
+    {
+        using var cts = new CancellationTokenSource();
+        _mockAgentRepository.Setup(r => r.GetAllAsync(cts.Token)).ReturnsAsync(Array.Empty<Agent>());
+        await _service.ListAsync(cts.Token);
+        _mockAgentRepository.Verify(r => r.GetAllAsync(cts.Token), Times.Once);
     }
 
     [Fact]
@@ -576,6 +583,14 @@ public class AgentServiceTests
         var result = await _service.ListByOwnerAsync(null);
 
         Assert.Equal(2, result.Count());
+    }
+
+    [Fact]
+    public async Task ListAsync_WhenRepositoryThrows_PropagatesException()
+    {
+        _mockAgentRepository.Setup(r => r.GetAllAsync()).ThrowsAsync(new InvalidOperationException("db down"));
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _service.ListAsync(CancellationToken.None));
     }
 
     [Fact]

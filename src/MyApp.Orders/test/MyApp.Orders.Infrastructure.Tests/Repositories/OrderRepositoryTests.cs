@@ -217,8 +217,18 @@ public class OrderRepositoryTests
 
         // Act & Assert
         var missing = await _repository.GetByIdAsync(nonExistentId);
-        if (missing is not null)
-            await _repository.DeleteAsync(missing);
+        missing.Should().BeNull();
+        var detached = new Order(nonExistentId)
+        {
+            OrderNumber = "ORD-MISSING",
+            Type = OrderType.Transfer,
+            SourceId = Guid.NewGuid(),
+            TargetId = Guid.NewGuid(),
+            OrderDate = DateTime.UtcNow,
+            Status = OrderStatus.Draft
+        };
+        var act = async () => await _repository.DeleteAsync(detached);
+        await act.Should().NotThrowAsync();
     }
 
     #endregion

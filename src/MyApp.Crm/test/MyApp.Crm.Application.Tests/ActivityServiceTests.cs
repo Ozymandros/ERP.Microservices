@@ -5,6 +5,7 @@ using MyApp.Crm.Application.Contracts.DTOs;
 using MyApp.Crm.Application.Services;
 using MyApp.Crm.Domain.Activities;
 using MyApp.Shared.Domain.DTOs;
+using MyApp.Shared.Domain.Events;
 using MyApp.Shared.Domain.Messaging;
 using MyApp.Shared.Domain.Repositories;
 
@@ -66,5 +67,35 @@ public class ActivityServiceTests
 
         Assert.Equal(ActivityStatus.Completed.ToString(), result.Status);
         Assert.NotNull(result.CompletedAt);
+    }
+
+    [Fact]
+    public async Task CreateAsync_Valid_AddsActivityAndPublishes()
+    {
+        _repo.Setup(r => r.AddAsync(It.IsAny<Activity>())).ReturnsAsync((Activity a) => a);
+        _mapper.Setup(m => m.Map<ActivityDto>(It.IsAny<Activity>()))
+            .Returns((Activity a) => new ActivityDto(
+                a.Id, a.Subject, a.Type.ToString(), a.Status.ToString(), a.DueAt, a.CompletedAt,
+                a.AssignedToUsername, a.LeadId, a.OpportunityId, a.CustomerId, a.CreatedAt, a.UpdatedAt));
+
+        var dueAt = DateTimeOffset.UtcNow.AddDays(2);
+        var result = await _sut.CreateAsync(new CreateActivityDto(
+            "Follow up", "Call", dueAt, "agent", null, null, Guid.NewGuid()));
+
+        Assert.Equal("Follow up", result.Subject);
+        Assert.Equal(ActivityType.Call.ToString(), result.Type);
+        _repo.Verify(r => r.AddAsync(It.Is<Activity>(a => a.Subject == "Follow up")), Times.Once);
+        _events.Verify(e => e.PublishAsync(
+            It.IsAny<string>(),
+            It.IsAny<CrmActivityCreatedEvent>(),
+            It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task CreateAsync_InvalidType_Throws()
+    {
+        await Assert.ThrowsAsync<ArgumentException>(() =>
+            _sut.CreateAsync(new CreateActivityDto(
+                "X", "NotAType", DateTimeOffset.UtcNow, "agent", null, null, null)));
     }
 }

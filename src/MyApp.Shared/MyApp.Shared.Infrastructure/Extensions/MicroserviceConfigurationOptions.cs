@@ -8,14 +8,7 @@ namespace MyApp.Shared.Infrastructure.Extensions;
 public class MicroserviceConfigurationOptions
 {
     /// <summary>
-    /// Initializes a new instance of the MicroserviceConfigurationOptions class.
-    /// </summary>
-    public MicroserviceConfigurationOptions()
-    {
-
-    }
-    /// <summary>
-    /// Initializes a new instance of the MicroserviceConfigurationOptions class.
+    /// Initializes a new instance of the <see cref="MicroserviceConfigurationOptions"/> class.
     /// </summary>
     /// <param name="serviceName">The service Name.</param>
     public MicroserviceConfigurationOptions(string? serviceName = null)

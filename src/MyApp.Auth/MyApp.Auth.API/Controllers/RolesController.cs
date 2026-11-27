@@ -11,10 +11,8 @@ using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
 using MyApp.Shared.Domain.Permissions;
 using MyApp.Shared.Domain.Security;
-using System;
-
-
 using MyApp.Shared.Infrastructure.Export;
+
 namespace MyApp.Auth.API.Controllers;
 
 /// <summary>
@@ -31,6 +29,8 @@ public class RolesController : ControllerBase
     private readonly IPermissionService _permissionService;
     private readonly ILogSanitizer _logSanitizer;
     private readonly ILogger<RolesController> _logger;
+
+    const string AllRolesCacheKey = "all_roles";
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RolesController"/> class.
@@ -53,6 +53,8 @@ public class RolesController : ControllerBase
         _logSanitizer = logSanitizer;
     }
 
+    private static string RoleCacheKey(Guid id) => $"Role-{id}";
+
     /// <summary>
     /// Exports all roles as an XLSX spreadsheet file.
     /// </summary>
@@ -65,7 +67,7 @@ public class RolesController : ControllerBase
     {
         try
         {
-            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>("all_roles")
+            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>(AllRolesCacheKey)
                 ?? await _roleService.GetAllRolesAsync();
             var bytes = roles.ExportToXlsx();
             return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Roles.xlsx");
@@ -89,7 +91,7 @@ public class RolesController : ControllerBase
     {
         try
         {
-            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>("all_roles")
+            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>(AllRolesCacheKey)
                 ?? await _roleService.GetAllRolesAsync();
             var bytes = roles.ExportToPdf();
             return File(bytes, "application/pdf", "Roles.pdf");
@@ -117,7 +119,7 @@ public class RolesController : ControllerBase
         try
         {
             // If query parameters are provided, perform a search/paginated query
-            if (Request.Query.Any())
+            if (Request.Query.Count != 0)
             {
                 query.BindFiltersFromQuery(Request.Query);
                 query.Validate();
@@ -126,14 +128,14 @@ public class RolesController : ControllerBase
                 return Ok(result);
             }
 
-            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>("all_roles");
+            var roles = await _cacheService.GetStateAsync<IEnumerable<RoleDto>>(AllRolesCacheKey);
             if (roles != null)
             {
                 return Ok(roles);
             }
 
             roles = await _roleService.GetAllRolesAsync();
-            await _cacheService.SaveStateAsync("all_roles", roles);
+            await _cacheService.SaveStateAsync(AllRolesCacheKey, roles);
 
             return Ok(roles);
         }
@@ -220,7 +222,7 @@ public class RolesController : ControllerBase
     {
         try
         {
-            string cacheKey = "Role-" + id;
+            string cacheKey = RoleCacheKey(id);
             var role = await _cacheService.GetStateAsync<RoleDto>(cacheKey); // 1. Try to get from cache
 
             if (role is not null)
@@ -302,7 +304,7 @@ public class RolesController : ControllerBase
                 return Conflict(new { message = "Role already exists" });
             }
 
-            await _cacheService.RemoveStateAsync("all_roles");
+            await _cacheService.RemoveStateAsync(AllRolesCacheKey);
 
             _logger.LogInformation("Role created: {@Role}", new { RoleName = createRoleDto.Name });
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
@@ -340,7 +342,7 @@ public class RolesController : ControllerBase
                 return NotFound(new { message = "Role not found" });
             }
 
-            string cacheKey = "Role-" + id;
+            string cacheKey = RoleCacheKey(id);
             await _cacheService.RemoveStateAsync(cacheKey);
 
             _logger.LogInformation("Role updated: {@Role}", new { RoleId = id });
@@ -374,9 +376,9 @@ public class RolesController : ControllerBase
                 return NotFound(new { message = "Role not found" });
             }
 
-            string cacheKey = "Role-" + id;
+            string cacheKey = RoleCacheKey(id);
             await _cacheService.RemoveStateAsync(cacheKey);
-            await _cacheService.RemoveStateAsync("all_roles");
+            await _cacheService.RemoveStateAsync(AllRolesCacheKey);
 
             _logger.LogInformation("Role deleted: {@Role}", new { RoleId = id });
             return NoContent();
@@ -451,22 +453,20 @@ public class RolesController : ControllerBase
             }
 
             // Invalidate role cache
-            string roleCacheKey = "Role-" + roleId;
+            string roleCacheKey = RoleCacheKey(roleId);
             await _cacheService.RemoveStateAsync(roleCacheKey);
-            await _cacheService.RemoveStateAsync("all_roles");
+            await _cacheService.RemoveStateAsync(AllRolesCacheKey);
             await _cacheService.RemoveStateAsync("all_permissions");
 
             // Invalidate cache for all users that have this role
             if (!string.IsNullOrEmpty(role.Name))
             {
                 var usersInRole = await _roleService.GetUsersInRoleAsync(role.Name);
-                foreach (var user in usersInRole)
+                foreach (var userId in usersInRole.Select(u => u.Id))
                 {
-                    string userCacheKey = "User-" + user.Id;
-                    await _cacheService.RemoveStateAsync(userCacheKey);
+                    await _cacheService.RemoveStateAsync($"User-{userId}");
                 }
-                string userRolesCacheKey = "Role-" + roleId;
-                await _cacheService.RemoveStateAsync(userRolesCacheKey);
+                await _cacheService.RemoveStateAsync(RoleCacheKey(roleId));
             }
 
             _logger.LogInformation(
@@ -532,20 +532,18 @@ public class RolesController : ControllerBase
             }
 
             // 4. Invalidate Cache and Return Success (204 No Content)
-            string roleCacheKey = "Role-" + roleId;
+            string roleCacheKey = RoleCacheKey(roleId);
             await _cacheService.RemoveStateAsync(roleCacheKey);
-            await _cacheService.RemoveStateAsync("all_roles");
+            await _cacheService.RemoveStateAsync(AllRolesCacheKey);
 
             // Invalidate cache for all users that have this role
             if (!string.IsNullOrEmpty(role.Name))
             {
                 var usersInRole = await _roleService.GetUsersInRoleAsync(role.Name);
-                foreach (var user in usersInRole)
+                foreach (var userId in usersInRole.Select(u => u.Id))
                 {
-                    string userCacheKey = "User-" + user.Id;
-                    string userRolesCacheKey = "Roles-" + user.Id;
-                    await _cacheService.RemoveStateAsync(userCacheKey);
-                    await _cacheService.RemoveStateAsync(userRolesCacheKey);
+                    await _cacheService.RemoveStateAsync($"User-{userId}");
+                    await _cacheService.RemoveStateAsync($"Roles-{userId}");
                 }
             }
 
@@ -609,7 +607,12 @@ public class RolesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddPermissionsToRole(Guid roleId, [FromBody] IEnumerable<Guid> permissionIds)
     {
-        if (permissionIds == null || !permissionIds.Any())
+        if (permissionIds is null)
+            return BadRequest(new { message = "No permission IDs provided." });
+        var permissionCount = permissionIds is ICollection<Guid> permissionCollection
+            ? permissionCollection.Count
+            : permissionIds.Count();
+        if (permissionCount == 0)
             return BadRequest(new { message = "No permission IDs provided." });
         var role = await _roleService.GetRoleByIdAsync(roleId);
         if (role is null)
@@ -618,15 +621,21 @@ public class RolesController : ControllerBase
         var result = await _roleService.AddPermissionsToRole(createDto);
         if (!result)
         {
-            _logger.LogWarning("Failed to add permissions to role: {@Role}", new { RoleId = roleId });
+            _logger.LogWarning("Failed to add permissions to role {RoleId}", roleId);
             return StatusCode(500, new { message = "Failed to add permissions to role." });
         }
         // Invalidate role cache
-        string roleCacheKey = "Role-" + roleId;
+        string roleCacheKey = RoleCacheKey(roleId);
         await _cacheService.RemoveStateAsync(roleCacheKey);
-        await _cacheService.RemoveStateAsync("all_roles");
+        await _cacheService.RemoveStateAsync(AllRolesCacheKey);
         await _cacheService.RemoveStateAsync("all_permissions");
-        _logger.LogInformation("Bulk permissions added to role: {@Role}", new { RoleId = roleId, PermissionIds = permissionIds });
+        if (_logger.IsEnabled(LogLevel.Information))
+        {
+            _logger.LogInformation(
+                "Bulk permissions added to role {RoleId} with {PermissionCount} permission(s)",
+                roleId,
+                permissionCount);
+        }
         return NoContent();
     }
 
@@ -643,7 +652,12 @@ public class RolesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RemovePermissionsFromRole(Guid roleId, [FromBody] IEnumerable<Guid> permissionIds)
     {
-        if (permissionIds == null || !permissionIds.Any())
+        if (permissionIds is null)
+            return BadRequest(new { message = "No permission IDs provided." });
+        var permissionCount = permissionIds is ICollection<Guid> permissionCollection
+            ? permissionCollection.Count
+            : permissionIds.Count();
+        if (permissionCount == 0)
             return BadRequest(new { message = "No permission IDs provided." });
         var role = await _roleService.GetRoleByIdAsync(roleId);
         if (role is null)
@@ -652,15 +666,21 @@ public class RolesController : ControllerBase
         var result = await _roleService.RemovePermissionsFromRoleAsync(deleteDto);
         if (!result)
         {
-            _logger.LogWarning("Failed to remove permissions from role: {@Role}", new { RoleId = roleId });
+            _logger.LogWarning("Failed to remove permissions from role {RoleId}", roleId);
             return StatusCode(500, new { message = "Failed to remove permissions from role." });
         }
         // Invalidate role cache
-        string roleCacheKey = "Role-" + roleId;
+        string roleCacheKey = RoleCacheKey(roleId);
         await _cacheService.RemoveStateAsync(roleCacheKey);
-        await _cacheService.RemoveStateAsync("all_roles");
+        await _cacheService.RemoveStateAsync(AllRolesCacheKey);
         await _cacheService.RemoveStateAsync("all_permissions");
-        _logger.LogInformation("Bulk permissions removed from role: {@Role}", new { RoleId = roleId, PermissionIds = permissionIds });
+        if (_logger.IsEnabled(LogLevel.Information))
+        {
+            _logger.LogInformation(
+                "Bulk permissions removed from role {RoleId} with {PermissionCount} permission(s)",
+                roleId,
+                permissionCount);
+        }
         return NoContent();
     }
 }

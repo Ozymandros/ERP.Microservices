@@ -109,4 +109,13 @@ public class EntityChangesControllerTests
     private static EntityChangeDto SampleDto(Guid id) =>
         new(id, "Product", Guid.NewGuid(), "Updated", null, null,
             DateTime.UtcNow, "user", null, null, []);
+
+    [Fact]
+    public async Task Query_WithoutQueryString_ReturnsBadRequest()
+    {
+        var result = await _sut.Query(new QuerySpec(), CancellationToken.None);
+
+        result.Should().BeOfType<BadRequestObjectResult>();
+        _service.Verify(s => s.QueryAsync(It.IsAny<MyApp.Shared.Domain.Specifications.ISpecification<EntityChange>>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
 }

@@ -210,7 +210,8 @@ public class CustomerRepositoryTests
         var nonExistentId = Guid.NewGuid();
 
         // Act & Assert
-        await _repository.DeleteAsync(nonExistentId); // Should not throw
+        var act = async () => await _repository.DeleteAsync(nonExistentId);
+        await act.Should().NotThrowAsync();
     }
 
     #endregion

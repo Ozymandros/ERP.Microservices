@@ -1,8 +1,6 @@
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using MyApp.Orders.Domain;
 using MyApp.Orders.Domain.Entities;
-using MyApp.Orders.Domain.Repositories;
 using MyApp.Orders.Infrastructure.Data;
 using MyApp.Orders.Infrastructure.Repositories;
 using MyApp.Orders.Tests.Helpers;
@@ -231,10 +229,11 @@ public class ReservedStockRepositoryTests
         // Arrange
         var nonExistentId = Guid.NewGuid();
 
-        // Act
+        // Act & Assert
         var missing = await _repository.GetByIdAsync(nonExistentId);
-        if (missing is not null)
-            await _repository.DeleteAsync(missing);
+        missing.Should().BeNull();
+        var act = async () => await _repository.DeleteAsync(new ReservedStock(nonExistentId));
+        await act.Should().NotThrowAsync();
     }
 
     #endregion

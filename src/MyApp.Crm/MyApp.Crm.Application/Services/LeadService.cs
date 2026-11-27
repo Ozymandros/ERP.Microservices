@@ -46,7 +46,7 @@ public class LeadService : AppServiceBase, ILeadService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<LeadDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var lead = await _leadRepository.GetByIdAsync(id);
+        var lead = await _leadRepository.GetByIdAsync(id, cancellationToken);
         return lead is null ? null : _mapper.Map<LeadDto>(lead);
     }
 
@@ -54,7 +54,7 @@ public class LeadService : AppServiceBase, ILeadService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<IEnumerable<LeadDto>> ListAsync(CancellationToken cancellationToken = default)
     {
-        var leads = await _leadRepository.ListAsync();
+        var leads = await _leadRepository.ListAsync(cancellationToken);
         return _mapper.Map<IEnumerable<LeadDto>>(leads);
     }
 
@@ -64,7 +64,7 @@ public class LeadService : AppServiceBase, ILeadService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<PaginatedResult<LeadDto>> ListPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
-        var result = await _leadRepository.GetAllPaginatedAsync(pageNumber, pageSize);
+        var result = await _leadRepository.GetAllPaginatedAsync(pageNumber, pageSize, cancellationToken: cancellationToken);
         var dtos = _mapper.Map<IEnumerable<LeadDto>>(result.Items);
         return new PaginatedResult<LeadDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }
@@ -74,7 +74,7 @@ public class LeadService : AppServiceBase, ILeadService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<PaginatedResult<LeadDto>> QueryAsync(ISpecification<Lead> spec, CancellationToken cancellationToken = default)
     {
-        var result = await _leadRepository.QueryAsync(spec);
+        var result = await _leadRepository.QueryAsync(spec, cancellationToken);
         var dtos = result.Items.Select(l => _mapper.Map<LeadDto>(l)).ToList();
         return new PaginatedResult<LeadDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }

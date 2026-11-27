@@ -60,7 +60,7 @@ public class RoleRepository : Repository<ApplicationRole, Guid>, IRoleRepository
             .Distinct()
             .ToListAsync(cancellationToken);
 
-        if (!roleIds.Any())
+        if (roleIds.Count == 0)
         {
             return Enumerable.Empty<ApplicationRole>();
         }

@@ -8,7 +8,6 @@ using MyApp.Agentic.Domain.AIModels;
 using MyApp.Agentic.Domain.AIProviders;
 using MyApp.Agentic.Domain.Memory;
 using MyApp.Agentic.Domain.Sessions;
-using MyApp.Agentic.Domain.Skills;
 using MyApp.Agentic.Infrastructure.Memory;
 using MyApp.Agentic.Infrastructure.State;
 using MyApp.Shared.Application;
@@ -36,11 +35,9 @@ public class AgentService : AppServiceBase, IAgentService
     private readonly IMemoryRepository _memoryRepository;
     private readonly ISecretCryptoService _secretCryptoService;
     private readonly ISessionStateStore _sessionStateStore;
-    private readonly IEmbeddingService _embeddingService;
     private readonly IAgentExecutionService _agentExecutionService;
     private readonly IAgentToolResolver _toolResolver;
     private readonly IServiceInvoker _serviceInvoker;
-    private readonly IMapper _mapper;
     private readonly ILogger<AgentService> _logger;
 
     /// <summary>
@@ -53,13 +50,11 @@ public class AgentService : AppServiceBase, IAgentService
     /// <param name="memoryRepository">The memory Repository.</param>
     /// <param name="secretCryptoService">The secret Crypto Service.</param>
     /// <param name="sessionStateStore">The session State Store.</param>
-    /// <param name="embeddingService">The embedding Service.</param>
     /// <param name="agentExecutionService">The agent Execution Service.</param>
     /// <param name="toolResolver">The tool Resolver.</param>
     /// <param name="unitOfWork">The unit Of Work.</param>
     /// <param name="eventPublisher">The event Publisher.</param>
     /// <param name="serviceInvoker">The service Invoker.</param>
-    /// <param name="mapper">The mapper.</param>
     /// <param name="logger">The logger.</param>
     public AgentService(
         IAgentRepository agentRepository,
@@ -69,13 +64,11 @@ public class AgentService : AppServiceBase, IAgentService
         IMemoryRepository memoryRepository,
         ISecretCryptoService secretCryptoService,
         ISessionStateStore sessionStateStore,
-        IEmbeddingService embeddingService,
         IAgentExecutionService agentExecutionService,
         IAgentToolResolver toolResolver,
         IUnitOfWork unitOfWork,
         IEventPublisher eventPublisher,
         IServiceInvoker serviceInvoker,
-        IMapper mapper,
         ILogger<AgentService> logger)
         : base(unitOfWork, eventPublisher, logger, ServiceNames.Agentic)
     {
@@ -86,11 +79,9 @@ public class AgentService : AppServiceBase, IAgentService
         _memoryRepository = memoryRepository;
         _secretCryptoService = secretCryptoService;
         _sessionStateStore = sessionStateStore;
-        _embeddingService = embeddingService;
         _agentExecutionService = agentExecutionService;
         _toolResolver = toolResolver;
         _serviceInvoker = serviceInvoker;
-        _mapper = mapper;
         _logger = logger;
     }
 
@@ -102,7 +93,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// <returns>The mapped <see cref="AgentDto"/> when found; otherwise <see langword="null"/>.</returns>
     public async Task<AgentDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var agent = await _agentRepository.GetByIdAsync(id);
+        var agent = await _agentRepository.GetByIdAsync(id, cancellationToken);
         return agent == null ? null : MapToDto(agent);
     }
 
@@ -113,7 +104,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// <returns>A collection of lightweight agent list DTOs.</returns>
     public async Task<IEnumerable<AgentListDto>> ListAsync(CancellationToken cancellationToken = default)
     {
-        var agents = await _agentRepository.GetAllAsync();
+        var agents = await _agentRepository.GetAllAsync(cancellationToken);
         return agents.Select(MapToListDto);
     }
 
@@ -125,7 +116,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// <returns>Filtered collection of <see cref="AgentListDto"/>.</returns>
     public async Task<IEnumerable<AgentListDto>> ListByOwnerAsync(string? ownerUserId, CancellationToken cancellationToken = default)
     {
-        var agents = await _agentRepository.GetAllAsync();
+        var agents = await _agentRepository.GetAllAsync(cancellationToken);
         var filtered = string.IsNullOrWhiteSpace(ownerUserId)
             ? agents
             : agents.Where(a => a.OwnerUserId == ownerUserId || a.OwnerUserId == null);
@@ -184,7 +175,7 @@ public class AgentService : AppServiceBase, IAgentService
     {
         var model = await ValidateProviderModelAsync(dto.ProviderId, dto.ModelId, cancellationToken);
 
-        var agent = await _agentRepository.GetByIdAsync(id);
+        var agent = await _agentRepository.GetByIdAsync(id, cancellationToken);
         if (agent == null) throw new InvalidOperationException($"Agent with ID {id} not found.");
 
         agent.Update(
@@ -215,7 +206,7 @@ public class AgentService : AppServiceBase, IAgentService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var agent = await _agentRepository.GetByIdAsync(id);
+        var agent = await _agentRepository.GetByIdAsync(id, cancellationToken);
         if (agent == null) return;
         await _agentRepository.DeleteAsync(agent);
         await SaveChangesAsync(cancellationToken);
@@ -599,7 +590,7 @@ public class AgentService : AppServiceBase, IAgentService
         string authenticatedUserId,
         CancellationToken cancellationToken = default)
     {
-        var session = await _sessionRepository.GetByIdAsync(sessionId)
+        var session = await _sessionRepository.GetByIdAsync(sessionId, cancellationToken)
             ?? throw new InvalidOperationException($"Session with ID {sessionId} not found.");
 
         if (session.UserId != authenticatedUserId)

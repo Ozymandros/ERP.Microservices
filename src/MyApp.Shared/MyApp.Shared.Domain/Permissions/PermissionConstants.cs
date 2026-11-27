@@ -30,7 +30,7 @@ public static class PermissionConstants
         public const string Import = "Inventory.Import";
 
         /// <summary>All Inventory permissions</summary>
-        public static string[] All => new[] { Read, Write, Delete, Execute, Export, Import };
+        public static string[] All => [ Read, Write, Delete, Execute, Export, Import ];
     }
 
     /// <summary>Purchasing module permissions</summary>
@@ -52,7 +52,7 @@ public static class PermissionConstants
         public const string Import = "Purchasing.Import";
 
         /// <summary>All Purchasing permissions</summary>
-        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+        public static string[] All => [ Read, Create, Update, Delete, Execute, Export, Import ];
     }
     /// <summary>Orders module permissions</summary>
     public static class Orders
@@ -73,7 +73,7 @@ public static class PermissionConstants
         public const string Import = "Orders.Import";
 
         /// <summary>All Orders permissions</summary>
-        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+        public static string[] All => [ Read, Create, Update, Delete, Execute, Export, Import ];
     }
 
     /// <summary>Sales module permissions</summary>
@@ -95,7 +95,7 @@ public static class PermissionConstants
         public const string Import = "Sales.Import";
 
         /// <summary>All Sales permissions</summary>
-        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+        public static string[] All => [ Read, Create, Update, Delete, Execute, Export, Import ];
     }
 
     /// <summary>Billing module permissions</summary>
@@ -117,7 +117,7 @@ public static class PermissionConstants
         public const string Import = "Billing.Import";
 
         /// <summary>All Billing permissions</summary>
-        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+        public static string[] All => [ Read, Create, Update, Delete, Execute, Export, Import ];
     }
 
     /// <summary>Projects module permissions</summary>
@@ -139,7 +139,7 @@ public static class PermissionConstants
         public const string Import = "Projects.Import";
 
         /// <summary>All Projects permissions</summary>
-        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+        public static string[] All => [ Read, Create, Update, Delete, Execute, Export, Import ];
     }
 
     /// <summary>CRM module permissions</summary>
@@ -161,7 +161,7 @@ public static class PermissionConstants
         public const string Import = "CRM.Import";
 
         /// <summary>All CRM permissions</summary>
-        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+        public static string[] All => [ Read, Create, Update, Delete, Execute, Export, Import ];
     }
 
     /// <summary>Notification module permissions</summary>
@@ -183,7 +183,7 @@ public static class PermissionConstants
         public const string Import = "Notification.Import";
 
         /// <summary>All Notification permissions</summary>
-        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+        public static string[] All => [ Read, Create, Update, Delete, Execute, Export, Import ];
     }
 
     /// <summary>Auth module permissions</summary>
@@ -205,7 +205,7 @@ public static class PermissionConstants
         public const string Import = "Auth.Import";
 
         /// <summary>All Auth permissions</summary>
-        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+        public static string[] All => [ Read, Create, Update, Delete, Execute, Export, Import ];
     }
 
     /// <summary>Users management permissions</summary>
@@ -227,7 +227,7 @@ public static class PermissionConstants
         public const string Import = "Users.Import";
 
         /// <summary>All Users permissions</summary>
-        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+        public static string[] All => [ Read, Create, Update, Delete, Execute, Export, Import ];
     }
 
     /// <summary>Roles management permissions</summary>
@@ -249,7 +249,7 @@ public static class PermissionConstants
         public const string Import = "Roles.Import";
 
         /// <summary>All Roles permissions</summary>
-        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+        public static string[] All => [ Read, Create, Update, Delete, Execute, Export, Import ];
     }
 
     /// <summary>Permissions management permissions</summary>
@@ -271,7 +271,7 @@ public static class PermissionConstants
         public const string Import = "Permissions.Import";
 
         /// <summary>All Permissions permissions</summary>
-        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+        public static string[] All => [ Read, Create, Update, Delete, Execute, Export, Import ];
     }
 
     /// <summary>Agentic module permissions - AI agent and bot orchestration</summary>
@@ -293,7 +293,7 @@ public static class PermissionConstants
         public const string Import = "Agentic.Import";
 
         /// <summary>All Agentic permissions</summary>
-        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+        public static string[] All => [ Read, Create, Update, Delete, Execute, Export, Import ];
     }
 
     /// <summary>Audit module permissions</summary>
@@ -315,7 +315,7 @@ public static class PermissionConstants
         public const string Import = "Audit.Import";
 
         /// <summary>All Audit permissions</summary>
-        public static string[] All => new[] { Read, Create, Update, Delete, Execute, Export, Import };
+        public static string[] All => [ Read, Create, Update, Delete, Execute, Export, Import ];
     }
 
     /// <summary>

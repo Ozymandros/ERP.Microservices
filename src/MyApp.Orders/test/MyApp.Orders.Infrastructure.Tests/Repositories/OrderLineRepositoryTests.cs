@@ -280,8 +280,9 @@ public class OrderLineRepositoryTests
 
         // Act & Assert
         var missing = await _repository.GetByIdAsync(nonExistentId);
-        if (missing is not null)
-            await _repository.DeleteAsync(missing);
+        missing.Should().BeNull();
+        var act = async () => await _repository.DeleteAsync(new OrderLine(nonExistentId));
+        await act.Should().NotThrowAsync();
     }
 
     #endregion

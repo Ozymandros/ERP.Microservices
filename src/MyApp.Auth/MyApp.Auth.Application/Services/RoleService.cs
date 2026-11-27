@@ -20,6 +20,8 @@ namespace MyApp.Auth.Application.Services;
 /// </summary>
 public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRoleService
 {
+    private const string RoleNotFoundLogTemplate = "Role not found: {RoleId}";
+
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IRoleRepository _roleRepository;
@@ -145,7 +147,7 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
         var role = await _roleRepository.GetByIdAsync(roleId);
         if (role == null)
         {
-            _logger.LogWarning("Role not found: {RoleId}", roleId);
+            _logger.LogWarning(RoleNotFoundLogTemplate, roleId);
             return false;
         }
 
@@ -172,7 +174,7 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
         var role = await _roleRepository.GetByIdAsync(roleId);
         if (role == null)
         {
-            _logger.LogWarning("Role not found: {RoleId}", roleId);
+            _logger.LogWarning(RoleNotFoundLogTemplate, roleId);
             return false;
         }
 
@@ -204,7 +206,7 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
         var role = await _roleRepository.GetByIdAsync(createDto.RoleId);
         if (role == null)
         {
-            _logger.LogWarning("Role not found: {RoleId}", createDto.RoleId);
+            _logger.LogWarning(RoleNotFoundLogTemplate, createDto.RoleId);
             return false;
         }
 
@@ -240,7 +242,7 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
         var role = await _roleManager.FindByIdAsync(deleteDto.RoleId.ToString());
         if (role == null)
         {
-            _logger.LogWarning("Role not found: {RoleId}", deleteDto.RoleId);
+            _logger.LogWarning(RoleNotFoundLogTemplate, deleteDto.RoleId);
             return false;
         }
 
@@ -297,7 +299,7 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
         var role = await _roleRepository.GetByIdAsync(createDto.RoleId);
         if (role == null)
         {
-            _logger.LogWarning("Role not found: {RoleId}", createDto.RoleId);
+            _logger.LogWarning(RoleNotFoundLogTemplate, createDto.RoleId);
             return false;
         }
 
@@ -343,7 +345,7 @@ public class RoleService : AppServiceBase<Guid, ApplicationRole, RoleDto>, IRole
     {
         if (await _roleRepository.GetByIdAsync(deleteDto.RoleId) is null)
         {
-            _logger.LogWarning("Role not found: {RoleId}", deleteDto.RoleId);
+            _logger.LogWarning(RoleNotFoundLogTemplate, deleteDto.RoleId);
             return false;
         }
 

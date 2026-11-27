@@ -394,4 +394,77 @@ public class ProjectPostingServiceTests
 
         await act.Should().ThrowAsync<ArgumentException>();
     }
+
+    [Fact]
+    public async Task HandleOrderCancelledAsync_PendingProjectOrder_ReleasesQuantities()
+    {
+        var line = ItemLine();
+        line.ReserveForConsumption(6m);
+        var orderId = Guid.NewGuid();
+        var consumption = new ProjectConsumptionOrder(Guid.NewGuid())
+        {
+            ProjectId = _project.Id,
+            OrderId = orderId,
+            OrderNumber = "ORD-1",
+            Status = ProjectConsumptionStatus.Pending
+        };
+        consumption.Lines.Add(new ProjectConsumptionOrderLine(Guid.NewGuid())
+        {
+            ConsumptionOrderId = consumption.Id,
+            PlanningLineId = line.Id,
+            ProductId = line.ProductId!.Value,
+            Quantity = 6
+        });
+        _consumptionOrders.Setup(r => r.GetByOrderIdAsync(orderId, It.IsAny<CancellationToken>())).ReturnsAsync(consumption);
+        _lines.Setup(r => r.GetByIdsAsync(It.IsAny<IEnumerable<Guid>>(), It.IsAny<CancellationToken>()))
+              .ReturnsAsync(new List<ProjectPlanningLine> { line });
+
+        var result = await _sut.HandleOrderCancelledAsync(
+            new OrderCancelledEvent(orderId, "customer cancelled", _project.Id, DocumentSources.Project));
+
+        result.Should().Be(_project.Id);
+        consumption.Status.Should().Be(ProjectConsumptionStatus.Cancelled);
+        line.QuantityInConsumption.Should().Be(0m);
+    }
+
+    [Fact]
+    public async Task HandleOrderCancelledAsync_SalesOrder_IsIgnored()
+    {
+        var result = await _sut.HandleOrderCancelledAsync(
+            new OrderCancelledEvent(Guid.NewGuid(), "n/a", Guid.NewGuid()));
+
+        result.Should().BeNull();
+        _consumptionOrders.Verify(r => r.GetByOrderIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task HandleInvoiceCreatedAsync_Requested_SetsDrafted()
+    {
+        var request = new ProjectInvoiceRequest(Guid.NewGuid())
+        {
+            ProjectId = _project.Id,
+            CustomerId = _project.CustomerId,
+            CurrencyCode = "USD",
+            Status = ProjectInvoiceRequestStatus.Requested
+        };
+        _invoiceRequests.Setup(r => r.GetWithLinesAsync(request.Id, It.IsAny<CancellationToken>())).ReturnsAsync(request);
+        var invoiceId = Guid.NewGuid();
+
+        var result = await _sut.HandleInvoiceCreatedAsync(new InvoiceCreatedEvent(
+            invoiceId, _project.CustomerId, null, "USD", 100m, DocumentSources.Project, request.Id));
+
+        result.Should().Be(_project.Id);
+        request.Status.Should().Be(ProjectInvoiceRequestStatus.Drafted);
+        request.InvoiceId.Should().Be(invoiceId);
+    }
+
+    [Fact]
+    public async Task HandleInvoiceCreatedAsync_SalesInvoice_IsIgnored()
+    {
+        var result = await _sut.HandleInvoiceCreatedAsync(new InvoiceCreatedEvent(
+            Guid.NewGuid(), Guid.NewGuid(), null, "USD", 10m));
+
+        result.Should().BeNull();
+        _invoiceRequests.Verify(r => r.GetWithLinesAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
 }

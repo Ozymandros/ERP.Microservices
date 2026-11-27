@@ -125,4 +125,119 @@ public class PlanningLineServiceTests
 
         await act.Should().ThrowAsync<InvalidOperationException>();
     }
+
+    [Fact]
+    public async Task UpdateAsync_Existing_UpdatesQuantityAndRecalculates()
+    {
+        var line = new ProjectPlanningLine(Guid.NewGuid())
+        {
+            ProjectId = _project.Id,
+            ProjectTaskId = _task.Id,
+            Kind = ProjectLineKind.Resource,
+            ResourceId = _resource.Id,
+            Description = "Senior Consultant",
+            UnitOfMeasure = "HOUR",
+            Quantity = 4m,
+            UnitCostLcy = 45m,
+            UnitPrice = 100m,
+            CurrencyCode = "USD",
+            ExchangeRate = 0.9m
+        };
+        line.Recalculate();
+        _lines.Setup(r => r.GetByIdAsync(line.Id, It.IsAny<CancellationToken>())).ReturnsAsync(line);
+
+        var mapper = new Mock<IMapper>();
+        mapper.Setup(m => m.Map<PlanningLineDto>(line))
+            .Returns((ProjectPlanningLine l) => new PlanningLineDto(l.Id)
+            {
+                Description = l.Description,
+                Quantity = l.Quantity,
+                LineAmount = l.LineAmount
+            });
+        var sut = CreateSut(mapper.Object);
+
+        var result = await sut.UpdateAsync(_project.Id, line.Id, new CreateUpdatePlanningLineDto
+        {
+            ProjectTaskId = _task.Id,
+            Kind = ProjectLineKind.Resource,
+            ResourceId = _resource.Id,
+            Quantity = 10m,
+            UnitPrice = 100m,
+            UnitCostLcy = 45m
+        });
+
+        line.Quantity.Should().Be(10m);
+        result.Quantity.Should().Be(10m);
+        result.LineAmount.Should().Be(1000m);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_ChangeKindAfterActivity_Throws()
+    {
+        var line = new ProjectPlanningLine(Guid.NewGuid())
+        {
+            ProjectId = _project.Id,
+            ProjectTaskId = _task.Id,
+            Kind = ProjectLineKind.Resource,
+            ResourceId = _resource.Id,
+            Quantity = 4m,
+            QuantityPosted = 1m
+        };
+        _lines.Setup(r => r.GetByIdAsync(line.Id, It.IsAny<CancellationToken>())).ReturnsAsync(line);
+
+        var act = () => _sut.UpdateAsync(_project.Id, line.Id, new CreateUpdatePlanningLineDto
+        {
+            ProjectTaskId = _task.Id,
+            Kind = ProjectLineKind.Expense,
+            Description = "Expense",
+            Quantity = 4m
+        });
+
+        await act.Should().ThrowAsync<InvalidOperationException>().WithMessage("*cannot be changed*");
+    }
+
+    [Fact]
+    public async Task DeleteAsync_WithoutActivity_Deletes()
+    {
+        var line = new ProjectPlanningLine(Guid.NewGuid())
+        {
+            ProjectId = _project.Id,
+            ProjectTaskId = _task.Id,
+            Description = "Line"
+        };
+        var ledger = new Mock<IProjectLedgerEntryRepository>();
+        ledger.Setup(r => r.AnyForPlanningLineAsync(line.Id, It.IsAny<CancellationToken>())).ReturnsAsync(false);
+        _lines.Setup(r => r.GetByIdAsync(line.Id, It.IsAny<CancellationToken>())).ReturnsAsync(line);
+        _lines.Setup(r => r.DeleteAsync(line)).Returns(Task.CompletedTask);
+
+        var sut = new PlanningLineService(
+            _projects.Object, _tasks.Object, _lines.Object, ledger.Object, _resources.Object,
+            Mock.Of<IInventoryProductLookupPort>(), _currency.Object, Mock.Of<IMapper>(), _unitOfWork.Object,
+            Mock.Of<IEventPublisher>(), Mock.Of<ILogger<PlanningLineService>>());
+
+        await sut.DeleteAsync(_project.Id, line.Id);
+
+        _lines.Verify(r => r.DeleteAsync(line), Times.Once);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_WithPostedQuantity_Throws()
+    {
+        var line = new ProjectPlanningLine(Guid.NewGuid())
+        {
+            ProjectId = _project.Id,
+            ProjectTaskId = _task.Id,
+            QuantityPosted = 1m
+        };
+        _lines.Setup(r => r.GetByIdAsync(line.Id, It.IsAny<CancellationToken>())).ReturnsAsync(line);
+
+        var act = () => _sut.DeleteAsync(_project.Id, line.Id);
+
+        await act.Should().ThrowAsync<InvalidOperationException>().WithMessage("*cannot be deleted*");
+    }
+
+    private PlanningLineService CreateSut(IMapper mapper) =>
+        new(_projects.Object, _tasks.Object, _lines.Object, Mock.Of<IProjectLedgerEntryRepository>(), _resources.Object,
+            Mock.Of<IInventoryProductLookupPort>(), _currency.Object, mapper, _unitOfWork.Object,
+            Mock.Of<IEventPublisher>(), Mock.Of<ILogger<PlanningLineService>>());
 }

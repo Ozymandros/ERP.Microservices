@@ -44,4 +44,4 @@ var app = builder.Build();
 
 app.UseServiceDefaults();
 
-app.Run();
+await app.RunAsync();

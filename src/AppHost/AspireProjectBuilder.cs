@@ -10,9 +10,9 @@ namespace AppHost;
 public class AspireProjectBuilder
 {
     private int _httpPort = 6000;
-    private int _daprHttpPort = 3500;
-    private int _daprGrpcPort = 45000;
-    private int _metricsPort = 9090;
+    //private int _daprHttpPort = 3500;
+    //private int _daprGrpcPort = 45000;
+    //private int _metricsPort = 9090;
 
     private readonly IDistributedApplicationBuilder _builder;
     private readonly IResourceBuilder<SqlServerServerResource>? _sqlServer;
@@ -191,9 +191,9 @@ public class AspireProjectBuilder
         int metricsPort = 9091)
     {
         _httpPort = httpPort;
-        _daprHttpPort = daprHttpPort;
-        _daprGrpcPort = daprGrpcPort;
-        _metricsPort = metricsPort;
+        //_daprHttpPort = daprHttpPort;
+        //_daprGrpcPort = daprGrpcPort;
+        //_metricsPort = metricsPort;
     }
 }
 

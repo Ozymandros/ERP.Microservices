@@ -55,7 +55,7 @@ public static class QuerySpecExtensions
             string filterKey;
 
             // Handle filters[key]=value format
-            if (key.StartsWith("filters[", StringComparison.OrdinalIgnoreCase) && key.EndsWith("]"))
+            if (key.StartsWith("filters[", StringComparison.OrdinalIgnoreCase) && key.EndsWith(']'))
             {
                 filterKey = key.Substring(8, key.Length - 9); // Extract key from filters[key]
             }

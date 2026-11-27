@@ -7,8 +7,10 @@ using MyApp.Auth.API.Controllers;
 using MyApp.Auth.Application.Contracts;
 using MyApp.Auth.Application.Contracts.DTOs;
 using MyApp.Auth.Domain.Specifications;
+using MyApp.Auth.Infrastructure.Services;
 using MyApp.Shared.Domain.Caching;
 using MyApp.Shared.Domain.Pagination;
+using MyApp.Shared.Domain.Security;
 using Xunit;
 
 namespace MyApp.Auth.API.Tests;
@@ -17,6 +19,8 @@ public class PermissionsControllerTests
 {
     private readonly Mock<IPermissionService> _permissionServiceMock;
     private readonly Mock<ICacheService> _cacheServiceMock;
+    private readonly Mock<IJwtTokenProvider> _jwtTokenProviderMock;
+    private readonly Mock<ILogSanitizer> _logSanitizerMock;
     private readonly Mock<ILogger<PermissionsController>> _loggerMock;
     private readonly PermissionsController _controller;
 
@@ -24,11 +28,15 @@ public class PermissionsControllerTests
     {
         _permissionServiceMock = new Mock<IPermissionService>();
         _cacheServiceMock = new Mock<ICacheService>();
+        _jwtTokenProviderMock = new Mock<IJwtTokenProvider>();
+        _logSanitizerMock = new Mock<ILogSanitizer>();
         _loggerMock = new Mock<ILogger<PermissionsController>>();
 
         _controller = new PermissionsController(
             _permissionServiceMock.Object,
             _cacheServiceMock.Object,
+            _jwtTokenProviderMock.Object,
+            _logSanitizerMock.Object,
             _loggerMock.Object);
 
         // Setup HttpContext
@@ -106,8 +114,10 @@ public class PermissionsControllerTests
         var okResult = Assert.IsType<OkObjectResult>(result.Result);
         Assert.IsType<PaginatedResult<PermissionDto>>(okResult.Value);
         
-        _permissionServiceMock.Verify(x => x.QueryPermissionsAsync(It.Is<PermissionQuerySpec>(s => 
-            s.Query.Filters.ContainsKey("Module") && s.Query.Filters.GetValueOrDefault("Module") == "Users"
+        _permissionServiceMock.Verify(x => x.QueryPermissionsAsync(It.Is<PermissionQuerySpec>(s =>
+            s.Query.Filters != null
+            && s.Query.Filters.ContainsKey("Module")
+            && s.Query.Filters.GetValueOrDefault("Module") == "Users"
         )), Times.Once);
     }
 }
