@@ -772,4 +772,24 @@ public class RoleServiceTests : BaseServiceTest
     }
 
     #endregion
+
+    /// <summary>
+    /// Verifies that Add Permission To Role returns false and does not touch permissions when the role does not exist.
+    /// </summary>
+    [Fact]
+    public async Task AddPermissionToRole_WithRoleNotFound_ShouldReturnFalse()
+    {
+        // Arrange
+        var roleId = Guid.NewGuid();
+        var createDto = new CreateRolePermissionDto(roleId, Guid.NewGuid());
+        _mockRoleRepository.Setup(r => r.GetByIdAsync(roleId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((ApplicationRole?)null);
+
+        // Act
+        var result = await _roleService.AddPermissionToRole(createDto);
+
+        // Assert
+        result.Should().BeFalse();
+        _mockRoleRepository.Verify(r => r.HasPermissionAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
 }

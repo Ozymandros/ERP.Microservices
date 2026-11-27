@@ -75,7 +75,7 @@ jobs:
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.sources="src" \
             /d:sonar.tests="src/**/test/**,src/**/*Tests/**,src/AppHost.Tests/**,src/MyApp.Shared.Tests/**" \
-            /d:sonar.exclusions="**/_site/**,**/src/AppHost/.aspire/**,**/*.original,**/Dockerfile.local,**/Dockerfile,infra/**,**/.github/**,**/docs/**,**/Migrations/**" \
+            /d:sonar.exclusions="**/_site/**,**/src/AppHost/.aspire/**,**/*.original,**/Dockerfile.local,**/Dockerfile,infra/**,**/.github/**,**/docs/**,**/Migrations/**,scripts/**,deploy/**,**/*.ps1" \
             /d:sonar.coverage.exclusions="**/Program.cs,**/Migrations/**,**/*Migration*.cs,**/AppHost/**,**/ErpApiGateway/**,**/**/Application.Contracts/**/*.cs,**/Configurations/**,**/Seeders/**,**/Mapping/**,**/*.g.cs,**/DependencyInjection/**,**/Extensions/MicroserviceExtensions.cs,**/OpenApi/**,**/MyApp.Agentic.Application/AI/MicrosoftAgentExecutionService.cs,**/*Constants.cs,**/Constants/**,**/BackgroundServices/**" \
             /d:sonar.cs.vstest.reportsPaths="${{ github.workspace }}/TestResults/*.trx" \
             /d:sonar.cs.opencover.reportsPaths="${{ github.workspace }}/TestResults/**/*.xml" \
