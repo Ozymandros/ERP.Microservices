@@ -55,28 +55,8 @@ public static class MicroserviceExtensions
             builder.Services.AddMicroserviceMessaging();
         }
 
-        // 2. OpenTelemetry (traces, metrics, structured logs → OTLP / Aspire dashboard)
         if (options.EnableOpenTelemetry)
-        {
-            builder.Logging.AddOpenTelemetry(logging =>
-            {
-                logging.IncludeFormattedMessage = true;
-                logging.IncludeScopes = true;
-            });
-
-            builder.Services.AddOpenTelemetry()
-                .ConfigureResource(resource => resource.AddService(serviceName))
-                .WithTracing(tracing => tracing
-                    .AddAspNetCoreInstrumentation()
-                    .AddHttpClientInstrumentation()
-                    .AddOtlpExporter())
-                .WithMetrics(metrics => metrics
-                    .AddAspNetCoreInstrumentation()
-                    .AddRuntimeInstrumentation()
-                    .AddOtlpExporter())
-                .WithLogging(logging => logging
-                    .AddOtlpExporter());
-        }
+            AddOpenTelemetryDefaults(builder, serviceName);
 
         // 3. Controllers and API endpoints
         builder.Services.AddControllers();
@@ -296,5 +276,27 @@ public static class MicroserviceExtensions
             app.UseCustomHealthChecks();
 
         return app;
+    }
+
+    private static void AddOpenTelemetryDefaults(WebApplicationBuilder builder, string serviceName)
+    {
+        builder.Logging.AddOpenTelemetry(logging =>
+        {
+            logging.IncludeFormattedMessage = true;
+            logging.IncludeScopes = true;
+        });
+
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService(serviceName))
+            .WithTracing(tracing => tracing
+                .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
+                .AddOtlpExporter())
+            .WithMetrics(metrics => metrics
+                .AddAspNetCoreInstrumentation()
+                .AddRuntimeInstrumentation()
+                .AddOtlpExporter())
+            .WithLogging(logging => logging
+                .AddOtlpExporter());
     }
 }

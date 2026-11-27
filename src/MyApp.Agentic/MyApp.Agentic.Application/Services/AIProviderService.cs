@@ -43,7 +43,7 @@ public class AIProviderService : AppServiceBase, IAIProviderService
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<IEnumerable<AIProviderDto>> ListAsync(CancellationToken cancellationToken = default)
     {
-        var providers = await providerRepository.GetAllAsync();
+        var providers = await providerRepository.GetAllAsync(cancellationToken);
         return providers
             .OrderBy(p => p.Name)
             .Select(MapToDto);
@@ -57,7 +57,7 @@ public class AIProviderService : AppServiceBase, IAIProviderService
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
     public async Task<AIProviderDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var provider = await providerRepository.GetByIdAsync(id);
+        var provider = await providerRepository.GetByIdAsync(id, cancellationToken);
         return provider is null ? null : MapToDto(provider);
     }
 
@@ -101,7 +101,7 @@ public class AIProviderService : AppServiceBase, IAIProviderService
     /// <returns>A task that represents the asynchronous operation. The task result contains the result.</returns>
     public async Task<AIProviderDto> UpdateAsync(Guid id, UpdateAIProviderDto dto, CancellationToken cancellationToken = default)
     {
-        var provider = await providerRepository.GetByIdAsync(id);
+        var provider = await providerRepository.GetByIdAsync(id, cancellationToken);
         if (provider is null)
             throw new InvalidOperationException($"AI provider with ID {id} not found.");
 
@@ -139,7 +139,7 @@ public class AIProviderService : AppServiceBase, IAIProviderService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var provider = await providerRepository.GetByIdAsync(id);
+        var provider = await providerRepository.GetByIdAsync(id, cancellationToken);
         if (provider is null)
             return;
 

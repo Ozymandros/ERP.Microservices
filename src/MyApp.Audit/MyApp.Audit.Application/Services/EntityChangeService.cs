@@ -117,7 +117,7 @@ public class EntityChangeService : AppServiceBase, IEntityChangeService
         ISpecification<EntityChange> spec,
         CancellationToken cancellationToken = default)
     {
-        var result = await _repository.QueryAsync(spec);
+        var result = await _repository.QueryAsync(spec, cancellationToken);
         var items = result.Items
             .Select(e => EnrichUpdatedPropertyChanges(_mapper.Map<EntityChangeDto>(e), e));
         return new PaginatedResult<EntityChangeDto>(

@@ -43,7 +43,7 @@ public class ResourceService : AppServiceBase, IResourceService
     /// <inheritdoc />
     public async Task<PaginatedResult<ResourceDto>> QueryAsync(ISpecification<Resource> spec, CancellationToken cancellationToken = default)
     {
-        var result = await _resources.QueryAsync(spec);
+        var result = await _resources.QueryAsync(spec, cancellationToken);
         return new PaginatedResult<ResourceDto>(
             _mapper.Map<List<ResourceDto>>(result.Items), result.PageNumber, result.PageSize, result.TotalCount);
     }
@@ -51,11 +51,11 @@ public class ResourceService : AppServiceBase, IResourceService
     /// <inheritdoc />
     public async Task<ResourceDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var resource = await _resources.GetByIdAsync(id);
+        var resource = await _resources.GetByIdAsync(id, cancellationToken);
         if (resource is null)
             return null;
         if (resource.ResourceGroupId.HasValue)
-            resource.ResourceGroup ??= await _groups.GetByIdAsync(resource.ResourceGroupId.Value);
+            resource.ResourceGroup ??= await _groups.GetByIdAsync(resource.ResourceGroupId.Value, cancellationToken);
         return _mapper.Map<ResourceDto>(resource);
     }
 
@@ -67,7 +67,7 @@ public class ResourceService : AppServiceBase, IResourceService
             throw new InvalidOperationException($"Resource {resourceNo} already exists.");
 
         var resource = new Resource(Guid.NewGuid()) { ResourceNo = resourceNo };
-        await ApplyAsync(resource, dto);
+        await ApplyAsync(resource, dto, cancellationToken);
 
         await _resources.AddAsync(resource);
         await SaveChangesAsync(cancellationToken);
@@ -77,7 +77,7 @@ public class ResourceService : AppServiceBase, IResourceService
     /// <inheritdoc />
     public async Task<ResourceDto> UpdateAsync(Guid id, CreateUpdateResourceDto dto, CancellationToken cancellationToken = default)
     {
-        var resource = await _resources.GetByIdAsync(id) ?? throw new NotFoundException(nameof(Resource), id);
+        var resource = await _resources.GetByIdAsync(id, cancellationToken) ?? throw new NotFoundException(nameof(Resource), id);
 
         var resourceNo = dto.ResourceNo.Trim().ToUpperInvariant();
         if (resourceNo != resource.ResourceNo)
@@ -88,7 +88,7 @@ public class ResourceService : AppServiceBase, IResourceService
             resource.ResourceNo = resourceNo;
         }
 
-        await ApplyAsync(resource, dto);
+        await ApplyAsync(resource, dto, cancellationToken);
         await SaveChangesAsync(cancellationToken);
         return _mapper.Map<ResourceDto>(resource);
     }
@@ -96,7 +96,7 @@ public class ResourceService : AppServiceBase, IResourceService
     /// <inheritdoc />
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var resource = await _resources.GetByIdAsync(id) ?? throw new NotFoundException(nameof(Resource), id);
+        var resource = await _resources.GetByIdAsync(id, cancellationToken) ?? throw new NotFoundException(nameof(Resource), id);
         if (await _resources.IsInUseAsync(id, cancellationToken))
             throw new InvalidOperationException($"Resource {resource.ResourceNo} is used on projects; block it instead of deleting it.");
         await _resources.DeleteAsync(resource);
@@ -105,12 +105,12 @@ public class ResourceService : AppServiceBase, IResourceService
 
     /// <inheritdoc />
     public async Task<List<ResourceGroupDto>> ListGroupsAsync(CancellationToken cancellationToken = default) =>
-        _mapper.Map<List<ResourceGroupDto>>((await _groups.GetAllAsync()).OrderBy(g => g.Code));
+        _mapper.Map<List<ResourceGroupDto>>((await _groups.GetAllAsync(cancellationToken)).OrderBy(g => g.Code));
 
     /// <inheritdoc />
     public async Task<ResourceGroupDto?> GetGroupByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var group = await _groups.GetByIdAsync(id);
+        var group = await _groups.GetByIdAsync(id, cancellationToken);
         return group is null ? null : _mapper.Map<ResourceGroupDto>(group);
     }
 
@@ -130,7 +130,7 @@ public class ResourceService : AppServiceBase, IResourceService
     /// <inheritdoc />
     public async Task<ResourceGroupDto> UpdateGroupAsync(Guid id, CreateUpdateResourceGroupDto dto, CancellationToken cancellationToken = default)
     {
-        var group = await _groups.GetByIdAsync(id) ?? throw new NotFoundException(nameof(ResourceGroup), id);
+        var group = await _groups.GetByIdAsync(id, cancellationToken) ?? throw new NotFoundException(nameof(ResourceGroup), id);
         var code = dto.Code.Trim().ToUpperInvariant();
         if (code != group.Code)
         {
@@ -148,7 +148,7 @@ public class ResourceService : AppServiceBase, IResourceService
     /// <inheritdoc />
     public async Task DeleteGroupAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var group = await _groups.GetByIdAsync(id) ?? throw new NotFoundException(nameof(ResourceGroup), id);
+        var group = await _groups.GetByIdAsync(id, cancellationToken) ?? throw new NotFoundException(nameof(ResourceGroup), id);
         if (await _groups.IsInUseAsync(id, cancellationToken))
             throw new InvalidOperationException($"Resource group {group.Code} is used by one or more resources.");
 
@@ -156,11 +156,11 @@ public class ResourceService : AppServiceBase, IResourceService
         await SaveChangesAsync(cancellationToken);
     }
 
-    private async Task ApplyAsync(Resource resource, CreateUpdateResourceDto dto)
+    private async Task ApplyAsync(Resource resource, CreateUpdateResourceDto dto, CancellationToken cancellationToken = default)
     {
         if (dto.ResourceGroupId.HasValue)
         {
-            resource.ResourceGroup = await _groups.GetByIdAsync(dto.ResourceGroupId.Value)
+            resource.ResourceGroup = await _groups.GetByIdAsync(dto.ResourceGroupId.Value, cancellationToken)
                 ?? throw new ArgumentException($"Resource group {dto.ResourceGroupId} does not exist.");
         }
         else

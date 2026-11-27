@@ -56,48 +56,7 @@ internal static class PluginQueryHelper
             return queryParams;
         }
 
-        using var document = JsonDocument.Parse(trimmed);
-        var root = document.RootElement;
-        if (root.ValueKind != JsonValueKind.Object)
-            return queryParams;
-
-        AddIfPresent(queryParams, root, "page");
-        AddIfPresent(queryParams, root, "pageSize");
-        AddIfPresent(queryParams, root, "sortBy");
-        AddIfPresent(queryParams, root, "sortDesc");
-        AddIfPresent(queryParams, root, "searchTerm");
-        AddIfPresent(queryParams, root, "searchFields");
-
-        if (root.TryGetProperty("filters", out var filters) && filters.ValueKind == JsonValueKind.Object)
-        {
-            foreach (var filter in filters.EnumerateObject())
-            {
-                if (!string.IsNullOrWhiteSpace(filter.Name) && filter.Value.ValueKind == JsonValueKind.String)
-                    queryParams[filter.Name] = filter.Value.GetString();
-            }
-        }
-
-        if (!queryParams.ContainsKey("searchTerm")
-            && root.TryGetProperty("name", out var nameElement)
-            && nameElement.ValueKind == JsonValueKind.String)
-        {
-            queryParams["name"] = nameElement.GetString();
-        }
-
-        if (!queryParams.ContainsKey("searchTerm")
-            && root.TryGetProperty("description", out var descriptionElement)
-            && descriptionElement.ValueKind == JsonValueKind.String)
-        {
-            queryParams["description"] = descriptionElement.GetString();
-        }
-
-        if (!queryParams.ContainsKey("page"))
-            queryParams["page"] = "1";
-
-        if (!queryParams.ContainsKey("pageSize"))
-            queryParams["pageSize"] = "20";
-
-        return queryParams;
+        return ParseJsonObjectQuery(trimmed, queryParams);
     }
 
     /// <summary>
@@ -133,6 +92,54 @@ internal static class PluginQueryHelper
         }
 
         return trimmed;
+    }
+
+    private static Dictionary<string, string?> ParseJsonObjectQuery(string trimmed, Dictionary<string, string?> queryParams)
+    {
+        using var document = JsonDocument.Parse(trimmed);
+        var root = document.RootElement;
+        if (root.ValueKind != JsonValueKind.Object)
+            return queryParams;
+
+        AddIfPresent(queryParams, root, "page");
+        AddIfPresent(queryParams, root, "pageSize");
+        AddIfPresent(queryParams, root, "sortBy");
+        AddIfPresent(queryParams, root, "sortDesc");
+        AddIfPresent(queryParams, root, "searchTerm");
+        AddIfPresent(queryParams, root, "searchFields");
+        AddFiltersFromJson(queryParams, root);
+        AddNameOrDescriptionFallback(queryParams, root);
+        EnsurePaginationDefaults(queryParams);
+        return queryParams;
+    }
+
+    private static void AddFiltersFromJson(Dictionary<string, string?> queryParams, JsonElement root)
+    {
+        if (!root.TryGetProperty("filters", out var filters) || filters.ValueKind != JsonValueKind.Object)
+            return;
+
+        foreach (var filter in filters.EnumerateObject())
+        {
+            if (!string.IsNullOrWhiteSpace(filter.Name) && filter.Value.ValueKind == JsonValueKind.String)
+                queryParams[filter.Name] = filter.Value.GetString();
+        }
+    }
+
+    private static void AddNameOrDescriptionFallback(Dictionary<string, string?> queryParams, JsonElement root)
+    {
+        if (queryParams.ContainsKey("searchTerm"))
+            return;
+
+        if (root.TryGetProperty("name", out var nameElement) && nameElement.ValueKind == JsonValueKind.String)
+            queryParams["name"] = nameElement.GetString();
+        else if (root.TryGetProperty("description", out var descriptionElement) && descriptionElement.ValueKind == JsonValueKind.String)
+            queryParams["description"] = descriptionElement.GetString();
+    }
+
+    private static void EnsurePaginationDefaults(Dictionary<string, string?> queryParams)
+    {
+        queryParams.TryAdd("page", "1");
+        queryParams.TryAdd("pageSize", "20");
     }
 
     /// <summary>

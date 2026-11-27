@@ -57,39 +57,54 @@ public class BillingDbContext : AuditableDbContext
     private void RegisterNewAggregateEntries()
     {
         ChangeTracker.DetectChanges();
+        RegisterNewInvoiceChildren();
+        RegisterNewCreditNoteLines();
+    }
 
+    private void RegisterNewInvoiceChildren()
+    {
         foreach (var invoiceEntry in ChangeTracker.Entries<Invoice>()
                      .Where(e => e.State is EntityState.Modified or EntityState.Unchanged))
         {
-            foreach (var payment in invoiceEntry.Entity.Payments)
-            {
-                var alreadyStored = Payments.AsNoTracking().Any(p => p.Id == payment.Id);
-                if (!alreadyStored)
-                {
-                    Entry(payment).State = EntityState.Added;
-                }
-            }
-
-            foreach (var creditNote in invoiceEntry.Entity.CreditNotes)
-            {
-                var alreadyStored = CreditNotes.AsNoTracking().Any(cn => cn.Id == creditNote.Id);
-                if (!alreadyStored)
-                {
-                    Entry(creditNote).State = EntityState.Added;
-                }
-            }
+            MarkMissingPayments(invoiceEntry.Entity.Payments);
+            MarkMissingCreditNotes(invoiceEntry.Entity.CreditNotes);
         }
+    }
 
+    private void MarkMissingPayments(IEnumerable<Payment> payments)
+    {
+        foreach (var payment in payments)
+        {
+            if (!Payments.AsNoTracking().Any(p => p.Id == payment.Id))
+                Entry(payment).State = EntityState.Added;
+        }
+    }
+
+    private void MarkMissingCreditNotes(IEnumerable<CreditNote> creditNotes)
+    {
+        foreach (var creditNote in creditNotes)
+        {
+            if (!CreditNotes.AsNoTracking().Any(cn => cn.Id == creditNote.Id))
+                Entry(creditNote).State = EntityState.Added;
+        }
+    }
+
+    private void RegisterNewCreditNoteLines()
+    {
         foreach (var creditNoteEntry in ChangeTracker.Entries<CreditNote>()
                      .Where(e => e.State is EntityState.Modified or EntityState.Unchanged))
-            foreach (var line in creditNoteEntry.Entity.Lines)
-            {
-                var alreadyStored = CreditNoteLines.AsNoTracking().Any(l => l.Id == line.Id);
-                if (!alreadyStored)
-                {
-                    Entry(line).State = EntityState.Added;
-                }
-            }
+        {
+            MarkMissingCreditNoteLines(creditNoteEntry.Entity.Lines);
+        }
+    }
+
+    private void MarkMissingCreditNoteLines(IEnumerable<CreditNoteLine> lines)
+    {
+        foreach (var line in lines)
+        {
+            if (!CreditNoteLines.AsNoTracking().Any(l => l.Id == line.Id))
+                Entry(line).State = EntityState.Added;
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

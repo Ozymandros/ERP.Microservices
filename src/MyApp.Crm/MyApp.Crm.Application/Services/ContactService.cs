@@ -49,7 +49,7 @@ public sealed class ContactService : AppServiceBase, IContactService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<ContactDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await _contactRepository.GetByIdAsync(id);
+        var entity = await _contactRepository.GetByIdAsync(id, cancellationToken);
         return entity is null ? null : _mapper.Map<ContactDto>(entity);
     }
 
@@ -68,7 +68,7 @@ public sealed class ContactService : AppServiceBase, IContactService
     public async Task<PaginatedResult<ContactDto>> QueryAsync(QuerySpec query, CancellationToken cancellationToken = default)
     {
         var spec = new ContactQuerySpec(query);
-        var result = await _contactRepository.QueryAsync(spec);
+        var result = await _contactRepository.QueryAsync(spec, cancellationToken);
         var dtos = result.Items.Select(c => _mapper.Map<ContactDto>(c)).ToList();
         return new PaginatedResult<ContactDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }
@@ -78,7 +78,7 @@ public sealed class ContactService : AppServiceBase, IContactService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<ContactDto> CreateAsync(CreateContactDto dto, CancellationToken cancellationToken = default)
     {
-        var account = await _accountRepository.GetByIdAsync(dto.AccountId);
+        var account = await _accountRepository.GetByIdAsync(dto.AccountId, cancellationToken);
         if (account is null) throw new KeyNotFoundException($"Account with ID {dto.AccountId} not found.");
 
         var contact = account.AddContact(
@@ -102,7 +102,7 @@ public sealed class ContactService : AppServiceBase, IContactService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<ContactDto> UpdateAsync(Guid id, UpdateContactDto dto, CancellationToken cancellationToken = default)
     {
-        var contact = await _contactRepository.GetByIdAsync(id);
+        var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
         if (contact is null) throw new KeyNotFoundException($"Contact with ID {id} not found.");
 
         contact.Update(dto.FullName, dto.Email, dto.Phone, dto.Title);
@@ -118,7 +118,7 @@ public sealed class ContactService : AppServiceBase, IContactService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task SetPrimaryAsync(Guid accountId, Guid contactId, CancellationToken cancellationToken = default)
     {
-        var account = await _accountRepository.GetByIdAsync(accountId);
+        var account = await _accountRepository.GetByIdAsync(accountId, cancellationToken);
         if (account is null) throw new KeyNotFoundException($"Account with ID {accountId} not found.");
 
         account.SetPrimaryContact(contactId);
@@ -131,7 +131,7 @@ public sealed class ContactService : AppServiceBase, IContactService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task DeactivateAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var contact = await _contactRepository.GetByIdAsync(id);
+        var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
         if (contact is null) return;
 
         contact.Deactivate();

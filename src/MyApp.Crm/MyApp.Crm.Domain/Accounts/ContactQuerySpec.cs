@@ -23,23 +23,7 @@ public sealed class ContactQuerySpec : BaseSpecification<Contact>
             foreach (var (key, value) in Query.Filters)
             {
                 if (string.IsNullOrWhiteSpace(value)) continue;
-                var normalized = value.Trim();
-
-                switch (key.Trim().ToLowerInvariant())
-                {
-                    case "accountid":
-                        if (Guid.TryParse(normalized, out var accountId))
-                            queryable = queryable.Where(c => c.AccountId == accountId);
-                        break;
-                    case "isactive":
-                        if (bool.TryParse(normalized, out var isActive))
-                            queryable = queryable.Where(c => c.IsActive == isActive);
-                        break;
-                    case "isprimary":
-                        if (bool.TryParse(normalized, out var isPrimary))
-                            queryable = queryable.Where(c => c.IsPrimary == isPrimary);
-                        break;
-                }
+                queryable = ApplyContactFilter(queryable, key, value.Trim());
             }
         }
 
@@ -48,5 +32,17 @@ public sealed class ContactQuerySpec : BaseSpecification<Contact>
 
         return queryable;
     }
+
+    private static IQueryable<Contact> ApplyContactFilter(IQueryable<Contact> queryable, string key, string normalized) =>
+        key.Trim().ToLowerInvariant() switch
+        {
+            "accountid" when Guid.TryParse(normalized, out var accountId)
+                => queryable.Where(c => c.AccountId == accountId),
+            "isactive" when bool.TryParse(normalized, out var isActive)
+                => queryable.Where(c => c.IsActive == isActive),
+            "isprimary" when bool.TryParse(normalized, out var isPrimary)
+                => queryable.Where(c => c.IsPrimary == isPrimary),
+            _ => queryable
+        };
 }
 

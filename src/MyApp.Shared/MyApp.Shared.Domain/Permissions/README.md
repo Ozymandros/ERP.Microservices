@@ -124,7 +124,7 @@ var allPermissions = PermissionConstants.GetAllPermissions();
 ### Create Permission Dynamically
 
 ```csharp
-var permission = PermissionConstants.Create(ModuleEnum.Inventory, ActionEnum.Read);
+var permission = PermissionConstants.FormatPermission(ModuleEnum.Inventory, ActionEnum.Read);
 // Result: "Inventory.Read"
 ```
 

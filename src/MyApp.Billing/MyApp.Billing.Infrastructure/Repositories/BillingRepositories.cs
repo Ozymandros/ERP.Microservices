@@ -155,7 +155,7 @@ public class SupplierInvoiceRepository : Repository<SupplierInvoice, Guid>, ISup
     {
         return await _context.SupplierInvoices
             .Include(i => i.Lines)
-            .FirstOrDefaultAsync(i => i.Id == id);
+            .FirstOrDefaultAsync(i => i.Id == id, cancellationToken);
     }
 
     public async Task<List<SupplierInvoice>> GetByPurchaseOrderIdAsync(Guid purchaseOrderId, CancellationToken cancellationToken = default)

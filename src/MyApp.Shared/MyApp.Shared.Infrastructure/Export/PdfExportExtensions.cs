@@ -92,22 +92,7 @@ namespace MyApp.Shared.Infrastructure.Export
                 table.ColumnsDefinition(columns =>
                 {
                     foreach (var prop in properties)
-                    {
-                        // Special handling for common property types
-                        if (prop.Name == "Id")
-                            columns.ConstantColumn(60);
-                        else if (prop.PropertyType == typeof(DateTime) || prop.PropertyType == typeof(DateTime?))
-                            columns.ConstantColumn(100);
-                        else if (prop.PropertyType == typeof(decimal) || prop.PropertyType == typeof(decimal?) ||
-                                 prop.PropertyType == typeof(double) || prop.PropertyType == typeof(double?))
-                            columns.ConstantColumn(80);
-                        else if (prop.PropertyType == typeof(bool) || prop.PropertyType == typeof(bool?))
-                            columns.ConstantColumn(60);
-                        else if (prop.PropertyType == typeof(int) || prop.PropertyType == typeof(int?))
-                            columns.ConstantColumn(70);
-                        else
-                            columns.RelativeColumn();
-                    }
+                        DefineColumnWidth(columns, prop);
                 });
 
                 // Header row
@@ -152,6 +137,27 @@ namespace MyApp.Shared.Infrastructure.Export
                     }
                 }
             });
+        }
+
+        private static void DefineColumnWidth(TableColumnsDefinitionDescriptor columns, PropertyInfo prop)
+        {
+            if (prop.Name == "Id")
+            {
+                columns.ConstantColumn(60);
+                return;
+            }
+
+            var type = prop.PropertyType;
+            if (type == typeof(DateTime) || type == typeof(DateTime?))
+                columns.ConstantColumn(100);
+            else if (type == typeof(decimal) || type == typeof(decimal?) || type == typeof(double) || type == typeof(double?))
+                columns.ConstantColumn(80);
+            else if (type == typeof(bool) || type == typeof(bool?))
+                columns.ConstantColumn(60);
+            else if (type == typeof(int) || type == typeof(int?))
+                columns.ConstantColumn(70);
+            else
+                columns.RelativeColumn();
         }
 
         private static string FormatValue(object? value, Type propertyType)

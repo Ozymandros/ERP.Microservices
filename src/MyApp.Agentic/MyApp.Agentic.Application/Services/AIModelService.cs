@@ -39,7 +39,7 @@ public class AIModelService : AppServiceBase, IAIModelService
     /// <returns>All AI model DTOs.</returns>
     public async Task<IEnumerable<AIModelDto>> ListAsync(CancellationToken cancellationToken = default)
     {
-        var models = await modelRepository.GetAllAsync();
+        var models = await modelRepository.GetAllAsync(cancellationToken);
         return models
             .OrderBy(m => m.Provider?.Name)
             .ThenBy(m => m.CommercialName)
@@ -66,7 +66,7 @@ public class AIModelService : AppServiceBase, IAIModelService
     /// <returns>The model DTO, or <see langword="null"/> if not found.</returns>
     public async Task<AIModelDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var model = await modelRepository.GetByIdAsync(id);
+        var model = await modelRepository.GetByIdAsync(id, cancellationToken);
         return model is null ? null : MapToDto(model);
     }
 
@@ -77,7 +77,7 @@ public class AIModelService : AppServiceBase, IAIModelService
     /// <exception cref="InvalidOperationException">Thrown when the referenced provider does not exist.</exception>
     public async Task<AIModelDto> CreateAsync(CreateAIModelDto dto, CancellationToken cancellationToken = default)
     {
-        var provider = await EnsureProviderExistsAsync(dto.ProviderId);
+        var provider = await EnsureProviderExistsAsync(dto.ProviderId, cancellationToken);
 
         var model = new AIModel(
             Guid.NewGuid(),
@@ -98,7 +98,7 @@ public class AIModelService : AppServiceBase, IAIModelService
 
         await modelRepository.AddAsync(model);
         await SaveChangesAsync(cancellationToken);
-        var persisted = await modelRepository.GetByIdAsync(model.Id) ?? model;
+        var persisted = await modelRepository.GetByIdAsync(model.Id, cancellationToken) ?? model;
         return MapToDto(persisted);
     }
 
@@ -110,9 +110,9 @@ public class AIModelService : AppServiceBase, IAIModelService
     /// <exception cref="InvalidOperationException">Thrown when the model or referenced provider does not exist.</exception>
     public async Task<AIModelDto> UpdateAsync(Guid id, UpdateAIModelDto dto, CancellationToken cancellationToken = default)
     {
-        await EnsureProviderExistsAsync(dto.ProviderId);
+        await EnsureProviderExistsAsync(dto.ProviderId, cancellationToken);
 
-        var model = await modelRepository.GetByIdAsync(id);
+        var model = await modelRepository.GetByIdAsync(id, cancellationToken);
         if (model is null)
             throw new InvalidOperationException($"AI model with ID {id} not found.");
 
@@ -134,7 +134,7 @@ public class AIModelService : AppServiceBase, IAIModelService
 
         await modelRepository.UpdateAsync(model);
         await SaveChangesAsync(cancellationToken);
-        var persisted = await modelRepository.GetByIdAsync(model.Id) ?? model;
+        var persisted = await modelRepository.GetByIdAsync(model.Id, cancellationToken) ?? model;
         return MapToDto(persisted);
     }
 
@@ -143,7 +143,7 @@ public class AIModelService : AppServiceBase, IAIModelService
     /// <param name="cancellationToken">Cancellation token.</param>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var model = await modelRepository.GetByIdAsync(id);
+        var model = await modelRepository.GetByIdAsync(id, cancellationToken);
         if (model is null)
             return;
 
@@ -151,12 +151,12 @@ public class AIModelService : AppServiceBase, IAIModelService
         await SaveChangesAsync(cancellationToken);
     }
 
-    private async Task<AIProvider> EnsureProviderExistsAsync(Guid providerId)
+    private async Task<AIProvider> EnsureProviderExistsAsync(Guid providerId, CancellationToken cancellationToken = default)
     {
         if (providerId == Guid.Empty)
             throw new ArgumentException("ProviderId is required.", nameof(providerId));
 
-        var provider = await providerRepository.GetByIdAsync(providerId);
+        var provider = await providerRepository.GetByIdAsync(providerId, cancellationToken);
         if (provider is null)
             throw new InvalidOperationException($"AI provider with ID {providerId} not found.");
 

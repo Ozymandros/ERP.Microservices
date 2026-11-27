@@ -16,36 +16,43 @@ public class ProjectQuerySpec : BaseSpecification<Project>
     /// <inheritdoc />
     public override IQueryable<Project> ApplyFilters(IQueryable<Project> query)
     {
-        var filters = Query.Filters;
-        if (filters is not null)
-        {
-            if (filters.TryGetValue(nameof(Project.Status), out var status)
-                && Enum.TryParse<ProjectStatus>(status, true, out var parsedStatus))
-                query = query.Where(p => p.Status == parsedStatus);
+        query = ApplyDictionaryFilters(query, Query.Filters);
+        return ApplyProjectSearch(query, Query.SearchTerm);
+    }
 
-            if (filters.TryGetValue(nameof(Project.CustomerId), out var customer) && Guid.TryParse(customer, out var customerId))
-                query = query.Where(p => p.CustomerId == customerId);
+    private static IQueryable<Project> ApplyDictionaryFilters(IQueryable<Project> query, Dictionary<string, string>? filters)
+    {
+        if (filters is null)
+            return query;
 
-            if (filters.TryGetValue(nameof(Project.ProjectManagerUserId), out var manager) && Guid.TryParse(manager, out var managerId))
-                query = query.Where(p => p.ProjectManagerUserId == managerId);
+        if (filters.TryGetValue(nameof(Project.Status), out var status)
+            && Enum.TryParse<ProjectStatus>(status, true, out var parsedStatus))
+            query = query.Where(p => p.Status == parsedStatus);
 
-            if (filters.TryGetValue(nameof(Project.CurrencyCode), out var currency) && !string.IsNullOrWhiteSpace(currency))
-                query = query.Where(p => p.CurrencyCode == currency.ToUpper());
+        if (filters.TryGetValue(nameof(Project.CustomerId), out var customer) && Guid.TryParse(customer, out var customerId))
+            query = query.Where(p => p.CustomerId == customerId);
 
-            if (filters.TryGetValue(nameof(Project.ProjectNumber), out var number) && !string.IsNullOrWhiteSpace(number))
-                query = query.Where(p => p.ProjectNumber.Contains(number));
-        }
+        if (filters.TryGetValue(nameof(Project.ProjectManagerUserId), out var manager) && Guid.TryParse(manager, out var managerId))
+            query = query.Where(p => p.ProjectManagerUserId == managerId);
 
-        if (!string.IsNullOrWhiteSpace(Query.SearchTerm))
-        {
-            var term = Query.SearchTerm;
-            query = query.Where(p =>
-                p.ProjectNumber.Contains(term) ||
-                p.Description.Contains(term) ||
-                (p.ExternalReference != null && p.ExternalReference.Contains(term)));
-        }
+        if (filters.TryGetValue(nameof(Project.CurrencyCode), out var currency) && !string.IsNullOrWhiteSpace(currency))
+            query = query.Where(p => p.CurrencyCode == currency.ToUpper());
+
+        if (filters.TryGetValue(nameof(Project.ProjectNumber), out var number) && !string.IsNullOrWhiteSpace(number))
+            query = query.Where(p => p.ProjectNumber.Contains(number));
 
         return query;
+    }
+
+    private static IQueryable<Project> ApplyProjectSearch(IQueryable<Project> query, string? searchTerm)
+    {
+        if (string.IsNullOrWhiteSpace(searchTerm))
+            return query;
+
+        return query.Where(p =>
+            p.ProjectNumber.Contains(searchTerm) ||
+            p.Description.Contains(searchTerm) ||
+            (p.ExternalReference != null && p.ExternalReference.Contains(searchTerm)));
     }
 }
 

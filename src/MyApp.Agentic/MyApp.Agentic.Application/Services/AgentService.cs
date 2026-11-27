@@ -642,11 +642,11 @@ public class AgentService : AppServiceBase, IAgentService
         if (modelId == Guid.Empty)
             throw new ArgumentException("ModelId is required.", nameof(modelId));
 
-        var provider = await _providerRepository.GetByIdAsync(providerId);
+        var provider = await _providerRepository.GetByIdAsync(providerId, cancellationToken);
         if (provider is null)
             throw new InvalidOperationException($"AI provider with ID {providerId} was not found.");
 
-        var model = await _modelRepository.GetByIdAsync(modelId);
+        var model = await _modelRepository.GetByIdAsync(modelId, cancellationToken);
         if (model is null)
             throw new InvalidOperationException($"AI model with ID {modelId} was not found.");
 

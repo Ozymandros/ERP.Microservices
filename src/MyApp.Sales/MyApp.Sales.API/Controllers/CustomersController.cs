@@ -113,7 +113,7 @@ public class CustomersController : ControllerBase
                 return Ok(customers);
             }
 
-            customers = await _customerService.ListCustomersAsync();
+            customers = await _customerService.ListCustomersAsync(cancellationToken);
             await _cacheService.SaveStateAsync("all_customers", customers);
             return Ok(customers);
         }

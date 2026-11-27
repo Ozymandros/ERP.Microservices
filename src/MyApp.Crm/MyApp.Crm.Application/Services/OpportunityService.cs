@@ -210,7 +210,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityLineDto> AddLineAsync(Guid opportunityId, CreateOpportunityLineDto dto, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(opportunityId);
+        var entity = await _repository.GetByIdAsync(opportunityId, cancellationToken);
         if (entity is null) throw new KeyNotFoundException($"Opportunity with ID {opportunityId} not found.");
 
         var line = entity.AddLine(
@@ -234,7 +234,7 @@ public class OpportunityService : AppServiceBase, IOpportunityService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     public async Task<OpportunityLineDto> UpdateLineAsync(Guid opportunityId, Guid lineId, UpdateOpportunityLineDto dto, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(opportunityId);
+        var entity = await _repository.GetByIdAsync(opportunityId, cancellationToken);
         if (entity is null) throw new KeyNotFoundException($"Opportunity with ID {opportunityId} not found.");
 
         entity.UpdateLine(lineId, dto.Description, dto.Quantity, dto.UnitPrice, dto.DiscountPercent, dto.ProductId, dto.Sku);
