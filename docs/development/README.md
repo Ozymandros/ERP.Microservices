@@ -236,6 +236,8 @@ This category covers everything a developer needs to get productive. From local 
 - Aim for > 80% coverage
 - Integration tests matter
 - Mock external dependencies
+- New API controllers: add `*.API.Tests` Moq smokes (list/cache, GetById, one write path, export where present). In Moq `Setup`/`Verify` lambdas, pass `It.IsAny<CancellationToken>()` when the interface method has an optional `CancellationToken` (expression trees cannot omit optional args).
+- Sonar overall baseline is tracked on [SonarCloud](https://sonarcloud.io) (requires `SONAR_TOKEN` in CI). Coverage excludes hosted `BackgroundServices` loops (integration-tested separately).
 
 ### Git Discipline
 - Commit frequently
@@ -315,3 +317,13 @@ development/
 **Category Status:** ✅ Complete  
 **Documents:** 8 files  
 **Target Coverage:** > 80%
+
+---
+
+## Sonar overall coverage
+
+Sonar **overall** coverage on `develop` is tracked in SonarCloud (target ≥ 80%). A local baseline pull from the dashboard requires `SONAR_TOKEN` and `SONAR_PROJECT_KEY` in CI secrets; without those credentials, use the SonarCloud project overview after push or mirror the CI flow in [`.github/workflows/sonarcloud.yml`](../../.github/workflows/sonarcloud.yml). `**/BackgroundServices/**` is excluded from the coverage denominator (hosted service loops).
+
+### API controller unit tests
+
+New `*.API.Tests` controller tests use **Moq** for `I*Service`, `ICacheService`, and `ILogger<>`, following [`InvoicesControllerTests`](../../src/MyApp.Billing/test/MyApp.Billing.API.Tests/Controllers/InvoicesControllerTests.cs) and [`RolesControllerTests`](../../src/MyApp.Auth.API.Tests/RolesControllerTests.cs). Cover export (cache hit and service fallback), list/query, `GetById` (cache, 200, 404), and at least one write path per controller. When stubbing service methods that accept `CancellationToken cancellationToken = default`, always use `It.IsAny<CancellationToken>()` in Moq setups and verifies.

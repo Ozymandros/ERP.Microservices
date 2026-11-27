@@ -35,7 +35,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\MyApp.Agentic.Infrastructure\MyApp.Agentic.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\MyApp.Agentic.API\MyApp.Agentic.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>
