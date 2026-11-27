@@ -480,4 +480,58 @@ public class ProjectPostingServiceTests
 
         await act.Should().ThrowAsync<ArgumentException>();
     }
+
+    [Fact]
+    public async Task PostUsageAsync_ExpenseWithDescription_CreatesLedgerEntry()
+    {
+        var dto = new PostUsageDto
+        {
+            ProjectTaskId = _task.Id,
+            Kind = ProjectLineKind.Expense,
+            Quantity = 2,
+            Description = "Travel",
+            UnitCostLcy = 25m
+        };
+
+        await _sut.PostUsageAsync(_project.Id, dto);
+
+        _postedEntries.Should().ContainSingle(e =>
+            e.Kind == ProjectLineKind.Expense &&
+            e.Description == "Travel" &&
+            e.Quantity == 2);
+    }
+
+    [Fact]
+    public async Task RequestInvoiceAsync_WithExplicitLines_UsesSpecifiedQuantities()
+    {
+        var line = BillableLine(5m, 50m);
+        _lines.Setup(r => r.GetByProjectAsync(_project.Id, null, It.IsAny<CancellationToken>()))
+              .ReturnsAsync(new List<ProjectPlanningLine> { line });
+        _invoiceRequests.Setup(r => r.AddAsync(It.IsAny<ProjectInvoiceRequest>()))
+                        .Returns<ProjectInvoiceRequest>(r => Task.FromResult(r));
+
+        await _sut.RequestInvoiceAsync(_project.Id, new CreateInvoiceRequestDto
+        {
+            TaxRate = 21m,
+            Lines = [new InvoiceRequestLineInputDto { PlanningLineId = line.Id, Quantity = 3m }]
+        });
+
+        line.QuantityTransferredToInvoice.Should().Be(3m);
+        _postedEntries.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task RequestInvoiceAsync_UnknownPlanningLine_Throws()
+    {
+        var line = BillableLine(5m, 50m);
+        _lines.Setup(r => r.GetByProjectAsync(_project.Id, null, It.IsAny<CancellationToken>()))
+              .ReturnsAsync(new List<ProjectPlanningLine> { line });
+
+        var act = () => _sut.RequestInvoiceAsync(_project.Id, new CreateInvoiceRequestDto
+        {
+            Lines = [new InvoiceRequestLineInputDto { PlanningLineId = Guid.NewGuid(), Quantity = 1m }]
+        });
+
+        await act.Should().ThrowAsync<ArgumentException>();
+    }
 }
