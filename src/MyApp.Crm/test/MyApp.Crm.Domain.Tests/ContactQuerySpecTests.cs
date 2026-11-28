@@ -21,13 +21,14 @@ public class ContactQuerySpecTests
   [Fact]
   public void ApplyFilters_AccountId_Filters()
   {
-    var accountId = SampleContacts().First().AccountId;
+    var contacts = SampleContacts();
+    var accountId = contacts.First().AccountId;
     var spec = new ContactQuerySpec(new QuerySpec
     {
       Filters = new Dictionary<string, string> { { "accountid", accountId.ToString() } }
     });
 
-    var result = spec.ApplyFilters(SampleContacts()).ToList();
+    var result = spec.ApplyFilters(contacts).ToList();
 
     result.Should().HaveCount(2);
     result.Should().OnlyContain(c => c.AccountId == accountId);

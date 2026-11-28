@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Xunit;
 using MyApp.Projects.Domain.Entities;
 using MyApp.Projects.Domain.Specifications;
 using MyApp.Shared.Domain.Pagination;
@@ -47,13 +48,14 @@ public class ProjectQuerySpecTests
     [Fact]
     public void ApplyFilters_CustomerId_Filters()
     {
-        var customerId = SampleProjects().First().CustomerId;
+        var projects = SampleProjects();
+        var customerId = projects.First().CustomerId;
         var spec = new ProjectQuerySpec(new QuerySpec
         {
             Filters = new Dictionary<string, string> { { nameof(Project.CustomerId), customerId.ToString() } }
         });
 
-        var result = spec.ApplyFilters(SampleProjects()).ToList();
+        var result = spec.ApplyFilters(projects).ToList();
 
         result.Should().ContainSingle(p => p.CustomerId == customerId);
     }
