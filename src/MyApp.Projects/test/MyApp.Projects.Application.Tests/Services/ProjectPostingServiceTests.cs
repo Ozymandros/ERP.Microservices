@@ -534,4 +534,110 @@ public class ProjectPostingServiceTests
 
         await act.Should().ThrowAsync<ArgumentException>();
     }
+
+    [Fact]
+    public async Task RequestInvoiceAsync_NonBillableLine_Throws()
+    {
+        var budgetOnly = BillableLine(3m, 40m, PlanningLineType.Budget);
+        _lines.Setup(r => r.GetByProjectAsync(_project.Id, null, It.IsAny<CancellationToken>()))
+              .ReturnsAsync(new List<ProjectPlanningLine> { budgetOnly });
+
+        var act = () => _sut.RequestInvoiceAsync(_project.Id, new CreateInvoiceRequestDto
+        {
+            Lines = [new InvoiceRequestLineInputDto { PlanningLineId = budgetOnly.Id, Quantity = 1m }]
+        });
+
+        await act.Should().ThrowAsync<ArgumentException>();
+    }
+
+    [Fact]
+    public async Task HandleInvoiceIssuedAsync_WhenRateLookupFails_UsesPlanningFallback()
+    {
+        var (request, _) = ArrangeRequestedInvoice(2m);
+        _currency.Setup(c => c.GetRateAsync("USD", It.IsAny<DateTime>(), It.IsAny<CancellationToken>()))
+                 .ThrowsAsync(new InvalidOperationException("rate table missing"));
+
+        await _sut.HandleInvoiceIssuedAsync(IssuedEvent(request.Id));
+
+        _postedEntries.Should().ContainSingle(e => e.ExchangeRate == 0.9m);
+    }
+
+    [Fact]
+    public async Task PostUsageAsync_BlockedResource_Throws()
+    {
+        var line = BillableLine(1m, 100m);
+        _lines.Setup(r => r.GetByIdAsync(line.Id)).ReturnsAsync(line);
+        _resources.Setup(r => r.GetByIdAsync(line.ResourceId!.Value))
+                  .ReturnsAsync(new Resource(line.ResourceId!.Value)
+                  {
+                      ResourceNo = "R-BLOCK",
+                      Name = "Blocked",
+                      UnitCost = 10m,
+                      Blocked = true
+                  });
+
+        var act = () => _sut.PostUsageAsync(_project.Id, new PostUsageDto
+        {
+            ProjectTaskId = _task.Id,
+            PlanningLineId = line.Id,
+            Kind = ProjectLineKind.Resource,
+            Quantity = 1m
+        });
+
+        await act.Should().ThrowAsync<InvalidOperationException>();
+    }
+
+    [Fact]
+    public async Task RequestInvoiceAsync_NullQuantity_UsesRemainingToInvoice()
+    {
+        var line = BillableLine(6m, 80m);
+        _lines.Setup(r => r.GetByProjectAsync(_project.Id, null, It.IsAny<CancellationToken>()))
+              .ReturnsAsync(new List<ProjectPlanningLine> { line });
+        _invoiceRequests.Setup(r => r.AddAsync(It.IsAny<ProjectInvoiceRequest>()))
+                        .Returns<ProjectInvoiceRequest>(r => Task.FromResult(r));
+
+        await _sut.RequestInvoiceAsync(_project.Id, new CreateInvoiceRequestDto
+        {
+            TaxRate = 21m,
+            Lines = [new InvoiceRequestLineInputDto { PlanningLineId = line.Id, Quantity = null }]
+        });
+
+        line.QuantityTransferredToInvoice.Should().Be(6m);
+    }
+
+    [Fact]
+    public async Task PostUsageAsync_PlanningLineWrongTask_Throws()
+    {
+        var otherTask = new ProjectTask(Guid.NewGuid()) { ProjectId = _project.Id, TaskNo = "2000", TaskType = ProjectTaskType.Posting };
+        var line = BillableLine(1m, 50m);
+        line.ProjectTaskId = otherTask.Id;
+        _lines.Setup(r => r.GetByIdAsync(line.Id)).ReturnsAsync(line);
+        _tasks.Setup(r => r.GetByProjectAsync(_project.Id, It.IsAny<CancellationToken>()))
+              .ReturnsAsync(new List<ProjectTask> { _task, otherTask });
+
+        var act = () => _sut.PostUsageAsync(_project.Id, new PostUsageDto
+        {
+            ProjectTaskId = _task.Id,
+            PlanningLineId = line.Id,
+            Kind = ProjectLineKind.Resource,
+            Quantity = 1m
+        });
+
+        await act.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("*different task*");
+    }
+
+    [Fact]
+    public async Task HandleInvoiceIssuedAsync_WhenAlreadyInvoiced_SkipsSecondPosting()
+    {
+        var (request, line) = ArrangeRequestedInvoice(3m);
+        request.Status = ProjectInvoiceRequestStatus.Invoiced;
+        var @event = IssuedEvent(request.Id);
+
+        var result = await _sut.HandleInvoiceIssuedAsync(@event);
+
+        result.Should().Be(_project.Id);
+        _postedEntries.Should().BeEmpty();
+        line.QuantityInvoiced.Should().Be(0m);
+    }
 }

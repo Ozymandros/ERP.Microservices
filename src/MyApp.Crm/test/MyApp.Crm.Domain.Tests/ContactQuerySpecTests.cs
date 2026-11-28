@@ -56,4 +56,36 @@ public class ContactQuerySpecTests
 
     result.Should().ContainSingle(c => c.FullName == "Carol");
   }
+
+  [Fact]
+  public void ApplyFilters_IsActive_FiltersActiveContacts()
+  {
+    var contacts = SampleContacts().ToList();
+    contacts[1].Deactivate();
+    var queryable = contacts.AsQueryable();
+    var spec = new ContactQuerySpec(new QuerySpec
+    {
+      Filters = new Dictionary<string, string> { { "isactive", "true" } }
+    });
+
+    var result = spec.ApplyFilters(queryable).ToList();
+
+    result.Should().HaveCount(2);
+    result.Should().OnlyContain(c => c.IsActive);
+  }
+
+  [Fact]
+  public void ApplyFilters_SearchTerm_MatchesEmail()
+  {
+    var accountId = Guid.NewGuid();
+    var contacts = new List<Contact>
+    {
+      new(Guid.NewGuid(), accountId, "Support", email: "help@contoso.com")
+    }.AsQueryable();
+    var spec = new ContactQuerySpec(new QuerySpec { SearchTerm = "help@" });
+
+    var result = spec.ApplyFilters(contacts).ToList();
+
+    result.Should().ContainSingle(c => c.Email == "help@contoso.com");
+  }
 }
