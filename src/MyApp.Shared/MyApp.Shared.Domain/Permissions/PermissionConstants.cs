@@ -143,7 +143,7 @@ public static class PermissionConstants
     }
 
     /// <summary>CRM module permissions</summary>
-    public static class CRM
+    public static class Crm
     {
         /// <summary>Permission to read/view CRM data.</summary>
         public const string Read = "CRM.Read";
@@ -332,7 +332,7 @@ public static class PermissionConstants
             ModuleEnum.Orders => Orders.All,
             ModuleEnum.Sales => Sales.All,
             ModuleEnum.Billing => Billing.All,
-            ModuleEnum.CRM => CRM.All,
+            ModuleEnum.CRM => Crm.All,
             ModuleEnum.Auth => Auth.All,
             ModuleEnum.Agentic => Agentic.All,
             ModuleEnum.Audit => Audit.All,
@@ -358,12 +358,12 @@ public static class PermissionConstants
     }
 
     /// <summary>
-    /// Creates a new item.
+    /// Builds a permission string from module and action.
     /// </summary>
     /// <param name="module">The module.</param>
     /// <param name="action">The action.</param>
     /// <returns>Permission string in format "Module.Action"</returns>
-    public static string Create(ModuleEnum module, ActionEnum action)
+    public static string FormatPermission(ModuleEnum module, ActionEnum action)
         => $"{module}.{action}";
 
     /// <summary>

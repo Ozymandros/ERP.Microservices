@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Design;
 using MyApp.Auth.Domain.Entities;
 using MyApp.Shared.Domain.Entities;
@@ -203,46 +204,56 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
 
     private void ApplyAuditInformation()
     {
+        var currentUser = ResolveCurrentAuditUser();
         var entries = ChangeTracker.Entries()
             .Where(e => e.Entity is IAuditableEntity &&
-                       (e.State == EntityState.Added || e.State == EntityState.Modified));
+                        (e.State == EntityState.Added || e.State == EntityState.Modified));
 
         foreach (var entry in entries)
-            if (entry.Entity is IAuditableEntity)
-            {
-                var entity = (IAuditableEntity)entry.Entity;
-                string currentUser = "SystemUser";
-                try
-                {
-                    var httpContextAccessor = this.GetService<IHttpContextAccessor>();
-                    var name = httpContextAccessor?.HttpContext?.User?.Identity?.Name;
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        currentUser = name;
-                    }
-                    else if (Thread.CurrentPrincipal?.Identity?.IsAuthenticated == true &&
-                             !string.IsNullOrEmpty(Thread.CurrentPrincipal.Identity.Name))
-                    {
-                        currentUser = Thread.CurrentPrincipal.Identity.Name;
-                    }
-                }
-                catch
-                {
-                    // If resolving IHttpContextAccessor fails for any reason, keep the default SystemUser
-                }
-                if (entry.State == EntityState.Added)
-                {
-                    entity.CreatedAt = DateTime.UtcNow;
-                    entity.CreatedBy = currentUser;
-                }
-                else
-                {
-                    Entry(entity).Property(p => p.CreatedAt).IsModified = false;
-                    Entry(entity).Property(p => p.CreatedBy).IsModified = false;
-                }
-                entity.UpdatedAt = DateTime.UtcNow;
-                entity.UpdatedBy = currentUser;
-            }
+        {
+            if (entry.Entity is not IAuditableEntity entity)
+                continue;
+
+            StampAuditFields(entry, entity, currentUser);
+        }
+    }
+
+    private string ResolveCurrentAuditUser()
+    {
+        try
+        {
+            var httpContextAccessor = this.GetService<IHttpContextAccessor>();
+            var name = httpContextAccessor?.HttpContext?.User?.Identity?.Name;
+            if (!string.IsNullOrEmpty(name))
+                return name;
+
+            if (Thread.CurrentPrincipal?.Identity?.IsAuthenticated == true &&
+                !string.IsNullOrEmpty(Thread.CurrentPrincipal.Identity.Name))
+                return Thread.CurrentPrincipal.Identity.Name;
+        }
+        catch
+        {
+            // If resolving IHttpContextAccessor fails for any reason, keep the default SystemUser
+        }
+
+        return "SystemUser";
+    }
+
+    private void StampAuditFields(EntityEntry entry, IAuditableEntity entity, string currentUser)
+    {
+        if (entry.State == EntityState.Added)
+        {
+            entity.CreatedAt = DateTime.UtcNow;
+            entity.CreatedBy = currentUser;
+        }
+        else
+        {
+            Entry(entity).Property(p => p.CreatedAt).IsModified = false;
+            Entry(entity).Property(p => p.CreatedBy).IsModified = false;
+        }
+
+        entity.UpdatedAt = DateTime.UtcNow;
+        entity.UpdatedBy = currentUser;
     }
 }
 

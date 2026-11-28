@@ -81,7 +81,7 @@ public class ProjectTaskService : AppServiceBase, IProjectTaskService
     /// <inheritdoc />
     public async Task<ProjectTaskDto?> GetByIdAsync(Guid projectId, Guid taskId, CancellationToken cancellationToken = default)
     {
-        var task = await _tasks.GetByIdAsync(taskId);
+        var task = await _tasks.GetByIdAsync(taskId, cancellationToken);
         return task is null || task.ProjectId != projectId ? null : _mapper.Map<ProjectTaskDto>(task);
     }
 

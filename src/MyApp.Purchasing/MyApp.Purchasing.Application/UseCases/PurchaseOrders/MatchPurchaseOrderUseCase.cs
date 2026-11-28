@@ -42,11 +42,36 @@ public sealed class MatchPurchaseOrderUseCase(
             .GroupBy(l => l.ProductId)
             .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
 
+        var (hasOverbill, hasPartial, allMatched) = EvaluateLines(order.Lines, billedByProduct, purchaseOrderId);
+
+        order.MatchStatus = DetermineMatchStatus(hasOverbill, hasPartial, allMatched);
+        order.MatchedAt = DateTime.UtcNow;
+        await purchaseOrderRepository.UpdateAsync(order);
+        await boundary.SaveChangesAsync(cancellationToken);
+
+        if (order.MatchStatus == PurchaseOrderMatchStatus.Matched)
+        {
+            await boundary.EventPublisher.PublishAsync(
+                MessagingConstants.Topics.PurchasingOrderMatched,
+                new PurchaseOrderMatchedEvent(order.Id, order.MatchStatus.ToString(), order.MatchedAt.Value),
+                cancellationToken);
+        }
+
+        var summary = $"MatchStatus={order.MatchStatus}; lines={order.Lines.Count}; supplierInvoices={supplierInvoiceList.Count}";
+        logger.LogInformation("Purchase order {PurchaseOrderId} match completed: {Summary}", purchaseOrderId, summary);
+        return new PurchaseOrderMatchResultDto(purchaseOrderId, order.MatchStatus, order.MatchedAt.Value, summary);
+    }
+
+    private (bool HasOverbill, bool HasPartial, bool AllMatched) EvaluateLines(
+        ICollection<PurchaseOrderLine> lines,
+        IReadOnlyDictionary<Guid, int> billedByProduct,
+        Guid purchaseOrderId)
+    {
         var hasOverbill = false;
         var hasPartial = false;
         var allMatched = true;
 
-        foreach (var line in order.Lines)
+        foreach (var line in lines)
         {
             var hasBilledLine = billedByProduct.TryGetValue(line.ProductId, out var billedQty);
             if (!hasBilledLine && (line.Quantity > 0 || line.ReceivedQuantity > 0))
@@ -69,26 +94,15 @@ public sealed class MatchPurchaseOrderUseCase(
             }
         }
 
-        order.MatchStatus = hasOverbill
-            ? PurchaseOrderMatchStatus.Overbilled
-            : allMatched && !hasPartial
-                ? PurchaseOrderMatchStatus.Matched
-                : PurchaseOrderMatchStatus.Partial;
+        return (hasOverbill, hasPartial, allMatched);
+    }
 
-        order.MatchedAt = DateTime.UtcNow;
-        await purchaseOrderRepository.UpdateAsync(order);
-        await boundary.SaveChangesAsync(cancellationToken);
-
-        if (order.MatchStatus == PurchaseOrderMatchStatus.Matched)
-        {
-            await boundary.EventPublisher.PublishAsync(
-                MessagingConstants.Topics.PurchasingOrderMatched,
-                new PurchaseOrderMatchedEvent(order.Id, order.MatchStatus.ToString(), order.MatchedAt.Value),
-                cancellationToken);
-        }
-
-        var summary = $"MatchStatus={order.MatchStatus}; lines={order.Lines.Count}; supplierInvoices={supplierInvoiceList.Count}";
-        logger.LogInformation("Purchase order {PurchaseOrderId} match completed: {Summary}", purchaseOrderId, summary);
-        return new PurchaseOrderMatchResultDto(purchaseOrderId, order.MatchStatus, order.MatchedAt.Value, summary);
+    private static PurchaseOrderMatchStatus DetermineMatchStatus(bool hasOverbill, bool hasPartial, bool allMatched)
+    {
+        if (hasOverbill)
+            return PurchaseOrderMatchStatus.Overbilled;
+        return allMatched && !hasPartial
+            ? PurchaseOrderMatchStatus.Matched
+            : PurchaseOrderMatchStatus.Partial;
     }
 }

@@ -85,7 +85,7 @@ public async Task<AccountDto?> GetByCustomerIdAsync(Guid customerId, Cancellatio
     public async Task<PaginatedResult<AccountDto>> QueryAsync(QuerySpec query, CancellationToken cancellationToken = default)
     {
         var spec = new AccountQuerySpec(query);
-        var result = await _repository.QueryAsync(spec);
+        var result = await _repository.QueryAsync(spec, cancellationToken);
         var dtos = result.Items.Select(a => _mapper.Map<AccountDto>(a)).ToList();
         return new PaginatedResult<AccountDto>(dtos, result.PageNumber, result.PageSize, result.TotalCount);
     }

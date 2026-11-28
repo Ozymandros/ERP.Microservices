@@ -194,4 +194,35 @@ public class MatchPurchaseOrderUseCaseTests
 
         result.MatchStatus.Should().Be(PurchaseOrderMatchStatus.Partial);
     }
+
+    [Fact]
+    public async Task ExecuteAsync_UnderbilledQuantity_SetsPartial()
+    {
+        var id = Guid.NewGuid();
+        var productId = Guid.NewGuid();
+        var order = new PurchaseOrder(id)
+        {
+            OrderNumber = "PO-5",
+            Lines =
+            [
+                new PurchaseOrderLine
+                {
+                    Id = Guid.NewGuid(),
+                    PurchaseOrderId = id,
+                    ProductId = productId,
+                    Quantity = 10,
+                    ReceivedQuantity = 10
+                }
+            ]
+        };
+        _orders.Setup(r => r.GetWithLinesAsync(id, It.IsAny<CancellationToken>())).ReturnsAsync(order);
+        _invoices.Setup(i => i.GetByPurchaseOrderIdAsync(id, It.IsAny<CancellationToken>()))
+            .ReturnsAsync([
+                new SupplierInvoiceSnapshot(Guid.NewGuid(), [new SupplierInvoiceLineSnapshot(productId, 4)])
+            ]);
+
+        var result = await _sut.ExecuteAsync(id);
+
+        result.MatchStatus.Should().Be(PurchaseOrderMatchStatus.Partial);
+    }
 }

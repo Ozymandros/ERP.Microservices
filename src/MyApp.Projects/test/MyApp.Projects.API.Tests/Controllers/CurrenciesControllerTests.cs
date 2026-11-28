@@ -31,6 +31,14 @@ public class CurrenciesControllerTests
     }
 
     [Fact]
+    public async Task ExportToXlsx_ReturnsFile()
+    {
+        _service.Setup(s => s.ListAsync(It.IsAny<CancellationToken>())).ReturnsAsync([]);
+        var result = await _sut.ExportToXlsx();
+        result.Should().BeOfType<FileContentResult>();
+    }
+
+    [Fact]
     public async Task GetAll_ReturnsOk()
     {
         _service.Setup(s => s.ListAsync(It.IsAny<CancellationToken>())).ReturnsAsync([]);

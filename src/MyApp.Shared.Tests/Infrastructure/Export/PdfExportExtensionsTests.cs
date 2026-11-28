@@ -139,6 +139,26 @@ public class PdfExportExtensionsTests
         pdfHeader.Should().Be("%PDF");
     }
 
+    public class WideRow
+    {
+        public string Notes { get; set; } = string.Empty;
+        public double? Score { get; set; }
+    }
+
+    [Fact]
+    public void ExportToPdf_WithRelativeColumnsAndNullableDouble_GeneratesPdf()
+    {
+        var items = new List<WideRow>
+        {
+            new() { Notes = "Long descriptive note for layout", Score = 98.5 }
+        };
+
+        var result = items.ExportToPdf();
+
+        result.Should().NotBeEmpty();
+        System.Text.Encoding.ASCII.GetString(result.Take(4).ToArray()).Should().Be("%PDF");
+    }
+
     [Fact]
     public void ExportToPdf_WithBooleanValues_FormatsCorrectly()
     {

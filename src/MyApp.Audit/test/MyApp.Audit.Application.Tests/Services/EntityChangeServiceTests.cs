@@ -130,7 +130,9 @@ public class EntityChangeServiceTests
         var page = new PaginatedResult<EntityChange>(
             [entity], 1, 10, 1);
 
-        _repository.Setup(r => r.QueryAsync(It.IsAny<MyApp.Shared.Domain.Specifications.ISpecification<EntityChange>>()))
+        _repository.Setup(r => r.QueryAsync(
+                It.IsAny<MyApp.Shared.Domain.Specifications.ISpecification<EntityChange>>(),
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(page);
 
         var spec = new EntityChangeQuerySpec(new QuerySpec { Page = 1, PageSize = 10 });
@@ -138,6 +140,24 @@ public class EntityChangeServiceTests
 
         result.Items.Should().HaveCount(1);
         result.Items.First().ChangeType.Should().Be("Deleted");
+    }
+
+    [Fact]
+    public async Task QueryAsync_PassesCancellationTokenToRepository()
+    {
+        var cts = new CancellationTokenSource();
+        var page = new PaginatedResult<EntityChange>([], 1, 10, 0);
+        _repository.Setup(r => r.QueryAsync(
+                It.IsAny<MyApp.Shared.Domain.Specifications.ISpecification<EntityChange>>(),
+                cts.Token))
+            .ReturnsAsync(page);
+
+        var spec = new EntityChangeQuerySpec(new QuerySpec { Page = 1, PageSize = 10 });
+        await _sut.QueryAsync(spec, cts.Token);
+
+        _repository.Verify(r => r.QueryAsync(
+            It.IsAny<MyApp.Shared.Domain.Specifications.ISpecification<EntityChange>>(),
+            cts.Token), Times.Once);
     }
 
     [Fact]

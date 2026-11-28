@@ -23,6 +23,14 @@ public class InvoiceQuerySpec : BaseSpecification<Invoice>
     /// <returns>The filtered <see cref="IQueryable{Invoice}"/>.</returns>
     public override IQueryable<Invoice> ApplyFilters(IQueryable<Invoice> query)
     {
+        query = ApplyScalarFilters(query);
+        query = ApplyDateFilters(query);
+        query = ApplyAmountFilters(query);
+        return ApplySearchFilter(query);
+    }
+
+    private IQueryable<Invoice> ApplyScalarFilters(IQueryable<Invoice> query)
+    {
         if (Query.Filters?.TryGetValue(nameof(Invoice.InvoiceNumber), out var invoiceNumberFilter) == true
             && !string.IsNullOrWhiteSpace(invoiceNumberFilter))
         {
@@ -55,6 +63,11 @@ public class InvoiceQuerySpec : BaseSpecification<Invoice>
             query = query.Where(i => i.Status == status);
         }
 
+        return query;
+    }
+
+    private IQueryable<Invoice> ApplyDateFilters(IQueryable<Invoice> query)
+    {
         if (Query.Filters?.TryGetValue("IssueDateFrom", out var issueDateFromFilter) == true
             && DateTime.TryParse(issueDateFromFilter, out var issueDateFrom))
         {
@@ -79,6 +92,11 @@ public class InvoiceQuerySpec : BaseSpecification<Invoice>
             query = query.Where(i => i.DueDate.HasValue && i.DueDate.Value <= dueDateTo);
         }
 
+        return query;
+    }
+
+    private IQueryable<Invoice> ApplyAmountFilters(IQueryable<Invoice> query)
+    {
         if (Query.Filters?.TryGetValue("OutstandingAmountMin", out var outstandingMinFilter) == true
             && decimal.TryParse(outstandingMinFilter, out var outstandingMin))
         {
@@ -103,15 +121,18 @@ public class InvoiceQuerySpec : BaseSpecification<Invoice>
             query = query.Where(i => i.TotalGross <= totalGrossMax);
         }
 
-        if (!string.IsNullOrWhiteSpace(Query.SearchTerm))
-        {
-            var searchTerm = Query.SearchTerm.Trim().ToLower();
-            query = query.Where(i =>
-                i.InvoiceNumber.ToLower().Contains(searchTerm) ||
-                i.Currency.ToLower().Contains(searchTerm) ||
-                i.Status.ToString().ToLower().Contains(searchTerm));
-        }
-
         return query;
+    }
+
+    private IQueryable<Invoice> ApplySearchFilter(IQueryable<Invoice> query)
+    {
+        if (string.IsNullOrWhiteSpace(Query.SearchTerm))
+            return query;
+
+        var searchTerm = Query.SearchTerm.Trim().ToLower();
+        return query.Where(i =>
+            i.InvoiceNumber.ToLower().Contains(searchTerm) ||
+            i.Currency.ToLower().Contains(searchTerm) ||
+            i.Status.ToString().ToLower().Contains(searchTerm));
     }
 }

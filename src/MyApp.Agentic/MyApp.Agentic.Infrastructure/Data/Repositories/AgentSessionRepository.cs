@@ -24,7 +24,7 @@ public class AgentSessionRepository : Repository<AgentSession, Guid>, IAgentSess
     /// <param name="id">The id.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the result if found; otherwise, <c>null</c>.</returns>
-    public override async Task<AgentSession?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public override async Task<AgentSession?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.AgentSessions
             .Include(s => s.Agent)

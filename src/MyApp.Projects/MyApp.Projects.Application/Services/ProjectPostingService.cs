@@ -87,33 +87,8 @@ public class ProjectPostingService : AppServiceBase, IProjectPostingService
 
         await EnsureLeafPostingTaskAsync(projectId, dto.ProjectTaskId, cancellationToken);
 
-        ProjectPlanningLine? line = null;
-        if (dto.PlanningLineId.HasValue)
-        {
-            line = await _lines.GetByIdAsync(dto.PlanningLineId.Value, cancellationToken);
-            if (line is null || line.ProjectId != projectId)
-                throw new ArgumentException($"Planning line {dto.PlanningLineId} does not belong to this project.");
-            if (line.ProjectTaskId != dto.ProjectTaskId)
-                throw new ArgumentException("The planning line belongs to a different task.");
-            if (line.Kind != dto.Kind)
-                throw new ArgumentException($"The planning line is a {line.Kind} line.");
-            if (dto.ResourceId.HasValue && line.ResourceId != dto.ResourceId)
-                throw new ArgumentException("The planning line refers to a different resource.");
-            if (line.QuantityPosted + dto.Quantity < 0)
-                throw new InvalidOperationException("The correction exceeds the quantity posted on the planning line.");
-        }
-
-        Resource? resource = null;
-        var resourceId = dto.ResourceId ?? line?.ResourceId;
-        if (dto.Kind == ProjectLineKind.Resource)
-        {
-            if (resourceId is null)
-                throw new ArgumentException("ResourceId is required for resource usage.");
-            resource = await _resources.GetByIdAsync(resourceId.Value, cancellationToken)
-                ?? throw new ArgumentException($"Resource {resourceId} does not exist.");
-            if (resource.Blocked)
-                throw new InvalidOperationException($"Resource {resource.ResourceNo} is blocked.");
-        }
+        var line = await ResolvePlanningLineForUsageAsync(projectId, dto, cancellationToken);
+        var resource = await ResolveResourceForUsageAsync(dto, line, cancellationToken);
 
         var postingDate = (dto.PostingDate ?? DateTime.UtcNow).Date;
         var rate = await _currencyService.GetRateAsync(project.CurrencyCode, postingDate, cancellationToken);
@@ -279,30 +254,7 @@ public class ProjectPostingService : AppServiceBase, IProjectPostingService
         project.EnsureCanPost();
 
         var allLines = await _lines.GetByProjectAsync(projectId, cancellationToken: cancellationToken);
-        List<(ProjectPlanningLine Line, decimal Quantity)> selection;
-
-        if (dto.Lines.Count == 0)
-        {
-            selection = allLines.Where(l => l.QuantityToInvoice > 0).Select(l => (l, l.QuantityToInvoice)).ToList();
-        }
-        else
-        {
-            var byId = allLines.ToDictionary(l => l.Id);
-            selection = new List<(ProjectPlanningLine, decimal)>();
-            foreach (var input in dto.Lines.GroupBy(l => l.PlanningLineId))
-            {
-                if (!byId.TryGetValue(input.Key, out var line))
-                    throw new ArgumentException($"Planning line {input.Key} does not belong to this project.");
-                if (!line.IsBillable)
-                    throw new ArgumentException($"Planning line {line.LineNo} is not billable.");
-
-                var quantity = input.Any(i => i.Quantity is null)
-                    ? line.QuantityToInvoice
-                    : input.Sum(i => i.Quantity!.Value);
-                if (quantity > 0)
-                    selection.Add((line, quantity));
-            }
-        }
+        var selection = BuildInvoiceLineSelection(allLines, dto);
 
         if (selection.Count == 0)
             throw new InvalidOperationException("There is nothing to invoice for this project.");
@@ -520,6 +472,75 @@ public class ProjectPostingService : AppServiceBase, IProjectPostingService
         if (request is null)
             _logger.LogWarning("Billing event references unknown project invoice request {RequestId}", sourceId);
         return request;
+    }
+
+    private async Task<ProjectPlanningLine?> ResolvePlanningLineForUsageAsync(
+        Guid projectId,
+        PostUsageDto dto,
+        CancellationToken cancellationToken)
+    {
+        if (!dto.PlanningLineId.HasValue)
+            return null;
+
+        var line = await _lines.GetByIdAsync(dto.PlanningLineId.Value, cancellationToken);
+        if (line is null || line.ProjectId != projectId)
+            throw new ArgumentException($"Planning line {dto.PlanningLineId} does not belong to this project.");
+        if (line.ProjectTaskId != dto.ProjectTaskId)
+            throw new ArgumentException("The planning line belongs to a different task.");
+        if (line.Kind != dto.Kind)
+            throw new ArgumentException($"The planning line is a {line.Kind} line.");
+        if (dto.ResourceId.HasValue && line.ResourceId != dto.ResourceId)
+            throw new ArgumentException("The planning line refers to a different resource.");
+        if (line.QuantityPosted + dto.Quantity < 0)
+            throw new InvalidOperationException("The correction exceeds the quantity posted on the planning line.");
+
+        return line;
+    }
+
+    private async Task<Resource?> ResolveResourceForUsageAsync(
+        PostUsageDto dto,
+        ProjectPlanningLine? line,
+        CancellationToken cancellationToken)
+    {
+        if (dto.Kind != ProjectLineKind.Resource)
+            return null;
+
+        var resourceId = dto.ResourceId ?? line?.ResourceId;
+        if (resourceId is null)
+            throw new ArgumentException("ResourceId is required for resource usage.");
+
+        var resource = await _resources.GetByIdAsync(resourceId.Value, cancellationToken)
+            ?? throw new ArgumentException($"Resource {resourceId} does not exist.");
+        if (resource.Blocked)
+            throw new InvalidOperationException($"Resource {resource.ResourceNo} is blocked.");
+
+        return resource;
+    }
+
+    private static List<(ProjectPlanningLine Line, decimal Quantity)> BuildInvoiceLineSelection(
+        IReadOnlyList<ProjectPlanningLine> allLines,
+        CreateInvoiceRequestDto dto)
+    {
+        if (dto.Lines.Count == 0)
+            return allLines.Where(l => l.QuantityToInvoice > 0).Select(l => (l, l.QuantityToInvoice)).ToList();
+
+        var byId = allLines.ToDictionary(l => l.Id);
+        var selection = new List<(ProjectPlanningLine, decimal)>();
+        foreach (var input in dto.Lines.GroupBy(l => l.PlanningLineId))
+        {
+            if (!byId.TryGetValue(input.Key, out var line))
+                throw new ArgumentException($"Planning line {input.Key} does not belong to this project.");
+            if (!line.IsBillable)
+                throw new ArgumentException($"Planning line {line.LineNo} is not billable.");
+
+            var quantity = input.Any(i => i.Quantity is null)
+                ? line.QuantityToInvoice
+                : input.Sum(i => i.Quantity!.Value);
+            if (quantity > 0)
+                selection.Add((line, quantity));
+        }
+
+        return selection;
     }
 
     private async Task<decimal> GetRateOrFallbackAsync(string currencyCode, DateTime date, decimal fallback, CancellationToken cancellationToken)

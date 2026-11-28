@@ -34,7 +34,12 @@ public class OrderEventHandlers : ControllerBase
     {
         var invalidation = await _salesOrderService.MarkShippedFromFulfillmentAsync(@event, cancellationToken);
         if (invalidation is not null)
+        {
+            _logger.LogInformation(
+                "Order fulfilled event applied to sales order {SalesOrderId}",
+                invalidation.SalesOrderId);
             await InvalidateSalesOrderCacheAsync(invalidation.SalesOrderId, invalidation.OrderNumber);
+        }
 
         return Ok();
     }
@@ -46,7 +51,12 @@ public class OrderEventHandlers : ControllerBase
     {
         var invalidation = await _salesOrderService.MarkCancelledFromOrderAsync(@event, cancellationToken);
         if (invalidation is not null)
+        {
+            _logger.LogInformation(
+                "Order cancelled event applied to sales order {SalesOrderId}",
+                invalidation.SalesOrderId);
             await InvalidateSalesOrderCacheAsync(invalidation.SalesOrderId, invalidation.OrderNumber);
+        }
 
         return Ok();
     }

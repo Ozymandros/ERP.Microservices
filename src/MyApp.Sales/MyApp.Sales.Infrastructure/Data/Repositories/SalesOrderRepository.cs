@@ -45,7 +45,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         public override async Task<IEnumerable<SalesOrder>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await ListAsync();
+            return await ListAsync(cancellationToken);
         }
 
         /// <summary>Get All Paginated Async.</summary>
@@ -55,7 +55,7 @@ namespace MyApp.Sales.Infrastructure.Data.Repositories
         public async Task<PaginatedResult<SalesOrder>> GetAllPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
         {
 #pragma warning disable CS8603 // Customer navigation is loaded via Include; null-forgiving would break EF translation
-            return await base.GetAllPaginatedAsync(pageNumber, pageSize, [o => o.Lines, o => o.Customer]);
+            return await base.GetAllPaginatedAsync(pageNumber, pageSize, [o => o.Lines, o => o.Customer], cancellationToken);
 #pragma warning restore CS8603
         }
 
